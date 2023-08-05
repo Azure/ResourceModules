@@ -1,3 +1,7 @@
+metadata name = 'Maintenance Configurations'
+metadata description = 'This module deploys a Maintenance Configuration.'
+metadata owner = 'Azure/module-maintainers'
+
 // ============== //
 //   Parameters   //
 // ============== //

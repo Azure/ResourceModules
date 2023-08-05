@@ -1,3 +1,7 @@
+metadata name = 'Authorization Locks (All scopes)'
+metadata description = 'This module deploys an Authorization Lock at a Subscription or Resource Group scope.'
+metadata owner = 'Azure/module-maintainers'
+
 targetScope = 'subscription'
 
 @allowed([

@@ -1,3 +1,7 @@
+metadata name = 'Site Slot App Settings'
+metadata description = 'This module deploys a Site Slot App Setting.'
+metadata owner = 'Azure/module-maintainers'
+
 // ================ //
 // Parameters       //
 // ================ //

@@ -1,3 +1,7 @@
+metadata name = 'Static Web App Site Config'
+metadata description = 'This module deploys a Static Web App Site Config.'
+metadata owner = 'Azure/module-maintainers'
+
 @allowed([
   'appsettings'
   'functionappsettings'

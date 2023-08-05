@@ -1,6 +1,0 @@
-{
-    "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
-    "name": "Firewall Policies",
-    "summary": "This module deploys a Firewall Policy.",
-    "owner": "Azure/module-maintainers"
-}

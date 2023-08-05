@@ -1,6 +1,0 @@
-{
-    "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
-    "name": "Analysis Services Servers",
-    "summary": "This module deploys an Analysis Services Server.",
-    "owner": "Azure/module-maintainers"
-}

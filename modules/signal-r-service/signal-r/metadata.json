@@ -1,6 +1,0 @@
-{
-    "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
-    "name": "SignalR Service SignalR",
-    "summary": "This module deploys a SignalR Service SignalR.",
-    "owner": "Azure/module-maintainers"
-}

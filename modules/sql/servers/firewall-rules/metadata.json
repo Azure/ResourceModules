@@ -1,6 +1,0 @@
-{
-    "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
-    "name": "Azure SQL Server Firewall Rule",
-    "summary": "This module deploys an Azure SQL Server Firewall Rule.",
-    "owner": "Azure/module-maintainers"
-}

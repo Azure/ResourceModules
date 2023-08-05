@@ -1,3 +1,7 @@
+metadata name = 'Healthcare API Workspace IoT Connectors'
+metadata description = 'This module deploys a Healthcare API Workspace IoT Connector.'
+metadata owner = 'Azure/module-maintainers'
+
 @description('Required. The name of the MedTech service.')
 @maxLength(50)
 param name string

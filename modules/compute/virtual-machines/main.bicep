@@ -1,3 +1,7 @@
+metadata name = 'Virtual Machines'
+metadata description = 'This module deploys a Virtual Machine with one or multiple NICs and optionally one or multiple public IPs.'
+metadata owner = 'Azure/module-maintainers'
+
 // Main resource
 @description('Optional. The name of the virtual machine to be created. You should use a unique prefix to reduce name collisions in Active Directory. If no value is provided, a 10 character long unique string will be generated based on the Resource Group\'s name.')
 param name string = take(toLower(uniqueString(resourceGroup().name)), 10)
@@ -114,8 +118,9 @@ param nicConfigurations array
 @description('Optional. The name of the PIP diagnostic setting, if deployed.')
 param pipDiagnosticSettingsName string = '${name}-diagnosticSettings'
 
-@description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource.')
+@description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to \'\' to disable log collection.')
 @allowed([
+  ''
   'allLogs'
   'DDoSProtectionNotifications'
   'DDoSMitigationFlowLogs'

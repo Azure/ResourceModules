@@ -24,7 +24,6 @@ The following activities are performed by the [`utilities/pipelines/staticValida
     1. Module should contain a [` README.md `] file.
     1. Module should contain a [` .test `] folder.
     1. Module should contain a [` version.json `] file.
-    1. Module should contain a [` metadata.json `] file.
   - **.test folder**
     1. Folder should contain one or more test files.
     1. JSON test files in the `.test` folder should be valid json.
@@ -68,9 +67,8 @@ The following activities are performed by the [`utilities/pipelines/staticValida
     1. All required parameters in template file (`main.json`) should exist in parameters files.
     1. All non-required parameters in template file should not have description that start with "Required.".
   - **Metadata content tests**
-    1. `metadata.json` file should not be empty.
-    1. `metadata.json` file should have a module name specified.
-    1. `metadata.json` file should have a module description / summary specified.
+    1. template file should have a module name specified.
+    1. template file should have a module description specified.
 - **Test file tests**
   - **General test file**
     1. Bicep test deployment name should contain [`-test-`].

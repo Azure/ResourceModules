@@ -1,3 +1,7 @@
+metadata name = 'Consumption Budgets'
+metadata description = 'This module deploys a Consumption Budget for Subscriptions.'
+metadata owner = 'Azure/module-maintainers'
+
 targetScope = 'subscription'
 
 @description('Required. The name of the budget.')
