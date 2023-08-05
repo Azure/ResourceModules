@@ -27,10 +27,11 @@ on:
     branches:
       - main
     paths:
+      - 'modules/document-db/database-accounts/**'
+      - 'modules/network/private-endpoints/**'
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.documentdb.databaseaccounts.yml'
-      - 'modules/document-db/database-accounts/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
       - '!*/**/README.md'
