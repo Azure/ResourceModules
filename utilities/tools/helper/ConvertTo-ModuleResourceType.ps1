@@ -1,9 +1,9 @@
 ﻿<#
 .SYNOPSIS
-Converts the module folder path to the actual resource type.
+Converts a parent or child module folder path to the corresponding resource type.
 
 .DESCRIPTION
-Converts the module folder path to the actual resource type.
+Converts a parent or child module folder path to the corresponding resource type.
 
 .PARAMETER ResourceIdentifier
 Mandatory. The resource identifier to search for, i.e. the relative module file path starting from the resource provider folder.
