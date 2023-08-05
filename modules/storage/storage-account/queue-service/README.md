@@ -1,4 +1,4 @@
-# Storage Account Queue Services `[Microsoft.Storage/storageAccount/queueService]`
+# Storage Account Queue Services `[Microsoft.Storage/storageAccounts/queueServices]`
 
 This module deploys a Storage Account Queue Service.
 

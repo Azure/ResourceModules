@@ -1,4 +1,4 @@
-# Storage Account blob Services `[Microsoft.Storage/storageAccount/blobService]`
+# Storage Account blob Services `[Microsoft.Storage/storageAccounts/blobServices]`
 
 This module deploys a Storage Account Blob Service.
 

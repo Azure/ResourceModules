@@ -1417,22 +1417,34 @@ function Initialize-ReadMe {
         [hashtable] $TemplateFileContent
     )
 
+    . (Join-Path $PSScriptRoot 'helper' 'ConvertTo-ModuleResourceType.ps1')
+
     $moduleName = $TemplateFileContent.metadata.name
     $moduleDescription = $TemplateFileContent.metadata.description
 
-    $splitHyphens = $FullModuleIdentifier.split('-')
-    $splitHyphens = $splitHyphens | ForEach-Object { $_.substring(0, 1).toupper() + $_.substring(1) }
-    $splitHyphens = $splitHyphens -join ''
-    $fullResourceType = 'Microsoft.{0}' -f $splitHyphens.Replace('-', '')
+    Write-Verbose '###################' -Verbose
+    Write-Verbose "FullModuleIdentifier $FullModuleIdentifier" -Verbose
+    Write-Verbose '###################' -Verbose
 
-    # Resolve resource type as per used API name to use matching casing
-    $relevantResourceTypeObjects = (Get-NestedResourceList $TemplateFileContent).type | Select-Object -Unique
-    $formattedResourceType = $relevantResourceTypeObjects | Where-Object { $_ -eq $fullResourceType }
+    $formattedResourceType = ConvertTo-ModuleResourceType -ResourceIdentifier $FullModuleIdentifier
 
-    if (-not $formattedResourceType) {
-        Write-Warning "Did not find module [$FullModuleIdentifier] formatted as [$fullResourceType] in the module template's resource types."
-        $formattedResourceType = $fullResourceType
-    }
+    Write-Verbose '###################' -Verbose
+    Write-Verbose "formattedResourceType $formattedResourceType" -Verbose
+    Write-Verbose '###################' -Verbose
+
+    # $splitHyphens = $FullModuleIdentifier.split('-')
+    # $splitHyphens = $splitHyphens | ForEach-Object { $_.substring(0, 1).toupper() + $_.substring(1) }
+    # $splitHyphens = $splitHyphens -join ''
+    # $fullResourceType = 'Microsoft.{0}' -f $splitHyphens.Replace('-', '')
+
+    # # Resolve resource type as per used API name to use matching casing
+    # $relevantResourceTypeObjects = (Get-NestedResourceList $TemplateFileContent).type | Select-Object -Unique
+    # $formattedResourceType = $relevantResourceTypeObjects | Where-Object { $_ -eq $fullResourceType }
+
+    # if (-not $formattedResourceType) {
+    #     Write-Warning "Did not find module [$FullModuleIdentifier] formatted as [$fullResourceType] in the module template's resource types."
+    #     $formattedResourceType = $fullResourceType
+    # }
 
     if (-not (Test-Path $ReadMeFilePath) -or ([String]::IsNullOrEmpty((Get-Content $ReadMeFilePath -Raw)))) {
 

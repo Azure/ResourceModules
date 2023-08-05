@@ -1,4 +1,4 @@
-# Storage Accounts `[Microsoft.Storage/storageAccount]`
+# Storage Accounts `[Microsoft.Storage/storageAccounts]`
 
 This module deploys a Storage Account.
 

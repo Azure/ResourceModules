@@ -1,4 +1,4 @@
-# Storage Account Blob Containers `[Microsoft.Storage/storageAccount/blobService/container]`
+# Storage Account Blob Containers `[Microsoft.Storage/storageAccounts/blobServices/containers]`
 
 This module deploys a Storage Account Blob Container.
 

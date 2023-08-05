@@ -1,4 +1,4 @@
-# Storage Account Management Policies `[Microsoft.Storage/storageAccount/managementPolicy]`
+# Storage Account Management Policies `[Microsoft.Storage/storageAccounts/managementPolicies]`
 
 This module deploys a Storage Account Management Policy.
 
