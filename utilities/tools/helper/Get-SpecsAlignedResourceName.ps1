@@ -67,19 +67,20 @@ function Get-SpecsAlignedResourceName {
 
     $reducedResourceIdentifier = $ResourceIdentifier -replace '-'
 
-    $rawProviderNamespace = $reducedResourceIdentifier.Split('/')[0]
+    $rawProviderNamespace, $rawResourceType = $reducedResourceIdentifier -split '/', 2
+
     $foundProviderNamespaceMatches = ($specs.Keys | Sort-Object) | Where-Object { $_ -like "Microsoft.$rawProviderNamespace*" }
 
     if (-not $foundProviderNamespaceMatches) {
         $providerNamespace = "Microsoft.$rawProviderNamespace"
-        Write-Warning "Failed to identifier provider namespace [$rawProviderNamespace]. Falling back to [$providerNamespace]."
+        Write-Warning "Failed to identify provider namespace [$rawProviderNamespace]. Falling back to [$providerNamespace]."
     } else {
         $providerNamespace = ($foundProviderNamespaceMatches.Count -eq 1) ? $foundProviderNamespaceMatches : $foundProviderNamespaceMatches[0]
     }
 
     $innerResourceTypes = $specs[$providerNamespace].Keys | Sort-Object
-    $rawResourceType = Get-ReducedWordString -StringToReduce ($reducedResourceIdentifier -replace ('{0}/' -f ($reducedResourceIdentifier.Split('/')[0])), '')
-    $foundResourceTypeMatches = $innerResourceTypes | Where-Object { $_ -like "$rawResourceType*" }
+    $rawResourceTypeReduced = Get-ReducedWordString -StringToReduce $rawResourceType
+    $foundResourceTypeMatches = $innerResourceTypes | Where-Object { $_ -like "$rawResourceTypeReduced*" }
 
     if (-not $foundResourceTypeMatches) {
         $resourceType = $reducedResourceIdentifier.Split('/')[0]

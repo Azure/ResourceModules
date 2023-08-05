@@ -39,18 +39,11 @@ function ConvertTo-ModuleResourceType {
 
         $innerResourceType = $fullParentResourceType
         foreach ($childType in $childTypeArray) {
-            Write-Verbose "0 - childType $childType" -Verbose
-
             $innerResourceType = $innerResourceType.Replace('Microsoft.', ''), $childType -join '/'
-            Write-Verbose "1 - innerResourceType $innerResourceType" -Verbose
-
             $fullResourceType = Get-SpecsAlignedResourceName -ResourceIdentifier $innerResourceType
-            Write-Verbose "3 - fullResourceType $fullResourceType" -Verbose
             $innerResourceType = $fullResourceType
-            Write-Verbose "4 - innerResourceType $innerResourceType" -Verbose
-
         }
     }
 
-    return "$fullResourceType"
+    return $fullResourceType
 }
