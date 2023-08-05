@@ -171,7 +171,8 @@ Describe 'Pipeline tests' -Tag 'Pipeline' {
             )
 
             $workflowsFolderName = Join-Path $repoRootPath '.github' 'workflows'
-            $workflowFileName = 'ms.{0}.yml' -f $moduleFolderName.Replace('\', '/').Replace('/', '.').Replace('-', '').ToLower()
+            # $workflowFileName = 'ms.{0}.yml' -f $moduleFolderName.Replace('\', '/').Replace('/', '.').Replace('-', '').ToLower()
+            $workflowFileName = Get-PipelineFileName -ResourceIdentifier $moduleFolderName
             $workflowPath = Join-Path $workflowsFolderName $workflowFileName
             Test-Path $workflowPath | Should -Be $true -Because "path [$workflowPath] should exist."
         }
@@ -191,7 +192,8 @@ Describe 'Pipeline tests' -Tag 'Pipeline' {
             }
 
             $workflowsFolderName = Join-Path $repoRootPath '.github' 'workflows'
-            $workflowFileName = 'ms.{0}.yml' -f $moduleFolderName.Replace('\', '/').Replace('/', '.').Replace('-', '').ToLower()
+            # $workflowFileName = 'ms.{0}.yml' -f $moduleFolderName.Replace('\', '/').Replace('/', '.').Replace('-', '').ToLower()
+            $workflowFileName = Get-PipelineFileName -ResourceIdentifier $moduleFolderName
             $workflowFilePath = Join-Path $workflowsFolderName $workflowFileName
             $workflowContent = Get-Content -Path $workflowFilePath
 
@@ -240,7 +242,9 @@ Describe 'Pipeline tests' -Tag 'Pipeline' {
             )
 
             $pipelinesFolderName = Join-Path $repoRootPath '.azuredevops' 'modulePipelines'
-            $pipelineFileName = 'ms.{0}.yml' -f $moduleFolderName.Replace('\', '/').Replace('/', '.').Replace('-', '').ToLower()
+            $pipelineFileName = Get-PipelineFileName -ResourceIdentifier $moduleFolderName
+            # $pipelineFileName = 'ms.{0}.yml' -f $moduleFolderName.Replace('\', '/').Replace('/', '.').Replace('-', '').ToLower()
+            Write-Verbose "pipelineFileName $pipelineFileName" -Verbose
             $pipelinePath = Join-Path $pipelinesFolderName $pipelineFileName
             Test-Path $pipelinePath | Should -Be $true -Because "path [$pipelinePath] should exist."
         }
@@ -260,7 +264,8 @@ Describe 'Pipeline tests' -Tag 'Pipeline' {
             }
 
             $pipelinesFolderName = Join-Path $repoRootPath '.azuredevops' 'modulePipelines'
-            $pipelineFileName = 'ms.{0}.yml' -f $moduleFolderName.Replace('\', '/').Replace('/', '.').Replace('-', '').ToLower()
+            $pipelineFileName = Get-PipelineFileName -ResourceIdentifier $moduleFolderName
+            # $pipelineFileName = 'ms.{0}.yml' -f $moduleFolderName.Replace('\', '/').Replace('/', '.').Replace('-', '').ToLower()
             $pipelineFilePath = Join-Path $pipelinesFolderName $pipelineFileName
             $pipelineContent = Get-Content -Path $pipelineFilePath
 
