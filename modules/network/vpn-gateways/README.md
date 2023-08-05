@@ -200,20 +200,6 @@ module vpnGateways './network/vpn-gateways/main.bicep' = {
       asn: 65515
       peerWeight: 0
     }
-    connections: [
-      {
-        connectionBandwidth: 100
-        enableBgp: false
-        enableInternetSecurity: true
-        enableRateLimiting: false
-        name: '<name>'
-        remoteVpnSiteResourceId: '<remoteVpnSiteResourceId>'
-        routingWeight: 0
-        useLocalAzureIpAddress: false
-        usePolicyBasedTrafficSelectors: false
-        vpnConnectionProtocolType: 'IKEv2'
-      }
-    ]
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
     natRules: [
@@ -237,6 +223,20 @@ module vpnGateways './network/vpn-gateways/main.bicep' = {
       Environment: 'Non-Prod'
       Role: 'DeploymentValidation'
     }
+    vpnConnections: [
+      {
+        connectionBandwidth: 100
+        enableBgp: false
+        enableInternetSecurity: true
+        enableRateLimiting: false
+        name: '<name>'
+        remoteVpnSiteResourceId: '<remoteVpnSiteResourceId>'
+        routingWeight: 0
+        useLocalAzureIpAddress: false
+        usePolicyBasedTrafficSelectors: false
+        vpnConnectionProtocolType: 'IKEv2'
+      }
+    ]
   }
 }
 ```
@@ -266,22 +266,6 @@ module vpnGateways './network/vpn-gateways/main.bicep' = {
         "asn": 65515,
         "peerWeight": 0
       }
-    },
-    "connections": {
-      "value": [
-        {
-          "connectionBandwidth": 100,
-          "enableBgp": false,
-          "enableInternetSecurity": true,
-          "enableRateLimiting": false,
-          "name": "<name>",
-          "remoteVpnSiteResourceId": "<remoteVpnSiteResourceId>",
-          "routingWeight": 0,
-          "useLocalAzureIpAddress": false,
-          "usePolicyBasedTrafficSelectors": false,
-          "vpnConnectionProtocolType": "IKEv2"
-        }
-      ]
     },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
@@ -313,6 +297,22 @@ module vpnGateways './network/vpn-gateways/main.bicep' = {
         "Environment": "Non-Prod",
         "Role": "DeploymentValidation"
       }
+    },
+    "vpnConnections": {
+      "value": [
+        {
+          "connectionBandwidth": 100,
+          "enableBgp": false,
+          "enableInternetSecurity": true,
+          "enableRateLimiting": false,
+          "name": "<name>",
+          "remoteVpnSiteResourceId": "<remoteVpnSiteResourceId>",
+          "routingWeight": 0,
+          "useLocalAzureIpAddress": false,
+          "usePolicyBasedTrafficSelectors": false,
+          "vpnConnectionProtocolType": "IKEv2"
+        }
+      ]
     }
   }
 }

@@ -55,7 +55,7 @@ module testDeployment '../../main.bicep' = {
       asn: 65515
       peerWeight: 0
     }
-    connections: [
+    vpnConnections: [
       {
         connectionBandwidth: 100
         enableBgp: false
