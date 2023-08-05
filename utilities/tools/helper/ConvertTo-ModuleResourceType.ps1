@@ -1,16 +1,17 @@
 ﻿<#
 .SYNOPSIS
-Try to find the actual provider namespace and resource type for a given resource identifier.
+Converts the module folder path to the actual resource type.
 
 .DESCRIPTION
-Try to find the actual provider namespace and resource type for a given resource identifier.
-For example, for 'virtual-machine-images/image-template' it we want to find 'Microsoft.VirtualMachineImages/imageTemplates'.
+Converts the module folder path to the actual resource type.
 
 .PARAMETER ResourceIdentifier
-Mandatory. The resource identifier to search for.
+Mandatory. The resource identifier to search for, i.e. the relative module file path starting from the resource provider folder.
 
-.PARAMETER SpecsFilePath
-Optional. The path to the specs file that contains all available provider namespaces & resource types. Defaults to 'utilities/src/apiSpecsList.json'.
+.EXAMPLE
+ConvertTo-ModuleResourceType -ResourceIdentifier 'storage/storage-account'.
+
+Returns 'Microsoft.Storage/storageAccounts'.
 
 .EXAMPLE
 ConvertTo-ModuleResourceType -ResourceIdentifier 'storage/storage-account/blob-service/container/immutability-policy'.
@@ -39,7 +40,7 @@ function ConvertTo-ModuleResourceType {
 
         $innerResourceType = $fullParentResourceType
         foreach ($childType in $childTypeArray) {
-            # additonal check for non existing child types (e.g. sites/hybridConnectionNamespaces does not exist, only sites/hybridConnectionNamespaces/relays does)
+            # Additonal check for child types non existing on their own (e.g. sites/hybridConnectionNamespaces does not exist, sites/hybridConnectionNamespaces/relays does)
             $innerResourceTypeLeafReduced = Get-ReducedWordString -StringToReduce ($innerResourceType -Split '[\/|\\]')[-1]
             $childTypeReduced = Get-ReducedWordString -StringToReduce $childType
             if ($innerResourceTypeLeafReduced -eq $childTypeReduced) {
