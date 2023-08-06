@@ -4,12 +4,12 @@ This module deploys a Storage Account.
 
 ## Navigation
 
-- [Resource types](#resource-types)
-- [Parameters](#parameters)
-- [Outputs](#outputs)
-- [Considerations](#considerations)
-- [Cross-referenced modules](#cross-referenced-modules)
-- [Deployment examples](#deployment-examples)
+- [Resource types](#Resource-types)
+- [Parameters](#Parameters)
+- [Outputs](#Outputs)
+- [Considerations](#Considerations)
+- [Cross-referenced modules](#Cross-referenced-modules)
+- [Deployment examples](#Deployment-examples)
 
 ## Resource types
 
@@ -98,6 +98,7 @@ This module deploys a Storage Account.
 | `tableServices` | _[tableServices](table-services/README.md)_ object | `{object}` |  | Table service and tables to create. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
+
 
 ### Parameter Usage: `roleAssignments`
 
