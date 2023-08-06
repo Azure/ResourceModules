@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.20.4.51522",
-      "templateHash": "3561947484235503079"
+      "templateHash": "16293846439301048579"
     },
     "name": "Recovery Services Vaults",
     "description": "This module deploys a Recovery Services Vault.",
@@ -1072,7 +1072,7 @@
     },
     {
       "copy": {
-        "name": "rsv_backupFabricsProtectionContainers",
+        "name": "rsv_backupFabric_protectionContainers",
         "count": "[length(parameters('protectionContainers'))]"
       },
       "type": "Microsoft.Resources/deployments",
