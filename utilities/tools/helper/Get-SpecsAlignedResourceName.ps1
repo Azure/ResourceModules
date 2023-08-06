@@ -81,7 +81,6 @@ function Get-SpecsAlignedResourceName {
     $innerResourceTypes = $specs[$providerNamespace].Keys | Sort-Object
     $rawResourceTypeReduced = Get-ReducedWordString -StringToReduce $rawResourceType
     $foundResourceTypeMatches = $innerResourceTypes | Where-Object { $_ -like "$rawResourceTypeReduced*" }
-    # $foundResourceTypeMatches = $innerResourceTypes | Where-Object { $_ -match "$rawResourceTypeReduced(.*?)\\" }
 
     if (-not $foundResourceTypeMatches) {
         $resourceType = $reducedResourceIdentifier.Split('/')[1]
