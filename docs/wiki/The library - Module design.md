@@ -248,7 +248,7 @@ param condition string = ''
 ])
 param conditionVersion string = '2.0'
 
-@sys.description('Optional. Id of the delegated managed identity resource.')
+@sys.description('Optional. ID of the delegated managed identity resource.')
 param delegatedManagedIdentityResourceId string = ''
 
 var builtInRoleNames = {
