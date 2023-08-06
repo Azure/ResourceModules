@@ -81,6 +81,7 @@ function Get-SpecsAlignedResourceName {
     $innerResourceTypes = $specs[$providerNamespace].Keys | Sort-Object
     $rawResourceTypeReduced = Get-ReducedWordString -StringToReduce $rawResourceType
     $foundResourceTypeMatches = $innerResourceTypes | Where-Object { $_ -like "$rawResourceTypeReduced*" }
+    # $foundResourceTypeMatches = $innerResourceTypes | Where-Object { $_ -match "$rawResourceTypeReduced(.*?)\\" }
 
     if (-not $foundResourceTypeMatches) {
         $resourceType = $reducedResourceIdentifier.Split('/')[1]
@@ -99,8 +100,21 @@ function Get-SpecsAlignedResourceName {
         }
 
         if (-not $resourceType) {
-            $resourceType = $foundResourceTypeMatches[0]
-            Write-Warning "Fallback to first ResourceType in the match list [$resourceType]."
+            # Try removing last split of each match, then reduce to core and compare
+            # This is needed to deal cases such as Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers where backupFabrics does not exist on its own
+            foreach ($foundResourceTypeMatch in $foundResourceTypeMatches) {
+                $foundResourceTypeMatch = $foundResourceTypeMatch.SubString(0, $foundResourceTypeMatch.LastIndexOf('/'))
+                $foundResourceTypeMatchReduced = Get-ReducedWordString -StringToReduce $foundResourceTypeMatch
+                if ($rawResourceTypeReduced -eq $foundResourceTypeMatchReduced) {
+                    $resourceType = $foundResourceTypeMatch
+                    break
+                }
+            }
+            # Finally fallback to first match in the list
+            if (-not $resourceType) {
+                $resourceType = $foundResourceTypeMatches[0]
+                Write-Warning "Failed to find exact match between core matched resource types and [$rawResourceTypeReduced]. Fallback to first ResourceType in the match list [$resourceType]."
+            }
         }
     }
 
