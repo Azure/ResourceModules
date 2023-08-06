@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.18.4.5664",
-      "templateHash": "9370005690855070962"
+      "templateHash": "11902600111982409364"
     },
     "name": "Storage Accounts",
     "description": "This module deploys a Storage Account.",
@@ -1609,7 +1609,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.18.4.5664",
-              "templateHash": "9464926907905218553"
+              "templateHash": "7069092381600637415"
             },
             "name": "Storage Account blob Services",
             "description": "This module deploys a Storage Account Blob Service.",
@@ -1891,7 +1891,7 @@
                 "deleteRetentionPolicy": {
                   "enabled": "[parameters('deleteRetentionPolicyEnabled')]",
                   "days": "[if(equals(parameters('deleteRetentionPolicyEnabled'), true()), parameters('deleteRetentionPolicyDays'), null())]",
-                  "allowPermanentDelete": "[if(equals(parameters('deleteRetentionPolicyEnabled'), true()), parameters('deleteRetentionPolicyAllowPermanentDelete'), null())]"
+                  "allowPermanentDelete": "[if(and(equals(parameters('deleteRetentionPolicyEnabled'), true()), equals(parameters('deleteRetentionPolicyAllowPermanentDelete'), true())), parameters('deleteRetentionPolicyAllowPermanentDelete'), null())]"
                 },
                 "isVersioningEnabled": "[parameters('isVersioningEnabled')]",
                 "lastAccessTimeTrackingPolicy": {

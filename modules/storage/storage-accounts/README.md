@@ -916,6 +916,8 @@ module storageAccounts './storage/storage-accounts/main.bicep' = {
       deleteRetentionPolicyEnabled: true
       isVersioningEnabled: true
       lastAccessTimeTrackingPolicyEnable: true
+      restorePolicyDays: 8
+      restorePolicyEnabled: true
     }
     cMKKeyName: '<cMKKeyName>'
     cMKKeyVaultResourceId: '<cMKKeyVaultResourceId>'
@@ -988,7 +990,9 @@ module storageAccounts './storage/storage-accounts/main.bicep' = {
         "deleteRetentionPolicyDays": 9,
         "deleteRetentionPolicyEnabled": true,
         "isVersioningEnabled": true,
-        "lastAccessTimeTrackingPolicyEnable": true
+        "lastAccessTimeTrackingPolicyEnable": true,
+        "restorePolicyDays": 8,
+        "restorePolicyEnabled": true
       }
     },
     "cMKKeyName": {
