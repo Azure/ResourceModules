@@ -100,7 +100,7 @@ Each module pipeline comes with the following runtime parameters (which are iden
 - `'Execute deployment validation'` switch: Can be enabled or disabled. It controls whether the deployment validation jobs are executed during the pipeline run.
 - `'Remove deployed module'` switch: Can be enabled or disabled. It controls whether the test-deployed resources are removed after the deployment validation jobs. It is enabled by default.
   > **Note:** This switch cannot be used to bypass the publishing requirements, where both the static tests & deployment validation jobs must be successful.
-- `'Publish prerelease module'` switch: Can be enabled or disabled and allows publishing a prerelease version for the corresponding module when running the pipeline from a branch different than `main|master`. It is disabled by default. For further information of how the input is processed refer to the [Publishing](./The%20CI%20environment%20-%20Publishing) dedicated page.
+- `'Publish prerelease module'` switch: Can be enabled or disabled. It allows publishing a `pre-release` version for the corresponding module when running the pipeline from a different branch than `main | master`. It is disabled by default. For further information of how the input is processed refer to the [Publishing Guide](./The%20CI%20environment%20-%20Publishing) dedicated page.
 
   <img src="./media/CIEnvironment/modulePipelineInput.png" alt="Module Pipeline Input" height="300">
 
