@@ -48,12 +48,10 @@ They can be deployed in different configurations just by changing the input para
   > **Example:** The VirtualNetworkPeering construct leverages the VirtualNetworkPeering module to deploy multiple virtual network peering connections at once.
 - Where the resource type in question supports it, the module should have support for:
   1. **Diagnostic logs** and **metrics** (you can have them sent to one ore more of the following destination types: storage account, log analytics and event hub).
-  1. Resource and child-resource level **RBAC** (for example, providing data contributor access on a storage account; granting file share/blob container level access in a storage account)
-  1. **Tags** (as objects)
-  1. **Locks**
-  1. **Private Endpoints** (if supported)
-  1. **User-defined Types** (if supported)
-  1. **Customer-managed Keys** (if supported)
+  2. Resource and child resource level **RBAC** (for example, providing data contributor access on a storage account; granting file share/blob container level access in a storage account)
+  3. **Tags** (as objects)
+  4. **Locks**
+  5. **Private Endpoints** (if supported)
 
 ---
 
@@ -72,7 +70,13 @@ A **CARML module** consists of
 
 A module usually represents a single resource or a set of closely related resources. For example, a storage account and the associated lock or virtual machine and network interfaces. Modules are located in the `modules` folder.
 
-Also, as described in the [General Guidelines](#general-guidelines), each module should be implemented with all capabilities it and its children support.
+Also, each module should be implemented with all capabilities it and its children support. This includes
+
+- `Locks`
+- `Role assignments (RBAC)`
+- `Diagnostic Settings`
+- `Managed identities`
+- `Private Endpoints`.
 
 ## Structure
 
@@ -103,13 +107,12 @@ module server_databases 'databases/main.bicep' = [for (database, index) in datab
 
 Use the following naming standard for module files and folders:
 
-- A module's 'Provider namespace' folder is lowercase, avoids the `Microsoft.` prefix and uses a `-` as a separator whenever the API reference would have an upper case (for example `'Microsoft.RecoveryServices'` would have a folder name `'recovery-service'`)
-- A module's 'Resource Type' folder is lowercase, singular and uses a `-` as a separator whenever the API reference would have an upper case (for example, `'storageAccounts'` would be `'storage-account'`, or `'virtualMachines'` be `virtual-machine`).
+- Module folders are in camelCase and their name reflects the main resource type of the Bicep module they are hosting (e.g., `storageAccounts`, `virtualMachines`).
 - Extension resource modules are placed in the `.bicep` subfolder and named `nested_<crossReferencedResourceType>.bicep`
 
   ```txt
-  <ProviderNamespace>
-  └─ <ResourceType>
+  Microsoft.<Provider>
+  └─ <service>
       ├─ .bicep
       |  ├─ nested_extensionResource1.bicep
       ├─ .test
@@ -118,11 +121,11 @@ Use the following naming standard for module files and folders:
       └─ README.md
   ```
 
-  > **Example**: `nested_roleAssignments.bicep` in the `web\site\.bicep` folder contains the `site` resource's RBAC implementation.
+  > **Example**: `nested_roleAssignments.bicep` in the `Microsoft.Web\sites\.bicep` folder contains the `site` resource RBAC implementation.
   >
   > ```txt
-  > web
-  > └─ site
+  > Microsoft.Web
+  > └─ sites
   >    ├─ .bicep
   >    |  └─ nested_roleAssignments.bicep
   >    ├─ .test
@@ -194,12 +197,8 @@ param roleAssignments array = []
 module <mainResource>_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${deployment().name}-rbac-${index}'
   params: {
-    description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
     principalIds: roleAssignment.principalIds
-    principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    condition: contains(roleAssignment, 'condition') ? roleAssignment.condition : ''
-    delegatedManagedIdentityResourceId: contains(roleAssignment, 'delegatedManagedIdentityResourceId') ? roleAssignment.delegatedManagedIdentityResourceId : ''
     resourceId: <mainResource>.id
   }
 }]
@@ -216,40 +215,10 @@ The `builtInRoleNames` variable contains the list of applicable roles for the sp
 The element requires you to provide both the `principalIds` & `roleDefinitionOrIdName` to assign to the principal IDs. Also, the `resourceId` is target resource's resource ID that allows us to reference it as an `existing` resource. Note, the implementation of the `split` in the resource reference becomes longer the deeper you go in the child resource hierarchy.
 
 ```bicep
-@sys.description('Required. The IDs of the principals to assign the role to.')
 param principalIds array
-
-@sys.description('Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead.')
-param roleDefinitionIdOrName string
-
-@sys.description('Required. The resource ID of the resource to apply the role assignment to.')
-param resourceId string
-
-@sys.description('Optional. The principal type of the assigned principal ID.')
-@allowed([
-  'ServicePrincipal'
-  'Group'
-  'User'
-  'ForeignGroup'
-  'Device'
-  ''
-])
 param principalType string = ''
-
-@sys.description('Optional. The description of the role assignment.')
-param description string = ''
-
-@sys.description('Optional. The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container".')
-param condition string = ''
-
-@sys.description('Optional. Version of the condition.')
-@allowed([
-  '2.0'
-])
-param conditionVersion string = '2.0'
-
-@sys.description('Optional. Id of the delegated managed identity resource.')
-param delegatedManagedIdentityResourceId string = ''
+param roleDefinitionIdOrName string
+param resourceId string
 
 var builtInRoleNames = {
   'Owner': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '8e3af657-a8ff-443c-a75c-2fe8c4bcb635')
@@ -271,13 +240,9 @@ resource <mainResource> '<mainResourceProviderNamespace>/<resourceType>@<resourc
 resource roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = [for principalId in principalIds: {
   name: guid(<mainResource>.id, principalId, roleDefinitionIdOrName)
   properties: {
-    description: description
     roleDefinitionId: contains(builtInRoleNames, roleDefinitionIdOrName) ? builtInRoleNames[roleDefinitionIdOrName] : roleDefinitionIdOrName
     principalId: principalId
     principalType: !empty(principalType) ? any(principalType) : null
-    condition: !empty(condition) ? condition : null
-    conditionVersion: !empty(conditionVersion) && !empty(condition) ? conditionVersion : null
-    delegatedManagedIdentityResourceId: !empty(delegatedManagedIdentityResourceId) ? delegatedManagedIdentityResourceId : null
   }
   scope: <mainResource>
 }]
@@ -312,9 +277,8 @@ param diagnosticEventHubAuthorizationRuleId string = ''
 @description('Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
 param diagnosticEventHubName string = ''
 
-@description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to \'\' to disable log collection.')
+@description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource.')
 @allowed([
-  ''
   'allLogs'
   <LogsIfAny>
 ])
@@ -333,7 +297,7 @@ param diagnosticMetricsToEnable array = [
 @description('Optional. The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings".')
 param diagnosticSettingsName string = ''
 
-var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs' && item != ''): {
+var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
   category: category
   enabled: true
   retentionPolicy: {
@@ -341,17 +305,6 @@ var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesTo
     days: diagnosticLogsRetentionInDays
   }
 }]
-
-var diagnosticsLogs = contains(diagnosticLogCategoriesToEnable, 'allLogs') ? [
-  {
-    categoryGroup: 'allLogs'
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
-] : contains(diagnosticLogCategoriesToEnable, '') ? [] : diagnosticsLogsSpecified
 
 var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   category: metric
@@ -394,7 +347,7 @@ The Private Endpoint deployment has 2 elements. A module that contains the imple
 @description('Optional. Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.')
 param privateEndpoints array = []
 
-module <mainResource>_privateEndpoints 'https://github.com/Azure/ResourceModules/blob/main/network/private-endpoint/main.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
+module <mainResource>_privateEndpoints 'https://github.com/Azure/ResourceModules/blob/main/Microsoft.Network/privateEndpoints/main.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
   name: '${uniqueString(deployment().name, location)}-<mainResource>-PrivateEndpoint-${index}'
   params: {
     groupIds: [
@@ -411,11 +364,9 @@ module <mainResource>_privateEndpoints 'https://github.com/Azure/ResourceModules
     tags: contains(privateEndpoint, 'tags') ? privateEndpoint.tags : {}
     manualPrivateLinkServiceConnections: contains(privateEndpoint, 'manualPrivateLinkServiceConnections') ? privateEndpoint.manualPrivateLinkServiceConnections : []
     customDnsConfigs: contains(privateEndpoint, 'customDnsConfigs') ? privateEndpoint.customDnsConfigs : []
-    ipConfigurations: contains(privateEndpoint, 'ipConfigurations') ? privateEndpoint.ipConfigurations : []
-    applicationSecurityGroups: contains(privateEndpoint, 'applicationSecurityGroups') ? privateEndpoint.applicationSecurityGroups : []
-    customNetworkInterfaceName: contains(privateEndpoint, 'customNetworkInterfaceName') ? privateEndpoint.customNetworkInterfaceName : ''
   }
 }]
+
 ```
 
 </details>
@@ -440,7 +391,7 @@ Within a bicep file, use the following conventions:
   - `Conditional` - The parameter value can be optional or required based on a condition, mostly based on the value provided to other parameters.
   - `Optional` - The parameter value is not mandatory. The module provides a default value for the parameter.
   - `Generated` - The parameter value is generated within the module and should not be specified as input.
-- Parameters mapping to resource properties should align with resource property names as much as possible and should not artificially include a resource type's name prefix to avoid redundancy.
+- Parameters mapping to resource properties should align with resource property names as much as possible and should not artifictially include a resource type's name prefix to avoid redundancy.
   > For example, the input parameter of the Key Vault module which maps to the `name` resource property should be just `name` and not `keyVaultName`. The rationale is that the consumers know that the name is for the Key Vault if they deploy its module.
 - If a property value allows a single value only, there is no need to introduce a parameter for it. Instead it can be hardcoded into the deployment.
   > For example, the name of a Blob Container Immutability Policy resource can only be `default`. Hence we can implement its name property directly as `name: 'default'`.
@@ -520,7 +471,7 @@ Within a bicep file, use the following conventions:
 
 - Module symbolic names are in camel_Snake_Case, following the schema `<mainResourceType>_<referencedResourceType>` e.g., `storageAccount_fileServices`, `virtualMachine_nic`, `resourceGroup_roleAssignments`.
 - Modules enable you to reuse code from a Bicep file in other Bicep files. As such, they're normally leveraged for deploying child resources (e.g., file services in a storage account), cross referenced resources (e.g., network interface in a virtual machine) or extension resources (e.g., role assignment in a resource group).
-- When a module requires to deploy a resource whose resource type is outside of the main module's provider namespace, the module of this additional resource is referenced locally. For example, when extending the Key Vault module with Private Endpoints, instead of including in the Key Vault module an ad hoc implementation of a Private Endpoint, the Key Vault directly references the Private Endpoint module (i.e., `module privateEndpoint 'https://github.com/Azure/ResourceModules/blob/main/network/private-endpoint/main.bicep'`). Major benefits of this implementation are less code duplication, more consistency throughout the module library and allowing the consumer to leverage the full interface provided by the referenced module.
+- When a module requires to deploy a resource whose resource type is outside of the main module's provider namespace, the module of this additional resource is referenced locally. For example, when extending the Key Vault module with Private Endpoints, instead of including in the Key Vault module an ad hoc implementation of a Private Endpoint, the Key Vault directly references the Private Endpoint module (i.e., `module privateEndpoint 'https://github.com/Azure/ResourceModules/blob/main/Microsoft.Network/privateEndpoints/main.bicep'`). Major benefits of this implementation are less code duplication, more consistency throughout the module library and allowing the consumer to leverage the full interface provided by the referenced module.
   > **Note**: Cross-referencing modules from the local repository creates a dependency for the modules applying this technique on the referenced modules being part of the local repository. Reusing the example from above, the Key Vault module has a dependency on the referenced Private Endpoint module, meaning that the repository from which the Key Vault module is deployed also requires the Private Endpoint module to be present. For this reason, we provide a utility to check for any local module references in a given path. This can be useful to determine which module folders you'd need if you don't want to keep the entire library. For further information on how to use the tool, please refer to the tool-specific [documentation](./Getting%20started%20-%20Get%20module%20cross-references).
 
 ### Deployment names
@@ -649,9 +600,9 @@ Dependency file (`dependencies.bicep`) guidelines:
 
   - A special case to point out is the implementation of Key Vaults that require purge protection (for example, for Customer Managed Keys). As this implies that we cannot fully clean up a test deployment, it is recommended to generate a new name for this resource upon each pipeline run using the output of the `utcNow()` function at the time.
 
-    > :scroll: [Example of test using purge protected Key Vault dependency](https://github.com/Azure/ResourceModules/tree/main/modules/batch/batch-account/.test/encr)
+    > :scroll: [Example of test using purge protected Key Vault dependency](https://github.com/Azure/ResourceModules/tree/main/modules/Batch/batchAccounts/.test/encr)
 
-  - If you need a Deployment Script to set additional non-template resources up (for example certificates/files, etc.), we recommend to store it as a file in the shared `modules/.shared/.scripts` folder and load it using the template function `loadTextContent()` (for example: `scriptContent: loadTextContent('../../../../.shared/.scripts/New-SSHKey.ps1')`). This approach makes it easier to test & validate the logic and further allows reusing the same logic across multiple test cases.
+  - If you need a Deployment Script to set additional non-template resources up (for example certificates/files, etc.), we recommend to store it as a file in the shared `modules/.shared/.scripts` folder and load it using the template function `loadTextContent()` (for example: `scriptContent: loadTextContent('../../../../.shared/.scripts/New-SSHKey.ps1')`). This approach makes it easier to test & validate the logic and further allows reusing the same logic accross multiple test cases.
 
 # Telemetry
 
