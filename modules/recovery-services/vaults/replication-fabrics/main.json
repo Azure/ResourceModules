@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "8692988019249568710"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "8280438435310104866"
+    },
+    "name": "Recovery Services Vault Replication Fabrics",
+    "description": "This module deploys a Replication Fabric for Azure to Azure disaster recovery scenario of Azure Site Recovery.\r\n\r\n> Note: this module currently support only the `instanceType: 'Azure'` scenario.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "recoveryVaultName": {
@@ -107,9 +110,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "6626402090111791362"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "1196918307822554260"
+            },
+            "name": "Recovery Services Vault Replication Fabric Replication Protection Containers",
+            "description": "This module deploys a Recovery Services Vault Replication Protection Container.\r\n\r\n> **Note**: this version of the module only supports the `instanceType: 'A2A'` scenario.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "recoveryVaultName": {
@@ -214,9 +220,12 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.19.5.34762",
-                      "templateHash": "14372562179522394332"
-                    }
+                      "version": "0.20.4.51522",
+                      "templateHash": "2149629411962083695"
+                    },
+                    "name": "Recovery Services Vault Replication Fabric Replication Protection Container Replication Protection Container Mappings",
+                    "description": "This module deploys a Recovery Services Vault (RSV) Replication Protection Container Mapping.\r\n\r\n> **Note**: this version of the module only supports the `instanceType: 'A2A'` scenario.",
+                    "owner": "Azure/module-maintainers"
                   },
                   "parameters": {
                     "recoveryVaultName": {
