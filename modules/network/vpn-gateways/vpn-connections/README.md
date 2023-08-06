@@ -1,4 +1,4 @@
-# VPN Gateway Connections `[Microsoft.Network/vpnGateways]`
+# VPN Gateway VPN Connections `[Microsoft.Network/vpnGateways/vpnConnections]`
 
 This module deploys a VPN Gateway VPN Connection.
 
