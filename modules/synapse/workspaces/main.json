@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.20.4.51522",
-      "templateHash": "12407840827279752277"
+      "templateHash": "3345433640294788580"
     },
     "name": "Synapse Workspaces",
     "description": "This module deploys a Synapse Workspace.",
@@ -350,7 +350,7 @@
           "filesystem": "[parameters('defaultDataLakeStorageFilesystem')]",
           "createManagedPrivateEndpoint": "[if(parameters('managedVirtualNetwork'), parameters('defaultDataLakeStorageCreateManagedPrivateEndpoint'), null())]"
         },
-        "encryption": "[if(parameters('encryption'), createObject('cmk', createObject('kekIdentity', createObject('userAssignedIdentity', if(not(empty(parameters('cMKUserAssignedIdentityResourceId'))), parameters('cMKUserAssignedIdentityResourceId'), null()), 'useSystemAssignedIdentity', parameters('cMKUseSystemAssignedIdentity')), 'key', createObject('keyVaultUrl', reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', split(parameters('cMKKeyVaultResourceId'), '/')[2], split(parameters('cMKKeyVaultResourceId'), '/')[4]), 'Microsoft.KeyVault/vaults/keys', last(split(parameters('cMKKeyVaultResourceId'), '/')), format('{0}/{1}', last(split(parameters('cMKKeyVaultResourceId'), '/')), parameters('cMKKeyName'))), '2021-10-01').keyUri, 'name', parameters('cMKKeyName')))), null())]",
+        "encryption": "[if(parameters('encryption'), createObject('cmk', createObject('kekIdentity', createObject('userAssignedIdentity', if(not(empty(parameters('cMKUserAssignedIdentityResourceId'))), parameters('cMKUserAssignedIdentityResourceId'), null()), 'useSystemAssignedIdentity', parameters('cMKUseSystemAssignedIdentity')), 'key', createObject('keyVaultUrl', reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', split(parameters('cMKKeyVaultResourceId'), '/')[2], split(parameters('cMKKeyVaultResourceId'), '/')[4]), 'Microsoft.KeyVault/vaults/keys', split(format('{0}/{1}', last(split(parameters('cMKKeyVaultResourceId'), '/')), parameters('cMKKeyName')), '/')[0], split(format('{0}/{1}', last(split(parameters('cMKKeyVaultResourceId'), '/')), parameters('cMKKeyName')), '/')[1]), '2021-10-01').keyUri, 'name', parameters('cMKKeyName')))), null())]",
         "managedResourceGroupName": "[if(not(empty(parameters('managedResourceGroupName'))), parameters('managedResourceGroupName'), null())]",
         "managedVirtualNetwork": "[if(parameters('managedVirtualNetwork'), 'default', null())]",
         "managedVirtualNetworkSettings": "[if(parameters('managedVirtualNetwork'), createObject('allowedAadTenantIdsForLinking', parameters('allowedAadTenantIdsForLinking'), 'linkedAccessCheckOnTargetResource', parameters('linkedAccessCheckOnTargetResource'), 'preventDataExfiltration', parameters('preventDataExfiltration')), null())]",

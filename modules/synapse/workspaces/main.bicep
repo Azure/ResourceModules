@@ -179,10 +179,11 @@ var enableReferencedModulesTelemetry = false
 resource cMKKeyVault 'Microsoft.KeyVault/vaults@2021-10-01' existing = if (!empty(cMKKeyVaultResourceId)) {
   name: last(split(cMKKeyVaultResourceId, '/'))!
   scope: resourceGroup(split(cMKKeyVaultResourceId, '/')[2], split(cMKKeyVaultResourceId, '/')[4])
+}
 
-  resource key 'keys@2021-10-01' existing = if (!empty(cMKKeyVaultResourceId) && !empty(cMKKeyName)) {
-    name: '${last(split(cMKKeyVaultResourceId, '/'))}/${cMKKeyName}'!
-  }
+resource cMKKeyVaultKey 'Microsoft.KeyVault/vaults/keys@2021-10-01' existing = if (!empty(cMKKeyVaultResourceId) && !empty(cMKKeyName)) {
+  name: '${last(split(cMKKeyVaultResourceId, '/'))}/${cMKKeyName}'!
+  scope: resourceGroup(split(cMKKeyVaultResourceId, '/')[2], split(cMKKeyVaultResourceId, '/')[4])
 }
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
@@ -220,7 +221,7 @@ resource workspace 'Microsoft.Synapse/workspaces@2021-06-01' = {
           useSystemAssignedIdentity: cMKUseSystemAssignedIdentity
         }
         key: {
-          keyVaultUrl: cMKKeyVault::key.properties.keyUri
+          keyVaultUrl: cMKKeyVaultKey.properties.keyUri
           name: cMKKeyName
         }
       }
