@@ -95,7 +95,7 @@ Technical documentation for each template, such as required input and output var
 Each module pipeline comes with the following runtime parameters (which are identical for GitHub & AzureDevOps):
 
 - `'Branch'` dropdown: A dropdown to select the branch to run the pipeline from.
-- `'Execute static validation'` switch: Can be enabled or disabled and controls whether the static tests jobs are executed during the pipeline run.
+- `'Execute static validation'` switch: Can be enabled or disabled. It controls whether the static tests jobs are executed during the pipeline run.
   > **Note:** This switch cannot be used to bypass the publishing requirements, where both static tests & deployment validation jobs must be successful.
 - `'Execute deployment validation'` switch: Can be enabled or disabled and controls whether the deployment tests jobs are executed during the pipeline run.
 - `'Remove deployed module'` switch: Can be enabled or disabled and controls whether the test-deployed resources are removed after testing. It is enabled by default.
