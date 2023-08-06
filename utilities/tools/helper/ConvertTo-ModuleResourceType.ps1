@@ -40,7 +40,7 @@ function ConvertTo-ModuleResourceType {
 
         $innerResourceType = $fullParentResourceType
         foreach ($childType in $childTypeArray) {
-            # Additonal check for child types non existing on their own (e.g. sites/hybridConnectionNamespaces does not exist, sites/hybridConnectionNamespaces/relays does)
+            # Additional check for child types non existing on their own (e.g. sites/hybridConnectionNamespaces does not exist, sites/hybridConnectionNamespaces/relays does)
             $innerResourceTypeLeafReduced = Get-ReducedWordString -StringToReduce ($innerResourceType -Split '[\/|\\]')[-1]
             $childTypeReduced = Get-ReducedWordString -StringToReduce $childType
             if ($innerResourceTypeLeafReduced -eq $childTypeReduced) {
