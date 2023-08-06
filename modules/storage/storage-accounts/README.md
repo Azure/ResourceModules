@@ -463,8 +463,8 @@ module storageAccounts './storage/storage-accounts/main.bicep' = {
           WORMRetention: 666
         }
       ]
-      deleteRetentionPolicyEnabled: true
       deleteRetentionPolicyDays: 9
+      deleteRetentionPolicyEnabled: true
       diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
       diagnosticEventHubName: '<diagnosticEventHubName>'
       diagnosticLogsRetentionInDays: 7
@@ -673,8 +673,8 @@ module storageAccounts './storage/storage-accounts/main.bicep' = {
             "WORMRetention": 666
           }
         ],
-        "deleteRetentionPolicy": true,
         "deleteRetentionPolicyDays": 9,
+        "deleteRetentionPolicyEnabled": true,
         "diagnosticEventHubAuthorizationRuleId": "<diagnosticEventHubAuthorizationRuleId>",
         "diagnosticEventHubName": "<diagnosticEventHubName>",
         "diagnosticLogsRetentionInDays": 7,
@@ -911,12 +911,10 @@ module storageAccounts './storage/storage-accounts/main.bicep' = {
         }
       ]
       defaultServiceVersion: '2008-10-27'
-      deleteRetentionPolicyEnabled: true
       deleteRetentionPolicyDays: 9
+      deleteRetentionPolicyEnabled: true
       isVersioningEnabled: true
       lastAccessTimeTrackingPolicyEnable: true
-      restorePolicyDays: 8
-      restorePolicyEnabled: true
     }
     cMKKeyName: '<cMKKeyName>'
     cMKKeyVaultResourceId: '<cMKKeyVaultResourceId>'
@@ -986,12 +984,10 @@ module storageAccounts './storage/storage-accounts/main.bicep' = {
           }
         ],
         "defaultServiceVersion": "2008-10-27",
-        "deleteRetentionPolicy": true,
         "deleteRetentionPolicyDays": 9,
+        "deleteRetentionPolicyEnabled": true,
         "isVersioningEnabled": true,
-        "lastAccessTimeTrackingPolicyEnable": true,
-        "restorePolicyDays": 8,
-        "restorePolicyEnabled": true
+        "lastAccessTimeTrackingPolicyEnable": true
       }
     },
     "cMKKeyName": {

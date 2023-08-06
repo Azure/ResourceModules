@@ -91,8 +91,6 @@ module testDeployment '../../main.bicep' = {
       deleteRetentionPolicyDays: 9
       isVersioningEnabled: true
       lastAccessTimeTrackingPolicyEnable: true
-      restorePolicyEnabled: true
-      restorePolicyDays: 8
     }
     systemAssignedIdentity: false
     userAssignedIdentities: {
