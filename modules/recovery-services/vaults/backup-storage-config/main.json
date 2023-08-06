@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "3601298674160149217"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "5682567943042044037"
+    },
+    "name": "Recovery Services Vault Backup Storage Config",
+    "description": "This module deploys a Recovery Service Vault Backup Storage Configuration.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "recoveryVaultName": {

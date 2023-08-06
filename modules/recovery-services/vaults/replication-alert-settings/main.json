@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "13257795139357040824"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "14248192554679574765"
+    },
+    "name": "Recovery Services Vault Replication Alert Settings",
+    "description": "This module deploys a Recovery Services Vault Replication Alert Settings.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "recoveryVaultName": {
