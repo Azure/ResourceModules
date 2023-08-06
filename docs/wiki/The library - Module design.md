@@ -103,7 +103,7 @@ module server_databases 'databases/main.bicep' = [for (database, index) in datab
 
 Use the following naming standard for module files and folders:
 
-- A module's 'Provider namespace' folder is lowercase, avoids the `Microsoft.` prefix and uses a `-` as a separator whenever the API reference would have an upper case (for example `'Microsoft.RecoveryServices'` would have a folder name `'recovery-service'`)
+- A module's 'Provider namespace' folder is lowercase, avoids the `Microsoft.` prefix and uses a `-` as a separator whenever the API reference would have an upper case (for example `'Microsoft.RecoveryServices'` would have a folder name `'recovery-services'`)
 - A module's 'Resource Type' folder is lowercase, singular and uses a `-` as a separator whenever the API reference would have an upper case (for example, `'storageAccounts'` would be `'storage-account'`, or `'virtualMachines'` be `virtual-machine`).
 - Extension resource modules are placed in the `.bicep` subfolder and named `nested_<crossReferencedResourceType>.bicep`
 
