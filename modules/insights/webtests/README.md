@@ -1,4 +1,4 @@
-# Web Tests `[microsoft.insights/webtests]`
+# Web Tests `[Microsoft.Insights/webtests]`
 
 This module deploys a Web Test.
 

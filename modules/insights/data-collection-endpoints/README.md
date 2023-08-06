@@ -1,4 +1,4 @@
-# Data Collection Endpoints `[microsoft.insights/dataCollectionEndpoints]`
+# Data Collection Endpoints `[Microsoft.Insights/dataCollectionEndpoints]`
 
 This module deploys a Data Collection Endpoint.
 

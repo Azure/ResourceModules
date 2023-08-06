@@ -1,4 +1,4 @@
-# Activity Log Alerts `[microsoft.insights/activityLogAlerts]`
+# Activity Log Alerts `[Microsoft.Insights/activityLogAlerts]`
 
 This module deploys an Activity Log Alert.
 

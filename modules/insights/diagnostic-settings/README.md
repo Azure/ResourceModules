@@ -1,4 +1,4 @@
-# Diagnostic Settings (Activity Logs) for Azure Subscriptions `[microsoft.insights/diagnosticSettings]`
+# Diagnostic Settings (Activity Logs) for Azure Subscriptions `[Microsoft.Insights/diagnosticSettings]`
 
 This module deploys a Subscription wide export of the Activity Log.
 

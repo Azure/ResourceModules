@@ -1,4 +1,4 @@
-# Scheduled Query Rules `[microsoft.insights/scheduledQueryRules]`
+# Scheduled Query Rules `[Microsoft.Insights/scheduledQueryRules]`
 
 This module deploys a Scheduled Query Rule.
 

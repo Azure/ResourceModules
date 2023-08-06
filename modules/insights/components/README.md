@@ -1,4 +1,4 @@
-# Application Insights `[microsoft.insights/components]`
+# Application Insights `[Microsoft.Insights/components]`
 
 This component deploys an Application Insights instance.
 
