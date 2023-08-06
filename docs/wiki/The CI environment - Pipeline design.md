@@ -97,7 +97,7 @@ Each module pipeline comes with the following runtime parameters (which are iden
 - `'Branch'` dropdown: A dropdown to select the branch to run the pipeline from.
 - `'Execute static validation'` switch: Can be enabled or disabled. It controls whether the static tests jobs are executed during the pipeline run.
   > **Note:** This switch cannot be used to bypass the publishing requirements, where both static tests & deployment validation jobs must be successful.
-- `'Execute deployment validation'` switch: Can be enabled or disabled and controls whether the deployment tests jobs are executed during the pipeline run.
+- `'Execute deployment validation'` switch: Can be enabled or disabled. It controls whether the deployment validation jobs are executed during the pipeline run.
 - `'Remove deployed module'` switch: Can be enabled or disabled and controls whether the test-deployed resources are removed after testing. It is enabled by default.
   > **Note:** This switch cannot be used to bypass the publishing requirements that both the static & deployment validation must be successful.
 - `'Publish prerelease module'` switch: Can be enabled or disabled and allows publishing a prerelease version for the corresponding module when running the pipeline from a branch different than `main|master`. It is disabled by default. For further information of how the input is processed refer to the [Publishing](./The%20CI%20environment%20-%20Publishing) dedicated page.
