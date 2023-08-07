@@ -36,7 +36,7 @@ function ConvertTo-ModuleResourceType {
     if (-not $childTypeString) {
         $fullResourceType = $fullParentResourceType
     } else {
-        $childTypeArray = $childTypeString.Split('/')
+        $childTypeArray = $childTypeString -split '\/'
 
         $innerResourceType = $fullParentResourceType
         foreach ($childType in $childTypeArray) {
