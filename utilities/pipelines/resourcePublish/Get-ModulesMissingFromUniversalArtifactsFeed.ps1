@@ -71,11 +71,6 @@ function Get-ModulesMissingFromUniversalArtifactsFeed {
         # Get all children
         $availableModuleTemplatePaths = (Get-ChildItem -Path (Split-Path $TemplateFilePath) -Recurse -Include @('main.bicep', 'main.json')).FullName
 
-        # ###########################
-        Write-Verbose 'KB UNIV: availableModuleTemplatePaths:' -Verbose
-        Write-Verbose ($availableModuleTemplatePaths | ConvertTo-Json | Out-String) -Verbose
-        # ###########################
-
         # Get artifacts
         if ($VstsOrganizationUri -like '*/') {
             $VstsOrganizationUri = $VstsOrganizationUri.Substring(0, ($VstsOrganizationUri.length - 1)) # Remove tailing slash if any
@@ -94,11 +89,6 @@ function Get-ModulesMissingFromUniversalArtifactsFeed {
         $publishedModules = Invoke-RestMethod @modulesInputObject
         $publishedModules = $publishedModules.value.name # Reduce down to the name
 
-        # ###########################
-        Write-Verbose 'KB UNIV: publishedModules:' -Verbose
-        Write-Verbose ($publishedModules | ConvertTo-Json | Out-String) -Verbose
-        # ###########################
-
         # Test all children against Universal Artifacts feed
         $missingTemplatePaths = @()
         foreach ($templatePath in $availableModuleTemplatePaths) {
@@ -110,11 +100,6 @@ function Get-ModulesMissingFromUniversalArtifactsFeed {
                 $missingTemplatePaths += $templatePath
             }
         }
-
-        # ###########################
-        Write-Verbose 'KB UNIV: missingTemplatePaths:' -Verbose
-        Write-Verbose ($missingTemplatePaths | ConvertTo-Json | Out-String) -Verbose
-        # ###########################
 
         # Collect any that are not part of the ACR, fetch their version and return the result array
         $modulesToPublish = @()
