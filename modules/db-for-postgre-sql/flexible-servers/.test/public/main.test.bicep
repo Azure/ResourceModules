@@ -72,8 +72,8 @@ module testDeployment '../../main.bicep' = {
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '${namePrefix}${serviceShort}001'
-    administratorLogin: 'adminUserName'
-    administratorLoginPassword: password
+    activeDirectoryAuth: 'Enabled'
+    passwordAuth: 'Disabled'
     skuName: 'Standard_D2s_v3'
     tier: 'GeneralPurpose'
     availabilityZone: '1'
@@ -117,7 +117,7 @@ module testDeployment '../../main.bicep' = {
         startIpAddress: '100.100.100.1'
       }
     ]
-    geoRedundantBackup: 'Disabled'
+    geoRedundantBackup: 'Enabled'
     highAvailability: 'SameZone'
     location: location
     storageSizeGB: 1024

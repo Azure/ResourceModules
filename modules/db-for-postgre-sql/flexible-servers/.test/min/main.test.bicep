@@ -47,6 +47,13 @@ module testDeployment '../../main.bicep' = {
     geoRedundantBackup: 'Enabled'
     skuName: 'Standard_B2s'
     tier: 'Burstable'
-    administrators: []
+    administrators: [
+      {
+        objectId: '[[objectId]]'
+        principalType: 'User'
+        principalName: '[[principalName]]'
+        tenantId: subscription().tenantId
+      }
+    ]
   }
 }
