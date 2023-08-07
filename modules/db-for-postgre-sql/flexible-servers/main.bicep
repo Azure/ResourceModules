@@ -5,12 +5,24 @@ metadata owner = 'Azure/module-maintainers'
 @description('Required. The name of the PostgreSQL flexible server.')
 param name string
 
-@description('Required. The administrator login name of a server. Can only be specified when the PostgreSQL server is being created.')
-param administratorLogin string
+@description('Optional. The administrator login name of a server. Can only be specified when the PostgreSQL server is being created.')
+param administratorLogin string = ''
 
-@description('Required. The administrator login password.')
+@description('Optional. The administrator login password.')
 @secure()
-param administratorLoginPassword string
+param administratorLoginPassword string = ''
+
+@description('Optional. If true, Azure Active Directory authentication is enabled.')
+param enableActiveDirectoryAuth bool = true
+
+@description('Optional. If true, password authentication is enabled.')
+param enbalePasswordAuth bool = false
+
+@description('Optional. Tenant id of the server.')
+param tenantId string = ''
+
+@description('Optional. The Azure AD administrators when AAD authentication enabled.')
+param administrators array = []
 
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
@@ -249,8 +261,14 @@ resource flexibleServer 'Microsoft.DBforPostgreSQL/flexibleServers@2022-12-01' =
     userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : {}
   }
   properties: {
-    administratorLogin: administratorLogin
-    administratorLoginPassword: administratorLoginPassword
+    administratorLogin: !empty(administratorLogin) ? administratorLogin : null
+    administratorLoginPassword: !empty(administratorLoginPassword) ? administratorLoginPassword : null
+    authConfig: {
+      activeDirectoryAuth: enableActiveDirectoryAuth ? 'Enabled' : 'Disabled'
+      passwordAuth: enbalePasswordAuth ? 'Enabled' : 'Disabled'
+      tenantId: !empty(tenantId) ? tenantId : null
+    }
+
     availabilityZone: availabilityZone
     backup: {
       backupRetentionDays: backupRetentionDays
@@ -344,6 +362,17 @@ module flexibleServer_configurations 'configurations/main.bicep' = [for (configu
   dependsOn: [
     flexibleServer_firewallRules
   ]
+}]
+
+module flexibleServer_administrators 'administrators/main.bicep' = [for (administrator, index) in administrators: {
+  name: '${uniqueString(deployment().name, location)}-PostgreSQL-Administrators-${index}'
+  params: {
+    flexibleServerName: flexibleServer.name
+    objectId: administrator.objectId
+    principalName: administrator.principalName
+    principalType: administrator.principalType
+    tenantId: administrator.tenantId
+  }
 }]
 
 resource flexibleServer_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {
