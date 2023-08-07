@@ -2,7 +2,7 @@ metadata name = 'Virtual Networks'
 metadata description = 'This module deploys a Virtual Network (vNet).'
 metadata owner = 'Azure/module-maintainers'
 
-@description('Required. The Virtual Network (vNet) Name.')
+@description('Required. The Virtual Network (vNet) Name. Dummy addition to trigger publishing.')
 param name string
 
 @description('Optional. Location for all resources.')
