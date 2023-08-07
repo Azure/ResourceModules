@@ -32,6 +32,13 @@ This module deploys a DBforPostgreSQL Flexible Server Administrator.
 | :-- | :-- | :-- |
 | `flexibleServerName` | string | The name of the parent PostgreSQL flexible server. Required if the template is used in a standalone deployment. |
 
+**Optional parameters**
+
+| Parameter Name | Type | Default Value | Description |
+| :-- | :-- | :-- | :-- |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
+| `location` | string | `[resourceGroup().location]` | Location for all resources. |
+
 
 ## Outputs
 
