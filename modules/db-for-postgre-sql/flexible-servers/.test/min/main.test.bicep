@@ -14,10 +14,6 @@ param location string = deployment().location
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints.')
 param serviceShort string = 'dfpsfsmin'
 
-@description('Optional. The password to leverage for the login.')
-@secure()
-param password string = newGuid()
-
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
@@ -45,8 +41,10 @@ module testDeployment '../../main.bicep' = {
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '${namePrefix}${serviceShort}001'
-    administratorLogin: 'adminUserName'
-    administratorLoginPassword: password
+    activeDirectoryAuth: 'Enabled'
+    passwordAuth: 'Disabled'
+    backupRetentionDays: 7
+    geoRedundantBackup: 'Enabled'
     skuName: 'Standard_B2s'
     tier: 'Burstable'
   }

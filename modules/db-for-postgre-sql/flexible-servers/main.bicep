@@ -12,11 +12,19 @@ param administratorLogin string = ''
 @secure()
 param administratorLoginPassword string = ''
 
-@description('Optional. If true, Azure Active Directory authentication is enabled.')
-param enableActiveDirectoryAuth bool = true
+@allowed([
+  'Disabled'
+  'Enabled'
+])
+@description('Optional. If Enabled, Azure Active Directory authentication is enabled.')
+param activeDirectoryAuth string = 'Enabled'
 
-@description('Optional. If true, password authentication is enabled.')
-param enbalePasswordAuth bool = false
+@allowed([
+  'Disabled'
+  'Enabled'
+])
+@description('Optional. If Enabled, password authentication is enabled.')
+param passwordAuth string = 'Disabled'
 
 @description('Optional. Tenant id of the server.')
 param tenantId string = ''
@@ -264,8 +272,8 @@ resource flexibleServer 'Microsoft.DBforPostgreSQL/flexibleServers@2022-12-01' =
     administratorLogin: !empty(administratorLogin) ? administratorLogin : null
     administratorLoginPassword: !empty(administratorLoginPassword) ? administratorLoginPassword : null
     authConfig: {
-      activeDirectoryAuth: enableActiveDirectoryAuth ? 'Enabled' : 'Disabled'
-      passwordAuth: enbalePasswordAuth ? 'Enabled' : 'Disabled'
+      activeDirectoryAuth: activeDirectoryAuth
+      passwordAuth: passwordAuth
       tenantId: !empty(tenantId) ? tenantId : null
     }
 
