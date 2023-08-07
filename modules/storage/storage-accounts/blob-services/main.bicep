@@ -176,7 +176,7 @@ resource blobServices 'Microsoft.Storage/storageAccounts/blobServices@2022-09-01
     deleteRetentionPolicy: {
       enabled: deleteRetentionPolicyEnabled
       days: deleteRetentionPolicyEnabled == true ? deleteRetentionPolicyDays : null
-      allowPermanentDelete: deleteRetentionPolicyEnabled == true && deleteRetentionPolicyAllowPermanentDelete == true ? deleteRetentionPolicyAllowPermanentDelete : null
+      allowPermanentDelete: deleteRetentionPolicyEnabled && deleteRetentionPolicyAllowPermanentDelete ? true : null
     }
     isVersioningEnabled: isVersioningEnabled
     lastAccessTimeTrackingPolicy: {
