@@ -47,6 +47,7 @@ This module deploys a DBforPostgreSQL Flexible Server.
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
+| `activeDirectoryAuth` | string | `'Enabled'` | `[Disabled, Enabled]` | If Enabled, Azure Active Directory authentication is enabled. |
 | `administratorLogin` | string | `''` |  | The administrator login name of a server. Can only be specified when the PostgreSQL server is being created. |
 | `administratorLoginPassword` | securestring | `''` |  | The administrator login password. |
 | `administrators` | _[administrators](administrators/README.md)_ array | `[]` |  | The Azure AD administrators when AAD authentication enabled. |
@@ -66,15 +67,14 @@ This module deploys a DBforPostgreSQL Flexible Server.
 | `diagnosticSettingsName` | string | `''` |  | The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings". |
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
-| `enableActiveDirectoryAuth` | bool | `True` |  | If true, Azure Active Directory authentication is enabled. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `enbalePasswordAuth` | bool | `False` |  | If true, password authentication is enabled. |
 | `firewallRules` | _[firewallRules](firewall-rules/README.md)_ array | `[]` |  | The firewall rules to create in the PostgreSQL flexible server. |
 | `geoRedundantBackup` | string | `'Disabled'` | `[Disabled, Enabled]` | A value indicating whether Geo-Redundant backup is enabled on the server. Should be left disabled if 'cMKKeyName' is not empty. |
 | `highAvailability` | string | `'Disabled'` | `[Disabled, SameZone, ZoneRedundant]` | The mode for high availability. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `maintenanceWindow` | object | `{object}` |  | Properties for the maintenence window. If provided, "customWindow" property must exist and set to "Enabled". |
+| `passwordAuth` | string | `'Disabled'` | `[Disabled, Enabled]` | If Enabled, password authentication is enabled. |
 | `privateDnsZoneArmResourceId` | string | `''` |  | Private dns zone arm resource ID. Used when the desired connectivity mode is "Private Access" and required when "delegatedSubnetResourceId" is used. The Private DNS Zone must be lined to the Virtual Network referenced in "delegatedSubnetResourceId". |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `storageSizeGB` | int | `32` | `[32, 64, 128, 256, 512, 1024, 2048, 4096, 8192, 16384]` | Max storage allowed for a server. |
@@ -394,9 +394,12 @@ module flexibleServers './db-for-postgre-sql/flexible-servers/main.bicep' = {
     skuName: 'Standard_B2s'
     tier: 'Burstable'
     // Non-required parameters
-    administratorLogin: 'adminUserName'
-    administratorLoginPassword: '<administratorLoginPassword>'
+    activeDirectoryAuth: 'Enabled'
+    administrators: []
+    backupRetentionDays: 7
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    geoRedundantBackup: 'Enabled'
+    passwordAuth: 'Disabled'
   }
 }
 ```
@@ -424,14 +427,23 @@ module flexibleServers './db-for-postgre-sql/flexible-servers/main.bicep' = {
       "value": "Burstable"
     },
     // Non-required parameters
-    "administratorLogin": {
-      "value": "adminUserName"
+    "activeDirectoryAuth": {
+      "value": "Enabled"
     },
-    "administratorLoginPassword": {
-      "value": "<administratorLoginPassword>"
+    "administrators": {
+      "value": []
+    },
+    "backupRetentionDays": {
+      "value": 7
     },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
+    },
+    "geoRedundantBackup": {
+      "value": "Enabled"
+    },
+    "passwordAuth": {
+      "value": "Disabled"
     }
   }
 }
