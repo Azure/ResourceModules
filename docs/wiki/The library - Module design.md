@@ -52,7 +52,7 @@ They can be deployed in different configurations just by changing the input para
   1. **Tags** (as objects)
   1. **Locks**
   1. **Private Endpoints** (if supported)
-  1. **User-defined Types** (if supported)
+  1. **User-Managed Identities** (if supported)
   1. **Customer-managed Keys** (if supported)
 
 ---
