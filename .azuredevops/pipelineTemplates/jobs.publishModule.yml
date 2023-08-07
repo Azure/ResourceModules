@@ -158,6 +158,11 @@ jobs:
             # Get the modified child resources
             $modulesToPublish += Get-ModulesToPublish @functionInput -Verbose
 
+            # ###########################
+            Write-Verbose "KB: Get-ModulesToPublish returned:" -Verbose
+            Write-Verbose ($modulesToPublish | ConvertTo-Json | Out-String) -Verbose
+            # ###########################
+
             #############################
             ##   Get missing modules   ##
             #############################
@@ -174,11 +179,22 @@ jobs:
 
             $missingModules = Get-ModulesMissingFromUniversalArtifactsFeed @missingInputObject -BearerToken $env:TOKEN
 
+            # ###########################
+            Write-Verbose "KB: Get-ModulesMissingFromUniversalArtifactsFeed returned:" -Verbose
+            Write-Verbose ($missingModules | ConvertTo-Json | Out-String) -Verbose
+            # ###########################
+
             foreach($missingModule in $missingModules) {
               if($modulsToPublish.TemplateFilePath -notcontains $missingModule.TemplateFilePath) {
                 $modulesToPublish += $missingModule
               }
             }
+
+            # ###########################
+            Write-Verbose "KB: modulesToPublish after adding missing modules:" -Verbose
+            Write-Verbose ($modulesToPublish | ConvertTo-Json | Out-String) -Verbose
+            # ###########################
+
 
             #################
             ##   Publish   ##
