@@ -395,7 +395,14 @@ module flexibleServers './db-for-postgre-sql/flexible-servers/main.bicep' = {
     tier: 'Burstable'
     // Non-required parameters
     activeDirectoryAuth: 'Enabled'
-    administrators: []
+    administrators: [
+      {
+        objectId: '<objectId>'
+        principalName: '<principalName>'
+        principalType: 'Group'
+        tenantId: '<tenantId>'
+      }
+    ]
     backupRetentionDays: 7
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     geoRedundantBackup: 'Enabled'
@@ -431,7 +438,14 @@ module flexibleServers './db-for-postgre-sql/flexible-servers/main.bicep' = {
       "value": "Enabled"
     },
     "administrators": {
-      "value": []
+      "value": [
+        {
+          "objectId": "<objectId>",
+          "principalName": "<principalName>",
+          "principalType": "Group",
+          "tenantId": "<tenantId>"
+        }
+      ]
     },
     "backupRetentionDays": {
       "value": 7
@@ -469,6 +483,14 @@ module flexibleServers './db-for-postgre-sql/flexible-servers/main.bicep' = {
     // Non-required parameters
     administratorLogin: 'adminUserName'
     administratorLoginPassword: '<administratorLoginPassword>'
+    administrators: [
+      {
+        objectId: '<objectId>'
+        principalName: '<principalName>'
+        principalType: 'Group'
+        tenantId: '<tenantId>'
+      }
+    ]
     configurations: [
       {
         name: 'log_min_messages'
@@ -536,6 +558,16 @@ module flexibleServers './db-for-postgre-sql/flexible-servers/main.bicep' = {
     },
     "administratorLoginPassword": {
       "value": "<administratorLoginPassword>"
+    },
+    "administrators": {
+      "value": [
+        {
+          "objectId": "<objectId>",
+          "principalName": "<principalName>",
+          "principalType": "Group",
+          "tenantId": "<tenantId>"
+        }
+      ]
     },
     "configurations": {
       "value": [
@@ -618,8 +650,15 @@ module flexibleServers './db-for-postgre-sql/flexible-servers/main.bicep' = {
     skuName: 'Standard_D2s_v3'
     tier: 'GeneralPurpose'
     // Non-required parameters
-    administratorLogin: 'adminUserName'
-    administratorLoginPassword: '<administratorLoginPassword>'
+    activeDirectoryAuth: 'Enabled'
+    administrators: [
+      {
+        objectId: '<objectId>'
+        principalName: '<principalName>'
+        principalType: 'Group'
+        tenantId: '<tenantId>'
+      }
+    ]
     availabilityZone: '1'
     backupRetentionDays: 20
     cMKKeyName: '<cMKKeyName>'
@@ -665,9 +704,10 @@ module flexibleServers './db-for-postgre-sql/flexible-servers/main.bicep' = {
         startIpAddress: '100.100.100.1'
       }
     ]
-    geoRedundantBackup: 'Disabled'
+    geoRedundantBackup: 'Enabled'
     highAvailability: 'SameZone'
     location: '<location>'
+    passwordAuth: 'Disabled'
     storageSizeGB: 1024
     tags: {
       Environment: 'Non-Prod'
@@ -704,11 +744,18 @@ module flexibleServers './db-for-postgre-sql/flexible-servers/main.bicep' = {
       "value": "GeneralPurpose"
     },
     // Non-required parameters
-    "administratorLogin": {
-      "value": "adminUserName"
+    "activeDirectoryAuth": {
+      "value": "Enabled"
     },
-    "administratorLoginPassword": {
-      "value": "<administratorLoginPassword>"
+    "administrators": {
+      "value": [
+        {
+          "objectId": "<objectId>",
+          "principalName": "<principalName>",
+          "principalType": "Group",
+          "tenantId": "<tenantId>"
+        }
+      ]
     },
     "availabilityZone": {
       "value": "1"
@@ -784,13 +831,16 @@ module flexibleServers './db-for-postgre-sql/flexible-servers/main.bicep' = {
       ]
     },
     "geoRedundantBackup": {
-      "value": "Disabled"
+      "value": "Enabled"
     },
     "highAvailability": {
       "value": "SameZone"
     },
     "location": {
       "value": "<location>"
+    },
+    "passwordAuth": {
+      "value": "Disabled"
     },
     "storageSizeGB": {
       "value": 1024

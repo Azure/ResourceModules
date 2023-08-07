@@ -24,6 +24,12 @@ param enableDefaultTelemetry bool = true
 @description('Optional. A token to inject into the name of each resource.')
 param namePrefix string = '[[namePrefix]]'
 
+@description('Required. The AAD Object Id to add to the AAD Group')
+param aadObjectId string = '[[objectId]]'
+
+@description('Required. The AAD Group Name to add the AAD Group')
+param aadGroupName string = '[[groupName]]'
+
 // ============ //
 // Dependencies //
 // ============ //
@@ -92,6 +98,14 @@ module testDeployment '../../main.bicep' = {
       }
       {
         name: 'testdb2'
+      }
+    ]
+    administrators: [
+      {
+        objectId: aadObjectId
+        principalType: 'Group'
+        principalName: aadGroupName
+        tenantId: subscription().tenantId
       }
     ]
     delegatedSubnetResourceId: nestedDependencies.outputs.subnetResourceId
