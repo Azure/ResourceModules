@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "15527351253700024077"
-    }
+      "version": "0.18.4.5664",
+      "templateHash": "7069092381600637415"
+    },
+    "name": "Storage Account blob Services",
+    "description": "This module deploys a Storage Account Blob Service.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "storageAccountName": {
@@ -59,7 +62,7 @@
       "type": "bool",
       "defaultValue": false,
       "metadata": {
-        "description": "Optional. This property when set to true allows deletion of the soft deleted blob versions and snapshots. This property cannot be used blob restore policy. This property only applies to blob service and does not apply to containers or file share."
+        "description": "Optional. This property when set to true allows deletion of the soft deleted blob versions and snapshots. This property cannot be used with blob restore policy. This property only applies to blob service and does not apply to containers or file share."
       }
     },
     "corsRules": {
@@ -91,6 +94,13 @@
       },
       "maxValue": 365,
       "minValue": 1
+    },
+    "deleteRetentionPolicyAllowPermanentDelete": {
+      "type": "bool",
+      "defaultValue": false,
+      "metadata": {
+        "description": "Optional. This property when set to true allows deletion of the soft deleted blob versions and snapshots. This property cannot be used with blob restore policy. This property only applies to blob service and does not apply to containers or file share."
+      }
     },
     "isVersioningEnabled": {
       "type": "bool",
@@ -276,7 +286,8 @@
         "defaultServiceVersion": "[if(not(empty(parameters('defaultServiceVersion'))), parameters('defaultServiceVersion'), null())]",
         "deleteRetentionPolicy": {
           "enabled": "[parameters('deleteRetentionPolicyEnabled')]",
-          "days": "[if(equals(parameters('deleteRetentionPolicyEnabled'), true()), parameters('deleteRetentionPolicyDays'), null())]"
+          "days": "[if(equals(parameters('deleteRetentionPolicyEnabled'), true()), parameters('deleteRetentionPolicyDays'), null())]",
+          "allowPermanentDelete": "[if(and(equals(parameters('deleteRetentionPolicyEnabled'), true()), equals(parameters('deleteRetentionPolicyAllowPermanentDelete'), true())), parameters('deleteRetentionPolicyAllowPermanentDelete'), null())]"
         },
         "isVersioningEnabled": "[parameters('isVersioningEnabled')]",
         "lastAccessTimeTrackingPolicy": {
@@ -347,9 +358,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "16864636039691597197"
-            }
+              "version": "0.18.4.5664",
+              "templateHash": "13118549664756004817"
+            },
+            "name": "Storage Account Blob Containers",
+            "description": "This module deploys a Storage Account Blob Container.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "storageAccountName": {
@@ -510,9 +524,12 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.19.5.34762",
-                      "templateHash": "16934496734737846581"
-                    }
+                      "version": "0.18.4.5664",
+                      "templateHash": "10095538202627004276"
+                    },
+                    "name": "Storage Account Blob Container Immutability Policies",
+                    "description": "This module deploys a Storage Account Blob Container Immutability Policy.",
+                    "owner": "Azure/module-maintainers"
                   },
                   "parameters": {
                     "storageAccountName": {
@@ -646,8 +663,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.19.5.34762",
-                      "templateHash": "3590948593540174307"
+                      "version": "0.18.4.5664",
+                      "templateHash": "9471266450275905523"
                     }
                   },
                   "parameters": {
