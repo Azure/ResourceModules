@@ -22,9 +22,6 @@ param location string = resourceGroup().location
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
 
-@description('Optional. The workspace\'s custom parameters.')
-param parameters object = {}
-
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
 @minValue(0)
 @maxValue(365)
@@ -55,6 +52,95 @@ param tags object = {}
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
+
+@description('Optional. The resource ID of a Virtual Network where this Databricks Cluster should be created.')
+param customVirtualNetworkResourceId string = ''
+
+@description('Optional. The resource ID of a Azure Machine Learning workspace to link with Databricks workspace.')
+param amlWorkspaceResourceId string = ''
+
+@description('Optional. The name of the Private Subnet within the Virtual Network.')
+param customPrivateSubnetName string = ''
+
+@description('Optional. The name of a Public Subnet within the Virtual Network')
+param customPublicSubnetName string = ''
+
+@description('Optional. Disable Public IP.')
+param disablePublicIp bool = false
+
+@description('Conditional. The resource ID of a key vault to reference a customer managed key for encryption from. Required if \'cMKKeyName\' is not empty.')
+param cMKManagedServicesKeyVaultResourceId string = ''
+
+@description('Optional. The name of the customer managed key to use for encryption.')
+param cMKManagedServicesKeyName string = ''
+
+@description('Optional. The version of the customer managed key to reference for encryption. If not provided, the latest key version is used.')
+param cMKManagedServicesKeyVersion string = ''
+
+@description('Conditional. The resource ID of a key vault to reference a customer managed key for encryption from. Required if \'cMKKeyName\' is not empty.')
+param cMKManagedDisksKeyVaultResourceId string = ''
+
+@description('Optional. The name of the customer managed key to use for encryption.')
+param cMKManagedDisksKeyName string = ''
+
+@description('Optional. The version of the customer managed key to reference for encryption. If not provided, the latest key version is used.')
+param cMKManagedDisksKeyVersion string = ''
+
+@description('Optional. Enable Auto Rotation of Key.')
+param cMKManagedDisksKeyRotationToLatestKeyVersionEnabled bool = true
+
+@description('Optional. Name of the outbound Load Balancer Backend Pool for Secure Cluster Connectivity (No Public IP).')
+param loadBalancerBackendPoolName string = ''
+
+@description('Optional. Name of the outbound Load Balancer Backend Pool for Secure Cluster Connectivity (No Public IP).')
+param loadBalancerResourceId string = ''
+
+@description('Optional. Name of the NAT gateway for Secure Cluster Connectivity (No Public IP) workspace subnets.')
+param natGatewayName string = ''
+
+@description('Optional. Prepare the workspace for encryption. Enables the Managed Identity for managed storage account.')
+param prepareEncryption bool = false
+
+@description('Optional. Name of the Public IP for No Public IP workspace with managed vNet.')
+param publicIpName string = ''
+
+@description('Optional. A boolean indicating whether or not the DBFS root file system will be enabled with secondary layer of encryption with platform managed keys for data at rest.')
+param requireInfrastructureEncryption bool = true
+
+@description('Optional. Default DBFS storage account name.')
+param storageAccountName string = ''
+
+@description('Optional. Storage account SKU name.')
+param storageAccountSkuName string = ''
+
+@description('Optional. Address prefix for Managed virtual network.')
+param vnetAddressPrefix string = ''
+
+@description('Optional. The workspace provider authorizations.')
+param authorizations array = []
+
+@description('Optional. The details of Managed Identity of Disk Encryption Set used for Managed Disk Encryption.')
+param managedDiskIdentity object = {}
+
+@description('Optional. 	The network access type for accessing workspace. Set value to disabled to access workspace only via private link.')
+@allowed([
+  'Disabled'
+  'Enabled'
+])
+param publicNetworkAccess string = 'Enabled'
+
+@description('Optional. Gets or sets a value indicating whether data plane (clusters) to control plane communication happen over private endpoint.')
+@allowed([
+  'AllRules'
+  'NoAzureDatabricksRules'
+])
+param requiredNsgRules string = 'AllRules'
+
+@description('Optional. The details of Managed Identity of Storage Account.')
+param storageAccountIdentity object = {}
+
+@description('Optional. The blob URI where the UI definition file is located.')
+param uiDefinitionUri string = ''
 
 @description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to \'\' to disable log collection.')
 @allowed([
@@ -98,9 +184,6 @@ var diagnosticsLogs = contains(diagnosticLogCategoriesToEnable, 'allLogs') ? [
   }
 ] : contains(diagnosticLogCategoriesToEnable, '') ? [] : diagnosticsLogsSpecified
 
-var managedResourceGroupName = '${name}-rg'
-var managedResourceGroupIdVar = '${subscription().id}/resourceGroups/${managedResourceGroupName}'
-
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
   properties: {
@@ -113,7 +196,27 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource workspace 'Microsoft.Databricks/workspaces@2018-04-01' = {
+resource cMKManagedDisksKeyVault 'Microsoft.KeyVault/vaults@2023-02-01' existing = if (!empty(cMKManagedDisksKeyVaultResourceId)) {
+  name: last(split(cMKManagedDisksKeyVaultResourceId, '/'))!
+  scope: resourceGroup(split(cMKManagedDisksKeyVaultResourceId, '/')[2], split(cMKManagedDisksKeyVaultResourceId, '/')[4])
+}
+
+resource cMKManagedDisksKeyVaultKey 'Microsoft.KeyVault/vaults/keys@2023-02-01' existing = if (!empty(cMKManagedDisksKeyVaultResourceId) && !empty(cMKManagedDisksKeyName)) {
+  name: '${last(split(cMKManagedDisksKeyVaultResourceId, '/'))}/${cMKManagedDisksKeyName}'!
+  scope: resourceGroup(split(cMKManagedDisksKeyVaultResourceId, '/')[2], split(cMKManagedDisksKeyVaultResourceId, '/')[4])
+}
+
+resource cMKManagedServicesKeyVault 'Microsoft.KeyVault/vaults@2023-02-01' existing = if (!empty(cMKManagedServicesKeyVaultResourceId)) {
+  name: last(split(cMKManagedServicesKeyVaultResourceId, '/'))!
+  scope: resourceGroup(split(cMKManagedServicesKeyVaultResourceId, '/')[2], split(cMKManagedServicesKeyVaultResourceId, '/')[4])
+}
+
+resource cMKManagedServicesKeyVaultKey 'Microsoft.KeyVault/vaults/keys@2023-02-01' existing = if (!empty(cMKManagedServicesKeyVaultResourceId) && !empty(cMKManagedServicesKeyName)) {
+  name: '${last(split(cMKManagedServicesKeyVaultResourceId, '/'))}/${cMKManagedServicesKeyName}'!
+  scope: resourceGroup(split(cMKManagedServicesKeyVaultResourceId, '/')[2], split(cMKManagedServicesKeyVaultResourceId, '/')[4])
+}
+
+resource workspace 'Microsoft.Databricks/workspaces@2023-02-01' = {
   name: name
   location: location
   tags: tags
@@ -121,8 +224,86 @@ resource workspace 'Microsoft.Databricks/workspaces@2018-04-01' = {
     name: pricingTier
   }
   properties: {
-    managedResourceGroupId: (empty(managedResourceGroupId) ? managedResourceGroupIdVar : managedResourceGroupId)
-    parameters: parameters
+    managedResourceGroupId: !empty(managedResourceGroupId) ? managedResourceGroupId : '${subscription().id}/resourceGroups/${name}-rg'
+    parameters: {
+      customVirtualNetworkId: {
+        value: customVirtualNetworkResourceId
+      }
+      amlWorkspaceId: {
+        value: amlWorkspaceResourceId
+      }
+      customPrivateSubnetName: {
+        value: customPrivateSubnetName
+      }
+      customPublicSubnetName: {
+        value: customPublicSubnetName
+      }
+      enableNoPublicIp: {
+        value: disablePublicIp
+      }
+      // encryption: !empty(cMKKeyName) ? {
+      //   keySource: 'Microsoft.KeyVault'
+      //   keyVaultProperties: {
+      //     keyVaultUri: cMKKeyVault.properties.vaultUri
+      //     keyName: cMKKeyName
+      //     keyVersion: !empty(cMKKeyVersion) ? cMKKeyVersion : last(split(cMKKeyVaultKey.properties.keyUriWithVersion, '/'))
+      //   }
+      // } : null
+      loadBalancerBackendPoolName: {
+        value: loadBalancerBackendPoolName
+      }
+      loadBalancerId: {
+        value: loadBalancerResourceId
+      }
+      natGatewayName: {
+        value: natGatewayName
+      }
+      prepareEncryption: {
+        value: prepareEncryption
+      }
+      publicIpName: {
+        value: publicIpName
+      }
+      requireInfrastructureEncryption: {
+        value: requireInfrastructureEncryption
+      }
+      storageAccountName: {
+        value: storageAccountName
+      }
+      storageAccountSkuName: {
+        value: storageAccountSkuName
+      }
+      vnetAddressPrefix: {
+        value: vnetAddressPrefix
+      }
+    }
+    authorizations: authorizations
+    managedDiskIdentity: managedDiskIdentity
+    publicNetworkAccess: publicNetworkAccess
+    requiredNsgRules: requiredNsgRules
+    storageAccountIdentity: storageAccountIdentity
+    uiDefinitionUri: uiDefinitionUri
+    encryption: !empty(cMKManagedServicesKeyName) || !empty(cMKManagedServicesKeyName) ? {
+      entities: {
+        managedServices: !empty(cMKManagedServicesKeyName) ? {
+          keySource: 'Microsoft.Keyvault'
+          keyVaultProperties: {
+            keyVaultUri: cMKManagedServicesKeyVault.properties.vaultUri
+            keyName: cMKManagedServicesKeyName
+            keyVersion: !empty(cMKManagedServicesKeyVersion) ? cMKManagedServicesKeyVersion : last(split(cMKManagedServicesKeyVaultKey.properties.keyUriWithVersion, '/'))
+          }
+        } : null
+        managedDisk: !empty(cMKManagedDisksKeyName) ? {
+          keySource: 'Microsoft.Keyvault'
+          keyVaultProperties: {
+            keyVaultUri: cMKManagedDisksKeyVault.properties.vaultUri
+            keyName: cMKManagedDisksKeyName
+            keyVersion: !empty(cMKManagedDisksKeyVersion) ? cMKManagedDisksKeyVersion : last(split(cMKManagedDisksKeyVaultKey.properties.keyUriWithVersion, '/'))
+          }
+          rotationToLatestKeyVersionEnabled: cMKManagedDisksKeyRotationToLatestKeyVersionEnabled
+        } : null
+      }
+    } : null
   }
 }
 

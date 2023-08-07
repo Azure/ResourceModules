@@ -17,6 +17,9 @@ param serviceShort string = 'dwcom'
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
+@description('Generated. Used as a basis for unique resource names.')
+param baseTime string = utcNow('u')
+
 @description('Optional. A token to inject into the name of each resource.')
 param namePrefix string = '[[namePrefix]]'
 
@@ -36,6 +39,9 @@ module nestedDependencies 'dependencies.bicep' = {
   name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
     managedIdentityName: 'dep-${namePrefix}-msi-${serviceShort}'
+    // Adding base time to make the name unique as purge protection must be enabled (but may not be longer than 24 characters total)
+    // keyVaultName: 'dep-${namePrefix}-kv-${serviceShort}-${substring(uniqueString(baseTime), 0, 3)}'
+    keyVaultName: 'dep-${namePrefix}-kv-${serviceShort}-alsehr'
   }
 }
 
@@ -82,5 +88,9 @@ module testDeployment '../../main.bicep' = {
       Environment: 'Non-Prod'
       Role: 'DeploymentValidation'
     }
+    cMKManagedDisksKeyName: nestedDependencies.outputs.keyVaultKeyName
+    cMKManagedDisksKeyVaultResourceId: nestedDependencies.outputs.keyVaultResourceId
+    cMKManagedServicesKeyName: nestedDependencies.outputs.keyVaultKeyName
+    cMKManagedServicesKeyVaultResourceId: nestedDependencies.outputs.keyVaultResourceId
   }
 }
