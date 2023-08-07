@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "6871793291010034543"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "5908766105709827281"
+    },
+    "name": "DBforPostgreSQL Flexible Servers",
+    "description": "This module deploys a DBforPostgreSQL Flexible Server.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
@@ -17,14 +20,52 @@
     },
     "administratorLogin": {
       "type": "string",
+      "defaultValue": "",
       "metadata": {
-        "description": "Required. The administrator login name of a server. Can only be specified when the PostgreSQL server is being created."
+        "description": "Optional. The administrator login name of a server. Can only be specified when the PostgreSQL server is being created."
       }
     },
     "administratorLoginPassword": {
       "type": "securestring",
+      "defaultValue": "",
       "metadata": {
-        "description": "Required. The administrator login password."
+        "description": "Optional. The administrator login password."
+      }
+    },
+    "activeDirectoryAuth": {
+      "type": "string",
+      "defaultValue": "Enabled",
+      "allowedValues": [
+        "Disabled",
+        "Enabled"
+      ],
+      "metadata": {
+        "description": "Optional. If Enabled, Azure Active Directory authentication is enabled."
+      }
+    },
+    "passwordAuth": {
+      "type": "string",
+      "defaultValue": "Disabled",
+      "allowedValues": [
+        "Disabled",
+        "Enabled"
+      ],
+      "metadata": {
+        "description": "Optional. If Enabled, password authentication is enabled."
+      }
+    },
+    "tenantId": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Optional. Tenant id of the server."
+      }
+    },
+    "administrators": {
+      "type": "array",
+      "defaultValue": [],
+      "metadata": {
+        "description": "Optional. The Azure AD administrators when AAD authentication enabled."
       }
     },
     "location": {
@@ -42,54 +83,51 @@
     },
     "tier": {
       "type": "string",
-      "metadata": {
-        "description": "Required. The tier of the particular SKU. Tier must align with the \"skuName\" property. Example, tier cannot be \"Burstable\" if skuName is \"Standard_D4s_v3\"."
-      },
       "allowedValues": [
         "GeneralPurpose",
         "Burstable",
         "MemoryOptimized"
-      ]
+      ],
+      "metadata": {
+        "description": "Required. The tier of the particular SKU. Tier must align with the \"skuName\" property. Example, tier cannot be \"Burstable\" if skuName is \"Standard_D4s_v3\"."
+      }
     },
     "availabilityZone": {
       "type": "string",
       "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Availability zone information of the server. Default will have no preference set."
-      },
       "allowedValues": [
         "",
         "1",
         "2",
         "3"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Availability zone information of the server. Default will have no preference set."
+      }
     },
     "backupRetentionDays": {
       "type": "int",
       "defaultValue": 7,
+      "minValue": 7,
+      "maxValue": 35,
       "metadata": {
         "description": "Optional. Backup retention days for the server."
-      },
-      "maxValue": 35,
-      "minValue": 7
+      }
     },
     "geoRedundantBackup": {
       "type": "string",
       "defaultValue": "Disabled",
-      "metadata": {
-        "description": "Optional. A value indicating whether Geo-Redundant backup is enabled on the server. Should be left disabled if 'cMKKeyName' is not empty."
-      },
       "allowedValues": [
         "Disabled",
         "Enabled"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. A value indicating whether Geo-Redundant backup is enabled on the server. Should be left disabled if 'cMKKeyName' is not empty."
+      }
     },
     "storageSizeGB": {
       "type": "int",
       "defaultValue": 32,
-      "metadata": {
-        "description": "Optional. Max storage allowed for a server."
-      },
       "allowedValues": [
         32,
         64,
@@ -101,45 +139,48 @@
         4096,
         8192,
         16384
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Max storage allowed for a server."
+      }
     },
     "version": {
       "type": "string",
       "defaultValue": "13",
-      "metadata": {
-        "description": "Optional. PostgreSQL Server version."
-      },
       "allowedValues": [
         "11",
         "12",
         "13",
         "14"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. PostgreSQL Server version."
+      }
     },
     "highAvailability": {
       "type": "string",
       "defaultValue": "Disabled",
-      "metadata": {
-        "description": "Optional. The mode for high availability."
-      },
       "allowedValues": [
         "Disabled",
         "SameZone",
         "ZoneRedundant"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. The mode for high availability."
+      }
     },
     "createMode": {
       "type": "string",
       "defaultValue": "Default",
-      "metadata": {
-        "description": "Optional. The mode to create a new PostgreSQL server."
-      },
       "allowedValues": [
         "Create",
         "Default",
         "PointInTimeRestore",
         "Update"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. The mode to create a new PostgreSQL server."
+      }
     },
     "userAssignedIdentities": {
       "type": "object",
@@ -235,14 +276,14 @@
     "lock": {
       "type": "string",
       "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Specify the type of lock."
-      },
       "allowedValues": [
         "",
         "CanNotDelete",
         "ReadOnly"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Specify the type of lock."
+      }
     },
     "roleAssignments": {
       "type": "array",
@@ -268,8 +309,8 @@
     "diagnosticLogsRetentionInDays": {
       "type": "int",
       "defaultValue": 365,
-      "maxValue": 365,
       "minValue": 0,
+      "maxValue": 365,
       "metadata": {
         "description": "Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely."
       }
@@ -402,8 +443,13 @@
         "userAssignedIdentities": "[if(not(empty(parameters('userAssignedIdentities'))), parameters('userAssignedIdentities'), createObject())]"
       },
       "properties": {
-        "administratorLogin": "[parameters('administratorLogin')]",
-        "administratorLoginPassword": "[parameters('administratorLoginPassword')]",
+        "administratorLogin": "[if(not(empty(parameters('administratorLogin'))), parameters('administratorLogin'), null())]",
+        "administratorLoginPassword": "[if(not(empty(parameters('administratorLoginPassword'))), parameters('administratorLoginPassword'), null())]",
+        "authConfig": {
+          "activeDirectoryAuth": "[parameters('activeDirectoryAuth')]",
+          "passwordAuth": "[parameters('passwordAuth')]",
+          "tenantId": "[if(not(empty(parameters('tenantId'))), parameters('tenantId'), null())]"
+        },
         "availabilityZone": "[parameters('availabilityZone')]",
         "backup": {
           "backupRetentionDays": "[parameters('backupRetentionDays')]",
@@ -491,8 +537,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "8288890441748688164"
+              "version": "0.20.4.51522",
+              "templateHash": "11735622953674778447"
             }
           },
           "parameters": {
@@ -637,9 +683,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "8477950788097943392"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "7432917940199201712"
+            },
+            "name": "DBforPostgreSQL Flexible Server Databases",
+            "description": "This module deploys a DBforPostgreSQL Flexible Server Database.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "name": {
@@ -773,9 +822,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "6282448505944682789"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "3071080362723739241"
+            },
+            "name": "DBforPostgreSQL Flexible Server Firewall Rules",
+            "description": "This module deploys a DBforPostgreSQL Flexible Server Firewall Rule.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "name": {
@@ -897,9 +949,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "12749548880138535045"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "5586008567080780040"
+            },
+            "name": "DBforPostgreSQL Flexible Server Configurations",
+            "description": "This module deploys a DBforPostgreSQL Flexible Server Configuration.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "name": {
@@ -996,6 +1051,128 @@
       "dependsOn": [
         "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('name'))]",
         "flexibleServer_firewallRules"
+      ]
+    },
+    {
+      "copy": {
+        "name": "flexibleServer_administrators",
+        "count": "[length(parameters('administrators'))]"
+      },
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2022-09-01",
+      "name": "[format('{0}-PostgreSQL-Administrators-{1}', uniqueString(deployment().name, parameters('location')), copyIndex())]",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "flexibleServerName": {
+            "value": "[parameters('name')]"
+          },
+          "objectId": {
+            "value": "[parameters('administrators')[copyIndex()].objectId]"
+          },
+          "principalName": {
+            "value": "[parameters('administrators')[copyIndex()].principalName]"
+          },
+          "principalType": {
+            "value": "[parameters('administrators')[copyIndex()].principalType]"
+          },
+          "tenantId": {
+            "value": "[parameters('administrators')[copyIndex()].tenantId]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.20.4.51522",
+              "templateHash": "14644832530230988134"
+            },
+            "name": "DBforPostgreSQL Flexible Server Administrators ",
+            "description": "This module deploys a DBforPostgreSQL Flexible Server Administrator.",
+            "owner": "Azure/module-maintainers"
+          },
+          "parameters": {
+            "flexibleServerName": {
+              "type": "string",
+              "metadata": {
+                "description": "Conditional. The name of the parent PostgreSQL flexible server. Required if the template is used in a standalone deployment."
+              }
+            },
+            "objectId": {
+              "type": "string",
+              "metadata": {
+                "description": "Required. The objectId of the Active Directory administrator."
+              }
+            },
+            "principalName": {
+              "type": "string",
+              "metadata": {
+                "description": "Required. Active Directory administrator principal name."
+              }
+            },
+            "principalType": {
+              "type": "string",
+              "allowedValues": [
+                "Group",
+                "ServicePrincipal",
+                "Unknown",
+                "User"
+              ],
+              "metadata": {
+                "description": "Required. The principal type used to represent the type of Active Directory Administrator."
+              }
+            },
+            "tenantId": {
+              "type": "string",
+              "metadata": {
+                "description": "Required. The tenantId of the Active Directory administrator."
+              }
+            }
+          },
+          "resources": [
+            {
+              "type": "Microsoft.DBforPostgreSQL/flexibleServers/administrators",
+              "apiVersion": "2022-12-01",
+              "name": "[format('{0}/{1}', parameters('flexibleServerName'), parameters('objectId'))]",
+              "properties": {
+                "principalName": "[parameters('principalName')]",
+                "principalType": "[parameters('principalType')]",
+                "tenantId": "[parameters('tenantId')]"
+              }
+            }
+          ],
+          "outputs": {
+            "name": {
+              "type": "string",
+              "metadata": {
+                "description": "The name of the deployed administrator."
+              },
+              "value": "[parameters('objectId')]"
+            },
+            "resourceId": {
+              "type": "string",
+              "metadata": {
+                "description": "The resource ID of the deployed administrator."
+              },
+              "value": "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers/administrators', parameters('flexibleServerName'), parameters('objectId'))]"
+            },
+            "resourceGroupName": {
+              "type": "string",
+              "metadata": {
+                "description": "The resource group of the deployed administrator."
+              },
+              "value": "[resourceGroup().name]"
+            }
+          }
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('name'))]"
       ]
     }
   ],
