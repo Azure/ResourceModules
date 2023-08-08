@@ -100,6 +100,7 @@ module testDeployment '../../main.bicep' = {
         skuName: 'GP_Gen5'
         skuTier: 'GeneralPurpose'
         skuCapacity: 10
+        minCapacity: 2
         // Pre-existing 'public' configuration
         maintenanceConfigurationId: '${subscription().id}/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_WestEurope_DB_1'
       }
@@ -110,8 +111,7 @@ module testDeployment '../../main.bicep' = {
         collation: 'SQL_Latin1_General_CP1_CI_AS'
         skuTier: 'GeneralPurpose'
         skuName: 'ElasticPool'
-        capacity: 2
-        minCapacity: 2
+        capacity: 0
         maxSizeBytes: 34359738368
         licenseType: 'LicenseIncluded'
         diagnosticLogsRetentionInDays: 7
