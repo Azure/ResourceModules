@@ -58,8 +58,8 @@ resource keyPermissions 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
 }
 
 resource amlPermissions 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-    name: guid('msi-${keyVault::key.id}-${location}-${managedIdentity.id}-Key-Vault-Contributor')
-    scope: keyVault::key
+    name: guid('msi-${keyVault.id}-${location}-${managedIdentity.id}-Key-Vault-Contributor')
+    scope: keyVault
     properties: {
         principalId: managedIdentity.properties.principalId
         roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c') // Contributor
