@@ -41,7 +41,10 @@ module nestedDependencies 'dependencies.bicep' = {
     managedIdentityName: 'dep-${namePrefix}-msi-${serviceShort}'
     amlWorkspaceName: 'dep-${namePrefix}-aml-${serviceShort}'
     applicationInsightsName: 'dep-${namePrefix}-appi-${serviceShort}'
+    loadBalancerName: 'dep-${namePrefix}-lb-${serviceShort}'
     storageAccountName: 'dep${namePrefix}sa${serviceShort}'
+    virtualNetworkName: 'dep-${namePrefix}-vnet-${serviceShort}'
+    networkSecurityGroupName: 'dep-${namePrefix}-nsg-${serviceShort}'
     // Adding base time to make the name unique as purge protection must be enabled (but may not be longer than 24 characters total)
     // keyVaultName: 'dep-${namePrefix}-kv-${serviceShort}-${substring(uniqueString(baseTime), 0, 3)}'
     keyVaultName: 'dep${namePrefix}kv${serviceShort}al'
@@ -91,10 +94,11 @@ module testDeployment '../../main.bicep' = {
       Environment: 'Non-Prod'
       Role: 'DeploymentValidation'
     }
-    cMKManagedDisksKeyName: nestedDependencies.outputs.keyVaultKeyName
-    cMKManagedDisksKeyVaultResourceId: nestedDependencies.outputs.keyVaultResourceId
     cMKManagedServicesKeyName: nestedDependencies.outputs.keyVaultKeyName
     cMKManagedServicesKeyVaultResourceId: nestedDependencies.outputs.keyVaultResourceId
+    cMKManagedDisksKeyName: nestedDependencies.outputs.keyVaultKeyName
+    cMKManagedDisksKeyVaultResourceId: nestedDependencies.outputs.keyVaultResourceId
+    cMKManagedDisksKeyRotationToLatestKeyVersionEnabled: true
     storageAccountName: '${namePrefix}${serviceShort}001'
     publicIpName: 'nat-gw-public-ip'
     natGatewayName: 'nat-gateway'
@@ -102,5 +106,27 @@ module testDeployment '../../main.bicep' = {
     requiredNsgRules: 'AllRules'
     skuName: 'premium'
     amlWorkspaceResourceId: nestedDependencies.outputs.machineLearningWorkspaceResourceId
+    customPrivateSubnetName: nestedDependencies.outputs.customPrivateSubnetName
+    customPublicSubnetName: nestedDependencies.outputs.customPublicSubnetName
+    publicNetworkAccess: 'Disabled'
+    disablePublicIp: true
+    loadBalancerResourceId: nestedDependencies.outputs.loadBalancerResourceId
+    loadBalancerBackendPoolName: nestedDependencies.outputs.loadBalancerBackendPoolName
+    customVirtualNetworkResourceId: nestedDependencies.outputs.virtualNetworkResourceId
+    privateEndpoints: [
+      {
+        privateDnsZoneGroup: {
+          privateDNSResourceIds: [
+            nestedDependencies.outputs.privateDNSResourceId
+          ]
+        }
+        service: 'databricks_ui_api'
+        subnetResourceId: nestedDependencies.outputs.defaultSubnetResourceId
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
+      }
+    ]
   }
 }
