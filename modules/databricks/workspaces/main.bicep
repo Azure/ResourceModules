@@ -14,7 +14,7 @@ param managedResourceGroupId string = ''
   'standard'
   'premium'
 ])
-param pricingTier string = 'premium'
+param skuName string = 'premium'
 
 @description('Optional. Location for all Resources.')
 param location string = resourceGroup().location
@@ -111,10 +111,10 @@ param requireInfrastructureEncryption bool = true
 param storageAccountName string = ''
 
 @description('Optional. Storage account SKU name.')
-param storageAccountSkuName string = ''
+param storageAccountSkuName string = 'Standard_GRS'
 
 @description('Optional. Address prefix for Managed virtual network.')
-param vnetAddressPrefix string = ''
+param vnetAddressPrefix string = '10.139'
 
 @description('Optional. The workspace provider authorizations.')
 param authorizations array = []
@@ -221,68 +221,60 @@ resource workspace 'Microsoft.Databricks/workspaces@2023-02-01' = {
   location: location
   tags: tags
   sku: {
-    name: pricingTier
+    name: skuName
   }
   properties: {
     managedResourceGroupId: !empty(managedResourceGroupId) ? managedResourceGroupId : '${subscription().id}/resourceGroups/${name}-rg'
     parameters: {
-      customVirtualNetworkId: {
+      customVirtualNetworkId: !empty(customVirtualNetworkResourceId) ? {
         value: customVirtualNetworkResourceId
-      }
-      amlWorkspaceId: {
+      } : null
+      amlWorkspaceId: !empty(amlWorkspaceResourceId) ? {
         value: amlWorkspaceResourceId
-      }
-      customPrivateSubnetName: {
+      } : null
+      customPrivateSubnetName: !empty(customPrivateSubnetName) ? {
         value: customPrivateSubnetName
-      }
-      customPublicSubnetName: {
+      } : null
+      customPublicSubnetName: !empty(customPublicSubnetName) ? {
         value: customPublicSubnetName
-      }
+      } : null
       enableNoPublicIp: {
         value: disablePublicIp
       }
-      // encryption: !empty(cMKKeyName) ? {
-      //   keySource: 'Microsoft.KeyVault'
-      //   keyVaultProperties: {
-      //     keyVaultUri: cMKKeyVault.properties.vaultUri
-      //     keyName: cMKKeyName
-      //     keyVersion: !empty(cMKKeyVersion) ? cMKKeyVersion : last(split(cMKKeyVaultKey.properties.keyUriWithVersion, '/'))
-      //   }
-      // } : null
-      loadBalancerBackendPoolName: {
+      loadBalancerBackendPoolName: !empty(loadBalancerBackendPoolName) ? {
         value: loadBalancerBackendPoolName
-      }
-      loadBalancerId: {
+      } : null
+      loadBalancerId: !empty(loadBalancerResourceId) ? {
         value: loadBalancerResourceId
-      }
-      natGatewayName: {
+      } : null
+      natGatewayName: !empty(natGatewayName) ? {
         value: natGatewayName
-      }
+      } : null
       prepareEncryption: {
         value: prepareEncryption
       }
-      publicIpName: {
+      publicIpName: !empty(publicIpName) ? {
         value: publicIpName
-      }
+      } : null
       requireInfrastructureEncryption: {
         value: requireInfrastructureEncryption
       }
-      storageAccountName: {
+      storageAccountName: !empty(storageAccountName) ? {
         value: storageAccountName
-      }
-      storageAccountSkuName: {
+      } : null
+      storageAccountSkuName: !empty(storageAccountSkuName) ? {
         value: storageAccountSkuName
-      }
-      vnetAddressPrefix: {
+      } : null
+      vnetAddressPrefix: !empty(vnetAddressPrefix) ? {
         value: vnetAddressPrefix
-      }
+      } : null
     }
-    authorizations: authorizations
-    managedDiskIdentity: managedDiskIdentity
-    publicNetworkAccess: publicNetworkAccess
-    requiredNsgRules: requiredNsgRules
-    storageAccountIdentity: storageAccountIdentity
-    uiDefinitionUri: uiDefinitionUri
+    // authorizations: authorizations
+    // managedDiskIdentity: managedDiskIdentity
+    // publicNetworkAccess: publicNetworkAccess
+    // requiredNsgRules: requiredNsgRules
+    // storageAccountIdentity: storageAccountIdentity
+    // uiDefinitionUri: uiDefinitionUri
     encryption: !empty(cMKManagedServicesKeyName) || !empty(cMKManagedServicesKeyName) ? {
       entities: {
         managedServices: !empty(cMKManagedServicesKeyName) ? {
@@ -317,7 +309,7 @@ resource workspace_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(
 }
 
 // Note: Diagnostic Settings are only supported by the premium tier
-resource workspace_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if (pricingTier == 'premium' && ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName)))) {
+resource workspace_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if (skuName == 'premium' && ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName)))) {
   name: !empty(diagnosticSettingsName) ? diagnosticSettingsName : '${name}-diagnosticSettings'
   properties: {
     storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
