@@ -100,7 +100,7 @@ module testDeployment '../../main.bicep' = {
         skuName: 'GP_Gen5'
         skuTier: 'GeneralPurpose'
         skuCapacity: 10
-        minCapacity: 2
+        minCapacity: '1.25'
         // Pre-existing 'public' configuration
         maintenanceConfigurationId: '${subscription().id}/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_WestEurope_DB_1'
       }
