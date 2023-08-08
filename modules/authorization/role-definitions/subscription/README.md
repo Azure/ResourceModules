@@ -1,4 +1,4 @@
-# Role Definitions (Subscription scope) `[Microsoft.Authorization/roleDefinitions/subscription]`
+# Role Definitions (Subscription scope) `[Microsoft.Authorization/roleDefinitions]`
 
 This module deploys a Role Definition at a Subscription scope.
 
