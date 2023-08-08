@@ -1,4 +1,4 @@
-# Resources Tags Resource Group `[Microsoft.Resources/tags/resourceGroups]`
+# Resources Tags Resource Group `[Microsoft.Resources/tags]`
 
 This module deploys a Resource Tag on a Resource Group scope.
 

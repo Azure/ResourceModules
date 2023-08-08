@@ -1,4 +1,4 @@
-# Resources Tags Subscription Scope `[Microsoft.Resources/tags/subscriptions]`
+# Resources Tags Subscription Scope `[Microsoft.Resources/tags]`
 
 This module deploys a Resource Tag on a Subscription scope.
 
