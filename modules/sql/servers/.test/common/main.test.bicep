@@ -97,10 +97,10 @@ module testDeployment '../../main.bicep' = {
     elasticPools: [
       {
         name: '${namePrefix}-${serviceShort}-ep-001'
-        skuName: 'GP_Gen5'
+        skuName: 'GP_Gen8'
         skuTier: 'GeneralPurpose'
         skuCapacity: 10
-        minCapacity: 10
+        minCapacity: 3
         // Pre-existing 'public' configuration
         maintenanceConfigurationId: '${subscription().id}/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_WestEurope_DB_1'
       }
