@@ -29,7 +29,7 @@ This module deploys a Virtual Network (vNet).
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `addressPrefixes` | array | An Array of 1 or more IP Address Prefixes for the Virtual Network. |
-| `name` | string | The Virtual Network (vNet) Name. Dummy addition to trigger publishing3. |
+| `name` | string | The Virtual Network (vNet) Name. |
 
 **Optional parameters**
 
