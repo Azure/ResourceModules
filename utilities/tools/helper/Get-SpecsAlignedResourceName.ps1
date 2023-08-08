@@ -67,7 +67,7 @@ function Get-SpecsAlignedResourceName {
 
     $reducedResourceIdentifier = $ResourceIdentifier -replace '-'
 
-    $rawProviderNamespace, $rawResourceType = $reducedResourceIdentifier -Split '[\/|\\]', 2
+    $rawProviderNamespace, $rawResourceType = $reducedResourceIdentifier -Split '[\/|\\]', 2 # e.g. 'keyvault' & 'vaults/keys'
 
     $foundProviderNamespaceMatches = ($specs.Keys | Sort-Object) | Where-Object { $_ -like "Microsoft.$rawProviderNamespace*" }
 
