@@ -110,7 +110,7 @@ module testDeployment '../../main.bicep' = {
         collation: 'SQL_Latin1_General_CP1_CI_AS'
         skuTier: 'GeneralPurpose'
         skuName: 'ElasticPool'
-        capacity: 0
+        capacity: 1
         maxSizeBytes: 34359738368
         licenseType: 'LicenseIncluded'
         diagnosticLogsRetentionInDays: 7
