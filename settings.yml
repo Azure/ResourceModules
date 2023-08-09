@@ -44,7 +44,7 @@ variables:
   # Deployment validation #
   # --------------------- #
 
-  location: 'westeurope' # The default location to test deploy resources to
+  location: 'uksouth' # The default location to test deploy resources to
 
   #############################
   ##   Publishing settings   ##
@@ -53,12 +53,12 @@ variables:
   # Shared settings #
   # --------------- #
 
-  publishLatest: true # [Only for Template-Specs & Bicep Registry] Publish an absolute latest version. Note: This version may include breaking changes and is not recommended for production environments
+  publishLatest: false # [Only for Template-Specs & Bicep Registry] Publish an absolute latest version. Note: This version may include breaking changes and is not recommended for production environments
 
   # Template-Spec settings #
   # ---------------------- #
 
-  templateSpecsDoPublish: true # Set to true, if you would like to publish module templates as template specs
+  templateSpecsDoPublish: false # Set to true, if you would like to publish module templates as template specs
   templateSpecsRGName: 'artifacts-rg' # The name of the resource group to publish to. If the resource group does not exist, it will be created.
   templateSpecsRGLocation: 'West Europe' # The location of the resource group to publish to
   templateSpecsDescription: components # The description to add to template specs published by this platform
@@ -67,7 +67,7 @@ variables:
   # Private Bicep Registry settings #
   # ------------------------------- #
 
-  bicepRegistryDoPublish: true # Set to true, if you would like to publish module templates to a bicep registry
+  bicepRegistryDoPublish: false # Set to true, if you would like to publish module templates to a bicep registry
   bicepRegistryName: adpsxxazacrx001 # The name of the bicep registry (ACR) to publish to. If it does not exist, it will be created.
   bicepRegistryRGName: 'artifacts-rg' # The resource group that hosts the private bicep registry (ACR)
   bicepRegistryRgLocation: 'West Europe' # The location of the resource group to publish to
