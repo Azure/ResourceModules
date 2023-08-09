@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "4506238262937483474"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "5185408907278073643"
+    },
+    "name": "Site Slot Auth Settings V2 Config",
+    "description": "This module deploys a Site Auth Settings V2 Configuration.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "appName": {
@@ -34,10 +37,16 @@
         "description": "Required. Type of slot to deploy."
       }
     },
-    "authSettingV2Configuration": {
+    "properties": {
       "type": "object",
       "metadata": {
-        "description": "Required. The auth settings V2 configuration."
+        "description": "Required. The properties object values."
+      }
+    },
+    "name": {
+      "type": "string",
+      "metadata": {
+        "description": "Required. The configuration object name."
       }
     },
     "enableDefaultTelemetry": {
@@ -66,9 +75,9 @@
     {
       "type": "Microsoft.Web/sites/slots/config",
       "apiVersion": "2022-03-01",
-      "name": "[format('{0}/{1}/{2}', parameters('appName'), parameters('slotName'), 'authsettingsV2')]",
+      "name": "[format('{0}/{1}/{2}', parameters('appName'), parameters('slotName'), parameters('name'))]",
       "kind": "[parameters('kind')]",
-      "properties": "[parameters('authSettingV2Configuration')]"
+      "properties": "[parameters('properties')]"
     }
   ],
   "outputs": {
@@ -77,14 +86,14 @@
       "metadata": {
         "description": "The name of the slot config."
       },
-      "value": "authsettingsV2"
+      "value": "[parameters('name')]"
     },
     "resourceId": {
       "type": "string",
       "metadata": {
         "description": "The resource ID of the slot config."
       },
-      "value": "[resourceId('Microsoft.Web/sites/slots/config', parameters('appName'), parameters('slotName'), 'authsettingsV2')]"
+      "value": "[resourceId('Microsoft.Web/sites/slots/config', parameters('appName'), parameters('slotName'), parameters('name'))]"
     },
     "resourceGroupName": {
       "type": "string",

@@ -474,7 +474,7 @@ module sites './web/sites/main.bicep' = {
     config: [
       {
         name: 'web'
-        value: {
+        properties: {
           ipSecurityRestrictions: [
             {
               action: 'Allow'
@@ -497,7 +497,7 @@ module sites './web/sites/main.bicep' = {
       }
       {
         name: 'authsettingsV2'
-        value: {
+        properties: {
           globalValidation: {
             requireAuthentication: true
             unauthenticatedClientAction: 'Return401'
@@ -651,7 +651,7 @@ module sites './web/sites/main.bicep' = {
       "value": [
         {
           "name": "web",
-          "value": {
+          "properties": {
             "ipSecurityRestrictions": [
               {
                 "action": "Allow",
@@ -674,7 +674,7 @@ module sites './web/sites/main.bicep' = {
         },
         {
           "name": "authsettingsV2",
-          "value": {
+          "properties": {
             "globalValidation": {
               "requireAuthentication": true,
               "unauthenticatedClientAction": "Return401"

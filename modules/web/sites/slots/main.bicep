@@ -320,8 +320,8 @@ module slot_config 'config/main.bicep' = [for configuration in config: {
     slotName: slot.name
     appName: app.name
     kind: kind
-    configName: configuration.name
-    configValue: configuration.value
+    name: configuration.name
+    properties: configuration.value
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]

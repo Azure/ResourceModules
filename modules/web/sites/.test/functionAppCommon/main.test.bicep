@@ -81,7 +81,7 @@ module testDeployment '../../main.bicep' = {
     config: [
       {
         name: 'web'
-        value: {
+        properties: {
           ipSecurityRestrictions: [
             {
               vnetSubnetResourceId: nestedDependencies.outputs.subnetResourceId
@@ -104,7 +104,7 @@ module testDeployment '../../main.bicep' = {
       }
       {
         name: 'authsettingsV2'
-        value: {
+        properties: {
           globalValidation: {
             requireAuthentication: true
             unauthenticatedClientAction: 'Return401'

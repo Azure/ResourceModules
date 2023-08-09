@@ -306,8 +306,8 @@ module app_config 'config/main.bicep' = [for configuration in config: {
   params: {
     appName: app.name
     kind: kind
-    configName: configuration.name
-    configValue: configuration.value
+    name: configuration.name
+    properties: configuration.properties
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]

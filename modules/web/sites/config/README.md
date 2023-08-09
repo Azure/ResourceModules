@@ -21,9 +21,9 @@ This module deploys a Site Auth Settings V2 Configuration.
 
 | Parameter Name | Type | Allowed Values | Description |
 | :-- | :-- | :-- | :-- |
-| `configName` | string |  | The configuration object name. |
-| `configValue` | object |  | The configuration object values. |
 | `kind` | string | `[app, functionapp, functionapp,linux, functionapp,workflowapp, functionapp,workflowapp,linux]` | Type of site to deploy. |
+| `name` | string |  | The configuration object name. |
+| `properties` | object |  | The properties object values. |
 
 **Conditional parameters**
 

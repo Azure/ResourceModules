@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "8947665391771130821"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "18373728467474969101"
+    },
+    "name": "Site App Settings",
+    "description": "This module deploys a Site App Setting.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "appName": {

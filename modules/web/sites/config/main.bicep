@@ -18,11 +18,11 @@ param appName string
 ])
 param kind string
 
-@description('Required. The configuration object values.')
-param configValue object
+@description('Required. The properties object values.')
+param properties object
 
 @description('Required. The configuration object name.')
-param configName string
+param name string
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
@@ -50,10 +50,10 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
 }
 
 resource appConfig 'Microsoft.Web/sites/config@2022-03-01' = {
-  name: configName
+  name: name
   kind: kind
   parent: app
-  properties: configValue
+  properties: properties
 }
 
 // =========== //
