@@ -46,13 +46,13 @@ This module deploys a Web or Function App.
 | `appInsightResourceId` | string | `''` |  | Resource ID of the app insight to leverage for this resource. |
 | `appServiceEnvironmentResourceId` | string | `''` |  | The resource ID of the app service environment to use for this resource. |
 | `appSettingsKeyValuePairs` | object | `{object}` |  | The app settings-value pairs except for AzureWebJobsStorage, AzureWebJobsDashboard, APPINSIGHTS_INSTRUMENTATIONKEY and APPLICATIONINSIGHTS_CONNECTION_STRING. |
-| `authSettingV2Configuration` | object | `{object}` |  | The auth settings V2 configuration. |
 | `basicPublishingCredentialsPolicies` | _[basicPublishingCredentialsPolicies](basic-publishing-credentials-policies/README.md)_ array | `[]` |  | The site publishing credential policy names which are associated with the sites. |
 | `clientAffinityEnabled` | bool | `True` |  | If client affinity is enabled. |
 | `clientCertEnabled` | bool | `False` |  | To enable client certificate authentication (TLS mutual authentication). |
 | `clientCertExclusionPaths` | string | `''` |  | Client certificate authentication comma-separated exclusion paths. |
 | `clientCertMode` | string | `'Optional'` | `[Optional, OptionalInteractiveUser, Required]` | This composes with ClientCertEnabled setting.</p>- ClientCertEnabled: false means ClientCert is ignored.</p>- ClientCertEnabled: true and ClientCertMode: Required means ClientCert is required.</p>- ClientCertEnabled: true and ClientCertMode: Optional means ClientCert is optional or accepted. |
 | `cloningInfo` | object | `{object}` |  | If specified during app creation, the app is cloned from a source app. |
+| `config` | _[config](config/README.md)_ array | `[]` |  | The sites/config settings. |
 | `containerSize` | int | `-1` |  | Size of the function container. |
 | `customDomainVerificationId` | string | `''` |  | Unique identifier that verifies the custom domains assigned to the app. Customer will add this ID to a txt record for verification. |
 | `dailyMemoryTimeQuota` | int | `-1` |  | Maximum allowed daily memory-time quota (applicable on dynamic apps only). |
@@ -471,68 +471,96 @@ module sites './web/sites/main.bicep' = {
       FUNCTIONS_EXTENSION_VERSION: '~4'
       FUNCTIONS_WORKER_RUNTIME: 'dotnet'
     }
-    authSettingV2Configuration: {
-      globalValidation: {
-        requireAuthentication: true
-        unauthenticatedClientAction: 'Return401'
-      }
-      httpSettings: {
-        forwardProxy: {
-          convention: 'NoProxy'
-        }
-        requireHttps: true
-        routes: {
-          apiPrefix: '/.auth'
-        }
-      }
-      identityProviders: {
-        azureActiveDirectory: {
-          enabled: true
-          login: {
-            disableWWWAuthenticate: false
-          }
-          registration: {
-            clientId: '55ffb134-9f3f-4169-9563-87f8deaaf751'
-            clientSecretSettingName: 'EASYAUTH_SECRET'
-            openIdIssuer: '<openIdIssuer>'
-          }
-          validation: {
-            allowedAudiences: [
-              'api://55ffb134-9f3f-4169-9563-87f8deaaf751'
-            ]
-            defaultAuthorizationPolicy: {
-              allowedPrincipals: {}
+    config: [
+      {
+        name: 'web'
+        value: {
+          ipSecurityRestrictions: [
+            {
+              action: 'Allow'
+              description: 'Allow from vnet'
+              name: 'Allow from VNET'
+              priority: 200
+              tag: 'Default'
+              vnetSubnetResourceId: '<vnetSubnetResourceId>'
             }
-            jwtClaimChecks: {}
+            {
+              action: 'Deny'
+              description: 'Deny all access'
+              ipAddress: 'Any'
+              name: 'Deny all'
+              priority: 2147483647
+            }
+          ]
+          ipSecurityRestrictionsDefaultAction: 'Deny'
+        }
+      }
+      {
+        name: 'authsettingsV2'
+        value: {
+          globalValidation: {
+            requireAuthentication: true
+            unauthenticatedClientAction: 'Return401'
+          }
+          httpSettings: {
+            forwardProxy: {
+              convention: 'NoProxy'
+            }
+            requireHttps: true
+            routes: {
+              apiPrefix: '/.auth'
+            }
+          }
+          identityProviders: {
+            azureActiveDirectory: {
+              enabled: true
+              login: {
+                disableWWWAuthenticate: false
+              }
+              registration: {
+                clientId: 'd874dd2f-2032-4db1-a053-f0ec243685aa'
+                clientSecretSettingName: 'EASYAUTH_SECRET'
+                openIdIssuer: '<openIdIssuer>'
+              }
+              validation: {
+                allowedAudiences: [
+                  'api://d874dd2f-2032-4db1-a053-f0ec243685aa'
+                ]
+                defaultAuthorizationPolicy: {
+                  allowedPrincipals: {}
+                }
+                jwtClaimChecks: {}
+              }
+            }
+          }
+          login: {
+            allowedExternalRedirectUrls: [
+              'string'
+            ]
+            cookieExpiration: {
+              convention: 'FixedTime'
+              timeToExpiration: '08:00:00'
+            }
+            nonce: {
+              nonceExpirationInterval: '00:05:00'
+              validateNonce: true
+            }
+            preserveUrlFragmentsForLogins: false
+            routes: {}
+            tokenStore: {
+              azureBlobStorage: {}
+              enabled: true
+              fileSystem: {}
+              tokenRefreshExtensionHours: 72
+            }
+          }
+          platform: {
+            enabled: true
+            runtimeVersion: '~1'
           }
         }
       }
-      login: {
-        allowedExternalRedirectUrls: [
-          'string'
-        ]
-        cookieExpiration: {
-          convention: 'FixedTime'
-          timeToExpiration: '08:00:00'
-        }
-        nonce: {
-          nonceExpirationInterval: '00:05:00'
-          validateNonce: true
-        }
-        preserveUrlFragmentsForLogins: false
-        routes: {}
-        tokenStore: {
-          azureBlobStorage: {}
-          enabled: true
-          fileSystem: {}
-          tokenRefreshExtensionHours: 72
-        }
-      }
-      platform: {
-        enabled: true
-        runtimeVersion: '~1'
-      }
-    }
+    ]
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
     diagnosticLogsRetentionInDays: 7
@@ -619,69 +647,97 @@ module sites './web/sites/main.bicep' = {
         "FUNCTIONS_WORKER_RUNTIME": "dotnet"
       }
     },
-    "authSettingV2Configuration": {
-      "value": {
-        "globalValidation": {
-          "requireAuthentication": true,
-          "unauthenticatedClientAction": "Return401"
-        },
-        "httpSettings": {
-          "forwardProxy": {
-            "convention": "NoProxy"
-          },
-          "requireHttps": true,
-          "routes": {
-            "apiPrefix": "/.auth"
+    "config": {
+      "value": [
+        {
+          "name": "web",
+          "value": {
+            "ipSecurityRestrictions": [
+              {
+                "action": "Allow",
+                "description": "Allow from vnet",
+                "name": "Allow from VNET",
+                "priority": 200,
+                "tag": "Default",
+                "vnetSubnetResourceId": "<vnetSubnetResourceId>"
+              },
+              {
+                "action": "Deny",
+                "description": "Deny all access",
+                "ipAddress": "Any",
+                "name": "Deny all",
+                "priority": 2147483647
+              }
+            ],
+            "ipSecurityRestrictionsDefaultAction": "Deny"
           }
         },
-        "identityProviders": {
-          "azureActiveDirectory": {
-            "enabled": true,
-            "login": {
-              "disableWWWAuthenticate": false
+        {
+          "name": "authsettingsV2",
+          "value": {
+            "globalValidation": {
+              "requireAuthentication": true,
+              "unauthenticatedClientAction": "Return401"
             },
-            "registration": {
-              "clientId": "55ffb134-9f3f-4169-9563-87f8deaaf751",
-              "clientSecretSettingName": "EASYAUTH_SECRET",
-              "openIdIssuer": "<openIdIssuer>"
-            },
-            "validation": {
-              "allowedAudiences": [
-                "api://55ffb134-9f3f-4169-9563-87f8deaaf751"
-              ],
-              "defaultAuthorizationPolicy": {
-                "allowedPrincipals": {}
+            "httpSettings": {
+              "forwardProxy": {
+                "convention": "NoProxy"
               },
-              "jwtClaimChecks": {}
+              "requireHttps": true,
+              "routes": {
+                "apiPrefix": "/.auth"
+              }
+            },
+            "identityProviders": {
+              "azureActiveDirectory": {
+                "enabled": true,
+                "login": {
+                  "disableWWWAuthenticate": false
+                },
+                "registration": {
+                  "clientId": "d874dd2f-2032-4db1-a053-f0ec243685aa",
+                  "clientSecretSettingName": "EASYAUTH_SECRET",
+                  "openIdIssuer": "<openIdIssuer>"
+                },
+                "validation": {
+                  "allowedAudiences": [
+                    "api://d874dd2f-2032-4db1-a053-f0ec243685aa"
+                  ],
+                  "defaultAuthorizationPolicy": {
+                    "allowedPrincipals": {}
+                  },
+                  "jwtClaimChecks": {}
+                }
+              }
+            },
+            "login": {
+              "allowedExternalRedirectUrls": [
+                "string"
+              ],
+              "cookieExpiration": {
+                "convention": "FixedTime",
+                "timeToExpiration": "08:00:00"
+              },
+              "nonce": {
+                "nonceExpirationInterval": "00:05:00",
+                "validateNonce": true
+              },
+              "preserveUrlFragmentsForLogins": false,
+              "routes": {},
+              "tokenStore": {
+                "azureBlobStorage": {},
+                "enabled": true,
+                "fileSystem": {},
+                "tokenRefreshExtensionHours": 72
+              }
+            },
+            "platform": {
+              "enabled": true,
+              "runtimeVersion": "~1"
             }
           }
-        },
-        "login": {
-          "allowedExternalRedirectUrls": [
-            "string"
-          ],
-          "cookieExpiration": {
-            "convention": "FixedTime",
-            "timeToExpiration": "08:00:00"
-          },
-          "nonce": {
-            "nonceExpirationInterval": "00:05:00",
-            "validateNonce": true
-          },
-          "preserveUrlFragmentsForLogins": false,
-          "routes": {},
-          "tokenStore": {
-            "azureBlobStorage": {},
-            "enabled": true,
-            "fileSystem": {},
-            "tokenRefreshExtensionHours": 72
-          }
-        },
-        "platform": {
-          "enabled": true,
-          "runtimeVersion": "~1"
         }
-      }
+      ]
     },
     "diagnosticEventHubAuthorizationRuleId": {
       "value": "<diagnosticEventHubAuthorizationRuleId>"

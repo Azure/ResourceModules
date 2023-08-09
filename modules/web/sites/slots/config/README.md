@@ -21,7 +21,8 @@ This module deploys a Site Auth Settings V2 Configuration.
 
 | Parameter Name | Type | Allowed Values | Description |
 | :-- | :-- | :-- | :-- |
-| `authSettingV2Configuration` | object |  | The auth settings V2 configuration. |
+| `configName` | string |  | The configuration object name. |
+| `configValue` | object |  | The configuration object values. |
 | `kind` | string | `[app, functionapp, functionapp,linux, functionapp,workflowapp, functionapp,workflowapp,linux]` | Type of slot to deploy. |
 | `slotName` | string |  | Slot name to be configured. |
 

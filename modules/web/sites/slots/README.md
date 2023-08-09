@@ -46,12 +46,12 @@ This module deploys a Web or Function App Deployment Slot.
 | `appInsightResourceId` | string | `''` |  | Resource ID of the app insight to leverage for this resource. |
 | `appServiceEnvironmentResourceId` | string | `''` |  | The resource ID of the app service environment to use for this resource. |
 | `appSettingsKeyValuePairs` | object | `{object}` |  | The app settings-value pairs except for AzureWebJobsStorage, AzureWebJobsDashboard, APPINSIGHTS_INSTRUMENTATIONKEY and APPLICATIONINSIGHTS_CONNECTION_STRING. |
-| `authSettingV2Configuration` | object | `{object}` |  | The auth settings V2 configuration. |
 | `clientAffinityEnabled` | bool | `True` |  | If client affinity is enabled. |
 | `clientCertEnabled` | bool | `False` |  | To enable client certificate authentication (TLS mutual authentication). |
 | `clientCertExclusionPaths` | string | `''` |  | Client certificate authentication comma-separated exclusion paths. |
 | `clientCertMode` | string | `'Optional'` | `[Optional, OptionalInteractiveUser, Required]` | This composes with ClientCertEnabled setting.</p>- ClientCertEnabled: false means ClientCert is ignored.</p>- ClientCertEnabled: true and ClientCertMode: Required means ClientCert is required.</p>- ClientCertEnabled: true and ClientCertMode: Optional means ClientCert is optional or accepted. |
 | `cloningInfo` | object | `{object}` |  | If specified during app creation, the app is cloned from a source app. |
+| `config` | _[config](config/README.md)_ array | `[]` |  | The sites/config settings. |
 | `containerSize` | int | `-1` |  | Size of the function container. |
 | `customDomainVerificationId` | string | `''` |  | Unique identifier that verifies the custom domains assigned to the app. Customer will add this ID to a txt record for verification. |
 | `dailyMemoryTimeQuota` | int | `-1` |  | Maximum allowed daily memory-time quota (applicable on dynamic apps only). |
