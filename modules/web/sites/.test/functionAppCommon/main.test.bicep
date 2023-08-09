@@ -78,68 +78,96 @@ module testDeployment '../../main.bicep' = {
       FUNCTIONS_EXTENSION_VERSION: '~4'
       FUNCTIONS_WORKER_RUNTIME: 'dotnet'
     }
-    authSettingV2Configuration: {
-      globalValidation: {
-        requireAuthentication: true
-        unauthenticatedClientAction: 'Return401'
-      }
-      httpSettings: {
-        forwardProxy: {
-          convention: 'NoProxy'
-        }
-        requireHttps: true
-        routes: {
-          apiPrefix: '/.auth'
-        }
-      }
-      identityProviders: {
-        azureActiveDirectory: {
-          enabled: true
-          login: {
-            disableWWWAuthenticate: false
-          }
-          registration: {
-            clientId: '55ffb134-9f3f-4169-9563-87f8deaaf751'
-            clientSecretSettingName: 'EASYAUTH_SECRET'
-            openIdIssuer: 'https://sts.windows.net/${tenant().tenantId}/v2.0/'
-          }
-          validation: {
-            allowedAudiences: [
-              'api://55ffb134-9f3f-4169-9563-87f8deaaf751'
-            ]
-            defaultAuthorizationPolicy: {
-              allowedPrincipals: {}
+    config: [
+      {
+        name: 'web'
+        value: {
+          ipSecurityRestrictions: [
+            {
+              vnetSubnetResourceId: nestedDependencies.outputs.subnetResourceId
+              action: 'Allow'
+              tag: 'Default'
+              priority: 200
+              name: 'Allow from VNET'
+              description: 'Allow from vnet'
             }
-            jwtClaimChecks: {}
+            {
+              ipAddress: 'Any'
+              action: 'Deny'
+              priority: 2147483647
+              name: 'Deny all'
+              description: 'Deny all access'
+            }
+          ]
+          ipSecurityRestrictionsDefaultAction: 'Deny'
+        }
+      }
+      {
+        name: 'authsettingsV2'
+        value: {
+          globalValidation: {
+            requireAuthentication: true
+            unauthenticatedClientAction: 'Return401'
+          }
+          httpSettings: {
+            forwardProxy: {
+              convention: 'NoProxy'
+            }
+            requireHttps: true
+            routes: {
+              apiPrefix: '/.auth'
+            }
+          }
+          identityProviders: {
+            azureActiveDirectory: {
+              enabled: true
+              login: {
+                disableWWWAuthenticate: false
+              }
+              registration: {
+                clientId: 'd874dd2f-2032-4db1-a053-f0ec243685aa'
+                clientSecretSettingName: 'EASYAUTH_SECRET'
+                openIdIssuer: 'https://sts.windows.net/${tenant().tenantId}/v2.0/'
+              }
+              validation: {
+                allowedAudiences: [
+                  'api://d874dd2f-2032-4db1-a053-f0ec243685aa'
+                ]
+                defaultAuthorizationPolicy: {
+                  allowedPrincipals: {}
+                }
+                jwtClaimChecks: {}
+              }
+            }
+          }
+          login: {
+            allowedExternalRedirectUrls: [
+              'string'
+            ]
+            cookieExpiration: {
+              convention: 'FixedTime'
+              timeToExpiration: '08:00:00'
+            }
+            nonce: {
+              nonceExpirationInterval: '00:05:00'
+              validateNonce: true
+            }
+            preserveUrlFragmentsForLogins: false
+            routes: {}
+            tokenStore: {
+              azureBlobStorage: {}
+              enabled: true
+              fileSystem: {}
+              tokenRefreshExtensionHours: 72
+            }
+          }
+          platform: {
+            enabled: true
+            runtimeVersion: '~1'
           }
         }
       }
-      login: {
-        allowedExternalRedirectUrls: [
-          'string'
-        ]
-        cookieExpiration: {
-          convention: 'FixedTime'
-          timeToExpiration: '08:00:00'
-        }
-        nonce: {
-          nonceExpirationInterval: '00:05:00'
-          validateNonce: true
-        }
-        preserveUrlFragmentsForLogins: false
-        routes: {}
-        tokenStore: {
-          azureBlobStorage: {}
-          enabled: true
-          fileSystem: {}
-          tokenRefreshExtensionHours: 72
-        }
-      }
-      platform: {
-        enabled: true
-        runtimeVersion: '~1'
-      }
-    }
+    ]
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
     diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId

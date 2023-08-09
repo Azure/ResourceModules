@@ -21,8 +21,11 @@ param slotName string
 ])
 param kind string
 
-@description('Required. The auth settings V2 configuration.')
-param authSettingV2Configuration object
+@description('Required. The configuration object values.')
+param configValue object
+
+@description('Required. The configuration object name.')
+param configName string
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
@@ -54,10 +57,10 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
 }
 
 resource slotSettings 'Microsoft.Web/sites/slots/config@2022-03-01' = {
-  name: 'authsettingsV2'
+  name: configName
   kind: kind
   parent: app::slot
-  properties: authSettingV2Configuration
+  properties: configValue
 }
 
 // =========== //
