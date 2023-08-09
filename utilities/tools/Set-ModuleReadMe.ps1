@@ -1004,7 +1004,7 @@ function Set-DeploymentExamplesSection {
 
             $rawBicepExampleString = ($rawBicepExample | Out-String)
             $rawBicepExampleString = $rawBicepExampleString -replace '\$\{serviceShort\}', $serviceShort
-            $rawBicepExampleString = $rawBicepExampleString -replace '\$\{namePrefix\}', '<<namePrefix>>' # Replacing with empty to not expose prefix and avoid potential deployment conflicts
+            $rawBicepExampleString = $rawBicepExampleString -replace '\$\{namePrefix\}[-|\.|_]?', '' # Replacing with empty to not expose prefix and avoid potential deployment conflicts
             $rawBicepExampleString = $rawBicepExampleString -replace '(?m):\s*location\s*$', ': ''<location>'''
 
             # [3/6] Format header, remove scope property & any empty line
@@ -1138,7 +1138,7 @@ function Set-DeploymentExamplesSection {
                         # e.g. "[format('{0}', reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, parameters('resourceGroupName')), 'Microsoft.Resources/deployments', format('{0}-paramNested', uniqueString(deployment().name, parameters('location')))), '2020-10-01').outputs.managedIdentityResourceId.value)]": {}
                         $expectedValue = $matches[1]
                     } elseif ($row -match '\[.*reference\(extensionResourceId.+\.([a-zA-Z]+).*\].*"') {
-                        # e.g. "[reference(extensionResourceId(managementGroup().id, 'Microsoft.Authorization/policySetDefinitions', format('dep-<<namePrefix>>-polSet-{0}', parameters('serviceShort'))), '2021-06-01').policyDefinitions[0].policyDefinitionReferenceId]"
+                        # e.g. "[reference(extensionResourceId(managementGroup().id, 'Microsoft.Authorization/policySetDefinitions', format('dep-[[namePrefix]]-polSet-{0}', parameters('serviceShort'))), '2021-06-01').policyDefinitions[0].policyDefinitionReferenceId]"
                         $expectedValue = $matches[1]
                     } else {
                         throw "Unhandled case [$row] in file [$testFilePath]"
@@ -1155,7 +1155,7 @@ function Set-DeploymentExamplesSection {
                     if ($jsonParameterContentArray[$index] -match '(\s*"value"): "\[.+\]"') {
                         # e.g.
                         # "policyAssignmentId": {
-                        #   "value": "[extensionResourceId(managementGroup().id, 'Microsoft.Authorization/policyAssignments', format('dep-<<namePrefix>>-psa-{0}', parameters('serviceShort')))]"
+                        #   "value": "[extensionResourceId(managementGroup().id, 'Microsoft.Authorization/policyAssignments', format('dep-[[namePrefix]]-psa-{0}', parameters('serviceShort')))]"
                         $prefix = $matches[1]
 
                         $headerIndex = $index
@@ -1173,7 +1173,7 @@ function Set-DeploymentExamplesSection {
                         # e.g.
                         # "policyDefinitionReferenceIds": {
                         #  "value": [
-                        #     "[reference(subscriptionResourceId('Microsoft.Authorization/policySetDefinitions', format('dep-<<namePrefix>>-polSet-{0}', parameters('serviceShort'))), '2021-06-01').policyDefinitions[0].policyDefinitionReferenceId]"
+                        #     "[reference(subscriptionResourceId('Microsoft.Authorization/policySetDefinitions', format('dep-[[namePrefix]]-polSet-{0}', parameters('serviceShort'))), '2021-06-01').policyDefinitions[0].policyDefinitionReferenceId]"
                         $prefix = $matches[1]
 
                         $headerIndex = $index
@@ -1387,7 +1387,7 @@ Initialize the readme file
 
 .DESCRIPTION
 If no readme file exists, the initial content is generated (e.g., the skeleton of the section headers).
-If a readme file does exist, its title and description are updated with whatever is documented in the metadata.json file.
+If a readme file does exist, its title and description are updated with whatever is documented as metadata in the template file.
 
 .PARAMETER ReadMeFilePath
 Required. The path to the readme file to initialize.
@@ -1417,24 +1417,11 @@ function Initialize-ReadMe {
         [hashtable] $TemplateFileContent
     )
 
-    $metadataFilePath = Join-Path (Split-Path $ReadMeFilePath -Parent) 'metadata.json'
-    $metadataFileContent = ConvertFrom-Json (Get-Content -Path $metadataFilePath -Raw)
-    $moduleName = $metadataFileContent.name
-    $moduleDescription = $metadataFileContent.summary
+    . (Join-Path $PSScriptRoot 'helper' 'ConvertTo-ModuleResourceType.ps1')
 
-    $splitHyphens = $FullModuleIdentifier.split('-')
-    $splitHyphens = $splitHyphens | ForEach-Object { $_.substring(0, 1).toupper() + $_.substring(1) }
-    $splitHyphens = $splitHyphens -join ''
-    $fullResourceType = 'Microsoft.{0}' -f $splitHyphens.Replace('-', '')
-
-    # Resolve resource type as per used API name to use matching casing
-    $relevantResourceTypeObjects = (Get-NestedResourceList $TemplateFileContent).type | Select-Object -Unique
-    $formattedResourceType = $relevantResourceTypeObjects | Where-Object { $_ -eq $fullResourceType }
-
-    if (-not $formattedResourceType) {
-        Write-Warning "Did not find module [$FullModuleIdentifier] formatted as [$fullResourceType] in the module template's resource types."
-        $formattedResourceType = $fullResourceType
-    }
+    $moduleName = $TemplateFileContent.metadata.name
+    $moduleDescription = $TemplateFileContent.metadata.description
+    $formattedResourceType = ConvertTo-ModuleResourceType -ResourceIdentifier $FullModuleIdentifier
 
     if (-not (Test-Path $ReadMeFilePath) -or ([String]::IsNullOrEmpty((Get-Content $ReadMeFilePath -Raw)))) {
 
@@ -1457,7 +1444,7 @@ function Initialize-ReadMe {
         # We want to inject the description right below the header and before the [Resource Types] section
 
         # Find start- and end-index of description section
-        $startIndex = 1 # One ofter the readme header
+        $startIndex = 1 # One after the readme header
         $endIndex = $startIndex
 
         while (-not ($endIndex -ge $readMeFileContent.Count - 1) -and -not $readMeFileContent[$endIndex].StartsWith('#')) {

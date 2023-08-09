@@ -76,7 +76,7 @@ function Convert-TokenInFile {
             if ($TokenNameValueObject[$_] -is [System.Security.SecureString]) {
                 $TokenNameValueObject[$_] = $TokenNameValueObject[$_] | ConvertFrom-SecureString -AsPlainText
             }
-            $File = $File -replace $_, $TokenNameValueObject[$_]
+            $File = $File -replace [Regex]::Escape($_), $TokenNameValueObject[$_]
         }
         # Set Content
         if ($OutputDirectory -and (Test-Path -Path $OutputDirectory -PathType Container)) {

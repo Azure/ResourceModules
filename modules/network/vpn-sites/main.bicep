@@ -1,3 +1,7 @@
+metadata name = 'VPN Sites'
+metadata description = 'This module deploys a VPN Site.'
+metadata owner = 'Azure/module-maintainers'
+
 @description('Required. Name of the VPN Site.')
 param name string
 

@@ -5,8 +5,11 @@
     "_generator": {
       "name": "bicep",
       "version": "0.18.4.5664",
-      "templateHash": "1864582065915973434"
-    }
+      "templateHash": "11902600111982409364"
+    },
+    "name": "Storage Accounts",
+    "description": "This module deploys a Storage Account.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
@@ -761,8 +764,11 @@
             "_generator": {
               "name": "bicep",
               "version": "0.18.4.5664",
-              "templateHash": "12991773916541265724"
-            }
+              "templateHash": "8880916552713339309"
+            },
+            "name": "Private Endpoints",
+            "description": "This module deploys a Private Endpoint.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "name": {
@@ -958,8 +964,11 @@
                     "_generator": {
                       "name": "bicep",
                       "version": "0.18.4.5664",
-                      "templateHash": "3520683536217550590"
-                    }
+                      "templateHash": "13364313939069632186"
+                    },
+                    "name": "Private Endpoint Private DNS Zone Groups",
+                    "description": "This module deploys a Private Endpoint Private DNS Zone Group.",
+                    "owner": "Azure/module-maintainers"
                   },
                   "parameters": {
                     "privateEndpointName": {
@@ -1300,8 +1309,11 @@
             "_generator": {
               "name": "bicep",
               "version": "0.18.4.5664",
-              "templateHash": "5299530817966477918"
-            }
+              "templateHash": "8715190675839758054"
+            },
+            "name": "Storage Account Management Policies",
+            "description": "This module deploys a Storage Account Management Policy.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "storageAccountName": {
@@ -1424,8 +1436,11 @@
             "_generator": {
               "name": "bicep",
               "version": "0.18.4.5664",
-              "templateHash": "4867276107242068354"
-            }
+              "templateHash": "16637831711101937862"
+            },
+            "name": "Storage Account Local Users",
+            "description": "This module deploys a Storage Account Local User, which is used for SFTP authentication.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "storageAccountName": {
@@ -1569,7 +1584,8 @@
           "containerDeleteRetentionPolicyAllowPermanentDelete": "[if(contains(parameters('blobServices'), 'containerDeleteRetentionPolicyAllowPermanentDelete'), createObject('value', parameters('blobServices').containerDeleteRetentionPolicyAllowPermanentDelete), createObject('value', false()))]",
           "corsRules": "[if(contains(parameters('blobServices'), 'corsRules'), createObject('value', parameters('blobServices').corsRules), createObject('value', createArray()))]",
           "defaultServiceVersion": "[if(contains(parameters('blobServices'), 'defaultServiceVersion'), createObject('value', parameters('blobServices').defaultServiceVersion), createObject('value', ''))]",
-          "deleteRetentionPolicyEnabled": "[if(contains(parameters('blobServices'), 'deleteRetentionPolicy'), createObject('value', parameters('blobServices').deleteRetentionPolicy), createObject('value', false()))]",
+          "deleteRetentionPolicyAllowPermanentDelete": "[if(contains(parameters('blobServices'), 'deleteRetentionPolicyAllowPermanentDelete'), createObject('value', parameters('blobServices').deleteRetentionPolicyAllowPermanentDelete), createObject('value', false()))]",
+          "deleteRetentionPolicyEnabled": "[if(contains(parameters('blobServices'), 'deleteRetentionPolicyEnabled'), createObject('value', parameters('blobServices').deleteRetentionPolicyEnabled), createObject('value', false()))]",
           "deleteRetentionPolicyDays": "[if(contains(parameters('blobServices'), 'deleteRetentionPolicyDays'), createObject('value', parameters('blobServices').deleteRetentionPolicyDays), createObject('value', 7))]",
           "isVersioningEnabled": "[if(contains(parameters('blobServices'), 'isVersioningEnabled'), createObject('value', parameters('blobServices').isVersioningEnabled), createObject('value', false()))]",
           "lastAccessTimeTrackingPolicyEnable": "[if(contains(parameters('blobServices'), 'lastAccessTimeTrackingPolicyEnable'), createObject('value', parameters('blobServices').lastAccessTimeTrackingPolicyEnable), createObject('value', false()))]",
@@ -1593,8 +1609,11 @@
             "_generator": {
               "name": "bicep",
               "version": "0.18.4.5664",
-              "templateHash": "3111235341975982054"
-            }
+              "templateHash": "7069092381600637415"
+            },
+            "name": "Storage Account blob Services",
+            "description": "This module deploys a Storage Account Blob Service.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "storageAccountName": {
@@ -1647,7 +1666,7 @@
               "type": "bool",
               "defaultValue": false,
               "metadata": {
-                "description": "Optional. This property when set to true allows deletion of the soft deleted blob versions and snapshots. This property cannot be used blob restore policy. This property only applies to blob service and does not apply to containers or file share."
+                "description": "Optional. This property when set to true allows deletion of the soft deleted blob versions and snapshots. This property cannot be used with blob restore policy. This property only applies to blob service and does not apply to containers or file share."
               }
             },
             "corsRules": {
@@ -1679,6 +1698,13 @@
               },
               "maxValue": 365,
               "minValue": 1
+            },
+            "deleteRetentionPolicyAllowPermanentDelete": {
+              "type": "bool",
+              "defaultValue": false,
+              "metadata": {
+                "description": "Optional. This property when set to true allows deletion of the soft deleted blob versions and snapshots. This property cannot be used with blob restore policy. This property only applies to blob service and does not apply to containers or file share."
+              }
             },
             "isVersioningEnabled": {
               "type": "bool",
@@ -1766,13 +1792,14 @@
                 "allLogs"
               ],
               "allowedValues": [
+                "",
                 "allLogs",
                 "StorageRead",
                 "StorageWrite",
                 "StorageDelete"
               ],
               "metadata": {
-                "description": "Optional. The name of logs that will be streamed. \"allLogs\" includes all possible logs for the resource."
+                "description": "Optional. The name of logs that will be streamed. \"allLogs\" includes all possible logs for the resource. Set to '' to disable log collection."
               }
             },
             "diagnosticMetricsToEnable": {
@@ -1799,9 +1826,9 @@
             "copy": [
               {
                 "name": "diagnosticsLogsSpecified",
-                "count": "[length(filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', not(equals(lambdaVariables('item'), 'allLogs')))))]",
+                "count": "[length(filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', and(not(equals(lambdaVariables('item'), 'allLogs')), not(equals(lambdaVariables('item'), ''))))))]",
                 "input": {
-                  "category": "[filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', not(equals(lambdaVariables('item'), 'allLogs'))))[copyIndex('diagnosticsLogsSpecified')]]",
+                  "category": "[filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', and(not(equals(lambdaVariables('item'), 'allLogs')), not(equals(lambdaVariables('item'), '')))))[copyIndex('diagnosticsLogsSpecified')]]",
                   "enabled": true,
                   "retentionPolicy": {
                     "enabled": true,
@@ -1824,7 +1851,7 @@
               }
             ],
             "name": "default",
-            "diagnosticsLogs": "[if(contains(parameters('diagnosticLogCategoriesToEnable'), 'allLogs'), createArray(createObject('categoryGroup', 'allLogs', 'enabled', true(), 'retentionPolicy', createObject('enabled', true(), 'days', parameters('diagnosticLogsRetentionInDays')))), variables('diagnosticsLogsSpecified'))]",
+            "diagnosticsLogs": "[if(contains(parameters('diagnosticLogCategoriesToEnable'), 'allLogs'), createArray(createObject('categoryGroup', 'allLogs', 'enabled', true(), 'retentionPolicy', createObject('enabled', true(), 'days', parameters('diagnosticLogsRetentionInDays')))), if(contains(parameters('diagnosticLogCategoriesToEnable'), ''), createArray(), variables('diagnosticsLogsSpecified')))]",
             "enableReferencedModulesTelemetry": false
           },
           "resources": [
@@ -1863,7 +1890,8 @@
                 "defaultServiceVersion": "[if(not(empty(parameters('defaultServiceVersion'))), parameters('defaultServiceVersion'), null())]",
                 "deleteRetentionPolicy": {
                   "enabled": "[parameters('deleteRetentionPolicyEnabled')]",
-                  "days": "[if(equals(parameters('deleteRetentionPolicyEnabled'), true()), parameters('deleteRetentionPolicyDays'), null())]"
+                  "days": "[if(equals(parameters('deleteRetentionPolicyEnabled'), true()), parameters('deleteRetentionPolicyDays'), null())]",
+                  "allowPermanentDelete": "[if(and(equals(parameters('deleteRetentionPolicyEnabled'), true()), equals(parameters('deleteRetentionPolicyAllowPermanentDelete'), true())), parameters('deleteRetentionPolicyAllowPermanentDelete'), null())]"
                 },
                 "isVersioningEnabled": "[parameters('isVersioningEnabled')]",
                 "lastAccessTimeTrackingPolicy": {
@@ -1935,8 +1963,11 @@
                     "_generator": {
                       "name": "bicep",
                       "version": "0.18.4.5664",
-                      "templateHash": "13432238059824416767"
-                    }
+                      "templateHash": "13118549664756004817"
+                    },
+                    "name": "Storage Account Blob Containers",
+                    "description": "This module deploys a Storage Account Blob Container.",
+                    "owner": "Azure/module-maintainers"
                   },
                   "parameters": {
                     "storageAccountName": {
@@ -2098,8 +2129,11 @@
                             "_generator": {
                               "name": "bicep",
                               "version": "0.18.4.5664",
-                              "templateHash": "9557485955064387621"
-                            }
+                              "templateHash": "10095538202627004276"
+                            },
+                            "name": "Storage Account Blob Container Immutability Policies",
+                            "description": "This module deploys a Storage Account Blob Container Immutability Policy.",
+                            "owner": "Azure/module-maintainers"
                           },
                           "parameters": {
                             "storageAccountName": {
@@ -2472,8 +2506,11 @@
             "_generator": {
               "name": "bicep",
               "version": "0.18.4.5664",
-              "templateHash": "11613596621855409908"
-            }
+              "templateHash": "13157392483571406601"
+            },
+            "name": "Storage Account File Share Services",
+            "description": "This module deploys a Storage Account File Share Service.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "storageAccountName": {
@@ -2564,13 +2601,14 @@
                 "allLogs"
               ],
               "allowedValues": [
+                "",
                 "allLogs",
                 "StorageRead",
                 "StorageWrite",
                 "StorageDelete"
               ],
               "metadata": {
-                "description": "Optional. The name of logs that will be streamed. \"allLogs\" includes all possible logs for the resource."
+                "description": "Optional. The name of logs that will be streamed. \"allLogs\" includes all possible logs for the resource. Set to '' to disable log collection."
               }
             },
             "diagnosticMetricsToEnable": {
@@ -2597,9 +2635,9 @@
             "copy": [
               {
                 "name": "diagnosticsLogsSpecified",
-                "count": "[length(filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', not(equals(lambdaVariables('item'), 'allLogs')))))]",
+                "count": "[length(filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', and(not(equals(lambdaVariables('item'), 'allLogs')), not(equals(lambdaVariables('item'), ''))))))]",
                 "input": {
-                  "category": "[filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', not(equals(lambdaVariables('item'), 'allLogs'))))[copyIndex('diagnosticsLogsSpecified')]]",
+                  "category": "[filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', and(not(equals(lambdaVariables('item'), 'allLogs')), not(equals(lambdaVariables('item'), '')))))[copyIndex('diagnosticsLogsSpecified')]]",
                   "enabled": true,
                   "retentionPolicy": {
                     "enabled": true,
@@ -2621,7 +2659,7 @@
                 }
               }
             ],
-            "diagnosticsLogs": "[if(contains(parameters('diagnosticLogCategoriesToEnable'), 'allLogs'), createArray(createObject('categoryGroup', 'allLogs', 'enabled', true(), 'retentionPolicy', createObject('enabled', true(), 'days', parameters('diagnosticLogsRetentionInDays')))), variables('diagnosticsLogsSpecified'))]",
+            "diagnosticsLogs": "[if(contains(parameters('diagnosticLogCategoriesToEnable'), 'allLogs'), createArray(createObject('categoryGroup', 'allLogs', 'enabled', true(), 'retentionPolicy', createObject('enabled', true(), 'days', parameters('diagnosticLogsRetentionInDays')))), if(contains(parameters('diagnosticLogCategoriesToEnable'), ''), createArray(), variables('diagnosticsLogsSpecified')))]",
             "enableReferencedModulesTelemetry": false
           },
           "resources": [
@@ -2705,8 +2743,11 @@
                     "_generator": {
                       "name": "bicep",
                       "version": "0.18.4.5664",
-                      "templateHash": "5466678674425977487"
-                    }
+                      "templateHash": "6020523361893327115"
+                    },
+                    "name": "Storage Account File Shares",
+                    "description": "This module deploys a Storage Account File Share.",
+                    "owner": "Azure/module-maintainers"
                   },
                   "parameters": {
                     "storageAccountName": {
@@ -3087,8 +3128,11 @@
             "_generator": {
               "name": "bicep",
               "version": "0.18.4.5664",
-              "templateHash": "16446761132064405013"
-            }
+              "templateHash": "16706900357087856920"
+            },
+            "name": "Storage Account Queue Services",
+            "description": "This module deploys a Storage Account Queue Service.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "storageAccountName": {
@@ -3155,13 +3199,14 @@
                 "allLogs"
               ],
               "allowedValues": [
+                "",
                 "allLogs",
                 "StorageRead",
                 "StorageWrite",
                 "StorageDelete"
               ],
               "metadata": {
-                "description": "Optional. The name of logs that will be streamed. \"allLogs\" includes all possible logs for the resource."
+                "description": "Optional. The name of logs that will be streamed. \"allLogs\" includes all possible logs for the resource. Set to '' to disable log collection."
               }
             },
             "diagnosticMetricsToEnable": {
@@ -3188,9 +3233,9 @@
             "copy": [
               {
                 "name": "diagnosticsLogsSpecified",
-                "count": "[length(filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', not(equals(lambdaVariables('item'), 'allLogs')))))]",
+                "count": "[length(filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', and(not(equals(lambdaVariables('item'), 'allLogs')), not(equals(lambdaVariables('item'), ''))))))]",
                 "input": {
-                  "category": "[filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', not(equals(lambdaVariables('item'), 'allLogs'))))[copyIndex('diagnosticsLogsSpecified')]]",
+                  "category": "[filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', and(not(equals(lambdaVariables('item'), 'allLogs')), not(equals(lambdaVariables('item'), '')))))[copyIndex('diagnosticsLogsSpecified')]]",
                   "enabled": true,
                   "retentionPolicy": {
                     "enabled": true,
@@ -3213,7 +3258,7 @@
               }
             ],
             "name": "default",
-            "diagnosticsLogs": "[if(contains(parameters('diagnosticLogCategoriesToEnable'), 'allLogs'), createArray(createObject('categoryGroup', 'allLogs', 'enabled', true(), 'retentionPolicy', createObject('enabled', true(), 'days', parameters('diagnosticLogsRetentionInDays')))), variables('diagnosticsLogsSpecified'))]",
+            "diagnosticsLogs": "[if(contains(parameters('diagnosticLogCategoriesToEnable'), 'allLogs'), createArray(createObject('categoryGroup', 'allLogs', 'enabled', true(), 'retentionPolicy', createObject('enabled', true(), 'days', parameters('diagnosticLogsRetentionInDays')))), if(contains(parameters('diagnosticLogCategoriesToEnable'), ''), createArray(), variables('diagnosticsLogsSpecified')))]",
             "enableReferencedModulesTelemetry": false
           },
           "resources": [
@@ -3288,8 +3333,11 @@
                     "_generator": {
                       "name": "bicep",
                       "version": "0.18.4.5664",
-                      "templateHash": "9116292018335087361"
-                    }
+                      "templateHash": "15787829564985484650"
+                    },
+                    "name": "Storage Account Queues",
+                    "description": "This module deploys a Storage Account Queue.",
+                    "owner": "Azure/module-maintainers"
                   },
                   "parameters": {
                     "storageAccountName": {
@@ -3621,8 +3669,11 @@
             "_generator": {
               "name": "bicep",
               "version": "0.18.4.5664",
-              "templateHash": "15589712361439512608"
-            }
+              "templateHash": "5583959058679098419"
+            },
+            "name": "Storage Account Table Services",
+            "description": "This module deploys a Storage Account Table Service.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "storageAccountName": {
@@ -3689,13 +3740,14 @@
                 "allLogs"
               ],
               "allowedValues": [
+                "",
                 "allLogs",
                 "StorageRead",
                 "StorageWrite",
                 "StorageDelete"
               ],
               "metadata": {
-                "description": "Optional. The name of logs that will be streamed. \"allLogs\" includes all possible logs for the resource."
+                "description": "Optional. The name of logs that will be streamed. \"allLogs\" includes all possible logs for the resource. Set to '' to disable log collection."
               }
             },
             "diagnosticMetricsToEnable": {
@@ -3722,9 +3774,9 @@
             "copy": [
               {
                 "name": "diagnosticsLogsSpecified",
-                "count": "[length(filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', not(equals(lambdaVariables('item'), 'allLogs')))))]",
+                "count": "[length(filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', and(not(equals(lambdaVariables('item'), 'allLogs')), not(equals(lambdaVariables('item'), ''))))))]",
                 "input": {
-                  "category": "[filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', not(equals(lambdaVariables('item'), 'allLogs'))))[copyIndex('diagnosticsLogsSpecified')]]",
+                  "category": "[filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', and(not(equals(lambdaVariables('item'), 'allLogs')), not(equals(lambdaVariables('item'), '')))))[copyIndex('diagnosticsLogsSpecified')]]",
                   "enabled": true,
                   "retentionPolicy": {
                     "enabled": true,
@@ -3747,7 +3799,7 @@
               }
             ],
             "name": "default",
-            "diagnosticsLogs": "[if(contains(parameters('diagnosticLogCategoriesToEnable'), 'allLogs'), createArray(createObject('categoryGroup', 'allLogs', 'enabled', true(), 'retentionPolicy', createObject('enabled', true(), 'days', parameters('diagnosticLogsRetentionInDays')))), variables('diagnosticsLogsSpecified'))]",
+            "diagnosticsLogs": "[if(contains(parameters('diagnosticLogCategoriesToEnable'), 'allLogs'), createArray(createObject('categoryGroup', 'allLogs', 'enabled', true(), 'retentionPolicy', createObject('enabled', true(), 'days', parameters('diagnosticLogsRetentionInDays')))), if(contains(parameters('diagnosticLogCategoriesToEnable'), ''), createArray(), variables('diagnosticsLogsSpecified')))]",
             "enableReferencedModulesTelemetry": false
           },
           "resources": [
@@ -3820,8 +3872,11 @@
                     "_generator": {
                       "name": "bicep",
                       "version": "0.18.4.5664",
-                      "templateHash": "18313788100863691650"
-                    }
+                      "templateHash": "10513189061355437921"
+                    },
+                    "name": "Storage Account Table",
+                    "description": "This module deploys a Storage Account Table.",
+                    "owner": "Azure/module-maintainers"
                   },
                   "parameters": {
                     "storageAccountName": {

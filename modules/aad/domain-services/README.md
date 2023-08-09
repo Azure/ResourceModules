@@ -42,7 +42,7 @@ This module deploys an Azure Active Directory Domain Services (AADDS).
 | `additionalRecipients` | array | `[]` |  | The email recipient value to receive alerts. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
-| `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `[AccountLogon, AccountManagement, allLogs, DetailTracking, DirectoryServiceAccess, LogonLogoff, ObjectAccess, PolicyChange, PrivilegeUse, SystemSecurity]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. |
+| `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `['', AccountLogon, AccountManagement, allLogs, DetailTracking, DirectoryServiceAccess, LogonLogoff, ObjectAccess, PolicyChange, PrivilegeUse, SystemSecurity]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
@@ -184,10 +184,10 @@ tags: {
 Follow the below PowerShell commands to get base64 encoded string of a self-signed certificate (with a `pfxCertificatePassword`)
 
 ```PowerShell
-$pfxCertificatePassword = ConvertTo-SecureString '<<YourPfxCertificatePassword>>' -AsPlainText -Force
+$pfxCertificatePassword = ConvertTo-SecureString '[[YourPfxCertificatePassword]]' -AsPlainText -Force
 $certInputObject = @{
-    Subject           = 'CN=*.<<YourDomainName>>'
-    DnsName           = '*.<<YourDomainName>>'
+    Subject           = 'CN=*.[[YourDomainName]]'
+    DnsName           = '*.[[YourDomainName]]'
     CertStoreLocation = 'cert:\LocalMachine\My'
     KeyExportPolicy   = 'Exportable'
     Provider          = 'Microsoft Enhanced RSA and AES Cryptographic Provider'
@@ -231,10 +231,10 @@ module domainServices './aad/domain-services/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-aaddscom'
   params: {
     // Required parameters
-    domainName: '<<namePrefix>>.onmicrosoft.com'
+    domainName: 'onmicrosoft.com'
     // Non-required parameters
     additionalRecipients: [
-      '<<namePrefix>>@noreply.github.com'
+      '@noreply.github.com'
     ]
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
@@ -243,7 +243,7 @@ module domainServices './aad/domain-services/main.bicep' = {
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
-    name: '<<namePrefix>>aaddscom001'
+    name: 'aaddscom001'
     pfxCertificate: '<pfxCertificate>'
     pfxCertificatePassword: '<pfxCertificatePassword>'
     replicaSets: [
@@ -275,12 +275,12 @@ module domainServices './aad/domain-services/main.bicep' = {
   "parameters": {
     // Required parameters
     "domainName": {
-      "value": "<<namePrefix>>.onmicrosoft.com"
+      "value": "onmicrosoft.com"
     },
     // Non-required parameters
     "additionalRecipients": {
       "value": [
-        "<<namePrefix>>@noreply.github.com"
+        "@noreply.github.com"
       ]
     },
     "diagnosticEventHubAuthorizationRuleId": {
@@ -305,7 +305,7 @@ module domainServices './aad/domain-services/main.bicep' = {
       "value": "CanNotDelete"
     },
     "name": {
-      "value": "<<namePrefix>>aaddscom001"
+      "value": "aaddscom001"
     },
     "pfxCertificate": {
       "value": "<pfxCertificate>"

@@ -23,7 +23,7 @@ Rename your local repository. Assuming the local repository location is `'D:\Res
 
 You have a public fork of public CARML source repository in your target organization.
 
-1. Keep your fork synced to the fork upstream repository, on the GitHub web UI or through the GitHub CLI or the command-line, as explaind in [Syncing a fork](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/syncing-a-fork) documentation.
+1. Keep your fork synced to the fork upstream repository, on the GitHub web UI or through the GitHub CLI or the command-line, as explained in [Syncing a fork](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/syncing-a-fork) documentation.
 1. Sync your local copy of the fork taking care of eventual customizations you can have in place.
 
 </details>

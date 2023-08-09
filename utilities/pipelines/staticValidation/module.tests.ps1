@@ -94,16 +94,6 @@ Describe 'File/folder tests' -Tag 'Modules' {
             $pathExisting = Test-Path (Join-Path -Path $moduleFolderPath 'version.json')
             $pathExisting | Should -Be $true
         }
-
-        It '[<moduleFolderName>] Module should contain a [` metadata.json `] file.' -TestCases $moduleFolderTestCases {
-
-            param (
-                [string] $moduleFolderPath
-            )
-
-            $pathExisting = Test-Path (Join-Path -Path $moduleFolderPath 'metadata.json')
-            $pathExisting | Should -Be $true
-        }
     }
 
     Context '.test folder' {
@@ -181,7 +171,7 @@ Describe 'Pipeline tests' -Tag 'Pipeline' {
             )
 
             $workflowsFolderName = Join-Path $repoRootPath '.github' 'workflows'
-            $workflowFileName = 'ms.{0}.yml' -f $moduleFolderName.Replace('\', '/').Replace('/', '.').Replace('-', '').ToLower()
+            $workflowFileName = Get-PipelineFileName -ResourceIdentifier $moduleFolderName
             $workflowPath = Join-Path $workflowsFolderName $workflowFileName
             Test-Path $workflowPath | Should -Be $true -Because "path [$workflowPath] should exist."
         }
@@ -201,7 +191,7 @@ Describe 'Pipeline tests' -Tag 'Pipeline' {
             }
 
             $workflowsFolderName = Join-Path $repoRootPath '.github' 'workflows'
-            $workflowFileName = 'ms.{0}.yml' -f $moduleFolderName.Replace('\', '/').Replace('/', '.').Replace('-', '').ToLower()
+            $workflowFileName = Get-PipelineFileName -ResourceIdentifier $moduleFolderName
             $workflowFilePath = Join-Path $workflowsFolderName $workflowFileName
             $workflowContent = Get-Content -Path $workflowFilePath
 
@@ -250,7 +240,8 @@ Describe 'Pipeline tests' -Tag 'Pipeline' {
             )
 
             $pipelinesFolderName = Join-Path $repoRootPath '.azuredevops' 'modulePipelines'
-            $pipelineFileName = 'ms.{0}.yml' -f $moduleFolderName.Replace('\', '/').Replace('/', '.').Replace('-', '').ToLower()
+            $pipelineFileName = Get-PipelineFileName -ResourceIdentifier $moduleFolderName
+            Write-Verbose "pipelineFileName $pipelineFileName" -Verbose
             $pipelinePath = Join-Path $pipelinesFolderName $pipelineFileName
             Test-Path $pipelinePath | Should -Be $true -Because "path [$pipelinePath] should exist."
         }
@@ -270,7 +261,7 @@ Describe 'Pipeline tests' -Tag 'Pipeline' {
             }
 
             $pipelinesFolderName = Join-Path $repoRootPath '.azuredevops' 'modulePipelines'
-            $pipelineFileName = 'ms.{0}.yml' -f $moduleFolderName.Replace('\', '/').Replace('/', '.').Replace('-', '').ToLower()
+            $pipelineFileName = Get-PipelineFileName -ResourceIdentifier $moduleFolderName
             $pipelineFilePath = Join-Path $pipelinesFolderName $pipelineFileName
             $pipelineContent = Get-Content -Path $pipelineFilePath
 
@@ -1236,53 +1227,62 @@ Describe 'Module tests' -Tag 'Module' {
 
         foreach ($moduleFolderPath in $moduleFolderPaths) {
 
-            $metadataFilePath = $resourceTypeIdentifier = $moduleFolderPath.Replace('\', '/').Split('/modules/')[1]
+            $moduleFolderName = $moduleFolderPath.Replace('\', '/').Split('/modules/')[1]
 
-            $metadataFilePath = Join-Path -Path $moduleFolderPath 'metadata.json'
-            $readMeFilePath = Join-Path -Path $moduleFolderPath 'README.md'
+            # For runtime purposes, we cache the compiled template in a hashtable that uses a formatted relative module path as a key
+            $moduleFolderPathKey = $moduleFolderPath.Replace('\', '/').Split('/modules/')[1].Trim('/').Replace('/', '-')
+            if (-not ($convertedTemplates.Keys -contains $moduleFolderPathKey)) {
+                if (Test-Path (Join-Path $moduleFolderPath 'main.bicep')) {
+                    $templateFilePath = Join-Path $moduleFolderPath 'main.bicep'
+                    $templateContent = bicep build $templateFilePath --stdout | ConvertFrom-Json -AsHashtable
+
+                    if (-not $templateContent) {
+                        throw ($bicepTemplateCompilationFailedException -f $templateFilePath)
+                    }
+                } elseIf (Test-Path (Join-Path $moduleFolderPath 'main.json')) {
+                    $templateFilePath = Join-Path $moduleFolderPath 'main.json'
+                    $templateContent = Get-Content $templateFilePath -Raw | ConvertFrom-Json -AsHashtable
+
+                    if (-not $templateContent) {
+                        throw ($jsonTemplateLoadFailedException -f $templateFilePath)
+                    }
+                } else {
+                    throw ($templateNotFoundException -f $moduleFolderPath)
+                }
+                $convertedTemplates[$moduleFolderPathKey] = @{
+                    templateContent = $templateContent
+                }
+            } else {
+                $templateContent = $convertedTemplates[$moduleFolderPathKey].templateContent
+            }
 
             $metadataFileTestCases += @{
-                moduleFolderName       = $resourceTypeIdentifier
-                moduleFolderPath       = $moduleFolderPath
-                metadataFilePath       = $metadataFilePath
-                metadataContent        = (Test-Path -Path $metadataFilePath) ? (ConvertFrom-Json (Get-Content -Path $metadataFilePath -Raw) -AsHashtable) : ''
-                readMeFilePath         = $readMeFilePath
-                readMeContent          = (Test-Path -Path $readMeFilePath) ? (Get-Content -Path $readMeFilePath -Raw) : ''
-                resourceTypeIdentifier = $resourceTypeIdentifier
+                moduleFolderName    = $resourceTypeIdentifier
+                templateFileContent = $templateContent
             }
         }
 
         ###############
         ##   Tests   ##
         ###############
-        It '[<moduleFolderName>] `metadata.json` file should not be empty.' -TestCases $metadataFileTestCases {
+        It '[<moduleFolderName>] template file should have a module name specified.' -TestCases $metadataFileTestCases {
 
             param(
                 [string] $moduleFolderName,
-                [hashtable] $metadataContent
+                [hashtable] $templateFileContent
             )
 
-            $metadataContent | Should -Not -BeNullOrEmpty
+            $templateFileContent.metadata.name | Should -Not -BeNullOrEmpty
         }
 
-        It '[<moduleFolderName>] `metadata.json` file should have a module name specified.' -TestCases $metadataFileTestCases {
+        It '[<moduleFolderName>] template file should have a module description specified.' -TestCases $metadataFileTestCases {
 
             param(
                 [string] $moduleFolderName,
-                [hashtable] $metadataContent
+                [hashtable] $templateFileContent
             )
 
-            $metadataContent.name | Should -Not -BeNullOrEmpty
-        }
-
-        It '[<moduleFolderName>] `metadata.json` file should have a module description / summary specified.' -TestCases $metadataFileTestCases {
-
-            param(
-                [string] $moduleFolderName,
-                [hashtable] $metadataContent
-            )
-
-            $metadataContent.summary | Should -Not -BeNullOrEmpty
+            $templateFileContent.metadata.description | Should -Not -BeNullOrEmpty
         }
     }
 }

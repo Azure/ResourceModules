@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.18.4.5664",
-      "templateHash": "16703336352641395900"
+      "version": "0.19.5.34762",
+      "templateHash": "12215356854067543127"
     }
   },
   "parameters": {
@@ -113,7 +113,7 @@
     {
       "condition": "[parameters('enableDefaultTelemetry')]",
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2021-04-01",
+      "apiVersion": "2022-09-01",
       "name": "[format('pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-{0}', uniqueString(deployment().name, parameters('location')))]",
       "properties": {
         "mode": "Incremental",
@@ -126,7 +126,7 @@
     },
     {
       "type": "Microsoft.Network/networkManagers",
-      "apiVersion": "2022-07-01",
+      "apiVersion": "2023-02-01",
       "name": "[parameters('name')]",
       "location": "[parameters('location')]",
       "tags": "[parameters('tags')]",
@@ -182,8 +182,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.18.4.5664",
-              "templateHash": "7805292700491577010"
+              "version": "0.19.5.34762",
+              "templateHash": "13468442252867472721"
             }
           },
           "parameters": {
@@ -230,7 +230,7 @@
             {
               "condition": "[parameters('enableDefaultTelemetry')]",
               "type": "Microsoft.Resources/deployments",
-              "apiVersion": "2021-04-01",
+              "apiVersion": "2022-09-01",
               "name": "[format('pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-{0}', uniqueString(deployment().name))]",
               "properties": {
                 "mode": "Incremental",
@@ -243,7 +243,7 @@
             },
             {
               "type": "Microsoft.Network/networkManagers/networkGroups",
-              "apiVersion": "2022-07-01",
+              "apiVersion": "2023-02-01",
               "name": "[format('{0}/{1}', parameters('networkManagerName'), parameters('name'))]",
               "properties": {
                 "description": "[parameters('description')]"
@@ -285,8 +285,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.18.4.5664",
-                      "templateHash": "16074472044760493"
+                      "version": "0.19.5.34762",
+                      "templateHash": "16214310991903541469"
                     }
                   },
                   "parameters": {
@@ -326,7 +326,7 @@
                     {
                       "condition": "[parameters('enableDefaultTelemetry')]",
                       "type": "Microsoft.Resources/deployments",
-                      "apiVersion": "2021-04-01",
+                      "apiVersion": "2022-09-01",
                       "name": "[format('pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-{0}', uniqueString(deployment().name))]",
                       "properties": {
                         "mode": "Incremental",
@@ -339,7 +339,7 @@
                     },
                     {
                       "type": "Microsoft.Network/networkManagers/networkGroups/staticMembers",
-                      "apiVersion": "2022-07-01",
+                      "apiVersion": "2023-02-01",
                       "name": "[format('{0}/{1}/{2}', parameters('networkManagerName'), parameters('networkGroupName'), parameters('name'))]",
                       "properties": {
                         "resourceId": "[parameters('resourceId')]"
@@ -445,8 +445,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.18.4.5664",
-              "templateHash": "16667559174627826583"
+              "version": "0.19.5.34762",
+              "templateHash": "4358706606848401992"
             }
           },
           "parameters": {
@@ -529,7 +529,7 @@
             {
               "condition": "[parameters('enableDefaultTelemetry')]",
               "type": "Microsoft.Resources/deployments",
-              "apiVersion": "2021-04-01",
+              "apiVersion": "2022-09-01",
               "name": "[format('pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-{0}', uniqueString(deployment().name))]",
               "properties": {
                 "mode": "Incremental",
@@ -542,7 +542,7 @@
             },
             {
               "type": "Microsoft.Network/networkManagers/connectivityConfigurations",
-              "apiVersion": "2022-07-01",
+              "apiVersion": "2023-02-01",
               "name": "[format('{0}/{1}', parameters('networkManagerName'), parameters('name'))]",
               "properties": {
                 "appliesToGroups": "[parameters('appliesToGroups')]",
@@ -621,8 +621,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.18.4.5664",
-              "templateHash": "7001380639317342407"
+              "version": "0.19.5.34762",
+              "templateHash": "10543425561671785083"
             }
           },
           "parameters": {
@@ -671,7 +671,7 @@
             {
               "condition": "[parameters('enableDefaultTelemetry')]",
               "type": "Microsoft.Resources/deployments",
-              "apiVersion": "2021-04-01",
+              "apiVersion": "2022-09-01",
               "name": "[format('pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-{0}', uniqueString(deployment().name))]",
               "properties": {
                 "mode": "Incremental",
@@ -684,7 +684,7 @@
             },
             {
               "type": "Microsoft.Network/networkManagers/scopeConnections",
-              "apiVersion": "2022-07-01",
+              "apiVersion": "2023-02-01",
               "name": "[format('{0}/{1}', parameters('networkManagerName'), parameters('name'))]",
               "properties": {
                 "description": "[parameters('description')]",
@@ -757,8 +757,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.18.4.5664",
-              "templateHash": "6958244438160245757"
+              "version": "0.19.5.34762",
+              "templateHash": "11248739545153525651"
             }
           },
           "parameters": {
@@ -819,7 +819,7 @@
             {
               "condition": "[parameters('enableDefaultTelemetry')]",
               "type": "Microsoft.Resources/deployments",
-              "apiVersion": "2021-04-01",
+              "apiVersion": "2022-09-01",
               "name": "[format('pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-{0}', uniqueString(deployment().name))]",
               "properties": {
                 "mode": "Incremental",
@@ -832,7 +832,7 @@
             },
             {
               "type": "Microsoft.Network/networkManagers/securityAdminConfigurations",
-              "apiVersion": "2022-07-01",
+              "apiVersion": "2023-02-01",
               "name": "[format('{0}/{1}', parameters('networkManagerName'), parameters('name'))]",
               "properties": {
                 "description": "[parameters('description')]",
@@ -876,8 +876,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.18.4.5664",
-                      "templateHash": "14871283848922516549"
+                      "version": "0.19.5.34762",
+                      "templateHash": "15345246908056395599"
                     }
                   },
                   "parameters": {
@@ -935,7 +935,7 @@
                     {
                       "condition": "[parameters('enableDefaultTelemetry')]",
                       "type": "Microsoft.Resources/deployments",
-                      "apiVersion": "2021-04-01",
+                      "apiVersion": "2022-09-01",
                       "name": "[format('pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-{0}', uniqueString(deployment().name))]",
                       "properties": {
                         "mode": "Incremental",
@@ -948,7 +948,7 @@
                     },
                     {
                       "type": "Microsoft.Network/networkManagers/securityAdminConfigurations/ruleCollections",
-                      "apiVersion": "2022-07-01",
+                      "apiVersion": "2023-02-01",
                       "name": "[format('{0}/{1}/{2}', parameters('networkManagerName'), parameters('securityAdminConfigurationName'), parameters('name'))]",
                       "properties": {
                         "description": "[parameters('description')]",
@@ -1008,8 +1008,8 @@
                           "metadata": {
                             "_generator": {
                               "name": "bicep",
-                              "version": "0.18.4.5664",
-                              "templateHash": "11792808555690600356"
+                              "version": "0.19.5.34762",
+                              "templateHash": "11476125438194706048"
                             }
                           },
                           "parameters": {
@@ -1129,7 +1129,7 @@
                             {
                               "condition": "[parameters('enableDefaultTelemetry')]",
                               "type": "Microsoft.Resources/deployments",
-                              "apiVersion": "2021-04-01",
+                              "apiVersion": "2022-09-01",
                               "name": "[format('pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-{0}', uniqueString(deployment().name))]",
                               "properties": {
                                 "mode": "Incremental",
@@ -1142,7 +1142,7 @@
                             },
                             {
                               "type": "Microsoft.Network/networkManagers/securityAdminConfigurations/ruleCollections/rules",
-                              "apiVersion": "2022-07-01",
+                              "apiVersion": "2023-02-01",
                               "name": "[format('{0}/{1}/{2}/{3}', parameters('networkManagerName'), parameters('securityAdminConfigurationName'), parameters('ruleCollectionName'), parameters('name'))]",
                               "kind": "Custom",
                               "properties": {
@@ -1282,8 +1282,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.18.4.5664",
-              "templateHash": "7867016327030860512"
+              "version": "0.19.5.34762",
+              "templateHash": "10175367214015467898"
             }
           },
           "parameters": {
@@ -1453,7 +1453,7 @@
       "metadata": {
         "description": "The location the resource was deployed into."
       },
-      "value": "[reference(resourceId('Microsoft.Network/networkManagers', parameters('name')), '2022-07-01', 'full').location]"
+      "value": "[reference(resourceId('Microsoft.Network/networkManagers', parameters('name')), '2023-02-01', 'full').location]"
     }
   }
 }

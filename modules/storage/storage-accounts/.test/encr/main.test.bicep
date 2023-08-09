@@ -21,7 +21,7 @@ param baseTime string = utcNow('u')
 param enableDefaultTelemetry bool = true
 
 @description('Optional. A token to inject into the name of each resource.')
-param namePrefix string = '<<namePrefix>>'
+param namePrefix string = '[[namePrefix]]'
 
 // ============ //
 // Dependencies //
@@ -87,7 +87,7 @@ module testDeployment '../../main.bicep' = {
       containerDeleteRetentionPolicyDays: 10
       containerDeleteRetentionPolicyAllowPermanentDelete: true
       defaultServiceVersion: '2008-10-27'
-      deleteRetentionPolicy: true
+      deleteRetentionPolicyEnabled: true
       deleteRetentionPolicyDays: 9
       isVersioningEnabled: true
       lastAccessTimeTrackingPolicyEnable: true

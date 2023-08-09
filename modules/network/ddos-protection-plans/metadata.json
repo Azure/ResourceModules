@@ -1,6 +1,0 @@
-{
-    "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
-    "name": "DDoS Protection Plans",
-    "summary": "This module deploys a DDoS Protection Plan.",
-    "owner": "Azure/module-maintainers"
-}

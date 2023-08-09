@@ -1,3 +1,7 @@
+metadata name = 'DocumentDB Database Accounts'
+metadata description = 'This module deploys a DocumentDB Database Account.'
+metadata owner = 'Azure/module-maintainers'
+
 @description('Required. Name of the Database Account.')
 param name string
 
@@ -97,8 +101,9 @@ param diagnosticEventHubAuthorizationRuleId string = ''
 @description('Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
 param diagnosticEventHubName string = ''
 
-@description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource.')
+@description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to \'\' to disable log collection.')
 @allowed([
+  ''
   'allLogs'
   'DataPlaneRequests'
   'MongoRequests'
@@ -168,7 +173,10 @@ param backupRetentionIntervalInHours int = 8
 @description('Optional. Enum to indicate type of backup residency. Only applies to periodic backup type.')
 param backupStorageRedundancy string = 'Local'
 
-var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs'): {
+@description('Optional. Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.')
+param privateEndpoints array = []
+
+var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs' && item != ''): {
   category: category
   enabled: true
   retentionPolicy: {
@@ -186,7 +194,7 @@ var diagnosticsLogs = contains(diagnosticLogCategoriesToEnable, 'allLogs') ? [
       days: diagnosticLogsRetentionInDays
     }
   }
-] : diagnosticsLogsSpecified
+] : contains(diagnosticLogCategoriesToEnable, '') ? [] : diagnosticsLogsSpecified
 
 var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   category: metric
@@ -357,6 +365,29 @@ module databaseAccount_gremlinDatabases 'gremlin-databases/main.bicep' = [for gr
     name: gremlinDatabase.name
     graphs: contains(gremlinDatabase, 'graphs') ? gremlinDatabase.graphs : []
     enableDefaultTelemetry: enableReferencedModulesTelemetry
+  }
+}]
+
+module databaseAccount_privateEndpoints '../../network/private-endpoints/main.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
+  name: '${uniqueString(deployment().name, location)}-CosmosDB-PrivateEndpoint-${index}'
+  params: {
+    groupIds: [
+      privateEndpoint.service
+    ]
+    name: contains(privateEndpoint, 'name') ? privateEndpoint.name : 'pe-${last(split(databaseAccount.id, '/'))}-${privateEndpoint.service}-${index}'
+    serviceResourceId: databaseAccount.id
+    subnetResourceId: privateEndpoint.subnetResourceId
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+    location: reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
+    lock: contains(privateEndpoint, 'lock') ? privateEndpoint.lock : lock
+    privateDnsZoneGroup: contains(privateEndpoint, 'privateDnsZoneGroup') ? privateEndpoint.privateDnsZoneGroup : {}
+    roleAssignments: contains(privateEndpoint, 'roleAssignments') ? privateEndpoint.roleAssignments : []
+    tags: contains(privateEndpoint, 'tags') ? privateEndpoint.tags : {}
+    manualPrivateLinkServiceConnections: contains(privateEndpoint, 'manualPrivateLinkServiceConnections') ? privateEndpoint.manualPrivateLinkServiceConnections : []
+    customDnsConfigs: contains(privateEndpoint, 'customDnsConfigs') ? privateEndpoint.customDnsConfigs : []
+    ipConfigurations: contains(privateEndpoint, 'ipConfigurations') ? privateEndpoint.ipConfigurations : []
+    applicationSecurityGroups: contains(privateEndpoint, 'applicationSecurityGroups') ? privateEndpoint.applicationSecurityGroups : []
+    customNetworkInterfaceName: contains(privateEndpoint, 'customNetworkInterfaceName') ? privateEndpoint.customNetworkInterfaceName : ''
   }
 }]
 

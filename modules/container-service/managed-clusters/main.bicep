@@ -1,3 +1,7 @@
+metadata name = 'Azure Kubernetes Service (AKS) Managed Clusters'
+metadata description = 'This module deploys an Azure Kubernetes Service (AKS) Managed Cluster.'
+metadata owner = 'Azure/module-maintainers'
+
 @description('Required. Specifies the name of the AKS cluster.')
 param name string
 
@@ -38,9 +42,6 @@ param aksClusterServiceCidr string = ''
 @description('Optional. Specifies the IP address assigned to the Kubernetes DNS service. It must be within the Kubernetes service address range specified in serviceCidr.')
 param aksClusterDnsServiceIP string = ''
 
-@description('Optional. Specifies the CIDR notation IP range assigned to the Docker bridge network. It must not overlap with any Subnet IP ranges or the Kubernetes service address range.')
-param aksClusterDockerBridgeCidr string = ''
-
 @description('Optional. Specifies the sku of the load balancer used by the virtual machine scale sets used by nodepools.')
 @allowed([
   'basic'
@@ -61,7 +62,8 @@ param aksClusterOutboundType string = 'loadBalancer'
 @description('Optional. Tier of a managed cluster SKU. - Free or Paid.')
 @allowed([
   'Free'
-  'Paid'
+  'Premium'
+  'Standard'
 ])
 param aksClusterSkuTier string = 'Free'
 
@@ -120,8 +122,8 @@ param enablePrivateCluster bool = false
 @description('Optional. Whether to create additional public FQDN for private cluster or not.')
 param enablePrivateClusterPublicFQDN bool = false
 
-@description('Optional. If AKS will create a Private DNS Zone in the Node Resource Group.')
-param usePrivateDNSZone bool = false
+@description('Optional. Private DNS Zone configuration. Set to \'system\' and AKS will create a private DNS zone in the node resource group. Set to \'\' to disable private DNS Zone creation and use public DNS. Supply the resource ID here of an existing Private DNS zone to use an existing zone.')
+param privateDNSZone string = ''
 
 @description('Required. Properties of the primary agent pool.')
 param primaryAgentPoolProfile array
@@ -131,6 +133,15 @@ param agentPools array = []
 
 @description('Optional. Specifies whether the httpApplicationRouting add-on is enabled or not.')
 param httpApplicationRoutingEnabled bool = false
+
+@description('Optional. Specifies whether the webApplicationRoutingEnabled add-on is enabled or not.')
+param webApplicationRoutingEnabled bool = false
+
+@description('Optional. Specifies the resource ID of connected DNS zone. It will be ignored if `webApplicationRoutingEnabled` is set to `false`.')
+param dnsZoneResourceId string = ''
+
+@description('Optional. Specifies whether assing the DNS zone contributor role to the cluster service principal. It will be ignored if `webApplicationRoutingEnabled` is set to `false` or `dnsZoneResourceId` not provided.')
+param enableDnsZoneContributorRoleAssignment bool = true
 
 @description('Optional. Specifies whether the ingressApplicationGateway (AGIC) add-on is enabled or not.')
 param ingressApplicationGatewayEnabled bool = false
@@ -305,8 +316,9 @@ param fluxConfigurationProtectedSettings object = {}
 @description('Optional. Settings and configurations for the flux extension.')
 param fluxExtension object = {}
 
-@description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource.')
+@description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to \'\' to disable log collection.')
 @allowed([
+  ''
   'allLogs'
   'kube-apiserver'
   'kube-audit'
@@ -331,7 +343,7 @@ param diagnosticMetricsToEnable array = [
 @description('Optional. The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings".')
 param diagnosticSettingsName string = ''
 
-var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs'): {
+var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs' && item != ''): {
   category: category
   enabled: true
   retentionPolicy: {
@@ -349,7 +361,7 @@ var diagnosticsLogs = contains(diagnosticLogCategoriesToEnable, 'allLogs') ? [
       days: diagnosticLogsRetentionInDays
     }
   }
-] : diagnosticsLogsSpecified
+] : contains(diagnosticLogCategoriesToEnable, '') ? [] : diagnosticsLogsSpecified
 
 var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   category: metric
@@ -400,13 +412,13 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2022-09-01' = if (ena
   }
 }
 
-resource managedCluster 'Microsoft.ContainerService/managedClusters@2022-11-01' = {
+resource managedCluster 'Microsoft.ContainerService/managedClusters@2023-05-02-preview' = {
   name: name
   location: location
   tags: tags
   identity: identity
   sku: {
-    name: 'Basic'
+    name: 'Base'
     tier: aksClusterSkuTier
   }
   properties: {
@@ -416,6 +428,12 @@ resource managedCluster 'Microsoft.ContainerService/managedClusters@2022-11-01' 
     agentPoolProfiles: primaryAgentPoolProfile
     linuxProfile: (empty(aksClusterSshPublicKey) ? null : aksClusterLinuxProfile)
     servicePrincipalProfile: (empty(aksServicePrincipalProfile) ? null : aksServicePrincipalProfile)
+    ingressProfile: {
+      webAppRouting: {
+        enabled: webApplicationRoutingEnabled
+        dnsZoneResourceId: !empty(dnsZoneResourceId) ? any(dnsZoneResourceId) : null
+      }
+    }
     addonProfiles: {
       httpApplicationRouting: {
         enabled: httpApplicationRoutingEnabled
@@ -469,7 +487,6 @@ resource managedCluster 'Microsoft.ContainerService/managedClusters@2022-11-01' 
       podCidr: !empty(aksClusterPodCidr) ? aksClusterPodCidr : null
       serviceCidr: !empty(aksClusterServiceCidr) ? aksClusterServiceCidr : null
       dnsServiceIP: !empty(aksClusterDnsServiceIP) ? aksClusterDnsServiceIP : null
-      dockerBridgeCidr: !empty(aksClusterDockerBridgeCidr) ? aksClusterDockerBridgeCidr : null
       outboundType: aksClusterOutboundType
       loadBalancerSku: aksClusterLoadBalancerSku
       loadBalancerProfile: managedOutboundIPCount != 0 ? lbProfile : null
@@ -507,7 +524,7 @@ resource managedCluster 'Microsoft.ContainerService/managedClusters@2022-11-01' 
       disableRunCommand: disableRunCommand
       enablePrivateCluster: enablePrivateCluster
       enablePrivateClusterPublicFQDN: enablePrivateClusterPublicFQDN
-      privateDNSZone: usePrivateDNSZone ? 'system' : ''
+      privateDNSZone: privateDNSZone
     }
     podIdentityProfile: {
       allowNetworkPluginKubenet: podIdentityProfileAllowNetworkPluginKubenet
@@ -618,6 +635,20 @@ module managedCluster_roleAssignments '.bicep/nested_roleAssignments.bicep' = [f
     resourceId: managedCluster.id
   }
 }]
+
+resource dnsZone 'Microsoft.Network/dnsZones@2018-05-01' existing = if (dnsZoneResourceId != null && webApplicationRoutingEnabled) {
+  name: last(split(dnsZoneResourceId, '/'))!
+}
+
+resource dnsZone_roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = if (enableDnsZoneContributorRoleAssignment == true && dnsZoneResourceId != null && webApplicationRoutingEnabled) {
+  name: guid(dnsZoneResourceId, subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'befefa01-2a29-4197-83a8-272ff33ce314'), 'DNS Zone Contributor')
+  properties: {
+    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'befefa01-2a29-4197-83a8-272ff33ce314') // 'DNS Zone Contributor'
+    principalId: managedCluster.properties.ingressProfile.webAppRouting.identity.objectId
+    principalType: 'ServicePrincipal'
+  }
+  scope: dnsZone
+}
 
 @description('The resource ID of the managed cluster.')
 output resourceId string = managedCluster.id

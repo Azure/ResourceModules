@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.18.4.5664",
-      "templateHash": "8442365004289541058"
+      "version": "0.19.5.34762",
+      "templateHash": "17940454545925305572"
     }
   },
   "parameters": {
@@ -154,6 +154,7 @@
         "allLogs"
       ],
       "allowedValues": [
+        "",
         "allLogs",
         "DigitalTwinsOperation",
         "EventRoutesOperation",
@@ -163,7 +164,7 @@
         "ResourceProviderOperation"
       ],
       "metadata": {
-        "description": "Optional. The name of logs that will be streamed."
+        "description": "Optional. The name of logs that will be streamed. \"allLogs\" includes all possible logs for the resource. Set to '' to disable log collection."
       }
     },
     "diagnosticMetricsToEnable": {
@@ -190,9 +191,9 @@
     "copy": [
       {
         "name": "diagnosticsLogsSpecified",
-        "count": "[length(filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', not(equals(lambdaVariables('item'), 'allLogs')))))]",
+        "count": "[length(filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', and(not(equals(lambdaVariables('item'), 'allLogs')), not(equals(lambdaVariables('item'), ''))))))]",
         "input": {
-          "category": "[filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', not(equals(lambdaVariables('item'), 'allLogs'))))[copyIndex('diagnosticsLogsSpecified')]]",
+          "category": "[filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', and(not(equals(lambdaVariables('item'), 'allLogs')), not(equals(lambdaVariables('item'), '')))))[copyIndex('diagnosticsLogsSpecified')]]",
           "enabled": true,
           "retentionPolicy": {
             "enabled": true,
@@ -217,7 +218,7 @@
     "enableReferencedModulesTelemetry": false,
     "identityType": "[if(parameters('systemAssignedIdentity'), if(not(empty(parameters('userAssignedIdentities'))), 'SystemAssigned, UserAssigned', 'SystemAssigned'), if(not(empty(parameters('userAssignedIdentities'))), 'UserAssigned', 'None'))]",
     "identity": "[if(not(equals(variables('identityType'), 'None')), createObject('type', variables('identityType'), 'userAssignedIdentities', if(not(empty(parameters('userAssignedIdentities'))), parameters('userAssignedIdentities'), null())), null())]",
-    "diagnosticsLogs": "[if(contains(parameters('diagnosticLogCategoriesToEnable'), 'allLogs'), createArray(createObject('categoryGroup', 'allLogs', 'enabled', true(), 'retentionPolicy', createObject('enabled', true(), 'days', parameters('diagnosticLogsRetentionInDays')))), variables('diagnosticsLogsSpecified'))]"
+    "diagnosticsLogs": "[if(contains(parameters('diagnosticLogCategoriesToEnable'), 'allLogs'), createArray(createObject('categoryGroup', 'allLogs', 'enabled', true(), 'retentionPolicy', createObject('enabled', true(), 'days', parameters('diagnosticLogsRetentionInDays')))), if(contains(parameters('diagnosticLogCategoriesToEnable'), ''), createArray(), variables('diagnosticsLogsSpecified')))]"
   },
   "resources": [
     {
@@ -311,8 +312,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.18.4.5664",
-              "templateHash": "13929856353114998858"
+              "version": "0.19.5.34762",
+              "templateHash": "11967486057366992053"
             }
           },
           "parameters": {
@@ -498,8 +499,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.18.4.5664",
-              "templateHash": "3194919604309470"
+              "version": "0.19.5.34762",
+              "templateHash": "13209746023702628221"
             }
           },
           "parameters": {
@@ -643,8 +644,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.18.4.5664",
-              "templateHash": "5597889488724650594"
+              "version": "0.19.5.34762",
+              "templateHash": "15643334991112942016"
             }
           },
           "parameters": {
@@ -846,8 +847,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.18.4.5664",
-              "templateHash": "12991773916541265724"
+              "version": "0.19.5.34762",
+              "templateHash": "11825715538543749879"
             }
           },
           "parameters": {
@@ -1043,8 +1044,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.18.4.5664",
-                      "templateHash": "3520683536217550590"
+                      "version": "0.19.5.34762",
+                      "templateHash": "12684511314187066258"
                     }
                   },
                   "parameters": {
@@ -1178,8 +1179,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.18.4.5664",
-                      "templateHash": "11724106538771429164"
+                      "version": "0.19.5.34762",
+                      "templateHash": "18055161250379920591"
                     }
                   },
                   "parameters": {
@@ -1392,8 +1393,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.18.4.5664",
-              "templateHash": "8597329460667593284"
+              "version": "0.19.5.34762",
+              "templateHash": "17162400653836540515"
             }
           },
           "parameters": {

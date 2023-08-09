@@ -36,7 +36,7 @@ This module deploys a Purview Account.
 | `accountPrivateEndpoints` | array | `[]` |  | Configuration details for Purview Account private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. Make sure the service property is set to 'account'. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
-| `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `[allLogs, DataSensitivity, PurviewAccountAuditEvents, ScanStatus]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. |
+| `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `['', allLogs, DataSensitivity, PurviewAccountAuditEvents, ScanStatus]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticMetricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | The name of metrics that will be streamed. |
 | `diagnosticSettingsName` | string | `''` |  | The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings". |
@@ -167,8 +167,8 @@ You can specify multiple user assigned identities to a resource by providing add
 ```json
 "userAssignedIdentities": {
     "value": {
-        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
-        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
+        "/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
+        "/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
     }
 }
 ```
@@ -181,8 +181,8 @@ You can specify multiple user assigned identities to a resource by providing add
 
 ```bicep
 userAssignedIdentities: {
-    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
-    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
+    '/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
+    '/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
 }
 ```
 
@@ -229,7 +229,7 @@ module accounts './purview/accounts/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-pvacom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>pvacom001'
+    name: 'pvacom001'
     // Non-required parameters
     accountPrivateEndpoints: [
       {
@@ -275,7 +275,7 @@ module accounts './purview/accounts/main.bicep' = {
     ]
     location: '<location>'
     lock: 'CanNotDelete'
-    managedResourceGroupName: '<<namePrefix>>pvacom001-managed-rg'
+    managedResourceGroupName: 'pvacom001-managed-rg'
     portalPrivateEndpoints: [
       {
         privateDnsZoneGroup: {
@@ -356,7 +356,7 @@ module accounts './purview/accounts/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>pvacom001"
+      "value": "pvacom001"
     },
     // Non-required parameters
     "accountPrivateEndpoints": {
@@ -428,7 +428,7 @@ module accounts './purview/accounts/main.bicep' = {
       "value": "CanNotDelete"
     },
     "managedResourceGroupName": {
-      "value": "<<namePrefix>>pvacom001-managed-rg"
+      "value": "pvacom001-managed-rg"
     },
     "portalPrivateEndpoints": {
       "value": [
@@ -524,10 +524,10 @@ module accounts './purview/accounts/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-pvamin'
   params: {
     // Required parameters
-    name: '<<namePrefix>>pvamin001'
+    name: 'pvamin001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    managedResourceGroupName: '<<namePrefix>>pvamin001-managed-rg'
+    managedResourceGroupName: 'pvamin001-managed-rg'
   }
 }
 ```
@@ -546,14 +546,14 @@ module accounts './purview/accounts/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>pvamin001"
+      "value": "pvamin001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     },
     "managedResourceGroupName": {
-      "value": "<<namePrefix>>pvamin001-managed-rg"
+      "value": "pvamin001-managed-rg"
     }
   }
 }

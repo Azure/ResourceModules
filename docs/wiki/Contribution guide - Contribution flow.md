@@ -19,14 +19,12 @@ Depending on the nature of your contribution, the number and implementation of t
 We kindly ask you to have an issue mapped to the contribution you'd like to make.
 How you proceed from here, depends on the scenario:
 
-- If you just want to contribute to this project, but don't know yet where and how you should start, navigate to the '[Projects (classic)](https://github.com/Azure/ResourceModules/projects?type=classic)' tab on the repository. You will find, that we have 2 projects: 'Bug board' & 'Backlog'. In the CARML repository we apply the following priorities when selecting issues:
+- If you just want to contribute to this project, but don't know yet where and how you should start, navigate to the '[Projects](https://github.com/Azure/ResourceModules/projects?query=is%3Aopen)' tab on the repository. You will find, that we have 2 projects: ['Bug board'](https://github.com/orgs/Azure/projects/364) & ['Backlog'](https://github.com/orgs/Azure/projects/363). In the CARML repository we apply the following priorities when selecting issues:
   1. The Bug board's `'High Priority'` column
   1. The Bug board's `'Low Priority'` column
   1. The Backlog's `'To do'` column, which has its items sorted by priority from the top <p>
 
   For the biggest impact, you can help us by following the same path. However, if none of the items speak to you, feel free to self-assign any other item of the `'To do'` column that you feel comfortable with. In this case you should assign the item to yourself / or reach out to discuss its content & priority.
-
-   <img src="./media/ContributionGuide/projectsTab.png" alt="Projects Tab" height="300">
 
   > Note: For starters, we suggest to search for issues labelled with `good first issue`.
 
@@ -54,6 +52,7 @@ How you proceed from here, depends on your scenario:
 
 - If your contribution involves the creation of a new module or an update to an existing module:
   - Make sure you also reflect your changes in the module's `README.md` file. Refer to the [Generate module Readme](./Contribution%20guide%20-%20Generate%20module%20Readme) section for details on how to leverage the Readme generator utility to support you with this task.
+  - Regenerate/update the `main.json` template using either the command `bicep build '<bicep-template-file-path>'` or `az bicep build -f '<bicep-template-file-path>'`
   - If you are adding or updating role assignments to resources deployable by the module, refer to the [Get formatted RBAC roles](./Contribution%20guide%20-%20Get%20formatted%20RBAC%20roles) section for details on how to leverage the RBAC roles formatting utility to support you with this task.
   - If applicable, make sure you set or update the major and minor versions in the corresponding module `version.json` file.
 
@@ -66,18 +65,17 @@ Once the contribution is implemented and the changes are pushed to your forked r
 - In case your contribution involves changes to the library (the modules) and/or to the CI environment (the pipelines), we kindly ask you to validate your updates in your own cloud environment before requesting to merge them to the main repo. Test your code leveraging the CARML CI environment, as detailed in the [Pipeline usage](./The%20CI%20environment%20-%20Pipeline%20usage) section.
    > **Note**: In case your contribution involves changes to a module, you can also optionally leverage the [Validate module locally](./Contribution%20guide%20-%20Validate%20module%20locally) utility to validate the updated module from your local host before validating it through its pipeline.
 
-# Open a PR
+# Open a Pull Request (PR)
 
 Finally, once your contribution is implemented and validated, open a PR for the CARML maintainers to review. Make sure you:
 
-- Provide a meaningful PR title in the following format: `[<Category>] <PR title>`. For `[<Category>]` use one of the following, depending on which one is the primary improvement your PR intends to make:
+- Provide a meaningful title in the following format: `[<Category>] <PR title>`. For `[<Category>]` use one of the following, depending on which one is the primary improvement your PR intends to make:
   - `[Modules]`: For improvements to the CARML library.
   - `[CI environment]`: For improvements to the CI environment pipelines.
-  - `[Static Validation]`: For improvements to Pester tests.
   - `[Wiki]`: For improvements to the documentation.
   - `[Utilities]`: For improvements to the tools in the utilities.
   - `[Fixes]`: For bug fixes when not specifically related to any of the above categories.
-- Provide a meaningful PR description.
+- Provide a meaningful description.
 - Follow instructions you find in the PR template.
 - Reference the issue number as per the [Create or pick up an issue](#create-or-pick-up-an-issue) step.
 - If applicable, please reference the badge status of your pipeline run. This badge will show the reviewer that the code changes were successfully validated & tested in your environment. To create a badge, first select the three dots (`...`) at the top right of the pipeline, and then chose the `Create status badge` option.

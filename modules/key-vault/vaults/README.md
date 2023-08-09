@@ -40,7 +40,7 @@ This module deploys a Key Vault.
 | `createMode` | string | `'default'` |  | The vault's create mode to indicate whether the vault need to be recovered or not. - recover or default. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
-| `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `[allLogs, AuditEvent, AzurePolicyEvaluationDetails]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. |
+| `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `['', allLogs, AuditEvent, AzurePolicyEvaluationDetails]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticMetricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | The name of metrics that will be streamed. |
 | `diagnosticSettingsName` | string | `''` |  | The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings". |
@@ -179,7 +179,7 @@ tags: {
         "defaultAction": "Deny",
         "virtualNetworkRules": [
             {
-                "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001",
+                "id": "/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001",
                 "ignoreMissingVnetServiceEndpoint": false
             }
         ],
@@ -204,7 +204,7 @@ networkAcls: {
     defaultAction: 'Deny'
     virtualNetworkRules: [
         {
-            id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001'
+            id: '/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001'
             ignoreMissingVnetServiceEndpoint: false
         }
     ]
@@ -295,11 +295,11 @@ To use Private Endpoint the following dependencies must be deployed:
         // Example showing all available fields
         {
             "name": "sxx-az-pe", // Optional: Name will be automatically generated if one is not provided here
-            "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001",
+            "subnetResourceId": "/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001",
             "service": "<serviceName>", // e.g. vault, registry, blob
             "privateDnsZoneGroup": {
                 "privateDNSResourceIds": [ // Optional: No DNS record will be created if a private DNS zone Resource ID is not specified
-                    "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/<privateDnsZoneName>" // e.g. privatelink.vaultcore.azure.net, privatelink.azurecr.io, privatelink.blob.core.windows.net
+                    "/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/<privateDnsZoneName>" // e.g. privatelink.vaultcore.azure.net, privatelink.azurecr.io, privatelink.blob.core.windows.net
                 ]
             },
             "ipConfigurations":[
@@ -323,7 +323,7 @@ To use Private Endpoint the following dependencies must be deployed:
         },
         // Example showing only mandatory fields
         {
-            "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001",
+            "subnetResourceId": "/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001",
             "service": "<serviceName>" // e.g. vault, registry, blob
         }
     ]
@@ -341,11 +341,11 @@ privateEndpoints:  [
     // Example showing all available fields
     {
         name: 'sxx-az-pe' // Optional: Name will be automatically generated if one is not provided here
-        subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001'
+        subnetResourceId: '/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001'
         service: '<serviceName>' // e.g. vault, registry, blob
         privateDnsZoneGroup: {
             privateDNSResourceIds: [ // Optional: No DNS record will be created if a private DNS zone Resource ID is not specified
-                '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/<privateDnsZoneName>' // e.g. privatelink.vaultcore.azure.net, privatelink.azurecr.io, privatelink.blob.core.windows.net
+                '/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/<privateDnsZoneName>' // e.g. privatelink.vaultcore.azure.net, privatelink.azurecr.io, privatelink.blob.core.windows.net
             ]
         }
         customDnsConfigs: [
@@ -369,7 +369,7 @@ privateEndpoints:  [
     }
     // Example showing only mandatory fields
     {
-        subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001'
+        subnetResourceId: '/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001'
         service: '<serviceName>' // e.g. vault, registry, blob
     }
 ]
@@ -413,7 +413,7 @@ The following module usage examples are retrieved from the content of the files 
 module vaults './key-vault/vaults/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-kvvcom'
   params: {
-    name: '<<namePrefix>>kvvcom002'
+    name: 'kvvcom002'
     accessPolicies: [
       {
         objectId: '<objectId>'
@@ -572,7 +572,7 @@ module vaults './key-vault/vaults/main.bicep' = {
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
-      "value": "<<namePrefix>>kvvcom002"
+      "value": "kvvcom002"
     },
     "accessPolicies": {
       "value": [
@@ -767,7 +767,7 @@ module vaults './key-vault/vaults/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-kvvmin'
   params: {
     // Required parameters
-    name: '<<namePrefix>>kvvmin002'
+    name: 'kvvmin002'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     enablePurgeProtection: false
@@ -789,7 +789,7 @@ module vaults './key-vault/vaults/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>kvvmin002"
+      "value": "kvvmin002"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {
@@ -816,7 +816,7 @@ module vaults './key-vault/vaults/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-kvvpe'
   params: {
     // Required parameters
-    name: '<<namePrefix>>kvvpe001'
+    name: 'kvvpe001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     enablePurgeProtection: false
@@ -857,7 +857,7 @@ module vaults './key-vault/vaults/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>kvvpe001"
+      "value": "kvvpe001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {

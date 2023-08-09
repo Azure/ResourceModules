@@ -1,3 +1,7 @@
+metadata name = 'Data Factories'
+metadata description = 'This module deploys a Data Factory.'
+metadata owner = 'Azure/module-maintainers'
+
 @description('Required. The name of the Azure Factory to create.')
 param name string
 
@@ -39,8 +43,14 @@ param gitRepositoryName string = ''
 @description('Optional. The collaboration branch name. Default is \'main\'.')
 param gitCollaborationBranch string = 'main'
 
+@description('Optional. Disable manual publish operation in ADF studio to favor automated publish.')
+param gitDisablePublish bool = false
+
 @description('Optional. The root folder path name. Default is \'/\'.')
 param gitRootFolder string = '/'
+
+@description('Optional. The GitHub Enterprise Server host (prefixed with \'https://\'). Only relevant for \'FactoryGitHubConfiguration\'.')
+param gitHostName string = ''
 
 @description('Optional. List of Global Parameters for the factory.')
 param globalParameters object = {}
@@ -91,8 +101,9 @@ param cMKKeyVersion string = ''
 @description('Conditional. User assigned identity to use when fetching the customer managed key. Required if \'cMKKeyName\' is not empty.')
 param cMKUserAssignedIdentityResourceId string = ''
 
-@description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource.')
+@description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to \'\' to disable log collection.')
 @allowed([
+  ''
   'allLogs'
   'ActivityRuns'
   'PipelineRuns'
@@ -119,7 +130,7 @@ param diagnosticMetricsToEnable array = [
 @description('Optional. The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings".')
 param diagnosticSettingsName string = ''
 
-var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs'): {
+var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs' && item != ''): {
   category: category
   enabled: true
   retentionPolicy: {
@@ -137,7 +148,7 @@ var diagnosticsLogs = contains(diagnosticLogCategoriesToEnable, 'allLogs') ? [
       days: diagnosticLogsRetentionInDays
     }
   }
-] : diagnosticsLogsSpecified
+] : contains(diagnosticLogCategoriesToEnable, '') ? [] : diagnosticsLogsSpecified
 
 var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   category: metric
@@ -192,10 +203,12 @@ resource dataFactory 'Microsoft.DataFactory/factories@2018-06-01' = {
   properties: {
     repoConfiguration: bool(gitConfigureLater) ? null : union({
         type: gitRepoType
+        hostName: gitHostName
         accountName: gitAccountName
         repositoryName: gitRepositoryName
         collaborationBranch: gitCollaborationBranch
         rootFolder: gitRootFolder
+        disablePublish: gitDisablePublish
       }, (gitRepoType == 'FactoryVSTSConfiguration' ? {
         projectName: gitProjectName
       } : {}), {})

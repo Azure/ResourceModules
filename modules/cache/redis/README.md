@@ -1,4 +1,4 @@
-# Redis Cache `[Microsoft.Cache/redis]`
+# Redis Cache `[Microsoft.Cache/Redis]`
 
 This module deploys a Redis Cache.
 
@@ -36,7 +36,7 @@ This module deploys a Redis Cache.
 | `capacity` | int | `1` | `[0, 1, 2, 3, 4, 5, 6]` | The size of the Redis cache to deploy. Valid values: for C (Basic/Standard) family (0, 1, 2, 3, 4, 5, 6), for P (Premium) family (1, 2, 3, 4). |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
-| `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `[allLogs, ConnectedClientList]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. |
+| `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `['', allLogs, ConnectedClientList]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticMetricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | The name of metrics that will be streamed. |
 | `diagnosticSettingsName` | string | `''` |  | The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings". |
@@ -177,8 +177,8 @@ You can specify multiple user assigned identities to a resource by providing add
 ```json
 "userAssignedIdentities": {
     "value": {
-        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
-        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
+        "/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
+        "/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
     }
 }
 ```
@@ -191,8 +191,8 @@ You can specify multiple user assigned identities to a resource by providing add
 
 ```bicep
 userAssignedIdentities: {
-    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
-    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
+    '/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
+    '/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
 }
 ```
 
@@ -249,11 +249,11 @@ To use Private Endpoint the following dependencies must be deployed:
         // Example showing all available fields
         {
             "name": "sxx-az-pe", // Optional: Name will be automatically generated if one is not provided here
-            "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001",
+            "subnetResourceId": "/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001",
             "service": "<serviceName>", // e.g. vault, registry, blob
             "privateDnsZoneGroup": {
                 "privateDNSResourceIds": [ // Optional: No DNS record will be created if a private DNS zone Resource ID is not specified
-                    "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/<privateDnsZoneName>" // e.g. privatelink.vaultcore.azure.net, privatelink.azurecr.io, privatelink.blob.core.windows.net
+                    "/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/<privateDnsZoneName>" // e.g. privatelink.vaultcore.azure.net, privatelink.azurecr.io, privatelink.blob.core.windows.net
                 ]
             },
             "ipConfigurations":[
@@ -277,7 +277,7 @@ To use Private Endpoint the following dependencies must be deployed:
         },
         // Example showing only mandatory fields
         {
-            "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001",
+            "subnetResourceId": "/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001",
             "service": "<serviceName>" // e.g. vault, registry, blob
         }
     ]
@@ -295,11 +295,11 @@ privateEndpoints:  [
     // Example showing all available fields
     {
         name: 'sxx-az-pe' // Optional: Name will be automatically generated if one is not provided here
-        subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001'
+        subnetResourceId: '/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001'
         service: '<serviceName>' // e.g. vault, registry, blob
         privateDnsZoneGroup: {
             privateDNSResourceIds: [ // Optional: No DNS record will be created if a private DNS zone Resource ID is not specified
-                '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/<privateDnsZoneName>' // e.g. privatelink.vaultcore.azure.net, privatelink.azurecr.io, privatelink.blob.core.windows.net
+                '/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/<privateDnsZoneName>' // e.g. privatelink.vaultcore.azure.net, privatelink.azurecr.io, privatelink.blob.core.windows.net
             ]
         }
         customDnsConfigs: [
@@ -323,7 +323,7 @@ privateEndpoints:  [
     }
     // Example showing only mandatory fields
     {
-        subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001'
+        subnetResourceId: '/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001'
         service: '<serviceName>' // e.g. vault, registry, blob
     }
 ]
@@ -370,7 +370,7 @@ module redis './cache/redis/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-crcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>crcom001'
+    name: 'crcom001'
     // Non-required parameters
     capacity: 2
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
@@ -429,7 +429,7 @@ module redis './cache/redis/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>crcom001"
+      "value": "crcom001"
     },
     // Non-required parameters
     "capacity": {
@@ -529,7 +529,7 @@ module redis './cache/redis/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-crmin'
   params: {
     // Required parameters
-    name: '<<namePrefix>>crmin001'
+    name: 'crmin001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
@@ -550,7 +550,7 @@ module redis './cache/redis/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>crmin001"
+      "value": "crmin001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {

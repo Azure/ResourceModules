@@ -1,3 +1,7 @@
+metadata name = 'Service Bus Namespace Queue'
+metadata description = 'This module deploys a Service Bus Namespace Queue.'
+metadata owner = 'Azure/module-maintainers'
+
 @description('Conditional. The name of the parent Service Bus Namespace for the Service Bus Queue. Required if the template is used in a standalone deployment.')
 @minLength(6)
 @maxLength(50)

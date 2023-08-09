@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.18.4.5664",
-      "templateHash": "7419891931235247147"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "16293846439301048579"
+    },
+    "name": "Recovery Services Vaults",
+    "description": "This module deploys a Recovery Services Vault.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
@@ -84,8 +87,8 @@
     "diagnosticLogsRetentionInDays": {
       "type": "int",
       "defaultValue": 365,
-      "maxValue": 365,
       "minValue": 0,
+      "maxValue": 365,
       "metadata": {
         "description": "Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely."
       }
@@ -128,14 +131,14 @@
     "lock": {
       "type": "string",
       "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Specify the type of lock."
-      },
       "allowedValues": [
         "",
         "CanNotDelete",
         "ReadOnly"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Specify the type of lock."
+      }
     },
     "systemAssignedIdentity": {
       "type": "bool",
@@ -164,6 +167,7 @@
         "allLogs"
       ],
       "allowedValues": [
+        "",
         "allLogs",
         "AzureBackupReport",
         "CoreAzureBackup",
@@ -181,7 +185,7 @@
         "AzureSiteRecoveryProtectedDiskDataChurn"
       ],
       "metadata": {
-        "description": "Optional. The name of logs that will be streamed. \"allLogs\" includes all possible logs for the resource."
+        "description": "Optional. The name of logs that will be streamed. \"allLogs\" includes all possible logs for the resource. Set to '' to disable log collection."
       }
     },
     "diagnosticMetricsToEnable": {
@@ -240,9 +244,9 @@
     "copy": [
       {
         "name": "diagnosticsLogsSpecified",
-        "count": "[length(filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', not(equals(lambdaVariables('item'), 'allLogs')))))]",
+        "count": "[length(filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', and(not(equals(lambdaVariables('item'), 'allLogs')), not(equals(lambdaVariables('item'), ''))))))]",
         "input": {
-          "category": "[filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', not(equals(lambdaVariables('item'), 'allLogs'))))[copyIndex('diagnosticsLogsSpecified')]]",
+          "category": "[filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', and(not(equals(lambdaVariables('item'), 'allLogs')), not(equals(lambdaVariables('item'), '')))))[copyIndex('diagnosticsLogsSpecified')]]",
           "enabled": true,
           "retentionPolicy": {
             "enabled": true,
@@ -264,7 +268,7 @@
         }
       }
     ],
-    "diagnosticsLogs": "[if(contains(parameters('diagnosticLogCategoriesToEnable'), 'allLogs'), createArray(createObject('categoryGroup', 'allLogs', 'enabled', true(), 'retentionPolicy', createObject('enabled', true(), 'days', parameters('diagnosticLogsRetentionInDays')))), variables('diagnosticsLogsSpecified'))]",
+    "diagnosticsLogs": "[if(contains(parameters('diagnosticLogCategoriesToEnable'), 'allLogs'), createArray(createObject('categoryGroup', 'allLogs', 'enabled', true(), 'retentionPolicy', createObject('enabled', true(), 'days', parameters('diagnosticLogsRetentionInDays')))), if(contains(parameters('diagnosticLogCategoriesToEnable'), ''), createArray(), variables('diagnosticsLogsSpecified')))]",
     "identityType": "[if(parameters('systemAssignedIdentity'), if(not(empty(parameters('userAssignedIdentities'))), 'SystemAssigned,UserAssigned', 'SystemAssigned'), if(not(empty(parameters('userAssignedIdentities'))), 'UserAssigned', 'None'))]",
     "identity": "[if(not(equals(variables('identityType'), 'None')), createObject('type', variables('identityType'), 'userAssignedIdentities', if(not(empty(parameters('userAssignedIdentities'))), parameters('userAssignedIdentities'), null())), null())]",
     "enableReferencedModulesTelemetry": false
@@ -365,9 +369,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.18.4.5664",
-              "templateHash": "5457354267519205840"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "8280438435310104866"
+            },
+            "name": "Recovery Services Vault Replication Fabrics",
+            "description": "This module deploys a Replication Fabric for Azure to Azure disaster recovery scenario of Azure Site Recovery.\r\n\r\n> Note: this module currently support only the `instanceType: 'Azure'` scenario.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "recoveryVaultName": {
@@ -468,9 +475,12 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.18.4.5664",
-                      "templateHash": "1655150241228474322"
-                    }
+                      "version": "0.20.4.51522",
+                      "templateHash": "1196918307822554260"
+                    },
+                    "name": "Recovery Services Vault Replication Fabric Replication Protection Containers",
+                    "description": "This module deploys a Recovery Services Vault Replication Protection Container.\r\n\r\n> **Note**: this version of the module only supports the `instanceType: 'A2A'` scenario.",
+                    "owner": "Azure/module-maintainers"
                   },
                   "parameters": {
                     "recoveryVaultName": {
@@ -575,9 +585,12 @@
                           "metadata": {
                             "_generator": {
                               "name": "bicep",
-                              "version": "0.18.4.5664",
-                              "templateHash": "16722004571802818309"
-                            }
+                              "version": "0.20.4.51522",
+                              "templateHash": "2149629411962083695"
+                            },
+                            "name": "Recovery Services Vault Replication Fabric Replication Protection Container Replication Protection Container Mappings",
+                            "description": "This module deploys a Recovery Services Vault (RSV) Replication Protection Container Mapping.\r\n\r\n> **Note**: this version of the module only supports the `instanceType: 'A2A'` scenario.",
+                            "owner": "Azure/module-maintainers"
                           },
                           "parameters": {
                             "recoveryVaultName": {
@@ -805,9 +818,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.18.4.5664",
-              "templateHash": "3773064425005409763"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "11896184761533167738"
+            },
+            "name": "Recovery Services Vault Replication Policies",
+            "description": "This module deploys a Recovery Services Vault Replication Policy for Disaster Recovery scenario.\r\n\r\n> **Note**: this version of the module only supports the `instanceType: 'A2A'` scenario.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "recoveryVaultName": {
@@ -951,9 +967,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.18.4.5664",
-              "templateHash": "3399910593416707796"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "5682567943042044037"
+            },
+            "name": "Recovery Services Vault Backup Storage Config",
+            "description": "This module deploys a Recovery Service Vault Backup Storage Configuration.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "recoveryVaultName": {
@@ -1053,7 +1072,7 @@
     },
     {
       "copy": {
-        "name": "rsv_protectionContainers",
+        "name": "rsv_backupFabric_protectionContainers",
         "count": "[length(parameters('protectionContainers'))]"
       },
       "type": "Microsoft.Resources/deployments",
@@ -1097,9 +1116,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.18.4.5664",
-              "templateHash": "12033116226344292543"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "17832840146797285516"
+            },
+            "name": "Recovery Services Vault Protection Container",
+            "description": "This module deploys a Recovery Services Vault Protection Container.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "recoveryVaultName": {
@@ -1262,9 +1284,12 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.18.4.5664",
-                      "templateHash": "9244336776798438387"
-                    }
+                      "version": "0.20.4.51522",
+                      "templateHash": "6407898441503460857"
+                    },
+                    "name": "Recovery Service Vaults Protection Container Protected Item",
+                    "description": "This module deploys a Recovery Services Vault Protection Container Protected Item.",
+                    "owner": "Azure/module-maintainers"
                   },
                   "parameters": {
                     "name": {
@@ -1294,9 +1319,6 @@
                     },
                     "protectedItemType": {
                       "type": "string",
-                      "metadata": {
-                        "description": "Required. The backup item type."
-                      },
                       "allowedValues": [
                         "AzureFileShareProtectedItem",
                         "AzureVmWorkloadSAPAseDatabase",
@@ -1308,7 +1330,10 @@
                         "Microsoft.ClassicCompute/virtualMachines",
                         "Microsoft.Compute/virtualMachines",
                         "Microsoft.Sql/servers/databases"
-                      ]
+                      ],
+                      "metadata": {
+                        "description": "Required. The backup item type."
+                      }
                     },
                     "policyId": {
                       "type": "string",
@@ -1449,9 +1474,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.18.4.5664",
-              "templateHash": "18320761715390179675"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "13635254612288594433"
+            },
+            "name": "Recovery Services Vault Backup Policies",
+            "description": "This module deploys a Recovery Services Vault Backup Policy.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "recoveryVaultName": {
@@ -1563,9 +1591,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.18.4.5664",
-              "templateHash": "5131372654986403353"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "2030776827393689599"
+            },
+            "name": "Recovery Services Vault Backup Config",
+            "description": "This module deploys a Recovery Services Vault Backup Config.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "recoveryVaultName": {
@@ -1751,9 +1782,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.18.4.5664",
-              "templateHash": "8602451020497964518"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "14248192554679574765"
+            },
+            "name": "Recovery Services Vault Replication Alert Settings",
+            "description": "This module deploys a Recovery Services Vault Replication Alert Settings.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "recoveryVaultName": {
@@ -1905,9 +1939,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.18.4.5664",
-              "templateHash": "12991773916541265724"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "609426544615556519"
+            },
+            "name": "Private Endpoints",
+            "description": "This module deploys a Private Endpoint.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "name": {
@@ -1972,14 +2009,14 @@
             "lock": {
               "type": "string",
               "defaultValue": "",
-              "metadata": {
-                "description": "Optional. Specify the type of lock."
-              },
               "allowedValues": [
                 "",
                 "CanNotDelete",
                 "ReadOnly"
-              ]
+              ],
+              "metadata": {
+                "description": "Optional. Specify the type of lock."
+              }
             },
             "roleAssignments": {
               "type": "array",
@@ -2102,9 +2139,12 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.18.4.5664",
-                      "templateHash": "3520683536217550590"
-                    }
+                      "version": "0.20.4.51522",
+                      "templateHash": "18114841529204248478"
+                    },
+                    "name": "Private Endpoint Private DNS Zone Groups",
+                    "description": "This module deploys a Private Endpoint Private DNS Zone Group.",
+                    "owner": "Azure/module-maintainers"
                   },
                   "parameters": {
                     "privateEndpointName": {
@@ -2115,8 +2155,8 @@
                     },
                     "privateDNSResourceIds": {
                       "type": "array",
-                      "maxLength": 5,
                       "minLength": 1,
+                      "maxLength": 5,
                       "metadata": {
                         "description": "Required. Array of private DNS zone resource IDs. A DNS zone group can support up to 5 DNS zones."
                       }
@@ -2237,8 +2277,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.18.4.5664",
-                      "templateHash": "11724106538771429164"
+                      "version": "0.20.4.51522",
+                      "templateHash": "11548486149222715894"
                     }
                   },
                   "parameters": {
@@ -2451,8 +2491,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.18.4.5664",
-              "templateHash": "17324046665245220392"
+              "version": "0.20.4.51522",
+              "templateHash": "14813895504014911303"
             }
           },
           "parameters": {

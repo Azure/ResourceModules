@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.18.4.5664",
-      "templateHash": "18376427660961730499"
+      "version": "0.19.5.34762",
+      "templateHash": "17442896935715609244"
     }
   },
   "parameters": {
@@ -97,11 +97,25 @@
         "description": "Optional. The collaboration branch name. Default is 'main'."
       }
     },
+    "gitDisablePublish": {
+      "type": "bool",
+      "defaultValue": false,
+      "metadata": {
+        "description": "Optional. Disable manual publish operation in ADF studio to favor automated publish."
+      }
+    },
     "gitRootFolder": {
       "type": "string",
       "defaultValue": "/",
       "metadata": {
         "description": "Optional. The root folder path name. Default is '/'."
+      }
+    },
+    "gitHostName": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Optional. The GitHub Enterprise Server host (prefixed with 'https://'). Only relevant for 'FactoryGitHubConfiguration'."
       }
     },
     "globalParameters": {
@@ -215,6 +229,7 @@
         "allLogs"
       ],
       "allowedValues": [
+        "",
         "allLogs",
         "ActivityRuns",
         "PipelineRuns",
@@ -227,7 +242,7 @@
         "SSISIntegrationRuntimeLogs"
       ],
       "metadata": {
-        "description": "Optional. The name of logs that will be streamed. \"allLogs\" includes all possible logs for the resource."
+        "description": "Optional. The name of logs that will be streamed. \"allLogs\" includes all possible logs for the resource. Set to '' to disable log collection."
       }
     },
     "diagnosticMetricsToEnable": {
@@ -275,9 +290,9 @@
     "copy": [
       {
         "name": "diagnosticsLogsSpecified",
-        "count": "[length(filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', not(equals(lambdaVariables('item'), 'allLogs')))))]",
+        "count": "[length(filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', and(not(equals(lambdaVariables('item'), 'allLogs')), not(equals(lambdaVariables('item'), ''))))))]",
         "input": {
-          "category": "[filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', not(equals(lambdaVariables('item'), 'allLogs'))))[copyIndex('diagnosticsLogsSpecified')]]",
+          "category": "[filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', and(not(equals(lambdaVariables('item'), 'allLogs')), not(equals(lambdaVariables('item'), '')))))[copyIndex('diagnosticsLogsSpecified')]]",
           "enabled": true,
           "retentionPolicy": {
             "enabled": true,
@@ -299,7 +314,7 @@
         }
       }
     ],
-    "diagnosticsLogs": "[if(contains(parameters('diagnosticLogCategoriesToEnable'), 'allLogs'), createArray(createObject('categoryGroup', 'allLogs', 'enabled', true(), 'retentionPolicy', createObject('enabled', true(), 'days', parameters('diagnosticLogsRetentionInDays')))), variables('diagnosticsLogsSpecified'))]",
+    "diagnosticsLogs": "[if(contains(parameters('diagnosticLogCategoriesToEnable'), 'allLogs'), createArray(createObject('categoryGroup', 'allLogs', 'enabled', true(), 'retentionPolicy', createObject('enabled', true(), 'days', parameters('diagnosticLogsRetentionInDays')))), if(contains(parameters('diagnosticLogCategoriesToEnable'), ''), createArray(), variables('diagnosticsLogsSpecified')))]",
     "identityType": "[if(parameters('systemAssignedIdentity'), if(not(empty(parameters('userAssignedIdentities'))), 'SystemAssigned,UserAssigned', 'SystemAssigned'), if(not(empty(parameters('userAssignedIdentities'))), 'UserAssigned', 'None'))]",
     "identity": "[if(not(equals(variables('identityType'), 'None')), createObject('type', variables('identityType'), 'userAssignedIdentities', if(not(empty(parameters('userAssignedIdentities'))), parameters('userAssignedIdentities'), null())), null())]",
     "enableReferencedModulesTelemetry": false
@@ -327,7 +342,7 @@
       "tags": "[parameters('tags')]",
       "identity": "[variables('identity')]",
       "properties": {
-        "repoConfiguration": "[if(bool(parameters('gitConfigureLater')), null(), union(createObject('type', parameters('gitRepoType'), 'accountName', parameters('gitAccountName'), 'repositoryName', parameters('gitRepositoryName'), 'collaborationBranch', parameters('gitCollaborationBranch'), 'rootFolder', parameters('gitRootFolder')), if(equals(parameters('gitRepoType'), 'FactoryVSTSConfiguration'), createObject('projectName', parameters('gitProjectName')), createObject()), createObject()))]",
+        "repoConfiguration": "[if(bool(parameters('gitConfigureLater')), null(), union(createObject('type', parameters('gitRepoType'), 'hostName', parameters('gitHostName'), 'accountName', parameters('gitAccountName'), 'repositoryName', parameters('gitRepositoryName'), 'collaborationBranch', parameters('gitCollaborationBranch'), 'rootFolder', parameters('gitRootFolder'), 'disablePublish', parameters('gitDisablePublish')), if(equals(parameters('gitRepoType'), 'FactoryVSTSConfiguration'), createObject('projectName', parameters('gitProjectName')), createObject()), createObject()))]",
         "globalParameters": "[if(not(empty(parameters('globalParameters'))), parameters('globalParameters'), null())]",
         "publicNetworkAccess": "[if(not(empty(parameters('publicNetworkAccess'))), parameters('publicNetworkAccess'), if(not(empty(parameters('privateEndpoints'))), 'Disabled', null()))]",
         "encryption": "[if(not(empty(parameters('cMKKeyName'))), createObject('identity', createObject('userAssignedIdentity', parameters('cMKUserAssignedIdentityResourceId')), 'keyName', parameters('cMKKeyName'), 'keyVersion', if(not(empty(parameters('cMKKeyVersion'))), parameters('cMKKeyVersion'), null()), 'vaultBaseUrl', reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', split(parameters('cMKKeyVaultResourceId'), '/')[2], split(parameters('cMKKeyVaultResourceId'), '/')[4]), 'Microsoft.KeyVault/vaults', last(split(parameters('cMKKeyVaultResourceId'), '/'))), '2021-10-01').vaultUri), null())]"
@@ -395,8 +410,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.18.4.5664",
-              "templateHash": "9467125112092485316"
+              "version": "0.19.5.34762",
+              "templateHash": "1965875674709533586"
             }
           },
           "parameters": {
@@ -493,8 +508,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.18.4.5664",
-                      "templateHash": "7898352428563033756"
+                      "version": "0.19.5.34762",
+                      "templateHash": "15894355068813582548"
                     }
                   },
                   "parameters": {
@@ -659,8 +674,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.18.4.5664",
-              "templateHash": "4402266085002901401"
+              "version": "0.19.5.34762",
+              "templateHash": "4260654403827080373"
             }
           },
           "parameters": {
@@ -800,8 +815,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.18.4.5664",
-              "templateHash": "1786779947286825660"
+              "version": "0.19.5.34762",
+              "templateHash": "3903369935711152836"
             }
           },
           "parameters": {
@@ -963,8 +978,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.18.4.5664",
-              "templateHash": "12991773916541265724"
+              "version": "0.19.5.34762",
+              "templateHash": "11825715538543749879"
             }
           },
           "parameters": {
@@ -1160,8 +1175,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.18.4.5664",
-                      "templateHash": "3520683536217550590"
+                      "version": "0.19.5.34762",
+                      "templateHash": "12684511314187066258"
                     }
                   },
                   "parameters": {
@@ -1295,8 +1310,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.18.4.5664",
-                      "templateHash": "11724106538771429164"
+                      "version": "0.19.5.34762",
+                      "templateHash": "18055161250379920591"
                     }
                   },
                   "parameters": {

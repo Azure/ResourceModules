@@ -71,7 +71,7 @@ function Add-YamlListToFile {
         # Process key value pairs in the list
         foreach ($Key in ($KeyValuePair.Keys.split(' ') | Sort-Object)) {
             Write-Verbose ('Setting environment variable [{0}] with value [{1}]' -f $Key, $KeyValuePair[$Key]) -Verbose
-            Write-Output "$Key=$($KeyValuePair[$Key])" | Out-File -FilePath $OutputFilePath -Encoding utf-8 -Append
+            Write-Output "$Key=$($KeyValuePair[$Key])" | Out-File -FilePath $OutputFilePath -Encoding 'utf-8' -Append
         }
     }
 

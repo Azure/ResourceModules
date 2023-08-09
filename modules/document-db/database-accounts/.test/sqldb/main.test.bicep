@@ -18,7 +18,7 @@ param serviceShort string = 'dddasql'
 param enableDefaultTelemetry bool = true
 
 @description('Optional. A token to inject into the name of each resource.')
-param namePrefix string = '<<namePrefix>>'
+param namePrefix string = '[[namePrefix]]'
 
 // ============ //
 // Dependencies //
@@ -36,6 +36,7 @@ module nestedDependencies 'dependencies.bicep' = {
   name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
     managedIdentityName: 'dep-${namePrefix}-msi-${serviceShort}'
+    virtualNetworkName: 'dep-${namePrefix}-vnet-${serviceShort}'
   }
 }
 
@@ -81,6 +82,21 @@ module testDeployment '../../main.bicep' = {
     diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
     diagnosticLogsRetentionInDays: 7
     location: location
+    privateEndpoints: [
+      {
+        privateDnsZoneGroup: {
+          privateDNSResourceIds: [
+            nestedDependencies.outputs.privateDNSResourceId
+          ]
+        }
+        service: 'Sql'
+        subnetResourceId: nestedDependencies.outputs.subnetResourceId
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
+      }
+    ]
     roleAssignments: [
       {
         roleDefinitionIdOrName: 'Reader'

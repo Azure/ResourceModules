@@ -1,3 +1,7 @@
+metadata name = 'Automation Account Runbooks'
+metadata description = 'This module deploys an Azure Automation Account Runbook.'
+metadata owner = 'Azure/module-maintainers'
+
 @sys.description('Required. Name of the Automation Account runbook.')
 param name string
 

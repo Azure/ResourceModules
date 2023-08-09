@@ -1,3 +1,7 @@
+metadata name = 'Route Tables'
+metadata description = 'This module deploys a User Defined Route Table (UDR).'
+metadata owner = 'Azure/module-maintainers'
+
 @description('Required. Name given for the hub route table.')
 param name string
 

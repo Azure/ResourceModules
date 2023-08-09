@@ -1,3 +1,7 @@
+metadata name = 'Network Watchers'
+metadata description = 'This module deploys a Network Watcher.'
+metadata owner = 'Azure/module-maintainers'
+
 @description('Optional. Name of the Network Watcher resource (hidden).')
 @minLength(1)
 param name string = 'NetworkWatcher_${location}'

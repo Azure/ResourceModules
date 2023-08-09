@@ -1,3 +1,7 @@
+metadata name = 'Resources Tags Resource Group'
+metadata description = 'This module deploys a Resource Tag on a Resource Group scope.'
+metadata owner = 'Azure/module-maintainers'
+
 @description('Optional. Tags for the resource group. If not provided, removes existing tags.')
 param tags object = {}
 

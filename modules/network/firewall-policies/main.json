@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.18.4.5664",
-      "templateHash": "16307759568129694261"
+      "version": "0.19.5.34762",
+      "templateHash": "13879906363559654168"
     }
   },
   "parameters": {
@@ -27,13 +27,6 @@
       "defaultValue": {},
       "metadata": {
         "description": "Optional. Tags of the Firewall policy resource."
-      }
-    },
-    "systemAssignedIdentity": {
-      "type": "bool",
-      "defaultValue": false,
-      "metadata": {
-        "description": "Optional. Enables system assigned managed identity on the resource."
       }
     },
     "userAssignedIdentities": {
@@ -210,7 +203,7 @@
     }
   },
   "variables": {
-    "identityType": "[if(parameters('systemAssignedIdentity'), if(not(empty(parameters('userAssignedIdentities'))), 'SystemAssigned,UserAssigned', 'SystemAssigned'), if(not(empty(parameters('userAssignedIdentities'))), 'UserAssigned', 'None'))]",
+    "identityType": "[if(not(empty(parameters('userAssignedIdentities'))), 'UserAssigned', 'None')]",
     "identity": "[if(not(equals(variables('identityType'), 'None')), createObject('type', variables('identityType'), 'userAssignedIdentities', if(not(empty(parameters('userAssignedIdentities'))), parameters('userAssignedIdentities'), null())), null())]",
     "enableReferencedModulesTelemetry": false
   },
@@ -294,8 +287,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.18.4.5664",
-              "templateHash": "6487198105310965906"
+              "version": "0.19.5.34762",
+              "templateHash": "17712009459606794175"
             }
           },
           "parameters": {

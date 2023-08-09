@@ -4,17 +4,20 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.18.4.5664",
-      "templateHash": "16197536701604805678"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "3345433640294788580"
+    },
+    "name": "Synapse Workspaces",
+    "description": "This module deploys a Synapse Workspace.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
       "type": "string",
+      "maxLength": 50,
       "metadata": {
         "description": "Required. The name of the Synapse Workspace."
-      },
-      "maxLength": 50
+      }
     },
     "location": {
       "type": "string",
@@ -115,10 +118,10 @@
     "managedResourceGroupName": {
       "type": "string",
       "defaultValue": "",
+      "maxLength": 90,
       "metadata": {
         "description": "Optional. Workspace managed resource group. The resource group name uniquely identifies the resource group within the user subscriptionId. The resource group name must be no longer than 90 characters long, and must be alphanumeric characters (Char.IsLetterOrDigit()) and '-', '_', '(', ')' and'.'. Note that the name cannot end with '.'."
-      },
-      "maxLength": 90
+      }
     },
     "managedVirtualNetwork": {
       "type": "bool",
@@ -158,13 +161,13 @@
     "publicNetworkAccess": {
       "type": "string",
       "defaultValue": "Enabled",
-      "metadata": {
-        "description": "Optional. Enable or Disable public network access to workspace."
-      },
       "allowedValues": [
         "Enabled",
         "Disabled"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Enable or Disable public network access to workspace."
+      }
     },
     "purviewResourceID": {
       "type": "string",
@@ -203,14 +206,14 @@
     "lock": {
       "type": "string",
       "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Specify the type of lock."
-      },
       "allowedValues": [
         "",
         "CanNotDelete",
         "ReadOnly"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Specify the type of lock."
+      }
     },
     "roleAssignments": {
       "type": "array",
@@ -229,8 +232,8 @@
     "diagnosticLogsRetentionInDays": {
       "type": "int",
       "defaultValue": 365,
-      "maxValue": 365,
       "minValue": 0,
+      "maxValue": 365,
       "metadata": {
         "description": "Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely."
       }
@@ -269,6 +272,7 @@
         "allLogs"
       ],
       "allowedValues": [
+        "",
         "allLogs",
         "SynapseRbacOperations",
         "GatewayApiRequests",
@@ -280,7 +284,7 @@
         "SynapseLinkEvent"
       ],
       "metadata": {
-        "description": "Optional. The name of logs that will be streamed. \"allLogs\" includes all possible logs for the resource."
+        "description": "Optional. The name of logs that will be streamed. \"allLogs\" includes all possible logs for the resource. Set to '' to disable log collection."
       }
     },
     "diagnosticSettingsName": {
@@ -295,9 +299,9 @@
     "copy": [
       {
         "name": "diagnosticsLogsSpecified",
-        "count": "[length(filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', not(equals(lambdaVariables('item'), 'allLogs')))))]",
+        "count": "[length(filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', and(not(equals(lambdaVariables('item'), 'allLogs')), not(equals(lambdaVariables('item'), ''))))))]",
         "input": {
-          "category": "[filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', not(equals(lambdaVariables('item'), 'allLogs'))))[copyIndex('diagnosticsLogsSpecified')]]",
+          "category": "[filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', and(not(equals(lambdaVariables('item'), 'allLogs')), not(equals(lambdaVariables('item'), '')))))[copyIndex('diagnosticsLogsSpecified')]]",
           "enabled": true,
           "retentionPolicy": {
             "enabled": true,
@@ -312,7 +316,7 @@
       "type": "[variables('identityType')]",
       "userAssignedIdentities": "[if(not(empty(variables('userAssignedIdentitiesUnion'))), variables('userAssignedIdentitiesUnion'), null())]"
     },
-    "diagnosticsLogs": "[if(contains(parameters('diagnosticLogCategoriesToEnable'), 'allLogs'), createArray(createObject('categoryGroup', 'allLogs', 'enabled', true(), 'retentionPolicy', createObject('enabled', true(), 'days', parameters('diagnosticLogsRetentionInDays')))), variables('diagnosticsLogsSpecified'))]",
+    "diagnosticsLogs": "[if(contains(parameters('diagnosticLogCategoriesToEnable'), 'allLogs'), createArray(createObject('categoryGroup', 'allLogs', 'enabled', true(), 'retentionPolicy', createObject('enabled', true(), 'days', parameters('diagnosticLogsRetentionInDays')))), if(contains(parameters('diagnosticLogCategoriesToEnable'), ''), createArray(), variables('diagnosticsLogsSpecified')))]",
     "enableReferencedModulesTelemetry": false
   },
   "resources": [
@@ -346,7 +350,7 @@
           "filesystem": "[parameters('defaultDataLakeStorageFilesystem')]",
           "createManagedPrivateEndpoint": "[if(parameters('managedVirtualNetwork'), parameters('defaultDataLakeStorageCreateManagedPrivateEndpoint'), null())]"
         },
-        "encryption": "[if(parameters('encryption'), createObject('cmk', createObject('kekIdentity', createObject('userAssignedIdentity', if(not(empty(parameters('cMKUserAssignedIdentityResourceId'))), parameters('cMKUserAssignedIdentityResourceId'), null()), 'useSystemAssignedIdentity', parameters('cMKUseSystemAssignedIdentity')), 'key', createObject('keyVaultUrl', reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', split(parameters('cMKKeyVaultResourceId'), '/')[2], split(parameters('cMKKeyVaultResourceId'), '/')[4]), 'Microsoft.KeyVault/vaults/keys', split(format('{0}/{1}', last(split(parameters('cMKKeyVaultResourceId'), '/')), parameters('cMKKeyName')), '/')[0], split(format('{0}/{1}', last(split(parameters('cMKKeyVaultResourceId'), '/')), parameters('cMKKeyName')), '/')[1]), '2022-07-01').keyUri, 'name', parameters('cMKKeyName')))), null())]",
+        "encryption": "[if(parameters('encryption'), createObject('cmk', createObject('kekIdentity', createObject('userAssignedIdentity', if(not(empty(parameters('cMKUserAssignedIdentityResourceId'))), parameters('cMKUserAssignedIdentityResourceId'), null()), 'useSystemAssignedIdentity', parameters('cMKUseSystemAssignedIdentity')), 'key', createObject('keyVaultUrl', reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', split(parameters('cMKKeyVaultResourceId'), '/')[2], split(parameters('cMKKeyVaultResourceId'), '/')[4]), 'Microsoft.KeyVault/vaults/keys', split(format('{0}/{1}', last(split(parameters('cMKKeyVaultResourceId'), '/')), parameters('cMKKeyName')), '/')[0], split(format('{0}/{1}', last(split(parameters('cMKKeyVaultResourceId'), '/')), parameters('cMKKeyName')), '/')[1]), '2021-10-01').keyUri, 'name', parameters('cMKKeyName')))), null())]",
         "managedResourceGroupName": "[if(not(empty(parameters('managedResourceGroupName'))), parameters('managedResourceGroupName'), null())]",
         "managedVirtualNetwork": "[if(parameters('managedVirtualNetwork'), 'default', null())]",
         "managedVirtualNetworkSettings": "[if(parameters('managedVirtualNetwork'), createObject('allowedAadTenantIdsForLinking', parameters('allowedAadTenantIdsForLinking'), 'linkedAccessCheckOnTargetResource', parameters('linkedAccessCheckOnTargetResource'), 'preventDataExfiltration', parameters('preventDataExfiltration')), null())]",
@@ -422,9 +426,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.18.4.5664",
-              "templateHash": "2518308521931682854"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "3836470848906868544"
+            },
+            "name": "Synapse Workspace Integration Runtimes",
+            "description": "This module deploys a Synapse Workspace Integration Runtime.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "workspaceName": {
@@ -441,13 +448,13 @@
             },
             "type": {
               "type": "string",
-              "metadata": {
-                "description": "Required. The type of Integration Runtime."
-              },
               "allowedValues": [
                 "Managed",
                 "SelfHosted"
-              ]
+              ],
+              "metadata": {
+                "description": "Required. The type of Integration Runtime."
+              }
             },
             "typeProperties": {
               "type": "object",
@@ -530,7 +537,7 @@
             "value": "[reference(resourceId('Microsoft.Synapse/workspaces', parameters('name')), '2021-06-01', 'full').identity.principalId]"
           },
           "keyvaultName": "[if(not(empty(parameters('cMKKeyVaultResourceId'))), createObject('value', last(split(parameters('cMKKeyVaultResourceId'), '/'))), createObject('value', ''))]",
-          "usesRbacAuthorization": "[if(not(empty(parameters('cMKKeyVaultResourceId'))), createObject('value', reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', split(parameters('cMKKeyVaultResourceId'), '/')[2], split(parameters('cMKKeyVaultResourceId'), '/')[4]), 'Microsoft.KeyVault/vaults', last(split(parameters('cMKKeyVaultResourceId'), '/'))), '2022-07-01').enableRbacAuthorization), createObject('value', true()))]"
+          "usesRbacAuthorization": "[if(not(empty(parameters('cMKKeyVaultResourceId'))), createObject('value', reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', split(parameters('cMKKeyVaultResourceId'), '/')[2], split(parameters('cMKKeyVaultResourceId'), '/')[4]), 'Microsoft.KeyVault/vaults', last(split(parameters('cMKKeyVaultResourceId'), '/'))), '2021-10-01').enableRbacAuthorization), createObject('value', true()))]"
         },
         "template": {
           "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
@@ -538,8 +545,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.18.4.5664",
-              "templateHash": "6953899740873270330"
+              "version": "0.20.4.51522",
+              "templateHash": "4302752720402895127"
             }
           },
           "parameters": {
@@ -625,9 +632,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.18.4.5664",
-              "templateHash": "3905250810932495166"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "11818706446850681387"
+            },
+            "name": "Synapse Workspaces Keys",
+            "description": "This module deploys a Synapse Workspaces Key.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "name": {
@@ -755,8 +765,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.18.4.5664",
-              "templateHash": "222425263769160205"
+              "version": "0.20.4.51522",
+              "templateHash": "1496376823456902472"
             }
           },
           "parameters": {
@@ -857,9 +867,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.18.4.5664",
-              "templateHash": "12991773916541265724"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "609426544615556519"
+            },
+            "name": "Private Endpoints",
+            "description": "This module deploys a Private Endpoint.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "name": {
@@ -924,14 +937,14 @@
             "lock": {
               "type": "string",
               "defaultValue": "",
-              "metadata": {
-                "description": "Optional. Specify the type of lock."
-              },
               "allowedValues": [
                 "",
                 "CanNotDelete",
                 "ReadOnly"
-              ]
+              ],
+              "metadata": {
+                "description": "Optional. Specify the type of lock."
+              }
             },
             "roleAssignments": {
               "type": "array",
@@ -1054,9 +1067,12 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.18.4.5664",
-                      "templateHash": "3520683536217550590"
-                    }
+                      "version": "0.20.4.51522",
+                      "templateHash": "18114841529204248478"
+                    },
+                    "name": "Private Endpoint Private DNS Zone Groups",
+                    "description": "This module deploys a Private Endpoint Private DNS Zone Group.",
+                    "owner": "Azure/module-maintainers"
                   },
                   "parameters": {
                     "privateEndpointName": {
@@ -1067,8 +1083,8 @@
                     },
                     "privateDNSResourceIds": {
                       "type": "array",
-                      "maxLength": 5,
                       "minLength": 1,
+                      "maxLength": 5,
                       "metadata": {
                         "description": "Required. Array of private DNS zone resource IDs. A DNS zone group can support up to 5 DNS zones."
                       }
@@ -1189,8 +1205,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.18.4.5664",
-                      "templateHash": "11724106538771429164"
+                      "version": "0.20.4.51522",
+                      "templateHash": "11548486149222715894"
                     }
                   },
                   "parameters": {

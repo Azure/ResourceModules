@@ -1,4 +1,4 @@
-# Azure Monitor Private Link Scopes `[microsoft.insights/privateLinkScopes]`
+# Azure Monitor Private Link Scopes `[Microsoft.Insights/privateLinkScopes]`
 
 This module deploys an Azure Monitor Private Link Scope.
 
@@ -118,11 +118,11 @@ To use Private Endpoint the following dependencies must be deployed:
         // Example showing all available fields
         {
             "name": "sxx-az-pe", // Optional: Name will be automatically generated if one is not provided here
-            "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001",
+            "subnetResourceId": "/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001",
             "service": "<serviceName>", // e.g. vault, registry, blob
             "privateDnsZoneGroup": {
                 "privateDNSResourceIds": [ // Optional: No DNS record will be created if a private DNS zone Resource ID is not specified
-                    "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/<privateDnsZoneName>" // e.g. privatelink.vaultcore.azure.net, privatelink.azurecr.io, privatelink.blob.core.windows.net
+                    "/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/<privateDnsZoneName>" // e.g. privatelink.vaultcore.azure.net, privatelink.azurecr.io, privatelink.blob.core.windows.net
                 ]
             },
             "ipConfigurations":[
@@ -146,7 +146,7 @@ To use Private Endpoint the following dependencies must be deployed:
         },
         // Example showing only mandatory fields
         {
-            "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001",
+            "subnetResourceId": "/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001",
             "service": "<serviceName>" // e.g. vault, registry, blob
         }
     ]
@@ -164,11 +164,11 @@ privateEndpoints:  [
     // Example showing all available fields
     {
         name: 'sxx-az-pe' // Optional: Name will be automatically generated if one is not provided here
-        subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001'
+        subnetResourceId: '/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001'
         service: '<serviceName>' // e.g. vault, registry, blob
         privateDnsZoneGroup: {
             privateDNSResourceIds: [ // Optional: No DNS record will be created if a private DNS zone Resource ID is not specified
-                '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/<privateDnsZoneName>' // e.g. privatelink.vaultcore.azure.net, privatelink.azurecr.io, privatelink.blob.core.windows.net
+                '/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/<privateDnsZoneName>' // e.g. privatelink.vaultcore.azure.net, privatelink.azurecr.io, privatelink.blob.core.windows.net
             ]
         }
         customDnsConfigs: [
@@ -192,7 +192,7 @@ privateEndpoints:  [
     }
     // Example showing only mandatory fields
     {
-        subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001'
+        subnetResourceId: '/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001'
         service: '<serviceName>' // e.g. vault, registry, blob
     }
 ]
@@ -277,7 +277,7 @@ module privateLinkScopes './insights/private-link-scopes/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-iplscom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>iplscom001'
+    name: 'iplscom001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     privateEndpoints: [
@@ -332,7 +332,7 @@ module privateLinkScopes './insights/private-link-scopes/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>iplscom001"
+      "value": "iplscom001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {
@@ -398,7 +398,7 @@ module privateLinkScopes './insights/private-link-scopes/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-iplsmin'
   params: {
     // Required parameters
-    name: '<<namePrefix>>iplsmin001'
+    name: 'iplsmin001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
@@ -419,7 +419,7 @@ module privateLinkScopes './insights/private-link-scopes/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>iplsmin001"
+      "value": "iplsmin001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {

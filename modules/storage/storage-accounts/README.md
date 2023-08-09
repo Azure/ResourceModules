@@ -173,7 +173,7 @@ roleAssignments: [
         "virtualNetworkRules": [
             {
                 "action": "Allow",
-                "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001"
+                "id": "/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001"
             }
         ],
         "ipRules": [
@@ -199,7 +199,7 @@ networkAcls: {
     virtualNetworkRules: [
         {
             action: 'Allow'
-            id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001'
+            id: '/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001'
         }
     ]
     ipRules: [
@@ -272,11 +272,11 @@ To use Private Endpoint the following dependencies must be deployed:
         // Example showing all available fields
         {
             "name": "sxx-az-pe", // Optional: Name will be automatically generated if one is not provided here
-            "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001",
+            "subnetResourceId": "/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001",
             "service": "<serviceName>", // e.g. vault, registry, blob
             "privateDnsZoneGroup": {
                 "privateDNSResourceIds": [ // Optional: No DNS record will be created if a private DNS zone Resource ID is not specified
-                    "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/<privateDnsZoneName>" // e.g. privatelink.vaultcore.azure.net, privatelink.azurecr.io, privatelink.blob.core.windows.net
+                    "/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/<privateDnsZoneName>" // e.g. privatelink.vaultcore.azure.net, privatelink.azurecr.io, privatelink.blob.core.windows.net
                 ]
             },
             "ipConfigurations":[
@@ -300,7 +300,7 @@ To use Private Endpoint the following dependencies must be deployed:
         },
         // Example showing only mandatory fields
         {
-            "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001",
+            "subnetResourceId": "/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001",
             "service": "<serviceName>" // e.g. vault, registry, blob
         }
     ]
@@ -318,11 +318,11 @@ privateEndpoints:  [
     // Example showing all available fields
     {
         name: 'sxx-az-pe' // Optional: Name will be automatically generated if one is not provided here
-        subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001'
+        subnetResourceId: '/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001'
         service: '<serviceName>' // e.g. vault, registry, blob
         privateDnsZoneGroup: {
             privateDNSResourceIds: [ // Optional: No DNS record will be created if a private DNS zone Resource ID is not specified
-                '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/<privateDnsZoneName>' // e.g. privatelink.vaultcore.azure.net, privatelink.azurecr.io, privatelink.blob.core.windows.net
+                '/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/<privateDnsZoneName>' // e.g. privatelink.vaultcore.azure.net, privatelink.azurecr.io, privatelink.blob.core.windows.net
             ]
         }
         customDnsConfigs: [
@@ -346,7 +346,7 @@ privateEndpoints:  [
     }
     // Example showing only mandatory fields
     {
-        subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001'
+        subnetResourceId: '/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001'
         service: '<serviceName>' // e.g. vault, registry, blob
     }
 ]
@@ -366,8 +366,8 @@ You can specify multiple user assigned identities to a resource by providing add
 ```json
 "userAssignedIdentities": {
     "value": {
-        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
-        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
+        "/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
+        "/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
     }
 }
 ```
@@ -380,8 +380,8 @@ You can specify multiple user assigned identities to a resource by providing add
 
 ```bicep
 userAssignedIdentities: {
-    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
-    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
+    '/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
+    '/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
 }
 ```
 
@@ -430,7 +430,7 @@ module storageAccounts './storage/storage-accounts/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-ssacom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>ssacom001'
+    name: 'ssacom001'
     // Non-required parameters
     allowBlobPublicAccess: false
     blobServices: {
@@ -464,8 +464,8 @@ module storageAccounts './storage/storage-accounts/main.bicep' = {
           WORMRetention: 666
         }
       ]
-      deleteRetentionPolicy: true
       deleteRetentionPolicyDays: 9
+      deleteRetentionPolicyEnabled: true
       diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
       diagnosticEventHubName: '<diagnosticEventHubName>'
       diagnosticLogsRetentionInDays: 7
@@ -523,7 +523,7 @@ module storageAccounts './storage/storage-accounts/main.bicep' = {
             service: 'blob'
           }
         ]
-        storageAccountName: '<<namePrefix>>ssacom001'
+        storageAccountName: 'ssacom001'
       }
     ]
     lock: 'CanNotDelete'
@@ -636,7 +636,7 @@ module storageAccounts './storage/storage-accounts/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>ssacom001"
+      "value": "ssacom001"
     },
     // Non-required parameters
     "allowBlobPublicAccess": {
@@ -674,8 +674,8 @@ module storageAccounts './storage/storage-accounts/main.bicep' = {
             "WORMRetention": 666
           }
         ],
-        "deleteRetentionPolicy": true,
         "deleteRetentionPolicyDays": 9,
+        "deleteRetentionPolicyEnabled": true,
         "diagnosticEventHubAuthorizationRuleId": "<diagnosticEventHubAuthorizationRuleId>",
         "diagnosticEventHubName": "<diagnosticEventHubName>",
         "diagnosticLogsRetentionInDays": 7,
@@ -757,7 +757,7 @@ module storageAccounts './storage/storage-accounts/main.bicep' = {
               "service": "blob"
             }
           ],
-          "storageAccountName": "<<namePrefix>>ssacom001"
+          "storageAccountName": "ssacom001"
         }
       ]
     },
@@ -895,7 +895,7 @@ module storageAccounts './storage/storage-accounts/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-ssaencr'
   params: {
     // Required parameters
-    name: '<<namePrefix>>ssaencr001'
+    name: 'ssaencr001'
     // Non-required parameters
     allowBlobPublicAccess: false
     blobServices: {
@@ -907,13 +907,13 @@ module storageAccounts './storage/storage-accounts/main.bicep' = {
       containerDeleteRetentionPolicyEnabled: true
       containers: [
         {
-          name: '<<namePrefix>>container'
+          name: 'container'
           publicAccess: 'None'
         }
       ]
       defaultServiceVersion: '2008-10-27'
-      deleteRetentionPolicy: true
       deleteRetentionPolicyDays: 9
+      deleteRetentionPolicyEnabled: true
       isVersioningEnabled: true
       lastAccessTimeTrackingPolicyEnable: true
       restorePolicyDays: 8
@@ -966,7 +966,7 @@ module storageAccounts './storage/storage-accounts/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>ssaencr001"
+      "value": "ssaencr001"
     },
     // Non-required parameters
     "allowBlobPublicAccess": {
@@ -982,13 +982,13 @@ module storageAccounts './storage/storage-accounts/main.bicep' = {
         "containerDeleteRetentionPolicyEnabled": true,
         "containers": [
           {
-            "name": "<<namePrefix>>container",
+            "name": "container",
             "publicAccess": "None"
           }
         ],
         "defaultServiceVersion": "2008-10-27",
-        "deleteRetentionPolicy": true,
         "deleteRetentionPolicyDays": 9,
+        "deleteRetentionPolicyEnabled": true,
         "isVersioningEnabled": true,
         "lastAccessTimeTrackingPolicyEnable": true,
         "restorePolicyDays": 8,
@@ -1062,7 +1062,7 @@ module storageAccounts './storage/storage-accounts/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-ssamin'
   params: {
     // Required parameters
-    name: '<<namePrefix>>ssamin001'
+    name: 'ssamin001'
     // Non-required parameters
     allowBlobPublicAccess: false
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
@@ -1084,7 +1084,7 @@ module storageAccounts './storage/storage-accounts/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>ssamin001"
+      "value": "ssamin001"
     },
     // Non-required parameters
     "allowBlobPublicAccess": {
@@ -1111,7 +1111,7 @@ module storageAccounts './storage/storage-accounts/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-ssanfs'
   params: {
     // Required parameters
-    name: '<<namePrefix>>ssanfs001'
+    name: 'ssanfs001'
     // Non-required parameters
     allowBlobPublicAccess: false
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
@@ -1167,7 +1167,7 @@ module storageAccounts './storage/storage-accounts/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>ssanfs001"
+      "value": "ssanfs001"
     },
     // Non-required parameters
     "allowBlobPublicAccess": {
@@ -1256,7 +1256,7 @@ module storageAccounts './storage/storage-accounts/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-ssav1'
   params: {
     // Required parameters
-    name: '<<namePrefix>>ssav1001'
+    name: 'ssav1001'
     // Non-required parameters
     allowBlobPublicAccess: false
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
@@ -1283,7 +1283,7 @@ module storageAccounts './storage/storage-accounts/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>ssav1001"
+      "value": "ssav1001"
     },
     // Non-required parameters
     "allowBlobPublicAccess": {

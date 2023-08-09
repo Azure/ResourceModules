@@ -1,6 +1,0 @@
-{
-    "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
-    "name": "Virtual Machines",
-    "summary": "This module deploys a Virtual Machine with one or multiple NICs and optionally one or multiple public IPs.",
-    "owner": "Azure/module-maintainers"
-}

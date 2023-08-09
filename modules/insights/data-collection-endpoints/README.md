@@ -170,7 +170,7 @@ module dataCollectionEndpoints './insights/data-collection-endpoints/main.bicep'
   name: '${uniqueString(deployment().name)}-test-idcecom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>idcecom001'
+    name: 'idcecom001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     kind: 'Windows'
@@ -207,7 +207,7 @@ module dataCollectionEndpoints './insights/data-collection-endpoints/main.bicep'
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>idcecom001"
+      "value": "idcecom001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {
@@ -257,7 +257,7 @@ module dataCollectionEndpoints './insights/data-collection-endpoints/main.bicep'
   name: '${uniqueString(deployment().name)}-test-idcemin'
   params: {
     // Required parameters
-    name: '<<namePrefix>>idcemin001'
+    name: 'idcemin001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
@@ -278,7 +278,7 @@ module dataCollectionEndpoints './insights/data-collection-endpoints/main.bicep'
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>idcemin001"
+      "value": "idcemin001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {
