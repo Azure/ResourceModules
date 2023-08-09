@@ -100,6 +100,7 @@ module testDeployment '../../main.bicep' = {
     cMKManagedDisksKeyVaultResourceId: nestedDependencies.outputs.keyVaultResourceId
     cMKManagedDisksKeyRotationToLatestKeyVersionEnabled: true
     storageAccountName: '${namePrefix}${serviceShort}001'
+    storageAccountSkuName: 'Standard_ZRS'
     publicIpName: 'nat-gw-public-ip'
     natGatewayName: 'nat-gateway'
     prepareEncryption: true
@@ -128,7 +129,6 @@ module testDeployment '../../main.bicep' = {
         }
       }
     ]
-    storageAccountSkuName: 'Standard_ZRS'
     managedResourceGroupResourceId: '${subscription().id}/resourceGroups/rg-${resourceGroupName}-managed'
 
   }
