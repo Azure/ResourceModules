@@ -492,13 +492,13 @@ module sites './web/sites/main.bicep' = {
             disableWWWAuthenticate: false
           }
           registration: {
-            clientId: 'd874dd2f-2032-4db1-a053-f0ec243685aa'
+            clientId: '55ffb134-9f3f-4169-9563-87f8deaaf751'
             clientSecretSettingName: 'EASYAUTH_SECRET'
             openIdIssuer: '<openIdIssuer>'
           }
           validation: {
             allowedAudiences: [
-              'api://d874dd2f-2032-4db1-a053-f0ec243685aa'
+              'api://55ffb134-9f3f-4169-9563-87f8deaaf751'
             ]
             defaultAuthorizationPolicy: {
               allowedPrincipals: {}
@@ -641,13 +641,13 @@ module sites './web/sites/main.bicep' = {
               "disableWWWAuthenticate": false
             },
             "registration": {
-              "clientId": "d874dd2f-2032-4db1-a053-f0ec243685aa",
+              "clientId": "55ffb134-9f3f-4169-9563-87f8deaaf751",
               "clientSecretSettingName": "EASYAUTH_SECRET",
               "openIdIssuer": "<openIdIssuer>"
             },
             "validation": {
               "allowedAudiences": [
-                "api://d874dd2f-2032-4db1-a053-f0ec243685aa"
+                "api://55ffb134-9f3f-4169-9563-87f8deaaf751"
               ],
               "defaultAuthorizationPolicy": {
                 "allowedPrincipals": {}
