@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.20.4.51522",
-      "templateHash": "9480568301304847644"
+      "templateHash": "6885797445606439561"
     },
     "name": "Azure Databricks Workspaces",
     "description": "This module deploys an Azure Databricks Workspace.",
@@ -139,7 +139,7 @@
       "type": "string",
       "defaultValue": "",
       "metadata": {
-        "description": "Optional. The name of a Public Subnet within the Virtual Network"
+        "description": "Optional. The name of a Public Subnet within the Virtual Network."
       }
     },
     "disablePublicIp": {
