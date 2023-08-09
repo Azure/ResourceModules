@@ -4,17 +4,20 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "18190940953857130422"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "15029180251266513913"
+    },
+    "name": "Storage Account Table Services",
+    "description": "This module deploys a Storage Account Table Service.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "storageAccountName": {
       "type": "string",
+      "maxLength": 24,
       "metadata": {
         "description": "Conditional. The name of the parent Storage Account. Required if the template is used in a standalone deployment."
-      },
-      "maxLength": 24
+      }
     },
     "tables": {
       "type": "array",
@@ -26,8 +29,8 @@
     "diagnosticLogsRetentionInDays": {
       "type": "int",
       "defaultValue": 365,
-      "maxValue": 365,
       "minValue": 0,
+      "maxValue": 365,
       "metadata": {
         "description": "Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely."
       }
@@ -204,17 +207,20 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "10978796725407723500"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "3732027241762478422"
+            },
+            "name": "Storage Account Table",
+            "description": "This module deploys a Storage Account Table.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "storageAccountName": {
               "type": "string",
+              "maxLength": 24,
               "metadata": {
                 "description": "Conditional. The name of the parent Storage Account. Required if the template is used in a standalone deployment."
-              },
-              "maxLength": 24
+              }
             },
             "name": {
               "type": "string",

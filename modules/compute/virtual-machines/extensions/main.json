@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "1717101673262574531"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "4640958558179616903"
+    },
+    "name": "Virtual Machine Extensions",
+    "description": "This module deploys a Virtual Machine Extension.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "virtualMachineName": {

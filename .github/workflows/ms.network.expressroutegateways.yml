@@ -30,7 +30,7 @@ on:
     paths:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
-      - '.github/workflows/ms.network.expressroutegateway.yml'
+      - '.github/workflows/ms.network.expressroutegateways.yml'
       - 'modules/network/express-route-gateway/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
@@ -38,7 +38,7 @@ on:
 
 env:
   modulePath: 'modules/network/express-route-gateway'
-  workflowPath: '.github/workflows/ms.network.expressroutegateway.yml'
+  workflowPath: '.github/workflows/ms.network.expressroutegateways.yml'
 
 concurrency:
   group: ${{ github.workflow }}

@@ -4,17 +4,20 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "16629237483959370486"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "13219619797955519085"
+    },
+    "name": "Storage Account Queue Services",
+    "description": "This module deploys a Storage Account Queue Service.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "storageAccountName": {
       "type": "string",
+      "maxLength": 24,
       "metadata": {
         "description": "Conditional. The name of the parent Storage Account. Required if the template is used in a standalone deployment."
-      },
-      "maxLength": 24
+      }
     },
     "queues": {
       "type": "array",
@@ -26,8 +29,8 @@
     "diagnosticLogsRetentionInDays": {
       "type": "int",
       "defaultValue": 365,
-      "maxValue": 365,
       "minValue": 0,
+      "maxValue": 365,
       "metadata": {
         "description": "Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely."
       }
@@ -206,17 +209,20 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "7151911553853543662"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "7293459815655804615"
+            },
+            "name": "Storage Account Queues",
+            "description": "This module deploys a Storage Account Queue.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "storageAccountName": {
               "type": "string",
+              "maxLength": 24,
               "metadata": {
                 "description": "Conditional. The name of the parent Storage Account. Required if the template is used in a standalone deployment."
-              },
-              "maxLength": 24
+              }
             },
             "name": {
               "type": "string",
@@ -303,8 +309,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.19.5.34762",
-                      "templateHash": "332423713047288228"
+                      "version": "0.20.4.51522",
+                      "templateHash": "16848435230262465953"
                     }
                   },
                   "parameters": {

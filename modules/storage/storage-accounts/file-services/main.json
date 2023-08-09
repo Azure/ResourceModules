@@ -4,17 +4,20 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "11673401817542578236"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "1594285537604698727"
+    },
+    "name": "Storage Account File Share Services",
+    "description": "This module deploys a Storage Account File Share Service.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "storageAccountName": {
       "type": "string",
+      "maxLength": 24,
       "metadata": {
         "description": "Conditional. The name of the parent Storage Account. Required if the template is used in a standalone deployment."
-      },
-      "maxLength": 24
+      }
     },
     "name": {
       "type": "string",
@@ -43,8 +46,8 @@
     "diagnosticLogsRetentionInDays": {
       "type": "int",
       "defaultValue": 365,
-      "maxValue": 365,
       "minValue": 0,
+      "maxValue": 365,
       "metadata": {
         "description": "Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely."
       }
@@ -238,17 +241,20 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "7389077354310638042"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "15634855845265993886"
+            },
+            "name": "Storage Account File Shares",
+            "description": "This module deploys a Storage Account File Share.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "storageAccountName": {
               "type": "string",
+              "maxLength": 24,
               "metadata": {
                 "description": "Conditional. The name of the parent Storage Account. Required if the template is used in a standalone deployment."
-              },
-              "maxLength": 24
+              }
             },
             "fileServicesName": {
               "type": "string",
@@ -266,15 +272,15 @@
             "accessTier": {
               "type": "string",
               "defaultValue": "TransactionOptimized",
-              "metadata": {
-                "description": "Conditional. Access tier for specific share. Required if the Storage Account kind is set to FileStorage (should be set to \"Premium\"). GpV2 account can choose between TransactionOptimized (default), Hot, and Cool."
-              },
               "allowedValues": [
                 "Premium",
                 "Hot",
                 "Cool",
                 "TransactionOptimized"
-              ]
+              ],
+              "metadata": {
+                "description": "Conditional. Access tier for specific share. Required if the Storage Account kind is set to FileStorage (should be set to \"Premium\"). GpV2 account can choose between TransactionOptimized (default), Hot, and Cool."
+              }
             },
             "shareQuota": {
               "type": "int",
@@ -286,25 +292,25 @@
             "enabledProtocols": {
               "type": "string",
               "defaultValue": "SMB",
-              "metadata": {
-                "description": "Optional. The authentication protocol that is used for the file share. Can only be specified when creating a share."
-              },
               "allowedValues": [
                 "NFS",
                 "SMB"
-              ]
+              ],
+              "metadata": {
+                "description": "Optional. The authentication protocol that is used for the file share. Can only be specified when creating a share."
+              }
             },
             "rootSquash": {
               "type": "string",
               "defaultValue": "NoRootSquash",
-              "metadata": {
-                "description": "Optional. Permissions for NFS file shares are enforced by the client OS rather than the Azure Files service. Toggling the root squash behavior reduces the rights of the root user for NFS shares."
-              },
               "allowedValues": [
                 "AllSquash",
                 "NoRootSquash",
                 "RootSquash"
-              ]
+              ],
+              "metadata": {
+                "description": "Optional. Permissions for NFS file shares are enforced by the client OS rather than the Azure Files service. Toggling the root squash behavior reduces the rights of the root user for NFS shares."
+              }
             },
             "roleAssignments": {
               "type": "array",
@@ -381,8 +387,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.19.5.34762",
-                      "templateHash": "2300763779336807238"
+                      "version": "0.20.4.51522",
+                      "templateHash": "17068545632348399169"
                     }
                   },
                   "parameters": {
