@@ -47,7 +47,7 @@ This module deploys an Azure Databricks Workspace.
 | `cMKManagedServicesKeyName` | string | `''` |  | The name of the customer managed key to use for encryption. |
 | `cMKManagedServicesKeyVersion` | string | `''` |  | The version of the customer managed key to reference for encryption. If not provided, the latest key version is used. |
 | `customPrivateSubnetName` | string | `''` |  | The name of the Private Subnet within the Virtual Network. |
-| `customPublicSubnetName` | string | `''` |  | The name of a Public Subnet within the Virtual Network |
+| `customPublicSubnetName` | string | `''` |  | The name of a Public Subnet within the Virtual Network. |
 | `customVirtualNetworkResourceId` | string | `''` |  | The resource ID of a Virtual Network where this Databricks Cluster should be created. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |

@@ -62,7 +62,7 @@ param amlWorkspaceResourceId string = ''
 @description('Optional. The name of the Private Subnet within the Virtual Network.')
 param customPrivateSubnetName string = ''
 
-@description('Optional. The name of a Public Subnet within the Virtual Network')
+@description('Optional. The name of a Public Subnet within the Virtual Network.')
 param customPublicSubnetName string = ''
 
 @description('Optional. Disable Public IP.')
