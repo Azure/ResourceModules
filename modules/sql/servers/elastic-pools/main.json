@@ -5,8 +5,11 @@
     "_generator": {
       "name": "bicep",
       "version": "0.19.5.34762",
-      "templateHash": "13468519453235936135"
-    }
+      "templateHash": "14041762700980122813"
+    },
+    "name": "SQL Server Elastic Pool",
+    "description": "This module deploys an Azure SQL Server Elastic Pool.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
@@ -90,7 +93,7 @@
     },
     "minCapacity": {
       "type": "int",
-      "defaultValue": 2,
+      "defaultValue": -1,
       "metadata": {
         "description": "Optional. Minimal capacity that serverless pool will not shrink below, if not paused."
       }
