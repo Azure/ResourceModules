@@ -5,8 +5,8 @@ metadata owner = 'Azure/module-maintainers'
 @description('Required. The name of the Azure Databricks workspace to create.')
 param name string
 
-@description('Optional. The managed resource group ID.')
-param managedResourceGroupId string = ''
+@description('Optional. The managed resource group ID. Is created by the module as per the to-be resource ID you provide.')
+param managedResourceGroupResourceId string = ''
 
 @description('Optional. The pricing tier of workspace.')
 @allowed([
@@ -119,9 +119,6 @@ param vnetAddressPrefix string = '10.139'
 @description('Optional. The workspace provider authorizations.')
 param authorizations array = []
 
-@description('Optional. The details of Managed Identity of Disk Encryption Set used for Managed Disk Encryption.')
-param managedDiskIdentity object = {}
-
 @description('Optional. 	The network access type for accessing workspace. Set value to disabled to access workspace only via private link.')
 @allowed([
   'Disabled'
@@ -135,9 +132,6 @@ param publicNetworkAccess string = 'Enabled'
   'NoAzureDatabricksRules'
 ])
 param requiredNsgRules string = 'AllRules'
-
-@description('Optional. The details of Managed Identity of Storage Account.')
-param storageAccountIdentity object = {}
 
 @description('Optional. The blob URI where the UI definition file is located.')
 param uiDefinitionUri string = ''
@@ -229,7 +223,7 @@ resource workspace 'Microsoft.Databricks/workspaces@2023-02-01' = {
     name: skuName
   }
   properties: {
-    managedResourceGroupId: !empty(managedResourceGroupId) ? managedResourceGroupId : '${subscription().id}/resourceGroups/${name}-rg'
+    managedResourceGroupId: !empty(managedResourceGroupResourceId) ? managedResourceGroupResourceId : '${subscription().id}/resourceGroups/${name}-rg'
     parameters: {
       customVirtualNetworkId: !empty(customVirtualNetworkResourceId) ? {
         value: customVirtualNetworkResourceId
@@ -274,12 +268,10 @@ resource workspace 'Microsoft.Databricks/workspaces@2023-02-01' = {
         value: vnetAddressPrefix
       } : null
     }
-    // authorizations: authorizations
-    // managedDiskIdentity: managedDiskIdentity
-    // publicNetworkAccess: publicNetworkAccess
-    // requiredNsgRules: requiredNsgRules
-    // storageAccountIdentity: storageAccountIdentity
-    // uiDefinitionUri: uiDefinitionUri
+    //authorizations: authorizations
+    publicNetworkAccess: publicNetworkAccess
+    requiredNsgRules: requiredNsgRules
+    //uiDefinitionUri: uiDefinitionUri
     encryption: !empty(cMKManagedServicesKeyName) || !empty(cMKManagedServicesKeyName) ? {
       entities: {
         managedServices: !empty(cMKManagedServicesKeyName) ? {

@@ -47,7 +47,7 @@ module nestedDependencies 'dependencies.bicep' = {
     networkSecurityGroupName: 'dep-${namePrefix}-nsg-${serviceShort}'
     // Adding base time to make the name unique as purge protection must be enabled (but may not be longer than 24 characters total)
     // keyVaultName: 'dep-${namePrefix}-kv-${serviceShort}-${substring(uniqueString(baseTime), 0, 3)}'
-    keyVaultName: 'dep${namePrefix}kv${serviceShort}al'
+    keyVaultName: 'dep-${namePrefix}-kv-${serviceShort}-al'
   }
 }
 
@@ -103,7 +103,7 @@ module testDeployment '../../main.bicep' = {
     publicIpName: 'nat-gw-public-ip'
     natGatewayName: 'nat-gateway'
     prepareEncryption: true
-    requiredNsgRules: 'AllRules'
+    requiredNsgRules: 'NoAzureDatabricksRules'
     skuName: 'premium'
     amlWorkspaceResourceId: nestedDependencies.outputs.machineLearningWorkspaceResourceId
     customPrivateSubnetName: nestedDependencies.outputs.customPrivateSubnetName
@@ -128,5 +128,8 @@ module testDeployment '../../main.bicep' = {
         }
       }
     ]
+    storageAccountSkuName: 'Standard_ZRS'
+    managedResourceGroupResourceId: '${subscription().id}/resourceGroups/rg-${resourceGroupName}-managed'
+
   }
 }
