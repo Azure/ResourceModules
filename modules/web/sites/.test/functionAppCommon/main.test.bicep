@@ -74,7 +74,7 @@ module testDeployment '../../main.bicep' = {
     appInsightResourceId: nestedDependencies.outputs.applicationInsightsResourceId
     appSettingsKeyValuePairs: {
       AzureFunctionsJobHost__logging__logLevel__default: 'Trace'
-      EASYAUTH_SECRET: 'https://${namePrefix}-KeyVault${environment().suffixes.keyvaultDns}/secrets/Modules-Test-SP-Password'
+      EASYAUTH_SECRET: 'https://hvtest${environment().suffixes.keyvaultDns}/secrets/testseceret/2fba3944e8a94314aee92630e3dee04c'
       FUNCTIONS_EXTENSION_VERSION: '~4'
       FUNCTIONS_WORKER_RUNTIME: 'dotnet'
     }
@@ -99,13 +99,13 @@ module testDeployment '../../main.bicep' = {
             disableWWWAuthenticate: false
           }
           registration: {
-            clientId: 'd874dd2f-2032-4db1-a053-f0ec243685aa'
+            clientId: '55ffb134-9f3f-4169-9563-87f8deaaf751'
             clientSecretSettingName: 'EASYAUTH_SECRET'
             openIdIssuer: 'https://sts.windows.net/${tenant().tenantId}/v2.0/'
           }
           validation: {
             allowedAudiences: [
-              'api://d874dd2f-2032-4db1-a053-f0ec243685aa'
+              'api://55ffb134-9f3f-4169-9563-87f8deaaf751'
             ]
             defaultAuthorizationPolicy: {
               allowedPrincipals: {}
