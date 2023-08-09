@@ -116,9 +116,6 @@ param storageAccountSkuName string = 'Standard_GRS'
 @description('Optional. Address prefix for Managed virtual network.')
 param vnetAddressPrefix string = '10.139'
 
-@description('Optional. The workspace provider authorizations.')
-param authorizations array = []
-
 @description('Optional. 	The network access type for accessing workspace. Set value to disabled to access workspace only via private link.')
 @allowed([
   'Disabled'
@@ -132,9 +129,6 @@ param publicNetworkAccess string = 'Enabled'
   'NoAzureDatabricksRules'
 ])
 param requiredNsgRules string = 'AllRules'
-
-@description('Optional. The blob URI where the UI definition file is located.')
-param uiDefinitionUri string = ''
 
 @description('Optional. Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.')
 param privateEndpoints array = []
@@ -268,10 +262,8 @@ resource workspace 'Microsoft.Databricks/workspaces@2023-02-01' = {
         value: vnetAddressPrefix
       } : null
     }
-    //authorizations: authorizations
     publicNetworkAccess: publicNetworkAccess
     requiredNsgRules: requiredNsgRules
-    //uiDefinitionUri: uiDefinitionUri
     encryption: !empty(cMKManagedServicesKeyName) || !empty(cMKManagedServicesKeyName) ? {
       entities: {
         managedServices: !empty(cMKManagedServicesKeyName) ? {

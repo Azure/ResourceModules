@@ -47,7 +47,7 @@ module nestedDependencies 'dependencies.bicep' = {
     networkSecurityGroupName: 'dep-${namePrefix}-nsg-${serviceShort}'
     // Adding base time to make the name unique as purge protection must be enabled (but may not be longer than 24 characters total)
     // keyVaultName: 'dep-${namePrefix}-kv-${serviceShort}-${substring(uniqueString(baseTime), 0, 3)}'
-    keyVaultName: 'dep-${namePrefix}-kv-${serviceShort}-al'
+    keyVaultName: 'dep-${namePrefix}-kv-${serviceShort}-ad'
   }
 }
 
@@ -57,7 +57,7 @@ module diagnosticDependencies '../../../../.shared/.templates/diagnostic.depende
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-diagnosticDependencies'
   params: {
-    storageAccountName: 'dep${namePrefix}diasa${serviceShort}01'
+    storageAccountName: 'dep${namePrefix}diasa${serviceShort}'
     logAnalyticsWorkspaceName: 'dep-${namePrefix}-law-${serviceShort}'
     eventHubNamespaceEventHubName: 'dep-${namePrefix}-evh-${serviceShort}'
     eventHubNamespaceName: 'dep-${namePrefix}-evhns-${serviceShort}'
@@ -80,7 +80,7 @@ module testDeployment '../../main.bicep' = {
     diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
     diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
     diagnosticLogsRetentionInDays: 7
-    // lock: 'CanNotDelete'
+    lock: 'CanNotDelete'
     roleAssignments: [
       {
         roleDefinitionIdOrName: 'Reader'
@@ -99,7 +99,7 @@ module testDeployment '../../main.bicep' = {
     cMKManagedDisksKeyName: nestedDependencies.outputs.keyVaultKeyName
     cMKManagedDisksKeyVaultResourceId: nestedDependencies.outputs.keyVaultResourceId
     cMKManagedDisksKeyRotationToLatestKeyVersionEnabled: true
-    storageAccountName: '${namePrefix}${serviceShort}001'
+    storageAccountName: 'sa${namePrefix}${serviceShort}001'
     storageAccountSkuName: 'Standard_ZRS'
     publicIpName: 'nat-gw-public-ip'
     natGatewayName: 'nat-gateway'
@@ -130,6 +130,13 @@ module testDeployment '../../main.bicep' = {
       }
     ]
     managedResourceGroupResourceId: '${subscription().id}/resourceGroups/rg-${resourceGroupName}-managed'
-
+    diagnosticLogCategoriesToEnable: [
+      'jobs'
+      'notebook'
+    ]
+    diagnosticSettingsName: 'diag${namePrefix}${serviceShort}001'
+    requireInfrastructureEncryption: true
+    vnetAddressPrefix: '10.100'
+    location: resourceGroup.location
   }
 }
