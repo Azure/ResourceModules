@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.18.4.5664",
-      "templateHash": "7069092381600637415"
+      "version": "0.20.4.51522",
+      "templateHash": "1395192341429097070"
     },
     "name": "Storage Account blob Services",
     "description": "This module deploys a Storage Account Blob Service.",
@@ -14,10 +14,10 @@
   "parameters": {
     "storageAccountName": {
       "type": "string",
+      "maxLength": 24,
       "metadata": {
         "description": "Conditional. The name of the parent Storage Account. Required if the template is used in a standalone deployment."
-      },
-      "maxLength": 24
+      }
     },
     "automaticSnapshotPolicyEnabled": {
       "type": "bool",
@@ -36,11 +36,11 @@
     "changeFeedRetentionInDays": {
       "type": "int",
       "defaultValue": 7,
+      "minValue": 0,
+      "maxValue": 146000,
       "metadata": {
         "description": "Optional. Indicates whether change feed event logging is enabled for the Blob service. Indicates the duration of changeFeed retention in days. A \"0\" value indicates an infinite retention of the change feed."
-      },
-      "maxValue": 146000,
-      "minValue": 0
+      }
     },
     "containerDeleteRetentionPolicyEnabled": {
       "type": "bool",
@@ -52,11 +52,11 @@
     "containerDeleteRetentionPolicyDays": {
       "type": "int",
       "defaultValue": 7,
+      "minValue": 1,
+      "maxValue": 365,
       "metadata": {
         "description": "Optional. Indicates the number of days that the deleted item should be retained."
-      },
-      "maxValue": 365,
-      "minValue": 1
+      }
     },
     "containerDeleteRetentionPolicyAllowPermanentDelete": {
       "type": "bool",
@@ -89,11 +89,11 @@
     "deleteRetentionPolicyDays": {
       "type": "int",
       "defaultValue": 7,
+      "minValue": 1,
+      "maxValue": 365,
       "metadata": {
         "description": "Optional. Indicates the number of days that the deleted blob should be retained."
-      },
-      "maxValue": 365,
-      "minValue": 1
+      }
     },
     "deleteRetentionPolicyAllowPermanentDelete": {
       "type": "bool",
@@ -126,10 +126,10 @@
     "restorePolicyDays": {
       "type": "int",
       "defaultValue": 6,
+      "minValue": 1,
       "metadata": {
         "description": "Optional. how long this blob can be restored. It should be less than DeleteRetentionPolicy days."
-      },
-      "minValue": 1
+      }
     },
     "containers": {
       "type": "array",
@@ -141,8 +141,8 @@
     "diagnosticLogsRetentionInDays": {
       "type": "int",
       "defaultValue": 365,
-      "maxValue": 365,
       "minValue": 0,
+      "maxValue": 365,
       "metadata": {
         "description": "Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely."
       }
@@ -287,7 +287,7 @@
         "deleteRetentionPolicy": {
           "enabled": "[parameters('deleteRetentionPolicyEnabled')]",
           "days": "[if(equals(parameters('deleteRetentionPolicyEnabled'), true()), parameters('deleteRetentionPolicyDays'), null())]",
-          "allowPermanentDelete": "[if(and(equals(parameters('deleteRetentionPolicyEnabled'), true()), equals(parameters('deleteRetentionPolicyAllowPermanentDelete'), true())), parameters('deleteRetentionPolicyAllowPermanentDelete'), null())]"
+          "allowPermanentDelete": "[if(and(parameters('deleteRetentionPolicyEnabled'), parameters('deleteRetentionPolicyAllowPermanentDelete')), true(), null())]"
         },
         "isVersioningEnabled": "[parameters('isVersioningEnabled')]",
         "lastAccessTimeTrackingPolicy": {
@@ -358,8 +358,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.18.4.5664",
-              "templateHash": "13118549664756004817"
+              "version": "0.20.4.51522",
+              "templateHash": "7500144031846073123"
             },
             "name": "Storage Account Blob Containers",
             "description": "This module deploys a Storage Account Blob Container.",
@@ -368,10 +368,10 @@
           "parameters": {
             "storageAccountName": {
               "type": "string",
+              "maxLength": 24,
               "metadata": {
                 "description": "Conditional. The name of the parent Storage Account. Required if the template is used in a standalone deployment."
-              },
-              "maxLength": 24
+              }
             },
             "name": {
               "type": "string",
@@ -438,14 +438,14 @@
             "publicAccess": {
               "type": "string",
               "defaultValue": "None",
-              "metadata": {
-                "description": "Optional. Specifies whether data in the container may be accessed publicly and the level of access."
-              },
               "allowedValues": [
                 "Container",
                 "Blob",
                 "None"
-              ]
+              ],
+              "metadata": {
+                "description": "Optional. Specifies whether data in the container may be accessed publicly and the level of access."
+              }
             },
             "roleAssignments": {
               "type": "array",
@@ -524,8 +524,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.18.4.5664",
-                      "templateHash": "10095538202627004276"
+                      "version": "0.20.4.51522",
+                      "templateHash": "5668549883344653702"
                     },
                     "name": "Storage Account Blob Container Immutability Policies",
                     "description": "This module deploys a Storage Account Blob Container Immutability Policy.",
@@ -534,10 +534,10 @@
                   "parameters": {
                     "storageAccountName": {
                       "type": "string",
+                      "maxLength": 24,
                       "metadata": {
                         "description": "Conditional. The name of the parent Storage Account. Required if the template is used in a standalone deployment."
-                      },
-                      "maxLength": 24
+                      }
                     },
                     "containerName": {
                       "type": "string",
@@ -663,8 +663,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.18.4.5664",
-                      "templateHash": "9471266450275905523"
+                      "version": "0.20.4.51522",
+                      "templateHash": "8600687658951622621"
                     }
                   },
                   "parameters": {

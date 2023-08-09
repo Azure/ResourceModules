@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.18.4.5664",
-      "templateHash": "11902600111982409364"
+      "version": "0.20.4.51522",
+      "templateHash": "3064442913839722689"
     },
     "name": "Storage Accounts",
     "description": "This module deploys a Storage Account.",
@@ -14,10 +14,10 @@
   "parameters": {
     "name": {
       "type": "string",
+      "maxLength": 24,
       "metadata": {
         "description": "Required. Name of the Storage Account."
-      },
-      "maxLength": 24
+      }
     },
     "location": {
       "type": "string",
@@ -50,23 +50,20 @@
     "kind": {
       "type": "string",
       "defaultValue": "StorageV2",
-      "metadata": {
-        "description": "Optional. Type of Storage Account to create."
-      },
       "allowedValues": [
         "Storage",
         "StorageV2",
         "BlobStorage",
         "FileStorage",
         "BlockBlobStorage"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Type of Storage Account to create."
+      }
     },
     "skuName": {
       "type": "string",
       "defaultValue": "Standard_GRS",
-      "metadata": {
-        "description": "Optional. Storage Account Sku Name."
-      },
       "allowedValues": [
         "Standard_LRS",
         "Standard_GRS",
@@ -76,30 +73,33 @@
         "Premium_ZRS",
         "Standard_GZRS",
         "Standard_RAGZRS"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Storage Account Sku Name."
+      }
     },
     "accessTier": {
       "type": "string",
       "defaultValue": "Hot",
-      "metadata": {
-        "description": "Conditional. Required if the Storage Account kind is set to BlobStorage. The access tier is used for billing. The \"Premium\" access tier is the default value for premium block blobs storage account type and it cannot be changed for the premium block blobs storage account type."
-      },
       "allowedValues": [
         "Premium",
         "Hot",
         "Cool"
-      ]
+      ],
+      "metadata": {
+        "description": "Conditional. Required if the Storage Account kind is set to BlobStorage. The access tier is used for billing. The \"Premium\" access tier is the default value for premium block blobs storage account type and it cannot be changed for the premium block blobs storage account type."
+      }
     },
     "largeFileSharesState": {
       "type": "string",
       "defaultValue": "Disabled",
-      "metadata": {
-        "description": "Optional. Allow large file shares if sets to 'Enabled'. It cannot be disabled once it is enabled. Only supported on locally redundant and zone redundant file shares. It cannot be set on FileStorage storage accounts (storage accounts for premium file shares)."
-      },
       "allowedValues": [
         "Disabled",
         "Enabled"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Allow large file shares if sets to 'Enabled'. It cannot be disabled once it is enabled. Only supported on locally redundant and zone redundant file shares. It cannot be set on FileStorage storage accounts (storage accounts for premium file shares)."
+      }
     },
     "azureFilesIdentityBasedAuthentication": {
       "type": "object",
@@ -221,14 +221,14 @@
     "minimumTlsVersion": {
       "type": "string",
       "defaultValue": "TLS1_2",
-      "metadata": {
-        "description": "Optional. Set the minimum TLS version on request to storage."
-      },
       "allowedValues": [
         "TLS1_0",
         "TLS1_1",
         "TLS1_2"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Set the minimum TLS version on request to storage."
+      }
     },
     "enableHierarchicalNamespace": {
       "type": "bool",
@@ -268,8 +268,8 @@
     "diagnosticLogsRetentionInDays": {
       "type": "int",
       "defaultValue": 365,
-      "maxValue": 365,
       "minValue": 0,
+      "maxValue": 365,
       "metadata": {
         "description": "Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely."
       }
@@ -305,14 +305,14 @@
     "lock": {
       "type": "string",
       "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Specify the type of lock."
-      },
       "allowedValues": [
         "",
         "CanNotDelete",
         "ReadOnly"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Specify the type of lock."
+      }
     },
     "tags": {
       "type": "object",
@@ -568,8 +568,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.18.4.5664",
-              "templateHash": "17399845773033742131"
+              "version": "0.20.4.51522",
+              "templateHash": "12642833522973709137"
             }
           },
           "parameters": {
@@ -763,8 +763,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.18.4.5664",
-              "templateHash": "8880916552713339309"
+              "version": "0.20.4.51522",
+              "templateHash": "609426544615556519"
             },
             "name": "Private Endpoints",
             "description": "This module deploys a Private Endpoint.",
@@ -833,14 +833,14 @@
             "lock": {
               "type": "string",
               "defaultValue": "",
-              "metadata": {
-                "description": "Optional. Specify the type of lock."
-              },
               "allowedValues": [
                 "",
                 "CanNotDelete",
                 "ReadOnly"
-              ]
+              ],
+              "metadata": {
+                "description": "Optional. Specify the type of lock."
+              }
             },
             "roleAssignments": {
               "type": "array",
@@ -963,8 +963,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.18.4.5664",
-                      "templateHash": "13364313939069632186"
+                      "version": "0.20.4.51522",
+                      "templateHash": "18114841529204248478"
                     },
                     "name": "Private Endpoint Private DNS Zone Groups",
                     "description": "This module deploys a Private Endpoint Private DNS Zone Group.",
@@ -979,8 +979,8 @@
                     },
                     "privateDNSResourceIds": {
                       "type": "array",
-                      "maxLength": 5,
                       "minLength": 1,
+                      "maxLength": 5,
                       "metadata": {
                         "description": "Required. Array of private DNS zone resource IDs. A DNS zone group can support up to 5 DNS zones."
                       }
@@ -1101,8 +1101,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.18.4.5664",
-                      "templateHash": "11724106538771429164"
+                      "version": "0.20.4.51522",
+                      "templateHash": "11548486149222715894"
                     }
                   },
                   "parameters": {
@@ -1308,8 +1308,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.18.4.5664",
-              "templateHash": "8715190675839758054"
+              "version": "0.20.4.51522",
+              "templateHash": "9756021983971600432"
             },
             "name": "Storage Account Management Policies",
             "description": "This module deploys a Storage Account Management Policy.",
@@ -1318,10 +1318,10 @@
           "parameters": {
             "storageAccountName": {
               "type": "string",
+              "maxLength": 24,
               "metadata": {
                 "description": "Conditional. The name of the parent Storage Account. Required if the template is used in a standalone deployment."
-              },
-              "maxLength": 24
+              }
             },
             "rules": {
               "type": "array",
@@ -1435,8 +1435,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.18.4.5664",
-              "templateHash": "16637831711101937862"
+              "version": "0.20.4.51522",
+              "templateHash": "17498007234218946474"
             },
             "name": "Storage Account Local Users",
             "description": "This module deploys a Storage Account Local User, which is used for SFTP authentication.",
@@ -1445,10 +1445,10 @@
           "parameters": {
             "storageAccountName": {
               "type": "string",
+              "maxLength": 24,
               "metadata": {
                 "description": "Conditional. The name of the parent Storage Account. Required if the template is used in a standalone deployment."
-              },
-              "maxLength": 24
+              }
             },
             "name": {
               "type": "string",
@@ -1608,8 +1608,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.18.4.5664",
-              "templateHash": "7069092381600637415"
+              "version": "0.20.4.51522",
+              "templateHash": "1395192341429097070"
             },
             "name": "Storage Account blob Services",
             "description": "This module deploys a Storage Account Blob Service.",
@@ -1618,10 +1618,10 @@
           "parameters": {
             "storageAccountName": {
               "type": "string",
+              "maxLength": 24,
               "metadata": {
                 "description": "Conditional. The name of the parent Storage Account. Required if the template is used in a standalone deployment."
-              },
-              "maxLength": 24
+              }
             },
             "automaticSnapshotPolicyEnabled": {
               "type": "bool",
@@ -1640,11 +1640,11 @@
             "changeFeedRetentionInDays": {
               "type": "int",
               "defaultValue": 7,
+              "minValue": 0,
+              "maxValue": 146000,
               "metadata": {
                 "description": "Optional. Indicates whether change feed event logging is enabled for the Blob service. Indicates the duration of changeFeed retention in days. A \"0\" value indicates an infinite retention of the change feed."
-              },
-              "maxValue": 146000,
-              "minValue": 0
+              }
             },
             "containerDeleteRetentionPolicyEnabled": {
               "type": "bool",
@@ -1656,11 +1656,11 @@
             "containerDeleteRetentionPolicyDays": {
               "type": "int",
               "defaultValue": 7,
+              "minValue": 1,
+              "maxValue": 365,
               "metadata": {
                 "description": "Optional. Indicates the number of days that the deleted item should be retained."
-              },
-              "maxValue": 365,
-              "minValue": 1
+              }
             },
             "containerDeleteRetentionPolicyAllowPermanentDelete": {
               "type": "bool",
@@ -1693,11 +1693,11 @@
             "deleteRetentionPolicyDays": {
               "type": "int",
               "defaultValue": 7,
+              "minValue": 1,
+              "maxValue": 365,
               "metadata": {
                 "description": "Optional. Indicates the number of days that the deleted blob should be retained."
-              },
-              "maxValue": 365,
-              "minValue": 1
+              }
             },
             "deleteRetentionPolicyAllowPermanentDelete": {
               "type": "bool",
@@ -1730,10 +1730,10 @@
             "restorePolicyDays": {
               "type": "int",
               "defaultValue": 6,
+              "minValue": 1,
               "metadata": {
                 "description": "Optional. how long this blob can be restored. It should be less than DeleteRetentionPolicy days."
-              },
-              "minValue": 1
+              }
             },
             "containers": {
               "type": "array",
@@ -1745,8 +1745,8 @@
             "diagnosticLogsRetentionInDays": {
               "type": "int",
               "defaultValue": 365,
-              "maxValue": 365,
               "minValue": 0,
+              "maxValue": 365,
               "metadata": {
                 "description": "Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely."
               }
@@ -1891,7 +1891,7 @@
                 "deleteRetentionPolicy": {
                   "enabled": "[parameters('deleteRetentionPolicyEnabled')]",
                   "days": "[if(equals(parameters('deleteRetentionPolicyEnabled'), true()), parameters('deleteRetentionPolicyDays'), null())]",
-                  "allowPermanentDelete": "[if(and(equals(parameters('deleteRetentionPolicyEnabled'), true()), equals(parameters('deleteRetentionPolicyAllowPermanentDelete'), true())), parameters('deleteRetentionPolicyAllowPermanentDelete'), null())]"
+                  "allowPermanentDelete": "[if(and(parameters('deleteRetentionPolicyEnabled'), parameters('deleteRetentionPolicyAllowPermanentDelete')), true(), null())]"
                 },
                 "isVersioningEnabled": "[parameters('isVersioningEnabled')]",
                 "lastAccessTimeTrackingPolicy": {
@@ -1962,8 +1962,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.18.4.5664",
-                      "templateHash": "13118549664756004817"
+                      "version": "0.20.4.51522",
+                      "templateHash": "7500144031846073123"
                     },
                     "name": "Storage Account Blob Containers",
                     "description": "This module deploys a Storage Account Blob Container.",
@@ -1972,10 +1972,10 @@
                   "parameters": {
                     "storageAccountName": {
                       "type": "string",
+                      "maxLength": 24,
                       "metadata": {
                         "description": "Conditional. The name of the parent Storage Account. Required if the template is used in a standalone deployment."
-                      },
-                      "maxLength": 24
+                      }
                     },
                     "name": {
                       "type": "string",
@@ -2042,14 +2042,14 @@
                     "publicAccess": {
                       "type": "string",
                       "defaultValue": "None",
-                      "metadata": {
-                        "description": "Optional. Specifies whether data in the container may be accessed publicly and the level of access."
-                      },
                       "allowedValues": [
                         "Container",
                         "Blob",
                         "None"
-                      ]
+                      ],
+                      "metadata": {
+                        "description": "Optional. Specifies whether data in the container may be accessed publicly and the level of access."
+                      }
                     },
                     "roleAssignments": {
                       "type": "array",
@@ -2128,8 +2128,8 @@
                           "metadata": {
                             "_generator": {
                               "name": "bicep",
-                              "version": "0.18.4.5664",
-                              "templateHash": "10095538202627004276"
+                              "version": "0.20.4.51522",
+                              "templateHash": "5668549883344653702"
                             },
                             "name": "Storage Account Blob Container Immutability Policies",
                             "description": "This module deploys a Storage Account Blob Container Immutability Policy.",
@@ -2138,10 +2138,10 @@
                           "parameters": {
                             "storageAccountName": {
                               "type": "string",
+                              "maxLength": 24,
                               "metadata": {
                                 "description": "Conditional. The name of the parent Storage Account. Required if the template is used in a standalone deployment."
-                              },
-                              "maxLength": 24
+                              }
                             },
                             "containerName": {
                               "type": "string",
@@ -2267,8 +2267,8 @@
                           "metadata": {
                             "_generator": {
                               "name": "bicep",
-                              "version": "0.18.4.5664",
-                              "templateHash": "9471266450275905523"
+                              "version": "0.20.4.51522",
+                              "templateHash": "8600687658951622621"
                             }
                           },
                           "parameters": {
@@ -2505,8 +2505,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.18.4.5664",
-              "templateHash": "13157392483571406601"
+              "version": "0.20.4.51522",
+              "templateHash": "1594285537604698727"
             },
             "name": "Storage Account File Share Services",
             "description": "This module deploys a Storage Account File Share Service.",
@@ -2515,10 +2515,10 @@
           "parameters": {
             "storageAccountName": {
               "type": "string",
+              "maxLength": 24,
               "metadata": {
                 "description": "Conditional. The name of the parent Storage Account. Required if the template is used in a standalone deployment."
-              },
-              "maxLength": 24
+              }
             },
             "name": {
               "type": "string",
@@ -2547,8 +2547,8 @@
             "diagnosticLogsRetentionInDays": {
               "type": "int",
               "defaultValue": 365,
-              "maxValue": 365,
               "minValue": 0,
+              "maxValue": 365,
               "metadata": {
                 "description": "Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely."
               }
@@ -2742,8 +2742,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.18.4.5664",
-                      "templateHash": "6020523361893327115"
+                      "version": "0.20.4.51522",
+                      "templateHash": "15634855845265993886"
                     },
                     "name": "Storage Account File Shares",
                     "description": "This module deploys a Storage Account File Share.",
@@ -2752,10 +2752,10 @@
                   "parameters": {
                     "storageAccountName": {
                       "type": "string",
+                      "maxLength": 24,
                       "metadata": {
                         "description": "Conditional. The name of the parent Storage Account. Required if the template is used in a standalone deployment."
-                      },
-                      "maxLength": 24
+                      }
                     },
                     "fileServicesName": {
                       "type": "string",
@@ -2773,15 +2773,15 @@
                     "accessTier": {
                       "type": "string",
                       "defaultValue": "TransactionOptimized",
-                      "metadata": {
-                        "description": "Conditional. Access tier for specific share. Required if the Storage Account kind is set to FileStorage (should be set to \"Premium\"). GpV2 account can choose between TransactionOptimized (default), Hot, and Cool."
-                      },
                       "allowedValues": [
                         "Premium",
                         "Hot",
                         "Cool",
                         "TransactionOptimized"
-                      ]
+                      ],
+                      "metadata": {
+                        "description": "Conditional. Access tier for specific share. Required if the Storage Account kind is set to FileStorage (should be set to \"Premium\"). GpV2 account can choose between TransactionOptimized (default), Hot, and Cool."
+                      }
                     },
                     "shareQuota": {
                       "type": "int",
@@ -2793,25 +2793,25 @@
                     "enabledProtocols": {
                       "type": "string",
                       "defaultValue": "SMB",
-                      "metadata": {
-                        "description": "Optional. The authentication protocol that is used for the file share. Can only be specified when creating a share."
-                      },
                       "allowedValues": [
                         "NFS",
                         "SMB"
-                      ]
+                      ],
+                      "metadata": {
+                        "description": "Optional. The authentication protocol that is used for the file share. Can only be specified when creating a share."
+                      }
                     },
                     "rootSquash": {
                       "type": "string",
                       "defaultValue": "NoRootSquash",
-                      "metadata": {
-                        "description": "Optional. Permissions for NFS file shares are enforced by the client OS rather than the Azure Files service. Toggling the root squash behavior reduces the rights of the root user for NFS shares."
-                      },
                       "allowedValues": [
                         "AllSquash",
                         "NoRootSquash",
                         "RootSquash"
-                      ]
+                      ],
+                      "metadata": {
+                        "description": "Optional. Permissions for NFS file shares are enforced by the client OS rather than the Azure Files service. Toggling the root squash behavior reduces the rights of the root user for NFS shares."
+                      }
                     },
                     "roleAssignments": {
                       "type": "array",
@@ -2888,8 +2888,8 @@
                           "metadata": {
                             "_generator": {
                               "name": "bicep",
-                              "version": "0.18.4.5664",
-                              "templateHash": "3454304478574190517"
+                              "version": "0.20.4.51522",
+                              "templateHash": "17068545632348399169"
                             }
                           },
                           "parameters": {
@@ -3127,8 +3127,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.18.4.5664",
-              "templateHash": "16706900357087856920"
+              "version": "0.20.4.51522",
+              "templateHash": "13219619797955519085"
             },
             "name": "Storage Account Queue Services",
             "description": "This module deploys a Storage Account Queue Service.",
@@ -3137,10 +3137,10 @@
           "parameters": {
             "storageAccountName": {
               "type": "string",
+              "maxLength": 24,
               "metadata": {
                 "description": "Conditional. The name of the parent Storage Account. Required if the template is used in a standalone deployment."
-              },
-              "maxLength": 24
+              }
             },
             "queues": {
               "type": "array",
@@ -3152,8 +3152,8 @@
             "diagnosticLogsRetentionInDays": {
               "type": "int",
               "defaultValue": 365,
-              "maxValue": 365,
               "minValue": 0,
+              "maxValue": 365,
               "metadata": {
                 "description": "Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely."
               }
@@ -3332,8 +3332,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.18.4.5664",
-                      "templateHash": "15787829564985484650"
+                      "version": "0.20.4.51522",
+                      "templateHash": "7293459815655804615"
                     },
                     "name": "Storage Account Queues",
                     "description": "This module deploys a Storage Account Queue.",
@@ -3342,10 +3342,10 @@
                   "parameters": {
                     "storageAccountName": {
                       "type": "string",
+                      "maxLength": 24,
                       "metadata": {
                         "description": "Conditional. The name of the parent Storage Account. Required if the template is used in a standalone deployment."
-                      },
-                      "maxLength": 24
+                      }
                     },
                     "name": {
                       "type": "string",
@@ -3432,8 +3432,8 @@
                           "metadata": {
                             "_generator": {
                               "name": "bicep",
-                              "version": "0.18.4.5664",
-                              "templateHash": "8826781769055434429"
+                              "version": "0.20.4.51522",
+                              "templateHash": "16848435230262465953"
                             }
                           },
                           "parameters": {
@@ -3668,8 +3668,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.18.4.5664",
-              "templateHash": "5583959058679098419"
+              "version": "0.20.4.51522",
+              "templateHash": "15029180251266513913"
             },
             "name": "Storage Account Table Services",
             "description": "This module deploys a Storage Account Table Service.",
@@ -3678,10 +3678,10 @@
           "parameters": {
             "storageAccountName": {
               "type": "string",
+              "maxLength": 24,
               "metadata": {
                 "description": "Conditional. The name of the parent Storage Account. Required if the template is used in a standalone deployment."
-              },
-              "maxLength": 24
+              }
             },
             "tables": {
               "type": "array",
@@ -3693,8 +3693,8 @@
             "diagnosticLogsRetentionInDays": {
               "type": "int",
               "defaultValue": 365,
-              "maxValue": 365,
               "minValue": 0,
+              "maxValue": 365,
               "metadata": {
                 "description": "Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely."
               }
@@ -3871,8 +3871,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.18.4.5664",
-                      "templateHash": "10513189061355437921"
+                      "version": "0.20.4.51522",
+                      "templateHash": "3732027241762478422"
                     },
                     "name": "Storage Account Table",
                     "description": "This module deploys a Storage Account Table.",
@@ -3881,10 +3881,10 @@
                   "parameters": {
                     "storageAccountName": {
                       "type": "string",
+                      "maxLength": 24,
                       "metadata": {
                         "description": "Conditional. The name of the parent Storage Account. Required if the template is used in a standalone deployment."
-                      },
-                      "maxLength": 24
+                      }
                     },
                     "name": {
                       "type": "string",
