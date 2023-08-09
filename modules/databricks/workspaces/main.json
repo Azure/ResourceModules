@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.20.4.51522",
-      "templateHash": "5183537567802884455"
+      "templateHash": "9480568301304847644"
     },
     "name": "Azure Databricks Workspaces",
     "description": "This module deploys an Azure Databricks Workspace.",
@@ -366,26 +366,48 @@
       "properties": {
         "managedResourceGroupId": "[if(not(empty(parameters('managedResourceGroupResourceId'))), parameters('managedResourceGroupResourceId'), format('{0}/resourceGroups/{1}-rg', subscription().id, parameters('name')))]",
         "parameters": {
-          "customVirtualNetworkId": "[if(not(empty(parameters('customVirtualNetworkResourceId'))), createObject('value', parameters('customVirtualNetworkResourceId')), null())]",
-          "amlWorkspaceId": "[if(not(empty(parameters('amlWorkspaceResourceId'))), createObject('value', parameters('amlWorkspaceResourceId')), null())]",
-          "customPrivateSubnetName": "[if(not(empty(parameters('customPrivateSubnetName'))), createObject('value', parameters('customPrivateSubnetName')), null())]",
-          "customPublicSubnetName": "[if(not(empty(parameters('customPublicSubnetName'))), createObject('value', parameters('customPublicSubnetName')), null())]",
+          "customVirtualNetworkId": {
+            "value": "[parameters('customVirtualNetworkResourceId')]"
+          },
+          "amlWorkspaceId": {
+            "value": "[parameters('amlWorkspaceResourceId')]"
+          },
+          "customPrivateSubnetName": {
+            "value": "[parameters('customPrivateSubnetName')]"
+          },
+          "customPublicSubnetName": {
+            "value": "[parameters('customPublicSubnetName')]"
+          },
           "enableNoPublicIp": {
             "value": "[parameters('disablePublicIp')]"
           },
-          "loadBalancerBackendPoolName": "[if(not(empty(parameters('loadBalancerBackendPoolName'))), createObject('value', parameters('loadBalancerBackendPoolName')), null())]",
-          "loadBalancerId": "[if(not(empty(parameters('loadBalancerResourceId'))), createObject('value', parameters('loadBalancerResourceId')), null())]",
-          "natGatewayName": "[if(not(empty(parameters('natGatewayName'))), createObject('value', parameters('natGatewayName')), null())]",
+          "loadBalancerBackendPoolName": {
+            "value": "[parameters('loadBalancerBackendPoolName')]"
+          },
+          "loadBalancerId": {
+            "value": "[parameters('loadBalancerResourceId')]"
+          },
+          "natGatewayName": {
+            "value": "[parameters('natGatewayName')]"
+          },
           "prepareEncryption": {
             "value": "[parameters('prepareEncryption')]"
           },
-          "publicIpName": "[if(not(empty(parameters('publicIpName'))), createObject('value', parameters('publicIpName')), null())]",
+          "publicIpName": {
+            "value": "[parameters('publicIpName')]"
+          },
           "requireInfrastructureEncryption": {
             "value": "[parameters('requireInfrastructureEncryption')]"
           },
-          "storageAccountName": "[if(not(empty(parameters('storageAccountName'))), createObject('value', parameters('storageAccountName')), null())]",
-          "storageAccountSkuName": "[if(not(empty(parameters('storageAccountSkuName'))), createObject('value', parameters('storageAccountSkuName')), null())]",
-          "vnetAddressPrefix": "[if(not(empty(parameters('vnetAddressPrefix'))), createObject('value', parameters('vnetAddressPrefix')), null())]"
+          "storageAccountName": {
+            "value": "[parameters('storageAccountName')]"
+          },
+          "storageAccountSkuName": {
+            "value": "[parameters('storageAccountSkuName')]"
+          },
+          "vnetAddressPrefix": {
+            "value": "[parameters('vnetAddressPrefix')]"
+          }
         },
         "publicNetworkAccess": "[parameters('publicNetworkAccess')]",
         "requiredNsgRules": "[parameters('requiredNsgRules')]",

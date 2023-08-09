@@ -219,48 +219,48 @@ resource workspace 'Microsoft.Databricks/workspaces@2023-02-01' = {
   properties: {
     managedResourceGroupId: !empty(managedResourceGroupResourceId) ? managedResourceGroupResourceId : '${subscription().id}/resourceGroups/${name}-rg'
     parameters: {
-      customVirtualNetworkId: !empty(customVirtualNetworkResourceId) ? {
+      customVirtualNetworkId: {
         value: customVirtualNetworkResourceId
-      } : null
-      amlWorkspaceId: !empty(amlWorkspaceResourceId) ? {
+      }
+      amlWorkspaceId: {
         value: amlWorkspaceResourceId
-      } : null
-      customPrivateSubnetName: !empty(customPrivateSubnetName) ? {
+      }
+      customPrivateSubnetName: {
         value: customPrivateSubnetName
-      } : null
-      customPublicSubnetName: !empty(customPublicSubnetName) ? {
+      }
+      customPublicSubnetName: {
         value: customPublicSubnetName
-      } : null
+      }
       enableNoPublicIp: {
         value: disablePublicIp
       }
-      loadBalancerBackendPoolName: !empty(loadBalancerBackendPoolName) ? {
+      loadBalancerBackendPoolName: {
         value: loadBalancerBackendPoolName
-      } : null
-      loadBalancerId: !empty(loadBalancerResourceId) ? {
+      }
+      loadBalancerId: {
         value: loadBalancerResourceId
-      } : null
-      natGatewayName: !empty(natGatewayName) ? {
+      }
+      natGatewayName: {
         value: natGatewayName
-      } : null
+      }
       prepareEncryption: {
         value: prepareEncryption
       }
-      publicIpName: !empty(publicIpName) ? {
+      publicIpName: {
         value: publicIpName
-      } : null
+      }
       requireInfrastructureEncryption: {
         value: requireInfrastructureEncryption
       }
-      storageAccountName: !empty(storageAccountName) ? {
+      storageAccountName: {
         value: storageAccountName
-      } : null
-      storageAccountSkuName: !empty(storageAccountSkuName) ? {
+      }
+      storageAccountSkuName: {
         value: storageAccountSkuName
-      } : null
-      vnetAddressPrefix: !empty(vnetAddressPrefix) ? {
+      }
+      vnetAddressPrefix: {
         value: vnetAddressPrefix
-      } : null
+      }
     }
     publicNetworkAccess: publicNetworkAccess
     requiredNsgRules: requiredNsgRules
