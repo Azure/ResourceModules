@@ -16,8 +16,10 @@ This module deploys an Azure Databricks Workspace.
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.Databricks/workspaces` | [2018-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Databricks/2018-04-01/workspaces) |
+| `Microsoft.Databricks/workspaces` | [2023-02-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Databricks/2023-02-01/workspaces) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
+| `Microsoft.Network/privateEndpoints` | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/privateEndpoints) |
+| `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/privateEndpoints/privateDnsZoneGroups) |
 
 ## Parameters
 
@@ -27,10 +29,26 @@ This module deploys an Azure Databricks Workspace.
 | :-- | :-- | :-- |
 | `name` | string | The name of the Azure Databricks workspace to create. |
 
+**Conditional parameters**
+
+| Parameter Name | Type | Default Value | Description |
+| :-- | :-- | :-- | :-- |
+| `cMKManagedDisksKeyVaultResourceId` | string | `''` | The resource ID of a key vault to reference a customer managed key for encryption from. Required if 'cMKKeyName' is not empty. |
+| `cMKManagedServicesKeyVaultResourceId` | string | `''` | The resource ID of a key vault to reference a customer managed key for encryption from. Required if 'cMKKeyName' is not empty. |
+
 **Optional parameters**
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
+| `amlWorkspaceResourceId` | string | `''` |  | The resource ID of a Azure Machine Learning workspace to link with Databricks workspace. |
+| `cMKManagedDisksKeyName` | string | `''` |  | The name of the customer managed key to use for encryption. |
+| `cMKManagedDisksKeyRotationToLatestKeyVersionEnabled` | bool | `True` |  | Enable Auto Rotation of Key. |
+| `cMKManagedDisksKeyVersion` | string | `''` |  | The version of the customer managed key to reference for encryption. If not provided, the latest key version is used. |
+| `cMKManagedServicesKeyName` | string | `''` |  | The name of the customer managed key to use for encryption. |
+| `cMKManagedServicesKeyVersion` | string | `''` |  | The version of the customer managed key to reference for encryption. If not provided, the latest key version is used. |
+| `customPrivateSubnetName` | string | `''` |  | The name of the Private Subnet within the Virtual Network. |
+| `customPublicSubnetName` | string | `''` |  | The name of a Public Subnet within the Virtual Network |
+| `customVirtualNetworkResourceId` | string | `''` |  | The resource ID of a Virtual Network where this Databricks Cluster should be created. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
 | `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `['', accounts, allLogs, clusters, dbfs, instancePools, jobs, notebook, secrets, sqlPermissions, ssh, workspace]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
@@ -38,14 +56,26 @@ This module deploys an Azure Databricks Workspace.
 | `diagnosticSettingsName` | string | `''` |  | The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings". |
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
+| `disablePublicIp` | bool | `False` |  | Disable Public IP. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
+| `loadBalancerBackendPoolName` | string | `''` |  | Name of the outbound Load Balancer Backend Pool for Secure Cluster Connectivity (No Public IP). |
+| `loadBalancerResourceId` | string | `''` |  | Resource URI of Outbound Load balancer for Secure Cluster Connectivity (No Public IP) workspace. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
-| `managedResourceGroupId` | string | `''` |  | The managed resource group ID. |
-| `parameters` | object | `{object}` |  | The workspace's custom parameters. |
-| `pricingTier` | string | `'premium'` | `[premium, standard, trial]` | The pricing tier of workspace. |
+| `managedResourceGroupResourceId` | string | `''` |  | The managed resource group ID. Is created by the module as per the to-be resource ID you provide. |
+| `natGatewayName` | string | `''` |  | Name of the NAT gateway for Secure Cluster Connectivity (No Public IP) workspace subnets. |
+| `prepareEncryption` | bool | `False` |  | Prepare the workspace for encryption. Enables the Managed Identity for managed storage account. |
+| `privateEndpoints` | array | `[]` |  | Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
+| `publicIpName` | string | `''` |  | Name of the Public IP for No Public IP workspace with managed vNet. |
+| `publicNetworkAccess` | string | `'Enabled'` | `[Disabled, Enabled]` | 	The network access type for accessing workspace. Set value to disabled to access workspace only via private link. |
+| `requiredNsgRules` | string | `'AllRules'` | `[AllRules, NoAzureDatabricksRules]` | Gets or sets a value indicating whether data plane (clusters) to control plane communication happen over private endpoint. |
+| `requireInfrastructureEncryption` | bool | `False` |  | A boolean indicating whether or not the DBFS root file system will be enabled with secondary layer of encryption with platform managed keys for data at rest. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| `skuName` | string | `'premium'` | `[premium, standard, trial]` | The pricing tier of workspace. |
+| `storageAccountName` | string | `''` |  | Default DBFS storage account name. |
+| `storageAccountSkuName` | string | `'Standard_GRS'` |  | Storage account SKU name. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
+| `vnetAddressPrefix` | string | `'10.139'` |  | Address prefix for Managed virtual network. |
 
 
 ### Parameter Usage: `roleAssignments`
@@ -213,6 +243,106 @@ tags: {
 </details>
 <p>
 
+### Parameter Usage: `privateEndpoints`
+
+To use Private Endpoint the following dependencies must be deployed:
+
+- Destination subnet must be created with the following configuration option - `"privateEndpointNetworkPolicies": "Disabled"`. Setting this option acknowledges that NSG rules are not applied to Private Endpoints (this capability is coming soon). A full example is available in the Virtual Network Module.
+- Although not strictly required, it is highly recommended to first create a private DNS Zone to host Private Endpoint DNS records. See [Azure Private Endpoint DNS configuration](https://learn.microsoft.com/en-us/azure/private-link/private-endpoint-dns) for more information.
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"privateEndpoints": {
+    "value": [
+        // Example showing all available fields
+        {
+            "name": "sxx-az-pe", // Optional: Name will be automatically generated if one is not provided here
+            "subnetResourceId": "/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001",
+            "service": "<serviceName>", // e.g. vault, registry, blob
+            "privateDnsZoneGroup": {
+                "privateDNSResourceIds": [ // Optional: No DNS record will be created if a private DNS zone Resource ID is not specified
+                    "/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/<privateDnsZoneName>" // e.g. privatelink.vaultcore.azure.net, privatelink.azurecr.io, privatelink.blob.core.windows.net
+                ]
+            },
+            "ipConfigurations":[
+                {
+                    "name": "myIPconfigTest02",
+                    "properties": {
+                        "groupId": "blob",
+                        "memberName": "blob",
+                        "privateIPAddress": "10.0.0.30"
+                    }
+                }
+            ],
+            "customDnsConfigs": [
+                {
+                    "fqdn": "customname.test.local",
+                    "ipAddresses": [
+                        "10.10.10.10"
+                    ]
+                }
+            ]
+        },
+        // Example showing only mandatory fields
+        {
+            "subnetResourceId": "/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001",
+            "service": "<serviceName>" // e.g. vault, registry, blob
+        }
+    ]
+}
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+privateEndpoints:  [
+    // Example showing all available fields
+    {
+        name: 'sxx-az-pe' // Optional: Name will be automatically generated if one is not provided here
+        subnetResourceId: '/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001'
+        service: '<serviceName>' // e.g. vault, registry, blob
+        privateDnsZoneGroup: {
+            privateDNSResourceIds: [ // Optional: No DNS record will be created if a private DNS zone Resource ID is not specified
+                '/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/<privateDnsZoneName>' // e.g. privatelink.vaultcore.azure.net, privatelink.azurecr.io, privatelink.blob.core.windows.net
+            ]
+        }
+        customDnsConfigs: [
+            {
+                fqdn: 'customname.test.local'
+                ipAddresses: [
+                    '10.10.10.10'
+                ]
+            }
+        ]
+        ipConfigurations:[
+          {
+            name: 'myIPconfigTest02'
+            properties: {
+              groupId: 'blob'
+              memberName: 'blob'
+              privateIPAddress: '10.0.0.30'
+            }
+          }
+        ]
+    }
+    // Example showing only mandatory fields
+    {
+        subnetResourceId: '/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001'
+        service: '<serviceName>' // e.g. vault, registry, blob
+    }
+]
+```
+
+</details>
+<p>
+
 ## Outputs
 
 | Output Name | Type | Description |
@@ -224,7 +354,11 @@ tags: {
 
 ## Cross-referenced modules
 
-_None_
+This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
+
+| Reference | Type |
+| :-- | :-- |
+| `network/private-endpoints` | Local reference |
 
 ## Deployment examples
 
@@ -246,13 +380,53 @@ module workspaces './databricks/workspaces/main.bicep' = {
     // Required parameters
     name: 'dwcom001'
     // Non-required parameters
+    amlWorkspaceResourceId: '<amlWorkspaceResourceId>'
+    cMKManagedDisksKeyName: '<cMKManagedDisksKeyName>'
+    cMKManagedDisksKeyRotationToLatestKeyVersionEnabled: true
+    cMKManagedDisksKeyVaultResourceId: '<cMKManagedDisksKeyVaultResourceId>'
+    cMKManagedServicesKeyName: '<cMKManagedServicesKeyName>'
+    cMKManagedServicesKeyVaultResourceId: '<cMKManagedServicesKeyVaultResourceId>'
+    customPrivateSubnetName: '<customPrivateSubnetName>'
+    customPublicSubnetName: '<customPublicSubnetName>'
+    customVirtualNetworkResourceId: '<customVirtualNetworkResourceId>'
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
+    diagnosticLogCategoriesToEnable: [
+      'jobs'
+      'notebook'
+    ]
     diagnosticLogsRetentionInDays: 7
+    diagnosticSettingsName: 'diagdwcom001'
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    disablePublicIp: true
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    loadBalancerBackendPoolName: '<loadBalancerBackendPoolName>'
+    loadBalancerResourceId: '<loadBalancerResourceId>'
+    location: '<location>'
     lock: 'CanNotDelete'
+    managedResourceGroupResourceId: '<managedResourceGroupResourceId>'
+    natGatewayName: 'nat-gateway'
+    prepareEncryption: true
+    privateEndpoints: [
+      {
+        privateDnsZoneGroup: {
+          privateDNSResourceIds: [
+            '<privateDNSResourceId>'
+          ]
+        }
+        service: 'databricks_ui_api'
+        subnetResourceId: '<subnetResourceId>'
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
+      }
+    ]
+    publicIpName: 'nat-gw-public-ip'
+    publicNetworkAccess: 'Disabled'
+    requiredNsgRules: 'NoAzureDatabricksRules'
+    requireInfrastructureEncryption: true
     roleAssignments: [
       {
         principalIds: [
@@ -262,10 +436,14 @@ module workspaces './databricks/workspaces/main.bicep' = {
         roleDefinitionIdOrName: 'Reader'
       }
     ]
+    skuName: 'premium'
+    storageAccountName: 'sadwcom001'
+    storageAccountSkuName: 'Standard_ZRS'
     tags: {
       Environment: 'Non-Prod'
       Role: 'DeploymentValidation'
     }
+    vnetAddressPrefix: '10.100'
   }
 }
 ```
@@ -287,14 +465,50 @@ module workspaces './databricks/workspaces/main.bicep' = {
       "value": "dwcom001"
     },
     // Non-required parameters
+    "amlWorkspaceResourceId": {
+      "value": "<amlWorkspaceResourceId>"
+    },
+    "cMKManagedDisksKeyName": {
+      "value": "<cMKManagedDisksKeyName>"
+    },
+    "cMKManagedDisksKeyRotationToLatestKeyVersionEnabled": {
+      "value": true
+    },
+    "cMKManagedDisksKeyVaultResourceId": {
+      "value": "<cMKManagedDisksKeyVaultResourceId>"
+    },
+    "cMKManagedServicesKeyName": {
+      "value": "<cMKManagedServicesKeyName>"
+    },
+    "cMKManagedServicesKeyVaultResourceId": {
+      "value": "<cMKManagedServicesKeyVaultResourceId>"
+    },
+    "customPrivateSubnetName": {
+      "value": "<customPrivateSubnetName>"
+    },
+    "customPublicSubnetName": {
+      "value": "<customPublicSubnetName>"
+    },
+    "customVirtualNetworkResourceId": {
+      "value": "<customVirtualNetworkResourceId>"
+    },
     "diagnosticEventHubAuthorizationRuleId": {
       "value": "<diagnosticEventHubAuthorizationRuleId>"
     },
     "diagnosticEventHubName": {
       "value": "<diagnosticEventHubName>"
     },
+    "diagnosticLogCategoriesToEnable": {
+      "value": [
+        "jobs",
+        "notebook"
+      ]
+    },
     "diagnosticLogsRetentionInDays": {
       "value": 7
+    },
+    "diagnosticSettingsName": {
+      "value": "diagdwcom001"
     },
     "diagnosticStorageAccountId": {
       "value": "<diagnosticStorageAccountId>"
@@ -302,11 +516,61 @@ module workspaces './databricks/workspaces/main.bicep' = {
     "diagnosticWorkspaceId": {
       "value": "<diagnosticWorkspaceId>"
     },
+    "disablePublicIp": {
+      "value": true
+    },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     },
+    "loadBalancerBackendPoolName": {
+      "value": "<loadBalancerBackendPoolName>"
+    },
+    "loadBalancerResourceId": {
+      "value": "<loadBalancerResourceId>"
+    },
+    "location": {
+      "value": "<location>"
+    },
     "lock": {
       "value": "CanNotDelete"
+    },
+    "managedResourceGroupResourceId": {
+      "value": "<managedResourceGroupResourceId>"
+    },
+    "natGatewayName": {
+      "value": "nat-gateway"
+    },
+    "prepareEncryption": {
+      "value": true
+    },
+    "privateEndpoints": {
+      "value": [
+        {
+          "privateDnsZoneGroup": {
+            "privateDNSResourceIds": [
+              "<privateDNSResourceId>"
+            ]
+          },
+          "service": "databricks_ui_api",
+          "subnetResourceId": "<subnetResourceId>",
+          "tags": {
+            "Environment": "Non-Prod",
+            "Role": "DeploymentValidation"
+          }
+        }
+      ]
+    },
+    "publicIpName": {
+      "value": "nat-gw-public-ip"
+    },
+    "publicNetworkAccess": {
+      "value": "Disabled"
+    },
+    "requiredNsgRules": {
+      "value": "NoAzureDatabricksRules"
+    },
+    "requireInfrastructureEncryption": {
+      "value": true
     },
     "roleAssignments": {
       "value": [
@@ -319,11 +583,68 @@ module workspaces './databricks/workspaces/main.bicep' = {
         }
       ]
     },
+    "skuName": {
+      "value": "premium"
+    },
+    "storageAccountName": {
+      "value": "sadwcom001"
+    },
+    "storageAccountSkuName": {
+      "value": "Standard_ZRS"
+    },
     "tags": {
       "value": {
         "Environment": "Non-Prod",
         "Role": "DeploymentValidation"
       }
+    },
+    "vnetAddressPrefix": {
+      "value": "10.100"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2: Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module workspaces './databricks/workspaces/main.bicep' = {
+  name: '${uniqueString(deployment().name, location)}-test-dwmin'
+  params: {
+    // Required parameters
+    name: 'dwmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "dwmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }

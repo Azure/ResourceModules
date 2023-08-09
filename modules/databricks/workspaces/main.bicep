@@ -105,7 +105,7 @@ param prepareEncryption bool = false
 param publicIpName string = ''
 
 @description('Optional. A boolean indicating whether or not the DBFS root file system will be enabled with secondary layer of encryption with platform managed keys for data at rest.')
-param requireInfrastructureEncryption bool = true
+param requireInfrastructureEncryption bool = false
 
 @description('Optional. Default DBFS storage account name.')
 param storageAccountName string = ''
