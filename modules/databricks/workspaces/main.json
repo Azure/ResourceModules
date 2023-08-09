@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.20.4.51522",
-      "templateHash": "6885797445606439561"
+      "templateHash": "3704611994759977421"
     },
     "name": "Azure Databricks Workspaces",
     "description": "This module deploys an Azure Databricks Workspace.",
@@ -366,12 +366,8 @@
       "properties": {
         "managedResourceGroupId": "[if(not(empty(parameters('managedResourceGroupResourceId'))), parameters('managedResourceGroupResourceId'), format('{0}/resourceGroups/{1}-rg', subscription().id, parameters('name')))]",
         "parameters": {
-          "customVirtualNetworkId": {
-            "value": "[parameters('customVirtualNetworkResourceId')]"
-          },
-          "amlWorkspaceId": {
-            "value": "[parameters('amlWorkspaceResourceId')]"
-          },
+          "customVirtualNetworkId": "[if(not(empty(parameters('customVirtualNetworkResourceId'))), createObject('value', parameters('customVirtualNetworkResourceId')), null())]",
+          "amlWorkspaceId": "[if(not(empty(parameters('amlWorkspaceResourceId'))), createObject('value', parameters('amlWorkspaceResourceId')), null())]",
           "customPrivateSubnetName": {
             "value": "[parameters('customPrivateSubnetName')]"
           },
@@ -387,21 +383,15 @@
           "loadBalancerId": {
             "value": "[parameters('loadBalancerResourceId')]"
           },
-          "natGatewayName": {
-            "value": "[parameters('natGatewayName')]"
-          },
+          "natGatewayName": "[if(not(empty(parameters('natGatewayName'))), createObject('value', parameters('natGatewayName')), null())]",
           "prepareEncryption": {
             "value": "[parameters('prepareEncryption')]"
           },
-          "publicIpName": {
-            "value": "[parameters('publicIpName')]"
-          },
+          "publicIpName": "[if(not(empty(parameters('publicIpName'))), createObject('value', parameters('publicIpName')), null())]",
           "requireInfrastructureEncryption": {
             "value": "[parameters('requireInfrastructureEncryption')]"
           },
-          "storageAccountName": {
-            "value": "[parameters('storageAccountName')]"
-          },
+          "storageAccountName": "[if(not(empty(parameters('storageAccountName'))), createObject('value', parameters('storageAccountName')), null())]",
           "storageAccountSkuName": {
             "value": "[parameters('storageAccountSkuName')]"
           },

@@ -219,12 +219,12 @@ resource workspace 'Microsoft.Databricks/workspaces@2023-02-01' = {
   properties: {
     managedResourceGroupId: !empty(managedResourceGroupResourceId) ? managedResourceGroupResourceId : '${subscription().id}/resourceGroups/${name}-rg'
     parameters: {
-      customVirtualNetworkId: {
+      customVirtualNetworkId: !empty(customVirtualNetworkResourceId) ? {
         value: customVirtualNetworkResourceId
-      }
-      amlWorkspaceId: {
+      } : null
+      amlWorkspaceId: !empty(amlWorkspaceResourceId) ? {
         value: amlWorkspaceResourceId
-      }
+      } : null
       customPrivateSubnetName: {
         value: customPrivateSubnetName
       }
@@ -240,21 +240,21 @@ resource workspace 'Microsoft.Databricks/workspaces@2023-02-01' = {
       loadBalancerId: {
         value: loadBalancerResourceId
       }
-      natGatewayName: {
+      natGatewayName: !empty(natGatewayName) ? {
         value: natGatewayName
-      }
+      } : null
       prepareEncryption: {
         value: prepareEncryption
       }
-      publicIpName: {
+      publicIpName: !empty(publicIpName) ? {
         value: publicIpName
-      }
+      } : null
       requireInfrastructureEncryption: {
         value: requireInfrastructureEncryption
       }
-      storageAccountName: {
+      storageAccountName: !empty(storageAccountName) ? {
         value: storageAccountName
-      }
+      } : null
       storageAccountSkuName: {
         value: storageAccountSkuName
       }
