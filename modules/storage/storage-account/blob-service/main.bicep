@@ -25,7 +25,7 @@ param containerDeleteRetentionPolicyEnabled bool = true
 @description('Optional. Indicates the number of days that the deleted item should be retained.')
 param containerDeleteRetentionPolicyDays int = 7
 
-@description('Optional. This property when set to true allows deletion of the soft deleted blob versions and snapshots. This property cannot be used blob restore policy. This property only applies to blob service and does not apply to containers or file share.')
+@description('Optional. This property when set to true allows deletion of the soft deleted blob versions and snapshots. This property cannot be used with blob restore policy. This property only applies to blob service and does not apply to containers or file share.')
 param containerDeleteRetentionPolicyAllowPermanentDelete bool = false
 
 @description('Optional. Specifies CORS rules for the Blob service. You can include up to five CorsRule elements in the request. If no CorsRule elements are included in the request body, all CORS rules will be deleted, and CORS will be disabled for the Blob service.')
@@ -41,6 +41,9 @@ param deleteRetentionPolicyEnabled bool = true
 @maxValue(365)
 @description('Optional. Indicates the number of days that the deleted blob should be retained.')
 param deleteRetentionPolicyDays int = 7
+
+@description('Optional. This property when set to true allows deletion of the soft deleted blob versions and snapshots. This property cannot be used with blob restore policy. This property only applies to blob service and does not apply to containers or file share.')
+param deleteRetentionPolicyAllowPermanentDelete bool = false
 
 @description('Optional. Use versioning to automatically maintain previous versions of your blobs.')
 param isVersioningEnabled bool = true
@@ -173,6 +176,7 @@ resource blobServices 'Microsoft.Storage/storageAccounts/blobServices@2022-09-01
     deleteRetentionPolicy: {
       enabled: deleteRetentionPolicyEnabled
       days: deleteRetentionPolicyEnabled == true ? deleteRetentionPolicyDays : null
+      allowPermanentDelete: deleteRetentionPolicyEnabled && deleteRetentionPolicyAllowPermanentDelete ? true : null
     }
     isVersioningEnabled: isVersioningEnabled
     lastAccessTimeTrackingPolicy: {

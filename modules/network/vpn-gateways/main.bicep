@@ -8,8 +8,8 @@ param name string
 @description('Optional. Location where all resources will be created.')
 param location string = resourceGroup().location
 
-@description('Optional. The connections to create in the VPN gateway.')
-param connections array = []
+@description('Optional. The VPN connections to create in the VPN gateway.')
+param vpnConnections array = []
 
 @description('Optional. List of all the NAT Rules to associate with the gateway.')
 param natRules array = []
@@ -95,7 +95,7 @@ module vpnGateway_natRules 'nat-rules/main.bicep' = [for (natRule, index) in nat
   }
 }]
 
-module vpnGateway_connections 'connections/main.bicep' = [for (connection, index) in connections: {
+module vpnGateway_vpnConnections 'vpn-connections/main.bicep' = [for (connection, index) in vpnConnections: {
   name: '${deployment().name}-Connection-${index}'
   params: {
     name: connection.name

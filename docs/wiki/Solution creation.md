@@ -140,8 +140,8 @@ Once you start building a solution using this library, you may wonder how best t
 
 - Use the [VS-Code extension](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-bicep) for Bicep to enable DSL-native features such as auto-complete. Metadata implemented in the modules are automatically loaded through the extension.
 - Use the readme
-  - If you don't know how to use an object/array parameter, you can check if the module's ReadMe file specifies any 'Parameter Usage' block for the given parameter ([example](https://github.com/Azure/ResourceModules/blob/main/modules/AnalysisServices/servers/README.md#parameter-usage-tags)) - or - check the module's `Deployment Examples` ([example](https://github.com/Azure/ResourceModules/blob/main/modules/AnalysisServices/servers/README.md#deployment-examples)).
-  - In general, take note of the `Deployment Examples` specified in each module's ReadMe file, as they provide you with rich & tested examples of how a given module can be deployed ([example](https://github.com/Azure/ResourceModules/blob/main/modules/AnalysisServices/servers/README.md#deployment-examples)). An easy way to get started is to copy one of the examples and then adjust it to your needs.
+  - If you don't know how to use an object/array parameter, you can check if the module's ReadMe file specifies any 'Parameter Usage' block for the given parameter ([example](https://github.com/Azure/ResourceModules/blob/main/modules/analysis-services/server/README.md#parameter-usage-tags)) - or - check the module's `Deployment Examples` ([example](https://github.com/Azure/ResourceModules/blob/main/modules/analysis-services/server/README.md#deployment-examples)).
+  - In general, take note of the `Deployment Examples` specified in each module's ReadMe file, as they provide you with rich & tested examples of how a given module can be deployed ([example](https://github.com/Azure/ResourceModules/blob/main/modules/analysis-services/server/README.md#deployment-examples)). An easy way to get started is to copy one of the examples and then adjust it to your needs.
 - Note the outputs that are returned by each module.
   - If an output you need isn't available, you have 2 choices:
     1. Add the missing output to the module
@@ -173,7 +173,7 @@ param location string = deployment().location
 // =========== //
 
 // Resource Group
-module rg 'modules/Resources/resourceGroups/main.bicep' = {
+module rg 'modules/resources/resource-group/main.bicep' = {
   name: 'registry-rg'
   params: {
     name: resourceGroupName
@@ -182,7 +182,7 @@ module rg 'modules/Resources/resourceGroups/main.bicep' = {
 }
 
 // Network Security Group
-module nsg 'modules/Network/networkSecurityGroups/main.bicep' = {
+module nsg 'modules/network/network-security-group/main.bicep' = {
   name: 'registry-nsg'
   scope: resourceGroup(resourceGroupName)
   params: {
@@ -194,7 +194,7 @@ module nsg 'modules/Network/networkSecurityGroups/main.bicep' = {
 }
 
 // Virtual Network
-module vnet 'modules/Network/virtualNetworks/main.bicep' = {
+module vnet 'modules/network/virtual-network/main.bicep' = {
   name: 'registry-vnet'
   scope: resourceGroup(resourceGroupName)
   params: {
@@ -248,7 +248,7 @@ param location string = deployment().location
 // =========== //
 
 // Resource Group
-module rg 'br/modules:resources.resourcegroups:1.0.0' = {
+module rg 'br/modules:resources.resource-group:1.0.0' = {
   name: 'registry-rg'
   params: {
     name: resourceGroupName
@@ -257,7 +257,7 @@ module rg 'br/modules:resources.resourcegroups:1.0.0' = {
 }
 
 // Network Security Group
-module nsg 'br/modules:network.networksecuritygroups:1.0.0' = {
+module nsg 'br/modules:network.network-security-group:1.0.0' = {
   name: 'registry-nsg'
   scope: resourceGroup(resourceGroupName)
   params: {
@@ -269,7 +269,7 @@ module nsg 'br/modules:network.networksecuritygroups:1.0.0' = {
 }
 
 // Virtual Network
-module vnet 'br/modules:network.virtualnetworks:1.0.0' = {
+module vnet 'br/modules:network.virtual-network:1.0.0' = {
   name: 'registry-vnet'
   scope: resourceGroup(resourceGroupName)
   params: {
@@ -338,7 +338,7 @@ param location string = deployment().location
 // =========== //
 
 // Resource Group
-module rg 'ts/modules:resources.resourcegroups:1.0.0' = {
+module rg 'ts/modules:resources.resource-group:1.0.0' = {
   name: 'registry-rg'
   params: {
     name: resourceGroupName
@@ -347,7 +347,7 @@ module rg 'ts/modules:resources.resourcegroups:1.0.0' = {
 }
 
 // Network Security Group
-module nsg 'ts/modules:network.networksecuritygroups:1.0.0' = {
+module nsg 'ts/modules:network.network-security-group:1.0.0' = {
   name: 'registry-nsg'
   scope: resourceGroup(resourceGroupName)
   params: {
@@ -359,7 +359,7 @@ module nsg 'ts/modules:network.networksecuritygroups:1.0.0' = {
 }
 
 // Virtual Network
-module vnet 'ts/modules:network.virtualnetworks:1.0.0' = {
+module vnet 'ts/modules:network.virtual-network:1.0.0' = {
   name: 'registry-vnet'
   scope: resourceGroup(resourceGroupName)
   params: {
@@ -475,8 +475,8 @@ jobs:
       - name: 'Deploy resource group'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
-          templateFilePath: './modules/Resources/resourceGroups/main.bicep'
-          parameterFilePath: './MultiRepoTestParentFolder/network-hub-rg/Parameters/ResourceGroup/parameters.json'
+          templateFilePath: './modules/resources/resource-group/main.bicep'
+          parameterFilePath: './MultiRepoTestParentFolder/network-hub-rg/Parameters/resource-group/parameters.json'
           location: '${{ env.defaultLocation }}'
           resourceGroupName: '${{ env.resourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
@@ -486,8 +486,8 @@ jobs:
       - name: 'Deploy network security group'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
-          templateFilePath: './modules/Network/networkSecurityGroups/main.bicep'
-          parameterFilePath: './MultiRepoTestParentFolder/network-hub-rg/Parameters/NetworkSecurityGroups/parameters.json'
+          templateFilePath: './modules/network/network-security-group/main.bicep'
+          parameterFilePath: './MultiRepoTestParentFolder/network-hub-rg/Parameters/network-security-group/parameters.json'
           location: '${{ env.defaultLocation }}'
           resourceGroupName: '${{ env.resourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
@@ -497,8 +497,8 @@ jobs:
       - name: 'Deploy virtual network A'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
-          templateFilePath: './modules/Network/virtualNetworks/main.bicep'
-          parameterFilePath: './MultiRepoTestParentFolder/network-hub-rg/Parameters/VirtualNetwork/vnet-A.parameters.json'
+          templateFilePath: './modules/network/virtual-network/main.bicep'
+          parameterFilePath: './MultiRepoTestParentFolder/network-hub-rg/Parameters/virtual-network/vnet-A.parameters.json'
           location: '${{ env.defaultLocation }}'
           resourceGroupName: '${{ env.resourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
@@ -560,39 +560,39 @@ stages:
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.solution.deploy.yml
         parameters:
-          jobName: resourceGroups
+          jobName: resource-group
           displayName: 'Resource Group'
-          modulePath: '/modules/Resources/resourceGroups/main.bicep'
+          modulePath: '/modules/resources/resource-group/main.bicep'
           moduleTestFilePath: '$(resourceGroupName)/parameters.json'
           checkoutRepositories:
             - modules
       - template: /.azuredevops/pipelineTemplates/jobs.solution.deploy.yml
         parameters:
-          jobName: networkSecurityGroups
+          jobName: network-security-group
           displayName: 'Network Security Groups'
-          modulePath: '/modules/Network/networkSecurityGroups/main.bicep'
-          moduleTestFilePath: '$(resourceGroupName)/networkSecurityGroups/parameters.json'
+          modulePath: '/modules/network/network-security-group/main.bicep'
+          moduleTestFilePath: '$(resourceGroupName)/network-security-group/parameters.json'
           checkoutRepositories:
             - modules
       - template: /.azuredevops/pipelineTemplates/jobs.solution.deploy.yml
         parameters:
-          jobName: routeTables
+          jobName: route-table
           displayName: 'Route Tables'
-          modulePath: '/modules/Network/routeTables/main.bicep'
-          moduleTestFilePath: '$(resourceGroupName)/routeTables/parameters.json'
+          modulePath: '/modules/network/route-table/main.bicep'
+          moduleTestFilePath: '$(resourceGroupName)/route-table/parameters.json'
           checkoutRepositories:
             - modules
       - template: /.azuredevops/pipelineTemplates/jobs.solution.deploy.yml
         parameters:
-          jobName: virtualNetworks
+          jobName: virtual-network
           displayName: 'Virtual Networks'
-          modulePath: '/modules/Network/virtualNetworks/main.bicep'
-          moduleTestFilePath: '$(resourceGroupName)/virtualNetworks/parameters.json'
+          modulePath: '/modules/network/virtual-network/main.bicep'
+          moduleTestFilePath: '$(resourceGroupName)/virtual-network/parameters.json'
           checkoutRepositories:
             - modules
           dependsOn:
-            - networkSecurityGroups
-            - routeTables
+            - network-security-group
+            - route-table
 ```
 
 > 1. `Azure/ResourceModules` repo has been checked out in a nested folder called `ResourceModules` (unlike in the above mentioned GitHub sample workflow and due to restrictions in order to support all publishing options in ADO.)
@@ -696,25 +696,25 @@ jobs:
 - template: pipeline.jobs.artifact.deploy.yml
   parameters:
     displayName: 'Deploy Resource Group'
-    moduleName: 'ResourceGroup'
+    moduleName: 'resource-group'
     moduleVersion: '1.0.0'
-    parameterFilePath: 'ResourceGroup/parameters.json'
+    parameterFilePath: 'resource-group/parameters.json'
 
 - template: pipeline.jobs.artifact.deploy.yml
   parameters:
     displayName: 'Deploy Network Security Group'
-    moduleName: 'NetworkSecurityGroup'
+    moduleName: 'network-security-group'
     moduleVersion: '1.0.0'
-    parameterFilePath: 'NetworkSecurityGroup/parameters.json'
+    parameterFilePath: 'network-security-group/parameters.json'
     dependsOn:
     - Deploy_Resource_Group
 
 - template: pipeline.jobs.artifact.deploy.yml
   parameters:
     displayName: 'Deploy Virtual Network'
-    moduleName: 'VirtualNetwork'
+    moduleName: 'virtual-network'
     moduleVersion: '1.0.0'
-    parameterFilePath: 'VirtualNetwork/parameters.json'
+    parameterFilePath: 'virtual-network/parameters.json'
     dependsOn:
     - Deploy_Resource_Group
 ```

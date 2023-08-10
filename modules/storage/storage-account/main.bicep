@@ -412,7 +412,8 @@ module storageAccount_blobServices 'blob-service/main.bicep' = if (!empty(blobSe
     containerDeleteRetentionPolicyAllowPermanentDelete: contains(blobServices, 'containerDeleteRetentionPolicyAllowPermanentDelete') ? blobServices.containerDeleteRetentionPolicyAllowPermanentDelete : false
     corsRules: contains(blobServices, 'corsRules') ? blobServices.corsRules : []
     defaultServiceVersion: contains(blobServices, 'defaultServiceVersion') ? blobServices.defaultServiceVersion : ''
-    deleteRetentionPolicyEnabled: contains(blobServices, 'deleteRetentionPolicy') ? blobServices.deleteRetentionPolicy : false
+    deleteRetentionPolicyAllowPermanentDelete: contains(blobServices, 'deleteRetentionPolicyAllowPermanentDelete') ? blobServices.deleteRetentionPolicyAllowPermanentDelete : false
+    deleteRetentionPolicyEnabled: contains(blobServices, 'deleteRetentionPolicyEnabled') ? blobServices.deleteRetentionPolicyEnabled : false
     deleteRetentionPolicyDays: contains(blobServices, 'deleteRetentionPolicyDays') ? blobServices.deleteRetentionPolicyDays : 7
     isVersioningEnabled: contains(blobServices, 'isVersioningEnabled') ? blobServices.isVersioningEnabled : false
     lastAccessTimeTrackingPolicyEnable: contains(blobServices, 'lastAccessTimeTrackingPolicyEnable') ? blobServices.lastAccessTimeTrackingPolicyEnable : false
