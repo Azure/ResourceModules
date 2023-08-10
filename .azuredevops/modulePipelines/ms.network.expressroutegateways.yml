@@ -27,7 +27,7 @@ trigger:
       - main
   paths:
     include:
-      - '/.azuredevops/modulePipelines/ms.network.expressroutegateway.yml'
+      - '/.azuredevops/modulePipelines/ms.network.expressroutegateways.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
       - '/modules/network/expressroutegateway/*'
       - '/utilities/pipelines/*'

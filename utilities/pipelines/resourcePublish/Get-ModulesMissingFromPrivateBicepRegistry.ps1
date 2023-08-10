@@ -68,8 +68,18 @@ function Get-ModulesMissingFromPrivateBicepRegistry {
     }
 
     process {
-        # Get all children
-        $availableModuleTemplatePaths = (Get-ChildItem -Path (Split-Path $TemplateFilePath) -Recurse -Include @('main.bicep', 'main.json')).FullName
+        # Get all children, bicep templates only
+        $availableModuleTemplatePaths = (Get-ChildItem -Path (Split-Path $TemplateFilePath) -Recurse -Include @('main.bicep')).FullName
+
+        # Get all children, ARM templates only
+        $availableModuleTemplatePathsARM = (Get-ChildItem -Path (Split-Path $TemplateFilePath) -Recurse -Include @('main.json')).FullName
+
+        # Add ARM templates to the list of available modules only if there is no bicep template for the same module
+        foreach ($path in $availableModuleTemplatePathsARM) {
+            if ($availableModuleTemplatePaths -contains $path.Replace('.json', '.bicep')) { continue }
+            $availableModuleTemplatePaths += $path
+        }
+        $availableModuleTemplatePaths = $availableModuleTemplatePaths | Sort-Object
 
         if (-not (Get-AzContainerRegistry -Name $BicepRegistryName -ResourceGroupName $BicepRegistryRgName -ErrorAction 'SilentlyContinue')) {
             $missingTemplatePaths = $availableModuleTemplatePaths
@@ -83,7 +93,7 @@ function Get-ModulesMissingFromPrivateBicepRegistry {
 
                 $null = Get-AzContainerRegistryTag -RepositoryName $moduleRegistryIdentifier -RegistryName $BicepRegistryName -ErrorAction 'SilentlyContinue' -ErrorVariable 'result'
 
-                if ($result.exception.Response.StatusCode -eq 'NotFound') {
+                if ($result.Exception.Response.StatusCode -eq 'NotFound' -or $result.Exception.Status -eq '404') {
                     $missingTemplatePaths += $templatePath
                 }
             }

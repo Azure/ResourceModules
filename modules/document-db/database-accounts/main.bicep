@@ -173,6 +173,9 @@ param backupRetentionIntervalInHours int = 8
 @description('Optional. Enum to indicate type of backup residency. Only applies to periodic backup type.')
 param backupStorageRedundancy string = 'Local'
 
+@description('Optional. Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.')
+param privateEndpoints array = []
+
 var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs' && item != ''): {
   category: category
   enabled: true
@@ -362,6 +365,29 @@ module databaseAccount_gremlinDatabases 'gremlin-databases/main.bicep' = [for gr
     name: gremlinDatabase.name
     graphs: contains(gremlinDatabase, 'graphs') ? gremlinDatabase.graphs : []
     enableDefaultTelemetry: enableReferencedModulesTelemetry
+  }
+}]
+
+module databaseAccount_privateEndpoints '../../network/private-endpoints/main.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
+  name: '${uniqueString(deployment().name, location)}-CosmosDB-PrivateEndpoint-${index}'
+  params: {
+    groupIds: [
+      privateEndpoint.service
+    ]
+    name: contains(privateEndpoint, 'name') ? privateEndpoint.name : 'pe-${last(split(databaseAccount.id, '/'))}-${privateEndpoint.service}-${index}'
+    serviceResourceId: databaseAccount.id
+    subnetResourceId: privateEndpoint.subnetResourceId
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+    location: reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
+    lock: contains(privateEndpoint, 'lock') ? privateEndpoint.lock : lock
+    privateDnsZoneGroup: contains(privateEndpoint, 'privateDnsZoneGroup') ? privateEndpoint.privateDnsZoneGroup : {}
+    roleAssignments: contains(privateEndpoint, 'roleAssignments') ? privateEndpoint.roleAssignments : []
+    tags: contains(privateEndpoint, 'tags') ? privateEndpoint.tags : {}
+    manualPrivateLinkServiceConnections: contains(privateEndpoint, 'manualPrivateLinkServiceConnections') ? privateEndpoint.manualPrivateLinkServiceConnections : []
+    customDnsConfigs: contains(privateEndpoint, 'customDnsConfigs') ? privateEndpoint.customDnsConfigs : []
+    ipConfigurations: contains(privateEndpoint, 'ipConfigurations') ? privateEndpoint.ipConfigurations : []
+    applicationSecurityGroups: contains(privateEndpoint, 'applicationSecurityGroups') ? privateEndpoint.applicationSecurityGroups : []
+    customNetworkInterfaceName: contains(privateEndpoint, 'customNetworkInterfaceName') ? privateEndpoint.customNetworkInterfaceName : ''
   }
 }]
 

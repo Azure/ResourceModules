@@ -4,17 +4,20 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "16934496734737846581"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "5668549883344653702"
+    },
+    "name": "Storage Account Blob Container Immutability Policies",
+    "description": "This module deploys a Storage Account Blob Container Immutability Policy.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "storageAccountName": {
       "type": "string",
+      "maxLength": 24,
       "metadata": {
         "description": "Conditional. The name of the parent Storage Account. Required if the template is used in a standalone deployment."
-      },
-      "maxLength": 24
+      }
     },
     "containerName": {
       "type": "string",

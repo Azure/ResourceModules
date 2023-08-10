@@ -59,7 +59,7 @@ This module deploys a Recovery Services Vault.
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `monitoringSettings` | object | `{object}` |  | Monitoring Settings of the vault. |
 | `privateEndpoints` | array | `[]` |  | Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
-| `protectionContainers` | _[protectionContainers](protection-containers/README.md)_ array | `[]` |  | List of all protection containers. |
+| `protectionContainers` | array | `[]` |  | List of all protection containers. |
 | `publicNetworkAccess` | string | `'Disabled'` | `[Disabled, Enabled]` | Whether or not public network access is allowed for this resource. For security reasons it should be disabled. |
 | `replicationAlertSettings` | _[replicationAlertSettings](replication-alert-settings/README.md)_ object | `{object}` |  | Replication alert settings. |
 | `replicationFabrics` | _[replicationFabrics](replication-fabrics/README.md)_ array | `[]` |  | List of all replication fabrics. |

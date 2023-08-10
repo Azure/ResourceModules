@@ -36,17 +36,17 @@ Optional. Remove existing 'main.json' and 'main.test.json' files in the given pa
 Optional. Don't run the code using multiple threads. May be necessary if context does not support it
 
 .EXAMPLE
-. .\utilities\tools\ConvertTo-ARMTemplate.ps1
+ConvertTo-ARMTemplate
 
 Converts bicep modules to json-based ARM template, cleaning up all bicep files and folders and updating the workflow files to use the json files.
 
 .EXAMPLE
-. .\utilities\tools\ConvertTo-ARMTemplate.ps1 -RemoveExistingTemplates -SkipMetadataCleanup -SkipBicepCleanUp -SkipPipelineUpdate -SkipTest -Verbose
+ConvertTo-ARMTemplate -RemoveExistingTemplates -SkipMetadataCleanup -SkipBicepCleanUp -SkipPipelineUpdate -SkipTest -Verbose
 
 Regenerates compiled 'main.json' for the whole library.
 
 .EXAMPLE
-. .\utilities\tools\ConvertTo-ARMTemplate.ps1 -ModuleRelativePath "modules\desktop-virtualization\application-group" -RemoveExistingTemplates -SkipMetadataCleanup -SkipBicepCleanUp -SkipPipelineUpdate -SkipTest -Verbose
+ConvertTo-ARMTemplate -ModuleRelativePath "modules\desktop-virtualization\application-groups" -RemoveExistingTemplates -SkipMetadataCleanup -SkipBicepCleanUp -SkipPipelineUpdate -SkipTest -Verbose
 
 Regenerates compiled 'main.json' for the provided ModuleRelativePath folder.
 
@@ -55,7 +55,7 @@ function ConvertTo-ARMTemplate {
     [CmdletBinding(SupportsShouldProcess = $true)]
     param (
         [Parameter(Mandatory = $false)]
-        [string] $RootPath = (Get-Location).Path,
+        [string] $RootPath = (Get-Item $PSScriptRoot).Parent.Parent.FullName,
 
         [Parameter(Mandatory = $false)]
         [string] $ModuleRelativePath = 'modules',
@@ -79,7 +79,6 @@ function ConvertTo-ARMTemplate {
         [switch] $RunSynchronous
     )
 
-    $RootPath = Get-Item -Path $RootPath | Select-Object -ExpandProperty 'FullName'
     $Path = Join-Path $RootPath $ModuleRelativePath
 
     if (-not $SkipTest) {
@@ -121,7 +120,7 @@ function ConvertTo-ARMTemplate {
     Write-Verbose '   Convert bicep files to json - Done'
     #endregion
 
-    #region Remove Bicep metadata from json
+    #region Remove Bicep metadata `_generator` property from json
     if (-not $SkipMetadataCleanup) {
         Write-Verbose "# Remove Bicep metadata from json - Processing [$($BicepFilesToConvert.count)] file(s)"
 
@@ -129,7 +128,7 @@ function ConvertTo-ARMTemplate {
             # helper function start
             <#
             .SYNOPSIS
-            Recursively remove 'metadata' property from a provided object.
+            Recursively remove 'metadata' `_generator` property from a provided object.
 
             .DESCRIPTION
             This object is expected to be an ARM template converted to a PowerShell custom object.
@@ -141,7 +140,7 @@ function ConvertTo-ARMTemplate {
             .EXAMPLE
             Remove-JSONMetadata -TemplateObject (ConvertFrom-Json (Get-Content -Path $JSONFilePath -Raw))
 
-            Reads content from a ARM/JSON file, converts it to a PSCustomObject and removes 'metadata' property under the template and recursively on all nested deployments.
+            Reads content from a ARM/JSON file, converts it to a PSCustomObject and removes 'metadata' `_generator` property under the template and recursively on all nested deployments.
             #>
             function Remove-JSONMetadata {
 
@@ -150,7 +149,11 @@ function ConvertTo-ARMTemplate {
                     [Parameter(Mandatory = $true)]
                     [psobject] $TemplateObject
                 )
-                $TemplateObject.PSObject.Properties.Remove('metadata')
+
+                if (($TemplateObject | Get-Member -MemberType 'NoteProperty').Name -contains 'metadata' -and ($TemplateObject.metadata | Get-Member -MemberType 'NoteProperty').Name -contains '_generator') {
+                    $TemplateObject.metadata.psobject.properties.Remove('_generator')
+                }
+
                 $TemplateObject.resources | Where-Object { $_.type -eq 'Microsoft.Resources/deployments' } | ForEach-Object {
                     Remove-JSONMetadata -TemplateObject $_.properties.template
                 }
@@ -159,7 +162,7 @@ function ConvertTo-ARMTemplate {
 
             $jsonFilePath = Join-Path (Split-Path $_ -Parent) ('{0}.json' -f (Split-Path $_ -LeafBase))
 
-            Write-Verbose ('   Removing metadata from file [{0}]' -f $jsonFilePath) -Verbose
+            Write-Verbose ('   Removing metadata `_generator` property from file [{0}]' -f $jsonFilePath) -Verbose
 
             $JSONFileContent = Get-Content -Path $JSONFilePath
             $JSONObj = $JSONFileContent | ConvertFrom-Json

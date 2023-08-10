@@ -93,11 +93,14 @@ function Get-CrossReferencedModuleList {
     $resultSet = [ordered]@{}
 
     # Get all top-level module folders (i.e. one level below the Resource Provider folder)
-    $topLevelFolderPaths = (Get-ChildItem -Path $path -Recurse -Depth 1 -Directory).FullName
+    $topLevelFolderPaths = (Get-ChildItem -Path $path -Depth 1 -Directory).FullName | Where-Object {
+        $_ -notlike '*.shared*' -and # Ignore shared templates
+        (($_ -split '[\\|\/]modules[\\|\/]')[1] -split '[\\|/]').Count -eq 2 # From '/modules/' only consider those which have 2 more path elements (i.e., are resource type folders)
+    }
 
     foreach ($topLevelFolderPath in $topLevelFolderPaths) {
 
-        $moduleTemplatePaths = (Get-ChildItem -Path $topLevelFolderPath -Recurse -Filter '*.bicep' -File -Force).FullName | Where-Object { $_ -notlike '*.test*' }
+        $moduleTemplatePaths = (Get-ChildItem -Path $topLevelFolderPath -Recurse -Include 'main.bicep' -File -Force).FullName
 
         $resourceReferences = [System.Collections.ArrayList]@()
         $localPathReferences = [System.Collections.ArrayList]@()
