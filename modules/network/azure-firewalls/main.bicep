@@ -124,7 +124,7 @@ param diagnosticSettingsName string = ''
 
 var azureSkuName = empty(vNetId) ? 'AZFW_Hub' : 'AZFW_VNet'
 var requiresManagementIp = azureSkuTier == 'Basic' ? true : false
-var isCreateDefaultManagementIP = empty(managementIPResourceID) && requiresManagementIp == true
+var isCreateDefaultManagementIP = empty(managementIPResourceID) && requiresManagementIp
 
 // ----------------------------------------------------------------------------
 // Prep ipConfigurations object AzureFirewallSubnet for different uses cases:
@@ -180,7 +180,7 @@ var existingMip = {
   }
 }
 var newMip = {
-  publicIPAddress: (empty(managementIPResourceID) && isCreateDefaultManagementIP) ? {
+  publicIPAddress: empty(managementIPResourceID) && isCreateDefaultManagementIP ? {
     id: managementIPAddress.outputs.resourceId
   } : null
 }
@@ -309,7 +309,7 @@ resource azureFirewall 'Microsoft.Network/azureFirewalls@2022-07-01' = {
       id: firewallPolicyId
     } : null
     ipConfigurations: ipConfigurations
-    managementIpConfiguration: requiresManagementIp == true ? managementIPConfiguration : null
+    managementIpConfiguration: requiresManagementIp ? managementIPConfiguration : null
     sku: {
       name: azureSkuName
       tier: azureSkuTier
