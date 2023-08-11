@@ -218,50 +218,73 @@ resource workspace 'Microsoft.Databricks/workspaces@2023-02-01' = {
   }
   properties: {
     managedResourceGroupId: !empty(managedResourceGroupResourceId) ? managedResourceGroupResourceId : '${subscription().id}/resourceGroups/${name}-rg'
-    parameters: {
-      customVirtualNetworkId: !empty(customVirtualNetworkResourceId) ? {
-        value: customVirtualNetworkResourceId
-      } : null
-      amlWorkspaceId: !empty(amlWorkspaceResourceId) ? {
-        value: amlWorkspaceResourceId
-      } : null
-      customPrivateSubnetName: {
-        value: customPrivateSubnetName
-      }
-      customPublicSubnetName: {
-        value: customPublicSubnetName
-      }
-      enableNoPublicIp: {
-        value: disablePublicIp
-      }
-      loadBalancerBackendPoolName: {
-        value: loadBalancerBackendPoolName
-      }
-      loadBalancerId: {
-        value: loadBalancerResourceId
-      }
-      natGatewayName: !empty(natGatewayName) ? {
-        value: natGatewayName
-      } : null
-      prepareEncryption: {
-        value: prepareEncryption
-      }
-      publicIpName: !empty(publicIpName) ? {
-        value: publicIpName
-      } : null
-      requireInfrastructureEncryption: {
-        value: requireInfrastructureEncryption
-      }
-      storageAccountName: !empty(storageAccountName) ? {
-        value: storageAccountName
-      } : null
-      storageAccountSkuName: {
-        value: storageAccountSkuName
-      }
-      vnetAddressPrefix: {
-        value: vnetAddressPrefix
-      }
-    }
+    parameters: union(
+      // Always added parameters
+      {
+        enableNoPublicIp: {
+          value: disablePublicIp
+        }
+        prepareEncryption: {
+          value: prepareEncryption
+        }
+        vnetAddressPrefix: {
+          value: vnetAddressPrefix
+        }
+        requireInfrastructureEncryption: {
+          value: requireInfrastructureEncryption
+        }
+      },
+      // Parameters only added if not empty
+      !empty(customVirtualNetworkResourceId) ? {
+        customVirtualNetworkId: {
+          value: customVirtualNetworkResourceId
+        }
+      } : {},
+      !empty(amlWorkspaceResourceId) ? {
+        amlWorkspaceId: {
+          value: amlWorkspaceResourceId
+        }
+      } : {},
+      !empty(customPrivateSubnetName) ? {
+        customPrivateSubnetName: {
+          value: customPrivateSubnetName
+        }
+      } : {},
+      !empty(customPublicSubnetName) ? {
+        customPublicSubnetName: {
+          value: customPublicSubnetName
+        }
+      } : {},
+      !empty(loadBalancerBackendPoolName) ? {
+        loadBalancerBackendPoolName: {
+          value: loadBalancerBackendPoolName
+        }
+      } : {},
+      !empty(loadBalancerResourceId) ? {
+        loadBalancerId: {
+          value: loadBalancerResourceId
+        }
+      } : {},
+      !empty(natGatewayName) ? {
+        natGatewayName: {
+          value: natGatewayName
+        }
+      } : {},
+      !empty(publicIpName) ? {
+        publicIpName: {
+          value: publicIpName
+        }
+      } : {},
+      !empty(storageAccountName) ? {
+        storageAccountName: {
+          value: storageAccountName
+        }
+      } : {},
+      !empty(storageAccountSkuName) ? {
+        storageAccountSkuName: {
+          value: storageAccountSkuName
+        }
+      } : {})
     publicNetworkAccess: publicNetworkAccess
     requiredNsgRules: requiredNsgRules
     encryption: !empty(cMKManagedServicesKeyName) || !empty(cMKManagedServicesKeyName) ? {

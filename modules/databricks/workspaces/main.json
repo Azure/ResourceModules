@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.20.4.51522",
-      "templateHash": "3704611994759977421"
+      "templateHash": "6917573805504793323"
     },
     "name": "Azure Databricks Workspaces",
     "description": "This module deploys an Azure Databricks Workspace.",
@@ -365,40 +365,7 @@
       },
       "properties": {
         "managedResourceGroupId": "[if(not(empty(parameters('managedResourceGroupResourceId'))), parameters('managedResourceGroupResourceId'), format('{0}/resourceGroups/{1}-rg', subscription().id, parameters('name')))]",
-        "parameters": {
-          "customVirtualNetworkId": "[if(not(empty(parameters('customVirtualNetworkResourceId'))), createObject('value', parameters('customVirtualNetworkResourceId')), null())]",
-          "amlWorkspaceId": "[if(not(empty(parameters('amlWorkspaceResourceId'))), createObject('value', parameters('amlWorkspaceResourceId')), null())]",
-          "customPrivateSubnetName": {
-            "value": "[parameters('customPrivateSubnetName')]"
-          },
-          "customPublicSubnetName": {
-            "value": "[parameters('customPublicSubnetName')]"
-          },
-          "enableNoPublicIp": {
-            "value": "[parameters('disablePublicIp')]"
-          },
-          "loadBalancerBackendPoolName": {
-            "value": "[parameters('loadBalancerBackendPoolName')]"
-          },
-          "loadBalancerId": {
-            "value": "[parameters('loadBalancerResourceId')]"
-          },
-          "natGatewayName": "[if(not(empty(parameters('natGatewayName'))), createObject('value', parameters('natGatewayName')), null())]",
-          "prepareEncryption": {
-            "value": "[parameters('prepareEncryption')]"
-          },
-          "publicIpName": "[if(not(empty(parameters('publicIpName'))), createObject('value', parameters('publicIpName')), null())]",
-          "requireInfrastructureEncryption": {
-            "value": "[parameters('requireInfrastructureEncryption')]"
-          },
-          "storageAccountName": "[if(not(empty(parameters('storageAccountName'))), createObject('value', parameters('storageAccountName')), null())]",
-          "storageAccountSkuName": {
-            "value": "[parameters('storageAccountSkuName')]"
-          },
-          "vnetAddressPrefix": {
-            "value": "[parameters('vnetAddressPrefix')]"
-          }
-        },
+        "parameters": "[union(createObject('enableNoPublicIp', createObject('value', parameters('disablePublicIp')), 'prepareEncryption', createObject('value', parameters('prepareEncryption')), 'vnetAddressPrefix', createObject('value', parameters('vnetAddressPrefix')), 'requireInfrastructureEncryption', createObject('value', parameters('requireInfrastructureEncryption'))), if(not(empty(parameters('customVirtualNetworkResourceId'))), createObject('customVirtualNetworkId', createObject('value', parameters('customVirtualNetworkResourceId'))), createObject()), if(not(empty(parameters('amlWorkspaceResourceId'))), createObject('amlWorkspaceId', createObject('value', parameters('amlWorkspaceResourceId'))), createObject()), if(not(empty(parameters('customPrivateSubnetName'))), createObject('customPrivateSubnetName', createObject('value', parameters('customPrivateSubnetName'))), createObject()), if(not(empty(parameters('customPublicSubnetName'))), createObject('customPublicSubnetName', createObject('value', parameters('customPublicSubnetName'))), createObject()), if(not(empty(parameters('loadBalancerBackendPoolName'))), createObject('loadBalancerBackendPoolName', createObject('value', parameters('loadBalancerBackendPoolName'))), createObject()), if(not(empty(parameters('loadBalancerResourceId'))), createObject('loadBalancerId', createObject('value', parameters('loadBalancerResourceId'))), createObject()), if(not(empty(parameters('natGatewayName'))), createObject('natGatewayName', createObject('value', parameters('natGatewayName'))), createObject()), if(not(empty(parameters('publicIpName'))), createObject('publicIpName', createObject('value', parameters('publicIpName'))), createObject()), if(not(empty(parameters('storageAccountName'))), createObject('storageAccountName', createObject('value', parameters('storageAccountName'))), createObject()), if(not(empty(parameters('storageAccountSkuName'))), createObject('storageAccountSkuName', createObject('value', parameters('storageAccountSkuName'))), createObject()))]",
         "publicNetworkAccess": "[parameters('publicNetworkAccess')]",
         "requiredNsgRules": "[parameters('requiredNsgRules')]",
         "encryption": "[if(or(not(empty(parameters('cMKManagedServicesKeyName'))), not(empty(parameters('cMKManagedServicesKeyName')))), createObject('entities', createObject('managedServices', if(not(empty(parameters('cMKManagedServicesKeyName'))), createObject('keySource', 'Microsoft.Keyvault', 'keyVaultProperties', createObject('keyVaultUri', reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', split(parameters('cMKManagedServicesKeyVaultResourceId'), '/')[2], split(parameters('cMKManagedServicesKeyVaultResourceId'), '/')[4]), 'Microsoft.KeyVault/vaults', last(split(parameters('cMKManagedServicesKeyVaultResourceId'), '/'))), '2023-02-01').vaultUri, 'keyName', parameters('cMKManagedServicesKeyName'), 'keyVersion', if(not(empty(parameters('cMKManagedServicesKeyVersion'))), parameters('cMKManagedServicesKeyVersion'), last(split(reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', split(parameters('cMKManagedServicesKeyVaultResourceId'), '/')[2], split(parameters('cMKManagedServicesKeyVaultResourceId'), '/')[4]), 'Microsoft.KeyVault/vaults/keys', split(format('{0}/{1}', last(split(parameters('cMKManagedServicesKeyVaultResourceId'), '/')), parameters('cMKManagedServicesKeyName')), '/')[0], split(format('{0}/{1}', last(split(parameters('cMKManagedServicesKeyVaultResourceId'), '/')), parameters('cMKManagedServicesKeyName')), '/')[1]), '2023-02-01').keyUriWithVersion, '/'))))), null()), 'managedDisk', if(not(empty(parameters('cMKManagedDisksKeyName'))), createObject('keySource', 'Microsoft.Keyvault', 'keyVaultProperties', createObject('keyVaultUri', reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', split(parameters('cMKManagedDisksKeyVaultResourceId'), '/')[2], split(parameters('cMKManagedDisksKeyVaultResourceId'), '/')[4]), 'Microsoft.KeyVault/vaults', last(split(parameters('cMKManagedDisksKeyVaultResourceId'), '/'))), '2023-02-01').vaultUri, 'keyName', parameters('cMKManagedDisksKeyName'), 'keyVersion', if(not(empty(parameters('cMKManagedDisksKeyVersion'))), parameters('cMKManagedDisksKeyVersion'), last(split(reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', split(parameters('cMKManagedDisksKeyVaultResourceId'), '/')[2], split(parameters('cMKManagedDisksKeyVaultResourceId'), '/')[4]), 'Microsoft.KeyVault/vaults/keys', split(format('{0}/{1}', last(split(parameters('cMKManagedDisksKeyVaultResourceId'), '/')), parameters('cMKManagedDisksKeyName')), '/')[0], split(format('{0}/{1}', last(split(parameters('cMKManagedDisksKeyVaultResourceId'), '/')), parameters('cMKManagedDisksKeyName')), '/')[1]), '2023-02-01').keyUriWithVersion, '/')))), 'rotationToLatestKeyVersionEnabled', parameters('cMKManagedDisksKeyRotationToLatestKeyVersionEnabled')), null()))), null())]"
