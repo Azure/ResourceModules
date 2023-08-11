@@ -1,3 +1,7 @@
+metadata name = 'Compute Galleries Applications'
+metadata description = 'This module deploys an Azure Compute Gallery Application.'
+metadata owner = 'Azure/module-maintainers'
+
 @sys.description('Required. Name of the application definition.')
 param name string
 

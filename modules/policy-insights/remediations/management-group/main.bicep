@@ -1,3 +1,7 @@
+metadata name = 'Policy Insights Remediations (Management Group scope)'
+metadata description = 'This module deploys a Policy Insights Remediation on a Management Group scope.'
+metadata owner = 'Azure/module-maintainers'
+
 targetScope = 'managementGroup'
 
 @sys.description('Required. Specifies the name of the policy remediation.')

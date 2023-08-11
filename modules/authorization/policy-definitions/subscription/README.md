@@ -1,4 +1,4 @@
-# Policy Definitions (Subscription scope) `[Microsoft.Authorization/policyDefinitions/subscription]`
+# Policy Definitions (Subscription scope) `[Microsoft.Authorization/policyDefinitions]`
 
 This module deploys a Policy Definition at a Subscription scope.
 

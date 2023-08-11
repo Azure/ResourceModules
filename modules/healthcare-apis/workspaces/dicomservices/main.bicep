@@ -1,3 +1,7 @@
+metadata name = 'Healthcare API Workspace DICOM Services'
+metadata description = 'This module deploys a Healthcare API Workspace DICOM Service.'
+metadata owner = 'Azure/module-maintainers'
+
 @description('Required. The name of the DICOM service.')
 @maxLength(50)
 param name string

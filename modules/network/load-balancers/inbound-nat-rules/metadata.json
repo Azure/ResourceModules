@@ -1,6 +1,0 @@
-{
-    "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
-    "name": "Load Balancer Inbound NAT Rules",
-    "summary": "This module deploys a Load Balancer Inbound NAT Rules.",
-    "owner": "Azure/module-maintainers"
-}

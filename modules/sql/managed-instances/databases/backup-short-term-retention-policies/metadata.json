@@ -1,6 +1,0 @@
-{
-    "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
-    "name": "SQL Managed Instance Database Backup Short-Term Retention Policies",
-    "summary": "This module deploys a SQL Managed Instance Database Backup Short-Term Retention Policy.",
-    "owner": "Azure/module-maintainers"
-}

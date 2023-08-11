@@ -1,6 +1,0 @@
-{
-    "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
-    "name": "Policy Set Definitions (Initiatives) (Subscription scope)",
-    "summary": "This module deploys a Policy Set Definition (Initiative) at a Subscription scope.",
-    "owner": "Azure/module-maintainers"
-}

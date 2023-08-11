@@ -1,3 +1,7 @@
+metadata name = 'Azure SQL Servers'
+metadata description = 'This module deploys an Azure SQL Server.'
+metadata owner = 'Azure/module-maintainers'
+
 @description('Conditional. The administrator username for the server. Required if no `administrators` object for AAD authentication is provided.')
 param administratorLogin string = ''
 
@@ -216,7 +220,7 @@ module server_elasticPools 'elastic-pools/main.bicep' = [for (elasticPool, index
     licenseType: contains(elasticPool, 'licenseType') ? elasticPool.licenseType : 'LicenseIncluded'
     maintenanceConfigurationId: contains(elasticPool, 'maintenanceConfigurationId') ? elasticPool.maintenanceConfigurationId : ''
     maxSizeBytes: contains(elasticPool, 'maxSizeBytes') ? elasticPool.maxSizeBytes : 34359738368
-    minCapacity: contains(elasticPool, 'minCapacity') ? elasticPool.minCapacity : 0
+    minCapacity: contains(elasticPool, 'minCapacity') ? elasticPool.minCapacity : -1
     skuCapacity: contains(elasticPool, 'skuCapacity') ? elasticPool.skuCapacity : 2
     skuName: contains(elasticPool, 'skuName') ? elasticPool.skuName : 'GP_Gen5'
     skuTier: contains(elasticPool, 'skuTier') ? elasticPool.skuTier : 'GeneralPurpose'

@@ -1,6 +1,0 @@
-{
-    "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
-    "name": "Site Auth Settings V2 Config",
-    "summary": "This module deploys a Site Auth Settings V2 Configuration.",
-    "owner": "Azure/module-maintainers"
-}

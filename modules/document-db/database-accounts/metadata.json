@@ -1,6 +1,0 @@
-{
-    "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
-    "name": "DocumentDB Database Accounts",
-    "summary": "This module deploys a DocumentDB Database Account.",
-    "owner": "Azure/module-maintainers"
-}

@@ -4,17 +4,20 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.18.4.5664",
-      "templateHash": "1864582065915973434"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "3064442913839722689"
+    },
+    "name": "Storage Accounts",
+    "description": "This module deploys a Storage Account.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
       "type": "string",
+      "maxLength": 24,
       "metadata": {
         "description": "Required. Name of the Storage Account."
-      },
-      "maxLength": 24
+      }
     },
     "location": {
       "type": "string",
@@ -47,23 +50,20 @@
     "kind": {
       "type": "string",
       "defaultValue": "StorageV2",
-      "metadata": {
-        "description": "Optional. Type of Storage Account to create."
-      },
       "allowedValues": [
         "Storage",
         "StorageV2",
         "BlobStorage",
         "FileStorage",
         "BlockBlobStorage"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Type of Storage Account to create."
+      }
     },
     "skuName": {
       "type": "string",
       "defaultValue": "Standard_GRS",
-      "metadata": {
-        "description": "Optional. Storage Account Sku Name."
-      },
       "allowedValues": [
         "Standard_LRS",
         "Standard_GRS",
@@ -73,30 +73,33 @@
         "Premium_ZRS",
         "Standard_GZRS",
         "Standard_RAGZRS"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Storage Account Sku Name."
+      }
     },
     "accessTier": {
       "type": "string",
       "defaultValue": "Hot",
-      "metadata": {
-        "description": "Conditional. Required if the Storage Account kind is set to BlobStorage. The access tier is used for billing. The \"Premium\" access tier is the default value for premium block blobs storage account type and it cannot be changed for the premium block blobs storage account type."
-      },
       "allowedValues": [
         "Premium",
         "Hot",
         "Cool"
-      ]
+      ],
+      "metadata": {
+        "description": "Conditional. Required if the Storage Account kind is set to BlobStorage. The access tier is used for billing. The \"Premium\" access tier is the default value for premium block blobs storage account type and it cannot be changed for the premium block blobs storage account type."
+      }
     },
     "largeFileSharesState": {
       "type": "string",
       "defaultValue": "Disabled",
-      "metadata": {
-        "description": "Optional. Allow large file shares if sets to 'Enabled'. It cannot be disabled once it is enabled. Only supported on locally redundant and zone redundant file shares. It cannot be set on FileStorage storage accounts (storage accounts for premium file shares)."
-      },
       "allowedValues": [
         "Disabled",
         "Enabled"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Allow large file shares if sets to 'Enabled'. It cannot be disabled once it is enabled. Only supported on locally redundant and zone redundant file shares. It cannot be set on FileStorage storage accounts (storage accounts for premium file shares)."
+      }
     },
     "azureFilesIdentityBasedAuthentication": {
       "type": "object",
@@ -218,14 +221,14 @@
     "minimumTlsVersion": {
       "type": "string",
       "defaultValue": "TLS1_2",
-      "metadata": {
-        "description": "Optional. Set the minimum TLS version on request to storage."
-      },
       "allowedValues": [
         "TLS1_0",
         "TLS1_1",
         "TLS1_2"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Set the minimum TLS version on request to storage."
+      }
     },
     "enableHierarchicalNamespace": {
       "type": "bool",
@@ -265,8 +268,8 @@
     "diagnosticLogsRetentionInDays": {
       "type": "int",
       "defaultValue": 365,
-      "maxValue": 365,
       "minValue": 0,
+      "maxValue": 365,
       "metadata": {
         "description": "Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely."
       }
@@ -302,14 +305,14 @@
     "lock": {
       "type": "string",
       "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Specify the type of lock."
-      },
       "allowedValues": [
         "",
         "CanNotDelete",
         "ReadOnly"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Specify the type of lock."
+      }
     },
     "tags": {
       "type": "object",
@@ -565,8 +568,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.18.4.5664",
-              "templateHash": "17399845773033742131"
+              "version": "0.20.4.51522",
+              "templateHash": "12642833522973709137"
             }
           },
           "parameters": {
@@ -760,9 +763,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.18.4.5664",
-              "templateHash": "12991773916541265724"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "609426544615556519"
+            },
+            "name": "Private Endpoints",
+            "description": "This module deploys a Private Endpoint.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "name": {
@@ -827,14 +833,14 @@
             "lock": {
               "type": "string",
               "defaultValue": "",
-              "metadata": {
-                "description": "Optional. Specify the type of lock."
-              },
               "allowedValues": [
                 "",
                 "CanNotDelete",
                 "ReadOnly"
-              ]
+              ],
+              "metadata": {
+                "description": "Optional. Specify the type of lock."
+              }
             },
             "roleAssignments": {
               "type": "array",
@@ -957,9 +963,12 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.18.4.5664",
-                      "templateHash": "3520683536217550590"
-                    }
+                      "version": "0.20.4.51522",
+                      "templateHash": "18114841529204248478"
+                    },
+                    "name": "Private Endpoint Private DNS Zone Groups",
+                    "description": "This module deploys a Private Endpoint Private DNS Zone Group.",
+                    "owner": "Azure/module-maintainers"
                   },
                   "parameters": {
                     "privateEndpointName": {
@@ -970,8 +979,8 @@
                     },
                     "privateDNSResourceIds": {
                       "type": "array",
-                      "maxLength": 5,
                       "minLength": 1,
+                      "maxLength": 5,
                       "metadata": {
                         "description": "Required. Array of private DNS zone resource IDs. A DNS zone group can support up to 5 DNS zones."
                       }
@@ -1092,8 +1101,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.18.4.5664",
-                      "templateHash": "11724106538771429164"
+                      "version": "0.20.4.51522",
+                      "templateHash": "11548486149222715894"
                     }
                   },
                   "parameters": {
@@ -1299,17 +1308,20 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.18.4.5664",
-              "templateHash": "5299530817966477918"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "9756021983971600432"
+            },
+            "name": "Storage Account Management Policies",
+            "description": "This module deploys a Storage Account Management Policy.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "storageAccountName": {
               "type": "string",
+              "maxLength": 24,
               "metadata": {
                 "description": "Conditional. The name of the parent Storage Account. Required if the template is used in a standalone deployment."
-              },
-              "maxLength": 24
+              }
             },
             "rules": {
               "type": "array",
@@ -1423,17 +1435,20 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.18.4.5664",
-              "templateHash": "4867276107242068354"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "17498007234218946474"
+            },
+            "name": "Storage Account Local Users",
+            "description": "This module deploys a Storage Account Local User, which is used for SFTP authentication.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "storageAccountName": {
               "type": "string",
+              "maxLength": 24,
               "metadata": {
                 "description": "Conditional. The name of the parent Storage Account. Required if the template is used in a standalone deployment."
-              },
-              "maxLength": 24
+              }
             },
             "name": {
               "type": "string",
@@ -1569,7 +1584,8 @@
           "containerDeleteRetentionPolicyAllowPermanentDelete": "[if(contains(parameters('blobServices'), 'containerDeleteRetentionPolicyAllowPermanentDelete'), createObject('value', parameters('blobServices').containerDeleteRetentionPolicyAllowPermanentDelete), createObject('value', false()))]",
           "corsRules": "[if(contains(parameters('blobServices'), 'corsRules'), createObject('value', parameters('blobServices').corsRules), createObject('value', createArray()))]",
           "defaultServiceVersion": "[if(contains(parameters('blobServices'), 'defaultServiceVersion'), createObject('value', parameters('blobServices').defaultServiceVersion), createObject('value', ''))]",
-          "deleteRetentionPolicyEnabled": "[if(contains(parameters('blobServices'), 'deleteRetentionPolicy'), createObject('value', parameters('blobServices').deleteRetentionPolicy), createObject('value', false()))]",
+          "deleteRetentionPolicyAllowPermanentDelete": "[if(contains(parameters('blobServices'), 'deleteRetentionPolicyAllowPermanentDelete'), createObject('value', parameters('blobServices').deleteRetentionPolicyAllowPermanentDelete), createObject('value', false()))]",
+          "deleteRetentionPolicyEnabled": "[if(contains(parameters('blobServices'), 'deleteRetentionPolicyEnabled'), createObject('value', parameters('blobServices').deleteRetentionPolicyEnabled), createObject('value', false()))]",
           "deleteRetentionPolicyDays": "[if(contains(parameters('blobServices'), 'deleteRetentionPolicyDays'), createObject('value', parameters('blobServices').deleteRetentionPolicyDays), createObject('value', 7))]",
           "isVersioningEnabled": "[if(contains(parameters('blobServices'), 'isVersioningEnabled'), createObject('value', parameters('blobServices').isVersioningEnabled), createObject('value', false()))]",
           "lastAccessTimeTrackingPolicyEnable": "[if(contains(parameters('blobServices'), 'lastAccessTimeTrackingPolicyEnable'), createObject('value', parameters('blobServices').lastAccessTimeTrackingPolicyEnable), createObject('value', false()))]",
@@ -1592,17 +1608,20 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.18.4.5664",
-              "templateHash": "3111235341975982054"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "1395192341429097070"
+            },
+            "name": "Storage Account blob Services",
+            "description": "This module deploys a Storage Account Blob Service.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "storageAccountName": {
               "type": "string",
+              "maxLength": 24,
               "metadata": {
                 "description": "Conditional. The name of the parent Storage Account. Required if the template is used in a standalone deployment."
-              },
-              "maxLength": 24
+              }
             },
             "automaticSnapshotPolicyEnabled": {
               "type": "bool",
@@ -1621,11 +1640,11 @@
             "changeFeedRetentionInDays": {
               "type": "int",
               "defaultValue": 7,
+              "minValue": 0,
+              "maxValue": 146000,
               "metadata": {
                 "description": "Optional. Indicates whether change feed event logging is enabled for the Blob service. Indicates the duration of changeFeed retention in days. A \"0\" value indicates an infinite retention of the change feed."
-              },
-              "maxValue": 146000,
-              "minValue": 0
+              }
             },
             "containerDeleteRetentionPolicyEnabled": {
               "type": "bool",
@@ -1637,17 +1656,17 @@
             "containerDeleteRetentionPolicyDays": {
               "type": "int",
               "defaultValue": 7,
+              "minValue": 1,
+              "maxValue": 365,
               "metadata": {
                 "description": "Optional. Indicates the number of days that the deleted item should be retained."
-              },
-              "maxValue": 365,
-              "minValue": 1
+              }
             },
             "containerDeleteRetentionPolicyAllowPermanentDelete": {
               "type": "bool",
               "defaultValue": false,
               "metadata": {
-                "description": "Optional. This property when set to true allows deletion of the soft deleted blob versions and snapshots. This property cannot be used blob restore policy. This property only applies to blob service and does not apply to containers or file share."
+                "description": "Optional. This property when set to true allows deletion of the soft deleted blob versions and snapshots. This property cannot be used with blob restore policy. This property only applies to blob service and does not apply to containers or file share."
               }
             },
             "corsRules": {
@@ -1674,11 +1693,18 @@
             "deleteRetentionPolicyDays": {
               "type": "int",
               "defaultValue": 7,
+              "minValue": 1,
+              "maxValue": 365,
               "metadata": {
                 "description": "Optional. Indicates the number of days that the deleted blob should be retained."
-              },
-              "maxValue": 365,
-              "minValue": 1
+              }
+            },
+            "deleteRetentionPolicyAllowPermanentDelete": {
+              "type": "bool",
+              "defaultValue": false,
+              "metadata": {
+                "description": "Optional. This property when set to true allows deletion of the soft deleted blob versions and snapshots. This property cannot be used with blob restore policy. This property only applies to blob service and does not apply to containers or file share."
+              }
             },
             "isVersioningEnabled": {
               "type": "bool",
@@ -1704,10 +1730,10 @@
             "restorePolicyDays": {
               "type": "int",
               "defaultValue": 6,
+              "minValue": 1,
               "metadata": {
                 "description": "Optional. how long this blob can be restored. It should be less than DeleteRetentionPolicy days."
-              },
-              "minValue": 1
+              }
             },
             "containers": {
               "type": "array",
@@ -1719,8 +1745,8 @@
             "diagnosticLogsRetentionInDays": {
               "type": "int",
               "defaultValue": 365,
-              "maxValue": 365,
               "minValue": 0,
+              "maxValue": 365,
               "metadata": {
                 "description": "Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely."
               }
@@ -1766,13 +1792,14 @@
                 "allLogs"
               ],
               "allowedValues": [
+                "",
                 "allLogs",
                 "StorageRead",
                 "StorageWrite",
                 "StorageDelete"
               ],
               "metadata": {
-                "description": "Optional. The name of logs that will be streamed. \"allLogs\" includes all possible logs for the resource."
+                "description": "Optional. The name of logs that will be streamed. \"allLogs\" includes all possible logs for the resource. Set to '' to disable log collection."
               }
             },
             "diagnosticMetricsToEnable": {
@@ -1799,9 +1826,9 @@
             "copy": [
               {
                 "name": "diagnosticsLogsSpecified",
-                "count": "[length(filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', not(equals(lambdaVariables('item'), 'allLogs')))))]",
+                "count": "[length(filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', and(not(equals(lambdaVariables('item'), 'allLogs')), not(equals(lambdaVariables('item'), ''))))))]",
                 "input": {
-                  "category": "[filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', not(equals(lambdaVariables('item'), 'allLogs'))))[copyIndex('diagnosticsLogsSpecified')]]",
+                  "category": "[filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', and(not(equals(lambdaVariables('item'), 'allLogs')), not(equals(lambdaVariables('item'), '')))))[copyIndex('diagnosticsLogsSpecified')]]",
                   "enabled": true,
                   "retentionPolicy": {
                     "enabled": true,
@@ -1824,7 +1851,7 @@
               }
             ],
             "name": "default",
-            "diagnosticsLogs": "[if(contains(parameters('diagnosticLogCategoriesToEnable'), 'allLogs'), createArray(createObject('categoryGroup', 'allLogs', 'enabled', true(), 'retentionPolicy', createObject('enabled', true(), 'days', parameters('diagnosticLogsRetentionInDays')))), variables('diagnosticsLogsSpecified'))]",
+            "diagnosticsLogs": "[if(contains(parameters('diagnosticLogCategoriesToEnable'), 'allLogs'), createArray(createObject('categoryGroup', 'allLogs', 'enabled', true(), 'retentionPolicy', createObject('enabled', true(), 'days', parameters('diagnosticLogsRetentionInDays')))), if(contains(parameters('diagnosticLogCategoriesToEnable'), ''), createArray(), variables('diagnosticsLogsSpecified')))]",
             "enableReferencedModulesTelemetry": false
           },
           "resources": [
@@ -1863,7 +1890,8 @@
                 "defaultServiceVersion": "[if(not(empty(parameters('defaultServiceVersion'))), parameters('defaultServiceVersion'), null())]",
                 "deleteRetentionPolicy": {
                   "enabled": "[parameters('deleteRetentionPolicyEnabled')]",
-                  "days": "[if(equals(parameters('deleteRetentionPolicyEnabled'), true()), parameters('deleteRetentionPolicyDays'), null())]"
+                  "days": "[if(equals(parameters('deleteRetentionPolicyEnabled'), true()), parameters('deleteRetentionPolicyDays'), null())]",
+                  "allowPermanentDelete": "[if(and(parameters('deleteRetentionPolicyEnabled'), parameters('deleteRetentionPolicyAllowPermanentDelete')), true(), null())]"
                 },
                 "isVersioningEnabled": "[parameters('isVersioningEnabled')]",
                 "lastAccessTimeTrackingPolicy": {
@@ -1934,17 +1962,20 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.18.4.5664",
-                      "templateHash": "13432238059824416767"
-                    }
+                      "version": "0.20.4.51522",
+                      "templateHash": "7500144031846073123"
+                    },
+                    "name": "Storage Account Blob Containers",
+                    "description": "This module deploys a Storage Account Blob Container.",
+                    "owner": "Azure/module-maintainers"
                   },
                   "parameters": {
                     "storageAccountName": {
                       "type": "string",
+                      "maxLength": 24,
                       "metadata": {
                         "description": "Conditional. The name of the parent Storage Account. Required if the template is used in a standalone deployment."
-                      },
-                      "maxLength": 24
+                      }
                     },
                     "name": {
                       "type": "string",
@@ -2011,14 +2042,14 @@
                     "publicAccess": {
                       "type": "string",
                       "defaultValue": "None",
-                      "metadata": {
-                        "description": "Optional. Specifies whether data in the container may be accessed publicly and the level of access."
-                      },
                       "allowedValues": [
                         "Container",
                         "Blob",
                         "None"
-                      ]
+                      ],
+                      "metadata": {
+                        "description": "Optional. Specifies whether data in the container may be accessed publicly and the level of access."
+                      }
                     },
                     "roleAssignments": {
                       "type": "array",
@@ -2097,17 +2128,20 @@
                           "metadata": {
                             "_generator": {
                               "name": "bicep",
-                              "version": "0.18.4.5664",
-                              "templateHash": "9557485955064387621"
-                            }
+                              "version": "0.20.4.51522",
+                              "templateHash": "5668549883344653702"
+                            },
+                            "name": "Storage Account Blob Container Immutability Policies",
+                            "description": "This module deploys a Storage Account Blob Container Immutability Policy.",
+                            "owner": "Azure/module-maintainers"
                           },
                           "parameters": {
                             "storageAccountName": {
                               "type": "string",
+                              "maxLength": 24,
                               "metadata": {
                                 "description": "Conditional. The name of the parent Storage Account. Required if the template is used in a standalone deployment."
-                              },
-                              "maxLength": 24
+                              }
                             },
                             "containerName": {
                               "type": "string",
@@ -2233,8 +2267,8 @@
                           "metadata": {
                             "_generator": {
                               "name": "bicep",
-                              "version": "0.18.4.5664",
-                              "templateHash": "9471266450275905523"
+                              "version": "0.20.4.51522",
+                              "templateHash": "8600687658951622621"
                             }
                           },
                           "parameters": {
@@ -2471,17 +2505,20 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.18.4.5664",
-              "templateHash": "11613596621855409908"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "1594285537604698727"
+            },
+            "name": "Storage Account File Share Services",
+            "description": "This module deploys a Storage Account File Share Service.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "storageAccountName": {
               "type": "string",
+              "maxLength": 24,
               "metadata": {
                 "description": "Conditional. The name of the parent Storage Account. Required if the template is used in a standalone deployment."
-              },
-              "maxLength": 24
+              }
             },
             "name": {
               "type": "string",
@@ -2510,8 +2547,8 @@
             "diagnosticLogsRetentionInDays": {
               "type": "int",
               "defaultValue": 365,
-              "maxValue": 365,
               "minValue": 0,
+              "maxValue": 365,
               "metadata": {
                 "description": "Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely."
               }
@@ -2564,13 +2601,14 @@
                 "allLogs"
               ],
               "allowedValues": [
+                "",
                 "allLogs",
                 "StorageRead",
                 "StorageWrite",
                 "StorageDelete"
               ],
               "metadata": {
-                "description": "Optional. The name of logs that will be streamed. \"allLogs\" includes all possible logs for the resource."
+                "description": "Optional. The name of logs that will be streamed. \"allLogs\" includes all possible logs for the resource. Set to '' to disable log collection."
               }
             },
             "diagnosticMetricsToEnable": {
@@ -2597,9 +2635,9 @@
             "copy": [
               {
                 "name": "diagnosticsLogsSpecified",
-                "count": "[length(filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', not(equals(lambdaVariables('item'), 'allLogs')))))]",
+                "count": "[length(filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', and(not(equals(lambdaVariables('item'), 'allLogs')), not(equals(lambdaVariables('item'), ''))))))]",
                 "input": {
-                  "category": "[filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', not(equals(lambdaVariables('item'), 'allLogs'))))[copyIndex('diagnosticsLogsSpecified')]]",
+                  "category": "[filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', and(not(equals(lambdaVariables('item'), 'allLogs')), not(equals(lambdaVariables('item'), '')))))[copyIndex('diagnosticsLogsSpecified')]]",
                   "enabled": true,
                   "retentionPolicy": {
                     "enabled": true,
@@ -2621,7 +2659,7 @@
                 }
               }
             ],
-            "diagnosticsLogs": "[if(contains(parameters('diagnosticLogCategoriesToEnable'), 'allLogs'), createArray(createObject('categoryGroup', 'allLogs', 'enabled', true(), 'retentionPolicy', createObject('enabled', true(), 'days', parameters('diagnosticLogsRetentionInDays')))), variables('diagnosticsLogsSpecified'))]",
+            "diagnosticsLogs": "[if(contains(parameters('diagnosticLogCategoriesToEnable'), 'allLogs'), createArray(createObject('categoryGroup', 'allLogs', 'enabled', true(), 'retentionPolicy', createObject('enabled', true(), 'days', parameters('diagnosticLogsRetentionInDays')))), if(contains(parameters('diagnosticLogCategoriesToEnable'), ''), createArray(), variables('diagnosticsLogsSpecified')))]",
             "enableReferencedModulesTelemetry": false
           },
           "resources": [
@@ -2704,17 +2742,20 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.18.4.5664",
-                      "templateHash": "5466678674425977487"
-                    }
+                      "version": "0.20.4.51522",
+                      "templateHash": "15634855845265993886"
+                    },
+                    "name": "Storage Account File Shares",
+                    "description": "This module deploys a Storage Account File Share.",
+                    "owner": "Azure/module-maintainers"
                   },
                   "parameters": {
                     "storageAccountName": {
                       "type": "string",
+                      "maxLength": 24,
                       "metadata": {
                         "description": "Conditional. The name of the parent Storage Account. Required if the template is used in a standalone deployment."
-                      },
-                      "maxLength": 24
+                      }
                     },
                     "fileServicesName": {
                       "type": "string",
@@ -2732,15 +2773,15 @@
                     "accessTier": {
                       "type": "string",
                       "defaultValue": "TransactionOptimized",
-                      "metadata": {
-                        "description": "Conditional. Access tier for specific share. Required if the Storage Account kind is set to FileStorage (should be set to \"Premium\"). GpV2 account can choose between TransactionOptimized (default), Hot, and Cool."
-                      },
                       "allowedValues": [
                         "Premium",
                         "Hot",
                         "Cool",
                         "TransactionOptimized"
-                      ]
+                      ],
+                      "metadata": {
+                        "description": "Conditional. Access tier for specific share. Required if the Storage Account kind is set to FileStorage (should be set to \"Premium\"). GpV2 account can choose between TransactionOptimized (default), Hot, and Cool."
+                      }
                     },
                     "shareQuota": {
                       "type": "int",
@@ -2752,25 +2793,25 @@
                     "enabledProtocols": {
                       "type": "string",
                       "defaultValue": "SMB",
-                      "metadata": {
-                        "description": "Optional. The authentication protocol that is used for the file share. Can only be specified when creating a share."
-                      },
                       "allowedValues": [
                         "NFS",
                         "SMB"
-                      ]
+                      ],
+                      "metadata": {
+                        "description": "Optional. The authentication protocol that is used for the file share. Can only be specified when creating a share."
+                      }
                     },
                     "rootSquash": {
                       "type": "string",
                       "defaultValue": "NoRootSquash",
-                      "metadata": {
-                        "description": "Optional. Permissions for NFS file shares are enforced by the client OS rather than the Azure Files service. Toggling the root squash behavior reduces the rights of the root user for NFS shares."
-                      },
                       "allowedValues": [
                         "AllSquash",
                         "NoRootSquash",
                         "RootSquash"
-                      ]
+                      ],
+                      "metadata": {
+                        "description": "Optional. Permissions for NFS file shares are enforced by the client OS rather than the Azure Files service. Toggling the root squash behavior reduces the rights of the root user for NFS shares."
+                      }
                     },
                     "roleAssignments": {
                       "type": "array",
@@ -2847,8 +2888,8 @@
                           "metadata": {
                             "_generator": {
                               "name": "bicep",
-                              "version": "0.18.4.5664",
-                              "templateHash": "3454304478574190517"
+                              "version": "0.20.4.51522",
+                              "templateHash": "17068545632348399169"
                             }
                           },
                           "parameters": {
@@ -3086,17 +3127,20 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.18.4.5664",
-              "templateHash": "16446761132064405013"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "13219619797955519085"
+            },
+            "name": "Storage Account Queue Services",
+            "description": "This module deploys a Storage Account Queue Service.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "storageAccountName": {
               "type": "string",
+              "maxLength": 24,
               "metadata": {
                 "description": "Conditional. The name of the parent Storage Account. Required if the template is used in a standalone deployment."
-              },
-              "maxLength": 24
+              }
             },
             "queues": {
               "type": "array",
@@ -3108,8 +3152,8 @@
             "diagnosticLogsRetentionInDays": {
               "type": "int",
               "defaultValue": 365,
-              "maxValue": 365,
               "minValue": 0,
+              "maxValue": 365,
               "metadata": {
                 "description": "Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely."
               }
@@ -3155,13 +3199,14 @@
                 "allLogs"
               ],
               "allowedValues": [
+                "",
                 "allLogs",
                 "StorageRead",
                 "StorageWrite",
                 "StorageDelete"
               ],
               "metadata": {
-                "description": "Optional. The name of logs that will be streamed. \"allLogs\" includes all possible logs for the resource."
+                "description": "Optional. The name of logs that will be streamed. \"allLogs\" includes all possible logs for the resource. Set to '' to disable log collection."
               }
             },
             "diagnosticMetricsToEnable": {
@@ -3188,9 +3233,9 @@
             "copy": [
               {
                 "name": "diagnosticsLogsSpecified",
-                "count": "[length(filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', not(equals(lambdaVariables('item'), 'allLogs')))))]",
+                "count": "[length(filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', and(not(equals(lambdaVariables('item'), 'allLogs')), not(equals(lambdaVariables('item'), ''))))))]",
                 "input": {
-                  "category": "[filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', not(equals(lambdaVariables('item'), 'allLogs'))))[copyIndex('diagnosticsLogsSpecified')]]",
+                  "category": "[filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', and(not(equals(lambdaVariables('item'), 'allLogs')), not(equals(lambdaVariables('item'), '')))))[copyIndex('diagnosticsLogsSpecified')]]",
                   "enabled": true,
                   "retentionPolicy": {
                     "enabled": true,
@@ -3213,7 +3258,7 @@
               }
             ],
             "name": "default",
-            "diagnosticsLogs": "[if(contains(parameters('diagnosticLogCategoriesToEnable'), 'allLogs'), createArray(createObject('categoryGroup', 'allLogs', 'enabled', true(), 'retentionPolicy', createObject('enabled', true(), 'days', parameters('diagnosticLogsRetentionInDays')))), variables('diagnosticsLogsSpecified'))]",
+            "diagnosticsLogs": "[if(contains(parameters('diagnosticLogCategoriesToEnable'), 'allLogs'), createArray(createObject('categoryGroup', 'allLogs', 'enabled', true(), 'retentionPolicy', createObject('enabled', true(), 'days', parameters('diagnosticLogsRetentionInDays')))), if(contains(parameters('diagnosticLogCategoriesToEnable'), ''), createArray(), variables('diagnosticsLogsSpecified')))]",
             "enableReferencedModulesTelemetry": false
           },
           "resources": [
@@ -3287,17 +3332,20 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.18.4.5664",
-                      "templateHash": "9116292018335087361"
-                    }
+                      "version": "0.20.4.51522",
+                      "templateHash": "7293459815655804615"
+                    },
+                    "name": "Storage Account Queues",
+                    "description": "This module deploys a Storage Account Queue.",
+                    "owner": "Azure/module-maintainers"
                   },
                   "parameters": {
                     "storageAccountName": {
                       "type": "string",
+                      "maxLength": 24,
                       "metadata": {
                         "description": "Conditional. The name of the parent Storage Account. Required if the template is used in a standalone deployment."
-                      },
-                      "maxLength": 24
+                      }
                     },
                     "name": {
                       "type": "string",
@@ -3384,8 +3432,8 @@
                           "metadata": {
                             "_generator": {
                               "name": "bicep",
-                              "version": "0.18.4.5664",
-                              "templateHash": "8826781769055434429"
+                              "version": "0.20.4.51522",
+                              "templateHash": "16848435230262465953"
                             }
                           },
                           "parameters": {
@@ -3620,17 +3668,20 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.18.4.5664",
-              "templateHash": "15589712361439512608"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "15029180251266513913"
+            },
+            "name": "Storage Account Table Services",
+            "description": "This module deploys a Storage Account Table Service.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "storageAccountName": {
               "type": "string",
+              "maxLength": 24,
               "metadata": {
                 "description": "Conditional. The name of the parent Storage Account. Required if the template is used in a standalone deployment."
-              },
-              "maxLength": 24
+              }
             },
             "tables": {
               "type": "array",
@@ -3642,8 +3693,8 @@
             "diagnosticLogsRetentionInDays": {
               "type": "int",
               "defaultValue": 365,
-              "maxValue": 365,
               "minValue": 0,
+              "maxValue": 365,
               "metadata": {
                 "description": "Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely."
               }
@@ -3689,13 +3740,14 @@
                 "allLogs"
               ],
               "allowedValues": [
+                "",
                 "allLogs",
                 "StorageRead",
                 "StorageWrite",
                 "StorageDelete"
               ],
               "metadata": {
-                "description": "Optional. The name of logs that will be streamed. \"allLogs\" includes all possible logs for the resource."
+                "description": "Optional. The name of logs that will be streamed. \"allLogs\" includes all possible logs for the resource. Set to '' to disable log collection."
               }
             },
             "diagnosticMetricsToEnable": {
@@ -3722,9 +3774,9 @@
             "copy": [
               {
                 "name": "diagnosticsLogsSpecified",
-                "count": "[length(filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', not(equals(lambdaVariables('item'), 'allLogs')))))]",
+                "count": "[length(filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', and(not(equals(lambdaVariables('item'), 'allLogs')), not(equals(lambdaVariables('item'), ''))))))]",
                 "input": {
-                  "category": "[filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', not(equals(lambdaVariables('item'), 'allLogs'))))[copyIndex('diagnosticsLogsSpecified')]]",
+                  "category": "[filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', and(not(equals(lambdaVariables('item'), 'allLogs')), not(equals(lambdaVariables('item'), '')))))[copyIndex('diagnosticsLogsSpecified')]]",
                   "enabled": true,
                   "retentionPolicy": {
                     "enabled": true,
@@ -3747,7 +3799,7 @@
               }
             ],
             "name": "default",
-            "diagnosticsLogs": "[if(contains(parameters('diagnosticLogCategoriesToEnable'), 'allLogs'), createArray(createObject('categoryGroup', 'allLogs', 'enabled', true(), 'retentionPolicy', createObject('enabled', true(), 'days', parameters('diagnosticLogsRetentionInDays')))), variables('diagnosticsLogsSpecified'))]",
+            "diagnosticsLogs": "[if(contains(parameters('diagnosticLogCategoriesToEnable'), 'allLogs'), createArray(createObject('categoryGroup', 'allLogs', 'enabled', true(), 'retentionPolicy', createObject('enabled', true(), 'days', parameters('diagnosticLogsRetentionInDays')))), if(contains(parameters('diagnosticLogCategoriesToEnable'), ''), createArray(), variables('diagnosticsLogsSpecified')))]",
             "enableReferencedModulesTelemetry": false
           },
           "resources": [
@@ -3819,17 +3871,20 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.18.4.5664",
-                      "templateHash": "18313788100863691650"
-                    }
+                      "version": "0.20.4.51522",
+                      "templateHash": "3732027241762478422"
+                    },
+                    "name": "Storage Account Table",
+                    "description": "This module deploys a Storage Account Table.",
+                    "owner": "Azure/module-maintainers"
                   },
                   "parameters": {
                     "storageAccountName": {
                       "type": "string",
+                      "maxLength": 24,
                       "metadata": {
                         "description": "Conditional. The name of the parent Storage Account. Required if the template is used in a standalone deployment."
-                      },
-                      "maxLength": 24
+                      }
                     },
                     "name": {
                       "type": "string",

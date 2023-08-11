@@ -1,3 +1,7 @@
+metadata name = 'Virtual Hub Virtual Network Connections'
+metadata description = 'This module deploys a Virtual Hub Virtual Network Connection.'
+metadata owner = 'Azure/module-maintainers'
+
 @description('Required. The connection name.')
 param name string
 

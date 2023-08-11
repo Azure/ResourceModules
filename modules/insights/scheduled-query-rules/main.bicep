@@ -1,3 +1,7 @@
+metadata name = 'Scheduled Query Rules'
+metadata description = 'This module deploys a Scheduled Query Rule.'
+metadata owner = 'Azure/module-maintainers'
+
 @description('Required. The name of the Alert.')
 param name string
 

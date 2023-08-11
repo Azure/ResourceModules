@@ -1,3 +1,7 @@
+metadata name = 'Local Network Gateways'
+metadata description = 'This module deploys a Local Network Gateway.'
+metadata owner = 'Azure/module-maintainers'
+
 @description('Required. Name of the Local Network Gateway.')
 @minLength(1)
 param name string

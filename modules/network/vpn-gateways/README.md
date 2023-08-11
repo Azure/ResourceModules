@@ -33,7 +33,6 @@ This module deploys a VPN Gateway.
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `bgpSettings` | object | `{object}` |  | BGP settings details. |
-| `connections` | _[connections](connections/README.md)_ array | `[]` |  | The connections to create in the VPN gateway. |
 | `enableBgpRouteTranslationForNat` | bool | `False` |  | Enable BGP routes translation for NAT on this VPN gateway. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `isRoutingPreferenceInternet` | bool | `False` |  | Enable routing preference property for the public IP interface of the VPN gateway. |
@@ -41,6 +40,7 @@ This module deploys a VPN Gateway.
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `natRules` | _[natRules](nat-rules/README.md)_ array | `[]` |  | List of all the NAT Rules to associate with the gateway. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
+| `vpnConnections` | _[vpnConnections](vpn-connections/README.md)_ array | `[]` |  | The VPN connections to create in the VPN gateway. |
 | `vpnGatewayScaleUnit` | int | `2` |  | The scale unit for this VPN gateway. |
 
 
@@ -200,20 +200,6 @@ module vpnGateways './network/vpn-gateways/main.bicep' = {
       asn: 65515
       peerWeight: 0
     }
-    connections: [
-      {
-        connectionBandwidth: 100
-        enableBgp: false
-        enableInternetSecurity: true
-        enableRateLimiting: false
-        name: '<name>'
-        remoteVpnSiteResourceId: '<remoteVpnSiteResourceId>'
-        routingWeight: 0
-        useLocalAzureIpAddress: false
-        usePolicyBasedTrafficSelectors: false
-        vpnConnectionProtocolType: 'IKEv2'
-      }
-    ]
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
     natRules: [
@@ -237,6 +223,20 @@ module vpnGateways './network/vpn-gateways/main.bicep' = {
       Environment: 'Non-Prod'
       Role: 'DeploymentValidation'
     }
+    vpnConnections: [
+      {
+        connectionBandwidth: 100
+        enableBgp: false
+        enableInternetSecurity: true
+        enableRateLimiting: false
+        name: '<name>'
+        remoteVpnSiteResourceId: '<remoteVpnSiteResourceId>'
+        routingWeight: 0
+        useLocalAzureIpAddress: false
+        usePolicyBasedTrafficSelectors: false
+        vpnConnectionProtocolType: 'IKEv2'
+      }
+    ]
   }
 }
 ```
@@ -266,22 +266,6 @@ module vpnGateways './network/vpn-gateways/main.bicep' = {
         "asn": 65515,
         "peerWeight": 0
       }
-    },
-    "connections": {
-      "value": [
-        {
-          "connectionBandwidth": 100,
-          "enableBgp": false,
-          "enableInternetSecurity": true,
-          "enableRateLimiting": false,
-          "name": "<name>",
-          "remoteVpnSiteResourceId": "<remoteVpnSiteResourceId>",
-          "routingWeight": 0,
-          "useLocalAzureIpAddress": false,
-          "usePolicyBasedTrafficSelectors": false,
-          "vpnConnectionProtocolType": "IKEv2"
-        }
-      ]
     },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
@@ -313,6 +297,22 @@ module vpnGateways './network/vpn-gateways/main.bicep' = {
         "Environment": "Non-Prod",
         "Role": "DeploymentValidation"
       }
+    },
+    "vpnConnections": {
+      "value": [
+        {
+          "connectionBandwidth": 100,
+          "enableBgp": false,
+          "enableInternetSecurity": true,
+          "enableRateLimiting": false,
+          "name": "<name>",
+          "remoteVpnSiteResourceId": "<remoteVpnSiteResourceId>",
+          "routingWeight": 0,
+          "useLocalAzureIpAddress": false,
+          "usePolicyBasedTrafficSelectors": false,
+          "vpnConnectionProtocolType": "IKEv2"
+        }
+      ]
     }
   }
 }

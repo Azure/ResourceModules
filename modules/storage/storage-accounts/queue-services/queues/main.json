@@ -4,17 +4,20 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.18.4.5664",
-      "templateHash": "9116292018335087361"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "7293459815655804615"
+    },
+    "name": "Storage Account Queues",
+    "description": "This module deploys a Storage Account Queue.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "storageAccountName": {
       "type": "string",
+      "maxLength": 24,
       "metadata": {
         "description": "Conditional. The name of the parent Storage Account. Required if the template is used in a standalone deployment."
-      },
-      "maxLength": 24
+      }
     },
     "name": {
       "type": "string",
@@ -101,8 +104,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.18.4.5664",
-              "templateHash": "8826781769055434429"
+              "version": "0.20.4.51522",
+              "templateHash": "16848435230262465953"
             }
           },
           "parameters": {

@@ -1,6 +1,0 @@
-{
-    "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
-    "name": "App Configuration Stores Key Values",
-    "summary": "This module deploys an App Configuration Store Key Value.",
-    "owner": "Azure/module-maintainers"
-}

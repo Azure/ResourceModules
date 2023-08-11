@@ -1,3 +1,7 @@
+metadata name = 'Azure NetApp Files'
+metadata description = 'This module deploys an Azure NetApp File.'
+metadata owner = 'Azure/module-maintainers'
+
 @description('Required. The name of the NetApp account.')
 param name string
 

@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.18.4.5664",
-      "templateHash": "3476559169973307631"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "10319315630521368786"
+    },
+    "name": "DBforMySQL Flexible Servers",
+    "description": "This module deploys a DBforMySQL Flexible Server.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
@@ -18,14 +21,14 @@
     "lock": {
       "type": "string",
       "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Specify the type of lock."
-      },
       "allowedValues": [
         "",
         "CanNotDelete",
         "ReadOnly"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Specify the type of lock."
+      }
     },
     "location": {
       "type": "string",
@@ -61,60 +64,60 @@
     },
     "tier": {
       "type": "string",
-      "metadata": {
-        "description": "Required. The tier of the particular SKU. Tier must align with the \"skuName\" property. Example, tier cannot be \"Burstable\" if skuName is \"Standard_D4s_v3\"."
-      },
       "allowedValues": [
         "GeneralPurpose",
         "Burstable",
         "MemoryOptimized"
-      ]
+      ],
+      "metadata": {
+        "description": "Required. The tier of the particular SKU. Tier must align with the \"skuName\" property. Example, tier cannot be \"Burstable\" if skuName is \"Standard_D4s_v3\"."
+      }
     },
     "availabilityZone": {
       "type": "string",
       "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Availability zone information of the server. Default will have no preference set."
-      },
       "allowedValues": [
         "",
         "1",
         "2",
         "3"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Availability zone information of the server. Default will have no preference set."
+      }
     },
     "backupRetentionDays": {
       "type": "int",
       "defaultValue": 7,
+      "minValue": 1,
+      "maxValue": 35,
       "metadata": {
         "description": "Optional. Backup retention days for the server."
-      },
-      "maxValue": 35,
-      "minValue": 1
+      }
     },
     "geoRedundantBackup": {
       "type": "string",
       "defaultValue": "Disabled",
-      "metadata": {
-        "description": "Optional. A value indicating whether Geo-Redundant backup is enabled on the server. If \"Enabled\" and \"cMKKeyName\" is not empty, then \"geoBackupCMKKeyVaultResourceId\" and \"cMKUserAssignedIdentityResourceId\" are also required."
-      },
       "allowedValues": [
         "Disabled",
         "Enabled"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. A value indicating whether Geo-Redundant backup is enabled on the server. If \"Enabled\" and \"cMKKeyName\" is not empty, then \"geoBackupCMKKeyVaultResourceId\" and \"cMKUserAssignedIdentityResourceId\" are also required."
+      }
     },
     "createMode": {
       "type": "string",
       "defaultValue": "Default",
-      "metadata": {
-        "description": "Optional. The mode to create a new MySQL server."
-      },
       "allowedValues": [
         "Default",
         "GeoRestore",
         "PointInTimeRestore",
         "Replica"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. The mode to create a new MySQL server."
+      }
     },
     "userAssignedIdentities": {
       "type": "object",
@@ -182,14 +185,14 @@
     "highAvailability": {
       "type": "string",
       "defaultValue": "Disabled",
-      "metadata": {
-        "description": "Optional. The mode for High Availability (HA). It is not supported for the Burstable pricing tier and Zone redundant HA can only be set during server provisioning."
-      },
       "allowedValues": [
         "Disabled",
         "SameZone",
         "ZoneRedundant"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. The mode for High Availability (HA). It is not supported for the Burstable pricing tier and Zone redundant HA can only be set during server provisioning."
+      }
     },
     "maintenanceWindow": {
       "type": "object",
@@ -222,14 +225,14 @@
     "replicationRole": {
       "type": "string",
       "defaultValue": "None",
-      "metadata": {
-        "description": "Optional. The replication role."
-      },
       "allowedValues": [
         "None",
         "Replica",
         "Source"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. The replication role."
+      }
     },
     "sourceServerResourceId": {
       "type": "string",
@@ -241,40 +244,37 @@
     "storageAutoGrow": {
       "type": "string",
       "defaultValue": "Disabled",
-      "metadata": {
-        "description": "Conditional. Enable Storage Auto Grow or not. Storage auto-growth prevents a server from running out of storage and becoming read-only. Required if \"highAvailability\" is not \"Disabled\"."
-      },
       "allowedValues": [
         "Disabled",
         "Enabled"
-      ]
+      ],
+      "metadata": {
+        "description": "Conditional. Enable Storage Auto Grow or not. Storage auto-growth prevents a server from running out of storage and becoming read-only. Required if \"highAvailability\" is not \"Disabled\"."
+      }
     },
     "storageAutoIoScaling": {
       "type": "string",
       "defaultValue": "Disabled",
-      "metadata": {
-        "description": "Optional. Enable IO Auto Scaling or not. The server scales IOPs up or down automatically depending on your workload needs."
-      },
       "allowedValues": [
         "Disabled",
         "Enabled"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Enable IO Auto Scaling or not. The server scales IOPs up or down automatically depending on your workload needs."
+      }
     },
     "storageIOPS": {
       "type": "int",
       "defaultValue": 1000,
+      "minValue": 360,
+      "maxValue": 48000,
       "metadata": {
         "description": "Optional. Storage IOPS for a server. Max IOPS are determined by compute size."
-      },
-      "maxValue": 48000,
-      "minValue": 360
+      }
     },
     "storageSizeGB": {
       "type": "int",
       "defaultValue": 64,
-      "metadata": {
-        "description": "Optional. Max storage allowed for a server. In all compute tiers, the minimum storage supported is 20 GiB and maximum is 16 TiB."
-      },
       "allowedValues": [
         20,
         32,
@@ -287,18 +287,21 @@
         4096,
         8192,
         16384
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Max storage allowed for a server. In all compute tiers, the minimum storage supported is 20 GiB and maximum is 16 TiB."
+      }
     },
     "version": {
       "type": "string",
       "defaultValue": "5.7",
-      "metadata": {
-        "description": "Optional. MySQL Server version."
-      },
       "allowedValues": [
         "5.7",
         "8.0.21"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. MySQL Server version."
+      }
     },
     "databases": {
       "type": "array",
@@ -324,8 +327,8 @@
     "diagnosticLogsRetentionInDays": {
       "type": "int",
       "defaultValue": 365,
-      "maxValue": 365,
       "minValue": 0,
+      "maxValue": 365,
       "metadata": {
         "description": "Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely."
       }
@@ -364,12 +367,13 @@
         "allLogs"
       ],
       "allowedValues": [
+        "",
         "allLogs",
         "MySqlAuditLogs",
         "MySqlSlowLogs"
       ],
       "metadata": {
-        "description": "Optional. The name of logs that will be streamed. \"allLogs\" includes all possible logs for the resource."
+        "description": "Optional. The name of logs that will be streamed. \"allLogs\" includes all possible logs for the resource. Set to '' to disable log collection."
       }
     },
     "diagnosticMetricsToEnable": {
@@ -403,9 +407,9 @@
     "copy": [
       {
         "name": "diagnosticsLogsSpecified",
-        "count": "[length(filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', not(equals(lambdaVariables('item'), 'allLogs')))))]",
+        "count": "[length(filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', and(not(equals(lambdaVariables('item'), 'allLogs')), not(equals(lambdaVariables('item'), ''))))))]",
         "input": {
-          "category": "[filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', not(equals(lambdaVariables('item'), 'allLogs'))))[copyIndex('diagnosticsLogsSpecified')]]",
+          "category": "[filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', and(not(equals(lambdaVariables('item'), 'allLogs')), not(equals(lambdaVariables('item'), '')))))[copyIndex('diagnosticsLogsSpecified')]]",
           "enabled": true,
           "retentionPolicy": {
             "enabled": true,
@@ -427,7 +431,7 @@
         }
       }
     ],
-    "diagnosticsLogs": "[if(contains(parameters('diagnosticLogCategoriesToEnable'), 'allLogs'), createArray(createObject('categoryGroup', 'allLogs', 'enabled', true(), 'retentionPolicy', createObject('enabled', true(), 'days', parameters('diagnosticLogsRetentionInDays')))), variables('diagnosticsLogsSpecified'))]",
+    "diagnosticsLogs": "[if(contains(parameters('diagnosticLogCategoriesToEnable'), 'allLogs'), createArray(createObject('categoryGroup', 'allLogs', 'enabled', true(), 'retentionPolicy', createObject('enabled', true(), 'days', parameters('diagnosticLogsRetentionInDays')))), if(contains(parameters('diagnosticLogCategoriesToEnable'), ''), createArray(), variables('diagnosticsLogsSpecified')))]",
     "identityType": "[if(not(empty(parameters('userAssignedIdentities'))), 'UserAssigned', 'None')]",
     "identity": "[if(not(equals(variables('identityType'), 'None')), createObject('type', variables('identityType'), 'userAssignedIdentities', if(not(empty(parameters('userAssignedIdentities'))), parameters('userAssignedIdentities'), null())), null())]",
     "enableReferencedModulesTelemetry": false
@@ -552,8 +556,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.18.4.5664",
-              "templateHash": "12427861579766099848"
+              "version": "0.20.4.51522",
+              "templateHash": "2852140057642466667"
             }
           },
           "parameters": {
@@ -699,9 +703,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.18.4.5664",
-              "templateHash": "11503028878076324392"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "12647720847614647024"
+            },
+            "name": "DBforMySQL Flexible Server Databases",
+            "description": "This module deploys a DBforMySQL Flexible Server Database.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "name": {
@@ -835,9 +842,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.18.4.5664",
-              "templateHash": "9607265338063560152"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "5263296307327888660"
+            },
+            "name": "DBforMySQL Flexible Server Firewall Rules",
+            "description": "This module deploys a DBforMySQL Flexible Server Firewall Rule.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "name": {

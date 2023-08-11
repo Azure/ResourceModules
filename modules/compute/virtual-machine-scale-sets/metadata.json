@@ -1,6 +1,0 @@
-{
-    "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
-    "name": "Virtual Machine Scale Sets",
-    "summary": "This module deploys a Virtual Machine Scale Set.",
-    "owner": "Azure/module-maintainers"
-}

@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.18.4.5664",
-      "templateHash": "1278193837216075086"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "10067626025010436242"
+    },
+    "name": "VPN Gateways",
+    "description": "This module deploys a VPN Gateway.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
@@ -22,11 +25,11 @@
         "description": "Optional. Location where all resources will be created."
       }
     },
-    "connections": {
+    "vpnConnections": {
       "type": "array",
       "defaultValue": [],
       "metadata": {
-        "description": "Optional. The connections to create in the VPN gateway."
+        "description": "Optional. The VPN connections to create in the VPN gateway."
       }
     },
     "natRules": {
@@ -80,14 +83,14 @@
     "lock": {
       "type": "string",
       "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Specify the type of lock."
-      },
       "allowedValues": [
         "",
         "CanNotDelete",
         "ReadOnly"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Specify the type of lock."
+      }
     },
     "enableDefaultTelemetry": {
       "type": "bool",
@@ -180,9 +183,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.18.4.5664",
-              "templateHash": "11619741189113918114"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "8392038973787732390"
+            },
+            "name": "VPN Gateway NAT Rules",
+            "description": "This module deploys a VPN Gateway NAT Rule.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "name": {
@@ -309,8 +315,8 @@
     },
     {
       "copy": {
-        "name": "vpnGateway_connections",
-        "count": "[length(parameters('connections'))]"
+        "name": "vpnGateway_vpnConnections",
+        "count": "[length(parameters('vpnConnections'))]"
       },
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
@@ -322,22 +328,22 @@
         "mode": "Incremental",
         "parameters": {
           "name": {
-            "value": "[parameters('connections')[copyIndex()].name]"
+            "value": "[parameters('vpnConnections')[copyIndex()].name]"
           },
           "vpnGatewayName": {
             "value": "[parameters('name')]"
           },
-          "connectionBandwidth": "[if(contains(parameters('connections')[copyIndex()], 'connectionBandwidth'), createObject('value', parameters('connections')[copyIndex()].connectionBandwidth), createObject('value', 10))]",
-          "enableBgp": "[if(contains(parameters('connections')[copyIndex()], 'enableBgp'), createObject('value', parameters('connections')[copyIndex()].enableBgp), createObject('value', false()))]",
-          "enableInternetSecurity": "[if(contains(parameters('connections')[copyIndex()], 'enableInternetSecurity'), createObject('value', parameters('connections')[copyIndex()].enableInternetSecurity), createObject('value', false()))]",
-          "remoteVpnSiteResourceId": "[if(contains(parameters('connections')[copyIndex()], 'remoteVpnSiteResourceId'), createObject('value', parameters('connections')[copyIndex()].remoteVpnSiteResourceId), createObject('value', ''))]",
-          "enableRateLimiting": "[if(contains(parameters('connections')[copyIndex()], 'enableRateLimiting'), createObject('value', parameters('connections')[copyIndex()].enableRateLimiting), createObject('value', false()))]",
-          "routingConfiguration": "[if(contains(parameters('connections')[copyIndex()], 'routingConfiguration'), createObject('value', parameters('connections')[copyIndex()].routingConfiguration), createObject('value', createObject()))]",
-          "routingWeight": "[if(contains(parameters('connections')[copyIndex()], 'routingWeight'), createObject('value', parameters('connections')[copyIndex()].routingWeight), createObject('value', 0))]",
-          "sharedKey": "[if(contains(parameters('connections')[copyIndex()], 'sharedKey'), createObject('value', parameters('connections')[copyIndex()].sharedKey), createObject('value', ''))]",
-          "useLocalAzureIpAddress": "[if(contains(parameters('connections')[copyIndex()], 'useLocalAzureIpAddress'), createObject('value', parameters('connections')[copyIndex()].useLocalAzureIpAddress), createObject('value', false()))]",
-          "usePolicyBasedTrafficSelectors": "[if(contains(parameters('connections')[copyIndex()], 'usePolicyBasedTrafficSelectors'), createObject('value', parameters('connections')[copyIndex()].usePolicyBasedTrafficSelectors), createObject('value', false()))]",
-          "vpnConnectionProtocolType": "[if(contains(parameters('connections')[copyIndex()], 'vpnConnectionProtocolType'), createObject('value', parameters('connections')[copyIndex()].vpnConnectionProtocolType), createObject('value', 'IKEv2'))]",
+          "connectionBandwidth": "[if(contains(parameters('vpnConnections')[copyIndex()], 'connectionBandwidth'), createObject('value', parameters('vpnConnections')[copyIndex()].connectionBandwidth), createObject('value', 10))]",
+          "enableBgp": "[if(contains(parameters('vpnConnections')[copyIndex()], 'enableBgp'), createObject('value', parameters('vpnConnections')[copyIndex()].enableBgp), createObject('value', false()))]",
+          "enableInternetSecurity": "[if(contains(parameters('vpnConnections')[copyIndex()], 'enableInternetSecurity'), createObject('value', parameters('vpnConnections')[copyIndex()].enableInternetSecurity), createObject('value', false()))]",
+          "remoteVpnSiteResourceId": "[if(contains(parameters('vpnConnections')[copyIndex()], 'remoteVpnSiteResourceId'), createObject('value', parameters('vpnConnections')[copyIndex()].remoteVpnSiteResourceId), createObject('value', ''))]",
+          "enableRateLimiting": "[if(contains(parameters('vpnConnections')[copyIndex()], 'enableRateLimiting'), createObject('value', parameters('vpnConnections')[copyIndex()].enableRateLimiting), createObject('value', false()))]",
+          "routingConfiguration": "[if(contains(parameters('vpnConnections')[copyIndex()], 'routingConfiguration'), createObject('value', parameters('vpnConnections')[copyIndex()].routingConfiguration), createObject('value', createObject()))]",
+          "routingWeight": "[if(contains(parameters('vpnConnections')[copyIndex()], 'routingWeight'), createObject('value', parameters('vpnConnections')[copyIndex()].routingWeight), createObject('value', 0))]",
+          "sharedKey": "[if(contains(parameters('vpnConnections')[copyIndex()], 'sharedKey'), createObject('value', parameters('vpnConnections')[copyIndex()].sharedKey), createObject('value', ''))]",
+          "useLocalAzureIpAddress": "[if(contains(parameters('vpnConnections')[copyIndex()], 'useLocalAzureIpAddress'), createObject('value', parameters('vpnConnections')[copyIndex()].useLocalAzureIpAddress), createObject('value', false()))]",
+          "usePolicyBasedTrafficSelectors": "[if(contains(parameters('vpnConnections')[copyIndex()], 'usePolicyBasedTrafficSelectors'), createObject('value', parameters('vpnConnections')[copyIndex()].usePolicyBasedTrafficSelectors), createObject('value', false()))]",
+          "vpnConnectionProtocolType": "[if(contains(parameters('vpnConnections')[copyIndex()], 'vpnConnectionProtocolType'), createObject('value', parameters('vpnConnections')[copyIndex()].vpnConnectionProtocolType), createObject('value', 'IKEv2'))]",
           "enableDefaultTelemetry": {
             "value": "[variables('enableReferencedModulesTelemetry')]"
           }
@@ -348,9 +354,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.18.4.5664",
-              "templateHash": "11821205776094785898"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "17179690973269419309"
+            },
+            "name": "VPN Gateway VPN Connections",
+            "description": "This module deploys a VPN Gateway VPN Connection.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "name": {

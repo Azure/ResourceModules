@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.18.4.5664",
-      "templateHash": "17151644590343274587"
-    }
+      "version": "0.19.5.34762",
+      "templateHash": "5853874786863085184"
+    },
+    "name": "Azure SQL Servers",
+    "description": "This module deploys an Azure SQL Server.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "administratorLogin": {
@@ -283,8 +286,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.18.4.5664",
-              "templateHash": "11458058122430689528"
+              "version": "0.19.5.34762",
+              "templateHash": "11734881635068469130"
             }
           },
           "parameters": {
@@ -471,9 +474,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.18.4.5664",
-              "templateHash": "7089674978008726758"
-            }
+              "version": "0.19.5.34762",
+              "templateHash": "3305351665095569664"
+            },
+            "name": "SQL Server Database",
+            "description": "This module deploys an Azure SQL Server Database.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "name": {
@@ -661,6 +667,7 @@
                 "allLogs"
               ],
               "allowedValues": [
+                "",
                 "allLogs",
                 "SQLInsights",
                 "AutomaticTuning",
@@ -675,7 +682,7 @@
                 "SQLSecurityAuditEvents"
               ],
               "metadata": {
-                "description": "Optional. The name of logs that will be streamed. \"allLogs\" includes all possible logs for the resource."
+                "description": "Optional. The name of logs that will be streamed. \"allLogs\" includes all possible logs for the resource. Set to '' to disable log collection."
               }
             },
             "diagnosticMetricsToEnable": {
@@ -792,9 +799,9 @@
             "copy": [
               {
                 "name": "diagnosticsLogsSpecified",
-                "count": "[length(filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', not(equals(lambdaVariables('item'), 'allLogs')))))]",
+                "count": "[length(filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', and(not(equals(lambdaVariables('item'), 'allLogs')), not(equals(lambdaVariables('item'), ''))))))]",
                 "input": {
-                  "category": "[filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', not(equals(lambdaVariables('item'), 'allLogs'))))[copyIndex('diagnosticsLogsSpecified')]]",
+                  "category": "[filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', and(not(equals(lambdaVariables('item'), 'allLogs')), not(equals(lambdaVariables('item'), '')))))[copyIndex('diagnosticsLogsSpecified')]]",
                   "enabled": true,
                   "retentionPolicy": {
                     "enabled": true,
@@ -816,7 +823,7 @@
                 }
               }
             ],
-            "diagnosticsLogs": "[if(contains(parameters('diagnosticLogCategoriesToEnable'), 'allLogs'), createArray(createObject('categoryGroup', 'allLogs', 'enabled', true(), 'retentionPolicy', createObject('enabled', true(), 'days', parameters('diagnosticLogsRetentionInDays')))), variables('diagnosticsLogsSpecified'))]",
+            "diagnosticsLogs": "[if(contains(parameters('diagnosticLogCategoriesToEnable'), 'allLogs'), createArray(createObject('categoryGroup', 'allLogs', 'enabled', true(), 'retentionPolicy', createObject('enabled', true(), 'days', parameters('diagnosticLogsRetentionInDays')))), if(contains(parameters('diagnosticLogCategoriesToEnable'), ''), createArray(), variables('diagnosticsLogsSpecified')))]",
             "skuVar": "[union(createObject('name', parameters('skuName'), 'tier', parameters('skuTier')), if(not(equals(parameters('skuCapacity'), -1)), createObject('capacity', parameters('skuCapacity')), if(not(empty(parameters('skuFamily'))), createObject('family', parameters('skuFamily')), if(not(empty(parameters('skuSize'))), createObject('size', parameters('skuSize')), createObject()))))]"
           },
           "resources": [
@@ -905,9 +912,12 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.18.4.5664",
-                      "templateHash": "6180510200677636310"
-                    }
+                      "version": "0.19.5.34762",
+                      "templateHash": "5781184315991648600"
+                    },
+                    "name": "Azure SQL Server Database Short Term Backup Retention Policies",
+                    "description": "This module deploys an Azure SQL Server Database Short-Term Backup Retention Policy.",
+                    "owner": "Azure/module-maintainers"
                   },
                   "parameters": {
                     "serverName": {
@@ -1025,9 +1035,12 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.18.4.5664",
-                      "templateHash": "6938908802015116457"
-                    }
+                      "version": "0.19.5.34762",
+                      "templateHash": "9549304898342154380"
+                    },
+                    "name": "SQL Server Database Long Term Backup Retention Policies",
+                    "description": "This module deploys an Azure SQL Server Database Long-Term Backup Retention Policy.",
+                    "owner": "Azure/module-maintainers"
                   },
                   "parameters": {
                     "serverName": {
@@ -1198,7 +1211,7 @@
           "licenseType": "[if(contains(parameters('elasticPools')[copyIndex()], 'licenseType'), createObject('value', parameters('elasticPools')[copyIndex()].licenseType), createObject('value', 'LicenseIncluded'))]",
           "maintenanceConfigurationId": "[if(contains(parameters('elasticPools')[copyIndex()], 'maintenanceConfigurationId'), createObject('value', parameters('elasticPools')[copyIndex()].maintenanceConfigurationId), createObject('value', ''))]",
           "maxSizeBytes": "[if(contains(parameters('elasticPools')[copyIndex()], 'maxSizeBytes'), createObject('value', parameters('elasticPools')[copyIndex()].maxSizeBytes), createObject('value', json('34359738368')))]",
-          "minCapacity": "[if(contains(parameters('elasticPools')[copyIndex()], 'minCapacity'), createObject('value', parameters('elasticPools')[copyIndex()].minCapacity), createObject('value', 0))]",
+          "minCapacity": "[if(contains(parameters('elasticPools')[copyIndex()], 'minCapacity'), createObject('value', parameters('elasticPools')[copyIndex()].minCapacity), createObject('value', -1))]",
           "skuCapacity": "[if(contains(parameters('elasticPools')[copyIndex()], 'skuCapacity'), createObject('value', parameters('elasticPools')[copyIndex()].skuCapacity), createObject('value', 2))]",
           "skuName": "[if(contains(parameters('elasticPools')[copyIndex()], 'skuName'), createObject('value', parameters('elasticPools')[copyIndex()].skuName), createObject('value', 'GP_Gen5'))]",
           "skuTier": "[if(contains(parameters('elasticPools')[copyIndex()], 'skuTier'), createObject('value', parameters('elasticPools')[copyIndex()].skuTier), createObject('value', 'GeneralPurpose'))]",
@@ -1217,9 +1230,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.18.4.5664",
-              "templateHash": "14276300972935909097"
-            }
+              "version": "0.19.5.34762",
+              "templateHash": "14041762700980122813"
+            },
+            "name": "SQL Server Elastic Pool",
+            "description": "This module deploys an Azure SQL Server Elastic Pool.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "name": {
@@ -1303,7 +1319,7 @@
             },
             "minCapacity": {
               "type": "int",
-              "defaultValue": 2,
+              "defaultValue": -1,
               "metadata": {
                 "description": "Optional. Minimal capacity that serverless pool will not shrink below, if not paused."
               }
@@ -1461,9 +1477,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.18.4.5664",
-              "templateHash": "12991773916541265724"
-            }
+              "version": "0.19.5.34762",
+              "templateHash": "15343651026946310931"
+            },
+            "name": "Private Endpoints",
+            "description": "This module deploys a Private Endpoint.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "name": {
@@ -1658,9 +1677,12 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.18.4.5664",
-                      "templateHash": "3520683536217550590"
-                    }
+                      "version": "0.19.5.34762",
+                      "templateHash": "5406224106432076575"
+                    },
+                    "name": "Private Endpoint Private DNS Zone Groups",
+                    "description": "This module deploys a Private Endpoint Private DNS Zone Group.",
+                    "owner": "Azure/module-maintainers"
                   },
                   "parameters": {
                     "privateEndpointName": {
@@ -1793,8 +1815,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.18.4.5664",
-                      "templateHash": "11724106538771429164"
+                      "version": "0.19.5.34762",
+                      "templateHash": "18055161250379920591"
                     }
                   },
                   "parameters": {
@@ -2005,9 +2027,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.18.4.5664",
-              "templateHash": "15536471809147997421"
-            }
+              "version": "0.19.5.34762",
+              "templateHash": "13046035125440131345"
+            },
+            "name": "Azure SQL Server Firewall Rule",
+            "description": "This module deploys an Azure SQL Server Firewall Rule.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "name": {
@@ -2132,9 +2157,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.18.4.5664",
-              "templateHash": "11443297739964051107"
-            }
+              "version": "0.19.5.34762",
+              "templateHash": "13392552360231460813"
+            },
+            "name": "Azure SQL Server Virtual Network Rules",
+            "description": "This module deploys an Azure SQL Server Virtual Network Rule.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "name": {
@@ -2261,9 +2289,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.18.4.5664",
-              "templateHash": "16839312524246760186"
-            }
+              "version": "0.19.5.34762",
+              "templateHash": "9867242417767715059"
+            },
+            "name": "Azure SQL Server Security Alert Policies",
+            "description": "This module deploys an Azure SQL Server Security Alert Policy.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "name": {
@@ -2429,9 +2460,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.18.4.5664",
-              "templateHash": "5567089066479363884"
-            }
+              "version": "0.19.5.34762",
+              "templateHash": "632874859253022186"
+            },
+            "name": "Azure SQL Server Vulnerability Assessments",
+            "description": "This module deploys an Azure SQL Server Vulnerability Assessment.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "name": {
@@ -2574,9 +2608,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.18.4.5664",
-              "templateHash": "9043382620833381545"
-            }
+              "version": "0.19.5.34762",
+              "templateHash": "10441220163352980152"
+            },
+            "name": "Azure SQL Server Keys",
+            "description": "This module deploys an Azure SQL Server Key.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "name": {
@@ -2704,9 +2741,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.18.4.5664",
-              "templateHash": "10780385686812544304"
-            }
+              "version": "0.19.5.34762",
+              "templateHash": "4641134195716494602"
+            },
+            "name": "Azure SQL Server Encryption Protector",
+            "description": "This module deploys an Azure SQL Server Encryption Protector.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "sqlServerName": {

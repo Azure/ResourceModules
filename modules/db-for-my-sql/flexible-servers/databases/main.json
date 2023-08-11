@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.18.4.5664",
-      "templateHash": "11503028878076324392"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "12647720847614647024"
+    },
+    "name": "DBforMySQL Flexible Server Databases",
+    "description": "This module deploys a DBforMySQL Flexible Server Database.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {

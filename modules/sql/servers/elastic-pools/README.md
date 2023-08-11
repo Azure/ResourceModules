@@ -41,7 +41,7 @@ This module deploys an Azure SQL Server Elastic Pool.
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `maintenanceConfigurationId` | string | `''` |  | Maintenance configuration resource ID assigned to the elastic pool. This configuration defines the period when the maintenance updates will will occur. |
 | `maxSizeBytes` | int | `34359738368` |  | The storage limit for the database elastic pool in bytes. |
-| `minCapacity` | int | `2` |  | Minimal capacity that serverless pool will not shrink below, if not paused. |
+| `minCapacity` | int | `-1` |  | Minimal capacity that serverless pool will not shrink below, if not paused. |
 | `skuCapacity` | int | `2` |  | Capacity of the particular SKU. |
 | `skuName` | string | `'GP_Gen5'` |  | The name of the SKU, typically, a letter + Number code, e.g. P3. |
 | `skuTier` | string | `'GeneralPurpose'` |  | The tier or edition of the particular SKU, e.g. Basic, Premium. |

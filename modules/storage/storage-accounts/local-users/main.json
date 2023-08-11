@@ -4,17 +4,20 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.18.4.5664",
-      "templateHash": "4867276107242068354"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "17498007234218946474"
+    },
+    "name": "Storage Account Local Users",
+    "description": "This module deploys a Storage Account Local User, which is used for SFTP authentication.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "storageAccountName": {
       "type": "string",
+      "maxLength": 24,
       "metadata": {
         "description": "Conditional. The name of the parent Storage Account. Required if the template is used in a standalone deployment."
-      },
-      "maxLength": 24
+      }
     },
     "name": {
       "type": "string",

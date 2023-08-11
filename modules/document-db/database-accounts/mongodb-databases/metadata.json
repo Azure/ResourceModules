@@ -1,6 +1,0 @@
-{
-    "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
-    "name": "DocumentDB Database Account MongoDB Databases",
-    "summary": "This module deploys a MongoDB Database within a CosmosDB Account.",
-    "owner": "Azure/module-maintainers"
-}

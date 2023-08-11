@@ -1,6 +1,0 @@
-{
-    "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
-    "name": "Power BI Dedicated Capacities",
-    "summary": "This module deploys a Power BI Dedicated Capacity.",
-    "owner": "Azure/module-maintainers"
-}

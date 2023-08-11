@@ -1,3 +1,7 @@
+metadata name = 'Azure Virtual Desktop (AVD) Application Groups'
+metadata description = 'This module deploys an Azure Virtual Desktop (AVD) Application Group.'
+metadata owner = 'Azure/module-maintainers'
+
 @sys.description('Required. Name of the Application Group to create this application in.')
 @minLength(1)
 param name string
@@ -55,8 +59,9 @@ param tags object = {}
 @sys.description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-@sys.description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource.')
+@sys.description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to \'\' to disable log collection.')
 @allowed([
+  ''
   'allLogs'
   'Checkpoint'
   'Error'
@@ -72,7 +77,7 @@ param applications array = []
 @sys.description('Optional. The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings".')
 param diagnosticSettingsName string = ''
 
-var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs'): {
+var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs' && item != ''): {
   category: category
   enabled: true
   retentionPolicy: {
@@ -90,7 +95,7 @@ var diagnosticsLogs = contains(diagnosticLogCategoriesToEnable, 'allLogs') ? [
       days: diagnosticLogsRetentionInDays
     }
   }
-] : diagnosticsLogsSpecified
+] : contains(diagnosticLogCategoriesToEnable, '') ? [] : diagnosticsLogsSpecified
 
 var enableReferencedModulesTelemetry = false
 

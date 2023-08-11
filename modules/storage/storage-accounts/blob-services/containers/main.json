@@ -4,17 +4,20 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.18.4.5664",
-      "templateHash": "13432238059824416767"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "7500144031846073123"
+    },
+    "name": "Storage Account Blob Containers",
+    "description": "This module deploys a Storage Account Blob Container.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "storageAccountName": {
       "type": "string",
+      "maxLength": 24,
       "metadata": {
         "description": "Conditional. The name of the parent Storage Account. Required if the template is used in a standalone deployment."
-      },
-      "maxLength": 24
+      }
     },
     "name": {
       "type": "string",
@@ -81,14 +84,14 @@
     "publicAccess": {
       "type": "string",
       "defaultValue": "None",
-      "metadata": {
-        "description": "Optional. Specifies whether data in the container may be accessed publicly and the level of access."
-      },
       "allowedValues": [
         "Container",
         "Blob",
         "None"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Specifies whether data in the container may be accessed publicly and the level of access."
+      }
     },
     "roleAssignments": {
       "type": "array",
@@ -167,17 +170,20 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.18.4.5664",
-              "templateHash": "9557485955064387621"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "5668549883344653702"
+            },
+            "name": "Storage Account Blob Container Immutability Policies",
+            "description": "This module deploys a Storage Account Blob Container Immutability Policy.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "storageAccountName": {
               "type": "string",
+              "maxLength": 24,
               "metadata": {
                 "description": "Conditional. The name of the parent Storage Account. Required if the template is used in a standalone deployment."
-              },
-              "maxLength": 24
+              }
             },
             "containerName": {
               "type": "string",
@@ -303,8 +309,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.18.4.5664",
-              "templateHash": "9471266450275905523"
+              "version": "0.20.4.51522",
+              "templateHash": "8600687658951622621"
             }
           },
           "parameters": {

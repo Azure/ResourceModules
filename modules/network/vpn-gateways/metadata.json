@@ -1,6 +1,0 @@
-{
-    "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
-    "name": "VPN Gateways",
-    "summary": "This module deploys a VPN Gateway.",
-    "owner": "Azure/module-maintainers"
-}

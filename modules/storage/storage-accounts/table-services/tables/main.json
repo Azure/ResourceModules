@@ -4,17 +4,20 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.18.4.5664",
-      "templateHash": "18313788100863691650"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "3732027241762478422"
+    },
+    "name": "Storage Account Table",
+    "description": "This module deploys a Storage Account Table.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "storageAccountName": {
       "type": "string",
+      "maxLength": 24,
       "metadata": {
         "description": "Conditional. The name of the parent Storage Account. Required if the template is used in a standalone deployment."
-      },
-      "maxLength": 24
+      }
     },
     "name": {
       "type": "string",

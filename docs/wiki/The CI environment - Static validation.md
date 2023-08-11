@@ -24,10 +24,9 @@ The following activities are performed by the [`utilities/pipelines/staticValida
     1. Module should contain a [` README.md `] file.
     1. Module should contain a [` .test `] folder.
     1. Module should contain a [` version.json `] file.
-    1. Module should contain a [` metadata.json `] file.
   - **.test folder**
     1. Folder should contain one or more test files.
-    1. JSON test files in the `.test` folder should be valid json.
+    1. JSON test files in the `.test` folder should be valid JSON.
 - **Pipeline tests**
     1. Module should have a GitHub workflow.
     1. Module workflow should have trigger for cross-module references, if any.
@@ -68,9 +67,8 @@ The following activities are performed by the [`utilities/pipelines/staticValida
     1. All required parameters in template file (`main.json`) should exist in parameters files.
     1. All non-required parameters in template file should not have description that start with "Required.".
   - **Metadata content tests**
-    1. `metadata.json` file should not be empty.
-    1. `metadata.json` file should have a module name specified.
-    1. `metadata.json` file should have a module description / summary specified.
+    1. template file should have a module name specified.
+    1. template file should have a module description specified.
 - **Test file tests**
   - **General test file**
     1. Bicep test deployment name should contain [`-test-`].
@@ -87,7 +85,7 @@ The following activities are performed by the [`utilities/pipelines/staticValida
 
 ## Output example
 
-<img src="./media/CIEnvironment/staticValidationOutput.png" alt="Static Validation Output" height="400">
+<img src="./media/CIEnvironment/staticValidationOutput.png" alt="Static Validation Output" height="700">
 
 ## Additional resources
 
@@ -124,7 +122,7 @@ $pathToRepository = '<pathToClonedRepo>'
 
 # REQUIRED INPUT FOR TESTING
 $TestModuleLocallyInput = @{
-    templateFilePath              = "$pathToRepository\modules\Authorization\roleDefinitions\main.bicep"
+    templateFilePath              = "$pathToRepository\modules\authorization\role-definition\main.bicep"
     PesterTest                    = $true
     DeploymentTest                = $false
     ValidationTest                = $false

@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.18.4.5664",
-      "templateHash": "7811601799408295032"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "12231440430796984538"
+    },
+    "name": "DBforPostgreSQL Flexible Servers",
+    "description": "This module deploys a DBforPostgreSQL Flexible Server.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
@@ -42,54 +45,51 @@
     },
     "tier": {
       "type": "string",
-      "metadata": {
-        "description": "Required. The tier of the particular SKU. Tier must align with the \"skuName\" property. Example, tier cannot be \"Burstable\" if skuName is \"Standard_D4s_v3\"."
-      },
       "allowedValues": [
         "GeneralPurpose",
         "Burstable",
         "MemoryOptimized"
-      ]
+      ],
+      "metadata": {
+        "description": "Required. The tier of the particular SKU. Tier must align with the \"skuName\" property. Example, tier cannot be \"Burstable\" if skuName is \"Standard_D4s_v3\"."
+      }
     },
     "availabilityZone": {
       "type": "string",
       "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Availability zone information of the server. Default will have no preference set."
-      },
       "allowedValues": [
         "",
         "1",
         "2",
         "3"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Availability zone information of the server. Default will have no preference set."
+      }
     },
     "backupRetentionDays": {
       "type": "int",
       "defaultValue": 7,
+      "minValue": 7,
+      "maxValue": 35,
       "metadata": {
         "description": "Optional. Backup retention days for the server."
-      },
-      "maxValue": 35,
-      "minValue": 7
+      }
     },
     "geoRedundantBackup": {
       "type": "string",
       "defaultValue": "Disabled",
-      "metadata": {
-        "description": "Optional. A value indicating whether Geo-Redundant backup is enabled on the server. Should be left disabled if 'cMKKeyName' is not empty."
-      },
       "allowedValues": [
         "Disabled",
         "Enabled"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. A value indicating whether Geo-Redundant backup is enabled on the server. Should be left disabled if 'cMKKeyName' is not empty."
+      }
     },
     "storageSizeGB": {
       "type": "int",
       "defaultValue": 32,
-      "metadata": {
-        "description": "Optional. Max storage allowed for a server."
-      },
       "allowedValues": [
         32,
         64,
@@ -101,45 +101,48 @@
         4096,
         8192,
         16384
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Max storage allowed for a server."
+      }
     },
     "version": {
       "type": "string",
       "defaultValue": "13",
-      "metadata": {
-        "description": "Optional. PostgreSQL Server version."
-      },
       "allowedValues": [
         "11",
         "12",
         "13",
         "14"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. PostgreSQL Server version."
+      }
     },
     "highAvailability": {
       "type": "string",
       "defaultValue": "Disabled",
-      "metadata": {
-        "description": "Optional. The mode for high availability."
-      },
       "allowedValues": [
         "Disabled",
         "SameZone",
         "ZoneRedundant"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. The mode for high availability."
+      }
     },
     "createMode": {
       "type": "string",
       "defaultValue": "Default",
-      "metadata": {
-        "description": "Optional. The mode to create a new PostgreSQL server."
-      },
       "allowedValues": [
         "Create",
         "Default",
         "PointInTimeRestore",
         "Update"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. The mode to create a new PostgreSQL server."
+      }
     },
     "userAssignedIdentities": {
       "type": "object",
@@ -235,14 +238,14 @@
     "lock": {
       "type": "string",
       "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Specify the type of lock."
-      },
       "allowedValues": [
         "",
         "CanNotDelete",
         "ReadOnly"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Specify the type of lock."
+      }
     },
     "roleAssignments": {
       "type": "array",
@@ -268,8 +271,8 @@
     "diagnosticLogsRetentionInDays": {
       "type": "int",
       "defaultValue": 365,
-      "maxValue": 365,
       "minValue": 0,
+      "maxValue": 365,
       "metadata": {
         "description": "Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely."
       }
@@ -308,6 +311,7 @@
         "allLogs"
       ],
       "allowedValues": [
+        "",
         "allLogs",
         "PostgreSQLLogs",
         "PostgreSQLFlexSessions",
@@ -317,7 +321,7 @@
         "PostgreSQLFlexDatabaseXacts"
       ],
       "metadata": {
-        "description": "Optional. The name of logs that will be streamed. \"allLogs\" includes all possible logs for the resource."
+        "description": "Optional. The name of logs that will be streamed. \"allLogs\" includes all possible logs for the resource. Set to '' to disable log collection."
       }
     },
     "diagnosticMetricsToEnable": {
@@ -344,9 +348,9 @@
     "copy": [
       {
         "name": "diagnosticsLogsSpecified",
-        "count": "[length(filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', not(equals(lambdaVariables('item'), 'allLogs')))))]",
+        "count": "[length(filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', and(not(equals(lambdaVariables('item'), 'allLogs')), not(equals(lambdaVariables('item'), ''))))))]",
         "input": {
-          "category": "[filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', not(equals(lambdaVariables('item'), 'allLogs'))))[copyIndex('diagnosticsLogsSpecified')]]",
+          "category": "[filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', and(not(equals(lambdaVariables('item'), 'allLogs')), not(equals(lambdaVariables('item'), '')))))[copyIndex('diagnosticsLogsSpecified')]]",
           "enabled": true,
           "retentionPolicy": {
             "enabled": true,
@@ -368,7 +372,7 @@
         }
       }
     ],
-    "diagnosticsLogs": "[if(contains(parameters('diagnosticLogCategoriesToEnable'), 'allLogs'), createArray(createObject('categoryGroup', 'allLogs', 'enabled', true(), 'retentionPolicy', createObject('enabled', true(), 'days', parameters('diagnosticLogsRetentionInDays')))), variables('diagnosticsLogsSpecified'))]",
+    "diagnosticsLogs": "[if(contains(parameters('diagnosticLogCategoriesToEnable'), 'allLogs'), createArray(createObject('categoryGroup', 'allLogs', 'enabled', true(), 'retentionPolicy', createObject('enabled', true(), 'days', parameters('diagnosticLogsRetentionInDays')))), if(contains(parameters('diagnosticLogCategoriesToEnable'), ''), createArray(), variables('diagnosticsLogsSpecified')))]",
     "enableReferencedModulesTelemetry": false
   },
   "resources": [
@@ -490,8 +494,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.18.4.5664",
-              "templateHash": "16596021479793823543"
+              "version": "0.20.4.51522",
+              "templateHash": "11735622953674778447"
             }
           },
           "parameters": {
@@ -636,9 +640,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.18.4.5664",
-              "templateHash": "12840528170310382995"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "7432917940199201712"
+            },
+            "name": "DBforPostgreSQL Flexible Server Databases",
+            "description": "This module deploys a DBforPostgreSQL Flexible Server Database.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "name": {
@@ -772,9 +779,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.18.4.5664",
-              "templateHash": "2003541086833346930"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "3071080362723739241"
+            },
+            "name": "DBforPostgreSQL Flexible Server Firewall Rules",
+            "description": "This module deploys a DBforPostgreSQL Flexible Server Firewall Rule.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "name": {
@@ -896,9 +906,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.18.4.5664",
-              "templateHash": "427700256497782682"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "5586008567080780040"
+            },
+            "name": "DBforPostgreSQL Flexible Server Configurations",
+            "description": "This module deploys a DBforPostgreSQL Flexible Server Configuration.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "name": {
