@@ -47,7 +47,7 @@ This module deploys a Web or Function App.
 | `appServiceEnvironmentResourceId` | string | `''` |  | The resource ID of the app service environment to use for this resource. |
 | `appSettingsKeyValuePairs` | object | `{object}` |  | The app settings-value pairs except for AzureWebJobsStorage, AzureWebJobsDashboard, APPINSIGHTS_INSTRUMENTATIONKEY and APPLICATIONINSIGHTS_CONNECTION_STRING. |
 | `authSettingV2Configuration` | object | `{object}` |  | The auth settings V2 configuration. |
-| `basicPublishingCredentialsPolicies` | _[basicPublishingCredentialsPolicies](basic-publishing-credentials-policies/README.md)_ array | `[]` |  | The site publishing credential policy names which are associated with the sites. |
+| `basicPublishingCredentialsPolicies` | array | `[]` |  | The site publishing credential policy names which are associated with the sites. |
 | `clientAffinityEnabled` | bool | `True` |  | If client affinity is enabled. |
 | `clientCertEnabled` | bool | `False` |  | To enable client certificate authentication (TLS mutual authentication). |
 | `clientCertExclusionPaths` | string | `''` |  | Client certificate authentication comma-separated exclusion paths. |
@@ -78,7 +78,7 @@ This module deploys a Web or Function App.
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `setAzureWebJobsDashboard` | bool | `[if(contains(parameters('kind'), 'functionapp'), true(), false())]` |  | For function apps. If true the app settings "AzureWebJobsDashboard" will be set. If false not. In case you use Application Insights it can make sense to not set it for performance reasons. |
 | `siteConfig` | object | `{object}` |  | The site config object. |
-| `slots` | _[slots](slots/README.md)_ array | `[]` |  | Configuration for deployment slots for an app. |
+| `slots` | array | `[]` |  | Configuration for deployment slots for an app. |
 | `storageAccountRequired` | bool | `False` |  | Checks if Customer provided storage account is required. |
 | `storageAccountResourceId` | string | `''` |  | Required if app of kind functionapp. Resource ID of the storage account to manage triggers and logging function executions. |
 | `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
@@ -440,7 +440,7 @@ This section gives you an overview of all local-referenced module files (i.e., o
 
 | Reference | Type |
 | :-- | :-- |
-| `network/private-endpoints` | Local reference |
+| `network/private-endpoint` | Local reference |
 
 ## Deployment examples
 
@@ -456,7 +456,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module sites './web/site/main.bicep' = {
+module site './web/site/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-wsfacom'
   params: {
     // Required parameters
@@ -777,7 +777,7 @@ module sites './web/site/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module sites './web/site/main.bicep' = {
+module site './web/site/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-wsfamin'
   params: {
     // Required parameters
@@ -838,7 +838,7 @@ module sites './web/site/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module sites './web/site/main.bicep' = {
+module site './web/site/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-wswa'
   params: {
     // Required parameters
@@ -1137,7 +1137,7 @@ module sites './web/site/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module sites './web/site/main.bicep' = {
+module site './web/site/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-wswamin'
   params: {
     // Required parameters

@@ -176,7 +176,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module servers './analysis-services/server/main.bicep' = {
+module server './analysis-services/server/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-asscom'
   params: {
     // Required parameters
@@ -279,7 +279,7 @@ module servers './analysis-services/server/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module servers './analysis-services/server/main.bicep' = {
+module server './analysis-services/server/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-assmax'
   params: {
     // Required parameters
@@ -416,7 +416,7 @@ module servers './analysis-services/server/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module servers './analysis-services/server/main.bicep' = {
+module server './analysis-services/server/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-assmin'
   params: {
     // Required parameters

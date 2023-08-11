@@ -164,7 +164,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module ddosProtectionPlans './network/ddos-protection-plan/main.bicep' = {
+module ddosProtectionPlan './network/ddos-protection-plan/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-ndppcom'
   params: {
     // Required parameters
@@ -243,7 +243,7 @@ module ddosProtectionPlans './network/ddos-protection-plan/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module ddosProtectionPlans './network/ddos-protection-plan/main.bicep' = {
+module ddosProtectionPlan './network/ddos-protection-plan/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-ndppmin'
   params: {
     // Required parameters

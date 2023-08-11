@@ -341,7 +341,7 @@ This section gives you an overview of all local-referenced module files (i.e., o
 
 | Reference | Type |
 | :-- | :-- |
-| `network/private-endpoints` | Local reference |
+| `network/private-endpoint` | Local reference |
 
 ## Deployment examples
 
@@ -357,7 +357,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module topics './event-grid/topic/main.bicep' = {
+module topic './event-grid/topic/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-egtcom'
   params: {
     // Required parameters
@@ -552,7 +552,7 @@ module topics './event-grid/topic/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module topics './event-grid/topic/main.bicep' = {
+module topic './event-grid/topic/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-egtmin'
   params: {
     // Required parameters
@@ -597,7 +597,7 @@ module topics './event-grid/topic/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module topics './event-grid/topic/main.bicep' = {
+module topic './event-grid/topic/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-egtpe'
   params: {
     // Required parameters

@@ -350,7 +350,7 @@ This section gives you an overview of all local-referenced module files (i.e., o
 
 | Reference | Type |
 | :-- | :-- |
-| `network/private-endpoints` | Local reference |
+| `network/private-endpoint` | Local reference |
 
 ## Deployment examples
 

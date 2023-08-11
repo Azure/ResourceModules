@@ -75,7 +75,7 @@ This section gives you an overview of all local-referenced module files (i.e., o
 
 | Reference | Type |
 | :-- | :-- |
-| `kubernetes-configuration/flux-configurations` | Local reference |
+| `kubernetes-configuration/flux-configuration` | Local reference |
 
 ## Deployment examples
 
@@ -91,7 +91,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module extensions './kubernetes-configuration/extension/main.bicep' = {
+module extension './kubernetes-configuration/extension/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-kcecom'
   params: {
     // Required parameters
@@ -202,7 +202,7 @@ module extensions './kubernetes-configuration/extension/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module extensions './kubernetes-configuration/extension/main.bicep' = {
+module extension './kubernetes-configuration/extension/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-kcemin'
   params: {
     // Required parameters

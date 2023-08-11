@@ -62,7 +62,7 @@ This module deploys a Synapse Workspace.
 | `encryption` | bool | `False` |  | Double encryption using a customer-managed key. |
 | `encryptionActivateWorkspace` | bool | `False` |  | Activate workspace by adding the system managed identity in the KeyVault containing the customer managed key and activating the workspace. |
 | `initialWorkspaceAdminObjectID` | string | `''` |  | AAD object ID of initial workspace admin. |
-| `integrationRuntimes` | _[integrationRuntimes](integration-runtimes/README.md)_ array | `[]` |  | The Integration Runtimes to create. |
+| `integrationRuntimes` | array | `[]` |  | The Integration Runtimes to create. |
 | `linkedAccessCheckOnTargetResource` | bool | `False` |  | Linked Access Check On Target Resource. |
 | `location` | string | `[resourceGroup().location]` |  | The geo-location where the resource lives. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
@@ -329,7 +329,7 @@ This section gives you an overview of all local-referenced module files (i.e., o
 
 | Reference | Type |
 | :-- | :-- |
-| `network/private-endpoints` | Local reference |
+| `network/private-endpoint` | Local reference |
 
 ## Deployment examples
 
@@ -345,7 +345,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module workspaces './synapse/workspace/main.bicep' = {
+module workspace './synapse/workspace/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-swcom'
   params: {
     // Required parameters
@@ -524,7 +524,7 @@ module workspaces './synapse/workspace/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module workspaces './synapse/workspace/main.bicep' = {
+module workspace './synapse/workspace/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-swensa'
   params: {
     // Required parameters
@@ -601,7 +601,7 @@ module workspaces './synapse/workspace/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module workspaces './synapse/workspace/main.bicep' = {
+module workspace './synapse/workspace/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-swenua'
   params: {
     // Required parameters
@@ -684,7 +684,7 @@ module workspaces './synapse/workspace/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module workspaces './synapse/workspace/main.bicep' = {
+module workspace './synapse/workspace/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-swmanv'
   params: {
     // Required parameters
@@ -767,7 +767,7 @@ module workspaces './synapse/workspace/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module workspaces './synapse/workspace/main.bicep' = {
+module workspace './synapse/workspace/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-swmin'
   params: {
     // Required parameters

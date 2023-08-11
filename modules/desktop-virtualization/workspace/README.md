@@ -175,7 +175,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module workspaces './desktop-virtualization/workspace/main.bicep' = {
+module workspace './desktop-virtualization/workspace/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-dvwcom'
   params: {
     // Required parameters
@@ -294,7 +294,7 @@ module workspaces './desktop-virtualization/workspace/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module workspaces './desktop-virtualization/workspace/main.bicep' = {
+module workspace './desktop-virtualization/workspace/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-dvwmin'
   params: {
     // Required parameters

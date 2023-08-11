@@ -35,7 +35,7 @@ This module deploys a Data Factory Managed Virtual Network.
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `managedPrivateEndpoints` | _[managedPrivateEndpoints](managed-private-endpoints/README.md)_ array | `[]` | An array of managed private endpoints objects created in the Data Factory managed virtual network. |
+| `managedPrivateEndpoints` | array | `[]` | An array of managed private endpoints objects created in the Data Factory managed virtual network. |
 
 
 ### Parameter Usage: `managedPrivateEndpoints`

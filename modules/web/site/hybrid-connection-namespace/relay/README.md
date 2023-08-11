@@ -1,4 +1,4 @@
-# Web/Function Apps Hybrid Connection Relay `[Microsoft.Web/sites/hybridConnectionNamespaces/relays]`
+# Web/Function Apps Hybrid Connection Relay `[Microsoft.Web/sites]`
 
 This module deploys a Site Hybrid Connection Namespace Relay.
 

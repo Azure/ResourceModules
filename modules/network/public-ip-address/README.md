@@ -183,7 +183,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module publicIPAddresses './network/public-ip-address/main.bicep' = {
+module publicIpAddress './network/public-ip-address/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-npiacom'
   params: {
     // Required parameters
@@ -302,7 +302,7 @@ module publicIPAddresses './network/public-ip-address/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module publicIPAddresses './network/public-ip-address/main.bicep' = {
+module publicIpAddress './network/public-ip-address/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-npiamin'
   params: {
     // Required parameters

@@ -251,7 +251,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module actionGroups './insights/action-group/main.bicep' = {
+module actionGroup './insights/action-group/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-iagcom'
   params: {
     // Required parameters
@@ -370,7 +370,7 @@ module actionGroups './insights/action-group/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module actionGroups './insights/action-group/main.bicep' = {
+module actionGroup './insights/action-group/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-iagmin'
   params: {
     // Required parameters

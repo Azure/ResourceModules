@@ -36,7 +36,7 @@ This module deploys a Key Vault.
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `accessPolicies` | _[accessPolicies](access-policies/README.md)_ array | `[]` |  | All access policies to create. |
+| `accessPolicies` | array | `[]` |  | All access policies to create. |
 | `createMode` | string | `'default'` |  | The vault's create mode to indicate whether the vault need to be recovered or not. - recover or default. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
@@ -53,7 +53,7 @@ This module deploys a Key Vault.
 | `enableVaultForDeployment` | bool | `True` |  | Specifies if the vault is enabled for deployment by script or compute. |
 | `enableVaultForDiskEncryption` | bool | `True` |  | Specifies if the azure platform has access to the vault for enabling disk encryption scenarios. |
 | `enableVaultForTemplateDeployment` | bool | `True` |  | Specifies if the vault is enabled for a template deployment. |
-| `keys` | _[keys](keys/README.md)_ array | `[]` |  | All keys to create. |
+| `keys` | array | `[]` |  | All keys to create. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `networkAcls` | object | `{object}` |  | Service endpoint object information. For security reasons, it is recommended to set the DefaultAction Deny. |
@@ -394,7 +394,7 @@ This section gives you an overview of all local-referenced module files (i.e., o
 
 | Reference | Type |
 | :-- | :-- |
-| `network/private-endpoints` | Local reference |
+| `network/private-endpoint` | Local reference |
 
 ## Deployment examples
 
@@ -410,7 +410,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module vaults './key-vault/vault/main.bicep' = {
+module vault './key-vault/vault/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-kvvcom'
   params: {
     name: 'kvvcom002'
@@ -763,7 +763,7 @@ module vaults './key-vault/vault/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module vaults './key-vault/vault/main.bicep' = {
+module vault './key-vault/vault/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-kvvmin'
   params: {
     // Required parameters
@@ -812,7 +812,7 @@ module vaults './key-vault/vault/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module vaults './key-vault/vault/main.bicep' = {
+module vault './key-vault/vault/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-kvvpe'
   params: {
     // Required parameters

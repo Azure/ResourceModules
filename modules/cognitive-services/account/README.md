@@ -438,7 +438,7 @@ This section gives you an overview of all local-referenced module files (i.e., o
 
 | Reference | Type |
 | :-- | :-- |
-| `network/private-endpoints` | Local reference |
+| `network/private-endpoint` | Local reference |
 
 ## Deployment examples
 
@@ -454,7 +454,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module accounts './cognitive-services/account/main.bicep' = {
+module account './cognitive-services/account/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-csacom'
   params: {
     // Required parameters
@@ -639,7 +639,7 @@ module accounts './cognitive-services/account/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module accounts './cognitive-services/account/main.bicep' = {
+module account './cognitive-services/account/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-csaencr'
   params: {
     // Required parameters
@@ -720,7 +720,7 @@ module accounts './cognitive-services/account/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module accounts './cognitive-services/account/main.bicep' = {
+module account './cognitive-services/account/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-csamin'
   params: {
     // Required parameters
@@ -769,7 +769,7 @@ module accounts './cognitive-services/account/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module accounts './cognitive-services/account/main.bicep' = {
+module account './cognitive-services/account/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-csaspeech'
   params: {
     // Required parameters

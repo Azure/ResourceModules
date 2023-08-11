@@ -42,7 +42,7 @@ This module deploys a Storage Account File Share Service.
 | `name` | string | `'default'` |  | The name of the file service. |
 | `protocolSettings` | object | `{object}` |  | Protocol settings for file service. |
 | `shareDeleteRetentionPolicy` | object | `{object}` |  | The service properties for soft delete. |
-| `shares` | _[shares](shares/README.md)_ array | `[]` |  | File shares to create. |
+| `shares` | array | `[]` |  | File shares to create. |
 
 
 ## Outputs

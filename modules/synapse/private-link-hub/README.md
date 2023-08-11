@@ -255,7 +255,7 @@ This section gives you an overview of all local-referenced module files (i.e., o
 
 | Reference | Type |
 | :-- | :-- |
-| `network/private-endpoints` | Local reference |
+| `network/private-endpoint` | Local reference |
 
 ## Deployment examples
 
@@ -271,7 +271,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module privateLinkHubs './synapse/private-link-hub/main.bicep' = {
+module privateLinkHub './synapse/private-link-hub/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-splhcom'
   params: {
     // Required parameters
@@ -394,7 +394,7 @@ module privateLinkHubs './synapse/private-link-hub/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module privateLinkHubs './synapse/private-link-hub/main.bicep' = {
+module privateLinkHub './synapse/private-link-hub/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-splhmin'
   params: {
     // Required parameters

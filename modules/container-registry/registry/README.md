@@ -67,7 +67,7 @@ This module deploys an Azure Container Registry (ACR).
 | `privateEndpoints` | array | `[]` |  | Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. Note, requires the 'acrSku' to be 'Premium'. |
 | `publicNetworkAccess` | string | `''` | `['', Disabled, Enabled]` | Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set and networkRuleSetIpRules are not set.  Note, requires the 'acrSku' to be 'Premium'. |
 | `quarantinePolicyStatus` | string | `'disabled'` | `[disabled, enabled]` | The value that indicates whether the quarantine policy is enabled or not. |
-| `replications` | _[replications](replications/README.md)_ array | `[]` |  | All replications to create. |
+| `replications` | array | `[]` |  | All replications to create. |
 | `retentionPolicyDays` | int | `15` |  | The number of days to retain an untagged manifest after which it gets purged. |
 | `retentionPolicyStatus` | string | `'enabled'` | `[disabled, enabled]` | The value that indicates whether the retention policy is enabled or not. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
@@ -77,7 +77,7 @@ This module deploys an Azure Container Registry (ACR).
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `trustPolicyStatus` | string | `'disabled'` | `[disabled, enabled]` | The value that indicates whether the trust policy is enabled or not. |
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
-| `webhooks` | _[webhooks](webhooks/README.md)_ array | `[]` |  | All webhooks to create. |
+| `webhooks` | array | `[]` |  | All webhooks to create. |
 | `zoneRedundancy` | string | `'Disabled'` | `[Disabled, Enabled]` | Whether or not zone redundancy is enabled for this container registry. |
 
 
@@ -366,7 +366,7 @@ This section gives you an overview of all local-referenced module files (i.e., o
 
 | Reference | Type |
 | :-- | :-- |
-| `network/private-endpoints` | Local reference |
+| `network/private-endpoint` | Local reference |
 
 ## Deployment examples
 
@@ -382,7 +382,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module registries './container-registry/registry/main.bicep' = {
+module registry './container-registry/registry/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-crrcom'
   params: {
     // Required parameters
@@ -599,7 +599,7 @@ module registries './container-registry/registry/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module registries './container-registry/registry/main.bicep' = {
+module registry './container-registry/registry/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-crrencr'
   params: {
     // Required parameters
@@ -682,7 +682,7 @@ module registries './container-registry/registry/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module registries './container-registry/registry/main.bicep' = {
+module registry './container-registry/registry/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-crrmin'
   params: {
     // Required parameters
@@ -727,7 +727,7 @@ module registries './container-registry/registry/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module registries './container-registry/registry/main.bicep' = {
+module registry './container-registry/registry/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-crrpe'
   params: {
     // Required parameters

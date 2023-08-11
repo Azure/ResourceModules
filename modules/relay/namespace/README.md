@@ -39,7 +39,7 @@ This module deploys a Relay Namespace
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `authorizationRules` | _[authorizationRules](authorization-rules/README.md)_ array | `[System.Management.Automation.OrderedHashtable]` |  | Authorization Rules for the Relay namespace. |
+| `authorizationRules` | array | `[System.Management.Automation.OrderedHashtable]` |  | Authorization Rules for the Relay namespace. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
 | `diagnosticLogCategoriesToEnable` | array | `[allLogs, hybridConnectionsEvent]` | `['', allLogs, hybridConnectionsEvent, OperationalLogs]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
@@ -49,15 +49,15 @@ This module deploys a Relay Namespace
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `hybridConnections` | _[hybridConnections](hybrid-connections/README.md)_ array | `[]` |  | The hybrid connections to create in the relay namespace. |
+| `hybridConnections` | array | `[]` |  | The hybrid connections to create in the relay namespace. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
-| `networkRuleSets` | _[networkRuleSets](network-rule-sets/README.md)_ object | `{object}` |  | Configure networking options for Relay. This object contains IPs/Subnets to allow or restrict access to private endpoints only. For security reasons, it is recommended to configure this object on the Namespace. |
+| `networkRuleSets` | object | `{object}` |  | Configure networking options for Relay. This object contains IPs/Subnets to allow or restrict access to private endpoints only. For security reasons, it is recommended to configure this object on the Namespace. |
 | `privateEndpoints` | array | `[]` |  | Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `skuName` | string | `'Standard'` | `[Standard]` | Name of this SKU. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
-| `wcfRelays` | _[wcfRelays](wcf-relays/README.md)_ array | `[]` |  | The wcf relays to create in the relay namespace. |
+| `wcfRelays` | array | `[]` |  | The wcf relays to create in the relay namespace. |
 
 
 ### Parameter Usage: `roleAssignments`
@@ -275,7 +275,7 @@ This section gives you an overview of all local-referenced module files (i.e., o
 
 | Reference | Type |
 | :-- | :-- |
-| `network/private-endpoints` | Local reference |
+| `network/private-endpoint` | Local reference |
 
 ## Deployment examples
 
@@ -291,7 +291,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module namespaces './relay/namespace/main.bicep' = {
+module namespace './relay/namespace/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-rncom'
   params: {
     // Required parameters
@@ -572,7 +572,7 @@ module namespaces './relay/namespace/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module namespaces './relay/namespace/main.bicep' = {
+module namespace './relay/namespace/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-rnmin'
   params: {
     // Required parameters
@@ -617,7 +617,7 @@ module namespaces './relay/namespace/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module namespaces './relay/namespace/main.bicep' = {
+module namespace './relay/namespace/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-rnpe'
   params: {
     // Required parameters

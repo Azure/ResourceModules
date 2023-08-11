@@ -163,7 +163,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module deploymentScripts './resources/deployment-script/main.bicep' = {
+module deploymentScript './resources/deployment-script/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-rdscli'
   params: {
     // Required parameters
@@ -284,7 +284,7 @@ module deploymentScripts './resources/deployment-script/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module deploymentScripts './resources/deployment-script/main.bicep' = {
+module deploymentScript './resources/deployment-script/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-rdsps'
   params: {
     // Required parameters

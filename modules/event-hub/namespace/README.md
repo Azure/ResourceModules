@@ -46,7 +46,7 @@ This module deploys an Event Hub Namespace.
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `authorizationRules` | _[authorizationRules](authorization-rules/README.md)_ array | `[System.Management.Automation.OrderedHashtable]` |  | Authorization Rules for the Event Hub namespace. |
+| `authorizationRules` | array | `[System.Management.Automation.OrderedHashtable]` |  | Authorization Rules for the Event Hub namespace. |
 | `cMKKeyName` | string | `''` |  | The name of the customer managed key to use for encryption. Customer-managed key encryption at rest is only available for namespaces of premium SKU or namespaces created in a Dedicated Cluster. |
 | `cMKKeyVersion` | string | `''` |  | The version of the customer managed key to reference for encryption. If not provided, the latest key version is used. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
@@ -58,16 +58,16 @@ This module deploys an Event Hub Namespace.
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
 | `disableLocalAuth` | bool | `True` |  | This property disables SAS authentication for the Event Hubs namespace. |
-| `disasterRecoveryConfig` | object | `{object}` |  | The disaster recovery config for this namespace. |
+| `disasterRecoveryConfig` | _[disasterRecoveryConfig](disaster-recovery-config/README.md)_ object | `{object}` |  | The disaster recovery config for this namespace. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `eventhubs` | _[eventhubs](eventhubs/README.md)_ array | `[]` |  | The event hubs to deploy into this namespace. |
+| `eventhubs` | array | `[]` |  | The event hubs to deploy into this namespace. |
 | `isAutoInflateEnabled` | bool | `False` |  | Switch to enable the Auto Inflate feature of Event Hub. |
 | `kafkaEnabled` | bool | `False` |  | Value that indicates whether Kafka is enabled for Event Hubs Namespace. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `maximumThroughputUnits` | int | `1` |  | Upper limit of throughput units when AutoInflate is enabled, value should be within 0 to 20 throughput units. |
 | `minimumTlsVersion` | string | `'1.2'` | `[1.0, 1.1, 1.2]` | The minimum TLS version for the cluster to support. |
-| `networkRuleSets` | _[networkRuleSets](network-rule-sets/README.md)_ object | `{object}` |  | Configure networking options. This object contains IPs/Subnets to allow or restrict access to private endpoints only. For security reasons, it is recommended to configure this object on the Namespace. |
+| `networkRuleSets` | object | `{object}` |  | Configure networking options. This object contains IPs/Subnets to allow or restrict access to private endpoints only. For security reasons, it is recommended to configure this object on the Namespace. |
 | `privateEndpoints` | array | `[]` |  | Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
 | `publicNetworkAccess` | string | `''` | `['', Disabled, Enabled, SecuredByPerimeter]` | Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set. |
 | `requireInfrastructureEncryption` | bool | `False` |  | Enable infrastructure encryption (double encryption). Note, this setting requires the configuration of Customer-Managed-Keys (CMK) via the corresponding module parameters. |
@@ -329,7 +329,7 @@ This section gives you an overview of all local-referenced module files (i.e., o
 
 | Reference | Type |
 | :-- | :-- |
-| `network/private-endpoints` | Local reference |
+| `network/private-endpoint` | Local reference |
 
 ## Deployment examples
 
@@ -345,7 +345,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module namespaces './event-hub/namespace/main.bicep' = {
+module namespace './event-hub/namespace/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-ehncom'
   params: {
     // Required parameters
@@ -690,7 +690,7 @@ module namespaces './event-hub/namespace/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module namespaces './event-hub/namespace/main.bicep' = {
+module namespace './event-hub/namespace/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-ehnenc'
   params: {
     // Required parameters
@@ -781,7 +781,7 @@ module namespaces './event-hub/namespace/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module namespaces './event-hub/namespace/main.bicep' = {
+module namespace './event-hub/namespace/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-ehnmin'
   params: {
     // Required parameters
@@ -826,7 +826,7 @@ module namespaces './event-hub/namespace/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module namespaces './event-hub/namespace/main.bicep' = {
+module namespace './event-hub/namespace/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-ehnpe'
   params: {
     // Required parameters

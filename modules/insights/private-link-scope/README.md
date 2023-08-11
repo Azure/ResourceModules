@@ -1,4 +1,4 @@
-# Azure Monitor Private Link Scopes `[Microsoft.Insights/privateLinkScopes]`
+# Azure Monitor Private Link Scopes `[Microsoft.Insights/privateLinkScopeOperationStatuses]`
 
 This module deploys an Azure Monitor Private Link Scope.
 
@@ -38,7 +38,7 @@ This module deploys an Azure Monitor Private Link Scope.
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `privateEndpoints` | array | `[]` |  | Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| `scopedResources` | _[scopedResources](scoped-resources/README.md)_ array | `[]` |  | Configuration details for Azure Monitor Resources. |
+| `scopedResources` | array | `[]` |  | Configuration details for Azure Monitor Resources. |
 | `tags` | object | `{object}` |  | Resource tags. |
 
 
@@ -257,7 +257,7 @@ This section gives you an overview of all local-referenced module files (i.e., o
 
 | Reference | Type |
 | :-- | :-- |
-| `network/private-endpoints` | Local reference |
+| `network/private-endpoint` | Local reference |
 
 ## Deployment examples
 
@@ -273,7 +273,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module privateLinkScopes './insights/private-link-scope/main.bicep' = {
+module privateLinkScope './insights/private-link-scope/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-iplscom'
   params: {
     // Required parameters
@@ -394,7 +394,7 @@ module privateLinkScopes './insights/private-link-scope/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module privateLinkScopes './insights/private-link-scope/main.bicep' = {
+module privateLinkScope './insights/private-link-scope/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-iplsmin'
   params: {
     // Required parameters

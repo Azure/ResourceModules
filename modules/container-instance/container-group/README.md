@@ -308,7 +308,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module containerGroups './container-instance/container-group/main.bicep' = {
+module containerGroup './container-instance/container-group/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-cicgcom'
   params: {
     // Required parameters
@@ -495,7 +495,7 @@ module containerGroups './container-instance/container-group/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module containerGroups './container-instance/container-group/main.bicep' = {
+module containerGroup './container-instance/container-group/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-cicgenc'
   params: {
     // Required parameters
@@ -694,7 +694,7 @@ module containerGroups './container-instance/container-group/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module containerGroups './container-instance/container-group/main.bicep' = {
+module containerGroup './container-instance/container-group/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-cicgmin'
   params: {
     // Required parameters
@@ -795,7 +795,7 @@ module containerGroups './container-instance/container-group/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module containerGroups './container-instance/container-group/main.bicep' = {
+module containerGroup './container-instance/container-group/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-cicgprivate'
   params: {
     // Required parameters

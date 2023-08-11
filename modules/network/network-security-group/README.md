@@ -44,7 +44,7 @@ This module deploys a Network security Group (NSG).
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| `securityRules` | _[securityRules](security-rules/README.md)_ array | `[]` |  | Array of Security Rules to deploy to the Network Security Group. When not provided, an NSG including only the built-in roles will be deployed. |
+| `securityRules` | array | `[]` |  | Array of Security Rules to deploy to the Network Security Group. When not provided, an NSG including only the built-in roles will be deployed. |
 | `tags` | object | `{object}` |  | Tags of the NSG resource. |
 
 
@@ -175,7 +175,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module networkSecurityGroups './network/network-security-group/main.bicep' = {
+module networkSecurityGroup './network/network-security-group/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nnsgcom'
   params: {
     // Required parameters
@@ -404,7 +404,7 @@ module networkSecurityGroups './network/network-security-group/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module networkSecurityGroups './network/network-security-group/main.bicep' = {
+module networkSecurityGroup './network/network-security-group/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nnsgmin'
   params: {
     // Required parameters

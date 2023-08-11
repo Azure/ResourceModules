@@ -38,7 +38,7 @@ This module deploys a Storage Account Table Service.
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of a log analytics workspace. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `tables` | _[tables](tables/README.md)_ array | `[]` |  | tables to create. |
+| `tables` | array | `[]` |  | tables to create. |
 
 
 ## Outputs

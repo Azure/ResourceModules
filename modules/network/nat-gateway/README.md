@@ -170,7 +170,7 @@ This section gives you an overview of all local-referenced module files (i.e., o
 
 | Reference | Type |
 | :-- | :-- |
-| `network/public-ip-addresses` | Local reference |
+| `network/public-ip-address` | Local reference |
 
 ## Deployment examples
 
@@ -186,7 +186,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module natGateways './network/nat-gateway/main.bicep' = {
+module natGateway './network/nat-gateway/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nngcom'
   params: {
     // Required parameters

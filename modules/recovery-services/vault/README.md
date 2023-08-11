@@ -44,7 +44,7 @@ This module deploys a Recovery Services Vault.
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `backupConfig` | _[backupConfig](backup-config/README.md)_ object | `{object}` |  | The backup configuration. |
-| `backupPolicies` | _[backupPolicies](backup-policies/README.md)_ array | `[]` |  | List of all backup policies. |
+| `backupPolicies` | array | `[]` |  | List of all backup policies. |
 | `backupStorageConfig` | _[backupStorageConfig](backup-storage-config/README.md)_ object | `{object}` |  | The storage configuration for the Azure Recovery Service Vault. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
@@ -61,9 +61,9 @@ This module deploys a Recovery Services Vault.
 | `privateEndpoints` | array | `[]` |  | Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
 | `protectionContainers` | array | `[]` |  | List of all protection containers. |
 | `publicNetworkAccess` | string | `'Disabled'` | `[Disabled, Enabled]` | Whether or not public network access is allowed for this resource. For security reasons it should be disabled. |
-| `replicationAlertSettings` | _[replicationAlertSettings](replication-alert-settings/README.md)_ object | `{object}` |  | Replication alert settings. |
-| `replicationFabrics` | _[replicationFabrics](replication-fabrics/README.md)_ array | `[]` |  | List of all replication fabrics. |
-| `replicationPolicies` | _[replicationPolicies](replication-policies/README.md)_ array | `[]` |  | List of all replication policies. |
+| `replicationAlertSettings` | object | `{object}` |  | Replication alert settings. |
+| `replicationFabrics` | array | `[]` |  | List of all replication fabrics. |
+| `replicationPolicies` | array | `[]` |  | List of all replication policies. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `securitySettings` | object | `{object}` |  | Security Settings of the vault. |
 | `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
@@ -928,7 +928,7 @@ This section gives you an overview of all local-referenced module files (i.e., o
 
 | Reference | Type |
 | :-- | :-- |
-| `network/private-endpoints` | Local reference |
+| `network/private-endpoint` | Local reference |
 
 ## Deployment examples
 
@@ -944,7 +944,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module vaults './recovery-services/vault/main.bicep' = {
+module vault './recovery-services/vault/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-rsvcom'
   params: {
     // Required parameters
@@ -1603,7 +1603,7 @@ module vaults './recovery-services/vault/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module vaults './recovery-services/vault/main.bicep' = {
+module vault './recovery-services/vault/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-rsvdr'
   params: {
     // Required parameters
@@ -1772,7 +1772,7 @@ module vaults './recovery-services/vault/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module vaults './recovery-services/vault/main.bicep' = {
+module vault './recovery-services/vault/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-rsvmin'
   params: {
     // Required parameters

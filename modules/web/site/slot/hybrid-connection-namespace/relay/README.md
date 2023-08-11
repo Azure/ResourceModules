@@ -1,4 +1,4 @@
-# Web/Function Apps Slot Hybrid Connection Relay `[Microsoft.Web/sites/slots/hybridConnectionNamespaces/relays]`
+# Web/Function Apps Slot Hybrid Connection Relay `[Microsoft.Web/sites]`
 
 This module deploys a Site Slot Hybrid Connection Namespace Relay.
 

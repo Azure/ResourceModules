@@ -180,7 +180,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module components './insights/component/main.bicep' = {
+module component './insights/component/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-iccom'
   params: {
     // Required parameters
@@ -279,7 +279,7 @@ module components './insights/component/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module components './insights/component/main.bicep' = {
+module component './insights/component/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-icmin'
   params: {
     // Required parameters
