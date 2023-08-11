@@ -342,7 +342,20 @@ module azureFirewalls './network/azure-firewalls/main.bicep' = {
         publicIPAddressResourceId: '<publicIPAddressResourceId>'
       }
     ]
+    azureSkuTier: 'Basic'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    managementIPAddressObject: {
+      publicIPAllocationMethod: 'Static'
+      roleAssignments: [
+        {
+          principalIds: [
+            '<managedIdentityPrincipalId>'
+          ]
+          principalType: 'ServicePrincipal'
+          roleDefinitionIdOrName: 'Reader'
+        }
+      ]
+    }
     tags: {
       Environment: 'Non-Prod'
       Role: 'DeploymentValidation'
@@ -377,8 +390,25 @@ module azureFirewalls './network/azure-firewalls/main.bicep' = {
         }
       ]
     },
+    "azureSkuTier": {
+      "value": "Basic"
+    },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
+    },
+    "managementIPAddressObject": {
+      "value": {
+        "publicIPAllocationMethod": "Static",
+        "roleAssignments": [
+          {
+            "principalIds": [
+              "<managedIdentityPrincipalId>"
+            ],
+            "principalType": "ServicePrincipal",
+            "roleDefinitionIdOrName": "Reader"
+          }
+        ]
+      }
     },
     "tags": {
       "value": {
