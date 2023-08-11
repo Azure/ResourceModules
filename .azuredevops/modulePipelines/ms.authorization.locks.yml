@@ -29,7 +29,7 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.authorization.locks.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/modules/authorization/locks/*'
+      - '/modules/authorization/lock/*'
       - '/utilities/pipelines/*'
     exclude:
       - '/utilities/pipelines/deploymentRemoval/*'
@@ -39,7 +39,7 @@ variables:
   - template: '../../settings.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/modules/authorization/locks'
+    value: '/modules/authorization/lock'
 
 stages:
   - template: /.azuredevops/pipelineTemplates/stages.module.yml

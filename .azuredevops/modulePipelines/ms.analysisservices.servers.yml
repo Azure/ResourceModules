@@ -29,7 +29,7 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.analysisservices.servers.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/modules/analysis-services/servers/*'
+      - '/modules/analysis-services/server/*'
       - '/utilities/pipelines/*'
     exclude:
       - '/utilities/pipelines/deploymentRemoval/*'
@@ -39,7 +39,7 @@ variables:
   - template: '../../settings.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/modules/analysis-services/servers'
+    value: '/modules/analysis-services/server'
 
 stages:
   - template: /.azuredevops/pipelineTemplates/stages.module.yml

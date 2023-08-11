@@ -29,7 +29,7 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.insights.webtests.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/modules/insights/webtests/*'
+      - '/modules/insights/webtest/*'
       - '/utilities/pipelines/*'
     exclude:
       - '/utilities/pipelines/deploymentRemoval/*'
@@ -39,7 +39,7 @@ variables:
   - template: '../../settings.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/modules/insights/webtests'
+    value: '/modules/insights/webtest'
 
 stages:
   - template: /.azuredevops/pipelineTemplates/stages.module.yml

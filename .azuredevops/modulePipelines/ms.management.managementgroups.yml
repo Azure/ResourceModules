@@ -29,7 +29,7 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.management.managementgroups.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/modules/management/management-groups/*'
+      - '/modules/management/management-group/*'
       - '/utilities/pipelines/*'
     exclude:
       - '/utilities/pipelines/deploymentRemoval/*'
@@ -39,7 +39,7 @@ variables:
   - template: '../../settings.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/modules/management/management-groups'
+    value: '/modules/management/management-group'
 
 stages:
   - template: /.azuredevops/pipelineTemplates/stages.module.yml

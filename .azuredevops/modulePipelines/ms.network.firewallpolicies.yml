@@ -29,7 +29,7 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.network.firewallpolicies.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/modules/network/firewall-policies/*'
+      - '/modules/network/firewall-policy/*'
       - '/utilities/pipelines/*'
     exclude:
       - '/utilities/pipelines/deploymentRemoval/*'
@@ -39,7 +39,7 @@ variables:
   - template: '../../settings.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/modules/network/firewall-policies'
+    value: '/modules/network/firewall-policy'
 
 stages:
   - template: /.azuredevops/pipelineTemplates/stages.module.yml
