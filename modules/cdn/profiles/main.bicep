@@ -102,7 +102,7 @@ module profile_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (rol
   }
 }]
 
-module profile_endpoint 'endpoints/main.bicep' = if (!empty(endpointProperties)) {
+module profile_endpoint 'endpoint/main.bicep' = if (!empty(endpointProperties)) {
   name: '${uniqueString(deployment().name, location)}-Profile-Endpoint'
   params: {
     name: !empty(endpointName) ? endpointName : '${profile.name}-endpoint'
