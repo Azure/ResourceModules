@@ -1,6 +1,6 @@
 # Virtual Network Gateways `[Microsoft.Network/virtualNetworkGateways]`
 
-This module deploys a virtual network gateway.
+This module deploys a Virtual Network Gateway.
 
 ## Navigation
 
@@ -62,13 +62,13 @@ This module deploys a virtual network gateway.
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `natRules` | _[natRules](nat-rules/README.md)_ array | `[]` |  | NatRules for virtual network gateway. NAT is supported on the the following SKUs: VpnGw2~5, VpnGw2AZ~5AZ and is supported for IPsec/IKE cross-premises connections only. |
-| `publicIpdiagnosticLogCategoriesToEnable` | array | `[allLogs]` | `[allLogs, DDoSMitigationFlowLogs, DDoSMitigationReports, DDoSProtectionNotifications]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. |
+| `publicIpdiagnosticLogCategoriesToEnable` | array | `[allLogs]` | `['', allLogs, DDoSMitigationFlowLogs, DDoSMitigationReports, DDoSProtectionNotifications]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
 | `publicIpDiagnosticSettingsName` | string | `''` |  | The name of the public IP diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings". |
 | `publicIPPrefixResourceId` | string | `''` |  | Resource ID of the Public IP Prefix object. This is only needed if you want your Public IPs created in a PIP Prefix. |
 | `publicIpZones` | array | `[]` |  | Specifies the zones of the Public IP address. Basic IP SKU does not support Availability Zones. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
-| `virtualNetworkGatewaydiagnosticLogCategoriesToEnable` | array | `[allLogs]` | `[allLogs, GatewayDiagnosticLog, IKEDiagnosticLog, P2SDiagnosticLog, RouteDiagnosticLog, TunnelDiagnosticLog]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. |
+| `virtualNetworkGatewaydiagnosticLogCategoriesToEnable` | array | `[allLogs]` | `['', allLogs, GatewayDiagnosticLog, IKEDiagnosticLog, P2SDiagnosticLog, RouteDiagnosticLog, TunnelDiagnosticLog]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
 | `vpnClientAadConfiguration` | object | `{object}` |  | Configuration for AAD Authentication for P2S Tunnel Type, Cannot be configured if clientRootCertData is provided. |
 | `vpnClientAddressPoolPrefix` | string | `''` |  | The IP address range from which VPN clients will receive an IP address when connected. Range specified must not overlap with on-premise network. |
 | `vpnGatewayGeneration` | string | `'None'` | `[Generation1, Generation2, None]` | The generation for this VirtualNetworkGateway. Must be None if virtualNetworkGatewayType is not VPN. |
@@ -279,7 +279,7 @@ module virtualNetworkGateways './network/virtual-network-gateways/main.bicep' = 
   params: {
     // Required parameters
     gatewayType: 'Vpn'
-    name: '<<namePrefix>>nvngavpn001'
+    name: 'nvngavpn001'
     skuName: 'VpnGw2AZ'
     vNetResourceId: '<vNetResourceId>'
     // Non-required parameters
@@ -289,7 +289,7 @@ module virtualNetworkGateways './network/virtual-network-gateways/main.bicep' = 
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     domainNameLabel: [
-      '<<namePrefix>>-dm-nvngavpn'
+      'dm-nvngavpn'
     ]
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
@@ -342,7 +342,7 @@ module virtualNetworkGateways './network/virtual-network-gateways/main.bicep' = 
       "value": "Vpn"
     },
     "name": {
-      "value": "<<namePrefix>>nvngavpn001"
+      "value": "nvngavpn001"
     },
     "skuName": {
       "value": "VpnGw2AZ"
@@ -368,7 +368,7 @@ module virtualNetworkGateways './network/virtual-network-gateways/main.bicep' = 
     },
     "domainNameLabel": {
       "value": [
-        "<<namePrefix>>-dm-nvngavpn"
+        "dm-nvngavpn"
       ]
     },
     "enableDefaultTelemetry": {
@@ -434,7 +434,7 @@ module virtualNetworkGateways './network/virtual-network-gateways/main.bicep' = 
   params: {
     // Required parameters
     gatewayType: 'ExpressRoute'
-    name: '<<namePrefix>>nvger001'
+    name: 'nvger001'
     skuName: 'ErGw1AZ'
     vNetResourceId: '<vNetResourceId>'
     // Non-required parameters
@@ -444,10 +444,10 @@ module virtualNetworkGateways './network/virtual-network-gateways/main.bicep' = 
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     domainNameLabel: [
-      '<<namePrefix>>-dm-nvger'
+      'dm-nvger'
     ]
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    gatewayPipName: '<<namePrefix>>-pip-nvger'
+    gatewayPipName: 'pip-nvger'
     roleAssignments: [
       {
         principalIds: [
@@ -485,7 +485,7 @@ module virtualNetworkGateways './network/virtual-network-gateways/main.bicep' = 
       "value": "ExpressRoute"
     },
     "name": {
-      "value": "<<namePrefix>>nvger001"
+      "value": "nvger001"
     },
     "skuName": {
       "value": "ErGw1AZ"
@@ -511,14 +511,14 @@ module virtualNetworkGateways './network/virtual-network-gateways/main.bicep' = 
     },
     "domainNameLabel": {
       "value": [
-        "<<namePrefix>>-dm-nvger"
+        "dm-nvger"
       ]
     },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     },
     "gatewayPipName": {
-      "value": "<<namePrefix>>-pip-nvger"
+      "value": "pip-nvger"
     },
     "roleAssignments": {
       "value": [
@@ -559,7 +559,7 @@ module virtualNetworkGateways './network/virtual-network-gateways/main.bicep' = 
   params: {
     // Required parameters
     gatewayType: 'Vpn'
-    name: '<<namePrefix>>nvgvpn001'
+    name: 'nvgvpn001'
     skuName: 'VpnGw2AZ'
     vNetResourceId: '<vNetResourceId>'
     // Non-required parameters
@@ -572,7 +572,7 @@ module virtualNetworkGateways './network/virtual-network-gateways/main.bicep' = 
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     disableIPSecReplayProtection: true
     domainNameLabel: [
-      '<<namePrefix>>-dm-nvgvpn'
+      'dm-nvgvpn'
     ]
     enableBgpRouteTranslationForNat: true
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
@@ -651,7 +651,7 @@ module virtualNetworkGateways './network/virtual-network-gateways/main.bicep' = 
       "value": "Vpn"
     },
     "name": {
-      "value": "<<namePrefix>>nvgvpn001"
+      "value": "nvgvpn001"
     },
     "skuName": {
       "value": "VpnGw2AZ"
@@ -686,7 +686,7 @@ module virtualNetworkGateways './network/virtual-network-gateways/main.bicep' = 
     },
     "domainNameLabel": {
       "value": [
-        "<<namePrefix>>-dm-nvgvpn"
+        "dm-nvgvpn"
       ]
     },
     "enableBgpRouteTranslationForNat": {

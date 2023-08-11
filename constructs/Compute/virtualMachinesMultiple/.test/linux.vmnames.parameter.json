@@ -4,9 +4,9 @@
     "parameters": {
         "vmNames": {
             "value": [
-                "<<namePrefix>>-vm-linux-vmnames-01",
-                "<<namePrefix>>-vm-linux-vmnames-02",
-                "<<namePrefix>>-vm-linux-vmnames-03"
+                "[[namePrefix]]-vm-linux-vmnames-01",
+                "[[namePrefix]]-vm-linux-vmnames-02",
+                "[[namePrefix]]-vm-linux-vmnames-03"
             ]
         },
         "osType": {
@@ -52,7 +52,7 @@
                     "ipConfigurations": [
                         {
                             "name": "ipconfig01",
-                            "subnetId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001",
+                            "subnetId": "/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-[[namePrefix]]-az-vnet-x-001/subnets/[[namePrefix]]-az-subnet-x-001",
                             "pipConfiguration": {
                                 "publicIpNameSuffix": "-pip-01"
                             }

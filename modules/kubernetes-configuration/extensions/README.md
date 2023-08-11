@@ -1,6 +1,6 @@
 # Kubernetes Configuration Extensions `[Microsoft.KubernetesConfiguration/extensions]`
 
-This module deploys Kubernetes Configuration Extensions.
+This module deploys a Kubernetes Configuration Extension.
 
 ## Navigation
 
@@ -97,7 +97,7 @@ module extensions './kubernetes-configuration/extensions/main.bicep' = {
     // Required parameters
     clusterName: '<clusterName>'
     extensionType: 'microsoft.flux'
-    name: '<<namePrefix>>kcecom001'
+    name: 'kcecom001'
     // Non-required parameters
     configurationSettings: {
       'image-automation-controller.enabled': 'false'
@@ -148,7 +148,7 @@ module extensions './kubernetes-configuration/extensions/main.bicep' = {
       "value": "microsoft.flux"
     },
     "name": {
-      "value": "<<namePrefix>>kcecom001"
+      "value": "kcecom001"
     },
     // Non-required parameters
     "configurationSettings": {
@@ -208,7 +208,7 @@ module extensions './kubernetes-configuration/extensions/main.bicep' = {
     // Required parameters
     clusterName: '<clusterName>'
     extensionType: 'microsoft.flux'
-    name: '<<namePrefix>>kcemin001'
+    name: 'kcemin001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     releaseNamespace: 'flux-system'
@@ -237,7 +237,7 @@ module extensions './kubernetes-configuration/extensions/main.bicep' = {
       "value": "microsoft.flux"
     },
     "name": {
-      "value": "<<namePrefix>>kcemin001"
+      "value": "kcemin001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {

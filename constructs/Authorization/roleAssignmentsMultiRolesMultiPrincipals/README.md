@@ -187,7 +187,7 @@ module roleAssignments-multiRolesMultiPrincipals './Microsoft.Authorization/role
         roleDefinitionIdOrName: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'
       }
     ]
-    subscriptionId: '<<subscriptionId>>'
+    subscriptionId: '[[subscriptionId]]'
   }
 }
 ```
@@ -220,7 +220,7 @@ module roleAssignments-multiRolesMultiPrincipals './Microsoft.Authorization/role
       ]
     },
     "subscriptionId": {
-      "value": "<<subscriptionId>>"
+      "value": "[[subscriptionId]]"
     }
   }
 }

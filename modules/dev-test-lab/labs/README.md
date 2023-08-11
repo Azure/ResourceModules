@@ -1,8 +1,6 @@
-# DevTestLab Labs `[Microsoft.DevTestLab/labs]`
+# DevTest Labs `[Microsoft.DevTestLab/labs]`
 
-This module deploys DevTestLab Labs.
-
-Azure DevTest Labs is a service for easily creating, using, and managing infrastructure-as-a-service (IaaS) virtual machines (VMs) and platform-as-a-service (PaaS) environments in labs. Labs offer preconfigured bases and artifacts for creating VMs, and Azure Resource Manager (ARM) templates for creating environments like Azure Web Apps or SharePoint farms.
+This module deploys a DevTest Lab.
 
 ## Navigation
 
@@ -184,8 +182,8 @@ You can specify multiple user assigned identities to a resource by providing add
 ```json
 "userAssignedIdentities": {
     "value": {
-        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
-        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
+        "/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
+        "/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
     }
 }
 ```
@@ -198,8 +196,8 @@ You can specify multiple user assigned identities to a resource by providing add
 
 ```bicep
 userAssignedIdentities: {
-    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
-    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
+    '/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
+    '/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
 }
 ```
 
@@ -239,7 +237,7 @@ module labs './dev-test-lab/labs/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-dtllcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>dtllcom001'
+    name: 'dtllcom001'
     // Non-required parameters
     announcement: {
       enabled: 'Enabled'
@@ -419,7 +417,7 @@ module labs './dev-test-lab/labs/main.bicep' = {
       markdown: 'DevTest Lab support text. <br> New line. It also supports Markdown'
     }
     tags: {
-      labName: '<<namePrefix>>dtllcom001'
+      labName: 'dtllcom001'
       resourceType: 'DevTest Lab'
     }
     userAssignedIdentities: {
@@ -478,7 +476,7 @@ module labs './dev-test-lab/labs/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>dtllcom001"
+      "value": "dtllcom001"
     },
     // Non-required parameters
     "announcement": {
@@ -704,7 +702,7 @@ module labs './dev-test-lab/labs/main.bicep' = {
     },
     "tags": {
       "value": {
-        "labName": "<<namePrefix>>dtllcom001",
+        "labName": "dtllcom001",
         "resourceType": "DevTest Lab"
       }
     },
@@ -770,7 +768,7 @@ module labs './dev-test-lab/labs/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-dtllmin'
   params: {
     // Required parameters
-    name: '<<namePrefix>>dtllmin001'
+    name: 'dtllmin001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
@@ -791,7 +789,7 @@ module labs './dev-test-lab/labs/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>dtllmin001"
+      "value": "dtllmin001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {

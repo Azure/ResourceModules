@@ -1,6 +1,6 @@
-# Network Firewall Policies Rule Collection Groups `[Microsoft.Network/firewallPolicies/ruleCollectionGroups]`
+# Firewall Policy Rule Collection Groups `[Microsoft.Network/firewallPolicies/ruleCollectionGroups]`
 
-This module deploys Network Firewall Policies Rule Collection Groups.
+This module deploys a Firewall Policy Rule Collection Group.
 
 ## Navigation
 

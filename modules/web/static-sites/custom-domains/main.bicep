@@ -1,3 +1,7 @@
+metadata name = 'Static Web App Site Custom Domains'
+metadata description = 'This module deploys a Static Web App Site Custom Domain.'
+metadata owner = 'Azure/module-maintainers'
+
 @description('Conditional. The custom domain name. Required if the template is used in a standalone deployment.')
 param name string
 

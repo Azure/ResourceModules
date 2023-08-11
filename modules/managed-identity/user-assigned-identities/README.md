@@ -1,6 +1,6 @@
 # User Assigned Identities `[Microsoft.ManagedIdentity/userAssignedIdentities]`
 
-This module deploys a user assigned identity.
+This module deploys a User Assigned Identity.
 
 ## Navigation
 
@@ -166,7 +166,7 @@ module userAssignedIdentities './managed-identity/user-assigned-identities/main.
   params: {
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
-    name: '<<namePrefix>>miuaicom001'
+    name: 'miuaicom001'
     roleAssignments: [
       {
         principalIds: [
@@ -203,7 +203,7 @@ module userAssignedIdentities './managed-identity/user-assigned-identities/main.
       "value": "CanNotDelete"
     },
     "name": {
-      "value": "<<namePrefix>>miuaicom001"
+      "value": "miuaicom001"
     },
     "roleAssignments": {
       "value": [

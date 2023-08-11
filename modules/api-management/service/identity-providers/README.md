@@ -1,6 +1,6 @@
 # API Management Service Identity Providers `[Microsoft.ApiManagement/service/identityProviders]`
 
-This module deploys API Management Service Identity Provider.
+This module deploys an API Management Service Identity Provider.
 
 ## Navigation
 

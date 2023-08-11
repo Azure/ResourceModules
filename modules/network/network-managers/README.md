@@ -1,7 +1,6 @@
-# Network NetworkManagers `[Microsoft.Network/networkManagers]`
+# Network Managers `[Microsoft.Network/networkManagers]`
 
-This module deploys Network NetworkManagers.
-Azure Virtual Network Manager is a management service that enables you to group, configure, deploy, and manage virtual networks globally across subscriptions. With Virtual Network Manager, you can define network groups to identify and logically segment your virtual networks. Then you can determine the connectivity and security configurations you want and apply them across all the selected virtual networks in network groups at once.
+This module deploys a Network Manager.
 
 ## Navigation
 
@@ -18,14 +17,14 @@ Azure Virtual Network Manager is a management service that enables you to group,
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.Network/networkManagers` | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/networkManagers) |
-| `Microsoft.Network/networkManagers/connectivityConfigurations` | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/networkManagers/connectivityConfigurations) |
-| `Microsoft.Network/networkManagers/networkGroups` | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/networkManagers/networkGroups) |
-| `Microsoft.Network/networkManagers/networkGroups/staticMembers` | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/networkManagers/networkGroups/staticMembers) |
-| `Microsoft.Network/networkManagers/scopeConnections` | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/networkManagers/scopeConnections) |
-| `Microsoft.Network/networkManagers/securityAdminConfigurations` | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/networkManagers/securityAdminConfigurations) |
-| `Microsoft.Network/networkManagers/securityAdminConfigurations/ruleCollections` | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/networkManagers/securityAdminConfigurations/ruleCollections) |
-| `Microsoft.Network/networkManagers/securityAdminConfigurations/ruleCollections/rules` | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/networkManagers/securityAdminConfigurations/ruleCollections/rules) |
+| `Microsoft.Network/networkManagers` | [2023-02-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-02-01/networkManagers) |
+| `Microsoft.Network/networkManagers/connectivityConfigurations` | [2023-02-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-02-01/networkManagers/connectivityConfigurations) |
+| `Microsoft.Network/networkManagers/networkGroups` | [2023-02-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-02-01/networkManagers/networkGroups) |
+| `Microsoft.Network/networkManagers/networkGroups/staticMembers` | [2023-02-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-02-01/networkManagers/networkGroups/staticMembers) |
+| `Microsoft.Network/networkManagers/scopeConnections` | [2023-02-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-02-01/networkManagers/scopeConnections) |
+| `Microsoft.Network/networkManagers/securityAdminConfigurations` | [2023-02-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-02-01/networkManagers/securityAdminConfigurations) |
+| `Microsoft.Network/networkManagers/securityAdminConfigurations/ruleCollections` | [2023-02-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-02-01/networkManagers/securityAdminConfigurations/ruleCollections) |
+| `Microsoft.Network/networkManagers/securityAdminConfigurations/ruleCollections/rules` | [2023-02-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-02-01/networkManagers/securityAdminConfigurations/ruleCollections/rules) |
 
 ## Parameters
 
@@ -126,7 +125,7 @@ networkManagerScopes: {
     '/subscriptions/<subscriptionId>'
   ]
   managementGroups: [
-    '/providers/Microsoft.Management/managementGroups/<<managementGroupId>>'
+    '/providers/Microsoft.Management/managementGroups/[[managementGroupId]]'
   ]
 }
 ```

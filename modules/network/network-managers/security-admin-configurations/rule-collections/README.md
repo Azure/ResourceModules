@@ -1,6 +1,6 @@
-# Network NetworkManagers SecurityAdminConfigurations RuleCollections `[Microsoft.Network/networkManagers/securityAdminConfigurations/ruleCollections]`
+# Network Manager Security Admin Configuration Rule Collections `[Microsoft.Network/networkManagers/securityAdminConfigurations/ruleCollections]`
 
-This module deploys Network NetworkManagers SecurityAdminConfigurations RuleCollections.
+This module deploys an Network Manager Security Admin Configuration Rule Collection.
 A security admin configuration contains a set of rule collections. Each rule collection contains one or more security admin rules. Security admin rules allows enforcing security policy criteria that matches the conditions set. Warning: A rule collection without rule will cause a deployment configuration for security admin goal state in network manager to fail.
 
 ## Navigation
@@ -14,8 +14,8 @@ A security admin configuration contains a set of rule collections. Each rule col
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Network/networkManagers/securityAdminConfigurations/ruleCollections` | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/networkManagers/securityAdminConfigurations/ruleCollections) |
-| `Microsoft.Network/networkManagers/securityAdminConfigurations/ruleCollections/rules` | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/networkManagers/securityAdminConfigurations/ruleCollections/rules) |
+| `Microsoft.Network/networkManagers/securityAdminConfigurations/ruleCollections` | [2023-02-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-02-01/networkManagers/securityAdminConfigurations/ruleCollections) |
+| `Microsoft.Network/networkManagers/securityAdminConfigurations/ruleCollections/rules` | [2023-02-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-02-01/networkManagers/securityAdminConfigurations/ruleCollections/rules) |
 
 ## Parameters
 

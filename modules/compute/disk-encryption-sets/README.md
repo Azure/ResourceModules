@@ -1,6 +1,6 @@
 # Disk Encryption Sets `[Microsoft.Compute/diskEncryptionSets]`
 
-This template deploys a disk encryption set.
+This module deploys a Disk Encryption Set.
 
 ## Navigation
 
@@ -163,8 +163,8 @@ You can specify multiple user assigned identities to a resource by providing add
 ```json
 "userAssignedIdentities": {
     "value": {
-        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
-        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
+        "/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
+        "/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
     }
 }
 ```
@@ -177,8 +177,8 @@ You can specify multiple user assigned identities to a resource by providing add
 
 ```bicep
 userAssignedIdentities: {
-    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
-    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
+    '/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
+    '/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
 }
 ```
 
@@ -225,7 +225,7 @@ module diskEncryptionSets './compute/disk-encryption-sets/main.bicep' = {
     // Required parameters
     keyName: '<keyName>'
     keyVaultResourceId: '<keyVaultResourceId>'
-    name: '<<namePrefix>>cdesap001'
+    name: 'cdesap001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     roleAssignments: [
@@ -269,7 +269,7 @@ module diskEncryptionSets './compute/disk-encryption-sets/main.bicep' = {
       "value": "<keyVaultResourceId>"
     },
     "name": {
-      "value": "<<namePrefix>>cdesap001"
+      "value": "cdesap001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {
@@ -320,7 +320,7 @@ module diskEncryptionSets './compute/disk-encryption-sets/main.bicep' = {
     // Required parameters
     keyName: '<keyName>'
     keyVaultResourceId: '<keyVaultResourceId>'
-    name: '<<namePrefix>>cdescom001'
+    name: 'cdescom001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
@@ -365,7 +365,7 @@ module diskEncryptionSets './compute/disk-encryption-sets/main.bicep' = {
       "value": "<keyVaultResourceId>"
     },
     "name": {
-      "value": "<<namePrefix>>cdescom001"
+      "value": "cdescom001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {

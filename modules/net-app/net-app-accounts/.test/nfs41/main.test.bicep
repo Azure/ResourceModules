@@ -18,7 +18,7 @@ param serviceShort string = 'nanaanfs41'
 param enableDefaultTelemetry bool = true
 
 @description('Optional. A token to inject into the name of each resource.')
-param namePrefix string = '<<namePrefix>>'
+param namePrefix string = '[[namePrefix]]'
 
 // ============ //
 // Dependencies //
@@ -144,6 +144,9 @@ module testDeployment '../../main.bicep' = {
       PurchaseOrder: '1234'
       Role: 'DeploymentValidation'
       ServiceName: 'DeploymentValidation'
+    }
+    userAssignedIdentities: {
+      '${nestedDependencies.outputs.managedIdentityResourceId}': {}
     }
   }
 }

@@ -1,6 +1,6 @@
-# AVD Application Groups `[Microsoft.DesktopVirtualization/applicationGroups]`
+# Azure Virtual Desktop (AVD) Application Groups `[Microsoft.DesktopVirtualization/applicationGroups]`
 
-This module deploys an Azure virtual desktop application group.
+This module deploys an Azure Virtual Desktop (AVD) Application Group.
 
 ## Navigation
 
@@ -38,7 +38,7 @@ This module deploys an Azure virtual desktop application group.
 | `description` | string | `''` |  | The description of the Application Group to be created. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
-| `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `[allLogs, Checkpoint, Error, Management]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. |
+| `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `['', allLogs, Checkpoint, Error, Management]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticSettingsName` | string | `''` |  | The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings". |
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
@@ -184,7 +184,7 @@ module applicationGroups './desktop-virtualization/application-groups/main.bicep
     // Required parameters
     applicationGroupType: 'RemoteApp'
     hostpoolName: '<hostpoolName>'
-    name: '<<namePrefix>>dvagcom001'
+    name: 'dvagcom001'
     // Non-required parameters
     applications: [
       {
@@ -251,7 +251,7 @@ module applicationGroups './desktop-virtualization/application-groups/main.bicep
       "value": "<hostpoolName>"
     },
     "name": {
-      "value": "<<namePrefix>>dvagcom001"
+      "value": "dvagcom001"
     },
     // Non-required parameters
     "applications": {
@@ -341,7 +341,7 @@ module applicationGroups './desktop-virtualization/application-groups/main.bicep
     // Required parameters
     applicationGroupType: 'RemoteApp'
     hostpoolName: '<hostpoolName>'
-    name: '<<namePrefix>>dvagmin001'
+    name: 'dvagmin001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
@@ -368,7 +368,7 @@ module applicationGroups './desktop-virtualization/application-groups/main.bicep
       "value": "<hostpoolName>"
     },
     "name": {
-      "value": "<<namePrefix>>dvagmin001"
+      "value": "dvagmin001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {

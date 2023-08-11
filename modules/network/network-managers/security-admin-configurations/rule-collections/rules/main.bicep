@@ -1,3 +1,8 @@
+metadata name = 'Network Manager Security Admin Configuration Rule Collection Rules'
+metadata description = '''This module deploys an Azure Virtual Network Manager (AVNM) Security Admin Configuration Rule Collection Rule.
+A security admin configuration contains a set of rule collections. Each rule collection contains one or more security admin rules.'''
+metadata owner = 'Azure/module-maintainers'
+
 @sys.description('Conditional. The name of the parent network manager. Required if the template is used in a standalone deployment.')
 param networkManagerName string
 
@@ -61,7 +66,7 @@ param sources array = []
 @sys.description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
+resource defaultTelemetry 'Microsoft.Resources/deployments@2022-09-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name)}'
   properties: {
     mode: 'Incremental'
@@ -73,19 +78,19 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource networkManager 'Microsoft.Network/networkManagers@2022-07-01' existing = {
+resource networkManager 'Microsoft.Network/networkManagers@2023-02-01' existing = {
   name: networkManagerName
 
-  resource securityAdminConfiguration 'securityAdminConfigurations@2022-07-01' existing = {
+  resource securityAdminConfiguration 'securityAdminConfigurations@2023-02-01' existing = {
     name: securityAdminConfigurationName
 
-    resource ruleCollection 'ruleCollections@2022-07-01' existing = {
+    resource ruleCollection 'ruleCollections@2023-02-01' existing = {
       name: ruleCollectionName
     }
   }
 }
 
-resource rule 'Microsoft.Network/networkManagers/securityAdminConfigurations/ruleCollections/rules@2022-07-01' = {
+resource rule 'Microsoft.Network/networkManagers/securityAdminConfigurations/ruleCollections/rules@2023-02-01' = {
   name: name
   parent: networkManager::securityAdminConfiguration::ruleCollection
   kind: 'Custom'

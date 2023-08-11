@@ -1,6 +1,6 @@
 # Virtual Network Gateway Connections `[Microsoft.Network/connections]`
 
-This template deploys a virtual network gateway connection.
+This module deploys a Virtual Network Gateway Connection.
 
 ## Navigation
 
@@ -334,7 +334,7 @@ module connections './network/connections/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-ncvtv'
   params: {
     // Required parameters
-    name: '<<namePrefix>>ncvtv001'
+    name: 'ncvtv001'
     virtualNetworkGateway1: {
       id: '<id>'
     }
@@ -369,7 +369,7 @@ module connections './network/connections/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>ncvtv001"
+      "value": "ncvtv001"
     },
     "virtualNetworkGateway1": {
       "value": {

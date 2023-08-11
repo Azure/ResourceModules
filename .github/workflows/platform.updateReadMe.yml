@@ -2,7 +2,7 @@
 # This pipeline requires a secret 'PLATFORM_REPO_UPDATE_PAT' set up in the GitHub secrets.
 # The secret's value should be a PAT token with the permissions to push to the repository's main branch.
 
-name: '.Platform: Update ReadMe status Tables'
+name: '.Platform: Update ReadMe Module Tables'
 
 on:
   workflow_dispatch:
@@ -33,7 +33,7 @@ jobs:
           token: '${{ secrets.PLATFORM_REPO_UPDATE_PAT }}' # Sets general GIT credentials up
 
       # Update the root ReadMe Module Pipelines table ([`/README.md`](https://github.com/Azure/ResourceModules/blob/main/README.md))
-      - name: 'Update Module Pipelines table'
+      - name: 'Update front-page module table'
         shell: pwsh
         run: |
           # Load used functions
@@ -44,28 +44,7 @@ jobs:
             FilePath       = Join-Path $env:GITHUB_WORKSPACE 'README.md'
             Organization   = ($env:GITHUB_REPOSITORY).split('/')[0]
             RepositoryName = ($env:GITHUB_REPOSITORY).split('/')[1]
-            ColumnsInOrder = @('ProviderNamespace','ResourceType', 'Name')
-            Environment    = 'GitHub'
-          }
-
-          Write-Verbose "Invoke task with" -Verbose
-          Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
-
-          Set-ReadMeModuleTable @functionInput -Verbose
-
-      # Update the `modules` folder ReadMe ([`/modules/README.md`](https://github.com/Azure/ResourceModules/blob/main/modules/README.md))
-      - name: 'Update module folder ReadMe'
-        shell: pwsh
-        run: |
-          # Load used functions
-          . (Join-Path $env:GITHUB_WORKSPACE $env:relativeScriptPath_SetReadMeModuleTable)
-
-          $functionInput = @{
-            ModulesPath    = Join-Path $env:GITHUB_WORKSPACE 'modules'
-            FilePath       = Join-Path $env:GITHUB_WORKSPACE 'modules' 'README.md'
-            Organization   = ($env:GITHUB_REPOSITORY).split('/')[0]
-            RepositoryName = ($env:GITHUB_REPOSITORY).split('/')[1]
-            ColumnsInOrder = @('ProviderNamespace','ResourceType', 'Name')
+            ColumnsInOrder = @('ProviderNamespace','ResourceType', 'Name', 'Deploy')
             Environment    = 'GitHub'
           }
 
@@ -95,7 +74,7 @@ jobs:
           Set-ModuleOverviewTable @functionInput -Verbose
 
       # Update the root ReadMe Platform Pipelines table ([`/README.md`](https://github.com/Azure/ResourceModules/blob/main/README.md))
-      - name: 'Update Platform Pipelines table'
+      - name: 'Update platform pipelines table'
         shell: pwsh
         run: |
           # Load used functions

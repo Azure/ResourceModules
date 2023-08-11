@@ -1,6 +1,6 @@
 # Azure Firewalls `[Microsoft.Network/azureFirewalls]`
 
-This module deploys a firewall.
+This module deploys an Azure Firewall.
 
 ## Navigation
 
@@ -46,7 +46,7 @@ This module deploys a firewall.
 | `azureSkuTier` | string | `'Standard'` | `[Premium, Standard]` | Tier of an Azure Firewall. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
-| `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `[allLogs, AzureFirewallApplicationRule, AzureFirewallDnsProxy, AzureFirewallNetworkRule]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. |
+| `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `['', allLogs, AzureFirewallApplicationRule, AzureFirewallDnsProxy, AzureFirewallNetworkRule]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticMetricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | The name of metrics that will be streamed. |
 | `diagnosticSettingsName` | string | `''` |  | The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings". |
@@ -82,11 +82,11 @@ Create additional public ip configurations from existing public ips
     "value": [
         {
             "name": "ipConfig01",
-            "publicIPAddressResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-<<namePrefix>>-az-pip-x-fw-01"
+            "publicIPAddressResourceId": "/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-[[namePrefix]]-az-pip-x-fw-01"
         },
         {
             "name": "ipConfig02",
-            "publicIPAddressResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-<<namePrefix>>-az-pip-x-fw-02"
+            "publicIPAddressResourceId": "/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-[[namePrefix]]-az-pip-x-fw-02"
         }
     ]
 }
@@ -102,11 +102,11 @@ Create additional public ip configurations from existing public ips
 additionalPublicIpConfigurations: [
     {
         name: 'ipConfig01'
-        publicIPAddressResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-<<namePrefix>>-az-pip-x-fw-01'
+        publicIPAddressResourceId: '/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-[[namePrefix]]-az-pip-x-fw-01'
     }
     {
         name: 'ipConfig02'
-        publicIPAddressResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-<<namePrefix>>-az-pip-x-fw-02'
+        publicIPAddressResourceId: '/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-[[namePrefix]]-az-pip-x-fw-02'
     }
 ]
 ```
@@ -126,7 +126,7 @@ The Public IP Address object to create as part of the module. This will be creat
 ```json
 "publicIPAddressObject": {
     "value": {
-        "name": "adp-<<namePrefix>>-az-pip-custom-x-fw",
+        "name": "adp-[[namePrefix]]-az-pip-custom-x-fw",
         "publicIPPrefixResourceId": "",
         "publicIPAllocationMethod": "Static",
         "skuName": "Standard",
@@ -163,7 +163,7 @@ The Public IP Address object to create as part of the module. This will be creat
 ```bicep
 publicIPAddressObject: {
     name: 'mypip'
-    publicIPPrefixResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPPrefixes/myprefix'
+    publicIPPrefixResourceId: '/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPPrefixes/myprefix'
     publicIPAllocationMethod: 'Dynamic'
     skuName: 'Basic'
     skuTier: 'Regional'
@@ -334,7 +334,7 @@ module azureFirewalls './network/azure-firewalls/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nafaddpip'
   params: {
     // Required parameters
-    name: '<<namePrefix>>nafaddpip001'
+    name: 'nafaddpip001'
     // Non-required parameters
     additionalPublicIpConfigurations: [
       {
@@ -366,7 +366,7 @@ module azureFirewalls './network/azure-firewalls/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>nafaddpip001"
+      "value": "nafaddpip001"
     },
     // Non-required parameters
     "additionalPublicIpConfigurations": {
@@ -407,7 +407,7 @@ module azureFirewalls './network/azure-firewalls/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nafcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>nafcom001'
+    name: 'nafcom001'
     // Non-required parameters
     applicationRuleCollections: [
       {
@@ -535,7 +535,7 @@ module azureFirewalls './network/azure-firewalls/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>nafcom001"
+      "value": "nafcom001"
     },
     // Non-required parameters
     "applicationRuleCollections": {
@@ -692,7 +692,7 @@ module azureFirewalls './network/azure-firewalls/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nafcstpip'
   params: {
     // Required parameters
-    name: '<<namePrefix>>nafcstpip001'
+    name: 'nafcstpip001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     publicIPAddressObject: {
@@ -704,7 +704,7 @@ module azureFirewalls './network/azure-firewalls/main.bicep' = {
       diagnosticMetricsToEnable: [
         'AllMetrics'
       ]
-      name: 'new-<<namePrefix>>-pip-nafcstpip'
+      name: 'new-pip-nafcstpip'
       publicIPAllocationMethod: 'Static'
       publicIPPrefixResourceId: ''
       roleAssignments: [
@@ -742,7 +742,7 @@ module azureFirewalls './network/azure-firewalls/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>nafcstpip001"
+      "value": "nafcstpip001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {
@@ -758,7 +758,7 @@ module azureFirewalls './network/azure-firewalls/main.bicep' = {
         "diagnosticMetricsToEnable": [
           "AllMetrics"
         ],
-        "name": "new-<<namePrefix>>-pip-nafcstpip",
+        "name": "new-pip-nafcstpip",
         "publicIPAllocationMethod": "Static",
         "publicIPPrefixResourceId": "",
         "roleAssignments": [
@@ -801,7 +801,7 @@ module azureFirewalls './network/azure-firewalls/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nafhubcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>nafhubcom001'
+    name: 'nafhubcom001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     firewallPolicyId: '<firewallPolicyId>'
@@ -833,7 +833,7 @@ module azureFirewalls './network/azure-firewalls/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>nafhubcom001"
+      "value": "nafhubcom001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {
@@ -876,7 +876,7 @@ module azureFirewalls './network/azure-firewalls/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nafhubmin'
   params: {
     // Required parameters
-    name: '<<namePrefix>>nafhubmin001'
+    name: 'nafhubmin001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     hubIPAddresses: {
@@ -903,7 +903,7 @@ module azureFirewalls './network/azure-firewalls/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>nafhubmin001"
+      "value": "nafhubmin001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {
@@ -937,7 +937,7 @@ module azureFirewalls './network/azure-firewalls/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nafmin'
   params: {
     // Required parameters
-    name: '<<namePrefix>>nafmin001'
+    name: 'nafmin001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     vNetId: '<vNetId>'
@@ -959,7 +959,7 @@ module azureFirewalls './network/azure-firewalls/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>nafmin001"
+      "value": "nafmin001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {

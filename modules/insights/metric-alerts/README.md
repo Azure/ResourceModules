@@ -1,6 +1,6 @@
 # Metric Alerts `[Microsoft.Insights/metricAlerts]`
 
-This module deploys an alert based on metrics.
+This module deploys a Metric Alert.
 
 ## Navigation
 
@@ -410,7 +410,7 @@ module metricAlerts './insights/metric-alerts/main.bicep' = {
         timeAggregation: 'Average'
       }
     ]
-    name: '<<namePrefix>>imacom001'
+    name: 'imacom001'
     // Non-required parameters
     actions: [
       '<actionGroupResourceId>'
@@ -464,7 +464,7 @@ module metricAlerts './insights/metric-alerts/main.bicep' = {
       ]
     },
     "name": {
-      "value": "<<namePrefix>>imacom001"
+      "value": "imacom001"
     },
     // Non-required parameters
     "actions": {

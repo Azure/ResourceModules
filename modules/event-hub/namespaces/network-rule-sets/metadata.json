@@ -1,6 +1,0 @@
-{
-  "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
-  "name": "EventHub Namespaces NetworkRuleSets",
-  "summary": "This module deploys EventHub Namespaces NetworkRuleSets.",
-  "owner": "Azure/module-maintainers"
-}

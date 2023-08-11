@@ -1,6 +1,6 @@
-# RecoveryServices Vaults ReplicationFabrics ReplicationProtectionContainers `[Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers]`
+# Recovery Services Vault Replication Fabric Replication Protection Containers `[Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers]`
 
-This module deploys a Replication Protection Container.
+This module deploys a Recovery Services Vault Replication Protection Container.
 
 > **Note**: this version of the module only supports the `instanceType: 'A2A'` scenario.
 
@@ -51,8 +51,8 @@ This module deploys a Replication Protection Container.
 "replicationContainerMappings": {
     "value": [
         {
-            "targetProtectionContainerId": "/Subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.RecoveryServices/vaults/<<namePrefix>>-az-rsv-dr-001/replicationFabrics/NorthEurope/replicationProtectionContainers/ne-container1",
-            "policyId": "/Subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.RecoveryServices/vaults/<<namePrefix>>-az-rsv-dr-001/replicationPolicies/Default_values"
+            "targetProtectionContainerId": "/Subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.RecoveryServices/vaults/[[namePrefix]]-az-rsv-dr-001/replicationFabrics/NorthEurope/replicationProtectionContainers/ne-container1",
+            "policyId": "/Subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.RecoveryServices/vaults/[[namePrefix]]-az-rsv-dr-001/replicationPolicies/Default_values"
         },
         {
             "name": null, //Optional
@@ -73,8 +73,8 @@ This module deploys a Replication Protection Container.
 ```bicep
 replicationContainerMappings: [
     {
-        targetProtectionContainerId: '/Subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.RecoveryServices/vaults/<<namePrefix>>-az-rsv-dr-001/replicationFabrics/NorthEurope/replicationProtectionContainers/ne-container1'
-        policyId: '/Subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.RecoveryServices/vaults/<<namePrefix>>-az-rsv-dr-001/replicationPolicies/Default_values'
+        targetProtectionContainerId: '/Subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.RecoveryServices/vaults/[[namePrefix]]-az-rsv-dr-001/replicationFabrics/NorthEurope/replicationProtectionContainers/ne-container1'
+        policyId: '/Subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.RecoveryServices/vaults/[[namePrefix]]-az-rsv-dr-001/replicationPolicies/Default_values'
     }
     {
         name: null //Optional

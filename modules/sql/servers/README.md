@@ -1,6 +1,6 @@
-# SQL Servers `[Microsoft.Sql/servers]`
+# Azure SQL Servers `[Microsoft.Sql/servers]`
 
-This module deploys a SQL server.
+This module deploys an Azure SQL Server.
 
 ## Navigation
 
@@ -184,8 +184,8 @@ You can specify multiple user assigned identities to a resource by providing add
 ```json
 "userAssignedIdentities": {
     "value": {
-        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
-        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
+        "/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
+        "/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
     }
 }
 ```
@@ -198,8 +198,8 @@ You can specify multiple user assigned identities to a resource by providing add
 
 ```bicep
 userAssignedIdentities: {
-    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
-    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
+    '/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
+    '/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
 }
 ```
 
@@ -220,9 +220,9 @@ Configure Azure Active Directory Authentication method for server administrator.
     "value": {
         "azureADOnlyAuthentication": true
         "login": "John Doe", // if application can be anything
-        "sid": "<<objectId>>", // if application, the object ID
+        "sid": "[[objectId]]", // if application, the object ID
         "principalType" : "User", // options: "User", "Group", "Application"
-        "tenantId": "<<tenantId>>"
+        "tenantId": "[[tenantId]]"
     }
 }
 ```
@@ -237,9 +237,9 @@ Configure Azure Active Directory Authentication method for server administrator.
 administrators: {
     azureADOnlyAuthentication: true
     login: 'John Doe' // if application can be anything
-    sid: '<<objectId>>' // if application the object ID
+    sid: '[[objectId]]' // if application the object ID
     'principalType' : 'User' // options: 'User' 'Group' 'Application'
-    tenantId: '<<tenantId>>'
+    tenantId: '[[tenantId]]'
 }
 ```
 
@@ -263,11 +263,11 @@ To use Private Endpoint the following dependencies must be deployed:
         // Example showing all available fields
         {
             "name": "sxx-az-pe", // Optional: Name will be automatically generated if one is not provided here
-            "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001",
+            "subnetResourceId": "/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001",
             "service": "<serviceName>", // e.g. vault, registry, blob
             "privateDnsZoneGroup": {
                 "privateDNSResourceIds": [ // Optional: No DNS record will be created if a private DNS zone Resource ID is not specified
-                    "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/<privateDnsZoneName>" // e.g. privatelink.vaultcore.azure.net, privatelink.azurecr.io, privatelink.blob.core.windows.net
+                    "/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/<privateDnsZoneName>" // e.g. privatelink.vaultcore.azure.net, privatelink.azurecr.io, privatelink.blob.core.windows.net
                 ]
             },
             "ipConfigurations":[
@@ -291,7 +291,7 @@ To use Private Endpoint the following dependencies must be deployed:
         },
         // Example showing only mandatory fields
         {
-            "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001",
+            "subnetResourceId": "/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001",
             "service": "<serviceName>" // e.g. vault, registry, blob
         }
     ]
@@ -309,11 +309,11 @@ privateEndpoints:  [
     // Example showing all available fields
     {
         name: 'sxx-az-pe' // Optional: Name will be automatically generated if one is not provided here
-        subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001'
+        subnetResourceId: '/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001'
         service: '<serviceName>' // e.g. vault, registry, blob
         privateDnsZoneGroup: {
             privateDNSResourceIds: [ // Optional: No DNS record will be created if a private DNS zone Resource ID is not specified
-                '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/<privateDnsZoneName>' // e.g. privatelink.vaultcore.azure.net, privatelink.azurecr.io, privatelink.blob.core.windows.net
+                '/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/<privateDnsZoneName>' // e.g. privatelink.vaultcore.azure.net, privatelink.azurecr.io, privatelink.blob.core.windows.net
             ]
         }
         customDnsConfigs: [
@@ -337,7 +337,7 @@ privateEndpoints:  [
     }
     // Example showing only mandatory fields
     {
-        subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001'
+        subnetResourceId: '/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001'
         service: '<serviceName>' // e.g. vault, registry, blob
     }
 ]
@@ -382,7 +382,7 @@ module servers './sql/servers/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-sqlsadmin'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-sqlsadmin'
+    name: 'sqlsadmin'
     // Non-required parameters
     administrators: {
       azureADOnlyAuthentication: true
@@ -410,7 +410,7 @@ module servers './sql/servers/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-sqlsadmin"
+      "value": "sqlsadmin"
     },
     // Non-required parameters
     "administrators": {
@@ -442,7 +442,7 @@ module servers './sql/servers/main.bicep' = {
 module servers './sql/servers/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-sqlscom'
   params: {
-    name: '<<namePrefix>>-sqlscom'
+    name: 'sqlscom'
     administratorLogin: 'adminUserName'
     administratorLoginPassword: '<administratorLoginPassword>'
     databases: [
@@ -467,7 +467,7 @@ module servers './sql/servers/main.bicep' = {
         }
         licenseType: 'LicenseIncluded'
         maxSizeBytes: 34359738368
-        name: '<<namePrefix>>-sqlscomdb-001'
+        name: 'sqlscomdb-001'
         skuName: 'ElasticPool'
         skuTier: 'GeneralPurpose'
       }
@@ -475,7 +475,7 @@ module servers './sql/servers/main.bicep' = {
     elasticPools: [
       {
         maintenanceConfigurationId: '<maintenanceConfigurationId>'
-        name: '<<namePrefix>>-sqlscom-ep-001'
+        name: 'sqlscom-ep-001'
         skuCapacity: 10
         skuName: 'GP_Gen5'
         skuTier: 'GeneralPurpose'
@@ -573,7 +573,7 @@ module servers './sql/servers/main.bicep' = {
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
-      "value": "<<namePrefix>>-sqlscom"
+      "value": "sqlscom"
     },
     "administratorLogin": {
       "value": "adminUserName"
@@ -604,7 +604,7 @@ module servers './sql/servers/main.bicep' = {
           },
           "licenseType": "LicenseIncluded",
           "maxSizeBytes": 34359738368,
-          "name": "<<namePrefix>>-sqlscomdb-001",
+          "name": "sqlscomdb-001",
           "skuName": "ElasticPool",
           "skuTier": "GeneralPurpose"
         }
@@ -614,7 +614,7 @@ module servers './sql/servers/main.bicep' = {
       "value": [
         {
           "maintenanceConfigurationId": "<maintenanceConfigurationId>",
-          "name": "<<namePrefix>>-sqlscom-ep-001",
+          "name": "sqlscom-ep-001",
           "skuCapacity": 10,
           "skuName": "GP_Gen5",
           "skuTier": "GeneralPurpose"
@@ -744,7 +744,7 @@ module servers './sql/servers/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-sqlspe'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-sqlspe'
+    name: 'sqlspe'
     // Non-required parameters
     administratorLogin: 'adminUserName'
     administratorLoginPassword: '<administratorLoginPassword>'
@@ -786,7 +786,7 @@ module servers './sql/servers/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-sqlspe"
+      "value": "sqlspe"
     },
     // Non-required parameters
     "administratorLogin": {
@@ -839,7 +839,7 @@ module servers './sql/servers/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-sqlsec'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-sqlsec-sec'
+    name: 'sqlsec-sec'
     // Non-required parameters
     administratorLogin: 'adminUserName'
     administratorLoginPassword: '<administratorLoginPassword>'
@@ -876,7 +876,7 @@ module servers './sql/servers/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-sqlsec-sec"
+      "value": "sqlsec-sec"
     },
     // Non-required parameters
     "administratorLogin": {

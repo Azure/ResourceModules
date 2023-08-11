@@ -1,6 +1,6 @@
 # Virtual Networks `[Microsoft.Network/virtualNetworks]`
 
-This template deploys a virtual network (vNet).
+This module deploys a Virtual Network (vNet).
 
 ## Navigation
 
@@ -38,7 +38,7 @@ This template deploys a virtual network (vNet).
 | `ddosProtectionPlanId` | string | `''` |  | Resource ID of the DDoS protection plan to assign the VNET to. If it's left blank, DDoS protection will not be configured. If it's provided, the VNET created by this template will be attached to the referenced DDoS protection plan. The DDoS protection plan can exist in the same or in a different subscription. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
-| `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `[allLogs, VMProtectionAlerts]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. |
+| `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `['', allLogs, VMProtectionAlerts]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticMetricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | The name of metrics that will be streamed. |
 | `diagnosticSettingsName` | string | `''` |  | The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings". |
@@ -73,9 +73,9 @@ Below you can find an example for the subnet property's usage. For all remaining
             "addressPrefix": "10.0.255.0/24"
         },
         {
-            "name": "<<namePrefix>>-az-subnet-x-001",
+            "name": "[[namePrefix]]-az-subnet-x-001",
             "addressPrefix": "10.0.0.0/24",
-            "networkSecurityGroupId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/networkSecurityGroups/adp-<<namePrefix>>-az-nsg-x-001",
+            "networkSecurityGroupId": "/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/networkSecurityGroups/adp-[[namePrefix]]-az-nsg-x-001",
             "serviceEndpoints": [
                 {
                     "service": "Microsoft.Storage"
@@ -84,7 +84,7 @@ Below you can find an example for the subnet property's usage. For all remaining
                     "service": "Microsoft.Sql"
                 }
             ],
-            "routeTableId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/routeTables/adp-<<namePrefix>>-az-udr-x-001",
+            "routeTableId": "/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/routeTables/adp-[[namePrefix]]-az-udr-x-001",
             "delegations": [
                 {
                     "name": "netappDel",
@@ -113,9 +113,9 @@ subnets: [
         addressPrefix: '10.0.255.0/24'
     }
     {
-        name: '<<namePrefix>>-az-subnet-x-001'
+        name: '[[namePrefix]]-az-subnet-x-001'
         addressPrefix: '10.0.0.0/24'
-        networkSecurityGroupId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/networkSecurityGroups/adp-<<namePrefix>>-az-nsg-x-001'
+        networkSecurityGroupId: '/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/networkSecurityGroups/adp-[[namePrefix]]-az-nsg-x-001'
         serviceEndpoints: [
             {
                 service: 'Microsoft.Storage'
@@ -124,7 +124,7 @@ subnets: [
                 service: 'Microsoft.Sql'
             }
         ]
-        routeTableId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/routeTables/adp-<<namePrefix>>-az-udr-x-001'
+        routeTableId: '/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/routeTables/adp-[[namePrefix]]-az-udr-x-001'
         delegations: [
             {
                 name: 'netappDel'
@@ -164,7 +164,7 @@ As the virtual network peering array allows you to deploy not only a one-way but
 "virtualNetworkPeerings": {
     "value": [
         {
-            "remoteVirtualNetworkId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-peer01",
+            "remoteVirtualNetworkId": "/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-[[namePrefix]]-az-vnet-x-peer01",
             "allowForwardedTraffic": true,
             "allowGatewayTransit": false,
             "allowVirtualNetworkAccess": true,
@@ -187,7 +187,7 @@ As the virtual network peering array allows you to deploy not only a one-way but
 ```bicep
 virtualNetworkPeerings: [
     {
-        remoteVirtualNetworkId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-peer01'
+        remoteVirtualNetworkId: '/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-[[namePrefix]]-az-vnet-x-peer01'
         allowForwardedTraffic: true
         allowGatewayTransit: false
         allowVirtualNetworkAccess: true
@@ -378,7 +378,7 @@ module virtualNetworks './network/virtual-networks/main.bicep' = {
     addressPrefixes: [
       '10.0.0.0/16'
     ]
-    name: '<<namePrefix>>nvncom001'
+    name: 'nvncom001'
     // Non-required parameters
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
@@ -408,7 +408,7 @@ module virtualNetworks './network/virtual-networks/main.bicep' = {
       }
       {
         addressPrefix: '10.0.0.0/24'
-        name: '<<namePrefix>>-az-subnet-x-001'
+        name: 'az-subnet-x-001'
         networkSecurityGroupId: '<networkSecurityGroupId>'
         roleAssignments: [
           {
@@ -439,11 +439,11 @@ module virtualNetworks './network/virtual-networks/main.bicep' = {
             }
           }
         ]
-        name: '<<namePrefix>>-az-subnet-x-002'
+        name: 'az-subnet-x-002'
       }
       {
         addressPrefix: '10.0.6.0/24'
-        name: '<<namePrefix>>-az-subnet-x-003'
+        name: 'az-subnet-x-003'
         privateEndpointNetworkPolicies: 'Disabled'
         privateLinkServiceNetworkPolicies: 'Enabled'
       }
@@ -475,7 +475,7 @@ module virtualNetworks './network/virtual-networks/main.bicep' = {
       ]
     },
     "name": {
-      "value": "<<namePrefix>>nvncom001"
+      "value": "nvncom001"
     },
     // Non-required parameters
     "diagnosticEventHubAuthorizationRuleId": {
@@ -527,7 +527,7 @@ module virtualNetworks './network/virtual-networks/main.bicep' = {
         },
         {
           "addressPrefix": "10.0.0.0/24",
-          "name": "<<namePrefix>>-az-subnet-x-001",
+          "name": "az-subnet-x-001",
           "networkSecurityGroupId": "<networkSecurityGroupId>",
           "roleAssignments": [
             {
@@ -558,11 +558,11 @@ module virtualNetworks './network/virtual-networks/main.bicep' = {
               }
             }
           ],
-          "name": "<<namePrefix>>-az-subnet-x-002"
+          "name": "az-subnet-x-002"
         },
         {
           "addressPrefix": "10.0.6.0/24",
-          "name": "<<namePrefix>>-az-subnet-x-003",
+          "name": "az-subnet-x-003",
           "privateEndpointNetworkPolicies": "Disabled",
           "privateLinkServiceNetworkPolicies": "Enabled"
         }
@@ -595,7 +595,7 @@ module virtualNetworks './network/virtual-networks/main.bicep' = {
     addressPrefixes: [
       '10.0.0.0/16'
     ]
-    name: '<<namePrefix>>nvnmin001'
+    name: 'nvnmin001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
@@ -621,7 +621,7 @@ module virtualNetworks './network/virtual-networks/main.bicep' = {
       ]
     },
     "name": {
-      "value": "<<namePrefix>>nvnmin001"
+      "value": "nvnmin001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {
@@ -648,7 +648,7 @@ module virtualNetworks './network/virtual-networks/main.bicep' = {
     addressPrefixes: [
       '10.1.0.0/24'
     ]
-    name: '<<namePrefix>>nvnpeer001'
+    name: 'nvnpeer001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     peerings: [
@@ -697,7 +697,7 @@ module virtualNetworks './network/virtual-networks/main.bicep' = {
       ]
     },
     "name": {
-      "value": "<<namePrefix>>nvnpeer001"
+      "value": "nvnpeer001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {

@@ -18,7 +18,7 @@ param serviceShort string = 'nvgcom'
 param enableDefaultTelemetry bool = true
 
 @description('Optional. A token to inject into the name of each resource.')
-param namePrefix string = '<<namePrefix>>'
+param namePrefix string = '[[namePrefix]]'
 
 // ============ //
 // Dependencies //
@@ -55,7 +55,7 @@ module testDeployment '../../main.bicep' = {
       asn: 65515
       peerWeight: 0
     }
-    connections: [
+    vpnConnections: [
       {
         connectionBandwidth: 100
         enableBgp: false

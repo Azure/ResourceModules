@@ -1,6 +1,6 @@
 # Proximity Placement Groups `[Microsoft.Compute/proximityPlacementGroups]`
 
-This template deploys a proximity placement group.
+This module deploys a Proximity Placement Group.
 
 ## Navigation
 
@@ -172,7 +172,7 @@ module proximityPlacementGroups './compute/proximity-placement-groups/main.bicep
   name: '${uniqueString(deployment().name, location)}-test-cppgcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>cppgcom001'
+    name: 'cppgcom001'
     // Non-required parameters
     colocationStatus: {
       code: 'ColocationStatus/Aligned'
@@ -223,7 +223,7 @@ module proximityPlacementGroups './compute/proximity-placement-groups/main.bicep
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>cppgcom001"
+      "value": "cppgcom001"
     },
     // Non-required parameters
     "colocationStatus": {
@@ -291,7 +291,7 @@ module proximityPlacementGroups './compute/proximity-placement-groups/main.bicep
   name: '${uniqueString(deployment().name, location)}-test-cppgmin'
   params: {
     // Required parameters
-    name: '<<namePrefix>>cppgmin001'
+    name: 'cppgmin001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
@@ -312,7 +312,7 @@ module proximityPlacementGroups './compute/proximity-placement-groups/main.bicep
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>cppgmin001"
+      "value": "cppgmin001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {

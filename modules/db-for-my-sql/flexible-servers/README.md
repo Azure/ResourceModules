@@ -1,6 +1,6 @@
-# DBforMySQL FlexibleServers `[Microsoft.DBforMySQL/flexibleServers]`
+# DBforMySQL Flexible Servers `[Microsoft.DBforMySQL/flexibleServers]`
 
-This module deploys DBforMySQL FlexibleServers.
+This module deploys a DBforMySQL Flexible Server.
 
 ## Navigation
 
@@ -16,9 +16,9 @@ This module deploys DBforMySQL FlexibleServers.
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.DBforMySQL/flexibleServers` | [2022-09-30-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DBforMySQL/flexibleServers) |
-| `Microsoft.DBforMySQL/flexibleServers/databases` | [2022-01-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DBforMySQL/flexibleServers/databases) |
-| `Microsoft.DBforMySQL/flexibleServers/firewallRules` | [2022-01-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DBforMySQL/flexibleServers/firewallRules) |
+| `Microsoft.DBforMySQL/flexibleServers` | [2022-09-30-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DBforMySQL/2022-09-30-preview/flexibleServers) |
+| `Microsoft.DBforMySQL/flexibleServers/databases` | [2022-01-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DBforMySQL/2022-01-01/flexibleServers/databases) |
+| `Microsoft.DBforMySQL/flexibleServers/firewallRules` | [2022-01-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DBforMySQL/2022-01-01/flexibleServers/firewallRules) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 
 ## Parameters
@@ -60,7 +60,7 @@ This module deploys DBforMySQL FlexibleServers.
 | `delegatedSubnetResourceId` | string | `''` |  | Delegated subnet arm resource ID. Used when the desired connectivity mode is "Private Access" - virtual network integration. Delegation must be enabled on the subnet for MySQL Flexible Servers and subnet CIDR size is /29. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
-| `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `[allLogs, MySqlAuditLogs, MySqlSlowLogs]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. |
+| `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `['', allLogs, MySqlAuditLogs, MySqlSlowLogs]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticMetricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | The name of metrics that will be streamed. |
 | `diagnosticSettingsName` | string | `''` |  | The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings". |
@@ -195,8 +195,8 @@ You can specify multiple user assigned identities to a resource by providing add
 ```json
 "userAssignedIdentities": {
     "value": {
-        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
-        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
+        "/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
+        "/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
     }
 }
 ```
@@ -209,8 +209,8 @@ You can specify multiple user assigned identities to a resource by providing add
 
 ```bicep
 userAssignedIdentities: {
-    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
-    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
+    '/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
+    '/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
 }
 ```
 
@@ -250,7 +250,7 @@ module flexibleServers './db-for-my-sql/flexible-servers/main.bicep' = {
     // Required parameters
     administratorLogin: 'adminUserName'
     administratorLoginPassword: '<administratorLoginPassword>'
-    name: '<<namePrefix>>dfmsfsmin001'
+    name: 'dfmsfsmin001'
     skuName: 'Standard_B1ms'
     tier: 'Burstable'
     // Non-required parameters
@@ -279,7 +279,7 @@ module flexibleServers './db-for-my-sql/flexible-servers/main.bicep' = {
       "value": "<administratorLoginPassword>"
     },
     "name": {
-      "value": "<<namePrefix>>dfmsfsmin001"
+      "value": "dfmsfsmin001"
     },
     "skuName": {
       "value": "Standard_B1ms"
@@ -311,7 +311,7 @@ module flexibleServers './db-for-my-sql/flexible-servers/main.bicep' = {
     // Required parameters
     administratorLogin: 'adminUserName'
     administratorLoginPassword: '<administratorLoginPassword>'
-    name: '<<namePrefix>>dfmsfspvt001'
+    name: 'dfmsfspvt001'
     skuName: 'Standard_D2ds_v4'
     tier: 'GeneralPurpose'
     // Non-required parameters
@@ -347,7 +347,7 @@ module flexibleServers './db-for-my-sql/flexible-servers/main.bicep' = {
     storageSizeGB: 64
     tags: {
       resourceType: 'MySQL Flexible Server'
-      serverName: '<<namePrefix>>dfmsfspvt001'
+      serverName: 'dfmsfspvt001'
     }
     userAssignedIdentities: {
       '<managedIdentityResourceId>': {}
@@ -376,7 +376,7 @@ module flexibleServers './db-for-my-sql/flexible-servers/main.bicep' = {
       "value": "<administratorLoginPassword>"
     },
     "name": {
-      "value": "<<namePrefix>>dfmsfspvt001"
+      "value": "dfmsfspvt001"
     },
     "skuName": {
       "value": "Standard_D2ds_v4"
@@ -454,7 +454,7 @@ module flexibleServers './db-for-my-sql/flexible-servers/main.bicep' = {
     "tags": {
       "value": {
         "resourceType": "MySQL Flexible Server",
-        "serverName": "<<namePrefix>>dfmsfspvt001"
+        "serverName": "dfmsfspvt001"
       }
     },
     "userAssignedIdentities": {
@@ -482,7 +482,7 @@ module flexibleServers './db-for-my-sql/flexible-servers/main.bicep' = {
     // Required parameters
     administratorLogin: 'adminUserName'
     administratorLoginPassword: '<administratorLoginPassword>'
-    name: '<<namePrefix>>dfmsfsp001'
+    name: 'dfmsfsp001'
     skuName: 'Standard_D2ds_v4'
     tier: 'GeneralPurpose'
     // Non-required parameters
@@ -546,7 +546,7 @@ module flexibleServers './db-for-my-sql/flexible-servers/main.bicep' = {
     storageSizeGB: 32
     tags: {
       resourceType: 'MySQL Flexible Server'
-      serverName: '<<namePrefix>>dfmsfsp001'
+      serverName: 'dfmsfsp001'
     }
     userAssignedIdentities: {
       '<geoBackupManagedIdentityResourceId>': {}
@@ -577,7 +577,7 @@ module flexibleServers './db-for-my-sql/flexible-servers/main.bicep' = {
       "value": "<administratorLoginPassword>"
     },
     "name": {
-      "value": "<<namePrefix>>dfmsfsp001"
+      "value": "dfmsfsp001"
     },
     "skuName": {
       "value": "Standard_D2ds_v4"
@@ -697,7 +697,7 @@ module flexibleServers './db-for-my-sql/flexible-servers/main.bicep' = {
     "tags": {
       "value": {
         "resourceType": "MySQL Flexible Server",
-        "serverName": "<<namePrefix>>dfmsfsp001"
+        "serverName": "dfmsfsp001"
       }
     },
     "userAssignedIdentities": {

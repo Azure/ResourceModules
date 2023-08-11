@@ -1,6 +1,6 @@
-# Network NetworkManagers NetworkGroups StaticMembers `[Microsoft.Network/networkManagers/networkGroups/staticMembers]`
+# Network Manager Network Group Static Members `[Microsoft.Network/networkManagers/networkGroups/staticMembers]`
 
-This module deploys Network NetworkManagers NetworkGroups StaticMembers.
+This module deploys a Network Manager Network Group Static Member.
 Static membership allows you to explicitly add virtual networks to a group by manually selecting individual virtual networks.
 
 ## Navigation
@@ -14,7 +14,7 @@ Static membership allows you to explicitly add virtual networks to a group by ma
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Network/networkManagers/networkGroups/staticMembers` | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/networkManagers/networkGroups/staticMembers) |
+| `Microsoft.Network/networkManagers/networkGroups/staticMembers` | [2023-02-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-02-01/networkManagers/networkGroups/staticMembers) |
 
 ## Parameters
 

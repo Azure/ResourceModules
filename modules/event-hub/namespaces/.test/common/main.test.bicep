@@ -18,7 +18,7 @@ param serviceShort string = 'ehncom'
 param enableDefaultTelemetry bool = true
 
 @description('Optional. A token to inject into the name of each resource.')
-param namePrefix string = '<<namePrefix>>'
+param namePrefix string = '[[namePrefix]]'
 
 // ============ //
 // Dependencies //
@@ -91,6 +91,15 @@ module testDeployment '../../main.bicep' = {
     eventhubs: [
       {
         name: '${namePrefix}-az-evh-x-001'
+        roleAssignments: [
+          {
+            roleDefinitionIdOrName: 'Reader'
+            principalIds: [
+              nestedDependencies.outputs.managedIdentityPrincipalId
+            ]
+            principalType: 'ServicePrincipal'
+          }
+        ]
       }
       {
         name: '${namePrefix}-az-evh-x-002'
@@ -189,5 +198,7 @@ module testDeployment '../../main.bicep' = {
       Environment: 'Non-Prod'
       Role: 'DeploymentValidation'
     }
+    kafkaEnabled: true
+    disableLocalAuth: true
   }
 }

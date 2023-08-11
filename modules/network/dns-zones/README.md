@@ -1,6 +1,6 @@
 # Public DNS Zones `[Microsoft.Network/dnsZones]`
 
-This template deploys a Public DNS zone.
+This module deploys a Public DNS zone.
 
 ## Navigation
 
@@ -188,7 +188,7 @@ module dnsZones './network/dns-zones/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-ndzcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>ndzcom001.com'
+    name: 'ndzcom001.com'
     // Non-required parameters
     a: [
       {
@@ -386,7 +386,7 @@ module dnsZones './network/dns-zones/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>ndzcom001.com"
+      "value": "ndzcom001.com"
     },
     // Non-required parameters
     "a": {
@@ -609,7 +609,7 @@ module dnsZones './network/dns-zones/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-ndzmin'
   params: {
     // Required parameters
-    name: '<<namePrefix>>ndzmin001.com'
+    name: 'ndzmin001.com'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
@@ -630,7 +630,7 @@ module dnsZones './network/dns-zones/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>ndzmin001.com"
+      "value": "ndzmin001.com"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {

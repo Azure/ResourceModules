@@ -1,6 +1,6 @@
 # App Service Plans `[Microsoft.Web/serverfarms]`
 
-This module deploys an app service plan.
+This module deploys an App Service Plan.
 
 ## Navigation
 
@@ -222,7 +222,7 @@ module serverfarms './web/serverfarms/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-wsfcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>wsfcom001'
+    name: 'wsfcom001'
     sku: {
       capacity: '1'
       family: 'S'
@@ -269,7 +269,7 @@ module serverfarms './web/serverfarms/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>wsfcom001"
+      "value": "wsfcom001"
     },
     "sku": {
       "value": {

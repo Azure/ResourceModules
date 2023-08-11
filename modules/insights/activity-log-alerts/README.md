@@ -1,6 +1,6 @@
 # Activity Log Alerts `[Microsoft.Insights/activityLogAlerts]`
 
-This module deploys an Alert based on Activity Log.
+This module deploys an Activity Log Alert.
 
 ## Navigation
 
@@ -431,7 +431,7 @@ module activityLogAlerts './insights/activity-log-alerts/main.bicep' = {
         field: 'operationName'
       }
     ]
-    name: '<<namePrefix>>ialacom001'
+    name: 'ialacom001'
     // Non-required parameters
     actions: [
       {
@@ -489,7 +489,7 @@ module activityLogAlerts './insights/activity-log-alerts/main.bicep' = {
       ]
     },
     "name": {
-      "value": "<<namePrefix>>ialacom001"
+      "value": "ialacom001"
     },
     // Non-required parameters
     "actions": {

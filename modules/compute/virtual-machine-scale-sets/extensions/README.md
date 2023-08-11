@@ -1,6 +1,6 @@
-# virtual machine scale set Extensions `[Microsoft.Compute/virtualMachineScaleSets/extensions]`
+# Virtual Machine Scale Set Extensions `[Microsoft.Compute/virtualMachineScaleSets/extensions]`
 
-This module deploys a virtual machine scale set extension.
+This module deploys a Virtual Machine Scale Set Extension.
 
 ## Navigation
 

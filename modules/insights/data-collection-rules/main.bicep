@@ -1,3 +1,7 @@
+metadata name = 'Data Collection Rules'
+metadata description = 'This module deploys a Data Collection Rule.'
+metadata owner = 'Azure/module-maintainers'
+
 // ============== //
 //   Parameters   //
 // ============== //

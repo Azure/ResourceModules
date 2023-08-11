@@ -1,6 +1,0 @@
-{
-  "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
-  "name": "AVD Workspaces",
-  "summary": "This module deploys an Azure virtual desktop workspace.",
-  "owner": "Azure/module-maintainers"
-}

@@ -1,6 +1,6 @@
 # Azure Compute Galleries `[Microsoft.Compute/galleries]`
 
-This module deploys an Azure compute gallery (formerly known as shared image gallery).
+This module deploys an Azure Compute Gallery (formerly known as Shared Image Gallery).
 
 ## Navigation
 
@@ -173,14 +173,14 @@ module galleries './compute/galleries/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-cgcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>cgcom001'
+    name: 'cgcom001'
     // Non-required parameters
     applications: [
       {
-        name: '<<namePrefix>>-cgcom-appd-001'
+        name: 'cgcom-appd-001'
       }
       {
-        name: '<<namePrefix>>-cgcom-appd-002'
+        name: 'cgcom-appd-002'
         roleAssignments: [
           {
             principalIds: [
@@ -196,7 +196,7 @@ module galleries './compute/galleries/main.bicep' = {
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     images: [
       {
-        name: '<<namePrefix>>-az-imgd-ws-001'
+        name: 'az-imgd-ws-001'
       }
       {
         hyperVGeneration: 'V1'
@@ -204,7 +204,7 @@ module galleries './compute/galleries/main.bicep' = {
         maxRecommendedvCPUs: 8
         minRecommendedMemory: 4
         minRecommendedvCPUs: 2
-        name: '<<namePrefix>>-az-imgd-ws-002'
+        name: 'az-imgd-ws-002'
         offer: 'WindowsServer'
         osState: 'Generalized'
         osType: 'Windows'
@@ -227,7 +227,7 @@ module galleries './compute/galleries/main.bicep' = {
         maxRecommendedvCPUs: 8
         minRecommendedMemory: 4
         minRecommendedvCPUs: 2
-        name: '<<namePrefix>>-az-imgd-ws-003'
+        name: 'az-imgd-ws-003'
         offer: 'WindowsServer'
         osState: 'Generalized'
         osType: 'Windows'
@@ -250,7 +250,7 @@ module galleries './compute/galleries/main.bicep' = {
         maxRecommendedvCPUs: 8
         minRecommendedMemory: 4
         minRecommendedvCPUs: 2
-        name: '<<namePrefix>>-az-imgd-ws-004'
+        name: 'az-imgd-ws-004'
         offer: 'WindowsServer'
         osState: 'Generalized'
         osType: 'Windows'
@@ -272,7 +272,7 @@ module galleries './compute/galleries/main.bicep' = {
         maxRecommendedvCPUs: 4
         minRecommendedMemory: 4
         minRecommendedvCPUs: 2
-        name: '<<namePrefix>>-az-imgd-wdtl-002'
+        name: 'az-imgd-wdtl-002'
         offer: 'WindowsDesktop'
         osState: 'Generalized'
         osType: 'Windows'
@@ -295,7 +295,7 @@ module galleries './compute/galleries/main.bicep' = {
         maxRecommendedvCPUs: 4
         minRecommendedMemory: 4
         minRecommendedvCPUs: 1
-        name: '<<namePrefix>>-az-imgd-us-001'
+        name: 'az-imgd-us-001'
         offer: '0001-com-ubuntu-server-focal'
         osState: 'Generalized'
         osType: 'Linux'
@@ -335,16 +335,16 @@ module galleries './compute/galleries/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>cgcom001"
+      "value": "cgcom001"
     },
     // Non-required parameters
     "applications": {
       "value": [
         {
-          "name": "<<namePrefix>>-cgcom-appd-001"
+          "name": "cgcom-appd-001"
         },
         {
-          "name": "<<namePrefix>>-cgcom-appd-002",
+          "name": "cgcom-appd-002",
           "roleAssignments": [
             {
               "principalIds": [
@@ -364,7 +364,7 @@ module galleries './compute/galleries/main.bicep' = {
     "images": {
       "value": [
         {
-          "name": "<<namePrefix>>-az-imgd-ws-001"
+          "name": "az-imgd-ws-001"
         },
         {
           "hyperVGeneration": "V1",
@@ -372,7 +372,7 @@ module galleries './compute/galleries/main.bicep' = {
           "maxRecommendedvCPUs": 8,
           "minRecommendedMemory": 4,
           "minRecommendedvCPUs": 2,
-          "name": "<<namePrefix>>-az-imgd-ws-002",
+          "name": "az-imgd-ws-002",
           "offer": "WindowsServer",
           "osState": "Generalized",
           "osType": "Windows",
@@ -395,7 +395,7 @@ module galleries './compute/galleries/main.bicep' = {
           "maxRecommendedvCPUs": 8,
           "minRecommendedMemory": 4,
           "minRecommendedvCPUs": 2,
-          "name": "<<namePrefix>>-az-imgd-ws-003",
+          "name": "az-imgd-ws-003",
           "offer": "WindowsServer",
           "osState": "Generalized",
           "osType": "Windows",
@@ -418,7 +418,7 @@ module galleries './compute/galleries/main.bicep' = {
           "maxRecommendedvCPUs": 8,
           "minRecommendedMemory": 4,
           "minRecommendedvCPUs": 2,
-          "name": "<<namePrefix>>-az-imgd-ws-004",
+          "name": "az-imgd-ws-004",
           "offer": "WindowsServer",
           "osState": "Generalized",
           "osType": "Windows",
@@ -440,7 +440,7 @@ module galleries './compute/galleries/main.bicep' = {
           "maxRecommendedvCPUs": 4,
           "minRecommendedMemory": 4,
           "minRecommendedvCPUs": 2,
-          "name": "<<namePrefix>>-az-imgd-wdtl-002",
+          "name": "az-imgd-wdtl-002",
           "offer": "WindowsDesktop",
           "osState": "Generalized",
           "osType": "Windows",
@@ -463,7 +463,7 @@ module galleries './compute/galleries/main.bicep' = {
           "maxRecommendedvCPUs": 4,
           "minRecommendedMemory": 4,
           "minRecommendedvCPUs": 1,
-          "name": "<<namePrefix>>-az-imgd-us-001",
+          "name": "az-imgd-us-001",
           "offer": "0001-com-ubuntu-server-focal",
           "osState": "Generalized",
           "osType": "Linux",
@@ -510,7 +510,7 @@ module galleries './compute/galleries/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-cgmin'
   params: {
     // Required parameters
-    name: '<<namePrefix>>cgmin001'
+    name: 'cgmin001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
@@ -531,7 +531,7 @@ module galleries './compute/galleries/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>cgmin001"
+      "value": "cgmin001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {

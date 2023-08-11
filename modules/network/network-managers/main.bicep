@@ -1,3 +1,7 @@
+metadata name = 'Network Managers'
+metadata description = 'This module deploys a Network Manager.'
+metadata owner = 'Azure/module-maintainers'
+
 @sys.description('Required. Name of the Network Manager.')
 @minLength(1)
 @maxLength(64)
@@ -47,7 +51,7 @@ param enableDefaultTelemetry bool = true
 
 var enableReferencedModulesTelemetry = false
 
-resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
+resource defaultTelemetry 'Microsoft.Resources/deployments@2022-09-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
   properties: {
     mode: 'Incremental'
@@ -59,7 +63,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource networkManager 'Microsoft.Network/networkManagers@2022-07-01' = {
+resource networkManager 'Microsoft.Network/networkManagers@2023-02-01' = {
   name: name
   location: location
   tags: tags

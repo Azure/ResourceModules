@@ -1,17 +1,30 @@
+metadata name = 'Log Analytics Workspaces'
+metadata description = 'This module deploys a Log Analytics Workspace.'
+metadata owner = 'Azure/module-maintainers'
+
 @description('Required. Name of the Log Analytics workspace.')
 param name string
 
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
 
-@description('Optional. Service Tier: PerGB2018, Free, Standalone, PerGB or PerNode.')
+@description('Optional. The name of the SKU.')
 @allowed([
+  'CapacityReservation'
   'Free'
-  'Standalone'
-  'PerNode'
+  'LACluster'
   'PerGB2018'
+  'PerNode'
+  'Premium'
+  'Standalone'
+  'Standard'
 ])
-param serviceTier string = 'PerGB2018'
+param skuName string = 'PerGB2018'
+
+@minValue(100)
+@maxValue(5000)
+@description('Optional. The capacity reservation level in GB for this workspace, when CapacityReservation sku is selected. Must be in increments of 100 between 100 and 5000.')
+param skuCapacityReservationLevel int = 100
 
 @description('Optional. List of storage accounts to be read by the workspace.')
 param storageInsightsConfigs array = []
@@ -106,8 +119,9 @@ param tags object = {}
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-@description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource.')
+@description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to \'\' to disable log collection.')
 @allowed([
+  ''
   'allLogs'
   'Audit'
 ])
@@ -126,7 +140,7 @@ param diagnosticMetricsToEnable array = [
 @description('Optional. The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings".')
 param diagnosticSettingsName string = ''
 
-var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs'): {
+var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs' && item != ''): {
   category: category
   enabled: true
   retentionPolicy: {
@@ -144,7 +158,7 @@ var diagnosticsLogs = contains(diagnosticLogCategoriesToEnable, 'allLogs') ? [
       days: diagnosticLogsRetentionInDays
     }
   }
-] : diagnosticsLogsSpecified
+] : contains(diagnosticLogCategoriesToEnable, '') ? [] : diagnosticsLogsSpecified
 
 var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   category: metric
@@ -189,7 +203,8 @@ resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2022-10
       enableLogAccessUsingOnlyResourcePermissions: useResourcePermissions
     }
     sku: {
-      name: serviceTier
+      name: skuName
+      capacityReservationLevel: skuName == 'CapacityReservation' ? skuCapacityReservationLevel : null
     }
     retentionInDays: dataRetention
     workspaceCapping: {

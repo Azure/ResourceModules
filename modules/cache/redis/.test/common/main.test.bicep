@@ -18,7 +18,7 @@ param serviceShort string = 'crcom'
 param enableDefaultTelemetry bool = true
 
 @description('Optional. A token to inject into the name of each resource.')
-param namePrefix string = '<<namePrefix>>'
+param namePrefix string = '[[namePrefix]]'
 
 // ============ //
 // Dependencies //
@@ -73,6 +73,8 @@ module testDeployment '../../main.bicep' = {
     enableNonSslPort: true
     lock: 'CanNotDelete'
     minimumTlsVersion: '1.2'
+    zoneRedundant: true
+    zones: [ 1, 2 ]
     privateEndpoints: [
       {
         privateDnsZoneGroup: {

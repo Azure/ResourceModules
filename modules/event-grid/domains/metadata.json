@@ -1,6 +1,0 @@
-{
-  "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
-  "name": "EventGrid Domains",
-  "summary": "This module deploys EventGrid Domains.",
-  "owner": "Azure/module-maintainers"
-}

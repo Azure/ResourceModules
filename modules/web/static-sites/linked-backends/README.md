@@ -1,6 +1,6 @@
-# Static Site Linked Backend `[Microsoft.Web/staticSites/linkedBackends]`
+# Static Web App Site Linked Backends `[Microsoft.Web/staticSites/linkedBackends]`
 
-This module deploys a Custom Function App into a Static Site using the linkedBackends property.
+This module deploys a Custom Function App into a Static Web App Site using the Linked Backends property.
 
 ## Navigation
 

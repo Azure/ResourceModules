@@ -1,6 +1,6 @@
 # Virtual WANs `[Microsoft.Network/virtualWans]`
 
-This template deploys a virtual WAN.
+This module deploys a Virtual WAN.
 
 ## Navigation
 
@@ -172,7 +172,7 @@ module virtualWans './network/virtual-wans/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nvwcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>nvwcom001'
+    name: 'nvwcom001'
     // Non-required parameters
     allowBranchToBranchTraffic: true
     allowVnetToVnetTraffic: true
@@ -211,7 +211,7 @@ module virtualWans './network/virtual-wans/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>nvwcom001"
+      "value": "nvwcom001"
     },
     // Non-required parameters
     "allowBranchToBranchTraffic": {
@@ -267,7 +267,7 @@ module virtualWans './network/virtual-wans/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nvwmin'
   params: {
     // Required parameters
-    name: '<<namePrefix>>nvwmin001'
+    name: 'nvwmin001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
@@ -288,7 +288,7 @@ module virtualWans './network/virtual-wans/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>nvwmin001"
+      "value": "nvwmin001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {

@@ -7,6 +7,8 @@ $repoRootPath = (Get-Item $PSScriptRoot).Parent.Parent.Parent.Parent.FullName
 . (Join-Path $repoRootPath 'utilities' 'pipelines' 'sharedScripts' 'Get-ScopeOfTemplateFile.ps1')
 . (Join-Path $repoRootPath 'utilities' 'pipelines' 'sharedScripts' 'Get-ModuleTestFileList.ps1')
 . (Join-Path $repoRootPath 'utilities' 'tools' 'Get-CrossReferencedModuleList.ps1')
+. (Join-Path $repoRootPath 'utilities' 'tools' 'helper' 'ConvertTo-OrderedHashtable.ps1')
+. (Join-Path $repoRootPath 'utilities' 'tools' 'helper' 'Get-PipelineFileName.ps1')
 
 ####################################
 #   Load test-specific functions   #
@@ -128,4 +130,36 @@ function Get-TableStartAndEndIndex {
     }
 
     return $tableStartIndex, $tableEndIndex
+}
+
+<#
+.SYNOPSIS
+Remove metadata blocks from given template object
+
+.DESCRIPTION
+Remove metadata blocks from given template object
+
+.PARAMETER TemplateObject
+The template object to remove the metadata from
+
+.EXAMPLE
+Remove-JSONMetadata -TemplateObject @{ metadata = 'a'; b = 'b' }
+
+Returns @{ b = 'b' }
+#>
+function Remove-JSONMetadata {
+
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory = $true)]
+        [hashtable] $TemplateObject
+    )
+    $TemplateObject.Remove('metadata')
+    for ($index = 0; $index -lt $TemplateObject.resources.Count; $index++) {
+        if ($TemplateObject.resources[$index].type -eq 'Microsoft.Resources/deployments') {
+            $TemplateObject.resources[$index] = Remove-JSONMetadata -TemplateObject $TemplateObject.resources[$index].properties.template
+        }
+    }
+
+    return $TemplateObject
 }

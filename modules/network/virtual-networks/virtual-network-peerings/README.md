@@ -1,6 +1,6 @@
-# VirtualNetworkPeering `[Microsoft.Network/virtualNetworks/virtualNetworkPeerings]`
+# Virtual Network Peerings `[Microsoft.Network/virtualNetworks/virtualNetworkPeerings]`
 
-This template deploys Virtual Network Peering.
+This module deploys a Virtual Network Peering.
 
 ## Navigation
 

@@ -36,7 +36,7 @@ This module deploys an Event Grid Topic.
 | :-- | :-- | :-- | :-- | :-- |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
-| `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `[allLogs, DeliveryFailures, PublishFailures]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. |
+| `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `['', allLogs, DeliveryFailures, PublishFailures]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticMetricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | The name of metrics that will be streamed. |
 | `diagnosticSettingsName` | string | `''` |  | The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings". |
@@ -80,7 +80,7 @@ You can specify multiple event subscriptions using the following format:
           "enableAdvancedFilteringOnArrays": true,
           "isSubjectCaseSensitive": false
         },
-        "name": "<<namePrefix>>egstcom001",
+        "name": "[[namePrefix]]egstcom001",
         "retryPolicy": {
           "eventTimeToLive": "120",
           "maxDeliveryAttempts": 10
@@ -114,7 +114,7 @@ eventSubscriptions: [
         enableAdvancedFilteringOnArrays: true
         isSubjectCaseSensitive: false
       }
-      name: '<<namePrefix>>egstcom001'
+      name: '[[namePrefix]]egstcom001'
       retryPolicy: {
         eventTimeToLive: '120'
         maxDeliveryAttempts: 10
@@ -143,11 +143,11 @@ To use Private Endpoint the following dependencies must be deployed:
         // Example showing all available fields
         {
             "name": "sxx-az-pe", // Optional: Name will be automatically generated if one is not provided here
-            "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001",
+            "subnetResourceId": "/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001",
             "service": "<serviceName>", // e.g. vault, registry, blob
             "privateDnsZoneGroup": {
                 "privateDNSResourceIds": [ // Optional: No DNS record will be created if a private DNS zone Resource ID is not specified
-                    "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/<privateDnsZoneName>" // e.g. privatelink.vaultcore.azure.net, privatelink.azurecr.io, privatelink.blob.core.windows.net
+                    "/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/<privateDnsZoneName>" // e.g. privatelink.vaultcore.azure.net, privatelink.azurecr.io, privatelink.blob.core.windows.net
                 ]
             },
             "ipConfigurations":[
@@ -171,7 +171,7 @@ To use Private Endpoint the following dependencies must be deployed:
         },
         // Example showing only mandatory fields
         {
-            "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001",
+            "subnetResourceId": "/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001",
             "service": "<serviceName>" // e.g. vault, registry, blob
         }
     ]
@@ -189,11 +189,11 @@ privateEndpoints:  [
     // Example showing all available fields
     {
         name: 'sxx-az-pe' // Optional: Name will be automatically generated if one is not provided here
-        subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001'
+        subnetResourceId: '/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001'
         service: '<serviceName>' // e.g. vault, registry, blob
         privateDnsZoneGroup: {
             privateDNSResourceIds: [ // Optional: No DNS record will be created if a private DNS zone Resource ID is not specified
-                '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/<privateDnsZoneName>' // e.g. privatelink.vaultcore.azure.net, privatelink.azurecr.io, privatelink.blob.core.windows.net
+                '/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/<privateDnsZoneName>' // e.g. privatelink.vaultcore.azure.net, privatelink.azurecr.io, privatelink.blob.core.windows.net
             ]
         }
         customDnsConfigs: [
@@ -217,7 +217,7 @@ privateEndpoints:  [
     }
     // Example showing only mandatory fields
     {
-        subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001'
+        subnetResourceId: '/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001'
         service: '<serviceName>' // e.g. vault, registry, blob
     }
 ]
@@ -361,7 +361,7 @@ module topics './event-grid/topics/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-egtcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>egtcom001'
+    name: 'egtcom001'
     // Non-required parameters
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
@@ -386,7 +386,7 @@ module topics './event-grid/topics/main.bicep' = {
           enableAdvancedFilteringOnArrays: true
           isSubjectCaseSensitive: false
         }
-        name: '<<namePrefix>>egtcom001'
+        name: 'egtcom001'
         retryPolicy: {
           eventTimeToLive: '120'
           maxDeliveryAttempts: 10
@@ -446,7 +446,7 @@ module topics './event-grid/topics/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>egtcom001"
+      "value": "egtcom001"
     },
     // Non-required parameters
     "diagnosticEventHubAuthorizationRuleId": {
@@ -485,7 +485,7 @@ module topics './event-grid/topics/main.bicep' = {
             "enableAdvancedFilteringOnArrays": true,
             "isSubjectCaseSensitive": false
           },
-          "name": "<<namePrefix>>egtcom001",
+          "name": "egtcom001",
           "retryPolicy": {
             "eventTimeToLive": "120",
             "maxDeliveryAttempts": 10
@@ -556,7 +556,7 @@ module topics './event-grid/topics/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-egtmin'
   params: {
     // Required parameters
-    name: '<<namePrefix>>egtmin001'
+    name: 'egtmin001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
@@ -577,7 +577,7 @@ module topics './event-grid/topics/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>egtmin001"
+      "value": "egtmin001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {
@@ -601,7 +601,7 @@ module topics './event-grid/topics/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-egtpe'
   params: {
     // Required parameters
-    name: '<<namePrefix>>egtpe001'
+    name: 'egtpe001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     privateEndpoints: [
@@ -641,7 +641,7 @@ module topics './event-grid/topics/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>egtpe001"
+      "value": "egtpe001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {

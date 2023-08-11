@@ -1,3 +1,7 @@
+metadata name = 'Storage Account File Share Services'
+metadata description = 'This module deploys a Storage Account File Share Service.'
+metadata owner = 'Azure/module-maintainers'
+
 @maxLength(24)
 @description('Conditional. The name of the parent Storage Account. Required if the template is used in a standalone deployment.')
 param storageAccountName string
@@ -37,8 +41,9 @@ param shares array = []
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-@description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource.')
+@description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to \'\' to disable log collection.')
 @allowed([
+  ''
   'allLogs'
   'StorageRead'
   'StorageWrite'
@@ -59,7 +64,7 @@ param diagnosticMetricsToEnable array = [
 @description('Optional. The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings".')
 param diagnosticSettingsName string = ''
 
-var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs'): {
+var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs' && item != ''): {
   category: category
   enabled: true
   retentionPolicy: {
@@ -77,7 +82,7 @@ var diagnosticsLogs = contains(diagnosticLogCategoriesToEnable, 'allLogs') ? [
       days: diagnosticLogsRetentionInDays
     }
   }
-] : diagnosticsLogsSpecified
+] : contains(diagnosticLogCategoriesToEnable, '') ? [] : diagnosticsLogsSpecified
 
 var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   category: metric
@@ -90,6 +95,8 @@ var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
 }]
 
 var enableReferencedModulesTelemetry = false
+
+var defaultShareAccessTier = storageAccount.kind == 'FileStorage' ? 'Premium' : 'TransactionOptimized' // default share accessTier depends on the Storage Account kind: 'Premium' for 'FileStorage' kind, 'TransactionOptimized' otherwise
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name)}'
@@ -135,6 +142,7 @@ module fileServices_shares 'shares/main.bicep' = [for (share, index) in shares: 
     storageAccountName: storageAccount.name
     fileServicesName: fileServices.name
     name: share.name
+    accessTier: contains(share, 'accessTier') ? share.accessTier : defaultShareAccessTier
     enabledProtocols: contains(share, 'enabledProtocols') ? share.enabledProtocols : 'SMB'
     rootSquash: contains(share, 'rootSquash') ? share.rootSquash : 'NoRootSquash'
     shareQuota: contains(share, 'shareQuota') ? share.shareQuota : 5120

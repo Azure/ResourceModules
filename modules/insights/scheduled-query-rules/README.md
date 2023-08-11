@@ -1,6 +1,6 @@
 # Scheduled Query Rules `[Microsoft.Insights/scheduledQueryRules]`
 
-This module deploys a scheduled query rule.
+This module deploys a Scheduled Query Rule.
 
 ## Navigation
 
@@ -207,7 +207,7 @@ module scheduledQueryRules './insights/scheduled-query-rules/main.bicep' = {
         }
       ]
     }
-    name: '<<namePrefix>>isqrcom001'
+    name: 'isqrcom001'
     scopes: [
       '<logAnalyticsWorkspaceResourceId>'
     ]
@@ -279,7 +279,7 @@ module scheduledQueryRules './insights/scheduled-query-rules/main.bicep' = {
       }
     },
     "name": {
-      "value": "<<namePrefix>>isqrcom001"
+      "value": "isqrcom001"
     },
     "scopes": {
       "value": [

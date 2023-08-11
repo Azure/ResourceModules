@@ -1,3 +1,7 @@
+metadata name = 'Policy Assignments (Subscription scope)'
+metadata description = 'This module deploys a Policy Assignment at a Subscription scope.'
+metadata owner = 'Azure/module-maintainers'
+
 targetScope = 'subscription'
 
 @sys.description('Required. Specifies the name of the policy assignment. Maximum length is 64 characters for subscription scope.')

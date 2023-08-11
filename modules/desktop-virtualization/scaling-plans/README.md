@@ -1,6 +1,6 @@
-# AVD Scaling Plans `[Microsoft.DesktopVirtualization/scalingPlans]`
+# Azure Virtual Desktop (AVD) Scaling Plans `[Microsoft.DesktopVirtualization/scalingPlans]`
 
-This module deploys an AVD Scaling Plan.
+This module deploys an Azure Virtual Desktop (AVD) Scaling Plan.
 
 ## Navigation
 
@@ -33,7 +33,7 @@ This module deploys an AVD Scaling Plan.
 | `description` | string | `[parameters('name')]` |  | Description of the scaling plan. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
-| `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `[allLogs, Autoscale]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. |
+| `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `['', allLogs, Autoscale]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
@@ -281,7 +281,7 @@ module scalingPlans './desktop-virtualization/scaling-plans/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-dvspcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>dvspcom001'
+    name: 'dvspcom001'
     // Non-required parameters
     description: 'My Scaling Plan Description'
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
@@ -323,7 +323,7 @@ module scalingPlans './desktop-virtualization/scaling-plans/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>dvspcom001"
+      "value": "dvspcom001"
     },
     // Non-required parameters
     "description": {
@@ -388,7 +388,7 @@ module scalingPlans './desktop-virtualization/scaling-plans/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-dvspmin'
   params: {
     // Required parameters
-    name: '<<namePrefix>>dvspmin001'
+    name: 'dvspmin001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
@@ -409,7 +409,7 @@ module scalingPlans './desktop-virtualization/scaling-plans/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>dvspmin001"
+      "value": "dvspmin001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {

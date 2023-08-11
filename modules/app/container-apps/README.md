@@ -1,6 +1,6 @@
-# App ContainerApps `[Microsoft.App/containerApps]`
+# Container Apps `[Microsoft.App/containerApps]`
 
-This module deploys Container Apps.
+This module deploys a Container App.
 
 ## Navigation
 
@@ -175,8 +175,8 @@ You can specify multiple user assigned identities to a resource by providing add
 ```json
 "userAssignedIdentities": {
     "value": {
-        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
-        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
+        "/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
+        "/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
     }
 }
 ```
@@ -189,8 +189,8 @@ You can specify multiple user assigned identities to a resource by providing add
 
 ```bicep
 userAssignedIdentities: {
-    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
-    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
+    '/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
+    '/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
 }
 ```
 
@@ -256,7 +256,7 @@ module containerApps './app/container-apps/main.bicep' = {
       }
     ]
     environmentId: '<environmentId>'
-    name: '<<namePrefix>>mcappcom001'
+    name: 'mcappcom001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     location: '<location>'
@@ -325,7 +325,7 @@ module containerApps './app/container-apps/main.bicep' = {
       "value": "<environmentId>"
     },
     "name": {
-      "value": "<<namePrefix>>mcappcom001"
+      "value": "mcappcom001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {
@@ -386,7 +386,7 @@ module containerApps './app/container-apps/main.bicep' = {
       }
     ]
     environmentId: '<environmentId>'
-    name: '<<namePrefix>>mcappmin001'
+    name: 'mcappmin001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     location: '<location>'
@@ -426,7 +426,7 @@ module containerApps './app/container-apps/main.bicep' = {
       "value": "<environmentId>"
     },
     "name": {
-      "value": "<<namePrefix>>mcappmin001"
+      "value": "mcappmin001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {

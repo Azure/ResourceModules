@@ -1,6 +1,6 @@
 # Private Endpoints `[Microsoft.Network/privateEndpoints]`
 
-This template deploys a private endpoint for a generic service.
+This module deploys a Private Endpoint.
 
 ## Navigation
 
@@ -304,7 +304,7 @@ module privateEndpoints './network/private-endpoints/main.bicep' = {
     groupIds: [
       'vault'
     ]
-    name: '<<namePrefix>>npecom001'
+    name: 'npecom001'
     serviceResourceId: '<serviceResourceId>'
     subnetResourceId: '<subnetResourceId>'
     // Non-required parameters
@@ -313,7 +313,7 @@ module privateEndpoints './network/private-endpoints/main.bicep' = {
         id: '<id>'
       }
     ]
-    customNetworkInterfaceName: '<<namePrefix>>npecom001nic'
+    customNetworkInterfaceName: 'npecom001nic'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     ipConfigurations: [
       {
@@ -367,7 +367,7 @@ module privateEndpoints './network/private-endpoints/main.bicep' = {
       ]
     },
     "name": {
-      "value": "<<namePrefix>>npecom001"
+      "value": "npecom001"
     },
     "serviceResourceId": {
       "value": "<serviceResourceId>"
@@ -384,7 +384,7 @@ module privateEndpoints './network/private-endpoints/main.bicep' = {
       ]
     },
     "customNetworkInterfaceName": {
-      "value": "<<namePrefix>>npecom001nic"
+      "value": "npecom001nic"
     },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
@@ -449,7 +449,7 @@ module privateEndpoints './network/private-endpoints/main.bicep' = {
     groupIds: [
       'vault'
     ]
-    name: '<<namePrefix>>npemin001'
+    name: 'npemin001'
     serviceResourceId: '<serviceResourceId>'
     subnetResourceId: '<subnetResourceId>'
     // Non-required parameters
@@ -477,7 +477,7 @@ module privateEndpoints './network/private-endpoints/main.bicep' = {
       ]
     },
     "name": {
-      "value": "<<namePrefix>>npemin001"
+      "value": "npemin001"
     },
     "serviceResourceId": {
       "value": "<serviceResourceId>"

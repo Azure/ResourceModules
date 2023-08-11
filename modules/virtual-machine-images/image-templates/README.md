@@ -1,6 +1,6 @@
-# Image Templates `[Microsoft.VirtualMachineImages/imageTemplates]`
+# Virtual Machine Image Templates `[Microsoft.VirtualMachineImages/imageTemplates]`
 
-This module deploys an image template that can be consumed by the Azure Image Builder (AIB) service.
+This module deploys a Virtual Machine Image Template that can be consumed by Azure Image Builder (AIB).
 
 ## Navigation
 
@@ -44,12 +44,12 @@ This module deploys an image template that can be consumed by the Azure Image Bu
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `sigImageDefinitionId` | string | `''` |  | Resource ID of Shared Image Gallery to distribute image to, e.g.: /subscriptions/<subscriptionID>/resourceGroups/<SIG resourcegroup>/providers/Microsoft.Compute/galleries/<SIG name>/images/<image definition>. |
 | `sigImageVersion` | string | `''` |  | Version of the Shared Image Gallery Image. Supports the following Version Syntax: Major.Minor.Build (i.e., '1.1.1' or '10.1.2'). |
-| `stagingResourceGroup` | string | `''` |  | Resource ID of the staging resource group in the same subscription and location as the image template that will be used to build the image.<p>If this field is empty, a resource group with a random name will be created.<p>If the resource group specified in this field doesn\'t exist, it will be created with the same name.<p>If the resource group specified exists, it must be empty and in the same region as the image template.<p>The resource group created will be deleted during template deletion if this field is empty or the resource group specified doesn\'t exist,<p>but if the resource group specified exists the resources created in the resource group will be deleted during template deletion and the resource group itself will remain.<p> |
+| `stagingResourceGroup` | string | `''` |  | Resource ID of the staging resource group in the same subscription and location as the image template that will be used to build the image.</p>If this field is empty, a resource group with a random name will be created.</p>If the resource group specified in this field doesn't exist, it will be created with the same name.</p>If the resource group specified exists, it must be empty and in the same region as the image template.</p>The resource group created will be deleted during template deletion if this field is empty or the resource group specified doesn't exist,</p>but if the resource group specified exists the resources created in the resource group will be deleted during template deletion and the resource group itself will remain. |
 | `storageAccountType` | string | `'Standard_LRS'` | `[Standard_LRS, Standard_ZRS]` | Storage account type to be used to store the image in the Azure Compute Gallery. |
-| `subnetId` | string | `''` |  | Resource ID of an already existing subnet, e.g.: /subscriptions/<subscriptionId>/resourceGroups/<resourceGroupName>/providers/Microsoft.Network/virtualNetworks/<vnetName>/subnets/<subnetName>.<p>If no value is provided, a new temporary VNET and subnet will be created in the staging resource group and will be deleted along with the remaining temporary resources.<p> |
+| `subnetId` | string | `''` |  | Resource ID of an already existing subnet, e.g.: /subscriptions/<subscriptionId>/resourceGroups/<resourceGroupName>/providers/Microsoft.Network/virtualNetworks/<vnetName>/subnets/<subnetName>.</p>If no value is provided, a new temporary VNET and subnet will be created in the staging resource group and will be deleted along with the remaining temporary resources. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `unManagedImageName` | string | `''` |  | Name of the unmanaged image that will be created in the AIB resourcegroup. |
-| `userAssignedIdentities` | array | `[]` |  | List of User-Assigned Identities associated to the Build VM for accessing Azure resources such as Key Vaults from your customizer scripts.<p>Be aware, the user assigned identity specified in the \'userMsiName\' parameter must have the \'Managed Identity Operator\' role assignment on all the user assigned identities<p>specified in this parameter for Azure Image Builder to be able to associate them to the build VM.<p> |
+| `userAssignedIdentities` | array | `[]` |  | List of User-Assigned Identities associated to the Build VM for accessing Azure resources such as Key Vaults from your customizer scripts.</p>Be aware, the user assigned identity specified in the 'userMsiName' parameter must have the 'Managed Identity Operator' role assignment on all the user assigned identities specified in this parameter for Azure Image Builder to be able to associate them to the build VM. |
 | `userMsiResourceGroup` | string | `[resourceGroup().name]` |  | Resource group of the user assigned identity. |
 | `vmSize` | string | `'Standard_D2s_v3'` |  | Specifies the size for the VM. |
 
@@ -268,8 +268,8 @@ You can specify multiple user assigned identities to a resource by providing add
 ```json
 "vmUserAssignedIdentities": {
     "value": [
-        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001",
-        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002"
+        "/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001",
+        "/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002"
     ]
 }
 ```
@@ -282,8 +282,8 @@ You can specify multiple user assigned identities to a resource by providing add
 
 ```bicep
 vmUserAssignedIdentities: [
-    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001'
-    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002'
+    '/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001'
+    '/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002'
 ]
 ```
 
@@ -301,8 +301,8 @@ You can specify multiple user assigned identities to a resource by providing add
 ```json
 "userAssignedIdentities": {
     "value": {
-        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
-        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
+        "/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
+        "/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
     }
 }
 ```
@@ -315,8 +315,8 @@ You can specify multiple user assigned identities to a resource by providing add
 
 ```bicep
 userAssignedIdentities: {
-    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
-    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
+    '/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
+    '/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
 }
 ```
 
@@ -369,14 +369,14 @@ module imageTemplates './virtual-machine-images/image-templates/main.bicep' = {
       type: 'PlatformImage'
       version: 'latest'
     }
-    name: '<<namePrefix>>vmiitcom001'
+    name: 'vmiitcom001'
     userMsiName: '<userMsiName>'
     // Non-required parameters
     buildTimeoutInMinutes: 60
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     imageReplicationRegions: []
     lock: 'CanNotDelete'
-    managedImageName: '<<namePrefix>>-mi-vmiitcom-001'
+    managedImageName: 'mi-vmiitcom-001'
     osDiskSizeGB: 127
     roleAssignments: [
       {
@@ -395,7 +395,7 @@ module imageTemplates './virtual-machine-images/image-templates/main.bicep' = {
       Environment: 'Non-Prod'
       Role: 'DeploymentValidation'
     }
-    unManagedImageName: '<<namePrefix>>-umi-vmiitcom-001'
+    unManagedImageName: 'umi-vmiitcom-001'
     userAssignedIdentities: [
       '<managedIdentityResourceId>'
     ]
@@ -436,7 +436,7 @@ module imageTemplates './virtual-machine-images/image-templates/main.bicep' = {
       }
     },
     "name": {
-      "value": "<<namePrefix>>vmiitcom001"
+      "value": "vmiitcom001"
     },
     "userMsiName": {
       "value": "<userMsiName>"
@@ -455,7 +455,7 @@ module imageTemplates './virtual-machine-images/image-templates/main.bicep' = {
       "value": "CanNotDelete"
     },
     "managedImageName": {
-      "value": "<<namePrefix>>-mi-vmiitcom-001"
+      "value": "mi-vmiitcom-001"
     },
     "osDiskSizeGB": {
       "value": 127
@@ -490,7 +490,7 @@ module imageTemplates './virtual-machine-images/image-templates/main.bicep' = {
       }
     },
     "unManagedImageName": {
-      "value": "<<namePrefix>>-umi-vmiitcom-001"
+      "value": "umi-vmiitcom-001"
     },
     "userAssignedIdentities": {
       "value": [
@@ -534,11 +534,11 @@ module imageTemplates './virtual-machine-images/image-templates/main.bicep' = {
       type: 'PlatformImage'
       version: 'latest'
     }
-    name: '<<namePrefix>>vmiitmin001'
+    name: 'vmiitmin001'
     userMsiName: '<userMsiName>'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    managedImageName: '<<namePrefix>>-mi-vmiitmin-001'
+    managedImageName: 'mi-vmiitmin-001'
     userMsiResourceGroup: '<userMsiResourceGroup>'
   }
 }
@@ -575,7 +575,7 @@ module imageTemplates './virtual-machine-images/image-templates/main.bicep' = {
       }
     },
     "name": {
-      "value": "<<namePrefix>>vmiitmin001"
+      "value": "vmiitmin001"
     },
     "userMsiName": {
       "value": "<userMsiName>"
@@ -585,7 +585,7 @@ module imageTemplates './virtual-machine-images/image-templates/main.bicep' = {
       "value": "<enableDefaultTelemetry>"
     },
     "managedImageName": {
-      "value": "<<namePrefix>>-mi-vmiitmin-001"
+      "value": "mi-vmiitmin-001"
     },
     "userMsiResourceGroup": {
       "value": "<userMsiResourceGroup>"

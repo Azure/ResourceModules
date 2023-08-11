@@ -1,3 +1,8 @@
+metadata name = 'Network Manager Network Group Static Members'
+metadata description = '''This module deploys a Network Manager Network Group Static Member.
+Static membership allows you to explicitly add virtual networks to a group by manually selecting individual virtual networks.'''
+metadata owner = 'Azure/module-maintainers'
+
 @description('Conditional. The name of the parent network manager. Required if the template is used in a standalone deployment.')
 param networkManagerName string
 
@@ -13,7 +18,7 @@ param resourceId string
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
+resource defaultTelemetry 'Microsoft.Resources/deployments@2022-09-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name)}'
   properties: {
     mode: 'Incremental'
@@ -25,15 +30,15 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource networkManager 'Microsoft.Network/networkManagers@2022-07-01' existing = {
+resource networkManager 'Microsoft.Network/networkManagers@2023-02-01' existing = {
   name: networkManagerName
 
-  resource networkGroup 'networkGroups@2022-07-01' existing = {
+  resource networkGroup 'networkGroups@2023-02-01' existing = {
     name: networkGroupName
   }
 }
 
-resource staticMember 'Microsoft.Network/networkManagers/networkGroups/staticMembers@2022-07-01' = {
+resource staticMember 'Microsoft.Network/networkManagers/networkGroups/staticMembers@2023-02-01' = {
   name: name
   parent: networkManager::networkGroup
   properties: {

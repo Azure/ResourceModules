@@ -1,3 +1,7 @@
+metadata name = 'Site Auth Settings V2 Config'
+metadata description = 'This module deploys a Site Auth Settings V2 Configuration.'
+metadata owner = 'Azure/module-maintainers'
+
 // ================ //
 // Parameters       //
 // ================ //

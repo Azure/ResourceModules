@@ -1,6 +1,6 @@
-# SQL Server Security Alert Policy `[Microsoft.Sql/servers/securityAlertPolicies]`
+# Azure SQL Server Security Alert Policies `[Microsoft.Sql/servers/securityAlertPolicies]`
 
-This module deploys an SQL Server Security Alert Policy.
+This module deploys an Azure SQL Server Security Alert Policy.
 
 ## Navigation
 

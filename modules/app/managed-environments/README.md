@@ -1,6 +1,6 @@
 # App ManagedEnvironments `[Microsoft.App/managedEnvironments]`
 
-This module deploys App ManagedEnvironments.
+This module deploys an App Managed Environment (also known as a Container App Environment).
 
 ## Navigation
 
@@ -190,7 +190,7 @@ module managedEnvironments './app/managed-environments/main.bicep' = {
     // Required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     logAnalyticsWorkspaceResourceId: '<logAnalyticsWorkspaceResourceId>'
-    name: '<<namePrefix>>amecom001'
+    name: 'amecom001'
     // Non-required parameters
     dockerBridgeCidr: '172.16.0.1/28'
     infrastructureSubnetId: '<infrastructureSubnetId>'
@@ -227,7 +227,7 @@ module managedEnvironments './app/managed-environments/main.bicep' = {
       "value": "<logAnalyticsWorkspaceResourceId>"
     },
     "name": {
-      "value": "<<namePrefix>>amecom001"
+      "value": "amecom001"
     },
     // Non-required parameters
     "dockerBridgeCidr": {
@@ -279,7 +279,7 @@ module managedEnvironments './app/managed-environments/main.bicep' = {
     // Required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     logAnalyticsWorkspaceResourceId: '<logAnalyticsWorkspaceResourceId>'
-    name: '<<namePrefix>>amemin001'
+    name: 'amemin001'
   }
 }
 ```
@@ -304,7 +304,7 @@ module managedEnvironments './app/managed-environments/main.bicep' = {
       "value": "<logAnalyticsWorkspaceResourceId>"
     },
     "name": {
-      "value": "<<namePrefix>>amemin001"
+      "value": "amemin001"
     }
   }
 }

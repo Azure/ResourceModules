@@ -1,3 +1,7 @@
+metadata name = 'Network Interface'
+metadata description = 'This module deploys a Network Interface.'
+metadata owner = 'Azure/module-maintainers'
+
 @description('Required. The name of the network interface.')
 param name string
 

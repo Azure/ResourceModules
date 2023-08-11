@@ -1,6 +1,6 @@
 # Public IP Prefixes `[Microsoft.Network/publicIPPrefixes]`
 
-This template deploys a public IP prefix.
+This module deploys a Public IP Prefix.
 
 ## Navigation
 
@@ -170,7 +170,7 @@ module publicIPPrefixes './network/public-ip-prefixes/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-npipcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>npipcom001'
+    name: 'npipcom001'
     prefixLength: 28
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
@@ -206,7 +206,7 @@ module publicIPPrefixes './network/public-ip-prefixes/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>npipcom001"
+      "value": "npipcom001"
     },
     "prefixLength": {
       "value": 28
@@ -253,7 +253,7 @@ module publicIPPrefixes './network/public-ip-prefixes/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-npipmin'
   params: {
     // Required parameters
-    name: '<<namePrefix>>npipmin001'
+    name: 'npipmin001'
     prefixLength: 28
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
@@ -275,7 +275,7 @@ module publicIPPrefixes './network/public-ip-prefixes/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>npipmin001"
+      "value": "npipmin001"
     },
     "prefixLength": {
       "value": 28

@@ -1,3 +1,7 @@
+metadata name = 'Data Protection Backup Vaults'
+metadata description = 'This module deploys a Data Protection Backup Vault.'
+metadata owner = 'Azure/module-maintainers'
+
 @description('Required. Name of the Backup Vault.')
 param name string
 
@@ -40,6 +44,13 @@ param dataStoreType string = 'VaultStore'
 ])
 param type string = 'GeoRedundant'
 
+@allowed([
+  'Disabled'
+  'Enabled'
+])
+@description('Optional. Settings for Azure Monitor based alerts for job failures.')
+param azureMonitorAlertSettingsAlertsForAllJobFailures string = 'Enabled'
+
 @description('Optional. List of all backup policies.')
 param backupPolicies array = []
 
@@ -63,12 +74,17 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource backupVault 'Microsoft.DataProtection/backupVaults@2022-05-01' = {
+resource backupVault 'Microsoft.DataProtection/backupVaults@2022-11-01-preview' = {
   name: name
   location: location
   tags: tags
   identity: identity
   properties: {
+    monitoringSettings: {
+      azureMonitorAlertSettings: {
+        alertsForAllJobFailures: azureMonitorAlertSettingsAlertsForAllJobFailures
+      }
+    }
     storageSettings: [
       {
         type: type

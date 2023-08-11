@@ -1,6 +1,6 @@
-# OperationsManagement Solutions `[Microsoft.OperationsManagement/solutions]`
+# Operations Management Solutions `[Microsoft.OperationsManagement/solutions]`
 
-This module deploys OperationsManagement Solutions.
+This module deploys an Operations Management Solution.
 
 ## Navigation
 
@@ -173,7 +173,7 @@ module solutions './operations-management/solutions/main.bicep' = {
   params: {
     // Required parameters
     logAnalyticsWorkspaceName: '<logAnalyticsWorkspaceName>'
-    name: '<<namePrefix>>omsnonms001'
+    name: 'omsnonms001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     product: 'nonmsTestSolutionProduct'
@@ -199,7 +199,7 @@ module solutions './operations-management/solutions/main.bicep' = {
       "value": "<logAnalyticsWorkspaceName>"
     },
     "name": {
-      "value": "<<namePrefix>>omsnonms001"
+      "value": "omsnonms001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {

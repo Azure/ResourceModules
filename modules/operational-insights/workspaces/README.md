@@ -1,6 +1,6 @@
 # Log Analytics Workspaces `[Microsoft.OperationalInsights/workspaces]`
 
-This template deploys a log analytics workspace.
+This module deploys a Log Analytics Workspace.
 
 ## Navigation
 
@@ -51,7 +51,7 @@ This template deploys a log analytics workspace.
 | `dataSources` | _[dataSources](data-sources/README.md)_ array | `[]` |  | LAW data sources to configure. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
-| `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `[allLogs, Audit]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. |
+| `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `['', allLogs, Audit]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticMetricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | The name of metrics that will be streamed. |
 | `diagnosticSettingsName` | string | `''` |  | The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings". |
@@ -67,7 +67,8 @@ This template deploys a log analytics workspace.
 | `publicNetworkAccessForQuery` | string | `'Enabled'` | `[Disabled, Enabled]` | The network access type for accessing Log Analytics query. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `savedSearches` | _[savedSearches](saved-searches/README.md)_ array | `[]` |  | Kusto Query Language searches to save. |
-| `serviceTier` | string | `'PerGB2018'` | `[Free, PerGB2018, PerNode, Standalone]` | Service Tier: PerGB2018, Free, Standalone, PerGB or PerNode. |
+| `skuCapacityReservationLevel` | int | `100` |  | The capacity reservation level in GB for this workspace, when CapacityReservation sku is selected. Must be in increments of 100 between 100 and 5000. |
+| `skuName` | string | `'PerGB2018'` | `[CapacityReservation, Free, LACluster, PerGB2018, PerNode, Premium, Standalone, Standard]` | The name of the SKU. |
 | `storageInsightsConfigs` | array | `[]` |  | List of storage accounts to be read by the workspace. |
 | `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
 | `tables` | _[tables](tables/README.md)_ array | `[]` |  | LAW custom tables to be deployed. |
@@ -456,8 +457,8 @@ You can specify multiple user assigned identities to a resource by providing add
 ```json
 "userAssignedIdentities": {
     "value": {
-        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
-        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
+        "/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
+        "/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
     }
 }
 ```
@@ -470,8 +471,8 @@ You can specify multiple user assigned identities to a resource by providing add
 
 ```bicep
 userAssignedIdentities: {
-    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
-    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
+    '/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
+    '/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
 }
 ```
 
@@ -515,7 +516,7 @@ module workspaces './operational-insights/workspaces/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-oiwadv'
   params: {
     // Required parameters
-    name: '<<namePrefix>>oiwadv001'
+    name: 'oiwadv001'
     // Non-required parameters
     dailyQuotaGb: 10
     dataExports: [
@@ -759,7 +760,7 @@ module workspaces './operational-insights/workspaces/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>oiwadv001"
+      "value": "oiwadv001"
     },
     // Non-required parameters
     "dailyQuotaGb": {
@@ -1046,7 +1047,7 @@ module workspaces './operational-insights/workspaces/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-oiwcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>oiwcom001'
+    name: 'oiwcom001'
     // Non-required parameters
     dailyQuotaGb: 10
     dataSources: [
@@ -1219,7 +1220,7 @@ module workspaces './operational-insights/workspaces/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>oiwcom001"
+      "value": "oiwcom001"
     },
     // Non-required parameters
     "dailyQuotaGb": {
@@ -1433,7 +1434,7 @@ module workspaces './operational-insights/workspaces/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-oiwmin'
   params: {
     // Required parameters
-    name: '<<namePrefix>>oiwmin001'
+    name: 'oiwmin001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
@@ -1454,7 +1455,7 @@ module workspaces './operational-insights/workspaces/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>oiwmin001"
+      "value": "oiwmin001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {

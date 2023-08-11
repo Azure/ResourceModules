@@ -1,6 +1,0 @@
-{
-  "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
-  "name": "Operational Insights Workspaces Linked Storage Accounts",
-  "summary": "This template deploys a linked Storage Accounts for a Log Analytics workspace.",
-  "owner": "Azure/module-maintainers"
-}

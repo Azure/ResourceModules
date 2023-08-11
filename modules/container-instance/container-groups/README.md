@@ -1,4 +1,4 @@
-# Container Instances `[Microsoft.ContainerInstance/containerGroups]`
+# Container Instances Container Groups `[Microsoft.ContainerInstance/containerGroups]`
 
 This module deploys a Container Instance Container Group.
 
@@ -257,8 +257,8 @@ You can specify multiple user assigned identities to a resource by providing add
 ```json
 "userAssignedIdentities": {
     "value": {
-        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
-        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
+        "/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
+        "/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
     }
 }
 ```
@@ -271,8 +271,8 @@ You can specify multiple user assigned identities to a resource by providing add
 
 ```bicep
 userAssignedIdentities: {
-    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
-    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
+    '/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
+    '/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
 }
 ```
 
@@ -314,7 +314,7 @@ module containerGroups './container-instance/container-groups/main.bicep' = {
     // Required parameters
     containers: [
       {
-        name: '<<namePrefix>>-az-aci-x-001'
+        name: 'az-aci-x-001'
         properties: {
           command: []
           environmentVariables: []
@@ -338,7 +338,7 @@ module containerGroups './container-instance/container-groups/main.bicep' = {
         }
       }
       {
-        name: '<<namePrefix>>-az-aci-x-002'
+        name: 'az-aci-x-002'
         properties: {
           command: []
           environmentVariables: []
@@ -358,7 +358,7 @@ module containerGroups './container-instance/container-groups/main.bicep' = {
         }
       }
     ]
-    name: '<<namePrefix>>cicgcom001'
+    name: 'cicgcom001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     ipAddressPorts: [
@@ -400,7 +400,7 @@ module containerGroups './container-instance/container-groups/main.bicep' = {
     "containers": {
       "value": [
         {
-          "name": "<<namePrefix>>-az-aci-x-001",
+          "name": "az-aci-x-001",
           "properties": {
             "command": [],
             "environmentVariables": [],
@@ -424,7 +424,7 @@ module containerGroups './container-instance/container-groups/main.bicep' = {
           }
         },
         {
-          "name": "<<namePrefix>>-az-aci-x-002",
+          "name": "az-aci-x-002",
           "properties": {
             "command": [],
             "environmentVariables": [],
@@ -446,7 +446,7 @@ module containerGroups './container-instance/container-groups/main.bicep' = {
       ]
     },
     "name": {
-      "value": "<<namePrefix>>cicgcom001"
+      "value": "cicgcom001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {
@@ -501,7 +501,7 @@ module containerGroups './container-instance/container-groups/main.bicep' = {
     // Required parameters
     containers: [
       {
-        name: '<<namePrefix>>-az-aci-x-001'
+        name: 'az-aci-x-001'
         properties: {
           command: []
           environmentVariables: []
@@ -525,7 +525,7 @@ module containerGroups './container-instance/container-groups/main.bicep' = {
         }
       }
       {
-        name: '<<namePrefix>>-az-aci-x-002'
+        name: 'az-aci-x-002'
         properties: {
           command: []
           environmentVariables: []
@@ -545,7 +545,7 @@ module containerGroups './container-instance/container-groups/main.bicep' = {
         }
       }
     ]
-    name: '<<namePrefix>>cicgenc001'
+    name: 'cicgenc001'
     // Non-required parameters
     cMKKeyName: '<cMKKeyName>'
     cMKKeyVaultResourceId: '<cMKKeyVaultResourceId>'
@@ -590,7 +590,7 @@ module containerGroups './container-instance/container-groups/main.bicep' = {
     "containers": {
       "value": [
         {
-          "name": "<<namePrefix>>-az-aci-x-001",
+          "name": "az-aci-x-001",
           "properties": {
             "command": [],
             "environmentVariables": [],
@@ -614,7 +614,7 @@ module containerGroups './container-instance/container-groups/main.bicep' = {
           }
         },
         {
-          "name": "<<namePrefix>>-az-aci-x-002",
+          "name": "az-aci-x-002",
           "properties": {
             "command": [],
             "environmentVariables": [],
@@ -636,7 +636,7 @@ module containerGroups './container-instance/container-groups/main.bicep' = {
       ]
     },
     "name": {
-      "value": "<<namePrefix>>cicgenc001"
+      "value": "cicgenc001"
     },
     // Non-required parameters
     "cMKKeyName": {
@@ -700,7 +700,7 @@ module containerGroups './container-instance/container-groups/main.bicep' = {
     // Required parameters
     containers: [
       {
-        name: '<<namePrefix>>-az-aci-x-001'
+        name: 'az-aci-x-001'
         properties: {
           image: 'mcr.microsoft.com/azuredocs/aci-helloworld'
           ports: [
@@ -718,7 +718,7 @@ module containerGroups './container-instance/container-groups/main.bicep' = {
         }
       }
     ]
-    name: '<<namePrefix>>cicgmin001'
+    name: 'cicgmin001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     ipAddressPorts: [
@@ -747,7 +747,7 @@ module containerGroups './container-instance/container-groups/main.bicep' = {
     "containers": {
       "value": [
         {
-          "name": "<<namePrefix>>-az-aci-x-001",
+          "name": "az-aci-x-001",
           "properties": {
             "image": "mcr.microsoft.com/azuredocs/aci-helloworld",
             "ports": [
@@ -767,7 +767,7 @@ module containerGroups './container-instance/container-groups/main.bicep' = {
       ]
     },
     "name": {
-      "value": "<<namePrefix>>cicgmin001"
+      "value": "cicgmin001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {
@@ -801,7 +801,7 @@ module containerGroups './container-instance/container-groups/main.bicep' = {
     // Required parameters
     containers: [
       {
-        name: '<<namePrefix>>-az-aci-x-001'
+        name: 'az-aci-x-001'
         properties: {
           command: []
           environmentVariables: []
@@ -831,7 +831,7 @@ module containerGroups './container-instance/container-groups/main.bicep' = {
         }
       }
       {
-        name: '<<namePrefix>>-az-aci-x-002'
+        name: 'az-aci-x-002'
         properties: {
           command: []
           environmentVariables: []
@@ -851,7 +851,7 @@ module containerGroups './container-instance/container-groups/main.bicep' = {
         }
       }
     ]
-    name: '<<namePrefix>>cicgprivate001'
+    name: 'cicgprivate001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     ipAddressPorts: [
@@ -905,7 +905,7 @@ module containerGroups './container-instance/container-groups/main.bicep' = {
     "containers": {
       "value": [
         {
-          "name": "<<namePrefix>>-az-aci-x-001",
+          "name": "az-aci-x-001",
           "properties": {
             "command": [],
             "environmentVariables": [],
@@ -935,7 +935,7 @@ module containerGroups './container-instance/container-groups/main.bicep' = {
           }
         },
         {
-          "name": "<<namePrefix>>-az-aci-x-002",
+          "name": "az-aci-x-002",
           "properties": {
             "command": [],
             "environmentVariables": [],
@@ -957,7 +957,7 @@ module containerGroups './container-instance/container-groups/main.bicep' = {
       ]
     },
     "name": {
-      "value": "<<namePrefix>>cicgprivate001"
+      "value": "cicgprivate001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {

@@ -28,7 +28,7 @@ on:
       - main
     paths:
       - 'modules/compute/virtual-machines/**'
-      - 'modules/recovery-services/vaults/protection-containers/protected-items/**'
+      - 'modules/recovery-services/vaults/backup-fabrics/protection-containers/protected-items/**'
       - 'modules/network/public-ip-addresses/**'
       - 'modules/network/network-interfaces/**'
       - '.github/actions/templates/**'

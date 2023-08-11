@@ -1,6 +1,0 @@
-{
-  "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
-  "name": "RecoveryServicesVaultsBackupStorageConfig",
-  "summary": "This module deploys the Backup Storage Configuration for the Recovery Service Vault",
-  "owner": "Azure/module-maintainers"
-}

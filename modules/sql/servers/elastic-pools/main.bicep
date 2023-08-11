@@ -1,3 +1,7 @@
+metadata name = 'SQL Server Elastic Pool'
+metadata description = 'This module deploys an Azure SQL Server Elastic Pool.'
+metadata owner = 'Azure/module-maintainers'
+
 @description('Required. The name of the Elastic Pool.')
 param name string
 
@@ -36,7 +40,7 @@ param maintenanceConfigurationId string = ''
 param maxSizeBytes int = 34359738368
 
 @description('Optional. Minimal capacity that serverless pool will not shrink below, if not paused.')
-param minCapacity int = 2
+param minCapacity int = -1
 
 @description('Optional. The maximum capacity any one database can consume.')
 param databaseMaxCapacity int = 2

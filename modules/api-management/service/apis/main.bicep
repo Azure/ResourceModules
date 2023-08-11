@@ -1,3 +1,7 @@
+metadata name = 'API Management Service APIs'
+metadata description = 'This module deploys an API Management Service API.'
+metadata owner = 'Azure/module-maintainers'
+
 @description('Required. API revision identifier. Must be unique in the current API Management service instance. Non-current revision has ;rev=n as a suffix where n is the revision number.')
 param name string
 
@@ -13,10 +17,12 @@ param apiRevision string = ''
 @description('Optional. Description of the API Revision.')
 param apiRevisionDescription string = ''
 
-@description('Optional. Type of API to create. * http creates a SOAP to REST API * soap creates a SOAP pass-through API.')
+@description('Optional. Type of API to create. * http creates a REST API * soap creates a SOAP pass-through API * websocket creates websocket API * graphql creates GraphQL API.')
 @allowed([
+  'graphql'
   'http'
   'soap'
+  'websocket'
 ])
 param apiType string = 'http'
 
@@ -83,8 +89,10 @@ param subscriptionRequired bool = false
 
 @description('Optional. Type of API.')
 @allowed([
+  'graphql'
   'http'
   'soap'
+  'websocket'
 ])
 param type string = 'http'
 

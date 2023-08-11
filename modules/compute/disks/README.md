@@ -1,6 +1,6 @@
 # Compute Disks `[Microsoft.Compute/disks]`
 
-This template deploys a disk
+This module deploys a Compute Disk
 
 ## Navigation
 
@@ -195,7 +195,7 @@ module disks './compute/disks/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-cdcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-cdcom001'
+    name: 'cdcom001'
     sku: 'UltraSSD_LRS'
     // Non-required parameters
     diskIOPSReadWrite: 500
@@ -237,7 +237,7 @@ module disks './compute/disks/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-cdcom001"
+      "value": "cdcom001"
     },
     "sku": {
       "value": "UltraSSD_LRS"
@@ -302,7 +302,7 @@ module disks './compute/disks/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-cdimg'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-cdimg001'
+    name: 'cdimg001'
     sku: 'Standard_LRS'
     // Non-required parameters
     createOption: 'FromImage'
@@ -339,7 +339,7 @@ module disks './compute/disks/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-cdimg001"
+      "value": "cdimg001"
     },
     "sku": {
       "value": "Standard_LRS"
@@ -389,7 +389,7 @@ module disks './compute/disks/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-cdimp'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-cdimp001'
+    name: 'cdimp001'
     sku: 'Standard_LRS'
     // Non-required parameters
     createOption: 'Import'
@@ -427,7 +427,7 @@ module disks './compute/disks/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-cdimp001"
+      "value": "cdimp001"
     },
     "sku": {
       "value": "Standard_LRS"
@@ -480,7 +480,7 @@ module disks './compute/disks/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-cdmin'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-cdmin001'
+    name: 'cdmin001'
     sku: 'Standard_LRS'
     // Non-required parameters
     diskSizeGB: 1
@@ -503,7 +503,7 @@ module disks './compute/disks/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-cdmin001"
+      "value": "cdmin001"
     },
     "sku": {
       "value": "Standard_LRS"
