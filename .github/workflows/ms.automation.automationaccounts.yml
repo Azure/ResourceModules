@@ -29,7 +29,7 @@ on:
       - main
     paths:
       - 'modules/automation/automation-account/**'
-      - 'modules/operational-insights/workspace/linked-services/**'
+      - 'modules/operational-insights/workspace/linked-service/**'
       - 'modules/operations-management/solution/**'
       - 'modules/network/private-endpoint/**'
       - '.github/actions/templates/**'

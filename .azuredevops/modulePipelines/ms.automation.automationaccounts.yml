@@ -28,7 +28,7 @@ trigger:
   paths:
     include:
       - '/modules/automation/automation-account/*'
-      - '/modules/operational-insights/workspace/linked-services/*'
+      - '/modules/operational-insights/workspace/linked-service/*'
       - '/modules/operations-management/solution/*'
       - '/modules/network/private-endpoint/*'
       - '/.azuredevops/modulePipelines/ms.automation.automationaccounts.yml'

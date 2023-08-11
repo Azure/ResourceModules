@@ -28,7 +28,7 @@ on:
       - main
     paths:
       - 'modules/compute/disk-encryption-set/**'
-      - 'modules/key-vault/vault/access-policies/**'
+      - 'modules/key-vault/vault/access-policy/**'
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.compute.diskencryptionsets.yml'
