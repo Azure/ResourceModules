@@ -26,7 +26,7 @@ function Get-ReducedWordString {
         [string] $StringToReduce
     )
 
-    if ($StringToReduce -match '(.+?)(y|ii|ies|es|s)$') {
+    if ($StringToReduce -match '(.+?)(y|ii|e|ys|ies|es|s)$') {
         return $Matches[1]
     }
 

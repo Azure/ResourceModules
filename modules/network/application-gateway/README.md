@@ -1,4 +1,4 @@
-# Network Application Gateways `[Microsoft.Network/applicationGatewayAvailableRequestHeaders]`
+# Network Application Gateways `[Microsoft.Network/applicationGateways]`
 
 This module deploys a Network Application Gateway.
 
