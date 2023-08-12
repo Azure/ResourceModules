@@ -171,7 +171,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module profiles './cdn/profile/main.bicep' = {
+module profile './cdn/profile/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-cdnpcom'
   params: {
     // Required parameters

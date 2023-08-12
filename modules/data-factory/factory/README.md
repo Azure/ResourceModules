@@ -392,7 +392,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module factories './data-factory/factory/main.bicep' = {
+module factory './data-factory/factory/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-dffcom'
   params: {
     // Required parameters
@@ -623,7 +623,7 @@ module factories './data-factory/factory/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module factories './data-factory/factory/main.bicep' = {
+module factory './data-factory/factory/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-dffmin'
   params: {
     // Required parameters
