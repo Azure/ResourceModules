@@ -47,7 +47,7 @@ param roleAssignments array = []
   'Double'
   'Single'
 ])
-param encryptionType string = 'Double'
+param encryptionType string = 'Single'
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
