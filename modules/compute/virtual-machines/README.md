@@ -1026,6 +1026,8 @@ This section gives you an overview of all local-referenced module files (i.e., o
 
 | Reference | Type |
 | :-- | :-- |
+| `network/network-interfaces` | Local reference |
+| `network/public-ip-addresses` | Local reference |
 | `recovery-services/vaults/backup-fabrics/protection-containers/protected-items` | Local reference |
 
 ## Deployment examples
