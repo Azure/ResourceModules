@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "417256104056036730"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "14277016556331634037"
+    },
+    "name": "Azure NetApp Files",
+    "description": "This module deploys an Azure NetApp File.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
@@ -88,20 +91,41 @@
     "lock": {
       "type": "string",
       "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Specify the type of lock."
-      },
       "allowedValues": [
         "",
         "CanNotDelete",
         "ReadOnly"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Specify the type of lock."
+      }
     },
     "tags": {
       "type": "object",
       "defaultValue": {},
       "metadata": {
         "description": "Optional. Tags for all resources."
+      }
+    },
+    "cMKKeyVaultResourceId": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Conditional. The resource ID of a key vault to reference a customer managed key for encryption from. Required if 'cMKKeyName' is not empty."
+      }
+    },
+    "cMKKeyName": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Optional. The name of the customer managed key to use for encryption."
+      }
+    },
+    "cMKUserAssignedIdentityResourceId": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Conditional. User assigned identity to use when fetching the customer managed key. Required if 'cMKKeyName' is not empty."
       }
     },
     "enableDefaultTelemetry": {
@@ -144,13 +168,14 @@
     },
     {
       "type": "Microsoft.NetApp/netAppAccounts",
-      "apiVersion": "2022-09-01",
+      "apiVersion": "2022-11-01",
       "name": "[parameters('name')]",
       "tags": "[parameters('tags')]",
       "identity": "[variables('identity')]",
       "location": "[parameters('location')]",
       "properties": {
-        "activeDirectories": "[if(not(empty(parameters('domainName'))), variables('activeDirectoryConnectionProperties'), null())]"
+        "activeDirectories": "[if(not(empty(parameters('domainName'))), variables('activeDirectoryConnectionProperties'), null())]",
+        "encryption": "[if(not(empty(parameters('cMKKeyName'))), createObject('identity', if(not(empty(parameters('cMKUserAssignedIdentityResourceId'))), createObject('userAssignedIdentity', parameters('cMKUserAssignedIdentityResourceId')), null()), 'keySource', 'Microsoft.KeyVault', 'keyVaultProperties', createObject('keyName', parameters('cMKKeyName'), 'keyVaultResourceId', extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', split(parameters('cMKKeyVaultResourceId'), '/')[2], split(parameters('cMKKeyVaultResourceId'), '/')[4]), 'Microsoft.KeyVault/vaults', last(split(parameters('cMKKeyVaultResourceId'), '/'))), 'keyVaultUri', reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', split(parameters('cMKKeyVaultResourceId'), '/')[2], split(parameters('cMKKeyVaultResourceId'), '/')[4]), 'Microsoft.KeyVault/vaults', last(split(parameters('cMKKeyVaultResourceId'), '/'))), '2021-10-01').vaultUri)), createObject('keySource', 'Microsoft.NetApp'))]"
       }
     },
     {
@@ -201,8 +226,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "18126615230901064847"
+              "version": "0.20.4.51522",
+              "templateHash": "4042341328592599874"
             }
           },
           "parameters": {
@@ -356,9 +381,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "5582726599079259116"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "13333372953499047799"
+            },
+            "name": "Azure NetApp Files Capacity Pools",
+            "description": "This module deploys an Azure NetApp Files Capacity Pool.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "netAppAccountName": {
@@ -438,6 +466,17 @@
                 "description": "Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'."
               }
             },
+            "encryptionType": {
+              "type": "string",
+              "defaultValue": "Single",
+              "allowedValues": [
+                "Double",
+                "Single"
+              ],
+              "metadata": {
+                "description": "Optional. Encryption type of the capacity pool, set encryption type for data at rest for this pool and all volumes in it. This value can only be set when creating new pool."
+              }
+            },
             "enableDefaultTelemetry": {
               "type": "bool",
               "defaultValue": true,
@@ -466,7 +505,7 @@
             },
             {
               "type": "Microsoft.NetApp/netAppAccounts/capacityPools",
-              "apiVersion": "2022-09-01",
+              "apiVersion": "2022-11-01",
               "name": "[format('{0}/{1}', parameters('netAppAccountName'), parameters('name'))]",
               "location": "[parameters('location')]",
               "tags": "[parameters('tags')]",
@@ -474,7 +513,8 @@
                 "serviceLevel": "[parameters('serviceLevel')]",
                 "size": "[parameters('size')]",
                 "qosType": "[parameters('qosType')]",
-                "coolAccess": "[parameters('coolAccess')]"
+                "coolAccess": "[parameters('coolAccess')]",
+                "encryptionType": "[parameters('encryptionType')]"
               }
             },
             {
@@ -528,9 +568,12 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.19.5.34762",
-                      "templateHash": "4861424102878838813"
-                    }
+                      "version": "0.20.4.51522",
+                      "templateHash": "5724175752968001086"
+                    },
+                    "name": "Azure NetApp Files Capacity Pool Volumes",
+                    "description": "This module deploys an Azure NetApp Files Capacity Pool Volume.",
+                    "owner": "Azure/module-maintainers"
                   },
                   "parameters": {
                     "netAppAccountName": {
@@ -636,7 +679,7 @@
                     },
                     {
                       "type": "Microsoft.NetApp/netAppAccounts/capacityPools/volumes",
-                      "apiVersion": "2022-09-01",
+                      "apiVersion": "2022-11-01",
                       "name": "[format('{0}/{1}/{2}', parameters('netAppAccountName'), parameters('capacityPoolName'), parameters('name'))]",
                       "location": "[parameters('location')]",
                       "properties": {
@@ -682,8 +725,8 @@
                           "metadata": {
                             "_generator": {
                               "name": "bicep",
-                              "version": "0.19.5.34762",
-                              "templateHash": "2805945634543671808"
+                              "version": "0.20.4.51522",
+                              "templateHash": "6579931820257793193"
                             }
                           },
                           "parameters": {
@@ -824,7 +867,7 @@
                       "metadata": {
                         "description": "The location the resource was deployed into."
                       },
-                      "value": "[reference(resourceId('Microsoft.NetApp/netAppAccounts/capacityPools/volumes', parameters('netAppAccountName'), parameters('capacityPoolName'), parameters('name')), '2022-09-01', 'full').location]"
+                      "value": "[reference(resourceId('Microsoft.NetApp/netAppAccounts/capacityPools/volumes', parameters('netAppAccountName'), parameters('capacityPoolName'), parameters('name')), '2022-11-01', 'full').location]"
                     }
                   }
                 }
@@ -867,8 +910,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.19.5.34762",
-                      "templateHash": "3662901243445895322"
+                      "version": "0.20.4.51522",
+                      "templateHash": "6567527079478034080"
                     }
                   },
                   "parameters": {
@@ -1009,7 +1052,7 @@
               "metadata": {
                 "description": "The location the resource was deployed into."
               },
-              "value": "[reference(resourceId('Microsoft.NetApp/netAppAccounts/capacityPools', parameters('netAppAccountName'), parameters('name')), '2022-09-01', 'full').location]"
+              "value": "[reference(resourceId('Microsoft.NetApp/netAppAccounts/capacityPools', parameters('netAppAccountName'), parameters('name')), '2022-11-01', 'full').location]"
             }
           }
         }
@@ -1046,7 +1089,7 @@
       "metadata": {
         "description": "The location the resource was deployed into."
       },
-      "value": "[reference(resourceId('Microsoft.NetApp/netAppAccounts', parameters('name')), '2022-09-01', 'full').location]"
+      "value": "[reference(resourceId('Microsoft.NetApp/netAppAccounts', parameters('name')), '2022-11-01', 'full').location]"
     }
   }
 }
