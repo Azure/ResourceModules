@@ -14,8 +14,8 @@ This module deploys an Azure NetApp Files Capacity Pool.
 | Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.NetApp/netAppAccounts/capacityPools` | [2022-09-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.NetApp/netAppAccounts/capacityPools) |
-| `Microsoft.NetApp/netAppAccounts/capacityPools/volumes` | [2022-09-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.NetApp/netAppAccounts/capacityPools/volumes) |
+| `Microsoft.NetApp/netAppAccounts/capacityPools` | [2022-11-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.NetApp/netAppAccounts/capacityPools) |
+| `Microsoft.NetApp/netAppAccounts/capacityPools/volumes` | [2022-11-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.NetApp/netAppAccounts/capacityPools/volumes) |
 
 ## Parameters
 
@@ -38,6 +38,7 @@ This module deploys an Azure NetApp Files Capacity Pool.
 | :-- | :-- | :-- | :-- | :-- |
 | `coolAccess` | bool | `False` |  | If enabled (true) the pool can contain cool Access enabled volumes. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
+| `encryptionType` | string | `'Double'` | `[Double, Single]` | Encryption type of the capacity pool, set encryption type for data at rest for this pool and all volumes in it. This value can only be set when creating new pool. |
 | `location` | string | `[resourceGroup().location]` |  | Location of the pool volume. |
 | `qosType` | string | `'Auto'` | `[Auto, Manual]` | The qos type of the pool. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |

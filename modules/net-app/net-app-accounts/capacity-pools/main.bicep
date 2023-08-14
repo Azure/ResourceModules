@@ -42,6 +42,13 @@ param coolAccess bool = false
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
 
+@description('Optional. Encryption type of the capacity pool, set encryption type for data at rest for this pool and all volumes in it. This value can only be set when creating new pool.')
+@allowed([
+  'Double'
+  'Single'
+])
+param encryptionType string = 'Double'
+
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
@@ -59,11 +66,11 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource netAppAccount 'Microsoft.NetApp/netAppAccounts@2022-09-01' existing = {
+resource netAppAccount 'Microsoft.NetApp/netAppAccounts@2022-11-01' existing = {
   name: netAppAccountName
 }
 
-resource capacityPool 'Microsoft.NetApp/netAppAccounts/capacityPools@2022-09-01' = {
+resource capacityPool 'Microsoft.NetApp/netAppAccounts/capacityPools@2022-11-01' = {
   name: name
   parent: netAppAccount
   location: location
@@ -73,6 +80,7 @@ resource capacityPool 'Microsoft.NetApp/netAppAccounts/capacityPools@2022-09-01'
     size: size
     qosType: qosType
     coolAccess: coolAccess
+    encryptionType: encryptionType
   }
 }
 

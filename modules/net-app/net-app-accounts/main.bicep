@@ -47,6 +47,15 @@ param lock string = ''
 @description('Optional. Tags for all resources.')
 param tags object = {}
 
+@description('Conditional. The resource ID of a key vault to reference a customer managed key for encryption from. Required if \'cMKKeyName\' is not empty.')
+param cMKKeyVaultResourceId string = ''
+
+@description('Optional. The name of the customer managed key to use for encryption.')
+param cMKKeyName string = ''
+
+@description('Conditional. User assigned identity to use when fetching the customer managed key. Required if \'cMKKeyName\' is not empty.')
+param cMKUserAssignedIdentityResourceId string = ''
+
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
@@ -70,6 +79,11 @@ var identity = identityType != 'None' ? {
   userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
 } : null
 
+resource cMKKeyVault 'Microsoft.KeyVault/vaults@2021-10-01' existing = if (!empty(cMKKeyVaultResourceId)) {
+  name: last(split(cMKKeyVaultResourceId, '/'))!
+  scope: resourceGroup(split(cMKKeyVaultResourceId, '/')[2], split(cMKKeyVaultResourceId, '/')[4])
+}
+
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name)}'
   properties: {
@@ -82,13 +96,26 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource netAppAccount 'Microsoft.NetApp/netAppAccounts@2022-09-01' = {
+resource netAppAccount 'Microsoft.NetApp/netAppAccounts@2022-11-01' = {
   name: name
   tags: tags
   identity: identity
   location: location
   properties: {
     activeDirectories: !empty(domainName) ? activeDirectoryConnectionProperties : null
+    encryption: !empty(cMKKeyName) ? {
+      identity: !empty(cMKUserAssignedIdentityResourceId) ? {
+        userAssignedIdentity: cMKUserAssignedIdentityResourceId
+      } : null
+      keySource: 'Microsoft.KeyVault'
+      keyVaultProperties: {
+        keyName: cMKKeyName
+        keyVaultResourceId: cMKKeyVault.id
+        keyVaultUri: cMKKeyVault.properties.vaultUri
+      }
+    } : {
+      keySource: 'Microsoft.NetApp'
+    }
   }
 }
 

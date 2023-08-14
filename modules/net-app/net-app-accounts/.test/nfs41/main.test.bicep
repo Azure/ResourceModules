@@ -14,6 +14,9 @@ param location string = deployment().location
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints.')
 param serviceShort string = 'nanaanfs41'
 
+@description('Generated. Used as a basis for unique resource names.')
+param baseTime string = utcNow('u')
+
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
@@ -37,6 +40,8 @@ module nestedDependencies 'dependencies.bicep' = {
   params: {
     virtualNetworkName: 'dep-${namePrefix}-vnet-${serviceShort}'
     managedIdentityName: 'dep-${namePrefix}-msi-${serviceShort}'
+    // Adding base time to make the name unique as purge protection must be enabled (but may not be longer than 24 characters total)
+    keyVaultName: 'dep-${namePrefix}-kv-${serviceShort}-${substring(uniqueString(baseTime), 0, 3)}'
   }
 }
 
@@ -148,5 +153,8 @@ module testDeployment '../../main.bicep' = {
     userAssignedIdentities: {
       '${nestedDependencies.outputs.managedIdentityResourceId}': {}
     }
+    cMKKeyName: nestedDependencies.outputs.keyVaultKeyName
+    cMKKeyVaultResourceId: nestedDependencies.outputs.keyVaultResourceId
+    cMKUserAssignedIdentityResourceId: nestedDependencies.outputs.managedIdentityResourceId
   }
 }
