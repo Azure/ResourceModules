@@ -98,7 +98,7 @@
     "endpoints--event-hub": "endpoint--event-hub",
     "endpoints--service-bus": "endpoint--service-bus",
     "eventhubs": "eventhub",
-    "eventSubscriptions": "eventSubscription",
+    "event-subscriptions": "event-subscription",
     "express-route-circuits": "express-route-circuit",
     "express-route-gateway": "express-route-gateway",
     "extensions": "extension",
