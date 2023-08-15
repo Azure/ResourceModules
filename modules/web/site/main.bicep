@@ -288,7 +288,7 @@ resource app 'Microsoft.Web/sites@2021-03-01' = {
   }
 }
 
-module app_appsettings 'config--appsetting/main.bicep' = if (!empty(appSettingsKeyValuePairs)) {
+module app_appsettings 'config--appsettings/main.bicep' = if (!empty(appSettingsKeyValuePairs)) {
   name: '${uniqueString(deployment().name, location)}-Site-Config-AppSettings'
   params: {
     appName: app.name
