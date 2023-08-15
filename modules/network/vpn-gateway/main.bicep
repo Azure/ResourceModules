@@ -95,7 +95,7 @@ module vpnGateway_natRules 'nat-rule/main.bicep' = [for (natRule, index) in natR
   }
 }]
 
-module vpnGateway_vpnConnections 'vpn-connections/main.bicep' = [for (connection, index) in vpnConnections: {
+module vpnGateway_vpnConnections 'vpn-connection/main.bicep' = [for (connection, index) in vpnConnections: {
   name: '${deployment().name}-Connection-${index}'
   params: {
     name: connection.name
