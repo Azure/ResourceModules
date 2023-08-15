@@ -136,7 +136,7 @@ resource topic 'Microsoft.EventGrid/topics@2020-06-01' = {
 }
 
 // Event subscriptions
-module topics_eventSubscriptions 'eventSubscription/main.bicep' = [for (eventSubscription, index) in eventSubscriptions: {
+module topics_eventSubscriptions 'event-subscription/main.bicep' = [for (eventSubscription, index) in eventSubscriptions: {
   name: '${uniqueString(deployment().name, location)}-EventGrid-Topics-EventSubscriptions-${index}'
   params: {
     destination: eventSubscription.destination
