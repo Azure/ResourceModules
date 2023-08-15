@@ -40,7 +40,7 @@ This module deploys a VPN Gateway.
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `natRules` | array | `[]` |  | List of all the NAT Rules to associate with the gateway. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
-| `vpnConnections` | _[vpnConnections](vpn-connections/README.md)_ array | `[]` |  | The VPN connections to create in the VPN gateway. |
+| `vpnConnections` | array | `[]` |  | The VPN connections to create in the VPN gateway. |
 | `vpnGatewayScaleUnit` | int | `2` |  | The scale unit for this VPN gateway. |
 
 
