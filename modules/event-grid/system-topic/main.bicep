@@ -139,7 +139,7 @@ resource systemTopic 'Microsoft.EventGrid/systemTopics@2021-12-01' = {
 }
 
 // Event subscriptions
-module systemTopics_eventSubscriptions 'eventSubscription/main.bicep' = [for (eventSubscription, index) in eventSubscriptions: {
+module systemTopics_eventSubscriptions 'event-subscription/main.bicep' = [for (eventSubscription, index) in eventSubscriptions: {
   name: '${uniqueString(deployment().name, location)}-EventGrid-SystemTopics-EventSubscriptions-${index}'
   params: {
     destination: eventSubscription.destination
