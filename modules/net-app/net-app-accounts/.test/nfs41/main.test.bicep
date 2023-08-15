@@ -12,7 +12,7 @@ param resourceGroupName string = 'ms.netapp.netappaccounts-${serviceShort}-rg'
 param location string = deployment().location
 
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints.')
-param serviceShort string = 'nanaanfs41'
+param serviceShort string = 'naanfs41'
 
 @description('Generated. Used as a basis for unique resource names.')
 param baseTime string = utcNow('u')
