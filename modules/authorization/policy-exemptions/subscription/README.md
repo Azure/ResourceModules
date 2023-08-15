@@ -1,4 +1,4 @@
-# Policy Exemptions (Subscription scope) `[Microsoft.Authorization/policyExemptions/subscription]`
+# Policy Exemptions (Subscription scope) `[Microsoft.Authorization/policyExemptions]`
 
 This module deploys a Policy Exemption at a Subscription scope.
 

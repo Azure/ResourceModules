@@ -92,7 +92,7 @@ This section focuses on _Azure DevOps_ pipelines.
 
   1. Now you can trigger the pipeline by selecting the 'Run' button on the bottom right.
 
-     <img src="./media/CIEnvironment/pipelineStart3.png" alt="Pipeline start step 3" height="400">
+     <img src="./media/CIEnvironment/pipelineStart3.png" alt="Pipeline start step 3" height="600">
 
   >**Note**: Depending on the pipeline you selected you may have additional input parameters you can provide aside from the branch. An outline can be found in the [Module pipeline inputs](./The%20CI%20environment%20-%20Pipeline%20design#module-pipeline-inputs) section.
 

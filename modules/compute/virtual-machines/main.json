@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "7699169858019499446"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "10649954371905940405"
+    },
+    "name": "Virtual Machines",
+    "description": "This module deploys a Virtual Machine with one or multiple NICs and optionally one or multiple public IPs.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
@@ -432,8 +435,8 @@
     "diagnosticLogsRetentionInDays": {
       "type": "int",
       "defaultValue": 365,
-      "maxValue": 365,
       "minValue": 0,
+      "maxValue": 365,
       "metadata": {
         "description": "Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely."
       }
@@ -469,14 +472,14 @@
     "lock": {
       "type": "string",
       "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Specify the type of lock."
-      },
       "allowedValues": [
         "",
         "CanNotDelete",
         "ReadOnly"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Specify the type of lock."
+      }
     },
     "roleAssignments": {
       "type": "array",
@@ -853,8 +856,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "2484294161947536933"
+              "version": "0.20.4.51522",
+              "templateHash": "7198152300976797281"
             }
           },
           "parameters": {
@@ -1014,9 +1017,12 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.19.5.34762",
-                      "templateHash": "1954871673414826097"
-                    }
+                      "version": "0.20.4.51522",
+                      "templateHash": "14474619344547636171"
+                    },
+                    "name": "Public IP Addresses",
+                    "description": "This module deploys a Public IP Address.",
+                    "owner": "Azure/module-maintainers"
                   },
                   "parameters": {
                     "name": {
@@ -1086,8 +1092,8 @@
                     "diagnosticLogsRetentionInDays": {
                       "type": "int",
                       "defaultValue": 365,
-                      "maxValue": 365,
                       "minValue": 0,
+                      "maxValue": 365,
                       "metadata": {
                         "description": "Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely."
                       }
@@ -1144,14 +1150,14 @@
                     "lock": {
                       "type": "string",
                       "defaultValue": "",
-                      "metadata": {
-                        "description": "Optional. Specify the type of lock."
-                      },
                       "allowedValues": [
                         "",
                         "CanNotDelete",
                         "ReadOnly"
-                      ]
+                      ],
+                      "metadata": {
+                        "description": "Optional. Specify the type of lock."
+                      }
                     },
                     "location": {
                       "type": "string",
@@ -1348,8 +1354,8 @@
                           "metadata": {
                             "_generator": {
                               "name": "bicep",
-                              "version": "0.19.5.34762",
-                              "templateHash": "7927074872480917952"
+                              "version": "0.20.4.51522",
+                              "templateHash": "11249227806125160411"
                             }
                           },
                           "parameters": {
@@ -1603,9 +1609,12 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.19.5.34762",
-                      "templateHash": "4998852968640897249"
-                    }
+                      "version": "0.20.4.51522",
+                      "templateHash": "2671718918533328624"
+                    },
+                    "name": "Network Interface",
+                    "description": "This module deploys a Network Interface.",
+                    "owner": "Azure/module-maintainers"
                   },
                   "parameters": {
                     "name": {
@@ -1666,14 +1675,14 @@
                     "auxiliaryMode": {
                       "type": "string",
                       "defaultValue": "None",
-                      "metadata": {
-                        "description": "Optional. Auxiliary mode of Network Interface resource. Not all regions are enabled for Auxiliary Mode Nic."
-                      },
                       "allowedValues": [
                         "Floating",
                         "MaxConnections",
                         "None"
-                      ]
+                      ],
+                      "metadata": {
+                        "description": "Optional. Auxiliary mode of Network Interface resource. Not all regions are enabled for Auxiliary Mode Nic."
+                      }
                     },
                     "disableTcpStateTracking": {
                       "type": "bool",
@@ -1691,14 +1700,14 @@
                     "lock": {
                       "type": "string",
                       "defaultValue": "",
-                      "metadata": {
-                        "description": "Optional. Specify the type of lock."
-                      },
                       "allowedValues": [
                         "",
                         "CanNotDelete",
                         "ReadOnly"
-                      ]
+                      ],
+                      "metadata": {
+                        "description": "Optional. Specify the type of lock."
+                      }
                     },
                     "roleAssignments": {
                       "type": "array",
@@ -1710,8 +1719,8 @@
                     "diagnosticLogsRetentionInDays": {
                       "type": "int",
                       "defaultValue": 365,
-                      "maxValue": 365,
                       "minValue": 0,
+                      "maxValue": 365,
                       "metadata": {
                         "description": "Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely."
                       }
@@ -1901,8 +1910,8 @@
                           "metadata": {
                             "_generator": {
                               "name": "bicep",
-                              "version": "0.19.5.34762",
-                              "templateHash": "11217191875210502826"
+                              "version": "0.20.4.51522",
+                              "templateHash": "12768288729117926344"
                             }
                           },
                           "parameters": {
@@ -2118,9 +2127,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "1717101673262574531"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "4640958558179616903"
+            },
+            "name": "Virtual Machine Extensions",
+            "description": "This module deploys a Virtual Machine Extension.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "virtualMachineName": {
@@ -2330,9 +2342,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "1717101673262574531"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "4640958558179616903"
+            },
+            "name": "Virtual Machine Extensions",
+            "description": "This module deploys a Virtual Machine Extension.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "virtualMachineName": {
@@ -2537,9 +2552,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "1717101673262574531"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "4640958558179616903"
+            },
+            "name": "Virtual Machine Extensions",
+            "description": "This module deploys a Virtual Machine Extension.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "virtualMachineName": {
@@ -2749,9 +2767,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "1717101673262574531"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "4640958558179616903"
+            },
+            "name": "Virtual Machine Extensions",
+            "description": "This module deploys a Virtual Machine Extension.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "virtualMachineName": {
@@ -2951,9 +2972,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "1717101673262574531"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "4640958558179616903"
+            },
+            "name": "Virtual Machine Extensions",
+            "description": "This module deploys a Virtual Machine Extension.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "virtualMachineName": {
@@ -3153,9 +3177,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "1717101673262574531"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "4640958558179616903"
+            },
+            "name": "Virtual Machine Extensions",
+            "description": "This module deploys a Virtual Machine Extension.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "virtualMachineName": {
@@ -3359,9 +3386,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "1717101673262574531"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "4640958558179616903"
+            },
+            "name": "Virtual Machine Extensions",
+            "description": "This module deploys a Virtual Machine Extension.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "virtualMachineName": {
@@ -3573,9 +3603,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "1717101673262574531"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "4640958558179616903"
+            },
+            "name": "Virtual Machine Extensions",
+            "description": "This module deploys a Virtual Machine Extension.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "virtualMachineName": {
@@ -3780,9 +3813,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "1717101673262574531"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "4640958558179616903"
+            },
+            "name": "Virtual Machine Extensions",
+            "description": "This module deploys a Virtual Machine Extension.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "virtualMachineName": {
@@ -3989,9 +4025,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "9148923827539718769"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "6407898441503460857"
+            },
+            "name": "Recovery Service Vaults Protection Container Protected Item",
+            "description": "This module deploys a Recovery Services Vault Protection Container Protected Item.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "name": {
@@ -4021,9 +4060,6 @@
             },
             "protectedItemType": {
               "type": "string",
-              "metadata": {
-                "description": "Required. The backup item type."
-              },
               "allowedValues": [
                 "AzureFileShareProtectedItem",
                 "AzureVmWorkloadSAPAseDatabase",
@@ -4035,7 +4071,10 @@
                 "Microsoft.ClassicCompute/virtualMachines",
                 "Microsoft.Compute/virtualMachines",
                 "Microsoft.Sql/servers/databases"
-              ]
+              ],
+              "metadata": {
+                "description": "Required. The backup item type."
+              }
             },
             "policyId": {
               "type": "string",
@@ -4155,8 +4194,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "8683447033120970865"
+              "version": "0.20.4.51522",
+              "templateHash": "5187922792757343332"
             }
           },
           "parameters": {

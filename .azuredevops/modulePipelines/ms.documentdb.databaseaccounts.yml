@@ -27,9 +27,10 @@ trigger:
       - main
   paths:
     include:
+      - '/modules/document-db/database-accounts/*'
+      - '/modules/network/private-endpoints/*'
       - '/.azuredevops/modulePipelines/ms.documentdb.databaseaccounts.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/modules/document-db/database-accounts/*'
       - '/utilities/pipelines/*'
     exclude:
       - '/utilities/pipelines/deploymentRemoval/*'

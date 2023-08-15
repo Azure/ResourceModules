@@ -26,7 +26,7 @@ The following activities are performed by the [`utilities/pipelines/staticValida
     1. Module should contain a [` version.json `] file.
   - **.test folder**
     1. Folder should contain one or more test files.
-    1. JSON test files in the `.test` folder should be valid json.
+    1. JSON test files in the `.test` folder should be valid JSON.
 - **Pipeline tests**
     1. Module should have a GitHub workflow.
     1. Module workflow should have trigger for cross-module references, if any.
@@ -85,7 +85,7 @@ The following activities are performed by the [`utilities/pipelines/staticValida
 
 ## Output example
 
-<img src="./media/CIEnvironment/staticValidationOutput.png" alt="Static Validation Output" height="400">
+<img src="./media/CIEnvironment/staticValidationOutput.png" alt="Static Validation Output" height="700">
 
 ## Additional resources
 
@@ -122,7 +122,7 @@ $pathToRepository = '<pathToClonedRepo>'
 
 # REQUIRED INPUT FOR TESTING
 $TestModuleLocallyInput = @{
-    templateFilePath              = "$pathToRepository\modules\Authorization\roleDefinitions\main.bicep"
+    templateFilePath              = "$pathToRepository\modules\authorization\role-definition\main.bicep"
     PesterTest                    = $true
     DeploymentTest                = $false
     ValidationTest                = $false

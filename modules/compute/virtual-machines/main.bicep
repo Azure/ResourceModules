@@ -684,7 +684,7 @@ module vm_azureDiskEncryptionExtension 'extensions/main.bicep' = if (extensionAz
   ]
 }
 
-module vm_backup '../../recovery-services/vaults/protection-containers/protected-items/main.bicep' = if (!empty(backupVaultName)) {
+module vm_backup '../../recovery-services/vaults/backup-fabrics/protection-containers/protected-items/main.bicep' = if (!empty(backupVaultName)) {
   name: '${uniqueString(deployment().name, location)}-VM-Backup'
   params: {
     name: 'vm;iaasvmcontainerv2;${resourceGroup().name};${vm.name}'

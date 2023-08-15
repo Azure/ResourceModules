@@ -26,7 +26,7 @@ function Get-ReducedWordString {
         [string] $StringToReduce
     )
 
-    if ($StringToReduce -match '(.+?)(y|ii|ies|es|s)$') {
+    if ($StringToReduce -match '(.+?)(y|ii|ys|ies|es|s)$') {
         return $Matches[1]
     }
 
@@ -67,25 +67,54 @@ function Get-SpecsAlignedResourceName {
 
     $reducedResourceIdentifier = $ResourceIdentifier -replace '-'
 
-    $rawProviderNamespace = $reducedResourceIdentifier.Split('/')[0]
+    $rawProviderNamespace, $rawResourceType = $reducedResourceIdentifier -Split '[\/|\\]', 2 # e.g. 'keyvault' & 'vaults/keys'
+
     $foundProviderNamespaceMatches = ($specs.Keys | Sort-Object) | Where-Object { $_ -like "Microsoft.$rawProviderNamespace*" }
 
     if (-not $foundProviderNamespaceMatches) {
         $providerNamespace = "Microsoft.$rawProviderNamespace"
-        Write-Warning "Failed to identifier provider namespace [$rawProviderNamespace]. Falling back to [$providerNamespace]."
+        Write-Warning "Failed to identify provider namespace [$rawProviderNamespace]. Falling back to [$providerNamespace]."
     } else {
         $providerNamespace = ($foundProviderNamespaceMatches.Count -eq 1) ? $foundProviderNamespaceMatches : $foundProviderNamespaceMatches[0]
     }
 
     $innerResourceTypes = $specs[$providerNamespace].Keys | Sort-Object
-    $rawResourceType = Get-ReducedWordString -StringToReduce ($reducedResourceIdentifier -replace ('{0}/' -f ($reducedResourceIdentifier.Split('/')[0])), '')
-    $foundResourceTypeMatches = $innerResourceTypes | Where-Object { $_ -like "$rawResourceType*" }
+    $rawResourceTypeReduced = Get-ReducedWordString -StringToReduce $rawResourceType
+    $foundResourceTypeMatches = $innerResourceTypes | Where-Object { $_ -like "$rawResourceTypeReduced*" }
 
     if (-not $foundResourceTypeMatches) {
-        $resourceType = $reducedResourceIdentifier.Split('/')[0]
+        $resourceType = $reducedResourceIdentifier.Split('/')[1]
         Write-Warning "Failed to identify resource type [$rawResourceType] in provider namespace [$providerNamespace]. Fallback to [$resourceType]."
+    } elseif ($foundResourceTypeMatches.Count -eq 1) {
+        $resourceType = $foundResourceTypeMatches
     } else {
-        $resourceType = ($foundResourceTypeMatches.Count -eq 1) ? $foundResourceTypeMatches : $foundResourceTypeMatches[0]
+        # If more than one specs resource type matches the input resource type core string, get all specs core strings and check exact match
+        # This is to avoid that e.g. web/connection falls to Microsoft.Web/connectionGateways instead of Microsoft.Web/connections
+        foreach ($foundResourceTypeMatch in $foundResourceTypeMatches) {
+            $foundResourceTypeMatchReduced = Get-ReducedWordString -StringToReduce $foundResourceTypeMatch
+            if ($rawResourceTypeReduced -eq $foundResourceTypeMatchReduced) {
+                $resourceType = $foundResourceTypeMatch
+                break
+            }
+        }
+
+        if (-not $resourceType) {
+            # Try removing last split of each match, then reduce to core and compare
+            # This is needed to deal cases such as Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers where backupFabrics does not exist on its own
+            foreach ($foundResourceTypeMatch in $foundResourceTypeMatches) {
+                $foundResourceTypeMatch = $foundResourceTypeMatch.SubString(0, $foundResourceTypeMatch.LastIndexOf('/'))
+                $foundResourceTypeMatchReduced = Get-ReducedWordString -StringToReduce $foundResourceTypeMatch
+                if ($rawResourceTypeReduced -eq $foundResourceTypeMatchReduced) {
+                    $resourceType = $foundResourceTypeMatch
+                    break
+                }
+            }
+            # Finally fallback to first match in the list
+            if (-not $resourceType) {
+                $resourceType = $foundResourceTypeMatches[0]
+                Write-Warning "Failed to find exact match between core matched resource types and [$rawResourceTypeReduced]. Fallback to first ResourceType in the match list [$resourceType]."
+            }
+        }
     }
 
     return "$providerNamespace/$resourceType"

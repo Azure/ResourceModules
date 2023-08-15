@@ -4,17 +4,20 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "7454408641260922049"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "9756021983971600432"
+    },
+    "name": "Storage Account Management Policies",
+    "description": "This module deploys a Storage Account Management Policy.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "storageAccountName": {
       "type": "string",
+      "maxLength": 24,
       "metadata": {
         "description": "Conditional. The name of the parent Storage Account. Required if the template is used in a standalone deployment."
-      },
-      "maxLength": 24
+      }
     },
     "rules": {
       "type": "array",

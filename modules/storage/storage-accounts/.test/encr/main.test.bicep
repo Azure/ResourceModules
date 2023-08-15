@@ -87,7 +87,7 @@ module testDeployment '../../main.bicep' = {
       containerDeleteRetentionPolicyDays: 10
       containerDeleteRetentionPolicyAllowPermanentDelete: true
       defaultServiceVersion: '2008-10-27'
-      deleteRetentionPolicy: true
+      deleteRetentionPolicyEnabled: true
       deleteRetentionPolicyDays: 9
       isVersioningEnabled: true
       lastAccessTimeTrackingPolicyEnable: true
