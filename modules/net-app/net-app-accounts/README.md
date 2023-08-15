@@ -486,14 +486,14 @@ module netAppAccounts './net-app/net-app-accounts/main.bicep' = {
 
 ```bicep
 module netAppAccounts './net-app/net-app-accounts/main.bicep' = {
-  name: '${uniqueString(deployment().name, location)}-test-nanaanfs41'
+  name: '${uniqueString(deployment().name, location)}-test-naanfs41'
   params: {
     // Required parameters
-    name: 'nanaanfs41001'
+    name: 'naanfs41001'
     // Non-required parameters
     capacityPools: [
       {
-        name: 'nanaanfs41-cp-001'
+        name: 'naanfs41-cp-001'
         roleAssignments: [
           {
             principalIds: [
@@ -517,7 +517,7 @@ module netAppAccounts './net-app/net-app-accounts/main.bicep' = {
                 unixReadWrite: true
               }
             ]
-            name: 'nanaanfs41-vol-001'
+            name: 'naanfs41-vol-001'
             protocolTypes: [
               'NFSv4.1'
             ]
@@ -544,7 +544,7 @@ module netAppAccounts './net-app/net-app-accounts/main.bicep' = {
                 unixReadWrite: true
               }
             ]
-            name: 'nanaanfs41-vol-002'
+            name: 'naanfs41-vol-002'
             protocolTypes: [
               'NFSv4.1'
             ]
@@ -554,7 +554,7 @@ module netAppAccounts './net-app/net-app-accounts/main.bicep' = {
         ]
       }
       {
-        name: 'nanaanfs41-cp-002'
+        name: 'naanfs41-cp-002'
         roleAssignments: [
           {
             principalIds: [
@@ -611,13 +611,13 @@ module netAppAccounts './net-app/net-app-accounts/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "nanaanfs41001"
+      "value": "naanfs41001"
     },
     // Non-required parameters
     "capacityPools": {
       "value": [
         {
-          "name": "nanaanfs41-cp-001",
+          "name": "naanfs41-cp-001",
           "roleAssignments": [
             {
               "principalIds": [
@@ -641,7 +641,7 @@ module netAppAccounts './net-app/net-app-accounts/main.bicep' = {
                   "unixReadWrite": true
                 }
               ],
-              "name": "nanaanfs41-vol-001",
+              "name": "naanfs41-vol-001",
               "protocolTypes": [
                 "NFSv4.1"
               ],
@@ -668,7 +668,7 @@ module netAppAccounts './net-app/net-app-accounts/main.bicep' = {
                   "unixReadWrite": true
                 }
               ],
-              "name": "nanaanfs41-vol-002",
+              "name": "naanfs41-vol-002",
               "protocolTypes": [
                 "NFSv4.1"
               ],
@@ -678,7 +678,7 @@ module netAppAccounts './net-app/net-app-accounts/main.bicep' = {
           ]
         },
         {
-          "name": "nanaanfs41-cp-002",
+          "name": "naanfs41-cp-002",
           "roleAssignments": [
             {
               "principalIds": [
