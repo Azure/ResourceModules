@@ -139,7 +139,6 @@ param agentUpdateMaintenanceWindowTimeZone string = 'Central Standard Time'
 @sys.description('Optional. Whether to use localTime of the virtual machine for scheduled agent updates.')
 param agentUpdateUseSessionHostLocalTime bool = false
 
-// issue #3523 update existing agentUpdate object with required properties
 @sys.description('Optional. The session host configuration for updating agent, monitoring agent, and stack component.')
 param agentUpdate object = {
   type: agentUpdateType
