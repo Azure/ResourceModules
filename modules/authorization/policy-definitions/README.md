@@ -15,7 +15,7 @@ This module deploys a Policy Definition at a Management Group or Subscription sc
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/policyDefinitions` | [2021-06-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/policyDefinitions) |
+| `Microsoft.Authorization/policyDefinitions` | [2021-06-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-06-01/policyDefinitions) |
 
 ## Parameters
 
