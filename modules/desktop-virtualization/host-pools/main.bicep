@@ -147,7 +147,6 @@ param agentUpdate object = {
   useSessionHostLocalTime: agentUpdateUseSessionHostLocalTime
 }
 
-// end issue #3523 parameters fix section
 
 @sys.description('Optional. The ring number of HostPool.')
 param ring int = -1
