@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "9382617018780365951"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "8950583195644458006"
+    },
+    "name": "Log Analytics Workspaces",
+    "description": "This module deploys a Log Analytics Workspace.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
@@ -42,11 +45,11 @@
     "skuCapacityReservationLevel": {
       "type": "int",
       "defaultValue": 100,
+      "minValue": 100,
+      "maxValue": 5000,
       "metadata": {
         "description": "Optional. The capacity reservation level in GB for this workspace, when CapacityReservation sku is selected. Must be in increments of 100 between 100 and 5000."
-      },
-      "maxValue": 5000,
-      "minValue": 100
+      }
     },
     "storageInsightsConfigs": {
       "type": "array",
@@ -107,8 +110,8 @@
     "dataRetention": {
       "type": "int",
       "defaultValue": 365,
-      "maxValue": 730,
       "minValue": 0,
+      "maxValue": 730,
       "metadata": {
         "description": "Optional. Number of days data will be retained for."
       }
@@ -167,8 +170,8 @@
     "diagnosticLogsRetentionInDays": {
       "type": "int",
       "defaultValue": 365,
-      "maxValue": 365,
       "minValue": 0,
+      "maxValue": 365,
       "metadata": {
         "description": "Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely."
       }
@@ -211,14 +214,14 @@
     "lock": {
       "type": "string",
       "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Specify the type of lock."
-      },
       "allowedValues": [
         "",
         "CanNotDelete",
         "ReadOnly"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Specify the type of lock."
+      }
     },
     "roleAssignments": {
       "type": "array",
@@ -413,9 +416,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "5892497567322793672"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "5679144933666454393"
+            },
+            "name": "Log Analytics Workspace Storage Insight Configs",
+            "description": "This module deploys a Log Analytics Workspace Storage Insight Config.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "logAnalyticsWorkspaceName": {
@@ -557,9 +563,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "9104010996147858950"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "6123492600831728521"
+            },
+            "name": "Log Analytics Workspace Linked Services",
+            "description": "This module deploys a Log Analytics Workspace Linked Service.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "logAnalyticsWorkspaceName": {
@@ -691,9 +700,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "4207477883724473600"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "17235548432615830542"
+            },
+            "name": "Log Analytics Workspace Linked Storage Accounts",
+            "description": "This module deploys a Log Analytics Workspace Linked Storage Account.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "logAnalyticsWorkspaceName": {
@@ -826,9 +838,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "18377173330328914128"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "10184551811647520122"
+            },
+            "name": "Log Analytics Workspace Saved Searches",
+            "description": "This module deploys a Log Analytics Workspace Saved Search.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "logAnalyticsWorkspaceName": {
@@ -998,15 +1013,18 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "1404193826490863720"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "6853475409424559635"
+            },
+            "name": "Log Analytics Workspace Data Exports",
+            "description": "This module deploys a Log Analytics Workspace Data Export.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "name": {
               "type": "string",
-              "maxLength": 63,
               "minLength": 4,
+              "maxLength": 63,
               "metadata": {
                 "description": "Required. The data export rule name."
               }
@@ -1145,9 +1163,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "14800885279121710904"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "526173230944614742"
+            },
+            "name": "Log Analytics Workspace Datasources",
+            "description": "This module deploys a Log Analytics Workspace Data Source.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "logAnalyticsWorkspaceName": {
@@ -1372,9 +1393,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "174331240044920355"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "761158132904084297"
+            },
+            "name": "Log Analytics Workspace Tables",
+            "description": "This module deploys a Log Analytics Workspace Table.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "name": {
@@ -1417,8 +1441,8 @@
             "retentionInDays": {
               "type": "int",
               "defaultValue": -1,
-              "maxValue": 730,
               "minValue": -1,
+              "maxValue": 730,
               "metadata": {
                 "description": "Optional. The table retention in days, between 4 and 730. Setting this property to -1 will default to the workspace retention."
               }
@@ -1440,8 +1464,8 @@
             "totalRetentionInDays": {
               "type": "int",
               "defaultValue": -1,
-              "maxValue": 2555,
               "minValue": -1,
+              "maxValue": 2555,
               "metadata": {
                 "description": "Optional. The table total retention in days, between 4 and 2555. Setting this property to -1 will default to table retention."
               }
@@ -1541,9 +1565,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "6203827990364745107"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "16708625392312836324"
+            },
+            "name": "Operations Management Solutions",
+            "description": "This module deploys an Operations Management Solution.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "name": {
@@ -1692,8 +1719,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "7475502990358761120"
+              "version": "0.20.4.51522",
+              "templateHash": "9516912265776834381"
             }
           },
           "parameters": {

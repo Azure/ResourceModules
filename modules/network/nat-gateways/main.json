@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "17459283846288520476"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "2092404131875498072"
+    },
+    "name": "NAT Gateways",
+    "description": "This module deploys a NAT Gateway.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
@@ -81,8 +84,8 @@
     "diagnosticLogsRetentionInDays": {
       "type": "int",
       "defaultValue": 365,
-      "maxValue": 365,
       "minValue": 0,
+      "maxValue": 365,
       "metadata": {
         "description": "Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely."
       }
@@ -118,14 +121,14 @@
     "lock": {
       "type": "string",
       "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Specify the type of lock."
-      },
       "allowedValues": [
         "",
         "CanNotDelete",
         "ReadOnly"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Specify the type of lock."
+      }
     },
     "roleAssignments": {
       "type": "array",
@@ -316,9 +319,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "1954871673414826097"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "14474619344547636171"
+            },
+            "name": "Public IP Addresses",
+            "description": "This module deploys a Public IP Address.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "name": {
@@ -388,8 +394,8 @@
             "diagnosticLogsRetentionInDays": {
               "type": "int",
               "defaultValue": 365,
-              "maxValue": 365,
               "minValue": 0,
+              "maxValue": 365,
               "metadata": {
                 "description": "Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely."
               }
@@ -446,14 +452,14 @@
             "lock": {
               "type": "string",
               "defaultValue": "",
-              "metadata": {
-                "description": "Optional. Specify the type of lock."
-              },
               "allowedValues": [
                 "",
                 "CanNotDelete",
                 "ReadOnly"
-              ]
+              ],
+              "metadata": {
+                "description": "Optional. Specify the type of lock."
+              }
             },
             "location": {
               "type": "string",
@@ -650,8 +656,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.19.5.34762",
-                      "templateHash": "7927074872480917952"
+                      "version": "0.20.4.51522",
+                      "templateHash": "11249227806125160411"
                     }
                   },
                   "parameters": {
@@ -868,8 +874,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "13433158154703182157"
+              "version": "0.20.4.51522",
+              "templateHash": "18168932094320787414"
             }
           },
           "parameters": {

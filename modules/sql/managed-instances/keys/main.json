@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "18086076605425313761"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "12303930012308222652"
+    },
+    "name": "SQL Managed Instance Keys",
+    "description": "This module deploys a SQL Managed Instance Key.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {

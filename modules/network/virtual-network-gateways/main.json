@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "3661581255162235432"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "3610136439814257007"
+    },
+    "name": "Virtual Network Gateways",
+    "description": "This module deploys a Virtual Network Gateway.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
@@ -222,8 +225,8 @@
     "diagnosticLogsRetentionInDays": {
       "type": "int",
       "defaultValue": 365,
-      "maxValue": 365,
       "minValue": 0,
+      "maxValue": 365,
       "metadata": {
         "description": "Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely."
       }
@@ -266,14 +269,14 @@
     "lock": {
       "type": "string",
       "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Specify the type of lock."
-      },
       "allowedValues": [
         "",
         "CanNotDelete",
         "ReadOnly"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Specify the type of lock."
+      }
     },
     "tags": {
       "type": "object",
@@ -553,9 +556,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "1954871673414826097"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "14474619344547636171"
+            },
+            "name": "Public IP Addresses",
+            "description": "This module deploys a Public IP Address.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "name": {
@@ -625,8 +631,8 @@
             "diagnosticLogsRetentionInDays": {
               "type": "int",
               "defaultValue": 365,
-              "maxValue": 365,
               "minValue": 0,
+              "maxValue": 365,
               "metadata": {
                 "description": "Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely."
               }
@@ -683,14 +689,14 @@
             "lock": {
               "type": "string",
               "defaultValue": "",
-              "metadata": {
-                "description": "Optional. Specify the type of lock."
-              },
               "allowedValues": [
                 "",
                 "CanNotDelete",
                 "ReadOnly"
-              ]
+              ],
+              "metadata": {
+                "description": "Optional. Specify the type of lock."
+              }
             },
             "location": {
               "type": "string",
@@ -887,8 +893,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.19.5.34762",
-                      "templateHash": "7927074872480917952"
+                      "version": "0.20.4.51522",
+                      "templateHash": "11249227806125160411"
                     }
                   },
                   "parameters": {
@@ -1106,9 +1112,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "6604741649541233041"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "12738577362496266730"
+            },
+            "name": "VPN Gateway NAT Rules",
+            "description": "This module deploys a Virtual Network Gateway NAT Rule.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "name": {
@@ -1267,8 +1276,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "1445235181338876133"
+              "version": "0.20.4.51522",
+              "templateHash": "6647636585152280249"
             }
           },
           "parameters": {

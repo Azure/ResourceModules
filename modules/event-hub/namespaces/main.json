@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "10213151462333101909"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "4238751276128918204"
+    },
+    "name": "Event Hub Namespaces",
+    "description": "This module deploys an Event Hub Namespace.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
@@ -38,8 +41,8 @@
     "skuCapacity": {
       "type": "int",
       "defaultValue": 1,
-      "maxValue": 20,
       "minValue": 1,
+      "maxValue": 20,
       "metadata": {
         "description": "Optional. The Event Hub's throughput units for Basic or Standard tiers, where value should be 0 to 20 throughput units. The Event Hubs premium units for Premium tier, where value should be 0 to 10 premium units."
       }
@@ -61,8 +64,8 @@
     "maximumThroughputUnits": {
       "type": "int",
       "defaultValue": 1,
-      "maxValue": 20,
       "minValue": 0,
+      "maxValue": 20,
       "metadata": {
         "description": "Optional. Upper limit of throughput units when AutoInflate is enabled, value should be within 0 to 20 throughput units."
       }
@@ -100,14 +103,14 @@
     "minimumTlsVersion": {
       "type": "string",
       "defaultValue": "1.2",
-      "metadata": {
-        "description": "Optional. The minimum TLS version for the cluster to support."
-      },
       "allowedValues": [
         "1.0",
         "1.1",
         "1.2"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. The minimum TLS version for the cluster to support."
+      }
     },
     "publicNetworkAccess": {
       "type": "string",
@@ -139,8 +142,8 @@
     "diagnosticLogsRetentionInDays": {
       "type": "int",
       "defaultValue": 365,
-      "maxValue": 365,
       "minValue": 0,
+      "maxValue": 365,
       "metadata": {
         "description": "Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely."
       }
@@ -176,14 +179,14 @@
     "lock": {
       "type": "string",
       "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Specify the type of lock."
-      },
       "allowedValues": [
         "",
         "CanNotDelete",
         "ReadOnly"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Specify the type of lock."
+      }
     },
     "systemAssignedIdentity": {
       "type": "bool",
@@ -446,9 +449,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "6503914993415142731"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "689013755293429510"
+            },
+            "name": "Event Hub Namespace Authorization Rule",
+            "description": "This module deploys an Event Hub Namespace Authorization Rule.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "namespaceName": {
@@ -564,9 +570,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "12261142567387877163"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "6638470700293836073"
+            },
+            "name": "Event Hub Namespace Disaster Recovery Configs",
+            "description": "This module deploys an Event Hub Namespace Disaster Recovery Config.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "namespaceName": {
@@ -695,9 +704,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "3518513774222730388"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "443948940379129513"
+            },
+            "name": "Event Hub Namespace Event Hubs",
+            "description": "This module deploys an Event Hub Namespace Event Hub.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "namespaceName": {
@@ -731,8 +743,8 @@
             "messageRetentionInDays": {
               "type": "int",
               "defaultValue": 1,
-              "maxValue": 7,
               "minValue": 1,
+              "maxValue": 7,
               "metadata": {
                 "description": "Optional. Number of days to retain the events for this Event Hub, value should be 1 to 7 days."
               }
@@ -740,8 +752,8 @@
             "partitionCount": {
               "type": "int",
               "defaultValue": 2,
-              "maxValue": 32,
               "minValue": 1,
+              "maxValue": 32,
               "metadata": {
                 "description": "Optional. Number of partitions created for the Event Hub, allowed values are from 1 to 32 partitions."
               }
@@ -778,14 +790,14 @@
             "lock": {
               "type": "string",
               "defaultValue": "",
-              "metadata": {
-                "description": "Optional. Specify the type of lock."
-              },
               "allowedValues": [
                 "",
                 "CanNotDelete",
                 "ReadOnly"
-              ]
+              ],
+              "metadata": {
+                "description": "Optional. Specify the type of lock."
+              }
             },
             "roleAssignments": {
               "type": "array",
@@ -843,8 +855,8 @@
             "captureDescriptionIntervalInSeconds": {
               "type": "int",
               "defaultValue": 300,
-              "maxValue": 900,
               "minValue": 60,
+              "maxValue": 900,
               "metadata": {
                 "description": "Optional. The time window allows you to set the frequency with which the capture to Azure Blobs will happen."
               }
@@ -852,8 +864,8 @@
             "captureDescriptionSizeLimitInBytes": {
               "type": "int",
               "defaultValue": 314572800,
-              "maxValue": 524288000,
               "minValue": 10485760,
+              "maxValue": 524288000,
               "metadata": {
                 "description": "Optional. The size window defines the amount of data built up in your Event Hub before an capture operation."
               }
@@ -970,9 +982,12 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.19.5.34762",
-                      "templateHash": "6857373991807692104"
-                    }
+                      "version": "0.20.4.51522",
+                      "templateHash": "4223870259264150873"
+                    },
+                    "name": "Event Hub Namespace Event Hub Consumer Groups",
+                    "description": "This module deploys an Event Hub Namespace Event Hub Consumer Group.",
+                    "owner": "Azure/module-maintainers"
                   },
                   "parameters": {
                     "namespaceName": {
@@ -1095,9 +1110,12 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.19.5.34762",
-                      "templateHash": "14445239246751091520"
-                    }
+                      "version": "0.20.4.51522",
+                      "templateHash": "12984183065402367529"
+                    },
+                    "name": "Event Hub Namespace Event Hub Authorization Rules",
+                    "description": "This module deploys an Event Hub Namespace Event Hub Authorization Rule.",
+                    "owner": "Azure/module-maintainers"
                   },
                   "parameters": {
                     "namespaceName": {
@@ -1225,8 +1243,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.19.5.34762",
-                      "templateHash": "12158134836363662242"
+                      "version": "0.20.4.51522",
+                      "templateHash": "14745150939607150150"
                     }
                   },
                   "parameters": {
@@ -1410,9 +1428,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "15545902637890611885"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "2572752048492506478"
+            },
+            "name": "Event Hub Namespace Network Rule Sets",
+            "description": "This module deploys an Event Hub Namespace Network Rule Set.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "namespaceName": {
@@ -1424,24 +1445,24 @@
             "publicNetworkAccess": {
               "type": "string",
               "defaultValue": "Enabled",
-              "metadata": {
-                "description": "Optional. This determines if traffic is allowed over public network. Default is \"Enabled\". If set to \"Disabled\", traffic to this namespace will be restricted over Private Endpoints only and network rules will not be applied."
-              },
               "allowedValues": [
                 "Enabled",
                 "Disabled"
-              ]
+              ],
+              "metadata": {
+                "description": "Optional. This determines if traffic is allowed over public network. Default is \"Enabled\". If set to \"Disabled\", traffic to this namespace will be restricted over Private Endpoints only and network rules will not be applied."
+              }
             },
             "defaultAction": {
               "type": "string",
               "defaultValue": "Allow",
-              "metadata": {
-                "description": "Optional. Default Action for Network Rule Set. Default is \"Allow\". It will not be set if publicNetworkAccess is \"Disabled\". Otherwise, it will be set to \"Deny\" if ipRules or virtualNetworkRules are being used."
-              },
               "allowedValues": [
                 "Allow",
                 "Deny"
-              ]
+              ],
+              "metadata": {
+                "description": "Optional. Default Action for Network Rule Set. Default is \"Allow\". It will not be set if publicNetworkAccess is \"Disabled\". Otherwise, it will be set to \"Deny\" if ipRules or virtualNetworkRules are being used."
+              }
             },
             "trustedServiceAccessEnabled": {
               "type": "bool",
@@ -1589,9 +1610,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "11825715538543749879"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "15140794202935990330"
+            },
+            "name": "Private Endpoints",
+            "description": "This module deploys a Private Endpoint.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "name": {
@@ -1656,14 +1680,14 @@
             "lock": {
               "type": "string",
               "defaultValue": "",
-              "metadata": {
-                "description": "Optional. Specify the type of lock."
-              },
               "allowedValues": [
                 "",
                 "CanNotDelete",
                 "ReadOnly"
-              ]
+              ],
+              "metadata": {
+                "description": "Optional. Specify the type of lock."
+              }
             },
             "roleAssignments": {
               "type": "array",
@@ -1721,7 +1745,7 @@
             },
             {
               "type": "Microsoft.Network/privateEndpoints",
-              "apiVersion": "2022-07-01",
+              "apiVersion": "2023-05-01",
               "name": "[parameters('name')]",
               "location": "[parameters('location')]",
               "tags": "[parameters('tags')]",
@@ -1786,9 +1810,12 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.19.5.34762",
-                      "templateHash": "12684511314187066258"
-                    }
+                      "version": "0.20.4.51522",
+                      "templateHash": "17831763001460207830"
+                    },
+                    "name": "Private Endpoint Private DNS Zone Groups",
+                    "description": "This module deploys a Private Endpoint Private DNS Zone Group.",
+                    "owner": "Azure/module-maintainers"
                   },
                   "parameters": {
                     "privateEndpointName": {
@@ -1799,8 +1826,8 @@
                     },
                     "privateDNSResourceIds": {
                       "type": "array",
-                      "maxLength": 5,
                       "minLength": 1,
+                      "maxLength": 5,
                       "metadata": {
                         "description": "Required. Array of private DNS zone resource IDs. A DNS zone group can support up to 5 DNS zones."
                       }
@@ -1851,7 +1878,7 @@
                     },
                     {
                       "type": "Microsoft.Network/privateEndpoints/privateDnsZoneGroups",
-                      "apiVersion": "2022-07-01",
+                      "apiVersion": "2023-04-01",
                       "name": "[format('{0}/{1}', parameters('privateEndpointName'), parameters('name'))]",
                       "properties": {
                         "privateDnsZoneConfigs": "[variables('privateDnsZoneConfigs')]"
@@ -1921,8 +1948,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.19.5.34762",
-                      "templateHash": "18055161250379920591"
+                      "version": "0.20.4.51522",
+                      "templateHash": "11548486149222715894"
                     }
                   },
                   "parameters": {
@@ -2092,7 +2119,7 @@
               "metadata": {
                 "description": "The location the resource was deployed into."
               },
-              "value": "[reference(resourceId('Microsoft.Network/privateEndpoints', parameters('name')), '2022-07-01', 'full').location]"
+              "value": "[reference(resourceId('Microsoft.Network/privateEndpoints', parameters('name')), '2023-05-01', 'full').location]"
             }
           }
         }
@@ -2135,8 +2162,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "17034984261540376802"
+              "version": "0.20.4.51522",
+              "templateHash": "4105980417580811499"
             }
           },
           "parameters": {

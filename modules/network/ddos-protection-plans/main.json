@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "13011445494121235150"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "16687492328807280731"
+    },
+    "name": "DDoS Protection Plans",
+    "description": "This module deploys a DDoS Protection Plan.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
@@ -26,14 +29,14 @@
     "lock": {
       "type": "string",
       "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Specify the type of lock."
-      },
       "allowedValues": [
         "",
         "CanNotDelete",
         "ReadOnly"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Specify the type of lock."
+      }
     },
     "roleAssignments": {
       "type": "array",
@@ -128,8 +131,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "12286798680007657788"
+              "version": "0.20.4.51522",
+              "templateHash": "11204718740684669608"
             }
           },
           "parameters": {

@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "2497751269793012554"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "15113454848732720811"
+    },
+    "name": "SQL Managed Instance Databases",
+    "description": "This module deploys a SQL Managed Instance Database.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
@@ -108,8 +111,8 @@
     "diagnosticLogsRetentionInDays": {
       "type": "int",
       "defaultValue": 365,
-      "maxValue": 365,
       "minValue": 0,
+      "maxValue": 365,
       "metadata": {
         "description": "Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely."
       }
@@ -145,14 +148,14 @@
     "lock": {
       "type": "string",
       "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Specify the type of lock."
-      },
       "allowedValues": [
         "",
         "CanNotDelete",
         "ReadOnly"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Specify the type of lock."
+      }
     },
     "backupShortTermRetentionPoliciesObj": {
       "type": "object",
@@ -321,9 +324,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "339225421683905916"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "6931213919610871740"
+            },
+            "name": "SQL Managed Instance Database Backup Short-Term Retention Policies",
+            "description": "This module deploys a SQL Managed Instance Database Backup Short-Term Retention Policy.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "name": {
@@ -446,9 +452,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "1033992501650214243"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "18038719600656297152"
+            },
+            "name": "SQL Managed Instance Database Backup Long-Term Retention Policies",
+            "description": "This module deploys a SQL Managed Instance Database Backup Long-Term Retention Policy.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "name": {

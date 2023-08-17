@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "18085550684061495455"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "12427678703978539260"
+    },
+    "name": "DevTest Lab Schedules",
+    "description": "This module deploys a DevTest Lab Schedule.\r\n\r\nLab schedules are used to modify the settings for auto-shutdown, auto-start for lab virtual machines.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "labName": {
@@ -17,23 +20,23 @@
     },
     "name": {
       "type": "string",
-      "metadata": {
-        "description": "Required. The name of the schedule."
-      },
       "allowedValues": [
         "LabVmsShutdown",
         "LabVmAutoStart"
-      ]
+      ],
+      "metadata": {
+        "description": "Required. The name of the schedule."
+      }
     },
     "taskType": {
       "type": "string",
-      "metadata": {
-        "description": "Required. The task type of the schedule (e.g. LabVmsShutdownTask, LabVmsStartupTask)."
-      },
       "allowedValues": [
         "LabVmsShutdownTask",
         "LabVmsStartupTask"
-      ]
+      ],
+      "metadata": {
+        "description": "Required. The task type of the schedule (e.g. LabVmsShutdownTask, LabVmsStartupTask)."
+      }
     },
     "tags": {
       "type": "object",
@@ -66,13 +69,13 @@
     "status": {
       "type": "string",
       "defaultValue": "Enabled",
-      "metadata": {
-        "description": "Optional. The status of the schedule (i.e. Enabled, Disabled)."
-      },
       "allowedValues": [
         "Enabled",
         "Disabled"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. The status of the schedule (i.e. Enabled, Disabled)."
+      }
     },
     "targetResourceId": {
       "type": "string",
@@ -91,13 +94,13 @@
     "notificationSettingsStatus": {
       "type": "string",
       "defaultValue": "Disabled",
-      "metadata": {
-        "description": "Optional. If notifications are enabled for this schedule (i.e. Enabled, Disabled)."
-      },
       "allowedValues": [
         "Enabled",
         "Disabled"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. If notifications are enabled for this schedule (i.e. Enabled, Disabled)."
+      }
     },
     "notificationSettingsTimeInMinutes": {
       "type": "int",

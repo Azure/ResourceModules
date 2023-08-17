@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "13941840651398754197"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "17994275321989817378"
+    },
+    "name": "Disk Encryption Sets",
+    "description": "This module deploys a Disk Encryption Set.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
@@ -25,14 +28,14 @@
     "lock": {
       "type": "string",
       "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Specify the type of lock."
-      },
       "allowedValues": [
         "",
         "CanNotDelete",
         "ReadOnly"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Specify the type of lock."
+      }
     },
     "keyVaultResourceId": {
       "type": "string",
@@ -207,8 +210,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "5266650210800919607"
+              "version": "0.20.4.51522",
+              "templateHash": "12898111153359655939"
             }
           },
           "parameters": {
@@ -283,8 +286,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.19.5.34762",
-                      "templateHash": "15248304540243541293"
+                      "version": "0.20.4.51522",
+                      "templateHash": "10065918419981417666"
                     }
                   },
                   "parameters": {
@@ -355,9 +358,12 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.19.5.34762",
-                      "templateHash": "5956155025819321457"
-                    }
+                      "version": "0.20.4.51522",
+                      "templateHash": "7542638391604115549"
+                    },
+                    "name": "Key Vault Access Policies",
+                    "description": "This module deploys a Key Vault Access Policy.",
+                    "owner": "Azure/module-maintainers"
                   },
                   "parameters": {
                     "keyVaultName": {
@@ -486,8 +492,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "4632454948156980307"
+              "version": "0.20.4.51522",
+              "templateHash": "14948408905344933172"
             }
           },
           "parameters": {

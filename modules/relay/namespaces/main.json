@@ -4,15 +4,18 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "18363231390750334097"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "13575383076647795845"
+    },
+    "name": "Relay Namespaces",
+    "description": "This module deploys a Relay Namespace",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
       "type": "string",
-      "maxLength": 50,
       "minLength": 6,
+      "maxLength": 50,
       "metadata": {
         "description": "Required. Name of the Relay Namespace."
       }
@@ -53,8 +56,8 @@
     "diagnosticLogsRetentionInDays": {
       "type": "int",
       "defaultValue": 365,
-      "maxValue": 365,
       "minValue": 0,
+      "maxValue": 365,
       "metadata": {
         "description": "Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely."
       }
@@ -90,14 +93,14 @@
     "lock": {
       "type": "string",
       "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Specify the type of lock."
-      },
       "allowedValues": [
         "",
         "CanNotDelete",
         "ReadOnly"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Specify the type of lock."
+      }
     },
     "roleAssignments": {
       "type": "array",
@@ -304,15 +307,18 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "9763854483927913724"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "2910468169645277295"
+            },
+            "name": "Relay Namespace Authorization Rules",
+            "description": "This module deploys a Relay Namespace Authorization Rule.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "namespaceName": {
               "type": "string",
-              "maxLength": 50,
               "minLength": 6,
+              "maxLength": 50,
               "metadata": {
                 "description": "Conditional. The name of the parent Relay Namespace for the Relay Hybrid Connection. Required if the template is used in a standalone deployment."
               }
@@ -423,15 +429,18 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "2429764380806740500"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "319020533136370885"
+            },
+            "name": "Relay Namespace Network Rules Sets",
+            "description": "This module deploys a Relay Namespace Network Rule Set.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "namespaceName": {
               "type": "string",
-              "maxLength": 50,
               "minLength": 6,
+              "maxLength": 50,
               "metadata": {
                 "description": "Conditional. The name of the parent Relay Namespace for the Relay Network Rule Set. Required if the template is used in a standalone deployment."
               }
@@ -439,24 +448,24 @@
             "publicNetworkAccess": {
               "type": "string",
               "defaultValue": "Enabled",
-              "metadata": {
-                "description": "Optional. This determines if traffic is allowed over public network. Default is \"Enabled\". If set to \"Disabled\", traffic to this namespace will be restricted over Private Endpoints only and network rules will not be applied."
-              },
               "allowedValues": [
                 "Enabled",
                 "Disabled"
-              ]
+              ],
+              "metadata": {
+                "description": "Optional. This determines if traffic is allowed over public network. Default is \"Enabled\". If set to \"Disabled\", traffic to this namespace will be restricted over Private Endpoints only and network rules will not be applied."
+              }
             },
             "defaultAction": {
               "type": "string",
               "defaultValue": "Allow",
-              "metadata": {
-                "description": "Optional. Default Action for Network Rule Set. Default is \"Allow\". It will not be set if publicNetworkAccess is \"Disabled\". Otherwise, it will be set to \"Deny\" if ipRules or virtualNetworkRules are being used."
-              },
               "allowedValues": [
                 "Allow",
                 "Deny"
-              ]
+              ],
+              "metadata": {
+                "description": "Optional. Default Action for Network Rule Set. Default is \"Allow\". It will not be set if publicNetworkAccess is \"Disabled\". Otherwise, it will be set to \"Deny\" if ipRules or virtualNetworkRules are being used."
+              }
             },
             "ipRules": {
               "type": "array",
@@ -563,23 +572,26 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "7847404424450621571"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "5587843022604046042"
+            },
+            "name": "Relay Namespace Hybrid Connections",
+            "description": "This module deploys a Relay Namespace Hybrid Connection.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "namespaceName": {
               "type": "string",
-              "maxLength": 50,
               "minLength": 6,
+              "maxLength": 50,
               "metadata": {
                 "description": "Conditional. The name of the parent Relay Namespace for the Relay Hybrid Connection. Required if the template is used in a standalone deployment."
               }
             },
             "name": {
               "type": "string",
-              "maxLength": 50,
               "minLength": 6,
+              "maxLength": 50,
               "metadata": {
                 "description": "Required. The name of the hybrid connection."
               }
@@ -628,14 +640,14 @@
             "lock": {
               "type": "string",
               "defaultValue": "",
-              "metadata": {
-                "description": "Optional. Specify the type of lock."
-              },
               "allowedValues": [
                 "",
                 "CanNotDelete",
                 "ReadOnly"
-              ]
+              ],
+              "metadata": {
+                "description": "Optional. Specify the type of lock."
+              }
             },
             "roleAssignments": {
               "type": "array",
@@ -727,9 +739,12 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.19.5.34762",
-                      "templateHash": "17231058756777007644"
-                    }
+                      "version": "0.20.4.51522",
+                      "templateHash": "9718423441307347496"
+                    },
+                    "name": "Hybrid Connection Authorization Rules",
+                    "description": "This module deploys a Hybrid Connection Authorization Rule.",
+                    "owner": "Azure/module-maintainers"
                   },
                   "parameters": {
                     "name": {
@@ -857,8 +872,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.19.5.34762",
-                      "templateHash": "232914041275606585"
+                      "version": "0.20.4.51522",
+                      "templateHash": "5814555714153100571"
                     }
                   },
                   "parameters": {
@@ -1042,36 +1057,39 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "1187887494213101123"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "18205555090536788516"
+            },
+            "name": "Relay Namespace WCF Relays",
+            "description": "This module deploys a Relay Namespace WCF Relay.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "namespaceName": {
               "type": "string",
-              "maxLength": 50,
               "minLength": 6,
+              "maxLength": 50,
               "metadata": {
                 "description": "Conditional. The name of the parent Relay Namespace for the WCF Relay. Required if the template is used in a standalone deployment."
               }
             },
             "name": {
               "type": "string",
-              "maxLength": 50,
               "minLength": 6,
+              "maxLength": 50,
               "metadata": {
                 "description": "Required. Name of the WCF Relay."
               }
             },
             "relayType": {
               "type": "string",
-              "metadata": {
-                "description": "Required. Type of WCF Relay."
-              },
               "allowedValues": [
                 "Http",
                 "NetTcp"
-              ]
+              ],
+              "metadata": {
+                "description": "Required. Type of WCF Relay."
+              }
             },
             "requiresClientAuthorization": {
               "type": "bool",
@@ -1125,14 +1143,14 @@
             "lock": {
               "type": "string",
               "defaultValue": "",
-              "metadata": {
-                "description": "Optional. Specify the type of lock."
-              },
               "allowedValues": [
                 "",
                 "CanNotDelete",
                 "ReadOnly"
-              ]
+              ],
+              "metadata": {
+                "description": "Optional. Specify the type of lock."
+              }
             },
             "roleAssignments": {
               "type": "array",
@@ -1226,9 +1244,12 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.19.5.34762",
-                      "templateHash": "2947511199808673632"
-                    }
+                      "version": "0.20.4.51522",
+                      "templateHash": "13141425566828642958"
+                    },
+                    "name": "WCF Relay Authorization Rules",
+                    "description": "This module deploys a WCF Relay Authorization Rule.",
+                    "owner": "Azure/module-maintainers"
                   },
                   "parameters": {
                     "name": {
@@ -1356,8 +1377,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.19.5.34762",
-                      "templateHash": "18065734222254333164"
+                      "version": "0.20.4.51522",
+                      "templateHash": "8507868775083821058"
                     }
                   },
                   "parameters": {
@@ -1552,9 +1573,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "11825715538543749879"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "15140794202935990330"
+            },
+            "name": "Private Endpoints",
+            "description": "This module deploys a Private Endpoint.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "name": {
@@ -1619,14 +1643,14 @@
             "lock": {
               "type": "string",
               "defaultValue": "",
-              "metadata": {
-                "description": "Optional. Specify the type of lock."
-              },
               "allowedValues": [
                 "",
                 "CanNotDelete",
                 "ReadOnly"
-              ]
+              ],
+              "metadata": {
+                "description": "Optional. Specify the type of lock."
+              }
             },
             "roleAssignments": {
               "type": "array",
@@ -1684,7 +1708,7 @@
             },
             {
               "type": "Microsoft.Network/privateEndpoints",
-              "apiVersion": "2022-07-01",
+              "apiVersion": "2023-05-01",
               "name": "[parameters('name')]",
               "location": "[parameters('location')]",
               "tags": "[parameters('tags')]",
@@ -1749,9 +1773,12 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.19.5.34762",
-                      "templateHash": "12684511314187066258"
-                    }
+                      "version": "0.20.4.51522",
+                      "templateHash": "17831763001460207830"
+                    },
+                    "name": "Private Endpoint Private DNS Zone Groups",
+                    "description": "This module deploys a Private Endpoint Private DNS Zone Group.",
+                    "owner": "Azure/module-maintainers"
                   },
                   "parameters": {
                     "privateEndpointName": {
@@ -1762,8 +1789,8 @@
                     },
                     "privateDNSResourceIds": {
                       "type": "array",
-                      "maxLength": 5,
                       "minLength": 1,
+                      "maxLength": 5,
                       "metadata": {
                         "description": "Required. Array of private DNS zone resource IDs. A DNS zone group can support up to 5 DNS zones."
                       }
@@ -1814,7 +1841,7 @@
                     },
                     {
                       "type": "Microsoft.Network/privateEndpoints/privateDnsZoneGroups",
-                      "apiVersion": "2022-07-01",
+                      "apiVersion": "2023-04-01",
                       "name": "[format('{0}/{1}', parameters('privateEndpointName'), parameters('name'))]",
                       "properties": {
                         "privateDnsZoneConfigs": "[variables('privateDnsZoneConfigs')]"
@@ -1884,8 +1911,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.19.5.34762",
-                      "templateHash": "18055161250379920591"
+                      "version": "0.20.4.51522",
+                      "templateHash": "11548486149222715894"
                     }
                   },
                   "parameters": {
@@ -2055,7 +2082,7 @@
               "metadata": {
                 "description": "The location the resource was deployed into."
               },
-              "value": "[reference(resourceId('Microsoft.Network/privateEndpoints', parameters('name')), '2022-07-01', 'full').location]"
+              "value": "[reference(resourceId('Microsoft.Network/privateEndpoints', parameters('name')), '2023-05-01', 'full').location]"
             }
           }
         }
@@ -2098,8 +2125,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "15987440490735040087"
+              "version": "0.20.4.51522",
+              "templateHash": "14855341178043805106"
             }
           },
           "parameters": {

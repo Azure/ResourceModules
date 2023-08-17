@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "1815800049558243200"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "18243256662531596547"
+    },
+    "name": "Express Route Gateways",
+    "description": "This module deploys an Express Route Gateway.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {

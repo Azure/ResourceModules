@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "14355316798617081412"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "8880725217295361508"
+    },
+    "name": "Virtual Hubs",
+    "description": "This module deploys a Virtual Hub.\r\nIf you are planning to deploy a Secure Virtual Hub (with an Azure Firewall integrated), please refer to the Azure Firewall module.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
@@ -93,13 +96,13 @@
     "sku": {
       "type": "string",
       "defaultValue": "Standard",
-      "metadata": {
-        "description": "Optional. The sku of this VirtualHub."
-      },
       "allowedValues": [
         "Basic",
         "Standard"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. The sku of this VirtualHub."
+      }
     },
     "virtualHubRouteTableV2s": {
       "type": "array",
@@ -152,14 +155,14 @@
     "lock": {
       "type": "string",
       "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Specify the type of lock."
-      },
       "allowedValues": [
         "",
         "CanNotDelete",
         "ReadOnly"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Specify the type of lock."
+      }
     },
     "enableDefaultTelemetry": {
       "type": "bool",
@@ -258,9 +261,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "13419259770629993067"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "14518513912380539716"
+            },
+            "name": "Virtual Hub Route Tables",
+            "description": "This module deploys a Virtual Hub Route Table.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "name": {
@@ -386,9 +392,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "2118079772329732249"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "5767473063979797254"
+            },
+            "name": "Virtual Hub Virtual Network Connections",
+            "description": "This module deploys a Virtual Hub Virtual Network Connection.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "name": {

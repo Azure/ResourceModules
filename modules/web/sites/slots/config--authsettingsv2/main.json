@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "4506238262937483474"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "9353145154752028146"
+    },
+    "name": "Site Slot Auth Settings V2 Config",
+    "description": "This module deploys a Site Auth Settings V2 Configuration.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "appName": {

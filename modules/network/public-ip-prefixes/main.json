@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "14918050419458548250"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "9791513283452098187"
+    },
+    "name": "Public IP Prefixes",
+    "description": "This module deploys a Public IP Prefix.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
@@ -25,8 +28,8 @@
     },
     "prefixLength": {
       "type": "int",
-      "maxValue": 31,
       "minValue": 28,
+      "maxValue": 31,
       "metadata": {
         "description": "Required. Length of the Public IP Prefix."
       }
@@ -34,14 +37,14 @@
     "lock": {
       "type": "string",
       "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Specify the type of lock."
-      },
       "allowedValues": [
         "",
         "CanNotDelete",
         "ReadOnly"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Specify the type of lock."
+      }
     },
     "roleAssignments": {
       "type": "array",
@@ -150,8 +153,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "15498009263298237197"
+              "version": "0.20.4.51522",
+              "templateHash": "12022352001401552775"
             }
           },
           "parameters": {

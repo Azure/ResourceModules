@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "1906322712473031665"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "9961899772573814013"
+    },
+    "name": "DevTest Lab Policy Sets Policies",
+    "description": "This module deploys a DevTest Lab Policy Sets Policy.\r\n\r\nDevTest lab policies are used to modify the lab settings such as only allowing certain VM Size SKUs, marketplace image types, number of VMs allowed per user and other settings.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "labName": {
@@ -44,13 +47,13 @@
     },
     "evaluatorType": {
       "type": "string",
-      "metadata": {
-        "description": "Required. The evaluator type of the policy (i.e. AllowedValuesPolicy, MaxValuePolicy)."
-      },
       "allowedValues": [
         "AllowedValuesPolicy",
         "MaxValuePolicy"
-      ]
+      ],
+      "metadata": {
+        "description": "Required. The evaluator type of the policy (i.e. AllowedValuesPolicy, MaxValuePolicy)."
+      }
     },
     "factData": {
       "type": "string",
@@ -61,9 +64,6 @@
     },
     "factName": {
       "type": "string",
-      "metadata": {
-        "description": "Required. The fact name of the policy."
-      },
       "allowedValues": [
         "EnvironmentTemplate",
         "GalleryImage",
@@ -75,18 +75,21 @@
         "UserOwnedLabPremiumVmCount",
         "UserOwnedLabVmCount",
         "UserOwnedLabVmCountInSubnet"
-      ]
+      ],
+      "metadata": {
+        "description": "Required. The fact name of the policy."
+      }
     },
     "status": {
       "type": "string",
       "defaultValue": "Enabled",
-      "metadata": {
-        "description": "Optional. The status of the policy."
-      },
       "allowedValues": [
         "Disabled",
         "Enabled"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. The status of the policy."
+      }
     },
     "threshold": {
       "type": "string",

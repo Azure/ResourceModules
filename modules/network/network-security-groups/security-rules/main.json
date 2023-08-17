@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "11939435370198735476"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "3678167334807068025"
+    },
+    "name": "Network Security Group (NSG) Security Rules",
+    "description": "This module deploys a Network Security Group (NSG) Security Rule.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
