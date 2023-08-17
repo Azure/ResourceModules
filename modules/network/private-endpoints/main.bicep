@@ -88,7 +88,6 @@ resource privateEndpoint 'Microsoft.Network/privateEndpoints@2023-05-01' = {
     subnet: {
       id: subnetResourceId
     }
-
   }
 }
 
