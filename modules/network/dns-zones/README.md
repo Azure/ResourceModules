@@ -4,11 +4,11 @@ This module deploys a Public DNS zone.
 
 ## Navigation
 
-- [Resource types](#resource-types)
-- [Parameters](#parameters)
-- [Outputs](#outputs)
-- [Cross-referenced modules](#cross-referenced-modules)
-- [Deployment examples](#deployment-examples)
+- [Resource types](#Resource-types)
+- [Parameters](#Parameters)
+- [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
+- [Deployment examples](#Deployment-examples)
 
 ## Resource types
 
@@ -55,6 +55,7 @@ This module deploys a Public DNS zone.
 | `srv` | _[srv](srv/README.md)_ array | `[]` |  | Array of SRV records. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `txt` | _[txt](txt/README.md)_ array | `[]` |  | Array of TXT records. |
+
 
 ### Parameter Usage: `roleAssignments`
 
