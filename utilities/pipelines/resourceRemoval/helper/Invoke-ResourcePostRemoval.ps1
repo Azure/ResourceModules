@@ -149,6 +149,22 @@ function Invoke-ResourcePostRemoval {
             $null = Set-AzRecoveryServicesVaultProperty -VaultId $vaultId -SoftDeleteFeatureState $softDeleteStatus.TrimEnd('d')
             break
         }
+        'Microsoft.MachineLearningServices/workspaces' {
+            $subscriptionId = $resourceId.Split('/')[2]
+            $resourceGroupName = $resourceId.Split('/')[4]
+            $resourceName = Split-Path $ResourceId -Leaf
+
+            # Purge service
+            $purgePath = '/subscriptions/{0}/resourceGroups/{1}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}?api-version=2023-06-01-preview&forceToPurge=true' -f $subscriptionId, $resourceGroupName,$resourceName
+            $purgeRequestInputObject = @{
+                Method = 'DELETE'
+                Path   = $purgePath
+            }
+            if ($PSCmdlet.ShouldProcess(('API management service with ID [{0}]' -f $softDeletedService.properties.serviceId), 'Purge')) {
+                $null = Invoke-AzRestMethod @purgeRequestInputObject
+            }
+            break
+        }
         ### CODE LOCATION: Add custom post-removal operation here
     }
 }
