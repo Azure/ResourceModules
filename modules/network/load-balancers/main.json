@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.20.4.51522",
-      "templateHash": "15409072009785485974"
+      "templateHash": "9662180849485089270"
     },
     "name": "Load Balancers",
     "description": "This module deploys a Load Balancer.",
@@ -287,7 +287,7 @@
     },
     {
       "type": "Microsoft.Network/loadBalancers",
-      "apiVersion": "2022-07-01",
+      "apiVersion": "2023-04-01",
       "name": "[parameters('name')]",
       "location": "[parameters('location')]",
       "tags": "[parameters('tags')]",
@@ -367,7 +367,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.20.4.51522",
-              "templateHash": "7353857127466687472"
+              "templateHash": "15566474884921056461"
             },
             "name": "Load Balancer Backend Address Pools",
             "description": "This module deploys a Load Balancer Backend Address Pools.",
@@ -432,7 +432,7 @@
             },
             {
               "type": "Microsoft.Network/loadBalancers/backendAddressPools",
-              "apiVersion": "2022-07-01",
+              "apiVersion": "2023-04-01",
               "name": "[format('{0}/{1}', parameters('loadBalancerName'), parameters('name'))]",
               "properties": {
                 "loadBalancerBackendAddresses": "[parameters('loadBalancerBackendAddresses')]",
@@ -515,7 +515,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.20.4.51522",
-              "templateHash": "6110758189927489854"
+              "templateHash": "17563889842244498787"
             },
             "name": "Load Balancer Inbound NAT Rules",
             "description": "This module deploys a Load Balancer Inbound NAT Rules.",
@@ -640,7 +640,7 @@
             },
             {
               "type": "Microsoft.Network/loadBalancers/inboundNatRules",
-              "apiVersion": "2022-07-01",
+              "apiVersion": "2023-04-01",
               "name": "[format('{0}/{1}', parameters('loadBalancerName'), parameters('name'))]",
               "properties": {
                 "frontendPort": "[parameters('frontendPort')]",
@@ -893,14 +893,14 @@
       "metadata": {
         "description": "The backend address pools available in the load balancer."
       },
-      "value": "[reference(resourceId('Microsoft.Network/loadBalancers', parameters('name')), '2022-07-01').backendAddressPools]"
+      "value": "[reference(resourceId('Microsoft.Network/loadBalancers', parameters('name')), '2023-04-01').backendAddressPools]"
     },
     "location": {
       "type": "string",
       "metadata": {
         "description": "The location the resource was deployed into."
       },
-      "value": "[reference(resourceId('Microsoft.Network/loadBalancers', parameters('name')), '2022-07-01', 'full').location]"
+      "value": "[reference(resourceId('Microsoft.Network/loadBalancers', parameters('name')), '2023-04-01', 'full').location]"
     }
   }
 }

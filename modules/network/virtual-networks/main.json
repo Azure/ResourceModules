@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.20.4.51522",
-      "templateHash": "17091652747661653062"
+      "templateHash": "9292461711724570806"
     },
     "name": "Virtual Networks",
     "description": "This module deploys a Virtual Network (vNet).",
@@ -243,7 +243,7 @@
     },
     {
       "type": "Microsoft.Network/virtualNetworks",
-      "apiVersion": "2022-07-01",
+      "apiVersion": "2023-04-01",
       "name": "[parameters('name')]",
       "location": "[parameters('location')]",
       "tags": "[parameters('tags')]",
@@ -359,7 +359,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.20.4.51522",
-              "templateHash": "12347140584991372505"
+              "templateHash": "17563066367289258796"
             },
             "name": "Virtual Network Subnets",
             "description": "This module deploys a Virtual Network Subnet.",
@@ -503,7 +503,7 @@
             },
             {
               "type": "Microsoft.Network/virtualNetworks/subnets",
-              "apiVersion": "2022-07-01",
+              "apiVersion": "2023-04-01",
               "name": "[format('{0}/{1}', parameters('virtualNetworkName'), parameters('name'))]",
               "properties": {
                 "addressPrefix": "[parameters('addressPrefix')]",
@@ -725,14 +725,14 @@
               "metadata": {
                 "description": "The address prefix for the subnet."
               },
-              "value": "[reference(resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworkName'), parameters('name')), '2022-07-01').addressPrefix]"
+              "value": "[reference(resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworkName'), parameters('name')), '2023-04-01').addressPrefix]"
             },
             "subnetAddressPrefixes": {
               "type": "array",
               "metadata": {
                 "description": "List of address prefixes for the subnet."
               },
-              "value": "[if(not(empty(parameters('addressPrefixes'))), reference(resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworkName'), parameters('name')), '2022-07-01').addressPrefixes, createArray())]"
+              "value": "[if(not(empty(parameters('addressPrefixes'))), reference(resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworkName'), parameters('name')), '2023-04-01').addressPrefixes, createArray())]"
             }
           }
         }
@@ -778,7 +778,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.20.4.51522",
-              "templateHash": "12729321417326466302"
+              "templateHash": "6880392752659964193"
             },
             "name": "Virtual Network Peerings",
             "description": "This module deploys a Virtual Network Peering.",
@@ -864,7 +864,7 @@
             },
             {
               "type": "Microsoft.Network/virtualNetworks/virtualNetworkPeerings",
-              "apiVersion": "2022-07-01",
+              "apiVersion": "2023-04-01",
               "name": "[format('{0}/{1}', parameters('localVnetName'), parameters('name'))]",
               "properties": {
                 "allowForwardedTraffic": "[parameters('allowForwardedTraffic')]",
@@ -947,7 +947,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.20.4.51522",
-              "templateHash": "12729321417326466302"
+              "templateHash": "6880392752659964193"
             },
             "name": "Virtual Network Peerings",
             "description": "This module deploys a Virtual Network Peering.",
@@ -1033,7 +1033,7 @@
             },
             {
               "type": "Microsoft.Network/virtualNetworks/virtualNetworkPeerings",
-              "apiVersion": "2022-07-01",
+              "apiVersion": "2023-04-01",
               "name": "[format('{0}/{1}', parameters('localVnetName'), parameters('name'))]",
               "properties": {
                 "allowForwardedTraffic": "[parameters('allowForwardedTraffic')]",
@@ -1301,7 +1301,7 @@
       "metadata": {
         "description": "The location the resource was deployed into."
       },
-      "value": "[reference(resourceId('Microsoft.Network/virtualNetworks', parameters('name')), '2022-07-01', 'full').location]"
+      "value": "[reference(resourceId('Microsoft.Network/virtualNetworks', parameters('name')), '2023-04-01', 'full').location]"
     },
     "diagnosticsLogs": {
       "type": "array",

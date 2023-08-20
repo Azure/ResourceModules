@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.20.4.51522",
-      "templateHash": "7353857127466687472"
+      "templateHash": "15566474884921056461"
     },
     "name": "Load Balancer Backend Address Pools",
     "description": "This module deploys a Load Balancer Backend Address Pools.",
@@ -70,7 +70,7 @@
     },
     {
       "type": "Microsoft.Network/loadBalancers/backendAddressPools",
-      "apiVersion": "2022-07-01",
+      "apiVersion": "2023-04-01",
       "name": "[format('{0}/{1}', parameters('loadBalancerName'), parameters('name'))]",
       "properties": {
         "loadBalancerBackendAddresses": "[parameters('loadBalancerBackendAddresses')]",

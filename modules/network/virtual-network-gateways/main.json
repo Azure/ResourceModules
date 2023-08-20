@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.20.4.51522",
-      "templateHash": "3610136439814257007"
+      "templateHash": "13663330059568651097"
     },
     "name": "Virtual Network Gateways",
     "description": "This module deploys a Virtual Network Gateway.",
@@ -429,7 +429,7 @@
     },
     {
       "type": "Microsoft.Network/virtualNetworkGateways",
-      "apiVersion": "2022-07-01",
+      "apiVersion": "2023-04-01",
       "name": "[parameters('name')]",
       "location": "[parameters('location')]",
       "tags": "[parameters('tags')]",
@@ -557,7 +557,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.20.4.51522",
-              "templateHash": "14474619344547636171"
+              "templateHash": "15569676361876738893"
             },
             "name": "Public IP Addresses",
             "description": "This module deploys a Public IP Address.",
@@ -809,7 +809,7 @@
             },
             {
               "type": "Microsoft.Network/publicIPAddresses",
-              "apiVersion": "2022-07-01",
+              "apiVersion": "2023-04-01",
               "name": "[parameters('name')]",
               "location": "[parameters('location')]",
               "tags": "[parameters('tags')]",
@@ -1064,14 +1064,14 @@
               "metadata": {
                 "description": "The public IP address of the public IP address resource."
               },
-              "value": "[if(contains(reference(resourceId('Microsoft.Network/publicIPAddresses', parameters('name')), '2022-07-01'), 'ipAddress'), reference(resourceId('Microsoft.Network/publicIPAddresses', parameters('name')), '2022-07-01').ipAddress, '')]"
+              "value": "[if(contains(reference(resourceId('Microsoft.Network/publicIPAddresses', parameters('name')), '2023-04-01'), 'ipAddress'), reference(resourceId('Microsoft.Network/publicIPAddresses', parameters('name')), '2023-04-01').ipAddress, '')]"
             },
             "location": {
               "type": "string",
               "metadata": {
                 "description": "The location the resource was deployed into."
               },
-              "value": "[reference(resourceId('Microsoft.Network/publicIPAddresses', parameters('name')), '2022-07-01', 'full').location]"
+              "value": "[reference(resourceId('Microsoft.Network/publicIPAddresses', parameters('name')), '2023-04-01', 'full').location]"
             }
           }
         }
@@ -1113,7 +1113,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.20.4.51522",
-              "templateHash": "12738577362496266730"
+              "templateHash": "15664896159925545005"
             },
             "name": "VPN Gateway NAT Rules",
             "description": "This module deploys a Virtual Network Gateway NAT Rule.",
@@ -1202,7 +1202,7 @@
             },
             {
               "type": "Microsoft.Network/virtualNetworkGateways/natRules",
-              "apiVersion": "2022-07-01",
+              "apiVersion": "2023-04-01",
               "name": "[format('{0}/{1}', parameters('virtualNetworkGatewayName'), parameters('name'))]",
               "properties": {
                 "externalMappings": "[parameters('externalMappings')]",
@@ -1447,14 +1447,14 @@
       "metadata": {
         "description": "Shows if the virtual network gateway is configured in active-active mode."
       },
-      "value": "[reference(resourceId('Microsoft.Network/virtualNetworkGateways', parameters('name')), '2022-07-01').activeActive]"
+      "value": "[reference(resourceId('Microsoft.Network/virtualNetworkGateways', parameters('name')), '2023-04-01').activeActive]"
     },
     "location": {
       "type": "string",
       "metadata": {
         "description": "The location the resource was deployed into."
       },
-      "value": "[reference(resourceId('Microsoft.Network/virtualNetworkGateways', parameters('name')), '2022-07-01', 'full').location]"
+      "value": "[reference(resourceId('Microsoft.Network/virtualNetworkGateways', parameters('name')), '2023-04-01', 'full').location]"
     }
   }
 }

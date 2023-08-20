@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.20.4.51522",
-      "templateHash": "17534901229402662507"
+      "templateHash": "11242448751971198211"
     },
     "name": "Network Security Groups",
     "description": "This module deploys a Network security Group (NSG).",
@@ -167,7 +167,7 @@
     },
     {
       "type": "Microsoft.Network/networkSecurityGroups",
-      "apiVersion": "2022-07-01",
+      "apiVersion": "2023-04-01",
       "name": "[parameters('name')]",
       "location": "[parameters('location')]",
       "tags": "[parameters('tags')]",
@@ -286,7 +286,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.20.4.51522",
-              "templateHash": "3678167334807068025"
+              "templateHash": "4767935764969237300"
             },
             "name": "Network Security Group (NSG) Security Rules",
             "description": "This module deploys a Network Security Group (NSG) Security Rule.",
@@ -449,7 +449,7 @@
             },
             {
               "type": "Microsoft.Network/networkSecurityGroups/securityRules",
-              "apiVersion": "2022-07-01",
+              "apiVersion": "2023-04-01",
               "name": "[format('{0}/{1}', parameters('networkSecurityGroupName'), parameters('name'))]",
               "properties": {
                 "access": "[parameters('access')]",
@@ -704,7 +704,7 @@
       "metadata": {
         "description": "The location the resource was deployed into."
       },
-      "value": "[reference(resourceId('Microsoft.Network/networkSecurityGroups', parameters('name')), '2022-07-01', 'full').location]"
+      "value": "[reference(resourceId('Microsoft.Network/networkSecurityGroups', parameters('name')), '2023-04-01', 'full').location]"
     }
   }
 }

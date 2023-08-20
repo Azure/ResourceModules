@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.20.4.51522",
-      "templateHash": "10184410469886474565"
+      "templateHash": "8941216473298209164"
     },
     "name": "Firewall Policies",
     "description": "This module deploys a Firewall Policy.",
@@ -227,7 +227,7 @@
     },
     {
       "type": "Microsoft.Network/firewallPolicies",
-      "apiVersion": "2022-07-01",
+      "apiVersion": "2023-04-01",
       "name": "[parameters('name')]",
       "location": "[parameters('location')]",
       "tags": "[parameters('tags')]",
@@ -291,7 +291,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.20.4.51522",
-              "templateHash": "2516156247224826718"
+              "templateHash": "12741470915279971248"
             },
             "name": "Firewall Policy Rule Collection Groups",
             "description": "This module deploys a Firewall Policy Rule Collection Group.",
@@ -348,7 +348,7 @@
             },
             {
               "type": "Microsoft.Network/firewallPolicies/ruleCollectionGroups",
-              "apiVersion": "2022-07-01",
+              "apiVersion": "2023-04-01",
               "name": "[format('{0}/{1}', parameters('firewallPolicyName'), parameters('name'))]",
               "properties": {
                 "priority": "[parameters('priority')]",
@@ -413,7 +413,7 @@
       "metadata": {
         "description": "The location the resource was deployed into."
       },
-      "value": "[reference(resourceId('Microsoft.Network/firewallPolicies', parameters('name')), '2022-07-01', 'full').location]"
+      "value": "[reference(resourceId('Microsoft.Network/firewallPolicies', parameters('name')), '2023-04-01', 'full').location]"
     }
   }
 }
