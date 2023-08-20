@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.20.4.51522",
-      "templateHash": "10649954371905940405"
+      "templateHash": "11674901486394643962"
     },
     "name": "Virtual Machines",
     "description": "This module deploys a Virtual Machine with one or multiple NICs and optionally one or multiple public IPs.",
@@ -857,7 +857,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.20.4.51522",
-              "templateHash": "7198152300976797281"
+              "templateHash": "9902709511407787747"
             }
           },
           "parameters": {
@@ -1610,7 +1610,7 @@
                     "_generator": {
                       "name": "bicep",
                       "version": "0.20.4.51522",
-                      "templateHash": "2671718918533328624"
+                      "templateHash": "5050887597776754387"
                     },
                     "name": "Network Interface",
                     "description": "This module deploys a Network Interface.",
@@ -1807,7 +1807,7 @@
                     },
                     {
                       "type": "Microsoft.Network/networkInterfaces",
-                      "apiVersion": "2022-07-01",
+                      "apiVersion": "2023-04-01",
                       "name": "[parameters('name')]",
                       "location": "[parameters('location')]",
                       "tags": "[parameters('tags')]",
@@ -2081,7 +2081,7 @@
                       "metadata": {
                         "description": "The location the resource was deployed into."
                       },
-                      "value": "[reference(resourceId('Microsoft.Network/networkInterfaces', parameters('name')), '2022-07-01', 'full').location]"
+                      "value": "[reference(resourceId('Microsoft.Network/networkInterfaces', parameters('name')), '2023-04-01', 'full').location]"
                     }
                   }
                 }
