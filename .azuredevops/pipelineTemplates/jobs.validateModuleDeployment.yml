@@ -311,7 +311,7 @@ jobs:
       #------------------
       - task: AzurePowerShell@5
         displayName: 'Remove deployed resources via [${{ parameters.serviceConnection }}]'
-        condition: and(always(), eq('${{ parameters.removeDeployment }}', 'True'), not(eq(variables['deploymentNames'],'')), not(startsWith(variables['deploymentNames'], 'variables[' )))
+        condition: and( always(), eq('${{ parameters.removeDeployment }}', 'True'), not(eq(variables['deploymentNames'],'')), not(startsWith(variables['deploymentNames'], 'variables[' )))
         inputs:
           azureSubscription: ${{ parameters.serviceConnection }}
           azurePowerShellVersion: ${{ parameters.azurePowerShellVersion }}
