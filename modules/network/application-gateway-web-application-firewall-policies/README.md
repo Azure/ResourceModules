@@ -14,7 +14,7 @@ This module deploys an Application Gateway Web Application Firewall (WAF) Policy
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Network/ApplicationGatewayWebApplicationFirewallPolicies` | [2022-11-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-11-01/ApplicationGatewayWebApplicationFirewallPolicies) |
+| `Microsoft.Network/ApplicationGatewayWebApplicationFirewallPolicies` | [2023-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-04-01/ApplicationGatewayWebApplicationFirewallPolicies) |
 
 ## Parameters
 
