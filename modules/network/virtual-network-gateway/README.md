@@ -61,7 +61,7 @@ This module deploys a Virtual Network Gateway.
 | `gatewayPipName` | string | `[format('{0}-pip1', parameters('name'))]` |  | Specifies the name of the Public IP used by the Virtual Network Gateway. If it's not provided, a '-pip' suffix will be appended to the gateway's name. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
-| `natRules` | _[natRules](nat-rules/README.md)_ array | `[]` |  | NatRules for virtual network gateway. NAT is supported on the the following SKUs: VpnGw2~5, VpnGw2AZ~5AZ and is supported for IPsec/IKE cross-premises connections only. |
+| `natRules` | array | `[]` |  | NatRules for virtual network gateway. NAT is supported on the the following SKUs: VpnGw2~5, VpnGw2AZ~5AZ and is supported for IPsec/IKE cross-premises connections only. |
 | `publicIpdiagnosticLogCategoriesToEnable` | array | `[allLogs]` | `['', allLogs, DDoSMitigationFlowLogs, DDoSMitigationReports, DDoSProtectionNotifications]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
 | `publicIpDiagnosticSettingsName` | string | `''` |  | The name of the public IP diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings". |
 | `publicIPPrefixResourceId` | string | `''` |  | Resource ID of the Public IP Prefix object. This is only needed if you want your Public IPs created in a PIP Prefix. |
@@ -258,7 +258,7 @@ This section gives you an overview of all local-referenced module files (i.e., o
 
 | Reference | Type |
 | :-- | :-- |
-| `network/public-ip-addresses` | Local reference |
+| `network/public-ip-address` | Local reference |
 
 ## Deployment examples
 
@@ -274,7 +274,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module virtualNetworkGateways './network/virtual-network-gateway/main.bicep' = {
+module virtualNetworkGateway './network/virtual-network-gateway/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nvngavpn'
   params: {
     // Required parameters
@@ -429,7 +429,7 @@ module virtualNetworkGateways './network/virtual-network-gateway/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module virtualNetworkGateways './network/virtual-network-gateway/main.bicep' = {
+module virtualNetworkGateway './network/virtual-network-gateway/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nvger'
   params: {
     // Required parameters
@@ -554,7 +554,7 @@ module virtualNetworkGateways './network/virtual-network-gateway/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module virtualNetworkGateways './network/virtual-network-gateway/main.bicep' = {
+module virtualNetworkGateway './network/virtual-network-gateway/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nvgvpn'
   params: {
     // Required parameters

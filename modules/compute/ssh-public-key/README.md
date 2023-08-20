@@ -167,7 +167,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module sshPublicKeys './compute/ssh-public-key/main.bicep' = {
+module sshPublicKey './compute/ssh-public-key/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-cspkcom'
   params: {
     // Required parameters
@@ -216,7 +216,7 @@ module sshPublicKeys './compute/ssh-public-key/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module sshPublicKeys './compute/ssh-public-key/main.bicep' = {
+module sshPublicKey './compute/ssh-public-key/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-cspkmin'
   params: {
     // Required parameters

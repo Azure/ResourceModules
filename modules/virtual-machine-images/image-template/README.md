@@ -352,7 +352,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module imageTemplates './virtual-machine-images/image-template/main.bicep' = {
+module imageTemplate './virtual-machine-images/image-template/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-vmiitcom'
   params: {
     // Required parameters
@@ -517,7 +517,7 @@ module imageTemplates './virtual-machine-images/image-template/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module imageTemplates './virtual-machine-images/image-template/main.bicep' = {
+module imageTemplate './virtual-machine-images/image-template/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-vmiitmin'
   params: {
     // Required parameters

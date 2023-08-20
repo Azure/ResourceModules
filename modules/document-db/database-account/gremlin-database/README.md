@@ -35,7 +35,7 @@ This module deploys a Gremlin Database within a CosmosDB Account.
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `graphs` | _[graphs](graphs/README.md)_ array | `[]` | Array of graphs to deploy in the Gremlin database. |
+| `graphs` | array | `[]` | Array of graphs to deploy in the Gremlin database. |
 | `maxThroughput` | int | `4000` | Represents maximum throughput, the resource can scale up to. Cannot be set together with `throughput`. If `throughput` is set to something else than -1, this autoscale setting is ignored. |
 | `systemAssignedIdentity` | bool | `False` | Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` | Tags of the Gremlin database resource. |

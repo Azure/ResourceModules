@@ -267,7 +267,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module hostingEnvironments './web/hosting-environment/main.bicep' = {
+module hostingEnvironment './web/hosting-environment/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-whasev2'
   params: {
     // Required parameters
@@ -412,7 +412,7 @@ module hostingEnvironments './web/hosting-environment/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module hostingEnvironments './web/hosting-environment/main.bicep' = {
+module hostingEnvironment './web/hosting-environment/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-whasev3'
   params: {
     // Required parameters

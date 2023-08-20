@@ -37,8 +37,8 @@ If you are planning to deploy a Secure Virtual Hub (with an Azure Firewall integ
 | `allowBranchToBranchTraffic` | bool | `True` |  | Flag to control transit for VirtualRouter hub. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `expressRouteGatewayId` | string | `''` |  | Resource ID of the Express Route Gateway to link to. |
-| `hubRouteTables` | _[hubRouteTables](hub-route-tables/README.md)_ array | `[]` |  | Route tables to create for the virtual hub. |
-| `hubVirtualNetworkConnections` | _[hubVirtualNetworkConnections](hub-virtual-network-connections/README.md)_ array | `[]` |  | Virtual network connections to create for the virtual hub. |
+| `hubRouteTables` | array | `[]` |  | Route tables to create for the virtual hub. |
+| `hubVirtualNetworkConnections` | array | `[]` |  | Virtual network connections to create for the virtual hub. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `p2SVpnGatewayId` | string | `''` |  | Resource ID of the Point-to-Site VPN Gateway to link to. |
@@ -122,7 +122,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module virtualHubs './network/virtual-hub/main.bicep' = {
+module virtualHub './network/virtual-hub/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nvhcom'
   params: {
     // Required parameters
@@ -245,7 +245,7 @@ module virtualHubs './network/virtual-hub/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module virtualHubs './network/virtual-hub/main.bicep' = {
+module virtualHub './network/virtual-hub/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nvhmin'
   params: {
     // Required parameters

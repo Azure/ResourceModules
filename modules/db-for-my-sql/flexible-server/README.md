@@ -56,7 +56,7 @@ This module deploys a DBforMySQL Flexible Server.
 | `cMKKeyName` | string | `''` |  | The name of the customer managed key to use for encryption. |
 | `cMKKeyVersion` | string | `''` |  | The version of the customer managed key to reference for encryption. If not provided, the latest key version is used. |
 | `createMode` | string | `'Default'` | `[Default, GeoRestore, PointInTimeRestore, Replica]` | The mode to create a new MySQL server. |
-| `databases` | _[databases](databases/README.md)_ array | `[]` |  | The databases to create in the server. |
+| `databases` | array | `[]` |  | The databases to create in the server. |
 | `delegatedSubnetResourceId` | string | `''` |  | Delegated subnet arm resource ID. Used when the desired connectivity mode is "Private Access" - virtual network integration. Delegation must be enabled on the subnet for MySQL Flexible Servers and subnet CIDR size is /29. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
@@ -67,7 +67,7 @@ This module deploys a DBforMySQL Flexible Server.
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `firewallRules` | _[firewallRules](firewall-rules/README.md)_ array | `[]` |  | The firewall rules to create in the MySQL flexible server. |
+| `firewallRules` | array | `[]` |  | The firewall rules to create in the MySQL flexible server. |
 | `geoBackupCMKKeyName` | string | `''` |  | The name of the customer managed key to use for encryption when geoRedundantBackup is "Enabled". |
 | `geoBackupCMKKeyVersion` | string | `''` |  | The version of the customer managed key to reference for encryption when geoRedundantBackup is "Enabled". If not provided, the latest key version is used. |
 | `geoRedundantBackup` | string | `'Disabled'` | `[Disabled, Enabled]` | A value indicating whether Geo-Redundant backup is enabled on the server. If "Enabled" and "cMKKeyName" is not empty, then "geoBackupCMKKeyVaultResourceId" and "cMKUserAssignedIdentityResourceId" are also required. |
@@ -244,7 +244,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module flexibleServers './db-for-my-sql/flexible-server/main.bicep' = {
+module flexibleServer './db-for-my-sql/flexible-server/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-dfmsfsmin'
   params: {
     // Required parameters
@@ -305,7 +305,7 @@ module flexibleServers './db-for-my-sql/flexible-server/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module flexibleServers './db-for-my-sql/flexible-server/main.bicep' = {
+module flexibleServer './db-for-my-sql/flexible-server/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-dfmsfspvt'
   params: {
     // Required parameters
@@ -476,7 +476,7 @@ module flexibleServers './db-for-my-sql/flexible-server/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module flexibleServers './db-for-my-sql/flexible-server/main.bicep' = {
+module flexibleServer './db-for-my-sql/flexible-server/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-dfmsfsp'
   params: {
     // Required parameters

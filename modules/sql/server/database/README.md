@@ -37,8 +37,8 @@ This module deploys an Azure SQL Server Database.
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `autoPauseDelay` | int | `0` |  | Time in minutes after which database is automatically paused. A value of -1 means that automatic pause is disabled. |
-| `backupLongTermRetentionPolicy` | object | `{object}` |  | The long term backup retention policy to create for the database. |
-| `backupShortTermRetentionPolicy` | object | `{object}` |  | The short term backup retention policy to create for the database. |
+| `backupLongTermRetentionPolicy` | _[backupLongTermRetentionPolicy](backup-long-term-retention-policy/README.md)_ object | `{object}` |  | The long term backup retention policy to create for the database. |
+| `backupShortTermRetentionPolicy` | _[backupShortTermRetentionPolicy](backup-short-term-retention-policy/README.md)_ object | `{object}` |  | The short term backup retention policy to create for the database. |
 | `collation` | string | `'SQL_Latin1_General_CP1_CI_AS'` |  | The collation of the database. |
 | `createMode` | string | `'Default'` | `[Copy, Default, OnlineSecondary, PointInTimeRestore, Recovery, Restore, RestoreLongTermRetentionBackup, Secondary]` | Specifies the mode of database creation. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |

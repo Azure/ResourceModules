@@ -151,7 +151,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module policySetDefinitions './authorization/policy-set-definition/main.bicep' = {
+module policySetDefinition './authorization/policy-set-definition/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-apsdmgcom'
   params: {
     // Required parameters
@@ -294,7 +294,7 @@ module policySetDefinitions './authorization/policy-set-definition/main.bicep' =
 <summary>via Bicep module</summary>
 
 ```bicep
-module policySetDefinitions './authorization/policy-set-definition/main.bicep' = {
+module policySetDefinition './authorization/policy-set-definition/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-apsdmgmin'
   params: {
     // Required parameters
@@ -365,7 +365,7 @@ module policySetDefinitions './authorization/policy-set-definition/main.bicep' =
 <summary>via Bicep module</summary>
 
 ```bicep
-module policySetDefinitions './authorization/policy-set-definition/main.bicep' = {
+module policySetDefinition './authorization/policy-set-definition/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-apsdsubcom'
   params: {
     // Required parameters
@@ -508,7 +508,7 @@ module policySetDefinitions './authorization/policy-set-definition/main.bicep' =
 <summary>via Bicep module</summary>
 
 ```bicep
-module policySetDefinitions './authorization/policy-set-definition/main.bicep' = {
+module policySetDefinition './authorization/policy-set-definition/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-apsdsubmin'
   params: {
     // Required parameters

@@ -72,7 +72,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module budgets './consumption/budget/main.bicep' = {
+module budget './consumption/budget/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-cbcom'
   params: {
     // Required parameters
@@ -145,7 +145,7 @@ module budgets './consumption/budget/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module budgets './consumption/budget/main.bicep' = {
+module budget './consumption/budget/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-cbmin'
   params: {
     // Required parameters

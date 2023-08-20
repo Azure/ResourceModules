@@ -49,7 +49,7 @@ This module deploys an Azure Kubernetes Service (AKS) Managed Cluster.
 | `aadProfileServerAppSecret` | string | `''` |  | The server AAD application secret. |
 | `aadProfileTenantId` | string | `[subscription().tenantId]` |  | Specifies the tenant ID of the Azure Active Directory used by the AKS cluster for authentication. |
 | `aciConnectorLinuxEnabled` | bool | `False` |  | Specifies whether the aciConnectorLinux add-on is enabled or not. |
-| `agentPools` | _[agentPools](agent-pools/README.md)_ array | `[]` |  | Define one or more secondary/additional agent pools. |
+| `agentPools` | array | `[]` |  | Define one or more secondary/additional agent pools. |
 | `aksClusterAdminUsername` | string | `'azureuser'` |  | Specifies the administrator username of Linux virtual machines. |
 | `aksClusterDnsPrefix` | string | `[parameters('name')]` |  | Specifies the DNS prefix specified when creating the managed cluster. |
 | `aksClusterDnsServiceIP` | string | `''` |  | Specifies the IP address assigned to the Kubernetes DNS service. It must be within the Kubernetes service address range specified in serviceCidr. |
@@ -376,8 +376,8 @@ This section gives you an overview of all local-referenced module files (i.e., o
 
 | Reference | Type |
 | :-- | :-- |
-| `kubernetes-configuration/extensions` | Local reference |
-| `kubernetes-configuration/flux-configurations` | Local reference |
+| `kubernetes-configuration/extension` | Local reference |
+| `kubernetes-configuration/flux-configuration` | Local reference |
 
 ## Deployment examples
 
@@ -393,7 +393,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module managedClusters './container-service/managed-cluster/main.bicep' = {
+module managedCluster './container-service/managed-cluster/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-csmaz'
   params: {
     // Required parameters
@@ -774,7 +774,7 @@ module managedClusters './container-service/managed-cluster/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module managedClusters './container-service/managed-cluster/main.bicep' = {
+module managedCluster './container-service/managed-cluster/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-csmkube'
   params: {
     // Required parameters
@@ -1025,7 +1025,7 @@ module managedClusters './container-service/managed-cluster/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module managedClusters './container-service/managed-cluster/main.bicep' = {
+module managedCluster './container-service/managed-cluster/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-csmmin'
   params: {
     // Required parameters
@@ -1092,7 +1092,7 @@ module managedClusters './container-service/managed-cluster/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module managedClusters './container-service/managed-cluster/main.bicep' = {
+module managedCluster './container-service/managed-cluster/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-csmpriv'
   params: {
     // Required parameters

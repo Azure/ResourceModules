@@ -52,7 +52,7 @@ This module deploys a Machine Learning Services Workspace.
 | `cMKKeyName` | string | `''` |  | The name of the customer managed key to use for encryption. |
 | `cMKKeyVersion` | string | `''` |  | The version of the customer managed key to reference for encryption. If not provided, the latest key version is used. |
 | `cMKUserAssignedIdentityResourceId` | string | `''` |  | User assigned identity to use when fetching the customer managed key. If not provided, a system-assigned identity can be used - but must be given access to the referenced key vault first. |
-| `computes` | _[computes](computes/README.md)_ array | `[]` |  | Computes to create respectively attach to the workspace. |
+| `computes` | array | `[]` |  | Computes to create respectively attach to the workspace. |
 | `description` | string | `''` |  | The description of this workspace. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
@@ -431,7 +431,7 @@ This section gives you an overview of all local-referenced module files (i.e., o
 
 | Reference | Type |
 | :-- | :-- |
-| `network/private-endpoints` | Local reference |
+| `network/private-endpoint` | Local reference |
 
 ## Deployment examples
 
@@ -447,7 +447,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module workspaces './machine-learning-services/workspace/main.bicep' = {
+module workspace './machine-learning-services/workspace/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-mlswcom'
   params: {
     // Required parameters
@@ -680,7 +680,7 @@ module workspaces './machine-learning-services/workspace/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module workspaces './machine-learning-services/workspace/main.bicep' = {
+module workspace './machine-learning-services/workspace/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-mlswecr'
   params: {
     // Required parameters
@@ -811,7 +811,7 @@ module workspaces './machine-learning-services/workspace/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module workspaces './machine-learning-services/workspace/main.bicep' = {
+module workspace './machine-learning-services/workspace/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-mlswmin'
   params: {
     // Required parameters

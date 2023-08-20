@@ -251,7 +251,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module dnsResolvers './network/dns-resolver/main.bicep' = {
+module dnsResolver './network/dns-resolver/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-ndrcom'
   params: {
     // Required parameters

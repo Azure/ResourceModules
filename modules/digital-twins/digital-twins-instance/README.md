@@ -434,7 +434,7 @@ This section gives you an overview of all local-referenced module files (i.e., o
 
 | Reference | Type |
 | :-- | :-- |
-| `network/private-endpoints` | Local reference |
+| `network/private-endpoint` | Local reference |
 
 ## Deployment examples
 
@@ -450,7 +450,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module digitalTwinsInstances './digital-twins/digital-twins-instance/main.bicep' = {
+module digitalTwinsInstance './digital-twins/digital-twins-instance/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-dtdticom'
   params: {
     // Required parameters
@@ -619,7 +619,7 @@ module digitalTwinsInstances './digital-twins/digital-twins-instance/main.bicep'
 <summary>via Bicep module</summary>
 
 ```bicep
-module digitalTwinsInstances './digital-twins/digital-twins-instance/main.bicep' = {
+module digitalTwinsInstance './digital-twins/digital-twins-instance/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-dtdtimin'
   params: {
     // Required parameters

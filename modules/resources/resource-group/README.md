@@ -157,7 +157,7 @@ This section gives you an overview of all local-referenced module files (i.e., o
 
 | Reference | Type |
 | :-- | :-- |
-| `authorization/locks/resource-group` | Local reference |
+| `authorization/lock/resource-group` | Local reference |
 
 ## Deployment examples
 
@@ -173,7 +173,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module resourceGroups './resources/resource-group/main.bicep' = {
+module resourceGroup './resources/resource-group/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-rrgcom'
   params: {
     // Required parameters
@@ -252,7 +252,7 @@ module resourceGroups './resources/resource-group/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module resourceGroups './resources/resource-group/main.bicep' = {
+module resourceGroup './resources/resource-group/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-rrgmin'
   params: {
     // Required parameters

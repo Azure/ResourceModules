@@ -49,7 +49,7 @@ This module deploys a Healthcare API Workspace IoT Connector.
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `fhirdestination` | object | `{object}` |  | FHIR Destination. |
+| `fhirdestination` | _[fhirdestination](fhirdestination/README.md)_ object | `{object}` |  | FHIR Destination. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |

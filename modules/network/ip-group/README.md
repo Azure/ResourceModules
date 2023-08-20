@@ -165,7 +165,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module ipGroups './network/ip-group/main.bicep' = {
+module ipGroup './network/ip-group/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nigcom'
   params: {
     // Required parameters
@@ -254,7 +254,7 @@ module ipGroups './network/ip-group/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module ipGroups './network/ip-group/main.bicep' = {
+module ipGroup './network/ip-group/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nigmin'
   params: {
     // Required parameters

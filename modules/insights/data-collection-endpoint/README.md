@@ -166,7 +166,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module dataCollectionEndpoints './insights/data-collection-endpoint/main.bicep' = {
+module dataCollectionEndpoint './insights/data-collection-endpoint/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-idcecom'
   params: {
     // Required parameters
@@ -253,7 +253,7 @@ module dataCollectionEndpoints './insights/data-collection-endpoint/main.bicep' 
 <summary>via Bicep module</summary>
 
 ```bicep
-module dataCollectionEndpoints './insights/data-collection-endpoint/main.bicep' = {
+module dataCollectionEndpoint './insights/data-collection-endpoint/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-idcemin'
   params: {
     // Required parameters

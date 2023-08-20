@@ -47,7 +47,7 @@ This module deploys an API Management Service API.
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `format` | string | `'openapi'` | `[openapi, openapi-link, openapi+json, openapi+json-link, swagger-json, swagger-link-json, wadl-link-json, wadl-xml, wsdl, wsdl-link]` | Format of the Content in which the API is getting imported. |
 | `isCurrent` | bool | `True` |  | Indicates if API revision is current API revision. |
-| `policies` | _[policies](policies/README.md)_ array | `[]` |  | Array of Policies to apply to the Service API. |
+| `policies` | array | `[]` |  | Array of Policies to apply to the Service API. |
 | `protocols` | array | `[https]` |  | Describes on which protocols the operations in this API can be invoked. - HTTP or HTTPS. |
 | `serviceUrl` | string | `''` |  | Absolute URL of the backend service implementing this API. Cannot be more than 2000 characters long. |
 | `sourceApiId` | string | `''` |  | API identifier of the source API. |

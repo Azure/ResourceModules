@@ -141,7 +141,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module managementGroups './management/management-group/main.bicep' = {
+module managementGroup './management/management-group/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-mmgcom'
   params: {
     // Required parameters
@@ -194,7 +194,7 @@ module managementGroups './management/management-group/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module managementGroups './management/management-group/main.bicep' = {
+module managementGroup './management/management-group/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-mmgmin'
   params: {
     // Required parameters

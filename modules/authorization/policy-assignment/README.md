@@ -189,7 +189,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module policyAssignments './authorization/policy-assignment/main.bicep' = {
+module policyAssignment './authorization/policy-assignment/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-apamgcom'
   params: {
     // Required parameters
@@ -390,7 +390,7 @@ module policyAssignments './authorization/policy-assignment/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module policyAssignments './authorization/policy-assignment/main.bicep' = {
+module policyAssignment './authorization/policy-assignment/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-apamgmin'
   params: {
     // Required parameters
@@ -439,7 +439,7 @@ module policyAssignments './authorization/policy-assignment/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module policyAssignments './authorization/policy-assignment/main.bicep' = {
+module policyAssignment './authorization/policy-assignment/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-apargcom'
   params: {
     // Required parameters
@@ -648,7 +648,7 @@ module policyAssignments './authorization/policy-assignment/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module policyAssignments './authorization/policy-assignment/main.bicep' = {
+module policyAssignment './authorization/policy-assignment/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-apargmin'
   params: {
     // Required parameters
@@ -701,7 +701,7 @@ module policyAssignments './authorization/policy-assignment/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module policyAssignments './authorization/policy-assignment/main.bicep' = {
+module policyAssignment './authorization/policy-assignment/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-apasubcom'
   params: {
     // Required parameters
@@ -906,7 +906,7 @@ module policyAssignments './authorization/policy-assignment/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module policyAssignments './authorization/policy-assignment/main.bicep' = {
+module policyAssignment './authorization/policy-assignment/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-apasubmin'
   params: {
     // Required parameters

@@ -34,7 +34,7 @@ This module deploys a Load Balancer.
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `backendAddressPools` | _[backendAddressPools](backend-address-pools/README.md)_ array | `[]` |  | Collection of backend address pools used by a load balancer. |
+| `backendAddressPools` | array | `[]` |  | Collection of backend address pools used by a load balancer. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
@@ -43,7 +43,7 @@ This module deploys a Load Balancer.
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `inboundNatRules` | _[inboundNatRules](inbound-nat-rules/README.md)_ array | `[]` |  | Collection of inbound NAT Rules used by a load balancer. Defining inbound NAT rules on your load balancer is mutually exclusive with defining an inbound NAT pool. Inbound NAT pools are referenced from virtual machine scale sets. NICs that are associated with individual virtual machines cannot reference an Inbound NAT pool. They have to reference individual inbound NAT rules. |
+| `inboundNatRules` | array | `[]` |  | Collection of inbound NAT Rules used by a load balancer. Defining inbound NAT rules on your load balancer is mutually exclusive with defining an inbound NAT pool. Inbound NAT pools are referenced from virtual machine scale sets. NICs that are associated with individual virtual machines cannot reference an Inbound NAT pool. They have to reference individual inbound NAT rules. |
 | `loadBalancingRules` | array | `[]` |  | Array of objects containing all load balancing rules. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
@@ -478,7 +478,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module loadBalancers './network/load-balancer/main.bicep' = {
+module loadBalancer './network/load-balancer/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nlbcom'
   params: {
     // Required parameters
@@ -749,7 +749,7 @@ module loadBalancers './network/load-balancer/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module loadBalancers './network/load-balancer/main.bicep' = {
+module loadBalancer './network/load-balancer/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nlbint'
   params: {
     // Required parameters
@@ -966,7 +966,7 @@ module loadBalancers './network/load-balancer/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module loadBalancers './network/load-balancer/main.bicep' = {
+module loadBalancer './network/load-balancer/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nlbmin'
   params: {
     // Required parameters

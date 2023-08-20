@@ -169,7 +169,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module capacities './power-bi-dedicated/capacity/main.bicep' = {
+module capacity './power-bi-dedicated/capacity/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-pbdcapcom'
   params: {
     // Required parameters
@@ -260,7 +260,7 @@ module capacities './power-bi-dedicated/capacity/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module capacities './power-bi-dedicated/capacity/main.bicep' = {
+module capacity './power-bi-dedicated/capacity/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-pbdcapmin'
   params: {
     // Required parameters

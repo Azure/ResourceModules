@@ -168,7 +168,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module proximityPlacementGroups './compute/proximity-placement-group/main.bicep' = {
+module proximityPlacementGroup './compute/proximity-placement-group/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-cppgcom'
   params: {
     // Required parameters
@@ -287,7 +287,7 @@ module proximityPlacementGroups './compute/proximity-placement-group/main.bicep'
 <summary>via Bicep module</summary>
 
 ```bicep
-module proximityPlacementGroups './compute/proximity-placement-group/main.bicep' = {
+module proximityPlacementGroup './compute/proximity-placement-group/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-cppgmin'
   params: {
     // Required parameters

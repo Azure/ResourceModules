@@ -37,7 +37,7 @@ This module deploys a Storage Account Blob Service.
 | `containerDeleteRetentionPolicyAllowPermanentDelete` | bool | `False` |  | This property when set to true allows deletion of the soft deleted blob versions and snapshots. This property cannot be used with blob restore policy. This property only applies to blob service and does not apply to containers or file share. |
 | `containerDeleteRetentionPolicyDays` | int | `7` |  | Indicates the number of days that the deleted item should be retained. |
 | `containerDeleteRetentionPolicyEnabled` | bool | `True` |  | The blob service properties for container soft delete. Indicates whether DeleteRetentionPolicy is enabled. |
-| `containers` | _[containers](containers/README.md)_ array | `[]` |  | Blob containers to create. |
+| `containers` | array | `[]` |  | Blob containers to create. |
 | `corsRules` | array | `[]` |  | Specifies CORS rules for the Blob service. You can include up to five CorsRule elements in the request. If no CorsRule elements are included in the request body, all CORS rules will be deleted, and CORS will be disabled for the Blob service. |
 | `defaultServiceVersion` | string | `''` |  | Indicates the default version to use for requests to the Blob service if an incoming request's version is not specified. Possible values include version 2008-10-27 and all more recent versions. |
 | `deleteRetentionPolicyAllowPermanentDelete` | bool | `False` |  | This property when set to true allows deletion of the soft deleted blob versions and snapshots. This property cannot be used with blob restore policy. This property only applies to blob service and does not apply to containers or file share. |

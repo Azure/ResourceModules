@@ -256,7 +256,7 @@ This section gives you an overview of all local-referenced module files (i.e., o
 
 | Reference | Type |
 | :-- | :-- |
-| `network/private-endpoints` | Local reference |
+| `network/private-endpoint` | Local reference |
 
 ## Deployment examples
 
@@ -272,7 +272,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module batchAccounts './batch/batch-account/main.bicep' = {
+module batchAccount './batch/batch-account/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-bbacom'
   params: {
     // Required parameters
@@ -421,7 +421,7 @@ module batchAccounts './batch/batch-account/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module batchAccounts './batch/batch-account/main.bicep' = {
+module batchAccount './batch/batch-account/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-bbaencr'
   params: {
     // Required parameters
@@ -540,7 +540,7 @@ module batchAccounts './batch/batch-account/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module batchAccounts './batch/batch-account/main.bicep' = {
+module batchAccount './batch/batch-account/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-bbamin'
   params: {
     // Required parameters
