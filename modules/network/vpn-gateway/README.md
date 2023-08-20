@@ -38,9 +38,9 @@ This module deploys a VPN Gateway.
 | `isRoutingPreferenceInternet` | bool | `False` |  | Enable routing preference property for the public IP interface of the VPN gateway. |
 | `location` | string | `[resourceGroup().location]` |  | Location where all resources will be created. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
-| `natRules` | _[natRules](nat-rules/README.md)_ array | `[]` |  | List of all the NAT Rules to associate with the gateway. |
+| `natRules` | array | `[]` |  | List of all the NAT Rules to associate with the gateway. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
-| `vpnConnections` | _[vpnConnections](vpn-connections/README.md)_ array | `[]` |  | The VPN connections to create in the VPN gateway. |
+| `vpnConnections` | array | `[]` |  | The VPN connections to create in the VPN gateway. |
 | `vpnGatewayScaleUnit` | int | `2` |  | The scale unit for this VPN gateway. |
 
 
@@ -189,7 +189,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module vpnGateways './network/vpn-gateway/main.bicep' = {
+module vpnGateway './network/vpn-gateway/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nvgcom'
   params: {
     // Required parameters
@@ -328,7 +328,7 @@ module vpnGateways './network/vpn-gateway/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module vpnGateways './network/vpn-gateway/main.bicep' = {
+module vpnGateway './network/vpn-gateway/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nvgmin'
   params: {
     // Required parameters

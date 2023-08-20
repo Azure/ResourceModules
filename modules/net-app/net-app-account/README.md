@@ -32,7 +32,7 @@ This module deploys an Azure NetApp File.
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `capacityPools` | _[capacityPools](capacity-pools/README.md)_ array | `[]` |  | Capacity pools to create. |
+| `capacityPools` | array | `[]` |  | Capacity pools to create. |
 | `dnsServers` | string | `''` |  | Required if domainName is specified. Comma separated list of DNS server IP addresses (IPv4 only) required for the Active Directory (AD) domain join and SMB authentication operations to succeed. |
 | `domainJoinOU` | string | `''` |  | Used only if domainName is specified. LDAP Path for the Organization Unit (OU) where SMB Server machine accounts will be created (i.e. 'OU=SecondLevel,OU=FirstLevel'). |
 | `domainJoinPassword` | securestring | `''` |  | Required if domainName is specified. Password of the user specified in domainJoinUser parameter. |
@@ -207,7 +207,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module netAppAccounts './net-app/net-app-account/main.bicep' = {
+module netAppAccount './net-app/net-app-account/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nanaamin'
   params: {
     // Required parameters
@@ -252,7 +252,7 @@ module netAppAccounts './net-app/net-app-account/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module netAppAccounts './net-app/net-app-account/main.bicep' = {
+module netAppAccount './net-app/net-app-account/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nanaanfs3'
   params: {
     // Required parameters
@@ -477,7 +477,7 @@ module netAppAccounts './net-app/net-app-account/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module netAppAccounts './net-app/net-app-account/main.bicep' = {
+module netAppAccount './net-app/net-app-account/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nanaanfs41'
   params: {
     // Required parameters

@@ -255,7 +255,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module routeTables './network/route-table/main.bicep' = {
+module routeTable './network/route-table/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nrtcom'
   params: {
     // Required parameters
@@ -356,7 +356,7 @@ module routeTables './network/route-table/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module routeTables './network/route-table/main.bicep' = {
+module routeTable './network/route-table/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nrtmin'
   params: {
     // Required parameters

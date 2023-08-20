@@ -34,7 +34,7 @@ This module deploys a MongoDB Database within a CosmosDB Account.
 
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
-| `collections` | _[collections](collections/README.md)_ array | `[]` | Collections in the mongodb database. |
+| `collections` | array | `[]` | Collections in the mongodb database. |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `tags` | object | `{object}` | Tags of the resource. |
 | `throughput` | int | `400` | Name of the mongodb database. |

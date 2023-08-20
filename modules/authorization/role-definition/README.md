@@ -190,7 +190,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module roleDefinitions './authorization/role-definition/main.bicep' = {
+module roleDefinition './authorization/role-definition/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-ardmgcom'
   params: {
     // Required parameters
@@ -269,7 +269,7 @@ module roleDefinitions './authorization/role-definition/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module roleDefinitions './authorization/role-definition/main.bicep' = {
+module roleDefinition './authorization/role-definition/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-ardmgmin'
   params: {
     // Required parameters
@@ -324,7 +324,7 @@ module roleDefinitions './authorization/role-definition/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module roleDefinitions './authorization/role-definition/main.bicep' = {
+module roleDefinition './authorization/role-definition/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-ardrgcom'
   params: {
     // Required parameters
@@ -419,7 +419,7 @@ module roleDefinitions './authorization/role-definition/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module roleDefinitions './authorization/role-definition/main.bicep' = {
+module roleDefinition './authorization/role-definition/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-ardrgmin'
   params: {
     // Required parameters
@@ -474,7 +474,7 @@ module roleDefinitions './authorization/role-definition/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module roleDefinitions './authorization/role-definition/main.bicep' = {
+module roleDefinition './authorization/role-definition/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-ardsubcom'
   params: {
     // Required parameters
@@ -569,7 +569,7 @@ module roleDefinitions './authorization/role-definition/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module roleDefinitions './authorization/role-definition/main.bicep' = {
+module roleDefinition './authorization/role-definition/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-ardsubmin'
   params: {
     // Required parameters

@@ -909,7 +909,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module virtualMachineScaleSets './compute/virtual-machine-scale-set/main.bicep' = {
+module virtualMachineScaleSet './compute/virtual-machine-scale-set/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-cvmsslin'
   params: {
     // Required parameters
@@ -1262,7 +1262,7 @@ module virtualMachineScaleSets './compute/virtual-machine-scale-set/main.bicep' 
 <summary>via Bicep module</summary>
 
 ```bicep
-module virtualMachineScaleSets './compute/virtual-machine-scale-set/main.bicep' = {
+module virtualMachineScaleSet './compute/virtual-machine-scale-set/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-cvmsslinmin'
   params: {
     // Required parameters
@@ -1399,7 +1399,7 @@ module virtualMachineScaleSets './compute/virtual-machine-scale-set/main.bicep' 
 <summary>via Bicep module</summary>
 
 ```bicep
-module virtualMachineScaleSets './compute/virtual-machine-scale-set/main.bicep' = {
+module virtualMachineScaleSet './compute/virtual-machine-scale-set/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-cvmsslcmk'
   params: {
     // Required parameters
@@ -1584,7 +1584,7 @@ module virtualMachineScaleSets './compute/virtual-machine-scale-set/main.bicep' 
 <summary>via Bicep module</summary>
 
 ```bicep
-module virtualMachineScaleSets './compute/virtual-machine-scale-set/main.bicep' = {
+module virtualMachineScaleSet './compute/virtual-machine-scale-set/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-cvmsswin'
   params: {
     // Required parameters
@@ -1919,7 +1919,7 @@ module virtualMachineScaleSets './compute/virtual-machine-scale-set/main.bicep' 
 <summary>via Bicep module</summary>
 
 ```bicep
-module virtualMachineScaleSets './compute/virtual-machine-scale-set/main.bicep' = {
+module virtualMachineScaleSet './compute/virtual-machine-scale-set/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-cvmsswinmin'
   params: {
     // Required parameters

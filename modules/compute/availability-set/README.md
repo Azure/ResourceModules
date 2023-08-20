@@ -168,7 +168,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module availabilitySets './compute/availability-set/main.bicep' = {
+module availabilitySet './compute/availability-set/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-cascom'
   params: {
     // Required parameters
@@ -251,7 +251,7 @@ module availabilitySets './compute/availability-set/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module availabilitySets './compute/availability-set/main.bicep' = {
+module availabilitySet './compute/availability-set/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-casmin'
   params: {
     // Required parameters

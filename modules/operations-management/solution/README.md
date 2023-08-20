@@ -62,7 +62,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module solutions './operations-management/solution/main.bicep' = {
+module solution './operations-management/solution/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-omsmin'
   params: {
     // Required parameters
@@ -111,7 +111,7 @@ module solutions './operations-management/solution/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module solutions './operations-management/solution/main.bicep' = {
+module solution './operations-management/solution/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-omsms'
   params: {
     // Required parameters
@@ -168,7 +168,7 @@ module solutions './operations-management/solution/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module solutions './operations-management/solution/main.bicep' = {
+module solution './operations-management/solution/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-omsnonms'
   params: {
     // Required parameters

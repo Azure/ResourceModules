@@ -294,7 +294,7 @@ This section gives you an overview of all local-referenced module files (i.e., o
 
 | Reference | Type |
 | :-- | :-- |
-| `network/public-ip-addresses` | Local reference |
+| `network/public-ip-address` | Local reference |
 
 ## Deployment examples
 
@@ -310,7 +310,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module bastionHosts './network/bastion-host/main.bicep' = {
+module bastionHost './network/bastion-host/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nbhcom'
   params: {
     // Required parameters
@@ -441,7 +441,7 @@ module bastionHosts './network/bastion-host/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module bastionHosts './network/bastion-host/main.bicep' = {
+module bastionHost './network/bastion-host/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nbhctmpip'
   params: {
     // Required parameters
@@ -550,7 +550,7 @@ module bastionHosts './network/bastion-host/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module bastionHosts './network/bastion-host/main.bicep' = {
+module bastionHost './network/bastion-host/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nbhmin'
   params: {
     // Required parameters

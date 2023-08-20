@@ -342,7 +342,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module vpnSites './network/vpn-site/main.bicep' = {
+module vpnSite './network/vpn-site/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nvscom'
   params: {
     // Required parameters
@@ -511,7 +511,7 @@ module vpnSites './network/vpn-site/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module vpnSites './network/vpn-site/main.bicep' = {
+module vpnSite './network/vpn-site/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nvsmin'
   params: {
     // Required parameters

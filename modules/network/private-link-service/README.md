@@ -440,7 +440,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module privateLinkServices './network/private-link-service/main.bicep' = {
+module privateLinkService './network/private-link-service/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nplscom'
   params: {
     // Required parameters
@@ -593,7 +593,7 @@ module privateLinkServices './network/private-link-service/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module privateLinkServices './network/private-link-service/main.bicep' = {
+module privateLinkService './network/private-link-service/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nplsmin'
   params: {
     // Required parameters

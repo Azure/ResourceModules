@@ -52,9 +52,9 @@ This module deploys a DBforPostgreSQL Flexible Server.
 | `backupRetentionDays` | int | `7` |  | Backup retention days for the server. |
 | `cMKKeyName` | string | `''` |  | The name of the customer managed key to use for encryption. |
 | `cMKKeyVersion` | string | `''` |  | The version of the customer managed key to reference for encryption. If not provided, the latest key version is used. |
-| `configurations` | _[configurations](configurations/README.md)_ array | `[]` |  | The configurations to create in the server. |
+| `configurations` | array | `[]` |  | The configurations to create in the server. |
 | `createMode` | string | `'Default'` | `[Create, Default, PointInTimeRestore, Update]` | The mode to create a new PostgreSQL server. |
-| `databases` | _[databases](databases/README.md)_ array | `[]` |  | The databases to create in the server. |
+| `databases` | array | `[]` |  | The databases to create in the server. |
 | `delegatedSubnetResourceId` | string | `''` |  | Delegated subnet arm resource ID. Used when the desired connectivity mode is "Private Access" - virtual network integration. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
@@ -65,7 +65,7 @@ This module deploys a DBforPostgreSQL Flexible Server.
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `firewallRules` | _[firewallRules](firewall-rules/README.md)_ array | `[]` |  | The firewall rules to create in the PostgreSQL flexible server. |
+| `firewallRules` | array | `[]` |  | The firewall rules to create in the PostgreSQL flexible server. |
 | `geoRedundantBackup` | string | `'Disabled'` | `[Disabled, Enabled]` | A value indicating whether Geo-Redundant backup is enabled on the server. Should be left disabled if 'cMKKeyName' is not empty. |
 | `highAvailability` | string | `'Disabled'` | `[Disabled, SameZone, ZoneRedundant]` | The mode for high availability. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
@@ -381,7 +381,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module flexibleServers './db-for-postgre-sql/flexible-server/main.bicep' = {
+module flexibleServer './db-for-postgre-sql/flexible-server/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-dfpsfsmin'
   params: {
     // Required parameters
@@ -442,7 +442,7 @@ module flexibleServers './db-for-postgre-sql/flexible-server/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module flexibleServers './db-for-postgre-sql/flexible-server/main.bicep' = {
+module flexibleServer './db-for-postgre-sql/flexible-server/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-dfpsfspvt'
   params: {
     // Required parameters
@@ -593,7 +593,7 @@ module flexibleServers './db-for-postgre-sql/flexible-server/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module flexibleServers './db-for-postgre-sql/flexible-server/main.bicep' = {
+module flexibleServer './db-for-postgre-sql/flexible-server/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-dfpsfsp'
   params: {
     // Required parameters

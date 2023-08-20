@@ -34,7 +34,7 @@ This template deploys an dns forwarding ruleset.
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `forwardingRules` | _[forwardingRules](forwarding-rules/README.md)_ array | `[]` |  | Array of forwarding rules. |
+| `forwardingRules` | array | `[]` |  | Array of forwarding rules. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
@@ -169,7 +169,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module dnsForwardingRulesets './network/dns-forwarding-ruleset/main.bicep' = {
+module dnsForwardingRuleset './network/dns-forwarding-ruleset/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-ndfrscom'
   params: {
     // Required parameters
@@ -292,7 +292,7 @@ module dnsForwardingRulesets './network/dns-forwarding-ruleset/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module dnsForwardingRulesets './network/dns-forwarding-ruleset/main.bicep' = {
+module dnsForwardingRuleset './network/dns-forwarding-ruleset/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-ndfrsmin'
   params: {
     // Required parameters

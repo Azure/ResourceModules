@@ -37,7 +37,7 @@ A network group is a collection of same-type network resources that you can asso
 | :-- | :-- | :-- | :-- |
 | `description` | string | `''` | A description of the network group. |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `staticMembers` | _[staticMembers](static-members/README.md)_ array | `[]` | Static Members to create for the network group. Contains virtual networks to add to the network group. |
+| `staticMembers` | array | `[]` | Static Members to create for the network group. Contains virtual networks to add to the network group. |
 
 
 ## Outputs

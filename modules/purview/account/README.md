@@ -209,7 +209,7 @@ This section gives you an overview of all local-referenced module files (i.e., o
 
 | Reference | Type |
 | :-- | :-- |
-| `network/private-endpoints` | Local reference |
+| `network/private-endpoint` | Local reference |
 
 ## Deployment examples
 
@@ -225,7 +225,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module accounts './purview/account/main.bicep' = {
+module account './purview/account/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-pvacom'
   params: {
     // Required parameters
@@ -520,7 +520,7 @@ module accounts './purview/account/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module accounts './purview/account/main.bicep' = {
+module account './purview/account/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-pvamin'
   params: {
     // Required parameters

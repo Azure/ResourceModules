@@ -104,7 +104,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module applicationGatewayWebApplicationFirewallPolicies './network/application-gateway-web-application-firewall-policy/main.bicep' = {
+module applicationGatewayWebApplicationFirewallPolicy './network/application-gateway-web-application-firewall-policy/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nagwafpcom'
   params: {
     // Required parameters

@@ -186,7 +186,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module roleAssignments './authorization/role-assignment/main.bicep' = {
+module roleAssignment './authorization/role-assignment/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-aramgcom'
   params: {
     // Required parameters
@@ -247,7 +247,7 @@ module roleAssignments './authorization/role-assignment/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module roleAssignments './authorization/role-assignment/main.bicep' = {
+module roleAssignment './authorization/role-assignment/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-aramgmin'
   params: {
     // Required parameters
@@ -300,7 +300,7 @@ module roleAssignments './authorization/role-assignment/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module roleAssignments './authorization/role-assignment/main.bicep' = {
+module roleAssignment './authorization/role-assignment/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-arargcom'
   params: {
     // Required parameters
@@ -365,7 +365,7 @@ module roleAssignments './authorization/role-assignment/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module roleAssignments './authorization/role-assignment/main.bicep' = {
+module roleAssignment './authorization/role-assignment/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-arargmin'
   params: {
     // Required parameters
@@ -426,7 +426,7 @@ module roleAssignments './authorization/role-assignment/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module roleAssignments './authorization/role-assignment/main.bicep' = {
+module roleAssignment './authorization/role-assignment/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-arasubcom'
   params: {
     // Required parameters
@@ -487,7 +487,7 @@ module roleAssignments './authorization/role-assignment/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module roleAssignments './authorization/role-assignment/main.bicep' = {
+module roleAssignment './authorization/role-assignment/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-arasubmin'
   params: {
     // Required parameters

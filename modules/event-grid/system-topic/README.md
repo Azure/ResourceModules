@@ -286,7 +286,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module systemTopics './event-grid/system-topic/main.bicep' = {
+module systemTopic './event-grid/system-topic/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-egstcom'
   params: {
     // Required parameters
@@ -443,7 +443,7 @@ module systemTopics './event-grid/system-topic/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module systemTopics './event-grid/system-topic/main.bicep' = {
+module systemTopic './event-grid/system-topic/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-egstmin'
   params: {
     // Required parameters

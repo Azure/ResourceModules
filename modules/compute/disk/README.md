@@ -191,7 +191,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module disks './compute/disk/main.bicep' = {
+module disk './compute/disk/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-cdcom'
   params: {
     // Required parameters
@@ -298,7 +298,7 @@ module disks './compute/disk/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module disks './compute/disk/main.bicep' = {
+module disk './compute/disk/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-cdimg'
   params: {
     // Required parameters
@@ -385,7 +385,7 @@ module disks './compute/disk/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module disks './compute/disk/main.bicep' = {
+module disk './compute/disk/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-cdimp'
   params: {
     // Required parameters
@@ -476,7 +476,7 @@ module disks './compute/disk/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module disks './compute/disk/main.bicep' = {
+module disk './compute/disk/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-cdmin'
   params: {
     // Required parameters

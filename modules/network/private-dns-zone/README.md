@@ -52,7 +52,7 @@ This module deploys a Private DNS zone.
 | `srv` | _[srv](srv/README.md)_ array | `[]` |  | Array of SRV records. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `txt` | _[txt](txt/README.md)_ array | `[]` |  | Array of TXT records. |
-| `virtualNetworkLinks` | _[virtualNetworkLinks](virtual-network-links/README.md)_ array | `[]` |  | Array of custom objects describing vNet links of the DNS zone. Each object should contain properties 'vnetResourceId' and 'registrationEnabled'. The 'vnetResourceId' is a resource ID of a vNet to link, 'registrationEnabled' (bool) enables automatic DNS registration in the zone for the linked vNet. |
+| `virtualNetworkLinks` | array | `[]` |  | Array of custom objects describing vNet links of the DNS zone. Each object should contain properties 'vnetResourceId' and 'registrationEnabled'. The 'vnetResourceId' is a resource ID of a vNet to link, 'registrationEnabled' (bool) enables automatic DNS registration in the zone for the linked vNet. |
 
 
 ### Parameter Usage: `roleAssignments`
@@ -182,7 +182,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module privateDnsZones './network/private-dns-zone/main.bicep' = {
+module privateDnsZone './network/private-dns-zone/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-npdzcom'
   params: {
     // Required parameters
@@ -609,7 +609,7 @@ module privateDnsZones './network/private-dns-zone/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module privateDnsZones './network/private-dns-zone/main.bicep' = {
+module privateDnsZone './network/private-dns-zone/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-npdzmin'
   params: {
     // Required parameters

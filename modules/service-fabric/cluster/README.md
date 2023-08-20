@@ -35,7 +35,7 @@ This module deploys a Service Fabric Cluster.
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `addOnFeatures` | array | `[]` | `[BackupRestoreService, DnsService, RepairManager, ResourceMonitorService]` | The list of add-on features to enable in the cluster. |
-| `applicationTypes` | _[applicationTypes](application-types/README.md)_ array | `[]` |  | Array of Service Fabric cluster application types. |
+| `applicationTypes` | array | `[]` |  | Array of Service Fabric cluster application types. |
 | `azureActiveDirectory` | object | `{object}` |  | The settings to enable AAD authentication on the cluster. |
 | `certificate` | object | `{object}` |  | Describes the certificate details like thumbprint of the primary certificate, thumbprint of the secondary certificate and the local certificate store location. |
 | `certificateCommonNames` | object | `{object}` |  | Describes a list of server certificates referenced by common name that are used to secure the cluster. |
@@ -247,7 +247,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module clusters './service-fabric/cluster/main.bicep' = {
+module cluster './service-fabric/cluster/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-sfccer'
   params: {
     // Required parameters
@@ -356,7 +356,7 @@ module clusters './service-fabric/cluster/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module clusters './service-fabric/cluster/main.bicep' = {
+module cluster './service-fabric/cluster/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-sfccom'
   params: {
     // Required parameters
@@ -763,7 +763,7 @@ module clusters './service-fabric/cluster/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module clusters './service-fabric/cluster/main.bicep' = {
+module cluster './service-fabric/cluster/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-sfcmin'
   params: {
     // Required parameters

@@ -39,7 +39,7 @@ A security admin configuration contains a set of rule collections. Each rule col
 | :-- | :-- | :-- | :-- |
 | `description` | string | `''` | A description of the admin rule collection. |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `rules` | _[rules](rules/README.md)_ array |  | List of rules for the admin rules collection. Security admin rules allows enforcing security policy criteria that matches the conditions set. Warning: A rule collection without rule will cause a deployment configuration for security admin goal state in network manager to fail. |
+| `rules` | array |  | List of rules for the admin rules collection. Security admin rules allows enforcing security policy criteria that matches the conditions set. Warning: A rule collection without rule will cause a deployment configuration for security admin goal state in network manager to fail. |
 
 
 ## Outputs

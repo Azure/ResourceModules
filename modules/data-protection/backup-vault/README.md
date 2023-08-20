@@ -32,7 +32,7 @@ This module deploys a Data Protection Backup Vault.
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `azureMonitorAlertSettingsAlertsForAllJobFailures` | string | `'Enabled'` | `[Disabled, Enabled]` | Settings for Azure Monitor based alerts for job failures. |
-| `backupPolicies` | _[backupPolicies](backup-policies/README.md)_ array | `[]` |  | List of all backup policies. |
+| `backupPolicies` | array | `[]` |  | List of all backup policies. |
 | `dataStoreType` | string | `'VaultStore'` | `[ArchiveStore, OperationalStore, VaultStore]` | The datastore type to use. ArchiveStore does not support ZoneRedundancy. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
@@ -351,7 +351,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module backupVaults './data-protection/backup-vault/main.bicep' = {
+module backupVault './data-protection/backup-vault/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-dpbvcom'
   params: {
     // Required parameters
@@ -564,7 +564,7 @@ module backupVaults './data-protection/backup-vault/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module backupVaults './data-protection/backup-vault/main.bicep' = {
+module backupVault './data-protection/backup-vault/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-dpbvmin'
   params: {
     // Required parameters

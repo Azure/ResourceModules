@@ -39,11 +39,11 @@ This module deploys a Static Web App.
 | `appSettings` | object | `{object}` |  | Static site app settings. |
 | `branch` | string | `''` |  | The branch name of the GitHub repository. |
 | `buildProperties` | object | `{object}` |  | Build properties for the static site. |
-| `customDomains` | _[customDomains](custom-domains/README.md)_ array | `[]` |  | The custom domains associated with this static site. The deployment will fail as long as the validation records are not present. |
+| `customDomains` | array | `[]` |  | The custom domains associated with this static site. The deployment will fail as long as the validation records are not present. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `enterpriseGradeCdnStatus` | string | `'Disabled'` | `[Disabled, Disabling, Enabled, Enabling]` | State indicating the status of the enterprise grade CDN serving traffic to the static web app. |
 | `functionAppSettings` | object | `{object}` |  | Function app settings. |
-| `linkedBackend` | object | `{object}` |  | Object with "resourceId" and "location" of the a user defined function app. |
+| `linkedBackend` | _[linkedBackend](linked-backend/README.md)_ object | `{object}` |  | Object with "resourceId" and "location" of the a user defined function app. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `privateEndpoints` | array | `[]` |  | Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. Note, requires the 'sku' to be 'Standard'. |
@@ -342,7 +342,7 @@ This section gives you an overview of all local-referenced module files (i.e., o
 
 | Reference | Type |
 | :-- | :-- |
-| `network/private-endpoints` | Local reference |
+| `network/private-endpoint` | Local reference |
 
 ## Deployment examples
 
@@ -358,7 +358,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module staticSites './web/static-site/main.bicep' = {
+module staticSite './web/static-site/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-wsscom'
   params: {
     // Required parameters
@@ -525,7 +525,7 @@ module staticSites './web/static-site/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module staticSites './web/static-site/main.bicep' = {
+module staticSite './web/static-site/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-wssmin'
   params: {
     // Required parameters

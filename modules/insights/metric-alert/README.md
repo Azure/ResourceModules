@@ -395,7 +395,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module metricAlerts './insights/metric-alert/main.bicep' = {
+module metricAlert './insights/metric-alert/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-imacom'
   params: {
     // Required parameters

@@ -35,7 +35,7 @@ This module deploys a SQL Database in a CosmosDB Account.
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `autoscaleSettingsMaxThroughput` | int | `-1` | Specifies the Autoscale settings and represents maximum throughput, the resource can scale up to.  The autoscale throughput should have valid throughput values between 1000 and 1000000 inclusive in increments of 1000. If value is set to -1, then the property will be set to null and autoscale will be disabled. |
-| `containers` | _[containers](containers/README.md)_ array | `[]` | Array of containers to deploy in the SQL database. |
+| `containers` | array | `[]` | Array of containers to deploy in the SQL database. |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `tags` | object | `{object}` | Tags of the SQL database resource. |
 | `throughput` | int | `400` | Request units per second. Will be set to null if autoscaleSettingsMaxThroughput is used. |

@@ -330,7 +330,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module connections './network/connection/main.bicep' = {
+module connection './network/connection/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-ncvtv'
   params: {
     // Required parameters

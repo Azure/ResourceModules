@@ -167,7 +167,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module serviceEndpointPolicies './network/service-endpoint-policy/main.bicep' = {
+module serviceEndpointPolicy './network/service-endpoint-policy/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nsnpcom'
   params: {
     // Required parameters
@@ -274,7 +274,7 @@ module serviceEndpointPolicies './network/service-endpoint-policy/main.bicep' = 
 <summary>via Bicep module</summary>
 
 ```bicep
-module serviceEndpointPolicies './network/service-endpoint-policy/main.bicep' = {
+module serviceEndpointPolicy './network/service-endpoint-policy/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nsnpmin'
   params: {
     // Required parameters

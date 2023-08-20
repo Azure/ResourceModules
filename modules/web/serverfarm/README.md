@@ -218,7 +218,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module serverfarms './web/serverfarm/main.bicep' = {
+module serverfarm './web/serverfarm/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-wsfcom'
   params: {
     // Required parameters

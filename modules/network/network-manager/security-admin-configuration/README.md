@@ -39,7 +39,7 @@ A security admin configuration contains a set of rule collections. Each rule col
 | :-- | :-- | :-- | :-- |
 | `description` | string | `''` | A description of the security admin configuration. |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `ruleCollections` | _[ruleCollections](rule-collections/README.md)_ array | `[]` | A security admin configuration contains a set of rule collections that are applied to network groups. Each rule collection contains one or more security admin rules. |
+| `ruleCollections` | array | `[]` | A security admin configuration contains a set of rule collections that are applied to network groups. Each rule collection contains one or more security admin rules. |
 
 
 ## Outputs

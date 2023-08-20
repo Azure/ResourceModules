@@ -269,7 +269,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module trafficmanagerprofiles './network/trafficmanagerprofile/main.bicep' = {
+module trafficmanagerprofile './network/trafficmanagerprofile/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-ntmpcom'
   params: {
     // Required parameters
@@ -372,7 +372,7 @@ module trafficmanagerprofiles './network/trafficmanagerprofile/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module trafficmanagerprofiles './network/trafficmanagerprofile/main.bicep' = {
+module trafficmanagerprofile './network/trafficmanagerprofile/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-ntmpmin'
   params: {
     // Required parameters

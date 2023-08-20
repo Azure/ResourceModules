@@ -180,7 +180,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module frontDoors './network/front-door/main.bicep' = {
+module frontDoor './network/front-door/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nfdcom'
   params: {
     // Required parameters
@@ -451,7 +451,7 @@ module frontDoors './network/front-door/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module frontDoors './network/front-door/main.bicep' = {
+module frontDoor './network/front-door/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nfdmin'
   params: {
     // Required parameters

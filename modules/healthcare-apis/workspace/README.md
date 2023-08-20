@@ -35,10 +35,10 @@ This module deploys a Healthcare API Workspace.
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `dicomservices` | _[dicomservices](dicomservices/README.md)_ array | `[]` |  | Deploy DICOM services. |
+| `dicomservices` | array | `[]` |  | Deploy DICOM services. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `fhirservices` | _[fhirservices](fhirservices/README.md)_ array | `[]` |  | Deploy FHIR services. |
-| `iotconnectors` | _[iotconnectors](iotconnectors/README.md)_ array | `[]` |  | Deploy IOT connectors. |
+| `fhirservices` | array | `[]` |  | Deploy FHIR services. |
+| `iotconnectors` | array | `[]` |  | Deploy IOT connectors. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `publicNetworkAccess` | string | `'Disabled'` | `[Disabled, Enabled]` | Control permission for data plane traffic coming from public networks while private endpoint is enabled. |
@@ -426,7 +426,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module workspaces './healthcare-apis/workspace/main.bicep' = {
+module workspace './healthcare-apis/workspace/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-hawcom'
   params: {
     // Required parameters
@@ -641,7 +641,7 @@ module workspaces './healthcare-apis/workspace/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module workspaces './healthcare-apis/workspace/main.bicep' = {
+module workspace './healthcare-apis/workspace/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-hawmin'
   params: {
     // Required parameters

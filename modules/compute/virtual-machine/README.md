@@ -1026,7 +1026,7 @@ This section gives you an overview of all local-referenced module files (i.e., o
 
 | Reference | Type |
 | :-- | :-- |
-| `recovery-services/vaults/backup-fabrics/protection-containers/protected-items` | Local reference |
+| `recovery-services/vault/backup-fabric/protection-container/protected-item` | Local reference |
 
 ## Deployment examples
 
@@ -1042,7 +1042,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module virtualMachines './compute/virtual-machine/main.bicep' = {
+module virtualMachine './compute/virtual-machine/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-cvmlincom'
   params: {
     // Required parameters
@@ -1539,7 +1539,7 @@ module virtualMachines './compute/virtual-machine/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module virtualMachines './compute/virtual-machine/main.bicep' = {
+module virtualMachine './compute/virtual-machine/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-cvmlinatmg'
   params: {
     // Required parameters
@@ -1706,7 +1706,7 @@ module virtualMachines './compute/virtual-machine/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module virtualMachines './compute/virtual-machine/main.bicep' = {
+module virtualMachine './compute/virtual-machine/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-cvmlinmin'
   params: {
     // Required parameters
@@ -1843,7 +1843,7 @@ module virtualMachines './compute/virtual-machine/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module virtualMachines './compute/virtual-machine/main.bicep' = {
+module virtualMachine './compute/virtual-machine/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-cvmwincom'
   params: {
     // Required parameters
@@ -2376,7 +2376,7 @@ module virtualMachines './compute/virtual-machine/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module virtualMachines './compute/virtual-machine/main.bicep' = {
+module virtualMachine './compute/virtual-machine/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-cvmwinatmg'
   params: {
     // Required parameters
@@ -2507,7 +2507,7 @@ module virtualMachines './compute/virtual-machine/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module virtualMachines './compute/virtual-machine/main.bicep' = {
+module virtualMachine './compute/virtual-machine/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-cvmwinmin'
   params: {
     // Required parameters
@@ -2624,7 +2624,7 @@ module virtualMachines './compute/virtual-machine/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module virtualMachines './compute/virtual-machine/main.bicep' = {
+module virtualMachine './compute/virtual-machine/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-cvmwincmk'
   params: {
     // Required parameters

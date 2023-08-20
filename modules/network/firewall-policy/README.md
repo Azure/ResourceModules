@@ -45,7 +45,7 @@ This module deploys a Firewall Policy.
 | `mode` | string | `'Off'` | `[Alert, Deny, Off]` | The configuring of intrusion detection. |
 | `privateRanges` | array | `[]` |  | List of private IP addresses/IP address ranges to not be SNAT. |
 | `retentionDays` | int | `365` |  | Number of days the insights should be enabled on the policy. |
-| `ruleCollectionGroups` | _[ruleCollectionGroups](rule-collection-groups/README.md)_ array | `[]` |  | Rule collection groups. |
+| `ruleCollectionGroups` | array | `[]` |  | Rule collection groups. |
 | `servers` | array | `[]` |  | List of Custom DNS Servers. |
 | `signatureOverrides` | array | `[]` |  | List of specific signatures states. |
 | `tags` | object | `{object}` |  | Tags of the Firewall policy resource. |
@@ -156,7 +156,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module firewallPolicies './network/firewall-policy/main.bicep' = {
+module firewallPolicy './network/firewall-policy/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nfpcom'
   params: {
     // Required parameters
@@ -297,7 +297,7 @@ module firewallPolicies './network/firewall-policy/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module firewallPolicies './network/firewall-policy/main.bicep' = {
+module firewallPolicy './network/firewall-policy/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nfpmin'
   params: {
     // Required parameters

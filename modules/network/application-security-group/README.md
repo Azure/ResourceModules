@@ -164,7 +164,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module applicationSecurityGroups './network/application-security-group/main.bicep' = {
+module applicationSecurityGroup './network/application-security-group/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nasgcom'
   params: {
     // Required parameters

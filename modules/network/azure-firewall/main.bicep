@@ -272,7 +272,7 @@ module publicIPAddress '../../network/public-ip-address/main.bicep' = if (empty(
 }
 
 // create a Management Public IP address if one is not provided and the flag is true
-module managementIPAddress '../../network/public-ip-addresses/main.bicep' = if (empty(managementIPResourceID) && isCreateDefaultManagementIP && azureSkuName == 'AZFW_VNet') {
+module managementIPAddress '../../network/public-ip-address/main.bicep' = if (empty(managementIPResourceID) && isCreateDefaultManagementIP && azureSkuName == 'AZFW_VNet') {
   name: '${uniqueString(deployment().name, location)}-Firewall-MIP'
   params: {
     name: contains(managementIPAddressObject, 'name') ? (!(empty(managementIPAddressObject.name)) ? managementIPAddressObject.name : '${name}-mip') : '${name}-mip'

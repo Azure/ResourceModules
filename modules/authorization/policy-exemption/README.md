@@ -220,7 +220,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module policyExemptions './authorization/policy-exemption/main.bicep' = {
+module policyExemption './authorization/policy-exemption/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-apemgcom'
   params: {
     // Required parameters
@@ -333,7 +333,7 @@ module policyExemptions './authorization/policy-exemption/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module policyExemptions './authorization/policy-exemption/main.bicep' = {
+module policyExemption './authorization/policy-exemption/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-apemgmin'
   params: {
     // Required parameters
@@ -382,7 +382,7 @@ module policyExemptions './authorization/policy-exemption/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module policyExemptions './authorization/policy-exemption/main.bicep' = {
+module policyExemption './authorization/policy-exemption/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-apergcom'
   params: {
     // Required parameters
@@ -495,7 +495,7 @@ module policyExemptions './authorization/policy-exemption/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module policyExemptions './authorization/policy-exemption/main.bicep' = {
+module policyExemption './authorization/policy-exemption/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-apergmin'
   params: {
     // Required parameters
@@ -544,7 +544,7 @@ module policyExemptions './authorization/policy-exemption/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module policyExemptions './authorization/policy-exemption/main.bicep' = {
+module policyExemption './authorization/policy-exemption/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-apesubcom'
   params: {
     // Required parameters
@@ -657,7 +657,7 @@ module policyExemptions './authorization/policy-exemption/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module policyExemptions './authorization/policy-exemption/main.bicep' = {
+module policyExemption './authorization/policy-exemption/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-apesubmin'
   params: {
     // Required parameters

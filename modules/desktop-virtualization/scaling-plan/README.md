@@ -277,7 +277,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module scalingPlans './desktop-virtualization/scaling-plan/main.bicep' = {
+module scalingPlan './desktop-virtualization/scaling-plan/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-dvspcom'
   params: {
     // Required parameters
@@ -384,7 +384,7 @@ module scalingPlans './desktop-virtualization/scaling-plan/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module scalingPlans './desktop-virtualization/scaling-plan/main.bicep' = {
+module scalingPlan './desktop-virtualization/scaling-plan/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-dvspmin'
   params: {
     // Required parameters
