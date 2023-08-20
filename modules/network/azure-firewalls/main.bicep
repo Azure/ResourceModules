@@ -302,7 +302,7 @@ module managementIPAddress '../../network/public-ip-addresses/main.bicep' = if (
   }
 }
 
-resource azureFirewall 'Microsoft.Network/azureFirewalls@2022-07-01' = {
+resource azureFirewall 'Microsoft.Network/azureFirewalls@2023-04-01' = {
   name: name
   location: location
   zones: length(zones) == 0 ? null : zones

@@ -36,7 +36,7 @@ resource loadBalancer 'Microsoft.Network/loadBalancers@2021-08-01' existing = {
   name: loadBalancerName
 }
 
-resource backendAddressPool 'Microsoft.Network/loadBalancers/backendAddressPools@2022-07-01' = {
+resource backendAddressPool 'Microsoft.Network/loadBalancers/backendAddressPools@2023-04-01' = {
   name: name
   properties: {
     loadBalancerBackendAddresses: loadBalancerBackendAddresses

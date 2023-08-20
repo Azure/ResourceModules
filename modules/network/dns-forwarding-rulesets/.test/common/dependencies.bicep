@@ -63,7 +63,6 @@ resource dnsResolver 'Microsoft.Network/dnsResolvers@2022-07-01' = {
     virtualNetwork: {
       id: virtualNetwork.id
     }
-
   }
 }
 

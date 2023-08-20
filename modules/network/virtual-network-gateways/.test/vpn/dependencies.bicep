@@ -37,7 +37,7 @@ resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-
     location: location
 }
 
-resource localNetworkGateway 'Microsoft.Network/localNetworkGateways@2022-07-01' = {
+resource localNetworkGateway 'Microsoft.Network/localNetworkGateways@2023-04-01' = {
     name: localNetworkGatewayName
     location: location
     properties: {

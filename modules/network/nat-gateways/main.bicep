@@ -138,7 +138,7 @@ module publicIPAddress '../public-ip-addresses/main.bicep' = if (natGatewayPubli
 
 // NAT GATEWAY
 // ===========
-resource natGateway 'Microsoft.Network/natGateways@2022-07-01' = {
+resource natGateway 'Microsoft.Network/natGateways@2023-04-01' = {
   name: name
   location: location
   tags: tags
