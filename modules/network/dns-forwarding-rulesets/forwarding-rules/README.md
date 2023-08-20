@@ -14,7 +14,7 @@ This template deploys Forwarding Rule in a Dns Forwarding Ruleset.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Network/dnsForwardingRulesets/forwardingRules` | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/dnsForwardingRulesets/forwardingRules) |
+| `Microsoft.Network/dnsForwardingRulesets/forwardingRules` | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/dnsForwardingRulesets/forwardingRules) |
 
 ## Parameters
 
