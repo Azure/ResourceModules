@@ -32,6 +32,12 @@ This module deploys an Azure Virtual Desktop (AVD) Host Pool.
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `agentUpdate` | object | `{object}` |  | The session host configuration for updating agent, monitoring agent, and stack component. |
+| `agentUpdateMaintenanceWindowDayOfWeek` | string | `'Sunday'` | `[Friday, Monday, Saturday, Sunday, Thursday, Tuesday, Wednesday]` | Update day for scheduled agent updates. |
+| `agentUpdateMaintenanceWindowHour` | int | `22` |  | Update hour for scheduled agent updates. |
+| `agentUpdateMaintenanceWindows` | array | `[System.Management.Automation.OrderedHashtable]` |  | List of maintenance windows for scheduled agent updates. |
+| `agentUpdateMaintenanceWindowTimeZone` | string | `'Central Standard Time'` |  | Time zone for scheduled agent updates. |
+| `agentUpdateType` | string | `'Default'` | `[Default, Scheduled]` | Enable scheduled agent updates, Default means agent updates will automatically be installed by AVD when they become available. |
+| `agentUpdateUseSessionHostLocalTime` | bool | `False` |  | Whether to use localTime of the virtual machine for scheduled agent updates. |
 | `customRdpProperty` | string | `'audiocapturemode:i:1;audiomode:i:0;drivestoredirect:s:;redirectclipboard:i:1;redirectcomports:i:1;redirectprinters:i:1;redirectsmartcards:i:1;screen mode id:i:2;'` |  | Host Pool RDP properties. |
 | `description` | string | `''` |  | The description of the Host Pool to be created. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
