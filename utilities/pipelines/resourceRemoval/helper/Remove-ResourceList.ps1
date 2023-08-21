@@ -40,7 +40,7 @@ function Remove-ResourceListInner {
 
             if ($alreadyProcessed) {
                 # Skipping
-                Write-Verbose ('[/] Skipping resource [{0}] of type [{1}] as a parent resource was already processed' -f $resourceName, $resource.type) -Verbose
+                Write-Verbose ('[/] Skipping resource [{0}] of type [{1}]. Reason: Its  parent resource was already processed' -f $resourceName, $resource.type) -Verbose
                 [array]$processedResources += $resource.resourceId
                 [array]$resourcesToRetry = $resourcesToRetry | Where-Object { $_.resourceId -notmatch $resource.resourceId }
             } else {
@@ -54,7 +54,7 @@ function Remove-ResourceListInner {
                     [array]$processedResources += $resource.resourceId
                     [array]$resourcesToRetry = $resourcesToRetry | Where-Object { $_.resourceId -notmatch $resource.resourceId }
                 } catch {
-                    Write-Warning ('Removal moved back for retry. Reason: [{0}]' -f $_.Exception.Message)
+                    Write-Warning ('[!] Removal moved back for retry. Reason: [{0}]' -f $_.Exception.Message)
                     [array]$resourcesToRetry += $resource
                 }
             }
