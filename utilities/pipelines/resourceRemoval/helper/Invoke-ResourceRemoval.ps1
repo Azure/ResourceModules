@@ -1,12 +1,12 @@
 ﻿<#
 .SYNOPSIS
-Remove unhandled delete locks from a resource.
+Remove unhandled resource locks from a resource.
 
 .DESCRIPTION
-Remove unhandled delete locks from a resource. If the resource is locked for deletion, the lock is removed.
+Remove unhandled resource locks from a resource. If the resource is locked, the lock is removed.
 
 .PARAMETER ResourceId
-Mandatory. The resourceID of the resource to check, and remove the lock from if it is locked for deletion.
+Mandatory. The resourceID of the resource to check, and remove the lock from if it is locked.
 
 .PARAMETER RetryLimit
 The number of times to retry checking if the lock is removed.
@@ -15,11 +15,11 @@ The number of times to retry checking if the lock is removed.
 The number of seconds to wait between each retry.
 
 .EXAMPLE
-Remove-UnhandledDeleteLock -ResourceId '/subscriptions/.../resourceGroups/validation-rg/.../resource-name'
+Remove-UnhandledResourceLock -ResourceId '/subscriptions/.../resourceGroups/validation-rg/.../resource-name'
 
-Check if the resource 'resource-name' is locked for deletion. If it is, remove the lock.
+Check if the resource 'resource-name' is locked. If it is, remove the lock.
 #>
-function Remove-UnhandledDeleteLock {
+function Remove-UnhandledResourceLock {
     [CmdletBinding(SupportsShouldProcess)]
     param (
         [Parameter(Mandatory = $true)]
@@ -30,28 +30,30 @@ function Remove-UnhandledDeleteLock {
         [int] $RetryInterval = 10
     )
 
-    $deleteLock = Get-AzResourceLock -Scope $ResourceId -ErrorAction SilentlyContinue | Where-Object { $_.Properties.level -eq 'CanNotDelete' }
-    $isDeleteLocked = $deleteLock.count -gt 0
+    $resourceLock = Get-AzResourceLock -Scope $ResourceId -ErrorAction SilentlyContinue
+    $isLocked = $resourceLock.count -gt 0
 
-    if (-not $isDeleteLocked) {
+    if (-not $isLocked) {
         return
     }
 
-    Write-Warning ('    [-] 🔒 Unhandled delete lock detected. Removing lock.' -f $ResourceId)
-    $null = $deleteLocks | Remove-AzResourceLock -Force
+    Write-Warning ('    [-] 🔒 Unhandled resource lock detected. Removing lock.' -f $ResourceId)
+    if ($PSCmdlet.ShouldProcess(('Lock [{0}] on resource [{1}]' -f $resourceLock.Name, $resourceLock.ResourceName ), 'Remove')) {
+        $null = $resourceLock | Remove-AzResourceLock -Force
 
-    $retryCount = 0
-    do {
-        $retryCount++
-        if ($retryCount -ge $RetryLimit) {
-            Write-Warning ('    [!] Lock was not removed after {1} seconds. Continuing with resource removal.' -f ($retryCount * $RetryInterval))
-            return
-        }
-        Write-Verbose '    [⏱️] Waiting for lock to be removed.' -Verbose
-        Start-Sleep -Seconds $RetryInterval
-        $deleteLock = Get-AzResourceLock -Scope $ResourceId -ErrorAction SilentlyContinue | Where-Object { $_.Properties.level -eq 'CanNotDelete' }
-        $isDeleteLocked = $deleteLock.count -gt 0
-    } while ($isDeleteLocked)
+        $retryCount = 0
+        do {
+            $retryCount++
+            if ($retryCount -ge $RetryLimit) {
+                Write-Warning ('    [!] Lock was not removed after {1} seconds. Continuing with resource removal.' -f ($retryCount * $RetryInterval))
+                return
+            }
+            Write-Verbose '    [⏱️] Waiting for lock to be removed.' -Verbose
+            Start-Sleep -Seconds $RetryInterval
+            $resourceLock = Get-AzResourceLock -Scope $ResourceId -ErrorAction SilentlyContinue
+            $isLocked = $resourceLock.count -gt 0
+        } while ($isLocked)
+    }
     return
 }
 
@@ -85,7 +87,7 @@ function Invoke-ResourceRemoval {
         [string] $Type
     )
 
-    Remove-UnhandledDeleteLock -ResourceId $ResourceId
+    Remove-UnhandledResourceLock -ResourceId $ResourceId
 
     switch ($Type) {
         'Microsoft.Insights/diagnosticSettings' {

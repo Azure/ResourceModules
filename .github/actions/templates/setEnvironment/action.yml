@@ -62,6 +62,7 @@ runs:
             @{ Name = 'Az.CognitiveServices' },
             @{ Name = 'Az.Compute' },
             @{ Name = 'Az.KeyVault' },
+            @{ Name = 'Az.MachineLearningServices' },
             @{ Name = 'Az.Monitor' },
             @{ Name = 'Az.OperationalInsights' },
             @{ Name = 'Az.RecoveryServices' }
