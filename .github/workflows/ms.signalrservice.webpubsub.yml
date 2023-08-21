@@ -28,7 +28,7 @@ on:
       - main
     paths:
       - 'modules/signal-r-service/web-pub-sub/**'
-      - 'modules/network/private-endpoints/**'
+      - 'modules/network/private-endpoint/**'
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.signalrservice.webpubsub.yml'

@@ -27,8 +27,8 @@ trigger:
       - main
   paths:
     include:
-      - '/modules/key-vault/vaults/*'
-      - '/modules/network/private-endpoints/*'
+      - '/modules/key-vault/vault/*'
+      - '/modules/network/private-endpoint/*'
       - '/.azuredevops/modulePipelines/ms.keyvault.vaults.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
       - '/utilities/pipelines/*'
@@ -40,7 +40,7 @@ variables:
   - template: '../../settings.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/modules/key-vault/vaults'
+    value: '/modules/key-vault/vault'
 
 stages:
   - template: /.azuredevops/pipelineTemplates/stages.module.yml

@@ -262,7 +262,7 @@ module redisCache_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignm
   }
 }]
 
-module redisCache_privateEndpoints '../../network/private-endpoints/main.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
+module redisCache_privateEndpoints '../../network/private-endpoint/main.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
   name: '${uniqueString(deployment().name, location)}-redisCache-PrivateEndpoint-${index}'
   params: {
     groupIds: [

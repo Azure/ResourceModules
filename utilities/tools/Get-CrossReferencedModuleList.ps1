@@ -61,9 +61,9 @@ Invoke the function with the default path. Returns an object such as:
 {
     "Compute/availabilitySets": {
         "localPathReferences": [
-            RecoveryServices/vaults/protectionContainers/protectedItems
-            Network/publicIPAddresses
-            Network/networkInterfaces
+            recovery-service/vault/protection-container/protected-item
+            network/public-ip-address
+            network/network-interface
         ],
         "remoteReferences": null,
         "resourceReferences": [
@@ -78,9 +78,9 @@ Invoke the function with the default path. Returns an object such as:
 }
 
 .EXAMPLE
-Get-CrossReferencedModuleList -Path './Sql'
+Get-CrossReferencedModuleList -Path './sql'
 
-Get only the references of the modules in folder path './Sql'
+Get only the references of the modules in folder path './sql'
 #>
 function Get-CrossReferencedModuleList {
 
@@ -136,7 +136,7 @@ function Get-CrossReferencedModuleList {
                 # remove leading path elements
                 ($_ -replace '\\', '/') -match '^[\.\/]*(.+)$'
             } | ForEach-Object {
-                # We have to differentate the case that the referenced resources is inside or outside the same provider namespace (e.g. '../publicIPAddresses')
+                # We have to differentate the case that the referenced resources is inside or outside the same provider namespace (e.g. '../public-ip-address')
                 if ($matches[1] -like '*/*') {
                     # Reference outside of namespace
                     $matches[1]

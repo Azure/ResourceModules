@@ -29,7 +29,7 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.dataprotection.backupvaults.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/modules/data-protection/vaults/*'
+      - '/modules/data-protection/vault/*'
       - '/utilities/pipelines/*'
     exclude:
       - '/utilities/pipelines/deploymentRemoval/*'
@@ -39,7 +39,7 @@ variables:
   - template: '../../settings.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/modules/data-protection/backup-vaults'
+    value: '/modules/data-protection/backup-vault'
 
 stages:
   - template: /.azuredevops/pipelineTemplates/stages.module.yml

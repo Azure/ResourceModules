@@ -29,7 +29,7 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.web.hostingenvironments.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/modules/web/hosting-environments/*'
+      - '/modules/web/hosting-environment/*'
       - '/utilities/pipelines/*'
     exclude:
       - '/utilities/pipelines/deploymentRemoval/*'
@@ -39,7 +39,7 @@ variables:
   - template: '../../settings.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/modules/web/hosting-environments'
+    value: '/modules/web/hosting-environment'
 
 stages:
   - template: /.azuredevops/pipelineTemplates/stages.module.yml

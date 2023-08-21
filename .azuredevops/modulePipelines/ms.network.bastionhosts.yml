@@ -27,8 +27,8 @@ trigger:
       - main
   paths:
     include:
-      - '/modules/network/bastion-hosts/*'
-      - '/modules/network/public-ip-addresses/*'
+      - '/modules/network/bastion-host/*'
+      - '/modules/network/public-ip-address/*'
       - '/.azuredevops/modulePipelines/ms.network.bastionhosts.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
       - '/utilities/pipelines/*'
@@ -40,7 +40,7 @@ variables:
   - template: '../../settings.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/modules/network/bastion-hosts'
+    value: '/modules/network/bastion-host'
 
 stages:
   - template: /.azuredevops/pipelineTemplates/stages.module.yml

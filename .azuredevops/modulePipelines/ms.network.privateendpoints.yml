@@ -29,7 +29,7 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.network.privateendpoints.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/modules/network/private-endpoints/*'
+      - '/modules/network/private-endpoint/*'
       - '/utilities/pipelines/*'
     exclude:
       - '/utilities/pipelines/deploymentRemoval/*'
@@ -39,7 +39,7 @@ variables:
   - template: '../../settings.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/modules/network/private-endpoints'
+    value: '/modules/network/private-endpoint'
 
 stages:
   - template: /.azuredevops/pipelineTemplates/stages.module.yml
