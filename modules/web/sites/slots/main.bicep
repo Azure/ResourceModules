@@ -68,8 +68,8 @@ param setAzureWebJobsDashboard bool = contains(kind, 'functionapp') ? true : fal
 @description('Optional. The app settings-value pairs except for AzureWebJobsStorage, AzureWebJobsDashboard, APPINSIGHTS_INSTRUMENTATIONKEY and APPLICATIONINSIGHTS_CONNECTION_STRING.')
 param appSettingsKeyValuePairs object = {}
 
-@description('Optional. The auth settings V2 configuration.')
-param authSettingV2Configuration object = {}
+@description('Optional. The sites/config settings.')
+param config array = []
 
 // Lock
 @allowed([
@@ -314,16 +314,17 @@ module slot_appsettings 'config--appsettings/main.bicep' = if (!empty(appSetting
   }
 }
 
-module slot_authsettingsv2 'config--authsettingsv2/main.bicep' = if (!empty(authSettingV2Configuration)) {
-  name: '${uniqueString(deployment().name, location)}-Slot-${name}-Config-AuthSettingsV2'
+module slot_config 'config/main.bicep' = [for configuration in config: {
+  name: '${uniqueString(deployment().name, location)}-Slot-${name}-Config-${configuration.name}'
   params: {
     slotName: slot.name
     appName: app.name
     kind: kind
-    authSettingV2Configuration: authSettingV2Configuration
+    name: configuration.name
+    properties: configuration.value
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
-}
+}]
 
 module slot_hybridConnectionRelays 'hybrid-connection-namespaces/relays/main.bicep' = [for (hybridConnectionRelay, index) in hybridConnectionRelays: {
   name: '${uniqueString(deployment().name, location)}-Slot-HybridConnectionRelay-${index}'

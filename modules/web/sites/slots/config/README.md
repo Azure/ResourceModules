@@ -1,4 +1,4 @@
-# Site Auth Settings V2 Config `[Microsoft.Web/sites/config]`
+# Site Slot Auth Settings V2 Config `[Microsoft.Web/sites/slots/config]`
 
 This module deploys a Site Auth Settings V2 Configuration.
 
@@ -13,7 +13,7 @@ This module deploys a Site Auth Settings V2 Configuration.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Web/sites/config` | [2022-03-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/sites) |
+| `Microsoft.Web/sites/slots/config` | [2022-03-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/sites) |
 
 ## Parameters
 
@@ -21,8 +21,10 @@ This module deploys a Site Auth Settings V2 Configuration.
 
 | Parameter Name | Type | Allowed Values | Description |
 | :-- | :-- | :-- | :-- |
-| `authSettingV2Configuration` | object |  | The auth settings V2 configuration. |
-| `kind` | string | `[app, functionapp, functionapp,linux, functionapp,workflowapp, functionapp,workflowapp,linux]` | Type of site to deploy. |
+| `kind` | string | `[app, functionapp, functionapp,linux, functionapp,workflowapp, functionapp,workflowapp,linux]` | Type of slot to deploy. |
+| `name` | string |  | The configuration object name. |
+| `properties` | object |  | The properties object values. |
+| `slotName` | string |  | Slot name to be configured. |
 
 **Conditional parameters**
 
@@ -34,7 +36,7 @@ This module deploys a Site Auth Settings V2 Configuration.
 
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 
 
 ### Parameter Usage: `authSettingV2Configuration`
@@ -72,9 +74,9 @@ siteConfig: [
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the site config. |
-| `resourceGroupName` | string | The resource group the site config was deployed into. |
-| `resourceId` | string | The resource ID of the site config. |
+| `name` | string | The name of the slot config. |
+| `resourceGroupName` | string | The resource group the slot config was deployed into. |
+| `resourceId` | string | The resource ID of the slot config. |
 
 ## Cross-referenced modules
 

@@ -4,15 +4,24 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "12960661892407144506"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "5185408907278073643"
+    },
+    "name": "Site Slot Auth Settings V2 Config",
+    "description": "This module deploys a Site Auth Settings V2 Configuration.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "appName": {
       "type": "string",
       "metadata": {
         "description": "Conditional. The name of the parent site resource. Required if the template is used in a standalone deployment."
+      }
+    },
+    "slotName": {
+      "type": "string",
+      "metadata": {
+        "description": "Required. Slot name to be configured."
       }
     },
     "kind": {
@@ -25,20 +34,26 @@
         "app"
       ],
       "metadata": {
-        "description": "Required. Type of site to deploy."
+        "description": "Required. Type of slot to deploy."
       }
     },
-    "authSettingV2Configuration": {
+    "properties": {
       "type": "object",
       "metadata": {
-        "description": "Required. The auth settings V2 configuration."
+        "description": "Required. The properties object values."
+      }
+    },
+    "name": {
+      "type": "string",
+      "metadata": {
+        "description": "Required. The configuration object name."
       }
     },
     "enableDefaultTelemetry": {
       "type": "bool",
       "defaultValue": true,
       "metadata": {
-        "description": "Optional. Enable telemetry via a Globally Unique Identifier (GUID)."
+        "description": "Optional. Enable telemetry via the Customer Usage Attribution ID (GUID)."
       }
     }
   },
@@ -58,32 +73,32 @@
       }
     },
     {
-      "type": "Microsoft.Web/sites/config",
+      "type": "Microsoft.Web/sites/slots/config",
       "apiVersion": "2022-03-01",
-      "name": "[format('{0}/{1}', parameters('appName'), 'authsettingsV2')]",
+      "name": "[format('{0}/{1}/{2}', parameters('appName'), parameters('slotName'), parameters('name'))]",
       "kind": "[parameters('kind')]",
-      "properties": "[parameters('authSettingV2Configuration')]"
+      "properties": "[parameters('properties')]"
     }
   ],
   "outputs": {
     "name": {
       "type": "string",
       "metadata": {
-        "description": "The name of the site config."
+        "description": "The name of the slot config."
       },
-      "value": "authsettingsV2"
+      "value": "[parameters('name')]"
     },
     "resourceId": {
       "type": "string",
       "metadata": {
-        "description": "The resource ID of the site config."
+        "description": "The resource ID of the slot config."
       },
-      "value": "[resourceId('Microsoft.Web/sites/config', parameters('appName'), 'authsettingsV2')]"
+      "value": "[resourceId('Microsoft.Web/sites/slots/config', parameters('appName'), parameters('slotName'), parameters('name'))]"
     },
     "resourceGroupName": {
       "type": "string",
       "metadata": {
-        "description": "The resource group the site config was deployed into."
+        "description": "The resource group the slot config was deployed into."
       },
       "value": "[resourceGroup().name]"
     }

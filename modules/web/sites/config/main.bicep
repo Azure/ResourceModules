@@ -18,8 +18,11 @@ param appName string
 ])
 param kind string
 
-@description('Required. The auth settings V2 configuration.')
-param authSettingV2Configuration object
+@description('Required. The properties object values.')
+param properties object
+
+@description('Required. The configuration object name.')
+param name string
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
@@ -46,21 +49,21 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource appSettings 'Microsoft.Web/sites/config@2022-03-01' = {
-  name: 'authsettingsV2'
+resource appConfig 'Microsoft.Web/sites/config@2022-03-01' = {
+  name: name
   kind: kind
   parent: app
-  properties: authSettingV2Configuration
+  properties: properties
 }
 
 // =========== //
 // Outputs     //
 // =========== //
 @description('The name of the site config.')
-output name string = appSettings.name
+output name string = appConfig.name
 
 @description('The resource ID of the site config.')
-output resourceId string = appSettings.id
+output resourceId string = appConfig.id
 
 @description('The resource group the site config was deployed into.')
 output resourceGroupName string = resourceGroup().name
