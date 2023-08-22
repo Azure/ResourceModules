@@ -78,7 +78,7 @@ var builtInRoleNames = {
   'Windows Admin Center Administrator Login': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'a6333a3e-0164-44c3-b281-7a577aff287f')
 }
 
-resource networkWatcher 'Microsoft.Network/networkWatchers@2022-07-01' existing = {
+resource networkWatcher 'Microsoft.Network/networkWatchers@2023-05-01' existing = {
   name: last(split(resourceId, '/'))!
 }
 

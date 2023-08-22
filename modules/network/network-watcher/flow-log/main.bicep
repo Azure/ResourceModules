@@ -73,11 +73,11 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource networkWatcher 'Microsoft.Network/networkWatchers@2022-07-01' existing = {
+resource networkWatcher 'Microsoft.Network/networkWatchers@2023-05-01' existing = {
   name: networkWatcherName
 }
 
-resource flowLog 'Microsoft.Network/networkWatchers/flowLogs@2022-07-01' = {
+resource flowLog 'Microsoft.Network/networkWatchers/flowLogs@2023-05-01' = {
   name: name
   parent: networkWatcher
   tags: tags
