@@ -12,7 +12,7 @@ on:
         type: boolean
         description: 'Execute deployment validation'
         required: false
-        default: true
+        default: false
       removeDeployment:
         type: boolean
         description: 'Remove deployed module'
@@ -25,7 +25,7 @@ on:
         default: false
   push:
     branches:
-      - main
+      - '*'
     paths:
       - 'modules/compute/ssh-public-key/**'
       - '.github/actions/templates/**'
