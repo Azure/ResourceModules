@@ -292,7 +292,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource applicationGateway 'Microsoft.Network/applicationGateways@2022-07-01' = {
+resource applicationGateway 'Microsoft.Network/applicationGateways@2023-05-01' = {
   name: name
   location: location
   tags: tags

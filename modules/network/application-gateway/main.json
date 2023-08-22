@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.20.4.51522",
-      "templateHash": "12453369441108614870"
+      "templateHash": "14057928211780203110"
     },
     "name": "Network Application Gateways",
     "description": "This module deploys a Network Application Gateway.",
@@ -510,7 +510,7 @@
     },
     {
       "type": "Microsoft.Network/applicationGateways",
-      "apiVersion": "2022-07-01",
+      "apiVersion": "2023-05-01",
       "name": "[parameters('name')]",
       "location": "[parameters('location')]",
       "tags": "[parameters('tags')]",
@@ -755,7 +755,7 @@
       "metadata": {
         "description": "The location the resource was deployed into."
       },
-      "value": "[reference(resourceId('Microsoft.Network/applicationGateways', parameters('name')), '2022-07-01', 'full').location]"
+      "value": "[reference(resourceId('Microsoft.Network/applicationGateways', parameters('name')), '2023-05-01', 'full').location]"
     }
   }
 }
