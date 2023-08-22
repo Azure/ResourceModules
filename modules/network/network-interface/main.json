@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.20.4.51522",
-      "templateHash": "2671718918533328624"
+      "templateHash": "5086729872673906429"
     },
     "name": "Network Interface",
     "description": "This module deploys a Network Interface.",
@@ -77,6 +77,20 @@
       ],
       "metadata": {
         "description": "Optional. Auxiliary mode of Network Interface resource. Not all regions are enabled for Auxiliary Mode Nic."
+      }
+    },
+    "auxiliarySku": {
+      "type": "string",
+      "defaultValue": "None",
+      "allowedValues": [
+        "A1",
+        "A2",
+        "A4",
+        "A8",
+        "None"
+      ],
+      "metadata": {
+        "description": "Optional. Auxiliary sku of Network Interface resource. Not all regions are enabled for Auxiliary Mode Nic."
       }
     },
     "disableTcpStateTracking": {
@@ -202,7 +216,7 @@
     },
     {
       "type": "Microsoft.Network/networkInterfaces",
-      "apiVersion": "2022-07-01",
+      "apiVersion": "2023-05-01",
       "name": "[parameters('name')]",
       "location": "[parameters('location')]",
       "tags": "[parameters('tags')]",
@@ -233,6 +247,7 @@
           }
         ],
         "auxiliaryMode": "[parameters('auxiliaryMode')]",
+        "auxiliarySku": "[parameters('auxiliarySku')]",
         "disableTcpStateTracking": "[parameters('disableTcpStateTracking')]",
         "dnsSettings": "[if(not(empty(parameters('dnsServers'))), createObject('dnsServers', parameters('dnsServers')), null())]",
         "enableAcceleratedNetworking": "[parameters('enableAcceleratedNetworking')]",
@@ -476,7 +491,7 @@
       "metadata": {
         "description": "The location the resource was deployed into."
       },
-      "value": "[reference(resourceId('Microsoft.Network/networkInterfaces', parameters('name')), '2022-07-01', 'full').location]"
+      "value": "[reference(resourceId('Microsoft.Network/networkInterfaces', parameters('name')), '2023-05-01', 'full').location]"
     }
   }
 }
