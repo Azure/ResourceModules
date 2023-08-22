@@ -25,7 +25,7 @@ on:
         default: false
   push:
     branches:
-      - 'main'
+      - main
     paths:
       - 'modules/app-configuration/configuration-store/**'
       - 'modules/network/private-endpoint/**'

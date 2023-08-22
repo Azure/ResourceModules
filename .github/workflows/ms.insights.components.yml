@@ -25,7 +25,7 @@ on:
         default: false
   push:
     branches:
-      - 'main'
+      - main
     paths:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'

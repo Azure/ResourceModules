@@ -25,7 +25,7 @@ on:
         default: false
   push:
     branches:
-      - 'main'
+      - main
     paths:
       - 'modules/cognitive-services/account/**'
       - 'modules/network/private-endpoint/**'

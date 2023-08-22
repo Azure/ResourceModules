@@ -25,7 +25,7 @@ on:
         default: false
   push:
     branches:
-      - 'main'
+      - main
     paths:
       - 'modules/data-factory/factory/**'
       - 'modules/network/private-endpoint/**'

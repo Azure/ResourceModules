@@ -25,7 +25,7 @@ on:
         default: false
   push:
     branches:
-      - 'main'
+      - main
     paths:
       - 'modules/kubernetes-configuration/extension/**'
       - 'modules/kubernetes-configuration/flux-configuration/**'

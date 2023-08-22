@@ -25,7 +25,7 @@ on:
         default: false
   push:
     branches:
-      - 'main'
+      - main
     paths:
       - 'modules/compute/disk-encryption-set/**'
       - 'modules/key-vault/vault/access-policy/**'
