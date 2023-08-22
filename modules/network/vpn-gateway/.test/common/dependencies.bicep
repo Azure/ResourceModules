@@ -26,7 +26,7 @@ resource virtualHub 'Microsoft.Network/virtualHubs@2022-01-01' = {
   }
 }
 
-resource vpnSite 'Microsoft.Network/vpnSites@2022-01-01' = {
+resource vpnSite 'Microsoft.Network/vpnSites@2023-05-01' = {
   name: vpnSiteName
   location: location
   properties: {
