@@ -15,7 +15,7 @@ resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-
     location: location
 }
 
-resource routeTable 'Microsoft.Network/routeTables@2022-01-01' = {
+resource routeTable 'Microsoft.Network/routeTables@2023-05-01' = {
     name: routeTableName
     location: location
 }

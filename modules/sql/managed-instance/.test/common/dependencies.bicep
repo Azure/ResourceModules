@@ -142,7 +142,7 @@ resource networkSecurityGroup 'Microsoft.Network/networkSecurityGroups@2023-05-0
   }
 }
 
-resource routeTable 'Microsoft.Network/routeTables@2021-08-01' = {
+resource routeTable 'Microsoft.Network/routeTables@2023-05-01' = {
   name: routeTableName
   location: location
   properties: {
