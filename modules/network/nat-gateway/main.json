@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.20.4.51522",
-      "templateHash": "2092404131875498072"
+      "templateHash": "17863420991735623328"
     },
     "name": "NAT Gateways",
     "description": "This module deploys a NAT Gateway.",
@@ -223,7 +223,7 @@
     },
     {
       "type": "Microsoft.Network/natGateways",
-      "apiVersion": "2022-07-01",
+      "apiVersion": "2023-05-01",
       "name": "[parameters('name')]",
       "location": "[parameters('location')]",
       "tags": "[parameters('tags')]",
@@ -1045,7 +1045,7 @@
       "metadata": {
         "description": "The location the resource was deployed into."
       },
-      "value": "[reference(resourceId('Microsoft.Network/natGateways', parameters('name')), '2022-07-01', 'full').location]"
+      "value": "[reference(resourceId('Microsoft.Network/natGateways', parameters('name')), '2023-05-01', 'full').location]"
     }
   }
 }
