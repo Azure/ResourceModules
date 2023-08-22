@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "15330446449054175723"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "5060813713999885493"
+    },
+    "name": "Application Insights",
+    "description": "This component deploys an Application Insights instance.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
@@ -75,8 +78,8 @@
     "samplingPercentage": {
       "type": "int",
       "defaultValue": 100,
-      "maxValue": 100,
       "minValue": 0,
+      "maxValue": 100,
       "metadata": {
         "description": "Optional. Percentage of the data produced by the application being monitored that is being sampled for Application Insights telemetry."
       }
@@ -119,8 +122,8 @@
     "diagnosticLogsRetentionInDays": {
       "type": "int",
       "defaultValue": 365,
-      "maxValue": 365,
       "minValue": 0,
+      "maxValue": 365,
       "metadata": {
         "description": "Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely."
       }
@@ -310,8 +313,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "5376732028486358032"
+              "version": "0.20.4.51522",
+              "templateHash": "8980605934442276115"
             }
           },
           "parameters": {

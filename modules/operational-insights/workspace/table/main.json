@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "174331240044920355"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "761158132904084297"
+    },
+    "name": "Log Analytics Workspace Tables",
+    "description": "This module deploys a Log Analytics Workspace Table.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
@@ -49,8 +52,8 @@
     "retentionInDays": {
       "type": "int",
       "defaultValue": -1,
-      "maxValue": 730,
       "minValue": -1,
+      "maxValue": 730,
       "metadata": {
         "description": "Optional. The table retention in days, between 4 and 730. Setting this property to -1 will default to the workspace retention."
       }
@@ -72,8 +75,8 @@
     "totalRetentionInDays": {
       "type": "int",
       "defaultValue": -1,
-      "maxValue": 2555,
       "minValue": -1,
+      "maxValue": 2555,
       "metadata": {
         "description": "Optional. The table total retention in days, between 4 and 2555. Setting this property to -1 will default to table retention."
       }

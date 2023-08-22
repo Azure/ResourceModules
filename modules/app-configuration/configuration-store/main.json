@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "14681467525006388511"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "437160263772031393"
+    },
+    "name": "App Configuration Stores",
+    "description": "This module deploys an App Configuration Store.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
@@ -39,24 +42,24 @@
     "sku": {
       "type": "string",
       "defaultValue": "Standard",
-      "metadata": {
-        "description": "Optional. Pricing tier of App Configuration."
-      },
       "allowedValues": [
         "Free",
         "Standard"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Pricing tier of App Configuration."
+      }
     },
     "createMode": {
       "type": "string",
       "defaultValue": "Default",
-      "metadata": {
-        "description": "Optional. Indicates whether the configuration store need to be recovered."
-      },
       "allowedValues": [
         "Default",
         "Recover"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Indicates whether the configuration store need to be recovered."
+      }
     },
     "disableLocalAuth": {
       "type": "bool",
@@ -87,8 +90,8 @@
     "softDeleteRetentionInDays": {
       "type": "int",
       "defaultValue": 1,
-      "maxValue": 7,
       "minValue": 1,
+      "maxValue": 7,
       "metadata": {
         "description": "Optional. The amount of time in days that the configuration store will be retained when it is soft deleted."
       }
@@ -103,8 +106,8 @@
     "diagnosticLogsRetentionInDays": {
       "type": "int",
       "defaultValue": 365,
-      "maxValue": 365,
       "minValue": 0,
+      "maxValue": 365,
       "metadata": {
         "description": "Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely."
       }
@@ -140,14 +143,14 @@
     "lock": {
       "type": "string",
       "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Specify the type of lock."
-      },
       "allowedValues": [
         "",
         "CanNotDelete",
         "ReadOnly"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Specify the type of lock."
+      }
     },
     "roleAssignments": {
       "type": "array",
@@ -348,9 +351,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "11694174927127142874"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "18125120019454222929"
+            },
+            "name": "App Configuration Stores Key Values",
+            "description": "This module deploys an App Configuration Store Key Value.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "name": {
@@ -482,8 +488,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "9214998026819281183"
+              "version": "0.20.4.51522",
+              "templateHash": "8595390874320189922"
             }
           },
           "parameters": {
@@ -646,9 +652,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "11825715538543749879"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "609426544615556519"
+            },
+            "name": "Private Endpoints",
+            "description": "This module deploys a Private Endpoint.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "name": {
@@ -713,14 +722,14 @@
             "lock": {
               "type": "string",
               "defaultValue": "",
-              "metadata": {
-                "description": "Optional. Specify the type of lock."
-              },
               "allowedValues": [
                 "",
                 "CanNotDelete",
                 "ReadOnly"
-              ]
+              ],
+              "metadata": {
+                "description": "Optional. Specify the type of lock."
+              }
             },
             "roleAssignments": {
               "type": "array",
@@ -843,9 +852,12 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.19.5.34762",
-                      "templateHash": "12684511314187066258"
-                    }
+                      "version": "0.20.4.51522",
+                      "templateHash": "18114841529204248478"
+                    },
+                    "name": "Private Endpoint Private DNS Zone Groups",
+                    "description": "This module deploys a Private Endpoint Private DNS Zone Group.",
+                    "owner": "Azure/module-maintainers"
                   },
                   "parameters": {
                     "privateEndpointName": {
@@ -856,8 +868,8 @@
                     },
                     "privateDNSResourceIds": {
                       "type": "array",
-                      "maxLength": 5,
                       "minLength": 1,
+                      "maxLength": 5,
                       "metadata": {
                         "description": "Required. Array of private DNS zone resource IDs. A DNS zone group can support up to 5 DNS zones."
                       }
@@ -978,8 +990,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.19.5.34762",
-                      "templateHash": "18055161250379920591"
+                      "version": "0.20.4.51522",
+                      "templateHash": "11548486149222715894"
                     }
                   },
                   "parameters": {

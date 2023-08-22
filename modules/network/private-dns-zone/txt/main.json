@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "6988918118495561067"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "11503781556355030458"
+    },
+    "name": "Private DNS Zone TXT record",
+    "description": "This module deploys a Private DNS Zone TXT record.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "privateDnsZoneName": {
@@ -116,8 +119,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "1209368876108232061"
+              "version": "0.20.4.51522",
+              "templateHash": "9559644743323745935"
             }
           },
           "parameters": {

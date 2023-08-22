@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "4998852968640897249"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "2671718918533328624"
+    },
+    "name": "Network Interface",
+    "description": "This module deploys a Network Interface.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
@@ -67,14 +70,14 @@
     "auxiliaryMode": {
       "type": "string",
       "defaultValue": "None",
-      "metadata": {
-        "description": "Optional. Auxiliary mode of Network Interface resource. Not all regions are enabled for Auxiliary Mode Nic."
-      },
       "allowedValues": [
         "Floating",
         "MaxConnections",
         "None"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Auxiliary mode of Network Interface resource. Not all regions are enabled for Auxiliary Mode Nic."
+      }
     },
     "disableTcpStateTracking": {
       "type": "bool",
@@ -92,14 +95,14 @@
     "lock": {
       "type": "string",
       "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Specify the type of lock."
-      },
       "allowedValues": [
         "",
         "CanNotDelete",
         "ReadOnly"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Specify the type of lock."
+      }
     },
     "roleAssignments": {
       "type": "array",
@@ -111,8 +114,8 @@
     "diagnosticLogsRetentionInDays": {
       "type": "int",
       "defaultValue": 365,
-      "maxValue": 365,
       "minValue": 0,
+      "maxValue": 365,
       "metadata": {
         "description": "Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely."
       }
@@ -302,8 +305,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "11217191875210502826"
+              "version": "0.20.4.51522",
+              "templateHash": "12768288729117926344"
             }
           },
           "parameters": {

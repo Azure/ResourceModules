@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "15744477094233687901"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "10927394621764774821"
+    },
+    "name": "Authorization Locks (Subscription scope)",
+    "description": "This module deploys an Authorization Lock at a Subscription scope.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
@@ -18,13 +21,13 @@
     },
     "level": {
       "type": "string",
-      "metadata": {
-        "description": "Required. Set lock level."
-      },
       "allowedValues": [
         "CanNotDelete",
         "ReadOnly"
-      ]
+      ],
+      "metadata": {
+        "description": "Required. Set lock level."
+      }
     },
     "notes": {
       "type": "string",

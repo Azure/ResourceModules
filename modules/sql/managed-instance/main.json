@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "9406931406845149664"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "2503340536888501754"
+    },
+    "name": "SQL Managed Instances",
+    "description": "This module deploys a SQL Managed Instance.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
@@ -179,8 +182,8 @@
     "diagnosticLogsRetentionInDays": {
       "type": "int",
       "defaultValue": 365,
-      "maxValue": 365,
       "minValue": 0,
+      "maxValue": 365,
       "metadata": {
         "description": "Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely."
       }
@@ -216,14 +219,14 @@
     "lock": {
       "type": "string",
       "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Specify the type of lock."
-      },
       "allowedValues": [
         "",
         "CanNotDelete",
         "ReadOnly"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Specify the type of lock."
+      }
     },
     "roleAssignments": {
       "type": "array",
@@ -312,15 +315,15 @@
     "minimalTlsVersion": {
       "type": "string",
       "defaultValue": "1.2",
-      "metadata": {
-        "description": "Optional. Minimal TLS version allowed."
-      },
       "allowedValues": [
         "None",
         "1.0",
         "1.1",
         "1.2"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Minimal TLS version allowed."
+      }
     },
     "requestedBackupStorageRedundancy": {
       "type": "string",
@@ -521,8 +524,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "2561429110475874953"
+              "version": "0.20.4.51522",
+              "templateHash": "10149117624574107754"
             }
           },
           "parameters": {
@@ -692,9 +695,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "2497751269793012554"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "15113454848732720811"
+            },
+            "name": "SQL Managed Instance Databases",
+            "description": "This module deploys a SQL Managed Instance Database.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "name": {
@@ -796,8 +802,8 @@
             "diagnosticLogsRetentionInDays": {
               "type": "int",
               "defaultValue": 365,
-              "maxValue": 365,
               "minValue": 0,
+              "maxValue": 365,
               "metadata": {
                 "description": "Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely."
               }
@@ -833,14 +839,14 @@
             "lock": {
               "type": "string",
               "defaultValue": "",
-              "metadata": {
-                "description": "Optional. Specify the type of lock."
-              },
               "allowedValues": [
                 "",
                 "CanNotDelete",
                 "ReadOnly"
-              ]
+              ],
+              "metadata": {
+                "description": "Optional. Specify the type of lock."
+              }
             },
             "backupShortTermRetentionPoliciesObj": {
               "type": "object",
@@ -1009,9 +1015,12 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.19.5.34762",
-                      "templateHash": "339225421683905916"
-                    }
+                      "version": "0.20.4.51522",
+                      "templateHash": "6931213919610871740"
+                    },
+                    "name": "SQL Managed Instance Database Backup Short-Term Retention Policies",
+                    "description": "This module deploys a SQL Managed Instance Database Backup Short-Term Retention Policy.",
+                    "owner": "Azure/module-maintainers"
                   },
                   "parameters": {
                     "name": {
@@ -1134,9 +1143,12 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.19.5.34762",
-                      "templateHash": "1033992501650214243"
-                    }
+                      "version": "0.20.4.51522",
+                      "templateHash": "18038719600656297152"
+                    },
+                    "name": "SQL Managed Instance Database Backup Long-Term Retention Policies",
+                    "description": "This module deploys a SQL Managed Instance Database Backup Long-Term Retention Policy.",
+                    "owner": "Azure/module-maintainers"
                   },
                   "parameters": {
                     "name": {
@@ -1315,9 +1327,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "15446099956468179466"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "15021129035939475675"
+            },
+            "name": "SQL Managed Instance Security Alert Policies",
+            "description": "This module deploys a SQL Managed Instance Security Alert Policy.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "name": {
@@ -1443,9 +1458,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "15588092439096999066"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "6142359620217113835"
+            },
+            "name": "SQL Managed Instance Vulnerability Assessments",
+            "description": "This module deploys a SQL Managed Instance Vulnerability Assessment.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "name": {
@@ -1588,9 +1606,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "18086076605425313761"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "12303930012308222652"
+            },
+            "name": "SQL Managed Instance Keys",
+            "description": "This module deploys a SQL Managed Instance Key.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "name": {
@@ -1718,9 +1739,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "4491359307411111036"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "3596420230929102349"
+            },
+            "name": "SQL Managed Instance Encryption Protector",
+            "description": "This module deploys a SQL Managed Instance Encryption Protector.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "managedInstanceName": {
@@ -1848,9 +1872,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "9014901880446223924"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "94742246961044490"
+            },
+            "name": "SQL Managed Instances Administrator",
+            "description": "This module deploys a SQL Managed Instance Administrator.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "managedInstanceName": {

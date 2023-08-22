@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "15404563432190354"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "6928988461229718614"
+    },
+    "name": "DevTest Labs",
+    "description": "This module deploys a DevTest Lab.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
@@ -25,14 +28,14 @@
     "lock": {
       "type": "string",
       "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Specify the type of lock."
-      },
       "allowedValues": [
         "",
         "CanNotDelete",
         "ReadOnly"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Specify the type of lock."
+      }
     },
     "roleAssignments": {
       "type": "array",
@@ -58,13 +61,13 @@
     "environmentPermission": {
       "type": "string",
       "defaultValue": "Reader",
-      "metadata": {
-        "description": "Optional. The access rights to be granted to the user when provisioning an environment."
-      },
       "allowedValues": [
         "Contributor",
         "Reader"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. The access rights to be granted to the user when provisioning an environment."
+      }
     },
     "extendedProperties": {
       "type": "object",
@@ -76,14 +79,14 @@
     "labStorageType": {
       "type": "string",
       "defaultValue": "Premium",
-      "metadata": {
-        "description": "Optional. Type of storage used by the lab. It can be either Premium or Standard."
-      },
       "allowedValues": [
         "Standard",
         "StandardSSD",
         "Premium"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Type of storage used by the lab. It can be either Premium or Standard."
+      }
     },
     "artifactsStorageAccount": {
       "type": "string",
@@ -109,13 +112,13 @@
     "premiumDataDisks": {
       "type": "string",
       "defaultValue": "Disabled",
-      "metadata": {
-        "description": "Optional. The setting to enable usage of premium data disks. When its value is \"Enabled\", creation of standard or premium data disks is allowed. When its value is \"Disabled\", only creation of standard data disks is allowed. Default is \"Disabled\"."
-      },
       "allowedValues": [
         "Enabled",
         "Disabled"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. The setting to enable usage of premium data disks. When its value is \"Enabled\", creation of standard or premium data disks is allowed. When its value is \"Disabled\", only creation of standard data disks is allowed. Default is \"Disabled\"."
+      }
     },
     "support": {
       "type": "object",
@@ -148,13 +151,13 @@
     "browserConnect": {
       "type": "string",
       "defaultValue": "Disabled",
-      "metadata": {
-        "description": "Optional. Enable browser connect on virtual machines if the lab's VNETs have configured Azure Bastion."
-      },
       "allowedValues": [
         "Enabled",
         "Disabled"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Enable browser connect on virtual machines if the lab's VNETs have configured Azure Bastion."
+      }
     },
     "disableAutoUpgradeCseMinorVersion": {
       "type": "bool",
@@ -166,24 +169,24 @@
     "isolateLabResources": {
       "type": "string",
       "defaultValue": "Enabled",
-      "metadata": {
-        "description": "Optional. Enable lab resources isolation from the public internet."
-      },
       "allowedValues": [
         "Enabled",
         "Disabled"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Enable lab resources isolation from the public internet."
+      }
     },
     "encryptionType": {
       "type": "string",
       "defaultValue": "EncryptionAtRestWithPlatformKey",
-      "metadata": {
-        "description": "Optional. Specify how OS and data disks created as part of the lab are encrypted."
-      },
       "allowedValues": [
         "EncryptionAtRestWithPlatformKey",
         "EncryptionAtRestWithCustomerKey"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Specify how OS and data disks created as part of the lab are encrypted."
+      }
     },
     "encryptionDiskEncryptionSetId": {
       "type": "string",
@@ -344,9 +347,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "10889431821569458862"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "3541849489263903716"
+            },
+            "name": "DevTest Lab Virtual Networks",
+            "description": "This module deploys a DevTest Lab Virtual Network.\r\n\r\nLab virtual machines must be deployed into a virtual network. This resource type allows configuring the virtual network and subnet settings used for the lab virtual machines.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "labName": {
@@ -505,9 +511,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "1906322712473031665"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "9961899772573814013"
+            },
+            "name": "DevTest Lab Policy Sets Policies",
+            "description": "This module deploys a DevTest Lab Policy Sets Policy.\r\n\r\nDevTest lab policies are used to modify the lab settings such as only allowing certain VM Size SKUs, marketplace image types, number of VMs allowed per user and other settings.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "labName": {
@@ -545,13 +554,13 @@
             },
             "evaluatorType": {
               "type": "string",
-              "metadata": {
-                "description": "Required. The evaluator type of the policy (i.e. AllowedValuesPolicy, MaxValuePolicy)."
-              },
               "allowedValues": [
                 "AllowedValuesPolicy",
                 "MaxValuePolicy"
-              ]
+              ],
+              "metadata": {
+                "description": "Required. The evaluator type of the policy (i.e. AllowedValuesPolicy, MaxValuePolicy)."
+              }
             },
             "factData": {
               "type": "string",
@@ -562,9 +571,6 @@
             },
             "factName": {
               "type": "string",
-              "metadata": {
-                "description": "Required. The fact name of the policy."
-              },
               "allowedValues": [
                 "EnvironmentTemplate",
                 "GalleryImage",
@@ -576,18 +582,21 @@
                 "UserOwnedLabPremiumVmCount",
                 "UserOwnedLabVmCount",
                 "UserOwnedLabVmCountInSubnet"
-              ]
+              ],
+              "metadata": {
+                "description": "Required. The fact name of the policy."
+              }
             },
             "status": {
               "type": "string",
               "defaultValue": "Enabled",
-              "metadata": {
-                "description": "Optional. The status of the policy."
-              },
               "allowedValues": [
                 "Disabled",
                 "Enabled"
-              ]
+              ],
+              "metadata": {
+                "description": "Optional. The status of the policy."
+              }
             },
             "threshold": {
               "type": "string",
@@ -706,9 +715,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "18085550684061495455"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "12427678703978539260"
+            },
+            "name": "DevTest Lab Schedules",
+            "description": "This module deploys a DevTest Lab Schedule.\r\n\r\nLab schedules are used to modify the settings for auto-shutdown, auto-start for lab virtual machines.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "labName": {
@@ -719,23 +731,23 @@
             },
             "name": {
               "type": "string",
-              "metadata": {
-                "description": "Required. The name of the schedule."
-              },
               "allowedValues": [
                 "LabVmsShutdown",
                 "LabVmAutoStart"
-              ]
+              ],
+              "metadata": {
+                "description": "Required. The name of the schedule."
+              }
             },
             "taskType": {
               "type": "string",
-              "metadata": {
-                "description": "Required. The task type of the schedule (e.g. LabVmsShutdownTask, LabVmsStartupTask)."
-              },
               "allowedValues": [
                 "LabVmsShutdownTask",
                 "LabVmsStartupTask"
-              ]
+              ],
+              "metadata": {
+                "description": "Required. The task type of the schedule (e.g. LabVmsShutdownTask, LabVmsStartupTask)."
+              }
             },
             "tags": {
               "type": "object",
@@ -768,13 +780,13 @@
             "status": {
               "type": "string",
               "defaultValue": "Enabled",
-              "metadata": {
-                "description": "Optional. The status of the schedule (i.e. Enabled, Disabled)."
-              },
               "allowedValues": [
                 "Enabled",
                 "Disabled"
-              ]
+              ],
+              "metadata": {
+                "description": "Optional. The status of the schedule (i.e. Enabled, Disabled)."
+              }
             },
             "targetResourceId": {
               "type": "string",
@@ -793,13 +805,13 @@
             "notificationSettingsStatus": {
               "type": "string",
               "defaultValue": "Disabled",
-              "metadata": {
-                "description": "Optional. If notifications are enabled for this schedule (i.e. Enabled, Disabled)."
-              },
               "allowedValues": [
                 "Enabled",
                 "Disabled"
-              ]
+              ],
+              "metadata": {
+                "description": "Optional. If notifications are enabled for this schedule (i.e. Enabled, Disabled)."
+              }
             },
             "notificationSettingsTimeInMinutes": {
               "type": "int",
@@ -917,9 +929,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "16463919279899526398"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "16877948453352231958"
+            },
+            "name": "DevTest Lab Notification Channels",
+            "description": "This module deploys a DevTest Lab Notification Channel.\r\n\r\nNotification channels are used by the schedule resource type in order to send notifications or events to email addresses and/or webhooks.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "labName": {
@@ -930,13 +945,13 @@
             },
             "name": {
               "type": "string",
-              "metadata": {
-                "description": "Required. The name of the notification channel."
-              },
               "allowedValues": [
                 "autoShutdown",
                 "costThreshold"
-              ]
+              ],
+              "metadata": {
+                "description": "Required. The name of the notification channel."
+              }
             },
             "tags": {
               "type": "object",
@@ -1088,9 +1103,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "2705905798561744734"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "10765635521160351928"
+            },
+            "name": "DevTest Lab Artifact Sources",
+            "description": "This module deploys a DevTest Lab Artifact Source.\r\n\r\nAn artifact source allows you to create custom artifacts for the VMs in the lab, or use Azure Resource Manager templates to create a custom test environment. You must add a private Git repository for the artifacts or Resource Manager templates that your team creates. The repository can be hosted on GitHub or on Azure DevOps Services.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "labName": {
@@ -1150,26 +1168,26 @@
             "sourceType": {
               "type": "string",
               "defaultValue": "",
-              "metadata": {
-                "description": "Optional. The artifact source's type."
-              },
               "allowedValues": [
                 "",
                 "GitHub",
                 "StorageAccount",
                 "VsoGit"
-              ]
+              ],
+              "metadata": {
+                "description": "Optional. The artifact source's type."
+              }
             },
             "status": {
               "type": "string",
               "defaultValue": "Enabled",
-              "metadata": {
-                "description": "Optional. Indicates if the artifact source is enabled (values: Enabled, Disabled). Default is \"Enabled\"."
-              },
               "allowedValues": [
                 "Enabled",
                 "Disabled"
-              ]
+              ],
+              "metadata": {
+                "description": "Optional. Indicates if the artifact source is enabled (values: Enabled, Disabled). Default is \"Enabled\"."
+              }
             },
             "uri": {
               "type": "string",
@@ -1291,9 +1309,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "7115830072126257185"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "4166206931202072952"
+            },
+            "name": "DevTest Lab Costs",
+            "description": "This module deploys a DevTest Lab Cost.\r\n\r\nManage lab costs by setting a spending target that can be viewed in the Monthly Estimated Cost Trend chart. DevTest Labs can send a notification when spending reaches the specified target threshold.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "labName": {
@@ -1304,13 +1325,13 @@
             },
             "cycleType": {
               "type": "string",
-              "metadata": {
-                "description": "Required. Reporting cycle type."
-              },
               "allowedValues": [
                 "Custom",
                 "CalendarMonth"
-              ]
+              ],
+              "metadata": {
+                "description": "Required. Reporting cycle type."
+              }
             },
             "tags": {
               "type": "object",
@@ -1336,13 +1357,13 @@
             "status": {
               "type": "string",
               "defaultValue": "Enabled",
-              "metadata": {
-                "description": "Optional. Target cost status."
-              },
               "allowedValues": [
                 "Enabled",
                 "Disabled"
-              ]
+              ],
+              "metadata": {
+                "description": "Optional. Target cost status."
+              }
             },
             "target": {
               "type": "int",
@@ -1361,112 +1382,112 @@
             "thresholdValue25DisplayOnChart": {
               "type": "string",
               "defaultValue": "Disabled",
-              "metadata": {
-                "description": "Optional. Target Cost threshold at 25% display on chart. Indicates whether this threshold will be displayed on cost charts."
-              },
               "allowedValues": [
                 "Enabled",
                 "Disabled"
-              ]
+              ],
+              "metadata": {
+                "description": "Optional. Target Cost threshold at 25% display on chart. Indicates whether this threshold will be displayed on cost charts."
+              }
             },
             "thresholdValue25SendNotificationWhenExceeded": {
               "type": "string",
               "defaultValue": "Disabled",
-              "metadata": {
-                "description": "Optional. Target cost threshold at 25% send notification when exceeded. Indicates whether notifications will be sent when this threshold is exceeded."
-              },
               "allowedValues": [
                 "Enabled",
                 "Disabled"
-              ]
+              ],
+              "metadata": {
+                "description": "Optional. Target cost threshold at 25% send notification when exceeded. Indicates whether notifications will be sent when this threshold is exceeded."
+              }
             },
             "thresholdValue50DisplayOnChart": {
               "type": "string",
               "defaultValue": "Disabled",
-              "metadata": {
-                "description": "Optional. Target Cost threshold at 50% display on chart. Indicates whether this threshold will be displayed on cost charts."
-              },
               "allowedValues": [
                 "Enabled",
                 "Disabled"
-              ]
+              ],
+              "metadata": {
+                "description": "Optional. Target Cost threshold at 50% display on chart. Indicates whether this threshold will be displayed on cost charts."
+              }
             },
             "thresholdValue50SendNotificationWhenExceeded": {
               "type": "string",
               "defaultValue": "Disabled",
-              "metadata": {
-                "description": "Optional. Target cost threshold at 50% send notification when exceeded. Indicates whether notifications will be sent when this threshold is exceeded."
-              },
               "allowedValues": [
                 "Enabled",
                 "Disabled"
-              ]
+              ],
+              "metadata": {
+                "description": "Optional. Target cost threshold at 50% send notification when exceeded. Indicates whether notifications will be sent when this threshold is exceeded."
+              }
             },
             "thresholdValue75DisplayOnChart": {
               "type": "string",
               "defaultValue": "Disabled",
-              "metadata": {
-                "description": "Optional. Target Cost threshold at 75% display on chart. Indicates whether this threshold will be displayed on cost charts."
-              },
               "allowedValues": [
                 "Enabled",
                 "Disabled"
-              ]
+              ],
+              "metadata": {
+                "description": "Optional. Target Cost threshold at 75% display on chart. Indicates whether this threshold will be displayed on cost charts."
+              }
             },
             "thresholdValue75SendNotificationWhenExceeded": {
               "type": "string",
               "defaultValue": "Disabled",
-              "metadata": {
-                "description": "Optional. Target cost threshold at 75% send notification when exceeded. Indicates whether notifications will be sent when this threshold is exceeded."
-              },
               "allowedValues": [
                 "Enabled",
                 "Disabled"
-              ]
+              ],
+              "metadata": {
+                "description": "Optional. Target cost threshold at 75% send notification when exceeded. Indicates whether notifications will be sent when this threshold is exceeded."
+              }
             },
             "thresholdValue100DisplayOnChart": {
               "type": "string",
               "defaultValue": "Disabled",
-              "metadata": {
-                "description": "Optional. Target Cost threshold at 100% display on chart. Indicates whether this threshold will be displayed on cost charts."
-              },
               "allowedValues": [
                 "Enabled",
                 "Disabled"
-              ]
+              ],
+              "metadata": {
+                "description": "Optional. Target Cost threshold at 100% display on chart. Indicates whether this threshold will be displayed on cost charts."
+              }
             },
             "thresholdValue100SendNotificationWhenExceeded": {
               "type": "string",
               "defaultValue": "Disabled",
-              "metadata": {
-                "description": "Optional. Target cost threshold at 100% send notification when exceeded. Indicates whether notifications will be sent when this threshold is exceeded."
-              },
               "allowedValues": [
                 "Enabled",
                 "Disabled"
-              ]
+              ],
+              "metadata": {
+                "description": "Optional. Target cost threshold at 100% send notification when exceeded. Indicates whether notifications will be sent when this threshold is exceeded."
+              }
             },
             "thresholdValue125DisplayOnChart": {
               "type": "string",
               "defaultValue": "Disabled",
-              "metadata": {
-                "description": "Optional. Target Cost threshold at 125% display on chart. Indicates whether this threshold will be displayed on cost charts."
-              },
               "allowedValues": [
                 "Enabled",
                 "Disabled"
-              ]
+              ],
+              "metadata": {
+                "description": "Optional. Target Cost threshold at 125% display on chart. Indicates whether this threshold will be displayed on cost charts."
+              }
             },
             "thresholdValue125SendNotificationWhenExceeded": {
               "type": "string",
               "defaultValue": "Disabled",
-              "metadata": {
-                "description": "Optional. Target cost threshold at 125% send notification when exceeded. Indicates whether notifications will be sent when this threshold is exceeded."
-              },
               "allowedValues": [
                 "Enabled",
                 "Disabled"
-              ]
+              ],
+              "metadata": {
+                "description": "Optional. Target cost threshold at 125% send notification when exceeded. Indicates whether notifications will be sent when this threshold is exceeded."
+              }
             },
             "enableDefaultTelemetry": {
               "type": "bool",
@@ -1615,8 +1636,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "14668218410139786404"
+              "version": "0.20.4.51522",
+              "templateHash": "14124087164727132861"
             }
           },
           "parameters": {

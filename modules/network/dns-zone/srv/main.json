@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "2573308748570559876"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "2772370204362718864"
+    },
+    "name": "Public DNS Zone SRV record",
+    "description": "This module deploys a Public DNS Zone SRV record.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "dnsZoneName": {
@@ -116,8 +119,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "15357224405420155309"
+              "version": "0.20.4.51522",
+              "templateHash": "13880457002928639304"
             }
           },
           "parameters": {

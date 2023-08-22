@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "5392244196871219309"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "16278038783151225278"
+    },
+    "name": "Batch Accounts",
+    "description": "This module deploys a Batch Account.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
@@ -45,13 +48,13 @@
     "storageAuthenticationMode": {
       "type": "string",
       "defaultValue": "StorageKeys",
-      "metadata": {
-        "description": "Optional. The authentication mode which the Batch service will use to manage the auto-storage account."
-      },
       "allowedValues": [
         "BatchAccountManagedIdentity",
         "StorageKeys"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. The authentication mode which the Batch service will use to manage the auto-storage account."
+      }
     },
     "storageAccessIdentity": {
       "type": "string",
@@ -63,13 +66,13 @@
     "poolAllocationMode": {
       "type": "string",
       "defaultValue": "BatchService",
-      "metadata": {
-        "description": "Optional. The allocation mode for creating pools in the Batch account. Determines which quota will be used."
-      },
       "allowedValues": [
         "BatchService",
         "UserSubscription"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. The allocation mode for creating pools in the Batch account. Determines which quota will be used."
+      }
     },
     "keyVaultReferenceResourceId": {
       "type": "string",
@@ -100,13 +103,13 @@
     "networkProfileDefaultAction": {
       "type": "string",
       "defaultValue": "Deny",
-      "metadata": {
-        "description": "Optional. The network profile default action for endpoint access. It is only applicable when publicNetworkAccess is not explicitly disabled."
-      },
       "allowedValues": [
         "Allow",
         "Deny"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. The network profile default action for endpoint access. It is only applicable when publicNetworkAccess is not explicitly disabled."
+      }
     },
     "networkProfileAllowedIpRanges": {
       "type": "array",
@@ -118,8 +121,8 @@
     "diagnosticLogsRetentionInDays": {
       "type": "int",
       "defaultValue": 365,
-      "maxValue": 365,
       "minValue": 0,
+      "maxValue": 365,
       "metadata": {
         "description": "Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely."
       }
@@ -155,14 +158,14 @@
     "lock": {
       "type": "string",
       "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Specify the type of lock."
-      },
       "allowedValues": [
         "",
         "CanNotDelete",
         "ReadOnly"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Specify the type of lock."
+      }
     },
     "tags": {
       "type": "object",
@@ -174,14 +177,14 @@
     "allowedAuthenticationModes": {
       "type": "array",
       "defaultValue": [],
-      "metadata": {
-        "description": "Optional. List of allowed authentication modes for the Batch account that can be used to authenticate with the data plane."
-      },
       "allowedValues": [
         "AAD",
         "SharedKey",
         "TaskAuthenticationToken"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. List of allowed authentication modes for the Batch account that can be used to authenticate with the data plane."
+      }
     },
     "cMKKeyVaultResourceId": {
       "type": "string",
@@ -407,9 +410,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "11825715538543749879"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "609426544615556519"
+            },
+            "name": "Private Endpoints",
+            "description": "This module deploys a Private Endpoint.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "name": {
@@ -474,14 +480,14 @@
             "lock": {
               "type": "string",
               "defaultValue": "",
-              "metadata": {
-                "description": "Optional. Specify the type of lock."
-              },
               "allowedValues": [
                 "",
                 "CanNotDelete",
                 "ReadOnly"
-              ]
+              ],
+              "metadata": {
+                "description": "Optional. Specify the type of lock."
+              }
             },
             "roleAssignments": {
               "type": "array",
@@ -604,9 +610,12 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.19.5.34762",
-                      "templateHash": "12684511314187066258"
-                    }
+                      "version": "0.20.4.51522",
+                      "templateHash": "18114841529204248478"
+                    },
+                    "name": "Private Endpoint Private DNS Zone Groups",
+                    "description": "This module deploys a Private Endpoint Private DNS Zone Group.",
+                    "owner": "Azure/module-maintainers"
                   },
                   "parameters": {
                     "privateEndpointName": {
@@ -617,8 +626,8 @@
                     },
                     "privateDNSResourceIds": {
                       "type": "array",
-                      "maxLength": 5,
                       "minLength": 1,
+                      "maxLength": 5,
                       "metadata": {
                         "description": "Required. Array of private DNS zone resource IDs. A DNS zone group can support up to 5 DNS zones."
                       }
@@ -739,8 +748,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.19.5.34762",
-                      "templateHash": "18055161250379920591"
+                      "version": "0.20.4.51522",
+                      "templateHash": "11548486149222715894"
                     }
                   },
                   "parameters": {

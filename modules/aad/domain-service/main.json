@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "7212864402192809754"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "12721378436248791893"
+    },
+    "name": "Azure Active Directory Domain Services",
+    "description": "This module deploys an Azure Active Directory Domain Services (AADDS).",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
@@ -235,8 +238,8 @@
     "diagnosticLogsRetentionInDays": {
       "type": "int",
       "defaultValue": 365,
-      "maxValue": 365,
       "minValue": 0,
+      "maxValue": 365,
       "metadata": {
         "description": "Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely."
       }
@@ -251,14 +254,14 @@
     "lock": {
       "type": "string",
       "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Specify the type of lock."
-      },
       "allowedValues": [
         "",
         "CanNotDelete",
         "ReadOnly"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Specify the type of lock."
+      }
     },
     "roleAssignments": {
       "type": "array",
@@ -420,8 +423,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "1835196590744677033"
+              "version": "0.20.4.51522",
+              "templateHash": "1057451730185252367"
             }
           },
           "parameters": {

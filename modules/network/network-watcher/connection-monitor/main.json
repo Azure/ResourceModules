@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "17070074753032626378"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "4884473903500210631"
+    },
+    "name": "Network Watchers Connection Monitors",
+    "description": "This module deploys a Network Watcher Connection Monitor.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "networkWatcherName": {

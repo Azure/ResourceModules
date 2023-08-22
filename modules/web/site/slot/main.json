@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "13778120720358101018"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "5486126875176328464"
+    },
+    "name": "Web/Function App Deployment Slots",
+    "description": "This module deploys a Web or Function App Deployment Slot.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
@@ -149,14 +152,14 @@
     "lock": {
       "type": "string",
       "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Specify the type of lock."
-      },
       "allowedValues": [
         "",
         "CanNotDelete",
         "ReadOnly"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Specify the type of lock."
+      }
     },
     "privateEndpoints": {
       "type": "array",
@@ -189,8 +192,8 @@
     "diagnosticLogsRetentionInDays": {
       "type": "int",
       "defaultValue": 365,
-      "maxValue": 365,
       "minValue": 0,
+      "maxValue": 365,
       "metadata": {
         "description": "Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely."
       }
@@ -543,9 +546,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "3348890338028712435"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "5493142537935111696"
+            },
+            "name": "Site Slot App Settings",
+            "description": "This module deploys a Site Slot App Setting.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "slotName": {
@@ -694,9 +700,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "4506238262937483474"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "9353145154752028146"
+            },
+            "name": "Site Slot Auth Settings V2 Config",
+            "description": "This module deploys a Site Auth Settings V2 Configuration.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "appName": {
@@ -824,9 +833,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "10162571329501184760"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "18138499386350818749"
+            },
+            "name": "Web/Function Apps Slot Hybrid Connection Relay",
+            "description": "This module deploys a Site Slot Hybrid Connection Namespace Relay.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "hybridConnectionResourceId": {
@@ -961,8 +973,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "6058525857462854449"
+              "version": "0.20.4.51522",
+              "templateHash": "17495218577109675288"
             }
           },
           "parameters": {
@@ -1101,9 +1113,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "11825715538543749879"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "609426544615556519"
+            },
+            "name": "Private Endpoints",
+            "description": "This module deploys a Private Endpoint.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "name": {
@@ -1168,14 +1183,14 @@
             "lock": {
               "type": "string",
               "defaultValue": "",
-              "metadata": {
-                "description": "Optional. Specify the type of lock."
-              },
               "allowedValues": [
                 "",
                 "CanNotDelete",
                 "ReadOnly"
-              ]
+              ],
+              "metadata": {
+                "description": "Optional. Specify the type of lock."
+              }
             },
             "roleAssignments": {
               "type": "array",
@@ -1298,9 +1313,12 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.19.5.34762",
-                      "templateHash": "12684511314187066258"
-                    }
+                      "version": "0.20.4.51522",
+                      "templateHash": "18114841529204248478"
+                    },
+                    "name": "Private Endpoint Private DNS Zone Groups",
+                    "description": "This module deploys a Private Endpoint Private DNS Zone Group.",
+                    "owner": "Azure/module-maintainers"
                   },
                   "parameters": {
                     "privateEndpointName": {
@@ -1311,8 +1329,8 @@
                     },
                     "privateDNSResourceIds": {
                       "type": "array",
-                      "maxLength": 5,
                       "minLength": 1,
+                      "maxLength": 5,
                       "metadata": {
                         "description": "Required. Array of private DNS zone resource IDs. A DNS zone group can support up to 5 DNS zones."
                       }
@@ -1433,8 +1451,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.19.5.34762",
-                      "templateHash": "18055161250379920591"
+                      "version": "0.20.4.51522",
+                      "templateHash": "11548486149222715894"
                     }
                   },
                   "parameters": {

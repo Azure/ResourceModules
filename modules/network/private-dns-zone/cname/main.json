@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "11683398732491402698"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "3131685819107198557"
+    },
+    "name": "Private DNS Zone CNAME record",
+    "description": "This module deploys a Private DNS Zone CNAME record.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "privateDnsZoneName": {
@@ -116,8 +119,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "17914042186704125412"
+              "version": "0.20.4.51522",
+              "templateHash": "14977392232463085529"
             }
           },
           "parameters": {

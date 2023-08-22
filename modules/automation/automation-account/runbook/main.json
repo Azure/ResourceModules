@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "4555370895939507576"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "123190998372280958"
+    },
+    "name": "Automation Account Runbooks",
+    "description": "This module deploys an Azure Automation Account Runbook.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
@@ -23,16 +26,16 @@
     },
     "type": {
       "type": "string",
-      "metadata": {
-        "description": "Required. The type of the runbook."
-      },
       "allowedValues": [
         "Graph",
         "GraphPowerShell",
         "GraphPowerShellWorkflow",
         "PowerShell",
         "PowerShellWorkflow"
-      ]
+      ],
+      "metadata": {
+        "description": "Required. The type of the runbook."
+      }
     },
     "description": {
       "type": "string",

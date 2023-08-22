@@ -4,16 +4,19 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "4246828463890718517"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "16269839762351658454"
+    },
+    "name": "Diagnostic Settings (Activity Logs) for Azure Subscriptions",
+    "description": "This module deploys a Subscription wide export of the Activity Log.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
       "type": "string",
       "defaultValue": "[format('{0}-ActivityLog', uniqueString(subscription().id))]",
-      "maxLength": 260,
       "minLength": 1,
+      "maxLength": 260,
       "metadata": {
         "description": "Optional. Name of the ActivityLog diagnostic settings."
       }
@@ -21,8 +24,8 @@
     "diagnosticLogsRetentionInDays": {
       "type": "int",
       "defaultValue": 365,
-      "maxValue": 365,
       "minValue": 0,
+      "maxValue": 365,
       "metadata": {
         "description": "Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely."
       }

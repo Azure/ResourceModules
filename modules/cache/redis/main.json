@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "4085710170805862931"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "8467211835133659664"
+    },
+    "name": "Redis Cache",
+    "description": "This module deploys a Redis Cache.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "location": {
@@ -25,14 +28,14 @@
     "lock": {
       "type": "string",
       "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Specify the type of lock."
-      },
       "allowedValues": [
         "",
         "CanNotDelete",
         "ReadOnly"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Specify the type of lock."
+      }
     },
     "roleAssignments": {
       "type": "array",
@@ -72,14 +75,14 @@
     "minimumTlsVersion": {
       "type": "string",
       "defaultValue": "1.2",
-      "metadata": {
-        "description": "Optional. Requires clients to use a specified TLS version (or higher) to connect."
-      },
       "allowedValues": [
         "1.0",
         "1.1",
         "1.2"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Requires clients to use a specified TLS version (or higher) to connect."
+      }
     },
     "publicNetworkAccess": {
       "type": "string",
@@ -103,44 +106,41 @@
     "redisVersion": {
       "type": "string",
       "defaultValue": "6",
-      "metadata": {
-        "description": "Optional. Redis version. Only major version will be used in PUT/PATCH request with current valid values: (4, 6)."
-      },
       "allowedValues": [
         "4",
         "6"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Redis version. Only major version will be used in PUT/PATCH request with current valid values: (4, 6)."
+      }
     },
     "replicasPerMaster": {
       "type": "int",
       "defaultValue": 1,
+      "minValue": 1,
       "metadata": {
         "description": "Optional. The number of replicas to be created per primary."
-      },
-      "minValue": 1
+      }
     },
     "replicasPerPrimary": {
       "type": "int",
       "defaultValue": 1,
+      "minValue": 1,
       "metadata": {
         "description": "Optional. The number of replicas to be created per primary."
-      },
-      "minValue": 1
+      }
     },
     "shardCount": {
       "type": "int",
       "defaultValue": 1,
+      "minValue": 1,
       "metadata": {
         "description": "Optional. The number of shards to be created on a Premium Cluster Cache."
-      },
-      "minValue": 1
+      }
     },
     "capacity": {
       "type": "int",
       "defaultValue": 1,
-      "metadata": {
-        "description": "Optional. The size of the Redis cache to deploy. Valid values: for C (Basic/Standard) family (0, 1, 2, 3, 4, 5, 6), for P (Premium) family (1, 2, 3, 4)."
-      },
       "allowedValues": [
         0,
         1,
@@ -149,19 +149,22 @@
         4,
         5,
         6
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. The size of the Redis cache to deploy. Valid values: for C (Basic/Standard) family (0, 1, 2, 3, 4, 5, 6), for P (Premium) family (1, 2, 3, 4)."
+      }
     },
     "skuName": {
       "type": "string",
       "defaultValue": "Basic",
-      "metadata": {
-        "description": "Optional. The type of Redis cache to deploy."
-      },
       "allowedValues": [
         "Basic",
         "Premium",
         "Standard"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. The type of Redis cache to deploy."
+      }
     },
     "staticIP": {
       "type": "string",
@@ -215,8 +218,8 @@
     "diagnosticLogsRetentionInDays": {
       "type": "int",
       "defaultValue": 365,
-      "maxValue": 365,
       "minValue": 0,
+      "maxValue": 365,
       "metadata": {
         "description": "Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely."
       }
@@ -428,8 +431,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "5092700248375657903"
+              "version": "0.20.4.51522",
+              "templateHash": "11568465556240097908"
             }
           },
           "parameters": {
@@ -591,9 +594,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "11825715538543749879"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "609426544615556519"
+            },
+            "name": "Private Endpoints",
+            "description": "This module deploys a Private Endpoint.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "name": {
@@ -658,14 +664,14 @@
             "lock": {
               "type": "string",
               "defaultValue": "",
-              "metadata": {
-                "description": "Optional. Specify the type of lock."
-              },
               "allowedValues": [
                 "",
                 "CanNotDelete",
                 "ReadOnly"
-              ]
+              ],
+              "metadata": {
+                "description": "Optional. Specify the type of lock."
+              }
             },
             "roleAssignments": {
               "type": "array",
@@ -788,9 +794,12 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.19.5.34762",
-                      "templateHash": "12684511314187066258"
-                    }
+                      "version": "0.20.4.51522",
+                      "templateHash": "18114841529204248478"
+                    },
+                    "name": "Private Endpoint Private DNS Zone Groups",
+                    "description": "This module deploys a Private Endpoint Private DNS Zone Group.",
+                    "owner": "Azure/module-maintainers"
                   },
                   "parameters": {
                     "privateEndpointName": {
@@ -801,8 +810,8 @@
                     },
                     "privateDNSResourceIds": {
                       "type": "array",
-                      "maxLength": 5,
                       "minLength": 1,
+                      "maxLength": 5,
                       "metadata": {
                         "description": "Required. Array of private DNS zone resource IDs. A DNS zone group can support up to 5 DNS zones."
                       }
@@ -923,8 +932,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.19.5.34762",
-                      "templateHash": "18055161250379920591"
+                      "version": "0.20.4.51522",
+                      "templateHash": "11548486149222715894"
                     }
                   },
                   "parameters": {

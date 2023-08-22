@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "850842372551317782"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "15557443303290918466"
+    },
+    "name": "Network Watchers",
+    "description": "This module deploys a Network Watcher.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
@@ -41,14 +44,14 @@
     "lock": {
       "type": "string",
       "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Specify the type of lock."
-      },
       "allowedValues": [
         "",
         "CanNotDelete",
         "ReadOnly"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Specify the type of lock."
+      }
     },
     "roleAssignments": {
       "type": "array",
@@ -146,8 +149,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "6580260885848172083"
+              "version": "0.20.4.51522",
+              "templateHash": "1939834340828490356"
             }
           },
           "parameters": {
@@ -323,9 +326,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "17070074753032626378"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "4884473903500210631"
+            },
+            "name": "Network Watchers Connection Monitors",
+            "description": "This module deploys a Network Watcher Connection Monitor.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "networkWatcherName": {
@@ -499,9 +505,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "12327372918876579570"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "14826968347364507291"
+            },
+            "name": "NSG Flow Logs",
+            "description": "This module controls the Network Security Group Flow Logs and analytics settings.\r\n**Note: this module must be run on the Resource Group where Network Watcher is deployed**",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "networkWatcherName": {
@@ -583,8 +592,8 @@
             "retentionInDays": {
               "type": "int",
               "defaultValue": 365,
-              "maxValue": 365,
               "minValue": 0,
+              "maxValue": 365,
               "metadata": {
                 "description": "Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely."
               }

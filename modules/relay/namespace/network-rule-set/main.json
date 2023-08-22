@@ -4,15 +4,18 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "2429764380806740500"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "319020533136370885"
+    },
+    "name": "Relay Namespace Network Rules Sets",
+    "description": "This module deploys a Relay Namespace Network Rule Set.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "namespaceName": {
       "type": "string",
-      "maxLength": 50,
       "minLength": 6,
+      "maxLength": 50,
       "metadata": {
         "description": "Conditional. The name of the parent Relay Namespace for the Relay Network Rule Set. Required if the template is used in a standalone deployment."
       }
@@ -20,24 +23,24 @@
     "publicNetworkAccess": {
       "type": "string",
       "defaultValue": "Enabled",
-      "metadata": {
-        "description": "Optional. This determines if traffic is allowed over public network. Default is \"Enabled\". If set to \"Disabled\", traffic to this namespace will be restricted over Private Endpoints only and network rules will not be applied."
-      },
       "allowedValues": [
         "Enabled",
         "Disabled"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. This determines if traffic is allowed over public network. Default is \"Enabled\". If set to \"Disabled\", traffic to this namespace will be restricted over Private Endpoints only and network rules will not be applied."
+      }
     },
     "defaultAction": {
       "type": "string",
       "defaultValue": "Allow",
-      "metadata": {
-        "description": "Optional. Default Action for Network Rule Set. Default is \"Allow\". It will not be set if publicNetworkAccess is \"Disabled\". Otherwise, it will be set to \"Deny\" if ipRules or virtualNetworkRules are being used."
-      },
       "allowedValues": [
         "Allow",
         "Deny"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Default Action for Network Rule Set. Default is \"Allow\". It will not be set if publicNetworkAccess is \"Disabled\". Otherwise, it will be set to \"Deny\" if ipRules or virtualNetworkRules are being used."
+      }
     },
     "ipRules": {
       "type": "array",

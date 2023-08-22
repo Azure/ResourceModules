@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "14691526432601298583"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "2365186882065323571"
+    },
+    "name": "Role Assignments (All scopes)",
+    "description": "This module deploys a Role Assignment at a Management Group, Subscription or Resource Group scope.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "roleDefinitionIdOrName": {
@@ -164,9 +167,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "16437436871893645237"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "5116103670131987468"
+            },
+            "name": "Role Assignments (Management Group scope)",
+            "description": "This module deploys a Role Assignment at a Management Group scope.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "roleDefinitionIdOrName": {
@@ -750,9 +756,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "8551972767559758659"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "318736480892502738"
+            },
+            "name": "Role Assignments (Subscription scope)",
+            "description": "This module deploys a Role Assignment at a Subscription scope.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "roleDefinitionIdOrName": {
@@ -1336,9 +1345,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "11819315313212174566"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "1439450089488966223"
+            },
+            "name": "Role Assignments (Resource Group scope)",
+            "description": "This module deploys a Role Assignment at a Resource Group scope.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "roleDefinitionIdOrName": {

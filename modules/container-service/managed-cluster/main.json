@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "8485307659564095159"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "14635294437728407087"
+    },
+    "name": "Azure Kubernetes Service (AKS) Managed Clusters",
+    "description": "This module deploys an Azure Kubernetes Service (AKS) Managed Cluster.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
@@ -362,13 +365,13 @@
     "enableSecretRotation": {
       "type": "string",
       "defaultValue": "false",
-      "metadata": {
-        "description": "Optional. Specifies whether the KeyvaultSecretsProvider add-on uses secret rotation."
-      },
       "allowedValues": [
         "false",
         "true"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Specifies whether the KeyvaultSecretsProvider add-on uses secret rotation."
+      }
     },
     "autoScalerProfileScanInterval": {
       "type": "string",
@@ -429,26 +432,26 @@
     "autoScalerProfileBalanceSimilarNodeGroups": {
       "type": "string",
       "defaultValue": "false",
-      "metadata": {
-        "description": "Optional. Specifies the balance of similar node groups for the auto-scaler of the AKS cluster."
-      },
       "allowedValues": [
         "false",
         "true"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Specifies the balance of similar node groups for the auto-scaler of the AKS cluster."
+      }
     },
     "autoScalerProfileExpander": {
       "type": "string",
       "defaultValue": "random",
-      "metadata": {
-        "description": "Optional. Specifies the expand strategy for the auto-scaler of the AKS cluster."
-      },
       "allowedValues": [
         "least-waste",
         "most-pods",
         "priority",
         "random"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Specifies the expand strategy for the auto-scaler of the AKS cluster."
+      }
     },
     "autoScalerProfileMaxEmptyBulkDelete": {
       "type": "string",
@@ -488,24 +491,24 @@
     "autoScalerProfileSkipNodesWithLocalStorage": {
       "type": "string",
       "defaultValue": "true",
-      "metadata": {
-        "description": "Optional. Specifies if nodes with local storage should be skipped for the auto-scaler of the AKS cluster."
-      },
       "allowedValues": [
         "false",
         "true"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Specifies if nodes with local storage should be skipped for the auto-scaler of the AKS cluster."
+      }
     },
     "autoScalerProfileSkipNodesWithSystemPods": {
       "type": "string",
       "defaultValue": "true",
-      "metadata": {
-        "description": "Optional. Specifies if nodes with system pods should be skipped for the auto-scaler of the AKS cluster."
-      },
       "allowedValues": [
         "false",
         "true"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Specifies if nodes with system pods should be skipped for the auto-scaler of the AKS cluster."
+      }
     },
     "podIdentityProfileAllowNetworkPluginKubenet": {
       "type": "bool",
@@ -601,8 +604,8 @@
     "diagnosticLogsRetentionInDays": {
       "type": "int",
       "defaultValue": 365,
-      "maxValue": 365,
       "minValue": 0,
+      "maxValue": 365,
       "metadata": {
         "description": "Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely."
       }
@@ -624,14 +627,14 @@
     "lock": {
       "type": "string",
       "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Specify the type of lock."
-      },
       "allowedValues": [
         "",
         "CanNotDelete",
         "ReadOnly"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Specify the type of lock."
+      }
     },
     "tags": {
       "type": "object",
@@ -993,9 +996,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "14718876477350380320"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "9201392896338098875"
+            },
+            "name": "Azure Kubernetes Service (AKS) Managed Cluster Agent Pools",
+            "description": "This module deploys an Azure Kubernetes Service (AKS) Managed Cluster Agent Pool.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "managedClusterName": {
@@ -1020,8 +1026,8 @@
             "count": {
               "type": "int",
               "defaultValue": 1,
-              "maxValue": 1000,
               "minValue": 0,
+              "maxValue": 1000,
               "metadata": {
                 "description": "Optional. Desired Number of agents (VMs) specified to host docker containers. Allowed values must be in the range of 0 to 1000 (inclusive) for user pools and in the range of 1 to 1000 (inclusive) for system pools. The default value is 1."
               }
@@ -1430,9 +1436,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "9994137923318557139"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "14118650678014878152"
+            },
+            "name": "Kubernetes Configuration Extensions",
+            "description": "This module deploys a Kubernetes Configuration Extension.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "name": {
@@ -1590,9 +1599,12 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.19.5.34762",
-                      "templateHash": "1433522452027494189"
-                    }
+                      "version": "0.20.4.51522",
+                      "templateHash": "16353701795521321177"
+                    },
+                    "name": "Kubernetes Configuration Flux Configurations",
+                    "description": "This module deploys a Kubernetes Configuration Flux Configuration.",
+                    "owner": "Azure/module-maintainers"
                   },
                   "parameters": {
                     "name": {
@@ -1657,23 +1669,23 @@
                     },
                     "scope": {
                       "type": "string",
-                      "metadata": {
-                        "description": "Required. Scope at which the configuration will be installed."
-                      },
                       "allowedValues": [
                         "cluster",
                         "namespace"
-                      ]
+                      ],
+                      "metadata": {
+                        "description": "Required. Scope at which the configuration will be installed."
+                      }
                     },
                     "sourceKind": {
                       "type": "string",
-                      "metadata": {
-                        "description": "Required. Source Kind to pull the configuration data from."
-                      },
                       "allowedValues": [
                         "Bucket",
                         "GitRepository"
-                      ]
+                      ],
+                      "metadata": {
+                        "description": "Required. Source Kind to pull the configuration data from."
+                      }
                     },
                     "suspend": {
                       "type": "bool",
@@ -1808,8 +1820,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "16480761360924535352"
+              "version": "0.20.4.51522",
+              "templateHash": "4009331148405617632"
             }
           },
           "parameters": {

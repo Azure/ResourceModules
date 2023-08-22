@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "17158630928383768350"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "14765784679706364894"
+    },
+    "name": "Service Bus Namespaces",
+    "description": "This module deploys a Service Bus Namespace.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
@@ -75,8 +78,8 @@
     "diagnosticLogsRetentionInDays": {
       "type": "int",
       "defaultValue": 365,
-      "maxValue": 365,
       "minValue": 0,
+      "maxValue": 365,
       "metadata": {
         "description": "Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely."
       }
@@ -112,14 +115,14 @@
     "lock": {
       "type": "string",
       "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Specify the type of lock."
-      },
       "allowedValues": [
         "",
         "CanNotDelete",
         "ReadOnly"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Specify the type of lock."
+      }
     },
     "systemAssignedIdentity": {
       "type": "bool",
@@ -379,15 +382,18 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "3980247914866382538"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "15235435585316551051"
+            },
+            "name": "Service Bus Namespace Authorization Rules",
+            "description": "This module deploys a Service Bus Namespace Authorization Rule.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "namespaceName": {
               "type": "string",
-              "maxLength": 50,
               "minLength": 6,
+              "maxLength": 50,
               "metadata": {
                 "description": "Conditional. The name of the parent Service Bus Namespace for the Service Bus Queue. Required if the template is used in a standalone deployment."
               }
@@ -498,15 +504,18 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "10239561254903489880"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "13563716064472285794"
+            },
+            "name": "Service Bus Namespace Disaster Recovery Configs",
+            "description": "This module deploys a Service Bus Namespace Disaster Recovery Config",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "namespaceName": {
               "type": "string",
-              "maxLength": 50,
               "minLength": 6,
+              "maxLength": 50,
               "metadata": {
                 "description": "Conditional. The name of the parent Service Bus Namespace for the Service Bus Queue. Required if the template is used in a standalone deployment."
               }
@@ -624,15 +633,18 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "9634923970896018925"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "15978046556546709106"
+            },
+            "name": "Service Bus Namespace Migration Configuration",
+            "description": "This module deploys a Service Bus Namespace Migration Configuration.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "namespaceName": {
               "type": "string",
-              "maxLength": 50,
               "minLength": 6,
+              "maxLength": 50,
               "metadata": {
                 "description": "Conditional. The name of the parent Service Bus Namespace for the Service Bus Queue. Required if the template is used in a standalone deployment."
               }
@@ -740,15 +752,18 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "11341933962050615676"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "16662631854898993961"
+            },
+            "name": "Service Bus Namespace Network Rule Sets",
+            "description": "This module deploys a ServiceBus Namespace Network Rule Set.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "namespaceName": {
               "type": "string",
-              "maxLength": 50,
               "minLength": 6,
+              "maxLength": 50,
               "metadata": {
                 "description": "Conditional. The name of the parent Service Bus Namespace for the Service Bus Network Rule Set. Required if the template is used in a standalone deployment."
               }
@@ -756,24 +771,24 @@
             "publicNetworkAccess": {
               "type": "string",
               "defaultValue": "Enabled",
-              "metadata": {
-                "description": "Optional. This determines if traffic is allowed over public network. Default is \"Enabled\". If set to \"Disabled\", traffic to this namespace will be restricted over Private Endpoints only and network rules will not be applied."
-              },
               "allowedValues": [
                 "Enabled",
                 "Disabled"
-              ]
+              ],
+              "metadata": {
+                "description": "Optional. This determines if traffic is allowed over public network. Default is \"Enabled\". If set to \"Disabled\", traffic to this namespace will be restricted over Private Endpoints only and network rules will not be applied."
+              }
             },
             "defaultAction": {
               "type": "string",
               "defaultValue": "Allow",
-              "metadata": {
-                "description": "Optional. Default Action for Network Rule Set. Default is \"Allow\". It will not be set if publicNetworkAccess is \"Disabled\". Otherwise, it will be set to \"Deny\" if ipRules or virtualNetworkRules are being used."
-              },
               "allowedValues": [
                 "Allow",
                 "Deny"
-              ]
+              ],
+              "metadata": {
+                "description": "Optional. Default Action for Network Rule Set. Default is \"Allow\". It will not be set if publicNetworkAccess is \"Disabled\". Otherwise, it will be set to \"Deny\" if ipRules or virtualNetworkRules are being used."
+              }
             },
             "trustedServiceAccessEnabled": {
               "type": "bool",
@@ -918,23 +933,26 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "17555846329866342390"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "12881561992595458775"
+            },
+            "name": "Service Bus Namespace Queue",
+            "description": "This module deploys a Service Bus Namespace Queue.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "namespaceName": {
               "type": "string",
-              "maxLength": 50,
               "minLength": 6,
+              "maxLength": 50,
               "metadata": {
                 "description": "Conditional. The name of the parent Service Bus Namespace for the Service Bus Queue. Required if the template is used in a standalone deployment."
               }
             },
             "name": {
               "type": "string",
-              "maxLength": 50,
               "minLength": 6,
+              "maxLength": 50,
               "metadata": {
                 "description": "Required. Name of the Service Bus Queue."
               }
@@ -1055,14 +1073,14 @@
             "lock": {
               "type": "string",
               "defaultValue": "",
-              "metadata": {
-                "description": "Optional. Specify the type of lock."
-              },
               "allowedValues": [
                 "",
                 "CanNotDelete",
                 "ReadOnly"
-              ]
+              ],
+              "metadata": {
+                "description": "Optional. Specify the type of lock."
+              }
             },
             "roleAssignments": {
               "type": "array",
@@ -1164,9 +1182,12 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.19.5.34762",
-                      "templateHash": "3929679930039405498"
-                    }
+                      "version": "0.20.4.51522",
+                      "templateHash": "18039866213861972678"
+                    },
+                    "name": "Service Bus Namespace Queue Authorization Rules",
+                    "description": "This module deploys a Service Bus Namespace Queue Authorization Rule.",
+                    "owner": "Azure/module-maintainers"
                   },
                   "parameters": {
                     "name": {
@@ -1294,8 +1315,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.19.5.34762",
-                      "templateHash": "7877329706197358997"
+                      "version": "0.20.4.51522",
+                      "templateHash": "18045820924353327609"
                     }
                   },
                   "parameters": {
@@ -1485,23 +1506,26 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "4304998500028939273"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "921300981514456809"
+            },
+            "name": "Service Bus Namespace Topic",
+            "description": "This module deploys a Service Bus Namespace Topic.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "namespaceName": {
               "type": "string",
-              "maxLength": 50,
               "minLength": 6,
+              "maxLength": 50,
               "metadata": {
                 "description": "Conditional. The name of the parent Service Bus Namespace for the Service Bus Topic. Required if the template is used in a standalone deployment."
               }
             },
             "name": {
               "type": "string",
-              "maxLength": 50,
               "minLength": 6,
+              "maxLength": 50,
               "metadata": {
                 "description": "Required. Name of the Service Bus Topic."
               }
@@ -1615,14 +1639,14 @@
             "lock": {
               "type": "string",
               "defaultValue": "",
-              "metadata": {
-                "description": "Optional. Specify the type of lock."
-              },
               "allowedValues": [
                 "",
                 "CanNotDelete",
                 "ReadOnly"
-              ]
+              ],
+              "metadata": {
+                "description": "Optional. Specify the type of lock."
+              }
             },
             "roleAssignments": {
               "type": "array",
@@ -1723,9 +1747,12 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.19.5.34762",
-                      "templateHash": "12238459450385505191"
-                    }
+                      "version": "0.20.4.51522",
+                      "templateHash": "12912382339345981506"
+                    },
+                    "name": "Service Bus Namespace Topic Authorization Rules",
+                    "description": "This module deploys a Service Bus Namespace Topic Authorization Rule.",
+                    "owner": "Azure/module-maintainers"
                   },
                   "parameters": {
                     "name": {
@@ -1853,8 +1880,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.19.5.34762",
-                      "templateHash": "18279135895049473482"
+                      "version": "0.20.4.51522",
+                      "templateHash": "11124682842627815351"
                     }
                   },
                   "parameters": {
@@ -2048,9 +2075,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "11825715538543749879"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "609426544615556519"
+            },
+            "name": "Private Endpoints",
+            "description": "This module deploys a Private Endpoint.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "name": {
@@ -2115,14 +2145,14 @@
             "lock": {
               "type": "string",
               "defaultValue": "",
-              "metadata": {
-                "description": "Optional. Specify the type of lock."
-              },
               "allowedValues": [
                 "",
                 "CanNotDelete",
                 "ReadOnly"
-              ]
+              ],
+              "metadata": {
+                "description": "Optional. Specify the type of lock."
+              }
             },
             "roleAssignments": {
               "type": "array",
@@ -2245,9 +2275,12 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.19.5.34762",
-                      "templateHash": "12684511314187066258"
-                    }
+                      "version": "0.20.4.51522",
+                      "templateHash": "18114841529204248478"
+                    },
+                    "name": "Private Endpoint Private DNS Zone Groups",
+                    "description": "This module deploys a Private Endpoint Private DNS Zone Group.",
+                    "owner": "Azure/module-maintainers"
                   },
                   "parameters": {
                     "privateEndpointName": {
@@ -2258,8 +2291,8 @@
                     },
                     "privateDNSResourceIds": {
                       "type": "array",
-                      "maxLength": 5,
                       "minLength": 1,
+                      "maxLength": 5,
                       "metadata": {
                         "description": "Required. Array of private DNS zone resource IDs. A DNS zone group can support up to 5 DNS zones."
                       }
@@ -2380,8 +2413,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.19.5.34762",
-                      "templateHash": "18055161250379920591"
+                      "version": "0.20.4.51522",
+                      "templateHash": "11548486149222715894"
                     }
                   },
                   "parameters": {
@@ -2594,8 +2627,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "15951430180432079946"
+              "version": "0.20.4.51522",
+              "templateHash": "8786741997339859255"
             }
           },
           "parameters": {

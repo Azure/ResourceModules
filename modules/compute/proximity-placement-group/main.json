@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "16971280078864146158"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "11762560439975541015"
+    },
+    "name": "Proximity Placement Groups",
+    "description": "This module deploys a Proximity Placement Group.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
@@ -36,14 +39,14 @@
     "lock": {
       "type": "string",
       "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Specify the type of lock."
-      },
       "allowedValues": [
         "",
         "CanNotDelete",
         "ReadOnly"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Specify the type of lock."
+      }
     },
     "roleAssignments": {
       "type": "array",
@@ -164,8 +167,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "1938170215691677826"
+              "version": "0.20.4.51522",
+              "templateHash": "2254381804917043935"
             }
           },
           "parameters": {

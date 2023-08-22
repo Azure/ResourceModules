@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "17231058756777007644"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "9718423441307347496"
+    },
+    "name": "Hybrid Connection Authorization Rules",
+    "description": "This module deploys a Hybrid Connection Authorization Rule.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {

@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "17250594128284307013"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "10889411140596485839"
+    },
+    "name": "Application Security Groups (ASG)",
+    "description": "This module deploys an Application Security Group (ASG).",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
@@ -25,14 +28,14 @@
     "lock": {
       "type": "string",
       "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Specify the type of lock."
-      },
       "allowedValues": [
         "",
         "CanNotDelete",
         "ReadOnly"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Specify the type of lock."
+      }
     },
     "roleAssignments": {
       "type": "array",
@@ -127,8 +130,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "15838105021656936169"
+              "version": "0.20.4.51522",
+              "templateHash": "2194807908259933046"
             }
           },
           "parameters": {

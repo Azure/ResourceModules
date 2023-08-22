@@ -4,15 +4,18 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "17940454545925305572"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "8253124912520930142"
+    },
+    "name": "Digital Twins Instances",
+    "description": "This module deploys an Azure Digital Twins Instance.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
       "type": "string",
-      "maxLength": 63,
       "minLength": 3,
+      "maxLength": 63,
       "metadata": {
         "description": "Required. The name of the Digital Twin Instance."
       }
@@ -34,14 +37,14 @@
     "lock": {
       "type": "string",
       "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Specify the type of lock."
-      },
       "allowedValues": [
         "",
         "CanNotDelete",
         "ReadOnly"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Specify the type of lock."
+      }
     },
     "systemAssignedIdentity": {
       "type": "bool",
@@ -114,8 +117,8 @@
     "diagnosticLogsRetentionInDays": {
       "type": "int",
       "defaultValue": 365,
-      "maxValue": 365,
       "minValue": 0,
+      "maxValue": 365,
       "metadata": {
         "description": "Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely."
       }
@@ -312,9 +315,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "11967486057366992053"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "10898754622351027742"
+            },
+            "name": "Digital Twins Instance EventHub Endpoint",
+            "description": "This module deploys a Digital Twins Instance EventHub Endpoint.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "name": {
@@ -333,13 +339,13 @@
             "authenticationType": {
               "type": "string",
               "defaultValue": "IdentityBased",
-              "metadata": {
-                "description": "Optional. Specifies the authentication type being used for connecting to the endpoint. If 'KeyBased' is selected, a connection string must be specified (at least the primary connection string). If 'IdentityBased' is selected, the endpointUri and entityPath properties must be specified."
-              },
               "allowedValues": [
                 "IdentityBased",
                 "KeyBased"
-              ]
+              ],
+              "metadata": {
+                "description": "Optional. Specifies the authentication type being used for connecting to the endpoint. If 'KeyBased' is selected, a connection string must be specified (at least the primary connection string). If 'IdentityBased' is selected, the endpointUri and entityPath properties must be specified."
+              }
             },
             "deadLetterSecret": {
               "type": "securestring",
@@ -499,9 +505,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "13209746023702628221"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "7115177198919820190"
+            },
+            "name": "Digital Twins Instance Event Grid Endpoints",
+            "description": "This module deploys a Digital Twins Instance Event Grid Endpoint.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "name": {
@@ -644,9 +653,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "15643334991112942016"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "13127448885590640743"
+            },
+            "name": "Digital Twins Instance ServiceBus Endpoint",
+            "description": "This module deploys a Digital Twins Instance ServiceBus Endpoint.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "name": {
@@ -665,13 +677,13 @@
             "authenticationType": {
               "type": "string",
               "defaultValue": "IdentityBased",
-              "metadata": {
-                "description": "Optional. Specifies the authentication type being used for connecting to the endpoint. If 'KeyBased' is selected, a connection string must be specified (at least the primary connection string). If 'IdentityBased' is selected, the endpointUri and entityPath properties must be specified."
-              },
               "allowedValues": [
                 "IdentityBased",
                 "KeyBased"
-              ]
+              ],
+              "metadata": {
+                "description": "Optional. Specifies the authentication type being used for connecting to the endpoint. If 'KeyBased' is selected, a connection string must be specified (at least the primary connection string). If 'IdentityBased' is selected, the endpointUri and entityPath properties must be specified."
+              }
             },
             "deadLetterSecret": {
               "type": "securestring",
@@ -847,9 +859,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "11825715538543749879"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "609426544615556519"
+            },
+            "name": "Private Endpoints",
+            "description": "This module deploys a Private Endpoint.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "name": {
@@ -914,14 +929,14 @@
             "lock": {
               "type": "string",
               "defaultValue": "",
-              "metadata": {
-                "description": "Optional. Specify the type of lock."
-              },
               "allowedValues": [
                 "",
                 "CanNotDelete",
                 "ReadOnly"
-              ]
+              ],
+              "metadata": {
+                "description": "Optional. Specify the type of lock."
+              }
             },
             "roleAssignments": {
               "type": "array",
@@ -1044,9 +1059,12 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.19.5.34762",
-                      "templateHash": "12684511314187066258"
-                    }
+                      "version": "0.20.4.51522",
+                      "templateHash": "18114841529204248478"
+                    },
+                    "name": "Private Endpoint Private DNS Zone Groups",
+                    "description": "This module deploys a Private Endpoint Private DNS Zone Group.",
+                    "owner": "Azure/module-maintainers"
                   },
                   "parameters": {
                     "privateEndpointName": {
@@ -1057,8 +1075,8 @@
                     },
                     "privateDNSResourceIds": {
                       "type": "array",
-                      "maxLength": 5,
                       "minLength": 1,
+                      "maxLength": 5,
                       "metadata": {
                         "description": "Required. Array of private DNS zone resource IDs. A DNS zone group can support up to 5 DNS zones."
                       }
@@ -1179,8 +1197,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.19.5.34762",
-                      "templateHash": "18055161250379920591"
+                      "version": "0.20.4.51522",
+                      "templateHash": "11548486149222715894"
                     }
                   },
                   "parameters": {
@@ -1393,8 +1411,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "17162400653836540515"
+              "version": "0.20.4.51522",
+              "templateHash": "7097043325579895545"
             }
           },
           "parameters": {

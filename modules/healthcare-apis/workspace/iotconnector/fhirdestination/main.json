@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "5625257407409224246"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "18442235072798053221"
+    },
+    "name": "Healthcare API Workspace IoT Connector FHIR Destinations",
+    "description": "This module deploys a Healthcare API Workspace IoT Connector FHIR Destination.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
@@ -61,13 +64,13 @@
     "resourceIdentityResolutionType": {
       "type": "string",
       "defaultValue": "Lookup",
-      "metadata": {
-        "description": "Optional. Determines how resource identity is resolved on the destination."
-      },
       "allowedValues": [
         "Create",
         "Lookup"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Determines how resource identity is resolved on the destination."
+      }
     }
   },
   "resources": [

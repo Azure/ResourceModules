@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "12684511314187066258"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "18114841529204248478"
+    },
+    "name": "Private Endpoint Private DNS Zone Groups",
+    "description": "This module deploys a Private Endpoint Private DNS Zone Group.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "privateEndpointName": {
@@ -17,8 +20,8 @@
     },
     "privateDNSResourceIds": {
       "type": "array",
-      "maxLength": 5,
       "minLength": 1,
+      "maxLength": 5,
       "metadata": {
         "description": "Required. Array of private DNS zone resource IDs. A DNS zone group can support up to 5 DNS zones."
       }

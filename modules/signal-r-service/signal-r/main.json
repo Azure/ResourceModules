@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "15208270281641036717"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "2994500732923071893"
+    },
+    "name": "SignalR Service SignalR",
+    "description": "This module deploys a SignalR Service SignalR.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "location": {
@@ -123,13 +126,13 @@
         "ConnectivityLogs",
         "MessagingLogs"
       ],
-      "metadata": {
-        "description": "Optional. Control permission for data plane traffic coming from public networks while private endpoint is enabled."
-      },
       "allowedValues": [
         "ConnectivityLogs",
         "MessagingLogs"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Control permission for data plane traffic coming from public networks while private endpoint is enabled."
+      }
     },
     "resourceLogConfigurationsToEnable": {
       "type": "array",
@@ -137,13 +140,13 @@
         "ConnectivityLogs",
         "MessagingLogs"
       ],
-      "metadata": {
-        "description": "Optional. Control permission for data plane traffic coming from public networks while private endpoint is enabled."
-      },
       "allowedValues": [
         "ConnectivityLogs",
         "MessagingLogs"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Control permission for data plane traffic coming from public networks while private endpoint is enabled."
+      }
     },
     "clientCertEnabled": {
       "type": "bool",
@@ -169,14 +172,14 @@
     "lock": {
       "type": "string",
       "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Specify the type of lock."
-      },
       "allowedValues": [
         "",
         "CanNotDelete",
         "ReadOnly"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Specify the type of lock."
+      }
     },
     "roleAssignments": {
       "type": "array",
@@ -318,9 +321,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "11825715538543749879"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "609426544615556519"
+            },
+            "name": "Private Endpoints",
+            "description": "This module deploys a Private Endpoint.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "name": {
@@ -385,14 +391,14 @@
             "lock": {
               "type": "string",
               "defaultValue": "",
-              "metadata": {
-                "description": "Optional. Specify the type of lock."
-              },
               "allowedValues": [
                 "",
                 "CanNotDelete",
                 "ReadOnly"
-              ]
+              ],
+              "metadata": {
+                "description": "Optional. Specify the type of lock."
+              }
             },
             "roleAssignments": {
               "type": "array",
@@ -515,9 +521,12 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.19.5.34762",
-                      "templateHash": "12684511314187066258"
-                    }
+                      "version": "0.20.4.51522",
+                      "templateHash": "18114841529204248478"
+                    },
+                    "name": "Private Endpoint Private DNS Zone Groups",
+                    "description": "This module deploys a Private Endpoint Private DNS Zone Group.",
+                    "owner": "Azure/module-maintainers"
                   },
                   "parameters": {
                     "privateEndpointName": {
@@ -528,8 +537,8 @@
                     },
                     "privateDNSResourceIds": {
                       "type": "array",
-                      "maxLength": 5,
                       "minLength": 1,
+                      "maxLength": 5,
                       "metadata": {
                         "description": "Required. Array of private DNS zone resource IDs. A DNS zone group can support up to 5 DNS zones."
                       }
@@ -650,8 +659,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.19.5.34762",
-                      "templateHash": "18055161250379920591"
+                      "version": "0.20.4.51522",
+                      "templateHash": "11548486149222715894"
                     }
                   },
                   "parameters": {
@@ -864,8 +873,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "11712391797872657680"
+              "version": "0.20.4.51522",
+              "templateHash": "9407968548081163481"
             }
           },
           "parameters": {

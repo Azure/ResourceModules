@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "9781665469217879953"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "7699689235641962518"
+    },
+    "name": "Key Vaults",
+    "description": "This module deploys a Key Vault.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
@@ -133,8 +136,8 @@
     "diagnosticLogsRetentionInDays": {
       "type": "int",
       "defaultValue": 365,
-      "maxValue": 365,
       "minValue": 0,
+      "maxValue": 365,
       "metadata": {
         "description": "Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely."
       }
@@ -170,14 +173,14 @@
     "lock": {
       "type": "string",
       "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Specify the type of lock."
-      },
       "allowedValues": [
         "",
         "CanNotDelete",
         "ReadOnly"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Specify the type of lock."
+      }
     },
     "roleAssignments": {
       "type": "array",
@@ -383,9 +386,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "5956155025819321457"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "7542638391604115549"
+            },
+            "name": "Key Vault Access Policies",
+            "description": "This module deploys a Key Vault Access Policy.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "keyVaultName": {
@@ -515,9 +521,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "11848774348676575570"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "3581368535918618501"
+            },
+            "name": "Key Vault Secrets",
+            "description": "This module deploys a Key Vault Secret.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "keyVaultName": {
@@ -652,8 +661,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.19.5.34762",
-                      "templateHash": "9154475470956985352"
+                      "version": "0.20.4.51522",
+                      "templateHash": "4251680927905962776"
                     }
                   },
                   "parameters": {
@@ -847,9 +856,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "7585019690208379133"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "7510105499462799965"
+            },
+            "name": "Key Vault Keys",
+            "description": "This module deploys a Key Vault Key.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "keyVaultName": {
@@ -1030,8 +1042,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.19.5.34762",
-                      "templateHash": "3354496057078802382"
+                      "version": "0.20.4.51522",
+                      "templateHash": "3968881335142586299"
                     }
                   },
                   "parameters": {
@@ -1233,9 +1245,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "11825715538543749879"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "609426544615556519"
+            },
+            "name": "Private Endpoints",
+            "description": "This module deploys a Private Endpoint.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "name": {
@@ -1300,14 +1315,14 @@
             "lock": {
               "type": "string",
               "defaultValue": "",
-              "metadata": {
-                "description": "Optional. Specify the type of lock."
-              },
               "allowedValues": [
                 "",
                 "CanNotDelete",
                 "ReadOnly"
-              ]
+              ],
+              "metadata": {
+                "description": "Optional. Specify the type of lock."
+              }
             },
             "roleAssignments": {
               "type": "array",
@@ -1430,9 +1445,12 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.19.5.34762",
-                      "templateHash": "12684511314187066258"
-                    }
+                      "version": "0.20.4.51522",
+                      "templateHash": "18114841529204248478"
+                    },
+                    "name": "Private Endpoint Private DNS Zone Groups",
+                    "description": "This module deploys a Private Endpoint Private DNS Zone Group.",
+                    "owner": "Azure/module-maintainers"
                   },
                   "parameters": {
                     "privateEndpointName": {
@@ -1443,8 +1461,8 @@
                     },
                     "privateDNSResourceIds": {
                       "type": "array",
-                      "maxLength": 5,
                       "minLength": 1,
+                      "maxLength": 5,
                       "metadata": {
                         "description": "Required. Array of private DNS zone resource IDs. A DNS zone group can support up to 5 DNS zones."
                       }
@@ -1565,8 +1583,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.19.5.34762",
-                      "templateHash": "18055161250379920591"
+                      "version": "0.20.4.51522",
+                      "templateHash": "11548486149222715894"
                     }
                   },
                   "parameters": {
@@ -1779,8 +1797,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "3806203937606389856"
+              "version": "0.20.4.51522",
+              "templateHash": "18089760146236492183"
             }
           },
           "parameters": {

@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "15588952701466266078"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "4275347865908810280"
+    },
+    "name": "Resources Tags Resource Group",
+    "description": "This module deploys a Resource Tag on a Resource Group scope.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "tags": {
@@ -73,8 +76,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "8684872468020728375"
+              "version": "0.20.4.51522",
+              "templateHash": "5447313974004996573"
             }
           },
           "parameters": {

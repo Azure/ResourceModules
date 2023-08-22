@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "17935698824231934849"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "16739611821824144982"
+    },
+    "name": "Maintenance Configurations",
+    "description": "This module deploys a Maintenance Configuration.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
@@ -181,8 +184,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "17071263450023081003"
+              "version": "0.20.4.51522",
+              "templateHash": "7156539886562733404"
             }
           },
           "parameters": {

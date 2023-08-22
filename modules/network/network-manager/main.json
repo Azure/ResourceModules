@@ -4,15 +4,18 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "12215356854067543127"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "12431557271932409213"
+    },
+    "name": "Network Managers",
+    "description": "This module deploys a Network Manager.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
       "type": "string",
-      "maxLength": 64,
       "minLength": 1,
+      "maxLength": 64,
       "metadata": {
         "description": "Required. Name of the Network Manager."
       }
@@ -27,14 +30,14 @@
     "lock": {
       "type": "string",
       "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Specify the type of lock."
-      },
       "allowedValues": [
         "",
         "CanNotDelete",
         "ReadOnly"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Specify the type of lock."
+      }
     },
     "roleAssignments": {
       "type": "array",
@@ -53,10 +56,10 @@
     "description": {
       "type": "string",
       "defaultValue": "",
+      "maxLength": 500,
       "metadata": {
         "description": "Optional. A description of the network manager."
-      },
-      "maxLength": 500
+      }
     },
     "networkManagerScopeAccesses": {
       "type": "array",
@@ -182,9 +185,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "13468442252867472721"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "1182394296109740179"
+            },
+            "name": "Network Manager Network Groups",
+            "description": "This module deploys a Network Manager Network Group.\r\nA network group is a collection of same-type network resources that you can associate with network manager configurations. You can add same-type network resources after you create the network group.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "networkManagerName": {
@@ -195,18 +201,18 @@
             },
             "name": {
               "type": "string",
+              "maxLength": 64,
               "metadata": {
                 "description": "Required. The name of the network group."
-              },
-              "maxLength": 64
+              }
             },
             "description": {
               "type": "string",
               "defaultValue": "",
+              "maxLength": 500,
               "metadata": {
                 "description": "Optional. A description of the network group."
-              },
-              "maxLength": 500
+              }
             },
             "staticMembers": {
               "type": "array",
@@ -285,9 +291,12 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.19.5.34762",
-                      "templateHash": "16214310991903541469"
-                    }
+                      "version": "0.20.4.51522",
+                      "templateHash": "12393286614459840374"
+                    },
+                    "name": "Network Manager Network Group Static Members",
+                    "description": "This module deploys a Network Manager Network Group Static Member.\r\nStatic membership allows you to explicitly add virtual networks to a group by manually selecting individual virtual networks.",
+                    "owner": "Azure/module-maintainers"
                   },
                   "parameters": {
                     "networkManagerName": {
@@ -445,9 +454,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "4358706606848401992"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "13738709959380835083"
+            },
+            "name": "Network Manager Connectivity Configurations",
+            "description": "This module deploys a Network Manager Connectivity Configuration.\r\nConnectivity configurations define hub-and-spoke or mesh topologies applied to one or more network groups.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "networkManagerName": {
@@ -458,18 +470,18 @@
             },
             "name": {
               "type": "string",
+              "maxLength": 64,
               "metadata": {
                 "description": "Required. The name of the connectivity configuration."
-              },
-              "maxLength": 64
+              }
             },
             "description": {
               "type": "string",
               "defaultValue": "",
+              "maxLength": 500,
               "metadata": {
                 "description": "Optional. A description of the connectivity configuration."
-              },
-              "maxLength": 500
+              }
             },
             "appliesToGroups": {
               "type": "array",
@@ -480,13 +492,13 @@
             },
             "connectivityTopology": {
               "type": "string",
-              "metadata": {
-                "description": "Required. Connectivity topology type."
-              },
               "allowedValues": [
                 "HubAndSpoke",
                 "Mesh"
-              ]
+              ],
+              "metadata": {
+                "description": "Required. Connectivity topology type."
+              }
             },
             "hubs": {
               "type": "array",
@@ -498,24 +510,24 @@
             "deleteExistingPeering": {
               "type": "string",
               "defaultValue": "False",
-              "metadata": {
-                "description": "Optional. Flag if need to remove current existing peerings. If set to \"True\", all peerings on virtual networks in selected network groups will be removed and replaced with the peerings defined by this configuration. Optional when connectivityTopology is of type \"HubAndSpoke\"."
-              },
               "allowedValues": [
                 "True",
                 "False"
-              ]
+              ],
+              "metadata": {
+                "description": "Optional. Flag if need to remove current existing peerings. If set to \"True\", all peerings on virtual networks in selected network groups will be removed and replaced with the peerings defined by this configuration. Optional when connectivityTopology is of type \"HubAndSpoke\"."
+              }
             },
             "isGlobal": {
               "type": "string",
               "defaultValue": "False",
-              "metadata": {
-                "description": "Optional. Flag if global mesh is supported. By default, mesh connectivity is applied to virtual networks within the same region. If set to \"True\", a global mesh enables connectivity across regions."
-              },
               "allowedValues": [
                 "True",
                 "False"
-              ]
+              ],
+              "metadata": {
+                "description": "Optional. Flag if global mesh is supported. By default, mesh connectivity is applied to virtual networks within the same region. If set to \"True\", a global mesh enables connectivity across regions."
+              }
             },
             "enableDefaultTelemetry": {
               "type": "bool",
@@ -621,9 +633,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "10543425561671785083"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "10403692977342355689"
+            },
+            "name": "Network Manager Scope Connections",
+            "description": "This module deploys a Network Manager Scope Connection.\r\nCreate a cross-tenant connection to manage a resource from another tenant.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "networkManagerName": {
@@ -634,18 +649,18 @@
             },
             "name": {
               "type": "string",
+              "maxLength": 64,
               "metadata": {
                 "description": "Required. The name of the scope connection."
-              },
-              "maxLength": 64
+              }
             },
             "description": {
               "type": "string",
               "defaultValue": "",
+              "maxLength": 500,
               "metadata": {
                 "description": "Optional. A description of the scope connection."
-              },
-              "maxLength": 500
+              }
             },
             "resourceId": {
               "type": "string",
@@ -757,9 +772,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "11248739545153525651"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "509040400222226150"
+            },
+            "name": "Network Manager Security Admin Configurations",
+            "description": "This module deploys an Network Manager Security Admin Configuration.\r\nA security admin configuration contains a set of rule collections. Each rule collection contains one or more security admin rules.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "networkManagerName": {
@@ -770,32 +788,32 @@
             },
             "name": {
               "type": "string",
+              "maxLength": 64,
               "metadata": {
                 "description": "Required. The name of the security admin configuration."
-              },
-              "maxLength": 64
+              }
             },
             "description": {
               "type": "string",
               "defaultValue": "",
+              "maxLength": 500,
               "metadata": {
                 "description": "Optional. A description of the security admin configuration."
-              },
-              "maxLength": 500
+              }
             },
             "applyOnNetworkIntentPolicyBasedServices": {
               "type": "array",
               "defaultValue": [
                 "None"
               ],
-              "metadata": {
-                "description": "Required. Enum list of network intent policy based services."
-              },
               "allowedValues": [
                 "None",
                 "All",
                 "AllowRulesOnly"
-              ]
+              ],
+              "metadata": {
+                "description": "Required. Enum list of network intent policy based services."
+              }
             },
             "ruleCollections": {
               "type": "array",
@@ -876,9 +894,12 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.19.5.34762",
-                      "templateHash": "15345246908056395599"
-                    }
+                      "version": "0.20.4.51522",
+                      "templateHash": "3922899062083147081"
+                    },
+                    "name": "Network Manager Security Admin Configuration Rule Collections",
+                    "description": "This module deploys an Network Manager Security Admin Configuration Rule Collection.\r\nA security admin configuration contains a set of rule collections. Each rule collection contains one or more security admin rules. Security admin rules allows enforcing security policy criteria that matches the conditions set. Warning: A rule collection without rule will cause a deployment configuration for security admin goal state in network manager to fail.",
+                    "owner": "Azure/module-maintainers"
                   },
                   "parameters": {
                     "networkManagerName": {
@@ -895,18 +916,18 @@
                     },
                     "name": {
                       "type": "string",
+                      "maxLength": 64,
                       "metadata": {
                         "description": "Required. The name of the admin rule collection."
-                      },
-                      "maxLength": 64
+                      }
                     },
                     "description": {
                       "type": "string",
                       "defaultValue": "",
+                      "maxLength": 500,
                       "metadata": {
                         "description": "Optional. A description of the admin rule collection."
-                      },
-                      "maxLength": 500
+                      }
                     },
                     "appliesToGroups": {
                       "type": "array",
@@ -1008,9 +1029,12 @@
                           "metadata": {
                             "_generator": {
                               "name": "bicep",
-                              "version": "0.19.5.34762",
-                              "templateHash": "11476125438194706048"
-                            }
+                              "version": "0.20.4.51522",
+                              "templateHash": "493168310843879218"
+                            },
+                            "name": "Network Manager Security Admin Configuration Rule Collection Rules",
+                            "description": "This module deploys an Azure Virtual Network Manager (AVNM) Security Admin Configuration Rule Collection Rule.\r\nA security admin configuration contains a set of rule collections. Each rule collection contains one or more security admin rules.",
+                            "owner": "Azure/module-maintainers"
                           },
                           "parameters": {
                             "networkManagerName": {
@@ -1033,29 +1057,29 @@
                             },
                             "name": {
                               "type": "string",
+                              "maxLength": 64,
                               "metadata": {
                                 "description": "Required. The name of the rule."
-                              },
-                              "maxLength": 64
+                              }
                             },
                             "description": {
                               "type": "string",
                               "defaultValue": "",
+                              "maxLength": 500,
                               "metadata": {
                                 "description": "Optional. A description of the rule."
-                              },
-                              "maxLength": 500
+                              }
                             },
                             "access": {
                               "type": "string",
-                              "metadata": {
-                                "description": "Required. Indicates the access allowed for this particular rule. \"Allow\" means traffic matching this rule will be allowed. \"Deny\" means traffic matching this rule will be blocked. \"AlwaysAllow\" means that traffic matching this rule will be allowed regardless of other rules with lower priority or user-defined NSGs."
-                              },
                               "allowedValues": [
                                 "Allow",
                                 "AlwaysAllow",
                                 "Deny"
-                              ]
+                              ],
+                              "metadata": {
+                                "description": "Required. Indicates the access allowed for this particular rule. \"Allow\" means traffic matching this rule will be allowed. \"Deny\" means traffic matching this rule will be blocked. \"AlwaysAllow\" means that traffic matching this rule will be allowed regardless of other rules with lower priority or user-defined NSGs."
+                              }
                             },
                             "destinationPortRanges": {
                               "type": "array",
@@ -1073,27 +1097,24 @@
                             },
                             "direction": {
                               "type": "string",
-                              "metadata": {
-                                "description": "Required. Indicates if the traffic matched against the rule in inbound or outbound."
-                              },
                               "allowedValues": [
                                 "Inbound",
                                 "Outbound"
-                              ]
+                              ],
+                              "metadata": {
+                                "description": "Required. Indicates if the traffic matched against the rule in inbound or outbound."
+                              }
                             },
                             "priority": {
                               "type": "int",
+                              "minValue": 1,
+                              "maxValue": 4096,
                               "metadata": {
                                 "description": "Required. The priority of the rule. The value can be between 1 and 4096. The priority number must be unique for each rule in the collection. The lower the priority number, the higher the priority of the rule."
-                              },
-                              "maxValue": 4096,
-                              "minValue": 1
+                              }
                             },
                             "protocol": {
                               "type": "string",
-                              "metadata": {
-                                "description": "Required. Network protocol this rule applies to."
-                              },
                               "allowedValues": [
                                 "Ah",
                                 "Any",
@@ -1101,7 +1122,10 @@
                                 "Icmp",
                                 "Tcp",
                                 "Udp"
-                              ]
+                              ],
+                              "metadata": {
+                                "description": "Required. Network protocol this rule applies to."
+                              }
                             },
                             "sourcePortRanges": {
                               "type": "array",
@@ -1282,8 +1306,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "10175367214015467898"
+              "version": "0.20.4.51522",
+              "templateHash": "3627541728287633806"
             }
           },
           "parameters": {

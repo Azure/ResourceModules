@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "8174648505463409401"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "4942566388428766727"
+    },
+    "name": "Service Endpoint Policies",
+    "description": "This module deploys a Service Endpoint Policy.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
@@ -46,14 +49,14 @@
     "lock": {
       "type": "string",
       "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Specify the type of lock."
-      },
       "allowedValues": [
         "",
         "CanNotDelete",
         "ReadOnly"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Specify the type of lock."
+      }
     },
     "roleAssignments": {
       "type": "array",
@@ -152,8 +155,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "2676751245670262624"
+              "version": "0.20.4.51522",
+              "templateHash": "11744949434447908326"
             }
           },
           "parameters": {
