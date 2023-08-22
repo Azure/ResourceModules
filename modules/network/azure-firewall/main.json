@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.20.4.51522",
-      "templateHash": "9308869025215221965"
+      "templateHash": "17298314078288999267"
     },
     "name": "Azure Firewalls",
     "description": "This module deploys an Azure Firewall.",
@@ -338,7 +338,7 @@
     },
     {
       "type": "Microsoft.Network/azureFirewalls",
-      "apiVersion": "2022-07-01",
+      "apiVersion": "2023-05-01",
       "name": "[parameters('name')]",
       "location": "[parameters('location')]",
       "zones": "[if(equals(length(parameters('zones')), 0), null(), parameters('zones'))]",
@@ -1740,14 +1740,14 @@
       "metadata": {
         "description": "The private IP of the Azure firewall."
       },
-      "value": "[if(contains(reference(resourceId('Microsoft.Network/azureFirewalls', parameters('name')), '2022-07-01'), 'ipConfigurations'), reference(resourceId('Microsoft.Network/azureFirewalls', parameters('name')), '2022-07-01').ipConfigurations[0].properties.privateIPAddress, '')]"
+      "value": "[if(contains(reference(resourceId('Microsoft.Network/azureFirewalls', parameters('name')), '2023-05-01'), 'ipConfigurations'), reference(resourceId('Microsoft.Network/azureFirewalls', parameters('name')), '2023-05-01').ipConfigurations[0].properties.privateIPAddress, '')]"
     },
     "ipConfAzureFirewallSubnet": {
       "type": "object",
       "metadata": {
         "description": "The Public IP configuration object for the Azure Firewall Subnet."
       },
-      "value": "[if(contains(reference(resourceId('Microsoft.Network/azureFirewalls', parameters('name')), '2022-07-01'), 'ipConfigurations'), reference(resourceId('Microsoft.Network/azureFirewalls', parameters('name')), '2022-07-01').ipConfigurations[0], createObject())]"
+      "value": "[if(contains(reference(resourceId('Microsoft.Network/azureFirewalls', parameters('name')), '2023-05-01'), 'ipConfigurations'), reference(resourceId('Microsoft.Network/azureFirewalls', parameters('name')), '2023-05-01').ipConfigurations[0], createObject())]"
     },
     "applicationRuleCollections": {
       "type": "array",
@@ -1775,7 +1775,7 @@
       "metadata": {
         "description": "The location the resource was deployed into."
       },
-      "value": "[reference(resourceId('Microsoft.Network/azureFirewalls', parameters('name')), '2022-07-01', 'full').location]"
+      "value": "[reference(resourceId('Microsoft.Network/azureFirewalls', parameters('name')), '2023-05-01', 'full').location]"
     }
   }
 }
