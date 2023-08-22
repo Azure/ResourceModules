@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.20.4.51522",
-      "templateHash": "15338968258330540152"
+      "templateHash": "9087270184564604443"
     },
     "name": "Data Factories",
     "description": "This module deploys a Data Factory.",
@@ -991,7 +991,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.20.4.51522",
-              "templateHash": "609426544615556519"
+              "templateHash": "9179734936742075792"
             },
             "name": "Private Endpoints",
             "description": "This module deploys a Private Endpoint.",
@@ -1125,7 +1125,7 @@
             },
             {
               "type": "Microsoft.Network/privateEndpoints",
-              "apiVersion": "2022-07-01",
+              "apiVersion": "2023-05-01",
               "name": "[parameters('name')]",
               "location": "[parameters('location')]",
               "tags": "[parameters('tags')]",
@@ -1191,7 +1191,7 @@
                     "_generator": {
                       "name": "bicep",
                       "version": "0.20.4.51522",
-                      "templateHash": "18114841529204248478"
+                      "templateHash": "10164345699985478911"
                     },
                     "name": "Private Endpoint Private DNS Zone Groups",
                     "description": "This module deploys a Private Endpoint Private DNS Zone Group.",
@@ -1258,7 +1258,7 @@
                     },
                     {
                       "type": "Microsoft.Network/privateEndpoints/privateDnsZoneGroups",
-                      "apiVersion": "2022-07-01",
+                      "apiVersion": "2023-05-01",
                       "name": "[format('{0}/{1}', parameters('privateEndpointName'), parameters('name'))]",
                       "properties": {
                         "privateDnsZoneConfigs": "[variables('privateDnsZoneConfigs')]"
@@ -1499,7 +1499,7 @@
               "metadata": {
                 "description": "The location the resource was deployed into."
               },
-              "value": "[reference(resourceId('Microsoft.Network/privateEndpoints', parameters('name')), '2022-07-01', 'full').location]"
+              "value": "[reference(resourceId('Microsoft.Network/privateEndpoints', parameters('name')), '2023-05-01', 'full').location]"
             }
           }
         }
