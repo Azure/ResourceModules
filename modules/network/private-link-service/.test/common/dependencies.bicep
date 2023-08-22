@@ -12,50 +12,50 @@ param managedIdentityName string
 
 var addressPrefix = '10.0.0.0/16'
 
-resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-11-01' = {
-    name: virtualNetworkName
-    location: location
-    properties: {
-        addressSpace: {
-            addressPrefixes: [
-                addressPrefix
-            ]
-        }
-        subnets: [
-            {
-                name: 'defaultSubnet'
-                properties: {
-                    addressPrefix: addressPrefix
-                    privateLinkServiceNetworkPolicies: 'Disabled'
-                }
-            }
-        ]
+resource virtualNetwork 'Microsoft.Network/virtualNetworks@2023-05-01' = {
+  name: virtualNetworkName
+  location: location
+  properties: {
+    addressSpace: {
+      addressPrefixes: [
+        addressPrefix
+      ]
     }
+    subnets: [
+      {
+        name: 'defaultSubnet'
+        properties: {
+          addressPrefix: addressPrefix
+          privateLinkServiceNetworkPolicies: 'Disabled'
+        }
+      }
+    ]
+  }
 }
 
 resource loadBalancer 'Microsoft.Network/loadBalancers@2022-11-01' = {
-    name: loadBalancerName
-    location: location
-    sku: {
-        name: 'Standard'
-    }
-    properties: {
-        frontendIPConfigurations: [
-            {
-                name: 'frontendIPConfiguration'
-                properties: {
-                    subnet: {
-                        id: virtualNetwork.properties.subnets[0].id
-                    }
-                }
-            }
-        ]
-    }
+  name: loadBalancerName
+  location: location
+  sku: {
+    name: 'Standard'
+  }
+  properties: {
+    frontendIPConfigurations: [
+      {
+        name: 'frontendIPConfiguration'
+        properties: {
+          subnet: {
+            id: virtualNetwork.properties.subnets[0].id
+          }
+        }
+      }
+    ]
+  }
 }
 
 resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' = {
-    name: managedIdentityName
-    location: location
+  name: managedIdentityName
+  location: location
 }
 
 @description('The resource ID of the created Virtual Network Subnet.')

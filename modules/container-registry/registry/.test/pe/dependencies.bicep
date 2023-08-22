@@ -6,40 +6,40 @@ param virtualNetworkName string
 
 var addressPrefix = '10.0.0.0/16'
 
-resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
-    name: virtualNetworkName
-    location: location
-    properties: {
-        addressSpace: {
-            addressPrefixes: [
-                addressPrefix
-            ]
-        }
-        subnets: [
-            {
-                name: 'defaultSubnet'
-                properties: {
-                    addressPrefix: addressPrefix
-                }
-            }
-        ]
+resource virtualNetwork 'Microsoft.Network/virtualNetworks@2023-05-01' = {
+  name: virtualNetworkName
+  location: location
+  properties: {
+    addressSpace: {
+      addressPrefixes: [
+        addressPrefix
+      ]
     }
+    subnets: [
+      {
+        name: 'defaultSubnet'
+        properties: {
+          addressPrefix: addressPrefix
+        }
+      }
+    ]
+  }
 }
 
 resource privateDNSZone 'Microsoft.Network/privateDnsZones@2020-06-01' = {
-    name: 'privatelink${environment().suffixes.acrLoginServer}'
-    location: 'global'
+  name: 'privatelink${environment().suffixes.acrLoginServer}'
+  location: 'global'
 
-    resource virtualNetworkLinks 'virtualNetworkLinks@2020-06-01' = {
-        name: '${virtualNetwork.name}-vnetlink'
-        location: 'global'
-        properties: {
-            virtualNetwork: {
-                id: virtualNetwork.id
-            }
-            registrationEnabled: false
-        }
+  resource virtualNetworkLinks 'virtualNetworkLinks@2020-06-01' = {
+    name: '${virtualNetwork.name}-vnetlink'
+    location: 'global'
+    properties: {
+      virtualNetwork: {
+        id: virtualNetwork.id
+      }
+      registrationEnabled: false
     }
+  }
 }
 
 @description('The resource ID of the created Virtual Network Subnet.')

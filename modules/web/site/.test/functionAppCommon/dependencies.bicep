@@ -24,103 +24,103 @@ param hybridConnectionName string
 
 var addressPrefix = '10.0.0.0/16'
 
-resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
-    name: virtualNetworkName
-    location: location
-    properties: {
-        addressSpace: {
-            addressPrefixes: [
-                addressPrefix
-            ]
-        }
-        subnets: [
-            {
-                name: 'defaultSubnet'
-                properties: {
-                    addressPrefix: addressPrefix
-                }
-            }
-        ]
+resource virtualNetwork 'Microsoft.Network/virtualNetworks@2023-05-01' = {
+  name: virtualNetworkName
+  location: location
+  properties: {
+    addressSpace: {
+      addressPrefixes: [
+        addressPrefix
+      ]
     }
+    subnets: [
+      {
+        name: 'defaultSubnet'
+        properties: {
+          addressPrefix: addressPrefix
+        }
+      }
+    ]
+  }
 }
 
 resource privateDNSZone 'Microsoft.Network/privateDnsZones@2020-06-01' = {
-    name: 'privatelink.azurewebsites.net'
-    location: 'global'
+  name: 'privatelink.azurewebsites.net'
+  location: 'global'
 
-    resource virtualNetworkLinks 'virtualNetworkLinks@2020-06-01' = {
-        name: '${virtualNetwork.name}-vnetlink'
-        location: 'global'
-        properties: {
-            virtualNetwork: {
-                id: virtualNetwork.id
-            }
-            registrationEnabled: false
-        }
+  resource virtualNetworkLinks 'virtualNetworkLinks@2020-06-01' = {
+    name: '${virtualNetwork.name}-vnetlink'
+    location: 'global'
+    properties: {
+      virtualNetwork: {
+        id: virtualNetwork.id
+      }
+      registrationEnabled: false
     }
+  }
 }
 
 resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' = {
-    name: managedIdentityName
-    location: location
+  name: managedIdentityName
+  location: location
 }
 
 resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' = {
-    name: storageAccountName
-    location: location
-    sku: {
-        name: 'Standard_LRS'
-    }
-    kind: 'StorageV2'
-    properties: {}
+  name: storageAccountName
+  location: location
+  sku: {
+    name: 'Standard_LRS'
+  }
+  kind: 'StorageV2'
+  properties: {}
 }
 
 resource serverFarm 'Microsoft.Web/serverfarms@2022-03-01' = {
-    name: serverFarmName
-    location: location
-    sku: {
-        name: 'S1'
-        tier: 'Standard'
-        size: 'S1'
-        family: 'S'
-        capacity: 1
-    }
-    properties: {}
+  name: serverFarmName
+  location: location
+  sku: {
+    name: 'S1'
+    tier: 'Standard'
+    size: 'S1'
+    family: 'S'
+    capacity: 1
+  }
+  properties: {}
 }
 
 resource applicationInsights 'Microsoft.Insights/components@2020-02-02' = {
-    name: applicationInsightsName
-    location: location
-    kind: ''
-    properties: {}
+  name: applicationInsightsName
+  location: location
+  kind: ''
+  properties: {}
 }
 
 resource namespace 'Microsoft.Relay/namespaces@2021-11-01' = {
-    name: relayNamespaceName
-    location: location
-    sku: {
-        name: 'Standard'
-    }
-    properties: {}
+  name: relayNamespaceName
+  location: location
+  sku: {
+    name: 'Standard'
+  }
+  properties: {}
 }
 
 resource hybridConnection 'Microsoft.Relay/namespaces/hybridConnections@2021-11-01' = {
-    name: hybridConnectionName
-    parent: namespace
-    properties: {
-        requiresClientAuthorization: true
-        userMetadata: '[{"key":"endpoint","value":"db-server.constoso.com:1433"}]'
-    }
+  name: hybridConnectionName
+  parent: namespace
+  properties: {
+    requiresClientAuthorization: true
+    userMetadata: '[{"key":"endpoint","value":"db-server.constoso.com:1433"}]'
+  }
 }
 
 resource authorizationRule 'Microsoft.Relay/namespaces/hybridConnections/authorizationRules@2021-11-01' = {
-    name: 'defaultSender'
-    parent: hybridConnection
-    properties: {
-        rights: [
-            'Send'
-        ]
-    }
+  name: 'defaultSender'
+  parent: hybridConnection
+  properties: {
+    rights: [
+      'Send'
+    ]
+  }
 }
 
 @description('The resource ID of the created Virtual Network Subnet.')

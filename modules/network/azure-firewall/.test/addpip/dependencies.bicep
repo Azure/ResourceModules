@@ -14,52 +14,52 @@ var addressPrefix = '10.0.0.0/16'
 var addressPrefixDefaultSubnet = '10.0.0.0/20'
 var addressPrefixManagementSubnet = '10.0.16.0/20'
 
-resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
-    name: virtualNetworkName
-    location: location
-    properties: {
-        addressSpace: {
-            addressPrefixes: [
-                addressPrefix
-            ]
-        }
-        subnets: [
-            {
-                name: 'AzureFirewallSubnet'
-                properties: {
-                    addressPrefix: addressPrefixDefaultSubnet
-                }
-            }
-            {
-                name: 'AzureFirewallManagementSubnet'
-                properties: {
-                    addressPrefix: addressPrefixManagementSubnet
-                }
-            }
-        ]
+resource virtualNetwork 'Microsoft.Network/virtualNetworks@2023-05-01' = {
+  name: virtualNetworkName
+  location: location
+  properties: {
+    addressSpace: {
+      addressPrefixes: [
+        addressPrefix
+      ]
     }
+    subnets: [
+      {
+        name: 'AzureFirewallSubnet'
+        properties: {
+          addressPrefix: addressPrefixDefaultSubnet
+        }
+      }
+      {
+        name: 'AzureFirewallManagementSubnet'
+        properties: {
+          addressPrefix: addressPrefixManagementSubnet
+        }
+      }
+    ]
+  }
 }
 
 resource publicIP 'Microsoft.Network/publicIPAddresses@2022-01-01' = {
-    name: publicIPName
-    location: location
-    sku: {
-        name: 'Standard'
-        tier: 'Regional'
-    }
-    properties: {
-        publicIPAllocationMethod: 'Static'
-    }
-    zones: [
-        '1'
-        '2'
-        '3'
-    ]
+  name: publicIPName
+  location: location
+  sku: {
+    name: 'Standard'
+    tier: 'Regional'
+  }
+  properties: {
+    publicIPAllocationMethod: 'Static'
+  }
+  zones: [
+    '1'
+    '2'
+    '3'
+  ]
 }
 
 resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' = {
-    name: managedIdentityName
-    location: location
+  name: managedIdentityName
+  location: location
 }
 
 @description('The resource ID of the created Virtual Network.')
