@@ -16,7 +16,7 @@ This module deploys an Application Security Group (ASG).
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.Network/applicationSecurityGroups` | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/applicationSecurityGroups) |
+| `Microsoft.Network/applicationSecurityGroups` | [2023-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/applicationSecurityGroups) |
 
 ## Parameters
 
