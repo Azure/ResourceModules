@@ -20,7 +20,7 @@ resource routeTable 'Microsoft.Network/routeTables@2022-01-01' = {
     location: location
 }
 
-resource networkSecurityGroup 'Microsoft.Network/networkSecurityGroups@2022-01-01' = {
+resource networkSecurityGroup 'Microsoft.Network/networkSecurityGroups@2023-05-01' = {
     name: networkSecurityGroupName
     location: location
 }

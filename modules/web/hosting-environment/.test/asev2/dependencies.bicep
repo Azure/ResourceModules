@@ -12,7 +12,7 @@ param managedIdentityName string
 
 var addressPrefix = '10.0.0.0/16'
 
-resource networkSecurityGroup 'Microsoft.Network/networkSecurityGroups@2021-08-01' = {
+resource networkSecurityGroup 'Microsoft.Network/networkSecurityGroups@2023-05-01' = {
     name: networkSecurityGroupName
     location: location
     properties: {

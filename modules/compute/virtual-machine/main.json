@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.20.4.51522",
-      "templateHash": "4356257784328913580"
+      "templateHash": "6780005008504491925"
     },
     "name": "Virtual Machines",
     "description": "This module deploys a Virtual Machine with one or multiple NICs and optionally one or multiple public IPs.",
@@ -857,7 +857,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.20.4.51522",
-              "templateHash": "562647666921012087"
+              "templateHash": "5219269290852159683"
             }
           },
           "parameters": {
@@ -1610,7 +1610,7 @@
                     "_generator": {
                       "name": "bicep",
                       "version": "0.20.4.51522",
-                      "templateHash": "13406973240234472085"
+                      "templateHash": "5086729872673906429"
                     },
                     "name": "Network Interface",
                     "description": "This module deploys a Network Interface.",
@@ -1682,6 +1682,20 @@
                       ],
                       "metadata": {
                         "description": "Optional. Auxiliary mode of Network Interface resource. Not all regions are enabled for Auxiliary Mode Nic."
+                      }
+                    },
+                    "auxiliarySku": {
+                      "type": "string",
+                      "defaultValue": "None",
+                      "allowedValues": [
+                        "A1",
+                        "A2",
+                        "A4",
+                        "A8",
+                        "None"
+                      ],
+                      "metadata": {
+                        "description": "Optional. Auxiliary sku of Network Interface resource. Not all regions are enabled for Auxiliary Mode Nic."
                       }
                     },
                     "disableTcpStateTracking": {
@@ -1838,6 +1852,7 @@
                           }
                         ],
                         "auxiliaryMode": "[parameters('auxiliaryMode')]",
+                        "auxiliarySku": "[parameters('auxiliarySku')]",
                         "disableTcpStateTracking": "[parameters('disableTcpStateTracking')]",
                         "dnsSettings": "[if(not(empty(parameters('dnsServers'))), createObject('dnsServers', parameters('dnsServers')), null())]",
                         "enableAcceleratedNetworking": "[parameters('enableAcceleratedNetworking')]",
