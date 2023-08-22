@@ -38,7 +38,7 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2023-05-01' = {
   }
 }
 
-resource publicIP 'Microsoft.Network/publicIPAddresses@2022-01-01' = {
+resource publicIP 'Microsoft.Network/publicIPAddresses@2023-05-01' = {
   name: publicIPName
   location: location
   sku: {

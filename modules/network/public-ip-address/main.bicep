@@ -59,6 +59,16 @@ param diagnosticEventHubName string = ''
 @description('Optional. The domain name label. The concatenation of the domain name label and the regionalized DNS zone make up the fully qualified domain name associated with the public IP address. If a domain name label is specified, an A DNS record is created for the public IP in the Microsoft Azure DNS system.')
 param domainNameLabel string = ''
 
+@allowed([
+  ''
+  'NoReuse'
+  'ResourceGroupReuse'
+  'SubscriptionReuse'
+  'TenantReuse'
+])
+@description('Optional. The domain name label scope. If a domain name label and a domain name label scope are specified, an A DNS record is created for the public IP in the Microsoft Azure DNS system with a hashed value includes in FQDN.')
+param domainNameLabelScope string = ''
+
 @description('Optional. The Fully Qualified Domain Name of the A DNS record associated with the public IP. This is the concatenation of the domainNameLabel and the regionalized DNS zone.')
 param fqdn string = ''
 
@@ -150,7 +160,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource publicIpAddress 'Microsoft.Network/publicIPAddresses@2022-07-01' = {
+resource publicIpAddress 'Microsoft.Network/publicIPAddresses@2023-05-01' = {
   name: name
   location: location
   tags: tags
@@ -162,6 +172,7 @@ resource publicIpAddress 'Microsoft.Network/publicIPAddresses@2022-07-01' = {
   properties: {
     dnsSettings: !empty(domainNameLabel) ? {
       domainNameLabel: domainNameLabel
+      domainNameLabelScope: domainNameLabelScope
       fqdn: fqdn
       reverseFqdn: reverseFqdn
     } : null

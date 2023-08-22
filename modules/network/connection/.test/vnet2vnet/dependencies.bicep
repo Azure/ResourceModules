@@ -39,7 +39,7 @@ resource primaryVirtualNetwork 'Microsoft.Network/virtualNetworks@2023-05-01' = 
   }
 }
 
-resource primaryPublicIP 'Microsoft.Network/publicIPAddresses@2022-01-01' = {
+resource primaryPublicIP 'Microsoft.Network/publicIPAddresses@2023-05-01' = {
   name: primaryPublicIPName
   location: location
 }
@@ -92,7 +92,7 @@ resource secondaryVirtualNetwork 'Microsoft.Network/virtualNetworks@2023-05-01' 
   }
 }
 
-resource secondaryPublicIP 'Microsoft.Network/publicIPAddresses@2022-01-01' = {
+resource secondaryPublicIP 'Microsoft.Network/publicIPAddresses@2023-05-01' = {
   name: secondaryPublicIPName
   location: location
 }
