@@ -266,6 +266,9 @@ module workspace_computes 'compute/main.bicep' = [for compute in computes: {
     computeType: compute.computeType
     properties: contains(compute, 'properties') ? compute.properties : {}
   }
+  dependsOn: [
+    workspace_privateEndpoints
+  ]
 }]
 
 resource workspace_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
