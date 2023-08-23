@@ -38,7 +38,7 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
 var testLocation = 'northeurope'
 module testDeployment '../../main.bicep' = {
   scope: resourceGroup
-  name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
+  name: '${uniqueString(deployment().name, testLocation)}-test-${serviceShort}'
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     // Note: This value is not required and only set to enable testing
