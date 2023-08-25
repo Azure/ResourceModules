@@ -46,8 +46,6 @@ module testDeployment '../../resource-group/main.bicep' = {
     description: '[Description] Policy Assignment at the resource group scope'
     displayName: '[Display Name] Policy Assignment at the resource group scope'
       metadata: {
-      category: 'Security'
-      version: '1.0'
       assignedBy: 'Bicep'
     }
   }
