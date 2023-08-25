@@ -43,5 +43,12 @@ module testDeployment '../../resource-group/main.bicep' = {
     name: '${namePrefix}${serviceShort}001'
     policyDefinitionId: '/providers/Microsoft.Authorization/policyDefinitions/06a78e20-9358-41c9-923c-fb736d382a4d'
     subscriptionId: subscription().subscriptionId
+    description: '[Description] Policy Assignment at the resource group scope'
+    displayName: '[Display Name] Policy Assignment at the resource group scope'
+      metadata: {
+      category: 'Security'
+      version: '1.0'
+      assignedBy: 'Bicep'
+    }
   }
 }
