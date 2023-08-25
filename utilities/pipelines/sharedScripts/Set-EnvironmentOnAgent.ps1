@@ -201,7 +201,7 @@ function Set-EnvironmentOnAgent {
 
     $count = 1
     Write-Verbose ('Try installing:') -Verbose
-    $modules | ForEach-Object {
+    $PSModules | ForEach-Object {
         Write-Verbose ('- {0}. [{1}]' -f $count, $_.Name) -Verbose
         $count++
     }
@@ -238,9 +238,9 @@ function Set-EnvironmentOnAgent {
 
     Write-Verbose ('Install-CustomModule start') -Verbose
     $count = 1
-    Foreach ($Module in $Modules) {
+    Foreach ($Module in $PSModules) {
         Write-Verbose ('=====================') -Verbose
-        Write-Verbose ('HANDLING MODULE [{0}/{1}] [{2}] ' -f $count, $Modules.Count, $Module.Name) -Verbose
+        Write-Verbose ('HANDLING MODULE [{0}/{1}] [{2}] ' -f $count, $PSModules.Count, $Module.Name) -Verbose
         Write-Verbose ('=====================') -Verbose
         # Installing New Modules and Removing Old
         $null = Install-CustomModule -Module $Module -InstalledModule $installedModules
