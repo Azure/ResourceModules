@@ -70,13 +70,13 @@ runs:
 
         # Additional PS modules need to be installed for the publish job
         if ('${{ github.job}}' -eq 'job_publish_module') {
-          $Modules += @(
+          $modules += @(
             @{ Name = 'Az.ContainerRegistry' }
           )
         }
 
         # Set agent up
-        Set-EnvironmentOnAgent -PSModules $Modules
+        Set-EnvironmentOnAgent -PSModules $modules
 
         Write-Output '::endgroup::'
 

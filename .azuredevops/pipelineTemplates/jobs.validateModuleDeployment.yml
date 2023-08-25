@@ -101,7 +101,7 @@ jobs:
 
             # Additional PS modules need to be installed for the removal step in case it is enabled
             if ('${{ parameters.removeDeployment}}' -eq 'true') {
-              $Modules += @(
+              $modules += @(
                 @{ Name = 'Az.CognitiveServices' },
                 @{ Name = 'Az.Compute' },
                 @{ Name = 'Az.KeyVault' },
@@ -112,7 +112,7 @@ jobs:
             }
 
             # Set agent up
-            Set-EnvironmentOnAgent -PSModules $Modules
+            Set-EnvironmentOnAgent -PSModules $modules
 
       # [Agent] Replace tokens
       #-----------------------
