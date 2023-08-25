@@ -93,7 +93,7 @@ jobs:
             . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
 
             # Define PS modules to install on the runner
-            $Modules = @(
+            $modules = @(
                 @{ Name = 'Az.Accounts' },
                 @{ Name = 'Az.Resources' },
                 @{ Name = 'powershell-yaml'; Version = '0.4.2'}
