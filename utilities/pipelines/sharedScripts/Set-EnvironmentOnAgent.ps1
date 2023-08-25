@@ -118,6 +118,15 @@ Optional. The PowerShell modules that should be installed on the agent.
 Set-EnvironmentOnAgent
 
 Install the default PowerShell modules to configure the agent
+
+.EXAMPLE
+$Modules = @(
+    @{ Name = 'Az.Accounts' },
+    @{ Name = 'Az.Resources' }
+)
+Set-EnvironmentOnAgent -PSModules $Modules
+
+Install the given PowerShell modules to configure the agent.
 #>
 function Set-EnvironmentOnAgent {
 
