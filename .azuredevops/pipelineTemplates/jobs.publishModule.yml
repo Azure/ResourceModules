@@ -109,14 +109,14 @@ jobs:
             . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
 
             # Define PS modules to install on the runner
-            $Modules = @(
+            $modules = @(
                 @{ Name = 'Az.Accounts' },
                 @{ Name = 'Az.ContainerRegistry' },
                 @{ Name = 'Az.Resources' }
             )
 
             # Set agent up
-            Set-EnvironmentOnAgent -PSModules $Modules
+            Set-EnvironmentOnAgent -PSModules $modules
 
       # [Universal Artifact-feed publish] task(s)
       #------------------------------------------
