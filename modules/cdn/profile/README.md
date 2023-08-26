@@ -27,7 +27,7 @@ This module deploys a CDN Profile.
 | Parameter Name | Type | Allowed Values | Description |
 | :-- | :-- | :-- | :-- |
 | `name` | string |  | Name of the CDN profile. |
-| `sku` | string | `[Custom_Akamai, Custom_ChinaCdn, Custom_Microsoft, Custom_Microsoft_AzureFrontDoor, Custom_Verizon, Premium_Akamai, Premium_ChinaCdn, Premium_Microsoft, Premium_Microsoft_AzureFrontDoor, Premium_Verizon, Standard_Akamai, Standard_ChinaCdn, Standard_Microsoft, Standard_Microsoft_AzureFrontDoor, Standard_Verizon]` | The pricing tier (defines a CDN provider, feature list and rate) of the CDN profile. |
+| `sku` | string | `[Custom_Akamai, Custom_ChinaCdn, Custom_Microsoft, Custom_Microsoft_AzureFrontDoor, Custom_Verizon, Premium_Akamai, Premium_ChinaCdn, Premium_Microsoft, Premium_Microsoft_AzureFrontDoor, Premium_Verizon, Standard_Akamai, Standard_ChinaCdn, Standard_Microsoft, Standard_Microsoft_AzureFrontDoor, Standard_Verizon, Standard_AzureFrontDoor, Premium_AzureFrontDoor ]` | The pricing tier (defines a CDN provider, feature list and rate) of the CDN profile. |
 
 **Optional parameters**
 
