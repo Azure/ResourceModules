@@ -295,10 +295,6 @@ The diagnostic settings may differ slightly, from resource to resource. Most not
 <summary>Details</summary>
 
 ```bicep
-@description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
-@minValue(0)
-@maxValue(365)
-param diagnosticLogsRetentionInDays int = 365
 
 @description('Optional. Resource ID of the diagnostic storage account.')
 param diagnosticStorageAccountId string = ''
