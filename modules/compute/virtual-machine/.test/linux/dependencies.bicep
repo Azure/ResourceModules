@@ -54,7 +54,7 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2023-05-01' = {
   }
 }
 
-resource applicationSecurityGroup 'Microsoft.Network/applicationSecurityGroups@2022-01-01' = {
+resource applicationSecurityGroup 'Microsoft.Network/applicationSecurityGroups@2023-04-01' = {
   name: applicationSecurityGroupName
   location: location
 }
@@ -74,7 +74,7 @@ resource msiRGContrRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-
   }
 }
 
-resource loadBalancer 'Microsoft.Network/loadBalancers@2022-01-01' = {
+resource loadBalancer 'Microsoft.Network/loadBalancers@2023-04-01' = {
   name: loadBalancerName
   location: location
   sku: {

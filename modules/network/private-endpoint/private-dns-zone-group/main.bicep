@@ -35,7 +35,7 @@ var privateDnsZoneConfigs = [for privateDNSResourceId in privateDNSResourceIds: 
   }
 }]
 
-resource privateEndpoint 'Microsoft.Network/privateEndpoints@2023-05-01' existing = {
+resource privateEndpoint 'Microsoft.Network/privateEndpoints@2023-04-01' existing = {
   name: privateEndpointName
 }
 

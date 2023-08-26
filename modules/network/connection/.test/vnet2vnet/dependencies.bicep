@@ -39,12 +39,12 @@ resource primaryVirtualNetwork 'Microsoft.Network/virtualNetworks@2023-05-01' = 
   }
 }
 
-resource primaryPublicIP 'Microsoft.Network/publicIPAddresses@2023-05-01' = {
+resource primaryPublicIP 'Microsoft.Network/publicIPAddresses@2023-04-01' = {
   name: primaryPublicIPName
   location: location
 }
 
-resource primaryVNETGateway 'Microsoft.Network/virtualNetworkGateways@2023-05-01' = {
+resource primaryVNETGateway 'Microsoft.Network/virtualNetworkGateways@2023-04-01' = {
   name: primaryVirtualNetworkGatewayName
   location: location
   properties: {
@@ -92,12 +92,12 @@ resource secondaryVirtualNetwork 'Microsoft.Network/virtualNetworks@2023-05-01' 
   }
 }
 
-resource secondaryPublicIP 'Microsoft.Network/publicIPAddresses@2023-05-01' = {
+resource secondaryPublicIP 'Microsoft.Network/publicIPAddresses@2023-04-01' = {
   name: secondaryPublicIPName
   location: location
 }
 
-resource secondaryVNETGateway 'Microsoft.Network/virtualNetworkGateways@2023-05-01' = {
+resource secondaryVNETGateway 'Microsoft.Network/virtualNetworkGateways@2023-04-01' = {
   name: secondaryVirtualNetworkGatewayName
   location: location
   properties: {

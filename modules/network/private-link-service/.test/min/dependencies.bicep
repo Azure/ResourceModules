@@ -30,7 +30,7 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2023-05-01' = {
   }
 }
 
-resource loadBalancer 'Microsoft.Network/loadBalancers@2022-11-01' = {
+resource loadBalancer 'Microsoft.Network/loadBalancers@2023-04-01' = {
   name: loadBalancerName
   location: location
   sku: {

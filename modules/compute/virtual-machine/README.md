@@ -21,8 +21,8 @@ This module deploys a Virtual Machine with one or multiple NICs and optionally o
 | `Microsoft.Compute/virtualMachines` | [2022-11-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Compute/2022-11-01/virtualMachines) |
 | `Microsoft.Compute/virtualMachines/extensions` | [2022-11-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Compute/2022-11-01/virtualMachines/extensions) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
-| `Microsoft.Network/networkInterfaces` | [2023-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/networkInterfaces) |
-| `Microsoft.Network/publicIPAddresses` | [2023-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/publicIPAddresses) |
+| `Microsoft.Network/networkInterfaces` | [2023-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-04-01/networkInterfaces) |
+| `Microsoft.Network/publicIPAddresses` | [2023-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-04-01/publicIPAddresses) |
 | `Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers/protectedItems` | [2023-01-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2023-01-01/vaults/backupFabrics/protectionContainers/protectedItems) |
 
 ## Parameters
@@ -1144,13 +1144,6 @@ module virtualMachine './compute/virtual-machine/main.bicep' = {
     enableAutomaticUpdates: true
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     encryptionAtHost: false
-    extensionAadJoinConfig: {
-      enabled: true
-      tags: {
-        Environment: 'Non-Prod'
-        Role: 'DeploymentValidation'
-      }
-    }
     extensionAzureDiskEncryptionConfig: {
       enabled: true
       settings: {
@@ -1206,6 +1199,13 @@ module virtualMachine './compute/virtual-machine/main.bicep' = {
       }
     }
     extensionNetworkWatcherAgentConfig: {
+      enabled: true
+      tags: {
+        Environment: 'Non-Prod'
+        Role: 'DeploymentValidation'
+      }
+    }
+    extensionAadJoinConfig: {
       enabled: true
       tags: {
         Environment: 'Non-Prod'
@@ -1395,15 +1395,6 @@ module virtualMachine './compute/virtual-machine/main.bicep' = {
     "encryptionAtHost": {
       "value": false
     },
-    "extensionAadJoinConfig": {
-      "value": {
-        "enabled": true,
-        "tags": {
-          "Environment": "Non-Prod",
-          "Role": "DeploymentValidation"
-        }
-      }
-    },
     "extensionAzureDiskEncryptionConfig": {
       "value": {
         "enabled": true,
@@ -1471,6 +1462,15 @@ module virtualMachine './compute/virtual-machine/main.bicep' = {
       }
     },
     "extensionNetworkWatcherAgentConfig": {
+      "value": {
+        "enabled": true,
+        "tags": {
+          "Environment": "Non-Prod",
+          "Role": "DeploymentValidation"
+        }
+      }
+    },
+    "extensionAadJoinConfig": {
       "value": {
         "enabled": true,
         "tags": {
@@ -1945,13 +1945,6 @@ module virtualMachine './compute/virtual-machine/main.bicep' = {
     enableAutomaticUpdates: true
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     encryptionAtHost: false
-    extensionAadJoinConfig: {
-      enabled: true
-      tags: {
-        Environment: 'Non-Prod'
-        Role: 'DeploymentValidation'
-      }
-    }
     extensionAntiMalwareConfig: {
       enabled: true
       settings: {
@@ -2029,6 +2022,13 @@ module virtualMachine './compute/virtual-machine/main.bicep' = {
       }
     }
     extensionNetworkWatcherAgentConfig: {
+      enabled: true
+      tags: {
+        Environment: 'Non-Prod'
+        Role: 'DeploymentValidation'
+      }
+    }
+    extensionAadJoinConfig: {
       enabled: true
       tags: {
         Environment: 'Non-Prod'
@@ -2213,15 +2213,6 @@ module virtualMachine './compute/virtual-machine/main.bicep' = {
     "encryptionAtHost": {
       "value": false
     },
-    "extensionAadJoinConfig": {
-      "value": {
-        "enabled": true,
-        "tags": {
-          "Environment": "Non-Prod",
-          "Role": "DeploymentValidation"
-        }
-      }
-    },
     "extensionAntiMalwareConfig": {
       "value": {
         "enabled": true,
@@ -2313,6 +2304,15 @@ module virtualMachine './compute/virtual-machine/main.bicep' = {
       }
     },
     "extensionNetworkWatcherAgentConfig": {
+      "value": {
+        "enabled": true,
+        "tags": {
+          "Environment": "Non-Prod",
+          "Role": "DeploymentValidation"
+        }
+      }
+    },
+    "extensionAadJoinConfig": {
       "value": {
         "enabled": true,
         "tags": {

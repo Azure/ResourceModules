@@ -10,7 +10,7 @@ param virtualHubName string
 @description('Required. The name of the Firewall Policy to create.')
 param firewallPolicyName string
 
-resource virtualWan 'Microsoft.Network/virtualWans@2023-05-01' = {
+resource virtualWan 'Microsoft.Network/virtualWans@2023-04-01' = {
   name: virtualWanName
   location: location
   properties: {
@@ -31,7 +31,7 @@ resource virtualHub 'Microsoft.Network/virtualHubs@2021-08-01' = {
   }
 }
 
-resource policy 'Microsoft.Network/firewallPolicies@2021-08-01' = {
+resource policy 'Microsoft.Network/firewallPolicies@2023-04-01' = {
   name: firewallPolicyName
   location: location
   properties: {

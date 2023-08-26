@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.20.4.51522",
-      "templateHash": "14455453466837220277"
+      "templateHash": "15745659203746227223"
     },
     "name": "DocumentDB Database Accounts",
     "description": "This module deploys a DocumentDB Database Account.",
@@ -1623,7 +1623,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.20.4.51522",
-              "templateHash": "15140794202935990330"
+              "templateHash": "13560297539192628062"
             },
             "name": "Private Endpoints",
             "description": "This module deploys a Private Endpoint.",
@@ -1757,7 +1757,7 @@
             },
             {
               "type": "Microsoft.Network/privateEndpoints",
-              "apiVersion": "2023-05-01",
+              "apiVersion": "2023-04-01",
               "name": "[parameters('name')]",
               "location": "[parameters('location')]",
               "tags": "[parameters('tags')]",
@@ -2131,7 +2131,7 @@
               "metadata": {
                 "description": "The location the resource was deployed into."
               },
-              "value": "[reference(resourceId('Microsoft.Network/privateEndpoints', parameters('name')), '2023-05-01', 'full').location]"
+              "value": "[reference(resourceId('Microsoft.Network/privateEndpoints', parameters('name')), '2023-04-01', 'full').location]"
             }
           }
         }

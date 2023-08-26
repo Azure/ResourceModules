@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.20.4.51522",
-      "templateHash": "1418515319536498670"
+      "templateHash": "13886376010607878497"
     },
     "name": "Virtual Network Gateways",
     "description": "This module deploys a Virtual Network Gateway.",
@@ -429,7 +429,7 @@
     },
     {
       "type": "Microsoft.Network/virtualNetworkGateways",
-      "apiVersion": "2023-05-01",
+      "apiVersion": "2023-04-01",
       "name": "[parameters('name')]",
       "location": "[parameters('location')]",
       "tags": "[parameters('tags')]",
@@ -557,7 +557,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.20.4.51522",
-              "templateHash": "13148048261772336691"
+              "templateHash": "1083592604266553783"
             },
             "name": "Public IP Addresses",
             "description": "This module deploys a Public IP Address.",
@@ -823,7 +823,7 @@
             },
             {
               "type": "Microsoft.Network/publicIPAddresses",
-              "apiVersion": "2023-05-01",
+              "apiVersion": "2023-04-01",
               "name": "[parameters('name')]",
               "location": "[parameters('location')]",
               "tags": "[parameters('tags')]",
@@ -1078,14 +1078,14 @@
               "metadata": {
                 "description": "The public IP address of the public IP address resource."
               },
-              "value": "[if(contains(reference(resourceId('Microsoft.Network/publicIPAddresses', parameters('name')), '2023-05-01'), 'ipAddress'), reference(resourceId('Microsoft.Network/publicIPAddresses', parameters('name')), '2023-05-01').ipAddress, '')]"
+              "value": "[if(contains(reference(resourceId('Microsoft.Network/publicIPAddresses', parameters('name')), '2023-04-01'), 'ipAddress'), reference(resourceId('Microsoft.Network/publicIPAddresses', parameters('name')), '2023-04-01').ipAddress, '')]"
             },
             "location": {
               "type": "string",
               "metadata": {
                 "description": "The location the resource was deployed into."
               },
-              "value": "[reference(resourceId('Microsoft.Network/publicIPAddresses', parameters('name')), '2023-05-01', 'full').location]"
+              "value": "[reference(resourceId('Microsoft.Network/publicIPAddresses', parameters('name')), '2023-04-01', 'full').location]"
             }
           }
         }
@@ -1461,14 +1461,14 @@
       "metadata": {
         "description": "Shows if the virtual network gateway is configured in active-active mode."
       },
-      "value": "[reference(resourceId('Microsoft.Network/virtualNetworkGateways', parameters('name')), '2023-05-01').activeActive]"
+      "value": "[reference(resourceId('Microsoft.Network/virtualNetworkGateways', parameters('name')), '2023-04-01').activeActive]"
     },
     "location": {
       "type": "string",
       "metadata": {
         "description": "The location the resource was deployed into."
       },
-      "value": "[reference(resourceId('Microsoft.Network/virtualNetworkGateways', parameters('name')), '2023-05-01', 'full').location]"
+      "value": "[reference(resourceId('Microsoft.Network/virtualNetworkGateways', parameters('name')), '2023-04-01', 'full').location]"
     }
   }
 }

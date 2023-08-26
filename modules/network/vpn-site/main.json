@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.20.4.51522",
-      "templateHash": "3220287912268753471"
+      "templateHash": "17973868678788667576"
     },
     "name": "VPN Sites",
     "description": "This module deploys a VPN Site.",
@@ -131,7 +131,7 @@
     },
     {
       "type": "Microsoft.Network/vpnSites",
-      "apiVersion": "2023-05-01",
+      "apiVersion": "2023-04-01",
       "name": "[parameters('name')]",
       "location": "[parameters('location')]",
       "tags": "[parameters('tags')]",
@@ -308,7 +308,7 @@
       "metadata": {
         "description": "The location the resource was deployed into."
       },
-      "value": "[reference(resourceId('Microsoft.Network/vpnSites', parameters('name')), '2023-05-01', 'full').location]"
+      "value": "[reference(resourceId('Microsoft.Network/vpnSites', parameters('name')), '2023-04-01', 'full').location]"
     }
   }
 }

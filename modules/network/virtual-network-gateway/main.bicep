@@ -373,7 +373,7 @@ module publicIPAddress '../public-ip-address/main.bicep' = [for (virtualGatewayP
 
 // VNET Gateway
 // ============
-resource virtualNetworkGateway 'Microsoft.Network/virtualNetworkGateways@2023-05-01' = {
+resource virtualNetworkGateway 'Microsoft.Network/virtualNetworkGateways@2023-04-01' = {
   name: name
   location: location
   tags: tags

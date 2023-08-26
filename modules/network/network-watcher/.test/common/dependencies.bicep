@@ -47,17 +47,17 @@ resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-
   location: location
 }
 
-resource firstNetworkSecurityGroup 'Microsoft.Network/networkSecurityGroups@2023-05-01' = {
+resource firstNetworkSecurityGroup 'Microsoft.Network/networkSecurityGroups@2023-04-01' = {
   name: firstNetworkSecurityGroupName
   location: location
 }
 
-resource secondNetworkSecurityGroup 'Microsoft.Network/networkSecurityGroups@2023-05-01' = {
+resource secondNetworkSecurityGroup 'Microsoft.Network/networkSecurityGroups@2023-04-01' = {
   name: secondNetworkSecurityGroupName
   location: location
 }
 
-resource networkInterface 'Microsoft.Network/networkInterfaces@2023-05-01' = {
+resource networkInterface 'Microsoft.Network/networkInterfaces@2023-04-01' = {
   name: '${virtualMachineName}-nic'
   location: location
   properties: {

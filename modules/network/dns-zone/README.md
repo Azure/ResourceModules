@@ -210,17 +210,6 @@ module dnsZone './network/dns-zone/main.bicep' = {
         ttl: 3600
       }
     ]
-    aaaa: [
-      {
-        aaaaRecords: [
-          {
-            ipv6Address: '2001:0db8:85a3:0000:0000:8a2e:0370:7334'
-          }
-        ]
-        name: 'AAAA_2001_0db8_85a3_0000_0000_8a2e_0370_7334'
-        ttl: 3600
-      }
-    ]
     cname: [
       {
         cnameRecord: {
@@ -368,6 +357,17 @@ module dnsZone './network/dns-zone/main.bicep' = {
         ]
       }
     ]
+    aaaa: [
+      {
+        name: 'AAAA_2001_0db8_85a3_0000_0000_8a2e_0370_7334'
+        ttl: 3600
+        aaaaRecords: [
+          {
+            ipv6Address: '2001:0db8:85a3:0000:0000:8a2e:0370:7334'
+          }
+        ]
+      }
+    ]
   }
 }
 ```
@@ -407,19 +407,6 @@ module dnsZone './network/dns-zone/main.bicep' = {
               "roleDefinitionIdOrName": "Reader"
             }
           ],
-          "ttl": 3600
-        }
-      ]
-    },
-    "aaaa": {
-      "value": [
-        {
-          "aaaaRecords": [
-            {
-              "ipv6Address": "2001:0db8:85a3:0000:0000:8a2e:0370:7334"
-            }
-          ],
-          "name": "AAAA_2001_0db8_85a3_0000_0000_8a2e_0370_7334",
           "ttl": 3600
         }
       ]
@@ -586,6 +573,19 @@ module dnsZone './network/dns-zone/main.bicep' = {
               "value": [
                 "test"
               ]
+            }
+          ]
+        }
+      ]
+    },
+    "aaaa": {
+      "value": [
+        {
+          "name": "AAAA_2001_0db8_85a3_0000_0000_8a2e_0370_7334",
+          "ttl": 3600,
+          "aaaaRecords": [
+            {
+              "ipv6Address": "2001:0db8:85a3:0000:0000:8a2e:0370:7334"
             }
           ]
         }

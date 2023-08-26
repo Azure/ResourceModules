@@ -44,7 +44,7 @@ This module deploys an API Management Service Identity Provider.
 | `signInPolicyName` | string | `''` |  | Signin Policy Name. Only applies to AAD B2C Identity Provider. |
 | `signInTenant` | string | `''` |  | The TenantId to use instead of Common when logging into Active Directory. |
 | `signUpPolicyName` | string | `''` |  | Signup Policy Name. Only applies to AAD B2C Identity Provider. |
-| `type` | string | `'aad'` | `[aad, aadB2C, facebook, google, microsoft, twitter]` | Identity Provider Type identifier. |
+| `type` | string | `'aad'` | `[facebook, google, microsoft, twitter, aad, aadB2C]` | Identity Provider Type identifier. |
 
 
 ## Outputs

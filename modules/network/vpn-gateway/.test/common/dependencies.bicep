@@ -10,7 +10,7 @@ param vpnSiteName string
 @description('Required. The name of the virtual WAN to create.')
 param virtualWANName string
 
-resource virtualWan 'Microsoft.Network/virtualWans@2023-05-01' = {
+resource virtualWan 'Microsoft.Network/virtualWans@2023-04-01' = {
   name: virtualWANName
   location: location
 }
@@ -26,7 +26,7 @@ resource virtualHub 'Microsoft.Network/virtualHubs@2022-01-01' = {
   }
 }
 
-resource vpnSite 'Microsoft.Network/vpnSites@2023-05-01' = {
+resource vpnSite 'Microsoft.Network/vpnSites@2023-04-01' = {
   name: vpnSiteName
   location: location
   properties: {

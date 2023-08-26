@@ -16,7 +16,7 @@ This module deploys a SignalR Service SignalR.
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.Network/privateEndpoints` | [2023-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/privateEndpoints) |
+| `Microsoft.Network/privateEndpoints` | [2023-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-04-01/privateEndpoints) |
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2023-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-04-01/privateEndpoints/privateDnsZoneGroups) |
 | `Microsoft.SignalRService/signalR` | [2022-02-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.SignalRService/2022-02-01/signalR) |
 
@@ -292,8 +292,8 @@ module signalR './signal-r-service/signal-r/main.bicep' = {
     // Non-required parameters
     capacity: 2
     clientCertEnabled: false
-    disableAadAuth: false
     disableLocalAuth: true
+    disableAadAuth: false
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     kind: 'SignalR'
     location: '<location>'
@@ -376,11 +376,11 @@ module signalR './signal-r-service/signal-r/main.bicep' = {
     "clientCertEnabled": {
       "value": false
     },
-    "disableAadAuth": {
-      "value": false
-    },
     "disableLocalAuth": {
       "value": true
+    },
+    "disableAadAuth": {
+      "value": false
     },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"

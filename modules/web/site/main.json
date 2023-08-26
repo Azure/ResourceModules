@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.20.4.51522",
-      "templateHash": "12568901911667366318"
+      "templateHash": "8150384838487445049"
     },
     "name": "Web/Function Apps",
     "description": "This module deploys a Web or Function App.",
@@ -839,7 +839,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.20.4.51522",
-              "templateHash": "15425015967276131285"
+              "templateHash": "3335652793898104714"
             },
             "name": "Web/Function App Deployment Slots",
             "description": "This module deploys a Web or Function App Deployment Slot.",
@@ -1948,7 +1948,7 @@
                     "_generator": {
                       "name": "bicep",
                       "version": "0.20.4.51522",
-                      "templateHash": "15140794202935990330"
+                      "templateHash": "13560297539192628062"
                     },
                     "name": "Private Endpoints",
                     "description": "This module deploys a Private Endpoint.",
@@ -2082,7 +2082,7 @@
                     },
                     {
                       "type": "Microsoft.Network/privateEndpoints",
-                      "apiVersion": "2023-05-01",
+                      "apiVersion": "2023-04-01",
                       "name": "[parameters('name')]",
                       "location": "[parameters('location')]",
                       "tags": "[parameters('tags')]",
@@ -2456,7 +2456,7 @@
                       "metadata": {
                         "description": "The location the resource was deployed into."
                       },
-                      "value": "[reference(resourceId('Microsoft.Network/privateEndpoints', parameters('name')), '2023-05-01', 'full').location]"
+                      "value": "[reference(resourceId('Microsoft.Network/privateEndpoints', parameters('name')), '2023-04-01', 'full').location]"
                     }
                   }
                 }
@@ -2976,7 +2976,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.20.4.51522",
-              "templateHash": "15140794202935990330"
+              "templateHash": "13560297539192628062"
             },
             "name": "Private Endpoints",
             "description": "This module deploys a Private Endpoint.",
@@ -3110,7 +3110,7 @@
             },
             {
               "type": "Microsoft.Network/privateEndpoints",
-              "apiVersion": "2023-05-01",
+              "apiVersion": "2023-04-01",
               "name": "[parameters('name')]",
               "location": "[parameters('location')]",
               "tags": "[parameters('tags')]",
@@ -3484,7 +3484,7 @@
               "metadata": {
                 "description": "The location the resource was deployed into."
               },
-              "value": "[reference(resourceId('Microsoft.Network/privateEndpoints', parameters('name')), '2023-05-01', 'full').location]"
+              "value": "[reference(resourceId('Microsoft.Network/privateEndpoints', parameters('name')), '2023-04-01', 'full').location]"
             }
           }
         }

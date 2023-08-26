@@ -160,7 +160,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource publicIpAddress 'Microsoft.Network/publicIPAddresses@2023-05-01' = {
+resource publicIpAddress 'Microsoft.Network/publicIPAddresses@2023-04-01' = {
   name: name
   location: location
   tags: tags

@@ -15,7 +15,7 @@ This module deploys a VPN Gateway.
 | Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
-| `Microsoft.Network/vpnGateways` | [2023-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/vpnGateways) |
+| `Microsoft.Network/vpnGateways` | [2023-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-04-01/vpnGateways) |
 | `Microsoft.Network/vpnGateways/natRules` | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/vpnGateways/natRules) |
 | `Microsoft.Network/vpnGateways/vpnConnections` | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/vpnGateways/vpnConnections) |
 

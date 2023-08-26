@@ -50,11 +50,11 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource networkWatcher 'Microsoft.Network/networkWatchers@2023-05-01' existing = {
+resource networkWatcher 'Microsoft.Network/networkWatchers@2023-04-01' existing = {
   name: networkWatcherName
 }
 
-resource connectionMonitor 'Microsoft.Network/networkWatchers/connectionMonitors@2023-05-01' = {
+resource connectionMonitor 'Microsoft.Network//connectionMonitors@2023-04-01' = {
   name: name
   parent: networkWatcher
   tags: tags

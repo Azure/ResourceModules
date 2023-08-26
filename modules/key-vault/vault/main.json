@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.20.4.51522",
-      "templateHash": "9855425285882033812"
+      "templateHash": "13407897882748144722"
     },
     "name": "Key Vaults",
     "description": "This module deploys a Key Vault.",
@@ -1246,7 +1246,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.20.4.51522",
-              "templateHash": "15140794202935990330"
+              "templateHash": "13560297539192628062"
             },
             "name": "Private Endpoints",
             "description": "This module deploys a Private Endpoint.",
@@ -1380,7 +1380,7 @@
             },
             {
               "type": "Microsoft.Network/privateEndpoints",
-              "apiVersion": "2023-05-01",
+              "apiVersion": "2023-04-01",
               "name": "[parameters('name')]",
               "location": "[parameters('location')]",
               "tags": "[parameters('tags')]",
@@ -1754,7 +1754,7 @@
               "metadata": {
                 "description": "The location the resource was deployed into."
               },
-              "value": "[reference(resourceId('Microsoft.Network/privateEndpoints', parameters('name')), '2023-05-01', 'full').location]"
+              "value": "[reference(resourceId('Microsoft.Network/privateEndpoints', parameters('name')), '2023-04-01', 'full').location]"
             }
           }
         }

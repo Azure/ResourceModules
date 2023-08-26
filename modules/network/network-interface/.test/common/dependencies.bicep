@@ -40,12 +40,12 @@ resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-
   location: location
 }
 
-resource applicationSecurityGroup 'Microsoft.Network/applicationSecurityGroups@2022-01-01' = {
+resource applicationSecurityGroup 'Microsoft.Network/applicationSecurityGroups@2023-04-01' = {
   name: applicationSecurityGroupName
   location: location
 }
 
-resource loadBalancer 'Microsoft.Network/loadBalancers@2022-01-01' = {
+resource loadBalancer 'Microsoft.Network/loadBalancers@2023-04-01' = {
   name: loadBalancerName
   location: location
   sku: {
