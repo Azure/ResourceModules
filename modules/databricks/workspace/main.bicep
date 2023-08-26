@@ -346,7 +346,7 @@ module workspace_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (r
   }
 }]
 
-module workspace_privateEndpoints '../../network/private-endpoints/main.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
+module workspace_privateEndpoints '../../network/private-endpoint/main.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
   name: '${uniqueString(deployment().name, location)}-Databricks-PrivateEndpoint-${index}'
   params: {
     groupIds: [
