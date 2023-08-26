@@ -42,7 +42,13 @@
         "Custom_Microsoft",
         "Standard_Microsoft_AzureFrontDoor",
         "Premium_Microsoft_AzureFrontDoor",
+<<<<<<< HEAD
         "Custom_Microsoft_AzureFrontDoor"
+=======
+        "Custom_Microsoft_AzureFrontDoor",
+        "Standard_AzureFrontDoor",
+        "Premium_AzureFrontDoor"
+>>>>>>> 55da8d13d86dd011ede279a7290ab616b5b93319
       ],
       "metadata": {
         "description": "Required. The pricing tier (defines a CDN provider, feature list and rate) of the CDN profile."

@@ -23,5 +23,10 @@ module testDeployment '../../main.bicep' = {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '${namePrefix}${serviceShort}001'
     policyDefinitionId: '/providers/Microsoft.Authorization/policyDefinitions/06a78e20-9358-41c9-923c-fb736d382a4d'
+    description: '[Description] Policy Assignment at the management group scope'
+    displayName: '[Display Name] Policy Assignment at the management group scope'
+    metadata: {
+      assignedBy: 'Bicep'
+    }
   }
 }
