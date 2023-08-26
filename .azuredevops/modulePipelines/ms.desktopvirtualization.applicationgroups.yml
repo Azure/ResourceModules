@@ -29,7 +29,7 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.desktopvirtualization.applicationgroups.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/modules/desktop-virtualization/application-groups/*'
+      - '/modules/desktop-virtualization/application-group/*'
       - '/utilities/pipelines/*'
     exclude:
       - '/utilities/pipelines/deploymentRemoval/*'
@@ -39,7 +39,7 @@ variables:
   - template: '../../settings.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/modules/desktop-virtualization/application-groups'
+    value: '/modules/desktop-virtualization/application-group'
 
 stages:
   - template: /.azuredevops/pipelineTemplates/stages.module.yml

@@ -27,8 +27,8 @@ trigger:
       - main
   paths:
     include:
-      - '/modules/insights/private-link-scopes/*'
-      - '/modules/network/private-endpoints/*'
+      - '/modules/insights/private-link-scope/*'
+      - '/modules/network/private-endpoint/*'
       - '/.azuredevops/modulePipelines/ms.insights.privatelinkscopes.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
       - '/utilities/pipelines/*'
@@ -40,7 +40,7 @@ variables:
   - template: '../../settings.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/modules/insights/private-link-scopes'
+    value: '/modules/insights/private-link-scope'
 
 stages:
   - template: /.azuredevops/pipelineTemplates/stages.module.yml

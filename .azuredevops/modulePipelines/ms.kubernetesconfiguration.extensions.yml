@@ -27,8 +27,8 @@ trigger:
       - main
   paths:
     include:
-      - '/modules/kubernetes-configuration/extensions/*'
-      - '/modules/kubernetes-configuration/flux-configurations/*'
+      - '/modules/kubernetes-configuration/extension/*'
+      - '/modules/kubernetes-configuration/flux-configuration/*'
       - '/.azuredevops/modulePipelines/ms.kubernetesconfiguration.extensions.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
       - '/utilities/pipelines/*'
@@ -40,7 +40,7 @@ variables:
   - template: '../../settings.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/modules/kubernetes-configuration/extensions'
+    value: '/modules/kubernetes-configuration/extension'
 
 stages:
   - template: /.azuredevops/pipelineTemplates/stages.module.yml

@@ -27,8 +27,8 @@ trigger:
       - main
   paths:
     include:
-      - '/modules/purview/accounts/*'
-      - '/modules/network/private-endpoints/*'
+      - '/modules/purview/account/*'
+      - '/modules/network/private-endpoint/*'
       - '/.azuredevops/modulePipelines/ms.purview.accounts.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
       - '/utilities/pipelines/*'
@@ -40,7 +40,7 @@ variables:
   - template: '../../settings.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/modules/purview/accounts'
+    value: '/modules/purview/account'
 
 stages:
   - template: /.azuredevops/pipelineTemplates/stages.module.yml

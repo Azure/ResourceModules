@@ -27,8 +27,8 @@ trigger:
       - main
   paths:
     include:
-      - '/modules/relay/namespaces/*'
-      - '/modules/network/private-endpoints/*'
+      - '/modules/relay/namespace/*'
+      - '/modules/network/private-endpoint/*'
       - '/.azuredevops/modulePipelines/ms.relay.namespaces.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
       - '/utilities/pipelines/*'
@@ -40,7 +40,7 @@ variables:
   - template: '../../settings.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/modules/relay/namespaces'
+    value: '/modules/relay/namespace'
 
 stages:
   - template: /.azuredevops/pipelineTemplates/stages.module.yml

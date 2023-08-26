@@ -33,8 +33,8 @@ Optional. A hashtable parameter that contains custom tokens to be replaced in th
 .EXAMPLE
 
 $TestModuleLocallyInput = @{
-    TemplateFilePath           = 'C:\Network\routeTables\main.bicep'
-    ModuleTestFilePath          = 'C:\Network\routeTables\.test\parameters.json'
+    TemplateFilePath           = 'C:\network\route-table\main.bicep'
+    ModuleTestFilePath          = 'C:\network\route-table\.test\parameters.json'
     PesterTest                 = $false
     DeploymentTest             = $false
     ValidationTest             = $true
@@ -56,8 +56,8 @@ Run a Test-Az*Deployment using a specific parameter-template combination with th
 .EXAMPLE
 
 $TestModuleLocallyInput = @{
-    TemplateFilePath           = 'C:\Network\routeTables\main.bicep'
-    ModuleTestFilePath          = 'C:\Network\routeTables\.test\common\main.test.bicep'
+    TemplateFilePath           = 'C:\network\route-table\main.bicep'
+    ModuleTestFilePath          = 'C:\network\route-table\.test\common\main.test.bicep'
     PesterTest                 = $false
     DeploymentTest             = $false
     ValidationTest             = $true
@@ -79,7 +79,7 @@ Run a Test-Az*Deployment using a test file with the provided tokens
 .EXAMPLE
 
 $TestModuleLocallyInput = @{
-    TemplateFilePath           = 'C:\Network\routeTables\main.bicep'
+    TemplateFilePath           = 'C:\network\route-table\main.bicep'
     PesterTest                 = $true
     DeploymentTest             = $false
     ValidationTest             = $true
@@ -101,7 +101,7 @@ Run all Pester tests for a given template and a Test-Az*Deployment using each te
 .EXAMPLE
 
 $TestModuleLocallyInput = @{
-    TemplateFilePath           = 'C:\Network\routeTables\main.bicep'
+    TemplateFilePath           = 'C:\network\route-table\main.bicep'
     PesterTest                 = $true
 }
 Test-ModuleLocally @TestModuleLocallyInput -Verbose
@@ -111,7 +111,7 @@ Run all Pester tests for the given template file
 .EXAMPLE
 
 $TestModuleLocallyInput = @{
-    TemplateFilePath           = 'C:\Network\routeTables\main.bicep'
+    TemplateFilePath           = 'C:\network\route-table\main.bicep'
     PesterTest                 = $true
     ValidateOrDeployParameters = @{
         SubscriptionId    = '00000000-0000-0000-0000-000000000000'
@@ -180,12 +180,12 @@ function Test-ModuleLocally {
         }
 
         # Construct Token Configuration Input
-        $GlobalVariablesObject = Get-Content -Path (Join-Path $repoRootPath 'settings.yml') | ConvertFrom-Yaml -ErrorAction Stop | Select-Object -ExpandProperty variables
+        $GlobalVariablesObject = Get-Content -Path (Join-Path $repoRootPath 'settings.yml') | ConvertFrom-Yaml -ErrorAction Stop | Select-Object -ExpandProperty 'variables'
         $tokenConfiguration = @{
             FilePathList = $moduleTestFiles
             Tokens       = @{}
-            TokenPrefix  = $GlobalVariablesObject | Select-Object -ExpandProperty tokenPrefix
-            TokenSuffix  = $GlobalVariablesObject | Select-Object -ExpandProperty tokenSuffix
+            TokenPrefix  = $GlobalVariablesObject | Select-Object -ExpandProperty 'tokenPrefix'
+            TokenSuffix  = $GlobalVariablesObject | Select-Object -ExpandProperty 'tokenSuffix'
         }
 
         # Add Enforced Tokens
