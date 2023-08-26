@@ -1144,6 +1144,13 @@ module virtualMachine './compute/virtual-machine/main.bicep' = {
     enableAutomaticUpdates: true
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     encryptionAtHost: false
+    extensionAadJoinConfig: {
+      enabled: true
+      tags: {
+        Environment: 'Non-Prod'
+        Role: 'DeploymentValidation'
+      }
+    }
     extensionAzureDiskEncryptionConfig: {
       enabled: true
       settings: {
@@ -1199,13 +1206,6 @@ module virtualMachine './compute/virtual-machine/main.bicep' = {
       }
     }
     extensionNetworkWatcherAgentConfig: {
-      enabled: true
-      tags: {
-        Environment: 'Non-Prod'
-        Role: 'DeploymentValidation'
-      }
-    }
-    extensionAadJoinConfig: {
       enabled: true
       tags: {
         Environment: 'Non-Prod'
@@ -1395,6 +1395,15 @@ module virtualMachine './compute/virtual-machine/main.bicep' = {
     "encryptionAtHost": {
       "value": false
     },
+    "extensionAadJoinConfig": {
+      "value": {
+        "enabled": true,
+        "tags": {
+          "Environment": "Non-Prod",
+          "Role": "DeploymentValidation"
+        }
+      }
+    },
     "extensionAzureDiskEncryptionConfig": {
       "value": {
         "enabled": true,
@@ -1462,15 +1471,6 @@ module virtualMachine './compute/virtual-machine/main.bicep' = {
       }
     },
     "extensionNetworkWatcherAgentConfig": {
-      "value": {
-        "enabled": true,
-        "tags": {
-          "Environment": "Non-Prod",
-          "Role": "DeploymentValidation"
-        }
-      }
-    },
-    "extensionAadJoinConfig": {
       "value": {
         "enabled": true,
         "tags": {
@@ -1945,6 +1945,13 @@ module virtualMachine './compute/virtual-machine/main.bicep' = {
     enableAutomaticUpdates: true
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     encryptionAtHost: false
+    extensionAadJoinConfig: {
+      enabled: true
+      tags: {
+        Environment: 'Non-Prod'
+        Role: 'DeploymentValidation'
+      }
+    }
     extensionAntiMalwareConfig: {
       enabled: true
       settings: {
@@ -2022,13 +2029,6 @@ module virtualMachine './compute/virtual-machine/main.bicep' = {
       }
     }
     extensionNetworkWatcherAgentConfig: {
-      enabled: true
-      tags: {
-        Environment: 'Non-Prod'
-        Role: 'DeploymentValidation'
-      }
-    }
-    extensionAadJoinConfig: {
       enabled: true
       tags: {
         Environment: 'Non-Prod'
@@ -2213,6 +2213,15 @@ module virtualMachine './compute/virtual-machine/main.bicep' = {
     "encryptionAtHost": {
       "value": false
     },
+    "extensionAadJoinConfig": {
+      "value": {
+        "enabled": true,
+        "tags": {
+          "Environment": "Non-Prod",
+          "Role": "DeploymentValidation"
+        }
+      }
+    },
     "extensionAntiMalwareConfig": {
       "value": {
         "enabled": true,
@@ -2304,15 +2313,6 @@ module virtualMachine './compute/virtual-machine/main.bicep' = {
       }
     },
     "extensionNetworkWatcherAgentConfig": {
-      "value": {
-        "enabled": true,
-        "tags": {
-          "Environment": "Non-Prod",
-          "Role": "DeploymentValidation"
-        }
-      }
-    },
-    "extensionAadJoinConfig": {
       "value": {
         "enabled": true,
         "tags": {

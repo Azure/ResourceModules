@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.20.4.51522",
-      "templateHash": "17971855815470888768"
+      "templateHash": "16260888276391715225"
     },
     "name": "Virtual Machines",
     "description": "This module deploys a Virtual Machine with one or multiple NICs and optionally one or multiple public IPs.",
@@ -4179,14 +4179,14 @@
       },
       "dependsOn": [
         "[resourceId('Microsoft.Compute/virtualMachines', parameters('name'))]",
+        "[resourceId('Microsoft.Resources/deployments', format('{0}-VM-AADLogin', uniqueString(deployment().name, parameters('location'))))]",
         "[resourceId('Microsoft.Resources/deployments', format('{0}-VM-CustomScriptExtension', uniqueString(deployment().name, parameters('location'))))]",
         "[resourceId('Microsoft.Resources/deployments', format('{0}-VM-DependencyAgent', uniqueString(deployment().name, parameters('location'))))]",
         "[resourceId('Microsoft.Resources/deployments', format('{0}-VM-DesiredStateConfiguration', uniqueString(deployment().name, parameters('location'))))]",
         "[resourceId('Microsoft.Resources/deployments', format('{0}-VM-DomainJoin', uniqueString(deployment().name, parameters('location'))))]",
         "[resourceId('Microsoft.Resources/deployments', format('{0}-VM-MicrosoftAntiMalware', uniqueString(deployment().name, parameters('location'))))]",
         "[resourceId('Microsoft.Resources/deployments', format('{0}-VM-MicrosoftMonitoringAgent', uniqueString(deployment().name, parameters('location'))))]",
-        "[resourceId('Microsoft.Resources/deployments', format('{0}-VM-NetworkWatcherAgent', uniqueString(deployment().name, parameters('location'))))]",
-        "[resourceId('Microsoft.Resources/deployments', format('{0}-VM-AADLogin', uniqueString(deployment().name, parameters('location'))))]"
+        "[resourceId('Microsoft.Resources/deployments', format('{0}-VM-NetworkWatcherAgent', uniqueString(deployment().name, parameters('location'))))]"
       ]
     },
     {

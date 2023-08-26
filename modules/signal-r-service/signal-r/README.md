@@ -292,8 +292,8 @@ module signalR './signal-r-service/signal-r/main.bicep' = {
     // Non-required parameters
     capacity: 2
     clientCertEnabled: false
-    disableLocalAuth: true
     disableAadAuth: false
+    disableLocalAuth: true
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     kind: 'SignalR'
     location: '<location>'
@@ -376,11 +376,11 @@ module signalR './signal-r-service/signal-r/main.bicep' = {
     "clientCertEnabled": {
       "value": false
     },
-    "disableLocalAuth": {
-      "value": true
-    },
     "disableAadAuth": {
       "value": false
+    },
+    "disableLocalAuth": {
+      "value": true
     },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"

@@ -398,8 +398,8 @@ module webPubSub './signal-r-service/web-pub-sub/main.bicep' = {
     // Non-required parameters
     capacity: 2
     clientCertEnabled: false
-    disableLocalAuth: true
     disableAadAuth: false
+    disableLocalAuth: true
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     location: '<location>'
     lock: 'CanNotDelete'
@@ -482,11 +482,11 @@ module webPubSub './signal-r-service/web-pub-sub/main.bicep' = {
     "clientCertEnabled": {
       "value": false
     },
-    "disableLocalAuth": {
-      "value": true
-    },
     "disableAadAuth": {
       "value": false
+    },
+    "disableLocalAuth": {
+      "value": true
     },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"

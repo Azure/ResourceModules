@@ -56,7 +56,7 @@ This module deploys a Storage Account.
 | :-- | :-- | :-- | :-- | :-- |
 | `allowBlobPublicAccess` | bool | `False` |  | Indicates whether public access is enabled for all blobs or containers in the storage account. For security reasons, it is recommended to set it to false. |
 | `allowCrossTenantReplication` | bool | `True` |  | Allow or disallow cross AAD tenant object replication. |
-| `allowedCopyScope` | string | `''` | `['', PrivateLink, AAD]` | Restrict copy to and from Storage Accounts within an AAD tenant or with Private Links to the same VNet. |
+| `allowedCopyScope` | string | `''` | `['', AAD, PrivateLink]` | Restrict copy to and from Storage Accounts within an AAD tenant or with Private Links to the same VNet. |
 | `allowSharedKeyAccess` | bool | `True` |  | Indicates whether the storage account permits requests to be authorized with the account access key via Shared Key. If false, then all requests, including shared access signatures, must be authorized with Azure Active Directory (Azure AD). The default value is null, which is equivalent to true. |
 | `azureFilesIdentityBasedAuthentication` | object | `{object}` |  | Provides the identity based authentication settings for Azure Files. |
 | `blobServices` | object | `{object}` |  | Blob service and containers to deploy. |
