@@ -293,10 +293,6 @@ var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   category: metric
   timeGrain: null
   enabled: true
-  retentionPolicy: {
-    enabled: true
-    days: diagnosticLogsRetentionInDays
-  }
 }]
 
 var publicKeysFormatted = [for publicKey in publicKeys: {

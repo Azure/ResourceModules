@@ -197,20 +197,12 @@ param publicIpDiagnosticSettingsName string = ''
 var virtualNetworkGatewayDiagnosticsLogsSpecified = [for category in filter(virtualNetworkGatewaydiagnosticLogCategoriesToEnable, item => item != 'allLogs'): {
   category: category
   enabled: true
-  retentionPolicy: {
-    enabled: true
-    days: diagnosticLogsRetentionInDays
-  }
 }]
 
 var virtualNetworkGatewayDiagnosticsLogs = contains(virtualNetworkGatewaydiagnosticLogCategoriesToEnable, 'allLogs') ? [
   {
     categoryGroup: 'allLogs'
     enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
   }
 ] : virtualNetworkGatewayDiagnosticsLogsSpecified
 
@@ -218,10 +210,6 @@ var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   category: metric
   timeGrain: null
   enabled: true
-  retentionPolicy: {
-    enabled: true
-    days: diagnosticLogsRetentionInDays
-  }
 }]
 
 // Other Variables

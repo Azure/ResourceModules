@@ -93,10 +93,6 @@ param diagnosticSettingsName string = ''
 var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
   category: category
   enabled: true
-  retentionPolicy: {
-    enabled: true
-    days: diagnosticLogsRetentionInDays
-  }
 }]
 
 var identityType = systemAssignedIdentity ? (!empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
