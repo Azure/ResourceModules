@@ -57,6 +57,7 @@ module testDeployment '../../subscription/main.bicep' = {
     metadata: {
       category: 'Security'
       version: '1.0'
+      assignedBy: 'Bicep'
     }
     nonComplianceMessages: [
       {
