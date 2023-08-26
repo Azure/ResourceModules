@@ -535,7 +535,6 @@ module site './web/site/main.bicep' = {
     }
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
-    diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
@@ -856,7 +855,6 @@ module site './web/site/main.bicep' = {
     ]
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
-    diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
@@ -904,7 +902,6 @@ module site './web/site/main.bicep' = {
       {
         diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
         diagnosticEventHubName: '<diagnosticEventHubName>'
-        diagnosticLogsRetentionInDays: 7
         diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
         diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
         hybridConnectionRelays: [

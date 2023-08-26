@@ -488,7 +488,6 @@ module workspace './machine-learning-services/workspace/main.bicep' = {
     description: 'The cake is a lie.'
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
-    diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     discoveryUrl: 'http://example.com'

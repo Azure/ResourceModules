@@ -113,7 +113,6 @@ module testDeployment '../../main.bicep' = {
         capacity: 0
         maxSizeBytes: 34359738368
         licenseType: 'LicenseIncluded'
-        diagnosticLogsRetentionInDays: 7
         diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
         diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
         diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId

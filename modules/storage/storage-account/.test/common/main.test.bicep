@@ -121,7 +121,6 @@ module testDeployment '../../main.bicep' = {
       }
     ]
     blobServices: {
-      diagnosticLogsRetentionInDays: 7
       diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
       diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
       diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
@@ -160,7 +159,6 @@ module testDeployment '../../main.bicep' = {
       deleteRetentionPolicyDays: 9
     }
     fileServices: {
-      diagnosticLogsRetentionInDays: 7
       diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
       diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
       diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
@@ -187,7 +185,6 @@ module testDeployment '../../main.bicep' = {
       ]
     }
     tableServices: {
-      diagnosticLogsRetentionInDays: 7
       diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
       diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
       diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
@@ -198,7 +195,6 @@ module testDeployment '../../main.bicep' = {
       ]
     }
     queueServices: {
-      diagnosticLogsRetentionInDays: 7
       diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
       diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
       diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
@@ -240,7 +236,6 @@ module testDeployment '../../main.bicep' = {
         principalType: 'ServicePrincipal'
       }
     ]
-    diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
     diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
     diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId

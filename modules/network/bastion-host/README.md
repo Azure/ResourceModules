@@ -320,7 +320,6 @@ module bastionHost './network/bastion-host/main.bicep' = {
     bastionSubnetPublicIpResourceId: '<bastionSubnetPublicIpResourceId>'
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
-    diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     disableCopyPaste: true

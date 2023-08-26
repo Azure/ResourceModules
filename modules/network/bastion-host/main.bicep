@@ -159,7 +159,6 @@ module publicIPAddress '../public-ip-address/main.bicep' = if (empty(bastionSubn
       'AllMetrics'
     ]
     diagnosticStorageAccountId: diagnosticStorageAccountId
-    diagnosticLogsRetentionInDays: diagnosticLogsRetentionInDays
     diagnosticWorkspaceId: diagnosticWorkspaceId
     diagnosticEventHubAuthorizationRuleId: diagnosticEventHubAuthorizationRuleId
     diagnosticEventHubName: diagnosticEventHubName

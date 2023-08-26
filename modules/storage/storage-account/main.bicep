@@ -410,7 +410,6 @@ module storageAccount_blobServices 'blob-service/main.bicep' = if (!empty(blobSe
     lastAccessTimeTrackingPolicyEnable: contains(blobServices, 'lastAccessTimeTrackingPolicyEnable') ? blobServices.lastAccessTimeTrackingPolicyEnable : false
     restorePolicyEnabled: contains(blobServices, 'restorePolicyEnabled') ? blobServices.restorePolicyEnabled : false
     restorePolicyDays: contains(blobServices, 'restorePolicyDays') ? blobServices.restorePolicyDays : 6
-    diagnosticLogsRetentionInDays: contains(blobServices, 'diagnosticLogsRetentionInDays') ? blobServices.diagnosticLogsRetentionInDays : 365
     diagnosticStorageAccountId: contains(blobServices, 'diagnosticStorageAccountId') ? blobServices.diagnosticStorageAccountId : ''
     diagnosticEventHubAuthorizationRuleId: contains(blobServices, 'diagnosticEventHubAuthorizationRuleId') ? blobServices.diagnosticEventHubAuthorizationRuleId : ''
     diagnosticEventHubName: contains(blobServices, 'diagnosticEventHubName') ? blobServices.diagnosticEventHubName : ''
@@ -426,7 +425,6 @@ module storageAccount_fileServices 'file-service/main.bicep' = if (!empty(fileSe
   name: '${uniqueString(deployment().name, location)}-Storage-FileServices'
   params: {
     storageAccountName: storageAccount.name
-    diagnosticLogsRetentionInDays: contains(fileServices, 'diagnosticLogsRetentionInDays') ? fileServices.diagnosticLogsRetentionInDays : 365
     diagnosticStorageAccountId: contains(fileServices, 'diagnosticStorageAccountId') ? fileServices.diagnosticStorageAccountId : ''
     diagnosticEventHubAuthorizationRuleId: contains(fileServices, 'diagnosticEventHubAuthorizationRuleId') ? fileServices.diagnosticEventHubAuthorizationRuleId : ''
     diagnosticEventHubName: contains(fileServices, 'diagnosticEventHubName') ? fileServices.diagnosticEventHubName : ''
@@ -448,7 +446,6 @@ module storageAccount_queueServices 'queue-service/main.bicep' = if (!empty(queu
   name: '${uniqueString(deployment().name, location)}-Storage-QueueServices'
   params: {
     storageAccountName: storageAccount.name
-    diagnosticLogsRetentionInDays: contains(queueServices, 'diagnosticLogsRetentionInDays') ? queueServices.diagnosticLogsRetentionInDays : 365
     diagnosticStorageAccountId: contains(queueServices, 'diagnosticStorageAccountId') ? queueServices.diagnosticStorageAccountId : ''
     diagnosticEventHubAuthorizationRuleId: contains(queueServices, 'diagnosticEventHubAuthorizationRuleId') ? queueServices.diagnosticEventHubAuthorizationRuleId : ''
     diagnosticEventHubName: contains(queueServices, 'diagnosticEventHubName') ? queueServices.diagnosticEventHubName : ''
@@ -465,7 +462,6 @@ module storageAccount_tableServices 'table-service/main.bicep' = if (!empty(tabl
   name: '${uniqueString(deployment().name, location)}-Storage-TableServices'
   params: {
     storageAccountName: storageAccount.name
-    diagnosticLogsRetentionInDays: contains(tableServices, 'diagnosticLogsRetentionInDays') ? tableServices.diagnosticLogsRetentionInDays : 365
     diagnosticStorageAccountId: contains(tableServices, 'diagnosticStorageAccountId') ? tableServices.diagnosticStorageAccountId : ''
     diagnosticEventHubAuthorizationRuleId: contains(tableServices, 'diagnosticEventHubAuthorizationRuleId') ? tableServices.diagnosticEventHubAuthorizationRuleId : ''
     diagnosticEventHubName: contains(tableServices, 'diagnosticEventHubName') ? tableServices.diagnosticEventHubName : ''

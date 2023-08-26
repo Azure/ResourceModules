@@ -300,7 +300,6 @@ module managedInstance_databases 'database/main.bicep' = [for (database, index) 
     catalogCollation: contains(database, 'catalogCollation') ? database.catalogCollation : 'SQL_Latin1_General_CP1_CI_AS'
     collation: contains(database, 'collation') ? database.collation : 'SQL_Latin1_General_CP1_CI_AS'
     createMode: contains(database, 'createMode') ? database.createMode : 'Default'
-    diagnosticLogsRetentionInDays: contains(database, 'diagnosticLogsRetentionInDays') ? database.diagnosticLogsRetentionInDays : 365
     diagnosticStorageAccountId: contains(database, 'diagnosticStorageAccountId') ? database.diagnosticStorageAccountId : ''
     diagnosticEventHubAuthorizationRuleId: contains(database, 'diagnosticEventHubAuthorizationRuleId') ? database.diagnosticEventHubAuthorizationRuleId : ''
     diagnosticEventHubName: contains(database, 'diagnosticEventHubName') ? database.diagnosticEventHubName : ''

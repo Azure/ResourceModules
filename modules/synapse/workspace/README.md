@@ -366,7 +366,6 @@ module workspace './synapse/workspace/main.bicep' = {
       'SynapseLinkEvent'
       'SynapseRbacOperations'
     ]
-    diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'

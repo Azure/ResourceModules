@@ -115,7 +115,6 @@ module publicIPAddress '../public-ip-address/main.bicep' = if (natGatewayPublicI
     diagnosticLogCategoriesToEnable: diagnosticLogCategoriesToEnable
     diagnosticMetricsToEnable: diagnosticMetricsToEnable
     diagnosticSettingsName: !empty(diagnosticSettingsName) ? diagnosticSettingsName : (!empty(natGatewayPipName) ? '${natGatewayPipName}-diagnosticSettings' : '${name}-pip-diagnosticSettings')
-    diagnosticLogsRetentionInDays: diagnosticLogsRetentionInDays
     diagnosticStorageAccountId: diagnosticStorageAccountId
     diagnosticWorkspaceId: diagnosticWorkspaceId
     diagnosticEventHubAuthorizationRuleId: diagnosticEventHubAuthorizationRuleId

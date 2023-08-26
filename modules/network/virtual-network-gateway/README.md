@@ -440,7 +440,6 @@ module virtualNetworkGateway './network/virtual-network-gateway/main.bicep' = {
     // Non-required parameters
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
-    diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     domainNameLabel: [
@@ -567,7 +566,6 @@ module virtualNetworkGateway './network/virtual-network-gateway/main.bicep' = {
     allowRemoteVnetTraffic: true
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
-    diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     disableIPSecReplayProtection: true

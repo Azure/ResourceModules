@@ -184,7 +184,6 @@ module server './analysis-services/server/main.bicep' = {
     // Non-required parameters
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
-    diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
@@ -291,7 +290,6 @@ module server './analysis-services/server/main.bicep' = {
       'Engine'
       'Service'
     ]
-    diagnosticLogsRetentionInDays: 7
     diagnosticMetricsToEnable: [
       'AllMetrics'
     ]

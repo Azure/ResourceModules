@@ -119,7 +119,6 @@ module testDeployment '../../main.bicep' = {
       }
     ]
     publicIPResourceID: nestedDependencies.outputs.publicIPResourceId
-    diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
     diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
     diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId

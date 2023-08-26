@@ -498,7 +498,6 @@ Order the given JSON object alphabetically. Would result into:
 
 @{
     name: 'carml'
-    diagnosticLogsRetentionInDays: 7
     lock: 'CanNotDelete'
 }
 #>
@@ -792,7 +791,6 @@ Convert the given JSONParameters object with one required parameter to a formatt
     // Required parameters
     name: 'carml'
     // Non-required parameters
-    diagnosticLogsRetentionInDays: 7
     lock: 'CanNotDelete'
 '
 #>

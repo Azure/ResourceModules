@@ -251,7 +251,6 @@ module account './purview/account/main.bicep' = {
     diagnosticLogCategoriesToEnable: [
       'allLogs'
     ]
-    diagnosticLogsRetentionInDays: 7
     diagnosticMetricsToEnable: [
       'AllMetrics'
     ]

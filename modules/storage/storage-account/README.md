@@ -468,13 +468,11 @@ module storageAccount './storage/storage-account/main.bicep' = {
       deleteRetentionPolicyEnabled: true
       diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
       diagnosticEventHubName: '<diagnosticEventHubName>'
-      diagnosticLogsRetentionInDays: 7
       diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
       diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     }
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
-    diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
@@ -484,7 +482,6 @@ module storageAccount './storage/storage-account/main.bicep' = {
     fileServices: {
       diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
       diagnosticEventHubName: '<diagnosticEventHubName>'
-      diagnosticLogsRetentionInDays: 7
       diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
       diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
       shares: [
@@ -561,7 +558,6 @@ module storageAccount './storage/storage-account/main.bicep' = {
     queueServices: {
       diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
       diagnosticEventHubName: '<diagnosticEventHubName>'
-      diagnosticLogsRetentionInDays: 7
       diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
       diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
       queues: [
@@ -603,7 +599,6 @@ module storageAccount './storage/storage-account/main.bicep' = {
     tableServices: {
       diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
       diagnosticEventHubName: '<diagnosticEventHubName>'
-      diagnosticLogsRetentionInDays: 7
       diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
       diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
       tables: [
@@ -1116,7 +1111,6 @@ module storageAccount './storage/storage-account/main.bicep' = {
     allowBlobPublicAccess: false
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
-    diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'

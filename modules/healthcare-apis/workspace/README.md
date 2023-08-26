@@ -114,7 +114,6 @@ fhirServices: [
         corsMaxAge: 600
         corsAllowCredentials: false
         location: location
-        diagnosticLogsRetentionInDays: 7
         diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
         diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
         diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
@@ -198,7 +197,6 @@ dicomServices: [
         corsMaxAge: 600
         corsAllowCredentials: false
         location: location
-        diagnosticLogsRetentionInDays: 7
         diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
         diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
         diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
@@ -275,7 +273,6 @@ iotConnectors: [
         corsMaxAge: 600
         corsAllowCredentials: false
         location: location
-        diagnosticLogsRetentionInDays: 7
         diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
         diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
         diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
@@ -447,7 +444,6 @@ module workspace './healthcare-apis/workspace/main.bicep' = {
         ]
         diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
         diagnosticEventHubName: '<diagnosticEventHubName>'
-        diagnosticLogsRetentionInDays: 7
         diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
         diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
         enableDefaultTelemetry: '<enableDefaultTelemetry>'
@@ -477,7 +473,6 @@ module workspace './healthcare-apis/workspace/main.bicep' = {
         ]
         diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
         diagnosticEventHubName: '<diagnosticEventHubName>'
-        diagnosticLogsRetentionInDays: 7
         diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
         diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
         enableDefaultTelemetry: '<enableDefaultTelemetry>'
