@@ -121,6 +121,7 @@ module testDeployment '../../main.bicep' = {
       }
     ]
     blobServices: {
+      lastAccessTimeTrackingPolicyEnabled: true
       diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
       diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
       diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId

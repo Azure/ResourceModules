@@ -49,7 +49,7 @@ param deleteRetentionPolicyAllowPermanentDelete bool = false
 param isVersioningEnabled bool = true
 
 @description('Optional. The blob service property to configure last access time based tracking policy. When set to true last access time based tracking is enabled.')
-param lastAccessTimeTrackingPolicyEnable bool = false
+param lastAccessTimeTrackingPolicyEnabled bool = false
 
 @description('Optional. The blob service properties for blob restore policy. If point-in-time restore is enabled, then versioning, change feed, and blob soft delete must also be enabled.')
 param restorePolicyEnabled bool = true
@@ -163,9 +163,9 @@ resource blobServices 'Microsoft.Storage/storageAccounts/blobServices@2022-09-01
     }
     isVersioningEnabled: isVersioningEnabled
     lastAccessTimeTrackingPolicy: {
-      enable: lastAccessTimeTrackingPolicyEnable
-      name: lastAccessTimeTrackingPolicyEnable == true ? 'AccessTimeTracking' : null
-      trackingGranularityInDays: lastAccessTimeTrackingPolicyEnable == true ? 1 : null
+      enable: lastAccessTimeTrackingPolicyEnabled
+      name: lastAccessTimeTrackingPolicyEnabled == true ? 'AccessTimeTracking' : null
+      trackingGranularityInDays: lastAccessTimeTrackingPolicyEnabled == true ? 1 : null
     }
     restorePolicy: {
       enabled: restorePolicyEnabled

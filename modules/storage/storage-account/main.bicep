@@ -371,6 +371,9 @@ module storageAccount_managementPolicies 'management-policy/main.bicep' = if (!e
     rules: managementPolicyRules
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
+  dependsOn: [
+    storageAccount_blobServices // To ensure the lastAccessTimeTrackingPolicy is set first (if used in rule)
+  ]
 }
 
 // SFTP user settings
@@ -407,7 +410,7 @@ module storageAccount_blobServices 'blob-service/main.bicep' = if (!empty(blobSe
     deleteRetentionPolicyEnabled: contains(blobServices, 'deleteRetentionPolicyEnabled') ? blobServices.deleteRetentionPolicyEnabled : false
     deleteRetentionPolicyDays: contains(blobServices, 'deleteRetentionPolicyDays') ? blobServices.deleteRetentionPolicyDays : 7
     isVersioningEnabled: contains(blobServices, 'isVersioningEnabled') ? blobServices.isVersioningEnabled : false
-    lastAccessTimeTrackingPolicyEnable: contains(blobServices, 'lastAccessTimeTrackingPolicyEnable') ? blobServices.lastAccessTimeTrackingPolicyEnable : false
+    lastAccessTimeTrackingPolicyEnabled: contains(blobServices, 'lastAccessTimeTrackingPolicyEnabled') ? blobServices.lastAccessTimeTrackingPolicyEnabled : false
     restorePolicyEnabled: contains(blobServices, 'restorePolicyEnabled') ? blobServices.restorePolicyEnabled : false
     restorePolicyDays: contains(blobServices, 'restorePolicyDays') ? blobServices.restorePolicyDays : 6
     diagnosticStorageAccountId: contains(blobServices, 'diagnosticStorageAccountId') ? blobServices.diagnosticStorageAccountId : ''
