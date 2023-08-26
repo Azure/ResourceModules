@@ -1,5 +1,4 @@
-﻿#region Helper functions
-<#
+﻿<#
 .SYNOPSIS
 Get a list of all resources (provider + service) in the given template content
 

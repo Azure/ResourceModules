@@ -27,8 +27,8 @@ on:
     branches:
       - main
     paths:
-      - 'modules/insights/private-link-scopes/**'
-      - 'modules/network/private-endpoints/**'
+      - 'modules/insights/private-link-scope/**'
+      - 'modules/network/private-endpoint/**'
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.insights.privatelinkscopes.yml'
@@ -37,7 +37,7 @@ on:
       - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/insights/private-link-scopes'
+  modulePath: 'modules/insights/private-link-scope'
   workflowPath: '.github/workflows/ms.insights.privatelinkscopes.yml'
 
 concurrency:

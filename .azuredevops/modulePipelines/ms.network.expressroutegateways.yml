@@ -39,7 +39,7 @@ variables:
   - template: '../../settings.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/modules/network/expressroutegateway'
+    value: '/modules/network/express-route-gateway'
 
 stages:
   - template: /.azuredevops/pipelineTemplates/stages.module.yml

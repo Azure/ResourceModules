@@ -27,8 +27,8 @@ trigger:
       - main
   paths:
     include:
-      - '/modules/recovery-services/vaults/*'
-      - '/modules/network/private-endpoints/*'
+      - '/modules/recovery-services/vault/*'
+      - '/modules/network/private-endpoint/*'
       - '/.azuredevops/modulePipelines/ms.recoveryservices.vaults.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
       - '/utilities/pipelines/*'
@@ -40,7 +40,7 @@ variables:
   - template: '../../settings.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/modules/recovery-services/vaults'
+    value: '/modules/recovery-services/vault'
 
 stages:
   - template: /.azuredevops/pipelineTemplates/stages.module.yml
