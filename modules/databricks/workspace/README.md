@@ -358,7 +358,7 @@ This section gives you an overview of all local-referenced module files (i.e., o
 
 | Reference | Type |
 | :-- | :-- |
-| `network/private-endpoints` | Local reference |
+| `network/private-endpoint` | Local reference |
 
 ## Deployment examples
 
@@ -615,7 +615,7 @@ module workspace './databricks/workspace/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module workspaces './databricks/workspaces/main.bicep' = {
+module workspace './databricks/workspace/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-dwmin'
   params: {
     // Required parameters
