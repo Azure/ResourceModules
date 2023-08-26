@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "5582726599079259116"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "11270733037529026157"
+    },
+    "name": "Azure NetApp Files Capacity Pools",
+    "description": "This module deploys an Azure NetApp Files Capacity Pool.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "netAppAccountName": {
@@ -176,9 +179,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "4861424102878838813"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "3615004731209837456"
+            },
+            "name": "Azure NetApp Files Capacity Pool Volumes",
+            "description": "This module deploys an Azure NetApp Files Capacity Pool Volume.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "netAppAccountName": {
@@ -330,8 +336,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.19.5.34762",
-                      "templateHash": "2805945634543671808"
+                      "version": "0.20.4.51522",
+                      "templateHash": "6579931820257793193"
                     }
                   },
                   "parameters": {
@@ -515,8 +521,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "3662901243445895322"
+              "version": "0.20.4.51522",
+              "templateHash": "6567527079478034080"
             }
           },
           "parameters": {

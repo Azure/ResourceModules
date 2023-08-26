@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "2504999546810498056"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "4090587598908950651"
+    },
+    "name": "CDN Profiles",
+    "description": "This module deploys a CDN Profile.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
@@ -24,9 +27,6 @@
     },
     "sku": {
       "type": "string",
-      "metadata": {
-        "description": "Required. The pricing tier (defines a CDN provider, feature list and rate) of the CDN profile."
-      },
       "allowedValues": [
         "Standard_Verizon",
         "Standard_Akamai",
@@ -43,7 +43,10 @@
         "Standard_Microsoft_AzureFrontDoor",
         "Premium_Microsoft_AzureFrontDoor",
         "Custom_Microsoft_AzureFrontDoor"
-      ]
+      ],
+      "metadata": {
+        "description": "Required. The pricing tier (defines a CDN provider, feature list and rate) of the CDN profile."
+      }
     },
     "originResponseTimeoutSeconds": {
       "type": "int",
@@ -76,14 +79,14 @@
     "lock": {
       "type": "string",
       "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Specify the type of lock."
-      },
       "allowedValues": [
         "",
         "CanNotDelete",
         "ReadOnly"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Specify the type of lock."
+      }
     },
     "roleAssignments": {
       "type": "array",
@@ -179,8 +182,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "2357200278770917127"
+              "version": "0.20.4.51522",
+              "templateHash": "6086619018554166705"
             }
           },
           "parameters": {
@@ -332,9 +335,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "15681386879611412018"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "17735453478116875585"
+            },
+            "name": "CDN Profiles Endpoints",
+            "description": "This module deploys a CDN Profile Endpoint.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "profileName": {
@@ -450,9 +456,12 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.19.5.34762",
-                      "templateHash": "16929017469298087182"
-                    }
+                      "version": "0.20.4.51522",
+                      "templateHash": "16752439019054773130"
+                    },
+                    "name": "CDN Profiles Endpoints Origins",
+                    "description": "This module deploys a CDN Profile Endpoint Origin.",
+                    "owner": "Azure/module-maintainers"
                   },
                   "parameters": {
                     "endpointName": {

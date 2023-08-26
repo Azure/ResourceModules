@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "9359283397847619664"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "838675247784542627"
+    },
+    "name": "Virtual Machine Image Templates",
+    "description": "This module deploys a Virtual Machine Image Template that can be consumed by Azure Image Builder (AIB).",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
@@ -38,8 +41,8 @@
     "buildTimeoutInMinutes": {
       "type": "int",
       "defaultValue": 0,
-      "maxValue": 960,
       "minValue": 0,
+      "maxValue": 960,
       "metadata": {
         "description": "Optional. Image build timeout in minutes. Allowed values: 0-960. 0 means the default 240 minutes."
       }
@@ -129,13 +132,13 @@
     "storageAccountType": {
       "type": "string",
       "defaultValue": "Standard_LRS",
-      "metadata": {
-        "description": "Optional. Storage account type to be used to store the image in the Azure Compute Gallery."
-      },
       "allowedValues": [
         "Standard_LRS",
         "Standard_ZRS"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Storage account type to be used to store the image in the Azure Compute Gallery."
+      }
     },
     "stagingResourceGroup": {
       "type": "string",
@@ -147,14 +150,14 @@
     "lock": {
       "type": "string",
       "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Specify the type of lock."
-      },
       "allowedValues": [
         "",
         "CanNotDelete",
         "ReadOnly"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Specify the type of lock."
+      }
     },
     "tags": {
       "type": "object",
@@ -334,8 +337,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "13408820321849136528"
+              "version": "0.20.4.51522",
+              "templateHash": "1642889532812614498"
             }
           },
           "parameters": {

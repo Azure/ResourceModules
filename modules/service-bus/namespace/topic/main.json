@@ -4,23 +4,26 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "4304998500028939273"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "921300981514456809"
+    },
+    "name": "Service Bus Namespace Topic",
+    "description": "This module deploys a Service Bus Namespace Topic.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "namespaceName": {
       "type": "string",
-      "maxLength": 50,
       "minLength": 6,
+      "maxLength": 50,
       "metadata": {
         "description": "Conditional. The name of the parent Service Bus Namespace for the Service Bus Topic. Required if the template is used in a standalone deployment."
       }
     },
     "name": {
       "type": "string",
-      "maxLength": 50,
       "minLength": 6,
+      "maxLength": 50,
       "metadata": {
         "description": "Required. Name of the Service Bus Topic."
       }
@@ -134,14 +137,14 @@
     "lock": {
       "type": "string",
       "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Specify the type of lock."
-      },
       "allowedValues": [
         "",
         "CanNotDelete",
         "ReadOnly"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Specify the type of lock."
+      }
     },
     "roleAssignments": {
       "type": "array",
@@ -242,9 +245,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "12238459450385505191"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "12912382339345981506"
+            },
+            "name": "Service Bus Namespace Topic Authorization Rules",
+            "description": "This module deploys a Service Bus Namespace Topic Authorization Rule.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "name": {
@@ -372,8 +378,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "18279135895049473482"
+              "version": "0.20.4.51522",
+              "templateHash": "11124682842627815351"
             }
           },
           "parameters": {

@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "2301912117131465144"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "8046317846959169913"
+    },
+    "name": "Virtual Network Gateway Connections",
+    "description": "This module deploys a Virtual Network Gateway Connection.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
@@ -52,34 +55,34 @@
     "connectionMode": {
       "type": "string",
       "defaultValue": "Default",
-      "metadata": {
-        "description": "Optional. The connection connectionMode for this connection. Available for IPSec connections."
-      },
       "allowedValues": [
         "Default",
         "InitiatorOnly",
         "ResponderOnly"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. The connection connectionMode for this connection. Available for IPSec connections."
+      }
     },
     "connectionProtocol": {
       "type": "string",
       "defaultValue": "IKEv2",
-      "metadata": {
-        "description": "Optional. Connection connectionProtocol used for this connection. Available for IPSec connections."
-      },
       "allowedValues": [
         "IKEv1",
         "IKEv2"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Connection connectionProtocol used for this connection. Available for IPSec connections."
+      }
     },
     "dpdTimeoutSeconds": {
       "type": "int",
       "defaultValue": 45,
+      "minValue": 9,
+      "maxValue": 3600,
       "metadata": {
         "description": "Optional. The dead peer detection timeout of this connection in seconds. Setting the timeout to shorter periods will cause IKE to rekey more aggressively, causing the connection to appear to be disconnected in some instances. The general recommendation is to set the timeout between 30 to 45 seconds."
-      },
-      "maxValue": 3600,
-      "minValue": 9
+      }
     },
     "usePolicyBasedTrafficSelectors": {
       "type": "bool",
@@ -135,14 +138,14 @@
     "lock": {
       "type": "string",
       "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Specify the connectionType of lock."
-      },
       "allowedValues": [
         "",
         "CanNotDelete",
         "ReadOnly"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Specify the connectionType of lock."
+      }
     },
     "tags": {
       "type": "object",

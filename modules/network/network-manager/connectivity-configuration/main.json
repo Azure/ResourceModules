@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "4358706606848401992"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "13738709959380835083"
+    },
+    "name": "Network Manager Connectivity Configurations",
+    "description": "This module deploys a Network Manager Connectivity Configuration.\r\nConnectivity configurations define hub-and-spoke or mesh topologies applied to one or more network groups.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "networkManagerName": {
@@ -17,18 +20,18 @@
     },
     "name": {
       "type": "string",
+      "maxLength": 64,
       "metadata": {
         "description": "Required. The name of the connectivity configuration."
-      },
-      "maxLength": 64
+      }
     },
     "description": {
       "type": "string",
       "defaultValue": "",
+      "maxLength": 500,
       "metadata": {
         "description": "Optional. A description of the connectivity configuration."
-      },
-      "maxLength": 500
+      }
     },
     "appliesToGroups": {
       "type": "array",
@@ -39,13 +42,13 @@
     },
     "connectivityTopology": {
       "type": "string",
-      "metadata": {
-        "description": "Required. Connectivity topology type."
-      },
       "allowedValues": [
         "HubAndSpoke",
         "Mesh"
-      ]
+      ],
+      "metadata": {
+        "description": "Required. Connectivity topology type."
+      }
     },
     "hubs": {
       "type": "array",
@@ -57,24 +60,24 @@
     "deleteExistingPeering": {
       "type": "string",
       "defaultValue": "False",
-      "metadata": {
-        "description": "Optional. Flag if need to remove current existing peerings. If set to \"True\", all peerings on virtual networks in selected network groups will be removed and replaced with the peerings defined by this configuration. Optional when connectivityTopology is of type \"HubAndSpoke\"."
-      },
       "allowedValues": [
         "True",
         "False"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Flag if need to remove current existing peerings. If set to \"True\", all peerings on virtual networks in selected network groups will be removed and replaced with the peerings defined by this configuration. Optional when connectivityTopology is of type \"HubAndSpoke\"."
+      }
     },
     "isGlobal": {
       "type": "string",
       "defaultValue": "False",
-      "metadata": {
-        "description": "Optional. Flag if global mesh is supported. By default, mesh connectivity is applied to virtual networks within the same region. If set to \"True\", a global mesh enables connectivity across regions."
-      },
       "allowedValues": [
         "True",
         "False"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Flag if global mesh is supported. By default, mesh connectivity is applied to virtual networks within the same region. If set to \"True\", a global mesh enables connectivity across regions."
+      }
     },
     "enableDefaultTelemetry": {
       "type": "bool",

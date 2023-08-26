@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "5264258087440913796"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "11328531768559149721"
+    },
+    "name": "Load Balancers",
+    "description": "This module deploys a Load Balancer.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
@@ -61,15 +64,6 @@
         "description": "Optional. Array of objects containing all probes, these are references in the load balancing rules."
       }
     },
-    "diagnosticLogsRetentionInDays": {
-      "type": "int",
-      "defaultValue": 365,
-      "maxValue": 365,
-      "minValue": 0,
-      "metadata": {
-        "description": "Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely."
-      }
-    },
     "diagnosticStorageAccountId": {
       "type": "string",
       "defaultValue": "",
@@ -101,14 +95,14 @@
     "lock": {
       "type": "string",
       "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Specify the type of lock."
-      },
       "allowedValues": [
         "",
         "CanNotDelete",
         "ReadOnly"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Specify the type of lock."
+      }
     },
     "roleAssignments": {
       "type": "array",
@@ -257,11 +251,7 @@
         "input": {
           "category": "[parameters('diagnosticMetricsToEnable')[copyIndex('diagnosticsMetrics')]]",
           "timeGrain": null,
-          "enabled": true,
-          "retentionPolicy": {
-            "enabled": true,
-            "days": "[parameters('diagnosticLogsRetentionInDays')]"
-          }
+          "enabled": true
         }
       }
     ],
@@ -363,9 +353,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "9987210976096685266"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "7353857127466687472"
+            },
+            "name": "Load Balancer Backend Address Pools",
+            "description": "This module deploys a Load Balancer Backend Address Pools.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "loadBalancerName": {
@@ -508,9 +501,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "16462838100949743192"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "6110758189927489854"
+            },
+            "name": "Load Balancer Inbound NAT Rules",
+            "description": "This module deploys a Load Balancer Inbound NAT Rules.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "loadBalancerName": {
@@ -527,8 +523,8 @@
             },
             "frontendPort": {
               "type": "int",
-              "maxValue": 65534,
               "minValue": 1,
+              "maxValue": 65534,
               "metadata": {
                 "description": "Required. The port for the external endpoint. Port numbers for each rule must be unique within the Load Balancer."
               }
@@ -536,8 +532,8 @@
             "backendPort": {
               "type": "int",
               "defaultValue": "[parameters('frontendPort')]",
-              "maxValue": 65535,
               "minValue": 1,
+              "maxValue": 65535,
               "metadata": {
                 "description": "Optional. The port used for the internal endpoint."
               }
@@ -572,8 +568,8 @@
             "frontendPortRangeEnd": {
               "type": "int",
               "defaultValue": -1,
-              "maxValue": 65534,
               "minValue": -1,
+              "maxValue": 65534,
               "metadata": {
                 "description": "Optional. The port range end for the external endpoint. This property is used together with BackendAddressPool and FrontendPortRangeStart. Individual inbound NAT rule port mappings will be created for each backend address from BackendAddressPool."
               }
@@ -581,8 +577,8 @@
             "frontendPortRangeStart": {
               "type": "int",
               "defaultValue": -1,
-              "maxValue": 65534,
               "minValue": -1,
+              "maxValue": 65534,
               "metadata": {
                 "description": "Optional. The port range start for the external endpoint. This property is used together with BackendAddressPool and FrontendPortRangeEnd. Individual inbound NAT rule port mappings will be created for each backend address from BackendAddressPool."
               }
@@ -713,8 +709,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "317938330178756229"
+              "version": "0.20.4.51522",
+              "templateHash": "13103053503630094914"
             }
           },
           "parameters": {

@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "4732499637614328383"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "13921692097298323788"
+    },
+    "name": "Azure Container Registry (ACR) Replications",
+    "description": "This module deploys an Azure Container Registry (ACR) Replication.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "registryName": {
@@ -45,13 +48,13 @@
     "zoneRedundancy": {
       "type": "string",
       "defaultValue": "Disabled",
-      "metadata": {
-        "description": "Optional. Whether or not zone redundancy is enabled for this container registry."
-      },
       "allowedValues": [
         "Disabled",
         "Enabled"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Whether or not zone redundancy is enabled for this container registry."
+      }
     },
     "enableDefaultTelemetry": {
       "type": "bool",

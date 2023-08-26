@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.20.4.51522",
-      "templateHash": "10649954371905940405"
+      "templateHash": "13181497279208180194"
     },
     "name": "Virtual Machines",
     "description": "This module deploys a Virtual Machine with one or multiple NICs and optionally one or multiple public IPs.",
@@ -432,15 +432,6 @@
         "description": "Optional. Location for all resources."
       }
     },
-    "diagnosticLogsRetentionInDays": {
-      "type": "int",
-      "defaultValue": 365,
-      "minValue": 0,
-      "maxValue": 365,
-      "metadata": {
-        "description": "Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely."
-      }
-    },
     "diagnosticStorageAccountId": {
       "type": "string",
       "defaultValue": "",
@@ -821,9 +812,6 @@
           "diagnosticStorageAccountId": {
             "value": "[parameters('diagnosticStorageAccountId')]"
           },
-          "diagnosticLogsRetentionInDays": {
-            "value": "[parameters('diagnosticLogsRetentionInDays')]"
-          },
           "diagnosticWorkspaceId": {
             "value": "[parameters('diagnosticWorkspaceId')]"
           },
@@ -857,7 +845,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.20.4.51522",
-              "templateHash": "7198152300976797281"
+              "templateHash": "9880303717534395256"
             }
           },
           "parameters": {
@@ -901,9 +889,6 @@
             },
             "diagnosticStorageAccountId": {
               "type": "string"
-            },
-            "diagnosticLogsRetentionInDays": {
-              "type": "int"
             },
             "diagnosticWorkspaceId": {
               "type": "string"
@@ -976,9 +961,6 @@
                   "diagnosticLogCategoriesToEnable": {
                     "value": "[parameters('pipdiagnosticLogCategoriesToEnable')]"
                   },
-                  "diagnosticLogsRetentionInDays": {
-                    "value": "[parameters('diagnosticLogsRetentionInDays')]"
-                  },
                   "diagnosticMetricsToEnable": {
                     "value": "[parameters('pipdiagnosticMetricsToEnable')]"
                   },
@@ -1018,7 +1000,7 @@
                     "_generator": {
                       "name": "bicep",
                       "version": "0.20.4.51522",
-                      "templateHash": "14474619344547636171"
+                      "templateHash": "3237407209897665781"
                     },
                     "name": "Public IP Addresses",
                     "description": "This module deploys a Public IP Address.",
@@ -1087,15 +1069,6 @@
                       ],
                       "metadata": {
                         "description": "Optional. IP address version."
-                      }
-                    },
-                    "diagnosticLogsRetentionInDays": {
-                      "type": "int",
-                      "defaultValue": 365,
-                      "minValue": 0,
-                      "maxValue": 365,
-                      "metadata": {
-                        "description": "Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely."
                       }
                     },
                     "diagnosticStorageAccountId": {
@@ -1230,11 +1203,7 @@
                         "count": "[length(filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', and(not(equals(lambdaVariables('item'), 'allLogs')), not(equals(lambdaVariables('item'), ''))))))]",
                         "input": {
                           "category": "[filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', and(not(equals(lambdaVariables('item'), 'allLogs')), not(equals(lambdaVariables('item'), '')))))[copyIndex('diagnosticsLogsSpecified')]]",
-                          "enabled": true,
-                          "retentionPolicy": {
-                            "enabled": true,
-                            "days": "[parameters('diagnosticLogsRetentionInDays')]"
-                          }
+                          "enabled": true
                         }
                       },
                       {
@@ -1243,15 +1212,11 @@
                         "input": {
                           "category": "[parameters('diagnosticMetricsToEnable')[copyIndex('diagnosticsMetrics')]]",
                           "timeGrain": null,
-                          "enabled": true,
-                          "retentionPolicy": {
-                            "enabled": true,
-                            "days": "[parameters('diagnosticLogsRetentionInDays')]"
-                          }
+                          "enabled": true
                         }
                       }
                     ],
-                    "diagnosticsLogs": "[if(contains(parameters('diagnosticLogCategoriesToEnable'), 'allLogs'), createArray(createObject('categoryGroup', 'allLogs', 'enabled', true(), 'retentionPolicy', createObject('enabled', true(), 'days', parameters('diagnosticLogsRetentionInDays')))), if(contains(parameters('diagnosticLogCategoriesToEnable'), ''), createArray(), variables('diagnosticsLogsSpecified')))]"
+                    "diagnosticsLogs": "[if(contains(parameters('diagnosticLogCategoriesToEnable'), 'allLogs'), createArray(createObject('categoryGroup', 'allLogs', 'enabled', true())), if(contains(parameters('diagnosticLogCategoriesToEnable'), ''), createArray(), variables('diagnosticsLogsSpecified')))]"
                   },
                   "resources": [
                     {
@@ -1572,9 +1537,6 @@
                   "diagnosticEventHubName": {
                     "value": "[parameters('diagnosticEventHubName')]"
                   },
-                  "diagnosticLogsRetentionInDays": {
-                    "value": "[parameters('diagnosticLogsRetentionInDays')]"
-                  },
                   "diagnosticStorageAccountId": {
                     "value": "[parameters('diagnosticStorageAccountId')]"
                   },
@@ -1610,7 +1572,7 @@
                     "_generator": {
                       "name": "bicep",
                       "version": "0.20.4.51522",
-                      "templateHash": "2671718918533328624"
+                      "templateHash": "14005516264014442491"
                     },
                     "name": "Network Interface",
                     "description": "This module deploys a Network Interface.",
@@ -1716,15 +1678,6 @@
                         "description": "Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'."
                       }
                     },
-                    "diagnosticLogsRetentionInDays": {
-                      "type": "int",
-                      "defaultValue": 365,
-                      "minValue": 0,
-                      "maxValue": 365,
-                      "metadata": {
-                        "description": "Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely."
-                      }
-                    },
                     "diagnosticStorageAccountId": {
                       "type": "string",
                       "defaultValue": "",
@@ -1781,11 +1734,7 @@
                         "input": {
                           "category": "[parameters('diagnosticMetricsToEnable')[copyIndex('diagnosticsMetrics')]]",
                           "timeGrain": null,
-                          "enabled": true,
-                          "retentionPolicy": {
-                            "enabled": true,
-                            "days": "[parameters('diagnosticLogsRetentionInDays')]"
-                          }
+                          "enabled": true
                         }
                       }
                     ]

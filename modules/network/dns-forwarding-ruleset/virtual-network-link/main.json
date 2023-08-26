@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "1750882725233704055"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "13969101007511584177"
+    },
+    "name": "Dns Forwarding Rulesets Virtual Network Links",
+    "description": "This template deploys Virtual Network Link in a Dns Forwarding Ruleset.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "dnsForwardingRulesetName": {

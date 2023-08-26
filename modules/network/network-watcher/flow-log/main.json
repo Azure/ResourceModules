@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "12327372918876579570"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "14826968347364507291"
+    },
+    "name": "NSG Flow Logs",
+    "description": "This module controls the Network Security Group Flow Logs and analytics settings.\r\n**Note: this module must be run on the Resource Group where Network Watcher is deployed**",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "networkWatcherName": {
@@ -88,8 +91,8 @@
     "retentionInDays": {
       "type": "int",
       "defaultValue": 365,
-      "maxValue": 365,
       "minValue": 0,
+      "maxValue": 365,
       "metadata": {
         "description": "Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely."
       }

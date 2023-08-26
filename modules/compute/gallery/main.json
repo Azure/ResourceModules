@@ -4,17 +4,20 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "13901468473811502546"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "15984862915086923960"
+    },
+    "name": "Azure Compute Galleries",
+    "description": "This module deploys an Azure Compute Gallery (formerly known as Shared Image Gallery).",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
       "type": "string",
+      "minLength": 1,
       "metadata": {
         "description": "Required. Name of the Azure Compute Gallery."
-      },
-      "minLength": 1
+      }
     },
     "location": {
       "type": "string",
@@ -47,14 +50,14 @@
     "lock": {
       "type": "string",
       "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Specify the type of lock."
-      },
       "allowedValues": [
         "",
         "CanNotDelete",
         "ReadOnly"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Specify the type of lock."
+      }
     },
     "roleAssignments": {
       "type": "array",
@@ -155,8 +158,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "12286644635375921182"
+              "version": "0.20.4.51522",
+              "templateHash": "889221691935593360"
             }
           },
           "parameters": {
@@ -330,9 +333,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "4712377854140060080"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "302763326863799273"
+            },
+            "name": "Compute Galleries Applications",
+            "description": "This module deploys an Azure Compute Gallery Application.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "name": {
@@ -495,8 +501,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.19.5.34762",
-                      "templateHash": "992879911082543993"
+                      "version": "0.20.4.51522",
+                      "templateHash": "3891555929973685105"
                     }
                   },
                   "parameters": {
@@ -720,9 +726,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "1301061718242455583"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "14112753208892308004"
+            },
+            "name": "Compute Galleries Image Definitions",
+            "description": "This module deploys an Azure Compute Gallery Image Definition.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "name": {
@@ -798,8 +807,8 @@
             "minRecommendedvCPUs": {
               "type": "int",
               "defaultValue": 1,
-              "maxValue": 128,
               "minValue": 1,
+              "maxValue": 128,
               "metadata": {
                 "description": "Optional. The minimum number of the CPU cores recommended for this image."
               }
@@ -807,8 +816,8 @@
             "maxRecommendedvCPUs": {
               "type": "int",
               "defaultValue": 4,
-              "maxValue": 128,
               "minValue": 1,
+              "maxValue": 128,
               "metadata": {
                 "description": "Optional. The maximum number of the CPU cores recommended for this image."
               }
@@ -816,8 +825,8 @@
             "minRecommendedMemory": {
               "type": "int",
               "defaultValue": 4,
-              "maxValue": 4000,
               "minValue": 1,
+              "maxValue": 4000,
               "metadata": {
                 "description": "Optional. The minimum amount of RAM in GB recommended for this image."
               }
@@ -825,8 +834,8 @@
             "maxRecommendedMemory": {
               "type": "int",
               "defaultValue": 16,
-              "maxValue": 4000,
               "minValue": 1,
+              "maxValue": 4000,
               "metadata": {
                 "description": "Optional. The maximum amount of RAM in GB recommended for this image."
               }
@@ -1046,8 +1055,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.19.5.34762",
-                      "templateHash": "16144820657592071665"
+                      "version": "0.20.4.51522",
+                      "templateHash": "5875220683176267757"
                     }
                   },
                   "parameters": {

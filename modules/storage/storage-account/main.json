@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.20.4.51522",
-      "templateHash": "3064442913839722689"
+      "templateHash": "7014297105278347696"
     },
     "name": "Storage Accounts",
     "description": "This module deploys a Storage Account.",
@@ -265,15 +265,6 @@
         "description": "Optional. If true, enables NFS 3.0 support for the storage account. Requires enableHierarchicalNamespace to be true."
       }
     },
-    "diagnosticLogsRetentionInDays": {
-      "type": "int",
-      "defaultValue": 365,
-      "minValue": 0,
-      "maxValue": 365,
-      "metadata": {
-        "description": "Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely."
-      }
-    },
     "diagnosticStorageAccountId": {
       "type": "string",
       "defaultValue": "",
@@ -422,11 +413,7 @@
         "input": {
           "category": "[parameters('diagnosticMetricsToEnable')[copyIndex('diagnosticsMetrics')]]",
           "timeGrain": null,
-          "enabled": true,
-          "retentionPolicy": {
-            "enabled": true,
-            "days": "[parameters('diagnosticLogsRetentionInDays')]"
-          }
+          "enabled": true
         }
       }
     ],
@@ -1309,7 +1296,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.20.4.51522",
-              "templateHash": "9756021983971600432"
+              "templateHash": "2581396185828179457"
             },
             "name": "Storage Account Management Policies",
             "description": "This module deploys a Storage Account Management Policy.",
@@ -1355,7 +1342,7 @@
             {
               "condition": "[not(empty(parameters('rules')))]",
               "type": "Microsoft.Storage/storageAccounts/managementPolicies",
-              "apiVersion": "2021-09-01",
+              "apiVersion": "2023-01-01",
               "name": "[format('{0}/{1}', parameters('storageAccountName'), 'default')]",
               "properties": {
                 "policy": {
@@ -1390,7 +1377,8 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Storage/storageAccounts', parameters('name'))]"
+        "[resourceId('Microsoft.Storage/storageAccounts', parameters('name'))]",
+        "[resourceId('Microsoft.Resources/deployments', format('{0}-Storage-BlobServices', uniqueString(deployment().name, parameters('location'))))]"
       ]
     },
     {
@@ -1588,10 +1576,9 @@
           "deleteRetentionPolicyEnabled": "[if(contains(parameters('blobServices'), 'deleteRetentionPolicyEnabled'), createObject('value', parameters('blobServices').deleteRetentionPolicyEnabled), createObject('value', false()))]",
           "deleteRetentionPolicyDays": "[if(contains(parameters('blobServices'), 'deleteRetentionPolicyDays'), createObject('value', parameters('blobServices').deleteRetentionPolicyDays), createObject('value', 7))]",
           "isVersioningEnabled": "[if(contains(parameters('blobServices'), 'isVersioningEnabled'), createObject('value', parameters('blobServices').isVersioningEnabled), createObject('value', false()))]",
-          "lastAccessTimeTrackingPolicyEnable": "[if(contains(parameters('blobServices'), 'lastAccessTimeTrackingPolicyEnable'), createObject('value', parameters('blobServices').lastAccessTimeTrackingPolicyEnable), createObject('value', false()))]",
+          "lastAccessTimeTrackingPolicyEnabled": "[if(contains(parameters('blobServices'), 'lastAccessTimeTrackingPolicyEnabled'), createObject('value', parameters('blobServices').lastAccessTimeTrackingPolicyEnabled), createObject('value', false()))]",
           "restorePolicyEnabled": "[if(contains(parameters('blobServices'), 'restorePolicyEnabled'), createObject('value', parameters('blobServices').restorePolicyEnabled), createObject('value', false()))]",
           "restorePolicyDays": "[if(contains(parameters('blobServices'), 'restorePolicyDays'), createObject('value', parameters('blobServices').restorePolicyDays), createObject('value', 6))]",
-          "diagnosticLogsRetentionInDays": "[if(contains(parameters('blobServices'), 'diagnosticLogsRetentionInDays'), createObject('value', parameters('blobServices').diagnosticLogsRetentionInDays), createObject('value', 365))]",
           "diagnosticStorageAccountId": "[if(contains(parameters('blobServices'), 'diagnosticStorageAccountId'), createObject('value', parameters('blobServices').diagnosticStorageAccountId), createObject('value', ''))]",
           "diagnosticEventHubAuthorizationRuleId": "[if(contains(parameters('blobServices'), 'diagnosticEventHubAuthorizationRuleId'), createObject('value', parameters('blobServices').diagnosticEventHubAuthorizationRuleId), createObject('value', ''))]",
           "diagnosticEventHubName": "[if(contains(parameters('blobServices'), 'diagnosticEventHubName'), createObject('value', parameters('blobServices').diagnosticEventHubName), createObject('value', ''))]",
@@ -1609,7 +1596,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.20.4.51522",
-              "templateHash": "1395192341429097070"
+              "templateHash": "16838270897726250953"
             },
             "name": "Storage Account blob Services",
             "description": "This module deploys a Storage Account Blob Service.",
@@ -1713,7 +1700,7 @@
                 "description": "Optional. Use versioning to automatically maintain previous versions of your blobs."
               }
             },
-            "lastAccessTimeTrackingPolicyEnable": {
+            "lastAccessTimeTrackingPolicyEnabled": {
               "type": "bool",
               "defaultValue": false,
               "metadata": {
@@ -1740,15 +1727,6 @@
               "defaultValue": [],
               "metadata": {
                 "description": "Optional. Blob containers to create."
-              }
-            },
-            "diagnosticLogsRetentionInDays": {
-              "type": "int",
-              "defaultValue": 365,
-              "minValue": 0,
-              "maxValue": 365,
-              "metadata": {
-                "description": "Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely."
               }
             },
             "diagnosticStorageAccountId": {
@@ -1829,11 +1807,7 @@
                 "count": "[length(filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', and(not(equals(lambdaVariables('item'), 'allLogs')), not(equals(lambdaVariables('item'), ''))))))]",
                 "input": {
                   "category": "[filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', and(not(equals(lambdaVariables('item'), 'allLogs')), not(equals(lambdaVariables('item'), '')))))[copyIndex('diagnosticsLogsSpecified')]]",
-                  "enabled": true,
-                  "retentionPolicy": {
-                    "enabled": true,
-                    "days": "[parameters('diagnosticLogsRetentionInDays')]"
-                  }
+                  "enabled": true
                 }
               },
               {
@@ -1842,16 +1816,12 @@
                 "input": {
                   "category": "[parameters('diagnosticMetricsToEnable')[copyIndex('diagnosticsMetrics')]]",
                   "timeGrain": null,
-                  "enabled": true,
-                  "retentionPolicy": {
-                    "enabled": true,
-                    "days": "[parameters('diagnosticLogsRetentionInDays')]"
-                  }
+                  "enabled": true
                 }
               }
             ],
             "name": "default",
-            "diagnosticsLogs": "[if(contains(parameters('diagnosticLogCategoriesToEnable'), 'allLogs'), createArray(createObject('categoryGroup', 'allLogs', 'enabled', true(), 'retentionPolicy', createObject('enabled', true(), 'days', parameters('diagnosticLogsRetentionInDays')))), if(contains(parameters('diagnosticLogCategoriesToEnable'), ''), createArray(), variables('diagnosticsLogsSpecified')))]",
+            "diagnosticsLogs": "[if(contains(parameters('diagnosticLogCategoriesToEnable'), 'allLogs'), createArray(createObject('categoryGroup', 'allLogs', 'enabled', true())), if(contains(parameters('diagnosticLogCategoriesToEnable'), ''), createArray(), variables('diagnosticsLogsSpecified')))]",
             "enableReferencedModulesTelemetry": false
           },
           "resources": [
@@ -1895,9 +1865,9 @@
                 },
                 "isVersioningEnabled": "[parameters('isVersioningEnabled')]",
                 "lastAccessTimeTrackingPolicy": {
-                  "enable": "[parameters('lastAccessTimeTrackingPolicyEnable')]",
-                  "name": "[if(equals(parameters('lastAccessTimeTrackingPolicyEnable'), true()), 'AccessTimeTracking', null())]",
-                  "trackingGranularityInDays": "[if(equals(parameters('lastAccessTimeTrackingPolicyEnable'), true()), 1, null())]"
+                  "enable": "[parameters('lastAccessTimeTrackingPolicyEnabled')]",
+                  "name": "[if(equals(parameters('lastAccessTimeTrackingPolicyEnabled'), true()), 'AccessTimeTracking', null())]",
+                  "trackingGranularityInDays": "[if(equals(parameters('lastAccessTimeTrackingPolicyEnabled'), true()), 1, null())]"
                 },
                 "restorePolicy": {
                   "enabled": "[parameters('restorePolicyEnabled')]",
@@ -2485,7 +2455,6 @@
           "storageAccountName": {
             "value": "[parameters('name')]"
           },
-          "diagnosticLogsRetentionInDays": "[if(contains(parameters('fileServices'), 'diagnosticLogsRetentionInDays'), createObject('value', parameters('fileServices').diagnosticLogsRetentionInDays), createObject('value', 365))]",
           "diagnosticStorageAccountId": "[if(contains(parameters('fileServices'), 'diagnosticStorageAccountId'), createObject('value', parameters('fileServices').diagnosticStorageAccountId), createObject('value', ''))]",
           "diagnosticEventHubAuthorizationRuleId": "[if(contains(parameters('fileServices'), 'diagnosticEventHubAuthorizationRuleId'), createObject('value', parameters('fileServices').diagnosticEventHubAuthorizationRuleId), createObject('value', ''))]",
           "diagnosticEventHubName": "[if(contains(parameters('fileServices'), 'diagnosticEventHubName'), createObject('value', parameters('fileServices').diagnosticEventHubName), createObject('value', ''))]",
@@ -2506,7 +2475,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.20.4.51522",
-              "templateHash": "1594285537604698727"
+              "templateHash": "17282775888269025572"
             },
             "name": "Storage Account File Share Services",
             "description": "This module deploys a Storage Account File Share Service.",
@@ -2542,15 +2511,6 @@
               },
               "metadata": {
                 "description": "Optional. The service properties for soft delete."
-              }
-            },
-            "diagnosticLogsRetentionInDays": {
-              "type": "int",
-              "defaultValue": 365,
-              "minValue": 0,
-              "maxValue": 365,
-              "metadata": {
-                "description": "Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely."
               }
             },
             "diagnosticStorageAccountId": {
@@ -2638,11 +2598,7 @@
                 "count": "[length(filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', and(not(equals(lambdaVariables('item'), 'allLogs')), not(equals(lambdaVariables('item'), ''))))))]",
                 "input": {
                   "category": "[filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', and(not(equals(lambdaVariables('item'), 'allLogs')), not(equals(lambdaVariables('item'), '')))))[copyIndex('diagnosticsLogsSpecified')]]",
-                  "enabled": true,
-                  "retentionPolicy": {
-                    "enabled": true,
-                    "days": "[parameters('diagnosticLogsRetentionInDays')]"
-                  }
+                  "enabled": true
                 }
               },
               {
@@ -2651,15 +2607,11 @@
                 "input": {
                   "category": "[parameters('diagnosticMetricsToEnable')[copyIndex('diagnosticsMetrics')]]",
                   "timeGrain": null,
-                  "enabled": true,
-                  "retentionPolicy": {
-                    "enabled": true,
-                    "days": "[parameters('diagnosticLogsRetentionInDays')]"
-                  }
+                  "enabled": true
                 }
               }
             ],
-            "diagnosticsLogs": "[if(contains(parameters('diagnosticLogCategoriesToEnable'), 'allLogs'), createArray(createObject('categoryGroup', 'allLogs', 'enabled', true(), 'retentionPolicy', createObject('enabled', true(), 'days', parameters('diagnosticLogsRetentionInDays')))), if(contains(parameters('diagnosticLogCategoriesToEnable'), ''), createArray(), variables('diagnosticsLogsSpecified')))]",
+            "diagnosticsLogs": "[if(contains(parameters('diagnosticLogCategoriesToEnable'), 'allLogs'), createArray(createObject('categoryGroup', 'allLogs', 'enabled', true())), if(contains(parameters('diagnosticLogCategoriesToEnable'), ''), createArray(), variables('diagnosticsLogsSpecified')))]",
             "enableReferencedModulesTelemetry": false
           },
           "resources": [
@@ -3109,7 +3061,6 @@
           "storageAccountName": {
             "value": "[parameters('name')]"
           },
-          "diagnosticLogsRetentionInDays": "[if(contains(parameters('queueServices'), 'diagnosticLogsRetentionInDays'), createObject('value', parameters('queueServices').diagnosticLogsRetentionInDays), createObject('value', 365))]",
           "diagnosticStorageAccountId": "[if(contains(parameters('queueServices'), 'diagnosticStorageAccountId'), createObject('value', parameters('queueServices').diagnosticStorageAccountId), createObject('value', ''))]",
           "diagnosticEventHubAuthorizationRuleId": "[if(contains(parameters('queueServices'), 'diagnosticEventHubAuthorizationRuleId'), createObject('value', parameters('queueServices').diagnosticEventHubAuthorizationRuleId), createObject('value', ''))]",
           "diagnosticEventHubName": "[if(contains(parameters('queueServices'), 'diagnosticEventHubName'), createObject('value', parameters('queueServices').diagnosticEventHubName), createObject('value', ''))]",
@@ -3128,7 +3079,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.20.4.51522",
-              "templateHash": "13219619797955519085"
+              "templateHash": "3707030790801090324"
             },
             "name": "Storage Account Queue Services",
             "description": "This module deploys a Storage Account Queue Service.",
@@ -3147,15 +3098,6 @@
               "defaultValue": [],
               "metadata": {
                 "description": "Optional. Queues to create."
-              }
-            },
-            "diagnosticLogsRetentionInDays": {
-              "type": "int",
-              "defaultValue": 365,
-              "minValue": 0,
-              "maxValue": 365,
-              "metadata": {
-                "description": "Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely."
               }
             },
             "diagnosticStorageAccountId": {
@@ -3236,11 +3178,7 @@
                 "count": "[length(filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', and(not(equals(lambdaVariables('item'), 'allLogs')), not(equals(lambdaVariables('item'), ''))))))]",
                 "input": {
                   "category": "[filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', and(not(equals(lambdaVariables('item'), 'allLogs')), not(equals(lambdaVariables('item'), '')))))[copyIndex('diagnosticsLogsSpecified')]]",
-                  "enabled": true,
-                  "retentionPolicy": {
-                    "enabled": true,
-                    "days": "[parameters('diagnosticLogsRetentionInDays')]"
-                  }
+                  "enabled": true
                 }
               },
               {
@@ -3249,16 +3187,12 @@
                 "input": {
                   "category": "[parameters('diagnosticMetricsToEnable')[copyIndex('diagnosticsMetrics')]]",
                   "timeGrain": null,
-                  "enabled": true,
-                  "retentionPolicy": {
-                    "enabled": true,
-                    "days": "[parameters('diagnosticLogsRetentionInDays')]"
-                  }
+                  "enabled": true
                 }
               }
             ],
             "name": "default",
-            "diagnosticsLogs": "[if(contains(parameters('diagnosticLogCategoriesToEnable'), 'allLogs'), createArray(createObject('categoryGroup', 'allLogs', 'enabled', true(), 'retentionPolicy', createObject('enabled', true(), 'days', parameters('diagnosticLogsRetentionInDays')))), if(contains(parameters('diagnosticLogCategoriesToEnable'), ''), createArray(), variables('diagnosticsLogsSpecified')))]",
+            "diagnosticsLogs": "[if(contains(parameters('diagnosticLogCategoriesToEnable'), 'allLogs'), createArray(createObject('categoryGroup', 'allLogs', 'enabled', true())), if(contains(parameters('diagnosticLogCategoriesToEnable'), ''), createArray(), variables('diagnosticsLogsSpecified')))]",
             "enableReferencedModulesTelemetry": false
           },
           "resources": [
@@ -3650,7 +3584,6 @@
           "storageAccountName": {
             "value": "[parameters('name')]"
           },
-          "diagnosticLogsRetentionInDays": "[if(contains(parameters('tableServices'), 'diagnosticLogsRetentionInDays'), createObject('value', parameters('tableServices').diagnosticLogsRetentionInDays), createObject('value', 365))]",
           "diagnosticStorageAccountId": "[if(contains(parameters('tableServices'), 'diagnosticStorageAccountId'), createObject('value', parameters('tableServices').diagnosticStorageAccountId), createObject('value', ''))]",
           "diagnosticEventHubAuthorizationRuleId": "[if(contains(parameters('tableServices'), 'diagnosticEventHubAuthorizationRuleId'), createObject('value', parameters('tableServices').diagnosticEventHubAuthorizationRuleId), createObject('value', ''))]",
           "diagnosticEventHubName": "[if(contains(parameters('tableServices'), 'diagnosticEventHubName'), createObject('value', parameters('tableServices').diagnosticEventHubName), createObject('value', ''))]",
@@ -3669,7 +3602,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.20.4.51522",
-              "templateHash": "15029180251266513913"
+              "templateHash": "16178057085724361046"
             },
             "name": "Storage Account Table Services",
             "description": "This module deploys a Storage Account Table Service.",
@@ -3688,15 +3621,6 @@
               "defaultValue": [],
               "metadata": {
                 "description": "Optional. tables to create."
-              }
-            },
-            "diagnosticLogsRetentionInDays": {
-              "type": "int",
-              "defaultValue": 365,
-              "minValue": 0,
-              "maxValue": 365,
-              "metadata": {
-                "description": "Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely."
               }
             },
             "diagnosticStorageAccountId": {
@@ -3777,11 +3701,7 @@
                 "count": "[length(filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', and(not(equals(lambdaVariables('item'), 'allLogs')), not(equals(lambdaVariables('item'), ''))))))]",
                 "input": {
                   "category": "[filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', and(not(equals(lambdaVariables('item'), 'allLogs')), not(equals(lambdaVariables('item'), '')))))[copyIndex('diagnosticsLogsSpecified')]]",
-                  "enabled": true,
-                  "retentionPolicy": {
-                    "enabled": true,
-                    "days": "[parameters('diagnosticLogsRetentionInDays')]"
-                  }
+                  "enabled": true
                 }
               },
               {
@@ -3790,16 +3710,12 @@
                 "input": {
                   "category": "[parameters('diagnosticMetricsToEnable')[copyIndex('diagnosticsMetrics')]]",
                   "timeGrain": null,
-                  "enabled": true,
-                  "retentionPolicy": {
-                    "enabled": true,
-                    "days": "[parameters('diagnosticLogsRetentionInDays')]"
-                  }
+                  "enabled": true
                 }
               }
             ],
             "name": "default",
-            "diagnosticsLogs": "[if(contains(parameters('diagnosticLogCategoriesToEnable'), 'allLogs'), createArray(createObject('categoryGroup', 'allLogs', 'enabled', true(), 'retentionPolicy', createObject('enabled', true(), 'days', parameters('diagnosticLogsRetentionInDays')))), if(contains(parameters('diagnosticLogCategoriesToEnable'), ''), createArray(), variables('diagnosticsLogsSpecified')))]",
+            "diagnosticsLogs": "[if(contains(parameters('diagnosticLogCategoriesToEnable'), 'allLogs'), createArray(createObject('categoryGroup', 'allLogs', 'enabled', true())), if(contains(parameters('diagnosticLogCategoriesToEnable'), ''), createArray(), variables('diagnosticsLogsSpecified')))]",
             "enableReferencedModulesTelemetry": false
           },
           "resources": [

@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "6267793583428414969"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "7346887991565421438"
+    },
+    "name": "Route Tables",
+    "description": "This module deploys a User Defined Route Table (UDR).",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
@@ -39,14 +42,14 @@
     "lock": {
       "type": "string",
       "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Specify the type of lock."
-      },
       "allowedValues": [
         "",
         "CanNotDelete",
         "ReadOnly"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Specify the type of lock."
+      }
     },
     "roleAssignments": {
       "type": "array",
@@ -144,8 +147,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "16752813498867197745"
+              "version": "0.20.4.51522",
+              "templateHash": "15433672522856459960"
             }
           },
           "parameters": {

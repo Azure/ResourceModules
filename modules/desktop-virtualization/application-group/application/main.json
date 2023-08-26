@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "11389546711531681509"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "7619639220591936340"
+    },
+    "name": "Azure Virtual Desktop (AVD) Application Group Applications",
+    "description": "This module deploys an Azure Virtual Desktop (AVD) Application Group Application.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "appGroupName": {
@@ -43,14 +46,14 @@
     "commandLineSetting": {
       "type": "string",
       "defaultValue": "DoNotAllow",
-      "metadata": {
-        "description": "Optional. Specifies whether this published application can be launched with command-line arguments provided by the client, command-line arguments specified at publish time, or no command-line arguments at all."
-      },
       "allowedValues": [
         "Allow",
         "DoNotAllow",
         "Require"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Specifies whether this published application can be launched with command-line arguments provided by the client, command-line arguments specified at publish time, or no command-line arguments at all."
+      }
     },
     "commandLineArguments": {
       "type": "string",

@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "11509710715638918489"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "14627609112936541603"
+    },
+    "name": "Availability Sets",
+    "description": "This module deploys an Availability Set.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
@@ -53,14 +56,14 @@
     "lock": {
       "type": "string",
       "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Specify the type of lock."
-      },
       "allowedValues": [
         "",
         "CanNotDelete",
         "ReadOnly"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Specify the type of lock."
+      }
     },
     "roleAssignments": {
       "type": "array",
@@ -162,8 +165,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "13414727736673410356"
+              "version": "0.20.4.51522",
+              "templateHash": "2845847199363525157"
             }
           },
           "parameters": {

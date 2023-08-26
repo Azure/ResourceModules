@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "8556452883620957061"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "14539564969232925648"
+    },
+    "name": "Web/Function Apps",
+    "description": "This module deploys a Web or Function App.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
@@ -142,14 +145,14 @@
     "lock": {
       "type": "string",
       "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Specify the type of lock."
-      },
       "allowedValues": [
         "",
         "CanNotDelete",
         "ReadOnly"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Specify the type of lock."
+      }
     },
     "privateEndpoints": {
       "type": "array",
@@ -184,15 +187,6 @@
       "defaultValue": [],
       "metadata": {
         "description": "Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'."
-      }
-    },
-    "diagnosticLogsRetentionInDays": {
-      "type": "int",
-      "defaultValue": 365,
-      "maxValue": 365,
-      "minValue": 0,
-      "metadata": {
-        "description": "Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely."
       }
     },
     "diagnosticStorageAccountId": {
@@ -371,11 +365,7 @@
         "count": "[length(filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', and(not(equals(lambdaVariables('item'), 'allLogs')), not(equals(lambdaVariables('item'), ''))))))]",
         "input": {
           "category": "[filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', and(not(equals(lambdaVariables('item'), 'allLogs')), not(equals(lambdaVariables('item'), '')))))[copyIndex('diagnosticsLogsSpecified')]]",
-          "enabled": true,
-          "retentionPolicy": {
-            "enabled": true,
-            "days": "[parameters('diagnosticLogsRetentionInDays')]"
-          }
+          "enabled": true
         }
       },
       {
@@ -384,15 +374,11 @@
         "input": {
           "category": "[parameters('diagnosticMetricsToEnable')[copyIndex('diagnosticsMetrics')]]",
           "timeGrain": null,
-          "enabled": true,
-          "retentionPolicy": {
-            "enabled": true,
-            "days": "[parameters('diagnosticLogsRetentionInDays')]"
-          }
+          "enabled": true
         }
       }
     ],
-    "diagnosticsLogs": "[if(contains(parameters('diagnosticLogCategoriesToEnable'), 'allLogs'), createArray(createObject('categoryGroup', 'allLogs', 'enabled', true(), 'retentionPolicy', createObject('enabled', true(), 'days', parameters('diagnosticLogsRetentionInDays')))), if(contains(parameters('diagnosticLogCategoriesToEnable'), ''), createArray(), variables('diagnosticsLogsSpecified')))]",
+    "diagnosticsLogs": "[if(contains(parameters('diagnosticLogCategoriesToEnable'), 'allLogs'), createArray(createObject('categoryGroup', 'allLogs', 'enabled', true())), if(contains(parameters('diagnosticLogCategoriesToEnable'), ''), createArray(), variables('diagnosticsLogsSpecified')))]",
     "identityType": "[if(parameters('systemAssignedIdentity'), if(not(empty(parameters('userAssignedIdentities'))), 'SystemAssigned,UserAssigned', 'SystemAssigned'), if(not(empty(parameters('userAssignedIdentities'))), 'UserAssigned', 'None'))]",
     "identity": "[if(not(equals(variables('identityType'), 'None')), createObject('type', variables('identityType'), 'userAssignedIdentities', if(not(empty(parameters('userAssignedIdentities'))), parameters('userAssignedIdentities'), null())), null())]",
     "enableReferencedModulesTelemetry": false
@@ -513,9 +499,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "8947665391771130821"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "18373728467474969101"
+            },
+            "name": "Site App Settings",
+            "description": "This module deploys a Site App Setting.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "appName": {
@@ -655,9 +644,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "12960661892407144506"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "17947854639766033581"
+            },
+            "name": "Site Auth Settings V2 Config",
+            "description": "This module deploys a Site Auth Settings V2 Configuration.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "appName": {
@@ -792,7 +784,6 @@
           "enableDefaultTelemetry": {
             "value": "[variables('enableReferencedModulesTelemetry')]"
           },
-          "diagnosticLogsRetentionInDays": "[if(contains(parameters('slots')[copyIndex()], 'diagnosticLogsRetentionInDays'), createObject('value', parameters('slots')[copyIndex()].diagnosticLogsRetentionInDays), createObject('value', parameters('diagnosticLogsRetentionInDays')))]",
           "diagnosticStorageAccountId": "[if(contains(parameters('slots')[copyIndex()], 'diagnosticStorageAccountId'), createObject('value', parameters('slots')[copyIndex()].diagnosticStorageAccountId), createObject('value', parameters('diagnosticStorageAccountId')))]",
           "diagnosticWorkspaceId": "[if(contains(parameters('slots')[copyIndex()], 'diagnosticWorkspaceId'), createObject('value', parameters('slots')[copyIndex()].diagnosticWorkspaceId), createObject('value', parameters('diagnosticWorkspaceId')))]",
           "diagnosticEventHubAuthorizationRuleId": "[if(contains(parameters('slots')[copyIndex()], 'diagnosticEventHubAuthorizationRuleId'), createObject('value', parameters('slots')[copyIndex()].diagnosticEventHubAuthorizationRuleId), createObject('value', parameters('diagnosticEventHubAuthorizationRuleId')))]",
@@ -829,9 +820,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "13778120720358101018"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "6785057323959034062"
+            },
+            "name": "Web/Function App Deployment Slots",
+            "description": "This module deploys a Web or Function App Deployment Slot.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "name": {
@@ -974,14 +968,14 @@
             "lock": {
               "type": "string",
               "defaultValue": "",
-              "metadata": {
-                "description": "Optional. Specify the type of lock."
-              },
               "allowedValues": [
                 "",
                 "CanNotDelete",
                 "ReadOnly"
-              ]
+              ],
+              "metadata": {
+                "description": "Optional. Specify the type of lock."
+              }
             },
             "privateEndpoints": {
               "type": "array",
@@ -1009,15 +1003,6 @@
               "defaultValue": [],
               "metadata": {
                 "description": "Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'."
-              }
-            },
-            "diagnosticLogsRetentionInDays": {
-              "type": "int",
-              "defaultValue": 365,
-              "maxValue": 365,
-              "minValue": 0,
-              "metadata": {
-                "description": "Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely."
               }
             },
             "diagnosticStorageAccountId": {
@@ -1220,11 +1205,7 @@
                 "count": "[length(parameters('diagnosticLogCategoriesToEnable'))]",
                 "input": {
                   "category": "[parameters('diagnosticLogCategoriesToEnable')[copyIndex('diagnosticsLogs')]]",
-                  "enabled": true,
-                  "retentionPolicy": {
-                    "enabled": true,
-                    "days": "[parameters('diagnosticLogsRetentionInDays')]"
-                  }
+                  "enabled": true
                 }
               },
               {
@@ -1233,11 +1214,7 @@
                 "input": {
                   "category": "[parameters('diagnosticMetricsToEnable')[copyIndex('diagnosticsMetrics')]]",
                   "timeGrain": null,
-                  "enabled": true,
-                  "retentionPolicy": {
-                    "enabled": true,
-                    "days": "[parameters('diagnosticLogsRetentionInDays')]"
-                  }
+                  "enabled": true
                 }
               }
             ],
@@ -1368,9 +1345,12 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.19.5.34762",
-                      "templateHash": "3348890338028712435"
-                    }
+                      "version": "0.20.4.51522",
+                      "templateHash": "5493142537935111696"
+                    },
+                    "name": "Site Slot App Settings",
+                    "description": "This module deploys a Site Slot App Setting.",
+                    "owner": "Azure/module-maintainers"
                   },
                   "parameters": {
                     "slotName": {
@@ -1519,9 +1499,12 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.19.5.34762",
-                      "templateHash": "4506238262937483474"
-                    }
+                      "version": "0.20.4.51522",
+                      "templateHash": "9353145154752028146"
+                    },
+                    "name": "Site Slot Auth Settings V2 Config",
+                    "description": "This module deploys a Site Auth Settings V2 Configuration.",
+                    "owner": "Azure/module-maintainers"
                   },
                   "parameters": {
                     "appName": {
@@ -1649,9 +1632,12 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.19.5.34762",
-                      "templateHash": "10162571329501184760"
-                    }
+                      "version": "0.20.4.51522",
+                      "templateHash": "18138499386350818749"
+                    },
+                    "name": "Web/Function Apps Slot Hybrid Connection Relay",
+                    "description": "This module deploys a Site Slot Hybrid Connection Namespace Relay.",
+                    "owner": "Azure/module-maintainers"
                   },
                   "parameters": {
                     "hybridConnectionResourceId": {
@@ -1786,8 +1772,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.19.5.34762",
-                      "templateHash": "6058525857462854449"
+                      "version": "0.20.4.51522",
+                      "templateHash": "17495218577109675288"
                     }
                   },
                   "parameters": {
@@ -1926,9 +1912,12 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.19.5.34762",
-                      "templateHash": "11825715538543749879"
-                    }
+                      "version": "0.20.4.51522",
+                      "templateHash": "609426544615556519"
+                    },
+                    "name": "Private Endpoints",
+                    "description": "This module deploys a Private Endpoint.",
+                    "owner": "Azure/module-maintainers"
                   },
                   "parameters": {
                     "name": {
@@ -1993,14 +1982,14 @@
                     "lock": {
                       "type": "string",
                       "defaultValue": "",
-                      "metadata": {
-                        "description": "Optional. Specify the type of lock."
-                      },
                       "allowedValues": [
                         "",
                         "CanNotDelete",
                         "ReadOnly"
-                      ]
+                      ],
+                      "metadata": {
+                        "description": "Optional. Specify the type of lock."
+                      }
                     },
                     "roleAssignments": {
                       "type": "array",
@@ -2123,9 +2112,12 @@
                           "metadata": {
                             "_generator": {
                               "name": "bicep",
-                              "version": "0.19.5.34762",
-                              "templateHash": "12684511314187066258"
-                            }
+                              "version": "0.20.4.51522",
+                              "templateHash": "18114841529204248478"
+                            },
+                            "name": "Private Endpoint Private DNS Zone Groups",
+                            "description": "This module deploys a Private Endpoint Private DNS Zone Group.",
+                            "owner": "Azure/module-maintainers"
                           },
                           "parameters": {
                             "privateEndpointName": {
@@ -2136,8 +2128,8 @@
                             },
                             "privateDNSResourceIds": {
                               "type": "array",
-                              "maxLength": 5,
                               "minLength": 1,
+                              "maxLength": 5,
                               "metadata": {
                                 "description": "Required. Array of private DNS zone resource IDs. A DNS zone group can support up to 5 DNS zones."
                               }
@@ -2258,8 +2250,8 @@
                           "metadata": {
                             "_generator": {
                               "name": "bicep",
-                              "version": "0.19.5.34762",
-                              "templateHash": "18055161250379920591"
+                              "version": "0.20.4.51522",
+                              "templateHash": "11548486149222715894"
                             }
                           },
                           "parameters": {
@@ -2512,9 +2504,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "6496735735518197935"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "8892331579235840311"
+            },
+            "name": "Web Site Basic Publishing Credentials Policies",
+            "description": "This module deploys a Web Site Basic Publishing Credentials Policy.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "name": {
@@ -2640,9 +2635,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "11916683553936252746"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "2808108711462639357"
+            },
+            "name": "Web/Function Apps Hybrid Connection Relay",
+            "description": "This module deploys a Site Hybrid Connection Namespace Relay.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "hybridConnectionResourceId": {
@@ -2773,8 +2771,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "16625824009136107504"
+              "version": "0.20.4.51522",
+              "templateHash": "12172515144547720998"
             }
           },
           "parameters": {
@@ -2942,9 +2940,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "11825715538543749879"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "609426544615556519"
+            },
+            "name": "Private Endpoints",
+            "description": "This module deploys a Private Endpoint.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "name": {
@@ -3009,14 +3010,14 @@
             "lock": {
               "type": "string",
               "defaultValue": "",
-              "metadata": {
-                "description": "Optional. Specify the type of lock."
-              },
               "allowedValues": [
                 "",
                 "CanNotDelete",
                 "ReadOnly"
-              ]
+              ],
+              "metadata": {
+                "description": "Optional. Specify the type of lock."
+              }
             },
             "roleAssignments": {
               "type": "array",
@@ -3139,9 +3140,12 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.19.5.34762",
-                      "templateHash": "12684511314187066258"
-                    }
+                      "version": "0.20.4.51522",
+                      "templateHash": "18114841529204248478"
+                    },
+                    "name": "Private Endpoint Private DNS Zone Groups",
+                    "description": "This module deploys a Private Endpoint Private DNS Zone Group.",
+                    "owner": "Azure/module-maintainers"
                   },
                   "parameters": {
                     "privateEndpointName": {
@@ -3152,8 +3156,8 @@
                     },
                     "privateDNSResourceIds": {
                       "type": "array",
-                      "maxLength": 5,
                       "minLength": 1,
+                      "maxLength": 5,
                       "metadata": {
                         "description": "Required. Array of private DNS zone resource IDs. A DNS zone group can support up to 5 DNS zones."
                       }
@@ -3274,8 +3278,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.19.5.34762",
-                      "templateHash": "18055161250379920591"
+                      "version": "0.20.4.51522",
+                      "templateHash": "11548486149222715894"
                     }
                   },
                   "parameters": {

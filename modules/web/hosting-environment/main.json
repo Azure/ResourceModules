@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "1989221922012543604"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "8748704169658147866"
+    },
+    "name": "App Service Environments",
+    "description": "This module deploys an App Service Environment.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
@@ -26,14 +29,14 @@
     "lock": {
       "type": "string",
       "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Specify the type of lock."
-      },
       "allowedValues": [
         "",
         "CanNotDelete",
         "ReadOnly"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Specify the type of lock."
+      }
     },
     "roleAssignments": {
       "type": "array",
@@ -52,13 +55,13 @@
     "kind": {
       "type": "string",
       "defaultValue": "ASEv3",
-      "metadata": {
-        "description": "Optional. Kind of resource."
-      },
       "allowedValues": [
         "ASEv2",
         "ASEv3"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Kind of resource."
+      }
     },
     "clusterSettings": {
       "type": "array",
@@ -229,15 +232,6 @@
         "description": "Optional. The ID(s) to assign to the resource."
       }
     },
-    "diagnosticLogsRetentionInDays": {
-      "type": "int",
-      "defaultValue": 365,
-      "maxValue": 365,
-      "minValue": 0,
-      "metadata": {
-        "description": "Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely."
-      }
-    },
     "diagnosticStorageAccountId": {
       "type": "string",
       "defaultValue": "",
@@ -302,15 +296,11 @@
         "count": "[length(filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', and(not(equals(lambdaVariables('item'), 'allLogs')), not(equals(lambdaVariables('item'), ''))))))]",
         "input": {
           "category": "[filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', and(not(equals(lambdaVariables('item'), 'allLogs')), not(equals(lambdaVariables('item'), '')))))[copyIndex('diagnosticsLogsSpecified')]]",
-          "enabled": true,
-          "retentionPolicy": {
-            "enabled": true,
-            "days": "[parameters('diagnosticLogsRetentionInDays')]"
-          }
+          "enabled": true
         }
       }
     ],
-    "diagnosticsLogs": "[if(contains(parameters('diagnosticLogCategoriesToEnable'), 'allLogs'), createArray(createObject('categoryGroup', 'allLogs', 'enabled', true(), 'retentionPolicy', createObject('enabled', true(), 'days', parameters('diagnosticLogsRetentionInDays')))), if(contains(parameters('diagnosticLogCategoriesToEnable'), ''), createArray(), variables('diagnosticsLogsSpecified')))]",
+    "diagnosticsLogs": "[if(contains(parameters('diagnosticLogCategoriesToEnable'), 'allLogs'), createArray(createObject('categoryGroup', 'allLogs', 'enabled', true())), if(contains(parameters('diagnosticLogCategoriesToEnable'), ''), createArray(), variables('diagnosticsLogsSpecified')))]",
     "identityType": "[if(parameters('systemAssignedIdentity'), if(not(empty(parameters('userAssignedIdentities'))), 'SystemAssigned,UserAssigned', 'SystemAssigned'), if(not(empty(parameters('userAssignedIdentities'))), 'UserAssigned', 'None'))]",
     "enableReferencedModulesTelemetry": false,
     "identity": "[if(not(equals(variables('identityType'), 'None')), createObject('type', variables('identityType'), 'userAssignedIdentities', if(not(empty(parameters('userAssignedIdentities'))), parameters('userAssignedIdentities'), null())), null())]"
@@ -422,9 +412,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "10424547902180820059"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "16351992787760940933"
+            },
+            "name": "Hosting Environment Network Configuration",
+            "description": "This module deploys a Hosting Environment Network Configuration.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "hostingEnvironmentName": {
@@ -558,9 +551,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "14999057769396977441"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "11788859333407565296"
+            },
+            "name": "Hosting Environment Custom DNS Suffix Configuration",
+            "description": "This module deploys a Hosting Environment Custom DNS Suffix Configuration.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "hostingEnvironmentName": {
@@ -684,8 +680,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "15912113861904370144"
+              "version": "0.20.4.51522",
+              "templateHash": "16350418428946694714"
             }
           },
           "parameters": {

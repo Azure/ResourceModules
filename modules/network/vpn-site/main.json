@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "262103692668335899"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "805771965679596936"
+    },
+    "name": "VPN Sites",
+    "description": "This module deploys a VPN Site.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
@@ -94,14 +97,14 @@
     "lock": {
       "type": "string",
       "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Specify the type of lock."
-      },
       "allowedValues": [
         "",
         "CanNotDelete",
         "ReadOnly"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Specify the type of lock."
+      }
     },
     "roleAssignments": {
       "type": "array",
@@ -189,8 +192,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "16444676877993222718"
+              "version": "0.20.4.51522",
+              "templateHash": "3653745242903782760"
             }
           },
           "parameters": {
