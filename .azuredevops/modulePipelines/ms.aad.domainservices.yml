@@ -29,7 +29,7 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.aad.domainservices.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/modules/aad/domain-services/*'
+      - '/modules/aad/domain-service/*'
       - '/utilities/pipelines/*'
     exclude:
       - '/utilities/pipelines/deploymentRemoval/*'
@@ -39,7 +39,7 @@ variables:
   - template: '../../settings.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/modules/aad/domain-services'
+    value: '/modules/aad/domain-service'
 
 stages:
   - template: /.azuredevops/pipelineTemplates/stages.module.yml

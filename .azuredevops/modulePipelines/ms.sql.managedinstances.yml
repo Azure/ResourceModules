@@ -29,7 +29,7 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.sql.managedinstances.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/modules/sql/managed-instances/*'
+      - '/modules/sql/managed-instance/*'
       - '/utilities/pipelines/*'
     exclude:
       - '/utilities/pipelines/deploymentRemoval/*'
@@ -39,7 +39,7 @@ variables:
   - template: '../../settings.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/modules/sql/managed-instances'
+    value: '/modules/sql/managed-instance'
 
 stages:
   - template: /.azuredevops/pipelineTemplates/stages.module.yml

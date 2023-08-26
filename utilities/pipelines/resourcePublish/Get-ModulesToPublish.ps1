@@ -79,9 +79,9 @@ This function will search the current directory and all parent directories for a
 Mandatory. Path to the folder/file that should be searched
 
 .EXAMPLE
-Find-TemplateFile -Path "C:\Repos\Azure\ResourceModules\modules\storage\storage-accounts\table-services\tables\.bicep\nested_roleAssignments.bicep"
+Find-TemplateFile -Path "C:\Repos\Azure\ResourceModules\modules\storage\storage-account\table-service\table\.bicep\nested_roleAssignments.bicep"
 
-    Directory: C:\Repos\Azure\ResourceModules\modules\storage\storage-accounts\table-services\tables
+    Directory: C:\Repos\Azure\ResourceModules\modules\storage\storage-account\table-service\table
 
 Mode                 LastWriteTime         Length Name
 ----                 -------------         ------ ----
@@ -126,12 +126,12 @@ Find the closest main.bicep/json file to the changed files in the module folder 
 Mandatory. Path to the main/parent module folder.
 
 .EXAMPLE
-Get-TemplateFileToPublish -ModuleFolderPath "C:\Repos\Azure\ResourceModules\modules\storage\storage-accounts\"
+Get-TemplateFileToPublish -ModuleFolderPath "C:\Repos\Azure\ResourceModules\modules\storage\storage-account\"
 
-C:\Repos\Azure\ResourceModules\modules\storage\storage-accounts\table-services\tables\main.bicep
+C:\Repos\Azure\ResourceModules\modules\storage\storage-account\table-service\table\main.bicep
 
 Gets the closest main.bicep/json file to the changed files in the module folder structure.
-Assuming there is a changed file in 'Microsoft.Storage\storageAccounts\tableServices\tables'
+Assuming there is a changed file in 'storage\storage-account\table-service\table'
 the function would return the main.bicep file in the same folder.
 
 #>
@@ -179,15 +179,15 @@ Mandatory. Path to a main.bicep/json file.
 Optional. If true, the function will recurse up the folder structure to find the closest main.bicep/json file.
 
 .EXAMPLE
-Get-ParentModuleTemplateFile -TemplateFilePath 'C:\Repos\Azure\ResourceModules\modules\storage\storage-accounts\table-services\tables\main.bicep' -Recurse
+Get-ParentModuleTemplateFile -TemplateFilePath 'C:\Repos\Azure\ResourceModules\modules\storage\storage-account\table-service\table\main.bicep' -Recurse
 
-    Directory: C:\Repos\Azure\ResourceModules\modules\storage\storage-accounts\tableServices
+    Directory: C:\Repos\Azure\ResourceModules\modules\storage\storage-account\table-service
 
 Mode                 LastWriteTime         Length Name
 ----                 -------------         ------ ----
 la---          05.12.2021    22:45           1427 main.bicep
 
-    Directory: C:\Repos\Azure\ResourceModules\modules\storage\storage-accounts
+    Directory: C:\Repos\Azure\ResourceModules\modules\storage\storage-account
 
 Mode                 LastWriteTime         Length Name
 ----                 -------------         ------ ----
@@ -268,7 +268,7 @@ The file needs to be in the same folder as the template file itself.
 Mandatory. Path to a main.bicep/json file.
 
 .EXAMPLE
-Get-ModuleVersionFromFile -TemplateFilePath 'C:\Repos\Azure\ResourceModules\modules\storage\storage-accounts\table-services\tables\main.bicep'
+Get-ModuleVersionFromFile -TemplateFilePath 'C:\Repos\Azure\ResourceModules\modules\storage\storage-account\table-service\table\main.bicep'
 
 0.3
 
@@ -307,11 +307,11 @@ Patch version number is calculated based on the git commit count on the branch.
 Mandatory. Path to a main.bicep/json file.
 
 .EXAMPLE
-Get-NewModuleVersion -TemplateFilePath 'C:\Repos\Azure\ResourceModules\modules\storage\storage-accounts\table-services\tables\main.bicep'
+Get-NewModuleVersion -TemplateFilePath 'C:\Repos\Azure\ResourceModules\modules\storage\storage-account\table-service\table\main.bicep'
 
 0.3.630
 
-Generates a new version for the tables module.
+Generates a new version for the table module.
 
 #>
 function Get-NewModuleVersion {
@@ -351,15 +351,15 @@ Optional. Publish an absolute latest version.
 Note: This version may include breaking changes and is not recommended for production environments
 
 .EXAMPLE
-Get-ModulesToPublish -TemplateFilePath 'C:\Repos\Azure\ResourceModules\modules\storage\storage-accounts\main.bicep'
+Get-ModulesToPublish -TemplateFilePath 'C:\Repos\Azure\ResourceModules\modules\storage\storage-account\main.bicep'
 
 Name               Value
 ----               -----
-TemplateFilePath   C:\Repos\Azure\ResourceModules\modules\storage\storage-accounts\file-services\shares\main.bicep
+TemplateFilePath   C:\Repos\Azure\ResourceModules\modules\storage\storage-account\file-service\share\main.bicep
 Version            0.3.848-prerelease
-TemplateFilePath   C:\Repos\Azure\ResourceModules\modules\storage\storage-accounts\file-services\main.bicep
+TemplateFilePath   C:\Repos\Azure\ResourceModules\modules\storage\storage-account\file-service\main.bicep
 Version            0.3.848-prerelease
-TemplateFilePath   C:\Repos\Azure\ResourceModules\modules\storage\storage-accounts\main.bicep
+TemplateFilePath   C:\Repos\Azure\ResourceModules\modules\storage\storage-account\main.bicep
 Version            0.3.848-prerelease
 
 Generates a hashtable with template file paths to publish and their new versions.

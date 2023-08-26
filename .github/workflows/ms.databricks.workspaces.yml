@@ -30,14 +30,14 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.databricks.workspaces.yml'
-      - 'modules/databricks/workspaces/**'
-      - 'modules/network/private-endpoints/**'
+      - 'modules/databricks/workspace/**'
+      - 'modules/network/private-endpoint/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
       - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/databricks/workspaces'
+  modulePath: 'modules/databricks/workspace'
   workflowPath: '.github/workflows/ms.databricks.workspaces.yml'
 
 concurrency:

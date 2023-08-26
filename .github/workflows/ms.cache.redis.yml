@@ -28,7 +28,7 @@ on:
       - main
     paths:
       - 'modules/cache/redis/**'
-      - 'modules/network/private-endpoints/**'
+      - 'modules/network/private-endpoint/**'
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.cache.redis.yml'
