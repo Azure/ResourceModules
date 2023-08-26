@@ -13,7 +13,7 @@ This module deploys a Network Watcher Connection Monitor.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Network/networkWatchers/connectionMonitors` | [2023-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/networkWatchers/connectionMonitors) |
+| `Microsoft.Network/networkWatchers/connectionMonitors` | [2023-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-04-01/networkWatchers/connectionMonitors) |
 
 ## Parameters
 

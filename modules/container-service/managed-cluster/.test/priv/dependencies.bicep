@@ -22,7 +22,7 @@ resource privateDnsZone 'Microsoft.Network/privateDnsZones@2020-06-01' = {
   location: 'global'
 }
 
-resource virtualNetwork 'Microsoft.Network/virtualNetworks@2023-05-01' = {
+resource virtualNetwork 'Microsoft.Network/virtualNetworks@2023-04-01' = {
   name: virtualNetworkName
   location: location
   properties: {

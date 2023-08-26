@@ -14,7 +14,7 @@ var addressPrefix = '10.0.0.0/16'
 var addressPrefixDefaultSubnet = '10.0.0.0/20'
 var addressPrefixManagementSubnet = '10.0.16.0/20'
 
-resource virtualNetwork 'Microsoft.Network/virtualNetworks@2023-05-01' = {
+resource virtualNetwork 'Microsoft.Network/virtualNetworks@2023-04-01' = {
   name: virtualNetworkName
   location: location
   properties: {

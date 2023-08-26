@@ -14,7 +14,7 @@ resource virtualWan 'Microsoft.Network/virtualWans@2023-04-01' = {
   location: location
 }
 
-resource virtualNetwork 'Microsoft.Network/virtualNetworks@2023-05-01' = {
+resource virtualNetwork 'Microsoft.Network/virtualNetworks@2023-04-01' = {
   name: virtualNetworkName
   location: location
   properties: {

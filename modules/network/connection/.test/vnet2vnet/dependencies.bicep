@@ -19,7 +19,7 @@ param secondaryVirtualNetworkName string
 @description('Required. The name of the secondary Virtual Network Gateway to create.')
 param secondaryVirtualNetworkGatewayName string
 
-resource primaryVirtualNetwork 'Microsoft.Network/virtualNetworks@2023-05-01' = {
+resource primaryVirtualNetwork 'Microsoft.Network/virtualNetworks@2023-04-01' = {
   name: primaryVirtualNetworkName
   location: location
   properties: {
@@ -72,7 +72,7 @@ resource primaryVNETGateway 'Microsoft.Network/virtualNetworkGateways@2023-04-01
   }
 }
 
-resource secondaryVirtualNetwork 'Microsoft.Network/virtualNetworks@2023-05-01' = {
+resource secondaryVirtualNetwork 'Microsoft.Network/virtualNetworks@2023-04-01' = {
   name: secondaryVirtualNetworkName
   location: location
   properties: {

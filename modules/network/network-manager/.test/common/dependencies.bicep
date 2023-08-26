@@ -23,7 +23,7 @@ var addressPrefixSpoke1 = '172.16.0.0/12'
 var addressPrefixSpoke2 = '192.168.0.0/16'
 var subnetName = 'defaultSubnet'
 
-resource virtualNetworkHub 'Microsoft.Network/virtualNetworks@2023-05-01' = {
+resource virtualNetworkHub 'Microsoft.Network/virtualNetworks@2023-04-01' = {
   name: virtualNetworkHubName
   location: location
   properties: {
@@ -43,7 +43,7 @@ resource virtualNetworkHub 'Microsoft.Network/virtualNetworks@2023-05-01' = {
   }
 }
 
-resource virtualNetworkSpoke1 'Microsoft.Network/virtualNetworks@2023-05-01' = {
+resource virtualNetworkSpoke1 'Microsoft.Network/virtualNetworks@2023-04-01' = {
   name: virtualNetworkSpoke1Name
   location: location
   properties: {
@@ -63,7 +63,7 @@ resource virtualNetworkSpoke1 'Microsoft.Network/virtualNetworks@2023-05-01' = {
   }
 }
 
-resource virtualNetworkSpoke2 'Microsoft.Network/virtualNetworks@2023-05-01' = {
+resource virtualNetworkSpoke2 'Microsoft.Network/virtualNetworks@2023-04-01' = {
   name: virtualNetworkSpoke2Name
   location: location
   properties: {
