@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "17289131489516532324"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "14783067103445567469"
+    },
+    "name": "Public DNS Zone AAAA record",
+    "description": "This module deploys a Public DNS Zone AAAA record.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "dnsZoneName": {
@@ -124,8 +127,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "928652912604346892"
+              "version": "0.20.4.51522",
+              "templateHash": "10619447653791643982"
             }
           },
           "parameters": {

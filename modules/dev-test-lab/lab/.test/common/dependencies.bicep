@@ -19,94 +19,94 @@ param virtualNetworkName string
 var addressPrefix = '10.0.0.0/16'
 
 resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' = {
-    name: managedIdentityName
-    location: location
+  name: managedIdentityName
+  location: location
 }
 
 resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
-    name: keyVaultName
-    location: location
-    properties: {
-        sku: {
-            family: 'A'
-            name: 'standard'
-        }
-        tenantId: tenant().tenantId
-        enablePurgeProtection: true // Required for encrption to work
-        softDeleteRetentionInDays: 7
-        enabledForTemplateDeployment: true
-        enabledForDiskEncryption: true
-        enabledForDeployment: true
-        enableRbacAuthorization: true
-        accessPolicies: []
+  name: keyVaultName
+  location: location
+  properties: {
+    sku: {
+      family: 'A'
+      name: 'standard'
     }
+    tenantId: tenant().tenantId
+    enablePurgeProtection: true // Required for encrption to work
+    softDeleteRetentionInDays: 7
+    enabledForTemplateDeployment: true
+    enabledForDiskEncryption: true
+    enabledForDeployment: true
+    enableRbacAuthorization: true
+    accessPolicies: []
+  }
 
-    resource key 'keys@2022-07-01' = {
-        name: 'encryptionKey'
-        properties: {
-            kty: 'RSA'
-        }
+  resource key 'keys@2022-07-01' = {
+    name: 'encryptionKey'
+    properties: {
+      kty: 'RSA'
     }
+  }
 }
 
 resource diskEncryptionSet 'Microsoft.Compute/diskEncryptionSets@2021-04-01' = {
-    name: diskEncryptionSetName
-    location: location
-    identity: {
-        type: 'SystemAssigned'
+  name: diskEncryptionSetName
+  location: location
+  identity: {
+    type: 'SystemAssigned'
+  }
+  properties: {
+    activeKey: {
+      sourceVault: {
+        id: keyVault.id
+      }
+      keyUrl: keyVault::key.properties.keyUriWithVersion
     }
-    properties: {
-        activeKey: {
-            sourceVault: {
-                id: keyVault.id
-            }
-            keyUrl: keyVault::key.properties.keyUriWithVersion
-        }
-        encryptionType: 'EncryptionAtRestWithCustomerKey'
-    }
+    encryptionType: 'EncryptionAtRestWithCustomerKey'
+  }
 }
 
 resource keyPermissions 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-    name: guid('msi-${keyVault.id}-${location}-${diskEncryptionSet.id}-KeyVault-Key-Read-RoleAssignment')
-    scope: keyVault
-    properties: {
-        principalId: diskEncryptionSet.identity.principalId
-        roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'e147488a-f6f5-4113-8e2d-b22465e65bf6') // Key Vault Crypto Service Encryption User
-        principalType: 'ServicePrincipal'
-    }
+  name: guid('msi-${keyVault.id}-${location}-${diskEncryptionSet.id}-KeyVault-Key-Read-RoleAssignment')
+  scope: keyVault
+  properties: {
+    principalId: diskEncryptionSet.identity.principalId
+    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'e147488a-f6f5-4113-8e2d-b22465e65bf6') // Key Vault Crypto Service Encryption User
+    principalType: 'ServicePrincipal'
+  }
 }
 
 resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' = {
-    name: storageAccountName
-    location: location
-    kind: 'StorageV2'
-    sku: {
-        name: 'Standard_LRS'
-    }
-    properties: {
-        allowBlobPublicAccess: false
-        publicNetworkAccess: 'Disabled'
-    }
+  name: storageAccountName
+  location: location
+  kind: 'StorageV2'
+  sku: {
+    name: 'Standard_LRS'
+  }
+  properties: {
+    allowBlobPublicAccess: false
+    publicNetworkAccess: 'Disabled'
+  }
 }
 
-resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
-    name: virtualNetworkName
-    location: location
-    properties: {
-        addressSpace: {
-            addressPrefixes: [
-                addressPrefix
-            ]
-        }
-        subnets: [
-            {
-                name: 'defaultSubnet'
-                properties: {
-                    addressPrefix: addressPrefix
-                }
-            }
-        ]
+resource virtualNetwork 'Microsoft.Network/virtualNetworks@2023-04-01' = {
+  name: virtualNetworkName
+  location: location
+  properties: {
+    addressSpace: {
+      addressPrefixes: [
+        addressPrefix
+      ]
     }
+    subnets: [
+      {
+        name: 'defaultSubnet'
+        properties: {
+          addressPrefix: addressPrefix
+        }
+      }
+    ]
+  }
 }
 
 @description('The name of the created Virtual Network.')

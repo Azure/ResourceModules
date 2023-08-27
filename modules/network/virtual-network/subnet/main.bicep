@@ -72,7 +72,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-07-01' existing = {
+resource virtualNetwork 'Microsoft.Network/virtualNetworks@2023-04-01' existing = {
   name: virtualNetworkName
 }
 

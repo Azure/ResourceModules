@@ -4,20 +4,23 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "12376748263215313179"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "5981963633647576119"
+    },
+    "name": "Static Web App Site Config",
+    "description": "This module deploys a Static Web App Site Config.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "kind": {
       "type": "string",
-      "metadata": {
-        "description": "Required. Type of settings to apply."
-      },
       "allowedValues": [
         "appsettings",
         "functionappsettings"
-      ]
+      ],
+      "metadata": {
+        "description": "Required. Type of settings to apply."
+      }
     },
     "properties": {
       "type": "object",

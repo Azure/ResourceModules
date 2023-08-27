@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "9546518808928883376"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "12601553929742094465"
+    },
+    "name": "Automation Accounts",
+    "description": "This module deploys an Azure Automation Account.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
@@ -146,11 +149,11 @@
     "diagnosticLogsRetentionInDays": {
       "type": "int",
       "defaultValue": 365,
+      "minValue": 0,
+      "maxValue": 365,
       "metadata": {
         "description": "Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely."
-      },
-      "maxValue": 365,
-      "minValue": 0
+      }
     },
     "diagnosticStorageAccountId": {
       "type": "string",
@@ -197,14 +200,14 @@
     "lock": {
       "type": "string",
       "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Specify the type of lock."
-      },
       "allowedValues": [
         "",
         "CanNotDelete",
         "ReadOnly"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Specify the type of lock."
+      }
     },
     "roleAssignments": {
       "type": "array",
@@ -401,9 +404,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "8461123692022561232"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "12776439865232935886"
+            },
+            "name": "Automation Account Modules",
+            "description": "This module deploys an Azure Automation Account Module.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "name": {
@@ -555,9 +561,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "15331115804969871270"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "5807574740331814274"
+            },
+            "name": "Automation Account Schedules",
+            "description": "This module deploys an Azure Automation Account Schedule.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "name": {
@@ -599,9 +608,6 @@
             "frequency": {
               "type": "string",
               "defaultValue": "OneTime",
-              "metadata": {
-                "description": "Optional. The frequency of the schedule."
-              },
               "allowedValues": [
                 "Day",
                 "Hour",
@@ -609,7 +615,10 @@
                 "Month",
                 "OneTime",
                 "Week"
-              ]
+              ],
+              "metadata": {
+                "description": "Optional. The frequency of the schedule."
+              }
             },
             "interval": {
               "type": "int",
@@ -748,9 +757,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "4555370895939507576"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "123190998372280958"
+            },
+            "name": "Automation Account Runbooks",
+            "description": "This module deploys an Azure Automation Account Runbook.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "name": {
@@ -767,16 +779,16 @@
             },
             "type": {
               "type": "string",
-              "metadata": {
-                "description": "Required. The type of the runbook."
-              },
               "allowedValues": [
                 "Graph",
                 "GraphPowerShell",
                 "GraphPowerShellWorkflow",
                 "PowerShell",
                 "PowerShellWorkflow"
-              ]
+              ],
+              "metadata": {
+                "description": "Required. The type of the runbook."
+              }
             },
             "description": {
               "type": "string",
@@ -950,9 +962,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "16536689871525046750"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "12038142052110102548"
+            },
+            "name": "Automation Account Job Schedules",
+            "description": "This module deploys an Azure Automation Account Job Schedule.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "name": {
@@ -1099,9 +1114,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "11841633230625073829"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "17684191295648041474"
+            },
+            "name": "Automation Account Variables",
+            "description": "This module deploys an Azure Automation Account Variable.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "automationAccountName": {
@@ -1234,9 +1252,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "9104010996147858950"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "6123492600831728521"
+            },
+            "name": "Log Analytics Workspace Linked Services",
+            "description": "This module deploys a Log Analytics Workspace Linked Service.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "logAnalyticsWorkspaceName": {
@@ -1373,9 +1394,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "6203827990364745107"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "16708625392312836324"
+            },
+            "name": "Operations Management Solutions",
+            "description": "This module deploys an Operations Management Solution.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "name": {
@@ -1556,9 +1580,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "15383978378137872211"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "11844327136869535634"
+            },
+            "name": "Automation Account Software Update Configurations",
+            "description": "This module deploys an Azure Automation Account Software Update Configuration.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "name": {
@@ -2027,9 +2054,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "11825715538543749879"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "13560297539192628062"
+            },
+            "name": "Private Endpoints",
+            "description": "This module deploys a Private Endpoint.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "name": {
@@ -2094,14 +2124,14 @@
             "lock": {
               "type": "string",
               "defaultValue": "",
-              "metadata": {
-                "description": "Optional. Specify the type of lock."
-              },
               "allowedValues": [
                 "",
                 "CanNotDelete",
                 "ReadOnly"
-              ]
+              ],
+              "metadata": {
+                "description": "Optional. Specify the type of lock."
+              }
             },
             "roleAssignments": {
               "type": "array",
@@ -2159,7 +2189,7 @@
             },
             {
               "type": "Microsoft.Network/privateEndpoints",
-              "apiVersion": "2022-07-01",
+              "apiVersion": "2023-04-01",
               "name": "[parameters('name')]",
               "location": "[parameters('location')]",
               "tags": "[parameters('tags')]",
@@ -2224,9 +2254,12 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.19.5.34762",
-                      "templateHash": "12684511314187066258"
-                    }
+                      "version": "0.20.4.51522",
+                      "templateHash": "17831763001460207830"
+                    },
+                    "name": "Private Endpoint Private DNS Zone Groups",
+                    "description": "This module deploys a Private Endpoint Private DNS Zone Group.",
+                    "owner": "Azure/module-maintainers"
                   },
                   "parameters": {
                     "privateEndpointName": {
@@ -2237,8 +2270,8 @@
                     },
                     "privateDNSResourceIds": {
                       "type": "array",
-                      "maxLength": 5,
                       "minLength": 1,
+                      "maxLength": 5,
                       "metadata": {
                         "description": "Required. Array of private DNS zone resource IDs. A DNS zone group can support up to 5 DNS zones."
                       }
@@ -2289,7 +2322,7 @@
                     },
                     {
                       "type": "Microsoft.Network/privateEndpoints/privateDnsZoneGroups",
-                      "apiVersion": "2022-07-01",
+                      "apiVersion": "2023-04-01",
                       "name": "[format('{0}/{1}', parameters('privateEndpointName'), parameters('name'))]",
                       "properties": {
                         "privateDnsZoneConfigs": "[variables('privateDnsZoneConfigs')]"
@@ -2359,8 +2392,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.19.5.34762",
-                      "templateHash": "18055161250379920591"
+                      "version": "0.20.4.51522",
+                      "templateHash": "11548486149222715894"
                     }
                   },
                   "parameters": {
@@ -2530,7 +2563,7 @@
               "metadata": {
                 "description": "The location the resource was deployed into."
               },
-              "value": "[reference(resourceId('Microsoft.Network/privateEndpoints', parameters('name')), '2022-07-01', 'full').location]"
+              "value": "[reference(resourceId('Microsoft.Network/privateEndpoints', parameters('name')), '2023-04-01', 'full').location]"
             }
           }
         }
@@ -2573,8 +2606,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "2412137951317227318"
+              "version": "0.20.4.51522",
+              "templateHash": "12807590367085737448"
             }
           },
           "parameters": {

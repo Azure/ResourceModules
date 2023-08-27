@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "4737667227541818959"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "4477853461523597510"
+    },
+    "name": "Public DNS Zone CAA record",
+    "description": "This module deploys a Public DNS Zone CAA record.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "dnsZoneName": {
@@ -116,8 +119,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "4833032307337861985"
+              "version": "0.20.4.51522",
+              "templateHash": "17740559314627874296"
             }
           },
           "parameters": {

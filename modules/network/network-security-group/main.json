@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "5818720461189205578"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "8464209741643291242"
+    },
+    "name": "Network Security Groups",
+    "description": "This module deploys a Network security Group (NSG).",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
@@ -46,8 +49,8 @@
     "diagnosticLogsRetentionInDays": {
       "type": "int",
       "defaultValue": 365,
-      "maxValue": 365,
       "minValue": 0,
+      "maxValue": 365,
       "metadata": {
         "description": "Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely."
       }
@@ -76,14 +79,14 @@
     "lock": {
       "type": "string",
       "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Specify the type of lock."
-      },
       "allowedValues": [
         "",
         "CanNotDelete",
         "ReadOnly"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Specify the type of lock."
+      }
     },
     "roleAssignments": {
       "type": "array",
@@ -164,7 +167,7 @@
     },
     {
       "type": "Microsoft.Network/networkSecurityGroups",
-      "apiVersion": "2022-07-01",
+      "apiVersion": "2023-04-01",
       "name": "[parameters('name')]",
       "location": "[parameters('location')]",
       "tags": "[parameters('tags')]",
@@ -282,9 +285,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "11939435370198735476"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "3678167334807068025"
+            },
+            "name": "Network Security Group (NSG) Security Rules",
+            "description": "This module deploys a Network Security Group (NSG) Security Rule.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "name": {
@@ -527,8 +533,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "14760097731901350181"
+              "version": "0.20.4.51522",
+              "templateHash": "15810256612189281963"
             }
           },
           "parameters": {
@@ -698,7 +704,7 @@
       "metadata": {
         "description": "The location the resource was deployed into."
       },
-      "value": "[reference(resourceId('Microsoft.Network/networkSecurityGroups', parameters('name')), '2022-07-01', 'full').location]"
+      "value": "[reference(resourceId('Microsoft.Network/networkSecurityGroups', parameters('name')), '2023-04-01', 'full').location]"
     }
   }
 }

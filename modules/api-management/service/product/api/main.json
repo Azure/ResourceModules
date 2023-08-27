@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "12089259943011536891"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "13243242177616383868"
+    },
+    "name": "API Management Service Products APIs",
+    "description": "This module deploys an API Management Service Product API.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "apiManagementServiceName": {

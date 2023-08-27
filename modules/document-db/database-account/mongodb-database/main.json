@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "10478774274627200406"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "13972019361365434498"
+    },
+    "name": "DocumentDB Database Account MongoDB Databases",
+    "description": "This module deploys a MongoDB Database within a CosmosDB Account.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "databaseAccountName": {
@@ -119,9 +122,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "17023323765982935979"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "12957080003676592321"
+            },
+            "name": "DocumentDB Database Account MongoDB Database Collections",
+            "description": "This module deploys a MongoDB Database Collection.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "databaseAccountName": {

@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "7585019690208379133"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "7510105499462799965"
+    },
+    "name": "Key Vault Keys",
+    "description": "This module deploys a Key Vault Key.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "keyVaultName": {
@@ -187,8 +190,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "3354496057078802382"
+              "version": "0.20.4.51522",
+              "templateHash": "3968881335142586299"
             }
           },
           "parameters": {

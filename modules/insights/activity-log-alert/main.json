@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "12922301550242279895"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "12483368143384987419"
+    },
+    "name": "Activity Log Alerts",
+    "description": "This module deploys an Activity Log Alert.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
@@ -159,8 +162,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "11667512505521874865"
+              "version": "0.20.4.51522",
+              "templateHash": "3392546988640861707"
             }
           },
           "parameters": {

@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "1811109282711100098"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "16372850809886319091"
+    },
+    "name": "Data Protection Backup Vaults",
+    "description": "This module deploys a Data Protection Backup Vault.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
@@ -39,14 +42,14 @@
     "lock": {
       "type": "string",
       "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Specify the type of lock."
-      },
       "allowedValues": [
         "",
         "CanNotDelete",
         "ReadOnly"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Specify the type of lock."
+      }
     },
     "systemAssignedIdentity": {
       "type": "bool",
@@ -89,13 +92,13 @@
     "azureMonitorAlertSettingsAlertsForAllJobFailures": {
       "type": "string",
       "defaultValue": "Enabled",
-      "metadata": {
-        "description": "Optional. Settings for Azure Monitor based alerts for job failures."
-      },
       "allowedValues": [
         "Disabled",
         "Enabled"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Settings for Azure Monitor based alerts for job failures."
+      }
     },
     "backupPolicies": {
       "type": "array",
@@ -193,9 +196,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "15950464845862056522"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "3184455103711973064"
+            },
+            "name": "Data Protection Backup Vault Backup Policies",
+            "description": "This module deploys a Data Protection Backup Vault Backup Policy.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "backupVaultName": {
@@ -311,8 +317,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "7094311822465776729"
+              "version": "0.20.4.51522",
+              "templateHash": "10253116074794957898"
             }
           },
           "parameters": {

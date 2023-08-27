@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "13419259770629993067"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "14518513912380539716"
+    },
+    "name": "Virtual Hub Route Tables",
+    "description": "This module deploys a Virtual Hub Route Table.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {

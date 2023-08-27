@@ -4,15 +4,18 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "14477404761572548237"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "17170884535140128269"
+    },
+    "name": "Azure Front Doors",
+    "description": "This module deploys an Azure Front Door.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
       "type": "string",
-      "maxLength": 64,
       "minLength": 1,
+      "maxLength": 64,
       "metadata": {
         "description": "Required. The name of the frontDoor."
       }
@@ -27,14 +30,14 @@
     "lock": {
       "type": "string",
       "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Specify the type of lock."
-      },
       "allowedValues": [
         "",
         "CanNotDelete",
         "ReadOnly"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Specify the type of lock."
+      }
     },
     "roleAssignments": {
       "type": "array",
@@ -119,8 +122,8 @@
     "diagnosticLogsRetentionInDays": {
       "type": "int",
       "defaultValue": 365,
-      "maxValue": 365,
       "minValue": 0,
+      "maxValue": 365,
       "metadata": {
         "description": "Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely."
       }
@@ -312,8 +315,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "12240281793388591156"
+              "version": "0.20.4.51522",
+              "templateHash": "7790989344899751422"
             }
           },
           "parameters": {

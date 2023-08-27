@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "3518513774222730388"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "443948940379129513"
+    },
+    "name": "Event Hub Namespace Event Hubs",
+    "description": "This module deploys an Event Hub Namespace Event Hub.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "namespaceName": {
@@ -40,8 +43,8 @@
     "messageRetentionInDays": {
       "type": "int",
       "defaultValue": 1,
-      "maxValue": 7,
       "minValue": 1,
+      "maxValue": 7,
       "metadata": {
         "description": "Optional. Number of days to retain the events for this Event Hub, value should be 1 to 7 days."
       }
@@ -49,8 +52,8 @@
     "partitionCount": {
       "type": "int",
       "defaultValue": 2,
-      "maxValue": 32,
       "minValue": 1,
+      "maxValue": 32,
       "metadata": {
         "description": "Optional. Number of partitions created for the Event Hub, allowed values are from 1 to 32 partitions."
       }
@@ -87,14 +90,14 @@
     "lock": {
       "type": "string",
       "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Specify the type of lock."
-      },
       "allowedValues": [
         "",
         "CanNotDelete",
         "ReadOnly"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Specify the type of lock."
+      }
     },
     "roleAssignments": {
       "type": "array",
@@ -152,8 +155,8 @@
     "captureDescriptionIntervalInSeconds": {
       "type": "int",
       "defaultValue": 300,
-      "maxValue": 900,
       "minValue": 60,
+      "maxValue": 900,
       "metadata": {
         "description": "Optional. The time window allows you to set the frequency with which the capture to Azure Blobs will happen."
       }
@@ -161,8 +164,8 @@
     "captureDescriptionSizeLimitInBytes": {
       "type": "int",
       "defaultValue": 314572800,
-      "maxValue": 524288000,
       "minValue": 10485760,
+      "maxValue": 524288000,
       "metadata": {
         "description": "Optional. The size window defines the amount of data built up in your Event Hub before an capture operation."
       }
@@ -279,9 +282,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "6857373991807692104"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "4223870259264150873"
+            },
+            "name": "Event Hub Namespace Event Hub Consumer Groups",
+            "description": "This module deploys an Event Hub Namespace Event Hub Consumer Group.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "namespaceName": {
@@ -404,9 +410,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "14445239246751091520"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "12984183065402367529"
+            },
+            "name": "Event Hub Namespace Event Hub Authorization Rules",
+            "description": "This module deploys an Event Hub Namespace Event Hub Authorization Rule.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "namespaceName": {
@@ -534,8 +543,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "12158134836363662242"
+              "version": "0.20.4.51522",
+              "templateHash": "14745150939607150150"
             }
           },
           "parameters": {

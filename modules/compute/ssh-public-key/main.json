@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "16443022752471991339"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "3176936377185255192"
+    },
+    "name": "Public SSH Keys",
+    "description": "This module deploys a Public SSH Key.\r\n\r\n> Note: The resource does not auto-generate the key for you.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
@@ -32,14 +35,14 @@
     "lock": {
       "type": "string",
       "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Specify the type of lock."
-      },
       "allowedValues": [
         "",
         "CanNotDelete",
         "ReadOnly"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Specify the type of lock."
+      }
     },
     "roleAssignments": {
       "type": "array",
@@ -136,8 +139,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "3437555523644485146"
+              "version": "0.20.4.51522",
+              "templateHash": "15802588423286494574"
             }
           },
           "parameters": {

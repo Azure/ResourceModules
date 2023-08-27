@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "4491359307411111036"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "3596420230929102349"
+    },
+    "name": "SQL Managed Instance Encryption Protector",
+    "description": "This module deploys a SQL Managed Instance Encryption Protector.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "managedInstanceName": {

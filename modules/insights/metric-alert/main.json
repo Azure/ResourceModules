@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "15628752476358479893"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "17294788707800776152"
+    },
+    "name": "Metric Alerts",
+    "description": "This module deploys a Metric Alert.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
@@ -242,8 +245,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "14205051524800606717"
+              "version": "0.20.4.51522",
+              "templateHash": "10158771102272403472"
             }
           },
           "parameters": {

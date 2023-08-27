@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "12702406365485231955"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "7035285655295461424"
+    },
+    "name": "Azure Virtual Desktop (AVD) Workspaces",
+    "description": "This module deploys an Azure Virtual Desktop (AVD) Workspace.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
@@ -46,8 +49,8 @@
     "diagnosticLogsRetentionInDays": {
       "type": "int",
       "defaultValue": 365,
-      "maxValue": 365,
       "minValue": 0,
+      "maxValue": 365,
       "metadata": {
         "description": "Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely."
       }
@@ -83,14 +86,14 @@
     "lock": {
       "type": "string",
       "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Specify the type of lock."
-      },
       "allowedValues": [
         "",
         "CanNotDelete",
         "ReadOnly"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Specify the type of lock."
+      }
     },
     "tags": {
       "type": "object",
@@ -247,8 +250,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "18072016089387616568"
+              "version": "0.20.4.51522",
+              "templateHash": "9018764467732457380"
             }
           },
           "parameters": {

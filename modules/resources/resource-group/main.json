@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "4868927926622801511"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "7084409585316897596"
+    },
+    "name": "Resource Groups",
+    "description": "This module deploys a Resource Group.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
@@ -25,14 +28,14 @@
     "lock": {
       "type": "string",
       "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Specify the type of lock."
-      },
       "allowedValues": [
         "",
         "CanNotDelete",
         "ReadOnly"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Specify the type of lock."
+      }
     },
     "roleAssignments": {
       "type": "array",
@@ -113,9 +116,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "9338790793667422174"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "7885747985110001606"
+            },
+            "name": "Authorization Locks (Resource Group scope)",
+            "description": "This module deploys an Authorization Lock at a Resource Group scope.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "name": {
@@ -127,13 +133,13 @@
             },
             "level": {
               "type": "string",
-              "metadata": {
-                "description": "Required. Set lock level."
-              },
               "allowedValues": [
                 "CanNotDelete",
                 "ReadOnly"
-              ]
+              ],
+              "metadata": {
+                "description": "Required. Set lock level."
+              }
             },
             "notes": {
               "type": "string",
@@ -243,8 +249,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "12586841471874813417"
+              "version": "0.20.4.51522",
+              "templateHash": "13758321727740315260"
             }
           },
           "parameters": {

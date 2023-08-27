@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "16025474284352958130"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "13634156293178921650"
+    },
+    "name": "Images",
+    "description": "This module deploys a Compute Image.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
@@ -218,8 +221,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "4688438158405140777"
+              "version": "0.20.4.51522",
+              "templateHash": "15836902918863510796"
             }
           },
           "parameters": {

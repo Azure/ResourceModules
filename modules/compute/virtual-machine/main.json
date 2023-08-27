@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.20.4.51522",
-      "templateHash": "10649954371905940405"
+      "templateHash": "16260888276391715225"
     },
     "name": "Virtual Machines",
     "description": "This module deploys a Virtual Machine with one or multiple NICs and optionally one or multiple public IPs.",
@@ -857,7 +857,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.20.4.51522",
-              "templateHash": "7198152300976797281"
+              "templateHash": "2403050015173417412"
             }
           },
           "parameters": {
@@ -1018,7 +1018,7 @@
                     "_generator": {
                       "name": "bicep",
                       "version": "0.20.4.51522",
-                      "templateHash": "14474619344547636171"
+                      "templateHash": "1083592604266553783"
                     },
                     "name": "Public IP Addresses",
                     "description": "This module deploys a Public IP Address.",
@@ -1131,6 +1131,20 @@
                       "defaultValue": "",
                       "metadata": {
                         "description": "Optional. The domain name label. The concatenation of the domain name label and the regionalized DNS zone make up the fully qualified domain name associated with the public IP address. If a domain name label is specified, an A DNS record is created for the public IP in the Microsoft Azure DNS system."
+                      }
+                    },
+                    "domainNameLabelScope": {
+                      "type": "string",
+                      "defaultValue": "",
+                      "allowedValues": [
+                        "",
+                        "NoReuse",
+                        "ResourceGroupReuse",
+                        "SubscriptionReuse",
+                        "TenantReuse"
+                      ],
+                      "metadata": {
+                        "description": "Optional. The domain name label scope. If a domain name label and a domain name label scope are specified, an A DNS record is created for the public IP in the Microsoft Azure DNS system with a hashed value includes in FQDN."
                       }
                     },
                     "fqdn": {
@@ -1270,7 +1284,7 @@
                     },
                     {
                       "type": "Microsoft.Network/publicIPAddresses",
-                      "apiVersion": "2022-07-01",
+                      "apiVersion": "2023-04-01",
                       "name": "[parameters('name')]",
                       "location": "[parameters('location')]",
                       "tags": "[parameters('tags')]",
@@ -1280,7 +1294,7 @@
                       },
                       "zones": "[parameters('zones')]",
                       "properties": {
-                        "dnsSettings": "[if(not(empty(parameters('domainNameLabel'))), createObject('domainNameLabel', parameters('domainNameLabel'), 'fqdn', parameters('fqdn'), 'reverseFqdn', parameters('reverseFqdn')), null())]",
+                        "dnsSettings": "[if(not(empty(parameters('domainNameLabel'))), createObject('domainNameLabel', parameters('domainNameLabel'), 'domainNameLabelScope', parameters('domainNameLabelScope'), 'fqdn', parameters('fqdn'), 'reverseFqdn', parameters('reverseFqdn')), null())]",
                         "publicIPAddressVersion": "[parameters('publicIPAddressVersion')]",
                         "publicIPAllocationMethod": "[parameters('publicIPAllocationMethod')]",
                         "publicIPPrefix": "[if(not(empty(parameters('publicIPPrefixResourceId'))), createObject('id', parameters('publicIPPrefixResourceId')), null())]",
@@ -1525,14 +1539,14 @@
                       "metadata": {
                         "description": "The public IP address of the public IP address resource."
                       },
-                      "value": "[if(contains(reference(resourceId('Microsoft.Network/publicIPAddresses', parameters('name')), '2022-07-01'), 'ipAddress'), reference(resourceId('Microsoft.Network/publicIPAddresses', parameters('name')), '2022-07-01').ipAddress, '')]"
+                      "value": "[if(contains(reference(resourceId('Microsoft.Network/publicIPAddresses', parameters('name')), '2023-04-01'), 'ipAddress'), reference(resourceId('Microsoft.Network/publicIPAddresses', parameters('name')), '2023-04-01').ipAddress, '')]"
                     },
                     "location": {
                       "type": "string",
                       "metadata": {
                         "description": "The location the resource was deployed into."
                       },
-                      "value": "[reference(resourceId('Microsoft.Network/publicIPAddresses', parameters('name')), '2022-07-01', 'full').location]"
+                      "value": "[reference(resourceId('Microsoft.Network/publicIPAddresses', parameters('name')), '2023-04-01', 'full').location]"
                     }
                   }
                 }
@@ -1610,7 +1624,7 @@
                     "_generator": {
                       "name": "bicep",
                       "version": "0.20.4.51522",
-                      "templateHash": "2671718918533328624"
+                      "templateHash": "16443618351676529498"
                     },
                     "name": "Network Interface",
                     "description": "This module deploys a Network Interface.",
@@ -1682,6 +1696,20 @@
                       ],
                       "metadata": {
                         "description": "Optional. Auxiliary mode of Network Interface resource. Not all regions are enabled for Auxiliary Mode Nic."
+                      }
+                    },
+                    "auxiliarySku": {
+                      "type": "string",
+                      "defaultValue": "None",
+                      "allowedValues": [
+                        "A1",
+                        "A2",
+                        "A4",
+                        "A8",
+                        "None"
+                      ],
+                      "metadata": {
+                        "description": "Optional. Auxiliary sku of Network Interface resource. Not all regions are enabled for Auxiliary Mode Nic."
                       }
                     },
                     "disableTcpStateTracking": {
@@ -1807,7 +1835,7 @@
                     },
                     {
                       "type": "Microsoft.Network/networkInterfaces",
-                      "apiVersion": "2022-07-01",
+                      "apiVersion": "2023-04-01",
                       "name": "[parameters('name')]",
                       "location": "[parameters('location')]",
                       "tags": "[parameters('tags')]",
@@ -1838,6 +1866,7 @@
                           }
                         ],
                         "auxiliaryMode": "[parameters('auxiliaryMode')]",
+                        "auxiliarySku": "[parameters('auxiliarySku')]",
                         "disableTcpStateTracking": "[parameters('disableTcpStateTracking')]",
                         "dnsSettings": "[if(not(empty(parameters('dnsServers'))), createObject('dnsServers', parameters('dnsServers')), null())]",
                         "enableAcceleratedNetworking": "[parameters('enableAcceleratedNetworking')]",
@@ -2081,7 +2110,7 @@
                       "metadata": {
                         "description": "The location the resource was deployed into."
                       },
-                      "value": "[reference(resourceId('Microsoft.Network/networkInterfaces', parameters('name')), '2022-07-01', 'full').location]"
+                      "value": "[reference(resourceId('Microsoft.Network/networkInterfaces', parameters('name')), '2023-04-01', 'full').location]"
                     }
                   }
                 }

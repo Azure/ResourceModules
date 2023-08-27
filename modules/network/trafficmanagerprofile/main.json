@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "10717328847534611454"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "14526210195159140049"
+    },
+    "name": "Traffic Manager Profiles",
+    "description": "This module deploys a Traffic Manager Profile.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
@@ -94,8 +97,8 @@
     "diagnosticLogsRetentionInDays": {
       "type": "int",
       "defaultValue": 365,
-      "maxValue": 365,
       "minValue": 0,
+      "maxValue": 365,
       "metadata": {
         "description": "Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely."
       }
@@ -131,14 +134,14 @@
     "lock": {
       "type": "string",
       "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Specify the type of lock."
-      },
       "allowedValues": [
         "",
         "CanNotDelete",
         "ReadOnly"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Specify the type of lock."
+      }
     },
     "roleAssignments": {
       "type": "array",
@@ -325,8 +328,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "9779359192040618252"
+              "version": "0.20.4.51522",
+              "templateHash": "12919047416876893123"
             }
           },
           "parameters": {

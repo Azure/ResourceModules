@@ -14,7 +14,7 @@ This module deploys an Express Route Gateway.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Network/expressRouteGateways` | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/expressRouteGateways) |
+| `Microsoft.Network/expressRouteGateways` | [2023-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-04-01/expressRouteGateways) |
 
 ## Parameters
 

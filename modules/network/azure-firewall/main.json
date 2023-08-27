@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.20.4.51522",
-      "templateHash": "9308869025215221965"
+      "templateHash": "9804363922267154833"
     },
     "name": "Azure Firewalls",
     "description": "This module deploys an Azure Firewall.",
@@ -338,7 +338,7 @@
     },
     {
       "type": "Microsoft.Network/azureFirewalls",
-      "apiVersion": "2022-07-01",
+      "apiVersion": "2023-04-01",
       "name": "[parameters('name')]",
       "location": "[parameters('location')]",
       "zones": "[if(equals(length(parameters('zones')), 0), null(), parameters('zones'))]",
@@ -438,7 +438,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.20.4.51522",
-              "templateHash": "14474619344547636171"
+              "templateHash": "1083592604266553783"
             },
             "name": "Public IP Addresses",
             "description": "This module deploys a Public IP Address.",
@@ -551,6 +551,20 @@
               "defaultValue": "",
               "metadata": {
                 "description": "Optional. The domain name label. The concatenation of the domain name label and the regionalized DNS zone make up the fully qualified domain name associated with the public IP address. If a domain name label is specified, an A DNS record is created for the public IP in the Microsoft Azure DNS system."
+              }
+            },
+            "domainNameLabelScope": {
+              "type": "string",
+              "defaultValue": "",
+              "allowedValues": [
+                "",
+                "NoReuse",
+                "ResourceGroupReuse",
+                "SubscriptionReuse",
+                "TenantReuse"
+              ],
+              "metadata": {
+                "description": "Optional. The domain name label scope. If a domain name label and a domain name label scope are specified, an A DNS record is created for the public IP in the Microsoft Azure DNS system with a hashed value includes in FQDN."
               }
             },
             "fqdn": {
@@ -690,7 +704,7 @@
             },
             {
               "type": "Microsoft.Network/publicIPAddresses",
-              "apiVersion": "2022-07-01",
+              "apiVersion": "2023-04-01",
               "name": "[parameters('name')]",
               "location": "[parameters('location')]",
               "tags": "[parameters('tags')]",
@@ -700,7 +714,7 @@
               },
               "zones": "[parameters('zones')]",
               "properties": {
-                "dnsSettings": "[if(not(empty(parameters('domainNameLabel'))), createObject('domainNameLabel', parameters('domainNameLabel'), 'fqdn', parameters('fqdn'), 'reverseFqdn', parameters('reverseFqdn')), null())]",
+                "dnsSettings": "[if(not(empty(parameters('domainNameLabel'))), createObject('domainNameLabel', parameters('domainNameLabel'), 'domainNameLabelScope', parameters('domainNameLabelScope'), 'fqdn', parameters('fqdn'), 'reverseFqdn', parameters('reverseFqdn')), null())]",
                 "publicIPAddressVersion": "[parameters('publicIPAddressVersion')]",
                 "publicIPAllocationMethod": "[parameters('publicIPAllocationMethod')]",
                 "publicIPPrefix": "[if(not(empty(parameters('publicIPPrefixResourceId'))), createObject('id', parameters('publicIPPrefixResourceId')), null())]",
@@ -945,14 +959,14 @@
               "metadata": {
                 "description": "The public IP address of the public IP address resource."
               },
-              "value": "[if(contains(reference(resourceId('Microsoft.Network/publicIPAddresses', parameters('name')), '2022-07-01'), 'ipAddress'), reference(resourceId('Microsoft.Network/publicIPAddresses', parameters('name')), '2022-07-01').ipAddress, '')]"
+              "value": "[if(contains(reference(resourceId('Microsoft.Network/publicIPAddresses', parameters('name')), '2023-04-01'), 'ipAddress'), reference(resourceId('Microsoft.Network/publicIPAddresses', parameters('name')), '2023-04-01').ipAddress, '')]"
             },
             "location": {
               "type": "string",
               "metadata": {
                 "description": "The location the resource was deployed into."
               },
-              "value": "[reference(resourceId('Microsoft.Network/publicIPAddresses', parameters('name')), '2022-07-01', 'full').location]"
+              "value": "[reference(resourceId('Microsoft.Network/publicIPAddresses', parameters('name')), '2023-04-01', 'full').location]"
             }
           }
         }
@@ -1015,7 +1029,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.20.4.51522",
-              "templateHash": "14474619344547636171"
+              "templateHash": "1083592604266553783"
             },
             "name": "Public IP Addresses",
             "description": "This module deploys a Public IP Address.",
@@ -1128,6 +1142,20 @@
               "defaultValue": "",
               "metadata": {
                 "description": "Optional. The domain name label. The concatenation of the domain name label and the regionalized DNS zone make up the fully qualified domain name associated with the public IP address. If a domain name label is specified, an A DNS record is created for the public IP in the Microsoft Azure DNS system."
+              }
+            },
+            "domainNameLabelScope": {
+              "type": "string",
+              "defaultValue": "",
+              "allowedValues": [
+                "",
+                "NoReuse",
+                "ResourceGroupReuse",
+                "SubscriptionReuse",
+                "TenantReuse"
+              ],
+              "metadata": {
+                "description": "Optional. The domain name label scope. If a domain name label and a domain name label scope are specified, an A DNS record is created for the public IP in the Microsoft Azure DNS system with a hashed value includes in FQDN."
               }
             },
             "fqdn": {
@@ -1267,7 +1295,7 @@
             },
             {
               "type": "Microsoft.Network/publicIPAddresses",
-              "apiVersion": "2022-07-01",
+              "apiVersion": "2023-04-01",
               "name": "[parameters('name')]",
               "location": "[parameters('location')]",
               "tags": "[parameters('tags')]",
@@ -1277,7 +1305,7 @@
               },
               "zones": "[parameters('zones')]",
               "properties": {
-                "dnsSettings": "[if(not(empty(parameters('domainNameLabel'))), createObject('domainNameLabel', parameters('domainNameLabel'), 'fqdn', parameters('fqdn'), 'reverseFqdn', parameters('reverseFqdn')), null())]",
+                "dnsSettings": "[if(not(empty(parameters('domainNameLabel'))), createObject('domainNameLabel', parameters('domainNameLabel'), 'domainNameLabelScope', parameters('domainNameLabelScope'), 'fqdn', parameters('fqdn'), 'reverseFqdn', parameters('reverseFqdn')), null())]",
                 "publicIPAddressVersion": "[parameters('publicIPAddressVersion')]",
                 "publicIPAllocationMethod": "[parameters('publicIPAllocationMethod')]",
                 "publicIPPrefix": "[if(not(empty(parameters('publicIPPrefixResourceId'))), createObject('id', parameters('publicIPPrefixResourceId')), null())]",
@@ -1522,14 +1550,14 @@
               "metadata": {
                 "description": "The public IP address of the public IP address resource."
               },
-              "value": "[if(contains(reference(resourceId('Microsoft.Network/publicIPAddresses', parameters('name')), '2022-07-01'), 'ipAddress'), reference(resourceId('Microsoft.Network/publicIPAddresses', parameters('name')), '2022-07-01').ipAddress, '')]"
+              "value": "[if(contains(reference(resourceId('Microsoft.Network/publicIPAddresses', parameters('name')), '2023-04-01'), 'ipAddress'), reference(resourceId('Microsoft.Network/publicIPAddresses', parameters('name')), '2023-04-01').ipAddress, '')]"
             },
             "location": {
               "type": "string",
               "metadata": {
                 "description": "The location the resource was deployed into."
               },
-              "value": "[reference(resourceId('Microsoft.Network/publicIPAddresses', parameters('name')), '2022-07-01', 'full').location]"
+              "value": "[reference(resourceId('Microsoft.Network/publicIPAddresses', parameters('name')), '2023-04-01', 'full').location]"
             }
           }
         }
@@ -1740,14 +1768,14 @@
       "metadata": {
         "description": "The private IP of the Azure firewall."
       },
-      "value": "[if(contains(reference(resourceId('Microsoft.Network/azureFirewalls', parameters('name')), '2022-07-01'), 'ipConfigurations'), reference(resourceId('Microsoft.Network/azureFirewalls', parameters('name')), '2022-07-01').ipConfigurations[0].properties.privateIPAddress, '')]"
+      "value": "[if(contains(reference(resourceId('Microsoft.Network/azureFirewalls', parameters('name')), '2023-04-01'), 'ipConfigurations'), reference(resourceId('Microsoft.Network/azureFirewalls', parameters('name')), '2023-04-01').ipConfigurations[0].properties.privateIPAddress, '')]"
     },
     "ipConfAzureFirewallSubnet": {
       "type": "object",
       "metadata": {
         "description": "The Public IP configuration object for the Azure Firewall Subnet."
       },
-      "value": "[if(contains(reference(resourceId('Microsoft.Network/azureFirewalls', parameters('name')), '2022-07-01'), 'ipConfigurations'), reference(resourceId('Microsoft.Network/azureFirewalls', parameters('name')), '2022-07-01').ipConfigurations[0], createObject())]"
+      "value": "[if(contains(reference(resourceId('Microsoft.Network/azureFirewalls', parameters('name')), '2023-04-01'), 'ipConfigurations'), reference(resourceId('Microsoft.Network/azureFirewalls', parameters('name')), '2023-04-01').ipConfigurations[0], createObject())]"
     },
     "applicationRuleCollections": {
       "type": "array",
@@ -1775,7 +1803,7 @@
       "metadata": {
         "description": "The location the resource was deployed into."
       },
-      "value": "[reference(resourceId('Microsoft.Network/azureFirewalls', parameters('name')), '2022-07-01', 'full').location]"
+      "value": "[reference(resourceId('Microsoft.Network/azureFirewalls', parameters('name')), '2023-04-01', 'full').location]"
     }
   }
 }

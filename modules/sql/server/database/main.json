@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "2441534246604708690"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "16491004875407634627"
+    },
+    "name": "SQL Server Database",
+    "description": "This module deploys an Azure SQL Server Database.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
@@ -154,8 +157,8 @@
     "diagnosticLogsRetentionInDays": {
       "type": "int",
       "defaultValue": 365,
-      "maxValue": 365,
       "minValue": 0,
+      "maxValue": 365,
       "metadata": {
         "description": "Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely."
       }
@@ -439,9 +442,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "1755178001864653280"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "2184125360304496486"
+            },
+            "name": "Azure SQL Server Database Short Term Backup Retention Policies",
+            "description": "This module deploys an Azure SQL Server Database Short-Term Backup Retention Policy.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "serverName": {
@@ -559,9 +565,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "576440200700805719"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "9219416659486760074"
+            },
+            "name": "SQL Server Database Long Term Backup Retention Policies",
+            "description": "This module deploys an Azure SQL Server Database Long-Term Backup Retention Policy.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "serverName": {
