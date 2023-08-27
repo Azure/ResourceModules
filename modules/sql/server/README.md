@@ -457,7 +457,6 @@ module server './sql/server/main.bicep' = {
         collation: 'SQL_Latin1_General_CP1_CI_AS'
         diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
         diagnosticEventHubName: '<diagnosticEventHubName>'
-        diagnosticLogsRetentionInDays: 7
         diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
         diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
         elasticPoolId: '<elasticPoolId>'
@@ -594,7 +593,6 @@ module server './sql/server/main.bicep' = {
           "collation": "SQL_Latin1_General_CP1_CI_AS",
           "diagnosticEventHubAuthorizationRuleId": "<diagnosticEventHubAuthorizationRuleId>",
           "diagnosticEventHubName": "<diagnosticEventHubName>",
-          "diagnosticLogsRetentionInDays": 7,
           "diagnosticStorageAccountId": "<diagnosticStorageAccountId>",
           "diagnosticWorkspaceId": "<diagnosticWorkspaceId>",
           "elasticPoolId": "<elasticPoolId>",

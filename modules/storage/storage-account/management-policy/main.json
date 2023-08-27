@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.20.4.51522",
-      "templateHash": "9756021983971600432"
+      "templateHash": "2581396185828179457"
     },
     "name": "Storage Account Management Policies",
     "description": "This module deploys a Storage Account Management Policy.",
@@ -51,7 +51,7 @@
     {
       "condition": "[not(empty(parameters('rules')))]",
       "type": "Microsoft.Storage/storageAccounts/managementPolicies",
-      "apiVersion": "2021-09-01",
+      "apiVersion": "2023-01-01",
       "name": "[format('{0}/{1}', parameters('storageAccountName'), 'default')]",
       "properties": {
         "policy": {

@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.20.4.51522",
-      "templateHash": "6792143552661751987"
+      "templateHash": "8975971845190410186"
     },
     "name": "Healthcare API Workspaces",
     "description": "This module deploys a Healthcare API Workspace.",
@@ -331,7 +331,6 @@
           "corsMethods": "[if(contains(parameters('fhirservices')[copyIndex()], 'corsMethods'), createObject('value', parameters('fhirservices')[copyIndex()].corsMethods), createObject('value', createArray()))]",
           "corsMaxAge": "[if(contains(parameters('fhirservices')[copyIndex()], 'corsMaxAge'), createObject('value', parameters('fhirservices')[copyIndex()].corsMaxAge), createObject('value', -1))]",
           "corsAllowCredentials": "[if(contains(parameters('fhirservices')[copyIndex()], 'corsAllowCredentials'), createObject('value', parameters('fhirservices')[copyIndex()].corsAllowCredentials), createObject('value', false()))]",
-          "diagnosticLogsRetentionInDays": "[if(contains(parameters('fhirservices')[copyIndex()], 'diagnosticLogsRetentionInDays'), createObject('value', parameters('fhirservices')[copyIndex()].diagnosticLogsRetentionInDays), createObject('value', 365))]",
           "diagnosticStorageAccountId": "[if(contains(parameters('fhirservices')[copyIndex()], 'diagnosticStorageAccountId'), createObject('value', parameters('fhirservices')[copyIndex()].diagnosticStorageAccountId), createObject('value', ''))]",
           "diagnosticWorkspaceId": "[if(contains(parameters('fhirservices')[copyIndex()], 'diagnosticWorkspaceId'), createObject('value', parameters('fhirservices')[copyIndex()].diagnosticWorkspaceId), createObject('value', ''))]",
           "diagnosticEventHubAuthorizationRuleId": "[if(contains(parameters('fhirservices')[copyIndex()], 'diagnosticEventHubAuthorizationRuleId'), createObject('value', parameters('fhirservices')[copyIndex()].diagnosticEventHubAuthorizationRuleId), createObject('value', ''))]",
@@ -358,7 +357,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.20.4.51522",
-              "templateHash": "5960921917878811827"
+              "templateHash": "3716031618750035294"
             },
             "name": "Healthcare API Workspace FHIR Services",
             "description": "This module deploys a Healthcare API Workspace FHIR Service.",
@@ -472,15 +471,6 @@
               "defaultValue": "[resourceGroup().location]",
               "metadata": {
                 "description": "Optional. Location for all resources."
-              }
-            },
-            "diagnosticLogsRetentionInDays": {
-              "type": "int",
-              "defaultValue": 365,
-              "minValue": 0,
-              "maxValue": 365,
-              "metadata": {
-                "description": "Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely."
               }
             },
             "diagnosticStorageAccountId": {
@@ -662,11 +652,7 @@
                 "count": "[length(parameters('diagnosticLogCategoriesToEnable'))]",
                 "input": {
                   "category": "[parameters('diagnosticLogCategoriesToEnable')[copyIndex('diagnosticsLogs')]]",
-                  "enabled": true,
-                  "retentionPolicy": {
-                    "enabled": true,
-                    "days": "[parameters('diagnosticLogsRetentionInDays')]"
-                  }
+                  "enabled": true
                 }
               },
               {
@@ -675,11 +661,7 @@
                 "input": {
                   "category": "[parameters('diagnosticMetricsToEnable')[copyIndex('diagnosticsMetrics')]]",
                   "timeGrain": null,
-                  "enabled": true,
-                  "retentionPolicy": {
-                    "enabled": true,
-                    "days": "[parameters('diagnosticLogsRetentionInDays')]"
-                  }
+                  "enabled": true
                 }
               },
               {
@@ -1021,7 +1003,6 @@
           "corsMethods": "[if(contains(parameters('dicomservices')[copyIndex()], 'corsMethods'), createObject('value', parameters('dicomservices')[copyIndex()].corsMethods), createObject('value', createArray()))]",
           "corsMaxAge": "[if(contains(parameters('dicomservices')[copyIndex()], 'corsMaxAge'), createObject('value', parameters('dicomservices')[copyIndex()].corsMaxAge), createObject('value', -1))]",
           "corsAllowCredentials": "[if(contains(parameters('dicomservices')[copyIndex()], 'corsAllowCredentials'), createObject('value', parameters('dicomservices')[copyIndex()].corsAllowCredentials), createObject('value', false()))]",
-          "diagnosticLogsRetentionInDays": "[if(contains(parameters('dicomservices')[copyIndex()], 'diagnosticLogsRetentionInDays'), createObject('value', parameters('dicomservices')[copyIndex()].diagnosticLogsRetentionInDays), createObject('value', 365))]",
           "diagnosticStorageAccountId": "[if(contains(parameters('dicomservices')[copyIndex()], 'diagnosticStorageAccountId'), createObject('value', parameters('dicomservices')[copyIndex()].diagnosticStorageAccountId), createObject('value', ''))]",
           "diagnosticWorkspaceId": "[if(contains(parameters('dicomservices')[copyIndex()], 'diagnosticWorkspaceId'), createObject('value', parameters('dicomservices')[copyIndex()].diagnosticWorkspaceId), createObject('value', ''))]",
           "diagnosticEventHubAuthorizationRuleId": "[if(contains(parameters('dicomservices')[copyIndex()], 'diagnosticEventHubAuthorizationRuleId'), createObject('value', parameters('dicomservices')[copyIndex()].diagnosticEventHubAuthorizationRuleId), createObject('value', ''))]",
@@ -1040,7 +1021,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.20.4.51522",
-              "templateHash": "17349771087938418319"
+              "templateHash": "13236257936604632093"
             },
             "name": "Healthcare API Workspace DICOM Services",
             "description": "This module deploys a Healthcare API Workspace DICOM Service.",
@@ -1108,15 +1089,6 @@
               "defaultValue": "[resourceGroup().location]",
               "metadata": {
                 "description": "Optional. Location for all resources."
-              }
-            },
-            "diagnosticLogsRetentionInDays": {
-              "type": "int",
-              "defaultValue": 365,
-              "minValue": 0,
-              "maxValue": 365,
-              "metadata": {
-                "description": "Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely."
               }
             },
             "diagnosticStorageAccountId": {
@@ -1225,11 +1197,7 @@
                 "count": "[length(parameters('diagnosticLogCategoriesToEnable'))]",
                 "input": {
                   "category": "[parameters('diagnosticLogCategoriesToEnable')[copyIndex('diagnosticsLogs')]]",
-                  "enabled": true,
-                  "retentionPolicy": {
-                    "enabled": true,
-                    "days": "[parameters('diagnosticLogsRetentionInDays')]"
-                  }
+                  "enabled": true
                 }
               }
             ],
@@ -1379,7 +1347,6 @@
           "fhirdestination": "[if(contains(parameters('iotconnectors')[copyIndex()], 'fhirdestination'), createObject('value', parameters('iotconnectors')[copyIndex()].fhirdestination), createObject('value', createObject()))]",
           "consumerGroup": "[if(contains(parameters('iotconnectors')[copyIndex()], 'consumerGroup'), createObject('value', parameters('iotconnectors')[copyIndex()].consumerGroup), createObject('value', parameters('iotconnectors')[copyIndex()].name))]",
           "systemAssignedIdentity": "[if(contains(parameters('iotconnectors')[copyIndex()], 'systemAssignedIdentity'), createObject('value', parameters('iotconnectors')[copyIndex()].systemAssignedIdentity), createObject('value', false()))]",
-          "diagnosticLogsRetentionInDays": "[if(contains(parameters('iotconnectors')[copyIndex()], 'diagnosticLogsRetentionInDays'), createObject('value', parameters('iotconnectors')[copyIndex()].diagnosticLogsRetentionInDays), createObject('value', 365))]",
           "diagnosticStorageAccountId": "[if(contains(parameters('iotconnectors')[copyIndex()], 'diagnosticStorageAccountId'), createObject('value', parameters('iotconnectors')[copyIndex()].diagnosticStorageAccountId), createObject('value', ''))]",
           "diagnosticWorkspaceId": "[if(contains(parameters('iotconnectors')[copyIndex()], 'diagnosticWorkspaceId'), createObject('value', parameters('iotconnectors')[copyIndex()].diagnosticWorkspaceId), createObject('value', ''))]",
           "diagnosticEventHubAuthorizationRuleId": "[if(contains(parameters('iotconnectors')[copyIndex()], 'diagnosticEventHubAuthorizationRuleId'), createObject('value', parameters('iotconnectors')[copyIndex()].diagnosticEventHubAuthorizationRuleId), createObject('value', ''))]",
@@ -1399,7 +1366,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.20.4.51522",
-              "templateHash": "1006320922223302726"
+              "templateHash": "16981578699165858107"
             },
             "name": "Healthcare API Workspace IoT Connectors",
             "description": "This module deploys a Healthcare API Workspace IoT Connector.",
@@ -1460,15 +1427,6 @@
               "defaultValue": "[resourceGroup().location]",
               "metadata": {
                 "description": "Optional. Location for all resources."
-              }
-            },
-            "diagnosticLogsRetentionInDays": {
-              "type": "int",
-              "defaultValue": 365,
-              "minValue": 0,
-              "maxValue": 365,
-              "metadata": {
-                "description": "Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely."
               }
             },
             "diagnosticStorageAccountId": {
@@ -1578,11 +1536,7 @@
                 "count": "[length(parameters('diagnosticLogCategoriesToEnable'))]",
                 "input": {
                   "category": "[parameters('diagnosticLogCategoriesToEnable')[copyIndex('diagnosticsLogs')]]",
-                  "enabled": true,
-                  "retentionPolicy": {
-                    "enabled": true,
-                    "days": "[parameters('diagnosticLogsRetentionInDays')]"
-                  }
+                  "enabled": true
                 }
               },
               {
@@ -1591,11 +1545,7 @@
                 "input": {
                   "category": "[parameters('diagnosticMetricsToEnable')[copyIndex('diagnosticsMetrics')]]",
                   "timeGrain": null,
-                  "enabled": true,
-                  "retentionPolicy": {
-                    "enabled": true,
-                    "days": "[parameters('diagnosticLogsRetentionInDays')]"
-                  }
+                  "enabled": true
                 }
               }
             ],
