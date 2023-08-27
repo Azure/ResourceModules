@@ -66,7 +66,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource privateEndpoint 'Microsoft.Network/privateEndpoints@2022-07-01' = {
+resource privateEndpoint 'Microsoft.Network/privateEndpoints@2023-04-01' = {
   name: name
   location: location
   tags: tags

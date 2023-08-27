@@ -62,7 +62,7 @@ resource msi_contibutorRoleAssignment 'Microsoft.Authorization/roleAssignments@2
   }
 }
 
-resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
+resource virtualNetwork 'Microsoft.Network/virtualNetworks@2023-04-01' = {
   name: virtualNetworkName
   location: location
   properties: {

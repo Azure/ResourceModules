@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.20.4.51522",
-      "templateHash": "10053541423205332960"
+      "templateHash": "7109762987268283105"
     },
     "name": "Network Security Groups",
     "description": "This module deploys a Network security Group (NSG).",
@@ -154,7 +154,7 @@
     },
     {
       "type": "Microsoft.Network/networkSecurityGroups",
-      "apiVersion": "2022-07-01",
+      "apiVersion": "2023-04-01",
       "name": "[parameters('name')]",
       "location": "[parameters('location')]",
       "tags": "[parameters('tags')]",
@@ -691,7 +691,7 @@
       "metadata": {
         "description": "The location the resource was deployed into."
       },
-      "value": "[reference(resourceId('Microsoft.Network/networkSecurityGroups', parameters('name')), '2022-07-01', 'full').location]"
+      "value": "[reference(resourceId('Microsoft.Network/networkSecurityGroups', parameters('name')), '2023-04-01', 'full').location]"
     }
   }
 }

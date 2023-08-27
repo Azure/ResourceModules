@@ -22,117 +22,117 @@ param proximityPlacementGroupName string
 var storageAccountCSEFileName = 'scriptExtensionMasterInstaller.ps1'
 var addressPrefix = '10.0.0.0/16'
 
-resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
-    name: virtualNetworkName
-    location: location
-    properties: {
-        addressSpace: {
-            addressPrefixes: [
-                addressPrefix
-            ]
-        }
-        subnets: [
-            {
-                name: 'defaultSubnet'
-                properties: {
-                    addressPrefix: addressPrefix
-                }
-            }
-        ]
+resource virtualNetwork 'Microsoft.Network/virtualNetworks@2023-04-01' = {
+  name: virtualNetworkName
+  location: location
+  properties: {
+    addressSpace: {
+      addressPrefixes: [
+        addressPrefix
+      ]
     }
+    subnets: [
+      {
+        name: 'defaultSubnet'
+        properties: {
+          addressPrefix: addressPrefix
+        }
+      }
+    ]
+  }
 }
 
 resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
-    name: keyVaultName
-    location: location
-    properties: {
-        sku: {
-            family: 'A'
-            name: 'standard'
-        }
-        tenantId: tenant().tenantId
-        enablePurgeProtection: null
-        enabledForTemplateDeployment: true
-        enabledForDiskEncryption: true
-        enabledForDeployment: true
-        enableRbacAuthorization: true
-        accessPolicies: []
+  name: keyVaultName
+  location: location
+  properties: {
+    sku: {
+      family: 'A'
+      name: 'standard'
     }
+    tenantId: tenant().tenantId
+    enablePurgeProtection: null
+    enabledForTemplateDeployment: true
+    enabledForDiskEncryption: true
+    enabledForDeployment: true
+    enableRbacAuthorization: true
+    accessPolicies: []
+  }
 
-    resource key 'keys@2022-07-01' = {
-        name: 'encryptionKey'
-        properties: {
-            kty: 'RSA'
-        }
+  resource key 'keys@2022-07-01' = {
+    name: 'encryptionKey'
+    properties: {
+      kty: 'RSA'
     }
+  }
 }
 
 resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' = {
-    name: managedIdentityName
-    location: location
+  name: managedIdentityName
+  location: location
 }
 
 resource msiRGContrRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-    name: guid(resourceGroup().id, 'Contributor', managedIdentity.id)
-    scope: resourceGroup()
-    properties: {
-        principalId: managedIdentity.properties.principalId
-        roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c') // Contributor
-        principalType: 'ServicePrincipal'
-    }
+  name: guid(resourceGroup().id, 'Contributor', managedIdentity.id)
+  scope: resourceGroup()
+  properties: {
+    principalId: managedIdentity.properties.principalId
+    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c') // Contributor
+    principalType: 'ServicePrincipal'
+  }
 }
 
 resource msiKVCryptoUserRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-    name: guid(keyVault::key.id, 'Key Vault Crypto User', managedIdentity.id)
-    scope: keyVault::key
-    properties: {
-        principalId: managedIdentity.properties.principalId
-        roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '12338af0-0e69-4776-bea7-57ae8d297424') // Key Vault Crypto User
-        principalType: 'ServicePrincipal'
-    }
+  name: guid(keyVault::key.id, 'Key Vault Crypto User', managedIdentity.id)
+  scope: keyVault::key
+  properties: {
+    principalId: managedIdentity.properties.principalId
+    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '12338af0-0e69-4776-bea7-57ae8d297424') // Key Vault Crypto User
+    principalType: 'ServicePrincipal'
+  }
 }
 
 resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' = {
-    name: storageAccountName
-    location: location
-    sku: {
-        name: 'Standard_LRS'
-    }
-    kind: 'StorageV2'
+  name: storageAccountName
+  location: location
+  sku: {
+    name: 'Standard_LRS'
+  }
+  kind: 'StorageV2'
 
-    resource blobService 'blobServices@2021-09-01' = {
-        name: 'default'
+  resource blobService 'blobServices@2021-09-01' = {
+    name: 'default'
 
-        resource container 'containers@2021-09-01' = {
-            name: 'scripts'
-        }
+    resource container 'containers@2021-09-01' = {
+      name: 'scripts'
     }
+  }
 }
 
 resource storageUpload 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
-    name: storageUploadDeploymentScriptName
-    location: location
-    kind: 'AzurePowerShell'
-    identity: {
-        type: 'UserAssigned'
-        userAssignedIdentities: {
-            '${managedIdentity.id}': {}
-        }
+  name: storageUploadDeploymentScriptName
+  location: location
+  kind: 'AzurePowerShell'
+  identity: {
+    type: 'UserAssigned'
+    userAssignedIdentities: {
+      '${managedIdentity.id}': {}
     }
-    properties: {
-        azPowerShellVersion: '9.0'
-        retentionInterval: 'P1D'
-        arguments: '-StorageAccountName "${storageAccount.name}" -ResourceGroupName "${resourceGroup().name}" -ContainerName "${storageAccount::blobService::container.name}" -FileName "${storageAccountCSEFileName}"'
-        scriptContent: loadTextContent('../../../../.shared/.scripts/Set-BlobContent.ps1')
-    }
-    dependsOn: [
-        msiRGContrRoleAssignment
-    ]
+  }
+  properties: {
+    azPowerShellVersion: '9.0'
+    retentionInterval: 'P1D'
+    arguments: '-StorageAccountName "${storageAccount.name}" -ResourceGroupName "${resourceGroup().name}" -ContainerName "${storageAccount::blobService::container.name}" -FileName "${storageAccountCSEFileName}"'
+    scriptContent: loadTextContent('../../../../.shared/.scripts/Set-BlobContent.ps1')
+  }
+  dependsOn: [
+    msiRGContrRoleAssignment
+  ]
 }
 
 resource proximityPlacementGroup 'Microsoft.Compute/proximityPlacementGroups@2022-03-01' = {
-    name: proximityPlacementGroupName
-    location: location
+  name: proximityPlacementGroupName
+  location: location
 }
 
 @description('The resource ID of the created Virtual Network Subnet.')

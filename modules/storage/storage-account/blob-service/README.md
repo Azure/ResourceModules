@@ -52,7 +52,7 @@ This module deploys a Storage Account Blob Service.
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of a log analytics workspace. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `isVersioningEnabled` | bool | `True` |  | Use versioning to automatically maintain previous versions of your blobs. |
-| `lastAccessTimeTrackingPolicyEnable` | bool | `False` |  | The blob service property to configure last access time based tracking policy. When set to true last access time based tracking is enabled. |
+| `lastAccessTimeTrackingPolicyEnabled` | bool | `False` |  | The blob service property to configure last access time based tracking policy. When set to true last access time based tracking is enabled. |
 | `restorePolicyDays` | int | `6` |  | how long this blob can be restored. It should be less than DeleteRetentionPolicy days. |
 | `restorePolicyEnabled` | bool | `True` |  | The blob service properties for blob restore policy. If point-in-time restore is enabled, then versioning, change feed, and blob soft delete must also be enabled. |
 
