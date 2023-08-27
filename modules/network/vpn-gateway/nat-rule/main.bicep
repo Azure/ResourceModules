@@ -52,7 +52,7 @@ resource vpnGateway 'Microsoft.Network/vpnGateways@2023-04-01' existing = {
   name: vpnGatewayName
 }
 
-resource natRule 'Microsoft.Network/vpnGateways/natRules@2022-07-01' = {
+resource natRule 'Microsoft.Network/vpnGateways/natRules@2023-04-01' = {
   name: name
   parent: vpnGateway
   properties: {
