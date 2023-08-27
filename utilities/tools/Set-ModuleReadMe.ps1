@@ -492,7 +492,7 @@ Mandatory. The JSON parameters block to process (ideally already without 'value'
 Mandatory. A list of all required top-level (i.e. non-nested) parameter names
 
 .EXAMPLE
-Get-OrderedParametersJSON -RequiredParametersList @('name') -ParametersJSON '{ "diagnosticLogsRetentionInDays": 7,"lock": "CanNotDelete","name": "carml" }'
+Get-OrderedParametersJSON -RequiredParametersList @('name') -ParametersJSON '{ "lock": "CanNotDelete","name": "carml" }'
 
 Order the given JSON object alphabetically. Would result into:
 
@@ -550,7 +550,7 @@ Mandatory. The parameter JSON object to process
 Mandatory. A list of all required top-level (i.e. non-nested) parameter names
 
 .EXAMPLE
-Build-OrderedJSONObject -RequiredParametersList @('name') -ParametersJSON '{ "lock": { "value": "CanNotDelete" }, "name": { "value": "carml" }, "diagnosticLogsRetentionInDays": { "value": 7 } }'
+Build-OrderedJSONObject -RequiredParametersList @('name') -ParametersJSON '{ "lock": { "value": "CanNotDelete" }, "name": { "value": "carml" } }'
 
 Build a formatted Parameter-JSON object with one required parameter. Would result into:
 
@@ -563,9 +563,6 @@ Build a formatted Parameter-JSON object with one required parameter. Would resul
             "value": "carml"
         },
         // Non-required parameters
-        "diagnosticLogsRetentionInDays": {
-            "value": 7
-        },
         "lock": {
             "value": "CanNotDelete"
         }
