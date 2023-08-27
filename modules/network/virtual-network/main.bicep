@@ -148,7 +148,7 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2023-04-01' = {
       properties: {
         addressPrefix: subnet.addressPrefix
         addressPrefixes: contains(subnet, 'addressPrefixes') ? subnet.addressPrefixes : []
-        applicationGatewayIpConfigurations: contains(subnet, 'applicationGatewayIpConfigurations') ? subnet.applicationGatewayIpConfigurations : []
+        applicationGatewayIPConfigurations: contains(subnet, 'applicationGatewayIPConfigurations') ? subnet.applicationGatewayIPConfigurations : []
         delegations: contains(subnet, 'delegations') ? subnet.delegations : []
         ipAllocations: contains(subnet, 'ipAllocations') ? subnet.ipAllocations : []
         natGateway: contains(subnet, 'natGatewayId') ? {
@@ -184,7 +184,7 @@ module virtualNetwork_subnets 'subnet/main.bicep' = [for (subnet, index) in subn
     name: subnet.name
     addressPrefix: subnet.addressPrefix
     addressPrefixes: contains(subnet, 'addressPrefixes') ? subnet.addressPrefixes : []
-    applicationGatewayIpConfigurations: contains(subnet, 'applicationGatewayIpConfigurations') ? subnet.applicationGatewayIpConfigurations : []
+    applicationGatewayIPConfigurations: contains(subnet, 'applicationGatewayIPConfigurations') ? subnet.applicationGatewayIPConfigurations : []
     delegations: contains(subnet, 'delegations') ? subnet.delegations : []
     ipAllocations: contains(subnet, 'ipAllocations') ? subnet.ipAllocations : []
     natGatewayId: contains(subnet, 'natGatewayId') ? subnet.natGatewayId : ''

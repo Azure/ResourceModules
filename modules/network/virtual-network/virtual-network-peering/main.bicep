@@ -45,7 +45,7 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2023-04-01' existing 
   name: localVnetName
 }
 
-resource virtualNetworkPeering 'Microsoft.Network/virtualNetworks/virtualNetworkPeerings@2022-07-01' = {
+resource virtualNetworkPeering 'Microsoft.Network/virtualNetworks/virtualNetworkPeerings@2023-04-01' = {
   name: name
   parent: virtualNetwork
   properties: {
