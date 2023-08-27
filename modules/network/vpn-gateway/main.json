@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.20.4.51522",
-      "templateHash": "10067626025010436242"
+      "templateHash": "18325828522139029745"
     },
     "name": "VPN Gateways",
     "description": "This module deploys a VPN Gateway.",
@@ -120,7 +120,7 @@
     },
     {
       "type": "Microsoft.Network/vpnGateways",
-      "apiVersion": "2022-07-01",
+      "apiVersion": "2023-04-01",
       "name": "[parameters('name')]",
       "location": "[parameters('location')]",
       "tags": "[parameters('tags')]",
@@ -578,7 +578,7 @@
       "metadata": {
         "description": "The location the resource was deployed into."
       },
-      "value": "[reference(resourceId('Microsoft.Network/vpnGateways', parameters('name')), '2022-07-01', 'full').location]"
+      "value": "[reference(resourceId('Microsoft.Network/vpnGateways', parameters('name')), '2023-04-01', 'full').location]"
     }
   }
 }

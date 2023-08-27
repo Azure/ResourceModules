@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "18434150449398323118"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "17592627855612646241"
+    },
+    "name": "Policy Exemptions (Management Group scope)",
+    "description": "This module deploys a Policy Exemption at a Management Group scope.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {

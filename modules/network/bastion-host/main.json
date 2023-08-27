@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "7216068948381159464"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "14936354487659140379"
+    },
+    "name": "Bastion Hosts",
+    "description": "This module deploys a Bastion Host.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
@@ -52,8 +55,8 @@
     "diagnosticLogsRetentionInDays": {
       "type": "int",
       "defaultValue": 365,
-      "maxValue": 365,
       "minValue": 0,
+      "maxValue": 365,
       "metadata": {
         "description": "Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely."
       }
@@ -89,25 +92,25 @@
     "lock": {
       "type": "string",
       "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Specify the type of lock."
-      },
       "allowedValues": [
         "",
         "CanNotDelete",
         "ReadOnly"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Specify the type of lock."
+      }
     },
     "skuName": {
       "type": "string",
       "defaultValue": "Basic",
-      "metadata": {
-        "description": "Optional. The SKU of this Bastion Host."
-      },
       "allowedValues": [
         "Basic",
         "Standard"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. The SKU of this Bastion Host."
+      }
     },
     "disableCopyPaste": {
       "type": "bool",
@@ -339,9 +342,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "1954871673414826097"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "1083592604266553783"
+            },
+            "name": "Public IP Addresses",
+            "description": "This module deploys a Public IP Address.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "name": {
@@ -411,8 +417,8 @@
             "diagnosticLogsRetentionInDays": {
               "type": "int",
               "defaultValue": 365,
-              "maxValue": 365,
               "minValue": 0,
+              "maxValue": 365,
               "metadata": {
                 "description": "Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely."
               }
@@ -452,6 +458,20 @@
                 "description": "Optional. The domain name label. The concatenation of the domain name label and the regionalized DNS zone make up the fully qualified domain name associated with the public IP address. If a domain name label is specified, an A DNS record is created for the public IP in the Microsoft Azure DNS system."
               }
             },
+            "domainNameLabelScope": {
+              "type": "string",
+              "defaultValue": "",
+              "allowedValues": [
+                "",
+                "NoReuse",
+                "ResourceGroupReuse",
+                "SubscriptionReuse",
+                "TenantReuse"
+              ],
+              "metadata": {
+                "description": "Optional. The domain name label scope. If a domain name label and a domain name label scope are specified, an A DNS record is created for the public IP in the Microsoft Azure DNS system with a hashed value includes in FQDN."
+              }
+            },
             "fqdn": {
               "type": "string",
               "defaultValue": "",
@@ -469,14 +489,14 @@
             "lock": {
               "type": "string",
               "defaultValue": "",
-              "metadata": {
-                "description": "Optional. Specify the type of lock."
-              },
               "allowedValues": [
                 "",
                 "CanNotDelete",
                 "ReadOnly"
-              ]
+              ],
+              "metadata": {
+                "description": "Optional. Specify the type of lock."
+              }
             },
             "location": {
               "type": "string",
@@ -589,7 +609,7 @@
             },
             {
               "type": "Microsoft.Network/publicIPAddresses",
-              "apiVersion": "2022-07-01",
+              "apiVersion": "2023-04-01",
               "name": "[parameters('name')]",
               "location": "[parameters('location')]",
               "tags": "[parameters('tags')]",
@@ -599,7 +619,7 @@
               },
               "zones": "[parameters('zones')]",
               "properties": {
-                "dnsSettings": "[if(not(empty(parameters('domainNameLabel'))), createObject('domainNameLabel', parameters('domainNameLabel'), 'fqdn', parameters('fqdn'), 'reverseFqdn', parameters('reverseFqdn')), null())]",
+                "dnsSettings": "[if(not(empty(parameters('domainNameLabel'))), createObject('domainNameLabel', parameters('domainNameLabel'), 'domainNameLabelScope', parameters('domainNameLabelScope'), 'fqdn', parameters('fqdn'), 'reverseFqdn', parameters('reverseFqdn')), null())]",
                 "publicIPAddressVersion": "[parameters('publicIPAddressVersion')]",
                 "publicIPAllocationMethod": "[parameters('publicIPAllocationMethod')]",
                 "publicIPPrefix": "[if(not(empty(parameters('publicIPPrefixResourceId'))), createObject('id', parameters('publicIPPrefixResourceId')), null())]",
@@ -673,8 +693,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.19.5.34762",
-                      "templateHash": "7927074872480917952"
+                      "version": "0.20.4.51522",
+                      "templateHash": "11249227806125160411"
                     }
                   },
                   "parameters": {
@@ -844,14 +864,14 @@
               "metadata": {
                 "description": "The public IP address of the public IP address resource."
               },
-              "value": "[if(contains(reference(resourceId('Microsoft.Network/publicIPAddresses', parameters('name')), '2022-07-01'), 'ipAddress'), reference(resourceId('Microsoft.Network/publicIPAddresses', parameters('name')), '2022-07-01').ipAddress, '')]"
+              "value": "[if(contains(reference(resourceId('Microsoft.Network/publicIPAddresses', parameters('name')), '2023-04-01'), 'ipAddress'), reference(resourceId('Microsoft.Network/publicIPAddresses', parameters('name')), '2023-04-01').ipAddress, '')]"
             },
             "location": {
               "type": "string",
               "metadata": {
                 "description": "The location the resource was deployed into."
               },
-              "value": "[reference(resourceId('Microsoft.Network/publicIPAddresses', parameters('name')), '2022-07-01', 'full').location]"
+              "value": "[reference(resourceId('Microsoft.Network/publicIPAddresses', parameters('name')), '2023-04-01', 'full').location]"
             }
           }
         }
@@ -891,8 +911,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "12549213259153345965"
+              "version": "0.20.4.51522",
+              "templateHash": "14708512190775235887"
             }
           },
           "parameters": {

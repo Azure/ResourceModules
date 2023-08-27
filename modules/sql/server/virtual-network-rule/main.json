@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "4935102343270424456"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "8465167845638762436"
+    },
+    "name": "Azure SQL Server Virtual Network Rules",
+    "description": "This module deploys an Azure SQL Server Virtual Network Rule.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {

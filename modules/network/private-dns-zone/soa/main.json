@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "8747868386608568641"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "1534736495493771844"
+    },
+    "name": "Private DNS Zone SOA record",
+    "description": "This module deploys a Private DNS Zone SOA record.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "privateDnsZoneName": {
@@ -116,8 +119,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "13404705877173488957"
+              "version": "0.20.4.51522",
+              "templateHash": "13036989829941135965"
             }
           },
           "parameters": {

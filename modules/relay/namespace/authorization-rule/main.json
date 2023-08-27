@@ -4,15 +4,18 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "9763854483927913724"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "2910468169645277295"
+    },
+    "name": "Relay Namespace Authorization Rules",
+    "description": "This module deploys a Relay Namespace Authorization Rule.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "namespaceName": {
       "type": "string",
-      "maxLength": 50,
       "minLength": 6,
+      "maxLength": 50,
       "metadata": {
         "description": "Conditional. The name of the parent Relay Namespace for the Relay Hybrid Connection. Required if the template is used in a standalone deployment."
       }

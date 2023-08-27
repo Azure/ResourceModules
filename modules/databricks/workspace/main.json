@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "15914648850876491078"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "3914896258609999885"
+    },
+    "name": "Azure Databricks Workspaces",
+    "description": "This module deploys an Azure Databricks Workspace.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
@@ -58,8 +61,8 @@
     "diagnosticLogsRetentionInDays": {
       "type": "int",
       "defaultValue": 365,
-      "maxValue": 365,
       "minValue": 0,
+      "maxValue": 365,
       "metadata": {
         "description": "Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely."
       }
@@ -95,14 +98,14 @@
     "lock": {
       "type": "string",
       "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Specify the type of lock."
-      },
       "allowedValues": [
         "",
         "CanNotDelete",
         "ReadOnly"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Specify the type of lock."
+      }
     },
     "tags": {
       "type": "object",
@@ -262,8 +265,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "13613915507747675582"
+              "version": "0.20.4.51522",
+              "templateHash": "11920634368378558628"
             }
           },
           "parameters": {

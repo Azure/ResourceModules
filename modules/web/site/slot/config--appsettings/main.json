@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "3348890338028712435"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "5493142537935111696"
+    },
+    "name": "Site Slot App Settings",
+    "description": "This module deploys a Site Slot App Setting.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "slotName": {

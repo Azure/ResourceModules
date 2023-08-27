@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "9014901880446223924"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "94742246961044490"
+    },
+    "name": "SQL Managed Instances Administrator",
+    "description": "This module deploys a SQL Managed Instance Administrator.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "managedInstanceName": {
