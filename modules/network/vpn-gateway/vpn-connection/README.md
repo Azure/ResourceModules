@@ -13,7 +13,7 @@ This module deploys a VPN Gateway VPN Connection.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Network/vpnGateways/vpnConnections` | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/vpnGateways/vpnConnections) |
+| `Microsoft.Network/vpnGateways/vpnConnections` | [2023-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-04-01/vpnGateways/vpnConnections) |
 
 ## Parameters
 
@@ -34,6 +34,7 @@ This module deploys a VPN Gateway VPN Connection.
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `connectionBandwidth` | int | `10` |  | Expected bandwidth in MBPS. |
+| `dpdTimeoutSeconds` | int | `45` |  | Dead peer detection (dpd) timeout in seconds vpn connection. |
 | `enableBgp` | bool | `False` |  | Enable BGP flag. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `enableInternetSecurity` | bool | `False` |  | Enable internet security. |

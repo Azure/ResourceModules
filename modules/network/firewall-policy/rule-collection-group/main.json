@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.20.4.51522",
-      "templateHash": "2516156247224826718"
+      "templateHash": "12741470915279971248"
     },
     "name": "Firewall Policy Rule Collection Groups",
     "description": "This module deploys a Firewall Policy Rule Collection Group.",
@@ -62,7 +62,7 @@
     },
     {
       "type": "Microsoft.Network/firewallPolicies/ruleCollectionGroups",
-      "apiVersion": "2022-07-01",
+      "apiVersion": "2023-04-01",
       "name": "[format('{0}/{1}', parameters('firewallPolicyName'), parameters('name'))]",
       "properties": {
         "priority": "[parameters('priority')]",

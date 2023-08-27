@@ -15,7 +15,7 @@ This module deploys a Virtual Network Subnet.
 | Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.Network/virtualNetworks/subnets` | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/virtualNetworks/subnets) |
+| `Microsoft.Network/virtualNetworks/subnets` | [2023-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-04-01/virtualNetworks/subnets) |
 
 ## Parameters
 
@@ -36,7 +36,7 @@ This module deploys a Virtual Network Subnet.
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `addressPrefixes` | array | `[]` |  | List of address prefixes for the subnet. |
-| `applicationGatewayIpConfigurations` | array | `[]` |  | Application gateway IP configurations of virtual network resource. |
+| `applicationGatewayIPConfigurations` | array | `[]` |  | Application gateway IP configurations of virtual network resource. |
 | `delegations` | array | `[]` |  | The delegations to enable on the subnet. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `ipAllocations` | array | `[]` |  | Array of IpAllocation which reference this subnet. |

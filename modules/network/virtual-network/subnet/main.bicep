@@ -46,7 +46,7 @@ param privateLinkServiceNetworkPolicies string = ''
 param addressPrefixes array = []
 
 @description('Optional. Application gateway IP configurations of virtual network resource.')
-param applicationGatewayIpConfigurations array = []
+param applicationGatewayIPConfigurations array = []
 
 @description('Optional. Array of IpAllocation which reference this subnet.')
 param ipAllocations array = []
@@ -76,7 +76,7 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2023-04-01' existing 
   name: virtualNetworkName
 }
 
-resource subnet 'Microsoft.Network/virtualNetworks/subnets@2022-07-01' = {
+resource subnet 'Microsoft.Network/virtualNetworks/subnets@2023-04-01' = {
   name: name
   parent: virtualNetwork
   properties: {
@@ -95,7 +95,7 @@ resource subnet 'Microsoft.Network/virtualNetworks/subnets@2022-07-01' = {
     privateEndpointNetworkPolicies: !empty(privateEndpointNetworkPolicies) ? any(privateEndpointNetworkPolicies) : null
     privateLinkServiceNetworkPolicies: !empty(privateLinkServiceNetworkPolicies) ? any(privateLinkServiceNetworkPolicies) : null
     addressPrefixes: addressPrefixes
-    applicationGatewayIpConfigurations: applicationGatewayIpConfigurations
+    applicationGatewayIPConfigurations: applicationGatewayIPConfigurations
     ipAllocations: ipAllocations
     serviceEndpointPolicies: serviceEndpointPolicies
   }

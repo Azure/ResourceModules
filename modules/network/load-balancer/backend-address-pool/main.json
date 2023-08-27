@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.20.4.51522",
-      "templateHash": "7353857127466687472"
+      "templateHash": "14919070901241549953"
     },
     "name": "Load Balancer Backend Address Pools",
     "description": "This module deploys a Load Balancer Backend Address Pools.",
@@ -45,6 +45,18 @@
         "description": "Optional. Amount of seconds Load Balancer waits for before sending RESET to client and backend address. if value is 0 then this property will be set to null. Subscription must register the feature Microsoft.Network/SLBAllowConnectionDraining before using this property."
       }
     },
+    "syncMode": {
+      "type": "string",
+      "defaultValue": "",
+      "allowedValues": [
+        "",
+        "Automatic",
+        "Manual"
+      ],
+      "metadata": {
+        "description": "Optional. Backend address synchronous mode for the backend pool."
+      }
+    },
     "enableDefaultTelemetry": {
       "type": "bool",
       "defaultValue": true,
@@ -70,12 +82,13 @@
     },
     {
       "type": "Microsoft.Network/loadBalancers/backendAddressPools",
-      "apiVersion": "2022-07-01",
+      "apiVersion": "2023-04-01",
       "name": "[format('{0}/{1}', parameters('loadBalancerName'), parameters('name'))]",
       "properties": {
         "loadBalancerBackendAddresses": "[parameters('loadBalancerBackendAddresses')]",
         "tunnelInterfaces": "[parameters('tunnelInterfaces')]",
-        "drainPeriodInSeconds": "[if(not(equals(parameters('drainPeriodInSeconds'), 0)), parameters('drainPeriodInSeconds'), null())]"
+        "drainPeriodInSeconds": "[if(not(equals(parameters('drainPeriodInSeconds'), 0)), parameters('drainPeriodInSeconds'), null())]",
+        "syncMode": "[if(not(empty(parameters('syncMode'))), parameters('syncMode'), null())]"
       }
     }
   ],

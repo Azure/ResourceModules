@@ -54,6 +54,9 @@ param sharedKey string = ''
 @description('Optional. Reference to a VPN site to link to.')
 param remoteVpnSiteResourceId string = ''
 
+@description('Optional. Dead peer detection (dpd) timeout in seconds vpn connection.')
+param dpdTimeoutSeconds int = 45
+
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
@@ -73,7 +76,7 @@ resource vpnGateway 'Microsoft.Network/vpnGateways@2023-04-01' existing = {
   name: vpnGatewayName
 }
 
-resource vpnConnection 'Microsoft.Network/vpnGateways/vpnConnections@2022-07-01' = {
+resource vpnConnection 'Microsoft.Network/vpnGateways/vpnConnections@2023-04-01' = {
   name: name
   parent: vpnGateway
   properties: {
@@ -93,6 +96,7 @@ resource vpnConnection 'Microsoft.Network/vpnGateways/vpnConnections@2022-07-01'
     usePolicyBasedTrafficSelectors: usePolicyBasedTrafficSelectors
     vpnConnectionProtocolType: vpnConnectionProtocolType
     vpnLinkConnections: vpnLinkConnections
+    dpdTimeoutSeconds: dpdTimeoutSeconds
   }
 }
 

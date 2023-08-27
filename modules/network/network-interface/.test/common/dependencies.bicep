@@ -70,7 +70,7 @@ resource loadBalancer 'Microsoft.Network/loadBalancers@2023-04-01' = {
   }
 }
 
-resource inboundNatRule 'Microsoft.Network/loadBalancers/inboundNatRules@2021-08-01' = {
+resource inboundNatRule 'Microsoft.Network/loadBalancers/inboundNatRules@2023-04-01' = {
   name: 'inboundNatRule1'
   properties: {
     frontendPort: 443
@@ -86,7 +86,7 @@ resource inboundNatRule 'Microsoft.Network/loadBalancers/inboundNatRules@2021-08
   parent: loadBalancer
 }
 
-resource inboundNatRule2 'Microsoft.Network/loadBalancers/inboundNatRules@2021-08-01' = {
+resource inboundNatRule2 'Microsoft.Network/loadBalancers/inboundNatRules@2023-04-01' = {
   name: 'inboundNatRule2'
   properties: {
     frontendPort: 3389

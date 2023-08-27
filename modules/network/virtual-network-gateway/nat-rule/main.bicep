@@ -52,7 +52,7 @@ resource virtualNetworkGateway 'Microsoft.Network/virtualNetworkGateways@2023-04
   name: virtualNetworkGatewayName
 }
 
-resource natRule 'Microsoft.Network/virtualNetworkGateways/natRules@2022-07-01' = {
+resource natRule 'Microsoft.Network/virtualNetworkGateways/natRules@2023-04-01' = {
   name: name
   parent: virtualNetworkGateway
   properties: {

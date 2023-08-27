@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.20.4.51522",
-      "templateHash": "17179690973269419309"
+      "templateHash": "1350863350773947727"
     },
     "name": "VPN Gateway VPN Connections",
     "description": "This module deploys a VPN Gateway VPN Connection.",
@@ -126,6 +126,13 @@
         "description": "Optional. Reference to a VPN site to link to."
       }
     },
+    "dpdTimeoutSeconds": {
+      "type": "int",
+      "defaultValue": 45,
+      "metadata": {
+        "description": "Optional. Dead peer detection (dpd) timeout in seconds vpn connection."
+      }
+    },
     "enableDefaultTelemetry": {
       "type": "bool",
       "defaultValue": true,
@@ -151,7 +158,7 @@
     },
     {
       "type": "Microsoft.Network/vpnGateways/vpnConnections",
-      "apiVersion": "2022-07-01",
+      "apiVersion": "2023-04-01",
       "name": "[format('{0}/{1}', parameters('vpnGatewayName'), parameters('name'))]",
       "properties": {
         "connectionBandwidth": "[parameters('connectionBandwidth')]",
@@ -167,7 +174,8 @@
         "useLocalAzureIpAddress": "[parameters('useLocalAzureIpAddress')]",
         "usePolicyBasedTrafficSelectors": "[parameters('usePolicyBasedTrafficSelectors')]",
         "vpnConnectionProtocolType": "[parameters('vpnConnectionProtocolType')]",
-        "vpnLinkConnections": "[parameters('vpnLinkConnections')]"
+        "vpnLinkConnections": "[parameters('vpnLinkConnections')]",
+        "dpdTimeoutSeconds": "[parameters('dpdTimeoutSeconds')]"
       }
     }
   ],
