@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.20.4.51522",
-      "templateHash": "14277016556331634037"
+      "templateHash": "4504561559399937088"
     },
     "name": "Azure NetApp Files",
     "description": "This module deploys an Azure NetApp File.",
@@ -371,6 +371,8 @@
           "volumes": "[if(contains(parameters('capacityPools')[copyIndex()], 'volumes'), createObject('value', parameters('capacityPools')[copyIndex()].volumes), createObject('value', createArray()))]",
           "coolAccess": "[if(contains(parameters('capacityPools')[copyIndex()], 'coolAccess'), createObject('value', parameters('capacityPools')[copyIndex()].coolAccess), createObject('value', false()))]",
           "roleAssignments": "[if(contains(parameters('capacityPools')[copyIndex()], 'roleAssignments'), createObject('value', parameters('capacityPools')[copyIndex()].roleAssignments), createObject('value', createArray()))]",
+          "encryptionType": "[if(contains(parameters('capacityPools')[copyIndex()], 'encryptionType'), createObject('value', parameters('capacityPools')[copyIndex()].encryptionType), createObject('value', 'Single'))]",
+          "tags": "[if(contains(parameters('capacityPools')[copyIndex()], 'tags'), createObject('value', parameters('capacityPools')[copyIndex()].tags), createObject('value', createObject()))]",
           "enableDefaultTelemetry": {
             "value": "[variables('enableReferencedModulesTelemetry')]"
           }

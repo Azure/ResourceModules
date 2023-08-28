@@ -1647,7 +1647,7 @@ Describe 'API version tests' -Tag 'ApiCheck' {
             $approvedApiVersions += $resourceTypeApiVersions | Select-Object -Last 5
             $approvedApiVersions += $resourceTypeApiVersions | Where-Object { $_ -notlike '*-preview' } | Select-Object -Last 5
         } else {
-            # We allow the latest 3 non-preview preview
+            # We allow the latest 5 non-preview preview
             $approvedApiVersions += $resourceTypeApiVersions | Where-Object { $_ -notlike '*-preview' } | Select-Object -Last 5
         }
 

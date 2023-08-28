@@ -153,6 +153,8 @@ module netAppAccount_capacityPools 'capacity-pool/main.bicep' = [for (capacityPo
     volumes: contains(capacityPool, 'volumes') ? capacityPool.volumes : []
     coolAccess: contains(capacityPool, 'coolAccess') ? capacityPool.coolAccess : false
     roleAssignments: contains(capacityPool, 'roleAssignments') ? capacityPool.roleAssignments : []
+    encryptionType: contains(capacityPool, 'encryptionType') ? capacityPool.encryptionType : 'Single'
+    tags: contains(capacityPool, 'tags') ? capacityPool.tags : {}
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
