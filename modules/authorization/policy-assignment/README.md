@@ -204,6 +204,7 @@ module policyAssignment './authorization/policy-assignment/main.bicep' = {
     location: '<location>'
     managementGroupId: '<managementGroupId>'
     metadata: {
+      assignedBy: 'Bicep'
       category: 'Security'
       version: '1.0'
     }
@@ -307,6 +308,7 @@ module policyAssignment './authorization/policy-assignment/main.bicep' = {
     },
     "metadata": {
       "value": {
+        "assignedBy": "Bicep",
         "category": "Security",
         "version": "1.0"
       }
@@ -397,7 +399,12 @@ module policyAssignment './authorization/policy-assignment/main.bicep' = {
     name: 'apamgmin001'
     policyDefinitionId: '/providers/Microsoft.Authorization/policyDefinitions/06a78e20-9358-41c9-923c-fb736d382a4d'
     // Non-required parameters
+    description: '[Description] Policy Assignment at the management group scope'
+    displayName: '[Display Name] Policy Assignment at the management group scope'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    metadata: {
+      assignedBy: 'Bicep'
+    }
   }
 }
 ```
@@ -422,8 +429,19 @@ module policyAssignment './authorization/policy-assignment/main.bicep' = {
       "value": "/providers/Microsoft.Authorization/policyDefinitions/06a78e20-9358-41c9-923c-fb736d382a4d"
     },
     // Non-required parameters
+    "description": {
+      "value": "[Description] Policy Assignment at the management group scope"
+    },
+    "displayName": {
+      "value": "[Display Name] Policy Assignment at the management group scope"
+    },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
+    },
+    "metadata": {
+      "value": {
+        "assignedBy": "Bicep"
+      }
     }
   }
 }
@@ -453,6 +471,7 @@ module policyAssignment './authorization/policy-assignment/main.bicep' = {
     identity: 'UserAssigned'
     location: '<location>'
     metadata: {
+      assignedBy: 'Bicep'
       category: 'Security'
       version: '1.0'
     }
@@ -556,6 +575,7 @@ module policyAssignment './authorization/policy-assignment/main.bicep' = {
     },
     "metadata": {
       "value": {
+        "assignedBy": "Bicep",
         "category": "Security",
         "version": "1.0"
       }
@@ -655,6 +675,8 @@ module policyAssignment './authorization/policy-assignment/main.bicep' = {
     name: 'apargmin001'
     policyDefinitionId: '/providers/Microsoft.Authorization/policyDefinitions/06a78e20-9358-41c9-923c-fb736d382a4d'
     // Non-required parameters
+    description: '[Description] Policy Assignment at the resource group scope'
+    displayName: '[Display Name] Policy Assignment at the resource group scope'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     subscriptionId: '<subscriptionId>'
   }
@@ -681,6 +703,12 @@ module policyAssignment './authorization/policy-assignment/main.bicep' = {
       "value": "/providers/Microsoft.Authorization/policyDefinitions/06a78e20-9358-41c9-923c-fb736d382a4d"
     },
     // Non-required parameters
+    "description": {
+      "value": "[Description] Policy Assignment at the resource group scope"
+    },
+    "displayName": {
+      "value": "[Display Name] Policy Assignment at the resource group scope"
+    },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     },
@@ -715,6 +743,7 @@ module policyAssignment './authorization/policy-assignment/main.bicep' = {
     identity: 'UserAssigned'
     location: '<location>'
     metadata: {
+      assignedBy: 'Bicep'
       category: 'Security'
       version: '1.0'
     }
@@ -817,6 +846,7 @@ module policyAssignment './authorization/policy-assignment/main.bicep' = {
     },
     "metadata": {
       "value": {
+        "assignedBy": "Bicep",
         "category": "Security",
         "version": "1.0"
       }
@@ -913,7 +943,14 @@ module policyAssignment './authorization/policy-assignment/main.bicep' = {
     name: 'apasubmin001'
     policyDefinitionId: '/providers/Microsoft.Authorization/policyDefinitions/06a78e20-9358-41c9-923c-fb736d382a4d'
     // Non-required parameters
+    description: '[Description] Policy Assignment at the subscription scope'
+    displayName: '[Display Name] Policy Assignment at the subscription scope'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    metadata: {
+      assignedBy: 'Bicep'
+      category: 'Security'
+      version: '1.0'
+    }
     subscriptionId: '<subscriptionId>'
   }
 }
@@ -939,8 +976,21 @@ module policyAssignment './authorization/policy-assignment/main.bicep' = {
       "value": "/providers/Microsoft.Authorization/policyDefinitions/06a78e20-9358-41c9-923c-fb736d382a4d"
     },
     // Non-required parameters
+    "description": {
+      "value": "[Description] Policy Assignment at the subscription scope"
+    },
+    "displayName": {
+      "value": "[Display Name] Policy Assignment at the subscription scope"
+    },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
+    },
+    "metadata": {
+      "value": {
+        "assignedBy": "Bicep",
+        "category": "Security",
+        "version": "1.0"
+      }
     },
     "subscriptionId": {
       "value": "<subscriptionId>"

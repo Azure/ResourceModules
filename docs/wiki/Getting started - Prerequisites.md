@@ -46,7 +46,7 @@ This sub-section provides you with several helper scripts that can help you set 
 
 ```PowerShell
 az --version
-az bicep --version
+az bicep version
 bicep --version
 git --version
 code --version
