@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.20.4.51522",
-      "templateHash": "11270733037529026157"
+      "templateHash": "13333372953499047799"
     },
     "name": "Azure NetApp Files Capacity Pools",
     "description": "This module deploys an Azure NetApp Files Capacity Pool.",
@@ -89,6 +89,17 @@
         "description": "Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'."
       }
     },
+    "encryptionType": {
+      "type": "string",
+      "defaultValue": "Single",
+      "allowedValues": [
+        "Double",
+        "Single"
+      ],
+      "metadata": {
+        "description": "Optional. Encryption type of the capacity pool, set encryption type for data at rest for this pool and all volumes in it. This value can only be set when creating new pool."
+      }
+    },
     "enableDefaultTelemetry": {
       "type": "bool",
       "defaultValue": true,
@@ -117,7 +128,7 @@
     },
     {
       "type": "Microsoft.NetApp/netAppAccounts/capacityPools",
-      "apiVersion": "2022-09-01",
+      "apiVersion": "2022-11-01",
       "name": "[format('{0}/{1}', parameters('netAppAccountName'), parameters('name'))]",
       "location": "[parameters('location')]",
       "tags": "[parameters('tags')]",
@@ -125,7 +136,8 @@
         "serviceLevel": "[parameters('serviceLevel')]",
         "size": "[parameters('size')]",
         "qosType": "[parameters('qosType')]",
-        "coolAccess": "[parameters('coolAccess')]"
+        "coolAccess": "[parameters('coolAccess')]",
+        "encryptionType": "[parameters('encryptionType')]"
       }
     },
     {
@@ -180,7 +192,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.20.4.51522",
-              "templateHash": "3615004731209837456"
+              "templateHash": "5724175752968001086"
             },
             "name": "Azure NetApp Files Capacity Pool Volumes",
             "description": "This module deploys an Azure NetApp Files Capacity Pool Volume.",
@@ -290,7 +302,7 @@
             },
             {
               "type": "Microsoft.NetApp/netAppAccounts/capacityPools/volumes",
-              "apiVersion": "2022-09-01",
+              "apiVersion": "2022-11-01",
               "name": "[format('{0}/{1}/{2}', parameters('netAppAccountName'), parameters('capacityPoolName'), parameters('name'))]",
               "location": "[parameters('location')]",
               "properties": {
@@ -478,7 +490,7 @@
               "metadata": {
                 "description": "The location the resource was deployed into."
               },
-              "value": "[reference(resourceId('Microsoft.NetApp/netAppAccounts/capacityPools/volumes', parameters('netAppAccountName'), parameters('capacityPoolName'), parameters('name')), '2022-09-01', 'full').location]"
+              "value": "[reference(resourceId('Microsoft.NetApp/netAppAccounts/capacityPools/volumes', parameters('netAppAccountName'), parameters('capacityPoolName'), parameters('name')), '2022-11-01', 'full').location]"
             }
           }
         }
@@ -663,7 +675,7 @@
       "metadata": {
         "description": "The location the resource was deployed into."
       },
-      "value": "[reference(resourceId('Microsoft.NetApp/netAppAccounts/capacityPools', parameters('netAppAccountName'), parameters('name')), '2022-09-01', 'full').location]"
+      "value": "[reference(resourceId('Microsoft.NetApp/netAppAccounts/capacityPools', parameters('netAppAccountName'), parameters('name')), '2022-11-01', 'full').location]"
     }
   }
 }
