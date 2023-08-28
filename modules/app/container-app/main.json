@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "18402842656591712663"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "811549268081936202"
+    },
+    "name": "Container Apps",
+    "description": "This module deploys a Container App.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
@@ -32,15 +35,15 @@
     "ingressTransport": {
       "type": "string",
       "defaultValue": "auto",
-      "metadata": {
-        "description": "Optional. Ingress transport protocol."
-      },
       "allowedValues": [
         "auto",
         "http",
         "http2",
         "tcp"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Ingress transport protocol."
+      }
     },
     "ingressAllowInsecure": {
       "type": "bool",
@@ -80,13 +83,13 @@
     "activeRevisionsMode": {
       "type": "string",
       "defaultValue": "Single",
-      "metadata": {
-        "description": "Optional. ActiveRevisionsMode controls how active revisions are handled for the Container app."
-      },
       "allowedValues": [
         "Multiple",
         "Single"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. ActiveRevisionsMode controls how active revisions are handled for the Container app."
+      }
     },
     "environmentId": {
       "type": "string",
@@ -97,14 +100,14 @@
     "lock": {
       "type": "string",
       "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Specify the type of lock."
-      },
       "allowedValues": [
         "",
         "CanNotDelete",
         "ReadOnly"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Specify the type of lock."
+      }
     },
     "tags": {
       "type": "object",
@@ -368,8 +371,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "16174564455702406600"
+              "version": "0.20.4.51522",
+              "templateHash": "17140491380029994713"
             }
           },
           "parameters": {

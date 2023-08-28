@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "2439060324976899647"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "13236257936604632093"
+    },
+    "name": "Healthcare API Workspace DICOM Services",
+    "description": "This module deploys a Healthcare API Workspace DICOM Service.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
@@ -39,9 +42,6 @@
     "corsMethods": {
       "type": "array",
       "defaultValue": [],
-      "metadata": {
-        "description": "Optional. Specify the allowed HTTP methods."
-      },
       "allowedValues": [
         "DELETE",
         "GET",
@@ -49,7 +49,10 @@
         "PATCH",
         "POST",
         "PUT"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Specify the allowed HTTP methods."
+      }
     },
     "corsMaxAge": {
       "type": "int",
@@ -70,15 +73,6 @@
       "defaultValue": "[resourceGroup().location]",
       "metadata": {
         "description": "Optional. Location for all resources."
-      }
-    },
-    "diagnosticLogsRetentionInDays": {
-      "type": "int",
-      "defaultValue": 365,
-      "maxValue": 365,
-      "minValue": 0,
-      "metadata": {
-        "description": "Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely."
       }
     },
     "diagnosticStorageAccountId": {
@@ -112,25 +106,25 @@
     "lock": {
       "type": "string",
       "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Specify the type of lock."
-      },
       "allowedValues": [
         "",
         "CanNotDelete",
         "ReadOnly"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Specify the type of lock."
+      }
     },
     "publicNetworkAccess": {
       "type": "string",
       "defaultValue": "Disabled",
-      "metadata": {
-        "description": "Optional. Control permission for data plane traffic coming from public networks while private endpoint is enabled."
-      },
       "allowedValues": [
         "Disabled",
         "Enabled"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Control permission for data plane traffic coming from public networks while private endpoint is enabled."
+      }
     },
     "systemAssignedIdentity": {
       "type": "bool",
@@ -187,11 +181,7 @@
         "count": "[length(parameters('diagnosticLogCategoriesToEnable'))]",
         "input": {
           "category": "[parameters('diagnosticLogCategoriesToEnable')[copyIndex('diagnosticsLogs')]]",
-          "enabled": true,
-          "retentionPolicy": {
-            "enabled": true,
-            "days": "[parameters('diagnosticLogsRetentionInDays')]"
-          }
+          "enabled": true
         }
       }
     ],

@@ -4,28 +4,31 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "13041396315414383570"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "3716031618750035294"
+    },
+    "name": "Healthcare API Workspace FHIR Services",
+    "description": "This module deploys a Healthcare API Workspace FHIR Service.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
       "type": "string",
+      "maxLength": 50,
       "metadata": {
         "description": "Required. The name of the FHIR service."
-      },
-      "maxLength": 50
+      }
     },
     "kind": {
       "type": "string",
       "defaultValue": "fhir-R4",
-      "metadata": {
-        "description": "Optional. The kind of the service. Defaults to R4."
-      },
       "allowedValues": [
         "fhir-R4",
         "fhir-Stu3"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. The kind of the service. Defaults to R4."
+      }
     },
     "workspaceName": {
       "type": "string",
@@ -85,9 +88,6 @@
     "corsMethods": {
       "type": "array",
       "defaultValue": [],
-      "metadata": {
-        "description": "Optional. Specify the allowed HTTP methods."
-      },
       "allowedValues": [
         "DELETE",
         "GET",
@@ -95,7 +95,10 @@
         "PATCH",
         "POST",
         "PUT"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Specify the allowed HTTP methods."
+      }
     },
     "corsMaxAge": {
       "type": "int",
@@ -116,15 +119,6 @@
       "defaultValue": "[resourceGroup().location]",
       "metadata": {
         "description": "Optional. Location for all resources."
-      }
-    },
-    "diagnosticLogsRetentionInDays": {
-      "type": "int",
-      "defaultValue": 365,
-      "maxValue": 365,
-      "minValue": 0,
-      "metadata": {
-        "description": "Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely."
       }
     },
     "diagnosticStorageAccountId": {
@@ -186,14 +180,14 @@
     "lock": {
       "type": "string",
       "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Specify the type of lock."
-      },
       "allowedValues": [
         "",
         "CanNotDelete",
         "ReadOnly"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Specify the type of lock."
+      }
     },
     "roleAssignments": {
       "type": "array",
@@ -205,25 +199,25 @@
     "publicNetworkAccess": {
       "type": "string",
       "defaultValue": "Disabled",
-      "metadata": {
-        "description": "Optional. Control permission for data plane traffic coming from public networks while private endpoint is enabled."
-      },
       "allowedValues": [
         "Disabled",
         "Enabled"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Control permission for data plane traffic coming from public networks while private endpoint is enabled."
+      }
     },
     "resourceVersionPolicy": {
       "type": "string",
       "defaultValue": "versioned",
-      "metadata": {
-        "description": "Optional. The default value for tracking history across all resources."
-      },
       "allowedValues": [
         "no-version",
         "versioned",
         "versioned-update"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. The default value for tracking history across all resources."
+      }
     },
     "resourceVersionOverrides": {
       "type": "object",
@@ -272,24 +266,24 @@
       "defaultValue": [
         "AuditLogs"
       ],
-      "metadata": {
-        "description": "Optional. The name of logs that will be streamed."
-      },
       "allowedValues": [
         "AuditLogs"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. The name of logs that will be streamed."
+      }
     },
     "diagnosticMetricsToEnable": {
       "type": "array",
       "defaultValue": [
         "AllMetrics"
       ],
-      "metadata": {
-        "description": "Optional. The name of metrics that will be streamed."
-      },
       "allowedValues": [
         "AllMetrics"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. The name of metrics that will be streamed."
+      }
     },
     "diagnosticSettingsName": {
       "type": "string",
@@ -306,11 +300,7 @@
         "count": "[length(parameters('diagnosticLogCategoriesToEnable'))]",
         "input": {
           "category": "[parameters('diagnosticLogCategoriesToEnable')[copyIndex('diagnosticsLogs')]]",
-          "enabled": true,
-          "retentionPolicy": {
-            "enabled": true,
-            "days": "[parameters('diagnosticLogsRetentionInDays')]"
-          }
+          "enabled": true
         }
       },
       {
@@ -319,11 +309,7 @@
         "input": {
           "category": "[parameters('diagnosticMetricsToEnable')[copyIndex('diagnosticsMetrics')]]",
           "timeGrain": null,
-          "enabled": true,
-          "retentionPolicy": {
-            "enabled": true,
-            "days": "[parameters('diagnosticLogsRetentionInDays')]"
-          }
+          "enabled": true
         }
       },
       {
@@ -460,8 +446,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "12959461194377825397"
+              "version": "0.20.4.51522",
+              "templateHash": "13975136606830731755"
             }
           },
           "parameters": {

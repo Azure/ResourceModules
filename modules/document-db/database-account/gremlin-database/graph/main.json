@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "105866141402179587"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "3593445264917455012"
+    },
+    "name": "DocumentDB Database Accounts Gremlin Databases Graphs",
+    "description": "This module deploys a DocumentDB Database Accounts Gremlin Database Graph.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {

@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "16656448416694951710"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "13568773713405945676"
+    },
+    "name": "Policy Assignments (Subscription scope)",
+    "description": "This module deploys a Policy Assignment at a Subscription scope.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {

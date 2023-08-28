@@ -4,15 +4,18 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "16903388947644520567"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "6584518441041226458"
+    },
+    "name": "Public DNS Zones",
+    "description": "This module deploys a Public DNS zone.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
       "type": "string",
-      "maxLength": 63,
       "minLength": 1,
+      "maxLength": 63,
       "metadata": {
         "description": "Required. DNS zone name."
       }
@@ -111,14 +114,14 @@
     "lock": {
       "type": "string",
       "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Specify the type of lock."
-      },
       "allowedValues": [
         "",
         "CanNotDelete",
         "ReadOnly"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Specify the type of lock."
+      }
     },
     "enableDefaultTelemetry": {
       "type": "bool",
@@ -205,9 +208,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "9656044135859018158"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "5170145363622927115"
+            },
+            "name": "Public DNS Zone A record",
+            "description": "This module deploys a Public DNS Zone A record.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "dnsZoneName": {
@@ -325,8 +331,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.19.5.34762",
-                      "templateHash": "5838800660531266266"
+                      "version": "0.20.4.51522",
+                      "templateHash": "3558751375290910792"
                     }
                   },
                   "parameters": {
@@ -533,9 +539,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "17289131489516532324"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "14783067103445567469"
+            },
+            "name": "Public DNS Zone AAAA record",
+            "description": "This module deploys a Public DNS Zone AAAA record.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "dnsZoneName": {
@@ -653,8 +662,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.19.5.34762",
-                      "templateHash": "928652912604346892"
+                      "version": "0.20.4.51522",
+                      "templateHash": "10619447653791643982"
                     }
                   },
                   "parameters": {
@@ -861,9 +870,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "3316321683949899686"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "16690614046545500600"
+            },
+            "name": "Public DNS Zone CNAME record",
+            "description": "This module deploys a Public DNS Zone CNAME record.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "dnsZoneName": {
@@ -981,8 +993,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.19.5.34762",
-                      "templateHash": "12386507584642406479"
+                      "version": "0.20.4.51522",
+                      "templateHash": "1579300133069941204"
                     }
                   },
                   "parameters": {
@@ -1188,9 +1200,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "4737667227541818959"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "4477853461523597510"
+            },
+            "name": "Public DNS Zone CAA record",
+            "description": "This module deploys a Public DNS Zone CAA record.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "dnsZoneName": {
@@ -1300,8 +1315,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.19.5.34762",
-                      "templateHash": "4833032307337861985"
+                      "version": "0.20.4.51522",
+                      "templateHash": "17740559314627874296"
                     }
                   },
                   "parameters": {
@@ -1507,9 +1522,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "5716130859187181927"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "14301321817801341159"
+            },
+            "name": "Public DNS Zone MX record",
+            "description": "This module deploys a Public DNS Zone MX record.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "dnsZoneName": {
@@ -1619,8 +1637,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.19.5.34762",
-                      "templateHash": "7481666858270434364"
+                      "version": "0.20.4.51522",
+                      "templateHash": "9536077061979113211"
                     }
                   },
                   "parameters": {
@@ -1826,9 +1844,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "16698471026179434287"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "13879924638868874443"
+            },
+            "name": "Public DNS Zone NS record",
+            "description": "This module deploys a Public DNS Zone NS record.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "dnsZoneName": {
@@ -1938,8 +1959,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.19.5.34762",
-                      "templateHash": "12862915302255804850"
+                      "version": "0.20.4.51522",
+                      "templateHash": "2717382131813837654"
                     }
                   },
                   "parameters": {
@@ -2145,9 +2166,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "18164536109323645020"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "14950916556855362521"
+            },
+            "name": "Public DNS Zone PTR record",
+            "description": "This module deploys a Public DNS Zone PTR record.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "dnsZoneName": {
@@ -2257,8 +2281,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.19.5.34762",
-                      "templateHash": "6672045440662548077"
+                      "version": "0.20.4.51522",
+                      "templateHash": "14048540340305231771"
                     }
                   },
                   "parameters": {
@@ -2464,9 +2488,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "18439593303689291072"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "15092776661272728734"
+            },
+            "name": "Public DNS Zone SOA record",
+            "description": "This module deploys a Public DNS Zone SOA record.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "dnsZoneName": {
@@ -2576,8 +2603,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.19.5.34762",
-                      "templateHash": "16683803953921655919"
+                      "version": "0.20.4.51522",
+                      "templateHash": "17247816691852004236"
                     }
                   },
                   "parameters": {
@@ -2783,9 +2810,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "2573308748570559876"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "2772370204362718864"
+            },
+            "name": "Public DNS Zone SRV record",
+            "description": "This module deploys a Public DNS Zone SRV record.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "dnsZoneName": {
@@ -2895,8 +2925,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.19.5.34762",
-                      "templateHash": "15357224405420155309"
+                      "version": "0.20.4.51522",
+                      "templateHash": "13880457002928639304"
                     }
                   },
                   "parameters": {
@@ -3102,9 +3132,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "7539598631188408331"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "16370550186541929198"
+            },
+            "name": "Public DNS Zone TXT record",
+            "description": "This module deploys a Public DNS Zone TXT record.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "dnsZoneName": {
@@ -3214,8 +3247,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.19.5.34762",
-                      "templateHash": "15382683460209888170"
+                      "version": "0.20.4.51522",
+                      "templateHash": "17843024796725206765"
                     }
                   },
                   "parameters": {
@@ -3421,8 +3454,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "18010354754861629753"
+              "version": "0.20.4.51522",
+              "templateHash": "12106058003619769842"
             }
           },
           "parameters": {

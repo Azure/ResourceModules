@@ -4,36 +4,39 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "1187887494213101123"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "18205555090536788516"
+    },
+    "name": "Relay Namespace WCF Relays",
+    "description": "This module deploys a Relay Namespace WCF Relay.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "namespaceName": {
       "type": "string",
-      "maxLength": 50,
       "minLength": 6,
+      "maxLength": 50,
       "metadata": {
         "description": "Conditional. The name of the parent Relay Namespace for the WCF Relay. Required if the template is used in a standalone deployment."
       }
     },
     "name": {
       "type": "string",
-      "maxLength": 50,
       "minLength": 6,
+      "maxLength": 50,
       "metadata": {
         "description": "Required. Name of the WCF Relay."
       }
     },
     "relayType": {
       "type": "string",
-      "metadata": {
-        "description": "Required. Type of WCF Relay."
-      },
       "allowedValues": [
         "Http",
         "NetTcp"
-      ]
+      ],
+      "metadata": {
+        "description": "Required. Type of WCF Relay."
+      }
     },
     "requiresClientAuthorization": {
       "type": "bool",
@@ -87,14 +90,14 @@
     "lock": {
       "type": "string",
       "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Specify the type of lock."
-      },
       "allowedValues": [
         "",
         "CanNotDelete",
         "ReadOnly"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Specify the type of lock."
+      }
     },
     "roleAssignments": {
       "type": "array",
@@ -188,9 +191,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "2947511199808673632"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "13141425566828642958"
+            },
+            "name": "WCF Relay Authorization Rules",
+            "description": "This module deploys a WCF Relay Authorization Rule.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "name": {
@@ -318,8 +324,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "18065734222254333164"
+              "version": "0.20.4.51522",
+              "templateHash": "8507868775083821058"
             }
           },
           "parameters": {

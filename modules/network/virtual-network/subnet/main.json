@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "5239437568291997506"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "17563066367289258796"
+    },
+    "name": "Virtual Network Subnets",
+    "description": "This module deploys a Virtual Network Subnet.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
@@ -93,7 +96,7 @@
         "description": "Optional. List of address prefixes for the subnet."
       }
     },
-    "applicationGatewayIpConfigurations": {
+    "applicationGatewayIPConfigurations": {
       "type": "array",
       "defaultValue": [],
       "metadata": {
@@ -146,7 +149,7 @@
     },
     {
       "type": "Microsoft.Network/virtualNetworks/subnets",
-      "apiVersion": "2022-07-01",
+      "apiVersion": "2023-04-01",
       "name": "[format('{0}/{1}', parameters('virtualNetworkName'), parameters('name'))]",
       "properties": {
         "addressPrefix": "[parameters('addressPrefix')]",
@@ -158,7 +161,7 @@
         "privateEndpointNetworkPolicies": "[if(not(empty(parameters('privateEndpointNetworkPolicies'))), parameters('privateEndpointNetworkPolicies'), null())]",
         "privateLinkServiceNetworkPolicies": "[if(not(empty(parameters('privateLinkServiceNetworkPolicies'))), parameters('privateLinkServiceNetworkPolicies'), null())]",
         "addressPrefixes": "[parameters('addressPrefixes')]",
-        "applicationGatewayIpConfigurations": "[parameters('applicationGatewayIpConfigurations')]",
+        "applicationGatewayIPConfigurations": "[parameters('applicationGatewayIPConfigurations')]",
         "ipAllocations": "[parameters('ipAllocations')]",
         "serviceEndpointPolicies": "[parameters('serviceEndpointPolicies')]"
       }
@@ -197,8 +200,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "16022559382364910663"
+              "version": "0.20.4.51522",
+              "templateHash": "11765890115463110578"
             }
           },
           "parameters": {
@@ -368,14 +371,14 @@
       "metadata": {
         "description": "The address prefix for the subnet."
       },
-      "value": "[reference(resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworkName'), parameters('name')), '2022-07-01').addressPrefix]"
+      "value": "[reference(resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworkName'), parameters('name')), '2023-04-01').addressPrefix]"
     },
     "subnetAddressPrefixes": {
       "type": "array",
       "metadata": {
         "description": "List of address prefixes for the subnet."
       },
-      "value": "[if(not(empty(parameters('addressPrefixes'))), reference(resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworkName'), parameters('name')), '2022-07-01').addressPrefixes, createArray())]"
+      "value": "[if(not(empty(parameters('addressPrefixes'))), reference(resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworkName'), parameters('name')), '2023-04-01').addressPrefixes, createArray())]"
     }
   }
 }

@@ -49,7 +49,7 @@ param deleteRetentionPolicyAllowPermanentDelete bool = false
 param isVersioningEnabled bool = true
 
 @description('Optional. The blob service property to configure last access time based tracking policy. When set to true last access time based tracking is enabled.')
-param lastAccessTimeTrackingPolicyEnable bool = false
+param lastAccessTimeTrackingPolicyEnabled bool = false
 
 @description('Optional. The blob service properties for blob restore policy. If point-in-time restore is enabled, then versioning, change feed, and blob soft delete must also be enabled.')
 param restorePolicyEnabled bool = true
@@ -60,11 +60,6 @@ param restorePolicyDays int = 6
 
 @description('Optional. Blob containers to create.')
 param containers array = []
-
-@description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
-@minValue(0)
-@maxValue(365)
-param diagnosticLogsRetentionInDays int = 365
 
 @description('Optional. Resource ID of the diagnostic storage account.')
 param diagnosticStorageAccountId string = ''
@@ -110,20 +105,12 @@ var name = 'default'
 var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs' && item != ''): {
   category: category
   enabled: true
-  retentionPolicy: {
-    enabled: true
-    days: diagnosticLogsRetentionInDays
-  }
 }]
 
 var diagnosticsLogs = contains(diagnosticLogCategoriesToEnable, 'allLogs') ? [
   {
     categoryGroup: 'allLogs'
     enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
   }
 ] : contains(diagnosticLogCategoriesToEnable, '') ? [] : diagnosticsLogsSpecified
 
@@ -131,10 +118,6 @@ var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   category: metric
   timeGrain: null
   enabled: true
-  retentionPolicy: {
-    enabled: true
-    days: diagnosticLogsRetentionInDays
-  }
 }]
 
 var enableReferencedModulesTelemetry = false
@@ -180,9 +163,9 @@ resource blobServices 'Microsoft.Storage/storageAccounts/blobServices@2022-09-01
     }
     isVersioningEnabled: isVersioningEnabled
     lastAccessTimeTrackingPolicy: {
-      enable: lastAccessTimeTrackingPolicyEnable
-      name: lastAccessTimeTrackingPolicyEnable == true ? 'AccessTimeTracking' : null
-      trackingGranularityInDays: lastAccessTimeTrackingPolicyEnable == true ? 1 : null
+      enable: lastAccessTimeTrackingPolicyEnabled
+      name: lastAccessTimeTrackingPolicyEnabled == true ? 'AccessTimeTracking' : null
+      trackingGranularityInDays: lastAccessTimeTrackingPolicyEnabled == true ? 1 : null
     }
     restorePolicy: {
       enabled: restorePolicyEnabled

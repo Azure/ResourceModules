@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "16437436871893645237"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "5116103670131987468"
+    },
+    "name": "Role Assignments (Management Group scope)",
+    "description": "This module deploys a Role Assignment at a Management Group scope.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "roleDefinitionIdOrName": {

@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "4825093771557214886"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "7715429520805746473"
+    },
+    "name": "Virtual Machine Scale Sets",
+    "description": "This module deploys a Virtual Machine Scale Set.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
@@ -270,15 +273,6 @@
         "description": "Optional. Storage account used to store boot diagnostic information. Boot diagnostics will be disabled if no value is provided."
       }
     },
-    "diagnosticLogsRetentionInDays": {
-      "type": "int",
-      "defaultValue": 365,
-      "maxValue": 365,
-      "minValue": 0,
-      "metadata": {
-        "description": "Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely."
-      }
-    },
     "diagnosticStorageAccountId": {
       "type": "string",
       "defaultValue": "",
@@ -310,14 +304,14 @@
     "lock": {
       "type": "string",
       "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Specify the type of lock."
-      },
       "allowedValues": [
         "",
         "CanNotDelete",
         "ReadOnly"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Specify the type of lock."
+      }
     },
     "upgradePolicyMode": {
       "type": "string",
@@ -390,8 +384,8 @@
     "vmNamePrefix": {
       "type": "string",
       "defaultValue": "vmssvm",
-      "maxLength": 15,
       "minLength": 1,
+      "maxLength": 15,
       "metadata": {
         "description": "Optional. Specifies the computer name prefix for all of the virtual machines in the scale set."
       }
@@ -598,11 +592,7 @@
         "input": {
           "category": "[parameters('diagnosticMetricsToEnable')[copyIndex('diagnosticsMetrics')]]",
           "timeGrain": null,
-          "enabled": true,
-          "retentionPolicy": {
-            "enabled": true,
-            "days": "[parameters('diagnosticLogsRetentionInDays')]"
-          }
+          "enabled": true
         }
       },
       {
@@ -852,9 +842,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "16938226056341383577"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "3045861199823874082"
+            },
+            "name": "Virtual Machine Scale Set Extensions",
+            "description": "This module deploys a Virtual Machine Scale Set Extension.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "virtualMachineScaleSetName": {
@@ -1035,9 +1028,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "16938226056341383577"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "3045861199823874082"
+            },
+            "name": "Virtual Machine Scale Set Extensions",
+            "description": "This module deploys a Virtual Machine Scale Set Extension.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "virtualMachineScaleSetName": {
@@ -1223,9 +1219,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "16938226056341383577"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "3045861199823874082"
+            },
+            "name": "Virtual Machine Scale Set Extensions",
+            "description": "This module deploys a Virtual Machine Scale Set Extension.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "virtualMachineScaleSetName": {
@@ -1401,9 +1400,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "16938226056341383577"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "3045861199823874082"
+            },
+            "name": "Virtual Machine Scale Set Extensions",
+            "description": "This module deploys a Virtual Machine Scale Set Extension.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "virtualMachineScaleSetName": {
@@ -1579,9 +1581,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "16938226056341383577"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "3045861199823874082"
+            },
+            "name": "Virtual Machine Scale Set Extensions",
+            "description": "This module deploys a Virtual Machine Scale Set Extension.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "virtualMachineScaleSetName": {
@@ -1761,9 +1766,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "16938226056341383577"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "3045861199823874082"
+            },
+            "name": "Virtual Machine Scale Set Extensions",
+            "description": "This module deploys a Virtual Machine Scale Set Extension.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "virtualMachineScaleSetName": {
@@ -1949,9 +1957,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "16938226056341383577"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "3045861199823874082"
+            },
+            "name": "Virtual Machine Scale Set Extensions",
+            "description": "This module deploys a Virtual Machine Scale Set Extension.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "virtualMachineScaleSetName": {
@@ -2132,9 +2143,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "16938226056341383577"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "3045861199823874082"
+            },
+            "name": "Virtual Machine Scale Set Extensions",
+            "description": "This module deploys a Virtual Machine Scale Set Extension.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "virtualMachineScaleSetName": {
@@ -2312,8 +2326,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "4840060024448665942"
+              "version": "0.20.4.51522",
+              "templateHash": "8957967426136290703"
             }
           },
           "parameters": {

@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "3491055673573321477"
+      "version": "0.20.4.51522",
+      "templateHash": "17230929813729114087"
     },
     "name": "DocumentDB Database Accounts",
     "description": "This module deploys a DocumentDB Database Account.",
@@ -65,16 +65,16 @@
     "defaultConsistencyLevel": {
       "type": "string",
       "defaultValue": "Session",
-      "metadata": {
-        "description": "Optional. The default consistency level of the Cosmos DB account."
-      },
       "allowedValues": [
         "Eventual",
         "ConsistentPrefix",
         "Session",
         "BoundedStaleness",
         "Strong"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. The default consistency level of the Cosmos DB account."
+      }
     },
     "automaticFailover": {
       "type": "bool",
@@ -93,20 +93,20 @@
     "maxStalenessPrefix": {
       "type": "int",
       "defaultValue": 100000,
+      "minValue": 10,
+      "maxValue": 2147483647,
       "metadata": {
         "description": "Optional. Max stale requests. Required for BoundedStaleness. Valid ranges, Single Region: 10 to 1000000. Multi Region: 100000 to 1000000."
-      },
-      "maxValue": 2147483647,
-      "minValue": 10
+      }
     },
     "maxIntervalInSeconds": {
       "type": "int",
       "defaultValue": 300,
+      "minValue": 5,
+      "maxValue": 86400,
       "metadata": {
         "description": "Optional. Max lag time (minutes). Required for BoundedStaleness. Valid ranges, Single Region: 5 to 84600. Multi Region: 300 to 86400."
-      },
-      "maxValue": 86400,
-      "minValue": 5
+      }
     },
     "serverVersion": {
       "type": "string",
@@ -152,29 +152,20 @@
     "lock": {
       "type": "string",
       "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Specify the type of lock."
-      },
       "allowedValues": [
         "",
         "CanNotDelete",
         "ReadOnly"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Specify the type of lock."
+      }
     },
     "roleAssignments": {
       "type": "array",
       "defaultValue": [],
       "metadata": {
         "description": "Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalIds' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'."
-      }
-    },
-    "diagnosticLogsRetentionInDays": {
-      "type": "int",
-      "defaultValue": 365,
-      "maxValue": 365,
-      "minValue": 0,
-      "metadata": {
-        "description": "Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely."
       }
     },
     "diagnosticStorageAccountId": {
@@ -249,9 +240,6 @@
     "capabilitiesToAdd": {
       "type": "array",
       "defaultValue": [],
-      "metadata": {
-        "description": "Optional. List of Cosmos DB capabilities for the account."
-      },
       "allowedValues": [
         "EnableCassandra",
         "EnableTable",
@@ -259,59 +247,62 @@
         "EnableMongo",
         "DisableRateLimitingResponses",
         "EnableServerless"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. List of Cosmos DB capabilities for the account."
+      }
     },
     "backupPolicyType": {
       "type": "string",
       "defaultValue": "Continuous",
-      "metadata": {
-        "description": "Optional. Describes the mode of backups."
-      },
       "allowedValues": [
         "Periodic",
         "Continuous"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Describes the mode of backups."
+      }
     },
     "backupPolicyContinuousTier": {
       "type": "string",
       "defaultValue": "Continuous30Days",
-      "metadata": {
-        "description": "Optional. Configuration values for continuous mode backup."
-      },
       "allowedValues": [
         "Continuous30Days",
         "Continuous7Days"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Configuration values for continuous mode backup."
+      }
     },
     "backupIntervalInMinutes": {
       "type": "int",
       "defaultValue": 240,
+      "minValue": 60,
+      "maxValue": 1440,
       "metadata": {
         "description": "Optional. An integer representing the interval in minutes between two backups. Only applies to periodic backup type."
-      },
-      "maxValue": 1440,
-      "minValue": 60
+      }
     },
     "backupRetentionIntervalInHours": {
       "type": "int",
       "defaultValue": 8,
+      "minValue": 2,
+      "maxValue": 720,
       "metadata": {
         "description": "Optional. An integer representing the time (in hours) that each backup is retained. Only applies to periodic backup type."
-      },
-      "maxValue": 720,
-      "minValue": 2
+      }
     },
     "backupStorageRedundancy": {
       "type": "string",
       "defaultValue": "Local",
-      "metadata": {
-        "description": "Optional. Enum to indicate type of backup residency. Only applies to periodic backup type."
-      },
       "allowedValues": [
         "Geo",
         "Local",
         "Zone"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Enum to indicate type of backup residency. Only applies to periodic backup type."
+      }
     },
     "privateEndpoints": {
       "type": "array",
@@ -328,11 +319,7 @@
         "count": "[length(filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', and(not(equals(lambdaVariables('item'), 'allLogs')), not(equals(lambdaVariables('item'), ''))))))]",
         "input": {
           "category": "[filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', and(not(equals(lambdaVariables('item'), 'allLogs')), not(equals(lambdaVariables('item'), '')))))[copyIndex('diagnosticsLogsSpecified')]]",
-          "enabled": true,
-          "retentionPolicy": {
-            "enabled": true,
-            "days": "[parameters('diagnosticLogsRetentionInDays')]"
-          }
+          "enabled": true
         }
       },
       {
@@ -341,11 +328,7 @@
         "input": {
           "category": "[parameters('diagnosticMetricsToEnable')[copyIndex('diagnosticsMetrics')]]",
           "timeGrain": null,
-          "enabled": true,
-          "retentionPolicy": {
-            "enabled": true,
-            "days": "[parameters('diagnosticLogsRetentionInDays')]"
-          }
+          "enabled": true
         }
       },
       {
@@ -365,7 +348,7 @@
         }
       }
     ],
-    "diagnosticsLogs": "[if(contains(parameters('diagnosticLogCategoriesToEnable'), 'allLogs'), createArray(createObject('categoryGroup', 'allLogs', 'enabled', true(), 'retentionPolicy', createObject('enabled', true(), 'days', parameters('diagnosticLogsRetentionInDays')))), if(contains(parameters('diagnosticLogCategoriesToEnable'), ''), createArray(), variables('diagnosticsLogsSpecified')))]",
+    "diagnosticsLogs": "[if(contains(parameters('diagnosticLogCategoriesToEnable'), 'allLogs'), createArray(createObject('categoryGroup', 'allLogs', 'enabled', true())), if(contains(parameters('diagnosticLogCategoriesToEnable'), ''), createArray(), variables('diagnosticsLogsSpecified')))]",
     "identityType": "[if(parameters('systemAssignedIdentity'), if(not(empty(parameters('userAssignedIdentities'))), 'SystemAssigned, UserAssigned', 'SystemAssigned'), if(not(empty(parameters('userAssignedIdentities'))), 'UserAssigned', 'None'))]",
     "identity": "[if(not(equals(variables('identityType'), 'None')), createObject('type', variables('identityType'), 'userAssignedIdentities', if(not(empty(parameters('userAssignedIdentities'))), parameters('userAssignedIdentities'), null())), null())]",
     "consistencyPolicy": {
@@ -483,8 +466,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "15105512277629326341"
+              "version": "0.20.4.51522",
+              "templateHash": "9062930380498217256"
             }
           },
           "parameters": {
@@ -635,8 +618,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "9165958576985328916"
+              "version": "0.20.4.51522",
+              "templateHash": "3181306638327423907"
             },
             "name": "DocumentDB Database Account SQL Databases",
             "description": "This module deploys a SQL Database in a CosmosDB Account.",
@@ -763,8 +746,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.19.5.34762",
-                      "templateHash": "11426208730264271754"
+                      "version": "0.20.4.51522",
+                      "templateHash": "14315455818011845279"
                     },
                     "name": "DocumentDB Database Account SQL Database Containers",
                     "description": "This module deploys a SQL Database Container in a CosmosDB Account.",
@@ -806,11 +789,11 @@
                     "defaultTtl": {
                       "type": "int",
                       "defaultValue": -1,
+                      "minValue": -1,
+                      "maxValue": 2147483647,
                       "metadata": {
                         "description": "Optional. Default time to live (in seconds). With Time to Live or TTL, Azure Cosmos DB provides the ability to delete items automatically from a container after a certain time period. If the value is set to \"-1\", it is equal to infinity, and items dont expire by default."
-                      },
-                      "minValue": -1,
-                      "maxValue": 2147483647
+                      }
                     },
                     "throughput": {
                       "type": "int",
@@ -822,10 +805,10 @@
                     "autoscaleSettingsMaxThroughput": {
                       "type": "int",
                       "defaultValue": -1,
+                      "maxValue": 1000000,
                       "metadata": {
                         "description": "Optional. Specifies the Autoscale settings and represents maximum throughput, the resource can scale up to. The autoscale throughput should have valid throughput values between 1000 and 1000000 inclusive in increments of 1000. If value is set to -1, then the property will be set to null and autoscale will be disabled."
-                      },
-                      "maxValue": 1000000
+                      }
                     },
                     "tags": {
                       "type": "object",
@@ -1002,8 +985,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "2085063402479874129"
+              "version": "0.20.4.51522",
+              "templateHash": "13972019361365434498"
             },
             "name": "DocumentDB Database Account MongoDB Databases",
             "description": "This module deploys a MongoDB Database within a CosmosDB Account.",
@@ -1120,8 +1103,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.19.5.34762",
-                      "templateHash": "18146087628954569143"
+                      "version": "0.20.4.51522",
+                      "templateHash": "12957080003676592321"
                     },
                     "name": "DocumentDB Database Account MongoDB Database Collections",
                     "description": "This module deploys a MongoDB Database Collection.",
@@ -1292,8 +1275,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "14580792451038416315"
+              "version": "0.20.4.51522",
+              "templateHash": "4256328904115204005"
             },
             "name": "DocumentDB Database Account Gremlin Databases",
             "description": "This module deploys a Gremlin Database within a CosmosDB Account.",
@@ -1429,8 +1412,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.19.5.34762",
-                      "templateHash": "7554276634599299832"
+                      "version": "0.20.4.51522",
+                      "templateHash": "3593445264917455012"
                     },
                     "name": "DocumentDB Database Accounts Gremlin Databases Graphs",
                     "description": "This module deploys a DocumentDB Database Accounts Gremlin Database Graph.",
@@ -1622,8 +1605,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "15343651026946310931"
+              "version": "0.20.4.51522",
+              "templateHash": "13560297539192628062"
             },
             "name": "Private Endpoints",
             "description": "This module deploys a Private Endpoint.",
@@ -1692,14 +1675,14 @@
             "lock": {
               "type": "string",
               "defaultValue": "",
-              "metadata": {
-                "description": "Optional. Specify the type of lock."
-              },
               "allowedValues": [
                 "",
                 "CanNotDelete",
                 "ReadOnly"
-              ]
+              ],
+              "metadata": {
+                "description": "Optional. Specify the type of lock."
+              }
             },
             "roleAssignments": {
               "type": "array",
@@ -1757,7 +1740,7 @@
             },
             {
               "type": "Microsoft.Network/privateEndpoints",
-              "apiVersion": "2022-07-01",
+              "apiVersion": "2023-04-01",
               "name": "[parameters('name')]",
               "location": "[parameters('location')]",
               "tags": "[parameters('tags')]",
@@ -1822,8 +1805,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.19.5.34762",
-                      "templateHash": "5406224106432076575"
+                      "version": "0.20.4.51522",
+                      "templateHash": "17831763001460207830"
                     },
                     "name": "Private Endpoint Private DNS Zone Groups",
                     "description": "This module deploys a Private Endpoint Private DNS Zone Group.",
@@ -1838,8 +1821,8 @@
                     },
                     "privateDNSResourceIds": {
                       "type": "array",
-                      "maxLength": 5,
                       "minLength": 1,
+                      "maxLength": 5,
                       "metadata": {
                         "description": "Required. Array of private DNS zone resource IDs. A DNS zone group can support up to 5 DNS zones."
                       }
@@ -1890,7 +1873,7 @@
                     },
                     {
                       "type": "Microsoft.Network/privateEndpoints/privateDnsZoneGroups",
-                      "apiVersion": "2022-07-01",
+                      "apiVersion": "2023-04-01",
                       "name": "[format('{0}/{1}', parameters('privateEndpointName'), parameters('name'))]",
                       "properties": {
                         "privateDnsZoneConfigs": "[variables('privateDnsZoneConfigs')]"
@@ -1960,8 +1943,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.19.5.34762",
-                      "templateHash": "18055161250379920591"
+                      "version": "0.20.4.51522",
+                      "templateHash": "11548486149222715894"
                     }
                   },
                   "parameters": {
@@ -2131,7 +2114,7 @@
               "metadata": {
                 "description": "The location the resource was deployed into."
               },
-              "value": "[reference(resourceId('Microsoft.Network/privateEndpoints', parameters('name')), '2022-07-01', 'full').location]"
+              "value": "[reference(resourceId('Microsoft.Network/privateEndpoints', parameters('name')), '2023-04-01', 'full').location]"
             }
           }
         }

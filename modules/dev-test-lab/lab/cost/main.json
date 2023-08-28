@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "7115830072126257185"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "4166206931202072952"
+    },
+    "name": "DevTest Lab Costs",
+    "description": "This module deploys a DevTest Lab Cost.\r\n\r\nManage lab costs by setting a spending target that can be viewed in the Monthly Estimated Cost Trend chart. DevTest Labs can send a notification when spending reaches the specified target threshold.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "labName": {
@@ -17,13 +20,13 @@
     },
     "cycleType": {
       "type": "string",
-      "metadata": {
-        "description": "Required. Reporting cycle type."
-      },
       "allowedValues": [
         "Custom",
         "CalendarMonth"
-      ]
+      ],
+      "metadata": {
+        "description": "Required. Reporting cycle type."
+      }
     },
     "tags": {
       "type": "object",
@@ -49,13 +52,13 @@
     "status": {
       "type": "string",
       "defaultValue": "Enabled",
-      "metadata": {
-        "description": "Optional. Target cost status."
-      },
       "allowedValues": [
         "Enabled",
         "Disabled"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Target cost status."
+      }
     },
     "target": {
       "type": "int",
@@ -74,112 +77,112 @@
     "thresholdValue25DisplayOnChart": {
       "type": "string",
       "defaultValue": "Disabled",
-      "metadata": {
-        "description": "Optional. Target Cost threshold at 25% display on chart. Indicates whether this threshold will be displayed on cost charts."
-      },
       "allowedValues": [
         "Enabled",
         "Disabled"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Target Cost threshold at 25% display on chart. Indicates whether this threshold will be displayed on cost charts."
+      }
     },
     "thresholdValue25SendNotificationWhenExceeded": {
       "type": "string",
       "defaultValue": "Disabled",
-      "metadata": {
-        "description": "Optional. Target cost threshold at 25% send notification when exceeded. Indicates whether notifications will be sent when this threshold is exceeded."
-      },
       "allowedValues": [
         "Enabled",
         "Disabled"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Target cost threshold at 25% send notification when exceeded. Indicates whether notifications will be sent when this threshold is exceeded."
+      }
     },
     "thresholdValue50DisplayOnChart": {
       "type": "string",
       "defaultValue": "Disabled",
-      "metadata": {
-        "description": "Optional. Target Cost threshold at 50% display on chart. Indicates whether this threshold will be displayed on cost charts."
-      },
       "allowedValues": [
         "Enabled",
         "Disabled"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Target Cost threshold at 50% display on chart. Indicates whether this threshold will be displayed on cost charts."
+      }
     },
     "thresholdValue50SendNotificationWhenExceeded": {
       "type": "string",
       "defaultValue": "Disabled",
-      "metadata": {
-        "description": "Optional. Target cost threshold at 50% send notification when exceeded. Indicates whether notifications will be sent when this threshold is exceeded."
-      },
       "allowedValues": [
         "Enabled",
         "Disabled"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Target cost threshold at 50% send notification when exceeded. Indicates whether notifications will be sent when this threshold is exceeded."
+      }
     },
     "thresholdValue75DisplayOnChart": {
       "type": "string",
       "defaultValue": "Disabled",
-      "metadata": {
-        "description": "Optional. Target Cost threshold at 75% display on chart. Indicates whether this threshold will be displayed on cost charts."
-      },
       "allowedValues": [
         "Enabled",
         "Disabled"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Target Cost threshold at 75% display on chart. Indicates whether this threshold will be displayed on cost charts."
+      }
     },
     "thresholdValue75SendNotificationWhenExceeded": {
       "type": "string",
       "defaultValue": "Disabled",
-      "metadata": {
-        "description": "Optional. Target cost threshold at 75% send notification when exceeded. Indicates whether notifications will be sent when this threshold is exceeded."
-      },
       "allowedValues": [
         "Enabled",
         "Disabled"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Target cost threshold at 75% send notification when exceeded. Indicates whether notifications will be sent when this threshold is exceeded."
+      }
     },
     "thresholdValue100DisplayOnChart": {
       "type": "string",
       "defaultValue": "Disabled",
-      "metadata": {
-        "description": "Optional. Target Cost threshold at 100% display on chart. Indicates whether this threshold will be displayed on cost charts."
-      },
       "allowedValues": [
         "Enabled",
         "Disabled"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Target Cost threshold at 100% display on chart. Indicates whether this threshold will be displayed on cost charts."
+      }
     },
     "thresholdValue100SendNotificationWhenExceeded": {
       "type": "string",
       "defaultValue": "Disabled",
-      "metadata": {
-        "description": "Optional. Target cost threshold at 100% send notification when exceeded. Indicates whether notifications will be sent when this threshold is exceeded."
-      },
       "allowedValues": [
         "Enabled",
         "Disabled"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Target cost threshold at 100% send notification when exceeded. Indicates whether notifications will be sent when this threshold is exceeded."
+      }
     },
     "thresholdValue125DisplayOnChart": {
       "type": "string",
       "defaultValue": "Disabled",
-      "metadata": {
-        "description": "Optional. Target Cost threshold at 125% display on chart. Indicates whether this threshold will be displayed on cost charts."
-      },
       "allowedValues": [
         "Enabled",
         "Disabled"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Target Cost threshold at 125% display on chart. Indicates whether this threshold will be displayed on cost charts."
+      }
     },
     "thresholdValue125SendNotificationWhenExceeded": {
       "type": "string",
       "defaultValue": "Disabled",
-      "metadata": {
-        "description": "Optional. Target cost threshold at 125% send notification when exceeded. Indicates whether notifications will be sent when this threshold is exceeded."
-      },
       "allowedValues": [
         "Enabled",
         "Disabled"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Target cost threshold at 125% send notification when exceeded. Indicates whether notifications will be sent when this threshold is exceeded."
+      }
     },
     "enableDefaultTelemetry": {
       "type": "bool",

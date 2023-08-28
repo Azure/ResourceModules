@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "4712377854140060080"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "302763326863799273"
+    },
+    "name": "Compute Galleries Applications",
+    "description": "This module deploys an Azure Compute Gallery Application.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
@@ -169,8 +172,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "992879911082543993"
+              "version": "0.20.4.51522",
+              "templateHash": "3891555929973685105"
             }
           },
           "parameters": {

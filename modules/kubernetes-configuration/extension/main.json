@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "9994137923318557139"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "14118650678014878152"
+    },
+    "name": "Kubernetes Configuration Extensions",
+    "description": "This module deploys a Kubernetes Configuration Extension.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
@@ -164,9 +167,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "1433522452027494189"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "16353701795521321177"
+            },
+            "name": "Kubernetes Configuration Flux Configurations",
+            "description": "This module deploys a Kubernetes Configuration Flux Configuration.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "name": {
@@ -231,23 +237,23 @@
             },
             "scope": {
               "type": "string",
-              "metadata": {
-                "description": "Required. Scope at which the configuration will be installed."
-              },
               "allowedValues": [
                 "cluster",
                 "namespace"
-              ]
+              ],
+              "metadata": {
+                "description": "Required. Scope at which the configuration will be installed."
+              }
             },
             "sourceKind": {
               "type": "string",
-              "metadata": {
-                "description": "Required. Source Kind to pull the configuration data from."
-              },
               "allowedValues": [
                 "Bucket",
                 "GitRepository"
-              ]
+              ],
+              "metadata": {
+                "description": "Required. Source Kind to pull the configuration data from."
+              }
             },
             "suspend": {
               "type": "bool",

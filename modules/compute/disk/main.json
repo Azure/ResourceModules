@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "10086023154618343477"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "3899309340586234055"
+    },
+    "name": "Compute Disks",
+    "description": "This module deploys a Compute Disk",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
@@ -24,9 +27,6 @@
     },
     "sku": {
       "type": "string",
-      "metadata": {
-        "description": "Required. The disks sku name. Can be ."
-      },
       "allowedValues": [
         "Standard_LRS",
         "Premium_LRS",
@@ -35,19 +35,22 @@
         "Premium_ZRS",
         "Premium_ZRS",
         "PremiumV2_LRS"
-      ]
+      ],
+      "metadata": {
+        "description": "Required. The disks sku name. Can be ."
+      }
     },
     "architecture": {
       "type": "string",
       "defaultValue": "",
-      "metadata": {
-        "description": "Optional. CPU architecture supported by an OS disk."
-      },
       "allowedValues": [
         "x64",
         "Arm64",
         ""
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. CPU architecture supported by an OS disk."
+      }
     },
     "burstingEnabled": {
       "type": "bool",
@@ -66,9 +69,6 @@
     "createOption": {
       "type": "string",
       "defaultValue": "Empty",
-      "metadata": {
-        "description": "Optional. Sources of a disk creation."
-      },
       "allowedValues": [
         "Attach",
         "Copy",
@@ -80,7 +80,10 @@
         "Restore",
         "Upload",
         "UploadPreparedSecure"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Sources of a disk creation."
+      }
     },
     "imageReferenceId": {
       "type": "string",
@@ -155,13 +158,13 @@
     "hyperVGeneration": {
       "type": "string",
       "defaultValue": "V2",
-      "metadata": {
-        "description": "Optional. The hypervisor generation of the Virtual Machine. Applicable to OS disks only."
-      },
       "allowedValues": [
         "V1",
         "V2"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. The hypervisor generation of the Virtual Machine. Applicable to OS disks only."
+      }
     },
     "maxShares": {
       "type": "int",
@@ -173,14 +176,14 @@
     "networkAccessPolicy": {
       "type": "string",
       "defaultValue": "DenyAll",
-      "metadata": {
-        "description": "Optional. Policy for accessing the disk via network."
-      },
       "allowedValues": [
         "AllowAll",
         "AllowPrivate",
         "DenyAll"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Policy for accessing the disk via network."
+      }
     },
     "optimizedForFrequentAttach": {
       "type": "bool",
@@ -192,25 +195,25 @@
     "osType": {
       "type": "string",
       "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Sources of a disk creation."
-      },
       "allowedValues": [
         "Windows",
         "Linux",
         ""
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Sources of a disk creation."
+      }
     },
     "publicNetworkAccess": {
       "type": "string",
       "defaultValue": "Disabled",
-      "metadata": {
-        "description": "Optional. Policy for controlling export on the disk."
-      },
       "allowedValues": [
         "Disabled",
         "Enabled"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Policy for controlling export on the disk."
+      }
     },
     "acceleratedNetwork": {
       "type": "bool",
@@ -222,14 +225,14 @@
     "lock": {
       "type": "string",
       "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Specify the type of lock."
-      },
       "allowedValues": [
         "",
         "CanNotDelete",
         "ReadOnly"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Specify the type of lock."
+      }
     },
     "roleAssignments": {
       "type": "array",
@@ -350,8 +353,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "12749624585003590955"
+              "version": "0.20.4.51522",
+              "templateHash": "7275007937766234540"
             }
           },
           "parameters": {

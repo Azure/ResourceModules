@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "15331115804969871270"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "5807574740331814274"
+    },
+    "name": "Automation Account Schedules",
+    "description": "This module deploys an Azure Automation Account Schedule.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
@@ -48,9 +51,6 @@
     "frequency": {
       "type": "string",
       "defaultValue": "OneTime",
-      "metadata": {
-        "description": "Optional. The frequency of the schedule."
-      },
       "allowedValues": [
         "Day",
         "Hour",
@@ -58,7 +58,10 @@
         "Month",
         "OneTime",
         "Week"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. The frequency of the schedule."
+      }
     },
     "interval": {
       "type": "int",

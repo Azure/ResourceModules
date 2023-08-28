@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "7983900470064159202"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "543064191837640838"
+    },
+    "name": "Role Definitions (All scopes)",
+    "description": "This module deploys a Role Definition at a Management Group, Subscription or Resource Group scope.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "roleName": {
@@ -148,9 +151,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "11312427522250634674"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "15321014984642305644"
+            },
+            "name": "Role Definitions (Management Group scope)",
+            "description": "This module deploys a Role Definition at a Management Group scope.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "roleName": {
@@ -307,9 +313,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "185323239353092830"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "9532889033437004469"
+            },
+            "name": "Role Definitions (Subscription scope)",
+            "description": "This module deploys a Role Definition at a Subscription scope.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "roleName": {
@@ -482,9 +491,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "4111491640630713206"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "13735806028928031798"
+            },
+            "name": "Role Definitions (Resource Group scope)",
+            "description": "This module deploys a Role Definition at a Resource Group scope.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "roleName": {

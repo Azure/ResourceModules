@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "18014827023007277307"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "13259276818307387958"
+    },
+    "name": "Private DNS Zone PTR record",
+    "description": "This module deploys a Private DNS Zone PTR record.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "privateDnsZoneName": {
@@ -116,8 +119,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "18134124109529472754"
+              "version": "0.20.4.51522",
+              "templateHash": "11481493487541604106"
             }
           },
           "parameters": {

@@ -69,11 +69,11 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource vpnGateway 'Microsoft.Network/vpnGateways@2022-07-01' existing = {
+resource vpnGateway 'Microsoft.Network/vpnGateways@2023-04-01' existing = {
   name: vpnGatewayName
 }
 
-resource vpnConnection 'Microsoft.Network/vpnGateways/vpnConnections@2022-07-01' = {
+resource vpnConnection 'Microsoft.Network/vpnGateways/vpnConnections@2023-04-01' = {
   name: name
   parent: vpnGateway
   properties: {

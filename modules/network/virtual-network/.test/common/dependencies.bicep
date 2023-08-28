@@ -11,18 +11,18 @@ param routeTableName string
 param networkSecurityGroupName string
 
 resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' = {
-    name: managedIdentityName
-    location: location
+  name: managedIdentityName
+  location: location
 }
 
-resource routeTable 'Microsoft.Network/routeTables@2022-01-01' = {
-    name: routeTableName
-    location: location
+resource routeTable 'Microsoft.Network/routeTables@2023-04-01' = {
+  name: routeTableName
+  location: location
 }
 
-resource networkSecurityGroup 'Microsoft.Network/networkSecurityGroups@2022-01-01' = {
-    name: networkSecurityGroupName
-    location: location
+resource networkSecurityGroup 'Microsoft.Network/networkSecurityGroups@2023-04-01' = {
+  name: networkSecurityGroupName
+  location: location
 }
 
 @description('The resource ID of the created Route Table.')

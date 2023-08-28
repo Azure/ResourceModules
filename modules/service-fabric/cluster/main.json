@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "4053406486831855406"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "15411420479083132968"
+    },
+    "name": "Service Fabric Clusters",
+    "description": "This module deploys a Service Fabric Cluster.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
@@ -32,14 +35,14 @@
     "lock": {
       "type": "string",
       "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Specify the type of lock."
-      },
       "allowedValues": [
         "",
         "CanNotDelete",
         "ReadOnly"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Specify the type of lock."
+      }
     },
     "enableDefaultTelemetry": {
       "type": "bool",
@@ -51,15 +54,15 @@
     "addOnFeatures": {
       "type": "array",
       "defaultValue": [],
-      "metadata": {
-        "description": "Optional. The list of add-on features to enable in the cluster."
-      },
       "allowedValues": [
         "BackupRestoreService",
         "DnsService",
         "RepairManager",
         "ResourceMonitorService"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. The list of add-on features to enable in the cluster."
+      }
     },
     "maxUnusedVersionsToKeep": {
       "type": "int",
@@ -159,16 +162,16 @@
     },
     "reliabilityLevel": {
       "type": "string",
-      "metadata": {
-        "description": "Required. The reliability level sets the replica set size of system services. Learn about ReliabilityLevel (https://learn.microsoft.com/en-us/azure/service-fabric/service-fabric-cluster-capacity). - None - Run the System services with a target replica set count of 1. This should only be used for test clusters. - Bronze - Run the System services with a target replica set count of 3. This should only be used for test clusters. - Silver - Run the System services with a target replica set count of 5. - Gold - Run the System services with a target replica set count of 7. - Platinum - Run the System services with a target replica set count of 9."
-      },
       "allowedValues": [
         "Bronze",
         "Gold",
         "None",
         "Platinum",
         "Silver"
-      ]
+      ],
+      "metadata": {
+        "description": "Required. The reliability level sets the replica set size of system services. Learn about ReliabilityLevel (https://learn.microsoft.com/en-us/azure/service-fabric/service-fabric-cluster-capacity). - None - Run the System services with a target replica set count of 1. This should only be used for test clusters. - Bronze - Run the System services with a target replica set count of 3. This should only be used for test clusters. - Silver - Run the System services with a target replica set count of 5. - Gold - Run the System services with a target replica set count of 7. - Platinum - Run the System services with a target replica set count of 9."
+      }
     },
     "reverseProxyCertificate": {
       "type": "object",
@@ -187,13 +190,13 @@
     "sfZonalUpgradeMode": {
       "type": "string",
       "defaultValue": "Hierarchical",
-      "metadata": {
-        "description": "Optional. This property controls the logical grouping of VMs in upgrade domains (UDs). This property cannot be modified if a node type with multiple Availability Zones is already present in the cluster."
-      },
       "allowedValues": [
         "Hierarchical",
         "Parallel"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. This property controls the logical grouping of VMs in upgrade domains (UDs). This property cannot be modified if a node type with multiple Availability Zones is already present in the cluster."
+      }
     },
     "upgradeDescription": {
       "type": "object",
@@ -205,13 +208,13 @@
     "upgradeMode": {
       "type": "string",
       "defaultValue": "Automatic",
-      "metadata": {
-        "description": "Optional. The upgrade mode of the cluster when new Service Fabric runtime version is available."
-      },
       "allowedValues": [
         "Automatic",
         "Manual"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. The upgrade mode of the cluster when new Service Fabric runtime version is available."
+      }
     },
     "upgradePauseEndTimestampUtc": {
       "type": "string",
@@ -230,14 +233,14 @@
     "upgradeWave": {
       "type": "string",
       "defaultValue": "Wave0",
-      "metadata": {
-        "description": "Optional. Indicates when new cluster runtime version upgrades will be applied after they are released. By default is Wave0."
-      },
       "allowedValues": [
         "Wave0",
         "Wave1",
         "Wave2"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Indicates when new cluster runtime version upgrades will be applied after they are released. By default is Wave0."
+      }
     },
     "vmImage": {
       "type": "string",
@@ -249,13 +252,13 @@
     "vmssZonalUpgradeMode": {
       "type": "string",
       "defaultValue": "Hierarchical",
-      "metadata": {
-        "description": "Optional. This property defines the upgrade mode for the virtual machine scale set, it is mandatory if a node type with multiple Availability Zones is added."
-      },
       "allowedValues": [
         "Hierarchical",
         "Parallel"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. This property defines the upgrade mode for the virtual machine scale set, it is mandatory if a node type with multiple Availability Zones is added."
+      }
     },
     "waveUpgradePaused": {
       "type": "bool",
@@ -440,8 +443,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "6315999366543720217"
+              "version": "0.20.4.51522",
+              "templateHash": "10133043076978827187"
             }
           },
           "parameters": {
@@ -585,9 +588,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "17377551140352908746"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "18125415207616023954"
+            },
+            "name": "Service Fabric Cluster Application Types",
+            "description": "This module deploys a Service Fabric Cluster Application Type.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "serviceFabricClusterName": {
