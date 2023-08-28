@@ -112,6 +112,10 @@ module vpnGateway_vpnConnections 'vpn-connection/main.bicep' = [for (connection,
     usePolicyBasedTrafficSelectors: contains(connection, 'usePolicyBasedTrafficSelectors') ? connection.usePolicyBasedTrafficSelectors : false
     vpnConnectionProtocolType: contains(connection, 'vpnConnectionProtocolType') ? connection.vpnConnectionProtocolType : 'IKEv2'
     enableDefaultTelemetry: enableReferencedModulesTelemetry
+    dpdTimeoutSeconds: contains(connection, 'dpdTimeoutSeconds') ? connection.dpdTimeoutSeconds : 45
+    ipsecPolicies: contains(connection, 'ipsecPolicies') ? connection.ipsecPolicies : []
+    trafficSelectorPolicies: contains(connection, 'trafficSelectorPolicies') ? connection.trafficSelectorPolicies : []
+    vpnLinkConnections: contains(connection, 'vpnLinkConnections') ? connection.vpnLinkConnections : []
   }
 }]
 

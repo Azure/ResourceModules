@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.20.4.51522",
-      "templateHash": "5924944926650245691"
+      "templateHash": "474717848315557739"
     },
     "name": "VPN Gateways",
     "description": "This module deploys a VPN Gateway.",
@@ -346,7 +346,11 @@
           "vpnConnectionProtocolType": "[if(contains(parameters('vpnConnections')[copyIndex()], 'vpnConnectionProtocolType'), createObject('value', parameters('vpnConnections')[copyIndex()].vpnConnectionProtocolType), createObject('value', 'IKEv2'))]",
           "enableDefaultTelemetry": {
             "value": "[variables('enableReferencedModulesTelemetry')]"
-          }
+          },
+          "dpdTimeoutSeconds": "[if(contains(parameters('vpnConnections')[copyIndex()], 'dpdTimeoutSeconds'), createObject('value', parameters('vpnConnections')[copyIndex()].dpdTimeoutSeconds), createObject('value', 45))]",
+          "ipsecPolicies": "[if(contains(parameters('vpnConnections')[copyIndex()], 'ipsecPolicies'), createObject('value', parameters('vpnConnections')[copyIndex()].ipsecPolicies), createObject('value', createArray()))]",
+          "trafficSelectorPolicies": "[if(contains(parameters('vpnConnections')[copyIndex()], 'trafficSelectorPolicies'), createObject('value', parameters('vpnConnections')[copyIndex()].trafficSelectorPolicies), createObject('value', createArray()))]",
+          "vpnLinkConnections": "[if(contains(parameters('vpnConnections')[copyIndex()], 'vpnLinkConnections'), createObject('value', parameters('vpnConnections')[copyIndex()].vpnLinkConnections), createObject('value', createArray()))]"
         },
         "template": {
           "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
