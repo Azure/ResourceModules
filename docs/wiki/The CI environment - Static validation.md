@@ -26,7 +26,7 @@ The following activities are performed by the [`utilities/pipelines/staticValida
     1. Module should contain a [` version.json `] file.
   - **.test folder**
     1. Folder should contain one or more test files.
-    1. JSON test files in the `.test` folder should be valid JSON.
+    1. JSON test files in the `.test` folder should be valid json.
 - **Pipeline tests**
     1. Module should have a GitHub workflow.
     1. Module workflow should have trigger for cross-module references, if any.
