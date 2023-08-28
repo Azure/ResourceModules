@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.20.4.51522",
-      "templateHash": "1350863350773947727"
+      "templateHash": "16568762636851429677"
     },
     "name": "VPN Gateway VPN Connections",
     "description": "This module deploys a VPN Gateway VPN Connection.",
@@ -126,13 +126,6 @@
         "description": "Optional. Reference to a VPN site to link to."
       }
     },
-    "dpdTimeoutSeconds": {
-      "type": "int",
-      "defaultValue": 45,
-      "metadata": {
-        "description": "Optional. Dead peer detection (dpd) timeout in seconds vpn connection."
-      }
-    },
     "enableDefaultTelemetry": {
       "type": "bool",
       "defaultValue": true,
@@ -174,8 +167,7 @@
         "useLocalAzureIpAddress": "[parameters('useLocalAzureIpAddress')]",
         "usePolicyBasedTrafficSelectors": "[parameters('usePolicyBasedTrafficSelectors')]",
         "vpnConnectionProtocolType": "[parameters('vpnConnectionProtocolType')]",
-        "vpnLinkConnections": "[parameters('vpnLinkConnections')]",
-        "dpdTimeoutSeconds": "[parameters('dpdTimeoutSeconds')]"
+        "vpnLinkConnections": "[parameters('vpnLinkConnections')]"
       }
     }
   ],

@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.20.4.51522",
-      "templateHash": "474717848315557739"
+      "templateHash": "965959360882540315"
     },
     "name": "VPN Gateways",
     "description": "This module deploys a VPN Gateway.",
@@ -347,7 +347,6 @@
           "enableDefaultTelemetry": {
             "value": "[variables('enableReferencedModulesTelemetry')]"
           },
-          "dpdTimeoutSeconds": "[if(contains(parameters('vpnConnections')[copyIndex()], 'dpdTimeoutSeconds'), createObject('value', parameters('vpnConnections')[copyIndex()].dpdTimeoutSeconds), createObject('value', 45))]",
           "ipsecPolicies": "[if(contains(parameters('vpnConnections')[copyIndex()], 'ipsecPolicies'), createObject('value', parameters('vpnConnections')[copyIndex()].ipsecPolicies), createObject('value', createArray()))]",
           "trafficSelectorPolicies": "[if(contains(parameters('vpnConnections')[copyIndex()], 'trafficSelectorPolicies'), createObject('value', parameters('vpnConnections')[copyIndex()].trafficSelectorPolicies), createObject('value', createArray()))]",
           "vpnLinkConnections": "[if(contains(parameters('vpnConnections')[copyIndex()], 'vpnLinkConnections'), createObject('value', parameters('vpnConnections')[copyIndex()].vpnLinkConnections), createObject('value', createArray()))]"
@@ -359,7 +358,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.20.4.51522",
-              "templateHash": "1350863350773947727"
+              "templateHash": "16568762636851429677"
             },
             "name": "VPN Gateway VPN Connections",
             "description": "This module deploys a VPN Gateway VPN Connection.",
@@ -480,13 +479,6 @@
                 "description": "Optional. Reference to a VPN site to link to."
               }
             },
-            "dpdTimeoutSeconds": {
-              "type": "int",
-              "defaultValue": 45,
-              "metadata": {
-                "description": "Optional. Dead peer detection (dpd) timeout in seconds vpn connection."
-              }
-            },
             "enableDefaultTelemetry": {
               "type": "bool",
               "defaultValue": true,
@@ -528,8 +520,7 @@
                 "useLocalAzureIpAddress": "[parameters('useLocalAzureIpAddress')]",
                 "usePolicyBasedTrafficSelectors": "[parameters('usePolicyBasedTrafficSelectors')]",
                 "vpnConnectionProtocolType": "[parameters('vpnConnectionProtocolType')]",
-                "vpnLinkConnections": "[parameters('vpnLinkConnections')]",
-                "dpdTimeoutSeconds": "[parameters('dpdTimeoutSeconds')]"
+                "vpnLinkConnections": "[parameters('vpnLinkConnections')]"
               }
             }
           ],
