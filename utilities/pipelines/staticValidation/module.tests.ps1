@@ -1645,10 +1645,10 @@ Describe 'API version tests' -Tag 'ApiCheck' {
         if ($AllowPreviewVersionsInAPITests) {
             # We allow the latest 5 including previews (in case somebody wants to use preview), or the latest 3 non-preview
             $approvedApiVersions += $resourceTypeApiVersions | Select-Object -Last 5
-            $approvedApiVersions += $resourceTypeApiVersions | Where-Object { $_ -notlike '*-preview' } | Select-Object -Last 3
+            $approvedApiVersions += $resourceTypeApiVersions | Where-Object { $_ -notlike '*-preview' } | Select-Object -Last 5
         } else {
-            # We allow the latest 3 non-preview preview
-            $approvedApiVersions += $resourceTypeApiVersions | Where-Object { $_ -notlike '*-preview' } | Select-Object -Last 3
+            # We allow the latest 5 non-preview preview
+            $approvedApiVersions += $resourceTypeApiVersions | Where-Object { $_ -notlike '*-preview' } | Select-Object -Last 5
         }
 
         $approvedApiVersions = $approvedApiVersions | Sort-Object -Unique -Descending
