@@ -245,3 +245,52 @@ module query './resource-graph/query/main.bicep' = {
 
 </details>
 <p>
+
+<h3>Example 2: Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module query './resource-graph/query/main.bicep' = {
+  name: '${uniqueString(deployment().name, location)}-test-rgqcom'
+  params: {
+    // Required parameters
+    query: 'resources | take 10'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    name: 'rgqcom001'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "query": {
+      "value": "resources | take 10"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "name": {
+      "value": "rgqcom001"
+    }
+  }
+}
+```
+
+</details>
+<p>
