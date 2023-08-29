@@ -10,9 +10,9 @@ Must be lowercase alphanumerics, dashes, dots or underscores, under 256 characte
 Mandatory. The template file path to convert
 
 .EXAMPLE
-Get-UniversalArtifactsName -TemplateFilePath 'C:\modules\Microsoft.KeyVault\vaults\deploy.bicep'
+Get-UniversalArtifactsName -TemplateFilePath 'C:\modules\key-vault\vault\main.bicep'
 
-Convert 'C:\modules\Microsoft.KeyVault\vaults\deploy.bicep' to e.g. 'microsoft.keyvault.vaults'
+Convert 'C:\modules\key-vault\vault\main.bicep' to e.g. 'microsoft.key-vault.vault'
 #>
 function Get-UniversalArtifactsName {
 
@@ -24,7 +24,7 @@ function Get-UniversalArtifactsName {
 
     $ModuleFolderPath = Split-Path $TemplateFilePath -Parent
     $universalPackageModuleName = $ModuleFolderPath.Replace('\', '/').Split('/modules/')[1]
-    $universalPackageModuleName = ($universalPackageModuleName.Replace('\', '.').Replace('/', '.').toLower() -Replace '[^a-z0-9\.\-_]')[0..255] -join ''
+    $universalPackageModuleName = $universalPackageModuleName.Replace('\', '.').Replace('/', '.').toLower()
 
     return $universalPackageModuleName
 }

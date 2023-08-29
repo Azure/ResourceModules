@@ -389,5 +389,5 @@ FodyWeavers.xsd
 # MacOS
 .DS_Store
 
-# Custom
-utilities/tools/REST2CARML/temp
+# Do not include files in workloads folder
+/workloads

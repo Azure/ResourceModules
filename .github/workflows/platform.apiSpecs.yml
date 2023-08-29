@@ -1,33 +1,59 @@
-name: '.Platform: Update API Specs file'
+name: ".Platform: Update API Specs file"
 
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 12 * * 0' # Weekly Sunday Update
+    - cron: "0 12 * * 0" # Weekly Sunday Update
 
 env:
-  pipelinePrincipalGitUserName: 'CARMLPipelinePrincipal'
-  pipelinePrincipalGitUserEmail: 'CARML@noreply.github.com'
+  pipelinePrincipalGitUserName: "CARMLPipelinePrincipal"
+  pipelinePrincipalGitUserEmail: "CARML@noreply.github.com"
 
 jobs:
   job_update_api_specs_file:
+    name: "Update file"
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
     runs-on: ubuntu-20.04
-    name: 'Update file'
     steps:
-      - name: 'Checkout'
+      - name: "Checkout"
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
-          token: '${{ secrets.PLATFORM_REPO_UPDATE_PAT }}' # Sets general GIT credentials up
-      - name: 'Update file'
+          token: "${{ secrets.PLATFORM_REPO_UPDATE_PAT }}" # Sets general GIT credentials up
+
+      # [Setup] task(s)
+      # ---------------
+      - name: "Setup agent"
+        shell: pwsh
+        run: |
+          # Load used functions
+          . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
+
+          # Define PS modules to install on the runner
+          $modules = @(
+              @{ Name = 'Az.Accounts' },
+              @{ Name = 'Az.Resources' }
+          )
+
+          # Set agent up
+          Set-EnvironmentOnAgent -PSModules $modules
+
+      - name: Azure Login
+        uses: Azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          enable-AzPSSession: true
+
+      - name: "Update file"
         shell: pwsh
         run: |
           # Load used functions
           . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'tools' 'platform' 'Set-ApiSpecsFile.ps1')
 
           $functionInput = @{
-            SpecsFilePath  = Join-Path $env:GITHUB_WORKSPACE 'utilities' 'src' 'apiSpecsList.json'
-            IncludePreview = $true
+            SpecsFilePath          = Join-Path $env:GITHUB_WORKSPACE 'utilities' 'src' 'apiSpecsList.json'
+            IncludePreview         = $true
+            IncludeExternalSources = $true
           }
 
           Write-Verbose "Invoke task with" -Verbose
@@ -35,7 +61,7 @@ jobs:
 
           Set-ApiSpecsFile @functionInput -Verbose
 
-      - name: 'Push changes'
+      - name: "Push changes"
         shell: pwsh
         run: |
           git config --global user.email '${{ env.pipelinePrincipalGitUserEmail }}'

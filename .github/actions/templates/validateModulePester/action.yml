@@ -13,7 +13,7 @@
 ##   |==================================================================================================================================================|
 ##   | Parameter                | Required | Default | Description                          | Example                                                   |
 ##   |--------------------------|----------|---------|--------------------------------------|-----------------------------------------------------------|
-##   | modulePath               | true     | ''      | The path to the module's folder      | 'modules/Microsoft.ApiManagement/service'                 |
+##   | modulePath               | true     | ''      | The path to the module's folder      | 'modules/api-management/service'                          |
 ##   | moduleTestFilePath       | true     | ''      | The path to the module Pester tests. | 'utilities/pipelines/staticValidation/module.tests.ps1'   |
 ##   |==================================================================================================================================================|
 ##
@@ -35,34 +35,6 @@ inputs:
 runs:
   using: 'composite'
   steps:
-    - name: 'Setup agent'
-      shell: pwsh
-      run: |
-        # Grouping task logs
-        Write-Output '::group::Setup agent'
-
-        # Load used functions
-        . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
-
-        # Define PS modules to install on the runner
-        $Modules = @(
-            # This is the latest tested Pester version. Uncomment the next line in case of a future breaking change in the default version installed on the runner.
-            # @{ Name = 'Pester'; Version = '5.3.1' }
-            @{ Name = 'Az.Resources' }
-            @{ Name = 'powershell-yaml'; Version = '0.4.2'}
-        )
-
-        # Set agent up
-        Set-EnvironmentOnAgent -PSModules $Modules
-
-        Write-Output '::endgroup::'
-
-    - name: Azure Login
-      uses: Azure/login@v1
-      with:
-        creds: ${{ env.AZURE_CREDENTIALS }}
-        enable-AzPSSession: true
-
     # [Module Pester Test] task(s)
     #-----------------------------
     - name: 'Run Pester tests'
@@ -72,83 +44,96 @@ runs:
         # Grouping task logs
         Write-Output '::group::Run Pester tests'
 
+        # Load used functions
+        . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'staticValidation' 'Set-PesterGitHubOutput.ps1')
+
         # Set repo root path
         $repoRootPath = $env:GITHUB_WORKSPACE
-
-        # Get Service Principal Object ID
-        $context = Get-AzContext
-        $servicePrincipalAppId = $context.Account.Id
-        $servicePrincipal = Get-AzADServicePrincipal -ApplicationId $servicePrincipalAppId
-        $servicePrincipalObjectId = $servicePrincipal.Id
 
         # Set test input module path
         $moduleFolderPaths = @(Join-Path $repoRootPath "${{ inputs.modulePath }}")
         $moduleFolderPaths += (Get-ChildItem $moduleFolderPaths -Recurse -Directory -Force).FullName | Where-Object {
-          (Get-ChildItem $_ -File -Depth 0 -Include @('deploy.json', 'deploy.bicep') -Force).Count -gt 0
+                  (Get-ChildItem $_ -File -Depth 0 -Include @('main.json', 'main.bicep') -Force).Count -gt 0
         }
-        Write-Verbose "Execute tests in path(s):" -Verbose
-        foreach($moduleFolderPath in $moduleFolderPaths) {
+        Write-Verbose 'Execute tests in path(s):' -Verbose
+        foreach ($moduleFolderPath in $moduleFolderPaths) {
           Write-Verbose "- [($moduleFolderPath]" -Verbose
         }
 
         # Construct Token Configuration Input and enforced tokens list
         $GlobalVariablesObject = Get-Content -Path 'settings.yml' | ConvertFrom-Yaml | Select-Object -ExpandProperty variables
         $tokenConfiguration = @{
-            Tokens      = @{}
-            TokenPrefix = $GlobalVariablesObject | Select-Object -ExpandProperty tokenPrefix
-            TokenSuffix = $GlobalVariablesObject | Select-Object -ExpandProperty tokenSuffix
+          Tokens      = @{}
+          TokenPrefix = $GlobalVariablesObject | Select-Object -ExpandProperty tokenPrefix
+          TokenSuffix = $GlobalVariablesObject | Select-Object -ExpandProperty tokenSuffix
         }
 
         if (-not [String]::IsNullOrEmpty('${{ env.ARM_SUBSCRIPTION_ID }}')) {
-            $tokenConfiguration.Tokens['subscriptionId'] = '${{ env.ARM_SUBSCRIPTION_ID }}'
+          $tokenConfiguration.Tokens['subscriptionId'] = '${{ env.ARM_SUBSCRIPTION_ID }}'
         }
         if (-not [String]::IsNullOrEmpty('${{ env.ARM_MGMTGROUP_ID }}')) {
-            $tokenConfiguration.Tokens['managementGroupId'] = '${{ env.ARM_MGMTGROUP_ID }}'
-        }
-        if (-not [String]::IsNullOrEmpty('${{ env.DEPLOYMENT_SP_ID }}')) {
-            $tokenConfiguration.Tokens['deploymentSpId'] = $servicePrincipalObjectId
+          $tokenConfiguration.Tokens['managementGroupId'] = '${{ env.ARM_MGMTGROUP_ID }}'
         }
         if (-not [String]::IsNullOrEmpty('${{ env.ARM_TENANT_ID }}')) {
-            $tokenConfiguration.Tokens['tenantId'] = '${{ env.ARM_TENANT_ID }}'
+          $tokenConfiguration.Tokens['tenantId'] = '${{ env.ARM_TENANT_ID }}'
         }
 
-        # Set and print test output path
         $moduleTestFilePath = '${{ inputs.moduleTestFilePath }}'
-        $outputPathDirectory = Split-Path $moduleTestFilePath -Parent
-        $outputPathFile = 'testResults.xml'
-        $outputPath = Join-Path $outputPathDirectory $outputPathFile
-        Write-Verbose "Pester tests output: $outputPath" -Verbose
-        Write-Output ('{0}={1}' -f 'outputPath', $outputPath) >> $env:GITHUB_OUTPUT
 
         # --------------------- #
         # Invoke Pester test(s) #
         # --------------------- #
-        $testContainerData = @{
-          moduleFolderPaths              = $moduleFolderPaths
-          tokenConfiguration             = $tokenConfiguration
-          allowPreviewVersionsInAPITests = [System.Convert]::ToBoolean('${{ env.allowPreviewVersionsInAPITests }}')
-        }
-
-        Write-Verbose 'Invoke test with' -Verbose
-        Write-Verbose ($testContainerData | ConvertTo-Json | Out-String) -Verbose
-
-        Invoke-Pester -Configuration @{
-          Run        = @{
-            Container = New-PesterContainer -Path (Join-Path $repoRootPath $moduleTestFilePath) -Data $testContainerData
+        $pesterConfiguration = @{
+          Run    = @{
+            Container = New-PesterContainer -Path (Join-Path $repoRootPath $moduleTestFilePath) -Data @{
+              moduleFolderPaths              = $moduleFolderPaths
+              tokenConfiguration             = $tokenConfiguration
+              allowPreviewVersionsInAPITests = [System.Convert]::ToBoolean('${{ env.allowPreviewVersionsInAPITests }}')
+            }
+            PassThru  = $true
           }
-          TestResult = @{
-            TestSuiteName = 'Module Tests'
-            OutputPath    = $outputPath
-            OutputFormat  = 'JUnitXml'
-            Enabled       = $true
-          }
-          Output     = @{
+          Output = @{
             Verbosity = 'Detailed'
           }
         }
 
-    - name: 'Publish Test Results'
-      uses: EnricoMi/publish-unit-test-result-action@v2
+        Write-Verbose 'Invoke test with' -Verbose
+        Write-Verbose ($pesterConfiguration | ConvertTo-Json -Depth 5 | Out-String) -Verbose
+
+        $testResults = Invoke-Pester -Configuration $pesterConfiguration
+
+        # ----------------------------------------- #
+        # Create formatted Pester Test Results File #
+        # ----------------------------------------- #
+
+        $functionInput = @{
+          PesterTestResults = $testResults
+          OutputFilePath    = Join-Path $env:GITHUB_WORKSPACE 'Pester-output.md'
+          GitHubRepository  = $env:GITHUB_REPOSITORY
+          BranchName        = $env:GITHUB_REF
+        }
+
+        Write-Verbose 'Invoke Pester formatting function with' -Verbose
+        Write-Verbose ($functionInput | ConvertTo-Json -Depth 0 | Out-String) -Verbose
+
+        Set-PesterGitHubOutput @functionInput -Verbose
+
+        Write-Output ('{0}={1}' -f 'formattedPesterResultsPath', $functionInput.outputFilePath) >> $env:GITHUB_OUTPUT
+
+    - name: 'Output to GitHub job summaries'
       if: always()
-      with:
-        junit_files: '${{ steps.pester_run_step.outputs.outputPath }}'
+      shell: pwsh
+      run: |
+        # Grouping task logs
+        Write-Output '::group::Output to GitHub job summaries'
+
+        $mdPesterOutputFilePath = '${{ steps.pester_run_step.outputs.formattedPesterResultsPath }}'
+
+        if (-not (Test-Path $mdPesterOutputFilePath)) {
+          Write-Warning ('Input file [{0}] not found. Please check if the previous task threw an error and try again.' -f $mdPesterOutputFilePath)
+        } else {
+          Get-Content $mdPesterOutputFilePath >> $env:GITHUB_STEP_SUMMARY
+          Write-Verbose ('Successfully printed out file [{0}] to Job Summaries' -f $mdPesterOutputFilePath) -Verbose
+        }
+
+        Write-Output '::endgroup::'

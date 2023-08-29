@@ -16,7 +16,7 @@ Optional. Publish an absolute latest version.
 Note: This version may include breaking changes and is not recommended for production environments
 
 .EXAMPLE
-Get-ModulesMissingFromTemplateSpecsRG -TemplateFilePath 'C:\ResourceModules\modules\Microsoft.KeyVault\vaults\deploy.bicep' -TemplateSpecsRGName 'artifacts-rg'
+Get-ModulesMissingFromTemplateSpecsRG -TemplateFilePath 'C:\ResourceModules\modules\key-vault\vault\main.bicep' -TemplateSpecsRGName 'artifacts-rg'
 
 Check if either the Key Vault module or any of its children (e.g. 'secret') is missing in the Resource Group 'artifacts-rg'
 
@@ -24,37 +24,37 @@ Returns for example:
 Name                           Value
 ----                           -----
 Version                        0.4.0
-TemplateFilePath               C:\ResourceModules\modules\Microsoft.KeyVault\vaults\accessPolicies\deploy.bicep
+TemplateFilePath               C:\ResourceModules\modules\key-vault\vault\access-policy\main.bicep
 Version                        0.4
-TemplateFilePath               C:\ResourceModules\modules\Microsoft.KeyVault\vaults\accessPolicies\deploy.bicep
+TemplateFilePath               C:\ResourceModules\modules\key-vault\vault\access-policy\main.bicep
 Version                        0
-TemplateFilePath               C:\ResourceModules\modules\Microsoft.KeyVault\vaults\accessPolicies\deploy.bicep
+TemplateFilePath               C:\ResourceModules\modules\key-vault\vault\access-policy\main.bicep
 Version                        latest
-TemplateFilePath               C:\ResourceModules\modules\Microsoft.KeyVault\vaults\accessPolicies\deploy.bicep
+TemplateFilePath               C:\ResourceModules\modules\key-vault\vault\access-policy\main.bicep
 Version                        0.4.0
-TemplateFilePath               C:\ResourceModules\modules\Microsoft.KeyVault\vaults\keys\deploy.bicep
+TemplateFilePath               C:\ResourceModules\modules\key-vault\vault\key\main.bicep
 Version                        0.4
-TemplateFilePath               C:\ResourceModules\modules\Microsoft.KeyVault\vaults\keys\deploy.bicep
+TemplateFilePath               C:\ResourceModules\modules\key-vault\vault\key\main.bicep
 Version                        0
-TemplateFilePath               C:\ResourceModules\modules\Microsoft.KeyVault\vaults\keys\deploy.bicep
+TemplateFilePath               C:\ResourceModules\modules\key-vault\vault\key\main.bicep
 Version                        latest
-TemplateFilePath               C:\ResourceModules\modules\Microsoft.KeyVault\vaults\keys\deploy.bicep
+TemplateFilePath               C:\ResourceModules\modules\key-vault\vault\key\main.bicep
 Version                        0.4.0
-TemplateFilePath               C:\ResourceModules\modules\Microsoft.KeyVault\vaults\secrets\deploy.bicep
+TemplateFilePath               C:\ResourceModules\modules\key-vault\vault\secret\main.bicep
 Version                        0.4
-TemplateFilePath               C:\ResourceModules\modules\Microsoft.KeyVault\vaults\secrets\deploy.bicep
+TemplateFilePath               C:\ResourceModules\modules\key-vault\vault\secret\main.bicep
 Version                        0
-TemplateFilePath               C:\ResourceModules\modules\Microsoft.KeyVault\vaults\secrets\deploy.bicep
+TemplateFilePath               C:\ResourceModules\modules\key-vault\vault\secret\main.bicep
 Version                        latest
-TemplateFilePath               C:\ResourceModules\modules\Microsoft.KeyVault\vaults\secrets\deploy.bicep
+TemplateFilePath               C:\ResourceModules\modules\key-vault\vault\secret\main.bicep
 Version                        0.5.0
-TemplateFilePath               C:\ResourceModules\modules\Microsoft.KeyVault\vaults\deploy.bicep
+TemplateFilePath               C:\ResourceModules\modules\key-vault\vault\main.bicep
 Version                        0.5
-TemplateFilePath               C:\ResourceModules\modules\Microsoft.KeyVault\vaults\deploy.bicep
+TemplateFilePath               C:\ResourceModules\modules\key-vault\vault\main.bicep
 Version                        0
-TemplateFilePath               C:\ResourceModules\modules\Microsoft.KeyVault\vaults\deploy.bicep
+TemplateFilePath               C:\ResourceModules\modules\key-vault\vault\main.bicep
 Version                        latest
-TemplateFilePath               C:\ResourceModules\modules\Microsoft.KeyVault\vaults\deploy.bicep
+TemplateFilePath               C:\ResourceModules\modules\key-vault\vault\main.bicep
 #>
 function Get-ModulesMissingFromTemplateSpecsRG {
 
@@ -78,10 +78,20 @@ function Get-ModulesMissingFromTemplateSpecsRG {
     }
 
     process {
-        # Get all children
-        $availableModuleTemplatePaths = (Get-ChildItem -Path (Split-Path $TemplateFilePath) -Recurse -Include @('deploy.bicep', 'deploy.json')).FullName
+        # Get all children, bicep templates only
+        $availableModuleTemplatePaths = (Get-ChildItem -Path (Split-Path $TemplateFilePath) -Recurse -Include @('main.bicep')).FullName
 
-        if (-not (Get-AzResourceGroup -ResourceGroupName 'artifacts-rg')) {
+        # Get all children, ARM templates only
+        $availableModuleTemplatePathsARM = (Get-ChildItem -Path (Split-Path $TemplateFilePath) -Recurse -Include @('main.json')).FullName
+
+        # Add ARM templates to the list of available modules only if there is no bicep template for the same module
+        foreach ($path in $availableModuleTemplatePathsARM) {
+            if ($availableModuleTemplatePaths -contains $path.Replace('.json', '.bicep')) { continue }
+            $availableModuleTemplatePaths += $path
+        }
+        $availableModuleTemplatePaths = $availableModuleTemplatePaths | Sort-Object
+
+        if (-not (Get-AzResourceGroup -ResourceGroupName $TemplateSpecsRGName -ErrorAction 'SilentlyContinue')) {
             $missingTemplatePaths = $availableModuleTemplatePaths
         } else {
             # Test all children against Resource Group
@@ -130,7 +140,7 @@ function Get-ModulesMissingFromTemplateSpecsRG {
             Write-Verbose ('Missing module [{0}] will be considered for publishing with version(s) [{1}]' -f $missingTemplatePath, ($moduleVersionsToPublish.Version -join ', ')) -Verbose
         }
 
-        if ($moduleToPublish.count -eq 0) {
+        if ($modulesToPublish.count -eq 0) {
             Write-Verbose 'No modules missing in the target environment' -Verbose
         }
 

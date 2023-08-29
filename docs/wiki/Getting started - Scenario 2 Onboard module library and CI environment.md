@@ -15,7 +15,11 @@ Depending on the DevOps environment you choose (GitHub or Azure DevOps), make su
 CARML tests the deployments and stores the module artifacts in an Azure subscription. To do so, it requires a service principal with access to it.
 
 In this first step, make sure you
-- Have/create an Azure Active Directory Service Principal with at least `Contributor` & `User Access Administrator` permissions on the Management-Group/Subscription you want to test the modules in
+- Have/create an Azure Active Directory Service Principal with at least `Contributor` & `User Access Administrator` permissions on the Management-Group/Subscription you want to test the modules in. You might find the following links useful:
+  - [Create a service principal (Azure Portal)](https://learn.microsoft.com/en-us/azure/active-directory/develop/howto-create-service-principal-portal)
+  - [Create a service principal (PowerShell)](https://learn.microsoft.com/en-us/azure/active-directory/develop/howto-authenticate-service-principal-powershell)
+  - [Find Service Principal object ID](https://cloudsight.zendesk.com/hc/en-us/articles/360016785598-Azure-finding-your-service-principal-object-ID)
+  - [Find managed Identity Service Principal](https://learn.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/how-to-view-managed-identity-service-principal-portal)
 - Note down the following pieces of information
   - Application (Client) ID
   - Service Principal Object ID (**not** the object ID of the application)
@@ -73,13 +77,19 @@ Alternatively, you can also do the same with a specific release by navigating to
 
   <img src="./media/SetupEnvironment/downloadZipRelease.png" alt="Download zip" height="150">
 
+To update your copy with the latest changes in CARML, you would need to download, for example, the latest CARML release the same way you did during your initial setup, copy its folder content to your repository's location, and upload the changes.
+
+As some files may have changed names or were removed in upstream CARML, you may further want to replace your entire folder to get to a 'clean' state. However, this is only recommended if you did not perform changes on any of the same files of upstream CARML. For reference, please refer to the changes shown by git.
+
+For more information, see the Wiki section ['Fetching latest changes'](./Fetching%20latest%20changes).
+
 </details>
 
 <p>
 
 # 3. Configure the CI environment
 
-CARML uses a single ([`settings.yml`](https://github.com/Azure/ResourceModules/blob/main/settings.yml)) file for configuring the CI environment. To replicate the CI environment locally on your machine, and perform local modules tests and validations, you must install the ([powershell-yaml](https://www.powershellgallery.com/packages/powershell-yaml/0.4.2)) module from the PowerShell gallery by executing the following on your PowerShell CLI:
+CARML uses a single ([`settings.yml`](https://github.com/Azure/ResourceModules/blob/main/settings.yml)) file for configuring the CI environment, which is located in the root of the repository. To replicate the CI environment locally on your machine, and perform local modules tests and validations, you must install the ([powershell-yaml](https://www.powershellgallery.com/packages/powershell-yaml/0.4.2)) module from the PowerShell gallery by executing the following on your PowerShell CLI:
 
 ```powershell
 Install-Module -Name powershell-yaml
@@ -138,10 +148,10 @@ To use the environment's pipelines you should use the information you gathered d
 
 | Secret Name | Example | Description |
 | - | - | - |
-| `ARM_MGMTGROUP_ID` | `de33a0e7-64d9-4a94-8fe9-b018cedf1e05` | The group ID of the management group to test-deploy modules in. |
-| `ARM_SUBSCRIPTION_ID` | `d0312b25-9160-4550-914f-8738d9b5caf5` | The ID of the subscription to test-deploy modules in. |
-| `ARM_TENANT_ID` | `9734cec9-4384-445b-bbb6-767e7be6e5ec` | The tenant ID of the Azure Active Directory tenant to test-deploy modules in. |
-| `AZURE_CREDENTIALS` | `{"clientId": "4ce8ce4c-cac0-48eb-b815-65e5763e2929", "clientSecret": "<placeholder>", "subscriptionId": "d0312b25-9160-4550-914f-8738d9b5caf5", "tenantId": "9734cec9-4384-445b-bbb6-767e7be6e5ec" }` | The login credentials of the deployment principal used to log into the target Azure environment to test in. The format is described [here](https://github.com/Azure/login#configure-deployment-credentials). |
+| `ARM_MGMTGROUP_ID` | `11111111-1111-1111-1111-111111111111` | The group ID of the management group to test-deploy modules in. |
+| `ARM_SUBSCRIPTION_ID` | `22222222-2222-2222-2222-222222222222` | The ID of the subscription to test-deploy modules in. |
+| `ARM_TENANT_ID` | `33333333-3333-3333-3333-333333333333` | The tenant ID of the Azure Active Directory tenant to test-deploy modules in. |
+| `AZURE_CREDENTIALS` | `{"clientId": "44444444-4444-4444-4444-444444444444", "clientSecret": "<placeholder>", "subscriptionId": "22222222-2222-2222-2222-222222222222", "tenantId": "33333333-3333-3333-3333-333333333333" }` | The login credentials of the deployment principal used to log into the target Azure environment to test in. The format is described [here](https://github.com/Azure/login#configure-deployment-credentials). |
 | `PLATFORM_REPO_UPDATE_PAT` | `<placeholder>` | A private access token (PAT) with enough permissions assigned to it to push into the main branch. This PAT is leveraged by pipelines that automatically generate ReadMe files to keep them up to date. |
 | `TOKEN_NAMEPREFIX` | `cntso` | Optional. If you specify the name prefix token here, it is only applied if the `localToken_namePrefix` specified in the [settings.yml](https://github.com/Azure/ResourceModules/blob/main/settings.yml) is left empty.  |
 
@@ -173,7 +183,7 @@ To use the environment's pipelines you should use the information you gathered d
 > {"clientId": "<client_id>", "clientSecret": "<client_secret>", "subscriptionId": "<subscriptionId>", "tenantId": "<tenant_id>" }
 > ```
 >
-> **Make sure you create this object as one continuous string as shown above** - using the information you collected during [Step 1](#1-configure-your-azure-environment). Failing to format the secret as above, causes GitHub to consider each line of the json object as a separate secret string. If you're interested, you can find more information about this object [here](https://github.com/Azure/login#configure-deployment-credentials).
+> **Make sure you create this object as one continuous string as shown above** - using the information you collected during [Step 1](#1-configure-your-azure-environment). Failing to format the secret as above, causes GitHub to consider each line of the JSON object as a separate secret string. If you're interested, you can find more information about this object [here](https://github.com/Azure/login#configure-deployment-credentials).
 
 ### 3.2.2 Set up settings file
 
@@ -185,7 +195,6 @@ The primary pipeline settings file ([`settings.yml`](https://github.com/Azure/Re
 | Variable Name | Example Value | Description |
 | - | - | - |
 | `location` | `"WestEurope"` | The default location to deploy resources to and store deployment metadata at. If no location is specified in the deploying module test file, this location is used. |
-| `resourceGroupName` | `"validation-rg"` | The resource group to deploy all resources for validation to. |
 
 </details>
 
@@ -259,21 +268,21 @@ For _Azure DevOps_, you have to perform the following environment-specific steps
 
 ### 3.2.1 Set up service connection
 
-The service connection must be set up in the project's settings under _Pipelines: Service connections_ (a step by step guide can be found [here](https://docs.microsoft.com/en-us/azure/devops/pipelines/library/service-endpoints?view=azure-devops&tabs=yaml)).
+The service connection must be set up in the project's settings under _Pipelines: Service connections_ (a step by step guide can be found [here](https://learn.microsoft.com/en-us/azure/devops/pipelines/library/service-endpoints?view=azure-devops&tabs=yaml)).
 
-It's name must match the one configured as `serviceConnection` in the [variable file](#323-set-up-variables-file)'s 'General' section.
+It's name must match the one configured as `serviceConnection` in the [setting.yml file](#323-set-up-settings-file)'s 'General' section. For example: `serviceConnection: 'CARML-Tenant-Connection'`.
 
 ### 3.2.2 Set up secrets in variable group
 
-The variable group `PLATFORM_VARIABLES` must be set up in Azure DevOps as described [here](https://docs.microsoft.com/en-us/azure/devops/pipelines/library/variable-groups?view=azure-devops&tabs=classic#create-a-variable-group).
+The variable group `PLATFORM_VARIABLES` must be set up in Azure DevOps as described [here](https://learn.microsoft.com/en-us/azure/devops/pipelines/library/variable-groups?view=azure-devops&tabs=classic#create-a-variable-group).
 
-Based on the information you gathered in the [Azure setup](#1-configure-your-azure-environment), you must configure the following secrets in the variable group:
+Based on the information you gathered in the Azure setup [above](#1-configure-your-azure-environment), you must configure the following secrets in the variable group:
 
 | Secret Name | Example | Description |
 | - | - | - |
-| `ARM_MGMTGROUP_ID` | `de33a0e7-64d9-4a94-8fe9-b018cedf1e05` | The group ID of the management group to test-deploy modules in. |
-| `ARM_SUBSCRIPTION_ID` | `d0312b25-9160-4550-914f-8738d9b5caf5` | The ID of the subscription to test-deploy modules in. |
-| `ARM_TENANT_ID` | `9734cec9-4384-445b-bbb6-767e7be6e5ec` | The tenant ID of the Azure Active Directory tenant to test-deploy modules in. |
+| `ARM_MGMTGROUP_ID` | `11111111-1111-1111-1111-111111111111` | The group ID of the management group to test-deploy modules in. |
+| `ARM_SUBSCRIPTION_ID` | `22222222-2222-2222-2222-222222222222` | The ID of the subscription to test-deploy modules in. |
+| `ARM_TENANT_ID` | `33333333-3333-3333-3333-333333333333` | The tenant ID of the Azure Active Directory tenant to test-deploy modules in. |
 | `TOKEN_NAMEPREFIX` | `<cntso>` | Optional. If you specify the name prefix token here, it is only applied if the `localToken_namePrefix` specified in the [settings.yml](https://github.com/Azure/ResourceModules/blob/main/settings.yml) is left empty.  |
 
 Make sure its name matches the `group` reference used in the module pipelines. For example
@@ -283,7 +292,7 @@ variables:
   - group: 'PLATFORM_VARIABLES'
 ```
 
-> **Note:** If you need to use different name than `PLATFORM_VARIABLES`, make sure to search & replace all references with the new name.
+> **Note:** If you need to use different name than `PLATFORM_VARIABLES`, make sure to search & replace all references with the new name. You will find these primarily in the module pipelines files in path `.azuredevops/modulePipelines/*.yml`
 
 ### 3.2.3 Set up settings file
 
@@ -295,7 +304,6 @@ The primary pipeline settings file ([`settings.yml`](https://github.com/Azure/Re
 | Variable Name | Example Value | Description |
 | - | - | - |
 | `location` | `'WestEurope'` | The default location to deploy resources to. If no location is specified in the deploying module test file, this location is used. |
-| `resourceGroupName` | `'validation-rg'` | The resource group to deploy all resources for validation into. |
 | `serviceConnection` | `'Contoso-Connection'` | The service connection that points to the subscription to test in and publish to. |
 
 </details>
@@ -305,7 +313,7 @@ The primary pipeline settings file ([`settings.yml`](https://github.com/Azure/Re
 
 | Variable Name | Example Value | Description |
 | - | - | - |
-| `templateSpecsRGName` | `'artifacts-rg'` | The resource group to host the created template-specs. |
+| `templateSpecsRGName` | `'artifacts-rg'` | The resource group to host the created template-specs. </p> Will be automatically created if not yet existing in the target subscription. |
 | `templateSpecsRGLocation` | `'WestEurope'` | The location of the resource group to host the template-specs. Is used to create a new resource group if not yet existing. |
 | `templateSpecsDescription` | `'This is a module from the [Common Azure Resource Modules Library]'` | A description to add to the published template specs. |
 | `templateSpecsDoPublish` | `'true'` | A central switch to enable/disable publishing to template-specs. |
@@ -317,8 +325,8 @@ The primary pipeline settings file ([`settings.yml`](https://github.com/Azure/Re
 
 | Variable Name | Example Value | Description |
 | - | - | - |
-| `bicepRegistryName` | `'adpsxxazacrx001'` | The container registry to publish Bicep templates to. <p> **NOTE:** Must be globally unique. |
-| `bicepRegistryRGName` | `'artifacts-rg'` | The resource group of the container registry to publish Bicep templates to. Is used to create a new container registry if not yet existing. |
+| `bicepRegistryName` | `'adpsxxazacrx001'` | The container registry to publish Bicep templates to. </p> **NOTE:** Must be globally unique. </p> Will be automatically created if not yet existing in the target subscription. |
+| `bicepRegistryRGName` | `'artifacts-rg'` | The resource group of the container registry to publish Bicep templates to. Is used to create a new container registry if not yet existing. </p> Will be automatically created if not yet existing in the target subscription. |
 | `bicepRegistryRgLocation` | `'West Europe'` | The location of the resource group of the container registry to publish Bicep templates to. Is used to create a new resource group if not yet existing. |
 | `bicepRegistryDoPublish` | `'true'` | A central switch to enable/disable publishing to the private Bicep registry. |
 
@@ -329,7 +337,7 @@ The primary pipeline settings file ([`settings.yml`](https://github.com/Azure/Re
 
 | Variable Name | Example Value | Description |
 | - | - | - |
-| `vstsFeedName` | `'carml'` | The name of the Azure DevOps universal packages feed to publish to. |
+| `vstsFeedName` | `'carml'` | The name of the Azure DevOps universal packages feed to publish to. Must be created before running the pipelines. |
 | `vstsFeedProject` | `'$(System.TeamProject)'` | The project that hosts the feed. The feed must be created in Azure DevOps ahead of time. |
 | `vstsFeedToken` | `'$(System.AccessToken)'` | The token used to publish universal packages into the feed above. |
 | `artifactsFeedDoPublish` | `'true'` | A central switch to enable/disable publishing to Universal packages. |
@@ -348,9 +356,9 @@ To use the pipelines that come with the environment in Azure DevOps, you need to
 
 ### 3.2.5 Azure Artifacts Universal Packages
 
-This section will explain what is required to publish the modules to [Azure Artifacts Universal Packages](https://docs.microsoft.com/en-us/azure/devops/artifacts/quickstarts/universal-packages?view=azure-devops). It will also assume you are publishing from Azure DevOps Pipelines.
+This section will explain what is required to publish the modules to [Azure Artifacts Universal Packages](https://learn.microsoft.com/en-us/azure/devops/artifacts/quickstarts/universal-packages?view=azure-devops). It will also assume you are publishing from Azure DevOps Pipelines.
 
-#### The dependent components are
+<h4><b>The dependent components are</b></h4>
 
 1. An Azure DevOps organization and project
 1. An Azure DevOps artifacts feed
@@ -358,12 +366,12 @@ This section will explain what is required to publish the modules to [Azure Arti
    >
    > **Note:** It's also very important that the feed's 'Permissions' (Artifact Feed -> Feed settings -> Permissions) are set up so that the project's 'Build Service' has at least the role 'Contributor' to be able to publish artifacts ([ref](https://learn.microsoft.com/en-us/azure/devops/artifacts/feeds/feed-permissions?view=azure-devops#permissions-table)).
 1. An Azure DevOps project to host the artifact feed
-   > **Note:** There are a couple options to consider when setting up an Azure Artifact feed. For example, organization-scoped feeds vs project-scoped feeds. Please see what option suits your needs by reviewing the [feeds](https://docs.microsoft.com/en-us/azure/devops/artifacts/concepts/feeds?view=azure-devops) document first.
-1. If you chose the feed to be project-scoped, you will need the Project Build Service account to have `Contributor` access to publish to the Azure Artifacts feed. To set this, follow the [Pipeline permission](https://docs.microsoft.com/en-us/azure/devops/artifacts/feeds/feed-permissions?view=azure-devops#pipelines-permissions) steps.
+   > **Note:** There are a couple options to consider when setting up an Azure Artifact feed. For example, organization-scoped feeds vs project-scoped feeds. Please see what option suits your needs by reviewing the [feeds](https://learn.microsoft.com/en-us/azure/devops/artifacts/concepts/feeds?view=azure-devops) document first.
+1. If you chose the feed to be project-scoped, you will need the Project Build Service account to have `Contributor` access to publish to the Azure Artifacts feed. To set this, follow the [Pipeline permission](https://learn.microsoft.com/en-us/azure/devops/artifacts/feeds/feed-permissions?view=azure-devops#pipelines-permissions) steps.
 
-#### Implementation Guidance
+<h4><b>Implementation Guidance</b></h4>
 
-Each `./azuredevops/modulePipelines` YAML pipeline already calls [`/.azuredevops/pipelineTemplates/jobs.publishModule.yml`](https://github.com/Azure/ResourceModules/blob/main/.azuredevops/pipelineTemplates/jobs.publishModule.yml). This YAML template contains a method to `Publish module to artifacts feed` via [`utilities\pipelines\resourcePublish\Publish-ModuleToUniversalArtifactsFeed.ps1`](https://github.com/Azure/ResourceModules/blob/main/utilities\pipelines\resourcePublish\Publish-ModuleToUniversalArtifactsFeed.ps1).
+Each `./azuredevops/modulePipelines` YAML pipeline invokes the [`/.azuredevops/pipelineTemplates/jobs.publishModule.yml`](https://github.com/Azure/ResourceModules/blob/main/.azuredevops/pipelineTemplates/jobs.publishModule.yml) template. This YAML template contains a method to `Publish module to artifacts feed` via the [`utilities\pipelines\resourcePublish\Publish-ModuleToUniversalArtifactsFeed.ps1`](https://github.com/Azure/ResourceModules/blob/main/utilities\pipelines\resourcePublish\Publish-ModuleToUniversalArtifactsFeed.ps1) script, which ultimately publishes the modules.
 
 </details>
 
@@ -379,15 +387,15 @@ In special cases, manual actions may be required to provision certain resources 
 
 ### Microsoft.Web/sites
 
-To successfully deploy the sites module using the `functionAppCommon/deploy.test.bicep` test, you need to create an Azure Active Directory App with its API endpoint enabled (e.g., `api://<app id>`) and add a secret. The secret value needs then to be stored in a Key Vault secret.
+To successfully deploy the sites module using the `functionAppCommon/main.test.bicep` test, you need to create an Azure Active Directory App with its API endpoint enabled (e.g., `api://<app id>`) and add a secret. The secret value needs then to be stored in a Key Vault secret.
 
 Finally, the elements described above must further be configured in the following files:
 
 | File | Parameter | Notes |
 | - | - | - |
-| `modules\Microsoft.Web\sites\.test\common\deploy.bicep` | `appSettingsKeyValuePairs.EASYAUTH_SECRET` | Key Vault secret URI without version (e.g., 'https://Test-KeyVault.vault.azure.net/secrets/aBcDeFghIjK69Ln') |
-| `modules\Microsoft.Web\sites\.test\common\deploy.bicep` | `authSettingV2Configuration.identityProviders.azureActiveDirectory.registration.clientId` | App ID from the Azure Active Directory App (e.g., '11111111-1111-1111-1111-11111111111') |
-| `modules\Microsoft.Web\sites\.test\common\deploy.bicep` | `authSettingV2Configuration.identityProviders.azureActiveDirectory.validation.allowedAudiences` | API endpoint from the Azure Active Directory app (e.g., 'api://11111111-1111-1111-1111-11111111111') |
+| `modules/Web/sites/.test/common/main.bicep` | `appSettingsKeyValuePairs.EASYAUTH_SECRET` | Key Vault secret URI without version (e.g., 'https://Test-KeyVault.vault.azure.net/secrets/aBcDeFghIjK69Ln') |
+| `modules/Web/sites/.test/common/main.bicep` | `authSettingV2Configuration.identityProviders.azureActiveDirectory.registration.clientId` | App ID from the Azure Active Directory App (e.g., '11111111-1111-1111-1111-11111111111') |
+| `modules/Web/sites/.test/common/main.bicep` | `authSettingV2Configuration.identityProviders.azureActiveDirectory.validation.allowedAudiences` | API endpoint from the Azure Active Directory app (e.g., 'api://11111111-1111-1111-1111-11111111111') |
 
 # 5. (Optional) Convert library to ARM
 

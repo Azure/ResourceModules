@@ -14,6 +14,9 @@ Optional. The module version of the AzureAPICrawler to install. Available versio
 .PARAMETER IncludePreview
 Optional. A switch parameter to control whether or not to include Preview versions in the table
 
+.PARAMETER IncludeExternalSources
+Optional. A switch parameter to control whether or not to include versions of other sources (e.g., Get-AzResourceProvider) too
+
 .EXAMPLE
 Set-ApiSpecsFile -SpecsFilePath 'C:/dev/ResourceModules/utilities/src/apiSpecsList.json'
 
@@ -27,10 +30,13 @@ function Set-ApiSpecsFile {
         [string] $SpecsFilePath = (Join-Path (Split-Path (Split-Path $PSScriptRoot -Parent)) 'src' 'apiSpecsList.json'),
 
         [Parameter(Mandatory = $false)]
-        [string] $ModuleVersion = '0.2.0',
+        [string] $ModuleVersion = '1.0.0',
 
         [Parameter(Mandatory = $false)]
-        [switch] $IncludePreview
+        [switch] $IncludePreview,
+
+        [Parameter(Mandatory = $false)]
+        [switch] $IncludeExternalSources
     )
 
     # Install and or import module
@@ -44,8 +50,9 @@ function Set-ApiSpecsFile {
 
     # Fetch data
     $getInputObject = @{
-        IncludePreview = $IncludePreview
-        Verbose        = $true
+        IncludePreview         = $IncludePreview
+        IncludeExternalSources = $IncludeExternalSources
+        Verbose                = $true
     }
     $res = Get-AzureApiSpecsVersionList @getInputObject
     $fileContent = $res | ConvertTo-Json

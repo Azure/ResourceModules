@@ -1,5 +1,5 @@
 
-Bicep is [ready for production use](https://docs.microsoft.com/en-us/azure/azure-resource-manager/bicep/frequently-asked-questions#is-this-ready-for-production-use) starting with version 0.3. It is supported by Microsoft support plans and has parity with what can be accomplished with ARM Templates.
+Bicep is [ready for production use](https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/frequently-asked-questions#is-this-ready-for-production-use) starting with version 0.3. It is supported by Microsoft support plans and has parity with what can be accomplished with ARM Templates.
 
 However, for users who still prefer using ARM templates over Bicep, the CARML library provides a script that uses the Bicep Toolkit translator/compiler to support the conversion of CARML Bicep modules to ARM/JSON Templates.
 
@@ -22,8 +22,8 @@ You can find the script under [`/utilities/tools/ConvertTo-ARMTemplate.ps1`](htt
 
 # How it works
 
-The script finds all `deploy.bicep` files and converts them to json-based ARM templates by using the following steps:
-1. Remove existing deploy.json files from folders where deploy.bicep files are also present.
+The script finds all `main.bicep` files and converts them to json-based ARM templates by using the following steps:
+1. Remove existing main.json files from folders where main.bicep files are also present.
 1. Convert .bicep files to .json
 1. Remove Bicep metadata from the converted .json files
 1. Remove .bicep files and folders

@@ -1,6 +1,14 @@
 name: 'VirtualMachineImages - ImageTemplates'
 
 parameters:
+  - name: staticValidation
+    displayName: Execute static validation
+    type: boolean
+    default: true
+  - name: deploymentValidation
+    displayName: Execute deployment validation
+    type: boolean
+    default: true
   - name: removeDeployment
     displayName: Remove deployed module
     type: boolean
@@ -21,7 +29,7 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.virtualmachineimages.imagetemplates.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/modules/Microsoft.VirtualMachineImages/imageTemplates/*'
+      - '/modules/virtual-machine-images/image-template/*'
       - '/utilities/pipelines/*'
     exclude:
       - '/utilities/pipelines/deploymentRemoval/*'
@@ -31,10 +39,12 @@ variables:
   - template: '../../settings.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/modules/Microsoft.VirtualMachineImages/imageTemplates'
+    value: '/modules/virtual-machine-images/image-template'
 
 stages:
   - template: /.azuredevops/pipelineTemplates/stages.module.yml
     parameters:
+      staticValidation: '${{ parameters.staticValidation }}'
+      deploymentValidation: '${{ parameters.deploymentValidation }}'
       removeDeployment: '${{ parameters.removeDeployment }}'
       prerelease: '${{ parameters.prerelease }}'

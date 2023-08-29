@@ -37,7 +37,7 @@ The module test files used in this stage should ideally cover as many configurat
 
 > **Note:** Since every customer environment might be different due to applied Azure Policies or security policies, modules might behave differently and naming conventions need to be verified beforehand.
 
-> **Note:** [Management-Group](https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/azure-subscription-service-limits#management-group-limits) or [Subscription](https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/azure-subscription-service-limits#subscription-limits) deployments may eventually exceed the limit of 800 and require you to remove some of them manually. If you are faced with any corresponding error message you can manually remove deployments on a Management-Group or Subscription Level on scale using one of our [utilities](./The%20CI%20environment%20-%20Deployment%20removal). The CI environment also comes with a [pipeline](./The%20CI%20environment%20-%20Deployment%20removal) that runs on a nightly basis to mitigate this limitation.
+> **Note:** [Management-Group](https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/azure-subscription-service-limits#management-group-limits) or [Subscription](https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/azure-subscription-service-limits#subscription-limits) deployments may eventually exceed the limit of 800 and require you to remove some of them manually. If you are faced with any corresponding error message you can manually remove deployments on a Management-Group or Subscription Level on scale using one of our [utilities](./The%20CI%20environment%20-%20Deployment%20removal). The CI environment also comes with a [pipeline](./The%20CI%20environment%20-%20Deployment%20removal) that runs on a nightly basis to mitigate this limitation.
 
 ### Output example
 
@@ -129,7 +129,7 @@ $pathToRepository = '<pathToClonedRepo>'
 
 # REQUIRED INPUT FOR TESTING
 $TestModuleLocallyInput = @{
-    templateFilePath              = '<Path to a module deploy.bicep>'
+    templateFilePath              = '<Path to a module main.bicep>'
     parameterFilePath            = '<Optional path to a module parameter.json>'
     PesterTest                    = $false
     DeploymentTest                = $true
@@ -141,7 +141,6 @@ $TestModuleLocallyInput = @{
         ManagementGroupId = '<ReplaceWith-TargetManagementGroupName>'
     }
     AdditionalTokens              = @{
-        'deploymentSpId' = '<ReplaceWith-SPNObjectId>'
         'tenantId'       = '<ReplaceWith-TargetTenantId>'
     }
 }

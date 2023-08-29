@@ -1,6 +1,14 @@
 name: 'Web - StaticSites'
 
 parameters:
+  - name: staticValidation
+    displayName: Execute static validation
+    type: boolean
+    default: true
+  - name: deploymentValidation
+    displayName: Execute deployment validation
+    type: boolean
+    default: true
   - name: removeDeployment
     displayName: Remove deployed module
     type: boolean
@@ -19,9 +27,10 @@ trigger:
       - main
   paths:
     include:
+      - '/modules/web/static-site/*'
+      - '/modules/network/private-endpoint/*'
       - '/.azuredevops/modulePipelines/ms.web.staticsites.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/modules/Microsoft.Web/staticSites/*'
       - '/utilities/pipelines/*'
     exclude:
       - '/utilities/pipelines/deploymentRemoval/*'
@@ -31,10 +40,12 @@ variables:
   - template: '../../settings.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/modules/Microsoft.Web/staticSites'
+    value: '/modules/web/static-site'
 
 stages:
   - template: /.azuredevops/pipelineTemplates/stages.module.yml
     parameters:
+      staticValidation: '${{ parameters.staticValidation }}'
+      deploymentValidation: '${{ parameters.deploymentValidation }}'
       removeDeployment: '${{ parameters.removeDeployment }}'
       prerelease: '${{ parameters.prerelease }}'

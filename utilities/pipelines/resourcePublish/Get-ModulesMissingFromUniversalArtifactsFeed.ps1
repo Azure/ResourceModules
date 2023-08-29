@@ -24,7 +24,7 @@ Example: 'Artifacts'.
 Optional. The bearer token to use to authenticate the request. If not provided it MUST be existing in your environment as `$env:TOKEN`
 
 .EXAMPLE
-Get-ModulesMissingFromUniversalArtifactsFeed -TemplateFilePath 'C:\modules\Microsoft.KeyVault\vaults\deploy.bicep' -vstsOrganizationUri 'https://dev.azure.com/fabrikam' -VstsProject 'IaC' -VstsFeedName 'Artifacts'
+Get-ModulesMissingFromUniversalArtifactsFeed -TemplateFilePath 'C:\modules\key-vault\vault\main.bicep' -vstsOrganizationUri 'https://dev.azure.com/fabrikam' -VstsProject 'IaC' -VstsFeedName 'Artifacts'
 
 Check if either the Key Vault module or any of its children (e.g. 'secret') is missing in artifacts feed 'Artifacts' of Azure DevOps project 'https://dev.azure.com/fabrikam/IaC'
 
@@ -32,13 +32,13 @@ Returns for example:
 Name                           Value
 ----                           -----
 Version                        0.4.0
-TemplateFilePath               C:\ResourceModules\modules\Microsoft.KeyVault\vaults\accessPolicies\deploy.bicep
+TemplateFilePath               C:\ResourceModules\modules\key-vault\vault\access-policy\main.bicep
 Version                        0.4.0
-TemplateFilePath               C:\ResourceModules\modules\Microsoft.KeyVault\vaults\keys\deploy.bicep
+TemplateFilePath               C:\ResourceModules\modules\key-vault\vault\key\main.bicep
 Version                        0.4.0
-TemplateFilePath               C:\ResourceModules\modules\Microsoft.KeyVault\vaults\secrets\deploy.bicep
+TemplateFilePath               C:\ResourceModules\modules\key-vault\vault\secret\main.bicep
 Version                        0.5.0
-TemplateFilePath               C:\ResourceModules\modules\Microsoft.KeyVault\vaults\deploy.bicep
+TemplateFilePath               C:\ResourceModules\modules\key-vault\vault\main.bicep
 #>
 function Get-ModulesMissingFromUniversalArtifactsFeed {
 
@@ -68,8 +68,18 @@ function Get-ModulesMissingFromUniversalArtifactsFeed {
     }
 
     process {
-        # Get all children
-        $availableModuleTemplatePaths = (Get-ChildItem -Path (Split-Path $TemplateFilePath) -Recurse -Include @('deploy.bicep', 'deploy.json')).FullName
+        # Get all children, bicep templates only
+        $availableModuleTemplatePaths = (Get-ChildItem -Path (Split-Path $TemplateFilePath) -Recurse -Include @('main.bicep')).FullName
+
+        # Get all children, ARM templates only
+        $availableModuleTemplatePathsARM = (Get-ChildItem -Path (Split-Path $TemplateFilePath) -Recurse -Include @('main.json')).FullName
+
+        # Add ARM templates to the list of available modules only if there is no bicep template for the same module
+        foreach ($path in $availableModuleTemplatePathsARM) {
+            if ($availableModuleTemplatePaths -contains $path.Replace('.json', '.bicep')) { continue }
+            $availableModuleTemplatePaths += $path
+        }
+        $availableModuleTemplatePaths = $availableModuleTemplatePaths | Sort-Object
 
         # Get artifacts
         if ($VstsOrganizationUri -like '*/') {
@@ -104,15 +114,15 @@ function Get-ModulesMissingFromUniversalArtifactsFeed {
         # Collect any that are not part of the ACR, fetch their version and return the result array
         $modulesToPublish = @()
         foreach ($missingTemplatePath in $missingTemplatePaths) {
-            $moduleToPublish = @{
+            $moduleVersionToPublish = @{
                 TemplateFilePath = $missingTemplatePath
                 Version          = '{0}.0' -f (Get-Content (Join-Path (Split-Path $missingTemplatePath) 'version.json') -Raw | ConvertFrom-Json).version
             }
-            $modulesToPublish += $moduleToPublish
-            Write-Verbose ('Missing module [{0}] will be considered for publishing with version [{1}]' -f $modulesToPublish.TemplateFilePath, $modulesToPublish.Version) -Verbose
+            $modulesToPublish += $moduleVersionToPublish
+            Write-Verbose ('Missing module [{0}] will be considered for publishing with version [{1}]' -f $moduleVersionToPublish.TemplateFilePath, $moduleVersionToPublish.Version) -Verbose
         }
 
-        if ($moduleToPublish.count -eq 0) {
+        if ($modulesToPublish.count -eq 0) {
             Write-Verbose 'No modules missing in the target environment' -Verbose
         }
 

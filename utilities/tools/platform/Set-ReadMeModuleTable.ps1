@@ -1,6 +1,4 @@
-﻿#region Helper functions
-
-<#
+﻿<#
 .SYNOPSIS
 Update the given ReadMe file with the latest module table
 
@@ -20,14 +18,20 @@ Mandatory. The name of the repository the modules are in (required to generate t
 .PARAMETER Organization
 Mandatory. The name of the Organization the modules are in (required to generate the correct links)
 
+.PARAMETER ProjectName
+Mandatory. The name of the Azure DevOps project the pipelines are in (required to generate the correct links) - in case Azure DevOps is used
+
+.PARAMETER Environment
+Mandatory. The environment to generate the badges for (either Azure DevOps - or GitHub)
+
 .PARAMETER ColumnsInOrder
 Mandatory. The set of columns to add to the table in the order you expect them in the table.
 Available are 'Name', 'ProviderNamespace', 'ResourceType', 'TemplateType', 'Deploy' & 'Status'
 
 .EXAMPLE
-Set-ReadMeModuleTable -FilePath 'C:\readme.md' -ModulesPath 'C:\modules' -RepositoryName 'ResourceModules' -Organization 'Azure' -ColumnsInOrder @('Name','Status')
+Set-ReadMeModuleTable -FilePath 'C:\README.md' -ModulesPath 'C:\modules' -RepositoryName 'ResourceModules' -Organization 'Azure' -ColumnsInOrder @('Name','Status')
 
-Update the defined table section in the 'readme.md' file with a table that has the columns 'Name' & 'Status'
+Update the defined table section in the 'README.md' file with a table that has the columns 'Name' & 'Status'
 #>
 function Set-ReadMeModuleTable {
 

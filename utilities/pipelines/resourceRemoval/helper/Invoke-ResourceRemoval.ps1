@@ -135,6 +135,35 @@ function Invoke-ResourceRemoval {
             }
             break
         }
+        'Microsoft.DevTestLab/labs' {
+            $resourceGroupName = $resourceId.Split('/')[4]
+            $resourceName = Split-Path $resourceId -Leaf
+            if ($PSCmdlet.ShouldProcess("DevTestLab Lab [$resourceName]", 'Remove')) {
+                Get-AzResourceLock -ResourceGroupName $resourceGroupName |
+                    Where-Object -FilterScript { $PSItem.properties.notes -eq "Reserved resource locked by '$resourceName' lab." } |
+                    ForEach-Object {
+                        $null = Remove-AzResourceLock -LockId $PSItem.LockId -Force
+                        Write-Verbose "Removed lock [$($PSItem.Name)] created by the DevTest Lab [$resourceName] on resource [$($PSItem.ResourceName)]. Waiting 10 seconds for propagation." -Verbose
+                        Start-Sleep 10
+                    }
+                $null = Remove-AzResource -ResourceId $resourceId -Force -ErrorAction 'Stop'
+            }
+            break
+        }
+        'Microsoft.MachineLearningServices/workspaces' {
+            $subscriptionId = $resourceId.Split('/')[2]
+            $resourceGroupName = $resourceId.Split('/')[4]
+            $resourceName = Split-Path $resourceId -Leaf
+            $purgePath = 'subscriptions/{0}/resourceGroups/{1}/providers/Microsoft.MachineLearningServices/workspaces/{2}?api-version=2023-04-01-preview&forceToPurge={3}' -f $subscriptionId, $resourceGroupName, $resourceName, $true
+            $purgeRequestInputObject = @{
+                Method = 'DELETE'
+                Path   = $purgePath
+            }
+            if ($PSCmdlet.ShouldProcess("Machine Learning Workspace [$resourceName]", 'Remove')) {
+                $null = Invoke-AzRestMethod @purgeRequestInputObject
+            }
+            break
+        }
 
         ### CODE LOCATION: Add custom removal action here
         Default {

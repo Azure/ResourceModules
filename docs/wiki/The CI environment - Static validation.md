@@ -16,29 +16,76 @@ All module Unit tests are performed with the help of [Pester](https://github.com
 
 The following activities are performed by the [`utilities/pipelines/staticValidation/module.tests.ps1`](https://github.com/Azure/ResourceModules/blob/main/utilities/pipelines/staticValidation/module.tests.ps1) script.
 
-- **File & folder tests** validate that the module folder structure is set up in the intended way, e.g.:
-  - readme.md file exists
-  - template file (either `deploy.json` or `deploy.bicep`) exists
-  - compliance with file naming convention
-- **Deployment template tests** check the template's structure and elements for errors as well as consistency matters, e.g.:
-  - template file (or the built bicep template) converts from JSON and has all expected properties
-  - variable names are camelCase
-  - the minimum set of outputs is returned (see [module design](./The%20library%20-%20Module%20design#outputs))
-- **Module (readme) documentation** contains all required sections, e.g.:
-  - is not empty
-  - contains all the mandatory sections
-  - describes all the parameters
-  - describes all outputs
-  - describes all cross-references
-- **Module Test Files**, e.g.:
-  - at least one `deploy.test.bicep` exists
-  - files should (optionally) be valid JSON
-  - must contain all required parameters
-  - (if tokens are used) Tests that no token values (e.g., `11111111-1111-1111-1111-11111111111`) from the specified token list (i.e., `deploymentSpId`, `subscriptionId`, `managementGroupId`, `tenantId`) are used in the module test files. Instead, the token itself should be referenced.
+## Outline
+
+- **File/folder tests**
+  - **General module folder tests**
+    1. Module should contain a [` main.json ` / ` main.bicep `] file.
+    1. Module should contain a [` README.md `] file.
+    1. Module should contain a [` .test `] folder.
+    1. Module should contain a [` version.json `] file.
+  - **.test folder**
+    1. Folder should contain one or more test files.
+    1. JSON test files in the `.test` folder should be valid json.
+- **Pipeline tests**
+    1. Module should have a GitHub workflow.
+    1. Module workflow should have trigger for cross-module references, if any.
+    1. Module should have an Azure DevOps pipeline.
+    1. Module pipeline should have trigger for cross-module references, if any.
+- **Module tests**
+  - **Readme content tests**
+    1. `README.md` file should not be empty.
+    1. `README.md` file should contain these sections in order: Navigation, Resource Types, Parameters, Outputs, Cross-referenced modules, Deployment examples.
+    1. Resources section should contain all resources from the template file.
+    1. Resources section should not contain more resources than the template file.
+    1. Parameters section should contain a table for each existing parameter category in the following order: Required, Conditional, Optional, Generated.
+    1. Parameter tables should provide columns in the following order: Parameter Name, Type, Default Value, Allowed Values, Description. Each column should be present unless empty for all the rows.
+    1. Parameters section should contain all parameters from the template file.
+    1. Outputs section should contain a table with these column names in order: Output Name, Type.
+    1. Output section should contain all outputs defined in the template file.
+    1. Dependencies section should contain all cross-references defined in the template file.
+    1. `Set-ModuleReadMe` script should not apply any updates.
+  - **Compiled ARM template tests**
+    1. Compiled ARM template should be latest.
+  - **General template tests**
+    1. The template file should not be empty.
+    1. Template schema version should be the latest.
+    1. Template schema should use HTTPS reference.
+    1. All apiVersion properties should be set to a static, hard-coded value.
+    1. The template file should contain required elements [schema], [contentVersion], [resources].
+    1. If delete lock is implemented, the template should have a lock parameter with an empty default value.
+    1. Parameter names should be camel-cased (no dashes or underscores and must start with lower-case letter).
+    1. Variable names should be camel-cased (no dashes or underscores and must start with lower-case letter).
+    1. Output names should be camel-cased (no dashes or underscores and must start with lower-case letter).
+    1. CUA ID deployment should be present in the template.
+    1. The Location should be defined as a parameter, with the default value of [resourceGroup().Location] or global for ResourceGroup deployment scope.
+    1. Location output should be returned for resources that use it.
+    1. Resource Group output should exist for resources that are deployed into a resource group scope.
+    1. Resource name output should exist.
+    1. Resource ID output should exist.
+    1. All parameters in parameters files exist in template file (`main.json`).
+    1. All required parameters in template file (`main.json`) should exist in parameters files.
+    1. All non-required parameters in template file should not have description that start with "Required.".
+  - **Metadata content tests**
+    1. template file should have a module name specified.
+    1. template file should have a module description specified.
+- **Test file tests**
+  - **General test file**
+    1. Bicep test deployment name should contain [`-test-`].
+    1. Bicep test deployment should have parameter [`serviceShort`].
+    1. JSON test deployment name should contain [`-test-`].
+    1. JSON test deployment should have parameter [`serviceShort`].
+  - **Token usage**
+    1. [Tokens] Test file should not contain the plain value for token guid.
+  - **Public Bicep Registry tests**
+    1. Module should have central test file [.test/main.test.bicep] for Public Bicep Registry CI
+    1. Module
+- **API version tests**
+    1. In used resource type should use one of the recent API version(s). Currently using .
 
 ## Output example
 
-<img src="./media/CIEnvironment/staticValidationOutput.png" alt="Static Validation Output" height="400">
+<img src="./media/CIEnvironment/staticValidationOutput.png" alt="Static Validation Output" height="700">
 
 ## Additional resources
 
@@ -75,7 +122,7 @@ $pathToRepository = '<pathToClonedRepo>'
 
 # REQUIRED INPUT FOR TESTING
 $TestModuleLocallyInput = @{
-    templateFilePath              = "$pathToRepository\modules\Microsoft.Authorization\roleDefinitions\deploy.bicep"
+    templateFilePath              = "$pathToRepository\modules\authorization\role-definition\main.bicep"
     PesterTest                    = $true
     DeploymentTest                = $false
     ValidationTest                = $false
@@ -85,4 +132,3 @@ Test-ModuleLocally @TestModuleLocallyInput -Verbose
 ```
 
 > You can use the `Get-Help` cmdlet to show more options on how you can use this script.
-

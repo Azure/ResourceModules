@@ -7,7 +7,7 @@ Publish a new version of a given module to a private bicep registry
 
 .PARAMETER TemplateFilePath
 Mandatory. Path to the module deployment file from root.
-Example: 'C:\modules\Microsoft.KeyVault\vaults\deploy.bicep'
+Example: 'C:\modules\key-vault\vault\main.bicep'
 
 .PARAMETER ModuleVersion
 Mandatory. Version of the module to publish, following SemVer convention.
@@ -26,7 +26,7 @@ Optional. The location of the resourceGroup the private bicep registry is deploy
 Example: 'West Europe'
 
 .EXAMPLE
-Publish-ModuleToPrivateBicepRegistry -TemplateFilePath 'C:\modules\Microsoft.KeyVault\vaults\deploy.bicep' -ModuleVersion '3.0.0-alpha' -BicepRegistryName 'adpsxxazacrx001' -BicepRegistryRgName 'artifacts-rg'
+Publish-ModuleToPrivateBicepRegistry -TemplateFilePath 'C:\modules\key-vault\vault\main.bicep' -ModuleVersion '3.0.0-alpha' -BicepRegistryName 'adpsxxazacrx001' -BicepRegistryRgName 'artifacts-rg'
 
 Try to publish the KeyVault module with version 3.0.0-alpha to a private bicep registry called 'adpsxxazacrx001' in resource group 'artifacts-rg'.
 #>
@@ -87,7 +87,7 @@ function Publish-ModuleToPrivateBicepRegistry {
         #############################################
         $publishingTarget = 'br:{0}.azurecr.io/{1}:{2}' -f $BicepRegistryName, $moduleRegistryIdentifier, $ModuleVersion
         if ($PSCmdlet.ShouldProcess("Private bicep registry entry [$moduleRegistryIdentifier] version [$ModuleVersion] to registry [$BicepRegistryName]", 'Publish')) {
-            bicep publish $TemplateFilePath --target $publishingTarget
+            bicep publish $TemplateFilePath --target $publishingTarget --force
         }
         Write-Verbose 'Publish complete'
     }

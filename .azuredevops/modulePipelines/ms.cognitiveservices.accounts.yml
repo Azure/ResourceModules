@@ -1,6 +1,14 @@
 name: 'CognitiveServices - Accounts'
 
 parameters:
+  - name: staticValidation
+    displayName: Execute static validation
+    type: boolean
+    default: true
+  - name: deploymentValidation
+    displayName: Execute deployment validation
+    type: boolean
+    default: true
   - name: removeDeployment
     displayName: Remove deployed module
     type: boolean
@@ -19,9 +27,10 @@ trigger:
       - main
   paths:
     include:
+      - '/modules/cognitive-services/account/*'
+      - '/modules/network/private-endpoint/*'
       - '/.azuredevops/modulePipelines/ms.cognitiveservices.accounts.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/modules/Microsoft.CognitiveServices/accounts/*'
       - '/utilities/pipelines/*'
     exclude:
       - '/utilities/pipelines/deploymentRemoval/*'
@@ -31,10 +40,12 @@ variables:
   - template: '../../settings.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/modules/Microsoft.CognitiveServices/accounts'
+    value: '/modules/cognitive-services/account'
 
 stages:
   - template: /.azuredevops/pipelineTemplates/stages.module.yml
     parameters:
+      staticValidation: '${{ parameters.staticValidation }}'
+      deploymentValidation: '${{ parameters.deploymentValidation }}'
       removeDeployment: '${{ parameters.removeDeployment }}'
       prerelease: '${{ parameters.prerelease }}'

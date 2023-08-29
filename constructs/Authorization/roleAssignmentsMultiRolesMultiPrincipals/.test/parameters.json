@@ -1,0 +1,25 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        // Resource Group name is optional, when provided with the subscriptionId, the Role Assignment will target the RG.
+        "resourceGroupName": {
+            "value": "validation-rg"
+        },
+        "subscriptionId": {
+            "value": "[[subscriptionId]]"
+        },
+        "roleAssignments": {
+            "value": [
+                {
+                    "roleDefinitionIdOrName": "Owner",
+                    "principalIds": []
+                },
+                {
+                    "roleDefinitionIdOrName": "/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11",
+                    "principalIds": []
+                }
+            ]
+        }
+    }
+}

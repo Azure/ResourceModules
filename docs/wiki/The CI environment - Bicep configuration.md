@@ -12,10 +12,10 @@ This section provides details on the Bicep configuration used in the CARML CI en
 # Bicep Configuration File
 
 Using this file, you can customize your Bicep development experience. This includes
-- Linter Rules (e.g., [max parameters](https://docs.microsoft.com/en-us/azure/azure-resource-manager/bicep/linter-rule-max-parameters))
-- Source locations (e.g., [aliases](https://docs.microsoft.com/en-us/azure/azure-resource-manager/bicep/bicep-config-modules))
+- Linter Rules (e.g., [max parameters](https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/linter-rule-max-parameters))
+- Source locations (e.g., [aliases](https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/bicep-config-modules))
 
-For a full list of available rules, please refer to the [official documentation](https://docs.microsoft.com/en-us/azure/azure-resource-manager/bicep/bicep-config).
+For a full list of available rules, please refer to the [official documentation](https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/bicep-config).
 
 > If you remove this file, Bicep uses default values
 

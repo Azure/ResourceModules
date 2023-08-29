@@ -23,7 +23,8 @@ variables:
     value: 'CARML@noreply.github.com'
 
 jobs:
-  - job: Update_module_tables
+  - job: sync_wiki
+    displayName: Sync Wiki
     pool:
       ${{ if ne('$(vmImage)', '') }}:
         vmImage: '$(vmImage)'

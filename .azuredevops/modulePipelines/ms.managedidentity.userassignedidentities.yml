@@ -1,6 +1,14 @@
 name: 'ManagedIdentity - UserAssignedIdentities'
 
 parameters:
+  - name: staticValidation
+    displayName: Execute static validation
+    type: boolean
+    default: true
+  - name: deploymentValidation
+    displayName: Execute deployment validation
+    type: boolean
+    default: true
   - name: removeDeployment
     displayName: Remove deployed module
     type: boolean
@@ -21,7 +29,7 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.managedidentity.userassignedidentities.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/modules/Microsoft.ManagedIdentity/userAssignedIdentities/*'
+      - '/modules/managed-identity/user-assigned-identity/*'
       - '/utilities/pipelines/*'
     exclude:
       - '/utilities/pipelines/deploymentRemoval/*'
@@ -31,10 +39,12 @@ variables:
   - template: '../../settings.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/modules/Microsoft.ManagedIdentity/userAssignedIdentities'
+    value: '/modules/managed-identity/user-assigned-identity'
 
 stages:
   - template: /.azuredevops/pipelineTemplates/stages.module.yml
     parameters:
+      staticValidation: '${{ parameters.staticValidation }}'
+      deploymentValidation: '${{ parameters.deploymentValidation }}'
       removeDeployment: '${{ parameters.removeDeployment }}'
       prerelease: '${{ parameters.prerelease }}'

@@ -29,7 +29,7 @@
 ##   | vmImage                         | '$(vmImage)'                         | You can provide either a [poolname] or [vmImage] to run the job on.                                       | 'ubuntu20.04'                                         |
 ##   | defaultJobTimeoutInMinutes      | 120                                  | The timeout for the job in this pipeline.                                                                 | 120                                                   |
 ##   | removeDeployment                | 'true'                               | Set to [true] to flag resources for removal. If not provided, defaults to true.                           | 'true'                                                |
-##   | templateFilePath                | ''                                   | Path to the template file to deploy.                                                                      | 'arm/Microsoft.AnalysisServices/servers/deploy.bicep' |
+##   | templateFilePath                | ''                                   | Path to the template file to deploy.                                                                      | 'modules/analysis-services/servers/main.bicep'        |
 ##   | customTokens                    | ''                                   | Additional token pairs in json format.                                                                    | '{"tokenName":"tokenValue"}'                          |
 ##   | jobDisplayName                  | ''                                   | The display name of the job.                                                                              | 'Deploy module'                                       |
 ##   | modulePath                      | '$(modulePath)'                      | The path to the module to deploy.                                                                         | 'c:/KeyVault'                                         |
@@ -93,7 +93,7 @@ jobs:
             . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
 
             # Define PS modules to install on the runner
-            $Modules = @(
+            $modules = @(
                 @{ Name = 'Az.Accounts' },
                 @{ Name = 'Az.Resources' },
                 @{ Name = 'powershell-yaml'; Version = '0.4.2'}
@@ -101,7 +101,7 @@ jobs:
 
             # Additional PS modules need to be installed for the removal step in case it is enabled
             if ('${{ parameters.removeDeployment}}' -eq 'true') {
-              $Modules += @(
+              $modules += @(
                 @{ Name = 'Az.CognitiveServices' },
                 @{ Name = 'Az.Compute' },
                 @{ Name = 'Az.KeyVault' },
@@ -112,7 +112,7 @@ jobs:
             }
 
             # Set agent up
-            Set-EnvironmentOnAgent -PSModules $Modules
+            Set-EnvironmentOnAgent -PSModules $modules
 
       # [Agent] Replace tokens
       #-----------------------
@@ -127,12 +127,6 @@ jobs:
           inline: |
             # Load used functions
             . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFileList.ps1')
-
-            # Get Service Principal Object ID
-            $context = Get-AzContext
-            $servicePrincipalAppId = $context.Account.Id
-            $servicePrincipal = Get-AzADServicePrincipal -ApplicationId $servicePrincipalAppId
-            $servicePrincipalObjectId = $servicePrincipal.Id
 
             # Get target files
             $moduleTestFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(moduleTestFilePath)'
@@ -151,7 +145,6 @@ jobs:
               subscriptionId    = '${{ parameters.subscriptionId }}'
               managementGroupId = '${{ parameters.managementGroupId }}'
               tenantId          = '$(ARM_TENANT_ID)'
-              deploymentSpId    = $servicePrincipalObjectId
             }
 
             # Add local (source control) tokens

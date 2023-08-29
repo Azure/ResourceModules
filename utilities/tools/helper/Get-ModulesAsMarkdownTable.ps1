@@ -1,79 +1,6 @@
 ﻿#region Helper functions
 <#
 .SYNOPSIS
-Generate the status URL for GitHub module action workflows
-
-.DESCRIPTION
-Generate the status URL for GitHub module action workflows
-E.g.  # [![AnalysisServices: Servers](https://github.com/Azure/ResourceModules/actions/workflows/ms.analysisservices.servers.yml/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.analysisservices.servers.yml)
-
-.PARAMETER name
-Mandatory. The name of the module to create the url for
-
-.PARAMETER provider
-Mandatory. The provider of the module to create the url for
-
-.PARAMETER RepositoryName
-Mandatory. The repository to create the url for
-
-.PARAMETER Organization
-Mandatory. The Organization the repository is hosted in to create the url for
-
-.EXAMPLE
-Get-PipelineStatusUrl -name 'servers' -provider 'Microsoft.AnalysisServices' -RepositoryName 'ResourceModules' -Organization 'Azure'
-
-Generate a status badge url for the 'service' module of the 'Microsoft.AnalysisServices' provider in repo 'Azure/ResourceModules'
-#>
-function Get-PipelineStatusUrl {
-
-    [CmdletBinding()]
-    param (
-        [Parameter(Mandatory)]
-        [string] $name,
-
-        [Parameter(Mandatory)]
-        [string] $provider,
-
-        [Parameter(Mandatory)]
-        [string] $RepositoryName,
-
-        [Parameter(Mandatory)]
-        [string] $Organization,
-
-        [Parameter(Mandatory)]
-        [ValidateSet('GitHub', 'ADO')]
-        [string]$Environment,
-
-        [Parameter(Mandatory = $false)]
-        [string]$ProjectName = ''
-    )
-
-
-    $shortProvider = $provider.Replace('Microsoft.', 'MS.')
-    $pipelineFileName = ('{0}.{1}.yml' -f $shortProvider, $name).Replace('\', '/').Replace('/', '.').ToLower()
-    switch ($Environment) {
-        'ADO' {
-            $pipelineFileUri = ".azuredevops/modulePipelines/$pipelineFileName"
-            $pipelineName = (Get-Content -Path $pipelineFileUri)[0].TrimStart('name:').Replace('"', '').Trim()
-            $pipelineFileGitUri = ('https://dev.azure.com/{0}/{1}/_apis/build/status/{2}?branchName=main' -f $Organization, $Projectname, $pipelineName.Replace("'", '')) -replace ' ', '%20'
-
-            # Note: Badge name is automatically the pipeline name
-            return ('[![{0}]({1})]({1})' -f $pipelineName, $pipelineFileGitUri).Replace('\', '/')
-        }
-        'GitHub' {
-            $pipelineFileUri = ".github/workflows/$pipelineFileName"
-            $pipelineName = (Get-Content -Path $pipelineFileUri)[0].TrimStart('name:').Replace('"', '').Trim()
-            $pipelineNameInUri = $pipelineName.Replace(' ', '%20').Replace("'", '')
-            $pipelineStatusUri = 'https://github.com/{0}/{1}/workflows/{2}' -f $Organization, $RepositoryName, $pipelineNameInUri
-            $pipelineFileGitUri = 'https://github.com/{0}/{1}/actions/workflows/{2}' -f $Organization, $RepositoryName, $pipelineFileName
-            # Note: Badge name is automatically the pipeline name
-            return ('[![{0}]({1}/badge.svg)]({2})' -f $pipelineName, $pipelineStatusUri, $pipelineFileGitUri).Replace('\', '/')
-        }
-    }
-}
-
-<#
-.SYNOPSIS
 Get a properly formatted 'Deploy to Azure' button for the template in the given path
 
 .DESCRIPTION
@@ -110,13 +37,15 @@ function Get-DeployToAzureUrl {
         [string] $Organization
     )
 
-    if (-not (Test-Path -Path "$Path\deploy.json")) {
-        Write-Warning "ARM Template in path [$Path\deploy.json] not found. Unable to generate 'Deploy to Azure' button."
+    if (-not (Test-Path -Path "$Path\main.json")) {
+        Write-Warning "ARM Template in path [$Path\main.json] not found. Unable to generate 'Deploy to Azure' button."
         return ''
     }
 
+    $path = $Path -replace '\\', '/'
     $baseUrl = '[![Deploy to Azure](/docs/media/deploytoazure.svg?sanitize=true)](<https://portal.azure.com/#create/Microsoft.Template/uri/'
-    $templateUri = 'https://raw.githubusercontent.com/{0}/{1}/main/{2}/deploy.json' -f $Organization, $RepositoryName, ($Path -split "\\$RepositoryName\\")[1]
+    # Splitting by [/$RepositoryName/modules/] as the repository on the agent is checked out with a path such as [/home/runner/work/ResourceModules/ResourceModules/modules]. Splitting by only the repository name would yield wrong results.
+    $templateUri = 'https://raw.githubusercontent.com/{0}/{1}/main/modules/{2}/main.json' -f $Organization, $RepositoryName, ($Path -split "\/$RepositoryName\/modules\/")[1]
 
     return ('{0}{1}>)' -f $baseUrl, ([System.Web.HttpUtility]::UrlEncode($templateUri)))
 }
@@ -132,9 +61,9 @@ Extract the resource name from the provided module path's readme
 Mandatory. The path to the module to process
 
 .EXAMPLE
-Get-ResourceModuleName -path 'C:\KeyVault'
+Get-ResourceModuleName -path 'C:\key-vault\vault'
 
-Get the resource name defined in the KeyVault-Module's readme. E.g. 'Key Vault'
+Get the resource name defined in the 'key-vault\vault'-module's readme. E.g. 'Key Vault'
 #>
 function Get-ResourceModuleName {
 
@@ -145,12 +74,12 @@ function Get-ResourceModuleName {
         [string] $Path
     )
 
-    if (-not (Test-Path "$Path/readme.md")) {
-        Write-Warning "No [readme.md] found in folder [$Path]"
+    if (-not (Test-Path "$Path/README.md")) {
+        Write-Warning "No [README.md] found in folder [$Path]"
         return ''
     }
 
-    $moduleReadMeContent = Get-Content -Path "$Path/readme.md"
+    $moduleReadMeContent = Get-Content -Path "$Path/README.md"
     $moduleName = $moduleReadMeContent[0].TrimStart('# ').Split('`')[0].Trim()
 
     if (-not [String]::IsNullOrEmpty($moduleName)) {
@@ -167,7 +96,7 @@ Get a string that indicates whether there are ARM/Bicep templates available in t
 .DESCRIPTION
 Get a string that indicates whether there are ARM/Bicep templates available in the given path.
 The string represents markdown table columns.
-Files must follow the naming schema 'deploy.json' & 'deploy.bicep'
+Files must follow the naming schema 'main.json' & 'main.bicep'
 
 .PARAMETER path
 Mandatory. The path to check for templates
@@ -190,7 +119,7 @@ function Get-TypeColumnString {
 
     $outputString = ''
 
-    # if ($moduleFiles.Name -contains 'deploy.json') {
+    # if ($moduleFiles.Name -contains 'main.json') {
     #     # ARM exists
     #     $outputString += ":heavy_check_mark:/"
     # }
@@ -198,7 +127,7 @@ function Get-TypeColumnString {
     #     $outputString += " /"
     # }
 
-    if ($moduleFiles.Name -contains 'deploy.bicep') {
+    if ($moduleFiles.Name -contains 'main.bicep') {
         # bicep exists
         $outputString += ':heavy_check_mark:'
     } else {
@@ -221,9 +150,9 @@ In other words, a module would contain a folder with e.g. a '.test' folder and w
 Mandatory. The path to search in.
 
 .EXAMPLE
-Measure-FolderHasNestedModule -path 'C:\dev\ApiManagement'
+Measure-FolderHasNestedModule -path 'C:\dev\api-management'
 
-Check if the path 'C:\dev\ApiManagement' contains any number of nested modules
+Check if the path 'C:\dev\api-management' contains any number of nested modules
 #>
 function Measure-FolderHasNestedModule {
 
@@ -279,9 +208,9 @@ Mandatory. The name of the repository the code resides in
 Mandatory. The name of the Organization the code resides in
 
 .EXAMPLE
-> Get-ResolvedSubServiceRow -subPath 'C:\dev\Microsoft.ApiManagement\serviceResources' -concatedBase "Microsoft.ApiManagement\serviceResources" -output @() -provider 'Microsoft.ApiManagement' -ColumnsInOrder @('Name','ProviderNamespace') -SortByColumn 'Name'
+Get-ResolvedSubServiceRow -subPath 'C:\dev\api-management\api' -concatedBase "api-management\api" -output @() -provider 'api-management' -ColumnsInOrder @('Name','ProviderNamespace') -SortByColumn 'Name'
 
-Adds a hashtable like  @{ Name = 'API Management'; 'Provider Namespace' = `Microsoft.ApiManagement` }. As the specified column for sorting is 'Name', the 'Provider Namespace' will be added to each entry.
+Adds a hashtable like  @{ Name = 'API Management'; 'Provider Namespace' = `api-management` }. As the specified column for sorting is 'Name', the 'Provider Namespace' will be added to each entry.
 #>
 function Get-ResolvedSubServiceRow {
 
@@ -317,11 +246,14 @@ function Get-ResolvedSubServiceRow {
 
         [Parameter(Mandatory = $false)]
         [ValidateSet('GitHub', 'ADO')]
-        [string]$Environment,
+        [string] $Environment,
 
         [Parameter(Mandatory = $false)]
-        [string]$ProjectName = ''
+        [string] $ProjectName = ''
     )
+
+    # Load external functions
+    . (Join-Path $PSScriptRoot 'Get-PipelineStatusUrl.ps1')
 
     $rawSubFolders = Get-ChildItem -Path $subPath -Directory -Recurse -Exclude @('.bicep', '.test') -Force
     # Only consider those folders that have their own parameters, i.e. are top-level modules and not child-resource modules
@@ -351,13 +283,7 @@ function Get-ResolvedSubServiceRow {
                 'ProviderNamespace' {
                     # If we don't sort by provider, we have to add the provider to each row to ensure readability of each row
                     if ($SortByColumn -eq 'Name') {
-                        if ($provider -like 'Microsoft.*') {
-                            # Shorten Microsoft to save some space
-                            $shortProvider = 'MS.{0}' -f ($provider.TrimStart('Microsoft.'))
-                            $row['ProviderNamespace'] += "``$shortProvider``"
-                        } else {
-                            $row['ProviderNamespace'] += "``$provider``"
-                        }
+                        $row['ProviderNamespace'] += "``$provider``"
                     } else {
                         $row['ProviderNamespace'] = ''
                     }
@@ -381,7 +307,13 @@ function Get-ResolvedSubServiceRow {
                     $row['Deploy'] += Get-DeployToAzureUrl -path $subfolder -RepositoryName $RepositoryName -Organization $Organization
                 }
                 'Status' {
-                    $row['Status'] += Get-PipelineStatusUrl -name $subName -provider $provider -RepositoryName $RepositoryName -Organization $Organization
+                    $statusInputObject = @{
+                        RepositoryName     = $RepositoryName
+                        Organization       = $Organization
+                        PipelineFileName   = (((('ms.{0}.{1}.yml' -f $provider, $subName) -replace '-', '') -replace '\\', '/') -replace '/', '.').ToLower()
+                        PipelineFolderPath = $Environment -eq 'GitHub' ? (Join-Path '.github' 'workflows') : (Join-Path '.azuredevops' 'modulePipelines')
+                    }
+                    $row['Status'] += Get-PipelineStatusUrl @statusInputObject
                 }
                 Default {
                     Write-Warning "Column [$column] not existing. Available are: [Name|ProviderNamespace|ResourceType|TemplateType|Deploy|Status]"
@@ -402,7 +334,7 @@ Generate a markdown table for all modules in the given path.
 Generate a markdown table for all modules in the given path. Returns an array with one row for each service provider
 Folders should follow the structure:
 
-Microsoft.Sql
+Sql
 ├─ server [module]
 └─ serverResources
     └─ databases [module]
@@ -411,10 +343,10 @@ Where sub-resources are part of a subfolder [<parentResource>Resources]
 
 Results in a table like
 
-    "| Name                           | Provider namespace | Resource Type                                                                   | ARM / Bicep |"
-    "| ------------------------------ | ------------------ | ------------------------------------------------------------------------------- | ----------- |"
-    "| SQL Managed Instances          | `Microsoft.Sql`    | [managedInstances](Microsoft.Sql/managedInstances)                              | :heavy_check_mark: / |
-    "| SQL Managed Instances Database |                    | [managedInstances\databases](Microsoft.Sql\managedInstancesResources\databases) | :heavy_check_mark: / :heavy_check_mark: |
+    "| Name                           | Provider namespace | Resource Type                                               |"
+    "| ------------------------------ | ------------------ | ------------------------------------------------------------|"
+    "| SQL Managed Instances          | `Sql`              | [managedInstances](sql/managed-instance)                    |"
+    "| SQL Managed Instances Database |                    | [managedInstances/databases](sql/managed-instance/database) |"
 
 .PARAMETER Path
 Mandatory. The path to resolve
@@ -435,25 +367,36 @@ Mandatory. The name of the repository the code resides in
 .PARAMETER Organization
 Mandatory. The name of the Organization the code resides in
 
-.EXAMPLE
-Get-ModulesAsMarkdownTable -path 'C:\dev\Modules'
+.PARAMETER Environment
+Mandatory. The DevOps environment to generate the status badges for
 
-Generate a markdown table for all modules in path 'C:\dev\Modules' with all default columns, sorted by 'Provider Namespace'
-
-.EXAMPLE
-Get-ModulesAsMarkdownTable -path 'C:\dev\Modules' -ColumnsInOrder @('Resource Type', 'Name')
-
-Generate a markdown table for all modules in path 'C:\dev\Modules' with only the 'Resource Type' & 'Name' columns, sorted by 'Provider Namespace'
+.PARAMETER ProjectName
+Optional. The project the repository is hosted in. Required if the 'environment' is 'ADO'
 
 .EXAMPLE
-Get-ModulesAsMarkdownTable -path 'C:\dev\Modules' -ColumnsInOrder @('Resource Type', 'Name') -SortByColumn 'Name'
+Get-ModulesAsMarkdownTable -path 'C:\dev\modules'
 
-Generate a markdown table for all modules in path 'C:\dev\Modules' with only the 'Resource Type' & 'Name' columns, , sorted by 'Name'
+Generate a markdown table for all modules in path 'C:\dev\modules' with all default columns, sorted by 'Provider Namespace'
 
 .EXAMPLE
-Get-ModulesAsMarkdownTable -path 'C:\dev\ip\Azure-Modules\ResourceModules\modules' -RepositoryName 'ResourceModules' -Organization 'Azure' -ColumnsInOrder @('Name','TemplateType','Status','Deploy')
+Get-ModulesAsMarkdownTable -path 'C:\dev\modules' -ColumnsInOrder @('Resource Type', 'Name')
 
-Generate a markdown table for all modules in path 'C:\dev\Modules' with only the 'Name','TemplateType','Status' &'Deploy' columns, sorted by 'Name'
+Generate a markdown table for all modules in path 'C:\dev\modules' with only the 'Resource Type' & 'Name' columns, sorted by 'Provider Namespace'
+
+.EXAMPLE
+Get-ModulesAsMarkdownTable -path 'C:\dev\modules' -ColumnsInOrder @('Resource Type', 'Name') -SortByColumn 'Name'
+
+Generate a markdown table for all modules in path 'C:\dev\modules' with only the 'Resource Type' & 'Name' columns, , sorted by 'Name'
+
+.EXAMPLE
+Get-ModulesAsMarkdownTable -path 'C:\dev\ip\Azure-ResourceModules\ResourceModules\modules' -RepositoryName 'ResourceModules' -Organization 'Azure' -ColumnsInOrder @('Name','TemplateType','Status','Deploy') -Environment 'GitHub'
+
+Generate a markdown table for all modules in path 'C:\dev\modules' with only the 'Name', 'TemplateType', 'Status'  &'Deploy' columns, sorted by 'Name' for GitHub
+
+.EXAMPLE
+Get-ModulesAsMarkdownTable -path 'C:\dev\ip\Azure-ResourceModules\ResourceModules\modules' -RepositoryName 'ResourceModules' -Organization 'CARML' -ProjectName 'ResourceModules' -Environment 'ADO' -ColumnsInOrder @('Name', 'TemplateType', 'Status', 'Deploy')
+
+Generate a markdown table for all modules in path 'C:\dev\modules' with only the 'Name', 'TemplateType', 'Status' & 'Deploy' columns, sorted by 'Name' for Azure DevOps
 #>
 function Get-ModulesAsMarkdownTable {
 
@@ -478,11 +421,15 @@ function Get-ModulesAsMarkdownTable {
 
         [Parameter(Mandatory)]
         [ValidateSet('GitHub', 'ADO')]
-        [string]$Environment,
+        [string] $Environment,
 
         [Parameter(Mandatory = $false)]
-        [string]$ProjectName = ''
+        [string] $ProjectName = ''
     )
+
+    # Load external functions
+    . (Join-Path $PSScriptRoot 'Get-PipelineStatusUrl.ps1')
+    . (Join-Path $PSScriptRoot 'Get-SpecsAlignedResourceName.ps1')
 
     # Header
     # ------
@@ -509,32 +456,36 @@ function Get-ModulesAsMarkdownTable {
     # Content
     # -------
     $output = [System.Collections.ArrayList]@()
-    if ($topLevelFolders = Get-ChildItem -Path $Path -Depth 1 -Filter 'Microsoft.*' -Force) {
+    if ($topLevelFolders = Get-ChildItem -Path $Path -Depth 0 -Directory -Exclude '.*' -Force) {
         $topLevelFolders = $topLevelFolders.FullName | Sort-Object
     }
 
     $previousProvider = ''
     foreach ($topLevelFolder in $topLevelFolders) {
-        $provider = Split-Path $topLevelFolder -Leaf
 
-        $containedFolders = Get-ChildItem -Path $topLevelFolder -Directory -Recurse -Exclude @('.bicep', '.test') -Depth 0 -Force
+        $containedFolderPaths = (Get-ChildItem -Path $topLevelFolder -Directory -Recurse -Exclude @('.bicep', '.test') -Depth 0 -Force).FullName
 
-        foreach ($containedFolder in $containedFolders.FullName) {
-            $containedFolderName = (Split-Path $containedFolder -Leaf)
-            $concatedBase = $containedFolder.Replace((Split-Path $topLevelFolder -Parent), '').Substring(1)
+        foreach ($containedFolderPath in $containedFolderPaths) {
+            $containedFolderName = Split-Path $containedFolderPath -Leaf
+            $concatedBase = $containedFolderPath.Replace((Split-Path $topLevelFolder -Parent), '').Substring(1)
 
-            if (Measure-FolderHasNestedModule -path $containedFolder) {
+            $provider = Split-Path $topLevelFolder -Leaf
+            $specsAlignedResourceName = Get-SpecsAlignedResourceName -ResourceIdentifier ($concatedBase -replace '\\', '/')
+            $specsAlignedProviderNamespace = $specsAlignedResourceName.Split('/')[0]
+            $specsAlignedResourceType = $specsAlignedResourceName -replace "$specsAlignedProviderNamespace/", ''
+
+            if (Measure-FolderHasNestedModule -path $containedFolderPath) {
                 $recursiveSubServiceInputObject = @{
-                    subPath        = $containedFolder
-                    concatedBase   = $concatedBase
-                    output         = $output
-                    provider       = $provider
-                    ColumnsInOrder = $ColumnsInOrder
-                    RepositoryName = $RepositoryName
-                    SortByColumn   = $SortByColumn
-                    Organization   = $Organization
-                    Environment    = $Environment
-                    ProjectName    = $ProjectName
+                    SubPath           = $containedFolderPath
+                    ConcatedBase      = $concatedBase
+                    Output            = $output
+                    ProviderNamespace = $provider
+                    ColumnsInOrder    = $ColumnsInOrder
+                    RepositoryName    = $RepositoryName
+                    SortByColumn      = $SortByColumn
+                    Organization      = $Organization
+                    Environment       = $Environment
+                    ProjectName       = $ProjectName
                 }
                 $output = Get-ResolvedSubServiceRow @recursiveSubServiceInputObject
             } else {
@@ -544,46 +495,48 @@ function Get-ModulesAsMarkdownTable {
                         'Name' {
                             switch ($Environment) {
                                 'ADO' {
-                                    $row['Name'] = ('[{0}](https://dev.azure.com/{1}/{2}/_git/{3}?path=/modules/{4})' -f (Get-ResourceModuleName -path $containedFolder), $Organization, $ProjectName, $RepositoryName, $concatedBase.Replace('\', '/'))
+                                    $row['Name'] = ('[{0}](https://dev.azure.com/{1}/{2}/_git/{3}?path=/modules/{4})' -f (Get-ResourceModuleName -path $containedFolderPath), $Organization, $ProjectName, $RepositoryName, $concatedBase.Replace('\', '/'))
                                 }
                                 'GitHub' {
-                                    $row['Name'] = ('[{0}](https://github.com/{1}/{2}/tree/main/modules/{3})' -f (Get-ResourceModuleName -path $containedFolder), $Organization, $RepositoryName, $concatedBase.Replace('\', '/'))
+                                    $row['Name'] = ('[{0}](https://github.com/{1}/{2}/tree/main/modules/{3})' -f (Get-ResourceModuleName -path $containedFolderPath), $Organization, $RepositoryName, $concatedBase.Replace('\', '/'))
                                 }
                             }
                         }
                         'ProviderNamespace' {
-                            if ($previousProvider -eq $provider -and $SortByColumn -ne 'Name') {
+                            if ($previousProvider -eq $specsAlignedProviderNamespace -and $SortByColumn -ne 'Name') {
                                 $row['ProviderNamespace'] += ''
                             } else {
-                                if ($provider -like 'Microsoft.*') {
-                                    # Shorten Microsoft to save some space
-                                    $shortProvider = 'MS.{0}' -f ($provider.TrimStart('Microsoft.'))
-                                    $row['ProviderNamespace'] += "``$shortProvider``"
-                                } else {
-                                    $row['ProviderNamespace'] += "``$provider``"
-                                }
-                                $previousProvider = $provider
+                                $row['ProviderNamespace'] += "``$specsAlignedProviderNamespace``"
+                                $previousProvider = $specsAlignedProviderNamespace
                             }
                         }
                         'ResourceType' {
                             switch ($Environment) {
                                 'ADO' {
-                                    $row['ResourceType'] = ('[{0}](https://dev.azure.com/{1}/{2}/_git/{3}?path=/modules/{4})' -f (Get-ResourceModuleName -path $containedFolder), $Organization, $ProjectName, $RepositoryName, $concatedBase.Replace('\', '/'))
+                                    $row['ResourceType'] = ('[{0}](https://dev.azure.com/{1}/{2}/_git/{3}?path=/modules/{4})' -f $specsAlignedResourceType, $Organization, $ProjectName, $RepositoryName, $concatedBase.Replace('\', '/'))
                                 }
                                 'GitHub' {
-                                    $row['ResourceType'] += ('[{0}](https://github.com/{1}/{2}/tree/main/modules/{3})' -f $containedFolderName, $Organization, $RepositoryName, $concatedBase.Replace('\', '/'))
+                                    $row['ResourceType'] += ('[{0}](https://github.com/{1}/{2}/tree/main/modules/{3})' -f $specsAlignedResourceType, $Organization, $RepositoryName, $concatedBase.Replace('\', '/'))
                                 }
                             }
 
                         }
                         'TemplateType' {
-                            $row['TemplateType'] += Get-TypeColumnString -path $containedFolder
+                            $row['TemplateType'] += Get-TypeColumnString -path $containedFolderPath
                         }
                         'Deploy' {
-                            $row['Deploy'] += Get-DeployToAzureUrl -path $containedFolder -RepositoryName $RepositoryName -Organization $Organization
+                            $row['Deploy'] += Get-DeployToAzureUrl -path $containedFolderPath -RepositoryName $RepositoryName -Organization $Organization
                         }
                         'Status' {
-                            $row['Status'] += Get-PipelineStatusUrl -name $containedFolderName -provider $provider -RepositoryName $RepositoryName -Organization $Organization -Environment $Environment -ProjectName $ProjectName
+                            $statusInputObject = @{
+                                RepositoryName     = $RepositoryName
+                                Organization       = $Organization
+                                Environment        = $Environment
+                                ProjectName        = $ProjectName
+                                PipelineFileName   = (((('ms.{0}.{1}.yml' -f $provider, $containedFolderName) -replace '-', '') -replace '\\', '/') -replace '/', '.').ToLower()
+                                PipelineFolderPath = $Environment -eq 'GitHub' ? (Join-Path '.github' 'workflows') : (Join-Path '.azuredevops' 'modulePipelines')
+                            }
+                            $row['Status'] += Get-PipelineStatusUrl @statusInputObject
                         }
                         Default {
                             Write-Warning "Column [$column] not existing. Available are: [Name|ProviderNamespace|ResourceType|TemplateType|Deploy|Status]"

@@ -20,7 +20,6 @@ $inputObject = @{
         SubscriptionId    = '00000000-0000-0000-0000-000000000000'
         ManagementGroupId = '00000000-0000-0000-0000-000000000000'
         RemoveDeployment  = $false
-        deploymentSpId    = '00000000-0000-0000-0000-000000000000'
     }
 }
 Test-NamePrefixAvailability @inputObject
@@ -61,7 +60,7 @@ function Test-NamePrefixAvailability {
         $containerRegistryNames = @()
         $keyVaultNames = @()
 
-        $parameterFiles = (Get-ChildItem -Path $repoRoot -Recurse -Filter 'deploy.test.bicep').FullName | Where-Object {
+        $parameterFiles = (Get-ChildItem -Path $repoRoot -Recurse -Filter 'main.test.bicep').FullName | Where-Object {
             Test-Path (Join-Path (Split-Path $_ -Parent) 'dependencies.bicep') # Currently we only need to consider files that have ResourceGroup resources
         } | ForEach-Object {
             $_.Replace('\', '/')
@@ -108,7 +107,7 @@ function Test-NamePrefixAvailability {
 
                     # trim the entry and replace placeholder values
                     $temp = $temp.Replace("'", '') # remove trailing quotes
-                    $temp = $temp.Replace('<<namePrefix>>', $namePrefix)
+                    $temp = $temp.Replace('[[namePrefix]]', $namePrefix)
                     $temp = $temp.Replace('${serviceShort}', $serviceShort)
                     $temp = $temp.Replace(' ', '') # remove trailing whitespaces
 

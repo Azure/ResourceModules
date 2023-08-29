@@ -1,6 +1,14 @@
 name: 'KubernetesConfiguration - Extensions'
 
 parameters:
+  - name: staticValidation
+    displayName: Execute static validation
+    type: boolean
+    default: true
+  - name: deploymentValidation
+    displayName: Execute deployment validation
+    type: boolean
+    default: true
   - name: removeDeployment
     displayName: Remove deployed module
     type: boolean
@@ -19,9 +27,10 @@ trigger:
       - main
   paths:
     include:
+      - '/modules/kubernetes-configuration/extension/*'
+      - '/modules/kubernetes-configuration/flux-configuration/*'
       - '/.azuredevops/modulePipelines/ms.kubernetesconfiguration.extensions.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/modules/Microsoft.KubernetesConfiguration/extensions/*'
       - '/utilities/pipelines/*'
     exclude:
       - '/utilities/pipelines/deploymentRemoval/*'
@@ -31,10 +40,12 @@ variables:
   - template: '../../settings.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/modules/Microsoft.KubernetesConfiguration/extensions'
+    value: '/modules/kubernetes-configuration/extension'
 
 stages:
   - template: /.azuredevops/pipelineTemplates/stages.module.yml
     parameters:
+      staticValidation: '${{ parameters.staticValidation }}'
+      deploymentValidation: '${{ parameters.deploymentValidation }}'
       removeDeployment: '${{ parameters.removeDeployment }}'
       prerelease: '${{ parameters.prerelease }}'

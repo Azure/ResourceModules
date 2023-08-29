@@ -1,0 +1,55 @@
+name: ".Platform: Update Static Test Documentation"
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/platform.updateStaticTestDocs.yml'
+      - 'utilities/pipelines/staticValidation/module.tests.ps1'
+      - utilities/tools/platform/Set-StaticTestDocumentation.ps1
+
+env:
+  pipelinePrincipalGitUserName: "CARMLPipelinePrincipal"
+  pipelinePrincipalGitUserEmail: "CARML@noreply.github.com"
+
+jobs:
+  job_update_static_test_docs:
+    name: "Update file"
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+    runs-on: ubuntu-20.04
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          token: "${{ secrets.PLATFORM_REPO_UPDATE_PAT }}" # Sets general GIT credentials up
+
+      - name: "Update file"
+        shell: pwsh
+        run: |
+          # Load used functions
+          . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'tools' 'platform' 'Set-StaticTestDocumentation.ps1')
+
+          $functionInput = @{
+            TestFilePath = Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'staticValidation' 'module.tests.ps1'
+            WikiFilePath = Join-Path $env:GITHUB_WORKSPACE 'docs' 'wiki' 'The CI environment - Static validation.md'
+          }
+
+          Write-Verbose "Invoke task with" -Verbose
+          Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
+
+          Set-StaticTestDocumentation @functionInput -Verbose
+
+      - name: "Push changes"
+        shell: pwsh
+        run: |
+          git config --global user.email '${{ env.pipelinePrincipalGitUserEmail }}'
+          git config --global user.name '${{ env.pipelinePrincipalGitUserName }}'
+
+          git pull
+          git status
+          git add .
+          git commit -m 'Push updated API Specs file'
+          git push

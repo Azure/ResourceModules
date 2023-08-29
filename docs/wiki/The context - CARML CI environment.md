@@ -58,14 +58,14 @@ The top row represents your orchestration environment, for example, _GitHub_ or 
 From left to right, there are the three phases introduced before, _Develop modules_, _Publish modules_ & _Consume modules_. The diagram shows how each phase interacts with the Azure environment.
 
 1. Starting with **Develop modules**, the top left box shows the test pipelines that exist for each module, performing the following steps:
-   - _Static validation_: Pester tests are run on each module to ensure a baseline code quality across the library.
+   - _Static validation_: Pester & PSRule tests are run on each module to ensure a baseline code quality across the library.
    - _Deployment validation_: An actual Azure deployment is performed in a validation/sandbox subscription, shown in the bottom left corner. The subscription is intended to be without any link to production. Resources deployed here should be considered temporary and be removed after testing.
    - _Publishing_: Runs only if the previous steps are successful and initiates the second phase as described below.
 
 1. The **Publish modules** phase is shown in the center box of the diagram. If all tests for a module succeed, the module is published to a given target location. Currently, the target locations supported by the CARML CI environment are:
-   - _[Template specs](https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/template-specs?tabs=azure-powershell)_
-   - _[Private Bicep registry](https://docs.microsoft.com/en-gb/azure/azure-resource-manager/bicep/private-module-registry)_
-   - _[Azure DevOps Universal Packages](https://docs.microsoft.com/en-us/azure/devops/artifacts/concepts/feeds?view=azure-devops)_.
+   - _[Template specs](https://learn.microsoft.com/en-us/azure/azure-resource-manager/templates/template-specs?tabs=azure-powershell)_
+   - _[Private Bicep registry](https://learn.microsoft.com/en-gb/azure/azure-resource-manager/bicep/private-module-registry)_
+   - _[Azure DevOps Universal Packages](https://learn.microsoft.com/en-us/azure/devops/artifacts/concepts/feeds?view=azure-devops)_.
      > Note: this is only available if using Azure DevOps pipelines.
 
    To dive deeper and understand which target locations may be best suited for your use case, we provide further information in the [Publish-location considerations](./Solution%20creation#publish-location-considerations) section.

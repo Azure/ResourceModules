@@ -18,9 +18,9 @@ Optional. The name of the resource group the deployment was happening in. Releva
 Optional. The ID of the management group to fetch deployments from. Relevant for management-group level deployments.
 
 .EXAMPLE
-Initialize-DeploymentRemoval -DeploymentName 'virtualWans-20211204T1812029146Z' -TemplateFilePath "$home/ResourceModules/modules/Microsoft.Network/virtualWans/deploy.bicep" -resourceGroupName 'test-virtualWan-rg'
+Initialize-DeploymentRemoval -DeploymentName 'n-vw-t1-20211204T1812029146Z' -TemplateFilePath "$home/ResourceModules/modules/network/virtual-wan/main.bicep" -resourceGroupName 'test-virtualWan-rg'
 
-Remove the deployment 'virtualWans-20211204T1812029146Z' from resource group 'test-virtualWan-rg' that was executed using template in path "$home/ResourceModules/modules/Microsoft.Network/virtualWans/deploy.bicep"
+Remove the deployment 'n-vw-t1-20211204T1812029146Z' from resource group 'test-virtualWan-rg' that was executed using template in path "$home/ResourceModules/modules/network/virtual-wan/main.bicep"
 #>
 function Initialize-DeploymentRemoval {
 
@@ -63,6 +63,9 @@ function Initialize-DeploymentRemoval {
             'Microsoft.Insights/diagnosticSettings',
             'Microsoft.Network/privateEndpoints/privateDnsZoneGroups',
             'Microsoft.Network/privateEndpoints',
+            'Microsoft.Network/azureFirewalls',
+            'Microsoft.Network/virtualHubs',
+            'Microsoft.Network/virtualWans',
             'Microsoft.OperationsManagement/solutions',
             'Microsoft.OperationalInsights/workspaces/linkedServices',
             'Microsoft.OperationalInsights/workspaces',
@@ -72,6 +75,7 @@ function Initialize-DeploymentRemoval {
             'Microsoft.Authorization/policySetDefinitions',
             'Microsoft.Authorization/policyDefinitions'
             'Microsoft.Sql/managedInstances',
+            'Microsoft.MachineLearningServices/workspaces',
             'Microsoft.Resources/resourceGroups',
             'Microsoft.Compute/virtualMachines'
         )

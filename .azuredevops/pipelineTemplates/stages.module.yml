@@ -1,4 +1,6 @@
 parameters:
+  staticValidation: true
+  deploymentValidation: true
   removeDeployment: true
   prerelease: false
   templateFilePath: ''
@@ -7,22 +9,27 @@ parameters:
 stages:
   - stage: validation
     displayName: Static validation
+    condition: eq('${{ parameters.staticValidation }}', 'True')
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModulePester.yml
 
   - stage: deployment
     displayName: Deployment validation
+    condition: and(eq('${{ parameters.deploymentValidation }}', 'True'), ne(dependencies.validation.result, 'Failed'))
+    dependsOn:
+      - validation
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
-          templateFilePath: '$(modulePath)/deploy.bicep'
+          templateFilePath: '$(modulePath)/main.bicep'
           removeDeployment: '${{ parameters.removeDeployment }}'
           defaultJobTimeoutInMinutes: ${{ parameters.defaultJobTimeoutInMinutes }}
 
   - stage: Publishing
-    dependsOn:
-      - deployment
     displayName: Publish module
-    condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), eq(variables['Build.SourceBranch'], 'refs/heads/master'), eq('${{ parameters.prerelease }}', 'true')))
+    condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), eq(variables['Build.SourceBranch'], 'refs/heads/master'), eq('${{ parameters.prerelease }}', 'True')))
+    dependsOn:
+      - validation
+      - deployment
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.publishModule.yml

@@ -10,8 +10,8 @@ on:
     branches:
       - main
     paths:
-      - 'modules/**/deploy.bicep'
-      - 'modules/**/deploy.json'
+      - 'modules/**/main.bicep'
+      - 'modules/**/main.json'
       - 'utilities/tools/platform/**'
 
 env:
@@ -19,18 +19,21 @@ env:
   pipelinePrincipalGitUserEmail: 'CARML@noreply.github.com'
   relativeScriptPath_SetReadMeModuleTable: 'utilities/tools/platform/Set-ReadMeModuleTable.ps1'
   relativeScriptPath_SetModuleOverviewTable: 'utilities/tools/platform/Set-ModuleOverviewTable.ps1'
+  relativeScriptPath_SetReadMePlatformTable: 'utilities/tools/platform/Set-ReadMePlatformTable.ps1'
 
 jobs:
   job_update_readme:
     runs-on: ubuntu-20.04
-    name: 'Update module tables'
+    name: 'Update status tables'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
           token: '${{ secrets.PLATFORM_REPO_UPDATE_PAT }}' # Sets general GIT credentials up
-      - name: 'Update general ReadMe'
+
+      # Update the root ReadMe Module Pipelines table ([`/README.md`](https://github.com/Azure/ResourceModules/blob/main/README.md))
+      - name: 'Update front-page module table'
         shell: pwsh
         run: |
           # Load used functions
@@ -41,8 +44,7 @@ jobs:
             FilePath       = Join-Path $env:GITHUB_WORKSPACE 'README.md'
             Organization   = ($env:GITHUB_REPOSITORY).split('/')[0]
             RepositoryName = ($env:GITHUB_REPOSITORY).split('/')[1]
-            ColumnsInOrder = @('Name', 'Status')
-            SortByColumn   = 'Name'
+            ColumnsInOrder = @('ProviderNamespace','ResourceType', 'Name', 'Deploy')
             Environment    = 'GitHub'
           }
 
@@ -51,26 +53,7 @@ jobs:
 
           Set-ReadMeModuleTable @functionInput -Verbose
 
-      - name: 'Update module folder ReadMe'
-        shell: pwsh
-        run: |
-          # Load used functions
-          . (Join-Path $env:GITHUB_WORKSPACE $env:relativeScriptPath_SetReadMeModuleTable)
-
-          $functionInput = @{
-            ModulesPath    = Join-Path $env:GITHUB_WORKSPACE 'modules'
-            FilePath       = Join-Path $env:GITHUB_WORKSPACE 'modules' 'README.md'
-            Organization   = ($env:GITHUB_REPOSITORY).split('/')[0]
-            RepositoryName = ($env:GITHUB_REPOSITORY).split('/')[1]
-            ColumnsInOrder = @('Name', 'ProviderNamespace','ResourceType')
-            Environment    = 'GitHub'
-          }
-
-          Write-Verbose "Invoke task with" -Verbose
-          Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
-
-          Set-ReadMeModuleTable @functionInput -Verbose
-
+      # Update the module overview table ([`/docs/wiki/The library - Module overview.md`](https://github.com/Azure/ResourceModules/wiki/The%20library%20-%20Module%20overview))
       - name: 'Update module outline'
         shell: pwsh
         run: |
@@ -80,12 +63,34 @@ jobs:
           $functionInput = @{
             MarkdownFilePath = Join-Path $env:GITHUB_WORKSPACE 'docs' 'wiki' 'The library - Module overview.md'
             ModuleFolderPath = Join-Path $env:GITHUB_WORKSPACE 'modules'
+            Organization   = ($env:GITHUB_REPOSITORY).split('/')[0]
+            RepositoryName = ($env:GITHUB_REPOSITORY).split('/')[1]
+            Environment    = 'GitHub'
           }
 
           Write-Verbose "Invoke task with" -Verbose
           Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
           Set-ModuleOverviewTable @functionInput -Verbose
+
+      # Update the root ReadMe Platform Pipelines table ([`/README.md`](https://github.com/Azure/ResourceModules/blob/main/README.md))
+      - name: 'Update platform pipelines table'
+        shell: pwsh
+        run: |
+          # Load used functions
+          . (Join-Path $env:GITHUB_WORKSPACE $env:relativeScriptPath_SetReadMePlatformTable)
+
+          $functionInput = @{
+            FilePath       = Join-Path $env:GITHUB_WORKSPACE 'README.md'
+            RepositoryName = ($env:GITHUB_REPOSITORY).split('/')[1]
+            Organization   = ($env:GITHUB_REPOSITORY).split('/')[0]
+            Environment    = 'GitHub'
+          }
+
+          Write-Verbose "Invoke task with" -Verbose
+          Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
+
+          Set-ReadMePlatformTable @functionInput -Verbose
 
       - name: 'Push changes'
         shell: pwsh

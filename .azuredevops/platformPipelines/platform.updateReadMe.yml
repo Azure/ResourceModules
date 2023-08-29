@@ -9,8 +9,8 @@ trigger:
       - main
   paths:
     include:
-      - 'modules/**/deploy.bicep'
-      - 'modules/**/deploy.json'
+      - 'modules/**/main.bicep'
+      - 'modules/**/main.json'
       - 'utilities/tools/platform/**'
 
 variables:
@@ -23,9 +23,12 @@ variables:
     value: 'utilities/tools/platform/Set-ReadMeModuleTable.ps1'
   - name: relativeScriptPath_SetModuleOverviewTable
     value: 'utilities/tools/platform/Set-ModuleOverviewTable.ps1'
+  - name: relativeScriptPath_SetReadMePlatformTable
+    value: 'utilities/tools/platform/Set-ReadMePlatformTable.ps1'
 
 jobs:
-  - job: Update_module_tables
+  - job: Update_status_tables
+    displayName: Update status tables
     pool:
       ${{ if ne(variables.vmImage, '') }}:
         vmImage: ${{ variables.vmImage }}
@@ -34,8 +37,10 @@ jobs:
     steps:
       - checkout: self
         persistCredentials: true
+
+      # Update the root ReadMe Module Pipelines table ([`/README.md`](https://github.com/Azure/ResourceModules/blob/main/README.md))
       - task: PowerShell@2
-        displayName: 'Update general ReadMe'
+        displayName: 'Update Module Pipelines table'
         inputs:
           targetType: inline
           pwsh: true
@@ -58,30 +63,8 @@ jobs:
             Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
             Set-ReadMeModuleTable @functionInput -Verbose
-      - task: PowerShell@2
-        displayName: 'Update module folder ReadMe'
-        inputs:
-          targetType: inline
-          pwsh: true
-          script: |
-            # Load used functions
-            . (Join-Path '$(System.DefaultWorkingDirectory)' '$(relativeScriptPath_SetReadMeModuleTable)')
 
-            $functionInput = @{
-              ModulesPath    = Join-Path '$(System.DefaultWorkingDirectory)' 'modules'
-              FilePath       = Join-Path '$(System.DefaultWorkingDirectory)' 'modules' 'README.md'
-              Organization   = '$(System.CollectionUri)'.Split('/')[3]
-              RepositoryName = '$(Build.Repository.Name)'
-              ColumnsInOrder = @('Name', 'ProviderNamespace','ResourceType')
-              Environment    = 'ADO'
-              ProjectName    = '$(System.TeamProject)'
-            }
-
-            Write-Verbose "Invoke task with" -Verbose
-            Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
-
-            Set-ReadMeModuleTable @functionInput -Verbose
-
+      # Update the module overview table ([`/docs/wiki/The library - Module overview.md`](https://github.com/Azure/ResourceModules/wiki/The%20library%20-%20Module%20overview))
       - task: PowerShell@2
         displayName: 'Update module outline'
         inputs:
@@ -94,12 +77,39 @@ jobs:
             $functionInput = @{
               MarkdownFilePath = Join-Path '$(System.DefaultWorkingDirectory)' 'docs' 'wiki' 'The library - Module overview.md'
               ModuleFolderPath = Join-Path '$(System.DefaultWorkingDirectory)' 'modules'
+              Organization     = '$(System.CollectionUri)'.Split('/')[3]
+              RepositoryName   = '$(Build.Repository.Name)'
+              Environment      = 'ADO'
+              ProjectName      = '$(System.TeamProject)'
             }
 
             Write-Verbose "Invoke task with" -Verbose
             Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
             Set-ModuleOverviewTable @functionInput -Verbose
+
+      # Update the root ReadMe Platform Pipelines table ([`/README.md`](https://github.com/Azure/ResourceModules/blob/main/README.md))
+      - task: PowerShell@2
+        displayName: 'Update Platform Pipelines table'
+        inputs:
+          targetType: inline
+          pwsh: true
+          script: |
+            # Load used functions
+            . (Join-Path '$(System.DefaultWorkingDirectory)' '$(relativeScriptPath_SetReadMePlatformTable)')
+
+            $functionInput = @{
+              FilePath       = Join-Path '$(System.DefaultWorkingDirectory)' 'README.md'
+              RepositoryName = '$(Build.Repository.Name)'
+              Organization   = '$(System.CollectionUri)'.Split('/')[3]
+              ProjectName    = '$(System.TeamProject)'
+              Environment    = 'ADO'
+            }
+
+            Write-Verbose "Invoke task with" -Verbose
+            Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
+
+            Set-ReadMePlatformTable @functionInput -Verbose
 
       - task: PowerShell@2
         displayName: 'Push changes'

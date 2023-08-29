@@ -1,0 +1,143 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.20.4.51522",
+      "templateHash": "10514926371607978717"
+    },
+    "name": "Express Route Gateways",
+    "description": "This module deploys an Express Route Gateway.",
+    "owner": "Azure/module-maintainers"
+  },
+  "parameters": {
+    "name": {
+      "type": "string",
+      "metadata": {
+        "description": "Required. Name of the Express Route Gateway."
+      }
+    },
+    "location": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().location]",
+      "metadata": {
+        "description": "Optional. Location for all resources."
+      }
+    },
+    "tags": {
+      "type": "object",
+      "defaultValue": {},
+      "metadata": {
+        "description": "Optional. Tags of the Firewall policy resource."
+      }
+    },
+    "allowNonVirtualWanTraffic": {
+      "type": "bool",
+      "defaultValue": false,
+      "metadata": {
+        "description": "Optional. Configures this gateway to accept traffic from non Virtual WAN networks."
+      }
+    },
+    "autoScaleConfigurationBoundsMax": {
+      "type": "int",
+      "defaultValue": 2,
+      "metadata": {
+        "description": "Optional. Maximum number of scale units deployed for ExpressRoute gateway."
+      }
+    },
+    "autoScaleConfigurationBoundsMin": {
+      "type": "int",
+      "defaultValue": 2,
+      "metadata": {
+        "description": "Optional. Minimum number of scale units deployed for ExpressRoute gateway."
+      }
+    },
+    "expressRouteConnections": {
+      "type": "array",
+      "defaultValue": [],
+      "metadata": {
+        "description": "Optional. List of ExpressRoute connections to the ExpressRoute gateway."
+      }
+    },
+    "virtualHubId": {
+      "type": "string",
+      "metadata": {
+        "description": "Required. Resource ID of the Virtual Wan Hub."
+      }
+    },
+    "enableDefaultTelemetry": {
+      "type": "bool",
+      "defaultValue": true,
+      "metadata": {
+        "description": "Optional. Enable telemetry via a Globally Unique Identifier (GUID)."
+      }
+    }
+  },
+  "resources": [
+    {
+      "condition": "[parameters('enableDefaultTelemetry')]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2021-04-01",
+      "name": "[format('pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-{0}', uniqueString(deployment().name, parameters('location')))]",
+      "properties": {
+        "mode": "Incremental",
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "resources": []
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Network/expressRouteGateways",
+      "apiVersion": "2023-04-01",
+      "name": "[parameters('name')]",
+      "location": "[parameters('location')]",
+      "tags": "[parameters('tags')]",
+      "properties": {
+        "allowNonVirtualWanTraffic": "[parameters('allowNonVirtualWanTraffic')]",
+        "autoScaleConfiguration": {
+          "bounds": {
+            "max": "[parameters('autoScaleConfigurationBoundsMax')]",
+            "min": "[parameters('autoScaleConfigurationBoundsMin')]"
+          }
+        },
+        "expressRouteConnections": "[parameters('expressRouteConnections')]",
+        "virtualHub": {
+          "id": "[parameters('virtualHubId')]"
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "resourceId": {
+      "type": "string",
+      "metadata": {
+        "description": "The resource ID of the ExpressRoute Gateway."
+      },
+      "value": "[resourceId('Microsoft.Network/expressRouteGateways', parameters('name'))]"
+    },
+    "resourceGroupName": {
+      "type": "string",
+      "metadata": {
+        "description": "The resource group of the ExpressRoute Gateway was deployed into."
+      },
+      "value": "[resourceGroup().name]"
+    },
+    "name": {
+      "type": "string",
+      "metadata": {
+        "description": "The name of the ExpressRoute Gateway."
+      },
+      "value": "[parameters('name')]"
+    },
+    "location": {
+      "type": "string",
+      "metadata": {
+        "description": "The location the resource was deployed into."
+      },
+      "value": "[reference(resourceId('Microsoft.Network/expressRouteGateways', parameters('name')), '2023-04-01', 'full').location]"
+    }
+  }
+}

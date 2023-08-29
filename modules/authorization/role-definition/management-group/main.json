@@ -1,0 +1,128 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-08-01/managementGroupDeploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.20.4.51522",
+      "templateHash": "15321014984642305644"
+    },
+    "name": "Role Definitions (Management Group scope)",
+    "description": "This module deploys a Role Definition at a Management Group scope.",
+    "owner": "Azure/module-maintainers"
+  },
+  "parameters": {
+    "roleName": {
+      "type": "string",
+      "metadata": {
+        "description": "Required. Name of the custom RBAC role to be created."
+      }
+    },
+    "description": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Optional. Description of the custom RBAC role to be created."
+      }
+    },
+    "actions": {
+      "type": "array",
+      "defaultValue": [],
+      "metadata": {
+        "description": "Optional. List of allowed actions."
+      }
+    },
+    "notActions": {
+      "type": "array",
+      "defaultValue": [],
+      "metadata": {
+        "description": "Optional. List of denied actions."
+      }
+    },
+    "managementGroupId": {
+      "type": "string",
+      "defaultValue": "[managementGroup().name]",
+      "metadata": {
+        "description": "Optional. The group ID of the Management Group where the Role Definition and Target Scope will be applied to. If not provided, will use the current scope for deployment."
+      }
+    },
+    "assignableScopes": {
+      "type": "array",
+      "defaultValue": [],
+      "metadata": {
+        "description": "Optional. Role definition assignable scopes. If not provided, will use the current scope provided."
+      }
+    },
+    "location": {
+      "type": "string",
+      "defaultValue": "[deployment().location]",
+      "metadata": {
+        "description": "Optional. Location deployment metadata."
+      }
+    },
+    "enableDefaultTelemetry": {
+      "type": "bool",
+      "defaultValue": true,
+      "metadata": {
+        "description": "Optional. Enable telemetry via a Globally Unique Identifier (GUID)."
+      }
+    }
+  },
+  "resources": [
+    {
+      "condition": "[parameters('enableDefaultTelemetry')]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2021-04-01",
+      "name": "[format('pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-{0}', uniqueString(deployment().name, parameters('location')))]",
+      "location": "[parameters('location')]",
+      "properties": {
+        "mode": "Incremental",
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "resources": []
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Authorization/roleDefinitions",
+      "apiVersion": "2022-04-01",
+      "name": "[guid(parameters('roleName'), parameters('managementGroupId'))]",
+      "properties": {
+        "roleName": "[parameters('roleName')]",
+        "description": "[parameters('description')]",
+        "type": "customRole",
+        "permissions": [
+          {
+            "actions": "[parameters('actions')]",
+            "notActions": "[parameters('notActions')]"
+          }
+        ],
+        "assignableScopes": "[if(equals(parameters('assignableScopes'), createArray()), array(tenantResourceId('Microsoft.Management/managementGroups', parameters('managementGroupId'))), parameters('assignableScopes'))]"
+      }
+    }
+  ],
+  "outputs": {
+    "name": {
+      "type": "string",
+      "metadata": {
+        "description": "The GUID of the Role Definition."
+      },
+      "value": "[guid(parameters('roleName'), parameters('managementGroupId'))]"
+    },
+    "scope": {
+      "type": "string",
+      "metadata": {
+        "description": "The scope this Role Definition applies to."
+      },
+      "value": "[managementGroup().id]"
+    },
+    "resourceId": {
+      "type": "string",
+      "metadata": {
+        "description": "The resource ID of the Role Definition."
+      },
+      "value": "[extensionResourceId(managementGroup().id, 'Microsoft.Authorization/roleDefinitions', guid(parameters('roleName'), parameters('managementGroupId')))]"
+    }
+  }
+}
