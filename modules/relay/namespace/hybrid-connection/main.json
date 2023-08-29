@@ -4,23 +4,26 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "7847404424450621571"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "5587843022604046042"
+    },
+    "name": "Relay Namespace Hybrid Connections",
+    "description": "This module deploys a Relay Namespace Hybrid Connection.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "namespaceName": {
       "type": "string",
-      "maxLength": 50,
       "minLength": 6,
+      "maxLength": 50,
       "metadata": {
         "description": "Conditional. The name of the parent Relay Namespace for the Relay Hybrid Connection. Required if the template is used in a standalone deployment."
       }
     },
     "name": {
       "type": "string",
-      "maxLength": 50,
       "minLength": 6,
+      "maxLength": 50,
       "metadata": {
         "description": "Required. The name of the hybrid connection."
       }
@@ -69,14 +72,14 @@
     "lock": {
       "type": "string",
       "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Specify the type of lock."
-      },
       "allowedValues": [
         "",
         "CanNotDelete",
         "ReadOnly"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Specify the type of lock."
+      }
     },
     "roleAssignments": {
       "type": "array",
@@ -168,9 +171,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "17231058756777007644"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "9718423441307347496"
+            },
+            "name": "Hybrid Connection Authorization Rules",
+            "description": "This module deploys a Hybrid Connection Authorization Rule.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "name": {
@@ -298,8 +304,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "232914041275606585"
+              "version": "0.20.4.51522",
+              "templateHash": "5814555714153100571"
             }
           },
           "parameters": {

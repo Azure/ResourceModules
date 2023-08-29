@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "3661581255162235432"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "13367766135108394301"
+    },
+    "name": "Virtual Network Gateways",
+    "description": "This module deploys a Virtual Network Gateway.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
@@ -219,15 +222,6 @@
         "description": "Optional. Thumbprint of the revoked certificate. This would revoke VPN client certificates matching this thumbprint from connecting to the VNet."
       }
     },
-    "diagnosticLogsRetentionInDays": {
-      "type": "int",
-      "defaultValue": 365,
-      "maxValue": 365,
-      "minValue": 0,
-      "metadata": {
-        "description": "Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely."
-      }
-    },
     "diagnosticStorageAccountId": {
       "type": "string",
       "defaultValue": "",
@@ -266,14 +260,14 @@
     "lock": {
       "type": "string",
       "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Specify the type of lock."
-      },
       "allowedValues": [
         "",
         "CanNotDelete",
         "ReadOnly"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Specify the type of lock."
+      }
     },
     "tags": {
       "type": "object",
@@ -364,11 +358,7 @@
         "count": "[length(filter(parameters('virtualNetworkGatewaydiagnosticLogCategoriesToEnable'), lambda('item', not(equals(lambdaVariables('item'), 'allLogs')))))]",
         "input": {
           "category": "[filter(parameters('virtualNetworkGatewaydiagnosticLogCategoriesToEnable'), lambda('item', not(equals(lambdaVariables('item'), 'allLogs'))))[copyIndex('virtualNetworkGatewayDiagnosticsLogsSpecified')]]",
-          "enabled": true,
-          "retentionPolicy": {
-            "enabled": true,
-            "days": "[parameters('diagnosticLogsRetentionInDays')]"
-          }
+          "enabled": true
         }
       },
       {
@@ -377,15 +367,11 @@
         "input": {
           "category": "[parameters('diagnosticMetricsToEnable')[copyIndex('diagnosticsMetrics')]]",
           "timeGrain": null,
-          "enabled": true,
-          "retentionPolicy": {
-            "enabled": true,
-            "days": "[parameters('diagnosticLogsRetentionInDays')]"
-          }
+          "enabled": true
         }
       }
     ],
-    "virtualNetworkGatewayDiagnosticsLogs": "[if(contains(parameters('virtualNetworkGatewaydiagnosticLogCategoriesToEnable'), 'allLogs'), createArray(createObject('categoryGroup', 'allLogs', 'enabled', true(), 'retentionPolicy', createObject('enabled', true(), 'days', parameters('diagnosticLogsRetentionInDays')))), variables('virtualNetworkGatewayDiagnosticsLogsSpecified'))]",
+    "virtualNetworkGatewayDiagnosticsLogs": "[if(contains(parameters('virtualNetworkGatewaydiagnosticLogCategoriesToEnable'), 'allLogs'), createArray(createObject('categoryGroup', 'allLogs', 'enabled', true())), variables('virtualNetworkGatewayDiagnosticsLogsSpecified'))]",
     "zoneRedundantSkus": [
       "VpnGw1AZ",
       "VpnGw2AZ",
@@ -426,7 +412,7 @@
     },
     {
       "type": "Microsoft.Network/virtualNetworkGateways",
-      "apiVersion": "2022-07-01",
+      "apiVersion": "2023-04-01",
       "name": "[parameters('name')]",
       "location": "[parameters('location')]",
       "tags": "[parameters('tags')]",
@@ -553,9 +539,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "1954871673414826097"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "7444990895328873286"
+            },
+            "name": "Public IP Addresses",
+            "description": "This module deploys a Public IP Address.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "name": {
@@ -622,15 +611,6 @@
                 "description": "Optional. IP address version."
               }
             },
-            "diagnosticLogsRetentionInDays": {
-              "type": "int",
-              "defaultValue": 365,
-              "maxValue": 365,
-              "minValue": 0,
-              "metadata": {
-                "description": "Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely."
-              }
-            },
             "diagnosticStorageAccountId": {
               "type": "string",
               "defaultValue": "",
@@ -666,6 +646,20 @@
                 "description": "Optional. The domain name label. The concatenation of the domain name label and the regionalized DNS zone make up the fully qualified domain name associated with the public IP address. If a domain name label is specified, an A DNS record is created for the public IP in the Microsoft Azure DNS system."
               }
             },
+            "domainNameLabelScope": {
+              "type": "string",
+              "defaultValue": "",
+              "allowedValues": [
+                "",
+                "NoReuse",
+                "ResourceGroupReuse",
+                "SubscriptionReuse",
+                "TenantReuse"
+              ],
+              "metadata": {
+                "description": "Optional. The domain name label scope. If a domain name label and a domain name label scope are specified, an A DNS record is created for the public IP in the Microsoft Azure DNS system with a hashed value includes in FQDN."
+              }
+            },
             "fqdn": {
               "type": "string",
               "defaultValue": "",
@@ -683,14 +677,14 @@
             "lock": {
               "type": "string",
               "defaultValue": "",
-              "metadata": {
-                "description": "Optional. Specify the type of lock."
-              },
               "allowedValues": [
                 "",
                 "CanNotDelete",
                 "ReadOnly"
-              ]
+              ],
+              "metadata": {
+                "description": "Optional. Specify the type of lock."
+              }
             },
             "location": {
               "type": "string",
@@ -763,11 +757,7 @@
                 "count": "[length(filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', and(not(equals(lambdaVariables('item'), 'allLogs')), not(equals(lambdaVariables('item'), ''))))))]",
                 "input": {
                   "category": "[filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', and(not(equals(lambdaVariables('item'), 'allLogs')), not(equals(lambdaVariables('item'), '')))))[copyIndex('diagnosticsLogsSpecified')]]",
-                  "enabled": true,
-                  "retentionPolicy": {
-                    "enabled": true,
-                    "days": "[parameters('diagnosticLogsRetentionInDays')]"
-                  }
+                  "enabled": true
                 }
               },
               {
@@ -776,15 +766,11 @@
                 "input": {
                   "category": "[parameters('diagnosticMetricsToEnable')[copyIndex('diagnosticsMetrics')]]",
                   "timeGrain": null,
-                  "enabled": true,
-                  "retentionPolicy": {
-                    "enabled": true,
-                    "days": "[parameters('diagnosticLogsRetentionInDays')]"
-                  }
+                  "enabled": true
                 }
               }
             ],
-            "diagnosticsLogs": "[if(contains(parameters('diagnosticLogCategoriesToEnable'), 'allLogs'), createArray(createObject('categoryGroup', 'allLogs', 'enabled', true(), 'retentionPolicy', createObject('enabled', true(), 'days', parameters('diagnosticLogsRetentionInDays')))), if(contains(parameters('diagnosticLogCategoriesToEnable'), ''), createArray(), variables('diagnosticsLogsSpecified')))]"
+            "diagnosticsLogs": "[if(contains(parameters('diagnosticLogCategoriesToEnable'), 'allLogs'), createArray(createObject('categoryGroup', 'allLogs', 'enabled', true())), if(contains(parameters('diagnosticLogCategoriesToEnable'), ''), createArray(), variables('diagnosticsLogsSpecified')))]"
           },
           "resources": [
             {
@@ -803,7 +789,7 @@
             },
             {
               "type": "Microsoft.Network/publicIPAddresses",
-              "apiVersion": "2022-07-01",
+              "apiVersion": "2023-04-01",
               "name": "[parameters('name')]",
               "location": "[parameters('location')]",
               "tags": "[parameters('tags')]",
@@ -813,7 +799,7 @@
               },
               "zones": "[parameters('zones')]",
               "properties": {
-                "dnsSettings": "[if(not(empty(parameters('domainNameLabel'))), createObject('domainNameLabel', parameters('domainNameLabel'), 'fqdn', parameters('fqdn'), 'reverseFqdn', parameters('reverseFqdn')), null())]",
+                "dnsSettings": "[if(not(empty(parameters('domainNameLabel'))), createObject('domainNameLabel', parameters('domainNameLabel'), 'domainNameLabelScope', parameters('domainNameLabelScope'), 'fqdn', parameters('fqdn'), 'reverseFqdn', parameters('reverseFqdn')), null())]",
                 "publicIPAddressVersion": "[parameters('publicIPAddressVersion')]",
                 "publicIPAllocationMethod": "[parameters('publicIPAllocationMethod')]",
                 "publicIPPrefix": "[if(not(empty(parameters('publicIPPrefixResourceId'))), createObject('id', parameters('publicIPPrefixResourceId')), null())]",
@@ -887,8 +873,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.19.5.34762",
-                      "templateHash": "7927074872480917952"
+                      "version": "0.20.4.51522",
+                      "templateHash": "11249227806125160411"
                     }
                   },
                   "parameters": {
@@ -1058,14 +1044,14 @@
               "metadata": {
                 "description": "The public IP address of the public IP address resource."
               },
-              "value": "[if(contains(reference(resourceId('Microsoft.Network/publicIPAddresses', parameters('name')), '2022-07-01'), 'ipAddress'), reference(resourceId('Microsoft.Network/publicIPAddresses', parameters('name')), '2022-07-01').ipAddress, '')]"
+              "value": "[if(contains(reference(resourceId('Microsoft.Network/publicIPAddresses', parameters('name')), '2023-04-01'), 'ipAddress'), reference(resourceId('Microsoft.Network/publicIPAddresses', parameters('name')), '2023-04-01').ipAddress, '')]"
             },
             "location": {
               "type": "string",
               "metadata": {
                 "description": "The location the resource was deployed into."
               },
-              "value": "[reference(resourceId('Microsoft.Network/publicIPAddresses', parameters('name')), '2022-07-01', 'full').location]"
+              "value": "[reference(resourceId('Microsoft.Network/publicIPAddresses', parameters('name')), '2023-04-01', 'full').location]"
             }
           }
         }
@@ -1106,9 +1092,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "6604741649541233041"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "15664896159925545005"
+            },
+            "name": "VPN Gateway NAT Rules",
+            "description": "This module deploys a Virtual Network Gateway NAT Rule.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "name": {
@@ -1193,7 +1182,7 @@
             },
             {
               "type": "Microsoft.Network/virtualNetworkGateways/natRules",
-              "apiVersion": "2022-07-01",
+              "apiVersion": "2023-04-01",
               "name": "[format('{0}/{1}', parameters('virtualNetworkGatewayName'), parameters('name'))]",
               "properties": {
                 "externalMappings": "[parameters('externalMappings')]",
@@ -1267,8 +1256,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "1445235181338876133"
+              "version": "0.20.4.51522",
+              "templateHash": "6647636585152280249"
             }
           },
           "parameters": {
@@ -1438,14 +1427,14 @@
       "metadata": {
         "description": "Shows if the virtual network gateway is configured in active-active mode."
       },
-      "value": "[reference(resourceId('Microsoft.Network/virtualNetworkGateways', parameters('name')), '2022-07-01').activeActive]"
+      "value": "[reference(resourceId('Microsoft.Network/virtualNetworkGateways', parameters('name')), '2023-04-01').activeActive]"
     },
     "location": {
       "type": "string",
       "metadata": {
         "description": "The location the resource was deployed into."
       },
-      "value": "[reference(resourceId('Microsoft.Network/virtualNetworkGateways', parameters('name')), '2022-07-01', 'full').location]"
+      "value": "[reference(resourceId('Microsoft.Network/virtualNetworkGateways', parameters('name')), '2023-04-01', 'full').location]"
     }
   }
 }

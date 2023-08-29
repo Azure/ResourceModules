@@ -9,45 +9,45 @@ param loadBalancerName string
 
 var addressPrefix = '10.0.0.0/16'
 
-resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-11-01' = {
-    name: virtualNetworkName
-    location: location
-    properties: {
-        addressSpace: {
-            addressPrefixes: [
-                addressPrefix
-            ]
-        }
-        subnets: [
-            {
-                name: 'defaultSubnet'
-                properties: {
-                    addressPrefix: addressPrefix
-                    privateLinkServiceNetworkPolicies: 'Disabled'
-                }
-            }
-        ]
+resource virtualNetwork 'Microsoft.Network/virtualNetworks@2023-04-01' = {
+  name: virtualNetworkName
+  location: location
+  properties: {
+    addressSpace: {
+      addressPrefixes: [
+        addressPrefix
+      ]
     }
+    subnets: [
+      {
+        name: 'defaultSubnet'
+        properties: {
+          addressPrefix: addressPrefix
+          privateLinkServiceNetworkPolicies: 'Disabled'
+        }
+      }
+    ]
+  }
 }
 
-resource loadBalancer 'Microsoft.Network/loadBalancers@2022-11-01' = {
-    name: loadBalancerName
-    location: location
-    sku: {
-        name: 'Standard'
-    }
-    properties: {
-        frontendIPConfigurations: [
-            {
-                name: 'frontendIPConfiguration'
-                properties: {
-                    subnet: {
-                        id: virtualNetwork.properties.subnets[0].id
-                    }
-                }
-            }
-        ]
-    }
+resource loadBalancer 'Microsoft.Network/loadBalancers@2023-04-01' = {
+  name: loadBalancerName
+  location: location
+  sku: {
+    name: 'Standard'
+  }
+  properties: {
+    frontendIPConfigurations: [
+      {
+        name: 'frontendIPConfiguration'
+        properties: {
+          subnet: {
+            id: virtualNetwork.properties.subnets[0].id
+          }
+        }
+      }
+    ]
+  }
 }
 
 @description('The resource ID of the created Virtual Network Subnet.')

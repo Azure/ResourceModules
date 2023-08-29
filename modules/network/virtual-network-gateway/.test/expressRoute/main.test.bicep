@@ -67,7 +67,6 @@ module testDeployment '../../main.bicep' = {
     skuName: 'ErGw1AZ'
     gatewayType: 'ExpressRoute'
     vNetResourceId: nestedDependencies.outputs.vnetResourceId
-    diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
     diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
     diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId

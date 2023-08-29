@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "3611012359574200078"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "7436511771322208351"
+    },
+    "name": "Action Groups",
+    "description": "This module deploys an Action Group.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
@@ -197,8 +200,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "15066885127596890987"
+              "version": "0.20.4.51522",
+              "templateHash": "8367920646182761059"
             }
           },
           "parameters": {

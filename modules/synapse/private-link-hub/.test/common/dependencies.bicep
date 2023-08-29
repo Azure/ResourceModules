@@ -12,56 +12,56 @@ param managedIdentityName string
 
 var addressPrefix = '10.0.0.0/16'
 
-resource networkSecurityGroup 'Microsoft.Network/networkSecurityGroups@2021-08-01' = {
-    name: networkSecurityGroupName
-    location: location
-    properties: {}
+resource networkSecurityGroup 'Microsoft.Network/networkSecurityGroups@2023-04-01' = {
+  name: networkSecurityGroupName
+  location: location
+  properties: {}
 }
 
-resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
-    name: virtualNetworkName
-    location: location
-    properties: {
-        addressSpace: {
-            addressPrefixes: [
-                addressPrefix
-            ]
-        }
-        subnets: [
-            {
-                name: 'defaultSubnet'
-                properties: {
-                    addressPrefix: addressPrefix
-                    networkSecurityGroup: {
-                        id: networkSecurityGroup.id
-                    }
-                    privateEndpointNetworkPolicies: 'Disabled'
-                    privateLinkServiceNetworkPolicies: 'Enabled'
-                }
-            }
-        ]
+resource virtualNetwork 'Microsoft.Network/virtualNetworks@2023-04-01' = {
+  name: virtualNetworkName
+  location: location
+  properties: {
+    addressSpace: {
+      addressPrefixes: [
+        addressPrefix
+      ]
     }
+    subnets: [
+      {
+        name: 'defaultSubnet'
+        properties: {
+          addressPrefix: addressPrefix
+          networkSecurityGroup: {
+            id: networkSecurityGroup.id
+          }
+          privateEndpointNetworkPolicies: 'Disabled'
+          privateLinkServiceNetworkPolicies: 'Enabled'
+        }
+      }
+    ]
+  }
 }
 
 resource privateDNSZone 'Microsoft.Network/privateDnsZones@2020-06-01' = {
-    name: 'privatelink.azuresynapse.net'
-    location: 'global'
+  name: 'privatelink.azuresynapse.net'
+  location: 'global'
 
-    resource virtualNetworkLinks 'virtualNetworkLinks@2020-06-01' = {
-        name: '${virtualNetwork.name}-vnetlink'
-        location: 'global'
-        properties: {
-            virtualNetwork: {
-                id: virtualNetwork.id
-            }
-            registrationEnabled: false
-        }
+  resource virtualNetworkLinks 'virtualNetworkLinks@2020-06-01' = {
+    name: '${virtualNetwork.name}-vnetlink'
+    location: 'global'
+    properties: {
+      virtualNetwork: {
+        id: virtualNetwork.id
+      }
+      registrationEnabled: false
     }
+  }
 }
 
 resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' = {
-    name: managedIdentityName
-    location: location
+  name: managedIdentityName
+  location: location
 }
 
 @description('The resource ID of the created Virtual Network Subnet.')

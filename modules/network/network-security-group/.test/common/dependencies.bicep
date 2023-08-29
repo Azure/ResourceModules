@@ -8,13 +8,13 @@ param managedIdentityName string
 param applicationSecurityGroupName string
 
 resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' = {
-    name: managedIdentityName
-    location: location
+  name: managedIdentityName
+  location: location
 }
 
-resource applicationSecurityGroup 'Microsoft.Network/applicationSecurityGroups@2022-01-01' = {
-    name: applicationSecurityGroupName
-    location: location
+resource applicationSecurityGroup 'Microsoft.Network/applicationSecurityGroups@2023-04-01' = {
+  name: applicationSecurityGroupName
+  location: location
 }
 
 @description('The principal ID of the created Managed Identity.')

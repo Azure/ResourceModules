@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "9104010996147858950"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "6123492600831728521"
+    },
+    "name": "Log Analytics Workspace Linked Services",
+    "description": "This module deploys a Log Analytics Workspace Linked Service.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "logAnalyticsWorkspaceName": {

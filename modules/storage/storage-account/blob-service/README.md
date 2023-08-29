@@ -46,14 +46,13 @@ This module deploys a Storage Account Blob Service.
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
 | `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `['', allLogs, StorageDelete, StorageRead, StorageWrite]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
-| `diagnosticLogsRetentionInDays` | int | `365` |  | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticMetricsToEnable` | array | `[Transaction]` | `[Transaction]` | The name of metrics that will be streamed. |
 | `diagnosticSettingsName` | string | `''` |  | The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings". |
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of a log analytics workspace. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `isVersioningEnabled` | bool | `True` |  | Use versioning to automatically maintain previous versions of your blobs. |
-| `lastAccessTimeTrackingPolicyEnable` | bool | `False` |  | The blob service property to configure last access time based tracking policy. When set to true last access time based tracking is enabled. |
+| `lastAccessTimeTrackingPolicyEnabled` | bool | `False` |  | The blob service property to configure last access time based tracking policy. When set to true last access time based tracking is enabled. |
 | `restorePolicyDays` | int | `6` |  | how long this blob can be restored. It should be less than DeleteRetentionPolicy days. |
 | `restorePolicyEnabled` | bool | `True` |  | The blob service properties for blob restore policy. If point-in-time restore is enabled, then versioning, change feed, and blob soft delete must also be enabled. |
 

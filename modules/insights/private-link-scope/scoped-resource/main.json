@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "3289526807399666136"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "15630582062607337146"
+    },
+    "name": "Private Link Scope Scoped Resources",
+    "description": "This module deploys a Private Link Scope Scoped Resource.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {

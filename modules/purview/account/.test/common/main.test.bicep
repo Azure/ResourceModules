@@ -73,7 +73,6 @@ module testDeployment '../../main.bicep' = {
     }
     managedResourceGroupName: '${namePrefix}${serviceShort}001-managed-rg'
     publicNetworkAccess: 'Disabled'
-    diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
     diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
     diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId

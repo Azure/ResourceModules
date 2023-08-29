@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "8148253719195728510"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "3172947896499441492"
+    },
+    "name": "Azure SQL Server Firewall Rule",
+    "description": "This module deploys an Azure SQL Server Firewall Rule.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {

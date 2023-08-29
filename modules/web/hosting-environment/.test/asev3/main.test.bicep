@@ -95,7 +95,6 @@ module testDeployment '../../main.bicep' = {
     inboundIpAddressOverride: '10.0.0.10'
     remoteDebugEnabled: true
     upgradePreference: 'Late'
-    diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
     diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
     diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId

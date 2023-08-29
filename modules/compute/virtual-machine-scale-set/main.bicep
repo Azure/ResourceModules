@@ -134,11 +134,6 @@ param bootDiagnosticStorageAccountUri string = '.blob.${environment().suffixes.s
 @description('Optional. Storage account used to store boot diagnostic information. Boot diagnostics will be disabled if no value is provided.')
 param bootDiagnosticStorageAccountName string = ''
 
-@description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
-@minValue(0)
-@maxValue(365)
-param diagnosticLogsRetentionInDays int = 365
-
 @description('Optional. Resource ID of the diagnostic storage account.')
 param diagnosticStorageAccountId string = ''
 
@@ -293,10 +288,6 @@ var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   category: metric
   timeGrain: null
   enabled: true
-  retentionPolicy: {
-    enabled: true
-    days: diagnosticLogsRetentionInDays
-  }
 }]
 
 var publicKeysFormatted = [for publicKey in publicKeys: {

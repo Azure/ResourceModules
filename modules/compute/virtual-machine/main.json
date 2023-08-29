@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.20.4.51522",
-      "templateHash": "10649954371905940405"
+      "templateHash": "6083372606537708604"
     },
     "name": "Virtual Machines",
     "description": "This module deploys a Virtual Machine with one or multiple NICs and optionally one or multiple public IPs.",
@@ -432,15 +432,6 @@
         "description": "Optional. Location for all resources."
       }
     },
-    "diagnosticLogsRetentionInDays": {
-      "type": "int",
-      "defaultValue": 365,
-      "minValue": 0,
-      "maxValue": 365,
-      "metadata": {
-        "description": "Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely."
-      }
-    },
     "diagnosticStorageAccountId": {
       "type": "string",
       "defaultValue": "",
@@ -821,9 +812,6 @@
           "diagnosticStorageAccountId": {
             "value": "[parameters('diagnosticStorageAccountId')]"
           },
-          "diagnosticLogsRetentionInDays": {
-            "value": "[parameters('diagnosticLogsRetentionInDays')]"
-          },
           "diagnosticWorkspaceId": {
             "value": "[parameters('diagnosticWorkspaceId')]"
           },
@@ -857,7 +845,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.20.4.51522",
-              "templateHash": "7198152300976797281"
+              "templateHash": "18368167306058144977"
             }
           },
           "parameters": {
@@ -901,9 +889,6 @@
             },
             "diagnosticStorageAccountId": {
               "type": "string"
-            },
-            "diagnosticLogsRetentionInDays": {
-              "type": "int"
             },
             "diagnosticWorkspaceId": {
               "type": "string"
@@ -976,9 +961,6 @@
                   "diagnosticLogCategoriesToEnable": {
                     "value": "[parameters('pipdiagnosticLogCategoriesToEnable')]"
                   },
-                  "diagnosticLogsRetentionInDays": {
-                    "value": "[parameters('diagnosticLogsRetentionInDays')]"
-                  },
                   "diagnosticMetricsToEnable": {
                     "value": "[parameters('pipdiagnosticMetricsToEnable')]"
                   },
@@ -1018,7 +1000,7 @@
                     "_generator": {
                       "name": "bicep",
                       "version": "0.20.4.51522",
-                      "templateHash": "14474619344547636171"
+                      "templateHash": "7444990895328873286"
                     },
                     "name": "Public IP Addresses",
                     "description": "This module deploys a Public IP Address.",
@@ -1089,15 +1071,6 @@
                         "description": "Optional. IP address version."
                       }
                     },
-                    "diagnosticLogsRetentionInDays": {
-                      "type": "int",
-                      "defaultValue": 365,
-                      "minValue": 0,
-                      "maxValue": 365,
-                      "metadata": {
-                        "description": "Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely."
-                      }
-                    },
                     "diagnosticStorageAccountId": {
                       "type": "string",
                       "defaultValue": "",
@@ -1131,6 +1104,20 @@
                       "defaultValue": "",
                       "metadata": {
                         "description": "Optional. The domain name label. The concatenation of the domain name label and the regionalized DNS zone make up the fully qualified domain name associated with the public IP address. If a domain name label is specified, an A DNS record is created for the public IP in the Microsoft Azure DNS system."
+                      }
+                    },
+                    "domainNameLabelScope": {
+                      "type": "string",
+                      "defaultValue": "",
+                      "allowedValues": [
+                        "",
+                        "NoReuse",
+                        "ResourceGroupReuse",
+                        "SubscriptionReuse",
+                        "TenantReuse"
+                      ],
+                      "metadata": {
+                        "description": "Optional. The domain name label scope. If a domain name label and a domain name label scope are specified, an A DNS record is created for the public IP in the Microsoft Azure DNS system with a hashed value includes in FQDN."
                       }
                     },
                     "fqdn": {
@@ -1230,11 +1217,7 @@
                         "count": "[length(filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', and(not(equals(lambdaVariables('item'), 'allLogs')), not(equals(lambdaVariables('item'), ''))))))]",
                         "input": {
                           "category": "[filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', and(not(equals(lambdaVariables('item'), 'allLogs')), not(equals(lambdaVariables('item'), '')))))[copyIndex('diagnosticsLogsSpecified')]]",
-                          "enabled": true,
-                          "retentionPolicy": {
-                            "enabled": true,
-                            "days": "[parameters('diagnosticLogsRetentionInDays')]"
-                          }
+                          "enabled": true
                         }
                       },
                       {
@@ -1243,15 +1226,11 @@
                         "input": {
                           "category": "[parameters('diagnosticMetricsToEnable')[copyIndex('diagnosticsMetrics')]]",
                           "timeGrain": null,
-                          "enabled": true,
-                          "retentionPolicy": {
-                            "enabled": true,
-                            "days": "[parameters('diagnosticLogsRetentionInDays')]"
-                          }
+                          "enabled": true
                         }
                       }
                     ],
-                    "diagnosticsLogs": "[if(contains(parameters('diagnosticLogCategoriesToEnable'), 'allLogs'), createArray(createObject('categoryGroup', 'allLogs', 'enabled', true(), 'retentionPolicy', createObject('enabled', true(), 'days', parameters('diagnosticLogsRetentionInDays')))), if(contains(parameters('diagnosticLogCategoriesToEnable'), ''), createArray(), variables('diagnosticsLogsSpecified')))]"
+                    "diagnosticsLogs": "[if(contains(parameters('diagnosticLogCategoriesToEnable'), 'allLogs'), createArray(createObject('categoryGroup', 'allLogs', 'enabled', true())), if(contains(parameters('diagnosticLogCategoriesToEnable'), ''), createArray(), variables('diagnosticsLogsSpecified')))]"
                   },
                   "resources": [
                     {
@@ -1270,7 +1249,7 @@
                     },
                     {
                       "type": "Microsoft.Network/publicIPAddresses",
-                      "apiVersion": "2022-07-01",
+                      "apiVersion": "2023-04-01",
                       "name": "[parameters('name')]",
                       "location": "[parameters('location')]",
                       "tags": "[parameters('tags')]",
@@ -1280,7 +1259,7 @@
                       },
                       "zones": "[parameters('zones')]",
                       "properties": {
-                        "dnsSettings": "[if(not(empty(parameters('domainNameLabel'))), createObject('domainNameLabel', parameters('domainNameLabel'), 'fqdn', parameters('fqdn'), 'reverseFqdn', parameters('reverseFqdn')), null())]",
+                        "dnsSettings": "[if(not(empty(parameters('domainNameLabel'))), createObject('domainNameLabel', parameters('domainNameLabel'), 'domainNameLabelScope', parameters('domainNameLabelScope'), 'fqdn', parameters('fqdn'), 'reverseFqdn', parameters('reverseFqdn')), null())]",
                         "publicIPAddressVersion": "[parameters('publicIPAddressVersion')]",
                         "publicIPAllocationMethod": "[parameters('publicIPAllocationMethod')]",
                         "publicIPPrefix": "[if(not(empty(parameters('publicIPPrefixResourceId'))), createObject('id', parameters('publicIPPrefixResourceId')), null())]",
@@ -1525,14 +1504,14 @@
                       "metadata": {
                         "description": "The public IP address of the public IP address resource."
                       },
-                      "value": "[if(contains(reference(resourceId('Microsoft.Network/publicIPAddresses', parameters('name')), '2022-07-01'), 'ipAddress'), reference(resourceId('Microsoft.Network/publicIPAddresses', parameters('name')), '2022-07-01').ipAddress, '')]"
+                      "value": "[if(contains(reference(resourceId('Microsoft.Network/publicIPAddresses', parameters('name')), '2023-04-01'), 'ipAddress'), reference(resourceId('Microsoft.Network/publicIPAddresses', parameters('name')), '2023-04-01').ipAddress, '')]"
                     },
                     "location": {
                       "type": "string",
                       "metadata": {
                         "description": "The location the resource was deployed into."
                       },
-                      "value": "[reference(resourceId('Microsoft.Network/publicIPAddresses', parameters('name')), '2022-07-01', 'full').location]"
+                      "value": "[reference(resourceId('Microsoft.Network/publicIPAddresses', parameters('name')), '2023-04-01', 'full').location]"
                     }
                   }
                 }
@@ -1572,9 +1551,6 @@
                   "diagnosticEventHubName": {
                     "value": "[parameters('diagnosticEventHubName')]"
                   },
-                  "diagnosticLogsRetentionInDays": {
-                    "value": "[parameters('diagnosticLogsRetentionInDays')]"
-                  },
                   "diagnosticStorageAccountId": {
                     "value": "[parameters('diagnosticStorageAccountId')]"
                   },
@@ -1610,7 +1586,7 @@
                     "_generator": {
                       "name": "bicep",
                       "version": "0.20.4.51522",
-                      "templateHash": "2671718918533328624"
+                      "templateHash": "4973390307671682303"
                     },
                     "name": "Network Interface",
                     "description": "This module deploys a Network Interface.",
@@ -1684,6 +1660,20 @@
                         "description": "Optional. Auxiliary mode of Network Interface resource. Not all regions are enabled for Auxiliary Mode Nic."
                       }
                     },
+                    "auxiliarySku": {
+                      "type": "string",
+                      "defaultValue": "None",
+                      "allowedValues": [
+                        "A1",
+                        "A2",
+                        "A4",
+                        "A8",
+                        "None"
+                      ],
+                      "metadata": {
+                        "description": "Optional. Auxiliary sku of Network Interface resource. Not all regions are enabled for Auxiliary Mode Nic."
+                      }
+                    },
                     "disableTcpStateTracking": {
                       "type": "bool",
                       "defaultValue": false,
@@ -1714,15 +1704,6 @@
                       "defaultValue": [],
                       "metadata": {
                         "description": "Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'."
-                      }
-                    },
-                    "diagnosticLogsRetentionInDays": {
-                      "type": "int",
-                      "defaultValue": 365,
-                      "minValue": 0,
-                      "maxValue": 365,
-                      "metadata": {
-                        "description": "Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely."
                       }
                     },
                     "diagnosticStorageAccountId": {
@@ -1781,11 +1762,7 @@
                         "input": {
                           "category": "[parameters('diagnosticMetricsToEnable')[copyIndex('diagnosticsMetrics')]]",
                           "timeGrain": null,
-                          "enabled": true,
-                          "retentionPolicy": {
-                            "enabled": true,
-                            "days": "[parameters('diagnosticLogsRetentionInDays')]"
-                          }
+                          "enabled": true
                         }
                       }
                     ]
@@ -1807,7 +1784,7 @@
                     },
                     {
                       "type": "Microsoft.Network/networkInterfaces",
-                      "apiVersion": "2022-07-01",
+                      "apiVersion": "2023-04-01",
                       "name": "[parameters('name')]",
                       "location": "[parameters('location')]",
                       "tags": "[parameters('tags')]",
@@ -1838,6 +1815,7 @@
                           }
                         ],
                         "auxiliaryMode": "[parameters('auxiliaryMode')]",
+                        "auxiliarySku": "[parameters('auxiliarySku')]",
                         "disableTcpStateTracking": "[parameters('disableTcpStateTracking')]",
                         "dnsSettings": "[if(not(empty(parameters('dnsServers'))), createObject('dnsServers', parameters('dnsServers')), null())]",
                         "enableAcceleratedNetworking": "[parameters('enableAcceleratedNetworking')]",
@@ -2081,7 +2059,7 @@
                       "metadata": {
                         "description": "The location the resource was deployed into."
                       },
-                      "value": "[reference(resourceId('Microsoft.Network/networkInterfaces', parameters('name')), '2022-07-01', 'full').location]"
+                      "value": "[reference(resourceId('Microsoft.Network/networkInterfaces', parameters('name')), '2023-04-01', 'full').location]"
                     }
                   }
                 }

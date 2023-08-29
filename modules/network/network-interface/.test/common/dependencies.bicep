@@ -15,89 +15,89 @@ param loadBalancerName string
 
 var addressPrefix = '10.0.0.0/16'
 
-resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
-    name: virtualNetworkName
-    location: location
-    properties: {
-        addressSpace: {
-            addressPrefixes: [
-                addressPrefix
-            ]
-        }
-        subnets: [
-            {
-                name: 'defaultSubnet'
-                properties: {
-                    addressPrefix: addressPrefix
-                }
-            }
-        ]
+resource virtualNetwork 'Microsoft.Network/virtualNetworks@2023-04-01' = {
+  name: virtualNetworkName
+  location: location
+  properties: {
+    addressSpace: {
+      addressPrefixes: [
+        addressPrefix
+      ]
     }
+    subnets: [
+      {
+        name: 'defaultSubnet'
+        properties: {
+          addressPrefix: addressPrefix
+        }
+      }
+    ]
+  }
 }
 
 resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' = {
-    name: managedIdentityName
-    location: location
+  name: managedIdentityName
+  location: location
 }
 
-resource applicationSecurityGroup 'Microsoft.Network/applicationSecurityGroups@2022-01-01' = {
-    name: applicationSecurityGroupName
-    location: location
+resource applicationSecurityGroup 'Microsoft.Network/applicationSecurityGroups@2023-04-01' = {
+  name: applicationSecurityGroupName
+  location: location
 }
 
-resource loadBalancer 'Microsoft.Network/loadBalancers@2022-01-01' = {
-    name: loadBalancerName
-    location: location
-    sku: {
-        name: 'Standard'
-    }
+resource loadBalancer 'Microsoft.Network/loadBalancers@2023-04-01' = {
+  name: loadBalancerName
+  location: location
+  sku: {
+    name: 'Standard'
+  }
 
-    properties: {
-        frontendIPConfigurations: [
-            {
-                name: 'privateIPConfig1'
-                properties: {
-                    subnet: {
-                        id: virtualNetwork.properties.subnets[0].id
-                    }
-                }
-            }
-        ]
-    }
-
-    resource backendPool 'backendAddressPools@2022-01-01' = {
-        name: 'default'
-    }
-}
-
-resource inboundNatRule 'Microsoft.Network/loadBalancers/inboundNatRules@2021-08-01' = {
-    name: 'inboundNatRule1'
-    properties: {
-        frontendPort: 443
-        backendPort: 443
-        enableFloatingIP: false
-        enableTcpReset: false
-        frontendIPConfiguration: {
-            id: loadBalancer.properties.frontendIPConfigurations[0].id
+  properties: {
+    frontendIPConfigurations: [
+      {
+        name: 'privateIPConfig1'
+        properties: {
+          subnet: {
+            id: virtualNetwork.properties.subnets[0].id
+          }
         }
-        idleTimeoutInMinutes: 4
-        protocol: 'Tcp'
-    }
-    parent: loadBalancer
+      }
+    ]
+  }
+
+  resource backendPool 'backendAddressPools@2022-01-01' = {
+    name: 'default'
+  }
 }
 
-resource inboundNatRule2 'Microsoft.Network/loadBalancers/inboundNatRules@2021-08-01' = {
-    name: 'inboundNatRule2'
-    properties: {
-        frontendPort: 3389
-        backendPort: 3389
-        frontendIPConfiguration: {
-            id: loadBalancer.properties.frontendIPConfigurations[0].id
-        }
-        idleTimeoutInMinutes: 4
-        protocol: 'Tcp'
+resource inboundNatRule 'Microsoft.Network/loadBalancers/inboundNatRules@2023-04-01' = {
+  name: 'inboundNatRule1'
+  properties: {
+    frontendPort: 443
+    backendPort: 443
+    enableFloatingIP: false
+    enableTcpReset: false
+    frontendIPConfiguration: {
+      id: loadBalancer.properties.frontendIPConfigurations[0].id
     }
-    parent: loadBalancer
+    idleTimeoutInMinutes: 4
+    protocol: 'Tcp'
+  }
+  parent: loadBalancer
+}
+
+resource inboundNatRule2 'Microsoft.Network/loadBalancers/inboundNatRules@2023-04-01' = {
+  name: 'inboundNatRule2'
+  properties: {
+    frontendPort: 3389
+    backendPort: 3389
+    frontendIPConfiguration: {
+      id: loadBalancer.properties.frontendIPConfigurations[0].id
+    }
+    idleTimeoutInMinutes: 4
+    protocol: 'Tcp'
+  }
+  parent: loadBalancer
 }
 
 @description('The resource ID of the created Virtual Network Subnet.')

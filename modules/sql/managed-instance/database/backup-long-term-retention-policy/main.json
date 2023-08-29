@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "1033992501650214243"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "18038719600656297152"
+    },
+    "name": "SQL Managed Instance Database Backup Long-Term Retention Policies",
+    "description": "This module deploys a SQL Managed Instance Database Backup Long-Term Retention Policy.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {

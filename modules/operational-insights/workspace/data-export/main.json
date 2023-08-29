@@ -4,15 +4,18 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "1404193826490863720"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "6853475409424559635"
+    },
+    "name": "Log Analytics Workspace Data Exports",
+    "description": "This module deploys a Log Analytics Workspace Data Export.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
       "type": "string",
-      "maxLength": 63,
       "minLength": 4,
+      "maxLength": 63,
       "metadata": {
         "description": "Required. The data export rule name."
       }

@@ -16,9 +16,9 @@ This module deploys a Network Watcher.
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.Network/networkWatchers` | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/networkWatchers) |
-| `Microsoft.Network/networkWatchers/connectionMonitors` | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/networkWatchers/connectionMonitors) |
-| `Microsoft.Network/networkWatchers/flowLogs` | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/networkWatchers/flowLogs) |
+| `Microsoft.Network/networkWatchers` | [2023-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-04-01/networkWatchers) |
+| `Microsoft.Network/networkWatchers/connectionMonitors` | [2023-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-04-01/networkWatchers/connectionMonitors) |
+| `Microsoft.Network/networkWatchers/flowLogs` | [2023-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-04-01/networkWatchers/flowLogs) |
 
 ## Parameters
 
@@ -164,7 +164,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module networkWatcher './network/network-watcher/main.bicep' = {
-  name: '${uniqueString(deployment().name, location)}-test-nnwcom'
+  name: '${uniqueString(deployment().name, testLocation)}-test-nnwcom'
   params: {
     connectionMonitors: [
       {
@@ -381,7 +381,7 @@ module networkWatcher './network/network-watcher/main.bicep' = {
 
 ```bicep
 module networkWatcher './network/network-watcher/main.bicep' = {
-  name: '${uniqueString(deployment().name, location)}-test-nnwmin'
+  name: '${uniqueString(deployment().name, testLocation)}-test-nnwmin'
   params: {
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     location: '<location>'

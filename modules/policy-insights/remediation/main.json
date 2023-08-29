@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "14392825922290602980"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "2388535043106462043"
+    },
+    "name": "Policy Insights Remediations",
+    "description": "This module deploys a Policy Insights Remediation.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
@@ -32,8 +35,8 @@
     "parallelDeployments": {
       "type": "int",
       "defaultValue": 10,
-      "maxValue": 30,
       "minValue": 1,
+      "maxValue": 30,
       "metadata": {
         "description": "Optional. Determines how many resources to remediate at any given time. Can be used to increase or reduce the pace of the remediation. Can be between 1-30. Higher values will cause the remediation to complete more quickly, but increase the risk of throttling. If not provided, the default parallel deployments value is used."
       }
@@ -41,8 +44,8 @@
     "resourceCount": {
       "type": "int",
       "defaultValue": 500,
-      "maxValue": 50000,
       "minValue": 1,
+      "maxValue": 50000,
       "metadata": {
         "description": "Optional. Determines the max number of resources that can be remediated by the remediation job. Can be between 1-50000. If not provided, the default resource count is used."
       }
@@ -176,9 +179,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "6787307117626777666"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "1304798094791157917"
+            },
+            "name": "Policy Insights Remediations (Management Group scope)",
+            "description": "This module deploys a Policy Insights Remediation on a Management Group scope.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "name": {
@@ -204,8 +210,8 @@
             "parallelDeployments": {
               "type": "int",
               "defaultValue": 10,
-              "maxValue": 30,
               "minValue": 1,
+              "maxValue": 30,
               "metadata": {
                 "description": "Optional. Determines how many resources to remediate at any given time. Can be used to increase or reduce the pace of the remediation. Can be between 1-30. Higher values will cause the remediation to complete more quickly, but increase the risk of throttling. If not provided, the default parallel deployments value is used."
               }
@@ -213,8 +219,8 @@
             "resourceCount": {
               "type": "int",
               "defaultValue": 500,
-              "maxValue": 50000,
               "minValue": 1,
+              "maxValue": 50000,
               "metadata": {
                 "description": "Optional. Determines the max number of resources that can be remediated by the remediation job. Can be between 1-50000. If not provided, the default resource count is used."
               }
@@ -369,9 +375,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "4686786682838572629"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "16781098206548824638"
+            },
+            "name": "Policy Insights Remediations (Subscription scope)",
+            "description": "This module deploys a Policy Insights Remediation on a Subscription scope.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "name": {
@@ -397,8 +406,8 @@
             "parallelDeployments": {
               "type": "int",
               "defaultValue": 10,
-              "maxValue": 30,
               "minValue": 1,
+              "maxValue": 30,
               "metadata": {
                 "description": "Optional. Determines how many resources to remediate at any given time. Can be used to increase or reduce the pace of the remediation. Can be between 1-30. Higher values will cause the remediation to complete more quickly, but increase the risk of throttling. If not provided, the default parallel deployments value is used."
               }
@@ -406,8 +415,8 @@
             "resourceCount": {
               "type": "int",
               "defaultValue": 500,
-              "maxValue": 50000,
               "minValue": 1,
+              "maxValue": 50000,
               "metadata": {
                 "description": "Optional. Determines the max number of resources that can be remediated by the remediation job. Can be between 1-50000. If not provided, the default resource count is used."
               }
@@ -562,9 +571,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "1267717863880241904"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "16839903448259241444"
+            },
+            "name": "Policy Insights Remediations (Resource Group scope)",
+            "description": "This module deploys a Policy Insights Remediation on a Resource Group scope.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "name": {
@@ -590,8 +602,8 @@
             "parallelDeployments": {
               "type": "int",
               "defaultValue": 10,
-              "maxValue": 30,
               "minValue": 1,
+              "maxValue": 30,
               "metadata": {
                 "description": "Optional. Determines how many resources to remediate at any given time. Can be used to increase or reduce the pace of the remediation. Can be between 1-30. Higher values will cause the remediation to complete more quickly, but increase the risk of throttling. If not provided, the default parallel deployments value is used."
               }
@@ -599,8 +611,8 @@
             "resourceCount": {
               "type": "int",
               "defaultValue": 500,
-              "maxValue": 50000,
               "minValue": 1,
+              "maxValue": 50000,
               "metadata": {
                 "description": "Optional. Determines the max number of resources that can be remediated by the remediation job. Can be between 1-50000. If not provided, the default resource count is used."
               }

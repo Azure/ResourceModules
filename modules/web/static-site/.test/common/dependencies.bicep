@@ -15,67 +15,67 @@ param serverFarmName string
 
 var addressPrefix = '10.0.0.0/16'
 
-resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
-    name: virtualNetworkName
-    location: location
-    properties: {
-        addressSpace: {
-            addressPrefixes: [
-                addressPrefix
-            ]
-        }
-        subnets: [
-            {
-                name: 'defaultSubnet'
-                properties: {
-                    addressPrefix: addressPrefix
-                }
-            }
-        ]
+resource virtualNetwork 'Microsoft.Network/virtualNetworks@2023-04-01' = {
+  name: virtualNetworkName
+  location: location
+  properties: {
+    addressSpace: {
+      addressPrefixes: [
+        addressPrefix
+      ]
     }
+    subnets: [
+      {
+        name: 'defaultSubnet'
+        properties: {
+          addressPrefix: addressPrefix
+        }
+      }
+    ]
+  }
 }
 
 resource privateDNSZone 'Microsoft.Network/privateDnsZones@2020-06-01' = {
-    name: 'privatelink.azurestaticapps.net'
-    location: 'global'
+  name: 'privatelink.azurestaticapps.net'
+  location: 'global'
 
-    resource virtualNetworkLinks 'virtualNetworkLinks@2020-06-01' = {
-        name: '${virtualNetwork.name}-vnetlink'
-        location: 'global'
-        properties: {
-            virtualNetwork: {
-                id: virtualNetwork.id
-            }
-            registrationEnabled: false
-        }
+  resource virtualNetworkLinks 'virtualNetworkLinks@2020-06-01' = {
+    name: '${virtualNetwork.name}-vnetlink'
+    location: 'global'
+    properties: {
+      virtualNetwork: {
+        id: virtualNetwork.id
+      }
+      registrationEnabled: false
     }
+  }
 }
 
 resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' = {
-    name: managedIdentityName
-    location: location
+  name: managedIdentityName
+  location: location
 }
 
 resource serverFarm 'Microsoft.Web/serverfarms@2022-03-01' = {
-    name: serverFarmName
-    location: location
-    sku: {
-        name: 'S1'
-        tier: 'Standard'
-        size: 'S1'
-        family: 'S'
-        capacity: 1
-    }
-    properties: {}
+  name: serverFarmName
+  location: location
+  sku: {
+    name: 'S1'
+    tier: 'Standard'
+    size: 'S1'
+    family: 'S'
+    capacity: 1
+  }
+  properties: {}
 }
 
 resource functionApp 'Microsoft.Web/sites@2022-03-01' = {
-    name: siteName
-    location: location
-    kind: 'functionapp'
-    properties: {
-        serverFarmId: serverFarm.id
-    }
+  name: siteName
+  location: location
+  kind: 'functionapp'
+  properties: {
+    serverFarmId: serverFarm.id
+  }
 }
 
 @description('The resource ID of the created Virtual Network Subnet.')

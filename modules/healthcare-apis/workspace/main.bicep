@@ -111,7 +111,6 @@ module workspace_fhirservices 'fhirservice/main.bicep' = [for (fhir, index) in f
     corsMethods: contains(fhir, 'corsMethods') ? fhir.corsMethods : []
     corsMaxAge: contains(fhir, 'corsMaxAge') ? fhir.corsMaxAge : -1
     corsAllowCredentials: contains(fhir, 'corsAllowCredentials') ? fhir.corsAllowCredentials : false
-    diagnosticLogsRetentionInDays: contains(fhir, 'diagnosticLogsRetentionInDays') ? fhir.diagnosticLogsRetentionInDays : 365
     diagnosticStorageAccountId: contains(fhir, 'diagnosticStorageAccountId') ? fhir.diagnosticStorageAccountId : ''
     diagnosticWorkspaceId: contains(fhir, 'diagnosticWorkspaceId') ? fhir.diagnosticWorkspaceId : ''
     diagnosticEventHubAuthorizationRuleId: contains(fhir, 'diagnosticEventHubAuthorizationRuleId') ? fhir.diagnosticEventHubAuthorizationRuleId : ''
@@ -145,7 +144,6 @@ module workspace_dicomservices 'dicomservice/main.bicep' = [for (dicom, index) i
     corsMethods: contains(dicom, 'corsMethods') ? dicom.corsMethods : []
     corsMaxAge: contains(dicom, 'corsMaxAge') ? dicom.corsMaxAge : -1
     corsAllowCredentials: contains(dicom, 'corsAllowCredentials') ? dicom.corsAllowCredentials : false
-    diagnosticLogsRetentionInDays: contains(dicom, 'diagnosticLogsRetentionInDays') ? dicom.diagnosticLogsRetentionInDays : 365
     diagnosticStorageAccountId: contains(dicom, 'diagnosticStorageAccountId') ? dicom.diagnosticStorageAccountId : ''
     diagnosticWorkspaceId: contains(dicom, 'diagnosticWorkspaceId') ? dicom.diagnosticWorkspaceId : ''
     diagnosticEventHubAuthorizationRuleId: contains(dicom, 'diagnosticEventHubAuthorizationRuleId') ? dicom.diagnosticEventHubAuthorizationRuleId : ''
@@ -173,7 +171,6 @@ module workspace_iotconnector 'iotconnector/main.bicep' = [for (iotConnector, in
     fhirdestination: contains(iotConnector, 'fhirdestination') ? iotConnector.fhirdestination : {}
     consumerGroup: contains(iotConnector, 'consumerGroup') ? iotConnector.consumerGroup : iotConnector.name
     systemAssignedIdentity: contains(iotConnector, 'systemAssignedIdentity') ? iotConnector.systemAssignedIdentity : false
-    diagnosticLogsRetentionInDays: contains(iotConnector, 'diagnosticLogsRetentionInDays') ? iotConnector.diagnosticLogsRetentionInDays : 365
     diagnosticStorageAccountId: contains(iotConnector, 'diagnosticStorageAccountId') ? iotConnector.diagnosticStorageAccountId : ''
     diagnosticWorkspaceId: contains(iotConnector, 'diagnosticWorkspaceId') ? iotConnector.diagnosticWorkspaceId : ''
     diagnosticEventHubAuthorizationRuleId: contains(iotConnector, 'diagnosticEventHubAuthorizationRuleId') ? iotConnector.diagnosticEventHubAuthorizationRuleId : ''

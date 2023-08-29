@@ -230,11 +230,6 @@ param extensionCustomScriptProtectedSetting object = {}
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
 
-@description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
-@minValue(0)
-@maxValue(365)
-param diagnosticLogsRetentionInDays int = 365
-
 @description('Optional. Resource ID of the diagnostic storage account.')
 param diagnosticStorageAccountId string = ''
 
@@ -301,7 +296,7 @@ var vmNamesToApply = !empty(vmNames) ? vmNames : vmGeneratedNames
 
 var enableReferencedModulesTelemetry = false
 
-module virtualMachine '../../../modules/Compute/virtualMachines/main.bicep' = [for (vmName, index) in vmNamesToApply: {
+module virtualMachine '../../../modules/compute/virtual-machine/main.bicep' = [for (vmName, index) in vmNamesToApply: {
   name: '${deployment().name}-vm-${index}'
   params: {
     name: vmName
@@ -328,7 +323,6 @@ module virtualMachine '../../../modules/Compute/virtualMachines/main.bicep' = [f
     dedicatedHostId: dedicatedHostId
     diagnosticEventHubAuthorizationRuleId: diagnosticEventHubAuthorizationRuleId
     diagnosticEventHubName: diagnosticEventHubName
-    diagnosticLogsRetentionInDays: diagnosticLogsRetentionInDays
     diagnosticStorageAccountId: diagnosticStorageAccountId
     diagnosticWorkspaceId: diagnosticWorkspaceId
     disablePasswordAuthentication: disablePasswordAuthentication
