@@ -106,7 +106,7 @@ resource frontDoorWAFPolicy 'Microsoft.Network/FrontDoorWebApplicationFirewallPo
   }
 }
 
-resource profile_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
+resource frontDoorWAFPolicy_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${frontDoorWAFPolicy.name}-${lock}-lock'
   properties: {
     level: any(lock)
@@ -115,8 +115,8 @@ resource profile_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lo
   scope: frontDoorWAFPolicy
 }
 
-module profile_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: '${uniqueString(deployment().name, location)}-Profile-Rbac-${index}'
+module frontDoorWAFPolicy_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
+  name: '${uniqueString(deployment().name, location)}-FDWAFP-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
     principalIds: roleAssignment.principalIds
