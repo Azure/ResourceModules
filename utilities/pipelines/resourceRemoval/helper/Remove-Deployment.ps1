@@ -103,6 +103,10 @@ function Remove-Deployment {
             $deployedTargetResources += Get-DeploymentTargetResourceList @deploymentsInputObject
         }
 
+        if ($deployedTargetResources.Count -eq 0) {
+            throw 'No deployment target resources found.'
+        }
+
         [array] $deployedTargetResources = $deployedTargetResources | Select-Object -Unique
 
         Write-Verbose ('Total number of deployment target resources after fetching deployments [{0}]' -f $deployedTargetResources.Count) -Verbose
