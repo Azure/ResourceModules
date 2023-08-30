@@ -2,8 +2,8 @@ metadata name = 'Resource Graph Queries'
 metadata description = 'This module deploys a Resource Graph Query.'
 metadata owner = 'Azure/module-maintainers'
 
-@description('Optional. Name of the Resource Graph Query.')
-param name string = guid(resourceGroup().id)
+@description('Required. Name of the Resource Graph Query.')
+param name string
 
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location

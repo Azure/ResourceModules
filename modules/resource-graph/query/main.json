@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.20.4.51522",
-      "templateHash": "18272244926270297031"
+      "templateHash": "14661732544583093132"
     },
     "name": "Resource Graph Queries",
     "description": "This module deploys a Resource Graph Query.",
@@ -14,9 +14,8 @@
   "parameters": {
     "name": {
       "type": "string",
-      "defaultValue": "[guid(resourceGroup().id)]",
       "metadata": {
-        "description": "Optional. Name of the Resource Graph Query."
+        "description": "Required. Name of the Resource Graph Query."
       }
     },
     "location": {
@@ -267,21 +266,21 @@
     "name": {
       "type": "string",
       "metadata": {
-        "description": "The name of the user assigned identity."
+        "description": "The name of the query."
       },
       "value": "[parameters('name')]"
     },
     "resourceId": {
       "type": "string",
       "metadata": {
-        "description": "The resource ID of the user assigned identity."
+        "description": "The resource ID of the query."
       },
       "value": "[resourceId('Microsoft.ResourceGraph/queries', parameters('name'))]"
     },
     "resourceGroupName": {
       "type": "string",
       "metadata": {
-        "description": "The resource group the user assigned identity was deployed into."
+        "description": "The resource group the query was deployed into."
       },
       "value": "[resourceGroup().name]"
     },

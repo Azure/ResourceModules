@@ -24,6 +24,7 @@ This module deploys a Resource Graph Query.
 
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
+| `name` | string | Name of the Resource Graph Query. |
 | `query` | string | KQL query that will be graph. |
 
 **Optional parameters**
@@ -33,7 +34,6 @@ This module deploys a Resource Graph Query.
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
-| `name` | string | `[guid(resourceGroup().id)]` |  | Name of the Resource Graph Query. |
 | `queryDescription` | string | `''` |  | The description of a graph query. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
@@ -144,9 +144,9 @@ tags: {
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of the user assigned identity. |
-| `resourceGroupName` | string | The resource group the user assigned identity was deployed into. |
-| `resourceId` | string | The resource ID of the user assigned identity. |
+| `name` | string | The name of the query. |
+| `resourceGroupName` | string | The resource group the query was deployed into. |
+| `resourceId` | string | The resource ID of the query. |
 
 ## Cross-referenced modules
 
@@ -170,11 +170,11 @@ module query './resource-graph/query/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-rgqcom'
   params: {
     // Required parameters
+    name: 'rgqcom001'
     query: 'resources | take 10'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
-    name: 'rgqcom001'
     queryDescription: 'An example query to list first 10 resources in the subscription.'
     roleAssignments: [
       {
@@ -206,6 +206,9 @@ module query './resource-graph/query/main.bicep' = {
   "contentVersion": "1.0.0.0",
   "parameters": {
     // Required parameters
+    "name": {
+      "value": "rgqcom001"
+    },
     "query": {
       "value": "resources | take 10"
     },
@@ -215,9 +218,6 @@ module query './resource-graph/query/main.bicep' = {
     },
     "lock": {
       "value": "CanNotDelete"
-    },
-    "name": {
-      "value": "rgqcom001"
     },
     "queryDescription": {
       "value": "An example query to list first 10 resources in the subscription."
@@ -254,13 +254,13 @@ module query './resource-graph/query/main.bicep' = {
 
 ```bicep
 module query './resource-graph/query/main.bicep' = {
-  name: '${uniqueString(deployment().name, location)}-test-rgqcom'
+  name: '${uniqueString(deployment().name, location)}-test-rgqmin'
   params: {
     // Required parameters
+    name: 'rgqmin001'
     query: 'resources | take 10'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    name: 'rgqcom001'
   }
 }
 ```
@@ -278,15 +278,15 @@ module query './resource-graph/query/main.bicep' = {
   "contentVersion": "1.0.0.0",
   "parameters": {
     // Required parameters
+    "name": {
+      "value": "rgqmin001"
+    },
     "query": {
       "value": "resources | take 10"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
-    },
-    "name": {
-      "value": "rgqcom001"
     }
   }
 }
