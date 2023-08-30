@@ -78,7 +78,7 @@ module rgQuery_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (rol
 @description('The name of the query.')
 output name string = rgQuery.name
 
-@description('The resource ID of the user assigned identity.')
+@description('The resource ID of the query.')
 output resourceId string = rgQuery.id
 
 @description('The resource group the user assigned identity was deployed into.')
