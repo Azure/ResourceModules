@@ -14,7 +14,9 @@ This module deploys a Front Door Web Application Firewall (WAF) Policy.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Network/FrontDoorWebApplicationFirewallPolicies` | [2022-05-01](https://learn.microsoft.com/en-us/azure/templates/microsoft.network/2022-05-01/frontdoorwebapplicationfirewallpolicies?pivots=deployment-language-bicep) |
+| `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
+| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
+| `Microsoft.Network/FrontDoorWebApplicationFirewallPolicies` | [2022-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-05-01/FrontDoorWebApplicationFirewallPolicies) |
 
 ## Parameters
 
@@ -26,17 +28,18 @@ This module deploys a Front Door Web Application Firewall (WAF) Policy.
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `sku` | string | `Premium_AzureFrontDoor` | The pricing tier of the WAF profile. |
-| `customRules` | array | `[]` | The custom rules inside the policy. |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `location` | string | `global` | Location for all resources. |
-| `managedRules` | object | `{object}` | Describes the managedRules structure. |
-| `policySettings` | object | `{object}` | The PolicySettings for policy. |
-| `tags` | object | `{object}` | Resource tags. |
+| Parameter Name | Type | Default Value | Allowed Values | Description |
+| :-- | :-- | :-- | :-- | :-- |
+| `customRules` | object | `{object}` |  | The custom rules inside the policy. |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
+| `location` | string | `'global'` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
+| `managedRules` | object | `{object}` |  | Describes the managedRules structure. |
+| `policySettings` | object | `{object}` |  | The PolicySettings for policy. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| `sku` | string | `'Premium_AzureFrontDoor'` | `[Premium_AzureFrontDoor, Standard_AzureFrontDoor]` | The pricing tier of the WAF profile. |
+| `tags` | object | `{object}` |  | Resource tags. |
+
 
 ### Parameter Usage: `tags`
 
@@ -79,14 +82,73 @@ tags: {
 </details>
 <p>
 
+### Parameter Usage: `roleAssignments`
+
+Create a role assignment for the given resource. If you want to assign a service principal / managed identity that is created in the same deployment, make sure to also specify the `'principalType'` parameter and set it to `'ServicePrincipal'`. This will ensure the role assignment waits for the principal's propagation in Azure.
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"roleAssignments": {
+    "value": [
+        {
+            "roleDefinitionIdOrName": "Reader",
+            "description": "Reader Role Assignment",
+            "principalIds": [
+                "12345678-1234-1234-1234-123456789012", // object 1
+                "78945612-1234-1234-1234-123456789012" // object 2
+            ]
+        },
+        {
+            "roleDefinitionIdOrName": "/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11",
+            "principalIds": [
+                "12345678-1234-1234-1234-123456789012" // object 1
+            ],
+            "principalType": "ServicePrincipal"
+        }
+    ]
+}
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+roleAssignments: [
+    {
+        roleDefinitionIdOrName: 'Reader'
+        description: 'Reader Role Assignment'
+        principalIds: [
+            '12345678-1234-1234-1234-123456789012' // object 1
+            '78945612-1234-1234-1234-123456789012' // object 2
+        ]
+    }
+    {
+        roleDefinitionIdOrName: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'
+        principalIds: [
+            '12345678-1234-1234-1234-123456789012' // object 1
+        ]
+        principalType: 'ServicePrincipal'
+    }
+]
+```
+
+</details>
+<p>
+
 ## Outputs
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of the front door WAF policy. |
-| `resourceGroupName` | string | The resource group the front door WAF policy was deployed into. |
-| `resourceId` | string | The resource ID of the front door WAF policy. |
+| `name` | string | The name of the application gateway WAF policy. |
+| `resourceGroupName` | string | The resource group the application gateway WAF policy was deployed into. |
+| `resourceId` | string | The resource ID of the application gateway WAF policy. |
 
 ## Cross-referenced modules
 
@@ -106,24 +168,24 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module applicationGatewayWebApplicationFirewallPolicy './network/front-door-web-application-firewall-policy/main.bicep' = {
-  name: '${uniqueString(deployment().name, location)}-test-nfdwafpcom'
+module frontDoorWebApplicationFirewallPolicy './network/front-door-web-application-firewall-policy/main.bicep' = {
+  name: '${uniqueString(deployment().name, location)}-test-nagwafpcom'
   params: {
     // Required parameters
-    name: 'nfdwafpcom001'
+    name: 'nagwafpcom001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     managedRules: {
       managedRuleSets: [
         {
           ruleGroupOverrides: []
-          ruleSetType: 'OWASP'
-          ruleSetVersion: '3.2'
+          ruleSetType: 'Microsoft_DefaultRuleSet'
+          ruleSetVersion: '2.1'
         }
         {
           ruleGroupOverrides: []
           ruleSetType: 'Microsoft_BotManagerRuleSet'
-          ruleSetVersion: '0.1'
+          ruleSetVersion: '1.0'
         }
       ]
     }
@@ -154,7 +216,7 @@ module applicationGatewayWebApplicationFirewallPolicy './network/front-door-web-
   "parameters": {
     // Required parameters
     "name": {
-      "value": "nfdwafpcom001"
+      "value": "nagwafpcom001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {
@@ -165,13 +227,13 @@ module applicationGatewayWebApplicationFirewallPolicy './network/front-door-web-
         "managedRuleSets": [
           {
             "ruleGroupOverrides": [],
-            "ruleSetType": "OWASP",
-            "ruleSetVersion": "3.2"
+            "ruleSetType": "Microsoft_DefaultRuleSet",
+            "ruleSetVersion": "2.1"
           },
           {
             "ruleGroupOverrides": [],
             "ruleSetType": "Microsoft_BotManagerRuleSet",
-            "ruleSetVersion": "0.1"
+            "ruleSetVersion": "1.0"
           }
         ]
       }
@@ -188,6 +250,51 @@ module applicationGatewayWebApplicationFirewallPolicy './network/front-door-web-
         "Environment": "Non-Prod",
         "Role": "DeploymentValidation"
       }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2: Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module frontDoorWebApplicationFirewallPolicy './network/front-door-web-application-firewall-policy/main.bicep' = {
+  name: '${uniqueString(deployment().name, location)}-test-nagwafpmin'
+  params: {
+    // Required parameters
+    name: 'nagwafpmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "nagwafpmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }

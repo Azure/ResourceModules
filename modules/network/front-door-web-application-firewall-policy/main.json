@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.20.4.51522",
-      "templateHash": "14640597468859368960"
+      "templateHash": "1964615369875139335"
     },
     "name": "Front Door Web Application Firewall (WAF) Policies",
     "description": "This module deploys a Front Door Web Application Firewall (WAF) Policy.",
@@ -158,7 +158,7 @@
       "tags": "[parameters('tags')]",
       "properties": {
         "customRules": "[parameters('customRules')]",
-        "managedRules": "[parameters('managedRules')]",
+        "managedRules": "[if(equals(parameters('sku'), 'Premium_AzureFrontDoor'), parameters('managedRules'), createObject('managedRuleSets', createArray()))]",
         "policySettings": "[parameters('policySettings')]"
       }
     },
@@ -178,12 +178,12 @@
     },
     {
       "copy": {
-        "name": "profile_roleAssignments",
+        "name": "frontDoorWAFPolicy_roleAssignments",
         "count": "[length(parameters('roleAssignments'))]"
       },
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
-      "name": "[format('{0}-Profile-Rbac-{1}', uniqueString(deployment().name, parameters('location')), copyIndex())]",
+      "name": "[format('{0}-FDWAFP-Rbac-{1}', uniqueString(deployment().name, parameters('location')), copyIndex())]",
       "properties": {
         "expressionEvaluationOptions": {
           "scope": "inner"
