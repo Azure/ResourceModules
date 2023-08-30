@@ -81,7 +81,7 @@ output name string = rgQuery.name
 @description('The resource ID of the query.')
 output resourceId string = rgQuery.id
 
-@description('The resource group the user assigned identity was deployed into.')
+@description('The resource group the query was deployed into.')
 output resourceGroupName string = resourceGroup().name
 
 @description('The location the resource was deployed into.')
