@@ -6,7 +6,9 @@
 param name string
 
 @description('Optional. Defines the options for how the data plane API of a Search service authenticates requests. This cannot be set if \'disableLocalAuth\' is set to true.')
-param authOptions object = {}
+param authOptions object = {
+  apiKeyOnly: {}
+}
 
 @description('Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
 param diagnosticEventHubAuthorizationRuleId string = ''
@@ -35,7 +37,7 @@ param diagnosticStorageAccountId string = ''
 param diagnosticWorkspaceId string = ''
 
 @description('Optional. When set to true, calls to the search service will not be permitted to utilize API keys for authentication. This cannot be set to true if \'dataPlaneAuthOptions\' are defined.')
-param disableLocalAuth bool = ''
+param disableLocalAuth bool = false
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
@@ -91,7 +93,16 @@ param replicaCount int = 1
 param roleAssignments array = []
 
 @description('Optional. Defines the SKU of an Azure Cognitive Search Service, which determines price tier and capacity limits.')
-param sku object = {}
+@allowed([
+  'basic'
+  'free'
+  'standard'
+  'standard2'
+  'standard3'
+  'storage_optimized_l1'
+  'storage_optimized_l2'
+])
+param sku string = 'standard'
 
 @description('Optional. Tags to help categorize the resource in the Azure portal.')
 param tags object = {}
@@ -128,76 +139,78 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
 }
 
 resource searchService 'Microsoft.Search/searchServices@2022-09-01' = {
-  identity: identity
   location: location
   name: name
-  sku: sku
-  tags: tags
+  sku: {
+    name: sku
+  }
+  // tags: tags
+  // identity: identity
   properties: {
     authOptions: authOptions
     disableLocalAuth: disableLocalAuth
-    encryptionWithCmk: encryptionWithCmk
+    // encryptionWithCmk: encryptionWithCmk
     hostingMode: hostingMode
-    networkRuleSet: networkRuleSet
+    // networkRuleSet: networkRuleSet
     partitionCount: partitionCount
-    publicNetworkAccess: publicNetworkAccess
     replicaCount: replicaCount
+    publicNetworkAccess: publicNetworkAccess
   }
 }
 
-resource searchService_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {
-  name: diagnosticSettingsName
-  properties: {
-    storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
-    workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null
-    eventHubAuthorizationRuleId: !empty(diagnosticEventHubAuthorizationRuleId) ? diagnosticEventHubAuthorizationRuleId : null
-    eventHubName: !empty(diagnosticEventHubName) ? diagnosticEventHubName : null
-    logs: diagnosticsLogs
-  }
-  scope: searchService
-}
+// resource searchService_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {
+//   name: diagnosticSettingsName
+//   properties: {
+//     storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
+//     workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null
+//     eventHubAuthorizationRuleId: !empty(diagnosticEventHubAuthorizationRuleId) ? diagnosticEventHubAuthorizationRuleId : null
+//     eventHubName: !empty(diagnosticEventHubName) ? diagnosticEventHubName : null
+//     logs: diagnosticsLogs
+//   }
+//   scope: searchService
+// }
 
-resource searchService_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
-  name: '${searchService.name}-${lock}-lock'
-  properties: {
-    level: any(lock)
-    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
-  }
-  scope: searchService
-}
+// resource searchService_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+//   name: '${searchService.name}-${lock}-lock'
+//   properties: {
+//     level: any(lock)
+//     notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+//   }
+//   scope: searchService
+// }
 
-module searchService_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: '${uniqueString(deployment().name, location)}-searchService-Rbac-${index}'
-  params: {
-    description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
-    principalIds: roleAssignment.principalIds
-    principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
-    roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    condition: contains(roleAssignment, 'condition') ? roleAssignment.condition : ''
-    delegatedManagedIdentityResourceId: contains(roleAssignment, 'delegatedManagedIdentityResourceId') ? roleAssignment.delegatedManagedIdentityResourceId : ''
-    resourceId: searchService.id
-  }
-}]
+// module searchService_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
+//   name: '${uniqueString(deployment().name, location)}-searchService-Rbac-${index}'
+//   params: {
+//     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
+//     principalIds: roleAssignment.principalIds
+//     principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
+//     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+//     condition: contains(roleAssignment, 'condition') ? roleAssignment.condition : ''
+//     delegatedManagedIdentityResourceId: contains(roleAssignment, 'delegatedManagedIdentityResourceId') ? roleAssignment.delegatedManagedIdentityResourceId : ''
+//     resourceId: searchService.id
+//   }
+// }]
 
-module searchService_privateEndpoints '../../network/private-endpoint/main.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
-  name: '${uniqueString(deployment().name, location)}-searchService-PrivateEndpoint-${index}'
-  params: {
-    groupIds: [
-      privateEndpoint.service
-    ]
-    name: contains(privateEndpoint, 'name') ? privateEndpoint.name : 'pe-${last(split(searchService.id, '/'))}-${privateEndpoint.service}-${index}'
-    serviceResourceId: searchService.id
-    subnetResourceId: privateEndpoint.subnetResourceId
-    enableDefaultTelemetry: enableReferencedModulesTelemetry
-    location: reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
-    lock: contains(privateEndpoint, 'lock') ? privateEndpoint.lock : lock
-    privateDnsZoneGroup: contains(privateEndpoint, 'privateDnsZoneGroup') ? privateEndpoint.privateDnsZoneGroup : {}
-    roleAssignments: contains(privateEndpoint, 'roleAssignments') ? privateEndpoint.roleAssignments : []
-    tags: contains(privateEndpoint, 'tags') ? privateEndpoint.tags : {}
-    manualPrivateLinkServiceConnections: contains(privateEndpoint, 'manualPrivateLinkServiceConnections') ? privateEndpoint.manualPrivateLinkServiceConnections : []
-    customDnsConfigs: contains(privateEndpoint, 'customDnsConfigs') ? privateEndpoint.customDnsConfigs : []
-  }
-}]
+// module searchService_privateEndpoints '../../network/private-endpoint/main.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
+//   name: '${uniqueString(deployment().name, location)}-searchService-PrivateEndpoint-${index}'
+//   params: {
+//     groupIds: [
+//       privateEndpoint.service
+//     ]
+//     name: contains(privateEndpoint, 'name') ? privateEndpoint.name : 'pe-${last(split(searchService.id, '/'))}-${privateEndpoint.service}-${index}'
+//     serviceResourceId: searchService.id
+//     subnetResourceId: privateEndpoint.subnetResourceId
+//     enableDefaultTelemetry: enableReferencedModulesTelemetry
+//     location: reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
+//     lock: contains(privateEndpoint, 'lock') ? privateEndpoint.lock : lock
+//     privateDnsZoneGroup: contains(privateEndpoint, 'privateDnsZoneGroup') ? privateEndpoint.privateDnsZoneGroup : {}
+//     roleAssignments: contains(privateEndpoint, 'roleAssignments') ? privateEndpoint.roleAssignments : []
+//     tags: contains(privateEndpoint, 'tags') ? privateEndpoint.tags : {}
+//     manualPrivateLinkServiceConnections: contains(privateEndpoint, 'manualPrivateLinkServiceConnections') ? privateEndpoint.manualPrivateLinkServiceConnections : []
+//     customDnsConfigs: contains(privateEndpoint, 'customDnsConfigs') ? privateEndpoint.customDnsConfigs : []
+//   }
+// }]
 
 // =========== //
 //   Outputs   //
