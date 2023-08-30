@@ -31,6 +31,14 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2022-09-01' = {
   location: location
 }
 
+module nestedDependencies 'dependencies.bicep' = {
+  scope: resourceGroup
+  name: '${uniqueString(deployment().name, location)}-nestedDependencies'
+  params: {
+    managedIdentityName: 'dep-${namePrefix}-msi-${serviceShort}'
+  }
+}
+
 // ============== //
 // Test Execution //
 // ============== //
@@ -42,21 +50,64 @@ module testDeployment '../../main.bicep' = {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '${namePrefix}${serviceShort}001'
     policySettings: {
-      fileUploadLimitInMb: 10
-      state: 'Enabled'
       mode: 'Prevention'
+      redirectUrl: 'http://www.bing.com'
+      customBlockResponseStatusCode: 200
+      customBlockResponseBody: 'PGh0bWw+CjxoZWFkZXI+PHRpdGxlPkhlbGxvPC90aXRsZT48L2hlYWRlcj4KPGJvZHk+CkhlbGxvIHdvcmxkCjwvYm9keT4KPC9odG1sPg=='
+    }
+    customRules: {
+      rules: [
+        {
+          name: 'CustomRule1'
+          priority: 2
+          enabledState: 'Enabled'
+          action: 'Block'
+          ruleType: 'MatchRule'
+          rateLimitDurationInMinutes: 1
+          rateLimitThreshold: 10
+          matchConditions: [
+            {
+              matchVariable: 'RemoteAddr'
+              selector: null
+              operator: 'GeoMatch'
+              negateCondition: false
+              transforms: []
+              matchValue: [
+                'CH'
+              ]
+            }
+            {
+              matchVariable: 'RequestHeader'
+              selector: 'UserAgent'
+              operator: 'Contains'
+              negateCondition: false
+              transforms: []
+              matchValue: [
+                'windows'
+              ]
+            }
+            {
+              matchVariable: 'QueryString'
+              operator: 'Contains'
+              negateCondition: false
+              transforms: [
+                'UrlDecode'
+                'Lowercase'
+              ]
+              matchValue: [
+                '<?php'
+                '?>'
+              ]
+            }
+          ]
+        }
+      ]
     }
     managedRules: {
       managedRuleSets: [
         {
-          ruleSetType: 'Microsoft_DefaultRuleSet'
-          ruleSetVersion: '2.1'
-          ruleGroupOverrides: []
-        }
-        {
           ruleSetType: 'Microsoft_BotManagerRuleSet'
           ruleSetVersion: '1.0'
-          ruleGroupOverrides: []
         }
       ]
     }
@@ -64,5 +115,14 @@ module testDeployment '../../main.bicep' = {
       Environment: 'Non-Prod'
       Role: 'DeploymentValidation'
     }
+    roleAssignments: [
+      {
+        roleDefinitionIdOrName: 'Reader'
+        principalIds: [
+          nestedDependencies.outputs.managedIdentityPrincipalId
+        ]
+        principalType: 'ServicePrincipal'
+      }
+    ]
   }
 }

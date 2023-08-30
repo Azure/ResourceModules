@@ -174,26 +174,78 @@ module frontDoorWebApplicationFirewallPolicy './network/front-door-web-applicati
     // Required parameters
     name: 'nagwafpcom001'
     // Non-required parameters
+    customRules: {
+      rules: [
+        {
+          action: 'Block'
+          enabledState: 'Enabled'
+          matchConditions: [
+            {
+              matchValue: [
+                'CH'
+              ]
+              matchVariable: 'RemoteAddr'
+              negateCondition: false
+              operator: 'GeoMatch'
+              selector: '<selector>'
+              transforms: []
+            }
+            {
+              matchValue: [
+                'windows'
+              ]
+              matchVariable: 'RequestHeader'
+              negateCondition: false
+              operator: 'Contains'
+              selector: 'UserAgent'
+              transforms: []
+            }
+            {
+              matchValue: [
+                '?>'
+                '<?php'
+              ]
+              matchVariable: 'QueryString'
+              negateCondition: false
+              operator: 'Contains'
+              transforms: [
+                'Lowercase'
+                'UrlDecode'
+              ]
+            }
+          ]
+          name: 'CustomRule1'
+          priority: 2
+          rateLimitDurationInMinutes: 1
+          rateLimitThreshold: 10
+          ruleType: 'MatchRule'
+        }
+      ]
+    }
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     managedRules: {
       managedRuleSets: [
         {
-          ruleGroupOverrides: []
-          ruleSetType: 'Microsoft_DefaultRuleSet'
-          ruleSetVersion: '2.1'
-        }
-        {
-          ruleGroupOverrides: []
           ruleSetType: 'Microsoft_BotManagerRuleSet'
           ruleSetVersion: '1.0'
         }
       ]
     }
     policySettings: {
-      fileUploadLimitInMb: 10
+      customBlockResponseBody: 'PGh0bWw+CjxoZWFkZXI+PHRpdGxlPkhlbGxvPC90aXRsZT48L2hlYWRlcj4KPGJvZHk+CkhlbGxvIHdvcmxkCjwvYm9keT4KPC9odG1sPg=='
+      customBlockResponseStatusCode: 200
       mode: 'Prevention'
-      state: 'Enabled'
+      redirectUrl: 'http://www.bing.com'
     }
+    roleAssignments: [
+      {
+        principalIds: [
+          '<managedIdentityPrincipalId>'
+        ]
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
     tags: {
       Environment: 'Non-Prod'
       Role: 'DeploymentValidation'
@@ -219,6 +271,56 @@ module frontDoorWebApplicationFirewallPolicy './network/front-door-web-applicati
       "value": "nagwafpcom001"
     },
     // Non-required parameters
+    "customRules": {
+      "value": {
+        "rules": [
+          {
+            "action": "Block",
+            "enabledState": "Enabled",
+            "matchConditions": [
+              {
+                "matchValue": [
+                  "CH"
+                ],
+                "matchVariable": "RemoteAddr",
+                "negateCondition": false,
+                "operator": "GeoMatch",
+                "selector": "<selector>",
+                "transforms": []
+              },
+              {
+                "matchValue": [
+                  "windows"
+                ],
+                "matchVariable": "RequestHeader",
+                "negateCondition": false,
+                "operator": "Contains",
+                "selector": "UserAgent",
+                "transforms": []
+              },
+              {
+                "matchValue": [
+                  "?>",
+                  "<?php"
+                ],
+                "matchVariable": "QueryString",
+                "negateCondition": false,
+                "operator": "Contains",
+                "transforms": [
+                  "Lowercase",
+                  "UrlDecode"
+                ]
+              }
+            ],
+            "name": "CustomRule1",
+            "priority": 2,
+            "rateLimitDurationInMinutes": 1,
+            "rateLimitThreshold": 10,
+            "ruleType": "MatchRule"
+          }
+        ]
+      }
+    },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     },
@@ -226,12 +328,6 @@ module frontDoorWebApplicationFirewallPolicy './network/front-door-web-applicati
       "value": {
         "managedRuleSets": [
           {
-            "ruleGroupOverrides": [],
-            "ruleSetType": "Microsoft_DefaultRuleSet",
-            "ruleSetVersion": "2.1"
-          },
-          {
-            "ruleGroupOverrides": [],
             "ruleSetType": "Microsoft_BotManagerRuleSet",
             "ruleSetVersion": "1.0"
           }
@@ -240,10 +336,22 @@ module frontDoorWebApplicationFirewallPolicy './network/front-door-web-applicati
     },
     "policySettings": {
       "value": {
-        "fileUploadLimitInMb": 10,
+        "customBlockResponseBody": "PGh0bWw+CjxoZWFkZXI+PHRpdGxlPkhlbGxvPC90aXRsZT48L2hlYWRlcj4KPGJvZHk+CkhlbGxvIHdvcmxkCjwvYm9keT4KPC9odG1sPg==",
+        "customBlockResponseStatusCode": 200,
         "mode": "Prevention",
-        "state": "Enabled"
+        "redirectUrl": "http://www.bing.com"
       }
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "<managedIdentityPrincipalId>"
+          ],
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
     },
     "tags": {
       "value": {
