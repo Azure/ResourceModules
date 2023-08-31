@@ -21,3 +21,19 @@ module min 'min/main.test.bicep' = {
     namePrefix: namePrefix
   }
 }
+
+// TEST 3 - PE
+module pe 'pe/main.test.bicep' = {
+  name: '${uniqueString(deployment().name)}-pe-test'
+  params: {
+    namePrefix: namePrefix
+  }
+}
+
+// // TEST 4 - ENCR
+// module encr 'encr/main.test.bicep' = {
+//   name: '${uniqueString(deployment().name)}-encr-test'
+//   params: {
+//     namePrefix: namePrefix
+//   }
+// }
