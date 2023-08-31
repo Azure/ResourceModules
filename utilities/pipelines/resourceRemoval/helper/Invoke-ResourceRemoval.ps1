@@ -150,8 +150,6 @@ function Invoke-ResourceRemoval {
             $keyVaultName = Split-Path $keyVaultResourceId -Leaf
             $objectId = $diskEncryptionSet.Identity.PrincipalId
 
-            Write-Verbose ('    keyVaultResourceId [{0}]' -f $keyVaultResourceId) -Verbose
-            Write-Verbose ('    objectId [{0}]' -f $objectId) -Verbose
             if ($PSCmdlet.ShouldProcess(('Access policy [{0}] from key vault [{1}]' -f $objectId, $keyVaultName), 'Remove')) {
                 $null = Remove-AzKeyVaultAccessPolicy -VaultName $keyVaultName -ObjectId $objectId
             }
