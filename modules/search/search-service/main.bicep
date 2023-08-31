@@ -82,6 +82,9 @@ param partitionCount int = 1
 @description('Optional. Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.')
 param privateEndpoints array = []
 
+@description('Optional. The sharedPrivateLinkResources to create as part of the search Service.')
+param sharedPrivateLinkResources array = []
+
 @description('Optional. This value can be set to \'enabled\' to avoid breaking changes on existing customer resources and templates. If set to \'disabled\', traffic over public interface is not allowed, and private endpoint connections would be the exclusive access method.')
 @allowed([
   'enabled'
@@ -229,6 +232,19 @@ module searchService_privateEndpoints '../../network/private-endpoint/main.bicep
     ipConfigurations: contains(privateEndpoint, 'ipConfigurations') ? privateEndpoint.ipConfigurations : []
     applicationSecurityGroups: contains(privateEndpoint, 'applicationSecurityGroups') ? privateEndpoint.applicationSecurityGroups : []
     customNetworkInterfaceName: contains(privateEndpoint, 'customNetworkInterfaceName') ? privateEndpoint.customNetworkInterfaceName : ''
+  }
+}]
+
+@batchSize(1)
+module searchService_sharedPrivateLinkResources 'shared-private-link-resource/main.bicep' = [for (sharedPrivateLinkResource, index) in sharedPrivateLinkResources: {
+  name: '${uniqueString(deployment().name, location)}-searchService-SharedPrivateLink-${index}'
+  params: {
+    name: contains(sharedPrivateLinkResource, 'name') ? sharedPrivateLinkResource.name : 'spl-${last(split(searchService.id, '/'))}-${sharedPrivateLinkResource.groupId}-${index}'
+    searchServiceName: searchService.name
+    privateLinkResourceId: sharedPrivateLinkResource.privateLinkResourceId
+    groupId: contains(sharedPrivateLinkResource, 'groupId') ? sharedPrivateLinkResource.groupId : ''
+    requestMessage: contains(sharedPrivateLinkResource, 'requestMessage') ? sharedPrivateLinkResource.requestMessage : ''
+    resourceRegion: contains(sharedPrivateLinkResource, 'resourceRegion') ? sharedPrivateLinkResource.resourceRegion : ''
   }
 }]
 

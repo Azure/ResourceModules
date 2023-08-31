@@ -37,6 +37,8 @@ module nestedDependencies 'dependencies.bicep' = {
   params: {
     virtualNetworkName: 'dep-${namePrefix}-vnet-${serviceShort}'
     applicationSecurityGroupName: 'dep-${namePrefix}-asg-${serviceShort}'
+    storageAccountName: 'dep${namePrefix}st${serviceShort}'
+    keyVaultName: 'dep-${namePrefix}-kv-${serviceShort}'
     privateDnsZoneName: 'privatelink.search.windows.net'
   }
 }
@@ -69,6 +71,20 @@ module testDeployment '../../main.bicep' = {
           Environment: 'Non-Prod'
           Role: 'DeploymentValidation'
         }
+      }
+    ]
+    sharedPrivateLinkResources: [
+      {
+        privateLinkResourceId: nestedDependencies.outputs.storageAccountResourceId
+        groupId: 'blob'
+        resourceRegion: nestedDependencies.outputs.storageAccountLocation
+        requestMessage: 'Please approve this request'
+      }
+      {
+        privateLinkResourceId: nestedDependencies.outputs.keyVaultResourceId
+        groupId: 'vault'
+        resourceRegion: nestedDependencies.outputs.keyVaultLocation
+        requestMessage: 'Please approve this request'
       }
     ]
     tags: {
