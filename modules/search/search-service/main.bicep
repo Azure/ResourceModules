@@ -150,7 +150,7 @@ resource searchService 'Microsoft.Search/searchServices@2022-09-01' = {
   sku: {
     name: sku
   }
-  // tags: tags
+  tags: tags
   identity: identity
   properties: {
     authOptions: authOptions
@@ -176,27 +176,27 @@ resource searchService 'Microsoft.Search/searchServices@2022-09-01' = {
 //   scope: searchService
 // }
 
-// resource searchService_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
-//   name: '${searchService.name}-${lock}-lock'
-//   properties: {
-//     level: any(lock)
-//     notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
-//   }
-//   scope: searchService
-// }
+resource searchService_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+  name: '${searchService.name}-${lock}-lock'
+  properties: {
+    level: any(lock)
+    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+  }
+  scope: searchService
+}
 
-// module searchService_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
-//   name: '${uniqueString(deployment().name, location)}-searchService-Rbac-${index}'
-//   params: {
-//     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
-//     principalIds: roleAssignment.principalIds
-//     principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
-//     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-//     condition: contains(roleAssignment, 'condition') ? roleAssignment.condition : ''
-//     delegatedManagedIdentityResourceId: contains(roleAssignment, 'delegatedManagedIdentityResourceId') ? roleAssignment.delegatedManagedIdentityResourceId : ''
-//     resourceId: searchService.id
-//   }
-// }]
+module searchService_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
+  name: '${uniqueString(deployment().name, location)}-searchService-Rbac-${index}'
+  params: {
+    description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
+    principalIds: roleAssignment.principalIds
+    principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
+    roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    condition: contains(roleAssignment, 'condition') ? roleAssignment.condition : ''
+    delegatedManagedIdentityResourceId: contains(roleAssignment, 'delegatedManagedIdentityResourceId') ? roleAssignment.delegatedManagedIdentityResourceId : ''
+    resourceId: searchService.id
+  }
+}]
 
 // module searchService_privateEndpoints '../../network/private-endpoint/main.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
 //   name: '${uniqueString(deployment().name, location)}-searchService-PrivateEndpoint-${index}'
