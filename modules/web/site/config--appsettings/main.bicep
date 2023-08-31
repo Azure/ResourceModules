@@ -42,12 +42,18 @@ var azureWebJobsValues = !empty(storageAccountResourceId) ? union({
     AzureWebJobsDashboard: 'DefaultEndpointsProtocol=https;AccountName=${storageAccount.name};AccountKey=${storageAccount.listKeys().keys[0].value};'
   } : {})) : {}
 
+var websiteContentShare = !empty(storageAccountResourceId) ? union({
+    WEBSITE_CONTENTAZUREFILECONNECTIONSTRING: 'DefaultEndpointsProtocol=https;AccountName=${storageAccount.name};AccountKey=${storageAccount.listKeys().keys[0].value};'
+  }, {
+    WEBSITE_CONTENTSHARE: '${appName}'
+  }) : {}
+
 var appInsightsValues = !empty(appInsightResourceId) ? {
   APPINSIGHTS_INSTRUMENTATIONKEY: appInsight.properties.InstrumentationKey
   APPLICATIONINSIGHTS_CONNECTION_STRING: appInsight.properties.ConnectionString
 } : {}
 
-var expandedAppSettings = union(appSettingsKeyValuePairs, azureWebJobsValues, appInsightsValues)
+var expandedAppSettings = union(appSettingsKeyValuePairs, azureWebJobsValues, appInsightsValues, websiteContentShare)
 
 // =========== //
 // Existing resources //
