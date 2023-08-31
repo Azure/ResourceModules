@@ -130,6 +130,7 @@ jobs:
         uses: ./.github/actions/templates/publishModule
         with:
           templateFilePath: '${{ inputs.modulePath }}/main.bicep'
+          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           templateSpecsRGName: '${{ env.templateSpecsRGName }}'
           templateSpecsRGLocation: '${{ env.templateSpecsRGLocation }}'
           templateSpecsDescription: '${{ env.templateSpecsDescription }}'
