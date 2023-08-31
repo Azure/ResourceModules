@@ -52,9 +52,6 @@ param encryptionWithCmk object = {}
 ])
 param hostingMode string = 'default'
 
-@description('Optional. Identity for the resource.')
-param identity object = {}
-
 @description('Optional. Location for all Resources.')
 param location string = resourceGroup().location
 
@@ -107,6 +104,9 @@ param sku string = 'standard'
 @description('Optional. Tags to help categorize the resource in the Azure portal.')
 param tags object = {}
 
+@description('Optional. Enables system assigned managed identity on the resource.')
+param systemAssignedIdentity bool = false
+
 // ============= //
 //   Variables   //
 // ============= //
@@ -121,6 +121,12 @@ var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
 }]
 
 var enableReferencedModulesTelemetry = false
+
+var identityType = systemAssignedIdentity ? 'SystemAssigned' : 'None'
+
+var identity = identityType != 'None' ? {
+  type: identityType
+} : null
 
 // =============== //
 //   Deployments   //
@@ -145,7 +151,7 @@ resource searchService 'Microsoft.Search/searchServices@2022-09-01' = {
     name: sku
   }
   // tags: tags
-  // identity: identity
+  identity: identity
   properties: {
     authOptions: authOptions
     disableLocalAuth: disableLocalAuth
