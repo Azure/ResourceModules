@@ -128,7 +128,7 @@ module frontDoorWAFPolicy_roleAssignments '.bicep/nested_roleAssignments.bicep' 
   }
 }]
 
-@description('The name of the application gateway WAF policy.')
+@description('The name of the Front Door WAF policy.')
 output name string = frontDoorWAFPolicy.name
 
 @description('The resource ID of the application gateway WAF policy.')
