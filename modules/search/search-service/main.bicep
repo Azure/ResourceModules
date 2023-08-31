@@ -187,7 +187,7 @@ resource searchService_diagnosticSettings 'Microsoft.Insights/diagnosticsettings
   scope: searchService
 }
 
-resource searchService_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource searchService_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${searchService.name}-${lock}-lock'
   properties: {
     level: any(lock)
