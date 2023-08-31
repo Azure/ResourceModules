@@ -170,7 +170,7 @@ resource searchService 'Microsoft.Search/searchServices@2022-09-01' = {
     disableLocalAuth: disableLocalAuth
     // encryptionWithCmk: encryptionWithCmk
     hostingMode: hostingMode
-    // networkRuleSet: networkRuleSet
+    networkRuleSet: networkRuleSet
     partitionCount: partitionCount
     replicaCount: replicaCount
     publicNetworkAccess: publicNetworkAccess

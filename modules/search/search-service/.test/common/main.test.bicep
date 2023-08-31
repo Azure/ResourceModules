@@ -85,6 +85,16 @@ module testDeployment '../../main.bicep' = {
         principalType: 'ServicePrincipal'
       }
     ]
+    networkRuleSet: {
+      ipRules: [
+        {
+          value: '40.74.28.0/23'
+        }
+        {
+          value: '87.147.204.13'
+        }
+      ]
+    }
     tags: {
       Environment: 'Non-Prod'
       Role: 'DeploymentValidation'
