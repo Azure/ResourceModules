@@ -49,6 +49,8 @@ module testDeployment '../../main.bicep' = {
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '${namePrefix}${serviceShort}001'
+    lock: 'CanNotDelete'
+    sku: 'Premium_AzureFrontDoor'
     policySettings: {
       mode: 'Prevention'
       redirectUrl: 'http://www.bing.com'

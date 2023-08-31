@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.20.4.51522",
-      "templateHash": "1964615369875139335"
+      "templateHash": "10866152058087829218"
     },
     "name": "Front Door Web Application Firewall (WAF) Policies",
     "description": "This module deploys a Front Door Web Application Firewall (WAF) Policy.",
@@ -29,7 +29,7 @@
     },
     "sku": {
       "type": "string",
-      "defaultValue": "Premium_AzureFrontDoor",
+      "defaultValue": "Standard_AzureFrontDoor",
       "allowedValues": [
         "Standard_AzureFrontDoor",
         "Premium_AzureFrontDoor"
@@ -327,21 +327,21 @@
     "name": {
       "type": "string",
       "metadata": {
-        "description": "The name of the application gateway WAF policy."
+        "description": "The name of the Front Door WAF policy."
       },
       "value": "[parameters('name')]"
     },
     "resourceId": {
       "type": "string",
       "metadata": {
-        "description": "The resource ID of the application gateway WAF policy."
+        "description": "The resource ID of the Front Door WAF policy."
       },
       "value": "[resourceId('Microsoft.Network/FrontDoorWebApplicationFirewallPolicies', parameters('name'))]"
     },
     "resourceGroupName": {
       "type": "string",
       "metadata": {
-        "description": "The resource group the application gateway WAF policy was deployed into."
+        "description": "The resource group the Front Door WAF policy was deployed into."
       },
       "value": "[resourceGroup().name]"
     },

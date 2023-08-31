@@ -37,7 +37,7 @@ This module deploys a Front Door Web Application Firewall (WAF) Policy.
 | `managedRules` | object | `{object}` |  | Describes the managedRules structure. |
 | `policySettings` | object | `{object}` |  | The PolicySettings for policy. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| `sku` | string | `'Premium_AzureFrontDoor'` | `[Premium_AzureFrontDoor, Standard_AzureFrontDoor]` | The pricing tier of the WAF profile. |
+| `sku` | string | `'Standard_AzureFrontDoor'` | `[Premium_AzureFrontDoor, Standard_AzureFrontDoor]` | The pricing tier of the WAF profile. |
 | `tags` | object | `{object}` |  | Resource tags. |
 
 
@@ -146,9 +146,9 @@ roleAssignments: [
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of the application gateway WAF policy. |
-| `resourceGroupName` | string | The resource group the application gateway WAF policy was deployed into. |
-| `resourceId` | string | The resource ID of the application gateway WAF policy. |
+| `name` | string | The name of the Front Door WAF policy. |
+| `resourceGroupName` | string | The resource group the Front Door WAF policy was deployed into. |
+| `resourceId` | string | The resource ID of the Front Door WAF policy. |
 
 ## Cross-referenced modules
 
@@ -223,6 +223,7 @@ module frontDoorWebApplicationFirewallPolicy './network/front-door-web-applicati
       ]
     }
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    lock: 'CanNotDelete'
     managedRules: {
       managedRuleSets: [
         {
@@ -246,6 +247,7 @@ module frontDoorWebApplicationFirewallPolicy './network/front-door-web-applicati
         roleDefinitionIdOrName: 'Reader'
       }
     ]
+    sku: 'Premium_AzureFrontDoor'
     tags: {
       Environment: 'Non-Prod'
       Role: 'DeploymentValidation'
@@ -324,6 +326,9 @@ module frontDoorWebApplicationFirewallPolicy './network/front-door-web-applicati
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     },
+    "lock": {
+      "value": "CanNotDelete"
+    },
     "managedRules": {
       "value": {
         "managedRuleSets": [
@@ -352,6 +357,9 @@ module frontDoorWebApplicationFirewallPolicy './network/front-door-web-applicati
           "roleDefinitionIdOrName": "Reader"
         }
       ]
+    },
+    "sku": {
+      "value": "Premium_AzureFrontDoor"
     },
     "tags": {
       "value": {

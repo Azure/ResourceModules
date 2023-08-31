@@ -15,7 +15,7 @@ param location string = 'global'
   'Premium_AzureFrontDoor'
 ])
 @description('Optional. The pricing tier of the WAF profile.')
-param sku string = 'Premium_AzureFrontDoor'
+param sku string = 'Standard_AzureFrontDoor'
 
 @description('Optional. Resource tags.')
 param tags object = {}
