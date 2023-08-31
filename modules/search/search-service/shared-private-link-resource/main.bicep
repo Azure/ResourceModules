@@ -11,11 +11,11 @@ param name string
 @description('Required. The resource id of the resource the shared private link resource is for.')
 param privateLinkResourceId string
 
-@description('Optional. The group id from the provider of resource the shared private link resource is for.')
-param groupId string = ''
+@description('Required. The group id from the provider of resource the shared private link resource is for.')
+param groupId string
 
-@description('Optional. The request message for requesting approval of the shared private link resource.')
-param requestMessage string = ''
+@description('Required. The request message for requesting approval of the shared private link resource.')
+param requestMessage string
 
 @description('Optional. Can be used to specify the Azure Resource Manager location of the resource to which a shared private link is to be created. This is only required for those resources whose DNS configuration are regional (such as Azure Kubernetes Service).')
 param resourceRegion string = ''

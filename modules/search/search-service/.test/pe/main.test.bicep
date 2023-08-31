@@ -83,7 +83,6 @@ module testDeployment '../../main.bicep' = {
       {
         privateLinkResourceId: nestedDependencies.outputs.keyVaultResourceId
         groupId: 'vault'
-        resourceRegion: nestedDependencies.outputs.keyVaultLocation
         requestMessage: 'Please approve this request'
       }
     ]
