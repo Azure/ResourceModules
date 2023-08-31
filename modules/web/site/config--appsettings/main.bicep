@@ -45,7 +45,7 @@ var azureWebJobsValues = !empty(storageAccountResourceId) ? union({
 var websiteContentShare = !empty(storageAccountResourceId) ? union({
     WEBSITE_CONTENTAZUREFILECONNECTIONSTRING: 'DefaultEndpointsProtocol=https;AccountName=${storageAccount.name};AccountKey=${storageAccount.listKeys().keys[0].value};'
   }, {
-    WEBSITE_CONTENTSHARE: '${appName}'
+    WEBSITE_CONTENTSHARE: appName
   }) : {}
 
 var appInsightsValues = !empty(appInsightResourceId) ? {
