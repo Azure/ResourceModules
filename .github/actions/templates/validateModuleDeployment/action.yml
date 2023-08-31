@@ -269,6 +269,10 @@ runs:
             ManagementGroupId = '${{ inputs.managementGroupId }}'
           }
 
+          if (-not [String]::IsNullOrEmpty('${{ inputs.subscriptionId }}')) {
+              $functionInput['SubscriptionId'] = '${{ inputs.subscriptionId }}'
+          }
+
           Write-Verbose 'Invoke task with' -Verbose
           Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 

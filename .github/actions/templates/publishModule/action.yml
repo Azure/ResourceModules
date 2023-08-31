@@ -16,6 +16,7 @@
 ##   | Parameter                | Required | Default | Description                                                                                      | Example                                                |
 ##   |--------------------------|----------|---------|--------------------------------------------------------------------------------------------------|--------------------------------------------------------|
 ##   | templateFilePath         | true     | ''      | The path to the template file to publish                                                         | 'modules/api-management/service/main.bicep'            |
+##   | subscriptionId           | false    | ''      | The ID of the subscription to publish to                                                         | '11111111-1111-1111-1111-111111111111'                 |
 ##   | templateSpecsRgName      | false    | ''      | Required to publish to template spec. ResourceGroup of the template spec to publish to           | 'artifacts-rg'                                         |
 ##   | templateSpecsRgLocation  | false    | ''      | Required to publish to template spec. Location of the template spec resource group               | 'WestEurope'                                           |
 ##   | templateSpecsDescription | false    | ''      | Required to publish to template spec. Description of the template spec to publish to             | 'This is an API-Management service template'           |
@@ -35,6 +36,9 @@ inputs:
   templateFilePath:
     description: 'The path to the template file to publish'
     required: true
+  subscriptionId:
+    description: 'The ID of the subscription to publish to'
+    required: false
   templateSpecsRgName:
     description: 'Required to publish to template spec. ResourceGroup of the template spec to publish to'
     required: false
@@ -83,6 +87,11 @@ runs:
         inlineScript: |
           # Grouping task logs
           Write-Output '::group::Publish module to template specs'
+
+          if (-not [String]::IsNullOrEmpty('${{ inputs.subscriptionId }}')) {
+            Write-Verbose ('Setting context to subscription [{0}]' -f '${{ inputs.subscriptionId }}') -Verbose
+            $null = Set-AzContext -Subscription '${{ inputs.subscriptionId }}'
+          }
 
           # Load used functions
           . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourcePublish' 'Get-ModulesToPublish.ps1')
@@ -158,6 +167,11 @@ runs:
         inlineScript: |
           # Grouping task logs
           Write-Output '::group::Publish module to private bicep registry'
+
+          if (-not [String]::IsNullOrEmpty('${{ inputs.subscriptionId }}')) {
+            Write-Verbose ('Setting context to subscription [{0}]' -f '${{ inputs.subscriptionId }}') -Verbose
+            $null = Set-AzContext -Subscription '${{ inputs.subscriptionId }}'
+          }
 
           # Load used functions
           . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourcePublish' 'Get-ModulesToPublish.ps1')
