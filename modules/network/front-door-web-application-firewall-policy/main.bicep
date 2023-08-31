@@ -134,7 +134,7 @@ output name string = frontDoorWAFPolicy.name
 @description('The resource ID of the Front Door WAF policy.')
 output resourceId string = frontDoorWAFPolicy.id
 
-@description('The resource group the application gateway WAF policy was deployed into.')
+@description('The resource group the Front Door WAF policy was deployed into.')
 output resourceGroupName string = resourceGroup().name
 
 @description('The location the resource was deployed into.')
