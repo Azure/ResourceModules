@@ -123,90 +123,90 @@ jobs:
 
       # [Universal Artifact-feed publish] task(s)
       #------------------------------------------
-      - task: PowerShell@2
-        displayName: 'Publish module to artifacts feed'
-        condition: and(
-          eq(variables['artifactsFeedDoPublish'], true),
-          succeeded()
-          )
-        enabled: true
-        inputs:
-          targetType: inline
-          pwsh: true
-          script: |
-            # Load used functions
-            . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Get-ModulesToPublish.ps1')
-            . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Publish-ModuleToUniversalArtifactsFeed.ps1')
-            . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Get-ModulesMissingFromUniversalArtifactsFeed.ps1')
+      # - task: PowerShell@2
+      #   displayName: 'Publish module to artifacts feed'
+      #   condition: and(
+      #     eq(variables['artifactsFeedDoPublish'], true),
+      #     succeeded()
+      #     )
+      #   enabled: true
+      #   inputs:
+      #     targetType: inline
+      #     pwsh: true
+      #     script: |
+      #       # Load used functions
+      #       . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Get-ModulesToPublish.ps1')
+      #       . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Publish-ModuleToUniversalArtifactsFeed.ps1')
+      #       . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Get-ModulesMissingFromUniversalArtifactsFeed.ps1')
 
-            #Prioritizing the bicep file
-            $TemplateFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.modulePath }}' 'main.bicep'
-            if (-not (Test-Path $TemplateFilePath)) {
-              $TemplateFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.modulePath }}' 'main.json'
-            }
+      #       #Prioritizing the bicep file
+      #       $TemplateFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.modulePath }}' 'main.bicep'
+      #       if (-not (Test-Path $TemplateFilePath)) {
+      #         $TemplateFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.modulePath }}' 'main.json'
+      #       }
 
-            ################################
-            ##   Get modules to publish   ##
-            ################################
-            $functionInput = @{
-              TemplateFilePath = $TemplateFilePath
-              PublishLatest    = $false # Not supported by Azure DevOps feeds
-            }
+      #       ################################
+      #       ##   Get modules to publish   ##
+      #       ################################
+      #       $functionInput = @{
+      #         TemplateFilePath = $TemplateFilePath
+      #         PublishLatest    = $false # Not supported by Azure DevOps feeds
+      #       }
 
-            Write-Verbose "Invoke Get-ModulesToPublish with" -Verbose
-            Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
+      #       Write-Verbose "Invoke Get-ModulesToPublish with" -Verbose
+      #       Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
-            $modulesToPublish = @()
+      #       $modulesToPublish = @()
 
-            # Get the modified child resources
-            $modulesToPublish += Get-ModulesToPublish @functionInput -Verbose
+      #       # Get the modified child resources
+      #       $modulesToPublish += Get-ModulesToPublish @functionInput -Verbose
 
-            #############################
-            ##   Get missing modules   ##
-            #############################
-            # Add all modules that don't exist in the target location
-            $missingInputObject = @{
-                TemplateFilePath    = $TemplateFilePath
-                VstsOrganizationUri = '${{ parameters.vstsOrganizationUri }}'
-                VstsFeedProject     = '${{ parameters.vstsFeedProject }}'
-                VstsFeedName        = '${{ parameters.vstsFeedName }}'
-            }
+      #       #############################
+      #       ##   Get missing modules   ##
+      #       #############################
+      #       # Add all modules that don't exist in the target location
+      #       $missingInputObject = @{
+      #           TemplateFilePath    = $TemplateFilePath
+      #           VstsOrganizationUri = '${{ parameters.vstsOrganizationUri }}'
+      #           VstsFeedProject     = '${{ parameters.vstsFeedProject }}'
+      #           VstsFeedName        = '${{ parameters.vstsFeedName }}'
+      #       }
 
-            Write-Verbose "Invoke Get-ModulesMissingFromUniversalArtifactsFeed with" -Verbose
-            Write-Verbose ($missingInputObject | ConvertTo-Json | Out-String) -Verbose
+      #       Write-Verbose "Invoke Get-ModulesMissingFromUniversalArtifactsFeed with" -Verbose
+      #       Write-Verbose ($missingInputObject | ConvertTo-Json | Out-String) -Verbose
 
-            $missingModules = Get-ModulesMissingFromUniversalArtifactsFeed @missingInputObject -BearerToken $env:TOKEN
+      #       $missingModules = Get-ModulesMissingFromUniversalArtifactsFeed @missingInputObject -BearerToken $env:TOKEN
 
-            foreach($missingModule in $missingModules) {
-              if($modulsToPublish.TemplateFilePath -notcontains $missingModule.TemplateFilePath) {
-                $modulesToPublish += $missingModule
-              }
-            }
+      #       foreach($missingModule in $missingModules) {
+      #         if($modulsToPublish.TemplateFilePath -notcontains $missingModule.TemplateFilePath) {
+      #           $modulesToPublish += $missingModule
+      #         }
+      #       }
 
-            #################
-            ##   Publish   ##
-            #################
-            foreach ($moduleToPublish in $modulesToPublish) {
-              $RelPath = (($moduleToPublish.TemplateFilePath).Split('/modules/')[-1]).Split('/main.')[0]
-              Write-Host "##[group]$(' - [{0}] [{1}]' -f $RelPath, $moduleToPublish.Version)"
+      #       #################
+      #       ##   Publish   ##
+      #       #################
+      #       foreach ($moduleToPublish in $modulesToPublish) {
+      #         $RelPath = (($moduleToPublish.TemplateFilePath).Split('/modules/')[-1]).Split('/main.')[0]
+      #         Write-Host "##[group]$(' - [{0}] [{1}]' -f $RelPath, $moduleToPublish.Version)"
 
-              $functionInput = @{
-                TemplateFilePath    = $moduleToPublish.TemplateFilePath
-                VstsOrganizationUri = '${{ parameters.vstsOrganizationUri }}'
-                VstsFeedProject     = '${{ parameters.vstsFeedProject }}'
-                VstsFeedName        = '${{ parameters.vstsFeedName }}'
-                ModuleVersion       = $moduleToPublish.Version
-                UseApiAlignedName   = [bool] '${{ parameters.publishUsingApiAlignedName }}'
-              }
+      #         $functionInput = @{
+      #           TemplateFilePath    = $moduleToPublish.TemplateFilePath
+      #           VstsOrganizationUri = '${{ parameters.vstsOrganizationUri }}'
+      #           VstsFeedProject     = '${{ parameters.vstsFeedProject }}'
+      #           VstsFeedName        = '${{ parameters.vstsFeedName }}'
+      #           ModuleVersion       = $moduleToPublish.Version
+      #           UseApiAlignedName   = [bool] '${{ parameters.publishUsingApiAlignedName }}'
+      #         }
 
-              Write-Verbose "Invoke Publish-ModuleToUniversalArtifactsFeed with" -Verbose
-              Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
+      #         Write-Verbose "Invoke Publish-ModuleToUniversalArtifactsFeed with" -Verbose
+      #         Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
-              Publish-ModuleToUniversalArtifactsFeed @functionInput -BearerToken $env:TOKEN  -Verbose
-              Write-Host "##[endgroup]"
-            }
-        env:
-          TOKEN: $(vstsFeedToken)
+      #         Publish-ModuleToUniversalArtifactsFeed @functionInput -BearerToken $env:TOKEN  -Verbose
+      #         Write-Host "##[endgroup]"
+      #       }
+      #   env:
+      #     TOKEN: $(vstsFeedToken)
 
       # [template-spec publish] task(s)
       #--------------------------------
