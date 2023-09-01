@@ -35,6 +35,7 @@ function Get-TemplateSpecsName {
         # Load helper script
         . (Join-Path (Get-Item -Path $PSScriptRoot).Parent.Parent 'tools' 'helper' 'Get-SpecsAlignedResourceName.ps1')
         $moduleIdentifier = Get-SpecsAlignedResourceName -ResourceIdentifier $moduleIdentifier
+        $moduleIdentifier = $moduleIdentifier -replace 'microsoft', 'ms'
     }
 
     $templateSpecIdentifier = $moduleIdentifier.Replace('\', '/').Replace('/', '.').ToLower()
