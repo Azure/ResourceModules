@@ -29,11 +29,3 @@ module pe 'pe/main.test.bicep' = {
     namePrefix: namePrefix
   }
 }
-
-// // TEST 4 - ENCR
-// module encr 'encr/main.test.bicep' = {
-//   name: '${uniqueString(deployment().name)}-encr-test'
-//   params: {
-//     namePrefix: namePrefix
-//   }
-// }

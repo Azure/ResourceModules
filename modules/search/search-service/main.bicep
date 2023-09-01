@@ -5,10 +5,8 @@
 @description('Required. The name of the Azure Cognitive Search service to create or update. Search service names must only contain lowercase letters, digits or dashes, cannot use dash as the first two or last one characters, cannot contain consecutive dashes, and must be between 2 and 60 characters in length. Search service names must be globally unique since they are part of the service URI (https://<name>.search.windows.net). You cannot change the service name after the service is created.')
 param name string
 
-@description('Optional. Defines the options for how the data plane API of a Search service authenticates requests. This cannot be set if \'disableLocalAuth\' is set to true.')
-param authOptions object = {
-  apiKeyOnly: {}
-}
+@description('Optional. Defines the options for how the data plane API of a Search service authenticates requests. Must remain an empty object {} if \'disableLocalAuth\' is set to true.')
+param authOptions object = {}
 
 @description('Optional. The name of logs that will be streamed.')
 @allowed([
@@ -44,14 +42,19 @@ param diagnosticEventHubAuthorizationRuleId string = ''
 @description('Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.')
 param diagnosticEventHubName string = ''
 
-@description('Optional. When set to true, calls to the search service will not be permitted to utilize API keys for authentication. This cannot be set to true if \'dataPlaneAuthOptions\' are defined.')
-param disableLocalAuth bool = false
+@description('Optional. When set to true, calls to the search service will not be permitted to utilize API keys for authentication. This cannot be set to true if \'authOptions\' are defined.')
+param disableLocalAuth bool = true
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
 @description('Optional. Describes a policy that determines how resources within the search service are to be encrypted with Customer Managed Keys.')
-param encryptionWithCmk object = {}
+@allowed([
+  'Disabled'
+  'Enabled'
+  'Unspecified'
+])
+param cmkEnforcement string = 'Unspecified'
 
 @description('Optional. Applicable only for the standard3 SKU. You can set this property to enable up to 3 high density partitions that allow up to 1000 indexes, which is much higher than the maximum indexes allowed for any other SKU. For the standard3 SKU, the value is either \'default\' or \'highDensity\'. For all other SKUs, this value must be \'default\'.')
 @allowed([
@@ -166,9 +169,11 @@ resource searchService 'Microsoft.Search/searchServices@2022-09-01' = {
   tags: tags
   identity: identity
   properties: {
-    authOptions: authOptions
+    authOptions: !empty(authOptions) ? authOptions : null
     disableLocalAuth: disableLocalAuth
-    // encryptionWithCmk: encryptionWithCmk
+    encryptionWithCmk: {
+      enforcement: cmkEnforcement
+    }
     hostingMode: hostingMode
     networkRuleSet: networkRuleSet
     partitionCount: partitionCount
