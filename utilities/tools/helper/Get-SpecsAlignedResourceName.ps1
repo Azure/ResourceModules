@@ -69,6 +69,7 @@ function Get-SpecsAlignedResourceName {
 
     $rawProviderNamespace, $rawResourceType = $reducedResourceIdentifier -Split '[\/|\\]', 2 # e.g. 'keyvault' & 'vaults/keys'
 
+    # Find provider namespace
     $foundProviderNamespaceMatches = ($specs.Keys | Sort-Object) | Where-Object { $_ -like "Microsoft.$rawProviderNamespace*" }
 
     if (-not $foundProviderNamespaceMatches) {
@@ -78,44 +79,18 @@ function Get-SpecsAlignedResourceName {
         $providerNamespace = ($foundProviderNamespaceMatches.Count -eq 1) ? $foundProviderNamespaceMatches : $foundProviderNamespaceMatches[0]
     }
 
+    # Find resource type
     $innerResourceTypes = $specs[$providerNamespace].Keys | Sort-Object
-    $rawResourceTypeReduced = Get-ReducedWordString -StringToReduce $rawResourceType
-    $foundResourceTypeMatches = $innerResourceTypes | Where-Object { $_ -like "$rawResourceTypeReduced*" }
+    $reducedResourceType = Get-ReducedWordString -StringToReduce $rawResourceType
 
-    if (-not $foundResourceTypeMatches) {
-        $resourceType = $reducedResourceIdentifier.Split('/')[1]
-        Write-Warning "Failed to identify resource type [$rawResourceType] in provider namespace [$providerNamespace]. Fallback to [$resourceType]."
-    } elseif ($foundResourceTypeMatches.Count -eq 1) {
-        $resourceType = $foundResourceTypeMatches
-    } else {
-        # If more than one specs resource type matches the input resource type core string, get all specs core strings and check exact match
-        # This is to avoid that e.g. web/connection falls to Microsoft.Web/connectionGateways instead of Microsoft.Web/connections
-        foreach ($foundResourceTypeMatch in $foundResourceTypeMatches) {
-            $foundResourceTypeMatchReduced = Get-ReducedWordString -StringToReduce $foundResourceTypeMatch
-            if ($rawResourceTypeReduced -eq $foundResourceTypeMatchReduced) {
-                $resourceType = $foundResourceTypeMatch
-                break
-            }
-        }
+    $reducedResourceTypeElements = $reducedResourceType -split '[\/|\\]'
 
-        if (-not $resourceType) {
-            # Try removing last split of each match, then reduce to core and compare
-            # This is needed to deal cases such as Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers where backupFabrics does not exist on its own
-            foreach ($foundResourceTypeMatch in $foundResourceTypeMatches) {
-                $foundResourceTypeMatch = $foundResourceTypeMatch.SubString(0, $foundResourceTypeMatch.LastIndexOf('/'))
-                $foundResourceTypeMatchReduced = Get-ReducedWordString -StringToReduce $foundResourceTypeMatch
-                if ($rawResourceTypeReduced -eq $foundResourceTypeMatchReduced) {
-                    $resourceType = $foundResourceTypeMatch
-                    break
-                }
-            }
-            # Finally fallback to first match in the list
-            if (-not $resourceType) {
-                $resourceType = $foundResourceTypeMatches[0]
-                Write-Warning "Failed to find exact match between core matched resource types and [$rawResourceTypeReduced]. Fallback to first ResourceType in the match list [$resourceType]."
-            }
-        }
-    }
+    ## We built a regex that matches the resource type, but also the plural and singular form of it along its entire path. For example ^vault(y|ii|e|ys|ies|es|s|)(\/|$)key(y|ii|e|ys|ies|es|s|)(\/|$)$
+    ### (y|ii|e|ys|ies|es|s|) = Singular or plural form
+    ### (\/|$)                = End of string or another resource type level
+    $resourceTypeRegex = '^{0}(y|ii|e|ys|ies|es|s|)(\/|$)$' -f ($reducedResourceTypeElements -join '(y|ii|e|ys|ies|es|s|)(\/|$)')
+    $resourceType = $innerResourceTypes | Where-Object { $_ -match $resourceTypeRegex }
 
+    # Build result
     return "$providerNamespace/$resourceType"
 }
