@@ -88,14 +88,27 @@ function Get-SpecsAlignedResourceName {
     ## We built a regex that matches the resource type, but also the plural and singular form of it along its entire path. For example ^vault(y|ii|e|ys|ies|es|s|)(\/|$)key(y|ii|e|ys|ies|es|s|)(\/|$)$
     ### (y|ii|e|ys|ies|es|s|) = Singular or plural form
     ### (\/|$)                = End of string or another resource type level
-    $resourceTypeRegex = '^{0}(y|ii|e|ys|ies|es|s|)(\/|$)$' -f ($reducedResourceTypeElements -join '(y|ii|e|ys|ies|es|s|)(\/|$)')
+    $resourceTypeRegex = '^{0}(y|ii|e|ys|ies|es|s|ses|)(\/|$)$' -f ($reducedResourceTypeElements -join '(y|ii|e|ys|ies|es|s|ses|)(\/|$)')
     $resourceType = $innerResourceTypes | Where-Object { $_ -match $resourceTypeRegex }
 
-    # If no resource type is found, fall back one level (e.g., for 'authorization\role-definition\management-group' as 'management-group' in this context is no actual resource type)
+    # Special case handling: Ambiguous resource types (usually incorrect RP implementations)
+    if ($resourceType.count -gt 1) {
+        switch ($rawResourceType) {
+            'service/api/policy' {
+                # Setting explicitely as both [apimanagement/service/apis/policies] & [apimanagement/service/apis/policy] exist in the specs and the later seem to have been an initial incorrect publish (only one API version exists)
+                $resourceType = 'service/apis/policies'
+            }
+            Default {
+                throw ('Found ambiguous resource types [{0}] for identifier [{1}]' -f ($resourceType -join ','), $rawResourceType)
+            }
+        }
+    }
+
+    # Special case handling: If no resource type is found, fall back one level (e.g., for 'authorization\role-definition\management-group' as 'management-group' in this context is no actual resource type)
     if (-not $resourceType) {
         $fallbackResourceTypeRegex = '{0}$' -f ($resourceTypeRegex -split $reducedResourceTypeElements[-1])[0]
         $resourceType = $innerResourceTypes | Where-Object { $_ -match $fallbackResourceTypeRegex }
-        Write-Warning "Failed to find exact match between core matched resource types and [$reducedResourceType]. Fallback one level of for identifier [$rawResourceType]."
+        Write-Warning "Failed to find exact match between core matched resource types and [$rawResourceType]. Fallback one level up."
     }
 
     # Build result
