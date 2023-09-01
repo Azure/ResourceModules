@@ -154,7 +154,7 @@ runs:
               TemplateSpecsRgLocation  = '${{ inputs.templateSpecsRgLocation }}'
               TemplateSpecsDescription = '${{ inputs.templateSpecsDescription }}'
               ModuleVersion            = $moduleToPublish.Version
-              UseApiAlignedName        = [System.Convert]::ToBoolean(${{ inputs.publishUsingApiAlignedName }}')
+              UseApiAlignedName        = [System.Convert]::ToBoolean('${{ inputs.publishUsingApiAlignedName }}')
             }
 
             Write-Verbose "Invoke task with" -Verbose
