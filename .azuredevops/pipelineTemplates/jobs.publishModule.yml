@@ -263,7 +263,7 @@ jobs:
             $missingInputObject = @{
                 TemplateFilePath    = $TemplateFilePath
                 TemplateSpecsRGName = '${{ parameters.templateSpecsRgName }}'
-                PublishLatest       = [System.Convert]::ToBoolean('${{ parameters.bicepRegistryRgName }}')
+                PublishLatest       = '${{ parameters.bicepRegistryRgName }}'
             }
 
             Write-Verbose "Invoke Get-ModulesMissingFromTemplateSpecsRG with" -Verbose
@@ -359,7 +359,7 @@ jobs:
                 TemplateFilePath    = $TemplateFilePath
                 BicepRegistryName   = '${{ parameters.bicepRegistryName }}'
                 BicepRegistryRgName = '${{ parameters.bicepRegistryRgName }}'
-                PublishLatest       = [System.Convert]::ToBoolean('${{ parameters.bicepRegistryRgName }}')
+                PublishLatest       = [System.Convert]::ToBoolean('${{ parameters.publishLatest }}')
             }
 
             Write-Verbose "Invoke Get-ModulesMissingFromPrivateBicepRegistry with" -Verbose
