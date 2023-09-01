@@ -27,9 +27,9 @@ stages:
 
   - stage: Publishing
     displayName: Publish module
-    condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), eq(variables['Build.SourceBranch'], 'refs/heads/master'), eq('${{ parameters.prerelease }}', 'True')))
-    dependsOn:
-      - validation
-      - deployment
+    # condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), eq(variables['Build.SourceBranch'], 'refs/heads/master'), eq('${{ parameters.prerelease }}', 'True')))
+    # dependsOn:
+    #   - validation
+    #   - deployment
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.publishModule.yml
