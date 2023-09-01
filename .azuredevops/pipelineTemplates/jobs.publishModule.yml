@@ -196,7 +196,7 @@ jobs:
       #           VstsFeedProject     = '${{ parameters.vstsFeedProject }}'
       #           VstsFeedName        = '${{ parameters.vstsFeedName }}'
       #           ModuleVersion       = $moduleToPublish.Version
-      #           UseApiAlignedName   = [bool] '${{ parameters.publishUsingApiAlignedName }}'
+      #           UseApiAlignedName   = [System.Convert]::ToBoolean('${{ parameters.publishUsingApiAlignedName }}')
       #         }
 
       #         Write-Verbose "Invoke Publish-ModuleToUniversalArtifactsFeed with" -Verbose
@@ -244,7 +244,7 @@ jobs:
             ################################
             $functionInput = @{
               TemplateFilePath = $TemplateFilePath
-              PublishLatest    = [bool] '${{ parameters.publishLatest }}'
+              PublishLatest    = [System.Convert]::ToBoolean('${{ parameters.publishLatest }}')
             }
 
             Write-Verbose "Invoke Get-ModulesToPublish with" -Verbose
@@ -263,7 +263,7 @@ jobs:
             $missingInputObject = @{
                 TemplateFilePath    = $TemplateFilePath
                 TemplateSpecsRGName = '${{ parameters.templateSpecsRgName }}'
-                PublishLatest       = [bool] '${{ parameters.bicepRegistryRgName }}'
+                PublishLatest       = [System.Convert]::ToBoolean('${{ parameters.bicepRegistryRgName }}')
             }
 
             Write-Verbose "Invoke Get-ModulesMissingFromTemplateSpecsRG with" -Verbose
@@ -290,7 +290,7 @@ jobs:
                 TemplateSpecsRgLocation  = '${{ parameters.templateSpecsRgLocation }}'
                 TemplateSpecsDescription = '${{ parameters.templateSpecsDescription }}'
                 ModuleVersion            = $moduleToPublish.Version
-                UseApiAlignedName        = [bool] '${{ parameters.publishUsingApiAlignedName }}'
+                UseApiAlignedName        = [System.Convert]::ToBoolean('${{ parameters.publishUsingApiAlignedName }}')
               }
 
               Write-Verbose "Invoke Publish-ModuleToTemplateSpecsRG with" -Verbose
@@ -340,7 +340,7 @@ jobs:
             ################################
             $functionInput = @{
               TemplateFilePath = $TemplateFilePath
-              PublishLatest    = [bool] '${{ parameters.publishLatest }}'
+              PublishLatest    = [System.Convert]::ToBoolean('${{ parameters.publishLatest }}')
             }
 
             Write-Verbose "Invoke Get-ModulesToPublish with" -Verbose
@@ -359,7 +359,7 @@ jobs:
                 TemplateFilePath    = $TemplateFilePath
                 BicepRegistryName   = '${{ parameters.bicepRegistryName }}'
                 BicepRegistryRgName = '${{ parameters.bicepRegistryRgName }}'
-                PublishLatest       = [bool] '${{ parameters.bicepRegistryRgName }}'
+                PublishLatest       = [System.Convert]::ToBoolean('${{ parameters.bicepRegistryRgName }}')
             }
 
             Write-Verbose "Invoke Get-ModulesMissingFromPrivateBicepRegistry with" -Verbose
@@ -386,7 +386,7 @@ jobs:
                 BicepRegistryRgName     = '${{ parameters.bicepRegistryRgName }}'
                 BicepRegistryRgLocation = '${{ parameters.bicepRegistryRgLocation }}'
                 ModuleVersion           = $moduleToPublish.Version
-                UseApiAlignedName       = [bool] '${{ parameters.publishUsingApiAlignedName }}'
+                UseApiAlignedName       = [System.Convert]::ToBoolean('${{ parameters.publishUsingApiAlignedName }}')
               }
 
               Write-Verbose "Invoke Publish-ModuleToPrivateBicepRegistry with" -Verbose
