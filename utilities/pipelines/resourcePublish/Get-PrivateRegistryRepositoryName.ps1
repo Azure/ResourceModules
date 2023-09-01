@@ -29,16 +29,15 @@ function Get-PrivateRegistryRepositoryName {
         [bool] $UseApiAlignedName = $false
     )
 
-    # Load helper scripts
-    . (Join-Path (Get-Item -Path $PSScriptRoot).Parent.Parent 'tools' 'helper' 'Get-SpecsAlignedResourceName.ps1')
-
     $moduleIdentifier = (Split-Path $TemplateFilePath -Parent).Replace('\', '/').Split('/modules/')[1]
 
     if ($UseApiAlignedName) {
-        $moduleRegistryIdentifier = 'bicep/modules/{0}' -f $moduleIdentifier.Replace('\', '/').Replace('/', '.').ToLower()
-    } else {
-        $moduleRegistryIdentifier = 'bicep/modules/{0}' -f $moduleIdentifier.Replace('\', '/').Replace('/', '.').ToLower()
+        # Load helper script
+        . (Join-Path (Get-Item -Path $PSScriptRoot).Parent.Parent 'tools' 'helper' 'Get-SpecsAlignedResourceName.ps1')
+        $moduleIdentifier = Get-SpecsAlignedResourceName -ResourceIdentifier $moduleIdentifier
     }
+
+    $moduleRegistryIdentifier = 'bicep/modules/{0}' -f $moduleIdentifier.Replace('\', '/').Replace('/', '.').ToLower()
 
     return $moduleRegistryIdentifier
 }

@@ -30,6 +30,13 @@ function Get-TemplateSpecsName {
     )
 
     $moduleIdentifier = (Split-Path $TemplateFilePath -Parent).Replace('\', '/').Split('/modules/')[1]
+
+    if ($UseApiAlignedName) {
+        # Load helper script
+        . (Join-Path (Get-Item -Path $PSScriptRoot).Parent.Parent 'tools' 'helper' 'Get-SpecsAlignedResourceName.ps1')
+        $moduleIdentifier = Get-SpecsAlignedResourceName -ResourceIdentifier $moduleIdentifier
+    }
+
     $templateSpecIdentifier = $moduleIdentifier.Replace('\', '/').Replace('/', '.').ToLower()
 
     # Shorten the name
@@ -44,8 +51,19 @@ function Get-TemplateSpecsName {
             $stringToCheck = $nameElems[($index + 1)]
 
             # If a name is replicated in a path, it is usually plural in the parent, and singular in the child path.
-            if ($stringToCheck.StartsWith($stringToRemove)) {
-                $nameElems[($index + 1)] = $stringToCheck -replace "$stringToRemove-"
+            # For example: /virtualNetworks/ (plural) & /virtualNetworks/virtualNetworkPeerings/ (singular)
+            # In this case we want to remove the singular version from the subsequent string & format it accordingly
+            if ($stringToRemove.EndsWith('s') -and $stringToCheck.StartsWith($stringToRemove.Substring(0, $stringToRemove.length - 1))) {
+                $singularString = $stringToRemove.Substring(0, $stringToRemove.length - 1)
+                $rest = $stringToCheck.length - $singularString.Length
+                $shortenedString = $stringToCheck.Substring($singularString.length, $rest)
+                $camelCaseString = [Regex]::Replace($shortenedString , '\b.', { $args[0].Value.Tolower() })
+                $nameElems[($index + 1)] = $camelCaseString
+            } elseif ($stringToCheck.StartsWith($stringToRemove)) {
+                # If the subsequent string starts with the current string, we want to remove the current string from the subsequent string.
+                # So we take the index of the end of the current string, caculate the length until the end of the string and reduce. If a `-` was in between the 2 elements, we also want to trim it from the front.
+                # For example 'replication-protection-container' & 'replication-protection-container-mapping' shiuld become 'mapping'
+                $nameElems[($index + 1)] = $stringToCheck.Substring($stringToRemove.length, $stringToCheck.length - $stringToRemove.length).TrimStart('-')
             }
         }
     }

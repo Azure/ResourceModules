@@ -32,6 +32,13 @@ function Get-UniversalArtifactsName {
 
     $ModuleFolderPath = Split-Path $TemplateFilePath -Parent
     $universalPackageModuleName = $ModuleFolderPath.Replace('\', '/').Split('/modules/')[1]
+
+    if ($UseApiAlignedName) {
+        # Load helper script
+        . (Join-Path (Get-Item -Path $PSScriptRoot).Parent.Parent 'tools' 'helper' 'Get-SpecsAlignedResourceName.ps1')
+        $universalPackageModuleName = Get-SpecsAlignedResourceName -ResourceIdentifier $universalPackageModuleName
+    }
+
     $universalPackageModuleName = $universalPackageModuleName.Replace('\', '.').Replace('/', '.').toLower()
 
     return $universalPackageModuleName
