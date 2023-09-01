@@ -27,7 +27,8 @@
 ##   | vmImage                         | '$(vmImage)'                         | You can provide either a [poolname] or [vmImage] to run the job on                                      | 'ubuntu20.04'                     |
 ##   | defaultJobTimeoutInMinutes      | 120                                  | The timeout for the job in this pipeline                                                                | 120                               |
 ##   | modulePath                      | '$(modulePath)'                      | The path to the module to deploy. E.g. [c:/KeyVault]                                                    | 'c:/KeyVault'                     |
-##   | publishLatest                   | '$(publishLatest)'                   | Flag to indicate whether or not to publish a "latest" version to Bicep Registry and Template Specs                                           | true                              |
+##   | publishLatest                   | '$(publishLatest)'                   | Flag to indicate whether or not to publish a "latest" version to Bicep Registry and Template Specs      | true                              |
+##   | publishUsingApiAlignedName      | '$(publishUsingApiAlignedName)'      | Flag to indicate whether or not to publish module using their REST API, or their folder path name       | true                              |
 ##   | templateSpecsRGName             | '$(templateSpecsRGName)'             | Required to publish to template spec. ResourceGroup of the template spec to publish to                  | 'mgmt-rg'                         |
 ##   | templateSpecsRGLocation         | '$(templateSpecsRGLocation)'         | Required to publish to template spec. Location of the template spec resource group                      | 'West Europe'                     |
 ##   | templateSpecsDescription        | '$(templateSpecsDescription)'        | Required to publish to template spec. Description of the template spec to publish to                    | 'IaCs module'                     |
@@ -60,6 +61,7 @@ parameters:
 
   # Shared
   publishLatest: '$(publishLatest)'
+  publishUsingApiAlignedName: '$(publishUsingApiAlignedName)'
 
   ## TemplateSpec-related
   templateSpecsDoPublish: '$(templateSpecsDoPublish)'
@@ -194,6 +196,7 @@ jobs:
                 VstsFeedProject     = '${{ parameters.vstsFeedProject }}'
                 VstsFeedName        = '${{ parameters.vstsFeedName }}'
                 ModuleVersion       = $moduleToPublish.Version
+                UseApiAlignedName   = '${{ parameters.publishUsingApiAlignedName }}'
               }
 
               Write-Verbose "Invoke Publish-ModuleToUniversalArtifactsFeed with" -Verbose
@@ -287,6 +290,7 @@ jobs:
                 TemplateSpecsRgLocation  = '${{ parameters.templateSpecsRgLocation }}'
                 TemplateSpecsDescription = '${{ parameters.templateSpecsDescription }}'
                 ModuleVersion            = $moduleToPublish.Version
+                UseApiAlignedName        = '${{ parameters.publishUsingApiAlignedName }}'
               }
 
               Write-Verbose "Invoke Publish-ModuleToTemplateSpecsRG with" -Verbose
@@ -382,6 +386,7 @@ jobs:
                 BicepRegistryRgName     = '${{ parameters.bicepRegistryRgName }}'
                 BicepRegistryRgLocation = '${{ parameters.bicepRegistryRgLocation }}'
                 ModuleVersion           = $moduleToPublish.Version
+                UseApiAlignedName       = '${{ parameters.publishUsingApiAlignedName }}'
               }
 
               Write-Verbose "Invoke Publish-ModuleToPrivateBicepRegistry with" -Verbose

@@ -59,6 +59,11 @@ Example: 'Artifacts'.
 .PARAMETER BearerToken
 Optional. The bearer token to use to authenticate the request. If not provided it MUST be existing in your environment as `$env:TOKEN`
 
+.PARAMETER UseApiAlignedName
+Optional. If set to true, the module will be published with a name that is aligned with the Azure API naming. If not, one aligned with the module's folder path. See the following examples:
+- True:  microsoft.keyvault.vaults.secrets
+- False: key-vault.vault.secret
+
 .EXAMPLE
 Publish-ModuleToUniversalArtifactsFeed -TemplateFilePath 'C:\modules\key-vault\vault\main.bicep' -ModuleVersion '3.0.0-alpha' -vstsOrganizationUri 'https://dev.azure.com/fabrikam' -VstsProject 'IaC' -VstsFeedName 'Artifacts'
 
@@ -84,7 +89,10 @@ function Publish-ModuleToUniversalArtifactsFeed {
         [string] $BearerToken = $env:TOKEN,
 
         [Parameter(Mandatory)]
-        [string] $ModuleVersion
+        [string] $ModuleVersion,
+
+        [Parameter(Mandatory = $false)]
+        [bool] $UseApiAlignedName = $false
     )
 
     begin {
@@ -103,7 +111,7 @@ function Publish-ModuleToUniversalArtifactsFeed {
         #################################
         ##    Generate package name    ##
         #################################
-        $universalPackageModuleName = Get-UniversalArtifactsName -TemplateFilePath $TemplateFilePath
+        $universalPackageModuleName = Get-UniversalArtifactsName -TemplateFilePath $TemplateFilePath -UseApiAlignedName $UseApiAlignedName
 
         ###########################
         ##    Find feed scope    ##

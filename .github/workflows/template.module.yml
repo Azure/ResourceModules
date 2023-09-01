@@ -140,3 +140,4 @@ jobs:
           bicepRegistryRgLocation: '${{ env.bicepRegistryRgLocation }}'
           bicepRegistryDoPublish: '${{ env.bicepRegistryDoPublish }}'
           publishLatest: '${{ env.publishLatest }}'
+          publishUsingApiAlignedName: '${{ env.publishUsingApiAlignedName }}'
