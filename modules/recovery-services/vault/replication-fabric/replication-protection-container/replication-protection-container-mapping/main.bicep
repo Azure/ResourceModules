@@ -1,4 +1,4 @@
-metadata name = 'Recovery Services Vault Replication Fabric Replication Protection Container Replication Protection Container Mappings'
+metadata name = 'Recovery Services Vault Replication Fabric Replication Protection Container Replication Protection Container Mappings <REMOVE>'
 metadata description = '''This module deploys a Recovery Services Vault (RSV) Replication Protection Container Mapping.
 
 > **Note**: this version of the module only supports the `instanceType: 'A2A'` scenario.'''
