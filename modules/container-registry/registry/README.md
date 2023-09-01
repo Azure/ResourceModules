@@ -421,8 +421,8 @@ module registry './container-registry/registry/main.bicep' = {
     quarantinePolicyStatus: 'enabled'
     replications: [
       {
-        location: 'northeurope'
-        name: 'northeurope'
+        location: '<location>'
+        name: '<name>'
       }
     ]
     roleAssignments: [
@@ -533,8 +533,8 @@ module registry './container-registry/registry/main.bicep' = {
     "replications": {
       "value": [
         {
-          "location": "northeurope",
-          "name": "northeurope"
+          "location": "<location>",
+          "name": "<name>"
         }
       ]
     },

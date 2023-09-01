@@ -31,7 +31,18 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
-module nestedDependencies 'dependencies.bicep' = {
+module nestedDependencies1 'dependencies1.bicep' = {
+  scope: resourceGroup
+  name: '${uniqueString(deployment().name, location)}-nestedDependencies1'
+  params: {
+    // Adding base time to make the name unique as purge protection must be enabled (but may not be longer than 24 characters total)
+    location: location
+    managedIdentityName: 'dep-${namePrefix}-msi-ds-${serviceShort}'
+    pairedRegionScriptName: 'dep-${namePrefix}-ds-${serviceShort}'
+  }
+}
+
+module nestedDependencies2 'dependencies2.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
@@ -78,10 +89,10 @@ module testDeployment '../../main.bicep' = {
     privateEndpoints: [
       {
         service: 'registry'
-        subnetResourceId: nestedDependencies.outputs.subnetResourceId
+        subnetResourceId: nestedDependencies2.outputs.subnetResourceId
         privateDnsZoneGroup: {
           privateDNSResourceIds: [
-            nestedDependencies.outputs.privateDNSZoneResourceId
+            nestedDependencies2.outputs.privateDNSZoneResourceId
           ]
         }
         tags: {
@@ -99,15 +110,15 @@ module testDeployment '../../main.bicep' = {
     quarantinePolicyStatus: 'enabled'
     replications: [
       {
-        location: 'northeurope'
-        name: 'northeurope'
+        location: nestedDependencies1.outputs.pairedRegionName
+        name: nestedDependencies1.outputs.pairedRegionName
       }
     ]
     roleAssignments: [
       {
         roleDefinitionIdOrName: 'Reader'
         principalIds: [
-          nestedDependencies.outputs.managedIdentityPrincipalId
+          nestedDependencies2.outputs.managedIdentityPrincipalId
         ]
         principalType: 'ServicePrincipal'
       }
@@ -115,7 +126,7 @@ module testDeployment '../../main.bicep' = {
     systemAssignedIdentity: true
     trustPolicyStatus: 'enabled'
     userAssignedIdentities: {
-      '${nestedDependencies.outputs.managedIdentityResourceId}': {}
+      '${nestedDependencies2.outputs.managedIdentityResourceId}': {}
     }
     webhooks: [
       {
