@@ -1,0 +1,150 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.20.4.51522",
+      "templateHash": "13735806028928031798"
+    },
+    "name": "Role Definitions (Resource Group scope)",
+    "description": "This module deploys a Role Definition at a Resource Group scope.",
+    "owner": "Azure/module-maintainers"
+  },
+  "parameters": {
+    "roleName": {
+      "type": "string",
+      "metadata": {
+        "description": "Required. Name of the custom RBAC role to be created."
+      }
+    },
+    "description": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Optional. Description of the custom RBAC role to be created."
+      }
+    },
+    "actions": {
+      "type": "array",
+      "defaultValue": [],
+      "metadata": {
+        "description": "Optional. List of allowed actions."
+      }
+    },
+    "notActions": {
+      "type": "array",
+      "defaultValue": [],
+      "metadata": {
+        "description": "Optional. List of denied actions."
+      }
+    },
+    "dataActions": {
+      "type": "array",
+      "defaultValue": [],
+      "metadata": {
+        "description": "Optional. List of allowed data actions. This is not supported if the assignableScopes contains Management Group Scopes."
+      }
+    },
+    "notDataActions": {
+      "type": "array",
+      "defaultValue": [],
+      "metadata": {
+        "description": "Optional. List of denied data actions. This is not supported if the assignableScopes contains Management Group Scopes."
+      }
+    },
+    "subscriptionId": {
+      "type": "string",
+      "defaultValue": "[subscription().subscriptionId]",
+      "metadata": {
+        "description": "Optional. The subscription ID where the Role Definition and Target Scope will be applied to. If not provided, will use the current scope for deployment."
+      }
+    },
+    "resourceGroupName": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().name]",
+      "metadata": {
+        "description": "Optional. The name of the Resource Group where the Role Definition and Target Scope will be applied to. If not provided, will use the current scope for deployment."
+      }
+    },
+    "assignableScopes": {
+      "type": "array",
+      "defaultValue": [],
+      "metadata": {
+        "description": "Optional. Role definition assignable scopes. If not provided, will use the current scope provided."
+      }
+    },
+    "enableDefaultTelemetry": {
+      "type": "bool",
+      "defaultValue": true,
+      "metadata": {
+        "description": "Optional. Enable telemetry via a Globally Unique Identifier (GUID)."
+      }
+    }
+  },
+  "resources": [
+    {
+      "condition": "[parameters('enableDefaultTelemetry')]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2021-04-01",
+      "name": "[format('pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-{0}', uniqueString(deployment().name))]",
+      "properties": {
+        "mode": "Incremental",
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "resources": []
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Authorization/roleDefinitions",
+      "apiVersion": "2022-04-01",
+      "name": "[guid(parameters('roleName'), parameters('subscriptionId'), parameters('resourceGroupName'))]",
+      "properties": {
+        "roleName": "[parameters('roleName')]",
+        "description": "[parameters('description')]",
+        "type": "customRole",
+        "permissions": [
+          {
+            "actions": "[parameters('actions')]",
+            "notActions": "[parameters('notActions')]",
+            "dataActions": "[parameters('dataActions')]",
+            "notDataActions": "[parameters('notDataActions')]"
+          }
+        ],
+        "assignableScopes": "[if(equals(parameters('assignableScopes'), createArray()), array(resourceGroup().id), parameters('assignableScopes'))]"
+      }
+    }
+  ],
+  "outputs": {
+    "name": {
+      "type": "string",
+      "metadata": {
+        "description": "The GUID of the Role Definition."
+      },
+      "value": "[guid(parameters('roleName'), parameters('subscriptionId'), parameters('resourceGroupName'))]"
+    },
+    "scope": {
+      "type": "string",
+      "metadata": {
+        "description": "The scope this Role Definition applies to."
+      },
+      "value": "[resourceGroup().id]"
+    },
+    "resourceId": {
+      "type": "string",
+      "metadata": {
+        "description": "The resource ID of the Role Definition."
+      },
+      "value": "[resourceId('Microsoft.Authorization/roleDefinitions', guid(parameters('roleName'), parameters('subscriptionId'), parameters('resourceGroupName')))]"
+    },
+    "resourceGroupName": {
+      "type": "string",
+      "metadata": {
+        "description": "The name of the resource group the role definition was created at."
+      },
+      "value": "[resourceGroup().name]"
+    }
+  }
+}

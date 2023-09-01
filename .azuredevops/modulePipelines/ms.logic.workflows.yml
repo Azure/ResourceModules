@@ -29,7 +29,7 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.logic.workflows.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/modules/logic/workflows/*'
+      - '/modules/logic/workflow/*'
       - '/utilities/pipelines/*'
     exclude:
       - '/utilities/pipelines/deploymentRemoval/*'
@@ -39,7 +39,7 @@ variables:
   - template: '../../settings.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/modules/logic/workflows'
+    value: '/modules/logic/workflow'
 
 stages:
   - template: /.azuredevops/pipelineTemplates/stages.module.yml

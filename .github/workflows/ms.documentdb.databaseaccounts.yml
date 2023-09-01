@@ -27,16 +27,17 @@ on:
     branches:
       - main
     paths:
+      - 'modules/document-db/database-account/**'
+      - 'modules/network/private-endpoint/**'
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.documentdb.databaseaccounts.yml'
-      - 'modules/document-db/database-accounts/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
       - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/document-db/database-accounts'
+  modulePath: 'modules/document-db/database-account'
   workflowPath: '.github/workflows/ms.documentdb.databaseaccounts.yml'
 
 concurrency:

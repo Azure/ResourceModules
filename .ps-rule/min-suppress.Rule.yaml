@@ -8,6 +8,8 @@ spec:
   rule:
    - Azure.Resource.UseTags
    - Azure.KeyVault.Logs
+   - Azure.Policy.Descriptors
+   - Azure.Policy.AssignmentDescriptors
   if:
     name: '.'
     contains:

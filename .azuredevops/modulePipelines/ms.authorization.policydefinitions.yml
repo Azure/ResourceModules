@@ -29,7 +29,7 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.authorization.policydefinitions.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/modules/authorization/policy-definitions/*'
+      - '/modules/authorization/policy-definition/*'
       - '/utilities/pipelines/*'
     exclude:
       - '/utilities/pipelines/deploymentRemoval/*'
@@ -39,7 +39,7 @@ variables:
   - template: '../../settings.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/modules/authorization/policy-definitions'
+    value: '/modules/authorization/policy-definition'
 
 stages:
   - template: /.azuredevops/pipelineTemplates/stages.module.yml

@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.18.4.5664",
-      "templateHash": "9522710652989103185"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "10514926371607978717"
+    },
+    "name": "Express Route Gateways",
+    "description": "This module deploys an Express Route Gateway.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
@@ -88,7 +91,7 @@
     },
     {
       "type": "Microsoft.Network/expressRouteGateways",
-      "apiVersion": "2022-07-01",
+      "apiVersion": "2023-04-01",
       "name": "[parameters('name')]",
       "location": "[parameters('location')]",
       "tags": "[parameters('tags')]",
@@ -134,7 +137,7 @@
       "metadata": {
         "description": "The location the resource was deployed into."
       },
-      "value": "[reference(resourceId('Microsoft.Network/expressRouteGateways', parameters('name')), '2022-07-01', 'full').location]"
+      "value": "[reference(resourceId('Microsoft.Network/expressRouteGateways', parameters('name')), '2023-04-01', 'full').location]"
     }
   }
 }

@@ -29,7 +29,7 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.eventgrid.systemtopics.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/modules/event-grid/system-topics/*'
+      - '/modules/event-grid/system-topic/*'
       - '/utilities/pipelines/*'
     exclude:
       - '/utilities/pipelines/deploymentRemoval/*'
@@ -39,7 +39,7 @@ variables:
   - template: '../../settings.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/modules/event-grid/system-topics'
+    value: '/modules/event-grid/system-topic'
 
 stages:
   - template: /.azuredevops/pipelineTemplates/stages.module.yml

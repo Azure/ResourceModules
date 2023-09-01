@@ -53,27 +53,6 @@ jobs:
 
           Set-ReadMeModuleTable @functionInput -Verbose
 
-      # Update the `modules` folder ReadMe ([`/modules/README.md`](https://github.com/Azure/ResourceModules/blob/main/modules/README.md))
-      - name: 'Update module folder ReadMe'
-        shell: pwsh
-        run: |
-          # Load used functions
-          . (Join-Path $env:GITHUB_WORKSPACE $env:relativeScriptPath_SetReadMeModuleTable)
-
-          $functionInput = @{
-            ModulesPath    = Join-Path $env:GITHUB_WORKSPACE 'modules'
-            FilePath       = Join-Path $env:GITHUB_WORKSPACE 'modules' 'README.md'
-            Organization   = ($env:GITHUB_REPOSITORY).split('/')[0]
-            RepositoryName = ($env:GITHUB_REPOSITORY).split('/')[1]
-            ColumnsInOrder = @('ProviderNamespace','ResourceType', 'Name')
-            Environment    = 'GitHub'
-          }
-
-          Write-Verbose "Invoke task with" -Verbose
-          Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
-
-          Set-ReadMeModuleTable @functionInput -Verbose
-
       # Update the module overview table ([`/docs/wiki/The library - Module overview.md`](https://github.com/Azure/ResourceModules/wiki/The%20library%20-%20Module%20overview))
       - name: 'Update module outline'
         shell: pwsh

@@ -18,7 +18,7 @@ param serviceShort string = 'apismax'
 param enableDefaultTelemetry bool = true
 
 @description('Optional. A token to inject into the name of each resource.')
-param namePrefix string = '<<namePrefix>>'
+param namePrefix string = '[[namePrefix]]'
 
 @description('Optional. The secret to leverage for authorization server authentication.')
 @secure()
@@ -117,7 +117,6 @@ module testDeployment '../../main.bicep' = {
         useFromLocation: 'westeurope'
       }
     ]
-    diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
     diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
     diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId

@@ -1,6 +1,0 @@
-{
-    "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
-    "name": "SQL Managed Instances Administrator",
-    "summary": "This module deploys a SQL Managed Instance Administrator.",
-    "owner": "Azure/module-maintainers"
-}

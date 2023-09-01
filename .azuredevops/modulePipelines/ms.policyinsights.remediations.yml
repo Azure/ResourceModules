@@ -29,7 +29,7 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.policyinsights.remediations.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/modules/policy-insights/remediations/*'
+      - '/modules/policy-insights/remediation/*'
       - '/utilities/pipelines/*'
     exclude:
       - '/utilities/pipelines/deploymentRemoval/*'
@@ -39,7 +39,7 @@ variables:
   - template: '../../settings.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/modules/policy-insights/remediations'
+    value: '/modules/policy-insights/remediation'
 
 stages:
   - template: /.azuredevops/pipelineTemplates/stages.module.yml

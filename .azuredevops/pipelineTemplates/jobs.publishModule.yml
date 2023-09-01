@@ -52,6 +52,7 @@ parameters:
   vmImage: '$(vmImage)'
   defaultJobTimeoutInMinutes: 120
   modulesRepository: '$(modulesRepository)'
+  subscriptionId: '$(ARM_SUBSCRIPTION_ID)'
 
   # Logic-related parameters
   ## Module-related
@@ -109,14 +110,14 @@ jobs:
             . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
 
             # Define PS modules to install on the runner
-            $Modules = @(
+            $modules = @(
                 @{ Name = 'Az.Accounts' },
                 @{ Name = 'Az.ContainerRegistry' },
                 @{ Name = 'Az.Resources' }
             )
 
             # Set agent up
-            Set-EnvironmentOnAgent -PSModules $Modules
+            Set-EnvironmentOnAgent -PSModules $modules
 
       # [Universal Artifact-feed publish] task(s)
       #------------------------------------------
@@ -220,6 +221,10 @@ jobs:
           pwsh: true
           ScriptType: InlineScript
           inline: |
+            # Set context to chosen subscription
+            Write-Verbose ('Setting context to subscription [{0}]' -f '${{ parameters.subscriptionId }}') -Verbose
+            $null = Set-AzContext -Subscription '${{ parameters.subscriptionId }}'
+
             # Load used functions
             . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Get-ModulesToPublish.ps1')
             . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Get-ModulesMissingFromTemplateSpecsRG.ps1')
@@ -310,6 +315,10 @@ jobs:
             $SecuredPassword = ConvertTo-SecureString -AsPlainText -String $env:servicePrincipalKey
             $Credential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $env:servicePrincipalId, $SecuredPassword
             $null = Connect-AzAccount -ServicePrincipal -TenantId $env:tenantId -Credential $Credential
+
+            # Set context to chosen subscription
+            Write-Verbose ('Setting context to subscription [{0}]' -f '${{ parameters.subscriptionId }}') -Verbose
+            $null = Set-AzContext -Subscription '${{ parameters.subscriptionId }}'
 
             # Load used functions
             . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Get-ModulesToPublish.ps1')

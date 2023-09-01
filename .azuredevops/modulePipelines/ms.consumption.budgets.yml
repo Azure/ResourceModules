@@ -29,7 +29,7 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.consumption.budgets.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/modules/consumption/budgets/*'
+      - '/modules/consumption/budget/*'
       - '/utilities/pipelines/*'
     exclude:
       - '/utilities/pipelines/deploymentRemoval/*'
@@ -39,7 +39,7 @@ variables:
   - template: '../../settings.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/modules/consumption/budgets'
+    value: '/modules/consumption/budget'
 
 stages:
   - template: /.azuredevops/pipelineTemplates/stages.module.yml

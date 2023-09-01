@@ -1,6 +1,0 @@
-{
-    "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
-    "name": "Storage Account Blob Containers",
-    "summary": "This module deploys a Storage Account Blob Container.",
-    "owner": "Azure/module-maintainers"
-}

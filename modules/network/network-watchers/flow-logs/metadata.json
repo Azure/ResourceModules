@@ -1,6 +1,0 @@
-{
-    "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
-    "name": "NSG Flow Logs",
-    "summary": "This module controls the Network Security Group Flow Logs and analytics settings\n**Note: this module must be run on the Resource Group where Network Watcher is deployed**",
-    "owner": "Azure/module-maintainers"
-}

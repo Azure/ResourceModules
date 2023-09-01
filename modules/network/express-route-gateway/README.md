@@ -1,4 +1,4 @@
-# Express Route Gateways `[Microsoft.Network/expressRouteGateway]`
+# Express Route Gateways `[Microsoft.Network/expressRouteGateways]`
 
 This module deploys an Express Route Gateway.
 
@@ -14,7 +14,7 @@ This module deploys an Express Route Gateway.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Network/expressRouteGateways` | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/expressRouteGateways) |
+| `Microsoft.Network/expressRouteGateways` | [2023-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-04-01/expressRouteGateways) |
 
 ## Parameters
 
@@ -149,8 +149,8 @@ You can specify multiple user assigned identities to a resource by providing add
 ```json
 "userAssignedIdentities": {
     "value": {
-        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
-        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
+        "/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
+        "/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
     }
 }
 ```
@@ -163,8 +163,8 @@ You can specify multiple user assigned identities to a resource by providing add
 
 ```bicep
 userAssignedIdentities: {
-    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
-    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
+    '/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
+    '/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
 }
 ```
 
@@ -202,7 +202,7 @@ module expressRouteGateway './network/express-route-gateway/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nergcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>nergcom001'
+    name: 'nergcom001'
     virtualHubId: '<virtualHubId>'
     // Non-required parameters
     autoScaleConfigurationBoundsMax: 3
@@ -229,7 +229,7 @@ module expressRouteGateway './network/express-route-gateway/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>nergcom001"
+      "value": "nergcom001"
     },
     "virtualHubId": {
       "value": "<virtualHubId>"

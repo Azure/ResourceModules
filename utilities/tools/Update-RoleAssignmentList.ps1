@@ -12,9 +12,9 @@ Mandatory. The Provider Namespace to fetch the role definitions for
 Mandatory. The ResourceType to fetch the role definitions for
 
 .EXAMPLE
-Update-RoleAssignmentListInner -ProviderNamespace 'Microsoft.KeyVault' -ResourceType 'vaults'
+Update-RoleAssignmentListInner -ProviderNamespace 'key-vault' -ResourceType 'vault'
 
-Update nested_roleassignments.bicep template for [Microsoft.KeyVault/vaults] module with latest available Role Definitions
+Update nested_roleassignments.bicep template for module [key-vault/vault] with latest available Role Definitions
 #>
 function Update-RoleAssignmentListInner {
 
@@ -55,11 +55,11 @@ function Update-RoleAssignmentListInner {
         ##  Create array of file names  ##
         ##################################
         $filesToProcess = @()
-        if ("$ProviderNamespace/$ResourceType" -eq 'Microsoft.Authorization/RoleAssignments') {
-            # for the module 'Microsoft.Authorization/RoleAssignments' looking recursiverly for
+        if ("$ProviderNamespace/$ResourceType" -eq 'authorization/role-assignment') {
+            # for the module 'authorization/role-assignment' looking recursiverly for
             # all 'main.bicep' files in the module folder
             Set-Location $modulesPath
-            $searchFile = Join-Path $modulesPath 'Microsoft.Authorization' 'roleAssignments' '**' 'main.bicep'
+            $searchFile = Join-Path $modulesPath 'authorization' 'role-assignment' '**' 'main.bicep'
             $rbacPathList = Get-ChildItem -Path $searchFile -Recurse
             foreach ($item in $rbacPathList) {
                 $FullFilePath = $item.FullName
@@ -115,9 +115,9 @@ Update-RoleAssignmentList
 Update all nested_roleassignments.bicep found in the library with latest available Role Definitions
 
 .EXAMPLE
-Update-RoleAssignmentList -ProviderNamespace 'Microsoft.KeyVault' -ResourceType 'vaults'
+Update-RoleAssignmentList -ProviderNamespace 'key-vault' -ResourceType 'vault'
 
-Update nested_roleassignments.bicep template for [Microsoft.KeyVault/vaults] module with latest available Role Definitions
+Update nested_roleassignments.bicep template for module [key-vault/vault] with latest available Role Definitions
 #>
 function Update-RoleAssignmentList {
 
@@ -163,11 +163,11 @@ function Update-RoleAssignmentList {
                     $null = Update-RoleAssignmentListInner -ProviderNamespace $provider -ResourceType $type -Verbose
                 }
             }
-            # also updating the roles in the [Microsoft.Authorization/RoleAssignments] module,
+            # also updating the roles in the [authorization/role-assignment] module,
             # which needs to be triggered separately, as the roles are not stored in the nested_roleAssignments.bicep
             # and therefore it's not detected by the search
-            if ($PSCmdlet.ShouldProcess('Role Assignments for module [Microsoft.Authorization/RoleAssignments]', 'Update')) {
-                $null = Update-RoleAssignmentListInner -ProviderNamespace 'Microsoft.Authorization' -ResourceType 'RoleAssignments' -Verbose
+            if ($PSCmdlet.ShouldProcess('Role Assignments for module [authorization/role-assignment]', 'Update')) {
+                $null = Update-RoleAssignmentListInner -ProviderNamespace 'authorization' -ResourceType 'role-assignment' -Verbose
             }
         }
     }

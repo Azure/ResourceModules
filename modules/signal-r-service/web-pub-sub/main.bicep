@@ -1,3 +1,7 @@
+metadata name = 'SignalR Web PubSub Services'
+metadata description = 'This module deploys a SignalR Web PubSub Service.'
+metadata owner = 'Azure/module-maintainers'
+
 @description('Optional. The location for the resource.')
 param location string = resourceGroup().location
 
@@ -118,7 +122,7 @@ resource webPubSub 'Microsoft.SignalRService/webPubSub@2021-10-01' = {
   }
 }
 
-module webPubSub_privateEndpoints '../../network/private-endpoints/main.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
+module webPubSub_privateEndpoints '../../network/private-endpoint/main.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
   name: '${uniqueString(deployment().name, location)}-WebPubSub-PrivateEndpoint-${index}'
   params: {
     groupIds: [

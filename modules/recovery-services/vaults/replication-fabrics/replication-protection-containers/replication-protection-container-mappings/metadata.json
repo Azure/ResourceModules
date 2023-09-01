@@ -1,6 +1,0 @@
-{
-    "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
-    "name": "Recovery Services Vault Replication Fabric Replication Protection Container Replication Protection Container Mappings",
-    "summary": "This module deploys a Recovery Services Vault (RSV) Replication Protection Container Mapping.\n\n> **Note**: this version of the module only supports the `instanceType: 'A2A'` scenario.",
-    "owner": "Azure/module-maintainers"
-}

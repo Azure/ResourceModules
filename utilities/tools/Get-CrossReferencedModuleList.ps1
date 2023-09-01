@@ -61,9 +61,9 @@ Invoke the function with the default path. Returns an object such as:
 {
     "Compute/availabilitySets": {
         "localPathReferences": [
-            RecoveryServices/vaults/protectionContainers/protectedItems
-            Network/publicIPAddresses
-            Network/networkInterfaces
+            recovery-service/vault/protection-container/protected-item
+            network/public-ip-address
+            network/network-interface
         ],
         "remoteReferences": null,
         "resourceReferences": [
@@ -78,9 +78,9 @@ Invoke the function with the default path. Returns an object such as:
 }
 
 .EXAMPLE
-Get-CrossReferencedModuleList -Path './Sql'
+Get-CrossReferencedModuleList -Path './sql'
 
-Get only the references of the modules in folder path './Sql'
+Get only the references of the modules in folder path './sql'
 #>
 function Get-CrossReferencedModuleList {
 
@@ -93,11 +93,16 @@ function Get-CrossReferencedModuleList {
     $resultSet = [ordered]@{}
 
     # Get all top-level module folders (i.e. one level below the Resource Provider folder)
-    $topLevelFolderPaths = (Get-ChildItem -Path $path -Recurse -Depth 1 -Directory).FullName
+    $topLevelFolderPaths = (Get-ChildItem -Path $path -Depth 1 -Directory).FullName | Where-Object {
+        $_ -notlike '*.shared*' -and # Ignore shared templates
+        (($_ -split '[\\|\/]modules[\\|\/]')[1] -split '[\\|/]').Count -eq 2 # From '/modules/' only consider those which have 2 more path elements (i.e., are resource type folders)
+    }
 
     foreach ($topLevelFolderPath in $topLevelFolderPaths) {
 
-        $moduleTemplatePaths = (Get-ChildItem -Path $topLevelFolderPath -Recurse -Filter '*.bicep' -File -Force).FullName | Where-Object { $_ -notlike '*.test*' }
+        $moduleTemplatePaths = (Get-ChildItem -Path $topLevelFolderPath -Recurse -Include '*.bicep' -File -Force).FullName | Where-Object {
+            $_ -notmatch '.+[\/|\\].test[\/|\\].+'
+        }
 
         $resourceReferences = [System.Collections.ArrayList]@()
         $localPathReferences = [System.Collections.ArrayList]@()
@@ -133,7 +138,7 @@ function Get-CrossReferencedModuleList {
                 # remove leading path elements
                 ($_ -replace '\\', '/') -match '^[\.\/]*(.+)$'
             } | ForEach-Object {
-                # We have to differentate the case that the referenced resources is inside or outside the same provider namespace (e.g. '../publicIPAddresses')
+                # We have to differentate the case that the referenced resources is inside or outside the same provider namespace (e.g. '../public-ip-address')
                 if ($matches[1] -like '*/*') {
                     # Reference outside of namespace
                     $matches[1]

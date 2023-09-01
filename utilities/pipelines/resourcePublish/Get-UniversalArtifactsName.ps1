@@ -10,9 +10,9 @@ Must be lowercase alphanumerics, dashes, dots or underscores, under 256 characte
 Mandatory. The template file path to convert
 
 .EXAMPLE
-Get-UniversalArtifactsName -TemplateFilePath 'C:\modules\key-vault\vaults\main.bicep'
+Get-UniversalArtifactsName -TemplateFilePath 'C:\modules\key-vault\vault\main.bicep'
 
-Convert 'C:\modules\key-vault\vaults\main.bicep' to e.g. 'microsoft.keyvault.vaults'
+Convert 'C:\modules\key-vault\vault\main.bicep' to e.g. 'microsoft.key-vault.vault'
 #>
 function Get-UniversalArtifactsName {
 

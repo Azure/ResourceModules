@@ -27,7 +27,7 @@ trigger:
       - main
   paths:
     include:
-      - '/modules/compute/ssh-public-keys/*'
+      - '/modules/compute/ssh-public-key/*'
       - '/.azuredevops/modulePipelines/ms.compute.sshpublickeys.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
       - '/utilities/pipelines/*'
@@ -39,7 +39,7 @@ variables:
   - template: '../../settings.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/modules/compute/ssh-public-keys'
+    value: '/modules/compute/ssh-public-key'
 
 stages:
   - template: /.azuredevops/pipelineTemplates/stages.module.yml

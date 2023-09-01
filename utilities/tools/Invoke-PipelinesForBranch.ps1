@@ -193,7 +193,7 @@ Optional. The Azure DevOps project to run the pipelines in. Required if the chos
 Optional. The folder in Azure DevOps the pipelines are registerd in. Required if the chosen environment is `AzureDevOps`. Defaults to 'CARML-Modules'.
 
 .EXAMPLE
-Invoke-PipelinesForBranch -PersonalAccessToken '<Placeholder>' -TargetBranch 'feature/branch' -Environment 'GitHub' -PipelineFilter 'ms.network.*' -GitHubPipelineInputs @{ prerelease = 'false'; deploymentValidation = 'false'; removeDeployment = 'true' }
+Invoke-PipelinesForBranch -PersonalAccessToken '<Placeholder>' -TargetBranch 'feature/branch' -Environment 'GitHub' -PipelineFilter 'ms.network.*' -GitHubPipelineInputs @{ prerelease = 'false'; staticValidation = 'true'; deploymentValidation = 'true'; removeDeployment = 'true' }
 
 Run all GitHub workflows that start with 'ms.network.*' using branch 'feature/branch'. Also returns all GitHub status badges.
 
