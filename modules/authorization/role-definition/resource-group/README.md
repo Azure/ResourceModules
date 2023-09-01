@@ -1,4 +1,4 @@
-# Role Definitions (Resource Group scope) `[Microsoft.Authorization/]`
+# Role Definitions (Resource Group scope) `[Microsoft.Authorization/roleDefinitions]`
 
 This module deploys a Role Definition at a Resource Group scope.
 

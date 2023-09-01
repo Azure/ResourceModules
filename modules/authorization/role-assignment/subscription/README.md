@@ -1,4 +1,4 @@
-# Role Assignments (Subscription scope) `[Microsoft.Authorization/]`
+# Role Assignments (Subscription scope) `[Microsoft.Authorization/roleAssignments]`
 
 This module deploys a Role Assignment at a Subscription scope.
 

@@ -1,4 +1,4 @@
-# Policy Exemptions (Resource Group scope) `[Microsoft.Authorization/]`
+# Policy Exemptions (Resource Group scope) `[Microsoft.Authorization/policyExemptions]`
 
 This module deploys a Policy Exemption at a Resource Group scope.
 

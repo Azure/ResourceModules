@@ -1,4 +1,4 @@
-# Policy Set Definitions (Initiatives) (Subscription scope) `[Microsoft.Authorization/]`
+# Policy Set Definitions (Initiatives) (Subscription scope) `[Microsoft.Authorization/policySetDefinitions]`
 
 This module deploys a Policy Set Definition (Initiative) at a Subscription scope.
 

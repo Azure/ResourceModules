@@ -1,4 +1,4 @@
-# Role Definitions (Management Group scope) `[Microsoft.Authorization/]`
+# Role Definitions (Management Group scope) `[Microsoft.Authorization/roleDefinitions]`
 
 This module deploys a Role Definition at a Management Group scope.
 

@@ -1,4 +1,4 @@
-# Policy Set Definitions (Initiatives) (Management Group scope) `[Microsoft.Authorization/]`
+# Policy Set Definitions (Initiatives) (Management Group scope) `[Microsoft.Authorization/policySetDefinitions]`
 
 This module deploys a Policy Set Definition (Initiative) at a Management Group scope.
 

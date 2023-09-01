@@ -91,6 +91,13 @@ function Get-SpecsAlignedResourceName {
     $resourceTypeRegex = '^{0}(y|ii|e|ys|ies|es|s|)(\/|$)$' -f ($reducedResourceTypeElements -join '(y|ii|e|ys|ies|es|s|)(\/|$)')
     $resourceType = $innerResourceTypes | Where-Object { $_ -match $resourceTypeRegex }
 
+    # If no resource type is found, fall back one level (e.g., for 'authorization\role-definition\management-group' as 'management-group' in this context is no actual resource type)
+    if (-not $resourceType) {
+        $fallbackResourceTypeRegex = '{0}$' -f ($resourceTypeRegex -split $reducedResourceTypeElements[-1])[0]
+        $resourceType = $innerResourceTypes | Where-Object { $_ -match $fallbackResourceTypeRegex }
+        Write-Warning "Failed to find exact match between core matched resource types and [$reducedResourceType]. Fallback one level of for identifier [$resourceType]."
+    }
+
     # Build result
     return "$providerNamespace/$resourceType"
 }

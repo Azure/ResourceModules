@@ -1,4 +1,4 @@
-# Authorization Locks (Subscription scope) `[Microsoft.Authorization/]`
+# Authorization Locks (Subscription scope) `[Microsoft.Authorization/locks]`
 
 This module deploys an Authorization Lock at a Subscription scope.
 
