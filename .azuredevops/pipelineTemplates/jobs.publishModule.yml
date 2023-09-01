@@ -263,7 +263,7 @@ jobs:
             $missingInputObject = @{
                 TemplateFilePath    = $TemplateFilePath
                 TemplateSpecsRGName = '${{ parameters.templateSpecsRgName }}'
-                PublishLatest       = '${{ parameters.bicepRegistryRgName }}'
+                PublishLatest       = [System.Convert]::ToBoolean('${{ parameters.publishLatest }}')
             }
 
             Write-Verbose "Invoke Get-ModulesMissingFromTemplateSpecsRG with" -Verbose
