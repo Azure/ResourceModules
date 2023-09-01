@@ -18,6 +18,11 @@ Mandatory. The name of Resource Group the Container Registry is located it.
 Optional. Publish an absolute latest version.
 Note: This version may include breaking changes and is not recommended for production environments
 
+.PARAMETER UseApiAlignedName
+Optional. If set to true, the module name looked for is aligned with the Azure API naming. If not, it's one aligned with the module's folder path. See the following examples:
+- True:  microsoft.keyvault.vaults.secrets
+- False: key-vault.vault.secret
+
 .EXAMPLE
 Get-ModulesMissingFromPrivateBicepRegistry -TemplateFilePath 'C:\ResourceModules\modules\compute\virtual-machine\main.bicep' -BicepRegistryName 'adpsxxazacrx001' -BicepRegistryRgName 'artifacts-rg'
 
@@ -57,7 +62,10 @@ function Get-ModulesMissingFromPrivateBicepRegistry {
         [string] $BicepRegistryRgName,
 
         [Parameter(Mandatory = $false)]
-        [bool] $PublishLatest = $true
+        [bool] $PublishLatest = $true,
+
+        [Parameter(Mandatory = $false)]
+        [bool] $UseApiAlignedName = $false
     )
 
     begin {
@@ -89,7 +97,7 @@ function Get-ModulesMissingFromPrivateBicepRegistry {
             foreach ($templatePath in $availableModuleTemplatePaths) {
 
                 # Get a valid Container Registry name
-                $moduleRegistryIdentifier = Get-PrivateRegistryRepositoryName -TemplateFilePath $templatePath
+                $moduleRegistryIdentifier = Get-PrivateRegistryRepositoryName -TemplateFilePath $templatePath -UseApiAlignedName $UseApiAlignedName
 
                 $null = Get-AzContainerRegistryTag -RepositoryName $moduleRegistryIdentifier -RegistryName $BicepRegistryName -ErrorAction 'SilentlyContinue' -ErrorVariable 'result'
 

@@ -265,6 +265,7 @@ jobs:
                 TemplateFilePath    = $TemplateFilePath
                 TemplateSpecsRGName = '${{ parameters.templateSpecsRgName }}'
                 PublishLatest       = [System.Convert]::ToBoolean('${{ parameters.publishLatest }}')
+                UseApiAlignedName   = [System.Convert]::ToBoolean('${{ parameters.publishUsingApiAlignedName }}')
             }
 
             Write-Verbose "Invoke Get-ModulesMissingFromTemplateSpecsRG with" -Verbose
@@ -361,6 +362,7 @@ jobs:
                 BicepRegistryName   = '${{ parameters.bicepRegistryName }}'
                 BicepRegistryRgName = '${{ parameters.bicepRegistryRgName }}'
                 PublishLatest       = [System.Convert]::ToBoolean('${{ parameters.publishLatest }}')
+                UseApiAlignedName   = [System.Convert]::ToBoolean('${{ parameters.publishUsingApiAlignedName }}')
             }
 
             Write-Verbose "Invoke Get-ModulesMissingFromPrivateBicepRegistry with" -Verbose
