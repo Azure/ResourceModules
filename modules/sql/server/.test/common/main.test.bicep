@@ -101,7 +101,7 @@ module testDeployment '../../main.bicep' = {
         skuTier: 'GeneralPurpose'
         skuCapacity: 10
         // Pre-existing 'public' configuration
-        maintenanceConfigurationId: '${subscription().id}/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_WestEurope_DB_1'
+        maintenanceConfigurationId: '${subscription().id}/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_${location}_DB_1'
       }
     ]
     databases: [
