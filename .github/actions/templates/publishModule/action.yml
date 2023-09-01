@@ -154,7 +154,7 @@ runs:
               TemplateSpecsRgLocation  = '${{ inputs.templateSpecsRgLocation }}'
               TemplateSpecsDescription = '${{ inputs.templateSpecsDescription }}'
               ModuleVersion            = $moduleToPublish.Version
-              UseApiAlignedName        = '${{ inputs.publishUsingApiAlignedName }}'
+              UseApiAlignedName        = [bool]' ${{ inputs.publishUsingApiAlignedName }}'
             }
 
             Write-Verbose "Invoke task with" -Verbose
@@ -235,7 +235,7 @@ runs:
               BicepRegistryRgName     = '${{ inputs.bicepRegistryRgName }}'
               BicepRegistryRgLocation = '${{ inputs.bicepRegistryRgLocation }}'
               ModuleVersion           = $moduleToPublish.Version
-              UseApiAlignedName       = '${{ inputs.publishUsingApiAlignedName }}'
+              UseApiAlignedName       = [bool] '${{ inputs.publishUsingApiAlignedName }}'
             }
 
             Write-Verbose "Invoke task with" -Verbose

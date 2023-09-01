@@ -196,7 +196,7 @@ jobs:
                 VstsFeedProject     = '${{ parameters.vstsFeedProject }}'
                 VstsFeedName        = '${{ parameters.vstsFeedName }}'
                 ModuleVersion       = $moduleToPublish.Version
-                UseApiAlignedName   = '${{ parameters.publishUsingApiAlignedName }}'
+                UseApiAlignedName   = [bool] '${{ parameters.publishUsingApiAlignedName }}'
               }
 
               Write-Verbose "Invoke Publish-ModuleToUniversalArtifactsFeed with" -Verbose
@@ -290,7 +290,7 @@ jobs:
                 TemplateSpecsRgLocation  = '${{ parameters.templateSpecsRgLocation }}'
                 TemplateSpecsDescription = '${{ parameters.templateSpecsDescription }}'
                 ModuleVersion            = $moduleToPublish.Version
-                UseApiAlignedName        = '${{ parameters.publishUsingApiAlignedName }}'
+                UseApiAlignedName        = [bool] '${{ parameters.publishUsingApiAlignedName }}'
               }
 
               Write-Verbose "Invoke Publish-ModuleToTemplateSpecsRG with" -Verbose
@@ -386,7 +386,7 @@ jobs:
                 BicepRegistryRgName     = '${{ parameters.bicepRegistryRgName }}'
                 BicepRegistryRgLocation = '${{ parameters.bicepRegistryRgLocation }}'
                 ModuleVersion           = $moduleToPublish.Version
-                UseApiAlignedName       = '${{ parameters.publishUsingApiAlignedName }}'
+                UseApiAlignedName       = [bool] '${{ parameters.publishUsingApiAlignedName }}'
               }
 
               Write-Verbose "Invoke Publish-ModuleToPrivateBicepRegistry with" -Verbose
