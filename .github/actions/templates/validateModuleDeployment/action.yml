@@ -252,7 +252,7 @@ runs:
     # [Deployment removal] task(s)
     # ----------------------------
     - name: 'Remove deployed resources'
-      if: ${{ always() && inputs.removeDeployment == 'true' && steps.deploy_step.outputs.deploymentNames != '' }}
+      if: ${{ (success() || failure()) && inputs.removeDeployment == 'true' && steps.deploy_step.outputs.deploymentNames != '' }}
       uses: azure/powershell@v1
       with:
         azPSVersion: 'latest'
