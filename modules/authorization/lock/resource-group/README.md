@@ -1,4 +1,4 @@
-# Authorization Locks (Resource Group scope) `[Microsoft.Authorization/locks]`
+# Authorization Locks (Resource Group scope) `[Microsoft.Authorization/]`
 
 This module deploys an Authorization Lock at a Resource Group scope.
 

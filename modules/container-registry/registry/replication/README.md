@@ -1,4 +1,4 @@
-# Azure Container Registry (ACR) Replications `[Microsoft.ContainerRegistry/registries/replications]`
+# Azure Container Registry (ACR) Replications `[Microsoft.ContainerRegistry/]`
 
 This module deploys an Azure Container Registry (ACR) Replication.
 

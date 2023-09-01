@@ -1,4 +1,4 @@
-# Policy Assignments (Management Group scope) `[Microsoft.Authorization/policyAssignments]`
+# Policy Assignments (Management Group scope) `[Microsoft.Authorization/]`
 
 This module deploys a Policy Assignment at a Management Group scope.
 

@@ -1,4 +1,4 @@
-# API Management Service APIs Policies `[Microsoft.ApiManagement/service/apis/policies]`
+# API Management Service APIs Policies `[Microsoft.ApiManagement/service/apis/policies service/apis/policy]`
 
 This module deploys an API Management Service API Policy.
 

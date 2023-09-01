@@ -1,4 +1,4 @@
-# Policy Exemptions (Management Group scope) `[Microsoft.Authorization/policyExemptions]`
+# Policy Exemptions (Management Group scope) `[Microsoft.Authorization/]`
 
 This module deploys a Policy Exemption at a Management Group scope.
 

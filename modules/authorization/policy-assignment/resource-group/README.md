@@ -1,4 +1,4 @@
-# Policy Assignments (Resource Group scope) `[Microsoft.Authorization/policyAssignments]`
+# Policy Assignments (Resource Group scope) `[Microsoft.Authorization/]`
 
 This module deploys a Policy Assignment at a Resource Group scope.
 

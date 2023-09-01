@@ -1,4 +1,4 @@
-# Compute Galleries Image Definitions `[Microsoft.Compute/galleries/images]`
+# Compute Galleries Image Definitions `[Microsoft.Compute/]`
 
 This module deploys an Azure Compute Gallery Image Definition.
 

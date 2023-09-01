@@ -20,6 +20,11 @@ Example: 'IaC'.
 Mandatory. Name to the feed to publish to.
 Example: 'Artifacts'.
 
+.PARAMETER UseApiAlignedName
+Optional. If set to true, the module name looked for is aligned with the Azure API naming. If not, it's one aligned with the module's folder path. See the following examples:
+- True:  microsoft.keyvault.vaults.secrets
+- False: key-vault.vault.secret
+
 .PARAMETER BearerToken
 Optional. The bearer token to use to authenticate the request. If not provided it MUST be existing in your environment as `$env:TOKEN`
 
@@ -55,6 +60,9 @@ function Get-ModulesMissingFromUniversalArtifactsFeed {
 
         [Parameter(Mandatory = $false)]
         [string] $VstsFeedProject = '',
+
+        [Parameter(Mandatory = $false)]
+        [bool] $UseApiAlignedName = $false,
 
         [Parameter(Mandatory = $false)]
         [string] $BearerToken = $env:TOKEN
@@ -104,7 +112,7 @@ function Get-ModulesMissingFromUniversalArtifactsFeed {
         foreach ($templatePath in $availableModuleTemplatePaths) {
 
             # Get a valid Universal Artifact name
-            $artifactsIdentifier = Get-UniversalArtifactsName -TemplateFilePath $templatePath
+            $artifactsIdentifier = Get-UniversalArtifactsName -TemplateFilePath $templatePath -UseApiAlignedName $UseApiAlignedName
 
             if ($publishedModules -notcontains $artifactsIdentifier) {
                 $missingTemplatePaths += $templatePath
