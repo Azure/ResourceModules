@@ -1,4 +1,4 @@
-# Data Factory Managed Virtual Networks `[Microsoft.DataFactory/]`
+# Data Factory Managed Virtual Networks `[Microsoft.DataFactory/factories/managedVirtualNetworks]`
 
 This module deploys a Data Factory Managed Virtual Network.
 

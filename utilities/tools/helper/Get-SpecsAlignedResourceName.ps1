@@ -81,9 +81,9 @@ function Get-SpecsAlignedResourceName {
 
     # Find resource type
     $innerResourceTypes = $specs[$providerNamespace].Keys | Sort-Object
-    $reducedResourceType = Get-ReducedWordString -StringToReduce $rawResourceType
 
-    $reducedResourceTypeElements = $reducedResourceType -split '[\/|\\]'
+    $rawResourceTypeElem = $rawResourceType -split '[\/|\\]'
+    $reducedResourceTypeElements = $rawResourceTypeElem | ForEach-Object { Get-ReducedWordString -StringToReduce $_ }
 
     ## We built a regex that matches the resource type, but also the plural and singular form of it along its entire path. For example ^vault(y|ii|e|ys|ies|es|s|)(\/|$)key(y|ii|e|ys|ies|es|s|)(\/|$)$
     ### (y|ii|e|ys|ies|es|s|) = Singular or plural form
@@ -95,7 +95,7 @@ function Get-SpecsAlignedResourceName {
     if (-not $resourceType) {
         $fallbackResourceTypeRegex = '{0}$' -f ($resourceTypeRegex -split $reducedResourceTypeElements[-1])[0]
         $resourceType = $innerResourceTypes | Where-Object { $_ -match $fallbackResourceTypeRegex }
-        Write-Warning "Failed to find exact match between core matched resource types and [$reducedResourceType]. Fallback one level of for identifier [$resourceType]."
+        Write-Warning "Failed to find exact match between core matched resource types and [$reducedResourceType]. Fallback one level of for identifier [$rawResourceType]."
     }
 
     # Build result

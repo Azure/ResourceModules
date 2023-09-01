@@ -1,4 +1,4 @@
-# Azure Container Registry (ACR) Webhooks `[Microsoft.ContainerRegistry/]`
+# Azure Container Registry (ACR) Webhooks `[Microsoft.ContainerRegistry/registries/webhooks]`
 
 This module deploys an Azure Container Registry (ACR) Webhook.
 
