@@ -63,7 +63,7 @@ function Get-TemplateSpecsName {
             } elseif ($stringToCheck.StartsWith($stringToRemove)) {
                 # If the subsequent string starts with the current string, we want to remove the current string from the subsequent string.
                 # So we take the index of the end of the current string, caculate the length until the end of the string and reduce. If a `-` was in between the 2 elements, we also want to trim it from the front.
-                # For example 'replication-protection-container' & 'replication-protection-container-mapping' shiuld become 'mapping'
+                # For example 'replication-protection-container' & 'replication-protection-container-mapping' should become 'mapping'
                 $nameElems[($index + 1)] = $stringToCheck.Substring($stringToRemove.length, $stringToCheck.length - $stringToRemove.length).TrimStart('-')
             }
         }
