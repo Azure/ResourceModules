@@ -1,7 +1,7 @@
 metadata name = 'Key Vault Keys'
-metadata description = 'This module deploys a Key Vault Key. <REMOVE>'
+metadata description = 'This module deploys a Key Vault Key.'
 metadata owner = 'Azure/module-maintainers'
-
+// Comment to <REMOVE>
 @description('Conditional. The name of the parent key vault. Required if the template is used in a standalone deployment.')
 param keyVaultName string
 
