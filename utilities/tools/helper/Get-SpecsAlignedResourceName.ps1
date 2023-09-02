@@ -113,7 +113,7 @@ function Get-SpecsAlignedResourceName {
             Write-Warning "Resource type [$rawResourceType] does not exist in the API / is custom. Falling back to it as default."
             $resourceType = $rawResourceType
         } else {
-            Write-Warning "Failed to find exact match between core matched resource types and [$rawResourceType]. Fallback one level up."
+            Write-Warning ('Failed to find exact match between core matched resource types and [{0}]. Fallback on [{1}].' -f $rawResourceType, (Split-Path $rawResourceType -Parent))
         }
     }
 
