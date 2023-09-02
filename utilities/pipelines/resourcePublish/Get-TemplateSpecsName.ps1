@@ -8,7 +8,7 @@ Convert the given template file path into a valid Template Specs repository name
 .PARAMETER TemplateFilePath
 Mandatory. The template file path to convert
 
-.PARAMETER UseApiAlignedName
+.PARAMETER UseApiSpecsAlignedName
 Optional. If set to true, the returned name will be aligned with the Azure API naming. If not, the one aligned with the module's folder path. See the following examples:
 - True:  microsoft.keyvault.vaults.secrets
 - False: key-vault.vault.secret
@@ -26,12 +26,12 @@ function Get-TemplateSpecsName {
         [string] $TemplateFilePath,
 
         [Parameter(Mandatory = $false)]
-        [bool] $UseApiAlignedName = $false
+        [bool] $UseApiSpecsAlignedName = $false
     )
 
     $moduleIdentifier = (Split-Path $TemplateFilePath -Parent).Replace('\', '/').Split('/modules/')[1]
 
-    if ($UseApiAlignedName) {
+    if ($UseApiSpecsAlignedName) {
         # Load helper script
         . (Join-Path (Get-Item -Path $PSScriptRoot).Parent.Parent 'tools' 'helper' 'Get-SpecsAlignedResourceName.ps1')
         $moduleIdentifier = Get-SpecsAlignedResourceName -ResourceIdentifier $moduleIdentifier

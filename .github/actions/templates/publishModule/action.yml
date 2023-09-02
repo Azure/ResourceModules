@@ -26,7 +26,7 @@
 ##   | bicepRegistryRgLocation    | false    | ''      | Required to publish to private bicep registry. Location of the container registry resource group  | 'WestEurope'                                           |
 ##   | bicepRegistryDoPublish     | false    | 'false' | Flag to indicate whether or not to publish to the private bicep registry                          | 'true'                                                 |
 ##   | publishLatest              | false    | 'true'  | Flag to indicate whether or not to publish a "latest" version                                     | 'true'                                                 |
-##   | publishUsingApiAlignedName | false    | 'false' | Flag to indicate whether or not to publish module using their REST API, or their folder path name | 'true'                                                 |
+##   | useApiSpecsAlignedName     | false    | 'false' | Flag to indicate whether or not to publish module using their REST API, or their folder path name | 'true'                                                 |
 ##   |==============================================================================================================================================================================================================|
 ##
 ##---------------------------------------------##
@@ -70,7 +70,7 @@ inputs:
     description: 'Flag to indicate whether or not to publish a "latest" version'
     default: 'true'
     required: false
-  publishUsingApiAlignedName:
+  useApiSpecsAlignedName:
     description: 'Flag to indicate whether or not to publish module using their REST API, or their folder path name'
     default: 'false'
     required: false
@@ -154,7 +154,7 @@ runs:
               TemplateSpecsRgLocation  = '${{ inputs.templateSpecsRgLocation }}'
               TemplateSpecsDescription = '${{ inputs.templateSpecsDescription }}'
               ModuleVersion            = $moduleToPublish.Version
-              UseApiAlignedName        = [System.Convert]::ToBoolean('${{ inputs.publishUsingApiAlignedName }}')
+              UseApiSpecsAlignedName   = [System.Convert]::ToBoolean('${{ inputs.useApiSpecsAlignedName }}')
             }
 
             Write-Verbose "Invoke task with" -Verbose
@@ -235,7 +235,7 @@ runs:
               BicepRegistryRgName     = '${{ inputs.bicepRegistryRgName }}'
               BicepRegistryRgLocation = '${{ inputs.bicepRegistryRgLocation }}'
               ModuleVersion           = $moduleToPublish.Version
-              UseApiAlignedName       = [System.Convert]::ToBoolean('${{ inputs.publishUsingApiAlignedName }}')
+              UseApiSpecsAlignedName  = [System.Convert]::ToBoolean('${{ inputs.useApiSpecsAlignedName }}')
             }
 
             Write-Verbose "Invoke task with" -Verbose

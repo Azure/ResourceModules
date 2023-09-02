@@ -26,7 +26,7 @@ Example: 'West Europe'
 Mandatory. The description of the parent template spec.
 Example: 'iacs key vault'
 
-.PARAMETER UseApiAlignedName
+.PARAMETER UseApiSpecsAlignedName
 Optional. If set to true, the module will be published with a name that is aligned with the Azure API naming. If not, one aligned with the module's folder path. See the following examples:
 - True:  microsoft.keyvault.vaults.secrets
 - False: key-vault.vault.secret
@@ -56,7 +56,7 @@ function Publish-ModuleToTemplateSpecsRG {
         [string] $TemplateSpecsDescription,
 
         [Parameter(Mandatory = $false)]
-        [bool] $UseApiAlignedName = $false
+        [bool] $UseApiSpecsAlignedName = $false
     )
 
     begin {
@@ -77,7 +77,7 @@ function Publish-ModuleToTemplateSpecsRG {
         }
 
         # Get a valid Template Specs name
-        $templateSpecIdentifier = Get-TemplateSpecsName -TemplateFilePath $TemplateFilePath -UseApiAlignedName $UseApiAlignedName
+        $templateSpecIdentifier = Get-TemplateSpecsName -TemplateFilePath $TemplateFilePath -UseApiSpecsAlignedName $UseApiSpecsAlignedName
 
         ################################
         ##    Create template spec    ##

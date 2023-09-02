@@ -28,7 +28,7 @@
 ##   | defaultJobTimeoutInMinutes      | 120                                  | The timeout for the job in this pipeline                                                                | 120                               |
 ##   | modulePath                      | '$(modulePath)'                      | The path to the module to deploy. E.g. [c:/KeyVault]                                                    | 'c:/KeyVault'                     |
 ##   | publishLatest                   | '$(publishLatest)'                   | Flag to indicate whether or not to publish a "latest" version to Bicep Registry and Template Specs      | true                              |
-##   | publishUsingApiAlignedName      | '$(publishUsingApiAlignedName)'      | Flag to indicate whether or not to publish module using their REST API, or their folder path name       | true                              |
+##   | useApiSpecsAlignedName          | '$(useApiSpecsAlignedName)'          | Flag to indicate whether or not to publish module using their REST API, or their folder path name       | true                              |
 ##   | templateSpecsRGName             | '$(templateSpecsRGName)'             | Required to publish to template spec. ResourceGroup of the template spec to publish to                  | 'mgmt-rg'                         |
 ##   | templateSpecsRGLocation         | '$(templateSpecsRGLocation)'         | Required to publish to template spec. Location of the template spec resource group                      | 'West Europe'                     |
 ##   | templateSpecsDescription        | '$(templateSpecsDescription)'        | Required to publish to template spec. Description of the template spec to publish to                    | 'IaCs module'                     |
@@ -61,7 +61,7 @@ parameters:
 
   # Shared
   publishLatest: '$(publishLatest)'
-  publishUsingApiAlignedName: '$(publishUsingApiAlignedName)'
+  useApiSpecsAlignedName: '$(useApiSpecsAlignedName)'
 
   ## TemplateSpec-related
   templateSpecsDoPublish: '$(templateSpecsDoPublish)'
@@ -166,11 +166,11 @@ jobs:
             #############################
             # Add all modules that don't exist in the target location
             $missingInputObject = @{
-                TemplateFilePath    = $TemplateFilePath
-                VstsOrganizationUri = '${{ parameters.vstsOrganizationUri }}'
-                VstsFeedProject     = '${{ parameters.vstsFeedProject }}'
-                VstsFeedName        = '${{ parameters.vstsFeedName }}'
-                UseApiAlignedName   = [System.Convert]::ToBoolean('${{ parameters.publishUsingApiAlignedName }}')
+                TemplateFilePath       = $TemplateFilePath
+                VstsOrganizationUri    = '${{ parameters.vstsOrganizationUri }}'
+                VstsFeedProject        = '${{ parameters.vstsFeedProject }}'
+                VstsFeedName           = '${{ parameters.vstsFeedName }}'
+                UseApiSpecsAlignedName = [System.Convert]::ToBoolean('${{ parameters.useApiSpecsAlignedName }}')
             }
 
             Write-Verbose "Invoke Get-ModulesMissingFromUniversalArtifactsFeed with" -Verbose
@@ -192,12 +192,12 @@ jobs:
               Write-Host "##[group]$(' - [{0}] [{1}]' -f $RelPath, $moduleToPublish.Version)"
 
               $functionInput = @{
-                TemplateFilePath    = $moduleToPublish.TemplateFilePath
-                VstsOrganizationUri = '${{ parameters.vstsOrganizationUri }}'
-                VstsFeedProject     = '${{ parameters.vstsFeedProject }}'
-                VstsFeedName        = '${{ parameters.vstsFeedName }}'
-                ModuleVersion       = $moduleToPublish.Version
-                UseApiAlignedName   = [System.Convert]::ToBoolean('${{ parameters.publishUsingApiAlignedName }}')
+                TemplateFilePath       = $moduleToPublish.TemplateFilePath
+                VstsOrganizationUri    = '${{ parameters.vstsOrganizationUri }}'
+                VstsFeedProject        = '${{ parameters.vstsFeedProject }}'
+                VstsFeedName           = '${{ parameters.vstsFeedName }}'
+                ModuleVersion          = $moduleToPublish.Version
+                UseApiSpecsAlignedName = [System.Convert]::ToBoolean('${{ parameters.useApiSpecsAlignedName }}')
               }
 
               Write-Verbose "Invoke Publish-ModuleToUniversalArtifactsFeed with" -Verbose
@@ -262,10 +262,10 @@ jobs:
 
             # Add all modules that don't exist in the target location
             $missingInputObject = @{
-                TemplateFilePath    = $TemplateFilePath
-                TemplateSpecsRGName = '${{ parameters.templateSpecsRgName }}'
-                PublishLatest       = [System.Convert]::ToBoolean('${{ parameters.publishLatest }}')
-                UseApiAlignedName   = [System.Convert]::ToBoolean('${{ parameters.publishUsingApiAlignedName }}')
+                TemplateFilePath       = $TemplateFilePath
+                TemplateSpecsRGName    = '${{ parameters.templateSpecsRgName }}'
+                PublishLatest          = [System.Convert]::ToBoolean('${{ parameters.publishLatest }}')
+                UseApiSpecsAlignedName = [System.Convert]::ToBoolean('${{ parameters.useApiSpecsAlignedName }}')
             }
 
             Write-Verbose "Invoke Get-ModulesMissingFromTemplateSpecsRG with" -Verbose
@@ -292,7 +292,7 @@ jobs:
                 TemplateSpecsRgLocation  = '${{ parameters.templateSpecsRgLocation }}'
                 TemplateSpecsDescription = '${{ parameters.templateSpecsDescription }}'
                 ModuleVersion            = $moduleToPublish.Version
-                UseApiAlignedName        = [System.Convert]::ToBoolean('${{ parameters.publishUsingApiAlignedName }}')
+                UseApiSpecsAlignedName   = [System.Convert]::ToBoolean('${{ parameters.useApiSpecsAlignedName }}')
               }
 
               Write-Verbose "Invoke Publish-ModuleToTemplateSpecsRG with" -Verbose
@@ -358,11 +358,11 @@ jobs:
             #############################
             # Add all modules that don't exist in the target location
             $missingInputObject = @{
-                TemplateFilePath    = $TemplateFilePath
-                BicepRegistryName   = '${{ parameters.bicepRegistryName }}'
-                BicepRegistryRgName = '${{ parameters.bicepRegistryRgName }}'
-                PublishLatest       = [System.Convert]::ToBoolean('${{ parameters.publishLatest }}')
-                UseApiAlignedName   = [System.Convert]::ToBoolean('${{ parameters.publishUsingApiAlignedName }}')
+                TemplateFilePath       = $TemplateFilePath
+                BicepRegistryName      = '${{ parameters.bicepRegistryName }}'
+                BicepRegistryRgName    = '${{ parameters.bicepRegistryRgName }}'
+                PublishLatest          = [System.Convert]::ToBoolean('${{ parameters.publishLatest }}')
+                UseApiSpecsAlignedName = [System.Convert]::ToBoolean('${{ parameters.useApiSpecsAlignedName }}')
             }
 
             Write-Verbose "Invoke Get-ModulesMissingFromPrivateBicepRegistry with" -Verbose
@@ -389,7 +389,7 @@ jobs:
                 BicepRegistryRgName     = '${{ parameters.bicepRegistryRgName }}'
                 BicepRegistryRgLocation = '${{ parameters.bicepRegistryRgLocation }}'
                 ModuleVersion           = $moduleToPublish.Version
-                UseApiAlignedName       = [System.Convert]::ToBoolean('${{ parameters.publishUsingApiAlignedName }}')
+                UseApiSpecsAlignedName  = [System.Convert]::ToBoolean('${{ parameters.useApiSpecsAlignedName }}')
               }
 
               Write-Verbose "Invoke Publish-ModuleToPrivateBicepRegistry with" -Verbose

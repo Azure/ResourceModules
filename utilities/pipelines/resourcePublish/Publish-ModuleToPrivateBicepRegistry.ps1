@@ -25,7 +25,7 @@ Example: 'artifacts-rg'
 Optional. The location of the resourceGroup the private bicep registry is deployed to. Required if the resource group is not yet existing.
 Example: 'West Europe'
 
-.PARAMETER UseApiAlignedName
+.PARAMETER UseApiSpecsAlignedName
 Optional. If set to true, the module will be published with a name that is aligned with the Azure API naming. If not, one aligned with the module's folder path. See the following examples:
 - True:  bicep/modules/microsoft.keyvault.vaults.secrets
 - False: bicep/modules/key-vault.vault.secret
@@ -55,7 +55,7 @@ function Publish-ModuleToPrivateBicepRegistry {
         [string] $BicepRegistryRgLocation,
 
         [Parameter(Mandatory = $false)]
-        [bool] $UseApiAlignedName = $false
+        [bool] $UseApiSpecsAlignedName = $false
     )
 
     begin {
@@ -88,7 +88,7 @@ function Publish-ModuleToPrivateBicepRegistry {
         }
 
         # Get a valid Container Registry name
-        $moduleRegistryIdentifier = Get-PrivateRegistryRepositoryName -TemplateFilePath $TemplateFilePath -UseApiAlignedName $UseApiAlignedName
+        $moduleRegistryIdentifier = Get-PrivateRegistryRepositoryName -TemplateFilePath $TemplateFilePath -UseApiSpecsAlignedName $UseApiSpecsAlignedName
 
         #############################################
         ##    Publish to private bicep registry    ##

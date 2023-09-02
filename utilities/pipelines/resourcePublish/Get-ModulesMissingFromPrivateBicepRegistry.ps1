@@ -18,7 +18,7 @@ Mandatory. The name of Resource Group the Container Registry is located it.
 Optional. Publish an absolute latest version.
 Note: This version may include breaking changes and is not recommended for production environments
 
-.PARAMETER UseApiAlignedName
+.PARAMETER UseApiSpecsAlignedName
 Optional. If set to true, the module name looked for is aligned with the Azure API naming. If not, it's one aligned with the module's folder path. See the following examples:
 - True:  microsoft.keyvault.vaults.secrets
 - False: key-vault.vault.secret
@@ -65,7 +65,7 @@ function Get-ModulesMissingFromPrivateBicepRegistry {
         [bool] $PublishLatest = $true,
 
         [Parameter(Mandatory = $false)]
-        [bool] $UseApiAlignedName = $false
+        [bool] $UseApiSpecsAlignedName = $false
     )
 
     begin {
@@ -97,7 +97,7 @@ function Get-ModulesMissingFromPrivateBicepRegistry {
             foreach ($templatePath in $availableModuleTemplatePaths) {
 
                 # Get a valid Container Registry name
-                $moduleRegistryIdentifier = Get-PrivateRegistryRepositoryName -TemplateFilePath $templatePath -UseApiAlignedName $UseApiAlignedName
+                $moduleRegistryIdentifier = Get-PrivateRegistryRepositoryName -TemplateFilePath $templatePath -UseApiSpecsAlignedName $UseApiSpecsAlignedName
 
                 $null = Get-AzContainerRegistryTag -RepositoryName $moduleRegistryIdentifier -RegistryName $BicepRegistryName -ErrorAction 'SilentlyContinue' -ErrorVariable 'result'
 
