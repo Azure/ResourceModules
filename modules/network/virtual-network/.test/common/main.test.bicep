@@ -59,6 +59,7 @@ module diagnosticDependencies '../../../../.shared/.templates/diagnostic.depende
 // Test Execution //
 // ============== //
 
+var addressPrefix = '10.0.0.0/16'
 module testDeployment '../../main.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
@@ -66,7 +67,7 @@ module testDeployment '../../main.bicep' = {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '${namePrefix}${serviceShort}001'
     addressPrefixes: [
-      '10.0.0.0/16'
+      addressPrefix
     ]
     diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
     diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
@@ -89,11 +90,11 @@ module testDeployment '../../main.bicep' = {
     flowTimeoutInMinutes: 20
     subnets: [
       {
-        addressPrefix: '10.0.255.0/24'
+        addressPrefix: cidrSubnet(addressPrefix, 24, 0)
         name: 'GatewaySubnet'
       }
       {
-        addressPrefix: '10.0.0.0/24'
+        addressPrefix: cidrSubnet(addressPrefix, 24, 1)
         name: '${namePrefix}-az-subnet-x-001'
         networkSecurityGroupId: nestedDependencies.outputs.networkSecurityGroupResourceId
         roleAssignments: [
@@ -116,7 +117,7 @@ module testDeployment '../../main.bicep' = {
         ]
       }
       {
-        addressPrefix: '10.0.3.0/24'
+        addressPrefix: cidrSubnet(addressPrefix, 24, 2)
         delegations: [
           {
             name: 'netappDel'
@@ -128,7 +129,7 @@ module testDeployment '../../main.bicep' = {
         name: '${namePrefix}-az-subnet-x-002'
       }
       {
-        addressPrefix: '10.0.6.0/24'
+        addressPrefix: cidrSubnet(addressPrefix, 24, 3)
         name: '${namePrefix}-az-subnet-x-003'
         privateEndpointNetworkPolicies: 'Disabled'
         privateLinkServiceNetworkPolicies: 'Enabled'
