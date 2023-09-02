@@ -183,6 +183,7 @@ module applicationSecurityGroup './network/application-security-group/main.bicep
     ]
     tags: {
       Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
     }
   }
@@ -226,6 +227,7 @@ module applicationSecurityGroup './network/application-security-group/main.bicep
     "tags": {
       "value": {
         "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
     }

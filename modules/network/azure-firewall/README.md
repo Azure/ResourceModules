@@ -357,6 +357,7 @@ module azureFirewall './network/azure-firewall/main.bicep' = {
     }
     tags: {
       Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
     }
     vNetId: '<vNetId>'
@@ -412,6 +413,7 @@ module azureFirewall './network/azure-firewall/main.bicep' = {
     "tags": {
       "value": {
         "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
     },
@@ -537,6 +539,7 @@ module azureFirewall './network/azure-firewall/main.bicep' = {
     ]
     tags: {
       Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
     }
     vNetId: '<vNetId>'
@@ -686,6 +689,7 @@ module azureFirewall './network/azure-firewall/main.bicep' = {
     "tags": {
       "value": {
         "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
     },
@@ -746,6 +750,7 @@ module azureFirewall './network/azure-firewall/main.bicep' = {
     }
     tags: {
       Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
     }
     vNetId: '<vNetId>'
@@ -802,6 +807,7 @@ module azureFirewall './network/azure-firewall/main.bicep' = {
     "tags": {
       "value": {
         "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
     },
@@ -837,6 +843,7 @@ module azureFirewall './network/azure-firewall/main.bicep' = {
     }
     tags: {
       Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
     }
     virtualHubId: '<virtualHubId>'
@@ -877,6 +884,7 @@ module azureFirewall './network/azure-firewall/main.bicep' = {
     "tags": {
       "value": {
         "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
     },

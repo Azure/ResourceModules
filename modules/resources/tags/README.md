@@ -141,6 +141,7 @@ module tags './resources/tags/main.bicep' = {
     onlyUpdate: false
     resourceGroupName: '<resourceGroupName>'
     tags: {
+      'hidden-title': 'This is visible in the resource name'
       Test: 'Yes'
       TestToo: 'No'
     }
@@ -171,6 +172,7 @@ module tags './resources/tags/main.bicep' = {
     },
     "tags": {
       "value": {
+        "hidden-title": "This is visible in the resource name",
         "Test": "Yes",
         "TestToo": "No"
       }
@@ -195,6 +197,7 @@ module tags './resources/tags/main.bicep' = {
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     onlyUpdate: true
     tags: {
+      'hidden-title': 'This is visible in the resource name'
       Test: 'Yes'
       TestToo: 'No'
     }
@@ -222,6 +225,7 @@ module tags './resources/tags/main.bicep' = {
     },
     "tags": {
       "value": {
+        "hidden-title": "This is visible in the resource name",
         "Test": "Yes",
         "TestToo": "No"
       }

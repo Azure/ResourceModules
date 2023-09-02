@@ -240,6 +240,7 @@ module diskEncryptionSet './compute/disk-encryption-set/main.bicep' = {
     systemAssignedIdentity: true
     tags: {
       Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
     }
     userAssignedIdentities: {
@@ -292,6 +293,7 @@ module diskEncryptionSet './compute/disk-encryption-set/main.bicep' = {
     "tags": {
       "value": {
         "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
     },
@@ -336,6 +338,7 @@ module diskEncryptionSet './compute/disk-encryption-set/main.bicep' = {
     systemAssignedIdentity: false
     tags: {
       Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
     }
     userAssignedIdentities: {
@@ -391,6 +394,7 @@ module diskEncryptionSet './compute/disk-encryption-set/main.bicep' = {
     "tags": {
       "value": {
         "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
     },

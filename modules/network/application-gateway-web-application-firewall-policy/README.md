@@ -132,6 +132,7 @@ module applicationGatewayWebApplicationFirewallPolicy './network/application-gat
     }
     tags: {
       Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
     }
   }
@@ -184,6 +185,7 @@ module applicationGatewayWebApplicationFirewallPolicy './network/application-gat
     "tags": {
       "value": {
         "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
     }

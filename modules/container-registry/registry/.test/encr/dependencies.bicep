@@ -25,7 +25,12 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2023-04-01' = {
       {
         name: 'defaultSubnet'
         properties: {
-          addressPrefix: addressPrefix
+          addressPrefix: cidrSubnet(addressPrefix, 16, 0)
+          serviceEndpoints: [
+            {
+              service: 'Microsoft.KeyVault'
+            }
+          ]
         }
       }
     ]

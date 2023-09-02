@@ -187,6 +187,7 @@ module webtest './insights/webtest/main.bicep' = {
     }
     tags: {
       'hidden-link:${nestedDependencies.outputs.appInsightResourceId}': 'Resource'
+      'hidden-title': 'This is visible in the resource name'
     }
     webTestName: 'wt$iwtcom001'
     // Non-required parameters
@@ -226,7 +227,8 @@ module webtest './insights/webtest/main.bicep' = {
     },
     "tags": {
       "value": {
-        "hidden-link:${nestedDependencies.outputs.appInsightResourceId}": "Resource"
+        "hidden-link:${nestedDependencies.outputs.appInsightResourceId}": "Resource",
+        "hidden-title": "This is visible in the resource name"
       }
     },
     "webTestName": {
@@ -274,6 +276,7 @@ module webtest './insights/webtest/main.bicep' = {
     }
     tags: {
       'hidden-link:${nestedDependencies.outputs.appInsightResourceId}': 'Resource'
+      'hidden-title': 'This is visible in the resource name'
     }
     webTestName: 'wt$iwtmin001'
     // Non-required parameters
@@ -306,7 +309,8 @@ module webtest './insights/webtest/main.bicep' = {
     },
     "tags": {
       "value": {
-        "hidden-link:${nestedDependencies.outputs.appInsightResourceId}": "Resource"
+        "hidden-link:${nestedDependencies.outputs.appInsightResourceId}": "Resource",
+        "hidden-title": "This is visible in the resource name"
       }
     },
     "webTestName": {
