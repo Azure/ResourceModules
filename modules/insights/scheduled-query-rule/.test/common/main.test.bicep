@@ -96,6 +96,7 @@ module testDeployment '../../main.bicep' = {
     suppressForMinutes: 'PT5M'
     windowSize: 'PT5M'
     tags: {
+      'hidden-title': 'This is visible in the resource name'
       Environment: 'Non-Prod'
       Role: 'DeploymentValidation'
     }

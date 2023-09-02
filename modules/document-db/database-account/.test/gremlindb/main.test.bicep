@@ -142,6 +142,7 @@ module testDeployment '../../main.bicep' = {
     ]
     systemAssignedIdentity: true
     tags: {
+      'hidden-title': 'This is visible in the resource name'
       Environment: 'Non-Prod'
       Role: 'DeploymentValidation'
     }

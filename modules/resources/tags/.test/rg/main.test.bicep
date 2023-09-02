@@ -42,6 +42,7 @@ module testDeployment '../../main.bicep' = {
     onlyUpdate: false
     resourceGroupName: resourceGroup.name
     tags: {
+      'hidden-title': 'This is visible in the resource name'
       Test: 'Yes'
       TestToo: 'No'
     }

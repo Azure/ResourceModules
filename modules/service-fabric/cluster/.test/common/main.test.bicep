@@ -52,6 +52,7 @@ module testDeployment '../../main.bicep' = {
     name: '${namePrefix}${serviceShort}001'
     lock: 'CanNotDelete'
     tags: {
+      'hidden-title': 'This is visible in the resource name'
       resourceType: 'Service Fabric'
       clusterName: '${namePrefix}${serviceShort}001'
     }
