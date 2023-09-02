@@ -19,7 +19,7 @@ param proximityPlacementGroupName string
 @description('Required. The name of the DNS Zone to create.')
 param dnsZoneName string
 
-var addressPrefix = '10.0.0.0/16'
+var addressPrefix = '10.1.0.0/22'
 
 resource virtualNetwork 'Microsoft.Network/virtualNetworks@2023-04-01' = {
   name: virtualNetworkName
