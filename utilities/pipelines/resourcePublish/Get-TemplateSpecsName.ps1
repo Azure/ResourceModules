@@ -55,11 +55,11 @@ function Get-TemplateSpecsName {
             # For example: /virtualNetworks/ (plural) & /virtualNetworks/virtualNetworkPeerings/ (singular)
             # In this case we want to remove the singular version from the subsequent string & format it accordingly
             if ($stringToRemove.EndsWith('s') -and $stringToCheck.StartsWith($stringToRemove.Substring(0, $stringToRemove.length - 1))) {
-                $singularString = $stringToRemove.Substring(0, $stringToRemove.length - 1)
-                $rest = $stringToCheck.length - $singularString.Length
-                $shortenedString = $stringToCheck.Substring($singularString.length, $rest)
-                $camelCaseString = [Regex]::Replace($shortenedString , '\b.', { $args[0].Value.Tolower() })
-                $nameElems[($index + 1)] = $camelCaseString
+                $singularString = $stringToRemove.Substring(0, $stringToRemove.length - 1) # Would be 'virtualNetwork' from the example above
+                $rest = $stringToCheck.length - $singularString.Length # Would be 8 from the example above
+                $shortenedString = $stringToCheck.Substring($singularString.length, $rest) # Would be 'peerings' from the example above
+                $camelCaseString = [Regex]::Replace($shortenedString , '\b.', { $args[0].Value.Tolower() }) # Would be 'peerings' from the example above
+                $nameElems[($index + 1)] = $camelCaseString # Would overwrite 'virtualnetworkpeerings' with 'peerings' from the example above
             } elseif ($stringToCheck.StartsWith($stringToRemove)) {
                 # If the subsequent string starts with the current string, we want to remove the current string from the subsequent string.
                 # So we take the index of the end of the current string, caculate the length until the end of the string and reduce. If a `-` was in between the 2 elements, we also want to trim it from the front.
