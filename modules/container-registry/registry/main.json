@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.20.4.51522",
-      "templateHash": "7889727082299991549"
+      "templateHash": "6843779189444730296"
     },
     "name": "Azure Container Registries (ACR)",
     "description": "This module deploys an Azure Container Registry (ACR).",
@@ -354,7 +354,7 @@
       "type": "array",
       "defaultValue": [],
       "metadata": {
-        "description": "Optional Array of Cache Rules."
+        "description": "Optional. Array of Cache Rules."
       }
     }
   },
