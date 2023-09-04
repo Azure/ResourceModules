@@ -396,6 +396,16 @@ module registry './container-registry/registry/main.bicep' = {
     acrAdminUserEnabled: false
     acrSku: 'Premium'
     azureADAuthenticationAsArmPolicyStatus: 'enabled'
+    cacheRules: [
+      {
+        name: 'customRule'
+        sourceRepository: 'docker.io/library/hello-world'
+        targetRepository: 'cached-docker-hub/hello-world'
+      }
+      {
+        sourceRepository: 'docker.io/library/hello-world'
+      }
+    ]
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
@@ -486,6 +496,18 @@ module registry './container-registry/registry/main.bicep' = {
     },
     "azureADAuthenticationAsArmPolicyStatus": {
       "value": "enabled"
+    },
+    "cacheRules": {
+      "value": [
+        {
+          "name": "customRule",
+          "sourceRepository": "docker.io/library/hello-world",
+          "targetRepository": "cached-docker-hub/hello-world"
+        },
+        {
+          "sourceRepository": "docker.io/library/hello-world"
+        }
+      ]
     },
     "diagnosticEventHubAuthorizationRuleId": {
       "value": "<diagnosticEventHubAuthorizationRuleId>"
