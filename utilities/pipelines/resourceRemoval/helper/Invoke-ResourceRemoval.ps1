@@ -1,65 +1,5 @@
 ﻿<#
 .SYNOPSIS
-Remove unhandled resource locks from a resource.
-
-.DESCRIPTION
-Remove unhandled resource locks from a resource. If the resource is locked, the lock is removed.
-
-.PARAMETER ResourceId
-Mandatory. The resourceID of the resource to check, and remove the lock from if it is locked.
-
-.PARAMETER RetryLimit
-The number of times to retry checking if the lock is removed.
-
-.PARAMETER RetryInterval
-The number of seconds to wait between each retry.
-
-.EXAMPLE
-Remove-UnhandledResourceLock -ResourceId '/subscriptions/.../resourceGroups/validation-rg/.../resource-name'
-
-Check if the resource 'resource-name' is locked. If it is, remove the lock.
-#>
-function Remove-UnhandledResourceLock {
-    [CmdletBinding(SupportsShouldProcess)]
-    param (
-        [Parameter(Mandatory = $true)]
-        [string] $ResourceId,
-
-        [int] $RetryLimit = 10,
-
-        [int] $RetryInterval = 10
-    )
-
-    $resourceLock = Get-AzResourceLock -Scope $ResourceId -ErrorAction SilentlyContinue
-    $isLocked = $resourceLock.count -gt 0
-
-    if (-not $isLocked) {
-        return
-    }
-
-    Write-Warning ('    [-] 🔒 Unhandled resource lock detected. Removing lock.' -f $ResourceId)
-    if ($PSCmdlet.ShouldProcess(('Lock [{0}] on resource [{1}]' -f $resourceLock.Name, $resourceLock.ResourceName ), 'Remove')) {
-        $null = $resourceLock | Remove-AzResourceLock -Force
-
-        $retryCount = 0
-        do {
-            $retryCount++
-            if ($retryCount -ge $RetryLimit) {
-                Write-Warning ('    [!] Lock was not removed after {1} seconds. Continuing with resource removal.' -f ($retryCount * $RetryInterval))
-                return
-            }
-            Write-Verbose '    [⏱️] Waiting for lock to be removed.' -Verbose
-            Start-Sleep -Seconds $RetryInterval
-            $resourceLock = Get-AzResourceLock -Scope $ResourceId -ErrorAction SilentlyContinue
-            $isLocked = $resourceLock.count -gt 0
-        } while ($isLocked)
-    }
-    return
-}
-
-
-<#
-.SYNOPSIS
 Remove a specific resource
 
 .DESCRIPTION
@@ -86,8 +26,8 @@ function Invoke-ResourceRemoval {
         [Parameter(Mandatory = $true)]
         [string] $Type
     )
-
-    Remove-UnhandledResourceLock -ResourceId $ResourceId
+    # Load functions
+    . (Join-Path $PSScriptRoot 'Invoke-ResourceLockRemoval.ps1')
 
     switch ($Type) {
         'Microsoft.Insights/diagnosticSettings' {
@@ -99,25 +39,7 @@ function Invoke-ResourceRemoval {
             break
         }
         'Microsoft.Authorization/locks' {
-            $lockName = ($ResourceId -split '/')[-1]
-            $lockScope = ($ResourceId -split '/providers/Microsoft.Authorization/locks')[0]
-
-            $null = Remove-AzResourceLock -LockName $lockName -Scope $lockScope -Force
-
-            $retryCount = 0
-            $retryLimit = 10
-            $retryInterval = 10
-            do {
-                $retryCount++
-                if ($retryCount -ge $retryLimit) {
-                    Write-Warning ('    [!] Lock [{0}] was not removed after {1} seconds. Continuing with resource removal.' -f $lockName, ($retryCount * $retryInterval))
-                    break
-                }
-                Write-Verbose ('    [⏱️] Waiting for lock [{0}] to be removed.' -f $lockName) -Verbose
-                Start-Sleep -Seconds $retryInterval
-                $lockExists = Get-AzResourceLock -LockName $lockName -Scope $lockScope -ErrorAction SilentlyContinue
-            } while ($lockExists)
-            break
+            Invoke-ResourceLockRemoval -ResourceId $ResourceId -Type $Type
         }
         'Microsoft.KeyVault/vaults/keys' {
             $resourceName = Split-Path $ResourceId -Leaf
@@ -265,6 +187,10 @@ function Invoke-ResourceRemoval {
         }
         ### CODE LOCATION: Add custom removal action here
         Default {
+            # Remove unhandled resource locks, for cases when the resource
+            # collection is incomplete, usually due to previous removal failing.
+            Invoke-ResourceLockRemoval -ResourceId $ResourceId -Type $Type
+
             $null = Remove-AzResource -ResourceId $ResourceId -Force -ErrorAction 'Stop'
         }
     }
