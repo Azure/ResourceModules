@@ -93,6 +93,7 @@ function Get-ModulesFeatureOutline {
 
     # Load external functions
     . (Join-Path $PSScriptRoot 'helper' 'Get-PipelineStatusUrl.ps1')
+    . (Join-Path $PSScriptRoot 'helper' 'Get-SpecsAlignedResourceName.ps1')
 
     if ($OnlyTopLevel) {
         $moduleTemplatePaths = (Get-ChildItem $ModuleFolderPath -Recurse -Filter 'main.bicep' -Depth 2).FullName
@@ -128,15 +129,18 @@ function Get-ModulesFeatureOutline {
         $isTopLevelModule = ($fullResourcePath -split '/').Count -eq 2
         if ($AddStatusBadges -and $isTopLevelModule) {
 
-            $provider = ($fullResourcePath -split '/')[0]
-            $resourceType = ($fullResourcePath -split '/')[1]
+            $specsAlignedResourceName = (Get-SpecsAlignedResourceName -ResourceIdentifier $fullResourcePath).ToLower()
+
+            $provider = ($specsAlignedResourceName -split '/')[0] -replace 'Microsoft', 'ms'
+            $resourceType = ($specsAlignedResourceName -split '/')[1]
+
 
             $statusInputObject = @{
                 RepositoryName     = $RepositoryName
                 Organization       = $Organization
                 Environment        = $Environment
                 ProjectName        = $ProjectName
-                PipelineFileName   = ((('ms.{0}.{1}.yml' -f $provider, $resourceType) -replace '-', '') -replace '/', '.')
+                PipelineFileName   = ((('{0}.{1}.yml' -f $provider, $resourceType) -replace '-', '') -replace '/', '.')
                 PipelineFolderPath = $Environment -eq 'GitHub' ? (Join-Path '.github' 'workflows') : (Join-Path '.azuredevops' 'modulePipelines')
             }
 
