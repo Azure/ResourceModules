@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.20.4.51522",
-      "templateHash": "6843779189444730296"
+      "templateHash": "11826366581990440721"
     },
     "name": "Azure Container Registries (ACR)",
     "description": "This module deploys an Azure Container Registry (ACR).",
@@ -650,7 +650,10 @@
           },
           "name": "[if(contains(parameters('cacheRules')[copyIndex()], 'name'), createObject('value', parameters('cacheRules')[copyIndex()].name), createObject('value', replace(replace(parameters('cacheRules')[copyIndex()].sourceRepository, '/', '-'), '.', '-')))]",
           "targetRepository": "[if(contains(parameters('cacheRules')[copyIndex()], 'targetRepository'), createObject('value', parameters('cacheRules')[copyIndex()].targetRepository), createObject('value', parameters('cacheRules')[copyIndex()].sourceRepository))]",
-          "credentialSetResourceId": "[if(contains(parameters('cacheRules')[copyIndex()], 'credentialSetResourceId'), createObject('value', parameters('cacheRules')[copyIndex()].credentialSetResourceId), createObject('value', ''))]"
+          "credentialSetResourceId": "[if(contains(parameters('cacheRules')[copyIndex()], 'credentialSetResourceId'), createObject('value', parameters('cacheRules')[copyIndex()].credentialSetResourceId), createObject('value', ''))]",
+          "enableDefaultTelemetry": {
+            "value": "[variables('enableReferencedModulesTelemetry')]"
+          }
         },
         "template": {
           "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
@@ -659,7 +662,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.20.4.51522",
-              "templateHash": "12825009183979803370"
+              "templateHash": "15072480678333552345"
             },
             "name": "Container Registries Cache",
             "description": "Cache for Azure Container Registry (Preview) feature allows users to cache container images in a private container registry. Cache for ACR, is a preview feature available in Basic, Standard, and Premium service tiers. https://learn.microsoft.com/en-us/azure/container-registry/tutorial-registry-cache.",
@@ -669,14 +672,14 @@
             "registryName": {
               "type": "string",
               "metadata": {
-                "description": "Conditional. The name of the parent registry. Required if the template is used in a standalone deployment."
+                "description": "Required. The name of the parent registry. Required if the template is used in a standalone deployment."
               }
             },
             "name": {
               "type": "string",
               "defaultValue": "[replace(replace(parameters('sourceRepository'), '/', '-'), '.', '-')]",
               "metadata": {
-                "description": "Conditional. The name of the cache rule. Will be dereived from the source repository name if not defined."
+                "description": "Optional. The name of the cache rule. Will be dereived from the source repository name if not defined."
               }
             },
             "sourceRepository": {
@@ -698,9 +701,30 @@
               "metadata": {
                 "description": "Optional. The resource ID of the credential store which is associated with the cache rule."
               }
+            },
+            "enableDefaultTelemetry": {
+              "type": "bool",
+              "defaultValue": true,
+              "metadata": {
+                "description": "Optional. Enable telemetry via a Globally Unique Identifier (GUID)."
+              }
             }
           },
           "resources": [
+            {
+              "condition": "[parameters('enableDefaultTelemetry')]",
+              "type": "Microsoft.Resources/deployments",
+              "apiVersion": "2021-04-01",
+              "name": "[format('pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-{0}', uniqueString(deployment().name))]",
+              "properties": {
+                "mode": "Incremental",
+                "template": {
+                  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                  "contentVersion": "1.0.0.0",
+                  "resources": []
+                }
+              }
+            },
             {
               "type": "Microsoft.ContainerRegistry/registries/cacheRules",
               "apiVersion": "2023-06-01-preview",

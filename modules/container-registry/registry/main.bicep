@@ -310,6 +310,7 @@ module registry_cacheRules 'cache-rules/main.bicep' = [for (cacheRule, index) in
     name: contains(cacheRule, 'name') ? cacheRule.name : replace(replace(cacheRule.sourceRepository, '/', '-'), '.', '-')
     targetRepository: contains(cacheRule, 'targetRepository') ? cacheRule.targetRepository : cacheRule.sourceRepository
     credentialSetResourceId: contains(cacheRule, 'credentialSetResourceId') ? cacheRule.credentialSetResourceId : ''
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
 
