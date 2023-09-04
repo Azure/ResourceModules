@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "11470399654102963558"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "11924576523256910990"
+    },
+    "name": "API Management Services",
+    "description": "This module deploys an API Management Service.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "additionalLocations": {
@@ -42,15 +45,6 @@
       "defaultValue": {},
       "metadata": {
         "description": "Optional. Custom properties of the API Management service."
-      }
-    },
-    "diagnosticLogsRetentionInDays": {
-      "type": "int",
-      "defaultValue": 365,
-      "maxValue": 365,
-      "minValue": 0,
-      "metadata": {
-        "description": "Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely."
       }
     },
     "diagnosticStorageAccountId": {
@@ -119,14 +113,14 @@
     "lock": {
       "type": "string",
       "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Specify the type of lock."
-      },
       "allowedValues": [
         "",
         "CanNotDelete",
         "ReadOnly"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Specify the type of lock."
+      }
     },
     "minApiVersion": {
       "type": "string",
@@ -358,11 +352,7 @@
         "count": "[length(filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', and(not(equals(lambdaVariables('item'), 'allLogs')), not(equals(lambdaVariables('item'), ''))))))]",
         "input": {
           "category": "[filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', and(not(equals(lambdaVariables('item'), 'allLogs')), not(equals(lambdaVariables('item'), '')))))[copyIndex('diagnosticsLogsSpecified')]]",
-          "enabled": true,
-          "retentionPolicy": {
-            "enabled": true,
-            "days": "[parameters('diagnosticLogsRetentionInDays')]"
-          }
+          "enabled": true
         }
       },
       {
@@ -371,17 +361,13 @@
         "input": {
           "category": "[parameters('diagnosticMetricsToEnable')[copyIndex('diagnosticsMetrics')]]",
           "timeGrain": null,
-          "enabled": true,
-          "retentionPolicy": {
-            "enabled": true,
-            "days": "[parameters('diagnosticLogsRetentionInDays')]"
-          }
+          "enabled": true
         }
       }
     ],
     "enableReferencedModulesTelemetry": false,
     "authorizationServerList": "[if(not(empty(parameters('authorizationServers'))), parameters('authorizationServers').secureList, createArray())]",
-    "diagnosticsLogs": "[if(contains(parameters('diagnosticLogCategoriesToEnable'), 'allLogs'), createArray(createObject('categoryGroup', 'allLogs', 'enabled', true(), 'retentionPolicy', createObject('enabled', true(), 'days', parameters('diagnosticLogsRetentionInDays')))), if(contains(parameters('diagnosticLogCategoriesToEnable'), ''), createArray(), variables('diagnosticsLogsSpecified')))]",
+    "diagnosticsLogs": "[if(contains(parameters('diagnosticLogCategoriesToEnable'), 'allLogs'), createArray(createObject('categoryGroup', 'allLogs', 'enabled', true())), if(contains(parameters('diagnosticLogCategoriesToEnable'), ''), createArray(), variables('diagnosticsLogsSpecified')))]",
     "identityType": "[if(parameters('systemAssignedIdentity'), if(not(empty(parameters('userAssignedIdentities'))), 'SystemAssigned,UserAssigned', 'SystemAssigned'), if(not(empty(parameters('userAssignedIdentities'))), 'UserAssigned', 'None'))]",
     "identity": "[if(not(equals(variables('identityType'), 'None')), createObject('type', variables('identityType'), 'userAssignedIdentities', if(not(empty(parameters('userAssignedIdentities'))), parameters('userAssignedIdentities'), null())), null())]"
   },
@@ -515,9 +501,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "2877903221973830932"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "9074052005199170712"
+            },
+            "name": "API Management Service APIs",
+            "description": "This module deploys an API Management Service API.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "name": {
@@ -792,9 +781,12 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.19.5.34762",
-                      "templateHash": "14535247884365099462"
-                    }
+                      "version": "0.20.4.51522",
+                      "templateHash": "5031714372762112092"
+                    },
+                    "name": "API Management Service APIs Policies",
+                    "description": "This module deploys an API Management Service API Policy.",
+                    "owner": "Azure/module-maintainers"
                   },
                   "parameters": {
                     "apiManagementServiceName": {
@@ -959,9 +951,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "5488393470456105245"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "9352626903654043411"
+            },
+            "name": "API Management Service API Version Sets",
+            "description": "This module deploys an API Management Service API Version Set.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "apiManagementServiceName": {
@@ -1096,9 +1091,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "16113108844531678160"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "8155815469027179886"
+            },
+            "name": "API Management Service Authorization Servers",
+            "description": "This module deploys an API Management Service Authorization Server.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "name": {
@@ -1341,9 +1339,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "10485477109069205796"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "1669725941639871055"
+            },
+            "name": "API Management Service Backends",
+            "description": "This module deploys an API Management Service Backend.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "apiManagementServiceName": {
@@ -1532,9 +1533,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "14901031265236109470"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "17031319637382778576"
+            },
+            "name": "API Management Service Caches",
+            "description": "This module deploys an API Management Service Cache.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "apiManagementServiceName": {
@@ -1680,9 +1684,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "5110602870020980101"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "17041253664250888675"
+            },
+            "name": "API Management Service Identity Providers",
+            "description": "This module deploys an API Management Service Identity Provider.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "apiManagementServiceName": {
@@ -1893,9 +1900,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "7564868053605703508"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "7537918735725646871"
+            },
+            "name": "API Management Service Named Values",
+            "description": "This module deploys an API Management Service Named Value.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "apiManagementServiceName": {
@@ -2043,9 +2053,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "4856642569874165602"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "11909172258549553650"
+            },
+            "name": "API Management Service Portal Settings",
+            "description": "This module deploys an API Management Service Portal Setting.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "apiManagementServiceName": {
@@ -2163,9 +2176,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "8916467929496361160"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "8348924989076719813"
+            },
+            "name": "API Management Service Policies",
+            "description": "This module deploys an API Management Service Policy.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "apiManagementServiceName": {
@@ -2300,9 +2316,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "16475090457313931987"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "11659142408016307537"
+            },
+            "name": "API Management Service Products",
+            "description": "This module deploys an API Management Service Product.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "apiManagementServiceName": {
@@ -2446,9 +2465,12 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.19.5.34762",
-                      "templateHash": "12089259943011536891"
-                    }
+                      "version": "0.20.4.51522",
+                      "templateHash": "13243242177616383868"
+                    },
+                    "name": "API Management Service Products APIs",
+                    "description": "This module deploys an API Management Service Product API.",
+                    "owner": "Azure/module-maintainers"
                   },
                   "parameters": {
                     "apiManagementServiceName": {
@@ -2557,9 +2579,12 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.19.5.34762",
-                      "templateHash": "11103836419434676307"
-                    }
+                      "version": "0.20.4.51522",
+                      "templateHash": "11867976378445976169"
+                    },
+                    "name": "API Management Service Products Groups",
+                    "description": "This module deploys an API Management Service Product Group.",
+                    "owner": "Azure/module-maintainers"
                   },
                   "parameters": {
                     "apiManagementServiceName": {
@@ -2720,9 +2745,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "12367355015017633052"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "15277659663277232184"
+            },
+            "name": "API Management Service Subscriptions",
+            "description": "This module deploys an API Management Service Subscription.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "allowTracing": {
@@ -2880,8 +2908,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "2137109478394702779"
+              "version": "0.20.4.51522",
+              "templateHash": "10733405494558281066"
             }
           },
           "parameters": {

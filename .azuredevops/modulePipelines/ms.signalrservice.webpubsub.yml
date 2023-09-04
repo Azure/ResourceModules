@@ -28,7 +28,7 @@ trigger:
   paths:
     include:
       - '/modules/signal-r-service/web-pub-sub/*'
-      - '/modules/network/private-endpoints/*'
+      - '/modules/network/private-endpoint/*'
       - '/.azuredevops/modulePipelines/ms.signalrservice.webpubsub.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
       - '/utilities/pipelines/*'

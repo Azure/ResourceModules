@@ -29,7 +29,7 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.network.networksecuritygroups.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/modules/network/network-security-groups/*'
+      - '/modules/network/network-security-group/*'
       - '/utilities/pipelines/*'
     exclude:
       - '/utilities/pipelines/deploymentRemoval/*'
@@ -39,7 +39,7 @@ variables:
   - template: '../../settings.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/modules/network/network-security-groups'
+    value: '/modules/network/network-security-group'
 
 stages:
   - template: /.azuredevops/pipelineTemplates/stages.module.yml

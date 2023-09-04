@@ -28,7 +28,7 @@ trigger:
   paths:
     include:
       - '/modules/cache/redis/*'
-      - '/modules/network/private-endpoints/*'
+      - '/modules/network/private-endpoint/*'
       - '/.azuredevops/modulePipelines/ms.cache.redis.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
       - '/utilities/pipelines/*'

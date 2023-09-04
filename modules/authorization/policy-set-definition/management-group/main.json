@@ -1,0 +1,126 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-08-01/managementGroupDeploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.20.4.51522",
+      "templateHash": "1638152228410583836"
+    },
+    "name": "Policy Set Definitions (Initiatives) (Management Group scope)",
+    "description": "This module deploys a Policy Set Definition (Initiative) at a Management Group scope.",
+    "owner": "Azure/module-maintainers"
+  },
+  "parameters": {
+    "name": {
+      "type": "string",
+      "maxLength": 64,
+      "metadata": {
+        "description": "Required. Specifies the name of the policy Set Definition (Initiative)."
+      }
+    },
+    "displayName": {
+      "type": "string",
+      "defaultValue": "",
+      "maxLength": 128,
+      "metadata": {
+        "description": "Optional. The display name of the Set Definition (Initiative). Maximum length is 128 characters."
+      }
+    },
+    "description": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Optional. The description name of the Set Definition (Initiative)."
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "defaultValue": {},
+      "metadata": {
+        "description": "Optional. The Set Definition (Initiative) metadata. Metadata is an open ended object and is typically a collection of key-value pairs."
+      }
+    },
+    "policyDefinitions": {
+      "type": "array",
+      "metadata": {
+        "description": "Required. The array of Policy definitions object to include for this policy set. Each object must include the Policy definition ID, and optionally other properties like parameters."
+      }
+    },
+    "policyDefinitionGroups": {
+      "type": "array",
+      "defaultValue": [],
+      "metadata": {
+        "description": "Optional. The metadata describing groups of policy definition references within the Policy Set Definition (Initiative)."
+      }
+    },
+    "parameters": {
+      "type": "object",
+      "defaultValue": {},
+      "metadata": {
+        "description": "Optional. The Set Definition (Initiative) parameters that can be used in policy definition references."
+      }
+    },
+    "location": {
+      "type": "string",
+      "defaultValue": "[deployment().location]",
+      "metadata": {
+        "description": "Optional. Location deployment metadata."
+      }
+    },
+    "enableDefaultTelemetry": {
+      "type": "bool",
+      "defaultValue": true,
+      "metadata": {
+        "description": "Optional. Enable telemetry via a Globally Unique Identifier (GUID)."
+      }
+    }
+  },
+  "resources": [
+    {
+      "condition": "[parameters('enableDefaultTelemetry')]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2021-04-01",
+      "name": "[format('pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-{0}', uniqueString(deployment().name, parameters('location')))]",
+      "location": "[parameters('location')]",
+      "properties": {
+        "mode": "Incremental",
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "resources": []
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Authorization/policySetDefinitions",
+      "apiVersion": "2021-06-01",
+      "name": "[parameters('name')]",
+      "properties": {
+        "policyType": "Custom",
+        "displayName": "[if(not(empty(parameters('displayName'))), parameters('displayName'), null())]",
+        "description": "[if(not(empty(parameters('description'))), parameters('description'), null())]",
+        "metadata": "[if(not(empty(parameters('metadata'))), parameters('metadata'), null())]",
+        "parameters": "[if(not(empty(parameters('parameters'))), parameters('parameters'), null())]",
+        "policyDefinitions": "[parameters('policyDefinitions')]",
+        "policyDefinitionGroups": "[if(not(empty(parameters('policyDefinitionGroups'))), parameters('policyDefinitionGroups'), createArray())]"
+      }
+    }
+  ],
+  "outputs": {
+    "name": {
+      "type": "string",
+      "metadata": {
+        "description": "Policy Set Definition Name."
+      },
+      "value": "[parameters('name')]"
+    },
+    "resourceId": {
+      "type": "string",
+      "metadata": {
+        "description": "Policy Set Definition resource ID."
+      },
+      "value": "[extensionResourceId(managementGroup().id, 'Microsoft.Authorization/policySetDefinitions', parameters('name'))]"
+    }
+  }
+}

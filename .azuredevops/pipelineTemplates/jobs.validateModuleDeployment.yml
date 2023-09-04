@@ -93,7 +93,7 @@ jobs:
             . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
 
             # Define PS modules to install on the runner
-            $Modules = @(
+            $modules = @(
                 @{ Name = 'Az.Accounts' },
                 @{ Name = 'Az.Resources' },
                 @{ Name = 'powershell-yaml'; Version = '0.4.2'}
@@ -101,7 +101,7 @@ jobs:
 
             # Additional PS modules need to be installed for the removal step in case it is enabled
             if ('${{ parameters.removeDeployment}}' -eq 'true') {
-              $Modules += @(
+              $modules += @(
                 @{ Name = 'Az.CognitiveServices' },
                 @{ Name = 'Az.Compute' },
                 @{ Name = 'Az.KeyVault' },
@@ -113,7 +113,7 @@ jobs:
             }
 
             # Set agent up
-            Set-EnvironmentOnAgent -PSModules $Modules
+            Set-EnvironmentOnAgent -PSModules $modules
 
       # [Agent] Replace tokens
       #-----------------------

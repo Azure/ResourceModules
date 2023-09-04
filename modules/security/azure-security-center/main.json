@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "6154301904044206249"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "11773698987297329299"
+    },
+    "name": "Azure Security Center (Defender for Cloud)",
+    "description": "This module deploys an Azure Security Center (Defender for Cloud) Configuration.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "workspaceId": {
@@ -361,8 +364,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "12093553705747671165"
+              "version": "0.20.4.51522",
+              "templateHash": "1815401284560397161"
             }
           },
           "parameters": {

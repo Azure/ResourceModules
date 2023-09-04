@@ -29,8 +29,8 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.digitaltwins.digitaltwinsinstances.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/modules/digital-twins/digital-twins-instances/*'
-      - '/modules/network/private-endpoints/*'
+      - '/modules/digital-twins/digital-twins-instance/*'
+      - '/modules/network/private-endpoint/*'
       - '/utilities/pipelines/*'
     exclude:
       - '/utilities/pipelines/deploymentRemoval/*'
@@ -40,7 +40,7 @@ variables:
   - template: '../../settings.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/modules/digital-twins/digital-twins-instances'
+    value: '/modules/digital-twins/digital-twins-instance'
 
 stages:
   - template: /.azuredevops/pipelineTemplates/stages.module.yml

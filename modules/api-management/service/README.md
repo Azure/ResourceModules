@@ -49,17 +49,16 @@ This module deploys an API Management Service.
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `additionalLocations` | array | `[]` |  | Additional datacenter locations of the API Management service. |
-| `apis` | _[apis](apis/README.md)_ array | `[]` |  | APIs. |
-| `apiVersionSets` | _[apiVersionSets](api-version-sets/README.md)_ array | `[]` |  | API Version Sets. |
+| `apis` | array | `[]` |  | APIs. |
+| `apiVersionSets` | array | `[]` |  | API Version Sets. |
 | `authorizationServers` | secureObject | `{object}` |  | Authorization servers. |
-| `backends` | _[backends](backends/README.md)_ array | `[]` |  | Backends. |
-| `caches` | _[caches](caches/README.md)_ array | `[]` |  | Caches. |
+| `backends` | array | `[]` |  | Backends. |
+| `caches` | array | `[]` |  | Caches. |
 | `certificates` | array | `[]` |  | List of Certificates that need to be installed in the API Management service. Max supported certificates that can be installed is 10. |
 | `customProperties` | object | `{object}` |  | Custom properties of the API Management service. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
 | `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `['', allLogs, GatewayLogs]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
-| `diagnosticLogsRetentionInDays` | int | `365` |  | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticMetricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | The name of metrics that will be streamed. |
 | `diagnosticSettingsName` | string | `''` |  | The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings". |
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
@@ -68,22 +67,22 @@ This module deploys an API Management Service.
 | `enableClientCertificate` | bool | `False` |  | Property only meant to be used for Consumption SKU Service. This enforces a client certificate to be presented on each request to the gateway. This also enables the ability to authenticate the certificate in the policy on the gateway. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `hostnameConfigurations` | array | `[]` |  | Custom hostname configuration of the API Management service. |
-| `identityProviders` | _[identityProviders](identity-providers/README.md)_ array | `[]` |  | Identity providers. |
+| `identityProviders` | array | `[]` |  | Identity providers. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `minApiVersion` | string | `''` |  | Limit control plane API calls to API Management service with version equal to or newer than this value. |
-| `namedValues` | _[namedValues](named-values/README.md)_ array | `[]` |  | Named values. |
+| `namedValues` | array | `[]` |  | Named values. |
 | `newGuidValue` | string | `[newGuid()]` |  | Necessary to create a new GUID. |
 | `notificationSenderEmail` | string | `'apimgmt-noreply@mail.windowsazure.com'` |  | The notification sender email address for the service. |
-| `policies` | _[policies](policies/README.md)_ array | `[]` |  | Policies. |
-| `portalsettings` | _[portalsettings](portalsettings/README.md)_ array | `[]` |  | Portal settings. |
-| `products` | _[products](products/README.md)_ array | `[]` |  | Products. |
+| `policies` | array | `[]` |  | Policies. |
+| `portalsettings` | array | `[]` |  | Portal settings. |
+| `products` | array | `[]` |  | Products. |
 | `restore` | bool | `False` |  | Undelete API Management Service if it was previously soft-deleted. If this flag is specified and set to True all other properties will be ignored. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `sku` | string | `'Developer'` | `[Basic, Consumption, Developer, Premium, Standard]` | The pricing tier of this API Management service. |
 | `skuCount` | int | `1` | `[1, 2]` | The instance size of this API Management service. |
 | `subnetResourceId` | string | `''` |  | The full resource ID of a subnet in a virtual network to deploy the API Management service in. |
-| `subscriptions` | _[subscriptions](subscriptions/README.md)_ array | `[]` |  | Subscriptions. |
+| `subscriptions` | array | `[]` |  | Subscriptions. |
 | `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
@@ -484,7 +483,6 @@ module service './api-management/service/main.bicep' = {
     ]
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
-    diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
@@ -652,9 +650,6 @@ module service './api-management/service/main.bicep' = {
     },
     "diagnosticEventHubName": {
       "value": "<diagnosticEventHubName>"
-    },
-    "diagnosticLogsRetentionInDays": {
-      "value": 7
     },
     "diagnosticStorageAccountId": {
       "value": "<diagnosticStorageAccountId>"

@@ -29,7 +29,7 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.managedservices.registrationdefinitions.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/modules/managed-services/registration-definitions/*'
+      - '/modules/managed-services/registration-definition/*'
       - '/utilities/pipelines/*'
     exclude:
       - '/utilities/pipelines/deploymentRemoval/*'
@@ -39,7 +39,7 @@ variables:
   - template: '../../settings.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/modules/managed-services/registration-definitions'
+    value: '/modules/managed-services/registration-definition'
 
 stages:
   - template: /.azuredevops/pipelineTemplates/stages.module.yml

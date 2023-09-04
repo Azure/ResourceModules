@@ -7,7 +7,7 @@ Publish a new version of a given module to a private bicep registry
 
 .PARAMETER TemplateFilePath
 Mandatory. Path to the module deployment file from root.
-Example: 'C:\modules\key-vault\vaults\main.bicep'
+Example: 'C:\modules\key-vault\vault\main.bicep'
 
 .PARAMETER ModuleVersion
 Mandatory. Version of the module to publish, following SemVer convention.
@@ -25,8 +25,13 @@ Example: 'artifacts-rg'
 Optional. The location of the resourceGroup the private bicep registry is deployed to. Required if the resource group is not yet existing.
 Example: 'West Europe'
 
+.PARAMETER UseApiSpecsAlignedName
+Optional. If set to true, the module will be published with a name that is aligned with the Azure API naming. If not, one aligned with the module's folder path. See the following examples:
+- True:  bicep/modules/microsoft.keyvault.vaults.secrets
+- False: bicep/modules/key-vault.vault.secret
+
 .EXAMPLE
-Publish-ModuleToPrivateBicepRegistry -TemplateFilePath 'C:\modules\key-vault\vaults\main.bicep' -ModuleVersion '3.0.0-alpha' -BicepRegistryName 'adpsxxazacrx001' -BicepRegistryRgName 'artifacts-rg'
+Publish-ModuleToPrivateBicepRegistry -TemplateFilePath 'C:\modules\key-vault\vault\main.bicep' -ModuleVersion '3.0.0-alpha' -BicepRegistryName 'adpsxxazacrx001' -BicepRegistryRgName 'artifacts-rg'
 
 Try to publish the KeyVault module with version 3.0.0-alpha to a private bicep registry called 'adpsxxazacrx001' in resource group 'artifacts-rg'.
 #>
@@ -47,7 +52,10 @@ function Publish-ModuleToPrivateBicepRegistry {
         [string] $BicepRegistryRgName,
 
         [Parameter(Mandatory = $false)]
-        [string] $BicepRegistryRgLocation
+        [string] $BicepRegistryRgLocation,
+
+        [Parameter(Mandatory = $false)]
+        [bool] $UseApiSpecsAlignedName = $false
     )
 
     begin {
@@ -80,7 +88,7 @@ function Publish-ModuleToPrivateBicepRegistry {
         }
 
         # Get a valid Container Registry name
-        $moduleRegistryIdentifier = Get-PrivateRegistryRepositoryName -TemplateFilePath $TemplateFilePath
+        $moduleRegistryIdentifier = Get-PrivateRegistryRepositoryName -TemplateFilePath $TemplateFilePath -UseApiSpecsAlignedName $UseApiSpecsAlignedName
 
         #############################################
         ##    Publish to private bicep registry    ##
