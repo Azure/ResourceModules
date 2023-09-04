@@ -31,7 +31,9 @@ function Invoke-ResourceRemoval {
 
     # Remove unhandled resource locks, for cases when the resource
     # collection is incomplete, usually due to previous removal failing.
-    Invoke-ResourceLockRemoval -ResourceId $ResourceId -Type $Type
+    if ($PSCmdlet.ShouldProcess("Possible locks on resource with ID [$ResourceId]", 'Handle')) {
+        Invoke-ResourceLockRemoval -ResourceId $ResourceId -Type $Type
+    }
 
     switch ($Type) {
         'Microsoft.Insights/diagnosticSettings' {
@@ -43,7 +45,9 @@ function Invoke-ResourceRemoval {
             break
         }
         'Microsoft.Authorization/locks' {
-            Invoke-ResourceLockRemoval -ResourceId $ResourceId -Type $Type
+            if ($PSCmdlet.ShouldProcess("Lock with ID [$ResourceId]", 'Handle')) {
+                Invoke-ResourceLockRemoval -ResourceId $ResourceId -Type $Type
+            }
             break
         }
         'Microsoft.KeyVault/vaults/keys' {
