@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "17944454305700070229"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "6357939502160422831"
+    },
+    "name": "Dns Forwarding Rulesets",
+    "description": "This template deploys an dns forwarding ruleset.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
@@ -26,14 +29,14 @@
     "lock": {
       "type": "string",
       "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Specify the type of lock."
-      },
       "allowedValues": [
         "",
         "CanNotDelete",
         "ReadOnly"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Specify the type of lock."
+      }
     },
     "roleAssignments": {
       "type": "array",
@@ -160,9 +163,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "6763736224574178406"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "9007779430484184440"
+            },
+            "name": "Dns Forwarding Rulesets Forwarding Rules",
+            "description": "This template deploys Forwarding Rule in a Dns Forwarding Ruleset.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "name": {
@@ -304,9 +310,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "1750882725233704055"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "13969101007511584177"
+            },
+            "name": "Dns Forwarding Rulesets Virtual Network Links",
+            "description": "This template deploys Virtual Network Link in a Dns Forwarding Ruleset.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "dnsForwardingRulesetName": {
@@ -432,8 +441,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "2022959906898437818"
+              "version": "0.20.4.51522",
+              "templateHash": "7949235653028892214"
             }
           },
           "parameters": {

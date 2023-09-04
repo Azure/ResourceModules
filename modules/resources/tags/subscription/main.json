@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "17191629021100561556"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "17445460813956994133"
+    },
+    "name": "Resources Tags Subscription Scope",
+    "description": "This module deploys a Resource Tag on a Subscription scope.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "tags": {
@@ -82,8 +85,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "9346428889993702152"
+              "version": "0.20.4.51522",
+              "templateHash": "373680921396677494"
             }
           },
           "parameters": {

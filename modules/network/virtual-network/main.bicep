@@ -37,11 +37,6 @@ param vnetEncryptionEnforcement string = 'AllowUnencrypted'
 @description('Optional. The flow timeout in minutes for the Virtual Network, which is used to enable connection tracking for intra-VM flows. Possible values are between 4 and 30 minutes. Default value 0 will set the property to null.')
 param flowTimeoutInMinutes int = 0
 
-@description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
-@minValue(0)
-@maxValue(365)
-param diagnosticLogsRetentionInDays int = 365
-
 @description('Optional. Resource ID of the diagnostic storage account.')
 param diagnosticStorageAccountId string = ''
 
@@ -95,20 +90,12 @@ param diagnosticSettingsName string = ''
 var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs' && item != ''): {
   category: category
   enabled: true
-  retentionPolicy: {
-    enabled: true
-    days: diagnosticLogsRetentionInDays
-  }
 }]
 
 var diagnosticsLogs = contains(diagnosticLogCategoriesToEnable, 'allLogs') ? [
   {
     categoryGroup: 'allLogs'
     enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
   }
 ] : contains(diagnosticLogCategoriesToEnable, '') ? [] : diagnosticsLogsSpecified
 
@@ -116,10 +103,6 @@ var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   category: metric
   timeGrain: null
   enabled: true
-  retentionPolicy: {
-    enabled: true
-    days: diagnosticLogsRetentionInDays
-  }
 }]
 
 var dnsServersVar = {
@@ -144,7 +127,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-07-01' = {
+resource virtualNetwork 'Microsoft.Network/virtualNetworks@2023-04-01' = {
   name: name
   location: location
   tags: tags
@@ -165,7 +148,7 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-07-01' = {
       properties: {
         addressPrefix: subnet.addressPrefix
         addressPrefixes: contains(subnet, 'addressPrefixes') ? subnet.addressPrefixes : []
-        applicationGatewayIpConfigurations: contains(subnet, 'applicationGatewayIpConfigurations') ? subnet.applicationGatewayIpConfigurations : []
+        applicationGatewayIPConfigurations: contains(subnet, 'applicationGatewayIPConfigurations') ? subnet.applicationGatewayIPConfigurations : []
         delegations: contains(subnet, 'delegations') ? subnet.delegations : []
         ipAllocations: contains(subnet, 'ipAllocations') ? subnet.ipAllocations : []
         natGateway: contains(subnet, 'natGatewayId') ? {
@@ -201,7 +184,7 @@ module virtualNetwork_subnets 'subnet/main.bicep' = [for (subnet, index) in subn
     name: subnet.name
     addressPrefix: subnet.addressPrefix
     addressPrefixes: contains(subnet, 'addressPrefixes') ? subnet.addressPrefixes : []
-    applicationGatewayIpConfigurations: contains(subnet, 'applicationGatewayIpConfigurations') ? subnet.applicationGatewayIpConfigurations : []
+    applicationGatewayIPConfigurations: contains(subnet, 'applicationGatewayIPConfigurations') ? subnet.applicationGatewayIPConfigurations : []
     delegations: contains(subnet, 'delegations') ? subnet.delegations : []
     ipAllocations: contains(subnet, 'ipAllocations') ? subnet.ipAllocations : []
     natGatewayId: contains(subnet, 'natGatewayId') ? subnet.natGatewayId : ''

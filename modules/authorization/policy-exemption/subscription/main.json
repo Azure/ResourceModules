@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "3561878551919543054"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "5067037150154630010"
+    },
+    "name": "Policy Exemptions (Subscription scope)",
+    "description": "This module deploys a Policy Exemption at a Subscription scope.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {

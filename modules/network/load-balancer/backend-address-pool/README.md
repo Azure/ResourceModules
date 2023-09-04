@@ -13,7 +13,7 @@ This module deploys a Load Balancer Backend Address Pools.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Network/loadBalancers/backendAddressPools` | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/loadBalancers/backendAddressPools) |
+| `Microsoft.Network/loadBalancers/backendAddressPools` | [2023-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-04-01/loadBalancers/backendAddressPools) |
 
 ## Parameters
 
@@ -31,12 +31,13 @@ This module deploys a Load Balancer Backend Address Pools.
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `drainPeriodInSeconds` | int | `0` | Amount of seconds Load Balancer waits for before sending RESET to client and backend address. if value is 0 then this property will be set to null. Subscription must register the feature Microsoft.Network/SLBAllowConnectionDraining before using this property. |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `loadBalancerBackendAddresses` | array | `[]` | An array of backend addresses. |
-| `tunnelInterfaces` | array | `[]` | An array of gateway load balancer tunnel interfaces. |
+| Parameter Name | Type | Default Value | Allowed Values | Description |
+| :-- | :-- | :-- | :-- | :-- |
+| `drainPeriodInSeconds` | int | `0` |  | Amount of seconds Load Balancer waits for before sending RESET to client and backend address. if value is 0 then this property will be set to null. Subscription must register the feature Microsoft.Network/SLBAllowConnectionDraining before using this property. |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
+| `loadBalancerBackendAddresses` | array | `[]` |  | An array of backend addresses. |
+| `syncMode` | string | `''` | `['', Automatic, Manual]` | Backend address synchronous mode for the backend pool. |
+| `tunnelInterfaces` | array | `[]` |  | An array of gateway load balancer tunnel interfaces. |
 
 
 ## Outputs

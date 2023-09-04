@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "9395681676877884238"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "6927038014071705356"
+    },
+    "name": "App ManagedEnvironments",
+    "description": "This module deploys an App Managed Environment (also known as a Container App Environment).",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
@@ -45,13 +48,13 @@
     "skuName": {
       "type": "string",
       "defaultValue": "Consumption",
-      "metadata": {
-        "description": "Optional. Managed environment SKU."
-      },
       "allowedValues": [
         "Consumption",
         "Premium"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Managed environment SKU."
+      }
     },
     "logsDestination": {
       "type": "string",
@@ -146,14 +149,14 @@
     "lock": {
       "type": "string",
       "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Specify the type of lock."
-      },
       "allowedValues": [
         "",
         "CanNotDelete",
         "ReadOnly"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Specify the type of lock."
+      }
     },
     "workloadProfiles": {
       "type": "array",
@@ -261,8 +264,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "12222893390511211948"
+              "version": "0.20.4.51522",
+              "templateHash": "11046672918941567596"
             }
           },
           "parameters": {

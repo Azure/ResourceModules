@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "14718876477350380320"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "9201392896338098875"
+    },
+    "name": "Azure Kubernetes Service (AKS) Managed Cluster Agent Pools",
+    "description": "This module deploys an Azure Kubernetes Service (AKS) Managed Cluster Agent Pool.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "managedClusterName": {
@@ -31,8 +34,8 @@
     "count": {
       "type": "int",
       "defaultValue": 1,
-      "maxValue": 1000,
       "minValue": 0,
+      "maxValue": 1000,
       "metadata": {
         "description": "Optional. Desired Number of agents (VMs) specified to host docker containers. Allowed values must be in the range of 0 to 1000 (inclusive) for user pools and in the range of 1 to 1000 (inclusive) for system pools. The default value is 1."
       }

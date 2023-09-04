@@ -68,7 +68,6 @@ module testDeployment '../../main.bicep' = {
     addressPrefixes: [
       '10.0.0.0/16'
     ]
-    diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
     diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
     diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId

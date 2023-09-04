@@ -66,7 +66,6 @@ module testDeployment '../../main.bicep' = {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '${namePrefix}${serviceShort}001'
     storageAccountId: nestedDependencies.outputs.storageAccountResourceId
-    diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
     diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
     diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId

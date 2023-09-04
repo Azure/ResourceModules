@@ -147,7 +147,6 @@ module testDeployment '../../main.bicep' = {
       }
     ]
     aksClusterNetworkPlugin: 'azure'
-    diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
     diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
     diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId

@@ -15,6 +15,11 @@ Mandatory. The Resource Group to search in
 Optional. Publish an absolute latest version.
 Note: This version may include breaking changes and is not recommended for production environments
 
+.PARAMETER UseApiSpecsAlignedName
+Optional. If set to true, the module name looked for is aligned with the Azure API naming. If not, it's one aligned with the module's folder path. See the following examples:
+- True:  microsoft.keyvault.vaults.secrets
+- False: key-vault.vault.secret
+
 .EXAMPLE
 Get-ModulesMissingFromTemplateSpecsRG -TemplateFilePath 'C:\ResourceModules\modules\key-vault\vault\main.bicep' -TemplateSpecsRGName 'artifacts-rg'
 
@@ -67,7 +72,10 @@ function Get-ModulesMissingFromTemplateSpecsRG {
         [string] $TemplateSpecsRGName,
 
         [Parameter(Mandatory = $false)]
-        [bool] $PublishLatest = $true
+        [bool] $PublishLatest = $true,
+
+        [Parameter(Mandatory = $false)]
+        [bool] $UseApiSpecsAlignedName = $false
     )
 
     begin {
@@ -99,7 +107,7 @@ function Get-ModulesMissingFromTemplateSpecsRG {
             foreach ($templatePath in $availableModuleTemplatePaths) {
 
                 # Get a valid Template Spec name
-                $templateSpecsIdentifier = Get-TemplateSpecsName -TemplateFilePath $templatePath
+                $templateSpecsIdentifier = Get-TemplateSpecsName -TemplateFilePath $templatePath -UseApiSpecsAlignedName $UseApiSpecsAlignedName
 
                 $null = Get-AzTemplateSpec -ResourceGroupName $TemplateSpecsRGName -Name $templateSpecsIdentifier -ErrorAction 'SilentlyContinue' -ErrorVariable 'result'
 

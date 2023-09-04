@@ -13,7 +13,7 @@ This module deploys a Storage Account Management Policy.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Storage/storageAccounts/managementPolicies` | [2021-09-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Storage/2021-09-01/storageAccounts/managementPolicies) |
+| `Microsoft.Storage/storageAccounts/managementPolicies` | [2023-01-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Storage/storageAccounts/managementPolicies) |
 
 ## Parameters
 

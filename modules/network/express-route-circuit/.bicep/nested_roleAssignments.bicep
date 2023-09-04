@@ -78,7 +78,7 @@ var builtInRoleNames = {
   'Windows Admin Center Administrator Login': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'a6333a3e-0164-44c3-b281-7a577aff287f')
 }
 
-resource expressRouteCircuits 'Microsoft.Network/expressRouteCircuits@2021-08-01' existing = {
+resource expressRouteCircuits 'Microsoft.Network/expressRouteCircuits@2023-04-01' existing = {
   name: last(split(resourceId, '/'))!
 }
 

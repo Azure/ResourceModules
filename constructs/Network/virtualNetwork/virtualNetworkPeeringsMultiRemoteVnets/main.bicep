@@ -19,7 +19,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-module virtualNetworkPeering '../../../../modules/Network/virtualNetworks/virtualNetworkPeerings/main.bicep' = [for peeringConfiguration in peeringConfigurations: {
+module virtualNetworkPeering '../../../../modules/network/virtual-network/virtual-network-peering/main.bicep' = [for peeringConfiguration in peeringConfigurations: {
   name: 'virtualNetworkPeering-${last(split(peeringConfiguration.remoteVirtualNetworkId, '/'))}'
   params: {
     name: contains(peeringConfiguration, 'peeringName') ? '${peeringConfiguration.peeringName}' : '${localVnetName}-${last(split(peeringConfiguration.remoteVirtualNetworkId, '/'))}'

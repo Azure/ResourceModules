@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "11476125438194706048"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "493168310843879218"
+    },
+    "name": "Network Manager Security Admin Configuration Rule Collection Rules",
+    "description": "This module deploys an Azure Virtual Network Manager (AVNM) Security Admin Configuration Rule Collection Rule.\r\nA security admin configuration contains a set of rule collections. Each rule collection contains one or more security admin rules.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "networkManagerName": {
@@ -29,29 +32,29 @@
     },
     "name": {
       "type": "string",
+      "maxLength": 64,
       "metadata": {
         "description": "Required. The name of the rule."
-      },
-      "maxLength": 64
+      }
     },
     "description": {
       "type": "string",
       "defaultValue": "",
+      "maxLength": 500,
       "metadata": {
         "description": "Optional. A description of the rule."
-      },
-      "maxLength": 500
+      }
     },
     "access": {
       "type": "string",
-      "metadata": {
-        "description": "Required. Indicates the access allowed for this particular rule. \"Allow\" means traffic matching this rule will be allowed. \"Deny\" means traffic matching this rule will be blocked. \"AlwaysAllow\" means that traffic matching this rule will be allowed regardless of other rules with lower priority or user-defined NSGs."
-      },
       "allowedValues": [
         "Allow",
         "AlwaysAllow",
         "Deny"
-      ]
+      ],
+      "metadata": {
+        "description": "Required. Indicates the access allowed for this particular rule. \"Allow\" means traffic matching this rule will be allowed. \"Deny\" means traffic matching this rule will be blocked. \"AlwaysAllow\" means that traffic matching this rule will be allowed regardless of other rules with lower priority or user-defined NSGs."
+      }
     },
     "destinationPortRanges": {
       "type": "array",
@@ -69,27 +72,24 @@
     },
     "direction": {
       "type": "string",
-      "metadata": {
-        "description": "Required. Indicates if the traffic matched against the rule in inbound or outbound."
-      },
       "allowedValues": [
         "Inbound",
         "Outbound"
-      ]
+      ],
+      "metadata": {
+        "description": "Required. Indicates if the traffic matched against the rule in inbound or outbound."
+      }
     },
     "priority": {
       "type": "int",
+      "minValue": 1,
+      "maxValue": 4096,
       "metadata": {
         "description": "Required. The priority of the rule. The value can be between 1 and 4096. The priority number must be unique for each rule in the collection. The lower the priority number, the higher the priority of the rule."
-      },
-      "maxValue": 4096,
-      "minValue": 1
+      }
     },
     "protocol": {
       "type": "string",
-      "metadata": {
-        "description": "Required. Network protocol this rule applies to."
-      },
       "allowedValues": [
         "Ah",
         "Any",
@@ -97,7 +97,10 @@
         "Icmp",
         "Tcp",
         "Udp"
-      ]
+      ],
+      "metadata": {
+        "description": "Required. Network protocol this rule applies to."
+      }
     },
     "sourcePortRanges": {
       "type": "array",

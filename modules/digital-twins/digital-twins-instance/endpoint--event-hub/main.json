@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "11967486057366992053"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "10898754622351027742"
+    },
+    "name": "Digital Twins Instance EventHub Endpoint",
+    "description": "This module deploys a Digital Twins Instance EventHub Endpoint.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
@@ -25,13 +28,13 @@
     "authenticationType": {
       "type": "string",
       "defaultValue": "IdentityBased",
-      "metadata": {
-        "description": "Optional. Specifies the authentication type being used for connecting to the endpoint. If 'KeyBased' is selected, a connection string must be specified (at least the primary connection string). If 'IdentityBased' is selected, the endpointUri and entityPath properties must be specified."
-      },
       "allowedValues": [
         "IdentityBased",
         "KeyBased"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Specifies the authentication type being used for connecting to the endpoint. If 'KeyBased' is selected, a connection string must be specified (at least the primary connection string). If 'IdentityBased' is selected, the endpointUri and entityPath properties must be specified."
+      }
     },
     "deadLetterSecret": {
       "type": "securestring",

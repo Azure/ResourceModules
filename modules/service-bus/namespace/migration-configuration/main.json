@@ -4,15 +4,18 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "9634923970896018925"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "15978046556546709106"
+    },
+    "name": "Service Bus Namespace Migration Configuration",
+    "description": "This module deploys a Service Bus Namespace Migration Configuration.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "namespaceName": {
       "type": "string",
-      "maxLength": 50,
       "minLength": 6,
+      "maxLength": 50,
       "metadata": {
         "description": "Conditional. The name of the parent Service Bus Namespace for the Service Bus Queue. Required if the template is used in a standalone deployment."
       }

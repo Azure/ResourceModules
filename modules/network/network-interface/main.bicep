@@ -34,6 +34,16 @@ param networkSecurityGroupResourceId string = ''
 @description('Optional. Auxiliary mode of Network Interface resource. Not all regions are enabled for Auxiliary Mode Nic.')
 param auxiliaryMode string = 'None'
 
+@allowed([
+  'A1'
+  'A2'
+  'A4'
+  'A8'
+  'None'
+])
+@description('Optional. Auxiliary sku of Network Interface resource. Not all regions are enabled for Auxiliary Mode Nic.')
+param auxiliarySku string = 'None'
+
 @description('Optional. Indicates whether to disable tcp state tracking. Subscription must be registered for the Microsoft.Network/AllowDisableTcpStateTracking feature before this property can be set to true.')
 param disableTcpStateTracking bool = false
 
@@ -50,11 +60,6 @@ param lock string = ''
 
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
-
-@description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
-@minValue(0)
-@maxValue(365)
-param diagnosticLogsRetentionInDays int = 365
 
 @description('Optional. Resource ID of the diagnostic storage account.')
 param diagnosticStorageAccountId string = ''
@@ -83,10 +88,6 @@ var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   category: metric
   timeGrain: null
   enabled: true
-  retentionPolicy: {
-    enabled: true
-    days: diagnosticLogsRetentionInDays
-  }
 }]
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
@@ -101,12 +102,13 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource networkInterface 'Microsoft.Network/networkInterfaces@2022-07-01' = {
+resource networkInterface 'Microsoft.Network/networkInterfaces@2023-04-01' = {
   name: name
   location: location
   tags: tags
   properties: {
     auxiliaryMode: auxiliaryMode
+    auxiliarySku: auxiliarySku
     disableTcpStateTracking: disableTcpStateTracking
     dnsSettings: !empty(dnsServers) ? {
       dnsServers: dnsServers

@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "7703424854561797533"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "12231844858437277938"
+    },
+    "name": "Power BI Dedicated Capacities",
+    "description": "This module deploys a Power BI Dedicated Capacity.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
@@ -45,9 +48,6 @@
     "skuName": {
       "type": "string",
       "defaultValue": "A1",
-      "metadata": {
-        "description": "Optional. SkuCapacity of the resource."
-      },
       "allowedValues": [
         "A1",
         "A2",
@@ -55,19 +55,22 @@
         "A4",
         "A5",
         "A6"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. SkuCapacity of the resource."
+      }
     },
     "skuTier": {
       "type": "string",
       "defaultValue": "PBIE_Azure",
-      "metadata": {
-        "description": "Optional. SkuCapacity of the resource."
-      },
       "allowedValues": [
         "AutoPremiumHost",
         "PBIE_Azure",
         "Premium"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. SkuCapacity of the resource."
+      }
     },
     "members": {
       "type": "array",
@@ -78,26 +81,26 @@
     "mode": {
       "type": "string",
       "defaultValue": "Gen2",
-      "metadata": {
-        "description": "Optional. Mode of the resource."
-      },
       "allowedValues": [
         "Gen1",
         "Gen2"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Mode of the resource."
+      }
     },
     "lock": {
       "type": "string",
       "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Specify the type of lock."
-      },
       "allowedValues": [
         "",
         "CanNotDelete",
         "NotSpecified",
         "ReadOnly"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Specify the type of lock."
+      }
     },
     "roleAssignments": {
       "type": "array",
@@ -181,8 +184,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "11763558823755974016"
+              "version": "0.20.4.51522",
+              "templateHash": "5472906726478084470"
             }
           },
           "parameters": {

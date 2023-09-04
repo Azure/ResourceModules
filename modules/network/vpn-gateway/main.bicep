@@ -57,7 +57,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource vpnGateway 'Microsoft.Network/vpnGateways@2022-07-01' = {
+resource vpnGateway 'Microsoft.Network/vpnGateways@2023-04-01' = {
   name: name
   location: location
   tags: tags
@@ -112,6 +112,9 @@ module vpnGateway_vpnConnections 'vpn-connection/main.bicep' = [for (connection,
     usePolicyBasedTrafficSelectors: contains(connection, 'usePolicyBasedTrafficSelectors') ? connection.usePolicyBasedTrafficSelectors : false
     vpnConnectionProtocolType: contains(connection, 'vpnConnectionProtocolType') ? connection.vpnConnectionProtocolType : 'IKEv2'
     enableDefaultTelemetry: enableReferencedModulesTelemetry
+    ipsecPolicies: contains(connection, 'ipsecPolicies') ? connection.ipsecPolicies : []
+    trafficSelectorPolicies: contains(connection, 'trafficSelectorPolicies') ? connection.trafficSelectorPolicies : []
+    vpnLinkConnections: contains(connection, 'vpnLinkConnections') ? connection.vpnLinkConnections : []
   }
 }]
 

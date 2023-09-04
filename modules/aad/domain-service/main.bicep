@@ -130,11 +130,6 @@ param diagnosticEventHubName string = ''
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
-@minValue(0)
-@maxValue(365)
-param diagnosticLogsRetentionInDays int = 365
-
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
@@ -170,20 +165,12 @@ param diagnosticLogCategoriesToEnable array = [
 var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs' && item != ''): {
   category: category
   enabled: true
-  retentionPolicy: {
-    enabled: true
-    days: diagnosticLogsRetentionInDays
-  }
 }]
 
 var diagnosticsLogs = contains(diagnosticLogCategoriesToEnable, 'allLogs') ? [
   {
     categoryGroup: 'allLogs'
     enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
   }
 ] : contains(diagnosticLogCategoriesToEnable, '') ? [] : diagnosticsLogsSpecified
 

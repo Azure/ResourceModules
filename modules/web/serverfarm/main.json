@@ -4,15 +4,18 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "5102051810775375915"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "10904675387778545087"
+    },
+    "name": "App Service Plans",
+    "description": "This module deploys an App Service Plan.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
       "type": "string",
-      "maxLength": 40,
       "minLength": 1,
+      "maxLength": 40,
       "metadata": {
         "description": "Required. The name of the app service plan to deploy."
       }
@@ -91,14 +94,14 @@
     "lock": {
       "type": "string",
       "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Specify the type of lock."
-      },
       "allowedValues": [
         "",
         "CanNotDelete",
         "ReadOnly"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Specify the type of lock."
+      }
     },
     "roleAssignments": {
       "type": "array",
@@ -126,15 +129,6 @@
       "defaultValue": "",
       "metadata": {
         "description": "Optional. The name of the diagnostic setting, if deployed. If left empty, it defaults to \"<resourceName>-diagnosticSettings\"."
-      }
-    },
-    "diagnosticLogsRetentionInDays": {
-      "type": "int",
-      "defaultValue": 365,
-      "maxValue": 365,
-      "minValue": 0,
-      "metadata": {
-        "description": "Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely."
       }
     },
     "diagnosticStorageAccountId": {
@@ -193,11 +187,7 @@
         "input": {
           "category": "[parameters('diagnosticMetricsToEnable')[copyIndex('diagnosticsMetrics')]]",
           "timeGrain": null,
-          "enabled": true,
-          "retentionPolicy": {
-            "enabled": true,
-            "days": "[parameters('diagnosticLogsRetentionInDays')]"
-          }
+          "enabled": true
         }
       }
     ]
@@ -302,8 +292,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "5292744640364919279"
+              "version": "0.20.4.51522",
+              "templateHash": "304746815992718029"
             }
           },
           "parameters": {

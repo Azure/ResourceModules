@@ -101,7 +101,7 @@ module testDeployment '../../main.bicep' = {
         skuTier: 'GeneralPurpose'
         skuCapacity: 10
         // Pre-existing 'public' configuration
-        maintenanceConfigurationId: '${subscription().id}/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_WestEurope_DB_1'
+        maintenanceConfigurationId: '${subscription().id}/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_${location}_DB_1'
       }
     ]
     databases: [
@@ -113,7 +113,6 @@ module testDeployment '../../main.bicep' = {
         capacity: 0
         maxSizeBytes: 34359738368
         licenseType: 'LicenseIncluded'
-        diagnosticLogsRetentionInDays: 7
         diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
         diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
         diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId

@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.18.4.5664",
-      "templateHash": "8022860912421276738"
+      "version": "0.20.4.51522",
+      "templateHash": "11648715346210984085"
     },
     "name": "Azure Virtual Desktop (AVD) Host Pools",
     "description": "This module deploys an Azure Virtual Desktop (AVD) Host Pool.",
@@ -117,15 +117,6 @@
         "description": "Generated. Do not provide a value! This date value is used to generate a registration token."
       }
     },
-    "diagnosticLogsRetentionInDays": {
-      "type": "int",
-      "defaultValue": 365,
-      "maxValue": 365,
-      "minValue": 0,
-      "metadata": {
-        "description": "Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely."
-      }
-    },
     "diagnosticStorageAccountId": {
       "type": "string",
       "defaultValue": "",
@@ -157,14 +148,14 @@
     "lock": {
       "type": "string",
       "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Specify the type of lock."
-      },
       "allowedValues": [
         "",
         "CanNotDelete",
         "ReadOnly"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Specify the type of lock."
+      }
     },
     "tags": {
       "type": "object",
@@ -220,8 +211,8 @@
     "agentUpdateMaintenanceWindowHour": {
       "type": "int",
       "defaultValue": 22,
-      "maxValue": 23,
       "minValue": 1,
+      "maxValue": 23,
       "metadata": {
         "description": "Optional. Update hour for scheduled agent updates."
       }
@@ -356,15 +347,11 @@
         "count": "[length(filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', and(not(equals(lambdaVariables('item'), 'allLogs')), not(equals(lambdaVariables('item'), ''))))))]",
         "input": {
           "category": "[filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', and(not(equals(lambdaVariables('item'), 'allLogs')), not(equals(lambdaVariables('item'), '')))))[copyIndex('diagnosticsLogsSpecified')]]",
-          "enabled": true,
-          "retentionPolicy": {
-            "enabled": true,
-            "days": "[parameters('diagnosticLogsRetentionInDays')]"
-          }
+          "enabled": true
         }
       }
     ],
-    "diagnosticsLogs": "[if(contains(parameters('diagnosticLogCategoriesToEnable'), 'allLogs'), createArray(createObject('categoryGroup', 'allLogs', 'enabled', true(), 'retentionPolicy', createObject('enabled', true(), 'days', parameters('diagnosticLogsRetentionInDays')))), if(contains(parameters('diagnosticLogCategoriesToEnable'), ''), createArray(), variables('diagnosticsLogsSpecified')))]",
+    "diagnosticsLogs": "[if(contains(parameters('diagnosticLogCategoriesToEnable'), 'allLogs'), createArray(createObject('categoryGroup', 'allLogs', 'enabled', true())), if(contains(parameters('diagnosticLogCategoriesToEnable'), ''), createArray(), variables('diagnosticsLogsSpecified')))]",
     "tokenExpirationTime": "[dateTimeAdd(parameters('baseTime'), parameters('tokenValidityLength'))]"
   },
   "resources": [
@@ -478,8 +465,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.18.4.5664",
-              "templateHash": "14279396732857224845"
+              "version": "0.20.4.51522",
+              "templateHash": "18049817812681767445"
             }
           },
           "parameters": {

@@ -35,8 +35,11 @@ module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
+    // Adding base time to make the name unique as purge protection must be enabled (but may not be longer than 24 characters total)
+    location: location
+    managedIdentityName: 'dep-${namePrefix}-msi-ds-${serviceShort}'
     virtualNetworkName: 'dep-${namePrefix}-vnet-${serviceShort}'
-    managedIdentityName: 'dep-${namePrefix}-msi-${serviceShort}'
+    pairedRegionScriptName: 'dep-${namePrefix}-ds-${serviceShort}'
   }
 }
 
@@ -66,7 +69,6 @@ module testDeployment '../../main.bicep' = {
     name: '${namePrefix}${serviceShort}001'
     acrAdminUserEnabled: false
     acrSku: 'Premium'
-    diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
     diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
     diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
@@ -100,8 +102,8 @@ module testDeployment '../../main.bicep' = {
     quarantinePolicyStatus: 'enabled'
     replications: [
       {
-        location: 'northeurope'
-        name: 'northeurope'
+        location: nestedDependencies.outputs.pairedRegionName
+        name: nestedDependencies.outputs.pairedRegionName
       }
     ]
     roleAssignments: [
