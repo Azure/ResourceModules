@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.20.4.51522",
-      "templateHash": "10067626025010436242"
+      "templateHash": "965959360882540315"
     },
     "name": "VPN Gateways",
     "description": "This module deploys a VPN Gateway.",
@@ -120,7 +120,7 @@
     },
     {
       "type": "Microsoft.Network/vpnGateways",
-      "apiVersion": "2022-07-01",
+      "apiVersion": "2023-04-01",
       "name": "[parameters('name')]",
       "location": "[parameters('location')]",
       "tags": "[parameters('tags')]",
@@ -184,7 +184,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.20.4.51522",
-              "templateHash": "8392038973787732390"
+              "templateHash": "6991949008498259337"
             },
             "name": "VPN Gateway NAT Rules",
             "description": "This module deploys a VPN Gateway NAT Rule.",
@@ -273,7 +273,7 @@
             },
             {
               "type": "Microsoft.Network/vpnGateways/natRules",
-              "apiVersion": "2022-07-01",
+              "apiVersion": "2023-04-01",
               "name": "[format('{0}/{1}', parameters('vpnGatewayName'), parameters('name'))]",
               "properties": {
                 "externalMappings": "[parameters('externalMappings')]",
@@ -346,7 +346,10 @@
           "vpnConnectionProtocolType": "[if(contains(parameters('vpnConnections')[copyIndex()], 'vpnConnectionProtocolType'), createObject('value', parameters('vpnConnections')[copyIndex()].vpnConnectionProtocolType), createObject('value', 'IKEv2'))]",
           "enableDefaultTelemetry": {
             "value": "[variables('enableReferencedModulesTelemetry')]"
-          }
+          },
+          "ipsecPolicies": "[if(contains(parameters('vpnConnections')[copyIndex()], 'ipsecPolicies'), createObject('value', parameters('vpnConnections')[copyIndex()].ipsecPolicies), createObject('value', createArray()))]",
+          "trafficSelectorPolicies": "[if(contains(parameters('vpnConnections')[copyIndex()], 'trafficSelectorPolicies'), createObject('value', parameters('vpnConnections')[copyIndex()].trafficSelectorPolicies), createObject('value', createArray()))]",
+          "vpnLinkConnections": "[if(contains(parameters('vpnConnections')[copyIndex()], 'vpnLinkConnections'), createObject('value', parameters('vpnConnections')[copyIndex()].vpnLinkConnections), createObject('value', createArray()))]"
         },
         "template": {
           "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
@@ -355,7 +358,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.20.4.51522",
-              "templateHash": "17179690973269419309"
+              "templateHash": "16568762636851429677"
             },
             "name": "VPN Gateway VPN Connections",
             "description": "This module deploys a VPN Gateway VPN Connection.",
@@ -501,7 +504,7 @@
             },
             {
               "type": "Microsoft.Network/vpnGateways/vpnConnections",
-              "apiVersion": "2022-07-01",
+              "apiVersion": "2023-04-01",
               "name": "[format('{0}/{1}', parameters('vpnGatewayName'), parameters('name'))]",
               "properties": {
                 "connectionBandwidth": "[parameters('connectionBandwidth')]",
@@ -578,7 +581,7 @@
       "metadata": {
         "description": "The location the resource was deployed into."
       },
-      "value": "[reference(resourceId('Microsoft.Network/vpnGateways', parameters('name')), '2022-07-01', 'full').location]"
+      "value": "[reference(resourceId('Microsoft.Network/vpnGateways', parameters('name')), '2023-04-01', 'full').location]"
     }
   }
 }

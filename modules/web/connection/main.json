@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "14555471655592960659"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "15514317301300272794"
+    },
+    "name": "API Connections",
+    "description": "This module deploys an Azure API Connection.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "api": {
@@ -80,14 +83,14 @@
     "lock": {
       "type": "string",
       "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Specify the type of lock."
-      },
       "allowedValues": [
         "",
         "CanNotDelete",
         "ReadOnly"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Specify the type of lock."
+      }
     },
     "tags": {
       "type": "object",
@@ -183,8 +186,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "15293872186826158574"
+              "version": "0.20.4.51522",
+              "templateHash": "2642908825697266610"
             }
           },
           "parameters": {

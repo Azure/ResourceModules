@@ -65,7 +65,7 @@ module diagnosticDependencies '../../../../.shared/.templates/diagnostic.depende
 var testLocation = 'westeurope'
 module testDeployment '../../main.bicep' = {
   scope: resourceGroup
-  name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
+  name: '${uniqueString(deployment().name, testLocation)}-test-${serviceShort}'
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: 'NetworkWatcher_${testLocation}'

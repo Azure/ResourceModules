@@ -98,10 +98,6 @@ param enableDefaultTelemetry bool = true
 param roleAssignments array = []
 
 // Diagnostic Settings
-@description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
-@minValue(0)
-@maxValue(365)
-param diagnosticLogsRetentionInDays int = 365
 
 @description('Optional. Resource ID of the diagnostic storage account.')
 param diagnosticStorageAccountId string = ''
@@ -206,20 +202,12 @@ param hybridConnectionRelays array = []
 var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs' && item != ''): {
   category: category
   enabled: true
-  retentionPolicy: {
-    enabled: true
-    days: diagnosticLogsRetentionInDays
-  }
 }]
 
 var diagnosticsLogs = contains(diagnosticLogCategoriesToEnable, 'allLogs') ? [
   {
     categoryGroup: 'allLogs'
     enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
   }
 ] : contains(diagnosticLogCategoriesToEnable, '') ? [] : diagnosticsLogsSpecified
 
@@ -227,10 +215,6 @@ var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   category: metric
   timeGrain: null
   enabled: true
-  retentionPolicy: {
-    enabled: true
-    days: diagnosticLogsRetentionInDays
-  }
 }]
 
 var identityType = systemAssignedIdentity ? (!empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
@@ -334,7 +318,6 @@ module app_slots 'slot/main.bicep' = [for (slot, index) in slots: {
     setAzureWebJobsDashboard: contains(slot, 'setAzureWebJobsDashboard') ? slot.setAzureWebJobsDashboard : setAzureWebJobsDashboard
     authSettingV2Configuration: contains(slot, 'authSettingV2Configuration') ? slot.authSettingV2Configuration : authSettingV2Configuration
     enableDefaultTelemetry: enableReferencedModulesTelemetry
-    diagnosticLogsRetentionInDays: contains(slot, 'diagnosticLogsRetentionInDays') ? slot.diagnosticLogsRetentionInDays : diagnosticLogsRetentionInDays
     diagnosticStorageAccountId: contains(slot, 'diagnosticStorageAccountId') ? slot.diagnosticStorageAccountId : diagnosticStorageAccountId
     diagnosticWorkspaceId: contains(slot, 'diagnosticWorkspaceId') ? slot.diagnosticWorkspaceId : diagnosticWorkspaceId
     diagnosticEventHubAuthorizationRuleId: contains(slot, 'diagnosticEventHubAuthorizationRuleId') ? slot.diagnosticEventHubAuthorizationRuleId : diagnosticEventHubAuthorizationRuleId

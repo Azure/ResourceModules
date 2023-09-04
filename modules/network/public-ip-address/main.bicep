@@ -39,11 +39,6 @@ param zones array = []
 ])
 param publicIPAddressVersion string = 'IPv4'
 
-@description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
-@minValue(0)
-@maxValue(365)
-param diagnosticLogsRetentionInDays int = 365
-
 @description('Optional. Resource ID of the diagnostic storage account.')
 param diagnosticStorageAccountId string = ''
 
@@ -58,6 +53,16 @@ param diagnosticEventHubName string = ''
 
 @description('Optional. The domain name label. The concatenation of the domain name label and the regionalized DNS zone make up the fully qualified domain name associated with the public IP address. If a domain name label is specified, an A DNS record is created for the public IP in the Microsoft Azure DNS system.')
 param domainNameLabel string = ''
+
+@allowed([
+  ''
+  'NoReuse'
+  'ResourceGroupReuse'
+  'SubscriptionReuse'
+  'TenantReuse'
+])
+@description('Optional. The domain name label scope. If a domain name label and a domain name label scope are specified, an A DNS record is created for the public IP in the Microsoft Azure DNS system with a hashed value includes in FQDN.')
+param domainNameLabelScope string = ''
 
 @description('Optional. The Fully Qualified Domain Name of the A DNS record associated with the public IP. This is the concatenation of the domainNameLabel and the regionalized DNS zone.')
 param fqdn string = ''
@@ -111,20 +116,12 @@ param diagnosticSettingsName string = ''
 var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs' && item != ''): {
   category: category
   enabled: true
-  retentionPolicy: {
-    enabled: true
-    days: diagnosticLogsRetentionInDays
-  }
 }]
 
 var diagnosticsLogs = contains(diagnosticLogCategoriesToEnable, 'allLogs') ? [
   {
     categoryGroup: 'allLogs'
     enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
   }
 ] : contains(diagnosticLogCategoriesToEnable, '') ? [] : diagnosticsLogsSpecified
 
@@ -132,10 +129,6 @@ var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   category: metric
   timeGrain: null
   enabled: true
-  retentionPolicy: {
-    enabled: true
-    days: diagnosticLogsRetentionInDays
-  }
 }]
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
@@ -150,7 +143,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource publicIpAddress 'Microsoft.Network/publicIPAddresses@2022-07-01' = {
+resource publicIpAddress 'Microsoft.Network/publicIPAddresses@2023-04-01' = {
   name: name
   location: location
   tags: tags
@@ -162,6 +155,7 @@ resource publicIpAddress 'Microsoft.Network/publicIPAddresses@2022-07-01' = {
   properties: {
     dnsSettings: !empty(domainNameLabel) ? {
       domainNameLabel: domainNameLabel
+      domainNameLabelScope: domainNameLabelScope
       fqdn: fqdn
       reverseFqdn: reverseFqdn
     } : null

@@ -1,0 +1,356 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.20.4.51522",
+      "templateHash": "10866152058087829218"
+    },
+    "name": "Front Door Web Application Firewall (WAF) Policies",
+    "description": "This module deploys a Front Door Web Application Firewall (WAF) Policy.",
+    "owner": "Azure/module-maintainers"
+  },
+  "parameters": {
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "metadata": {
+        "description": "Required. Name of the Front Door WAF policy."
+      }
+    },
+    "location": {
+      "type": "string",
+      "defaultValue": "global",
+      "metadata": {
+        "description": "Optional. Location for all resources."
+      }
+    },
+    "sku": {
+      "type": "string",
+      "defaultValue": "Standard_AzureFrontDoor",
+      "allowedValues": [
+        "Standard_AzureFrontDoor",
+        "Premium_AzureFrontDoor"
+      ],
+      "metadata": {
+        "description": "Optional. The pricing tier of the WAF profile."
+      }
+    },
+    "tags": {
+      "type": "object",
+      "defaultValue": {},
+      "metadata": {
+        "description": "Optional. Resource tags."
+      }
+    },
+    "enableDefaultTelemetry": {
+      "type": "bool",
+      "defaultValue": true,
+      "metadata": {
+        "description": "Optional. Enable telemetry via a Globally Unique Identifier (GUID)."
+      }
+    },
+    "managedRules": {
+      "type": "object",
+      "defaultValue": {
+        "managedRuleSets": [
+          {
+            "ruleSetType": "Microsoft_DefaultRuleSet",
+            "ruleSetVersion": "2.1",
+            "ruleGroupOverrides": [],
+            "exclusions": [],
+            "ruleSetAction": "Block"
+          },
+          {
+            "ruleSetType": "Microsoft_BotManagerRuleSet",
+            "ruleSetVersion": "1.0",
+            "ruleGroupOverrides": [],
+            "exclusions": []
+          }
+        ]
+      },
+      "metadata": {
+        "description": "Optional. Describes the managedRules structure."
+      }
+    },
+    "customRules": {
+      "type": "object",
+      "defaultValue": {
+        "rules": [
+          {
+            "name": "ApplyGeoFilter",
+            "priority": 100,
+            "enabledState": "Enabled",
+            "ruleType": "MatchRule",
+            "action": "Block",
+            "matchConditions": [
+              {
+                "matchVariable": "RemoteAddr",
+                "operator": "GeoMatch",
+                "negateCondition": true,
+                "matchValue": [
+                  "ZZ"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "metadata": {
+        "description": "Optional. The custom rules inside the policy."
+      }
+    },
+    "policySettings": {
+      "type": "object",
+      "defaultValue": {
+        "enabledState": "Enabled",
+        "mode": "Prevention"
+      },
+      "metadata": {
+        "description": "Optional. The PolicySettings for policy."
+      }
+    },
+    "lock": {
+      "type": "string",
+      "defaultValue": "",
+      "allowedValues": [
+        "",
+        "CanNotDelete",
+        "ReadOnly"
+      ],
+      "metadata": {
+        "description": "Optional. Specify the type of lock."
+      }
+    },
+    "roleAssignments": {
+      "type": "array",
+      "defaultValue": [],
+      "metadata": {
+        "description": "Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'."
+      }
+    }
+  },
+  "resources": [
+    {
+      "condition": "[parameters('enableDefaultTelemetry')]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2021-04-01",
+      "name": "[format('pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-{0}', uniqueString(deployment().name, parameters('location')))]",
+      "properties": {
+        "mode": "Incremental",
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "resources": []
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Network/FrontDoorWebApplicationFirewallPolicies",
+      "apiVersion": "2022-05-01",
+      "name": "[parameters('name')]",
+      "location": "[parameters('location')]",
+      "sku": {
+        "name": "[parameters('sku')]"
+      },
+      "tags": "[parameters('tags')]",
+      "properties": {
+        "customRules": "[parameters('customRules')]",
+        "managedRules": "[if(equals(parameters('sku'), 'Premium_AzureFrontDoor'), parameters('managedRules'), createObject('managedRuleSets', createArray()))]",
+        "policySettings": "[parameters('policySettings')]"
+      }
+    },
+    {
+      "condition": "[not(empty(parameters('lock')))]",
+      "type": "Microsoft.Authorization/locks",
+      "apiVersion": "2020-05-01",
+      "scope": "[format('Microsoft.Network/FrontDoorWebApplicationFirewallPolicies/{0}', parameters('name'))]",
+      "name": "[format('{0}-{1}-lock', parameters('name'), parameters('lock'))]",
+      "properties": {
+        "level": "[parameters('lock')]",
+        "notes": "[if(equals(parameters('lock'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot modify the resource or child resources.')]"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/FrontDoorWebApplicationFirewallPolicies', parameters('name'))]"
+      ]
+    },
+    {
+      "copy": {
+        "name": "frontDoorWAFPolicy_roleAssignments",
+        "count": "[length(parameters('roleAssignments'))]"
+      },
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2022-09-01",
+      "name": "[format('{0}-FDWAFP-Rbac-{1}', uniqueString(deployment().name, parameters('location')), copyIndex())]",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "description": "[if(contains(parameters('roleAssignments')[copyIndex()], 'description'), createObject('value', parameters('roleAssignments')[copyIndex()].description), createObject('value', ''))]",
+          "principalIds": {
+            "value": "[parameters('roleAssignments')[copyIndex()].principalIds]"
+          },
+          "principalType": "[if(contains(parameters('roleAssignments')[copyIndex()], 'principalType'), createObject('value', parameters('roleAssignments')[copyIndex()].principalType), createObject('value', ''))]",
+          "roleDefinitionIdOrName": {
+            "value": "[parameters('roleAssignments')[copyIndex()].roleDefinitionIdOrName]"
+          },
+          "condition": "[if(contains(parameters('roleAssignments')[copyIndex()], 'condition'), createObject('value', parameters('roleAssignments')[copyIndex()].condition), createObject('value', ''))]",
+          "delegatedManagedIdentityResourceId": "[if(contains(parameters('roleAssignments')[copyIndex()], 'delegatedManagedIdentityResourceId'), createObject('value', parameters('roleAssignments')[copyIndex()].delegatedManagedIdentityResourceId), createObject('value', ''))]",
+          "resourceId": {
+            "value": "[resourceId('Microsoft.Network/FrontDoorWebApplicationFirewallPolicies', parameters('name'))]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.20.4.51522",
+              "templateHash": "2284372900511543285"
+            }
+          },
+          "parameters": {
+            "principalIds": {
+              "type": "array",
+              "metadata": {
+                "description": "Required. The IDs of the principals to assign the role to."
+              }
+            },
+            "roleDefinitionIdOrName": {
+              "type": "string",
+              "metadata": {
+                "description": "Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead."
+              }
+            },
+            "resourceId": {
+              "type": "string",
+              "metadata": {
+                "description": "Required. The resource ID of the resource to apply the role assignment to."
+              }
+            },
+            "principalType": {
+              "type": "string",
+              "defaultValue": "",
+              "allowedValues": [
+                "ServicePrincipal",
+                "Group",
+                "User",
+                "ForeignGroup",
+                "Device",
+                ""
+              ],
+              "metadata": {
+                "description": "Optional. The principal type of the assigned principal ID."
+              }
+            },
+            "description": {
+              "type": "string",
+              "defaultValue": "",
+              "metadata": {
+                "description": "Optional. The description of the role assignment."
+              }
+            },
+            "condition": {
+              "type": "string",
+              "defaultValue": "",
+              "metadata": {
+                "description": "Optional. The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase \"foo_storage_container\"."
+              }
+            },
+            "conditionVersion": {
+              "type": "string",
+              "defaultValue": "2.0",
+              "allowedValues": [
+                "2.0"
+              ],
+              "metadata": {
+                "description": "Optional. Version of the condition."
+              }
+            },
+            "delegatedManagedIdentityResourceId": {
+              "type": "string",
+              "defaultValue": "",
+              "metadata": {
+                "description": "Optional. Id of the delegated managed identity resource."
+              }
+            }
+          },
+          "variables": {
+            "builtInRoleNames": {
+              "Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]",
+              "Managed Application Contributor Role": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '641177b8-a67a-45b9-a033-47bc880bb21e')]",
+              "Managed Application Operator Role": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'c7393b34-138c-406f-901b-d8cf2b17e6ae')]",
+              "Managed Applications Reader": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b9331d33-8a36-4f8c-b097-4f54124fdb44')]",
+              "Monitoring Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '749f88d5-cbae-40b8-bcfc-e573ddc772fa')]",
+              "Monitoring Reader": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '43d0d8ad-25c7-4714-9337-8ba259a9fe05')]",
+              "Owner": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '8e3af657-a8ff-443c-a75c-2fe8c4bcb635')]",
+              "Reader": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'acdd72a7-3385-48ef-bd42-f606fba81ae7')]",
+              "Resource Policy Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '36243c78-bf99-498c-9df9-86d9f8d28608')]",
+              "Role Based Access Control Administrator (Preview)": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'f58310d9-a9f6-439a-9e8d-f62e7b41a168')]",
+              "User Access Administrator": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '18d7d88d-d35e-4fb5-a5c3-7773c20a72d9')]"
+            }
+          },
+          "resources": [
+            {
+              "copy": {
+                "name": "roleAssignment",
+                "count": "[length(parameters('principalIds'))]"
+              },
+              "type": "Microsoft.Authorization/roleAssignments",
+              "apiVersion": "2022-04-01",
+              "scope": "[format('Microsoft.Network/FrontDoorWebApplicationFirewallPolicies/{0}', last(split(parameters('resourceId'), '/')))]",
+              "name": "[guid(resourceId('Microsoft.Network/FrontDoorWebApplicationFirewallPolicies', last(split(parameters('resourceId'), '/'))), parameters('principalIds')[copyIndex()], parameters('roleDefinitionIdOrName'))]",
+              "properties": {
+                "description": "[parameters('description')]",
+                "roleDefinitionId": "[if(contains(variables('builtInRoleNames'), parameters('roleDefinitionIdOrName')), variables('builtInRoleNames')[parameters('roleDefinitionIdOrName')], parameters('roleDefinitionIdOrName'))]",
+                "principalId": "[parameters('principalIds')[copyIndex()]]",
+                "principalType": "[if(not(empty(parameters('principalType'))), parameters('principalType'), null())]",
+                "condition": "[if(not(empty(parameters('condition'))), parameters('condition'), null())]",
+                "conditionVersion": "[if(and(not(empty(parameters('conditionVersion'))), not(empty(parameters('condition')))), parameters('conditionVersion'), null())]",
+                "delegatedManagedIdentityResourceId": "[if(not(empty(parameters('delegatedManagedIdentityResourceId'))), parameters('delegatedManagedIdentityResourceId'), null())]"
+              }
+            }
+          ]
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/FrontDoorWebApplicationFirewallPolicies', parameters('name'))]"
+      ]
+    }
+  ],
+  "outputs": {
+    "name": {
+      "type": "string",
+      "metadata": {
+        "description": "The name of the Front Door WAF policy."
+      },
+      "value": "[parameters('name')]"
+    },
+    "resourceId": {
+      "type": "string",
+      "metadata": {
+        "description": "The resource ID of the Front Door WAF policy."
+      },
+      "value": "[resourceId('Microsoft.Network/FrontDoorWebApplicationFirewallPolicies', parameters('name'))]"
+    },
+    "resourceGroupName": {
+      "type": "string",
+      "metadata": {
+        "description": "The resource group the Front Door WAF policy was deployed into."
+      },
+      "value": "[resourceGroup().name]"
+    },
+    "location": {
+      "type": "string",
+      "metadata": {
+        "description": "The location the resource was deployed into."
+      },
+      "value": "[reference(resourceId('Microsoft.Network/FrontDoorWebApplicationFirewallPolicies', parameters('name')), '2022-05-01', 'full').location]"
+    }
+  }
+}

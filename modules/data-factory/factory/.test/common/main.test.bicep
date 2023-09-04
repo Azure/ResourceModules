@@ -69,7 +69,6 @@ module testDeployment '../../main.bicep' = {
     cMKKeyName: nestedDependencies.outputs.keyVaultEncryptionKeyName
     cMKKeyVaultResourceId: nestedDependencies.outputs.keyVaultResourceId
     cMKUserAssignedIdentityResourceId: nestedDependencies.outputs.managedIdentityResourceId
-    diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
     diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
     diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId

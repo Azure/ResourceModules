@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "4122001514474984050"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "14526788352544918663"
+    },
+    "name": "Policy Definitions (All scopes)",
+    "description": "This module deploys a Policy Definition at a Management Group or Subscription scope.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
@@ -153,9 +156,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "14309814077168618325"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "14890815799488372081"
+            },
+            "name": "Policy Definitions (Management Group scope)",
+            "description": "This module deploys a Policy Definition at a Management Group scope.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "name": {
@@ -326,9 +332,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "4872290154327272363"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "14434059777291440353"
+            },
+            "name": "Policy Definitions (Subscription scope)",
+            "description": "This module deploys a Policy Definition at a Subscription scope.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "name": {

@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.20.4.51522",
-      "templateHash": "6917573805504793323"
+      "templateHash": "9156434929960030548"
     },
     "name": "Azure Databricks Workspaces",
     "description": "This module deploys an Azure Databricks Workspace.",
@@ -49,15 +49,6 @@
       "defaultValue": [],
       "metadata": {
         "description": "Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'."
-      }
-    },
-    "diagnosticLogsRetentionInDays": {
-      "type": "int",
-      "defaultValue": 365,
-      "minValue": 0,
-      "maxValue": 365,
-      "metadata": {
-        "description": "Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely."
       }
     },
     "diagnosticStorageAccountId": {
@@ -328,15 +319,11 @@
         "count": "[length(filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', and(not(equals(lambdaVariables('item'), 'allLogs')), not(equals(lambdaVariables('item'), ''))))))]",
         "input": {
           "category": "[filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', and(not(equals(lambdaVariables('item'), 'allLogs')), not(equals(lambdaVariables('item'), '')))))[copyIndex('diagnosticsLogsSpecified')]]",
-          "enabled": true,
-          "retentionPolicy": {
-            "enabled": true,
-            "days": "[parameters('diagnosticLogsRetentionInDays')]"
-          }
+          "enabled": true
         }
       }
     ],
-    "diagnosticsLogs": "[if(contains(parameters('diagnosticLogCategoriesToEnable'), 'allLogs'), createArray(createObject('categoryGroup', 'allLogs', 'enabled', true(), 'retentionPolicy', createObject('enabled', true(), 'days', parameters('diagnosticLogsRetentionInDays')))), if(contains(parameters('diagnosticLogCategoriesToEnable'), ''), createArray(), variables('diagnosticsLogsSpecified')))]",
+    "diagnosticsLogs": "[if(contains(parameters('diagnosticLogCategoriesToEnable'), 'allLogs'), createArray(createObject('categoryGroup', 'allLogs', 'enabled', true())), if(contains(parameters('diagnosticLogCategoriesToEnable'), ''), createArray(), variables('diagnosticsLogsSpecified')))]",
     "enableReferencedModulesTelemetry": false
   },
   "resources": [
@@ -599,7 +586,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.20.4.51522",
-              "templateHash": "609426544615556519"
+              "templateHash": "13560297539192628062"
             },
             "name": "Private Endpoints",
             "description": "This module deploys a Private Endpoint.",
@@ -733,7 +720,7 @@
             },
             {
               "type": "Microsoft.Network/privateEndpoints",
-              "apiVersion": "2022-07-01",
+              "apiVersion": "2023-04-01",
               "name": "[parameters('name')]",
               "location": "[parameters('location')]",
               "tags": "[parameters('tags')]",
@@ -799,7 +786,7 @@
                     "_generator": {
                       "name": "bicep",
                       "version": "0.20.4.51522",
-                      "templateHash": "18114841529204248478"
+                      "templateHash": "17831763001460207830"
                     },
                     "name": "Private Endpoint Private DNS Zone Groups",
                     "description": "This module deploys a Private Endpoint Private DNS Zone Group.",
@@ -866,7 +853,7 @@
                     },
                     {
                       "type": "Microsoft.Network/privateEndpoints/privateDnsZoneGroups",
-                      "apiVersion": "2022-07-01",
+                      "apiVersion": "2023-04-01",
                       "name": "[format('{0}/{1}', parameters('privateEndpointName'), parameters('name'))]",
                       "properties": {
                         "privateDnsZoneConfigs": "[variables('privateDnsZoneConfigs')]"
@@ -1107,7 +1094,7 @@
               "metadata": {
                 "description": "The location the resource was deployed into."
               },
-              "value": "[reference(resourceId('Microsoft.Network/privateEndpoints', parameters('name')), '2022-07-01', 'full').location]"
+              "value": "[reference(resourceId('Microsoft.Network/privateEndpoints', parameters('name')), '2023-04-01', 'full').location]"
             }
           }
         }

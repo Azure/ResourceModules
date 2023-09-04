@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "10822358276047923797"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "7104376460236029224"
+    },
+    "name": "Data Collection Endpoints",
+    "description": "This module deploys a Data Collection Endpoint.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
@@ -154,8 +157,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "3348228389312702075"
+              "version": "0.20.4.51522",
+              "templateHash": "4828222370523897181"
             }
           },
           "parameters": {

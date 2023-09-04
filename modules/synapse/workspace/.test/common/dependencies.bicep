@@ -13,64 +13,64 @@ param storageAccountName string
 var addressPrefix = '10.0.0.0/16'
 
 resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' = {
-    name: managedIdentityName
-    location: location
+  name: managedIdentityName
+  location: location
 }
 
-resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-07-01' = {
-    name: virtualNetworkName
-    location: location
-    properties: {
-        addressSpace: {
-            addressPrefixes: [
-                addressPrefix
-            ]
-        }
-        subnets: [
-            {
-                name: 'defaultSubnet'
-                properties: {
-                    addressPrefix: addressPrefix
-                }
-            }
-        ]
+resource virtualNetwork 'Microsoft.Network/virtualNetworks@2023-04-01' = {
+  name: virtualNetworkName
+  location: location
+  properties: {
+    addressSpace: {
+      addressPrefixes: [
+        addressPrefix
+      ]
     }
+    subnets: [
+      {
+        name: 'defaultSubnet'
+        properties: {
+          addressPrefix: addressPrefix
+        }
+      }
+    ]
+  }
 }
 
 resource privateDNSZone 'Microsoft.Network/privateDnsZones@2020-06-01' = {
-    name: 'privatelink.sql.azuresynapse.net'
-    location: 'global'
+  name: 'privatelink.sql.azuresynapse.net'
+  location: 'global'
 
-    resource virtualNetworkLinks 'virtualNetworkLinks@2020-06-01' = {
-        name: '${virtualNetworkName}-vnetlink'
-        location: 'global'
-        properties: {
-            virtualNetwork: {
-                id: virtualNetwork.id
-            }
-            registrationEnabled: false
-        }
+  resource virtualNetworkLinks 'virtualNetworkLinks@2020-06-01' = {
+    name: '${virtualNetworkName}-vnetlink'
+    location: 'global'
+    properties: {
+      virtualNetwork: {
+        id: virtualNetwork.id
+      }
+      registrationEnabled: false
     }
+  }
 }
 
 resource storageAccount 'Microsoft.Storage/storageAccounts@2022-09-01' = {
-    name: storageAccountName
-    location: location
-    sku: {
-        name: 'Standard_LRS'
-    }
-    kind: 'StorageV2'
-    properties: {
-        isHnsEnabled: true
-    }
+  name: storageAccountName
+  location: location
+  sku: {
+    name: 'Standard_LRS'
+  }
+  kind: 'StorageV2'
+  properties: {
+    isHnsEnabled: true
+  }
 
-    resource blobService 'blobServices@2022-09-01' = {
-        name: 'default'
+  resource blobService 'blobServices@2022-09-01' = {
+    name: 'default'
 
-        resource container 'containers@2022-09-01' = {
-            name: 'synapsews'
-        }
+    resource container 'containers@2022-09-01' = {
+      name: 'synapsews'
     }
+  }
 }
 
 @description('The principal ID of the created Managed Identity.')

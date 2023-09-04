@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "6402048725621026089"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "8975971845190410186"
+    },
+    "name": "Healthcare API Workspaces",
+    "description": "This module deploys a Healthcare API Workspace.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
@@ -26,14 +29,14 @@
     "lock": {
       "type": "string",
       "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Specify the type of lock."
-      },
       "allowedValues": [
         "",
         "CanNotDelete",
         "ReadOnly"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Specify the type of lock."
+      }
     },
     "roleAssignments": {
       "type": "array",
@@ -45,13 +48,13 @@
     "publicNetworkAccess": {
       "type": "string",
       "defaultValue": "Disabled",
-      "metadata": {
-        "description": "Optional. Control permission for data plane traffic coming from public networks while private endpoint is enabled."
-      },
       "allowedValues": [
         "Disabled",
         "Enabled"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Control permission for data plane traffic coming from public networks while private endpoint is enabled."
+      }
     },
     "tags": {
       "type": "object",
@@ -165,8 +168,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "761636189970295993"
+              "version": "0.20.4.51522",
+              "templateHash": "13579581223684332874"
             }
           },
           "parameters": {
@@ -328,7 +331,6 @@
           "corsMethods": "[if(contains(parameters('fhirservices')[copyIndex()], 'corsMethods'), createObject('value', parameters('fhirservices')[copyIndex()].corsMethods), createObject('value', createArray()))]",
           "corsMaxAge": "[if(contains(parameters('fhirservices')[copyIndex()], 'corsMaxAge'), createObject('value', parameters('fhirservices')[copyIndex()].corsMaxAge), createObject('value', -1))]",
           "corsAllowCredentials": "[if(contains(parameters('fhirservices')[copyIndex()], 'corsAllowCredentials'), createObject('value', parameters('fhirservices')[copyIndex()].corsAllowCredentials), createObject('value', false()))]",
-          "diagnosticLogsRetentionInDays": "[if(contains(parameters('fhirservices')[copyIndex()], 'diagnosticLogsRetentionInDays'), createObject('value', parameters('fhirservices')[copyIndex()].diagnosticLogsRetentionInDays), createObject('value', 365))]",
           "diagnosticStorageAccountId": "[if(contains(parameters('fhirservices')[copyIndex()], 'diagnosticStorageAccountId'), createObject('value', parameters('fhirservices')[copyIndex()].diagnosticStorageAccountId), createObject('value', ''))]",
           "diagnosticWorkspaceId": "[if(contains(parameters('fhirservices')[copyIndex()], 'diagnosticWorkspaceId'), createObject('value', parameters('fhirservices')[copyIndex()].diagnosticWorkspaceId), createObject('value', ''))]",
           "diagnosticEventHubAuthorizationRuleId": "[if(contains(parameters('fhirservices')[copyIndex()], 'diagnosticEventHubAuthorizationRuleId'), createObject('value', parameters('fhirservices')[copyIndex()].diagnosticEventHubAuthorizationRuleId), createObject('value', ''))]",
@@ -354,28 +356,31 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "13041396315414383570"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "3716031618750035294"
+            },
+            "name": "Healthcare API Workspace FHIR Services",
+            "description": "This module deploys a Healthcare API Workspace FHIR Service.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "name": {
               "type": "string",
+              "maxLength": 50,
               "metadata": {
                 "description": "Required. The name of the FHIR service."
-              },
-              "maxLength": 50
+              }
             },
             "kind": {
               "type": "string",
               "defaultValue": "fhir-R4",
-              "metadata": {
-                "description": "Optional. The kind of the service. Defaults to R4."
-              },
               "allowedValues": [
                 "fhir-R4",
                 "fhir-Stu3"
-              ]
+              ],
+              "metadata": {
+                "description": "Optional. The kind of the service. Defaults to R4."
+              }
             },
             "workspaceName": {
               "type": "string",
@@ -435,9 +440,6 @@
             "corsMethods": {
               "type": "array",
               "defaultValue": [],
-              "metadata": {
-                "description": "Optional. Specify the allowed HTTP methods."
-              },
               "allowedValues": [
                 "DELETE",
                 "GET",
@@ -445,7 +447,10 @@
                 "PATCH",
                 "POST",
                 "PUT"
-              ]
+              ],
+              "metadata": {
+                "description": "Optional. Specify the allowed HTTP methods."
+              }
             },
             "corsMaxAge": {
               "type": "int",
@@ -466,15 +471,6 @@
               "defaultValue": "[resourceGroup().location]",
               "metadata": {
                 "description": "Optional. Location for all resources."
-              }
-            },
-            "diagnosticLogsRetentionInDays": {
-              "type": "int",
-              "defaultValue": 365,
-              "maxValue": 365,
-              "minValue": 0,
-              "metadata": {
-                "description": "Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely."
               }
             },
             "diagnosticStorageAccountId": {
@@ -536,14 +532,14 @@
             "lock": {
               "type": "string",
               "defaultValue": "",
-              "metadata": {
-                "description": "Optional. Specify the type of lock."
-              },
               "allowedValues": [
                 "",
                 "CanNotDelete",
                 "ReadOnly"
-              ]
+              ],
+              "metadata": {
+                "description": "Optional. Specify the type of lock."
+              }
             },
             "roleAssignments": {
               "type": "array",
@@ -555,25 +551,25 @@
             "publicNetworkAccess": {
               "type": "string",
               "defaultValue": "Disabled",
-              "metadata": {
-                "description": "Optional. Control permission for data plane traffic coming from public networks while private endpoint is enabled."
-              },
               "allowedValues": [
                 "Disabled",
                 "Enabled"
-              ]
+              ],
+              "metadata": {
+                "description": "Optional. Control permission for data plane traffic coming from public networks while private endpoint is enabled."
+              }
             },
             "resourceVersionPolicy": {
               "type": "string",
               "defaultValue": "versioned",
-              "metadata": {
-                "description": "Optional. The default value for tracking history across all resources."
-              },
               "allowedValues": [
                 "no-version",
                 "versioned",
                 "versioned-update"
-              ]
+              ],
+              "metadata": {
+                "description": "Optional. The default value for tracking history across all resources."
+              }
             },
             "resourceVersionOverrides": {
               "type": "object",
@@ -622,24 +618,24 @@
               "defaultValue": [
                 "AuditLogs"
               ],
-              "metadata": {
-                "description": "Optional. The name of logs that will be streamed."
-              },
               "allowedValues": [
                 "AuditLogs"
-              ]
+              ],
+              "metadata": {
+                "description": "Optional. The name of logs that will be streamed."
+              }
             },
             "diagnosticMetricsToEnable": {
               "type": "array",
               "defaultValue": [
                 "AllMetrics"
               ],
-              "metadata": {
-                "description": "Optional. The name of metrics that will be streamed."
-              },
               "allowedValues": [
                 "AllMetrics"
-              ]
+              ],
+              "metadata": {
+                "description": "Optional. The name of metrics that will be streamed."
+              }
             },
             "diagnosticSettingsName": {
               "type": "string",
@@ -656,11 +652,7 @@
                 "count": "[length(parameters('diagnosticLogCategoriesToEnable'))]",
                 "input": {
                   "category": "[parameters('diagnosticLogCategoriesToEnable')[copyIndex('diagnosticsLogs')]]",
-                  "enabled": true,
-                  "retentionPolicy": {
-                    "enabled": true,
-                    "days": "[parameters('diagnosticLogsRetentionInDays')]"
-                  }
+                  "enabled": true
                 }
               },
               {
@@ -669,11 +661,7 @@
                 "input": {
                   "category": "[parameters('diagnosticMetricsToEnable')[copyIndex('diagnosticsMetrics')]]",
                   "timeGrain": null,
-                  "enabled": true,
-                  "retentionPolicy": {
-                    "enabled": true,
-                    "days": "[parameters('diagnosticLogsRetentionInDays')]"
-                  }
+                  "enabled": true
                 }
               },
               {
@@ -810,8 +798,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.19.5.34762",
-                      "templateHash": "12959461194377825397"
+                      "version": "0.20.4.51522",
+                      "templateHash": "13975136606830731755"
                     }
                   },
                   "parameters": {
@@ -1015,7 +1003,6 @@
           "corsMethods": "[if(contains(parameters('dicomservices')[copyIndex()], 'corsMethods'), createObject('value', parameters('dicomservices')[copyIndex()].corsMethods), createObject('value', createArray()))]",
           "corsMaxAge": "[if(contains(parameters('dicomservices')[copyIndex()], 'corsMaxAge'), createObject('value', parameters('dicomservices')[copyIndex()].corsMaxAge), createObject('value', -1))]",
           "corsAllowCredentials": "[if(contains(parameters('dicomservices')[copyIndex()], 'corsAllowCredentials'), createObject('value', parameters('dicomservices')[copyIndex()].corsAllowCredentials), createObject('value', false()))]",
-          "diagnosticLogsRetentionInDays": "[if(contains(parameters('dicomservices')[copyIndex()], 'diagnosticLogsRetentionInDays'), createObject('value', parameters('dicomservices')[copyIndex()].diagnosticLogsRetentionInDays), createObject('value', 365))]",
           "diagnosticStorageAccountId": "[if(contains(parameters('dicomservices')[copyIndex()], 'diagnosticStorageAccountId'), createObject('value', parameters('dicomservices')[copyIndex()].diagnosticStorageAccountId), createObject('value', ''))]",
           "diagnosticWorkspaceId": "[if(contains(parameters('dicomservices')[copyIndex()], 'diagnosticWorkspaceId'), createObject('value', parameters('dicomservices')[copyIndex()].diagnosticWorkspaceId), createObject('value', ''))]",
           "diagnosticEventHubAuthorizationRuleId": "[if(contains(parameters('dicomservices')[copyIndex()], 'diagnosticEventHubAuthorizationRuleId'), createObject('value', parameters('dicomservices')[copyIndex()].diagnosticEventHubAuthorizationRuleId), createObject('value', ''))]",
@@ -1033,9 +1020,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "2439060324976899647"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "13236257936604632093"
+            },
+            "name": "Healthcare API Workspace DICOM Services",
+            "description": "This module deploys a Healthcare API Workspace DICOM Service.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "name": {
@@ -1068,9 +1058,6 @@
             "corsMethods": {
               "type": "array",
               "defaultValue": [],
-              "metadata": {
-                "description": "Optional. Specify the allowed HTTP methods."
-              },
               "allowedValues": [
                 "DELETE",
                 "GET",
@@ -1078,7 +1065,10 @@
                 "PATCH",
                 "POST",
                 "PUT"
-              ]
+              ],
+              "metadata": {
+                "description": "Optional. Specify the allowed HTTP methods."
+              }
             },
             "corsMaxAge": {
               "type": "int",
@@ -1099,15 +1089,6 @@
               "defaultValue": "[resourceGroup().location]",
               "metadata": {
                 "description": "Optional. Location for all resources."
-              }
-            },
-            "diagnosticLogsRetentionInDays": {
-              "type": "int",
-              "defaultValue": 365,
-              "maxValue": 365,
-              "minValue": 0,
-              "metadata": {
-                "description": "Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely."
               }
             },
             "diagnosticStorageAccountId": {
@@ -1141,25 +1122,25 @@
             "lock": {
               "type": "string",
               "defaultValue": "",
-              "metadata": {
-                "description": "Optional. Specify the type of lock."
-              },
               "allowedValues": [
                 "",
                 "CanNotDelete",
                 "ReadOnly"
-              ]
+              ],
+              "metadata": {
+                "description": "Optional. Specify the type of lock."
+              }
             },
             "publicNetworkAccess": {
               "type": "string",
               "defaultValue": "Disabled",
-              "metadata": {
-                "description": "Optional. Control permission for data plane traffic coming from public networks while private endpoint is enabled."
-              },
               "allowedValues": [
                 "Disabled",
                 "Enabled"
-              ]
+              ],
+              "metadata": {
+                "description": "Optional. Control permission for data plane traffic coming from public networks while private endpoint is enabled."
+              }
             },
             "systemAssignedIdentity": {
               "type": "bool",
@@ -1216,11 +1197,7 @@
                 "count": "[length(parameters('diagnosticLogCategoriesToEnable'))]",
                 "input": {
                   "category": "[parameters('diagnosticLogCategoriesToEnable')[copyIndex('diagnosticsLogs')]]",
-                  "enabled": true,
-                  "retentionPolicy": {
-                    "enabled": true,
-                    "days": "[parameters('diagnosticLogsRetentionInDays')]"
-                  }
+                  "enabled": true
                 }
               }
             ],
@@ -1370,7 +1347,6 @@
           "fhirdestination": "[if(contains(parameters('iotconnectors')[copyIndex()], 'fhirdestination'), createObject('value', parameters('iotconnectors')[copyIndex()].fhirdestination), createObject('value', createObject()))]",
           "consumerGroup": "[if(contains(parameters('iotconnectors')[copyIndex()], 'consumerGroup'), createObject('value', parameters('iotconnectors')[copyIndex()].consumerGroup), createObject('value', parameters('iotconnectors')[copyIndex()].name))]",
           "systemAssignedIdentity": "[if(contains(parameters('iotconnectors')[copyIndex()], 'systemAssignedIdentity'), createObject('value', parameters('iotconnectors')[copyIndex()].systemAssignedIdentity), createObject('value', false()))]",
-          "diagnosticLogsRetentionInDays": "[if(contains(parameters('iotconnectors')[copyIndex()], 'diagnosticLogsRetentionInDays'), createObject('value', parameters('iotconnectors')[copyIndex()].diagnosticLogsRetentionInDays), createObject('value', 365))]",
           "diagnosticStorageAccountId": "[if(contains(parameters('iotconnectors')[copyIndex()], 'diagnosticStorageAccountId'), createObject('value', parameters('iotconnectors')[copyIndex()].diagnosticStorageAccountId), createObject('value', ''))]",
           "diagnosticWorkspaceId": "[if(contains(parameters('iotconnectors')[copyIndex()], 'diagnosticWorkspaceId'), createObject('value', parameters('iotconnectors')[copyIndex()].diagnosticWorkspaceId), createObject('value', ''))]",
           "diagnosticEventHubAuthorizationRuleId": "[if(contains(parameters('iotconnectors')[copyIndex()], 'diagnosticEventHubAuthorizationRuleId'), createObject('value', parameters('iotconnectors')[copyIndex()].diagnosticEventHubAuthorizationRuleId), createObject('value', ''))]",
@@ -1389,9 +1365,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "1832587141900709980"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "16981578699165858107"
+            },
+            "name": "Healthcare API Workspace IoT Connectors",
+            "description": "This module deploys a Healthcare API Workspace IoT Connector.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "name": {
@@ -1450,15 +1429,6 @@
                 "description": "Optional. Location for all resources."
               }
             },
-            "diagnosticLogsRetentionInDays": {
-              "type": "int",
-              "defaultValue": 365,
-              "maxValue": 365,
-              "minValue": 0,
-              "metadata": {
-                "description": "Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely."
-              }
-            },
             "diagnosticStorageAccountId": {
               "type": "string",
               "defaultValue": "",
@@ -1490,14 +1460,14 @@
             "lock": {
               "type": "string",
               "defaultValue": "",
-              "metadata": {
-                "description": "Optional. Specify the type of lock."
-              },
               "allowedValues": [
                 "",
                 "CanNotDelete",
                 "ReadOnly"
-              ]
+              ],
+              "metadata": {
+                "description": "Optional. Specify the type of lock."
+              }
             },
             "systemAssignedIdentity": {
               "type": "bool",
@@ -1566,11 +1536,7 @@
                 "count": "[length(parameters('diagnosticLogCategoriesToEnable'))]",
                 "input": {
                   "category": "[parameters('diagnosticLogCategoriesToEnable')[copyIndex('diagnosticsLogs')]]",
-                  "enabled": true,
-                  "retentionPolicy": {
-                    "enabled": true,
-                    "days": "[parameters('diagnosticLogsRetentionInDays')]"
-                  }
+                  "enabled": true
                 }
               },
               {
@@ -1579,11 +1545,7 @@
                 "input": {
                   "category": "[parameters('diagnosticMetricsToEnable')[copyIndex('diagnosticsMetrics')]]",
                   "timeGrain": null,
-                  "enabled": true,
-                  "retentionPolicy": {
-                    "enabled": true,
-                    "days": "[parameters('diagnosticLogsRetentionInDays')]"
-                  }
+                  "enabled": true
                 }
               }
             ],
@@ -1694,9 +1656,12 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.19.5.34762",
-                      "templateHash": "5625257407409224246"
-                    }
+                      "version": "0.20.4.51522",
+                      "templateHash": "18442235072798053221"
+                    },
+                    "name": "Healthcare API Workspace IoT Connector FHIR Destinations",
+                    "description": "This module deploys a Healthcare API Workspace IoT Connector FHIR Destination.",
+                    "owner": "Azure/module-maintainers"
                   },
                   "parameters": {
                     "name": {
@@ -1751,13 +1716,13 @@
                     "resourceIdentityResolutionType": {
                       "type": "string",
                       "defaultValue": "Lookup",
-                      "metadata": {
-                        "description": "Optional. Determines how resource identity is resolved on the destination."
-                      },
                       "allowedValues": [
                         "Create",
                         "Lookup"
-                      ]
+                      ],
+                      "metadata": {
+                        "description": "Optional. Determines how resource identity is resolved on the destination."
+                      }
                     }
                   },
                   "resources": [

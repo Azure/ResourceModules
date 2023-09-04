@@ -17,8 +17,8 @@ This module deploys a Service Bus Namespace.
 | `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
-| `Microsoft.Network/privateEndpoints` | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/privateEndpoints) |
-| `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/privateEndpoints/privateDnsZoneGroups) |
+| `Microsoft.Network/privateEndpoints` | [2023-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-04-01/privateEndpoints) |
+| `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2023-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-04-01/privateEndpoints/privateDnsZoneGroups) |
 | `Microsoft.ServiceBus/namespaces` | [2021-11-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2021-11-01/namespaces) |
 | `Microsoft.ServiceBus/namespaces/AuthorizationRules` | [2017-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2017-04-01/namespaces/AuthorizationRules) |
 | `Microsoft.ServiceBus/namespaces/disasterRecoveryConfigs` | [2017-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2017-04-01/namespaces/disasterRecoveryConfigs) |
@@ -54,7 +54,6 @@ This module deploys a Service Bus Namespace.
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
 | `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `['', allLogs, OperationalLogs]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
-| `diagnosticLogsRetentionInDays` | int | `365` |  | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticMetricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | The name of metrics that will be streamed. |
 | `diagnosticSettingsName` | string | `''` |  | The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings". |
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
@@ -403,7 +402,6 @@ module namespace './service-bus/namespace/main.bicep' = {
     ]
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
-    diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
@@ -568,9 +566,6 @@ module namespace './service-bus/namespace/main.bicep' = {
     },
     "diagnosticEventHubName": {
       "value": "<diagnosticEventHubName>"
-    },
-    "diagnosticLogsRetentionInDays": {
-      "value": 7
     },
     "diagnosticStorageAccountId": {
       "value": "<diagnosticStorageAccountId>"

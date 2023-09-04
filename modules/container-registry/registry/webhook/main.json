@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "2786725630837251417"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "939950579337463642"
+    },
+    "name": "Azure Container Registry (ACR) Webhooks",
+    "description": "This module deploys an Azure Container Registry (ACR) Webhook.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "registryName": {
@@ -18,8 +21,8 @@
     "name": {
       "type": "string",
       "defaultValue": "[format('{0}webhook', parameters('registryName'))]",
-      "maxLength": 50,
       "minLength": 5,
+      "maxLength": 50,
       "metadata": {
         "description": "Optional. The name of the registry webhook."
       }
@@ -33,13 +36,13 @@
     "status": {
       "type": "string",
       "defaultValue": "enabled",
-      "metadata": {
-        "description": "Optional. The status of the webhook at the time the operation was called."
-      },
       "allowedValues": [
         "disabled",
         "enabled"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. The status of the webhook at the time the operation was called."
+      }
     },
     "action": {
       "type": "array",

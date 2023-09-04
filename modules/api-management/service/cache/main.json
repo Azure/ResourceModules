@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "14901031265236109470"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "17031319637382778576"
+    },
+    "name": "API Management Service Caches",
+    "description": "This module deploys an API Management Service Cache.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "apiManagementServiceName": {

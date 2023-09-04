@@ -70,7 +70,6 @@ module testDeployment '../../main.bicep' = {
     gatewayType: 'Vpn'
     vNetResourceId: nestedDependencies.outputs.vnetResourceId
     activeActive: true
-    diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
     diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
     diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId

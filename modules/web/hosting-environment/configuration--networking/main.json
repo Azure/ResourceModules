@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "10424547902180820059"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "16351992787760940933"
+    },
+    "name": "Hosting Environment Network Configuration",
+    "description": "This module deploys a Hosting Environment Network Configuration.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "hostingEnvironmentName": {

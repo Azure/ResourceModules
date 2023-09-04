@@ -121,7 +121,7 @@ module testDeployment '../../main.bicep' = {
       }
     ]
     blobServices: {
-      diagnosticLogsRetentionInDays: 7
+      lastAccessTimeTrackingPolicyEnabled: true
       diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
       diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
       diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
@@ -160,7 +160,6 @@ module testDeployment '../../main.bicep' = {
       deleteRetentionPolicyDays: 9
     }
     fileServices: {
-      diagnosticLogsRetentionInDays: 7
       diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
       diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
       diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
@@ -187,7 +186,6 @@ module testDeployment '../../main.bicep' = {
       ]
     }
     tableServices: {
-      diagnosticLogsRetentionInDays: 7
       diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
       diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
       diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
@@ -198,7 +196,6 @@ module testDeployment '../../main.bicep' = {
       ]
     }
     queueServices: {
-      diagnosticLogsRetentionInDays: 7
       diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
       diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
       diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
@@ -240,11 +237,44 @@ module testDeployment '../../main.bicep' = {
         principalType: 'ServicePrincipal'
       }
     ]
-    diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
     diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
     diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
     diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
+    managementPolicyRules: [
+      {
+        enabled: true
+        name: 'FirstRule'
+        type: 'Lifecycle'
+        definition: {
+          actions: {
+            baseBlob: {
+              delete: {
+                daysAfterModificationGreaterThan: 30
+              }
+              tierToCool: {
+                daysAfterLastAccessTimeGreaterThan: 5
+              }
+            }
+          }
+          filters: {
+            blobIndexMatch: [
+              {
+                name: 'BlobIndex'
+                op: '=='
+                value: '1'
+              }
+            ]
+            blobTypes: [
+              'blockBlob'
+            ]
+            prefixMatch: [
+              'sample-container/log'
+            ]
+          }
+        }
+      }
+    ]
     tags: {
       Environment: 'Non-Prod'
       Role: 'DeploymentValidation'

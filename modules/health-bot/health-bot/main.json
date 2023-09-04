@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "596039493256474889"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "11057494810956244402"
+    },
+    "name": "Azure Health Bots",
+    "description": "This module deploys an Azure Health Bot.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
@@ -17,14 +20,14 @@
     },
     "sku": {
       "type": "string",
-      "metadata": {
-        "description": "Required. The name of the Azure Health Bot SKU."
-      },
       "allowedValues": [
         "C0",
         "F0",
         "S1"
-      ]
+      ],
+      "metadata": {
+        "description": "Required. The name of the Azure Health Bot SKU."
+      }
     },
     "userAssignedIdentities": {
       "type": "object",
@@ -43,14 +46,14 @@
     "lock": {
       "type": "string",
       "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Specify the type of lock."
-      },
       "allowedValues": [
         "",
         "CanNotDelete",
         "ReadOnly"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Specify the type of lock."
+      }
     },
     "roleAssignments": {
       "type": "array",
@@ -153,8 +156,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "5579132809486468278"
+              "version": "0.20.4.51522",
+              "templateHash": "4578446478829376129"
             }
           },
           "parameters": {

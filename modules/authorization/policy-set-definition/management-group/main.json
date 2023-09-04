@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "3402211804211188599"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "1638152228410583836"
+    },
+    "name": "Policy Set Definitions (Initiatives) (Management Group scope)",
+    "description": "This module deploys a Policy Set Definition (Initiative) at a Management Group scope.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {

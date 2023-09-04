@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "13879906363559654168"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "8941216473298209164"
+    },
+    "name": "Firewall Policies",
+    "description": "This module deploys a Firewall Policy.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
@@ -132,13 +135,13 @@
     "autoLearnPrivateRanges": {
       "type": "string",
       "defaultValue": "Disabled",
-      "metadata": {
-        "description": "Optional. The operation mode for automatically learning private ranges to not be SNAT."
-      },
       "allowedValues": [
         "Disabled",
         "Enabled"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. The operation mode for automatically learning private ranges to not be SNAT."
+      }
     },
     "threatIntelMode": {
       "type": "string",
@@ -224,7 +227,7 @@
     },
     {
       "type": "Microsoft.Network/firewallPolicies",
-      "apiVersion": "2022-07-01",
+      "apiVersion": "2023-04-01",
       "name": "[parameters('name')]",
       "location": "[parameters('location')]",
       "tags": "[parameters('tags')]",
@@ -287,9 +290,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "17712009459606794175"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "12741470915279971248"
+            },
+            "name": "Firewall Policy Rule Collection Groups",
+            "description": "This module deploys a Firewall Policy Rule Collection Group.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "firewallPolicyName": {
@@ -342,7 +348,7 @@
             },
             {
               "type": "Microsoft.Network/firewallPolicies/ruleCollectionGroups",
-              "apiVersion": "2022-07-01",
+              "apiVersion": "2023-04-01",
               "name": "[format('{0}/{1}', parameters('firewallPolicyName'), parameters('name'))]",
               "properties": {
                 "priority": "[parameters('priority')]",
@@ -407,7 +413,7 @@
       "metadata": {
         "description": "The location the resource was deployed into."
       },
-      "value": "[reference(resourceId('Microsoft.Network/firewallPolicies', parameters('name')), '2022-07-01', 'full').location]"
+      "value": "[reference(resourceId('Microsoft.Network/firewallPolicies', parameters('name')), '2023-04-01', 'full').location]"
     }
   }
 }
