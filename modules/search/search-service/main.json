@@ -5,8 +5,11 @@
     "_generator": {
       "name": "bicep",
       "version": "0.20.4.51522",
-      "templateHash": "314414634982990144"
-    }
+      "templateHash": "1191504937361016974"
+    },
+    "name": "Search Services",
+    "description": "This module deploys a Search Service.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
