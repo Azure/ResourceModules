@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.20.4.51522",
-      "templateHash": "9807343240175832898"
+      "templateHash": "1146196423253215648"
     },
     "name": "Machine Learning Services Workspaces",
     "description": "This module deploys a Machine Learning Services Workspace.",
@@ -684,7 +684,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.20.4.51522",
-              "templateHash": "16616509457944914829"
+              "templateHash": "13560297539192628062"
             },
             "name": "Private Endpoints",
             "description": "This module deploys a Private Endpoint.",
@@ -884,7 +884,7 @@
                     "_generator": {
                       "name": "bicep",
                       "version": "0.20.4.51522",
-                      "templateHash": "18114841529204248478"
+                      "templateHash": "17831763001460207830"
                     },
                     "name": "Private Endpoint Private DNS Zone Groups",
                     "description": "This module deploys a Private Endpoint Private DNS Zone Group.",
