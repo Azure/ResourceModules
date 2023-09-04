@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.20.4.51522",
-      "templateHash": "18007585977453464504"
+      "templateHash": "12825009183979803370"
     },
     "name": "Container Registries Cache",
     "description": "Cache for Azure Container Registry (Preview) feature allows users to cache container images in a private container registry. Cache for ACR, is a preview feature available in Basic, Standard, and Premium service tiers. https://learn.microsoft.com/en-us/azure/container-registry/tutorial-registry-cache.",
@@ -37,6 +37,13 @@
       "metadata": {
         "description": "Optional. Target repository specified in docker pull command. E.g.: docker pull myregistry.azurecr.io/{targetRepository}:{tag}."
       }
+    },
+    "credentialSetResourceId": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Optional. The resource ID of the credential store which is associated with the cache rule."
+      }
     }
   },
   "resources": [
@@ -46,7 +53,8 @@
       "name": "[format('{0}/{1}', parameters('registryName'), parameters('name'))]",
       "properties": {
         "sourceRepository": "[parameters('sourceRepository')]",
-        "targetRepository": "[parameters('targetRepository')]"
+        "targetRepository": "[parameters('targetRepository')]",
+        "credentialSetResourceId": "[if(not(empty(parameters('credentialSetResourceId'))), parameters('credentialSetResourceId'), null())]"
       }
     }
   ],

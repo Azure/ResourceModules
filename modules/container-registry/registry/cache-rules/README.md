@@ -34,6 +34,7 @@ Cache for Azure Container Registry (Preview) feature allows users to cache conta
 
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
+| `credentialSetResourceId` | string | `''` | The resource ID of the credential store which is associated with the cache rule. |
 | `targetRepository` | string | `[parameters('sourceRepository')]` | Target repository specified in docker pull command. E.g.: docker pull myregistry.azurecr.io/{targetRepository}:{tag}. |
 
 
