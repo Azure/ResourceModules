@@ -16,9 +16,9 @@ This module deploys an Azure Container Registry (ACR).
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.ContainerRegistry/registries` | [2022-02-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ContainerRegistry/2022-02-01-preview/registries) |
-| `Microsoft.ContainerRegistry/registries/replications` | [2022-02-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ContainerRegistry/2022-02-01-preview/registries/replications) |
-| `Microsoft.ContainerRegistry/registries/webhooks` | [2022-02-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ContainerRegistry/2022-02-01-preview/registries/webhooks) |
+| `Microsoft.ContainerRegistry/registries` | [2023-06-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ContainerRegistry/registries) |
+| `Microsoft.ContainerRegistry/registries/replications` | [2023-06-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ContainerRegistry/registries/replications) |
+| `Microsoft.ContainerRegistry/registries/webhooks` | [2023-06-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ContainerRegistry/registries/webhooks) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 | `Microsoft.Network/privateEndpoints` | [2023-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-04-01/privateEndpoints) |
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2023-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-04-01/privateEndpoints/privateDnsZoneGroups) |
@@ -421,8 +421,8 @@ module registry './container-registry/registry/main.bicep' = {
     quarantinePolicyStatus: 'enabled'
     replications: [
       {
-        location: 'northeurope'
-        name: 'northeurope'
+        location: '<location>'
+        name: '<name>'
       }
     ]
     roleAssignments: [
@@ -533,8 +533,8 @@ module registry './container-registry/registry/main.bicep' = {
     "replications": {
       "value": [
         {
-          "location": "northeurope",
-          "name": "northeurope"
+          "location": "<location>",
+          "name": "<name>"
         }
       ]
     },
