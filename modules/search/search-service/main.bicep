@@ -1,3 +1,7 @@
+metadata name = 'Search Services'
+metadata description = 'This module deploys a Search Service.'
+metadata owner = 'Azure/module-maintainers'
+
 // ============== //
 //   Parameters   //
 // ============== //
@@ -237,6 +241,9 @@ module searchService_privateEndpoints '../../network/private-endpoint/main.bicep
   }
 }]
 
+// The Shared Private Link Resources must be deployed sequentially
+// othersie the deployment may fail.
+// Using batchSize(1) to deploy them one by one
 @batchSize(1)
 module searchService_sharedPrivateLinkResources 'shared-private-link-resource/main.bicep' = [for (sharedPrivateLinkResource, index) in sharedPrivateLinkResources: {
   name: '${uniqueString(deployment().name, location)}-searchService-SharedPrivateLink-${index}'
