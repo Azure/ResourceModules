@@ -202,7 +202,9 @@ function Invoke-ResourceRemoval {
         }
         ### CODE LOCATION: Add custom removal action here
         Default {
-            $null = Remove-AzResource -ResourceId $ResourceId -Force -ErrorAction 'Stop'
+            if ($PSCmdlet.ShouldProcess("Resource with ID [$ResourceId]", 'Remove')) {
+                $null = Remove-AzResource -ResourceId $ResourceId -Force -ErrorAction 'Stop'
+            }
         }
     }
 }
