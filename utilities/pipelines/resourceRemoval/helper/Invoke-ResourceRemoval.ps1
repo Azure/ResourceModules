@@ -29,6 +29,10 @@ function Invoke-ResourceRemoval {
     # Load functions
     . (Join-Path $PSScriptRoot 'Invoke-ResourceLockRemoval.ps1')
 
+    # Remove unhandled resource locks, for cases when the resource
+    # collection is incomplete, usually due to previous removal failing.
+    Invoke-ResourceLockRemoval -ResourceId $ResourceId -Type $Type
+
     switch ($Type) {
         'Microsoft.Insights/diagnosticSettings' {
             $parentResourceId = $ResourceId.Split('/providers/{0}' -f $Type)[0]
@@ -188,10 +192,6 @@ function Invoke-ResourceRemoval {
         }
         ### CODE LOCATION: Add custom removal action here
         Default {
-            # Remove unhandled resource locks, for cases when the resource
-            # collection is incomplete, usually due to previous removal failing.
-            Invoke-ResourceLockRemoval -ResourceId $ResourceId -Type $Type
-
             $null = Remove-AzResource -ResourceId $ResourceId -Force -ErrorAction 'Stop'
         }
     }
