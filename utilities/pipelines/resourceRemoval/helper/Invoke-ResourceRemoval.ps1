@@ -156,7 +156,9 @@ function Invoke-ResourceRemoval {
                         Write-Verbose "    [⏱️] Removed lock [$($PSItem.Name)] created by the DevTest Lab [$resourceName] on resource [$($PSItem.ResourceName)]. Waiting 10 seconds for propagation." -Verbose
                         Start-Sleep -Seconds 10
                     }
-                $null = Remove-AzResource -ResourceId $ResourceId -Force -ErrorAction 'Stop'
+                if ($PSCmdlet.ShouldProcess("Resource with ID [$ResourceId]", 'Remove')) {
+                    $null = Remove-AzResource -ResourceId $ResourceId -Force -ErrorAction 'Stop'
+                }
             }
             break
         }
