@@ -27,13 +27,13 @@
     "privateLinkResourceId": {
       "type": "string",
       "metadata": {
-        "description": "Required. The resource id of the resource the shared private link resource is for."
+        "description": "Required. The resource ID of the resource the shared private link resource is for."
       }
     },
     "groupId": {
       "type": "string",
       "metadata": {
-        "description": "Required. The group id from the provider of resource the shared private link resource is for."
+        "description": "Required. The group ID from the provider of resource the shared private link resource is for."
       }
     },
     "requestMessage": {

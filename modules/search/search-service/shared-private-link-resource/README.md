@@ -21,9 +21,9 @@ This module deploys a Cognitive Search Private Link Resource.
 
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `groupId` | string | The group id from the provider of resource the shared private link resource is for. |
+| `groupId` | string | The group ID from the provider of resource the shared private link resource is for. |
 | `name` | string | The name of the shared private link resource managed by the Azure Cognitive Search service within the specified resource group. |
-| `privateLinkResourceId` | string | The resource id of the resource the shared private link resource is for. |
+| `privateLinkResourceId` | string | The resource ID of the resource the shared private link resource is for. |
 | `requestMessage` | string | The request message for requesting approval of the shared private link resource. |
 
 **Conditional parameters**

@@ -8,10 +8,10 @@ param searchServiceName string
 @description('Required. The name of the shared private link resource managed by the Azure Cognitive Search service within the specified resource group.')
 param name string
 
-@description('Required. The resource id of the resource the shared private link resource is for.')
+@description('Required. The resource ID of the resource the shared private link resource is for.')
 param privateLinkResourceId string
 
-@description('Required. The group id from the provider of resource the shared private link resource is for.')
+@description('Required. The group ID from the provider of resource the shared private link resource is for.')
 param groupId string
 
 @description('Required. The request message for requesting approval of the shared private link resource.')
