@@ -40,6 +40,7 @@ function Invoke-ResourceRemoval {
         }
         'Microsoft.Authorization/locks' {
             Invoke-ResourceLockRemoval -ResourceId $ResourceId -Type $Type
+            break
         }
         'Microsoft.KeyVault/vaults/keys' {
             $resourceName = Split-Path $ResourceId -Leaf
