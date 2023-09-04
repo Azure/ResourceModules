@@ -45,7 +45,7 @@ function Invoke-ResourceRemoval {
             break
         }
         'Microsoft.Authorization/locks' {
-            if ($PSCmdlet.ShouldProcess("Lock with ID [$ResourceId]", 'Handle')) {
+            if ($PSCmdlet.ShouldProcess("Lock with ID [$ResourceId]", 'Remove')) {
                 Invoke-ResourceLockRemoval -ResourceId $ResourceId -Type $Type
             }
             break
@@ -142,23 +142,6 @@ function Invoke-ResourceRemoval {
             if ($PSCmdlet.ShouldProcess("Log Analytics Workspace [$resourceName]", 'Remove')) {
                 Write-Verbose ('[*] Purging resource [{0}] of type [{1}]' -f $resourceName, $Type) -Verbose
                 $null = Remove-AzOperationalInsightsWorkspace -ResourceGroupName $resourceGroupName -Name $resourceName -Force -ForceDelete
-            }
-            break
-        }
-        'Microsoft.DevTestLab/labs' {
-            $resourceGroupName = $ResourceId.Split('/')[4]
-            $resourceName = Split-Path $ResourceId -Leaf
-            if ($PSCmdlet.ShouldProcess("DevTestLab Lab [$resourceName]", 'Remove')) {
-                Get-AzResourceLock -ResourceGroupName $resourceGroupName |
-                    Where-Object -FilterScript { $PSItem.properties.notes -eq "Reserved resource locked by '$resourceName' lab." } |
-                    ForEach-Object {
-                        $null = Remove-AzResourceLock -LockId $PSItem.LockId -Force
-                        Write-Verbose "    [⏱️] Removed lock [$($PSItem.Name)] created by the DevTest Lab [$resourceName] on resource [$($PSItem.ResourceName)]. Waiting 10 seconds for propagation." -Verbose
-                        Start-Sleep -Seconds 10
-                    }
-                if ($PSCmdlet.ShouldProcess("Resource with ID [$ResourceId]", 'Remove')) {
-                    $null = Remove-AzResource -ResourceId $ResourceId -Force -ErrorAction 'Stop'
-                }
             }
             break
         }
