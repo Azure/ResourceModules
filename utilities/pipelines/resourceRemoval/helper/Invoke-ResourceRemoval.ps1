@@ -87,7 +87,9 @@ function Invoke-ResourceRemoval {
 
             # Actual removal
             # --------------
-            $null = Remove-AzResource -ResourceId $ResourceId -Force -ErrorAction 'Stop'
+            if ($PSCmdlet.ShouldProcess("Resource with ID [$ResourceId]", 'Remove')) {
+                $null = Remove-AzResource -ResourceId $ResourceId -Force -ErrorAction 'Stop'
+            }
             break
         }
         'Microsoft.RecoveryServices/vaults/backupstorageconfig' {
