@@ -31,23 +31,15 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
-module nestedDependencies1 'dependencies1.bicep' = {
+module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-nestedDependencies1'
   params: {
     // Adding base time to make the name unique as purge protection must be enabled (but may not be longer than 24 characters total)
     location: location
     managedIdentityName: 'dep-${namePrefix}-msi-ds-${serviceShort}'
-    pairedRegionScriptName: 'dep-${namePrefix}-ds-${serviceShort}'
-  }
-}
-
-module nestedDependencies2 'dependencies2.bicep' = {
-  scope: resourceGroup
-  name: '${uniqueString(deployment().name, location)}-nestedDependencies'
-  params: {
     virtualNetworkName: 'dep-${namePrefix}-vnet-${serviceShort}'
-    managedIdentityName: 'dep-${namePrefix}-msi-${serviceShort}'
+    pairedRegionScriptName: 'dep-${namePrefix}-ds-${serviceShort}'
   }
 }
 
@@ -89,10 +81,10 @@ module testDeployment '../../main.bicep' = {
     privateEndpoints: [
       {
         service: 'registry'
-        subnetResourceId: nestedDependencies2.outputs.subnetResourceId
+        subnetResourceId: nestedDependencies.outputs.subnetResourceId
         privateDnsZoneGroup: {
           privateDNSResourceIds: [
-            nestedDependencies2.outputs.privateDNSZoneResourceId
+            nestedDependencies.outputs.privateDNSZoneResourceId
           ]
         }
         tags: {
@@ -110,15 +102,15 @@ module testDeployment '../../main.bicep' = {
     quarantinePolicyStatus: 'enabled'
     replications: [
       {
-        location: nestedDependencies1.outputs.pairedRegionName
-        name: nestedDependencies1.outputs.pairedRegionName
+        location: nestedDependencies.outputs.pairedRegionName
+        name: nestedDependencies.outputs.pairedRegionName
       }
     ]
     roleAssignments: [
       {
         roleDefinitionIdOrName: 'Reader'
         principalIds: [
-          nestedDependencies2.outputs.managedIdentityPrincipalId
+          nestedDependencies.outputs.managedIdentityPrincipalId
         ]
         principalType: 'ServicePrincipal'
       }
@@ -126,7 +118,7 @@ module testDeployment '../../main.bicep' = {
     systemAssignedIdentity: true
     trustPolicyStatus: 'enabled'
     userAssignedIdentities: {
-      '${nestedDependencies2.outputs.managedIdentityResourceId}': {}
+      '${nestedDependencies.outputs.managedIdentityResourceId}': {}
     }
     webhooks: [
       {
