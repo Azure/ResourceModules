@@ -47,12 +47,14 @@ function Invoke-ResourceLockRemoval {
         return
     }
 
-if ($Type -ne 'Microsoft.Authorization/locks') {
-    Write-Warning ('    [-] 🔒  Unmanaged resource lock detected. Removing.' -f $ResourceId)
-    if ($PSCmdlet.ShouldProcess(('Lock [{0}] on resource [{1}]' -f $resourceLock.Name, $resourceLock.ResourceName ), 'Remove')) {
-        $null = $resourceLock | Remove-AzResourceLock -Force
+    if ($Type -ne 'Microsoft.Authorization/locks') {
+        $resourceLock | ForEach-Object {
+            Write-Warning ('    [-] Removing lock [{0}] on [{1}] of type [{2}].' -f $_.Name, $_.ResourceName)
+            if ($PSCmdlet.ShouldProcess(('Lock [{0}] on resource [{1}]' -f $resourceLock.Name, $resourceLock.ResourceName ), 'Remove')) {
+                $null = $_ | Remove-AzResourceLock -Force
+            }
+        }
     }
-}
 
     $retryCount = 0
     do {
