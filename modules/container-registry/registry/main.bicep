@@ -185,8 +185,8 @@ param cMKKeyVersion string = ''
 @description('Conditional. User assigned identity to use when fetching the customer managed key. Note, CMK requires the \'acrSku\' to be \'Premium\'. Required if \'cMKKeyName\' is not empty.')
 param cMKUserAssignedIdentityResourceId string = ''
 
-@description('Optional Array of cache rules. Objects with properties: source (req), target (opt), name (opt). name and target will be derived from source if not defined.')
-param repoCaches array = []
+@description('Optional Array of Cache Rules.')
+param cacheRules array = []
 
 var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs' && item != ''): {
   category: category
@@ -302,15 +302,17 @@ module registry_replications 'replication/main.bicep' = [for (replication, index
   }
 }]
 
-module registry_caches 'cache-rules/main.bicep' = {
-  name: '${uniqueString(deployment().name, location)}-Registry-Cache'
+module registry_caches 'cache-rules/main.bicep' = [for (cacheRule, index) in cacheRules: {
+  name: '${uniqueString(deployment().name, location)}-Registry-Cache-${index}'
   params: {
     registryName: registry.name
-    repoCaches: repoCaches
+    sourceRepository: cacheRule.sourceRepository
+    name: contains(cacheRule, 'name') ? cacheRule.name : replace(replace(cacheRule.sourceRepository, '/', '-'), '.', '-')
+    targetRepository: contains(cacheRule, 'targetRepository') ? cacheRule.targetRepository : cacheRule.sourceRepository
   }
-}
+}]
 
-module registry_webhooks 'webhooks/main.bicep' = [for (webhook, index) in webhooks: {
+module registry_webhooks 'webhook/main.bicep' = [for (webhook, index) in webhooks: {
   name: '${uniqueString(deployment().name, location)}-Registry-Webhook-${index}'
   params: {
     name: webhook.name
