@@ -234,7 +234,7 @@ resource cMKKeyVaultKey 'Microsoft.KeyVault/vaults/keys@2021-10-01' existing = i
   scope: resourceGroup(split(cMKKeyVaultResourceId, '/')[2], split(cMKKeyVaultResourceId, '/')[4])
 }
 
-resource registry 'Microsoft.ContainerRegistry/registries@2022-02-01-preview' = {
+resource registry 'Microsoft.ContainerRegistry/registries@2023-06-01-preview' = {
   name: name
   location: location
   identity: identity
