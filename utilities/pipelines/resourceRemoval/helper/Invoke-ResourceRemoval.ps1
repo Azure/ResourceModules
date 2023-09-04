@@ -65,7 +65,9 @@ function Invoke-ResourceRemoval {
             if ((Split-Path $ResourceId '/')[-1] -eq 'RootManageSharedAccessKey') {
                 Write-Verbose ('[/] Skipping resource [RootManageSharedAccessKey] of type [{0}]. Reason: The Service Bus''s default authorization key cannot be removed' -f $Type) -Verbose
             } else {
-                $null = Remove-AzResource -ResourceId $ResourceId -Force -ErrorAction 'Stop'
+                if ($PSCmdlet.ShouldProcess("Resource with ID [$ResourceId]", 'Remove')) {
+                    $null = Remove-AzResource -ResourceId $ResourceId -Force -ErrorAction 'Stop'
+                }
             }
             break
         }
