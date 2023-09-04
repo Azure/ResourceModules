@@ -69,5 +69,5 @@ function Invoke-ResourceLockRemoval {
         $isLocked = $resourceLock.count -gt 0
     } while ($isLocked)
     
-    Write-Verbose '    [-] Resource lock(s) removed.' -Verbose
+    Write-Verbose ('    [-] [{0}] resource lock(s) removed.' -f $resourceLock.count) -Verbose
 }
