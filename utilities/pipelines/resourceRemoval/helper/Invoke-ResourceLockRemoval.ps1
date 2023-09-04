@@ -68,7 +68,6 @@ function Invoke-ResourceLockRemoval {
         $resourceLock = Invoke-ResourceLockRetrieval -ResourceId $ResourceId -Type $Type
         $isLocked = $resourceLock.count -gt 0
     } while ($isLocked)
-    Write-Verbose '    [-] Resource lock removed.' -Verbose
-
-    return
+    
+    Write-Verbose '    [-] Resource lock(s) removed.' -Verbose
 }
