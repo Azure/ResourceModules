@@ -27,7 +27,7 @@ resource cacheRule 'Microsoft.ContainerRegistry/registries/cacheRules@2023-06-01
   properties: {
     sourceRepository: sourceRepository
     targetRepository: targetRepository
-    credentialSetResourceId: credentialSetResourceId
+    credentialSetResourceId: !empty(credentialSetResourceId) ? credentialSetResourceId : null
   }
 }
 
