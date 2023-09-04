@@ -302,7 +302,7 @@ module registry_replications 'replication/main.bicep' = [for (replication, index
   }
 }]
 
-module registry_caches 'cache-rules/main.bicep' = [for (cacheRule, index) in cacheRules: {
+module registry_cacheRules 'cache-rules/main.bicep' = [for (cacheRule, index) in cacheRules: {
   name: '${uniqueString(deployment().name, location)}-Registry-Cache-${index}'
   params: {
     registryName: registry.name

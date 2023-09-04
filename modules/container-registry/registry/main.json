@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.20.4.51522",
-      "templateHash": "5763931758480793983"
+      "templateHash": "15648869212774017052"
     },
     "name": "Azure Container Registries (ACR)",
     "description": "This module deploys an Azure Container Registry (ACR).",
@@ -349,6 +349,13 @@
       "metadata": {
         "description": "Conditional. User assigned identity to use when fetching the customer managed key. Note, CMK requires the 'acrSku' to be 'Premium'. Required if 'cMKKeyName' is not empty."
       }
+    },
+    "cacheRules": {
+      "type": "array",
+      "defaultValue": [],
+      "metadata": {
+        "description": "Optional Array of Cache Rules."
+      }
     }
   },
   "variables": {
@@ -613,6 +620,110 @@
                 "description": "The location the resource was deployed into."
               },
               "value": "[reference(resourceId('Microsoft.ContainerRegistry/registries/replications', parameters('registryName'), parameters('name')), '2023-06-01-preview', 'full').location]"
+            }
+          }
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.ContainerRegistry/registries', parameters('name'))]"
+      ]
+    },
+    {
+      "copy": {
+        "name": "registry_cacheRules",
+        "count": "[length(parameters('cacheRules'))]"
+      },
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2022-09-01",
+      "name": "[format('{0}-Registry-Cache-{1}', uniqueString(deployment().name, parameters('location')), copyIndex())]",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "registryName": {
+            "value": "[parameters('name')]"
+          },
+          "sourceRepository": {
+            "value": "[parameters('cacheRules')[copyIndex()].sourceRepository]"
+          },
+          "name": "[if(contains(parameters('cacheRules')[copyIndex()], 'name'), createObject('value', parameters('cacheRules')[copyIndex()].name), createObject('value', replace(replace(parameters('cacheRules')[copyIndex()].sourceRepository, '/', '-'), '.', '-')))]",
+          "targetRepository": "[if(contains(parameters('cacheRules')[copyIndex()], 'targetRepository'), createObject('value', parameters('cacheRules')[copyIndex()].targetRepository), createObject('value', parameters('cacheRules')[copyIndex()].sourceRepository))]"
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.20.4.51522",
+              "templateHash": "18007585977453464504"
+            },
+            "name": "Container Registries Cache",
+            "description": "Cache for Azure Container Registry (Preview) feature allows users to cache container images in a private container registry. Cache for ACR, is a preview feature available in Basic, Standard, and Premium service tiers. https://learn.microsoft.com/en-us/azure/container-registry/tutorial-registry-cache.",
+            "owner": "Azure/module-maintainers"
+          },
+          "parameters": {
+            "registryName": {
+              "type": "string",
+              "metadata": {
+                "description": "Conditional. The name of the parent registry. Required if the template is used in a standalone deployment."
+              }
+            },
+            "name": {
+              "type": "string",
+              "defaultValue": "[replace(replace(parameters('sourceRepository'), '/', '-'), '.', '-')]",
+              "metadata": {
+                "description": "Conditional. The name of the cache rule. Will be dereived from the source repository name if not defined."
+              }
+            },
+            "sourceRepository": {
+              "type": "string",
+              "metadata": {
+                "description": "Required. Source repository pulled from upstream."
+              }
+            },
+            "targetRepository": {
+              "type": "string",
+              "defaultValue": "[parameters('sourceRepository')]",
+              "metadata": {
+                "description": "Optional. Target repository specified in docker pull command. E.g.: docker pull myregistry.azurecr.io/{targetRepository}:{tag}."
+              }
+            }
+          },
+          "resources": [
+            {
+              "type": "Microsoft.ContainerRegistry/registries/cacheRules",
+              "apiVersion": "2023-06-01-preview",
+              "name": "[format('{0}/{1}', parameters('registryName'), parameters('name'))]",
+              "properties": {
+                "sourceRepository": "[parameters('sourceRepository')]",
+                "targetRepository": "[parameters('targetRepository')]"
+              }
+            }
+          ],
+          "outputs": {
+            "name": {
+              "type": "string",
+              "metadata": {
+                "description": "The Name of the Cache Rule."
+              },
+              "value": "[parameters('name')]"
+            },
+            "resourceGroupName": {
+              "type": "string",
+              "metadata": {
+                "description": "The name of the Cache Rule."
+              },
+              "value": "[resourceGroup().name]"
+            },
+            "resourceId": {
+              "type": "string",
+              "metadata": {
+                "description": "The resource ID of the Cache Rule."
+              },
+              "value": "[resourceId('Microsoft.ContainerRegistry/registries/cacheRules', parameters('registryName'), parameters('name'))]"
             }
           }
         }
