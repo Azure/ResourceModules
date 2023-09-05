@@ -64,5 +64,5 @@ output name string = sharedPrivateLinkResource.name
 @description('The resource ID of the sharedPrivateLinkResource.')
 output resourceId string = sharedPrivateLinkResource.id
 
-@description('The name of the resource group the sharedPrivateLinkResource was created in.')
+@description('The name of the resource group the shared private link resource was created in.')
 output resourceGroupName string = resourceGroup().name
