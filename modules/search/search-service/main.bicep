@@ -12,37 +12,6 @@ param name string
 @description('Optional. Defines the options for how the data plane API of a Search service authenticates requests. Must remain an empty object {} if \'disableLocalAuth\' is set to true.')
 param authOptions object = {}
 
-@description('Optional. The name of logs that will be streamed.')
-@allowed([
-  'OperationLogs'
-])
-param diagnosticLogCategoriesToEnable array = [
-  'OperationLogs'
-]
-
-@description('Optional. The name of metrics that will be streamed.')
-@allowed([
-  'AllMetrics'
-])
-param diagnosticMetricsToEnable array = [
-  'AllMetrics'
-]
-
-@description('Optional. The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings".')
-param diagnosticSettingsName string = ''
-
-@description('Optional. Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.')
-param diagnosticStorageAccountId string = ''
-
-@description('Optional. Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.')
-param diagnosticWorkspaceId string = ''
-
-@description('Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
-param diagnosticEventHubAuthorizationRuleId string = ''
-
-@description('Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.')
-param diagnosticEventHubName string = ''
-
 @description('Optional. When set to true, calls to the search service will not be permitted to utilize API keys for authentication. This cannot be set to true if \'authOptions\' are defined.')
 param disableLocalAuth bool = true
 
@@ -116,11 +85,42 @@ param roleAssignments array = []
 ])
 param sku string = 'standard'
 
-@description('Optional. Tags to help categorize the resource in the Azure portal.')
-param tags object = {}
-
 @description('Optional. Enables system assigned managed identity on the resource.')
 param systemAssignedIdentity bool = false
+
+@description('Optional. The name of logs that will be streamed.')
+@allowed([
+  'OperationLogs'
+])
+param diagnosticLogCategoriesToEnable array = [
+  'OperationLogs'
+]
+
+@description('Optional. The name of metrics that will be streamed.')
+@allowed([
+  'AllMetrics'
+])
+param diagnosticMetricsToEnable array = [
+  'AllMetrics'
+]
+
+@description('Optional. The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings".')
+param diagnosticSettingsName string = ''
+
+@description('Optional. Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.')
+param diagnosticStorageAccountId string = ''
+
+@description('Optional. Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.')
+param diagnosticWorkspaceId string = ''
+
+@description('Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
+param diagnosticEventHubAuthorizationRuleId string = ''
+
+@description('Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.')
+param diagnosticEventHubName string = ''
+
+@description('Optional. Tags to help categorize the resource in the Azure portal.')
+param tags object = {}
 
 // ============= //
 //   Variables   //
