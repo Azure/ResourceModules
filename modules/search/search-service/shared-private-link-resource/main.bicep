@@ -1,5 +1,5 @@
 metadata name = 'Cognitive Search Private Link Resources'
-metadata description = 'This module deploys a Cognitive Search Private Link Resource.'
+metadata description = 'This module deploys a Search Service Private Link Resource.'
 metadata owner = 'Azure/module-maintainers'
 
 @description('Conditional. The name of the parent searchServices. Required if the template is used in a standalone deployment.')
