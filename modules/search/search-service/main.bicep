@@ -267,7 +267,7 @@ output name string = searchService.name
 @description('The resource ID of the searchService.')
 output resourceId string = searchService.id
 
-@description('The name of the resource group the searchService was created in.')
+@description('The name of the resource group the search service was created in.')
 output resourceGroupName string = resourceGroup().name
 
 @description('The location the resource was deployed into.')
