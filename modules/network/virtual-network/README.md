@@ -375,7 +375,7 @@ module virtualNetwork './network/virtual-network/main.bicep' = {
   params: {
     // Required parameters
     addressPrefixes: [
-      '10.0.0.0/16'
+      '<addressPrefix>'
     ]
     name: 'nvncom001'
     // Non-required parameters
@@ -401,11 +401,11 @@ module virtualNetwork './network/virtual-network/main.bicep' = {
     ]
     subnets: [
       {
-        addressPrefix: '10.0.255.0/24'
+        addressPrefix: '<addressPrefix>'
         name: 'GatewaySubnet'
       }
       {
-        addressPrefix: '10.0.0.0/24'
+        addressPrefix: '<addressPrefix>'
         name: 'az-subnet-x-001'
         networkSecurityGroupId: '<networkSecurityGroupId>'
         roleAssignments: [
@@ -428,7 +428,7 @@ module virtualNetwork './network/virtual-network/main.bicep' = {
         ]
       }
       {
-        addressPrefix: '10.0.3.0/24'
+        addressPrefix: '<addressPrefix>'
         delegations: [
           {
             name: 'netappDel'
@@ -440,7 +440,7 @@ module virtualNetwork './network/virtual-network/main.bicep' = {
         name: 'az-subnet-x-002'
       }
       {
-        addressPrefix: '10.0.6.0/24'
+        addressPrefix: '<addressPrefix>'
         name: 'az-subnet-x-003'
         privateEndpointNetworkPolicies: 'Disabled'
         privateLinkServiceNetworkPolicies: 'Enabled'
@@ -448,6 +448,7 @@ module virtualNetwork './network/virtual-network/main.bicep' = {
     ]
     tags: {
       Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
     }
   }
@@ -469,7 +470,7 @@ module virtualNetwork './network/virtual-network/main.bicep' = {
     // Required parameters
     "addressPrefixes": {
       "value": [
-        "10.0.0.0/16"
+        "<addressPrefix>"
       ]
     },
     "name": {
@@ -517,11 +518,11 @@ module virtualNetwork './network/virtual-network/main.bicep' = {
     "subnets": {
       "value": [
         {
-          "addressPrefix": "10.0.255.0/24",
+          "addressPrefix": "<addressPrefix>",
           "name": "GatewaySubnet"
         },
         {
-          "addressPrefix": "10.0.0.0/24",
+          "addressPrefix": "<addressPrefix>",
           "name": "az-subnet-x-001",
           "networkSecurityGroupId": "<networkSecurityGroupId>",
           "roleAssignments": [
@@ -544,7 +545,7 @@ module virtualNetwork './network/virtual-network/main.bicep' = {
           ]
         },
         {
-          "addressPrefix": "10.0.3.0/24",
+          "addressPrefix": "<addressPrefix>",
           "delegations": [
             {
               "name": "netappDel",
@@ -556,7 +557,7 @@ module virtualNetwork './network/virtual-network/main.bicep' = {
           "name": "az-subnet-x-002"
         },
         {
-          "addressPrefix": "10.0.6.0/24",
+          "addressPrefix": "<addressPrefix>",
           "name": "az-subnet-x-003",
           "privateEndpointNetworkPolicies": "Disabled",
           "privateLinkServiceNetworkPolicies": "Enabled"
@@ -566,6 +567,7 @@ module virtualNetwork './network/virtual-network/main.bicep' = {
     "tags": {
       "value": {
         "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
     }
@@ -667,6 +669,7 @@ module virtualNetwork './network/virtual-network/main.bicep' = {
     ]
     tags: {
       Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
     }
   }
@@ -724,6 +727,7 @@ module virtualNetwork './network/virtual-network/main.bicep' = {
     "tags": {
       "value": {
         "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
     }

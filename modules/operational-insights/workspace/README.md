@@ -734,6 +734,7 @@ module workspace './operational-insights/workspace/main.bicep' = {
     ]
     tags: {
       Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
     }
     userAssignedIdentities: {
@@ -1013,6 +1014,7 @@ module workspace './operational-insights/workspace/main.bicep' = {
     "tags": {
       "value": {
         "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
     },
@@ -1193,6 +1195,7 @@ module workspace './operational-insights/workspace/main.bicep' = {
     systemAssignedIdentity: true
     tags: {
       Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
     }
     useResourcePermissions: true
@@ -1401,6 +1404,7 @@ module workspace './operational-insights/workspace/main.bicep' = {
     "tags": {
       "value": {
         "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
     },

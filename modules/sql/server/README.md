@@ -509,6 +509,7 @@ module server './sql/server/main.bicep' = {
         subnetResourceId: '<subnetResourceId>'
         tags: {
           Environment: 'Non-Prod'
+          'hidden-title': 'This is visible in the resource name'
           Role: 'DeploymentValidation'
         }
       }
@@ -533,6 +534,7 @@ module server './sql/server/main.bicep' = {
     systemAssignedIdentity: true
     tags: {
       Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
     }
     userAssignedIdentities: {
@@ -661,6 +663,7 @@ module server './sql/server/main.bicep' = {
           "subnetResourceId": "<subnetResourceId>",
           "tags": {
             "Environment": "Non-Prod",
+            "hidden-title": "This is visible in the resource name",
             "Role": "DeploymentValidation"
           }
         }
@@ -695,6 +698,7 @@ module server './sql/server/main.bicep' = {
     "tags": {
       "value": {
         "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
     },
@@ -758,12 +762,14 @@ module server './sql/server/main.bicep' = {
         subnetResourceId: '<subnetResourceId>'
         tags: {
           Environment: 'Non-Prod'
+          'hidden-title': 'This is visible in the resource name'
           Role: 'DeploymentValidation'
         }
       }
     ]
     tags: {
       Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
     }
   }
@@ -808,6 +814,7 @@ module server './sql/server/main.bicep' = {
           "subnetResourceId": "<subnetResourceId>",
           "tags": {
             "Environment": "Non-Prod",
+            "hidden-title": "This is visible in the resource name",
             "Role": "DeploymentValidation"
           }
         }
@@ -816,6 +823,7 @@ module server './sql/server/main.bicep' = {
     "tags": {
       "value": {
         "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
     }
@@ -854,6 +862,7 @@ module server './sql/server/main.bicep' = {
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     tags: {
       Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
     }
   }
@@ -901,6 +910,7 @@ module server './sql/server/main.bicep' = {
     "tags": {
       "value": {
         "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
     }

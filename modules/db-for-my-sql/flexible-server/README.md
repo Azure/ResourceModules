@@ -344,6 +344,7 @@ module flexibleServer './db-for-my-sql/flexible-server/main.bicep' = {
     storageIOPS: 400
     storageSizeGB: 64
     tags: {
+      'hidden-title': 'This is visible in the resource name'
       resourceType: 'MySQL Flexible Server'
       serverName: 'dfmsfspvt001'
     }
@@ -448,6 +449,7 @@ module flexibleServer './db-for-my-sql/flexible-server/main.bicep' = {
     },
     "tags": {
       "value": {
+        "hidden-title": "This is visible in the resource name",
         "resourceType": "MySQL Flexible Server",
         "serverName": "dfmsfspvt001"
       }
@@ -539,6 +541,7 @@ module flexibleServer './db-for-my-sql/flexible-server/main.bicep' = {
     storageIOPS: 400
     storageSizeGB: 32
     tags: {
+      'hidden-title': 'This is visible in the resource name'
       resourceType: 'MySQL Flexible Server'
       serverName: 'dfmsfsp001'
     }
@@ -687,6 +690,7 @@ module flexibleServer './db-for-my-sql/flexible-server/main.bicep' = {
     },
     "tags": {
       "value": {
+        "hidden-title": "This is visible in the resource name",
         "resourceType": "MySQL Flexible Server",
         "serverName": "dfmsfsp001"
       }

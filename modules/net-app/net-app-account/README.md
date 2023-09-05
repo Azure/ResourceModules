@@ -341,6 +341,7 @@ module netAppAccount './net-app/net-app-account/main.bicep' = {
       Contact: 'test.user@testcompany.com'
       CostCenter: '7890'
       Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
       PurchaseOrder: '1234'
       Role: 'DeploymentValidation'
       ServiceName: 'DeploymentValidation'
@@ -458,6 +459,7 @@ module netAppAccount './net-app/net-app-account/main.bicep' = {
         "Contact": "test.user@testcompany.com",
         "CostCenter": "7890",
         "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
         "PurchaseOrder": "1234",
         "Role": "DeploymentValidation",
         "ServiceName": "DeploymentValidation"
@@ -575,6 +577,7 @@ module netAppAccount './net-app/net-app-account/main.bicep' = {
       Contact: 'test.user@testcompany.com'
       CostCenter: '7890'
       Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
       PurchaseOrder: '1234'
       Role: 'DeploymentValidation'
       ServiceName: 'DeploymentValidation'
@@ -702,6 +705,7 @@ module netAppAccount './net-app/net-app-account/main.bicep' = {
         "Contact": "test.user@testcompany.com",
         "CostCenter": "7890",
         "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
         "PurchaseOrder": "1234",
         "Role": "DeploymentValidation",
         "ServiceName": "DeploymentValidation"

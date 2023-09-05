@@ -300,6 +300,7 @@ module hostingEnvironment './web/hosting-environment/main.bicep' = {
     ]
     systemAssignedIdentity: true
     tags: {
+      'hidden-title': 'This is visible in the resource name'
       hostingEnvironmentName: 'whasev2001'
       resourceType: 'App Service Environment'
     }
@@ -384,6 +385,7 @@ module hostingEnvironment './web/hosting-environment/main.bicep' = {
     },
     "tags": {
       "value": {
+        "hidden-title": "This is visible in the resource name",
         "hostingEnvironmentName": "whasev2001",
         "resourceType": "App Service Environment"
       }
@@ -446,6 +448,7 @@ module hostingEnvironment './web/hosting-environment/main.bicep' = {
     ]
     systemAssignedIdentity: true
     tags: {
+      'hidden-title': 'This is visible in the resource name'
       hostingEnvironmentName: 'whasev3001'
       resourceType: 'App Service Environment'
     }
@@ -546,6 +549,7 @@ module hostingEnvironment './web/hosting-environment/main.bicep' = {
     },
     "tags": {
       "value": {
+        "hidden-title": "This is visible in the resource name",
         "hostingEnvironmentName": "whasev3001",
         "resourceType": "App Service Environment"
       }

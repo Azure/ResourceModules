@@ -186,6 +186,7 @@ module dataCollectionEndpoint './insights/data-collection-endpoint/main.bicep' =
       }
     ]
     tags: {
+      'hidden-title': 'This is visible in the resource name'
       kind: 'Windows'
       resourceType: 'Data Collection Rules'
     }
@@ -235,6 +236,7 @@ module dataCollectionEndpoint './insights/data-collection-endpoint/main.bicep' =
     },
     "tags": {
       "value": {
+        "hidden-title": "This is visible in the resource name",
         "kind": "Windows",
         "resourceType": "Data Collection Rules"
       }

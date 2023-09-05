@@ -199,6 +199,7 @@ module server './analysis-services/server/main.bicep' = {
     skuName: 'S0'
     tags: {
       Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
     }
   }
@@ -257,6 +258,7 @@ module server './analysis-services/server/main.bicep' = {
     "tags": {
       "value": {
         "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
     }

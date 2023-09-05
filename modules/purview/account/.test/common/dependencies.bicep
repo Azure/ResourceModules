@@ -12,8 +12,8 @@ var addressPrefix = '10.0.0.0/16'
 var privateDNSZoneNames = [
   'privatelink.purview.azure.com'
   'privatelink.purviewstudio.azure.com'
-  'privatelink.blob.core.windows.net'
-  'privatelink.queue.core.windows.net'
+  'privatelink.blob.${environment().suffixes.storage}'
+  'privatelink.queue.${environment().suffixes.storage}'
   'privatelink.servicebus.windows.net'
 ]
 
@@ -30,7 +30,7 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2023-04-01' = {
       {
         name: 'defaultSubnet'
         properties: {
-          addressPrefix: '10.0.0.0/24'
+          addressPrefix: cidrSubnet(addressPrefix, 16, 0)
         }
       }
     ]

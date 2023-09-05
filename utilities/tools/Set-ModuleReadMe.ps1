@@ -730,6 +730,9 @@ function ConvertTo-FormattedJSONParameterObject {
             if ($line -notlike '*"*"*' -and $line -like '*.*') {
                 # In case of a array value like '[ \n -> resourceGroupResources.outputs.managedIdentityPrincipalId <- \n ]' we'll only show "<managedIdentityPrincipalId>""
                 $line = '"<{0}>"' -f $line.Split('.')[-1].Trim()
+            } elseif ($line -match '^\s*[a-zA-Z]+\s*$') {
+                # If there is simply only a value such as a variable reference, we'll wrap it as a string to replace. For example a reference of a variable `addressPrefix` will be replaced with `"<addressPrefix>"`
+                $line = '"<{0}>"' -f $line.Trim()
             }
         }
 

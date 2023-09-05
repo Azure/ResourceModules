@@ -305,6 +305,7 @@ module batchAccount './batch/batch-account/main.bicep' = {
         subnetResourceId: '<subnetResourceId>'
         tags: {
           Environment: 'Non-Prod'
+          'hidden-title': 'This is visible in the resource name'
           Role: 'DeploymentValidation'
         }
       }
@@ -314,6 +315,7 @@ module batchAccount './batch/batch-account/main.bicep' = {
     systemAssignedIdentity: true
     tags: {
       Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
     }
   }
@@ -382,6 +384,7 @@ module batchAccount './batch/batch-account/main.bicep' = {
           "subnetResourceId": "<subnetResourceId>",
           "tags": {
             "Environment": "Non-Prod",
+            "hidden-title": "This is visible in the resource name",
             "Role": "DeploymentValidation"
           }
         }
@@ -399,6 +402,7 @@ module batchAccount './batch/batch-account/main.bicep' = {
     "tags": {
       "value": {
         "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
     }
@@ -438,6 +442,7 @@ module batchAccount './batch/batch-account/main.bicep' = {
         subnetResourceId: '<subnetResourceId>'
         tags: {
           Environment: 'Non-Prod'
+          'hidden-title': 'This is visible in the resource name'
           Role: 'DeploymentValidation'
         }
       }
@@ -446,6 +451,7 @@ module batchAccount './batch/batch-account/main.bicep' = {
     storageAuthenticationMode: 'BatchAccountManagedIdentity'
     tags: {
       Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
     }
     userAssignedIdentities: {
@@ -499,6 +505,7 @@ module batchAccount './batch/batch-account/main.bicep' = {
           "subnetResourceId": "<subnetResourceId>",
           "tags": {
             "Environment": "Non-Prod",
+            "hidden-title": "This is visible in the resource name",
             "Role": "DeploymentValidation"
           }
         }
@@ -513,6 +520,7 @@ module batchAccount './batch/batch-account/main.bicep' = {
     "tags": {
       "value": {
         "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
     },

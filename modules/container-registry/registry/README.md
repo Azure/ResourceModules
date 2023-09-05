@@ -414,6 +414,7 @@ module registry './container-registry/registry/main.bicep' = {
         subnetResourceId: '<subnetResourceId>'
         tags: {
           Environment: 'Non-Prod'
+          'hidden-title': 'This is visible in the resource name'
           Role: 'DeploymentValidation'
         }
       }
@@ -439,6 +440,7 @@ module registry './container-registry/registry/main.bicep' = {
     systemAssignedIdentity: true
     tags: {
       Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
     }
     trustPolicyStatus: 'enabled'
@@ -522,6 +524,7 @@ module registry './container-registry/registry/main.bicep' = {
           "subnetResourceId": "<subnetResourceId>",
           "tags": {
             "Environment": "Non-Prod",
+            "hidden-title": "This is visible in the resource name",
             "Role": "DeploymentValidation"
           }
         }
@@ -561,6 +564,7 @@ module registry './container-registry/registry/main.bicep' = {
     "tags": {
       "value": {
         "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
     },
@@ -608,6 +612,7 @@ module registry './container-registry/registry/main.bicep' = {
     publicNetworkAccess: 'Disabled'
     tags: {
       Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
     }
     userAssignedIdentities: {
@@ -655,6 +660,7 @@ module registry './container-registry/registry/main.bicep' = {
     "tags": {
       "value": {
         "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
     },
@@ -741,12 +747,14 @@ module registry './container-registry/registry/main.bicep' = {
         subnetResourceId: '<subnetResourceId>'
         tags: {
           Environment: 'Non-Prod'
+          'hidden-title': 'This is visible in the resource name'
           Role: 'DeploymentValidation'
         }
       }
     ]
     tags: {
       Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
     }
   }
@@ -788,6 +796,7 @@ module registry './container-registry/registry/main.bicep' = {
           "subnetResourceId": "<subnetResourceId>",
           "tags": {
             "Environment": "Non-Prod",
+            "hidden-title": "This is visible in the resource name",
             "Role": "DeploymentValidation"
           }
         }
@@ -796,6 +805,7 @@ module registry './container-registry/registry/main.bicep' = {
     "tags": {
       "value": {
         "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
     }

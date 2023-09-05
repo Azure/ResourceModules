@@ -499,6 +499,7 @@ module digitalTwinsInstance './digital-twins/digital-twins-instance/main.bicep' 
     }
     tags: {
       Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
     }
     userAssignedIdentities: {
@@ -592,6 +593,7 @@ module digitalTwinsInstance './digital-twins/digital-twins-instance/main.bicep' 
     "tags": {
       "value": {
         "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
     },

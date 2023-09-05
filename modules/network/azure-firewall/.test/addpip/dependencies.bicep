@@ -11,8 +11,6 @@ param publicIPName string
 param managedIdentityName string
 
 var addressPrefix = '10.0.0.0/16'
-var addressPrefixDefaultSubnet = '10.0.0.0/20'
-var addressPrefixManagementSubnet = '10.0.16.0/20'
 
 resource virtualNetwork 'Microsoft.Network/virtualNetworks@2023-04-01' = {
   name: virtualNetworkName
@@ -27,13 +25,13 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2023-04-01' = {
       {
         name: 'AzureFirewallSubnet'
         properties: {
-          addressPrefix: addressPrefixDefaultSubnet
+          addressPrefix: cidrSubnet(addressPrefix, 20, 0)
         }
       }
       {
         name: 'AzureFirewallManagementSubnet'
         properties: {
-          addressPrefix: addressPrefixManagementSubnet
+          addressPrefix: cidrSubnet(addressPrefix, 20, 1)
         }
       }
     ]
