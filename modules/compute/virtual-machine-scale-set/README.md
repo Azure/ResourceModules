@@ -1434,6 +1434,9 @@ module virtualMachineScaleSet './compute/virtual-machine-scale-set/main.bicep' =
     ]
     disablePasswordAuthentication: true
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    extensionMonitoringAgentConfig: {
+      enabled: true
+    }
     location: '<location>'
     nicConfigurations: [
       {
@@ -1530,6 +1533,11 @@ module virtualMachineScaleSet './compute/virtual-machine-scale-set/main.bicep' =
     },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
+    },
+    "extensionMonitoringAgentConfig": {
+      "value": {
+        "enabled": true
+      }
     },
     "location": {
       "value": "<location>"
