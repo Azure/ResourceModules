@@ -185,7 +185,7 @@ param cMKKeyVersion string = ''
 @description('Conditional. User assigned identity to use when fetching the customer managed key. Note, CMK requires the \'acrSku\' to be \'Premium\'. Required if \'cMKKeyName\' is not empty.')
 param cMKUserAssignedIdentityResourceId string = ''
 
-@description('Optional. Array of Cache Rules.')
+@description('Optional. Array of Cache Rules. Note: This is a preview feature ([ref](https://learn.microsoft.com/en-us/azure/container-registry/tutorial-registry-cache#cache-for-acr-preview)).')
 param cacheRules array = []
 
 var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs' && item != ''): {
