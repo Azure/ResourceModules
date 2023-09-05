@@ -332,6 +332,7 @@ module registry_webhooks 'webhook/main.bicep' = [for (webhook, index) in webhook
     status: contains(webhook, 'status') ? webhook.status : 'enabled'
     serviceUri: webhook.serviceUri
     tags: contains(webhook, 'tags') ? webhook.tags : {}
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
 
