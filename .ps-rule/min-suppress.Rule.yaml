@@ -8,6 +8,7 @@ spec:
   rule:
    - Azure.Resource.UseTags
    - Azure.KeyVault.Logs
+   - Azure.VM.AMA
    - Azure.Policy.ExemptionDescriptors
    - Azure.Policy.Descriptors
    - Azure.Policy.AssignmentDescriptors
