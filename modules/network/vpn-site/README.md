@@ -371,6 +371,7 @@ module vpnSite './network/vpn-site/main.bicep' = {
       }
     ]
     tags: {
+      'hidden-title': 'This is visible in the resource name'
       tagA: 'valueA'
       tagB: 'valueB'
     }
@@ -461,6 +462,7 @@ module vpnSite './network/vpn-site/main.bicep' = {
     },
     "tags": {
       "value": {
+        "hidden-title": "This is visible in the resource name",
         "tagA": "valueA",
         "tagB": "valueB"
       }

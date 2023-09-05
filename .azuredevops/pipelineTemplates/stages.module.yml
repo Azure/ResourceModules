@@ -15,7 +15,7 @@ stages:
 
   - stage: deployment
     displayName: Deployment validation
-    condition: and(eq('${{ parameters.deploymentValidation }}', 'True'), ne(dependencies.validation.result, 'Failed'))
+    condition: and(eq('${{ parameters.deploymentValidation }}', 'True'), not(in(dependencies.validation.result, 'Failed', 'Canceled')))
     dependsOn:
       - validation
     jobs:

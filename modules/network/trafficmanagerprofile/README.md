@@ -292,6 +292,7 @@ module trafficmanagerprofile './network/trafficmanagerprofile/main.bicep' = {
     ]
     tags: {
       Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
     }
   }
@@ -350,6 +351,7 @@ module trafficmanagerprofile './network/trafficmanagerprofile/main.bicep' = {
     "tags": {
       "value": {
         "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
     }

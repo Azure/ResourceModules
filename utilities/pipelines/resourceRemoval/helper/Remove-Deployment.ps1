@@ -15,12 +15,6 @@ Optional. The resource group of the resource to remove
 .PARAMETER ManagementGroupId
 Optional. The ID of the management group to fetch deployments from. Relevant for management-group level deployments.
 
-.PARAMETER SearchRetryLimit
-Optional. The maximum times to retry the search for resources via their removal tag
-
-.PARAMETER SearchRetryInterval
-Optional. The time to wait in between the search for resources via their remove tags
-
 .PARAMETER DeploymentNames
 Optional. The deployment names to use for the removal
 
@@ -52,13 +46,7 @@ function Remove-Deployment {
         [string] $TemplateFilePath,
 
         [Parameter(Mandatory = $false)]
-        [string[]] $RemovalSequence = @(),
-
-        [Parameter(Mandatory = $false)]
-        [int] $SearchRetryLimit = 40,
-
-        [Parameter(Mandatory = $false)]
-        [int] $SearchRetryInterval = 60
+        [string[]] $RemovalSequence = @()
     )
 
     begin {
@@ -80,7 +68,7 @@ function Remove-Deployment {
         $deploymentScope = Get-ScopeOfTemplateFile -TemplateFilePath $TemplateFilePath
 
         # Fundamental checks
-        if ($deploymentScope -eq 'resourcegroup' -and -not (Get-AzResourceGroup -Name $resourceGroupName -ErrorAction 'SilentlyContinue')) {
+        if ($deploymentScope -eq 'resourcegroup' -and -not (Get-AzResourceGroup -Name $ResourceGroupName -ErrorAction 'SilentlyContinue')) {
             Write-Verbose "Resource group [$ResourceGroupName] does not exist (anymore). Skipping removal of its contained resources" -Verbose
             return
         }
@@ -94,13 +82,17 @@ function Remove-Deployment {
                 Name  = $deploymentName
                 Scope = $deploymentScope
             }
-            if (-not [String]::IsNullOrEmpty($resourceGroupName)) {
-                $deploymentsInputObject['resourceGroupName'] = $resourceGroupName
+            if (-not [String]::IsNullOrEmpty($ResourceGroupName)) {
+                $deploymentsInputObject['resourceGroupName'] = $ResourceGroupName
             }
             if (-not [String]::IsNullOrEmpty($ManagementGroupId)) {
                 $deploymentsInputObject['ManagementGroupId'] = $ManagementGroupId
             }
             $deployedTargetResources += Get-DeploymentTargetResourceList @deploymentsInputObject
+        }
+
+        if ($deployedTargetResources.Count -eq 0) {
+            throw 'No deployment target resources found.'
         }
 
         [array] $deployedTargetResources = $deployedTargetResources | Select-Object -Unique
@@ -110,7 +102,7 @@ function Remove-Deployment {
         # Pre-Filter & order items
         # ========================
         $rawTargetResourceIdsToRemove = $deployedTargetResources | Sort-Object -Property { $_.Split('/').Count } -Descending | Select-Object -Unique
-        Write-Verbose ('Total number of deployment target resources  after pre-filtering (duplicates) & ordering items [{0}]' -f $rawTargetResourceIdsToRemove.Count) -Verbose
+        Write-Verbose ('Total number of deployment target resources after pre-filtering (duplicates) & ordering items [{0}]' -f $rawTargetResourceIdsToRemove.Count) -Verbose
 
         # Format items
         # ============
@@ -138,7 +130,7 @@ function Remove-Deployment {
             '/subscriptions/{0}/providers/Microsoft.Security/securityContacts/' -f $azContext.Subscription.Id
             '/subscriptions/{0}/providers/Microsoft.Security/workspaceSettings/' -f $azContext.Subscription.Id
         )
-        [regex] $ignorePrefix_regex = '(?i)^(' + (($resourceIdPrefixesToIgnore | ForEach-Object { [regex]::escape($_) }) –join '|') + ')'
+        [regex] $ignorePrefix_regex = '(?i)^(' + (($resourceIdPrefixesToIgnore | ForEach-Object { [regex]::escape($_) }) -join '|') + ')'
 
 
         if ($resourcesToIgnore = $resourcesToRemove | Where-Object { $_.resourceId -in $resourceIdsToIgnore -or $_.resourceId -match $ignorePrefix_regex }) {

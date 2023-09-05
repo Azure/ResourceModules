@@ -1,0 +1,50 @@
+name: "ResourceGraph - Queries"
+
+parameters:
+  - name: staticValidation
+    displayName: Execute static validation
+    type: boolean
+    default: true
+  - name: deploymentValidation
+    displayName: Execute deployment validation
+    type: boolean
+    default: true
+  - name: removeDeployment
+    displayName: Remove deployed module
+    type: boolean
+    default: true
+  - name: prerelease
+    displayName: Publish prerelease module
+    type: boolean
+    default: false
+
+pr: none
+
+trigger:
+  batch: true
+  branches:
+    include:
+      - main
+  paths:
+    include:
+      - "/modules/resource-graph/query/*"
+      - "/.azuredevops/modulePipelines/ms.resourcegraph.queries.yml"
+      - "/.azuredevops/pipelineTemplates/*.yml"
+      - "/utilities/pipelines/*"
+    exclude:
+      - "/utilities/pipelines/deploymentRemoval/*"
+      - "/**/*.md"
+
+variables:
+  - template: "../../settings.yml"
+  - group: "PLATFORM_VARIABLES"
+  - name: modulePath
+    value: "/modules/resource-graph/query"
+
+stages:
+  - template: /.azuredevops/pipelineTemplates/stages.module.yml
+    parameters:
+      staticValidation: "${{ parameters.staticValidation }}"
+      deploymentValidation: "${{ parameters.deploymentValidation }}"
+      removeDeployment: "${{ parameters.removeDeployment }}"
+      prerelease: "${{ parameters.prerelease }}"

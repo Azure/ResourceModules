@@ -68,6 +68,7 @@ module testDeployment '../../main.bicep' = {
           ]
         }
         tags: {
+          'hidden-title': 'This is visible in the resource name'
           Environment: 'Non-Prod'
           Role: 'DeploymentValidation'
         }
@@ -102,6 +103,7 @@ module testDeployment '../../main.bicep' = {
     cMKKeyName: nestedDependencies.outputs.keyName
     cMKUserAssignedIdentityResourceId: nestedDependencies.outputs.managedIdentityResourceId
     tags: {
+      'hidden-title': 'This is visible in the resource name'
       Environment: 'Non-Prod'
       Role: 'DeploymentValidation'
     }

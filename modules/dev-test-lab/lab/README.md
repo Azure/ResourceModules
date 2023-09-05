@@ -417,6 +417,7 @@ module lab './dev-test-lab/lab/main.bicep' = {
       markdown: 'DevTest Lab support text. <br> New line. It also supports Markdown'
     }
     tags: {
+      'hidden-title': 'This is visible in the resource name'
       labName: 'dtllcom001'
       resourceType: 'DevTest Lab'
     }
@@ -702,6 +703,7 @@ module lab './dev-test-lab/lab/main.bicep' = {
     },
     "tags": {
       "value": {
+        "hidden-title": "This is visible in the resource name",
         "labName": "dtllcom001",
         "resourceType": "DevTest Lab"
       }

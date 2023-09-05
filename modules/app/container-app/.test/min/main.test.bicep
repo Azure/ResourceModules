@@ -50,6 +50,7 @@ module testDeployment '../../main.bicep' = {
   params: {
     name: '${namePrefix}${serviceShort}001'
     tags: {
+      'hidden-title': 'This is visible in the resource name'
       Env: 'test'
     }
     enableDefaultTelemetry: enableDefaultTelemetry

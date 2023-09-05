@@ -119,6 +119,7 @@ module testDeployment '../../main.bicep' = {
       }
     ]
     tags: {
+      'hidden-title': 'This is visible in the resource name'
       resourceType: 'Data Collection Rules'
       kind: 'Windows'
     }

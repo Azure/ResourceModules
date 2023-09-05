@@ -428,6 +428,7 @@ module metricAlert './insights/metric-alert/main.bicep' = {
     ]
     tags: {
       Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
     }
     targetResourceRegion: 'westeurope'
@@ -492,6 +493,7 @@ module metricAlert './insights/metric-alert/main.bicep' = {
     "tags": {
       "value": {
         "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
     },

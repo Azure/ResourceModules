@@ -483,6 +483,7 @@ module flexibleServer './db-for-postgre-sql/flexible-server/main.bicep' = {
     privateDnsZoneArmResourceId: '<privateDnsZoneArmResourceId>'
     tags: {
       Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
     }
   }
@@ -571,6 +572,7 @@ module flexibleServer './db-for-postgre-sql/flexible-server/main.bicep' = {
     "tags": {
       "value": {
         "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
     }
@@ -648,6 +650,7 @@ module flexibleServer './db-for-postgre-sql/flexible-server/main.bicep' = {
     storageSizeGB: 1024
     tags: {
       Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
     }
     userAssignedIdentities: {
@@ -772,6 +775,7 @@ module flexibleServer './db-for-postgre-sql/flexible-server/main.bicep' = {
     "tags": {
       "value": {
         "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
     },

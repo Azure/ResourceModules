@@ -160,6 +160,7 @@ module virtualHub './network/virtual-hub/main.bicep' = {
     lock: 'CanNotDelete'
     tags: {
       Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
     }
   }
@@ -228,6 +229,7 @@ module virtualHub './network/virtual-hub/main.bicep' = {
     "tags": {
       "value": {
         "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
     }

@@ -1146,6 +1146,7 @@ module virtualMachine './compute/virtual-machine/main.bicep' = {
       enabled: true
       tags: {
         Environment: 'Non-Prod'
+        'hidden-title': 'This is visible in the resource name'
         Role: 'DeploymentValidation'
       }
     }
@@ -1163,6 +1164,7 @@ module virtualMachine './compute/virtual-machine/main.bicep' = {
       }
       tags: {
         Environment: 'Non-Prod'
+        'hidden-title': 'This is visible in the resource name'
         Role: 'DeploymentValidation'
       }
     }
@@ -1176,6 +1178,7 @@ module virtualMachine './compute/virtual-machine/main.bicep' = {
       ]
       tags: {
         Environment: 'Non-Prod'
+        'hidden-title': 'This is visible in the resource name'
         Role: 'DeploymentValidation'
       }
     }
@@ -1186,6 +1189,7 @@ module virtualMachine './compute/virtual-machine/main.bicep' = {
       enabled: true
       tags: {
         Environment: 'Non-Prod'
+        'hidden-title': 'This is visible in the resource name'
         Role: 'DeploymentValidation'
       }
     }
@@ -1193,6 +1197,7 @@ module virtualMachine './compute/virtual-machine/main.bicep' = {
       enabled: false
       tags: {
         Environment: 'Non-Prod'
+        'hidden-title': 'This is visible in the resource name'
         Role: 'DeploymentValidation'
       }
     }
@@ -1200,6 +1205,7 @@ module virtualMachine './compute/virtual-machine/main.bicep' = {
       enabled: true
       tags: {
         Environment: 'Non-Prod'
+        'hidden-title': 'This is visible in the resource name'
         Role: 'DeploymentValidation'
       }
     }
@@ -1207,6 +1213,7 @@ module virtualMachine './compute/virtual-machine/main.bicep' = {
       enabled: true
       tags: {
         Environment: 'Non-Prod'
+        'hidden-title': 'This is visible in the resource name'
         Role: 'DeploymentValidation'
       }
     }
@@ -1233,6 +1240,7 @@ module virtualMachine './compute/virtual-machine/main.bicep' = {
     systemAssignedIdentity: true
     tags: {
       Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
     }
     userAssignedIdentities: {
@@ -1395,6 +1403,7 @@ module virtualMachine './compute/virtual-machine/main.bicep' = {
         "enabled": true,
         "tags": {
           "Environment": "Non-Prod",
+          "hidden-title": "This is visible in the resource name",
           "Role": "DeploymentValidation"
         }
       }
@@ -1414,6 +1423,7 @@ module virtualMachine './compute/virtual-machine/main.bicep' = {
         },
         "tags": {
           "Environment": "Non-Prod",
+          "hidden-title": "This is visible in the resource name",
           "Role": "DeploymentValidation"
         }
       }
@@ -1429,6 +1439,7 @@ module virtualMachine './compute/virtual-machine/main.bicep' = {
         ],
         "tags": {
           "Environment": "Non-Prod",
+          "hidden-title": "This is visible in the resource name",
           "Role": "DeploymentValidation"
         }
       }
@@ -1443,6 +1454,7 @@ module virtualMachine './compute/virtual-machine/main.bicep' = {
         "enabled": true,
         "tags": {
           "Environment": "Non-Prod",
+          "hidden-title": "This is visible in the resource name",
           "Role": "DeploymentValidation"
         }
       }
@@ -1452,6 +1464,7 @@ module virtualMachine './compute/virtual-machine/main.bicep' = {
         "enabled": false,
         "tags": {
           "Environment": "Non-Prod",
+          "hidden-title": "This is visible in the resource name",
           "Role": "DeploymentValidation"
         }
       }
@@ -1461,6 +1474,7 @@ module virtualMachine './compute/virtual-machine/main.bicep' = {
         "enabled": true,
         "tags": {
           "Environment": "Non-Prod",
+          "hidden-title": "This is visible in the resource name",
           "Role": "DeploymentValidation"
         }
       }
@@ -1470,6 +1484,7 @@ module virtualMachine './compute/virtual-machine/main.bicep' = {
         "enabled": true,
         "tags": {
           "Environment": "Non-Prod",
+          "hidden-title": "This is visible in the resource name",
           "Role": "DeploymentValidation"
         }
       }
@@ -1514,6 +1529,7 @@ module virtualMachine './compute/virtual-machine/main.bicep' = {
     "tags": {
       "value": {
         "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
     },
@@ -1556,6 +1572,7 @@ module virtualMachine './compute/virtual-machine/main.bicep' = {
               publicIpNameSuffix: '-pip-01'
               tags: {
                 Environment: 'Non-Prod'
+                'hidden-title': 'This is visible in the resource name'
                 Role: 'DeploymentValidation'
               }
             }
@@ -1565,6 +1582,7 @@ module virtualMachine './compute/virtual-machine/main.bicep' = {
         nicSuffix: '-nic-01'
         tags: {
           Environment: 'Non-Prod'
+          'hidden-title': 'This is visible in the resource name'
           Role: 'DeploymentValidation'
         }
       }
@@ -1591,6 +1609,7 @@ module virtualMachine './compute/virtual-machine/main.bicep' = {
     ]
     tags: {
       Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
     }
   }
@@ -1631,6 +1650,7 @@ module virtualMachine './compute/virtual-machine/main.bicep' = {
                 "publicIpNameSuffix": "-pip-01",
                 "tags": {
                   "Environment": "Non-Prod",
+                  "hidden-title": "This is visible in the resource name",
                   "Role": "DeploymentValidation"
                 }
               },
@@ -1640,6 +1660,7 @@ module virtualMachine './compute/virtual-machine/main.bicep' = {
           "nicSuffix": "-nic-01",
           "tags": {
             "Environment": "Non-Prod",
+            "hidden-title": "This is visible in the resource name",
             "Role": "DeploymentValidation"
           }
         }
@@ -1686,6 +1707,7 @@ module virtualMachine './compute/virtual-machine/main.bicep' = {
     "tags": {
       "value": {
         "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
     }
@@ -1943,6 +1965,7 @@ module virtualMachine './compute/virtual-machine/main.bicep' = {
       enabled: true
       tags: {
         Environment: 'Non-Prod'
+        'hidden-title': 'This is visible in the resource name'
         Role: 'DeploymentValidation'
       }
     }
@@ -1965,6 +1988,7 @@ module virtualMachine './compute/virtual-machine/main.bicep' = {
       }
       tags: {
         Environment: 'Non-Prod'
+        'hidden-title': 'This is visible in the resource name'
         Role: 'DeploymentValidation'
       }
     }
@@ -1980,6 +2004,7 @@ module virtualMachine './compute/virtual-machine/main.bicep' = {
         ResizeOSDisk: 'false'
         tags: {
           Environment: 'Non-Prod'
+          'hidden-title': 'This is visible in the resource name'
           Role: 'DeploymentValidation'
         }
         VolumeType: 'All'
@@ -1995,6 +2020,7 @@ module virtualMachine './compute/virtual-machine/main.bicep' = {
       ]
       tags: {
         Environment: 'Non-Prod'
+        'hidden-title': 'This is visible in the resource name'
         Role: 'DeploymentValidation'
       }
     }
@@ -2005,6 +2031,7 @@ module virtualMachine './compute/virtual-machine/main.bicep' = {
       enabled: true
       tags: {
         Environment: 'Non-Prod'
+        'hidden-title': 'This is visible in the resource name'
         Role: 'DeploymentValidation'
       }
     }
@@ -2012,6 +2039,7 @@ module virtualMachine './compute/virtual-machine/main.bicep' = {
       enabled: true
       tags: {
         Environment: 'Non-Prod'
+        'hidden-title': 'This is visible in the resource name'
         Role: 'DeploymentValidation'
       }
     }
@@ -2019,6 +2047,7 @@ module virtualMachine './compute/virtual-machine/main.bicep' = {
       enabled: true
       tags: {
         Environment: 'Non-Prod'
+        'hidden-title': 'This is visible in the resource name'
         Role: 'DeploymentValidation'
       }
     }
@@ -2026,6 +2055,7 @@ module virtualMachine './compute/virtual-machine/main.bicep' = {
       enabled: true
       tags: {
         Environment: 'Non-Prod'
+        'hidden-title': 'This is visible in the resource name'
         Role: 'DeploymentValidation'
       }
     }
@@ -2047,6 +2077,7 @@ module virtualMachine './compute/virtual-machine/main.bicep' = {
     systemAssignedIdentity: true
     tags: {
       Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
     }
     userAssignedIdentities: {
@@ -2209,6 +2240,7 @@ module virtualMachine './compute/virtual-machine/main.bicep' = {
         "enabled": true,
         "tags": {
           "Environment": "Non-Prod",
+          "hidden-title": "This is visible in the resource name",
           "Role": "DeploymentValidation"
         }
       }
@@ -2233,6 +2265,7 @@ module virtualMachine './compute/virtual-machine/main.bicep' = {
         },
         "tags": {
           "Environment": "Non-Prod",
+          "hidden-title": "This is visible in the resource name",
           "Role": "DeploymentValidation"
         }
       }
@@ -2250,6 +2283,7 @@ module virtualMachine './compute/virtual-machine/main.bicep' = {
           "ResizeOSDisk": "false",
           "tags": {
             "Environment": "Non-Prod",
+            "hidden-title": "This is visible in the resource name",
             "Role": "DeploymentValidation"
           },
           "VolumeType": "All"
@@ -2267,6 +2301,7 @@ module virtualMachine './compute/virtual-machine/main.bicep' = {
         ],
         "tags": {
           "Environment": "Non-Prod",
+          "hidden-title": "This is visible in the resource name",
           "Role": "DeploymentValidation"
         }
       }
@@ -2281,6 +2316,7 @@ module virtualMachine './compute/virtual-machine/main.bicep' = {
         "enabled": true,
         "tags": {
           "Environment": "Non-Prod",
+          "hidden-title": "This is visible in the resource name",
           "Role": "DeploymentValidation"
         }
       }
@@ -2290,6 +2326,7 @@ module virtualMachine './compute/virtual-machine/main.bicep' = {
         "enabled": true,
         "tags": {
           "Environment": "Non-Prod",
+          "hidden-title": "This is visible in the resource name",
           "Role": "DeploymentValidation"
         }
       }
@@ -2299,6 +2336,7 @@ module virtualMachine './compute/virtual-machine/main.bicep' = {
         "enabled": true,
         "tags": {
           "Environment": "Non-Prod",
+          "hidden-title": "This is visible in the resource name",
           "Role": "DeploymentValidation"
         }
       }
@@ -2308,6 +2346,7 @@ module virtualMachine './compute/virtual-machine/main.bicep' = {
         "enabled": true,
         "tags": {
           "Environment": "Non-Prod",
+          "hidden-title": "This is visible in the resource name",
           "Role": "DeploymentValidation"
         }
       }
@@ -2347,6 +2386,7 @@ module virtualMachine './compute/virtual-machine/main.bicep' = {
     "tags": {
       "value": {
         "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
     },
@@ -2407,6 +2447,7 @@ module virtualMachine './compute/virtual-machine/main.bicep' = {
     name: 'cvmwinatmg'
     tags: {
       Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
     }
   }
@@ -2483,6 +2524,7 @@ module virtualMachine './compute/virtual-machine/main.bicep' = {
     "tags": {
       "value": {
         "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
     }
@@ -2668,6 +2710,7 @@ module virtualMachine './compute/virtual-machine/main.bicep' = {
     name: 'cvmwincmk'
     tags: {
       Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
     }
   }
@@ -2757,6 +2800,7 @@ module virtualMachine './compute/virtual-machine/main.bicep' = {
     "tags": {
       "value": {
         "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
     }

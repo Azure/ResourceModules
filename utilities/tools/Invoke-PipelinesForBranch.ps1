@@ -29,7 +29,7 @@ Optional. Input parameters to pass into the pipeline. Must match the names of th
 Required. The path to the workflow.
 
 .EXAMPLE
-Invoke-GitHubWorkflow -PersonalAccessToken '<Placeholder>' -GitHubRepositoryOwner 'Azure' -GitHubRepositoryName 'ResourceModules' -WorkflowFileName 'ms.analysisservices.servers.yml' -TargetBranch 'main' -GitHubPipelineInputs @{ prerelease = 'false'; deploymentValidation = 'false'; removeDeployment = 'true' }
+Invoke-GitHubWorkflow -PersonalAccessToken '<Placeholder>' -GitHubRepositoryOwner 'Azure' -GitHubRepositoryName 'ResourceModules' -WorkflowFileName 'ms.analysisservices.servers.yml' -TargetBranch 'main' -GitHubPipelineInputs @{ prerelease = 'false'; staticValidation = 'true'; deploymentValidation = 'true'; removeDeployment = 'true' }
 
 Trigger the workflow 'ms.analysisservices.servers.yml' with branch 'main' in repository 'Azure/ResourceModules'.
 #>
