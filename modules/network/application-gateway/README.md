@@ -424,6 +424,9 @@ module applicationGateway './network/application-gateway/main.bicep' = {
         name: 'public'
         properties: {
           privateIPAllocationMethod: 'Dynamic'
+          privateLinkConfiguration: {
+            id: '<id>'
+          }
           publicIPAddress: {
             id: '<id>'
           }
@@ -870,6 +873,9 @@ module applicationGateway './network/application-gateway/main.bicep' = {
           "name": "public",
           "properties": {
             "privateIPAllocationMethod": "Dynamic",
+            "privateLinkConfiguration": {
+              "id": "<id>"
+            },
             "publicIPAddress": {
               "id": "<id>"
             }
