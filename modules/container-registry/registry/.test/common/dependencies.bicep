@@ -7,6 +7,9 @@ param virtualNetworkName string
 @description('Required. The name of the Managed Identity to create.')
 param managedIdentityName string
 
+@description('Required. The name of the Deployment Script to create to get the paired region name.')
+param pairedRegionScriptName string
+
 var addressPrefix = '10.0.0.0/16'
 
 resource virtualNetwork 'Microsoft.Network/virtualNetworks@2023-04-01' = {
@@ -22,7 +25,7 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2023-04-01' = {
       {
         name: 'defaultSubnet'
         properties: {
-          addressPrefix: addressPrefix
+          addressPrefix: cidrSubnet(addressPrefix, 16, 0)
         }
       }
     ]
@@ -50,6 +53,36 @@ resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-
   location: location
 }
 
+resource roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  name: guid('msi-${location}-${managedIdentity.id}-Reader-RoleAssignment')
+  properties: {
+    principalId: managedIdentity.properties.principalId
+    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'acdd72a7-3385-48ef-bd42-f606fba81ae7') // Reader
+    principalType: 'ServicePrincipal'
+  }
+}
+
+resource getPairedRegionScript 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
+  name: pairedRegionScriptName
+  location: location
+  kind: 'AzurePowerShell'
+  identity: {
+    type: 'UserAssigned'
+    userAssignedIdentities: {
+      '${managedIdentity.id}': {}
+    }
+  }
+  properties: {
+    azPowerShellVersion: '8.0'
+    retentionInterval: 'P1D'
+    arguments: '-Location \\"${location}\\"'
+    scriptContent: loadTextContent('../../../../.shared/.scripts/Get-PairedRegion.ps1')
+  }
+  dependsOn: [
+    roleAssignment
+  ]
+}
+
 @description('The resource ID of the created Virtual Network Subnet.')
 output subnetResourceId string = virtualNetwork.properties.subnets[0].id
 
@@ -61,3 +94,6 @@ output managedIdentityResourceId string = managedIdentity.id
 
 @description('The resource ID of the created Private DNS Zone.')
 output privateDNSZoneResourceId string = privateDNSZone.id
+
+@description('The name of the paired region.')
+output pairedRegionName string = getPairedRegionScript.properties.outputs.pairedRegionName

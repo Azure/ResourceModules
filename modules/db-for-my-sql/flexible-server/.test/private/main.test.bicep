@@ -80,6 +80,7 @@ module testDeployment '../../main.bicep' = {
       }
     ]
     tags: {
+      'hidden-title': 'This is visible in the resource name'
       resourceType: 'MySQL Flexible Server'
       serverName: '${namePrefix}${serviceShort}001'
     }

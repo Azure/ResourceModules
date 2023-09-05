@@ -64,6 +64,7 @@ module testDeployment '../../main.bicep' = {
     ]
     type: 'Standard'
     tags: {
+      'hidden-title': 'This is visible in the resource name'
       TagA: 'Would you kindly...'
       TagB: 'Tags for sale'
     }

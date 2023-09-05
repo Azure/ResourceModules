@@ -271,6 +271,7 @@ module containerApp './app/container-app/main.bicep' = {
     }
     tags: {
       Env: 'test'
+      'hidden-title': 'This is visible in the resource name'
     }
     userAssignedIdentities: {
       '<managedIdentityResourceId>': {}
@@ -349,7 +350,8 @@ module containerApp './app/container-app/main.bicep' = {
     },
     "tags": {
       "value": {
-        "Env": "test"
+        "Env": "test",
+        "hidden-title": "This is visible in the resource name"
       }
     },
     "userAssignedIdentities": {
@@ -392,6 +394,7 @@ module containerApp './app/container-app/main.bicep' = {
     location: '<location>'
     tags: {
       Env: 'test'
+      'hidden-title': 'This is visible in the resource name'
     }
   }
 }
@@ -437,7 +440,8 @@ module containerApp './app/container-app/main.bicep' = {
     },
     "tags": {
       "value": {
-        "Env": "test"
+        "Env": "test",
+        "hidden-title": "This is visible in the resource name"
       }
     }
   }

@@ -198,6 +198,7 @@ module proximityPlacementGroup './compute/proximity-placement-group/main.bicep' 
       }
     ]
     tags: {
+      'hidden-title': 'This is visible in the resource name'
       TagA: 'Would you kindly...'
       TagB: 'Tags for sale'
     }
@@ -261,6 +262,7 @@ module proximityPlacementGroup './compute/proximity-placement-group/main.bicep' 
     },
     "tags": {
       "value": {
+        "hidden-title": "This is visible in the resource name",
         "TagA": "Would you kindly...",
         "TagB": "Tags for sale"
       }

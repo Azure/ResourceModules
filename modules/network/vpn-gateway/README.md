@@ -221,6 +221,7 @@ module vpnGateway './network/vpn-gateway/main.bicep' = {
     ]
     tags: {
       Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
     }
     vpnConnections: [
@@ -295,6 +296,7 @@ module vpnGateway './network/vpn-gateway/main.bicep' = {
     "tags": {
       "value": {
         "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
     },

@@ -9,7 +9,11 @@ spec:
    - Azure.Resource.UseTags
    - Azure.KeyVault.Logs
    - Azure.VMSS.AMA
+   - Azure.Policy.ExemptionDescriptors
+   - Azure.Policy.Descriptors
+   - Azure.Policy.AssignmentDescriptors
   if:
     name: '.'
     contains:
       - 'min'
+

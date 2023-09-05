@@ -191,6 +191,7 @@ module deploymentScript './resources/deployment-script/main.bicep' = {
     storageAccountResourceId: '<storageAccountResourceId>'
     tags: {
       Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
     }
     timeout: 'PT30M'
@@ -259,6 +260,7 @@ module deploymentScript './resources/deployment-script/main.bicep' = {
     "tags": {
       "value": {
         "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
     },
@@ -301,6 +303,7 @@ module deploymentScript './resources/deployment-script/main.bicep' = {
     storageAccountResourceId: '<storageAccountResourceId>'
     tags: {
       Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
     }
     timeout: 'PT30M'
@@ -358,6 +361,7 @@ module deploymentScript './resources/deployment-script/main.bicep' = {
     "tags": {
       "value": {
         "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
     },

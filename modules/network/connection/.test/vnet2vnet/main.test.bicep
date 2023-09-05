@@ -69,6 +69,7 @@ module testDeployment '../../main.bicep' = {
     connectionType: 'Vnet2Vnet'
     vpnSharedKey: password
     tags: {
+      'hidden-title': 'This is visible in the resource name'
       Environment: 'Non-Prod'
       Role: 'DeploymentValidation'
     }

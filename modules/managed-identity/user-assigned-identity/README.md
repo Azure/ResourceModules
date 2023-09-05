@@ -178,6 +178,7 @@ module userAssignedIdentity './managed-identity/user-assigned-identity/main.bice
     ]
     tags: {
       Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
     }
   }
@@ -219,6 +220,7 @@ module userAssignedIdentity './managed-identity/user-assigned-identity/main.bice
     "tags": {
       "value": {
         "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
     }

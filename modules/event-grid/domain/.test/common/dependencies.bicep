@@ -7,7 +7,7 @@ param virtualNetworkName string
 @description('Required. The name of the Managed Identity to create.')
 param managedIdentityName string
 
-var addressPrefix = '10.0.0.0/24'
+var addressPrefix = '10.0.0.0/16'
 
 resource virtualNetwork 'Microsoft.Network/virtualNetworks@2023-04-01' = {
   name: virtualNetworkName
@@ -22,7 +22,7 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2023-04-01' = {
       {
         name: 'defaultSubnet'
         properties: {
-          addressPrefix: addressPrefix
+          addressPrefix: cidrSubnet(addressPrefix, 16, 0)
         }
       }
     ]

@@ -22,6 +22,7 @@ module testDeployment '../../main.bicep' = {
   params: {
     onlyUpdate: true
     tags: {
+      'hidden-title': 'This is visible in the resource name'
       Test: 'Yes'
       TestToo: 'No'
     }

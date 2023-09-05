@@ -312,7 +312,7 @@ mongodbDatabases: [
 </details>
 <p>
 
-Please reference the documentation for [mongodbDatabases](./mongodb-databases/README.md)
+Please reference the documentation for [mongodbDatabase](./mongodb-database/README.md)
 
 ### Parameter Usage: `gremlinDatabases`
 
@@ -379,7 +379,7 @@ gremlinDatabases: [
 </details>
 <p>
 
-Please reference the documentation for [gremlinDatabases](./gremlin-databases/README.md)
+Please reference the documentation for [gremlinDatabase](./gremlin-database/README.md)
 
 ### Parameter Usage: `roleAssignments`
 
@@ -745,6 +745,7 @@ module databaseAccount './document-db/database-account/main.bicep' = {
     systemAssignedIdentity: true
     tags: {
       Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
     }
   }
@@ -872,6 +873,7 @@ module databaseAccount './document-db/database-account/main.bicep' = {
     "tags": {
       "value": {
         "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
     }
@@ -1109,6 +1111,7 @@ module databaseAccount './document-db/database-account/main.bicep' = {
     systemAssignedIdentity: true
     tags: {
       Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
     }
   }
@@ -1367,6 +1370,7 @@ module databaseAccount './document-db/database-account/main.bicep' = {
     "tags": {
       "value": {
         "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
     }
@@ -1419,6 +1423,7 @@ module databaseAccount './document-db/database-account/main.bicep' = {
     ]
     tags: {
       Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
     }
   }
@@ -1488,6 +1493,7 @@ module databaseAccount './document-db/database-account/main.bicep' = {
     "tags": {
       "value": {
         "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
     }
@@ -1540,6 +1546,7 @@ module databaseAccount './document-db/database-account/main.bicep' = {
         subnetResourceId: '<subnetResourceId>'
         tags: {
           Environment: 'Non-Prod'
+          'hidden-title': 'This is visible in the resource name'
           Role: 'DeploymentValidation'
         }
       }
@@ -1631,6 +1638,7 @@ module databaseAccount './document-db/database-account/main.bicep' = {
     ]
     tags: {
       Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
     }
     userAssignedIdentities: {
@@ -1701,6 +1709,7 @@ module databaseAccount './document-db/database-account/main.bicep' = {
           "subnetResourceId": "<subnetResourceId>",
           "tags": {
             "Environment": "Non-Prod",
+            "hidden-title": "This is visible in the resource name",
             "Role": "DeploymentValidation"
           }
         }
@@ -1798,6 +1807,7 @@ module databaseAccount './document-db/database-account/main.bicep' = {
     "tags": {
       "value": {
         "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
     },

@@ -233,6 +233,7 @@ module maintenanceConfiguration './maintenance/maintenance-configuration/main.bi
     ]
     tags: {
       Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
     }
     visibility: 'Custom'
@@ -292,6 +293,7 @@ module maintenanceConfiguration './maintenance/maintenance-configuration/main.bi
     "tags": {
       "value": {
         "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
     },
