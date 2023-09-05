@@ -166,8 +166,6 @@ module testDeployment '../../main.bicep' = {
     }
     identityProfile: {
       kubeletidentity: {
-        clientId: nestedDependencies.outputs.managedIdentityClientId
-        objectId: nestedDependencies.outputs.managedIdentityPrincipalId
         resourceId: nestedDependencies.outputs.managedIdentityResourceId
       }
     }

@@ -117,9 +117,6 @@ resource dnsZone 'Microsoft.Network/dnsZones@2018-05-01' = {
 @description('The principal ID of the created Managed Identity.')
 output managedIdentityPrincipalId string = managedIdentity.properties.principalId
 
-@description('The client ID of the created Managed Identity.')
-output managedIdentityClientId string = managedIdentity.properties.clientId
-
 @description('The resource ID of the created Managed Identity.')
 output managedIdentityResourceId string = managedIdentity.id
 

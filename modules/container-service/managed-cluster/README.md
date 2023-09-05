@@ -558,8 +558,6 @@ module managedCluster './container-service/managed-cluster/main.bicep' = {
     }
     identityProfile: {
       kubeletidentity: {
-        clientId: '<clientId>'
-        objectId: '<objectId>'
         resourceId: '<resourceId>'
       }
     }
@@ -788,8 +786,6 @@ module managedCluster './container-service/managed-cluster/main.bicep' = {
     "identityProfile": {
       "value": {
         "kubeletidentity": {
-          "clientId": "<clientId>",
-          "objectId": "<objectId>",
           "resourceId": "<resourceId>"
         }
       }
