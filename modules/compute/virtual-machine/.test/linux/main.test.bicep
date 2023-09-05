@@ -261,9 +261,9 @@ module testDeployment '../../main.bicep' = {
       }
     ]
     systemAssignedIdentity: true
-    userAssignedIdentities: {
-      '${nestedDependencies.outputs.managedIdentityResourceId}': {}
-    }
+    // userAssignedIdentities: {
+    //   '${nestedDependencies.outputs.managedIdentityResourceId}': {}
+    // }
     tags: {
       'hidden-title': 'This is visible in the resource name'
       Environment: 'Non-Prod'
