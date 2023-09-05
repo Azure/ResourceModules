@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.20.4.51522",
-      "templateHash": "4005221740253981129"
+      "templateHash": "7307837577721751473"
     },
     "name": "Azure Kubernetes Service (AKS) Managed Clusters",
     "description": "This module deploys an Azure Kubernetes Service (AKS) Managed Cluster.",
@@ -586,7 +586,7 @@
       "type": "bool",
       "defaultValue": false,
       "metadata": {
-        "description": "Optional. Whether to enable Kubernetes pod security policy."
+        "description": "Optional. Whether to enable Kubernetes pod security policy. Requires enabling the pod security policy feature flag on the subscription."
       }
     },
     "enableStorageProfileBlobCSIDriver": {

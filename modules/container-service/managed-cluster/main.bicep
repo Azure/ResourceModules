@@ -281,7 +281,7 @@ param enableWorkloadIdentity bool = false
 @description('Optional. Whether to enable Azure Defender.')
 param enableAzureDefender bool = false
 
-@description('Optional. Whether to enable Kubernetes pod security policy.')
+@description('Optional. Whether to enable Kubernetes pod security policy. Requires enabling the pod security policy feature flag on the subscription.')
 param enablePodSecurityPolicy bool = false
 
 @description('Optional. Whether the AzureBlob CSI Driver for the storage profile is enabled.')

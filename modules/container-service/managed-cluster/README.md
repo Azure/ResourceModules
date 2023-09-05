@@ -101,7 +101,7 @@ This module deploys an Azure Kubernetes Service (AKS) Managed Cluster.
 | `enableDnsZoneContributorRoleAssignment` | bool | `True` |  | Specifies whether assing the DNS zone contributor role to the cluster service principal. It will be ignored if `webApplicationRoutingEnabled` is set to `false` or `dnsZoneResourceId` not provided. |
 | `enableKeyvaultSecretsProvider` | bool | `False` |  | Specifies whether the KeyvaultSecretsProvider add-on is enabled or not. |
 | `enableOidcIssuerProfile` | bool | `False` |  | Whether the The OIDC issuer profile of the Managed Cluster is enabled. |
-| `enablePodSecurityPolicy` | bool | `False` |  | Whether to enable Kubernetes pod security policy. |
+| `enablePodSecurityPolicy` | bool | `False` |  | Whether to enable Kubernetes pod security policy. Requires enabling the pod security policy feature flag on the subscription. |
 | `enablePrivateCluster` | bool | `False` |  | Specifies whether to create the cluster as a private cluster or not. |
 | `enablePrivateClusterPublicFQDN` | bool | `False` |  | Whether to create additional public FQDN for private cluster or not. |
 | `enableRBAC` | bool | `True` |  | Whether to enable Kubernetes Role-Based Access Control. |
@@ -495,7 +495,6 @@ module managedCluster './container-service/managed-cluster/main.bicep' = {
     diskEncryptionSetID: '<diskEncryptionSetID>'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     enableOidcIssuerProfile: true
-    enablePodSecurityPolicy: true
     enableStorageProfileBlobCSIDriver: true
     enableStorageProfileDiskCSIDriver: true
     enableStorageProfileFileCSIDriver: true
@@ -708,9 +707,6 @@ module managedCluster './container-service/managed-cluster/main.bicep' = {
       "value": "<enableDefaultTelemetry>"
     },
     "enableOidcIssuerProfile": {
-      "value": true
-    },
-    "enablePodSecurityPolicy": {
       "value": true
     },
     "enableStorageProfileBlobCSIDriver": {

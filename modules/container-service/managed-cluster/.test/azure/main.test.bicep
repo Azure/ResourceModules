@@ -148,7 +148,6 @@ module testDeployment '../../main.bicep' = {
     ]
     enableWorkloadIdentity: true
     enableOidcIssuerProfile: true
-    enablePodSecurityPolicy: true
     aksClusterNetworkPlugin: 'azure'
     aksClusterNetworkDataplane: 'azure'
     aksClusterNetworkPluginMode: 'overlay'
