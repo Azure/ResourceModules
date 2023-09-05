@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.20.4.51522",
-      "templateHash": "1191504937361016974"
+      "templateHash": "3567713664243744018"
     },
     "name": "Search Services",
     "description": "This module deploys a Search Service.",
@@ -23,65 +23,6 @@
       "defaultValue": {},
       "metadata": {
         "description": "Optional. Defines the options for how the data plane API of a Search service authenticates requests. Must remain an empty object {} if 'disableLocalAuth' is set to true."
-      }
-    },
-    "diagnosticLogCategoriesToEnable": {
-      "type": "array",
-      "defaultValue": [
-        "OperationLogs"
-      ],
-      "allowedValues": [
-        "OperationLogs"
-      ],
-      "metadata": {
-        "description": "Optional. The name of logs that will be streamed."
-      }
-    },
-    "diagnosticMetricsToEnable": {
-      "type": "array",
-      "defaultValue": [
-        "AllMetrics"
-      ],
-      "allowedValues": [
-        "AllMetrics"
-      ],
-      "metadata": {
-        "description": "Optional. The name of metrics that will be streamed."
-      }
-    },
-    "diagnosticSettingsName": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": "Optional. The name of the diagnostic setting, if deployed. If left empty, it defaults to \"<resourceName>-diagnosticSettings\"."
-      }
-    },
-    "diagnosticStorageAccountId": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub."
-      }
-    },
-    "diagnosticWorkspaceId": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub."
-      }
-    },
-    "diagnosticEventHubAuthorizationRuleId": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to."
-      }
-    },
-    "diagnosticEventHubName": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub."
       }
     },
     "disableLocalAuth": {
@@ -213,18 +154,77 @@
         "description": "Optional. Defines the SKU of an Azure Cognitive Search Service, which determines price tier and capacity limits."
       }
     },
-    "tags": {
-      "type": "object",
-      "defaultValue": {},
-      "metadata": {
-        "description": "Optional. Tags to help categorize the resource in the Azure portal."
-      }
-    },
     "systemAssignedIdentity": {
       "type": "bool",
       "defaultValue": false,
       "metadata": {
         "description": "Optional. Enables system assigned managed identity on the resource."
+      }
+    },
+    "diagnosticLogCategoriesToEnable": {
+      "type": "array",
+      "defaultValue": [
+        "OperationLogs"
+      ],
+      "allowedValues": [
+        "OperationLogs"
+      ],
+      "metadata": {
+        "description": "Optional. The name of logs that will be streamed."
+      }
+    },
+    "diagnosticMetricsToEnable": {
+      "type": "array",
+      "defaultValue": [
+        "AllMetrics"
+      ],
+      "allowedValues": [
+        "AllMetrics"
+      ],
+      "metadata": {
+        "description": "Optional. The name of metrics that will be streamed."
+      }
+    },
+    "diagnosticSettingsName": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Optional. The name of the diagnostic setting, if deployed. If left empty, it defaults to \"<resourceName>-diagnosticSettings\"."
+      }
+    },
+    "diagnosticStorageAccountId": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Optional. Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub."
+      }
+    },
+    "diagnosticWorkspaceId": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Optional. Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub."
+      }
+    },
+    "diagnosticEventHubAuthorizationRuleId": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to."
+      }
+    },
+    "diagnosticEventHubName": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub."
+      }
+    },
+    "tags": {
+      "type": "object",
+      "defaultValue": {},
+      "metadata": {
+        "description": "Optional. Tags to help categorize the resource in the Azure portal."
       }
     }
   },
@@ -1065,7 +1065,10 @@
           },
           "groupId": "[if(contains(parameters('sharedPrivateLinkResources')[copyIndex()], 'groupId'), createObject('value', parameters('sharedPrivateLinkResources')[copyIndex()].groupId), createObject('value', ''))]",
           "requestMessage": "[if(contains(parameters('sharedPrivateLinkResources')[copyIndex()], 'requestMessage'), createObject('value', parameters('sharedPrivateLinkResources')[copyIndex()].requestMessage), createObject('value', ''))]",
-          "resourceRegion": "[if(contains(parameters('sharedPrivateLinkResources')[copyIndex()], 'resourceRegion'), createObject('value', parameters('sharedPrivateLinkResources')[copyIndex()].resourceRegion), createObject('value', ''))]"
+          "resourceRegion": "[if(contains(parameters('sharedPrivateLinkResources')[copyIndex()], 'resourceRegion'), createObject('value', parameters('sharedPrivateLinkResources')[copyIndex()].resourceRegion), createObject('value', ''))]",
+          "enableDefaultTelemetry": {
+            "value": "[variables('enableReferencedModulesTelemetry')]"
+          }
         },
         "template": {
           "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
@@ -1074,10 +1077,10 @@
             "_generator": {
               "name": "bicep",
               "version": "0.20.4.51522",
-              "templateHash": "7351579205393161233"
+              "templateHash": "13822392072513993341"
             },
-            "name": "Cognitive Search Private Link Resources",
-            "description": "This module deploys a Cognitive Search Private Link Resource.",
+            "name": "Search Services Private Link Resources",
+            "description": "This module deploys a Search Service Private Link Resource.",
             "owner": "Azure/module-maintainers"
           },
           "parameters": {
@@ -1096,13 +1099,13 @@
             "privateLinkResourceId": {
               "type": "string",
               "metadata": {
-                "description": "Required. The resource id of the resource the shared private link resource is for."
+                "description": "Required. The resource ID of the resource the shared private link resource is for."
               }
             },
             "groupId": {
               "type": "string",
               "metadata": {
-                "description": "Required. The group id from the provider of resource the shared private link resource is for."
+                "description": "Required. The group ID from the provider of resource the shared private link resource is for."
               }
             },
             "requestMessage": {
@@ -1157,21 +1160,21 @@
             "name": {
               "type": "string",
               "metadata": {
-                "description": "The name of the sharedPrivateLinkResource."
+                "description": "The name of the shared private link resource."
               },
               "value": "[parameters('name')]"
             },
             "resourceId": {
               "type": "string",
               "metadata": {
-                "description": "The resource ID of the sharedPrivateLinkResource."
+                "description": "The resource ID of the shared private link resource."
               },
               "value": "[resourceId('Microsoft.Search/searchServices/sharedPrivateLinkResources', parameters('searchServiceName'), parameters('name'))]"
             },
             "resourceGroupName": {
               "type": "string",
               "metadata": {
-                "description": "The name of the resource group the sharedPrivateLinkResource was created in."
+                "description": "The name of the resource group the shared private link resource was created in."
               },
               "value": "[resourceGroup().name]"
             }
@@ -1187,21 +1190,21 @@
     "name": {
       "type": "string",
       "metadata": {
-        "description": "The name of the searchService."
+        "description": "The name of the search service."
       },
       "value": "[parameters('name')]"
     },
     "resourceId": {
       "type": "string",
       "metadata": {
-        "description": "The resource ID of the searchService."
+        "description": "The resource ID of the search service."
       },
       "value": "[resourceId('Microsoft.Search/searchServices', parameters('name'))]"
     },
     "resourceGroupName": {
       "type": "string",
       "metadata": {
-        "description": "The name of the resource group the searchService was created in."
+        "description": "The name of the resource group the search service was created in."
       },
       "value": "[resourceGroup().name]"
     },

@@ -265,9 +265,9 @@ tags: {
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of the searchService. |
-| `resourceGroupName` | string | The name of the resource group the searchService was created in. |
-| `resourceId` | string | The resource ID of the searchService. |
+| `name` | string | The name of the search service. |
+| `resourceGroupName` | string | The name of the resource group the search service was created in. |
+| `resourceId` | string | The resource ID of the search service. |
 
 ## Cross-referenced modules
 
@@ -292,23 +292,24 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module searchService './search/search-service/main.bicep' = {
-  name: '${uniqueString(deployment().name, location)}-test-sesvcom'
+  name: '${uniqueString(deployment().name, location)}-test-ssscom'
   params: {
     // Required parameters
-    name: 'sesvcom001'
+    name: 'ssscom001'
     // Non-required parameters
     authOptions: {
       aadOrApiKey: {
         aadAuthFailureMode: 'http401WithBearerChallenge'
       }
     }
-    cmkEnforcement: 'Disabled'
+    cmkEnforcement: 'Enabled'
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     disableLocalAuth: false
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    hostingMode: 'highDensity'
     lock: 'CanNotDelete'
     networkRuleSet: {
       ipRules: [
@@ -320,6 +321,8 @@ module searchService './search/search-service/main.bicep' = {
         }
       ]
     }
+    partitionCount: 2
+    replicaCount: 3
     roleAssignments: [
       {
         principalIds: [
@@ -336,9 +339,11 @@ module searchService './search/search-service/main.bicep' = {
         roleDefinitionIdOrName: 'Search Service Contributor'
       }
     ]
+    sku: 'standard3'
     systemAssignedIdentity: true
     tags: {
       Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
     }
   }
@@ -359,7 +364,7 @@ module searchService './search/search-service/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "sesvcom001"
+      "value": "ssscom001"
     },
     // Non-required parameters
     "authOptions": {
@@ -370,7 +375,7 @@ module searchService './search/search-service/main.bicep' = {
       }
     },
     "cmkEnforcement": {
-      "value": "Disabled"
+      "value": "Enabled"
     },
     "diagnosticEventHubAuthorizationRuleId": {
       "value": "<diagnosticEventHubAuthorizationRuleId>"
@@ -390,6 +395,9 @@ module searchService './search/search-service/main.bicep' = {
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     },
+    "hostingMode": {
+      "value": "highDensity"
+    },
     "lock": {
       "value": "CanNotDelete"
     },
@@ -404,6 +412,12 @@ module searchService './search/search-service/main.bicep' = {
           }
         ]
       }
+    },
+    "partitionCount": {
+      "value": 2
+    },
+    "replicaCount": {
+      "value": 3
     },
     "roleAssignments": {
       "value": [
@@ -423,12 +437,16 @@ module searchService './search/search-service/main.bicep' = {
         }
       ]
     },
+    "sku": {
+      "value": "standard3"
+    },
     "systemAssignedIdentity": {
       "value": true
     },
     "tags": {
       "value": {
         "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
     }
@@ -447,10 +465,10 @@ module searchService './search/search-service/main.bicep' = {
 
 ```bicep
 module searchService './search/search-service/main.bicep' = {
-  name: '${uniqueString(deployment().name, location)}-test-sesvmin'
+  name: '${uniqueString(deployment().name, location)}-test-sssmin'
   params: {
     // Required parameters
-    name: 'sesvmin001'
+    name: 'sssmin001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
@@ -471,7 +489,7 @@ module searchService './search/search-service/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "sesvmin001"
+      "value": "sssmin001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {
@@ -492,10 +510,10 @@ module searchService './search/search-service/main.bicep' = {
 
 ```bicep
 module searchService './search/search-service/main.bicep' = {
-  name: '${uniqueString(deployment().name, location)}-test-sesvpe'
+  name: '${uniqueString(deployment().name, location)}-test-ssspe'
   params: {
     // Required parameters
-    name: 'sesvpe001'
+    name: 'ssspe001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     privateEndpoints: [
@@ -534,6 +552,7 @@ module searchService './search/search-service/main.bicep' = {
     ]
     tags: {
       Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
     }
   }
@@ -554,7 +573,7 @@ module searchService './search/search-service/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "sesvpe001"
+      "value": "ssspe001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {
@@ -603,6 +622,7 @@ module searchService './search/search-service/main.bicep' = {
     "tags": {
       "value": {
         "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
     }

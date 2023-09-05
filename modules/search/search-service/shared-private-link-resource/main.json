@@ -5,10 +5,10 @@
     "_generator": {
       "name": "bicep",
       "version": "0.20.4.51522",
-      "templateHash": "7351579205393161233"
+      "templateHash": "13822392072513993341"
     },
-    "name": "Cognitive Search Private Link Resources",
-    "description": "This module deploys a Cognitive Search Private Link Resource.",
+    "name": "Search Services Private Link Resources",
+    "description": "This module deploys a Search Service Private Link Resource.",
     "owner": "Azure/module-maintainers"
   },
   "parameters": {
@@ -88,21 +88,21 @@
     "name": {
       "type": "string",
       "metadata": {
-        "description": "The name of the sharedPrivateLinkResource."
+        "description": "The name of the shared private link resource."
       },
       "value": "[parameters('name')]"
     },
     "resourceId": {
       "type": "string",
       "metadata": {
-        "description": "The resource ID of the sharedPrivateLinkResource."
+        "description": "The resource ID of the shared private link resource."
       },
       "value": "[resourceId('Microsoft.Search/searchServices/sharedPrivateLinkResources', parameters('searchServiceName'), parameters('name'))]"
     },
     "resourceGroupName": {
       "type": "string",
       "metadata": {
-        "description": "The name of the resource group the sharedPrivateLinkResource was created in."
+        "description": "The name of the resource group the shared private link resource was created in."
       },
       "value": "[resourceGroup().name]"
     }

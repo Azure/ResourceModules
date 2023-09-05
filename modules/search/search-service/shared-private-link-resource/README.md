@@ -1,6 +1,6 @@
-# Cognitive Search Private Link Resources `[Microsoft.Search/searchServices/sharedPrivateLinkResources]`
+# Search Services Private Link Resources `[Microsoft.Search/searchServices/sharedPrivateLinkResources]`
 
-This module deploys a Cognitive Search Private Link Resource.
+This module deploys a Search Service Private Link Resource.
 
 ## Navigation
 
@@ -44,9 +44,9 @@ This module deploys a Cognitive Search Private Link Resource.
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the sharedPrivateLinkResource. |
-| `resourceGroupName` | string | The name of the resource group the sharedPrivateLinkResource was created in. |
-| `resourceId` | string | The resource ID of the sharedPrivateLinkResource. |
+| `name` | string | The name of the shared private link resource. |
+| `resourceGroupName` | string | The name of the resource group the shared private link resource was created in. |
+| `resourceId` | string | The resource ID of the shared private link resource. |
 
 ## Cross-referenced modules
 
