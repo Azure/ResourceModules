@@ -64,7 +64,7 @@ module testDeployment '../../main.bicep' = {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '${namePrefix}${serviceShort}001'
     sku: 'standard3'
-    cmkEnforcement: 'Disabled'
+    cmkEnforcement: 'Enabled'
     disableLocalAuth: false
     authOptions: {
       aadOrApiKey: {
