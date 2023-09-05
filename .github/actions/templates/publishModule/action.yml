@@ -141,6 +141,13 @@ runs:
             }
           }
 
+          # Filter modules to publish 'prerelease' only if branch is not main/master
+          $BranchName = "$env:GITHUB_REF_NAME"
+          if ($BranchName -ne 'main' -and $BranchName -ne 'master') {
+            Write-Verbose "Filtering modules to only publish a [prerelease] version as the current branch [$BranchName] is not [main/master]." -Verbose
+            $modulesToPublish = $modulesToPublish | Where-Object -Property version -like '*-prerelease'
+          }
+
           #################
           ##   Publish   ##
           #################
@@ -220,6 +227,13 @@ runs:
             if($modulsToPublish.TemplateFilePath -notcontains $missingModule.TemplateFilePath) {
               $modulesToPublish += $missingModule
             }
+          }
+
+          # Filter modules to publish 'prerelease' only if branch is not main/master
+          $BranchName = "$env:GITHUB_REF_NAME"
+          if ($BranchName -ne 'main' -and $BranchName -ne 'master') {
+            Write-Verbose "Filtering modules to only publish a [prerelease] version as the current branch [$BranchName] is not [main/master]." -Verbose
+            $modulesToPublish = $modulesToPublish | Where-Object -Property version -like '*-prerelease'
           }
 
           #################
