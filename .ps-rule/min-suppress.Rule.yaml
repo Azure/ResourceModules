@@ -8,6 +8,7 @@ spec:
   rule:
    - Azure.Resource.UseTags
    - Azure.KeyVault.Logs
+   - Azure.VMSS.AMA
   if:
     name: '.'
     contains:
