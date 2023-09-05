@@ -175,6 +175,9 @@ module testDeployment '../../main.bicep' = {
           publicIPAddress: {
             id: nestedDependencies.outputs.publicIPResourceId
           }
+          privateLinkConfiguration: {
+            id: '${appGWExpectedResourceID}/privateLinkConfigurations/pvtlink01'
+          }
         }
       }
     ]
