@@ -546,6 +546,27 @@ module applicationGateway './network/application-gateway/main.bicep' = {
         }
       }
     ]
+    privateLinkConfigurations: [
+      {
+        id: '<id>'
+        name: 'pvtlink01'
+        properties: {
+          ipConfigurations: [
+            {
+              id: '<id>'
+              name: 'privateLinkIpConfig1'
+              properties: {
+                primary: true
+                privateIPAllocationMethod: 'Dynamic'
+                subnet: {
+                  id: '<id>'
+                }
+              }
+            }
+          ]
+        }
+      }
+    ]
     probes: [
       {
         name: 'privateVmHttpSettingProbe'
@@ -978,6 +999,29 @@ module applicationGateway './network/application-gateway/main.bicep' = {
           "tags": {
             "Environment": "Non-Prod",
             "Role": "DeploymentValidation"
+          }
+        }
+      ]
+    },
+    "privateLinkConfigurations": {
+      "value": [
+        {
+          "id": "<id>",
+          "name": "pvtlink01",
+          "properties": {
+            "ipConfigurations": [
+              {
+                "id": "<id>",
+                "name": "privateLinkIpConfig1",
+                "properties": {
+                  "primary": true,
+                  "privateIPAllocationMethod": "Dynamic",
+                  "subnet": {
+                    "id": "<id>"
+                  }
+                }
+              }
+            ]
           }
         }
       ]
