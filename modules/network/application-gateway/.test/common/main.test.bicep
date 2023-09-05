@@ -121,6 +121,27 @@ module testDeployment '../../main.bicep' = {
     diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
     diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
     enableHttp2: true
+    privateLinkConfigurations: [
+      {
+        name: 'pvtlink01'
+        id: '${appGWExpectedResourceID}/privateLinkConfigurations/pvtlink01'
+        properties: {
+          ipConfigurations: [
+            {
+              name: 'privateLinkIpConfig1'
+              id: '${appGWExpectedResourceID}/privateLinkConfigurations/pvtlink01/ipConfigurations/privateLinkIpConfig1'
+              properties: {
+                privateIPAllocationMethod: 'Dynamic'
+                primary: true
+                subnet: {
+                  id: nestedDependencies.outputs.privateLinkSubnetResourceId
+                }
+              }
+            }
+          ]
+        }
+      }
+    ]
     privateEndpoints: [
       {
         privateDnsZoneGroup: {
@@ -129,7 +150,7 @@ module testDeployment '../../main.bicep' = {
           ]
         }
         service: 'application gateway'
-        subnetResourceId: nestedDependencies.outputs.subnetResourceId
+        subnetResourceId: nestedDependencies.outputs.defaultSubnetResourceId
         tags: {
           Environment: 'Non-Prod'
           Role: 'DeploymentValidation'
@@ -143,7 +164,7 @@ module testDeployment '../../main.bicep' = {
           privateIPAddress: '10.0.0.20'
           privateIPAllocationMethod: 'Static'
           subnet: {
-            id: nestedDependencies.outputs.subnetResourceId
+            id: nestedDependencies.outputs.defaultSubnetResourceId
           }
         }
       }
@@ -188,7 +209,7 @@ module testDeployment '../../main.bicep' = {
         name: 'apw-ip-configuration'
         properties: {
           subnet: {
-            id: nestedDependencies.outputs.subnetResourceId
+            id: nestedDependencies.outputs.defaultSubnetResourceId
           }
         }
       }

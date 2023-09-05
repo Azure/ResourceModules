@@ -31,7 +31,13 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2023-04-01' = {
       {
         name: 'defaultSubnet'
         properties: {
-          addressPrefix: addressPrefix
+          addressPrefix: '10.0.0.0/24'
+        }
+      }
+      {
+        name: 'subnet02'
+        properties:{
+          addressPrefix: '10.0.0.1/24'
         }
       }
     ]
@@ -117,8 +123,11 @@ resource certDeploymentScript 'Microsoft.Resources/deploymentScripts@2020-10-01'
   }
 }
 
-@description('The resource ID of the created Virtual Network Subnet.')
-output subnetResourceId string = virtualNetwork.properties.subnets[0].id
+@description('The resource ID of the created Virtual Network default subnet.')
+output defaultSubnetResourceId string = virtualNetwork.properties.subnets[0].id
+
+@description('The resource ID of the created Virtual Network default subnet.')
+output privateLinkSubnetResourceId string = virtualNetwork.properties.subnets[1].id
 
 @description('The resource ID of the created Public IP.')
 output publicIPResourceId string = publicIP.id
