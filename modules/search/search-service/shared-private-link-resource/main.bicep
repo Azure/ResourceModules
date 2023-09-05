@@ -1,4 +1,4 @@
-metadata name = 'Cognitive Search Private Link Resources'
+metadata name = 'Search Services Private Link Resources'
 metadata description = 'This module deploys a Search Service Private Link Resource.'
 metadata owner = 'Azure/module-maintainers'
 
