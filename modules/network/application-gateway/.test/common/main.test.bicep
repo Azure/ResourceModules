@@ -142,6 +142,21 @@ module testDeployment '../../main.bicep' = {
         }
       }
     ]
+    privateEndpoints: [
+      {
+        privateDnsZoneGroup: {
+          privateDNSResourceIds: [
+            nestedDependencies.outputs.privateDNSZoneResourceId
+          ]
+        }
+        service: 'application gateway'
+        subnetResourceId: nestedDependencies.outputs.defaultSubnetResourceId
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
+      }
+    ]
     frontendIPConfigurations: [
       {
         name: 'private'
