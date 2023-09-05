@@ -78,7 +78,7 @@ This module deploys a Log Analytics Workspace.
 
 ### Parameter Usage: `gallerySolutions`
 
-Ref cross-referenced _[solutions](../../operations-management/solutions/README.md)_
+Ref cross-referenced _[solution](../../operations-management/solution/README.md)_
 
 <details>
 
