@@ -148,7 +148,6 @@ module testDeployment '../../main.bicep' = {
         principalType: 'ServicePrincipal'
       }
     ]
-    systemAssignedIdentity: true
     userAssignedIdentities: {
       '${nestedDependencies.outputs.managedIdentityResourceId}': {}
     }

@@ -923,7 +923,6 @@ module managedCluster './container-service/managed-cluster/main.bicep' = {
         roleDefinitionIdOrName: 'Reader'
       }
     ]
-    systemAssignedIdentity: true
     tags: {
       Environment: 'Non-Prod'
       'hidden-title': 'This is visible in the resource name'
@@ -1055,9 +1054,6 @@ module managedCluster './container-service/managed-cluster/main.bicep' = {
           "roleDefinitionIdOrName": "Reader"
         }
       ]
-    },
-    "systemAssignedIdentity": {
-      "value": true
     },
     "tags": {
       "value": {
@@ -1241,7 +1237,6 @@ module managedCluster './container-service/managed-cluster/main.bicep' = {
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     enablePrivateCluster: true
     privateDNSZone: '<privateDNSZone>'
-    systemAssignedIdentity: true
     tags: {
       Environment: 'Non-Prod'
       'hidden-title': 'This is visible in the resource name'
@@ -1379,9 +1374,6 @@ module managedCluster './container-service/managed-cluster/main.bicep' = {
     },
     "privateDNSZone": {
       "value": "<privateDNSZone>"
-    },
-    "systemAssignedIdentity": {
-      "value": true
     },
     "tags": {
       "value": {
