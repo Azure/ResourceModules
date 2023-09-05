@@ -61,7 +61,7 @@ resource sharedPrivateLinkResource 'Microsoft.Search/searchServices/sharedPrivat
 @description('The name of the sharedPrivateLinkResource.')
 output name string = sharedPrivateLinkResource.name
 
-@description('The resource ID of the sharedPrivateLinkResource.')
+@description('The resource ID of the shared private link resource.')
 output resourceId string = sharedPrivateLinkResource.id
 
 @description('The name of the resource group the shared private link resource was created in.')
