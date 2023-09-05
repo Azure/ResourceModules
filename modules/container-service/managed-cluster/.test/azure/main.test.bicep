@@ -164,11 +164,6 @@ module testDeployment '../../main.bicep' = {
     userAssignedIdentities: {
       '${nestedDependencies.outputs.managedIdentityResourceId}': {}
     }
-    identityProfile: {
-      kubeletidentity: {
-        resourceId: nestedDependencies.outputs.managedIdentityResourceId
-      }
-    }
     lock: 'CanNotDelete'
     roleAssignments: [
       {

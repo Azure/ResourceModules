@@ -556,11 +556,6 @@ module managedCluster './container-service/managed-cluster/main.bicep' = {
         'source-controller.enabled': 'true'
       }
     }
-    identityProfile: {
-      kubeletidentity: {
-        resourceId: '<resourceId>'
-      }
-    }
     lock: 'CanNotDelete'
     openServiceMeshEnabled: true
     roleAssignments: [
@@ -780,13 +775,6 @@ module managedCluster './container-service/managed-cluster/main.bicep' = {
           "kustomize-controller.enabled": "true",
           "notification-controller.enabled": "true",
           "source-controller.enabled": "true"
-        }
-      }
-    },
-    "identityProfile": {
-      "value": {
-        "kubeletidentity": {
-          "resourceId": "<resourceId>"
         }
       }
     },
