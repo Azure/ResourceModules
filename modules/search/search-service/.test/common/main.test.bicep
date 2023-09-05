@@ -63,6 +63,7 @@ module testDeployment '../../main.bicep' = {
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '${namePrefix}${serviceShort}001'
+    sku: 'standard3'
     cmkEnforcement: 'Disabled'
     disableLocalAuth: false
     authOptions: {
@@ -70,6 +71,9 @@ module testDeployment '../../main.bicep' = {
         aadAuthFailureMode: 'http401WithBearerChallenge'
       }
     }
+    hostingMode: 'highDensity'
+    partitionCount: 2
+    replicaCount: 3
     diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
     diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
     diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
