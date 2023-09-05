@@ -264,7 +264,7 @@ module searchService_sharedPrivateLinkResources 'shared-private-link-resource/ma
 @description('The name of the searchService.')
 output name string = searchService.name
 
-@description('The resource ID of the searchService.')
+@description('The resource ID of the search service.')
 output resourceId string = searchService.id
 
 @description('The name of the resource group the search service was created in.')
