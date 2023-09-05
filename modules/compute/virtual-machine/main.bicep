@@ -579,6 +579,7 @@ module vm_azureMonitorAgentExtension 'extension/main.bicep' = if (extensionMonit
     enableAutomaticUpgrade: contains(extensionMonitoringAgentConfig, 'enableAutomaticUpgrade') ? extensionMonitoringAgentConfig.enableAutomaticUpgrade : false
     settings: {
       workspaceId: !empty(monitoringWorkspaceId) ? vm_logAnalyticsWorkspace.properties.customerId : ''
+      GCS_AUTO_CONFIG: true
     }
     tags: contains(extensionMonitoringAgentConfig, 'tags') ? extensionMonitoringAgentConfig.tags : {}
     protectedSettings: {

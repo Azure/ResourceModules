@@ -1243,6 +1243,9 @@ module virtualMachine './compute/virtual-machine/main.bicep' = {
       'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
     }
+    userAssignedIdentities: {
+      '<managedIdentityResourceId>': {}
+    }
   }
 }
 ```
@@ -1528,6 +1531,11 @@ module virtualMachine './compute/virtual-machine/main.bicep' = {
         "Environment": "Non-Prod",
         "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
+      }
+    },
+    "userAssignedIdentities": {
+      "value": {
+        "<managedIdentityResourceId>": {}
       }
     }
   }
