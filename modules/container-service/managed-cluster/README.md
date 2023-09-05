@@ -16,8 +16,8 @@ This module deploys an Azure Kubernetes Service (AKS) Managed Cluster.
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.ContainerService/managedClusters` | [2023-05-02-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ContainerService/2023-05-02-preview/managedClusters) |
-| `Microsoft.ContainerService/managedClusters/agentPools` | [2023-05-02-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ContainerService/2023-05-02-preview/managedClusters/agentPools) |
+| `Microsoft.ContainerService/managedClusters` | [2023-06-02-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ContainerService/managedClusters) |
+| `Microsoft.ContainerService/managedClusters/agentPools` | [2023-06-02-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ContainerService/managedClusters/agentPools) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 | `Microsoft.KubernetesConfiguration/extensions` | [2022-03-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.KubernetesConfiguration/2022-03-01/extensions) |
 | `Microsoft.KubernetesConfiguration/fluxConfigurations` | [2022-03-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.KubernetesConfiguration/2022-03-01/fluxConfigurations) |
@@ -35,6 +35,7 @@ This module deploys an Azure Kubernetes Service (AKS) Managed Cluster.
 
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
+| `aksServicePrincipalProfile` | object | `{object}` | Information about a service principal identity for the cluster to use for manipulating Azure APIs. Required if no managed identities are assigned to the cluster. |
 | `appGatewayResourceId` | string | `''` | Specifies the resource ID of connected application gateway. Required if `ingressApplicationGatewayEnabled` is set to `true`. |
 
 **Optional parameters**
@@ -55,14 +56,15 @@ This module deploys an Azure Kubernetes Service (AKS) Managed Cluster.
 | `aksClusterDnsServiceIP` | string | `''` |  | Specifies the IP address assigned to the Kubernetes DNS service. It must be within the Kubernetes service address range specified in serviceCidr. |
 | `aksClusterKubernetesVersion` | string | `''` |  | Version of Kubernetes specified when creating the managed cluster. |
 | `aksClusterLoadBalancerSku` | string | `'standard'` | `[basic, standard]` | Specifies the sku of the load balancer used by the virtual machine scale sets used by nodepools. |
-| `aksClusterNetworkPlugin` | string | `''` | `['', azure, kubenet]` | Specifies the network plugin used for building Kubernetes network. - azure or kubenet. |
+| `aksClusterNetworkDataplane` | string | `''` | `['', azure, cilium]` | Network dataplane used in the Kubernetes cluster. Not compatible with kubenet network plugin. |
+| `aksClusterNetworkPlugin` | string | `''` | `['', azure, kubenet]` | Specifies the network plugin used for building Kubernetes network. |
+| `aksClusterNetworkPluginMode` | string | `''` | `['', overlay]` | Network plugin mode used for building the Kubernetes network. Not compatible with kubenet network plugin. |
 | `aksClusterNetworkPolicy` | string | `''` | `['', azure, calico]` | Specifies the network policy used for building Kubernetes network. - calico or azure. |
 | `aksClusterOutboundType` | string | `'loadBalancer'` | `[loadBalancer, userDefinedRouting]` | Specifies outbound (egress) routing method. - loadBalancer or userDefinedRouting. |
 | `aksClusterPodCidr` | string | `''` |  | Specifies the CIDR notation IP range from which to assign pod IPs when kubenet is used. |
 | `aksClusterServiceCidr` | string | `''` |  | A CIDR notation IP range from which to assign service cluster IPs. It must not overlap with any Subnet IP ranges. |
-| `aksClusterSkuTier` | string | `'Free'` | `[Free, Premium, Standard]` | Tier of a managed cluster SKU. - Free or Paid. |
+| `aksClusterSkuTier` | string | `'Free'` | `[Free, Premium, Standard]` | Tier of a managed cluster SKU. - Free or Standard. |
 | `aksClusterSshPublicKey` | string | `''` |  | Specifies the SSH RSA public key string for the Linux nodes. |
-| `aksServicePrincipalProfile` | object | `{object}` |  | Information about a service principal identity for the cluster to use for manipulating Azure APIs. |
 | `authorizedIPRanges` | array | `[]` |  | IP ranges are specified in CIDR format, e.g. 137.117.106.88/29. This feature is not compatible with clusters that use Public IP Per Node, or clusters that are using a Basic Load Balancer. |
 | `autoScalerProfileBalanceSimilarNodeGroups` | string | `'false'` | `[false, true]` | Specifies the balance of similar node groups for the auto-scaler of the AKS cluster. |
 | `autoScalerProfileExpander` | string | `'random'` | `[least-waste, most-pods, priority, random]` | Specifies the expand strategy for the auto-scaler of the AKS cluster. |
@@ -104,9 +106,16 @@ This module deploys an Azure Kubernetes Service (AKS) Managed Cluster.
 | `enablePrivateClusterPublicFQDN` | bool | `False` |  | Whether to create additional public FQDN for private cluster or not. |
 | `enableRBAC` | bool | `True` |  | Whether to enable Kubernetes Role-Based Access Control. |
 | `enableSecretRotation` | string | `'false'` | `[false, true]` | Specifies whether the KeyvaultSecretsProvider add-on uses secret rotation. |
+| `enableStorageProfileBlobCSIDriver` | bool | `False` |  | Whether the AzureBlob CSI Driver for the storage profile is enabled. |
+| `enableStorageProfileDiskCSIDriver` | bool | `False` |  | Whether the AzureDisk CSI Driver for the storage profile is enabled. |
+| `enableStorageProfileFileCSIDriver` | bool | `False` |  | Whether the AzureFile CSI Driver for the storage profile is enabled. |
+| `enableStorageProfileSnapshotController` | bool | `False` |  | Whether the snapshot controller for the storage profile is enabled. |
+| `enableWorkloadIdentity` | bool | `False` |  | Whether to enable Workload Identity. Requires OIDC issuer profile to be enabled. |
 | `fluxConfigurationProtectedSettings` | secureObject | `{object}` |  | Configuration settings that are sensitive, as name-value pairs for configuring this extension. |
 | `fluxExtension` | object | `{object}` |  | Settings and configurations for the flux extension. |
 | `httpApplicationRoutingEnabled` | bool | `False` |  | Specifies whether the httpApplicationRouting add-on is enabled or not. |
+| `httpProxyConfig` | object | `{object}` |  | Configurations for provisioning the cluster with HTTP proxy servers. |
+| `identityProfile` | object | `{object}` |  | Identities associated with the cluster. |
 | `ingressApplicationGatewayEnabled` | bool | `False` |  | Specifies whether the ingressApplicationGateway (AGIC) add-on is enabled or not. |
 | `kubeDashboardEnabled` | bool | `False` |  | Specifies whether the kubeDashboard add-on is enabled or not. |
 | `location` | string | `[resourceGroup().location]` |  | Specifies the location of AKS cluster. It picks up Resource Group's location by default. |
@@ -122,6 +131,7 @@ This module deploys an Azure Kubernetes Service (AKS) Managed Cluster.
 | `podIdentityProfileUserAssignedIdentityExceptions` | array | `[]` |  | The pod identity exceptions to allow. |
 | `privateDNSZone` | string | `''` |  | Private DNS Zone configuration. Set to 'system' and AKS will create a private DNS zone in the node resource group. Set to '' to disable private DNS Zone creation and use public DNS. Supply the resource ID here of an existing Private DNS zone to use an existing zone. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| `supportPlan` | string | `'KubernetesOfficial'` | `[AKSLongTermSupport, KubernetesOfficial]` | The support plan for the Managed Cluster. |
 | `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
@@ -359,7 +369,10 @@ userAssignedIdentities: {
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
+| `addonProfiles` | object | The addonProfiles of the Kubernetes cluster. |
 | `controlPlaneFQDN` | string | The control plane FQDN of the managed cluster. |
+| `keyvaultIdentityClientId` | string | The Client ID of the Key Vault Secrets Provider identity. |
+| `keyvaultIdentityObjectId` | string | The Object ID of the Key Vault Secrets Provider identity. |
 | `kubeletidentityObjectId` | string | The Object ID of the AKS identity. |
 | `location` | string | The location the resource was deployed into. |
 | `name` | string | The name of the managed cluster. |
@@ -472,13 +485,22 @@ module managedCluster './container-service/managed-cluster/main.bicep' = {
         vnetSubnetID: '<vnetSubnetID>'
       }
     ]
+    aksClusterNetworkDataplane: 'azure'
     aksClusterNetworkPlugin: 'azure'
+    aksClusterNetworkPluginMode: 'overlay'
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     diskEncryptionSetID: '<diskEncryptionSetID>'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    enableOidcIssuerProfile: true
+    enablePodSecurityPolicy: true
+    enableStorageProfileBlobCSIDriver: true
+    enableStorageProfileDiskCSIDriver: true
+    enableStorageProfileFileCSIDriver: true
+    enableStorageProfileSnapshotController: true
+    enableWorkloadIdentity: true
     fluxExtension: {
       configurations: [
         {
@@ -533,6 +555,13 @@ module managedCluster './container-service/managed-cluster/main.bicep' = {
         'kustomize-controller.enabled': 'true'
         'notification-controller.enabled': 'true'
         'source-controller.enabled': 'true'
+      }
+    }
+    identityProfile: {
+      kubeletidentity: {
+        clientId: '<clientId>'
+        objectId: '<objectId>'
+        resourceId: '<resourceId>'
       }
     }
     lock: 'CanNotDelete'
@@ -650,8 +679,14 @@ module managedCluster './container-service/managed-cluster/main.bicep' = {
         }
       ]
     },
+    "aksClusterNetworkDataplane": {
+      "value": "azure"
+    },
     "aksClusterNetworkPlugin": {
       "value": "azure"
+    },
+    "aksClusterNetworkPluginMode": {
+      "value": "overlay"
     },
     "diagnosticEventHubAuthorizationRuleId": {
       "value": "<diagnosticEventHubAuthorizationRuleId>"
@@ -670,6 +705,27 @@ module managedCluster './container-service/managed-cluster/main.bicep' = {
     },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
+    },
+    "enableOidcIssuerProfile": {
+      "value": true
+    },
+    "enablePodSecurityPolicy": {
+      "value": true
+    },
+    "enableStorageProfileBlobCSIDriver": {
+      "value": true
+    },
+    "enableStorageProfileDiskCSIDriver": {
+      "value": true
+    },
+    "enableStorageProfileFileCSIDriver": {
+      "value": true
+    },
+    "enableStorageProfileSnapshotController": {
+      "value": true
+    },
+    "enableWorkloadIdentity": {
+      "value": true
     },
     "fluxExtension": {
       "value": {
@@ -726,6 +782,15 @@ module managedCluster './container-service/managed-cluster/main.bicep' = {
           "kustomize-controller.enabled": "true",
           "notification-controller.enabled": "true",
           "source-controller.enabled": "true"
+        }
+      }
+    },
+    "identityProfile": {
+      "value": {
+        "kubeletidentity": {
+          "clientId": "<clientId>",
+          "objectId": "<objectId>",
+          "resourceId": "<resourceId>"
         }
       }
     },

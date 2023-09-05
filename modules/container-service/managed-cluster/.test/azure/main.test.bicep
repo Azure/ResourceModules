@@ -146,13 +146,29 @@ module testDeployment '../../main.bicep' = {
         vnetSubnetID: nestedDependencies.outputs.subnetResourceIds[2]
       }
     ]
+    enableWorkloadIdentity: true
+    enableOidcIssuerProfile: true
+    enablePodSecurityPolicy: true
     aksClusterNetworkPlugin: 'azure'
+    aksClusterNetworkDataplane: 'azure'
+    aksClusterNetworkPluginMode: 'overlay'
     diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
     diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
     diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
     diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
     diskEncryptionSetID: nestedDependencies.outputs.diskEncryptionSetResourceId
     openServiceMeshEnabled: true
+    enableStorageProfileBlobCSIDriver: true
+    enableStorageProfileDiskCSIDriver: true
+    enableStorageProfileFileCSIDriver: true
+    enableStorageProfileSnapshotController: true
+    identityProfile: {
+      kubeletidentity: {
+        clientId: nestedDependencies.outputs.managedIdentityClientId
+        objectId: nestedDependencies.outputs.managedIdentityPrincipalId
+        resourceId: nestedDependencies.outputs.managedIdentityResourceId
+      }
+    }
     lock: 'CanNotDelete'
     roleAssignments: [
       {

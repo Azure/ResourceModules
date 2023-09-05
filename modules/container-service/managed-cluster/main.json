@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.20.4.51522",
-      "templateHash": "2499528815561589714"
+      "templateHash": "4005221740253981129"
     },
     "name": "Azure Kubernetes Service (AKS) Managed Clusters",
     "description": "This module deploys an Azure Kubernetes Service (AKS) Managed Cluster.",
@@ -46,6 +46,18 @@
         "description": "Optional. The ID(s) to assign to the resource."
       }
     },
+    "aksClusterNetworkDataplane": {
+      "type": "string",
+      "defaultValue": "",
+      "allowedValues": [
+        "",
+        "azure",
+        "cilium"
+      ],
+      "metadata": {
+        "description": "Optional. Network dataplane used in the Kubernetes cluster. Not compatible with kubenet network plugin."
+      }
+    },
     "aksClusterNetworkPlugin": {
       "type": "string",
       "defaultValue": "",
@@ -55,7 +67,18 @@
         "kubenet"
       ],
       "metadata": {
-        "description": "Optional. Specifies the network plugin used for building Kubernetes network. - azure or kubenet."
+        "description": "Optional. Specifies the network plugin used for building Kubernetes network."
+      }
+    },
+    "aksClusterNetworkPluginMode": {
+      "type": "string",
+      "defaultValue": "",
+      "allowedValues": [
+        "",
+        "overlay"
+      ],
+      "metadata": {
+        "description": "Optional. Network plugin mode used for building the Kubernetes network. Not compatible with kubenet network plugin."
       }
     },
     "aksClusterNetworkPolicy": {
@@ -129,7 +152,7 @@
         "Standard"
       ],
       "metadata": {
-        "description": "Optional. Tier of a managed cluster SKU. - Free or Paid."
+        "description": "Optional. Tier of a managed cluster SKU. - Free or Standard."
       }
     },
     "aksClusterKubernetesVersion": {
@@ -157,7 +180,7 @@
       "type": "object",
       "defaultValue": {},
       "metadata": {
-        "description": "Optional. Information about a service principal identity for the cluster to use for manipulating Azure APIs."
+        "description": "Conditional. Information about a service principal identity for the cluster to use for manipulating Azure APIs. Required if no managed identities are assigned to the cluster."
       }
     },
     "aadProfileClientAppID": {
@@ -545,6 +568,13 @@
         "description": "Optional. Whether the The OIDC issuer profile of the Managed Cluster is enabled."
       }
     },
+    "enableWorkloadIdentity": {
+      "type": "bool",
+      "defaultValue": false,
+      "metadata": {
+        "description": "Optional. Whether to enable Workload Identity. Requires OIDC issuer profile to be enabled."
+      }
+    },
     "enableAzureDefender": {
       "type": "bool",
       "defaultValue": false,
@@ -557,6 +587,45 @@
       "defaultValue": false,
       "metadata": {
         "description": "Optional. Whether to enable Kubernetes pod security policy."
+      }
+    },
+    "enableStorageProfileBlobCSIDriver": {
+      "type": "bool",
+      "defaultValue": false,
+      "metadata": {
+        "description": "Optional. Whether the AzureBlob CSI Driver for the storage profile is enabled."
+      }
+    },
+    "enableStorageProfileDiskCSIDriver": {
+      "type": "bool",
+      "defaultValue": false,
+      "metadata": {
+        "description": "Optional. Whether the AzureDisk CSI Driver for the storage profile is enabled."
+      }
+    },
+    "enableStorageProfileFileCSIDriver": {
+      "type": "bool",
+      "defaultValue": false,
+      "metadata": {
+        "description": "Optional. Whether the AzureFile CSI Driver for the storage profile is enabled."
+      }
+    },
+    "enableStorageProfileSnapshotController": {
+      "type": "bool",
+      "defaultValue": false,
+      "metadata": {
+        "description": "Optional. Whether the snapshot controller for the storage profile is enabled."
+      }
+    },
+    "supportPlan": {
+      "type": "string",
+      "defaultValue": "KubernetesOfficial",
+      "allowedValues": [
+        "AKSLongTermSupport",
+        "KubernetesOfficial"
+      ],
+      "metadata": {
+        "description": "Optional. The support plan for the Managed Cluster."
       }
     },
     "diagnosticStorageAccountId": {
@@ -653,6 +722,20 @@
       "defaultValue": {},
       "metadata": {
         "description": "Optional. Settings and configurations for the flux extension."
+      }
+    },
+    "httpProxyConfig": {
+      "type": "object",
+      "defaultValue": {},
+      "metadata": {
+        "description": "Optional. Configurations for provisioning the cluster with HTTP proxy servers."
+      }
+    },
+    "identityProfile": {
+      "type": "object",
+      "defaultValue": {},
+      "metadata": {
+        "description": "Optional. Identities associated with the cluster."
       }
     },
     "diagnosticLogCategoriesToEnable": {
@@ -756,7 +839,7 @@
     },
     {
       "type": "Microsoft.ContainerService/managedClusters",
-      "apiVersion": "2023-05-02-preview",
+      "apiVersion": "2023-06-02-preview",
       "name": "[parameters('name')]",
       "location": "[parameters('location')]",
       "tags": "[parameters('tags')]",
@@ -766,18 +849,14 @@
         "tier": "[parameters('aksClusterSkuTier')]"
       },
       "properties": {
+        "httpProxyConfig": "[if(not(empty(parameters('httpProxyConfig'))), parameters('httpProxyConfig'), null())]",
+        "identityProfile": "[if(not(empty(parameters('identityProfile'))), parameters('identityProfile'), null())]",
         "diskEncryptionSetID": "[if(not(empty(parameters('diskEncryptionSetID'))), parameters('diskEncryptionSetID'), null())]",
         "kubernetesVersion": "[if(empty(parameters('aksClusterKubernetesVersion')), null(), parameters('aksClusterKubernetesVersion'))]",
         "dnsPrefix": "[parameters('aksClusterDnsPrefix')]",
         "agentPoolProfiles": "[parameters('primaryAgentPoolProfile')]",
         "linuxProfile": "[if(empty(parameters('aksClusterSshPublicKey')), null(), variables('aksClusterLinuxProfile'))]",
         "servicePrincipalProfile": "[if(empty(parameters('aksServicePrincipalProfile')), null(), parameters('aksServicePrincipalProfile'))]",
-        "ingressProfile": {
-          "webAppRouting": {
-            "enabled": "[parameters('webApplicationRoutingEnabled')]",
-            "dnsZoneResourceId": "[if(not(empty(parameters('dnsZoneResourceId'))), parameters('dnsZoneResourceId'), null())]"
-          }
-        },
         "addonProfiles": {
           "httpApplicationRouting": {
             "enabled": "[parameters('httpApplicationRoutingEnabled')]"
@@ -815,7 +894,9 @@
         "nodeResourceGroup": "[parameters('nodeResourceGroup')]",
         "enablePodSecurityPolicy": "[parameters('enablePodSecurityPolicy')]",
         "networkProfile": {
+          "networkDataplane": "[if(not(empty(parameters('aksClusterNetworkDataplane'))), parameters('aksClusterNetworkDataplane'), null())]",
           "networkPlugin": "[if(not(empty(parameters('aksClusterNetworkPlugin'))), parameters('aksClusterNetworkPlugin'), null())]",
+          "networkPluginMode": "[if(not(empty(parameters('aksClusterNetworkPluginMode'))), parameters('aksClusterNetworkPluginMode'), null())]",
           "networkPolicy": "[if(not(empty(parameters('aksClusterNetworkPolicy'))), parameters('aksClusterNetworkPolicy'), null())]",
           "podCidr": "[if(not(empty(parameters('aksClusterPodCidr'))), parameters('aksClusterPodCidr'), null())]",
           "serviceCidr": "[if(not(empty(parameters('aksClusterServiceCidr'))), parameters('aksClusterServiceCidr'), null())]",
@@ -865,7 +946,25 @@
           "userAssignedIdentities": "[parameters('podIdentityProfileUserAssignedIdentities')]",
           "userAssignedIdentityExceptions": "[parameters('podIdentityProfileUserAssignedIdentityExceptions')]"
         },
-        "securityProfile": "[if(parameters('enableAzureDefender'), createObject('azureDefender', createObject('enabled', parameters('enableAzureDefender'), 'logAnalyticsWorkspaceResourceId', if(not(empty(parameters('monitoringWorkspaceId'))), parameters('monitoringWorkspaceId'), null()))), null())]"
+        "securityProfile": {
+          "defender": "[if(parameters('enableAzureDefender'), createObject('securityMonitoring', createObject('enabled', parameters('enableAzureDefender')), 'logAnalyticsWorkspaceResourceId', if(not(empty(parameters('monitoringWorkspaceId'))), parameters('monitoringWorkspaceId'), null())), null())]",
+          "workloadIdentity": "[if(parameters('enableWorkloadIdentity'), createObject('enabled', parameters('enableWorkloadIdentity')), null())]"
+        },
+        "storageProfile": {
+          "blobCSIDriver": {
+            "enabled": "[parameters('enableStorageProfileBlobCSIDriver')]"
+          },
+          "diskCSIDriver": {
+            "enabled": "[parameters('enableStorageProfileDiskCSIDriver')]"
+          },
+          "fileCSIDriver": {
+            "enabled": "[parameters('enableStorageProfileFileCSIDriver')]"
+          },
+          "snapshotController": {
+            "enabled": "[parameters('enableStorageProfileSnapshotController')]"
+          }
+        },
+        "supportPlan": "[parameters('supportPlan')]"
       }
     },
     {
@@ -908,7 +1007,7 @@
       "name": "[guid(parameters('dnsZoneResourceId'), subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'befefa01-2a29-4197-83a8-272ff33ce314'), 'DNS Zone Contributor')]",
       "properties": {
         "roleDefinitionId": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'befefa01-2a29-4197-83a8-272ff33ce314')]",
-        "principalId": "[reference(resourceId('Microsoft.ContainerService/managedClusters', parameters('name')), '2023-05-02-preview').ingressProfile.webAppRouting.identity.objectId]",
+        "principalId": "[reference(resourceId('Microsoft.ContainerService/managedClusters', parameters('name')), '2023-06-02-preview').ingressProfile.webAppRouting.identity.objectId]",
         "principalType": "ServicePrincipal"
       },
       "dependsOn": [
@@ -980,7 +1079,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.20.4.51522",
-              "templateHash": "9201392896338098875"
+              "templateHash": "9410143707484116201"
             },
             "name": "Azure Kubernetes Service (AKS) Managed Cluster Agent Pools",
             "description": "This module deploys an Azure Kubernetes Service (AKS) Managed Cluster Agent Pool.",
@@ -1158,12 +1257,15 @@
               "type": "string",
               "defaultValue": "",
               "allowedValues": [
+                "AzureLinux",
                 "CBLMariner",
                 "Ubuntu",
+                "Windows2019",
+                "Windows2022",
                 ""
               ],
               "metadata": {
-                "description": "Optional. Specifies an OS SKU. This value must not be specified if OSType is Windows."
+                "description": "Optional. Specifies the OS SKU used by the agent pool. The default is Ubuntu if OSType is Linux. The default is Windows2019 when Kubernetes <= 1.24 or Windows2022 when Kubernetes >= 1.25 if OSType is Windows."
               }
             },
             "osType": {
@@ -1307,7 +1409,7 @@
             },
             {
               "type": "Microsoft.ContainerService/managedClusters/agentPools",
-              "apiVersion": "2023-05-02-preview",
+              "apiVersion": "2023-06-02-preview",
               "name": "[format('{0}/{1}', parameters('managedClusterName'), parameters('name'))]",
               "properties": {
                 "availabilityZones": "[parameters('availabilityZones')]",
@@ -1959,42 +2061,63 @@
       "metadata": {
         "description": "The control plane FQDN of the managed cluster."
       },
-      "value": "[if(parameters('enablePrivateCluster'), reference(resourceId('Microsoft.ContainerService/managedClusters', parameters('name')), '2023-05-02-preview').privateFQDN, reference(resourceId('Microsoft.ContainerService/managedClusters', parameters('name')), '2023-05-02-preview').fqdn)]"
+      "value": "[if(parameters('enablePrivateCluster'), reference(resourceId('Microsoft.ContainerService/managedClusters', parameters('name')), '2023-06-02-preview').privateFQDN, reference(resourceId('Microsoft.ContainerService/managedClusters', parameters('name')), '2023-06-02-preview').fqdn)]"
     },
     "systemAssignedPrincipalId": {
       "type": "string",
       "metadata": {
         "description": "The principal ID of the system assigned identity."
       },
-      "value": "[if(and(parameters('systemAssignedIdentity'), contains(reference(resourceId('Microsoft.ContainerService/managedClusters', parameters('name')), '2023-05-02-preview', 'full').identity, 'principalId')), reference(resourceId('Microsoft.ContainerService/managedClusters', parameters('name')), '2023-05-02-preview', 'full').identity.principalId, '')]"
+      "value": "[if(and(parameters('systemAssignedIdentity'), contains(reference(resourceId('Microsoft.ContainerService/managedClusters', parameters('name')), '2023-06-02-preview', 'full').identity, 'principalId')), reference(resourceId('Microsoft.ContainerService/managedClusters', parameters('name')), '2023-06-02-preview', 'full').identity.principalId, '')]"
     },
     "kubeletidentityObjectId": {
       "type": "string",
       "metadata": {
         "description": "The Object ID of the AKS identity."
       },
-      "value": "[if(contains(reference(resourceId('Microsoft.ContainerService/managedClusters', parameters('name')), '2023-05-02-preview'), 'identityProfile'), if(contains(reference(resourceId('Microsoft.ContainerService/managedClusters', parameters('name')), '2023-05-02-preview').identityProfile, 'kubeletidentity'), reference(resourceId('Microsoft.ContainerService/managedClusters', parameters('name')), '2023-05-02-preview').identityProfile.kubeletidentity.objectId, ''), '')]"
+      "value": "[if(contains(reference(resourceId('Microsoft.ContainerService/managedClusters', parameters('name')), '2023-06-02-preview'), 'identityProfile'), if(contains(reference(resourceId('Microsoft.ContainerService/managedClusters', parameters('name')), '2023-06-02-preview').identityProfile, 'kubeletidentity'), reference(resourceId('Microsoft.ContainerService/managedClusters', parameters('name')), '2023-06-02-preview').identityProfile.kubeletidentity.objectId, ''), '')]"
     },
     "omsagentIdentityObjectId": {
       "type": "string",
       "metadata": {
         "description": "The Object ID of the OMS agent identity."
       },
-      "value": "[if(contains(reference(resourceId('Microsoft.ContainerService/managedClusters', parameters('name')), '2023-05-02-preview'), 'addonProfiles'), if(contains(reference(resourceId('Microsoft.ContainerService/managedClusters', parameters('name')), '2023-05-02-preview').addonProfiles, 'omsagent'), if(contains(reference(resourceId('Microsoft.ContainerService/managedClusters', parameters('name')), '2023-05-02-preview').addonProfiles.omsagent, 'identity'), reference(resourceId('Microsoft.ContainerService/managedClusters', parameters('name')), '2023-05-02-preview').addonProfiles.omsagent.identity.objectId, ''), ''), '')]"
+      "value": "[if(contains(reference(resourceId('Microsoft.ContainerService/managedClusters', parameters('name')), '2023-06-02-preview'), 'addonProfiles'), if(contains(reference(resourceId('Microsoft.ContainerService/managedClusters', parameters('name')), '2023-06-02-preview').addonProfiles, 'omsagent'), if(contains(reference(resourceId('Microsoft.ContainerService/managedClusters', parameters('name')), '2023-06-02-preview').addonProfiles.omsagent, 'identity'), reference(resourceId('Microsoft.ContainerService/managedClusters', parameters('name')), '2023-06-02-preview').addonProfiles.omsagent.identity.objectId, ''), ''), '')]"
+    },
+    "keyvaultIdentityObjectId": {
+      "type": "string",
+      "metadata": {
+        "description": "The Object ID of the Key Vault Secrets Provider identity."
+      },
+      "value": "[if(contains(reference(resourceId('Microsoft.ContainerService/managedClusters', parameters('name')), '2023-06-02-preview'), 'addonProfiles'), if(contains(reference(resourceId('Microsoft.ContainerService/managedClusters', parameters('name')), '2023-06-02-preview').addonProfiles, 'azureKeyvaultSecretsPorvider'), if(contains(reference(resourceId('Microsoft.ContainerService/managedClusters', parameters('name')), '2023-06-02-preview').addonProfiles.omsagent, 'identity'), reference(resourceId('Microsoft.ContainerService/managedClusters', parameters('name')), '2023-06-02-preview').addonProfiles.azureKeyvaultSecretsPorvider.identity.objectId, ''), ''), '')]"
+    },
+    "keyvaultIdentityClientId": {
+      "type": "string",
+      "metadata": {
+        "description": "The Client ID of the Key Vault Secrets Provider identity."
+      },
+      "value": "[if(contains(reference(resourceId('Microsoft.ContainerService/managedClusters', parameters('name')), '2023-06-02-preview'), 'addonProfiles'), if(contains(reference(resourceId('Microsoft.ContainerService/managedClusters', parameters('name')), '2023-06-02-preview').addonProfiles, 'azureKeyvaultSecretsPorvider'), if(contains(reference(resourceId('Microsoft.ContainerService/managedClusters', parameters('name')), '2023-06-02-preview').addonProfiles.omsagent, 'identity'), reference(resourceId('Microsoft.ContainerService/managedClusters', parameters('name')), '2023-06-02-preview').addonProfiles.azureKeyvaultSecretsPorvider.identity.clientId, ''), ''), '')]"
     },
     "location": {
       "type": "string",
       "metadata": {
         "description": "The location the resource was deployed into."
       },
-      "value": "[reference(resourceId('Microsoft.ContainerService/managedClusters', parameters('name')), '2023-05-02-preview', 'full').location]"
+      "value": "[reference(resourceId('Microsoft.ContainerService/managedClusters', parameters('name')), '2023-06-02-preview', 'full').location]"
     },
     "oidcIssuerUrl": {
       "type": "string",
       "metadata": {
         "description": "The OIDC token issuer URL."
       },
-      "value": "[if(parameters('enableOidcIssuerProfile'), reference(resourceId('Microsoft.ContainerService/managedClusters', parameters('name')), '2023-05-02-preview').oidcIssuerProfile.issuerURL, '')]"
+      "value": "[if(parameters('enableOidcIssuerProfile'), reference(resourceId('Microsoft.ContainerService/managedClusters', parameters('name')), '2023-06-02-preview').oidcIssuerProfile.issuerURL, '')]"
+    },
+    "addonProfiles": {
+      "type": "object",
+      "metadata": {
+        "description": "The addonProfiles of the Kubernetes cluster."
+      },
+      "value": "[if(contains(reference(resourceId('Microsoft.ContainerService/managedClusters', parameters('name')), '2023-06-02-preview'), 'addonProfiles'), reference(resourceId('Microsoft.ContainerService/managedClusters', parameters('name')), '2023-06-02-preview').addonProfiles, createObject())]"
     }
   }
 }
