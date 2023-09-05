@@ -261,7 +261,7 @@ module searchService_sharedPrivateLinkResources 'shared-private-link-resource/ma
 //   Outputs   //
 // =========== //
 
-@description('The name of the searchService.')
+@description('The name of the search service.')
 output name string = searchService.name
 
 @description('The resource ID of the search service.')
