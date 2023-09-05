@@ -424,9 +424,6 @@ module applicationGateway './network/application-gateway/main.bicep' = {
         name: 'public'
         properties: {
           privateIPAllocationMethod: 'Dynamic'
-          privateLinkConfiguration: {
-            id: '<id>'
-          }
           publicIPAddress: {
             id: '<id>'
           }
@@ -534,21 +531,6 @@ module applicationGateway './network/application-gateway/main.bicep' = {
       }
     ]
     lock: 'CanNotDelete'
-    privateEndpoints: [
-      {
-        privateDnsZoneGroup: {
-          privateDNSResourceIds: [
-            '<privateDNSZoneResourceId>'
-          ]
-        }
-        service: 'application gateway'
-        subnetResourceId: '<subnetResourceId>'
-        tags: {
-          Environment: 'Non-Prod'
-          Role: 'DeploymentValidation'
-        }
-      }
-    ]
     privateLinkConfigurations: [
       {
         id: '<id>'
@@ -873,9 +855,6 @@ module applicationGateway './network/application-gateway/main.bicep' = {
           "name": "public",
           "properties": {
             "privateIPAllocationMethod": "Dynamic",
-            "privateLinkConfiguration": {
-              "id": "<id>"
-            },
             "publicIPAddress": {
               "id": "<id>"
             }
@@ -991,23 +970,6 @@ module applicationGateway './network/application-gateway/main.bicep' = {
     },
     "lock": {
       "value": "CanNotDelete"
-    },
-    "privateEndpoints": {
-      "value": [
-        {
-          "privateDnsZoneGroup": {
-            "privateDNSResourceIds": [
-              "<privateDNSZoneResourceId>"
-            ]
-          },
-          "service": "application gateway",
-          "subnetResourceId": "<subnetResourceId>",
-          "tags": {
-            "Environment": "Non-Prod",
-            "Role": "DeploymentValidation"
-          }
-        }
-      ]
     },
     "privateLinkConfigurations": {
       "value": [
