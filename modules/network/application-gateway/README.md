@@ -559,7 +559,7 @@ module applicationGateway './network/application-gateway/main.bicep' = {
               id: '<id>'
               name: 'privateLinkIpConfig1'
               properties: {
-                primary: true
+                primary: false
                 privateIPAllocationMethod: 'Dynamic'
                 subnet: {
                   id: '<id>'
@@ -1020,7 +1020,7 @@ module applicationGateway './network/application-gateway/main.bicep' = {
                 "id": "<id>",
                 "name": "privateLinkIpConfig1",
                 "properties": {
-                  "primary": true,
+                  "primary": false,
                   "privateIPAllocationMethod": "Dynamic",
                   "subnet": {
                     "id": "<id>"

@@ -132,7 +132,7 @@ module testDeployment '../../main.bicep' = {
               id: '${appGWExpectedResourceID}/privateLinkConfigurations/pvtlink01/ipConfigurations/privateLinkIpConfig1'
               properties: {
                 privateIPAllocationMethod: 'Dynamic'
-                primary: true
+                primary: false
                 subnet: {
                   id: nestedDependencies.outputs.privateLinkSubnetResourceId
                 }
