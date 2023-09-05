@@ -329,6 +329,7 @@ module signalR './signal-r-service/signal-r/main.bicep' = {
         subnetResourceId: '<subnetResourceId>'
         tags: {
           Environment: 'Non-Prod'
+          'hidden-title': 'This is visible in the resource name'
           Role: 'DeploymentValidation'
         }
       }
@@ -347,6 +348,7 @@ module signalR './signal-r-service/signal-r/main.bicep' = {
     sku: 'Standard_S1'
     tags: {
       Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
     }
   }
@@ -428,6 +430,7 @@ module signalR './signal-r-service/signal-r/main.bicep' = {
           "subnetResourceId": "<subnetResourceId>",
           "tags": {
             "Environment": "Non-Prod",
+            "hidden-title": "This is visible in the resource name",
             "Role": "DeploymentValidation"
           }
         }
@@ -454,6 +457,7 @@ module signalR './signal-r-service/signal-r/main.bicep' = {
     "tags": {
       "value": {
         "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
     }

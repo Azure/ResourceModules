@@ -102,6 +102,7 @@ module testDeployment '../../main.bicep' = {
     geoRedundantBackup: 'Enabled'
     privateDnsZoneArmResourceId: nestedDependencies.outputs.privateDNSResourceId
     tags: {
+      'hidden-title': 'This is visible in the resource name'
       Environment: 'Non-Prod'
       Role: 'DeploymentValidation'
     }

@@ -340,6 +340,7 @@ module bastionHost './network/bastion-host/main.bicep' = {
     skuName: 'Standard'
     tags: {
       Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
     }
   }
@@ -419,6 +420,7 @@ module bastionHost './network/bastion-host/main.bicep' = {
     "tags": {
       "value": {
         "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
     }
@@ -470,6 +472,7 @@ module bastionHost './network/bastion-host/main.bicep' = {
     }
     tags: {
       Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
     }
   }
@@ -528,6 +531,7 @@ module bastionHost './network/bastion-host/main.bicep' = {
     "tags": {
       "value": {
         "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
     }

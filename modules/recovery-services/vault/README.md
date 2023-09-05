@@ -1212,6 +1212,7 @@ module vault './recovery-services/vault/main.bicep' = {
         subnetResourceId: '<subnetResourceId>'
         tags: {
           Environment: 'Non-Prod'
+          'hidden-title': 'This is visible in the resource name'
           Role: 'DeploymentValidation'
         }
       }
@@ -1239,6 +1240,7 @@ module vault './recovery-services/vault/main.bicep' = {
     }
     tags: {
       Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
     }
   }
@@ -1546,6 +1548,7 @@ module vault './recovery-services/vault/main.bicep' = {
           "subnetResourceId": "<subnetResourceId>",
           "tags": {
             "Environment": "Non-Prod",
+            "hidden-title": "This is visible in the resource name",
             "Role": "DeploymentValidation"
           }
         }
@@ -1581,6 +1584,7 @@ module vault './recovery-services/vault/main.bicep' = {
     "tags": {
       "value": {
         "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
     }
@@ -1662,6 +1666,7 @@ module vault './recovery-services/vault/main.bicep' = {
     ]
     tags: {
       Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
     }
   }
@@ -1750,6 +1755,7 @@ module vault './recovery-services/vault/main.bicep' = {
     "tags": {
       "value": {
         "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
     }

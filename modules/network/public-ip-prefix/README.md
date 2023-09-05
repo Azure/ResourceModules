@@ -186,6 +186,7 @@ module publicIpPrefix './network/public-ip-prefix/main.bicep' = {
     ]
     tags: {
       Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
     }
   }
@@ -232,6 +233,7 @@ module publicIpPrefix './network/public-ip-prefix/main.bicep' = {
     "tags": {
       "value": {
         "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
     }

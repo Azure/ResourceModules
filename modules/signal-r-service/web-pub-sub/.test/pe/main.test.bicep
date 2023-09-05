@@ -59,6 +59,7 @@ module testDeployment '../../main.bicep' = {
         service: 'webpubsub'
         subnetResourceId: nestedDependencies.outputs.subnetResourceId
         tags: {
+          'hidden-title': 'This is visible in the resource name'
           Environment: 'Non-Prod'
           Role: 'DeploymentValidation'
         }
@@ -66,6 +67,7 @@ module testDeployment '../../main.bicep' = {
     ]
     sku: 'Standard_S1'
     tags: {
+      'hidden-title': 'This is visible in the resource name'
       Environment: 'Non-Prod'
       Role: 'DeploymentValidation'
     }

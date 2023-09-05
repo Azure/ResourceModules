@@ -119,6 +119,7 @@ module testDeployment '../../main.bicep' = {
         service: 'dataFactory'
         subnetResourceId: nestedDependencies.outputs.subnetResourceId
         tags: {
+          'hidden-title': 'This is visible in the resource name'
           application: 'CARML'
         }
       }
@@ -137,6 +138,7 @@ module testDeployment '../../main.bicep' = {
       '${nestedDependencies.outputs.managedIdentityResourceId}': {}
     }
     tags: {
+      'hidden-title': 'This is visible in the resource name'
       Environment: 'Non-Prod'
       Role: 'DeploymentValidation'
     }

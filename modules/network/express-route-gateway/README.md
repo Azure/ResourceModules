@@ -210,6 +210,7 @@ module expressRouteGateway './network/express-route-gateway/main.bicep' = {
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     tags: {
       hello: 'world'
+      'hidden-title': 'This is visible in the resource name'
     }
   }
 }
@@ -246,7 +247,8 @@ module expressRouteGateway './network/express-route-gateway/main.bicep' = {
     },
     "tags": {
       "value": {
-        "hello": "world"
+        "hello": "world",
+        "hidden-title": "This is visible in the resource name"
       }
     }
   }

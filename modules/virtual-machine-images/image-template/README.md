@@ -393,6 +393,7 @@ module imageTemplate './virtual-machine-images/image-template/main.bicep' = {
     subnetId: '<subnetId>'
     tags: {
       Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
     }
     unManagedImageName: 'umi-vmiitcom-001'
@@ -486,6 +487,7 @@ module imageTemplate './virtual-machine-images/image-template/main.bicep' = {
     "tags": {
       "value": {
         "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
     },

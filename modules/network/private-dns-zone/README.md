@@ -338,6 +338,7 @@ module privateDnsZone './network/private-dns-zone/main.bicep' = {
     ]
     tags: {
       Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
     }
     txt: [
@@ -560,6 +561,7 @@ module privateDnsZone './network/private-dns-zone/main.bicep' = {
     "tags": {
       "value": {
         "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
     },

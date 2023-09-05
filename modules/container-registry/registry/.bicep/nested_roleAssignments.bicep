@@ -55,7 +55,7 @@ var builtInRoleNames = {
   'User Access Administrator': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '18d7d88d-d35e-4fb5-a5c3-7773c20a72d9')
 }
 
-resource registry 'Microsoft.ContainerRegistry/registries@2021-09-01' existing = {
+resource registry 'Microsoft.ContainerRegistry/registries@2023-06-01-preview' existing = {
   name: last(split(resourceId, '/'))!
 }
 
