@@ -451,6 +451,7 @@ module factory './data-factory/factory/main.bicep' = {
         subnetResourceId: '<subnetResourceId>'
         tags: {
           application: 'CARML'
+          'hidden-title': 'This is visible in the resource name'
         }
       }
     ]
@@ -466,6 +467,7 @@ module factory './data-factory/factory/main.bicep' = {
     systemAssignedIdentity: true
     tags: {
       Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
     }
     userAssignedIdentities: {
@@ -574,7 +576,8 @@ module factory './data-factory/factory/main.bicep' = {
           "service": "dataFactory",
           "subnetResourceId": "<subnetResourceId>",
           "tags": {
-            "application": "CARML"
+            "application": "CARML",
+            "hidden-title": "This is visible in the resource name"
           }
         }
       ]
@@ -596,6 +599,7 @@ module factory './data-factory/factory/main.bicep' = {
     "tags": {
       "value": {
         "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
     },

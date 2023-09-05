@@ -18,7 +18,7 @@ resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-
   location: location
 }
 
-var addressPrefix = '10.0.0.0/24'
+var addressPrefix = '10.0.0.0/16'
 
 resource gallery 'Microsoft.Compute/galleries@2022-03-03' = {
   name: galleryName
@@ -75,7 +75,7 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2023-04-01' = {
       {
         name: 'defaultSubnet'
         properties: {
-          addressPrefix: addressPrefix
+          addressPrefix: cidrSubnet(addressPrefix, 16, 0)
           privateLinkServiceNetworkPolicies: 'Disabled'
         }
       }

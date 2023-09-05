@@ -10,6 +10,8 @@ param location string = resourceGroup().location
 @description('Required. The name of the Key Vault to create.')
 param keyVaultName string
 
+var addressPrefix = '10.0.0.0/16'
+
 resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' = {
   name: managedIdentityName
   location: location
@@ -21,25 +23,15 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2023-04-01' = {
   properties: {
     addressSpace: {
       addressPrefixes: [
-        '10.0.0.0/16'
+        addressPrefix
       ]
     }
-    subnets: [
-      {
-        name: 'sxx-subnet-pe-01'
+    subnets: map(range(0, 2), i => {
+        name: 'subnet-${i}'
         properties: {
-
-          addressPrefix: '10.0.0.0/24'
+          addressPrefix: cidrSubnet(addressPrefix, 24, i)
         }
-      }
-      {
-        name: 'sxx-subnet-se-01'
-        properties: {
-
-          addressPrefix: '10.0.1.0/24'
-        }
-      }
-    ]
+      })
   }
 }
 

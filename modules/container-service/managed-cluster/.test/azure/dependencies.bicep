@@ -19,35 +19,23 @@ param proximityPlacementGroupName string
 @description('Required. The name of the DNS Zone to create.')
 param dnsZoneName string
 
+var addressPrefix = '10.1.0.0/22'
+
 resource virtualNetwork 'Microsoft.Network/virtualNetworks@2023-04-01' = {
   name: virtualNetworkName
   location: location
   properties: {
     addressSpace: {
       addressPrefixes: [
-        '10.1.0.0/22'
+        addressPrefix
       ]
     }
-    subnets: [
-      {
-        name: 'systemSubnet'
+    subnets: map(range(0, 3), i => {
+        name: 'subnet-${i}'
         properties: {
-          addressPrefix: '10.1.0.0/24'
+          addressPrefix: cidrSubnet(addressPrefix, 24, i)
         }
-      }
-      {
-        name: 'userSubnet1'
-        properties: {
-          addressPrefix: '10.1.1.0/24'
-        }
-      }
-      {
-        name: 'userSubnet2'
-        properties: {
-          addressPrefix: '10.1.2.0/24'
-        }
-      }
-    ]
+      })
   }
 }
 

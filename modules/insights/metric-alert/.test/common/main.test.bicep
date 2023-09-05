@@ -78,6 +78,7 @@ module testDeployment '../../main.bicep' = {
     targetResourceType: 'microsoft.compute/virtualmachines'
     windowSize: 'PT15M'
     tags: {
+      'hidden-title': 'This is visible in the resource name'
       Environment: 'Non-Prod'
       Role: 'DeploymentValidation'
     }

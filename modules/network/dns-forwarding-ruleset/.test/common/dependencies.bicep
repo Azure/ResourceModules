@@ -11,8 +11,6 @@ param location string = resourceGroup().location
 param managedIdentityName string
 
 var addressPrefix = '10.0.0.0/16'
-var pdnsinSnetAddressPrefix = '10.0.100.0/25'
-var pdnsoutSnetAddressPrefix = '10.0.100.128/25'
 
 resource virtualNetwork 'Microsoft.Network/virtualNetworks@2023-04-01' = {
   name: virtualNetworkName
@@ -23,11 +21,10 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2023-04-01' = {
         addressPrefix
       ]
     }
-    subnets: [
-      {
-        name: 'pdnsin'
+    subnets: map(range(0, 2), i => {
+        name: 'subnet-${i}'
         properties: {
-          addressPrefix: pdnsinSnetAddressPrefix
+          addressPrefix: cidrSubnet(addressPrefix, 25, i)
           delegations: [
             {
               name: 'dnsdel'
@@ -37,22 +34,7 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2023-04-01' = {
             }
           ]
         }
-      }
-      {
-        name: 'pdnsout'
-        properties: {
-          addressPrefix: pdnsoutSnetAddressPrefix
-          delegations: [
-            {
-              name: 'dnsdel'
-              properties: {
-                serviceName: 'Microsoft.Network/dnsResolvers'
-              }
-            }
-          ]
-        }
-      }
-    ]
+      })
   }
 }
 

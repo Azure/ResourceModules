@@ -119,6 +119,7 @@ module testDeployment '../../main.bicep' = {
     cMKKeyVaultResourceId: nestedDependencies.outputs.keyVaultResourceId
     cMKUserAssignedIdentityResourceId: nestedDependencies.outputs.managedIdentityResourceId
     tags: {
+      'hidden-title': 'This is visible in the resource name'
       Environment: 'Non-Prod'
       Role: 'DeploymentValidation'
     }

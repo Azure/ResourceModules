@@ -99,6 +99,7 @@ module testDeployment '../../main.bicep' = {
     softDeleteRetentionInDays: 1
     systemAssignedIdentity: true
     tags: {
+      'hidden-title': 'This is visible in the resource name'
       Environment: 'Non-Prod'
       Role: 'DeploymentValidation'
     }

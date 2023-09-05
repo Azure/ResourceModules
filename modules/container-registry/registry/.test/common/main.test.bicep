@@ -88,6 +88,7 @@ module testDeployment '../../main.bicep' = {
           ]
         }
         tags: {
+          'hidden-title': 'This is visible in the resource name'
           Environment: 'Non-Prod'
           Role: 'DeploymentValidation'
         }
@@ -120,6 +121,16 @@ module testDeployment '../../main.bicep' = {
     userAssignedIdentities: {
       '${nestedDependencies.outputs.managedIdentityResourceId}': {}
     }
+    cacheRules: [
+      {
+        name: 'customRule'
+        sourceRepository: 'docker.io/library/hello-world'
+        targetRepository: 'cached-docker-hub/hello-world'
+      }
+      {
+        sourceRepository: 'docker.io/library/hello-world'
+      }
+    ]
     webhooks: [
       {
         name: '${namePrefix}acrx001webhook'
@@ -127,6 +138,7 @@ module testDeployment '../../main.bicep' = {
       }
     ]
     tags: {
+      'hidden-title': 'This is visible in the resource name'
       Environment: 'Non-Prod'
       Role: 'DeploymentValidation'
     }

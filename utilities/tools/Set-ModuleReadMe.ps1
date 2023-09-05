@@ -1,4 +1,5 @@
 ﻿#requires -version 7.3
+#requires -Modules powershell-yaml
 
 <#
 .SYNOPSIS
@@ -730,6 +731,9 @@ function ConvertTo-FormattedJSONParameterObject {
             if ($line -notlike '*"*"*' -and $line -like '*.*') {
                 # In case of a array value like '[ \n -> resourceGroupResources.outputs.managedIdentityPrincipalId <- \n ]' we'll only show "<managedIdentityPrincipalId>""
                 $line = '"<{0}>"' -f $line.Split('.')[-1].Trim()
+            } elseif ($line -match '^\s*[a-zA-Z]+\s*$') {
+                # If there is simply only a value such as a variable reference, we'll wrap it as a string to replace. For example a reference of a variable `addressPrefix` will be replaced with `"<addressPrefix>"`
+                $line = '"<{0}>"' -f $line.Trim()
             }
         }
 
@@ -1575,7 +1579,7 @@ function Set-ModuleReadMe {
     }
 
     $moduleRoot = Split-Path $TemplateFilePath -Parent
-    $fullModuleIdentifier = $moduleRoot.Replace('\', '/').split('modules/')[1]
+    $fullModuleIdentifier = $moduleRoot.Replace('\', '/').split('modules/')[-1]
     # Custom modules are modules having the same resource type but different properties based on the name
     # E.g., web/site/config--appsetting vs web/site/config--authsettingv2
     $customModuleSeparator = '--'

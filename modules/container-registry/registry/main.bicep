@@ -185,6 +185,9 @@ param cMKKeyVersion string = ''
 @description('Conditional. User assigned identity to use when fetching the customer managed key. Note, CMK requires the \'acrSku\' to be \'Premium\'. Required if \'cMKKeyName\' is not empty.')
 param cMKUserAssignedIdentityResourceId string = ''
 
+@description('Optional. Array of Cache Rules. Note: This is a preview feature ([ref](https://learn.microsoft.com/en-us/azure/container-registry/tutorial-registry-cache#cache-for-acr-preview)).')
+param cacheRules array = []
+
 var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs' && item != ''): {
   category: category
   enabled: true
@@ -299,6 +302,18 @@ module registry_replications 'replication/main.bicep' = [for (replication, index
   }
 }]
 
+module registry_cacheRules 'cache-rules/main.bicep' = [for (cacheRule, index) in cacheRules: {
+  name: '${uniqueString(deployment().name, location)}-Registry-Cache-${index}'
+  params: {
+    registryName: registry.name
+    sourceRepository: cacheRule.sourceRepository
+    name: contains(cacheRule, 'name') ? cacheRule.name : replace(replace(cacheRule.sourceRepository, '/', '-'), '.', '-')
+    targetRepository: contains(cacheRule, 'targetRepository') ? cacheRule.targetRepository : cacheRule.sourceRepository
+    credentialSetResourceId: contains(cacheRule, 'credentialSetResourceId') ? cacheRule.credentialSetResourceId : ''
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+  }
+}]
+
 module registry_webhooks 'webhook/main.bicep' = [for (webhook, index) in webhooks: {
   name: '${uniqueString(deployment().name, location)}-Registry-Webhook-${index}'
   params: {
@@ -317,6 +332,7 @@ module registry_webhooks 'webhook/main.bicep' = [for (webhook, index) in webhook
     status: contains(webhook, 'status') ? webhook.status : 'enabled'
     serviceUri: webhook.serviceUri
     tags: contains(webhook, 'tags') ? webhook.tags : {}
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
 

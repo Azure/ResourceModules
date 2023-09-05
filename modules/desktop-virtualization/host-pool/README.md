@@ -331,6 +331,7 @@ module hostPool './desktop-virtualization/host-pool/main.bicep' = {
     ]
     tags: {
       Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
     }
     type: 'Pooled'
@@ -442,6 +443,7 @@ module hostPool './desktop-virtualization/host-pool/main.bicep' = {
     "tags": {
       "value": {
         "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
     },

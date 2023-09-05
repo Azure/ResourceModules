@@ -177,6 +177,7 @@ module testDeployment '../../main.bicep' = {
         }
       ]
       tags: {
+        'hidden-title': 'This is visible in the resource name'
         Environment: 'Non-Prod'
         Role: 'DeploymentValidation'
       }
@@ -187,6 +188,7 @@ module testDeployment '../../main.bicep' = {
     extensionDependencyAgentConfig: {
       enabled: true
       tags: {
+        'hidden-title': 'This is visible in the resource name'
         Environment: 'Non-Prod'
         Role: 'DeploymentValidation'
       }
@@ -204,6 +206,7 @@ module testDeployment '../../main.bicep' = {
         VolumeType: 'All'
       }
       tags: {
+        'hidden-title': 'This is visible in the resource name'
         Environment: 'Non-Prod'
         Role: 'DeploymentValidation'
       }
@@ -211,6 +214,7 @@ module testDeployment '../../main.bicep' = {
     extensionAadJoinConfig: {
       enabled: true
       tags: {
+        'hidden-title': 'This is visible in the resource name'
         Environment: 'Non-Prod'
         Role: 'DeploymentValidation'
       }
@@ -218,6 +222,7 @@ module testDeployment '../../main.bicep' = {
     extensionDSCConfig: {
       enabled: false
       tags: {
+        'hidden-title': 'This is visible in the resource name'
         Environment: 'Non-Prod'
         Role: 'DeploymentValidation'
       }
@@ -225,6 +230,7 @@ module testDeployment '../../main.bicep' = {
     extensionMonitoringAgentConfig: {
       enabled: true
       tags: {
+        'hidden-title': 'This is visible in the resource name'
         Environment: 'Non-Prod'
         Role: 'DeploymentValidation'
       }
@@ -232,6 +238,7 @@ module testDeployment '../../main.bicep' = {
     extensionNetworkWatcherAgentConfig: {
       enabled: true
       tags: {
+        'hidden-title': 'This is visible in the resource name'
         Environment: 'Non-Prod'
         Role: 'DeploymentValidation'
       }
@@ -258,6 +265,7 @@ module testDeployment '../../main.bicep' = {
       '${nestedDependencies.outputs.managedIdentityResourceId}': {}
     }
     tags: {
+      'hidden-title': 'This is visible in the resource name'
       Environment: 'Non-Prod'
       Role: 'DeploymentValidation'
     }
