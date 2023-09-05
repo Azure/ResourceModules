@@ -66,6 +66,7 @@ module testDeployment '../../main.bicep' = {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '${namePrefix}${serviceShort}001'
     enablePrivateCluster: true
+    systemAssignedIdentity: true
     primaryAgentPoolProfile: [
       {
         availabilityZones: [

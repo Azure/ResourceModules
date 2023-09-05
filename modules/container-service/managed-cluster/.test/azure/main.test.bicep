@@ -164,6 +164,11 @@ module testDeployment '../../main.bicep' = {
     userAssignedIdentities: {
       '${nestedDependencies.outputs.managedIdentityResourceId}': {}
     }
+    identityProfile: {
+      kubeletidentity: {
+        resourceId: nestedDependencies.outputs.managedIdentityResourceId
+      }
+    }
     lock: 'CanNotDelete'
     roleAssignments: [
       {
@@ -174,7 +179,6 @@ module testDeployment '../../main.bicep' = {
         principalType: 'ServicePrincipal'
       }
     ]
-    systemAssignedIdentity: true
     tags: {
       'hidden-title': 'This is visible in the resource name'
       Environment: 'Non-Prod'
