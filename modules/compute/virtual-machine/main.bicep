@@ -572,7 +572,7 @@ module vm_microsoftMonitoringAgentExtension 'extension/main.bicep' = if (extensi
   params: {
     virtualMachineName: vm.name
     name: 'MicrosoftMonitoringAgent'
-    publisher: 'EnterpriseCloud.Monitoring'
+    publisher: 'Microsoft.EnterpriseCloud.Monitoring'
     type: osType == 'Windows' ? 'MicrosoftMonitoringAgent' : 'OmsAgentForLinux'
     typeHandlerVersion: contains(extensionMonitoringAgentConfig, 'typeHandlerVersion') ? extensionMonitoringAgentConfig.typeHandlerVersion : (osType == 'Windows' ? '1.0' : '1.7')
     autoUpgradeMinorVersion: contains(extensionMonitoringAgentConfig, 'autoUpgradeMinorVersion') ? extensionMonitoringAgentConfig.autoUpgradeMinorVersion : true
