@@ -208,6 +208,7 @@ module publicIpAddress './network/public-ip-address/main.bicep' = {
     skuName: 'Standard'
     tags: {
       Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
     }
     zones: [
@@ -274,6 +275,7 @@ module publicIpAddress './network/public-ip-address/main.bicep' = {
     "tags": {
       "value": {
         "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
     },

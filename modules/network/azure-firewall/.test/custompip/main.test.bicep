@@ -76,6 +76,7 @@ module testDeployment '../../main.bicep' = {
       skuTier: 'Regional'
     }
     tags: {
+      'hidden-title': 'This is visible in the resource name'
       Environment: 'Non-Prod'
       Role: 'DeploymentValidation'
     }

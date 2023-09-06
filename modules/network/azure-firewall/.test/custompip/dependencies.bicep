@@ -22,7 +22,7 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2023-04-01' = {
       {
         name: 'AzureFirewallSubnet'
         properties: {
-          addressPrefix: addressPrefix
+          addressPrefix: cidrSubnet(addressPrefix, 16, 0)
         }
       }
     ]

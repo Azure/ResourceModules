@@ -74,6 +74,7 @@ module testDeployment '../../main.bicep' = {
             pipConfiguration: {
               publicIpNameSuffix: '-pip-01'
               tags: {
+                'hidden-title': 'This is visible in the resource name'
                 Environment: 'Non-Prod'
                 Role: 'DeploymentValidation'
               }
@@ -83,6 +84,7 @@ module testDeployment '../../main.bicep' = {
         ]
         nicSuffix: '-nic-01'
         tags: {
+          'hidden-title': 'This is visible in the resource name'
           Environment: 'Non-Prod'
           Role: 'DeploymentValidation'
         }
@@ -105,6 +107,7 @@ module testDeployment '../../main.bicep' = {
       }
     ]
     tags: {
+      'hidden-title': 'This is visible in the resource name'
       Environment: 'Non-Prod'
       Role: 'DeploymentValidation'
     }

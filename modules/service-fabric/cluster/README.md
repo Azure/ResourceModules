@@ -279,6 +279,7 @@ module cluster './service-fabric/cluster/main.bicep' = {
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     tags: {
       Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
     }
   }
@@ -339,6 +340,7 @@ module cluster './service-fabric/cluster/main.bicep' = {
     "tags": {
       "value": {
         "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
     }
@@ -505,6 +507,7 @@ module cluster './service-fabric/cluster/main.bicep' = {
     ]
     tags: {
       clusterName: 'sfccom001'
+      'hidden-title': 'This is visible in the resource name'
       resourceType: 'Service Fabric'
     }
     upgradeDescription: {
@@ -723,6 +726,7 @@ module cluster './service-fabric/cluster/main.bicep' = {
     "tags": {
       "value": {
         "clusterName": "sfccom001",
+        "hidden-title": "This is visible in the resource name",
         "resourceType": "Service Fabric"
       }
     },

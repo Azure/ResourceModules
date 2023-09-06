@@ -439,6 +439,7 @@ module workspace './databricks/workspace/main.bicep' = {
     storageAccountSkuName: 'Standard_ZRS'
     tags: {
       Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
     }
     vnetAddressPrefix: '10.100'
@@ -590,6 +591,7 @@ module workspace './databricks/workspace/main.bicep' = {
     "tags": {
       "value": {
         "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
     },

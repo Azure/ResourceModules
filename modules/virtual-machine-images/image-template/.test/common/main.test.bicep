@@ -107,6 +107,7 @@ module testDeployment '../../main.bicep' = {
     userMsiResourceGroup: resourceGroupName
     vmSize: 'Standard_D2s_v3'
     tags: {
+      'hidden-title': 'This is visible in the resource name'
       Environment: 'Non-Prod'
       Role: 'DeploymentValidation'
     }

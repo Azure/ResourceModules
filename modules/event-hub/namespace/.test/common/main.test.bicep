@@ -175,6 +175,7 @@ module testDeployment '../../main.bicep' = {
         service: 'namespace'
         subnetResourceId: nestedDependencies.outputs.subnetResourceId
         tags: {
+          'hidden-title': 'This is visible in the resource name'
           Environment: 'Non-Prod'
           Role: 'DeploymentValidation'
         }
@@ -194,6 +195,7 @@ module testDeployment '../../main.bicep' = {
       '${nestedDependencies.outputs.managedIdentityResourceId}': {}
     }
     tags: {
+      'hidden-title': 'This is visible in the resource name'
       Environment: 'Non-Prod'
       Role: 'DeploymentValidation'
     }

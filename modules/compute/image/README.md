@@ -201,6 +201,7 @@ module image './compute/image/main.bicep' = {
       }
     ]
     tags: {
+      'hidden-title': 'This is visible in the resource name'
       tagA: 'You\'re it'
       tagB: 'Player'
     }
@@ -266,6 +267,7 @@ module image './compute/image/main.bicep' = {
     },
     "tags": {
       "value": {
+        "hidden-title": "This is visible in the resource name",
         "tagA": "You\"re it",
         "tagB": "Player"
       }

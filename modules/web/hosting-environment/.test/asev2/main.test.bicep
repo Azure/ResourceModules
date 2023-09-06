@@ -77,6 +77,7 @@ module testDeployment '../../main.bicep' = {
       }
     ]
     tags: {
+      'hidden-title': 'This is visible in the resource name'
       resourceType: 'App Service Environment'
       hostingEnvironmentName: '${namePrefix}${serviceShort}001'
     }

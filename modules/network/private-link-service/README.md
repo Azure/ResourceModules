@@ -485,6 +485,7 @@ module privateLinkService './network/private-link-service/main.bicep' = {
     ]
     tags: {
       Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
     }
     visibility: {
@@ -569,6 +570,7 @@ module privateLinkService './network/private-link-service/main.bicep' = {
     "tags": {
       "value": {
         "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
     },
