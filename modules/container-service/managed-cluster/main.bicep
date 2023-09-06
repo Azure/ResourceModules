@@ -9,7 +9,7 @@ param name string
 param location string = resourceGroup().location
 
 @description('Optional. Specifies the DNS prefix specified when creating the managed cluster.')
-param aksClusterDnsPrefix string = name
+param dnsPrefix string = name
 
 @description('Optional. Enables system assigned managed identity on the resource.')
 param systemAssignedIdentity bool = false
@@ -80,16 +80,16 @@ param outboundType string = 'loadBalancer'
   'Premium'
   'Standard'
 ])
-param aksClusterSkuTier string = 'Free'
+param skuTier string = 'Free'
 
 @description('Optional. Version of Kubernetes specified when creating the managed cluster.')
-param aksClusterKubernetesVersion string = ''
+param kubernetesVersion string = ''
 
 @description('Optional. Specifies the administrator username of Linux virtual machines.')
-param aksClusterAdminUsername string = 'azureuser'
+param adminUsername string = 'azureuser'
 
 @description('Optional. Specifies the SSH RSA public key string for the Linux nodes.')
-param aksClusterSshPublicKey string = ''
+param sshPublicKey string = ''
 
 @description('Conditional. Information about a service principal identity for the cluster to use for manipulating Azure APIs. Required if no managed identities are assigned to the cluster.')
 param aksServicePrincipalProfile object = {}
@@ -417,12 +417,12 @@ var identity = {
   userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
 }
 
-var aksClusterLinuxProfile = {
-  adminUsername: aksClusterAdminUsername
+var linuxProfile = {
+  adminUsername: adminUsername
   ssh: {
     publicKeys: [
       {
-        keyData: aksClusterSshPublicKey
+        keyData: sshPublicKey
       }
     ]
   }
@@ -456,16 +456,16 @@ resource managedCluster 'Microsoft.ContainerService/managedClusters@2023-06-02-p
   identity: identity
   sku: {
     name: 'Base'
-    tier: aksClusterSkuTier
+    tier: skuTier
   }
   properties: {
     httpProxyConfig: !empty(httpProxyConfig) ? httpProxyConfig : null
     identityProfile: !empty(identityProfile) ? identityProfile : null
     diskEncryptionSetID: !empty(diskEncryptionSetID) ? diskEncryptionSetID : null
-    kubernetesVersion: (empty(aksClusterKubernetesVersion) ? null : aksClusterKubernetesVersion)
-    dnsPrefix: aksClusterDnsPrefix
+    kubernetesVersion: (empty(kubernetesVersion) ? null : kubernetesVersion)
+    dnsPrefix: dnsPrefix
     agentPoolProfiles: primaryAgentPoolProfile
-    linuxProfile: (empty(aksClusterSshPublicKey) ? null : aksClusterLinuxProfile)
+    linuxProfile: (empty(sshPublicKey) ? null : linuxProfile)
     servicePrincipalProfile: (empty(aksServicePrincipalProfile) ? null : aksServicePrincipalProfile)
     ingressProfile: {
       webAppRouting: {
@@ -627,7 +627,7 @@ module managedCluster_agentPools 'agent-pool/main.bicep' = [for (agentPool, inde
     nodeLabels: contains(agentPool, 'nodeLabels') ? agentPool.nodeLabels : {}
     nodePublicIpPrefixId: contains(agentPool, 'nodePublicIpPrefixId') ? agentPool.nodePublicIpPrefixId : ''
     nodeTaints: contains(agentPool, 'nodeTaints') ? agentPool.nodeTaints : []
-    orchestratorVersion: contains(agentPool, 'orchestratorVersion') ? agentPool.orchestratorVersion : aksClusterKubernetesVersion
+    orchestratorVersion: contains(agentPool, 'orchestratorVersion') ? agentPool.orchestratorVersion : kubernetesVersion
     osDiskSizeGB: contains(agentPool, 'osDiskSizeGB') ? agentPool.osDiskSizeGB : -1
     osDiskType: contains(agentPool, 'osDiskType') ? agentPool.osDiskType : ''
     osSku: contains(agentPool, 'osSku') ? agentPool.osSku : ''

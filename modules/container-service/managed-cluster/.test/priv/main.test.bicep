@@ -139,7 +139,7 @@ module testDeployment '../../main.bicep' = {
       }
     ]
     networkPlugin: 'azure'
-    aksClusterSkuTier: 'Standard'
+    skuTier: 'Standard'
     dnsServiceIP: '10.10.200.10'
     serviceCidr: '10.10.200.0/24'
     diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId

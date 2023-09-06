@@ -50,12 +50,8 @@ This module deploys an Azure Kubernetes Service (AKS) Managed Cluster.
 | `aadProfileServerAppSecret` | string | `''` |  | The server AAD application secret. |
 | `aadProfileTenantId` | string | `[subscription().tenantId]` |  | Specifies the tenant ID of the Azure Active Directory used by the AKS cluster for authentication. |
 | `aciConnectorLinuxEnabled` | bool | `False` |  | Specifies whether the aciConnectorLinux add-on is enabled or not. |
+| `adminUsername` | string | `'azureuser'` |  | Specifies the administrator username of Linux virtual machines. |
 | `agentPools` | array | `[]` |  | Define one or more secondary/additional agent pools. |
-| `aksClusterAdminUsername` | string | `'azureuser'` |  | Specifies the administrator username of Linux virtual machines. |
-| `aksClusterDnsPrefix` | string | `[parameters('name')]` |  | Specifies the DNS prefix specified when creating the managed cluster. |
-| `aksClusterKubernetesVersion` | string | `''` |  | Version of Kubernetes specified when creating the managed cluster. |
-| `aksClusterSkuTier` | string | `'Free'` | `[Free, Premium, Standard]` | Tier of a managed cluster SKU. - Free or Standard. |
-| `aksClusterSshPublicKey` | string | `''` |  | Specifies the SSH RSA public key string for the Linux nodes. |
 | `authorizedIPRanges` | array | `[]` |  | IP ranges are specified in CIDR format, e.g. 137.117.106.88/29. This feature is not compatible with clusters that use Public IP Per Node, or clusters that are using a Basic Load Balancer. |
 | `autoScalerProfileBalanceSimilarNodeGroups` | string | `'false'` | `[false, true]` | Specifies the balance of similar node groups for the auto-scaler of the AKS cluster. |
 | `autoScalerProfileExpander` | string | `'random'` | `[least-waste, most-pods, priority, random]` | Specifies the expand strategy for the auto-scaler of the AKS cluster. |
@@ -87,6 +83,7 @@ This module deploys an Azure Kubernetes Service (AKS) Managed Cluster.
 | `disableLocalAccounts` | bool | `False` |  | If set to true, getting static credentials will be disabled for this cluster. This must only be used on Managed Clusters that are AAD enabled. |
 | `disableRunCommand` | bool | `False` |  | Whether to disable run command for the cluster or not. |
 | `diskEncryptionSetID` | string | `''` |  | The resource ID of the disc encryption set to apply to the cluster. For security reasons, this value should be provided. |
+| `dnsPrefix` | string | `[parameters('name')]` |  | Specifies the DNS prefix specified when creating the managed cluster. |
 | `dnsServiceIP` | string | `''` |  | Specifies the IP address assigned to the Kubernetes DNS service. It must be within the Kubernetes service address range specified in serviceCidr. |
 | `dnsZoneResourceId` | string | `''` |  | Specifies the resource ID of connected DNS zone. It will be ignored if `webApplicationRoutingEnabled` is set to `false`. |
 | `enableAzureDefender` | bool | `False` |  | Whether to enable Azure Defender. |
@@ -111,6 +108,7 @@ This module deploys an Azure Kubernetes Service (AKS) Managed Cluster.
 | `identityProfile` | object | `{object}` |  | Identities associated with the cluster. |
 | `ingressApplicationGatewayEnabled` | bool | `False` |  | Specifies whether the ingressApplicationGateway (AGIC) add-on is enabled or not. |
 | `kubeDashboardEnabled` | bool | `False` |  | Specifies whether the kubeDashboard add-on is enabled or not. |
+| `kubernetesVersion` | string | `''` |  | Version of Kubernetes specified when creating the managed cluster. |
 | `loadBalancerSku` | string | `'standard'` | `[basic, standard]` | Specifies the sku of the load balancer used by the virtual machine scale sets used by nodepools. |
 | `location` | string | `[resourceGroup().location]` |  | Specifies the location of AKS cluster. It picks up Resource Group's location by default. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
@@ -132,6 +130,8 @@ This module deploys an Azure Kubernetes Service (AKS) Managed Cluster.
 | `privateDNSZone` | string | `''` |  | Private DNS Zone configuration. Set to 'system' and AKS will create a private DNS zone in the node resource group. Set to '' to disable private DNS Zone creation and use public DNS. Supply the resource ID here of an existing Private DNS zone to use an existing zone. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `serviceCidr` | string | `''` |  | A CIDR notation IP range from which to assign service cluster IPs. It must not overlap with any Subnet IP ranges. |
+| `skuTier` | string | `'Free'` | `[Free, Premium, Standard]` | Tier of a managed cluster SKU. - Free or Standard. |
+| `sshPublicKey` | string | `''` |  | Specifies the SSH RSA public key string for the Linux nodes. |
 | `supportPlan` | string | `'KubernetesOfficial'` | `[AKSLongTermSupport, KubernetesOfficial]` | The support plan for the Managed Cluster. |
 | `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
@@ -1282,7 +1282,6 @@ module managedCluster './container-service/managed-cluster/main.bicep' = {
         vmSize: 'Standard_DS2_v2'
       }
     ]
-    aksClusterSkuTier: 'Standard'
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
@@ -1293,6 +1292,7 @@ module managedCluster './container-service/managed-cluster/main.bicep' = {
     networkPlugin: 'azure'
     privateDNSZone: '<privateDNSZone>'
     serviceCidr: '10.10.200.0/24'
+    skuTier: 'Standard'
     tags: {
       Environment: 'Non-Prod'
       'hidden-title': 'This is visible in the resource name'
@@ -1398,9 +1398,6 @@ module managedCluster './container-service/managed-cluster/main.bicep' = {
         }
       ]
     },
-    "aksClusterSkuTier": {
-      "value": "Standard"
-    },
     "diagnosticEventHubAuthorizationRuleId": {
       "value": "<diagnosticEventHubAuthorizationRuleId>"
     },
@@ -1430,6 +1427,9 @@ module managedCluster './container-service/managed-cluster/main.bicep' = {
     },
     "serviceCidr": {
       "value": "10.10.200.0/24"
+    },
+    "skuTier": {
+      "value": "Standard"
     },
     "tags": {
       "value": {
