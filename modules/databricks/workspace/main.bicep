@@ -5,7 +5,7 @@ metadata owner = 'Azure/module-maintainers'
 @description('Required. The name of the Azure Databricks workspace to create.')
 param name string
 
-@description('Optional. The managed resource group ID. Is created by the module as per the to-be resource ID you provide.')
+@description('Optional. The managed resource group ID. It is created by the module as per the to-be resource ID you provide.')
 param managedResourceGroupResourceId string = ''
 
 @description('Optional. The pricing tier of workspace.')
