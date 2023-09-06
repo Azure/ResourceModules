@@ -26,9 +26,6 @@ param applicationInsightsName string
 param virtualNetworkName string
 
 var addressPrefix = '10.0.0.0/16'
-var defaultAddressPrefix = '10.0.0.0/20'
-var publicAddressPrefix = '10.0.16.0/20'
-var privateAddressPrefix = '10.0.32.0/20'
 
 resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' = {
     name: managedIdentityName
@@ -245,13 +242,13 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
             {
                 name: 'defaultSubnet'
                 properties: {
-                    addressPrefix: cidrSubnet(addressPrefix, 16, 0)
+                    addressPrefix: cidrSubnet(addressPrefix, 20, 0)
                 }
             }
             {
                 name: 'custom-public-subnet'
                 properties: {
-                    addressPrefix: publicAddressPrefix
+                    addressPrefix: cidrSubnet(addressPrefix, 20, 1)
                     networkSecurityGroup: {
                         id: networkSecurityGroup.id
                     }
@@ -268,7 +265,7 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
             {
                 name: 'custom-private-subnet'
                 properties: {
-                    addressPrefix: privateAddressPrefix
+                    addressPrefix: cidrSubnet(addressPrefix, 20, 2)
                     networkSecurityGroup: {
                         id: networkSecurityGroup.id
                     }
