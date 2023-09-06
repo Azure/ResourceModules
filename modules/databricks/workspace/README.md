@@ -61,7 +61,7 @@ This module deploys an Azure Databricks Workspace.
 | `loadBalancerResourceId` | string | `''` |  | Resource URI of Outbound Load balancer for Secure Cluster Connectivity (No Public IP) workspace. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
-| `managedResourceGroupResourceId` | string | `''` |  | The managed resource group ID. Is created by the module as per the to-be resource ID you provide. |
+| `managedResourceGroupResourceId` | string | `''` |  | The managed resource group ID. It is created by the module as per the to-be resource ID you provide. |
 | `natGatewayName` | string | `''` |  | Name of the NAT gateway for Secure Cluster Connectivity (No Public IP) workspace subnets. |
 | `prepareEncryption` | bool | `False` |  | Prepare the workspace for encryption. Enables the Managed Identity for managed storage account. |
 | `privateEndpoints` | array | `[]` |  | Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
