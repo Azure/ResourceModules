@@ -366,6 +366,57 @@ userAssignedIdentities: {
 </details>
 <p>
 
+### Parameter Usage: `httpProxyConfig`
+
+Configurations for provisioning the cluster with HTTP proxy servers. You can specify in the following format:
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"httpProxyConfig": {
+    "value": {
+        "httpProxy": "http://proxy.contoso.com:8080/",
+        "httpsProxy": "http://proxy.contoso.com:8080/",
+        "noProxy": [
+            "10.0.0.0/8",
+            "127.0.0.1",
+            "168.63.129.16",
+            "169.254.169.254",
+            "azurecr.io",
+            "konnectivity",
+            "localhost"
+        ]
+    }
+}
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+httpProxyConfig: {
+  httpProxy: 'http://proxy.contoso.com:8080/'
+  httpsProxy: 'http://proxy.contoso.com:8080/'
+  noProxy: [
+    '10.0.0.0/8'
+    '127.0.0.1'
+    '168.63.129.16'
+    '169.254.169.254'
+    'azurecr.io'
+    'konnectivity'
+    'localhost'
+  ]
+}
+```
+
+</details>
+<p>
+
 ## Outputs
 
 | Output Name | Type | Description |
