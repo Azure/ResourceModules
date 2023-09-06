@@ -203,7 +203,7 @@ The primary pipeline settings file ([`settings.yml`](https://github.com/Azure/Re
 
 | Variable Name | Example Value | Description |
 | - | - | - |
-| `useApiSpecsAlignedName` | `'false'` |  Publish a module not using its folder path, but the matching name in the REST API (i.e., the classic naming). For example: `bicep/modules/microsoft.keyvault.vaults.secrets` instead of `bicep/modules/key-vault.vault.secret`. |
+| `useApiSpecsAlignedName` | `'false'` |  Publish a module not using its folder path, but the matching name in the REST API (i.e., the classic naming). For example: `bicep/modules/microsoft.keyvault.vaults.secrets` instead of `bicep/modules/key-vault.vault.secret`. For more information, please refer to the [Publishing guidelines](./The%20CI%20environment%20-%20Publishing#Module-identifiers). |
 
 </details>
 
@@ -324,7 +324,7 @@ The primary pipeline settings file ([`settings.yml`](https://github.com/Azure/Re
 
 | Variable Name | Example Value | Description |
 | - | - | - |
-| `useApiSpecsAlignedName` | `'false'` |  Publish a module not using its folder path, but the matching name in the REST API (i.e., the classic naming). For example: `bicep/modules/microsoft.keyvault.vaults.secrets` instead of `bicep/modules/key-vault.vault.secret`. |
+| `useApiSpecsAlignedName` | `'false'` |  Publish a module not using its folder path, but the matching name in the REST API (i.e., the classic naming). For example: `bicep/modules/microsoft.keyvault.vaults.secrets` instead of `bicep/modules/key-vault.vault.secret`. For more information, please refer to the [Publishing guidelines](./The%20CI%20environment%20-%20Publishing#Module-identifiers).  |
 
 </details>
 
