@@ -1,7 +1,7 @@
 This section provides an overview of the principles the publishing is built upon, how it is set up, and how you can interact with it.
 
 - [Publishing overview](#publishing-overview)
-- [Module identifiers](#module-identifiers)
+  - [Module identifiers](#module-identifiers)
 - [How it works](#how-it-works)
   - [Example scenario](#example-scenario)
   - [Output example](#output-example)
@@ -24,27 +24,48 @@ Besides the publishing phase's runtime, there is also the possibility to set the
 
 ## Module identifiers
 
-The names of published modules differ slightly depending on the location they are published to. This is rooted in the different requirements per target location. In the following you can find the rules applied for each:
+The names of published modules differ slightly depending on the location they are published to & settings you may have configured. This is rooted in the different requirements per target location. In the following you can find the rules applied for each:
 
 <details>
 <summary>Template Specs</summary>
 
 **Actions**
 
+The final name is different based on the `useApiSpecsAlignedName` setting in the `settings.yml` file.
+
+If set to `true`:
+
+- Recover the original API Specs reference for the module from the `utilities/src/apiSpecsList.json` file
 - Remove the root folder name `modules` from provided module reference
 - Make lowercase
-- Replace `Microsoft` with `MS`
+- Replace `microsoft` with `ms`
 - Replace all `\` or `/` with `.`
-- Remove all duplications in the path. For example, the path `virtual-network/virtual-network-peering` would be shortened to `virtual-network/peering`
+- Remove all duplications in the path. For example, the module identifier `ms.network.virtualnetworks.virtualnetworkpeerings` would be shortened to `ms.network.virtualnetworks.peerings`
+
+  **Examples**
+
+    - vault
+      - Before: `modules\recovery-services\vault`
+      - After: `ms.recoveryservices.vaults`
+    - replication-protection-container-mapping
+      - Before: `modules\recovery-services\vault\replication-fabric\replication-protection-container\replication-protection-container-mapping`
+      - After: `ms.recoveryservices.vaults.replicationfabrics.replicationprotectioncontainers.mappings`
+
+If set to `false`:
+
+- Remove the root folder name `modules` from provided module reference
+- Make lowercase
+- Replace all `\` or `/` with `.`
+- Remove all duplications in the path. For example, the module identifier `virtual-network/virtual-network-peering` would be shortened to `virtual-network/peering`
 
 **Examples**
 
-  - vault
-    - Before: `modules\recovery-services\vault`
-    - After: `recovery-services.vault`
-  - replication-protection-container-mapping
-    - Before: `modules\recovery-services\vault\replication-fabric\replication-protection-container\replication-protection-container-mapping`
-    - After: `recovery-services.vault.replication-fabric.replication-protection-container.mapping`
+    - vault
+      - Before: `modules\recovery-services\vault`
+      - After: `recovery-services.vault`
+    - replication-protection-container-mapping
+      - Before: `modules\recovery-services\vault\replication-fabric\replication-protection-container\replication-protection-container-mapping`
+      - After: `recovery-services.vault.replication-fabric.replication-protection-container.mapping`
 
 </details>
 
@@ -53,19 +74,40 @@ The names of published modules differ slightly depending on the location they ar
 
 **Actions**
 
+The final name is different based on the `useApiSpecsAlignedName` setting in the `settings.yml` file.
+
+If set to `true`:
+
+- Recover the original API Specs reference for the module from the `utilities/src/apiSpecsList.json` file
 - Remove the root folder name `modules` from provided module reference
 - Make lowercase
 - Replace all `\` or `/` with `.`
 - Add the `bicep/modules` prefix
 
-**Examples**
+  **Examples**
 
-- vault
+  - vault
+     - Before: `modules\recovery-services\vault`
+     - After: `bicep/modules/microsoft.recoveryservices.vaults`
+  - replication-protection-container-mapping
+     - Before: `modules\recovery-services\vault\replication-fabric\replication-protection-container\replication-protection-container-mapping`
+     - After: `bicep/modules/microsoft.recoveryservices.vaults.replicationfabrics.replicationprotectioncontainers.replicationprotectioncontainermappings`
+
+If set to `false`:
+
+- Remove the root folder name `modules` from provided module reference
+- Make lowercase
+- Replace all `\` or `/` with `.`
+- Add the `bicep/modules` prefix
+
+  **Examples**
+
+  - vault
    - Before: `modules\recovery-services\vault`
-   - After: `bicep/modules/recovery-services.vault`
-- replication-protection-container-mapping
-   - Before: `modules\recovery-services\vault\replication-fabric\replication-protection-container\replication-protection-container-mapping`
-   - After: `bicep/modules/recovery-services.vault.replication-fabric.replication-protection-container.replication-protection-container-mapping`
+     - After: `bicep/modules/recovery-services.vault`
+  - replication-protection-container-mapping
+     - Before: `modules\recovery-services\vault\replication-fabric\replication-protection-container\replication-protection-container-mapping`
+     - After: `bicep/modules/recovery-services.vault.replication-fabric.replication-protection-container.replication-protection-container-mapping`
 
 </details>
 
@@ -74,18 +116,38 @@ The names of published modules differ slightly depending on the location they ar
 
 **Actions**
 
+The final name is different based on the `useApiSpecsAlignedName` setting in the `settings.yml` file.
+
+If set to `true`:
+
+- Recover the original API Specs reference for the module from the `utilities/src/apiSpecsList.json` file
 - Remove the root folder name `modules` from provided module reference
 - Make lowercase
 - Replace all `\` or `/` with `.`
 
-**Examples**
+  **Examples**
 
-- vault
-  - Before: `modules\recovery-services\vault`
-  - After: `recovery-services.vault`
-- replication-protection-container-mapping
-  - Before: `modules\recovery-services\vault\replication-fabric\replication-protection-container\replication-protection-container-mapping`
-  - After: `bicep/modules/recovery-services.vault.replication-fabric.replication-protection-container.replication-protection-container-mapping`
+  - vault
+    - Before: `modules\recovery-services\vault`
+    - After: `microsoft.recoveryservices.vault`
+  - replication-protection-container-mapping
+    - Before: `modules\recovery-services\vault\replication-fabric\replication-protection-container\replication-protection-container-mapping`
+    - After: `microsoft.recoveryservices.vault.replicationfabric.replicationprotectioncontainer.replicationprotectioncontainermapping`
+
+If set to `false`:
+
+- Remove the root folder name `modules` from provided module reference
+- Make lowercase
+- Replace all `\` or `/` with `.`
+
+  **Examples**
+
+  - vault
+    - Before: `modules\recovery-services\vault`
+    - After: `recovery-services.vault`
+  - replication-protection-container-mapping
+    - Before: `modules\recovery-services\vault\replication-fabric\replication-protection-container\replication-protection-container-mapping`
+    - After: `recovery-services.vault.replication-fabric.replication-protection-container.replication-protection-container-mapping`
 
 </details>
 
