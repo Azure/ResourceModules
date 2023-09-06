@@ -534,6 +534,21 @@ module applicationGateway './network/application-gateway/main.bicep' = {
       }
     ]
     lock: 'CanNotDelete'
+    privateEndpoints: [
+      {
+        privateDnsZoneGroup: {
+          privateDNSResourceIds: [
+            '<privateDNSZoneResourceId>'
+          ]
+        }
+        service: 'public'
+        subnetResourceId: '<subnetResourceId>'
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
+      }
+    ]
     privateLinkConfigurations: [
       {
         id: '<id>'
@@ -976,6 +991,23 @@ module applicationGateway './network/application-gateway/main.bicep' = {
     },
     "lock": {
       "value": "CanNotDelete"
+    },
+    "privateEndpoints": {
+      "value": [
+        {
+          "privateDnsZoneGroup": {
+            "privateDNSResourceIds": [
+              "<privateDNSZoneResourceId>"
+            ]
+          },
+          "service": "public",
+          "subnetResourceId": "<subnetResourceId>",
+          "tags": {
+            "Environment": "Non-Prod",
+            "Role": "DeploymentValidation"
+          }
+        }
+      ]
     },
     "privateLinkConfigurations": {
       "value": [
