@@ -14,6 +14,8 @@ This module deploys an Express Route Gateway.
 
 | Resource Type | API Version |
 | :-- | :-- |
+| `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
+| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Network/expressRouteGateways` | [2023-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-04-01/expressRouteGateways) |
 
 ## Parameters
@@ -27,15 +29,17 @@ This module deploys an Express Route Gateway.
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `allowNonVirtualWanTraffic` | bool | `False` | Configures this gateway to accept traffic from non Virtual WAN networks. |
-| `autoScaleConfigurationBoundsMax` | int | `2` | Maximum number of scale units deployed for ExpressRoute gateway. |
-| `autoScaleConfigurationBoundsMin` | int | `2` | Minimum number of scale units deployed for ExpressRoute gateway. |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `expressRouteConnections` | array | `[]` | List of ExpressRoute connections to the ExpressRoute gateway. |
-| `location` | string | `[resourceGroup().location]` | Location for all resources. |
-| `tags` | object | `{object}` | Tags of the Firewall policy resource. |
+| Parameter Name | Type | Default Value | Allowed Values | Description |
+| :-- | :-- | :-- | :-- | :-- |
+| `allowNonVirtualWanTraffic` | bool | `False` |  | Configures this gateway to accept traffic from non Virtual WAN networks. |
+| `autoScaleConfigurationBoundsMax` | int | `2` |  | Maximum number of scale units deployed for ExpressRoute gateway. |
+| `autoScaleConfigurationBoundsMin` | int | `2` |  | Minimum number of scale units deployed for ExpressRoute gateway. |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
+| `expressRouteConnections` | array | `[]` |  | List of ExpressRoute connections to the ExpressRoute gateway. |
+| `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
+| `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
+| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| `tags` | object | `{object}` |  | Tags of the Firewall policy resource. |
 
 
 ### Parameter Usage: `roleAssignments`
@@ -208,6 +212,16 @@ module expressRouteGateway './network/express-route-gateway/main.bicep' = {
     autoScaleConfigurationBoundsMax: 3
     autoScaleConfigurationBoundsMin: 2
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    lock: 'CanNotDelete'
+    roleAssignments: [
+      {
+        principalIds: [
+          '<managedIdentityPrincipalId>'
+        ]
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
     tags: {
       hello: 'world'
       'hidden-title': 'This is visible in the resource name'
@@ -245,11 +259,74 @@ module expressRouteGateway './network/express-route-gateway/main.bicep' = {
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     },
+    "lock": {
+      "value": "CanNotDelete"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "<managedIdentityPrincipalId>"
+          ],
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
     "tags": {
       "value": {
         "hello": "world",
         "hidden-title": "This is visible in the resource name"
       }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2: Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module expressRouteGateway './network/express-route-gateway/main.bicep' = {
+  name: '${uniqueString(deployment().name, location)}-test-nergmin'
+  params: {
+    // Required parameters
+    name: 'nergmin001'
+    virtualHubId: '<virtualHubId>'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "nergmin001"
+    },
+    "virtualHubId": {
+      "value": "<virtualHubId>"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }

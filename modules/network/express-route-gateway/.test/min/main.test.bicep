@@ -12,7 +12,7 @@ param resourceGroupName string = 'ms.network.expressRouteGateway-${serviceShort}
 param location string = deployment().location
 
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints.')
-param serviceShort string = 'nergcom'
+param serviceShort string = 'nergmin'
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
@@ -37,7 +37,6 @@ module nestedDependencies 'dependencies.bicep' = {
   params: {
     virtualWANName: 'dep-${namePrefix}-vwan-${serviceShort}'
     virtualHubName: 'dep-${namePrefix}-hub-${serviceShort}'
-    managedIdentityName: 'dep-${namePrefix}-msi-${serviceShort}'
   }
 }
 // ============== //
@@ -50,22 +49,7 @@ module testDeployment '../../main.bicep' = {
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '${namePrefix}${serviceShort}001'
-    tags: {
-      'hidden-title': 'This is visible in the resource name'
-      hello: 'world'
-    }
-    autoScaleConfigurationBoundsMin: 2
-    autoScaleConfigurationBoundsMax: 3
     virtualHubId: nestedDependencies.outputs.virtualHubResourceId
-    lock: 'CanNotDelete'
-    roleAssignments: [
-      {
-        roleDefinitionIdOrName: 'Reader'
-        principalIds: [
-          nestedDependencies.outputs.managedIdentityPrincipalId
-        ]
-        principalType: 'ServicePrincipal'
-      }
-    ]
+
   }
 }
