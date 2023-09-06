@@ -147,6 +147,7 @@ module testDeployment '../../main.bicep' = {
         vnetSubnetID: nestedDependencies.outputs.subnetResourceIds[2]
       }
     ]
+    autoUpgradeProfileUpgradeChannel: 'stable'
     enableWorkloadIdentity: true
     enableOidcIssuerProfile: true
     aksClusterNetworkPlugin: 'azure'

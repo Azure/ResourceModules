@@ -83,6 +83,7 @@ This module deploys an Azure Kubernetes Service (AKS) Managed Cluster.
 | `autoScalerProfileSkipNodesWithLocalStorage` | string | `'true'` | `[false, true]` | Specifies if nodes with local storage should be skipped for the auto-scaler of the AKS cluster. |
 | `autoScalerProfileSkipNodesWithSystemPods` | string | `'true'` | `[false, true]` | Specifies if nodes with system pods should be skipped for the auto-scaler of the AKS cluster. |
 | `autoScalerProfileUtilizationThreshold` | string | `'0.5'` |  | Specifies the utilization threshold of the auto-scaler of the AKS cluster. |
+| `autoUpgradeProfileUpgradeChannel` | string | `''` | `['', node-image, none, patch, rapid, stable]` | Auto-upgrade channel on the AKS cluster. |
 | `azurePolicyEnabled` | bool | `True` |  | Specifies whether the azurepolicy add-on is enabled or not. For security reasons, this setting should be enabled. |
 | `azurePolicyVersion` | string | `'v2'` |  | Specifies the azure policy version to use. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
@@ -488,6 +489,7 @@ module managedCluster './container-service/managed-cluster/main.bicep' = {
     aksClusterNetworkDataplane: 'azure'
     aksClusterNetworkPlugin: 'azure'
     aksClusterNetworkPluginMode: 'overlay'
+    autoUpgradeProfileUpgradeChannel: 'stable'
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
@@ -687,6 +689,9 @@ module managedCluster './container-service/managed-cluster/main.bicep' = {
     },
     "aksClusterNetworkPluginMode": {
       "value": "overlay"
+    },
+    "autoUpgradeProfileUpgradeChannel": {
+      "value": "stable"
     },
     "diagnosticEventHubAuthorizationRuleId": {
       "value": "<diagnosticEventHubAuthorizationRuleId>"

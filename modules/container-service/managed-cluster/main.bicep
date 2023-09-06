@@ -260,6 +260,17 @@ param autoScalerProfileSkipNodesWithLocalStorage string = 'true'
 @description('Optional. Specifies if nodes with system pods should be skipped for the auto-scaler of the AKS cluster.')
 param autoScalerProfileSkipNodesWithSystemPods string = 'true'
 
+@allowed([
+  'node-image'
+  'none'
+  'patch'
+  'rapid'
+  'stable'
+  ''
+])
+@description('Optional. Auto-upgrade channel on the AKS cluster.')
+param autoUpgradeProfileUpgradeChannel string = ''
+
 @description('Optional. Running in Kubenet is disabled by default due to the security related nature of AAD Pod Identity and the risks of IP spoofing.')
 param podIdentityProfileAllowNetworkPluginKubenet bool = false
 
@@ -543,6 +554,9 @@ resource managedCluster 'Microsoft.ContainerService/managedClusters@2023-06-02-p
       'skip-nodes-with-local-storage': autoScalerProfileSkipNodesWithLocalStorage
       'skip-nodes-with-system-pods': autoScalerProfileSkipNodesWithSystemPods
     }
+    autoUpgradeProfile: {
+      upgradeChannel: !empty(autoUpgradeProfileUpgradeChannel) ? autoUpgradeProfileUpgradeChannel : null
+    }
     apiServerAccessProfile: {
       authorizedIPRanges: authorizedIPRanges
       disableRunCommand: disableRunCommand
@@ -562,7 +576,7 @@ resource managedCluster 'Microsoft.ContainerService/managedClusters@2023-06-02-p
           enabled: enableAzureDefender
         }
         logAnalyticsWorkspaceResourceId: !empty(monitoringWorkspaceId) ? monitoringWorkspaceId : null
-      } : any(null)
+      } : null
       workloadIdentity: enableWorkloadIdentity ? {
         enabled: enableWorkloadIdentity
       } : null

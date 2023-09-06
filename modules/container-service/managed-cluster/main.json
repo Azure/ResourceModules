@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.20.4.51522",
-      "templateHash": "7307837577721751473"
+      "templateHash": "14430077297660706085"
     },
     "name": "Azure Kubernetes Service (AKS) Managed Clusters",
     "description": "This module deploys an Azure Kubernetes Service (AKS) Managed Cluster.",
@@ -533,6 +533,21 @@
         "description": "Optional. Specifies if nodes with system pods should be skipped for the auto-scaler of the AKS cluster."
       }
     },
+    "autoUpgradeProfileUpgradeChannel": {
+      "type": "string",
+      "defaultValue": "",
+      "allowedValues": [
+        "node-image",
+        "none",
+        "patch",
+        "rapid",
+        "stable",
+        ""
+      ],
+      "metadata": {
+        "description": "Optional. Auto-upgrade channel on the AKS cluster."
+      }
+    },
     "podIdentityProfileAllowNetworkPluginKubenet": {
       "type": "bool",
       "defaultValue": false,
@@ -932,6 +947,9 @@
           "scan-interval": "[parameters('autoScalerProfileScanInterval')]",
           "skip-nodes-with-local-storage": "[parameters('autoScalerProfileSkipNodesWithLocalStorage')]",
           "skip-nodes-with-system-pods": "[parameters('autoScalerProfileSkipNodesWithSystemPods')]"
+        },
+        "autoUpgradeProfile": {
+          "upgradeChannel": "[if(not(empty(parameters('autoUpgradeProfileUpgradeChannel'))), parameters('autoUpgradeProfileUpgradeChannel'), null())]"
         },
         "apiServerAccessProfile": {
           "authorizedIPRanges": "[parameters('authorizedIPRanges')]",
