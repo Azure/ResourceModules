@@ -7,6 +7,9 @@ param virtualNetworkName string
 @description('Required. The name of the Managed Identity to create.')
 param managedIdentityName string
 
+@description('Required. The name of the Kubelet Identity Managed Identity to create.')
+param managedIdentityKubeletIdentityName string
+
 @description('Required. The name of the Disk Encryption Set to create.')
 param diskEncryptionSetName string
 
@@ -114,8 +117,29 @@ resource dnsZone 'Microsoft.Network/dnsZones@2018-05-01' = {
   location: 'global'
 }
 
+resource managedIdentityKubeletIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' = {
+  name: managedIdentityKubeletIdentityName
+  location: location
+}
+
+resource roleAssignmentKubeletIdentity 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  name: guid('msi-${location}-${managedIdentityKubeletIdentity.id}-ManagedIdentityOperator-RoleAssignment')
+  scope: managedIdentityKubeletIdentity
+  properties: {
+    principalId: managedIdentity.properties.principalId
+    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'f1a07417-d97a-45cb-824c-7a7467783830') // Managed Identity Operator Role used for Kubelet identity.
+    principalType: 'ServicePrincipal'
+  }
+}
+
 @description('The principal ID of the created Managed Identity.')
 output managedIdentityPrincipalId string = managedIdentity.properties.principalId
+
+@description('The resource ID of the created Managed Identity.')
+output managedIdentityResourceId string = managedIdentity.id
+
+@description('The resource ID of the created Kubelet Identity Managed Identity.')
+output managedIdentityKubeletIdentityResourceId string = managedIdentityKubeletIdentity.id
 
 @description('The resource ID of the created Disk Encryption Set.')
 output diskEncryptionSetResourceId string = diskEncryptionSet.id
