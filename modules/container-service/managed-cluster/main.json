@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.20.4.51522",
-      "templateHash": "14430077297660706085"
+      "templateHash": "9118275699242964066"
     },
     "name": "Azure Kubernetes Service (AKS) Managed Clusters",
     "description": "This module deploys an Azure Kubernetes Service (AKS) Managed Cluster.",
@@ -25,7 +25,7 @@
         "description": "Optional. Specifies the location of AKS cluster. It picks up Resource Group's location by default."
       }
     },
-    "aksClusterDnsPrefix": {
+    "dnsPrefix": {
       "type": "string",
       "defaultValue": "[parameters('name')]",
       "metadata": {
@@ -46,7 +46,7 @@
         "description": "Optional. The ID(s) to assign to the resource."
       }
     },
-    "aksClusterNetworkDataplane": {
+    "networkDataplane": {
       "type": "string",
       "defaultValue": "",
       "allowedValues": [
@@ -58,7 +58,7 @@
         "description": "Optional. Network dataplane used in the Kubernetes cluster. Not compatible with kubenet network plugin."
       }
     },
-    "aksClusterNetworkPlugin": {
+    "networkPlugin": {
       "type": "string",
       "defaultValue": "",
       "allowedValues": [
@@ -70,7 +70,7 @@
         "description": "Optional. Specifies the network plugin used for building Kubernetes network."
       }
     },
-    "aksClusterNetworkPluginMode": {
+    "networkPluginMode": {
       "type": "string",
       "defaultValue": "",
       "allowedValues": [
@@ -81,7 +81,7 @@
         "description": "Optional. Network plugin mode used for building the Kubernetes network. Not compatible with kubenet network plugin."
       }
     },
-    "aksClusterNetworkPolicy": {
+    "networkPolicy": {
       "type": "string",
       "defaultValue": "",
       "allowedValues": [
@@ -93,28 +93,28 @@
         "description": "Optional. Specifies the network policy used for building Kubernetes network. - calico or azure."
       }
     },
-    "aksClusterPodCidr": {
+    "podCidr": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
         "description": "Optional. Specifies the CIDR notation IP range from which to assign pod IPs when kubenet is used."
       }
     },
-    "aksClusterServiceCidr": {
+    "serviceCidr": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
         "description": "Optional. A CIDR notation IP range from which to assign service cluster IPs. It must not overlap with any Subnet IP ranges."
       }
     },
-    "aksClusterDnsServiceIP": {
+    "dnsServiceIP": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
         "description": "Optional. Specifies the IP address assigned to the Kubernetes DNS service. It must be within the Kubernetes service address range specified in serviceCidr."
       }
     },
-    "aksClusterLoadBalancerSku": {
+    "loadBalancerSku": {
       "type": "string",
       "defaultValue": "standard",
       "allowedValues": [
@@ -132,7 +132,7 @@
         "description": "Optional. Outbound IP Count for the Load balancer."
       }
     },
-    "aksClusterOutboundType": {
+    "outboundType": {
       "type": "string",
       "defaultValue": "loadBalancer",
       "allowedValues": [
@@ -143,7 +143,7 @@
         "description": "Optional. Specifies outbound (egress) routing method. - loadBalancer or userDefinedRouting."
       }
     },
-    "aksClusterSkuTier": {
+    "skuTier": {
       "type": "string",
       "defaultValue": "Free",
       "allowedValues": [
@@ -155,21 +155,21 @@
         "description": "Optional. Tier of a managed cluster SKU. - Free or Standard."
       }
     },
-    "aksClusterKubernetesVersion": {
+    "kubernetesVersion": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
         "description": "Optional. Version of Kubernetes specified when creating the managed cluster."
       }
     },
-    "aksClusterAdminUsername": {
+    "adminUsername": {
       "type": "string",
       "defaultValue": "azureuser",
       "metadata": {
         "description": "Optional. Specifies the administrator username of Linux virtual machines."
       }
     },
-    "aksClusterSshPublicKey": {
+    "sshPublicKey": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
@@ -819,12 +819,12 @@
       "type": "[variables('identityType')]",
       "userAssignedIdentities": "[if(not(empty(parameters('userAssignedIdentities'))), parameters('userAssignedIdentities'), null())]"
     },
-    "aksClusterLinuxProfile": {
-      "adminUsername": "[parameters('aksClusterAdminUsername')]",
+    "linuxProfile": {
+      "adminUsername": "[parameters('adminUsername')]",
       "ssh": {
         "publicKeys": [
           {
-            "keyData": "[parameters('aksClusterSshPublicKey')]"
+            "keyData": "[parameters('sshPublicKey')]"
           }
         ]
       }
@@ -861,17 +861,23 @@
       "identity": "[variables('identity')]",
       "sku": {
         "name": "Base",
-        "tier": "[parameters('aksClusterSkuTier')]"
+        "tier": "[parameters('skuTier')]"
       },
       "properties": {
         "httpProxyConfig": "[if(not(empty(parameters('httpProxyConfig'))), parameters('httpProxyConfig'), null())]",
         "identityProfile": "[if(not(empty(parameters('identityProfile'))), parameters('identityProfile'), null())]",
         "diskEncryptionSetID": "[if(not(empty(parameters('diskEncryptionSetID'))), parameters('diskEncryptionSetID'), null())]",
-        "kubernetesVersion": "[if(empty(parameters('aksClusterKubernetesVersion')), null(), parameters('aksClusterKubernetesVersion'))]",
-        "dnsPrefix": "[parameters('aksClusterDnsPrefix')]",
+        "kubernetesVersion": "[if(empty(parameters('kubernetesVersion')), null(), parameters('kubernetesVersion'))]",
+        "dnsPrefix": "[parameters('dnsPrefix')]",
         "agentPoolProfiles": "[parameters('primaryAgentPoolProfile')]",
-        "linuxProfile": "[if(empty(parameters('aksClusterSshPublicKey')), null(), variables('aksClusterLinuxProfile'))]",
+        "linuxProfile": "[if(empty(parameters('sshPublicKey')), null(), variables('linuxProfile'))]",
         "servicePrincipalProfile": "[if(empty(parameters('aksServicePrincipalProfile')), null(), parameters('aksServicePrincipalProfile'))]",
+        "ingressProfile": {
+          "webAppRouting": {
+            "enabled": "[parameters('webApplicationRoutingEnabled')]",
+            "dnsZoneResourceId": "[if(not(empty(parameters('dnsZoneResourceId'))), parameters('dnsZoneResourceId'), null())]"
+          }
+        },
         "addonProfiles": {
           "httpApplicationRouting": {
             "enabled": "[parameters('httpApplicationRoutingEnabled')]"
@@ -909,15 +915,15 @@
         "nodeResourceGroup": "[parameters('nodeResourceGroup')]",
         "enablePodSecurityPolicy": "[parameters('enablePodSecurityPolicy')]",
         "networkProfile": {
-          "networkDataplane": "[if(not(empty(parameters('aksClusterNetworkDataplane'))), parameters('aksClusterNetworkDataplane'), null())]",
-          "networkPlugin": "[if(not(empty(parameters('aksClusterNetworkPlugin'))), parameters('aksClusterNetworkPlugin'), null())]",
-          "networkPluginMode": "[if(not(empty(parameters('aksClusterNetworkPluginMode'))), parameters('aksClusterNetworkPluginMode'), null())]",
-          "networkPolicy": "[if(not(empty(parameters('aksClusterNetworkPolicy'))), parameters('aksClusterNetworkPolicy'), null())]",
-          "podCidr": "[if(not(empty(parameters('aksClusterPodCidr'))), parameters('aksClusterPodCidr'), null())]",
-          "serviceCidr": "[if(not(empty(parameters('aksClusterServiceCidr'))), parameters('aksClusterServiceCidr'), null())]",
-          "dnsServiceIP": "[if(not(empty(parameters('aksClusterDnsServiceIP'))), parameters('aksClusterDnsServiceIP'), null())]",
-          "outboundType": "[parameters('aksClusterOutboundType')]",
-          "loadBalancerSku": "[parameters('aksClusterLoadBalancerSku')]",
+          "networkDataplane": "[if(not(empty(parameters('networkDataplane'))), parameters('networkDataplane'), null())]",
+          "networkPlugin": "[if(not(empty(parameters('networkPlugin'))), parameters('networkPlugin'), null())]",
+          "networkPluginMode": "[if(not(empty(parameters('networkPluginMode'))), parameters('networkPluginMode'), null())]",
+          "networkPolicy": "[if(not(empty(parameters('networkPolicy'))), parameters('networkPolicy'), null())]",
+          "podCidr": "[if(not(empty(parameters('podCidr'))), parameters('podCidr'), null())]",
+          "serviceCidr": "[if(not(empty(parameters('serviceCidr'))), parameters('serviceCidr'), null())]",
+          "dnsServiceIP": "[if(not(empty(parameters('dnsServiceIP'))), parameters('dnsServiceIP'), null())]",
+          "outboundType": "[parameters('outboundType')]",
+          "loadBalancerSku": "[parameters('loadBalancerSku')]",
           "loadBalancerProfile": "[if(not(equals(parameters('managedOutboundIPCount'), 0)), variables('lbProfile'), null())]"
         },
         "aadProfile": {
@@ -1069,7 +1075,7 @@
           "nodeLabels": "[if(contains(parameters('agentPools')[copyIndex()], 'nodeLabels'), createObject('value', parameters('agentPools')[copyIndex()].nodeLabels), createObject('value', createObject()))]",
           "nodePublicIpPrefixId": "[if(contains(parameters('agentPools')[copyIndex()], 'nodePublicIpPrefixId'), createObject('value', parameters('agentPools')[copyIndex()].nodePublicIpPrefixId), createObject('value', ''))]",
           "nodeTaints": "[if(contains(parameters('agentPools')[copyIndex()], 'nodeTaints'), createObject('value', parameters('agentPools')[copyIndex()].nodeTaints), createObject('value', createArray()))]",
-          "orchestratorVersion": "[if(contains(parameters('agentPools')[copyIndex()], 'orchestratorVersion'), createObject('value', parameters('agentPools')[copyIndex()].orchestratorVersion), createObject('value', parameters('aksClusterKubernetesVersion')))]",
+          "orchestratorVersion": "[if(contains(parameters('agentPools')[copyIndex()], 'orchestratorVersion'), createObject('value', parameters('agentPools')[copyIndex()].orchestratorVersion), createObject('value', parameters('kubernetesVersion')))]",
           "osDiskSizeGB": "[if(contains(parameters('agentPools')[copyIndex()], 'osDiskSizeGB'), createObject('value', parameters('agentPools')[copyIndex()].osDiskSizeGB), createObject('value', -1))]",
           "osDiskType": "[if(contains(parameters('agentPools')[copyIndex()], 'osDiskType'), createObject('value', parameters('agentPools')[copyIndex()].osDiskType), createObject('value', ''))]",
           "osSku": "[if(contains(parameters('agentPools')[copyIndex()], 'osSku'), createObject('value', parameters('agentPools')[copyIndex()].osSku), createObject('value', ''))]",
