@@ -31,41 +31,24 @@ The names of published modules differ slightly depending on the location they ar
 
 **Actions**
 
-The final name is different based on the `useApiSpecsAlignedName` setting in the `settings.yml` file.
+The final name is different based on the `useApiSpecsAlignedName` setting in the `settings.yml` file. The main difference is, that based on the module's path, the actual resource type identifier will be fetched from the `utilities/src/apiSpecsList.json` file. Following you can find the general flow and distinct differences in either case:
 
-If set to `true`:
-
-- Recover the original API Specs reference for the module from the `utilities/src/apiSpecsList.json` file
-- Remove the root folder name `modules` from provided module reference
-- Make lowercase
-- Replace `microsoft` with `ms`
-- Replace all `\` or `/` with `.`
-- Remove all duplications in the path. For example, the module identifier `ms.network.virtualnetworks.virtualnetworkpeerings` would be shortened to `ms.network.virtualnetworks.peerings`
-
-  **Examples**
-
-    - vault
-      - Before: `modules\recovery-services\vault`
-      - After: `ms.recoveryservices.vaults`
-    - replication-protection-container-mapping
-      - Before: `modules\recovery-services\vault\replication-fabric\replication-protection-container\replication-protection-container-mapping`
-      - After: `ms.recoveryservices.vaults.replicationfabrics.replicationprotectioncontainers.mappings`
-
-If set to `false`:
-
-- Remove the root folder name `modules` from provided module reference
-- Make lowercase
-- Replace all `\` or `/` with `.`
-- Remove all duplications in the path. For example, the module identifier `virtual-network/virtual-network-peering` would be shortened to `virtual-network/peering`
+1. (if `useApiSpecsAlignedName` is `true`)
+   1. Recover the original API Specs reference for the module from the `utilities/src/apiSpecsList.json` file
+   1. Replace `microsoft` with `ms`
+1. Remove the root folder name `modules` from provided module reference
+1. Make lowercase
+1. Replace all `\` or `/` with `.`
+1. Remove all duplications in the path. For example, in an identifier like `virtualNetworks/virtualNetworkPeerings` we'd trim down to `virtualNetworks/peerings` to shorten the path (as there is a maximum character limit for template specs)
 
 **Examples**
 
-    - vault
-      - Before: `modules\recovery-services\vault`
-      - After: `recovery-services.vault`
-    - replication-protection-container-mapping
-      - Before: `modules\recovery-services\vault\replication-fabric\replication-protection-container\replication-protection-container-mapping`
-      - After: `recovery-services.vault.replication-fabric.replication-protection-container.mapping`
+| Module Path | `useApiSpecsAlignedName` | Result |
+| - | - | - |
+| `/recovery-services/vault` | `true` | `ms.recoveryservices.vaults` |
+| | `false` | `recovery-services.vault` |
+| `/recovery-services\vault\replication-fabric\replication-protection-container\replication-protection-container-mapping` | `true` | `ms.recoveryservices.vaults.replicationfabrics.replicationprotectioncontainers.mappings` |
+| | `false` | `recovery-services.vault.replication-fabric.replication-protection-container.mapping` |
 
 </details>
 
@@ -74,40 +57,23 @@ If set to `false`:
 
 **Actions**
 
-The final name is different based on the `useApiSpecsAlignedName` setting in the `settings.yml` file.
+The final name is different based on the `useApiSpecsAlignedName` setting in the `settings.yml` file. The main difference is, that based on the module's path, the actual resource type identifier will be fetched from the `utilities/src/apiSpecsList.json` file. Following you can find the general flow and distinct differences in either case:
 
-If set to `true`:
+1. (if `useApiSpecsAlignedName` is `true`)
+   1. Recover the original API Specs reference for the module from the `utilities/src/apiSpecsList.json` file
+1. Remove the root folder name `modules` from provided module reference
+1. Make lowercase
+1. Replace all `\` or `/` with `.`
+1. Add the `bicep/modules` prefix
 
-- Recover the original API Specs reference for the module from the `utilities/src/apiSpecsList.json` file
-- Remove the root folder name `modules` from provided module reference
-- Make lowercase
-- Replace all `\` or `/` with `.`
-- Add the `bicep/modules` prefix
+**Examples**
 
-  **Examples**
-
-  - vault
-     - Before: `modules\recovery-services\vault`
-     - After: `bicep/modules/microsoft.recoveryservices.vaults`
-  - replication-protection-container-mapping
-     - Before: `modules\recovery-services\vault\replication-fabric\replication-protection-container\replication-protection-container-mapping`
-     - After: `bicep/modules/microsoft.recoveryservices.vaults.replicationfabrics.replicationprotectioncontainers.replicationprotectioncontainermappings`
-
-If set to `false`:
-
-- Remove the root folder name `modules` from provided module reference
-- Make lowercase
-- Replace all `\` or `/` with `.`
-- Add the `bicep/modules` prefix
-
-  **Examples**
-
-  - vault
-   - Before: `modules\recovery-services\vault`
-     - After: `bicep/modules/recovery-services.vault`
-  - replication-protection-container-mapping
-     - Before: `modules\recovery-services\vault\replication-fabric\replication-protection-container\replication-protection-container-mapping`
-     - After: `bicep/modules/recovery-services.vault.replication-fabric.replication-protection-container.replication-protection-container-mapping`
+| Module Path | `useApiSpecsAlignedName` | Result |
+| - | - | - |
+| `/recovery-services/vault` | `true` | `bicep/modules/microsoft.recoveryservices.vaults` |
+| | `false` | `bicep/modules/recovery-services.vault` |
+| `/recovery-services\vault\replication-fabric\replication-protection-container\replication-protection-container-mapping` | `true` | `bicep/modules/microsoft.recoveryservices.vaults.replicationfabrics.replicationprotectioncontainers.replicationprotectioncontainermappings` |
+| | `false` | `bicep/modules/recovery-services.vault.replication-fabric.replication-protection-container.replication-protection-container-mapping` |
 
 </details>
 
@@ -116,38 +82,23 @@ If set to `false`:
 
 **Actions**
 
-The final name is different based on the `useApiSpecsAlignedName` setting in the `settings.yml` file.
 
-If set to `true`:
+The final name is different based on the `useApiSpecsAlignedName` setting in the `settings.yml` file. The main difference is, that based on the module's path, the actual resource type identifier will be fetched from the `utilities/src/apiSpecsList.json` file. Following you can find the general flow and distinct differences in either case:
 
-- Recover the original API Specs reference for the module from the `utilities/src/apiSpecsList.json` file
-- Remove the root folder name `modules` from provided module reference
-- Make lowercase
-- Replace all `\` or `/` with `.`
+1. (if `useApiSpecsAlignedName` is `true`)
+   1. Recover the original API Specs reference for the module from the `utilities/src/apiSpecsList.json` file
+1. Remove the root folder name `modules` from provided module reference
+1. Make lowercase
+1. Replace all `\` or `/` with `.`
 
-  **Examples**
+**Examples**
 
-  - vault
-    - Before: `modules\recovery-services\vault`
-    - After: `microsoft.recoveryservices.vault`
-  - replication-protection-container-mapping
-    - Before: `modules\recovery-services\vault\replication-fabric\replication-protection-container\replication-protection-container-mapping`
-    - After: `microsoft.recoveryservices.vault.replicationfabric.replicationprotectioncontainer.replicationprotectioncontainermapping`
-
-If set to `false`:
-
-- Remove the root folder name `modules` from provided module reference
-- Make lowercase
-- Replace all `\` or `/` with `.`
-
-  **Examples**
-
-  - vault
-    - Before: `modules\recovery-services\vault`
-    - After: `recovery-services.vault`
-  - replication-protection-container-mapping
-    - Before: `modules\recovery-services\vault\replication-fabric\replication-protection-container\replication-protection-container-mapping`
-    - After: `recovery-services.vault.replication-fabric.replication-protection-container.replication-protection-container-mapping`
+| Module Path | `useApiSpecsAlignedName` | Result |
+| - | - | - |
+| `/recovery-services/vault` | `true` | `microsoft.recoveryservices.vault` |
+| | `false` | `recovery-services.vault` |
+| `/recovery-services\vault\replication-fabric\replication-protection-container\replication-protection-container-mapping` | `true` | `microsoft.recoveryservices.vault.replicationfabric.replicationprotectioncontainer.replicationprotectioncontainermapping` |
+| | `false` | `recovery-services.vault.replication-fabric.replication-protection-container.replication-protection-container-mapping` |
 
 </details>
 
