@@ -154,7 +154,7 @@ module testDeployment '../../main.bicep' = {
           ]
         }
         service: 'public'
-        subnetResourceId: nestedDependencies.outputs.defaultSubnetResourceId
+        subnetResourceId: nestedDependencies.outputs.privateLinkSubnetResourceId
         tags: {
           Environment: 'Non-Prod'
           Role: 'DeploymentValidation'
