@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.20.4.51522",
-      "templateHash": "7482819904287931651"
+      "templateHash": "18410461445637867561"
     },
     "name": "Express Route Gateways",
     "description": "This module deploys an Express Route Gateway.",
@@ -79,6 +79,18 @@
       "metadata": {
         "description": "Optional. Enable telemetry via a Globally Unique Identifier (GUID)."
       }
+    },
+    "lock": {
+      "type": "string",
+      "defaultValue": "",
+      "allowedValues": [
+        "",
+        "CanNotDelete",
+        "ReadOnly"
+      ],
+      "metadata": {
+        "description": "Optional. Specify the type of lock."
+      }
     }
   },
   "resources": [
@@ -115,6 +127,20 @@
           "id": "[parameters('virtualHubId')]"
         }
       }
+    },
+    {
+      "condition": "[not(empty(parameters('lock')))]",
+      "type": "Microsoft.Authorization/locks",
+      "apiVersion": "2020-05-01",
+      "scope": "[format('Microsoft.Network/expressRouteGateways/{0}', parameters('name'))]",
+      "name": "[format('{0}-{1}-lock', parameters('name'), parameters('lock'))]",
+      "properties": {
+        "level": "[parameters('lock')]",
+        "notes": "[if(equals(parameters('lock'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot modify the resource or child resources.')]"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/expressRouteGateways', parameters('name'))]"
+      ]
     },
     {
       "copy": {
