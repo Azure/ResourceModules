@@ -567,13 +567,13 @@ resource vm_logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2021
   scope: az.resourceGroup(split(monitoringWorkspaceId, '/')[2], split(monitoringWorkspaceId, '/')[4])
 }
 
-module vm_azureMonitorAgentExtension 'extension/main.bicep' = if (extensionMonitoringAgentConfig.enabled) {
-  name: '${uniqueString(deployment().name, location)}-VM-azureMonitorAgentExtension'
+module vm_microsoftMonitoringAgentExtension 'extension/main.bicep' = if (extensionMonitoringAgentConfig.enabled) {
+  name: '${uniqueString(deployment().name, location)}-VM-MicrosoftMonitoringAgent'
   params: {
     virtualMachineName: vm.name
-    name: 'AzureMonitorAgent'
-    publisher: 'Microsoft.Azure.Monitor'
-    type: osType == 'Windows' ? 'AzureMonitorWindowsAgent' : 'AzureMonitorLinuxAgent'
+    name: 'MicrosoftMonitoringAgent'
+    publisher: 'EnterpriseCloud.Monitoring'
+    type: osType == 'Windows' ? 'MicrosoftMonitoringAgent' : 'OmsAgentForLinux'
     typeHandlerVersion: contains(extensionMonitoringAgentConfig, 'typeHandlerVersion') ? extensionMonitoringAgentConfig.typeHandlerVersion : (osType == 'Windows' ? '1.0' : '1.7')
     autoUpgradeMinorVersion: contains(extensionMonitoringAgentConfig, 'autoUpgradeMinorVersion') ? extensionMonitoringAgentConfig.autoUpgradeMinorVersion : true
     enableAutomaticUpgrade: contains(extensionMonitoringAgentConfig, 'enableAutomaticUpgrade') ? extensionMonitoringAgentConfig.enableAutomaticUpgrade : false
@@ -674,7 +674,7 @@ module vm_azureDiskEncryptionExtension 'extension/main.bicep' = if (extensionAzu
   }
   dependsOn: [
     vm_customScriptExtension
-    vm_azureMonitorAgentExtension
+    vm_microsoftMonitoringAgentExtension
   ]
 }
 
@@ -693,7 +693,7 @@ module vm_backup '../../recovery-services/vault/backup-fabric/protection-contain
   dependsOn: [
     vm_aadJoinExtension
     vm_domainJoinExtension
-    vm_azureMonitorAgentExtension
+    vm_microsoftMonitoringAgentExtension
     vm_microsoftAntiMalwareExtension
     vm_networkWatcherAgentExtension
     vm_dependencyAgentExtension
