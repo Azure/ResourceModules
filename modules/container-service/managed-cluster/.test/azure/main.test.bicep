@@ -40,6 +40,7 @@ module nestedDependencies 'dependencies.bicep' = {
   params: {
     virtualNetworkName: 'dep-${namePrefix}-vnet-${serviceShort}'
     managedIdentityName: 'dep-${namePrefix}-msi-${serviceShort}'
+    managedIdentityKubeletIdentityName: 'dep-${namePrefix}-msiki-${serviceShort}'
     diskEncryptionSetName: 'dep-${namePrefix}-des-${serviceShort}'
     proximityPlacementGroupName: 'dep-${namePrefix}-ppg-${serviceShort}'
     // Adding base time to make the name unique as purge protection must be enabled (but may not be longer than 24 characters total)
@@ -166,7 +167,7 @@ module testDeployment '../../main.bicep' = {
     }
     identityProfile: {
       kubeletidentity: {
-        resourceId: nestedDependencies.outputs.managedIdentityResourceId
+        resourceId: nestedDependencies.outputs.managedIdentityKubeletIdentityResourceId
       }
     }
     lock: 'CanNotDelete'
