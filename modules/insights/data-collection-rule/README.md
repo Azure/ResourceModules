@@ -262,6 +262,7 @@ module dataCollectionRule './insights/data-collection-rule/main.bicep' = {
       }
     }
     tags: {
+      'hidden-title': 'This is visible in the resource name'
       kind: 'Windows'
       resourceType: 'Data Collection Rules'
     }
@@ -392,6 +393,7 @@ module dataCollectionRule './insights/data-collection-rule/main.bicep' = {
     },
     "tags": {
       "value": {
+        "hidden-title": "This is visible in the resource name",
         "kind": "Windows",
         "resourceType": "Data Collection Rules"
       }
@@ -485,6 +487,7 @@ module dataCollectionRule './insights/data-collection-rule/main.bicep' = {
       }
     }
     tags: {
+      'hidden-title': 'This is visible in the resource name'
       kind: 'Windows'
       resourceType: 'Data Collection Rules'
     }
@@ -599,6 +602,7 @@ module dataCollectionRule './insights/data-collection-rule/main.bicep' = {
     },
     "tags": {
       "value": {
+        "hidden-title": "This is visible in the resource name",
         "kind": "Windows",
         "resourceType": "Data Collection Rules"
       }
@@ -671,6 +675,7 @@ module dataCollectionRule './insights/data-collection-rule/main.bicep' = {
       }
     ]
     tags: {
+      'hidden-title': 'This is visible in the resource name'
       kind: 'Windows'
       resourceType: 'Data Collection Rules'
     }
@@ -762,6 +767,7 @@ module dataCollectionRule './insights/data-collection-rule/main.bicep' = {
     },
     "tags": {
       "value": {
+        "hidden-title": "This is visible in the resource name",
         "kind": "Windows",
         "resourceType": "Data Collection Rules"
       }
@@ -947,6 +953,7 @@ module dataCollectionRule './insights/data-collection-rule/main.bicep' = {
       }
     ]
     tags: {
+      'hidden-title': 'This is visible in the resource name'
       kind: 'Linux'
       resourceType: 'Data Collection Rules'
     }
@@ -1149,6 +1156,7 @@ module dataCollectionRule './insights/data-collection-rule/main.bicep' = {
     },
     "tags": {
       "value": {
+        "hidden-title": "This is visible in the resource name",
         "kind": "Linux",
         "resourceType": "Data Collection Rules"
       }
@@ -1419,6 +1427,7 @@ module dataCollectionRule './insights/data-collection-rule/main.bicep' = {
       }
     ]
     tags: {
+      'hidden-title': 'This is visible in the resource name'
       kind: 'Windows'
       resourceType: 'Data Collection Rules'
     }
@@ -1575,6 +1584,7 @@ module dataCollectionRule './insights/data-collection-rule/main.bicep' = {
     },
     "tags": {
       "value": {
+        "hidden-title": "This is visible in the resource name",
         "kind": "Windows",
         "resourceType": "Data Collection Rules"
       }

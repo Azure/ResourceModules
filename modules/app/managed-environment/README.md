@@ -202,6 +202,7 @@ module managedEnvironment './app/managed-environment/main.bicep' = {
     skuName: 'Consumption'
     tags: {
       Env: 'test'
+      'hidden-title': 'This is visible in the resource name'
     }
   }
 }
@@ -256,7 +257,8 @@ module managedEnvironment './app/managed-environment/main.bicep' = {
     },
     "tags": {
       "value": {
-        "Env": "test"
+        "Env": "test",
+        "hidden-title": "This is visible in the resource name"
       }
     }
   }

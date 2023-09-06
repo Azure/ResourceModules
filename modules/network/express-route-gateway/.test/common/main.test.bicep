@@ -50,6 +50,7 @@ module testDeployment '../../main.bicep' = {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '${namePrefix}${serviceShort}001'
     tags: {
+      'hidden-title': 'This is visible in the resource name'
       hello: 'world'
     }
     autoScaleConfigurationBoundsMin: 2

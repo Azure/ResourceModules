@@ -53,6 +53,7 @@ module testDeployment '../../main.bicep' = {
     virtualWanId: nestedDependencies.outputs.virtualWWANResourceId
     lock: 'CanNotDelete'
     tags: {
+      'hidden-title': 'This is visible in the resource name'
       tagA: 'valueA'
       tagB: 'valueB'
     }

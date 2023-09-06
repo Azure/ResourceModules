@@ -54,6 +54,7 @@ variables:
   # --------------- #
 
   publishLatest: true # [Only for Template-Specs & Bicep Registry] Publish an absolute latest version. Note: This version may include breaking changes and is not recommended for production environments
+  useApiSpecsAlignedName: false # Publish a module not using its folder path, but the matching name in the REST API (i.e., the classic naming). For example: `bicep/modules/microsoft.keyvault.vaults.secrets` instead of `bicep/modules/key-vault.vault.secret`
 
   # Template-Spec settings #
   # ---------------------- #

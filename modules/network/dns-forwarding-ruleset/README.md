@@ -204,6 +204,7 @@ module dnsForwardingRuleset './network/dns-forwarding-ruleset/main.bicep' = {
     ]
     tags: {
       Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
     }
     vNetLinks: [
@@ -270,6 +271,7 @@ module dnsForwardingRuleset './network/dns-forwarding-ruleset/main.bicep' = {
     "tags": {
       "value": {
         "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
     },

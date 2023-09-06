@@ -250,6 +250,7 @@ module frontDoorWebApplicationFirewallPolicy './network/front-door-web-applicati
     sku: 'Premium_AzureFrontDoor'
     tags: {
       Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
     }
   }
@@ -364,6 +365,7 @@ module frontDoorWebApplicationFirewallPolicy './network/front-door-web-applicati
     "tags": {
       "value": {
         "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
     }

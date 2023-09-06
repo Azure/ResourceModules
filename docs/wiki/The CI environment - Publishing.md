@@ -1,7 +1,7 @@
 This section provides an overview of the principles the publishing is built upon, how it is set up, and how you can interact with it.
 
 - [Publishing overview](#publishing-overview)
-- [Module identifiers](#module-identifiers)
+  - [Module identifiers](#module-identifiers)
 - [How it works](#how-it-works)
   - [Example scenario](#example-scenario)
   - [Output example](#output-example)
@@ -24,27 +24,31 @@ Besides the publishing phase's runtime, there is also the possibility to set the
 
 ## Module identifiers
 
-The names of published modules differ slightly depending on the location they are published to. This is rooted in the different requirements per target location. In the following you can find the rules applied for each:
+The names of published modules differ slightly depending on the location they are published to & settings you may have configured. This is rooted in the different requirements per target location. In the following you can find the rules applied for each:
 
 <details>
 <summary>Template Specs</summary>
 
 **Actions**
 
-- Remove the root folder name `modules` from provided module reference
-- Make lowercase
-- Replace `Microsoft` with `MS`
-- Replace all `\` or `/` with `.`
-- Remove all duplications in the path. For example, the path `virtual-network/virtual-network-peering` would be shortened to `virtual-network/peering`
+The final name is different based on the `useApiSpecsAlignedName` setting in the `settings.yml` file. The main difference is, that based on the module's path, the actual resource type identifier will be fetched from the `utilities/src/apiSpecsList.json` file. Following you can find the general flow and distinct differences in either case:
+
+1. (if `useApiSpecsAlignedName` is `true`)
+   1. Recover the original API Specs reference for the module from the `utilities/src/apiSpecsList.json` file
+   1. Replace `microsoft` with `ms`
+1. Remove the root folder name `modules` from provided module reference
+1. Make lowercase
+1. Replace all `\` or `/` with `.`
+1. Remove all duplications in the path. For example, in an identifier like `virtualNetworks/virtualNetworkPeerings` we'd trim down to `virtualNetworks/peerings` to shorten the path (as there is a maximum character limit for template specs)
 
 **Examples**
 
-  - vault
-    - Before: `modules\recovery-services\vault`
-    - After: `recovery-services.vault`
-  - replication-protection-container-mapping
-    - Before: `modules\recovery-services\vault\replication-fabric\replication-protection-container\replication-protection-container-mapping`
-    - After: `recovery-services.vault.replication-fabric.replication-protection-container.mapping`
+| Module Path | `useApiSpecsAlignedName` | Result |
+| - | - | - |
+| `/recovery-services/vault` | `true` | `ms.recoveryservices.vaults` |
+| | `false` | `recovery-services.vault` |
+| `/recovery-services\vault\replication-fabric\replication-protection-container\replication-protection-container-mapping` | `true` | `ms.recoveryservices.vaults.replicationfabrics.replicationprotectioncontainers.mappings` |
+| | `false` | `recovery-services.vault.replication-fabric.replication-protection-container.mapping` |
 
 </details>
 
@@ -53,19 +57,23 @@ The names of published modules differ slightly depending on the location they ar
 
 **Actions**
 
-- Remove the root folder name `modules` from provided module reference
-- Make lowercase
-- Replace all `\` or `/` with `.`
-- Add the `bicep/modules` prefix
+The final name is different based on the `useApiSpecsAlignedName` setting in the `settings.yml` file. The main difference is, that based on the module's path, the actual resource type identifier will be fetched from the `utilities/src/apiSpecsList.json` file. Following you can find the general flow and distinct differences in either case:
+
+1. (if `useApiSpecsAlignedName` is `true`)
+   1. Recover the original API Specs reference for the module from the `utilities/src/apiSpecsList.json` file
+1. Remove the root folder name `modules` from provided module reference
+1. Make lowercase
+1. Replace all `\` or `/` with `.`
+1. Add the `bicep/modules` prefix
 
 **Examples**
 
-- vault
-   - Before: `modules\recovery-services\vault`
-   - After: `bicep/modules/recovery-services.vault`
-- replication-protection-container-mapping
-   - Before: `modules\recovery-services\vault\replication-fabric\replication-protection-container\replication-protection-container-mapping`
-   - After: `bicep/modules/recovery-services.vault.replication-fabric.replication-protection-container.replication-protection-container-mapping`
+| Module Path | `useApiSpecsAlignedName` | Result |
+| - | - | - |
+| `/recovery-services/vault` | `true` | `bicep/modules/microsoft.recoveryservices.vaults` |
+| | `false` | `bicep/modules/recovery-services.vault` |
+| `/recovery-services\vault\replication-fabric\replication-protection-container\replication-protection-container-mapping` | `true` | `bicep/modules/microsoft.recoveryservices.vaults.replicationfabrics.replicationprotectioncontainers.replicationprotectioncontainermappings` |
+| | `false` | `bicep/modules/recovery-services.vault.replication-fabric.replication-protection-container.replication-protection-container-mapping` |
 
 </details>
 
@@ -74,18 +82,23 @@ The names of published modules differ slightly depending on the location they ar
 
 **Actions**
 
-- Remove the root folder name `modules` from provided module reference
-- Make lowercase
-- Replace all `\` or `/` with `.`
+
+The final name is different based on the `useApiSpecsAlignedName` setting in the `settings.yml` file. The main difference is, that based on the module's path, the actual resource type identifier will be fetched from the `utilities/src/apiSpecsList.json` file. Following you can find the general flow and distinct differences in either case:
+
+1. (if `useApiSpecsAlignedName` is `true`)
+   1. Recover the original API Specs reference for the module from the `utilities/src/apiSpecsList.json` file
+1. Remove the root folder name `modules` from provided module reference
+1. Make lowercase
+1. Replace all `\` or `/` with `.`
 
 **Examples**
 
-- vault
-  - Before: `modules\recovery-services\vault`
-  - After: `recovery-services.vault`
-- replication-protection-container-mapping
-  - Before: `modules\recovery-services\vault\replication-fabric\replication-protection-container\replication-protection-container-mapping`
-  - After: `bicep/modules/recovery-services.vault.replication-fabric.replication-protection-container.replication-protection-container-mapping`
+| Module Path | `useApiSpecsAlignedName` | Result |
+| - | - | - |
+| `/recovery-services/vault` | `true` | `microsoft.recoveryservices.vault` |
+| | `false` | `recovery-services.vault` |
+| `/recovery-services\vault\replication-fabric\replication-protection-container\replication-protection-container-mapping` | `true` | `microsoft.recoveryservices.vault.replicationfabric.replicationprotectioncontainer.replicationprotectioncontainermapping` |
+| | `false` | `recovery-services.vault.replication-fabric.replication-protection-container.replication-protection-container-mapping` |
 
 </details>
 

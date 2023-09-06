@@ -83,10 +83,13 @@ param osDiskSizeGB int = 0
 ])
 param osDiskType string = ''
 
-@description('Optional. Specifies an OS SKU. This value must not be specified if OSType is Windows.')
+@description('Optional. Specifies the OS SKU used by the agent pool. The default is Ubuntu if OSType is Linux. The default is Windows2019 when Kubernetes <= 1.24 or Windows2022 when Kubernetes >= 1.25 if OSType is Windows.')
 @allowed([
+  'AzureLinux'
   'CBLMariner'
   'Ubuntu'
+  'Windows2019'
+  'Windows2022'
   ''
 ])
 param osSku string = ''
@@ -170,11 +173,11 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource managedCluster 'Microsoft.ContainerService/managedClusters@2023-05-02-preview' existing = {
+resource managedCluster 'Microsoft.ContainerService/managedClusters@2023-06-02-preview' existing = {
   name: managedClusterName
 }
 
-resource agentPool 'Microsoft.ContainerService/managedClusters/agentPools@2023-05-02-preview' = {
+resource agentPool 'Microsoft.ContainerService/managedClusters/agentPools@2023-06-02-preview' = {
   name: name
   parent: managedCluster
   properties: {

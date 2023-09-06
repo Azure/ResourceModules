@@ -165,6 +165,7 @@ module testDeployment '../../main.bicep' = {
         service: 'vault'
         subnetResourceId: nestedDependencies.outputs.subnetResourceId
         tags: {
+          'hidden-title': 'This is visible in the resource name'
           Environment: 'Non-Prod'
           Role: 'DeploymentValidation'
         }
@@ -201,6 +202,7 @@ module testDeployment '../../main.bicep' = {
     }
     softDeleteRetentionInDays: 7
     tags: {
+      'hidden-title': 'This is visible in the resource name'
       Environment: 'Non-Prod'
       Role: 'DeploymentValidation'
     }

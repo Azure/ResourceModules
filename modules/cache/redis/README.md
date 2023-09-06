@@ -392,6 +392,7 @@ module redis './cache/redis/main.bicep' = {
         subnetResourceId: '<subnetResourceId>'
         tags: {
           Environment: 'Non-Prod'
+          'hidden-title': 'This is visible in the resource name'
           Role: 'DeploymentValidation'
         }
       }
@@ -402,6 +403,7 @@ module redis './cache/redis/main.bicep' = {
     skuName: 'Premium'
     systemAssignedIdentity: true
     tags: {
+      'hidden-title': 'This is visible in the resource name'
       resourceType: 'Redis Cache'
     }
     zoneRedundant: true
@@ -472,6 +474,7 @@ module redis './cache/redis/main.bicep' = {
           "subnetResourceId": "<subnetResourceId>",
           "tags": {
             "Environment": "Non-Prod",
+            "hidden-title": "This is visible in the resource name",
             "Role": "DeploymentValidation"
           }
         }
@@ -494,6 +497,7 @@ module redis './cache/redis/main.bicep' = {
     },
     "tags": {
       "value": {
+        "hidden-title": "This is visible in the resource name",
         "resourceType": "Redis Cache"
       }
     },

@@ -218,6 +218,7 @@ module expressRouteCircuit './network/express-route-circuit/main.bicep' = {
     skuTier: 'Standard'
     tags: {
       Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
     }
   }
@@ -291,6 +292,7 @@ module expressRouteCircuit './network/express-route-circuit/main.bicep' = {
     "tags": {
       "value": {
         "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
     }

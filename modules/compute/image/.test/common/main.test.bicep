@@ -77,6 +77,7 @@ module testDeployment '../../main.bicep' = {
     osState: 'Generalized'
     diskSizeGB: 128
     tags: {
+      'hidden-title': 'This is visible in the resource name'
       tagA: 'You\'re it'
       tagB: 'Player'
     }

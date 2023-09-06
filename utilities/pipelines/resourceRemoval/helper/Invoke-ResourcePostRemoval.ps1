@@ -27,9 +27,9 @@ function Invoke-ResourcePostRemoval {
         [string] $Type
     )
 
-    switch ($type) {
+    switch ($Type) {
         'Microsoft.AppConfiguration/configurationStores' {
-            $subscriptionId = $resourceId.Split('/')[2]
+            $subscriptionId = $ResourceId.Split('/')[2]
             $resourceName = Split-Path $ResourceId -Leaf
 
             # Fetch service in soft-delete
@@ -38,7 +38,7 @@ function Invoke-ResourcePostRemoval {
                 Method = 'GET'
                 Path   = $getPath
             }
-            $softDeletedConfigurationStore = ((Invoke-AzRestMethod @getRequestInputObject).Content | ConvertFrom-Json).value | Where-Object { $_.properties.configurationStoreId -eq $resourceId }
+            $softDeletedConfigurationStore = ((Invoke-AzRestMethod @getRequestInputObject).Content | ConvertFrom-Json).value | Where-Object { $_.properties.configurationStoreId -eq $ResourceId }
 
             if ($softDeletedConfigurationStore) {
                 # Purge service
@@ -47,6 +47,7 @@ function Invoke-ResourcePostRemoval {
                     Method = 'POST'
                     Path   = $purgePath
                 }
+                Write-Verbose ('[*] Purging resource [{0}] of type [{1}]' -f $resourceName, $Type) -Verbose
                 if ($PSCmdlet.ShouldProcess(('App Configuration Store with ID [{0}]' -f $softDeletedConfigurationStore.properties.configurationStoreId), 'Purge')) {
                     $response = Invoke-AzRestMethod @purgeRequestInputObject
                     if ($response.StatusCode -ne 200) {
@@ -61,7 +62,7 @@ function Invoke-ResourcePostRemoval {
 
             $matchingKeyVault = Get-AzKeyVault -InRemovedState | Where-Object { $_.resourceId -eq $ResourceId }
             if ($matchingKeyVault -and -not $matchingKeyVault.EnablePurgeProtection) {
-                Write-Verbose ("Purging key vault [$resourceName]") -Verbose
+                Write-Verbose ('[*] Purging resource [{0}] of type [{1}]' -f $resourceName, $Type) -Verbose
                 if ($PSCmdlet.ShouldProcess(('Key Vault with ID [{0}]' -f $matchingKeyVault.Id), 'Purge')) {
                     try {
                         $null = Remove-AzKeyVault -ResourceId $matchingKeyVault.Id -InRemovedState -Force -Location $matchingKeyVault.Location -ErrorAction 'Stop'
@@ -77,11 +78,12 @@ function Invoke-ResourcePostRemoval {
             break
         }
         'Microsoft.CognitiveServices/accounts' {
-            $resourceGroupName = $resourceId.Split('/')[4]
+            $resourceGroupName = $ResourceId.Split('/')[4]
             $resourceName = Split-Path $ResourceId -Leaf
 
             $matchingAccount = Get-AzCognitiveServicesAccount -InRemovedState | Where-Object { $_.AccountName -eq $resourceName }
             if ($matchingAccount) {
+                Write-Verbose ('[*] Purging resource [{0}] of type [{1}]' -f $resourceName, $Type) -Verbose
                 if ($PSCmdlet.ShouldProcess(('Cognitive services account with ID [{0}]' -f $matchingAccount.Id), 'Purge')) {
                     $null = Remove-AzCognitiveServicesAccount -InRemovedState -Force -Location $matchingAccount.Location -ResourceGroupName $resourceGroupName -Name $matchingAccount.AccountName
                 }
@@ -89,7 +91,7 @@ function Invoke-ResourcePostRemoval {
             break
         }
         'Microsoft.ApiManagement/service' {
-            $subscriptionId = $resourceId.Split('/')[2]
+            $subscriptionId = $ResourceId.Split('/')[2]
             $resourceName = Split-Path $ResourceId -Leaf
 
             # Fetch service in soft-delete
@@ -98,7 +100,7 @@ function Invoke-ResourcePostRemoval {
                 Method = 'GET'
                 Path   = $getPath
             }
-            $softDeletedService = ((Invoke-AzRestMethod @getRequestInputObject).Content | ConvertFrom-Json).value | Where-Object { $_.properties.serviceId -eq $resourceId }
+            $softDeletedService = ((Invoke-AzRestMethod @getRequestInputObject).Content | ConvertFrom-Json).value | Where-Object { $_.properties.serviceId -eq $ResourceId }
 
             if ($softDeletedService) {
                 # Purge service
@@ -107,6 +109,7 @@ function Invoke-ResourcePostRemoval {
                     Method = 'DELETE'
                     Path   = $purgePath
                 }
+                Write-Verbose ('[*] Purging resource [{0}] of type [{1}]' -f $resourceName, $Type) -Verbose
                 if ($PSCmdlet.ShouldProcess(('API management service with ID [{0}]' -f $softDeletedService.properties.serviceId), 'Purge')) {
                     $null = Invoke-AzRestMethod @purgeRequestInputObject
                 }
@@ -116,7 +119,7 @@ function Invoke-ResourcePostRemoval {
         'Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers/protectedItems' {
             # Remove protected VM
             # Required if e.g. a VM was listed in an RSV and only that VM is removed
-            $vaultId = $resourceId.split('/backupFabrics/')[0]
+            $vaultId = $ResourceId.split('/backupFabrics/')[0]
             $resourceName = Split-Path $ResourceId -Leaf
             $softDeleteStatus = (Get-AzRecoveryServicesVaultProperty -VaultId $vaultId).SoftDeleteFeatureState
             if ($softDeleteStatus -ne 'Disabled') {
@@ -132,7 +135,7 @@ function Invoke-ResourcePostRemoval {
                 Name                 = $resourceName
             }
             if ($backupItem = Get-AzRecoveryServicesBackupItem @backupItemInputObject -ErrorAction 'SilentlyContinue') {
-                Write-Verbose ('Removing Backup item [{0}] from RSV [{1}]' -f $backupItem.Name, $vaultId) -Verbose
+                Write-Verbose ('    [-] Removing Backup item [{0}] from RSV [{1}]' -f $backupItem.Name, $vaultId) -Verbose
 
                 if ($backupItem.DeleteState -eq 'ToBeDeleted') {
                     if ($PSCmdlet.ShouldProcess('Soft-deleted backup data removal', 'Undo')) {

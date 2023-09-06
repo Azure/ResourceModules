@@ -26,11 +26,11 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource backupVault 'Microsoft.DataProtection/backupVaults@2022-11-01-preview' existing = {
+resource backupVault 'Microsoft.DataProtection/backupVaults@2023-05-01' existing = {
   name: backupVaultName
 }
 
-resource backupPolicy 'Microsoft.DataProtection/backupVaults/backupPolicies@2022-11-01-preview' = {
+resource backupPolicy 'Microsoft.DataProtection/backupVaults/backupPolicies@2023-05-01' = {
   name: name
   parent: backupVault
   properties: properties
