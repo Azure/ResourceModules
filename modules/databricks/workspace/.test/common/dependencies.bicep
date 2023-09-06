@@ -245,7 +245,7 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
             {
                 name: 'defaultSubnet'
                 properties: {
-                    addressPrefix: defaultAddressPrefix
+                    addressPrefix: cidrSubnet(addressPrefix, 16, 0)
                 }
             }
             {
