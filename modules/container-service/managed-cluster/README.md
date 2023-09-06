@@ -53,16 +53,7 @@ This module deploys an Azure Kubernetes Service (AKS) Managed Cluster.
 | `agentPools` | array | `[]` |  | Define one or more secondary/additional agent pools. |
 | `aksClusterAdminUsername` | string | `'azureuser'` |  | Specifies the administrator username of Linux virtual machines. |
 | `aksClusterDnsPrefix` | string | `[parameters('name')]` |  | Specifies the DNS prefix specified when creating the managed cluster. |
-| `aksClusterDnsServiceIP` | string | `''` |  | Specifies the IP address assigned to the Kubernetes DNS service. It must be within the Kubernetes service address range specified in serviceCidr. |
 | `aksClusterKubernetesVersion` | string | `''` |  | Version of Kubernetes specified when creating the managed cluster. |
-| `aksClusterLoadBalancerSku` | string | `'standard'` | `[basic, standard]` | Specifies the sku of the load balancer used by the virtual machine scale sets used by nodepools. |
-| `aksClusterNetworkDataplane` | string | `''` | `['', azure, cilium]` | Network dataplane used in the Kubernetes cluster. Not compatible with kubenet network plugin. |
-| `aksClusterNetworkPlugin` | string | `''` | `['', azure, kubenet]` | Specifies the network plugin used for building Kubernetes network. |
-| `aksClusterNetworkPluginMode` | string | `''` | `['', overlay]` | Network plugin mode used for building the Kubernetes network. Not compatible with kubenet network plugin. |
-| `aksClusterNetworkPolicy` | string | `''` | `['', azure, calico]` | Specifies the network policy used for building Kubernetes network. - calico or azure. |
-| `aksClusterOutboundType` | string | `'loadBalancer'` | `[loadBalancer, userDefinedRouting]` | Specifies outbound (egress) routing method. - loadBalancer or userDefinedRouting. |
-| `aksClusterPodCidr` | string | `''` |  | Specifies the CIDR notation IP range from which to assign pod IPs when kubenet is used. |
-| `aksClusterServiceCidr` | string | `''` |  | A CIDR notation IP range from which to assign service cluster IPs. It must not overlap with any Subnet IP ranges. |
 | `aksClusterSkuTier` | string | `'Free'` | `[Free, Premium, Standard]` | Tier of a managed cluster SKU. - Free or Standard. |
 | `aksClusterSshPublicKey` | string | `''` |  | Specifies the SSH RSA public key string for the Linux nodes. |
 | `authorizedIPRanges` | array | `[]` |  | IP ranges are specified in CIDR format, e.g. 137.117.106.88/29. This feature is not compatible with clusters that use Public IP Per Node, or clusters that are using a Basic Load Balancer. |
@@ -96,6 +87,7 @@ This module deploys an Azure Kubernetes Service (AKS) Managed Cluster.
 | `disableLocalAccounts` | bool | `False` |  | If set to true, getting static credentials will be disabled for this cluster. This must only be used on Managed Clusters that are AAD enabled. |
 | `disableRunCommand` | bool | `False` |  | Whether to disable run command for the cluster or not. |
 | `diskEncryptionSetID` | string | `''` |  | The resource ID of the disc encryption set to apply to the cluster. For security reasons, this value should be provided. |
+| `dnsServiceIP` | string | `''` |  | Specifies the IP address assigned to the Kubernetes DNS service. It must be within the Kubernetes service address range specified in serviceCidr. |
 | `dnsZoneResourceId` | string | `''` |  | Specifies the resource ID of connected DNS zone. It will be ignored if `webApplicationRoutingEnabled` is set to `false`. |
 | `enableAzureDefender` | bool | `False` |  | Whether to enable Azure Defender. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
@@ -119,19 +111,27 @@ This module deploys an Azure Kubernetes Service (AKS) Managed Cluster.
 | `identityProfile` | object | `{object}` |  | Identities associated with the cluster. |
 | `ingressApplicationGatewayEnabled` | bool | `False` |  | Specifies whether the ingressApplicationGateway (AGIC) add-on is enabled or not. |
 | `kubeDashboardEnabled` | bool | `False` |  | Specifies whether the kubeDashboard add-on is enabled or not. |
+| `loadBalancerSku` | string | `'standard'` | `[basic, standard]` | Specifies the sku of the load balancer used by the virtual machine scale sets used by nodepools. |
 | `location` | string | `[resourceGroup().location]` |  | Specifies the location of AKS cluster. It picks up Resource Group's location by default. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `managedOutboundIPCount` | int | `0` |  | Outbound IP Count for the Load balancer. |
 | `monitoringWorkspaceId` | string | `''` |  | Resource ID of the monitoring log analytics workspace. |
+| `networkDataplane` | string | `''` | `['', azure, cilium]` | Network dataplane used in the Kubernetes cluster. Not compatible with kubenet network plugin. |
+| `networkPlugin` | string | `''` | `['', azure, kubenet]` | Specifies the network plugin used for building Kubernetes network. |
+| `networkPluginMode` | string | `''` | `['', overlay]` | Network plugin mode used for building the Kubernetes network. Not compatible with kubenet network plugin. |
+| `networkPolicy` | string | `''` | `['', azure, calico]` | Specifies the network policy used for building Kubernetes network. - calico or azure. |
 | `nodeResourceGroup` | string | `[format('{0}_aks_{1}_nodes', resourceGroup().name, parameters('name'))]` |  | Name of the resource group containing agent pool nodes. |
 | `omsAgentEnabled` | bool | `True` |  | Specifies whether the OMS agent is enabled. |
 | `openServiceMeshEnabled` | bool | `False` |  | Specifies whether the openServiceMesh add-on is enabled or not. |
+| `outboundType` | string | `'loadBalancer'` | `[loadBalancer, userDefinedRouting]` | Specifies outbound (egress) routing method. - loadBalancer or userDefinedRouting. |
+| `podCidr` | string | `''` |  | Specifies the CIDR notation IP range from which to assign pod IPs when kubenet is used. |
 | `podIdentityProfileAllowNetworkPluginKubenet` | bool | `False` |  | Running in Kubenet is disabled by default due to the security related nature of AAD Pod Identity and the risks of IP spoofing. |
 | `podIdentityProfileEnable` | bool | `False` |  | Whether the pod identity addon is enabled. |
 | `podIdentityProfileUserAssignedIdentities` | array | `[]` |  | The pod identities to use in the cluster. |
 | `podIdentityProfileUserAssignedIdentityExceptions` | array | `[]` |  | The pod identity exceptions to allow. |
 | `privateDNSZone` | string | `''` |  | Private DNS Zone configuration. Set to 'system' and AKS will create a private DNS zone in the node resource group. Set to '' to disable private DNS Zone creation and use public DNS. Supply the resource ID here of an existing Private DNS zone to use an existing zone. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| `serviceCidr` | string | `''` |  | A CIDR notation IP range from which to assign service cluster IPs. It must not overlap with any Subnet IP ranges. |
 | `supportPlan` | string | `'KubernetesOfficial'` | `[AKSLongTermSupport, KubernetesOfficial]` | The support plan for the Managed Cluster. |
 | `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
@@ -537,9 +537,6 @@ module managedCluster './container-service/managed-cluster/main.bicep' = {
         vnetSubnetID: '<vnetSubnetID>'
       }
     ]
-    aksClusterNetworkDataplane: 'azure'
-    aksClusterNetworkPlugin: 'azure'
-    aksClusterNetworkPluginMode: 'overlay'
     autoUpgradeProfileUpgradeChannel: 'stable'
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
@@ -615,6 +612,9 @@ module managedCluster './container-service/managed-cluster/main.bicep' = {
       }
     }
     lock: 'CanNotDelete'
+    networkDataplane: 'azure'
+    networkPlugin: 'azure'
+    networkPluginMode: 'overlay'
     openServiceMeshEnabled: true
     roleAssignments: [
       {
@@ -732,15 +732,6 @@ module managedCluster './container-service/managed-cluster/main.bicep' = {
         }
       ]
     },
-    "aksClusterNetworkDataplane": {
-      "value": "azure"
-    },
-    "aksClusterNetworkPlugin": {
-      "value": "azure"
-    },
-    "aksClusterNetworkPluginMode": {
-      "value": "overlay"
-    },
     "autoUpgradeProfileUpgradeChannel": {
       "value": "stable"
     },
@@ -847,6 +838,15 @@ module managedCluster './container-service/managed-cluster/main.bicep' = {
     },
     "lock": {
       "value": "CanNotDelete"
+    },
+    "networkDataplane": {
+      "value": "azure"
+    },
+    "networkPlugin": {
+      "value": "azure"
+    },
+    "networkPluginMode": {
+      "value": "overlay"
     },
     "openServiceMeshEnabled": {
       "value": true
@@ -964,12 +964,12 @@ module managedCluster './container-service/managed-cluster/main.bicep' = {
         vmSize: 'Standard_DS2_v2'
       }
     ]
-    aksClusterNetworkPlugin: 'kubenet'
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    networkPlugin: 'kubenet'
     roleAssignments: [
       {
         principalIds: [
@@ -1082,9 +1082,6 @@ module managedCluster './container-service/managed-cluster/main.bicep' = {
         }
       ]
     },
-    "aksClusterNetworkPlugin": {
-      "value": "kubenet"
-    },
     "diagnosticEventHubAuthorizationRuleId": {
       "value": "<diagnosticEventHubAuthorizationRuleId>"
     },
@@ -1099,6 +1096,9 @@ module managedCluster './container-service/managed-cluster/main.bicep' = {
     },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
+    },
+    "networkPlugin": {
+      "value": "kubenet"
     },
     "roleAssignments": {
       "value": [
@@ -1282,17 +1282,17 @@ module managedCluster './container-service/managed-cluster/main.bicep' = {
         vmSize: 'Standard_DS2_v2'
       }
     ]
-    aksClusterDnsServiceIP: '10.10.200.10'
-    aksClusterNetworkPlugin: 'azure'
-    aksClusterServiceCidr: '10.10.200.0/24'
     aksClusterSkuTier: 'Standard'
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    dnsServiceIP: '10.10.200.10'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     enablePrivateCluster: true
+    networkPlugin: 'azure'
     privateDNSZone: '<privateDNSZone>'
+    serviceCidr: '10.10.200.0/24'
     tags: {
       Environment: 'Non-Prod'
       'hidden-title': 'This is visible in the resource name'
@@ -1398,15 +1398,6 @@ module managedCluster './container-service/managed-cluster/main.bicep' = {
         }
       ]
     },
-    "aksClusterDnsServiceIP": {
-      "value": "10.10.200.10"
-    },
-    "aksClusterNetworkPlugin": {
-      "value": "azure"
-    },
-    "aksClusterServiceCidr": {
-      "value": "10.10.200.0/24"
-    },
     "aksClusterSkuTier": {
       "value": "Standard"
     },
@@ -1422,14 +1413,23 @@ module managedCluster './container-service/managed-cluster/main.bicep' = {
     "diagnosticWorkspaceId": {
       "value": "<diagnosticWorkspaceId>"
     },
+    "dnsServiceIP": {
+      "value": "10.10.200.10"
+    },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     },
     "enablePrivateCluster": {
       "value": true
     },
+    "networkPlugin": {
+      "value": "azure"
+    },
     "privateDNSZone": {
       "value": "<privateDNSZone>"
+    },
+    "serviceCidr": {
+      "value": "10.10.200.0/24"
     },
     "tags": {
       "value": {

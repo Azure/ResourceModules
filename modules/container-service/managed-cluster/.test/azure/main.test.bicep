@@ -150,9 +150,9 @@ module testDeployment '../../main.bicep' = {
     autoUpgradeProfileUpgradeChannel: 'stable'
     enableWorkloadIdentity: true
     enableOidcIssuerProfile: true
-    aksClusterNetworkPlugin: 'azure'
-    aksClusterNetworkDataplane: 'azure'
-    aksClusterNetworkPluginMode: 'overlay'
+    networkPlugin: 'azure'
+    networkDataplane: 'azure'
+    networkPluginMode: 'overlay'
     diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
     diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
     diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId

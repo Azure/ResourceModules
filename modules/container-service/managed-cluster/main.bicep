@@ -23,7 +23,7 @@ param userAssignedIdentities object = {}
   'azure'
   'cilium'
 ])
-param aksClusterNetworkDataplane string = ''
+param networkDataplane string = ''
 
 @description('Optional. Specifies the network plugin used for building Kubernetes network.')
 @allowed([
@@ -31,14 +31,14 @@ param aksClusterNetworkDataplane string = ''
   'azure'
   'kubenet'
 ])
-param aksClusterNetworkPlugin string = ''
+param networkPlugin string = ''
 
 @description('Optional. Network plugin mode used for building the Kubernetes network. Not compatible with kubenet network plugin.')
 @allowed([
   ''
   'overlay'
 ])
-param aksClusterNetworkPluginMode string = ''
+param networkPluginMode string = ''
 
 @description('Optional. Specifies the network policy used for building Kubernetes network. - calico or azure.')
 @allowed([
@@ -46,23 +46,23 @@ param aksClusterNetworkPluginMode string = ''
   'azure'
   'calico'
 ])
-param aksClusterNetworkPolicy string = ''
+param networkPolicy string = ''
 
 @description('Optional. Specifies the CIDR notation IP range from which to assign pod IPs when kubenet is used.')
-param aksClusterPodCidr string = ''
+param podCidr string = ''
 
 @description('Optional. A CIDR notation IP range from which to assign service cluster IPs. It must not overlap with any Subnet IP ranges.')
-param aksClusterServiceCidr string = ''
+param serviceCidr string = ''
 
 @description('Optional. Specifies the IP address assigned to the Kubernetes DNS service. It must be within the Kubernetes service address range specified in serviceCidr.')
-param aksClusterDnsServiceIP string = ''
+param dnsServiceIP string = ''
 
 @description('Optional. Specifies the sku of the load balancer used by the virtual machine scale sets used by nodepools.')
 @allowed([
   'basic'
   'standard'
 ])
-param aksClusterLoadBalancerSku string = 'standard'
+param loadBalancerSku string = 'standard'
 
 @description('Optional. Outbound IP Count for the Load balancer.')
 param managedOutboundIPCount int = 0
@@ -72,7 +72,7 @@ param managedOutboundIPCount int = 0
   'loadBalancer'
   'userDefinedRouting'
 ])
-param aksClusterOutboundType string = 'loadBalancer'
+param outboundType string = 'loadBalancer'
 
 @description('Optional. Tier of a managed cluster SKU. - Free or Standard.')
 @allowed([
@@ -467,6 +467,12 @@ resource managedCluster 'Microsoft.ContainerService/managedClusters@2023-06-02-p
     agentPoolProfiles: primaryAgentPoolProfile
     linuxProfile: (empty(aksClusterSshPublicKey) ? null : aksClusterLinuxProfile)
     servicePrincipalProfile: (empty(aksServicePrincipalProfile) ? null : aksServicePrincipalProfile)
+    ingressProfile: {
+      webAppRouting: {
+        enabled: webApplicationRoutingEnabled
+        dnsZoneResourceId: !empty(dnsZoneResourceId) ? any(dnsZoneResourceId) : null
+      }
+    }
     addonProfiles: {
       httpApplicationRouting: {
         enabled: httpApplicationRoutingEnabled
@@ -515,15 +521,15 @@ resource managedCluster 'Microsoft.ContainerService/managedClusters@2023-06-02-p
     nodeResourceGroup: nodeResourceGroup
     enablePodSecurityPolicy: enablePodSecurityPolicy
     networkProfile: {
-      networkDataplane: !empty(aksClusterNetworkDataplane) ? any(aksClusterNetworkDataplane) : null
-      networkPlugin: !empty(aksClusterNetworkPlugin) ? any(aksClusterNetworkPlugin) : null
-      networkPluginMode: !empty(aksClusterNetworkPluginMode) ? any(aksClusterNetworkPluginMode) : null
-      networkPolicy: !empty(aksClusterNetworkPolicy) ? any(aksClusterNetworkPolicy) : null
-      podCidr: !empty(aksClusterPodCidr) ? aksClusterPodCidr : null
-      serviceCidr: !empty(aksClusterServiceCidr) ? aksClusterServiceCidr : null
-      dnsServiceIP: !empty(aksClusterDnsServiceIP) ? aksClusterDnsServiceIP : null
-      outboundType: aksClusterOutboundType
-      loadBalancerSku: aksClusterLoadBalancerSku
+      networkDataplane: !empty(networkDataplane) ? any(networkDataplane) : null
+      networkPlugin: !empty(networkPlugin) ? any(networkPlugin) : null
+      networkPluginMode: !empty(networkPluginMode) ? any(networkPluginMode) : null
+      networkPolicy: !empty(networkPolicy) ? any(networkPolicy) : null
+      podCidr: !empty(podCidr) ? podCidr : null
+      serviceCidr: !empty(serviceCidr) ? serviceCidr : null
+      dnsServiceIP: !empty(dnsServiceIP) ? dnsServiceIP : null
+      outboundType: outboundType
+      loadBalancerSku: loadBalancerSku
       loadBalancerProfile: managedOutboundIPCount != 0 ? lbProfile : null
     }
     aadProfile: {
