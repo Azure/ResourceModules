@@ -153,7 +153,7 @@ module testDeployment '../../main.bicep' = {
             nestedDependencies.outputs.privateDNSZoneResourceId
           ]
         }
-        service: 'application gateway'
+        service: 'public'
         subnetResourceId: nestedDependencies.outputs.privateLinkSubnetResourceId
         tags: {
           Environment: 'Non-Prod'

@@ -541,7 +541,7 @@ module applicationGateway './network/application-gateway/main.bicep' = {
             '<privateDNSZoneResourceId>'
           ]
         }
-        service: 'application gateway'
+        service: 'public'
         subnetResourceId: '<subnetResourceId>'
         tags: {
           Environment: 'Non-Prod'
@@ -1000,7 +1000,7 @@ module applicationGateway './network/application-gateway/main.bicep' = {
               "<privateDNSZoneResourceId>"
             ]
           },
-          "service": "application gateway",
+          "service": "public",
           "subnetResourceId": "<subnetResourceId>",
           "tags": {
             "Environment": "Non-Prod",
