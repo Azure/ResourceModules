@@ -31,14 +31,14 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2023-04-01' = {
       {
         name: 'defaultSubnet'
         properties: {
-          addressPrefix: cidrSubnet('10.0.0.0/24'
+          addressPrefix: cidrSubnet(addressPrefix, 24, 0)
         }
       }
       {
         name: 'privateLinkSubnet'
         properties:{
-          addressPrefix: '10.0.1.0/24'
-          privateLinkServiceNetworkPolicies: 'Disabled', 16, 0)
+          addressPrefix: cidrSubnet(addressPrefix, 24, 1)
+          privateLinkServiceNetworkPolicies: 'Disabled'
         }
       }
     ]
