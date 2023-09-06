@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.14.85.62628",
-      "templateHash": "18428754366188428160"
+      "version": "0.20.4.51522",
+      "templateHash": "17986575755601642852"
     },
     "name": "Network Application Gateways",
     "description": "This module deploys a Network Application Gateway.",
@@ -149,7 +149,7 @@
       "type": "array",
       "defaultValue": [],
       "metadata": {
-        "description": "Optional. Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. Note, requires the 'sku' to be 'Standard'."
+        "description": "Optional. Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible."
       }
     },
     "privateLinkConfigurations": {
@@ -206,8 +206,8 @@
     "capacity": {
       "type": "int",
       "defaultValue": 2,
-      "maxValue": 10,
       "minValue": 1,
+      "maxValue": 10,
       "metadata": {
         "description": "Optional. The number of Application instances to be configured."
       }
@@ -407,14 +407,14 @@
     "lock": {
       "type": "string",
       "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Specify the type of lock."
-      },
       "allowedValues": [
         "",
         "CanNotDelete",
         "ReadOnly"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Specify the type of lock."
+      }
     },
     "roleAssignments": {
       "type": "array",
@@ -547,7 +547,7 @@
         "count": "[length(parameters('privateEndpoints'))]"
       },
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2020-10-01",
+      "apiVersion": "2022-09-01",
       "name": "[format('{0}-ApplicationGateway-PrivateEndpoint-{1}', uniqueString(deployment().name, parameters('location')), copyIndex())]",
       "properties": {
         "expressionEvaluationOptions": {
@@ -589,9 +589,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.14.85.62628",
-              "templateHash": "9385541552726653187"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "13560297539192628062"
+            },
+            "name": "Private Endpoints",
+            "description": "This module deploys a Private Endpoint.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "name": {
@@ -656,14 +659,14 @@
             "lock": {
               "type": "string",
               "defaultValue": "",
-              "metadata": {
-                "description": "Optional. Specify the type of lock."
-              },
               "allowedValues": [
                 "",
                 "CanNotDelete",
                 "ReadOnly"
-              ]
+              ],
+              "metadata": {
+                "description": "Optional. Specify the type of lock."
+              }
             },
             "roleAssignments": {
               "type": "array",
@@ -762,7 +765,7 @@
             {
               "condition": "[not(empty(parameters('privateDnsZoneGroup')))]",
               "type": "Microsoft.Resources/deployments",
-              "apiVersion": "2020-10-01",
+              "apiVersion": "2022-09-01",
               "name": "[format('{0}-PrivateEndpoint-PrivateDnsZoneGroup', uniqueString(deployment().name, parameters('location')))]",
               "properties": {
                 "expressionEvaluationOptions": {
@@ -786,9 +789,12 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.14.85.62628",
-                      "templateHash": "4374997643062731765"
-                    }
+                      "version": "0.20.4.51522",
+                      "templateHash": "17831763001460207830"
+                    },
+                    "name": "Private Endpoint Private DNS Zone Groups",
+                    "description": "This module deploys a Private Endpoint Private DNS Zone Group.",
+                    "owner": "Azure/module-maintainers"
                   },
                   "parameters": {
                     "privateEndpointName": {
@@ -799,8 +805,8 @@
                     },
                     "privateDNSResourceIds": {
                       "type": "array",
-                      "maxLength": 5,
                       "minLength": 1,
+                      "maxLength": 5,
                       "metadata": {
                         "description": "Required. Array of private DNS zone resource IDs. A DNS zone group can support up to 5 DNS zones."
                       }
@@ -861,24 +867,24 @@
                   "outputs": {
                     "name": {
                       "type": "string",
-                      "value": "[parameters('name')]",
                       "metadata": {
                         "description": "The name of the private endpoint DNS zone group."
-                      }
+                      },
+                      "value": "[parameters('name')]"
                     },
                     "resourceId": {
                       "type": "string",
-                      "value": "[resourceId('Microsoft.Network/privateEndpoints/privateDnsZoneGroups', parameters('privateEndpointName'), parameters('name'))]",
                       "metadata": {
                         "description": "The resource ID of the private endpoint DNS zone group."
-                      }
+                      },
+                      "value": "[resourceId('Microsoft.Network/privateEndpoints/privateDnsZoneGroups', parameters('privateEndpointName'), parameters('name'))]"
                     },
                     "resourceGroupName": {
                       "type": "string",
-                      "value": "[resourceGroup().name]",
                       "metadata": {
                         "description": "The resource group the private endpoint DNS zone group was deployed into."
-                      }
+                      },
+                      "value": "[resourceGroup().name]"
                     }
                   }
                 }
@@ -893,7 +899,7 @@
                 "count": "[length(parameters('roleAssignments'))]"
               },
               "type": "Microsoft.Resources/deployments",
-              "apiVersion": "2020-10-01",
+              "apiVersion": "2022-09-01",
               "name": "[format('{0}-PrivateEndpoint-Rbac-{1}', uniqueString(deployment().name, parameters('location')), copyIndex())]",
               "properties": {
                 "expressionEvaluationOptions": {
@@ -921,8 +927,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.14.85.62628",
-                      "templateHash": "8979338004540534697"
+                      "version": "0.20.4.51522",
+                      "templateHash": "11548486149222715894"
                     }
                   },
                   "parameters": {
@@ -1068,31 +1074,31 @@
           "outputs": {
             "resourceGroupName": {
               "type": "string",
-              "value": "[resourceGroup().name]",
               "metadata": {
                 "description": "The resource group the private endpoint was deployed into."
-              }
+              },
+              "value": "[resourceGroup().name]"
             },
             "resourceId": {
               "type": "string",
-              "value": "[resourceId('Microsoft.Network/privateEndpoints', parameters('name'))]",
               "metadata": {
                 "description": "The resource ID of the private endpoint."
-              }
+              },
+              "value": "[resourceId('Microsoft.Network/privateEndpoints', parameters('name'))]"
             },
             "name": {
               "type": "string",
-              "value": "[parameters('name')]",
               "metadata": {
                 "description": "The name of the private endpoint."
-              }
+              },
+              "value": "[parameters('name')]"
             },
             "location": {
               "type": "string",
-              "value": "[reference(resourceId('Microsoft.Network/privateEndpoints', parameters('name')), '2023-04-01', 'full').location]",
               "metadata": {
                 "description": "The location the resource was deployed into."
-              }
+              },
+              "value": "[reference(resourceId('Microsoft.Network/privateEndpoints', parameters('name')), '2023-04-01', 'full').location]"
             }
           }
         }
@@ -1107,7 +1113,7 @@
         "count": "[length(parameters('roleAssignments'))]"
       },
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2020-10-01",
+      "apiVersion": "2022-09-01",
       "name": "[format('{0}-AppGateway-Rbac-{1}', uniqueString(deployment().name, parameters('location')), copyIndex())]",
       "properties": {
         "expressionEvaluationOptions": {
@@ -1135,8 +1141,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.14.85.62628",
-              "templateHash": "226980693899509170"
+              "version": "0.20.4.51522",
+              "templateHash": "12763064958980402840"
             }
           },
           "parameters": {
@@ -1282,31 +1288,31 @@
   "outputs": {
     "name": {
       "type": "string",
-      "value": "[parameters('name')]",
       "metadata": {
         "description": "The name of the application gateway."
-      }
+      },
+      "value": "[parameters('name')]"
     },
     "resourceId": {
       "type": "string",
-      "value": "[resourceId('Microsoft.Network/applicationGateways', parameters('name'))]",
       "metadata": {
         "description": "The resource ID of the application gateway."
-      }
+      },
+      "value": "[resourceId('Microsoft.Network/applicationGateways', parameters('name'))]"
     },
     "resourceGroupName": {
       "type": "string",
-      "value": "[resourceGroup().name]",
       "metadata": {
         "description": "The resource group the application gateway was deployed into."
-      }
+      },
+      "value": "[resourceGroup().name]"
     },
     "location": {
       "type": "string",
-      "value": "[reference(resourceId('Microsoft.Network/applicationGateways', parameters('name')), '2023-04-01', 'full').location]",
       "metadata": {
         "description": "The location the resource was deployed into."
-      }
+      },
+      "value": "[reference(resourceId('Microsoft.Network/applicationGateways', parameters('name')), '2023-04-01', 'full').location]"
     }
   }
 }

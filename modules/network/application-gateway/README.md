@@ -62,7 +62,7 @@ This module deploys a Network Application Gateway.
 | `loadDistributionPolicies` | array | `[]` |  | Load distribution policies of the application gateway resource. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
-| `privateEndpoints` | array | `[]` |  | Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. Note, requires the 'sku' to be 'Standard'. |
+| `privateEndpoints` | array | `[]` |  | Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
 | `privateLinkConfigurations` | array | `[]` |  | PrivateLink configurations on application gateway. |
 | `probes` | array | `[]` |  | Probes of the application gateway resource. |
 | `redirectConfigurations` | array | `[]` |  | Redirect configurations of the application gateway resource. |
