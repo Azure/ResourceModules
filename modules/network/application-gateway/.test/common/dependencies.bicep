@@ -35,7 +35,7 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2023-04-01' = {
         }
       }
       {
-        name: 'subnet02'
+        name: 'privateLinkSubnet'
         properties:{
           addressPrefix: '10.0.1.0/24'
           privateLinkServiceNetworkPolicies: 'Disabled'
