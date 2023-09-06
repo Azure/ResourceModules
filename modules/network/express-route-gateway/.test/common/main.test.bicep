@@ -57,6 +57,7 @@ module testDeployment '../../main.bicep' = {
     autoScaleConfigurationBoundsMin: 2
     autoScaleConfigurationBoundsMax: 3
     virtualHubId: nestedDependencies.outputs.virtualHubResourceId
+    lock: 'CanNotDelete'
     roleAssignments: [
       {
         roleDefinitionIdOrName: 'Reader'

@@ -32,6 +32,14 @@ param roleAssignments array = []
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
+@allowed([
+  ''
+  'CanNotDelete'
+  'ReadOnly'
+])
+@description('Optional. Specify the type of lock.')
+param lock string = ''
+
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
   properties: {
@@ -61,6 +69,15 @@ resource expressRouteGateway 'Microsoft.Network/expressRouteGateways@2023-04-01'
       id: virtualHubId
     }
   }
+}
+
+resource expressRouteGateway_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
+  name: '${expressRouteGateway.name}-${lock}-lock'
+  properties: {
+    level: any(lock)
+    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+  }
+  scope: expressRouteGateway
 }
 
 module expressRouteGateway_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
