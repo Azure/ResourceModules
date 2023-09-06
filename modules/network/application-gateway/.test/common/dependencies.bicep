@@ -127,7 +127,7 @@ resource certDeploymentScript 'Microsoft.Resources/deploymentScripts@2020-10-01'
 @description('The resource ID of the created Virtual Network default subnet.')
 output defaultSubnetResourceId string = virtualNetwork.properties.subnets[0].id
 
-@description('The resource ID of the created Virtual Network default subnet.')
+@description('The resource ID of the created Virtual Network private link subnet.')
 output privateLinkSubnetResourceId string = virtualNetwork.properties.subnets[1].id
 
 @description('The resource ID of the created Public IP.')
