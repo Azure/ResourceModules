@@ -199,10 +199,20 @@ The primary pipeline settings file ([`settings.yml`](https://github.com/Azure/Re
 </details>
 
 <details>
+<summary>General (publishing)</summary>
+
+| Variable Name | Example Value | Description |
+| - | - | - |
+| `useApiSpecsAlignedName` | `'false'` |  Publish a module not using its folder path, but the matching name in the REST API (i.e., the classic naming). For example: `bicep/modules/microsoft.keyvault.vaults.secrets` instead of `bicep/modules/key-vault.vault.secret`. For more information, please refer to the [Publishing guidelines](./The%20CI%20environment%20-%20Publishing#Module-identifiers). |
+
+</details>
+
+<details>
 <summary>Template-specs specific (publishing)</summary>
 
 | Variable Name | Example Value | Description |
 | - | - | - |
+| `publishLatest` | `'true'` |  Publish an absolute latest version. Note: This version may include breaking changes and is not recommended for production environments. |
 | `templateSpecsRGName` | `"artifacts-rg"` | The resource group to host the created template-specs. |
 | `templateSpecsRGLocation` | `"WestEurope"` | The location of the resource group to host the template-specs. Is used to create a new resource group if not yet existing. |
 | `templateSpecsDescription` | `"This is a module from the [Common Azure Resource Modules Library]"` | A description to add to the published template specs. |
@@ -215,6 +225,7 @@ The primary pipeline settings file ([`settings.yml`](https://github.com/Azure/Re
 
 | Variable Name | Example Value | Description |
 | - | - | - |
+| `publishLatest` | `'true'` |  Publish an absolute latest version. Note: This version may include breaking changes and is not recommended for production environments. |
 | `bicepRegistryName` | `"adpsxxazacrx001"` | The container registry to publish Bicep templates to. <p> **NOTE:** Must be globally unique. |
 | `bicepRegistryRGName` | `"artifacts-rg"` | The resource group of the container registry to publish Bicep templates into. It is used to create a new container registry if not yet existing. |
 | `bicepRegistryRgLocation` | `'West Europe'` | The location of the resource group of the container registry to publish Bicep templates into. Is used to create a new resource group if not yet existing. |
@@ -309,10 +320,20 @@ The primary pipeline settings file ([`settings.yml`](https://github.com/Azure/Re
 </details>
 
 <details>
+<summary>General (publishing)</summary>
+
+| Variable Name | Example Value | Description |
+| - | - | - |
+| `useApiSpecsAlignedName` | `'false'` |  Publish a module not using its folder path, but the matching name in the REST API (i.e., the classic naming). For example: `bicep/modules/microsoft.keyvault.vaults.secrets` instead of `bicep/modules/key-vault.vault.secret`. For more information, please refer to the [Publishing guidelines](./The%20CI%20environment%20-%20Publishing#Module-identifiers).  |
+
+</details>
+
+<details>
 <summary>Template-specs specific (publishing)</summary>
 
 | Variable Name | Example Value | Description |
 | - | - | - |
+| `publishLatest` | `'true'` |  Publish an absolute latest version. Note: This version may include breaking changes and is not recommended for production environments. |
 | `templateSpecsRGName` | `'artifacts-rg'` | The resource group to host the created template-specs. </p> Will be automatically created if not yet existing in the target subscription. |
 | `templateSpecsRGLocation` | `'WestEurope'` | The location of the resource group to host the template-specs. Is used to create a new resource group if not yet existing. |
 | `templateSpecsDescription` | `'This is a module from the [Common Azure Resource Modules Library]'` | A description to add to the published template specs. |
@@ -325,6 +346,7 @@ The primary pipeline settings file ([`settings.yml`](https://github.com/Azure/Re
 
 | Variable Name | Example Value | Description |
 | - | - | - |
+| `publishLatest` | `'true'` |  Publish an absolute latest version. Note: This version may include breaking changes and is not recommended for production environments. |
 | `bicepRegistryName` | `'adpsxxazacrx001'` | The container registry to publish Bicep templates to. </p> **NOTE:** Must be globally unique. </p> Will be automatically created if not yet existing in the target subscription. |
 | `bicepRegistryRGName` | `'artifacts-rg'` | The resource group of the container registry to publish Bicep templates to. Is used to create a new container registry if not yet existing. </p> Will be automatically created if not yet existing in the target subscription. |
 | `bicepRegistryRgLocation` | `'West Europe'` | The location of the resource group of the container registry to publish Bicep templates to. Is used to create a new resource group if not yet existing. |
