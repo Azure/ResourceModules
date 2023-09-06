@@ -54,6 +54,12 @@ param azureMonitorAlertSettingsAlertsForAllJobFailures string = 'Enabled'
 @description('Optional. List of all backup policies.')
 param backupPolicies array = []
 
+@description('Optional. Security settings for the backup vault.')
+param securitySettings object = {}
+
+@description('Optional. Feature settings for the backup vault.')
+param featureSettings object = {}
+
 var identityType = systemAssignedIdentity ? 'SystemAssigned' : 'None'
 
 var identity = identityType != 'None' ? {
@@ -74,7 +80,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource backupVault 'Microsoft.DataProtection/backupVaults@2022-11-01-preview' = {
+resource backupVault 'Microsoft.DataProtection/backupVaults@2023-05-01' = {
   name: name
   location: location
   tags: tags
@@ -91,6 +97,8 @@ resource backupVault 'Microsoft.DataProtection/backupVaults@2022-11-01-preview' 
         datastoreType: dataStoreType
       }
     ]
+    featureSettings: featureSettings
+    securitySettings: securitySettings
   }
 }
 

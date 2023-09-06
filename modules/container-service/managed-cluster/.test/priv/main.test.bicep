@@ -138,10 +138,10 @@ module testDeployment '../../main.bicep' = {
         vmSize: 'Standard_DS2_v2'
       }
     ]
-    aksClusterNetworkPlugin: 'azure'
-    aksClusterSkuTier: 'Standard'
-    aksClusterDnsServiceIP: '10.10.200.10'
-    aksClusterServiceCidr: '10.10.200.0/24'
+    networkPlugin: 'azure'
+    skuTier: 'Standard'
+    dnsServiceIP: '10.10.200.10'
+    serviceCidr: '10.10.200.0/24'
     diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
     diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
     diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
@@ -151,6 +151,7 @@ module testDeployment '../../main.bicep' = {
       '${nestedDependencies.outputs.managedIdentityResourceId}': {}
     }
     tags: {
+      'hidden-title': 'This is visible in the resource name'
       Environment: 'Non-Prod'
       Role: 'DeploymentValidation'
     }

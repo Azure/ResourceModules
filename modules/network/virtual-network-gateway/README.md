@@ -306,6 +306,7 @@ module virtualNetworkGateway './network/virtual-network-gateway/main.bicep' = {
     ]
     tags: {
       Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
     }
     vpnClientAadConfiguration: {
@@ -395,6 +396,7 @@ module virtualNetworkGateway './network/virtual-network-gateway/main.bicep' = {
     "tags": {
       "value": {
         "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
     },
@@ -458,6 +460,7 @@ module virtualNetworkGateway './network/virtual-network-gateway/main.bicep' = {
       Contact: 'test.user@testcompany.com'
       CostCenter: ''
       Environment: 'Validation'
+      'hidden-title': 'This is visible in the resource name'
       PurchaseOrder: ''
       Role: 'DeploymentValidation'
       ServiceName: 'DeploymentValidation'
@@ -530,6 +533,7 @@ module virtualNetworkGateway './network/virtual-network-gateway/main.bicep' = {
         "Contact": "test.user@testcompany.com",
         "CostCenter": "",
         "Environment": "Validation",
+        "hidden-title": "This is visible in the resource name",
         "PurchaseOrder": "",
         "Role": "DeploymentValidation",
         "ServiceName": "DeploymentValidation"
@@ -620,6 +624,7 @@ module virtualNetworkGateway './network/virtual-network-gateway/main.bicep' = {
     ]
     tags: {
       Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
     }
     vpnGatewayGeneration: 'Generation2'
@@ -749,6 +754,7 @@ module virtualNetworkGateway './network/virtual-network-gateway/main.bicep' = {
     "tags": {
       "value": {
         "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
     },

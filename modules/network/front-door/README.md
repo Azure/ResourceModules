@@ -287,6 +287,7 @@ module frontDoor './network/front-door/main.bicep' = {
     sendRecvTimeoutSeconds: 10
     tags: {
       Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
     }
   }
@@ -433,6 +434,7 @@ module frontDoor './network/front-door/main.bicep' = {
     "tags": {
       "value": {
         "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
     }

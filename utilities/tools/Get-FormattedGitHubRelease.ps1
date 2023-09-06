@@ -114,7 +114,7 @@ function Get-FormattedGitHubRelease {
         $contributors += $matchContributor.Value
     }
     $foundCategories = $categories | Select-Object -Unique
-    $foundContributors = $contributors | Select-Object -Unique
+    $foundContributors = $contributors | Where-Object { -not [String]::IsNullOrEmpty($_) } | Select-Object -Unique
 
     $newContributors = @()
     foreach ($line in $newContributorsContent) {
@@ -159,10 +159,14 @@ function Get-FormattedGitHubRelease {
                 Authorization = "Bearer $PersonalAccessToken"
             }
         }
-        $response = Invoke-RestMethod @requestInputObject
-        $contributorName = $response.name
-        $contributorNames += $contributorName + ', '
-        $output += ('| {0} | {1} |' -f $contributorHandle, $contributorName)
+        try {
+            $response = Invoke-RestMethod @requestInputObject
+            $contributorName = $response.name
+            $contributorNames += $contributorName + ', '
+            $output += ('| {0} | {1} |' -f $contributorHandle, $contributorName)
+        } catch {
+            Write-Error ("Failed for [$contributor]. Error: $_")
+        }
     }
 
     $output += ''

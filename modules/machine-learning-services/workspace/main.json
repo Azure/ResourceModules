@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.20.4.51522",
-      "templateHash": "12489776525535905441"
+      "templateHash": "1146196423253215648"
     },
     "name": "Machine Learning Services Workspaces",
     "description": "This module deploys a Machine Learning Services Workspace.",
@@ -634,7 +634,8 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.MachineLearningServices/workspaces', parameters('name'))]"
+        "[resourceId('Microsoft.MachineLearningServices/workspaces', parameters('name'))]",
+        "workspace_privateEndpoints"
       ]
     },
     {

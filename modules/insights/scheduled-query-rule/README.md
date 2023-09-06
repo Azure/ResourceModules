@@ -229,6 +229,7 @@ module scheduledQueryRule './insights/scheduled-query-rule/main.bicep' = {
     suppressForMinutes: 'PT5M'
     tags: {
       Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
     }
     windowSize: 'PT5M'
@@ -319,6 +320,7 @@ module scheduledQueryRule './insights/scheduled-query-rule/main.bicep' = {
     "tags": {
       "value": {
         "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
     },

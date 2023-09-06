@@ -502,6 +502,7 @@ module workspace './healthcare-apis/workspace/main.bicep' = {
     publicNetworkAccess: 'Enabled'
     tags: {
       Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
     }
   }
@@ -614,6 +615,7 @@ module workspace './healthcare-apis/workspace/main.bicep' = {
     "tags": {
       "value": {
         "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
     }

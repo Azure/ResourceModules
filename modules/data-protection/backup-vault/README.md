@@ -16,8 +16,8 @@ This module deploys a Data Protection Backup Vault.
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.DataProtection/backupVaults` | [2022-11-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DataProtection/2022-11-01-preview/backupVaults) |
-| `Microsoft.DataProtection/backupVaults/backupPolicies` | [2022-11-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DataProtection/2022-11-01-preview/backupVaults/backupPolicies) |
+| `Microsoft.DataProtection/backupVaults` | [2023-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DataProtection/backupVaults) |
+| `Microsoft.DataProtection/backupVaults/backupPolicies` | [2023-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DataProtection/backupVaults/backupPolicies) |
 
 ## Parameters
 
@@ -35,9 +35,11 @@ This module deploys a Data Protection Backup Vault.
 | `backupPolicies` | array | `[]` |  | List of all backup policies. |
 | `dataStoreType` | string | `'VaultStore'` | `[ArchiveStore, OperationalStore, VaultStore]` | The datastore type to use. ArchiveStore does not support ZoneRedundancy. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
+| `featureSettings` | object | `{object}` |  | Feature settings for the backup vault. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| `securitySettings` | object | `{object}` |  | Security settings for the backup vault. |
 | `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Tags of the Recovery Service Vault resource. |
 | `type` | string | `'GeoRedundant'` | `[GeoRedundant, LocallyRedundant, ZoneRedundant]` | The vault redundancy level to use. |
@@ -434,6 +436,7 @@ module backupVault './data-protection/backup-vault/main.bicep' = {
     systemAssignedIdentity: true
     tags: {
       Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
     }
   }
@@ -547,6 +550,7 @@ module backupVault './data-protection/backup-vault/main.bicep' = {
     "tags": {
       "value": {
         "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
     }

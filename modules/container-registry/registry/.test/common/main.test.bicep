@@ -35,8 +35,11 @@ module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
+    // Adding base time to make the name unique as purge protection must be enabled (but may not be longer than 24 characters total)
+    location: location
+    managedIdentityName: 'dep-${namePrefix}-msi-ds-${serviceShort}'
     virtualNetworkName: 'dep-${namePrefix}-vnet-${serviceShort}'
-    managedIdentityName: 'dep-${namePrefix}-msi-${serviceShort}'
+    pairedRegionScriptName: 'dep-${namePrefix}-ds-${serviceShort}'
   }
 }
 
@@ -85,6 +88,7 @@ module testDeployment '../../main.bicep' = {
           ]
         }
         tags: {
+          'hidden-title': 'This is visible in the resource name'
           Environment: 'Non-Prod'
           Role: 'DeploymentValidation'
         }
@@ -99,8 +103,8 @@ module testDeployment '../../main.bicep' = {
     quarantinePolicyStatus: 'enabled'
     replications: [
       {
-        location: 'northeurope'
-        name: 'northeurope'
+        location: nestedDependencies.outputs.pairedRegionName
+        name: nestedDependencies.outputs.pairedRegionName
       }
     ]
     roleAssignments: [
@@ -117,6 +121,16 @@ module testDeployment '../../main.bicep' = {
     userAssignedIdentities: {
       '${nestedDependencies.outputs.managedIdentityResourceId}': {}
     }
+    cacheRules: [
+      {
+        name: 'customRule'
+        sourceRepository: 'docker.io/library/hello-world'
+        targetRepository: 'cached-docker-hub/hello-world'
+      }
+      {
+        sourceRepository: 'docker.io/library/hello-world'
+      }
+    ]
     webhooks: [
       {
         name: '${namePrefix}acrx001webhook'
@@ -124,6 +138,7 @@ module testDeployment '../../main.bicep' = {
       }
     ]
     tags: {
+      'hidden-title': 'This is visible in the resource name'
       Environment: 'Non-Prod'
       Role: 'DeploymentValidation'
     }

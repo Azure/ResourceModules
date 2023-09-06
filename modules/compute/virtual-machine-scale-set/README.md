@@ -1028,6 +1028,7 @@ module virtualMachineScaleSet './compute/virtual-machine-scale-set/main.bicep' =
     systemAssignedIdentity: true
     tags: {
       Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
     }
     upgradePolicyMode: 'Manual'
@@ -1226,6 +1227,7 @@ module virtualMachineScaleSet './compute/virtual-machine-scale-set/main.bicep' =
     "tags": {
       "value": {
         "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
     },
@@ -1458,6 +1460,7 @@ module virtualMachineScaleSet './compute/virtual-machine-scale-set/main.bicep' =
     ]
     tags: {
       Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
     }
   }
@@ -1562,6 +1565,7 @@ module virtualMachineScaleSet './compute/virtual-machine-scale-set/main.bicep' =
     "tags": {
       "value": {
         "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
     }
@@ -1692,6 +1696,7 @@ module virtualMachineScaleSet './compute/virtual-machine-scale-set/main.bicep' =
     systemAssignedIdentity: true
     tags: {
       Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
     }
     upgradePolicyMode: 'Manual'
@@ -1879,6 +1884,7 @@ module virtualMachineScaleSet './compute/virtual-machine-scale-set/main.bicep' =
     "tags": {
       "value": {
         "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
     },

@@ -59,6 +59,7 @@ module testDeployment '../../main.bicep' = {
     infrastructureSubnetId: nestedDependencies.outputs.subnetResourceId
     lock: 'CanNotDelete'
     tags: {
+      'hidden-title': 'This is visible in the resource name'
       Env: 'test'
     }
   }

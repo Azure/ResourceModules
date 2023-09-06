@@ -88,6 +88,7 @@ module testDeployment '../../main.bicep' = {
     scaleUnits: 4
     skuName: 'Standard'
     tags: {
+      'hidden-title': 'This is visible in the resource name'
       Environment: 'Non-Prod'
       Role: 'DeploymentValidation'
     }
