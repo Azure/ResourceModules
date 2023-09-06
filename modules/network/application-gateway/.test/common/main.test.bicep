@@ -40,7 +40,7 @@ module nestedDependencies 'dependencies.bicep' = {
   params: {
     virtualNetworkName: 'dep-${namePrefix}-vnet-${serviceShort}'
     publicIPName: 'dep-${namePrefix}-pip-${serviceShort}'
-    managedIdentityName: 'dep-${namePrefix}-msi01-${serviceShort}'
+    managedIdentityName: 'dep-${namePrefix}-msi02-${serviceShort}'
     certDeploymentScriptName: 'dep-${namePrefix}-ds-${serviceShort}'
     // Adding base time to make the name unique as purge protection must be enabled (but may not be longer than 24 characters total)
     keyVaultName: 'dep-${namePrefix}-kv-${serviceShort}-${substring(uniqueString(baseTime), 0, 3)}'
@@ -143,21 +143,6 @@ module testDeployment '../../main.bicep' = {
               }
             }
           ]
-        }
-      }
-    ]
-    privateEndpoints: [
-      {
-        privateDnsZoneGroup: {
-          privateDNSResourceIds: [
-            nestedDependencies.outputs.privateDNSZoneResourceId
-          ]
-        }
-        service: 'application gateway'
-        subnetResourceId: nestedDependencies.outputs.defaultSubnetResourceId
-        tags: {
-          Environment: 'Non-Prod'
-          Role: 'DeploymentValidation'
         }
       }
     ]
