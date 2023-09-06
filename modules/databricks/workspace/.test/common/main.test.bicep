@@ -17,6 +17,9 @@ param serviceShort string = 'dwcom'
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
+@description('Generated. Used as a basis for unique resource names.')
+param baseTime string = utcNow('u')
+
 @description('Optional. A token to inject into the name of each resource.')
 param namePrefix string = '[[namePrefix]]'
 
@@ -36,6 +39,14 @@ module nestedDependencies 'dependencies.bicep' = {
   name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
     managedIdentityName: 'dep-${namePrefix}-msi-${serviceShort}'
+    amlWorkspaceName: 'dep-${namePrefix}-aml-${serviceShort}'
+    applicationInsightsName: 'dep-${namePrefix}-appi-${serviceShort}'
+    loadBalancerName: 'dep-${namePrefix}-lb-${serviceShort}'
+    storageAccountName: 'dep${namePrefix}sa${serviceShort}'
+    virtualNetworkName: 'dep-${namePrefix}-vnet-${serviceShort}'
+    networkSecurityGroupName: 'dep-${namePrefix}-nsg-${serviceShort}'
+    // Adding base time to make the name unique as purge protection must be enabled (but may not be longer than 24 characters total)
+    keyVaultName: 'dep-${namePrefix}-kv-${serviceShort}-${substring(uniqueString(baseTime), 0, 3)}'
   }
 }
 
@@ -45,7 +56,7 @@ module diagnosticDependencies '../../../../.shared/.templates/diagnostic.depende
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-diagnosticDependencies'
   params: {
-    storageAccountName: 'dep${namePrefix}diasa${serviceShort}01'
+    storageAccountName: 'dep${namePrefix}diasa${serviceShort}'
     logAnalyticsWorkspaceName: 'dep-${namePrefix}-law-${serviceShort}'
     eventHubNamespaceEventHubName: 'dep-${namePrefix}-evh-${serviceShort}'
     eventHubNamespaceName: 'dep-${namePrefix}-evhns-${serviceShort}'
@@ -82,5 +93,49 @@ module testDeployment '../../main.bicep' = {
       Environment: 'Non-Prod'
       Role: 'DeploymentValidation'
     }
+    cMKManagedServicesKeyName: nestedDependencies.outputs.keyVaultKeyName
+    cMKManagedServicesKeyVaultResourceId: nestedDependencies.outputs.keyVaultResourceId
+    cMKManagedDisksKeyName: nestedDependencies.outputs.keyVaultKeyName
+    cMKManagedDisksKeyVaultResourceId: nestedDependencies.outputs.keyVaultResourceId
+    cMKManagedDisksKeyRotationToLatestKeyVersionEnabled: true
+    storageAccountName: 'sa${namePrefix}${serviceShort}001'
+    storageAccountSkuName: 'Standard_ZRS'
+    publicIpName: 'nat-gw-public-ip'
+    natGatewayName: 'nat-gateway'
+    prepareEncryption: true
+    requiredNsgRules: 'NoAzureDatabricksRules'
+    skuName: 'premium'
+    amlWorkspaceResourceId: nestedDependencies.outputs.machineLearningWorkspaceResourceId
+    customPrivateSubnetName: nestedDependencies.outputs.customPrivateSubnetName
+    customPublicSubnetName: nestedDependencies.outputs.customPublicSubnetName
+    publicNetworkAccess: 'Disabled'
+    disablePublicIp: true
+    loadBalancerResourceId: nestedDependencies.outputs.loadBalancerResourceId
+    loadBalancerBackendPoolName: nestedDependencies.outputs.loadBalancerBackendPoolName
+    customVirtualNetworkResourceId: nestedDependencies.outputs.virtualNetworkResourceId
+    privateEndpoints: [
+      {
+        privateDnsZoneGroup: {
+          privateDNSResourceIds: [
+            nestedDependencies.outputs.privateDNSResourceId
+          ]
+        }
+        service: 'databricks_ui_api'
+        subnetResourceId: nestedDependencies.outputs.defaultSubnetResourceId
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
+      }
+    ]
+    managedResourceGroupResourceId: '${subscription().id}/resourceGroups/rg-${resourceGroupName}-managed'
+    diagnosticLogCategoriesToEnable: [
+      'jobs'
+      'notebook'
+    ]
+    diagnosticSettingsName: 'diag${namePrefix}${serviceShort}001'
+    requireInfrastructureEncryption: true
+    vnetAddressPrefix: '10.100'
+    location: resourceGroup.location
   }
 }

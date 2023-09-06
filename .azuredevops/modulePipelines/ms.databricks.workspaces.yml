@@ -30,6 +30,7 @@ trigger:
       - '/.azuredevops/modulePipelines/ms.databricks.workspaces.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
       - '/modules/databricks/workspace/*'
+      - '/modules/network/private-endpoint/*'
       - '/utilities/pipelines/*'
     exclude:
       - '/utilities/pipelines/deploymentRemoval/*'
