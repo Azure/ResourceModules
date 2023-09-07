@@ -37,7 +37,7 @@ BeforeAll {
 Describe 'Test default behavior' -Tag 'Default' {
 
     BeforeAll {
-        ConvertTo-ARMTemplate -Path $rootPath -Verbose -RunSynchronous
+        ConvertTo-ARMTemplate -RootPath $rootPath -Verbose -RunSynchronous
     }
 
     It 'All [<topLevelBicepDeployFilesCount>] top-level [main.bicep] files are converted to [main.json]' {
@@ -90,7 +90,7 @@ Describe 'Test default behavior' -Tag 'Default' {
 Describe 'Test flag to including children' -Tag 'ConvertChildren' {
 
     BeforeAll {
-        ConvertTo-ARMTemplate -Path $rootPath -ConvertChildren -Verbose -RunSynchronous
+        ConvertTo-ARMTemplate -RootPath $rootPath -ConvertChildren -Verbose -RunSynchronous
     }
 
     It 'All [<allBicepDeployFilesCount>] [main.bicep] files are converted to [main.json]' {
@@ -143,7 +143,7 @@ Describe 'Test flag to including children' -Tag 'ConvertChildren' {
 Describe 'Test flags that skip logic' -Tag 'Skip' {
 
     BeforeAll {
-        ConvertTo-ARMTemplate -Path $rootPath -SkipBicepCleanUp -SkipMetadataCleanup -SkipPipelineUpdate -Verbose -RunSynchronous
+        ConvertTo-ARMTemplate -RootPath $rootPath -SkipBicepCleanUp -SkipMetadataCleanup -SkipPipelineUpdate -Verbose -RunSynchronous
     }
 
     It 'All [<allBicepDeployFilesCount>] main.bicep files are converted to main.json' {
