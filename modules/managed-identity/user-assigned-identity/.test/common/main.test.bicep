@@ -56,7 +56,7 @@ module testDeployment '../../main.bicep' = {
         audiences: [
           'api://AzureADTokenExchange'
         ]
-        issuer: 'https://${location}.oic.prod-aks.azure.com/${subscription().tenantId}/${guid(deployment().name)}/'
+        issuer: 'https://contoso.com/${subscription().tenantId}/${guid(deployment().name)}/'
         subject: 'system:serviceaccount:default:workload-identity-sa'
       }
     ]
