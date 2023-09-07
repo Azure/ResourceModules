@@ -8,7 +8,7 @@ This section provides an overview of the most impactful limitations and known is
   - [aad/domain-service](#aaddomain-service)
   - [managed-services/registration-definition](#managed-servicesregistration-definition)
   - [management/management-group](#managementmanagement-group)
-  - [recovery-service/vault](#recovery-servicevault)
+  - [recovery-services/vault](#recovery-servicesvault)
   - [network/network-manager](#networknetwork-manager)
 - [CI environment specific](#ci-environment-specific)
   - [Static validation](#static-validation)
@@ -51,7 +51,7 @@ A related issue has been opened to the Bicep board [#6832](https://github.com/Az
 
 Further details are also provided in issue [#1342](https://github.com/Azure/ResourceModules/issues/1342).
 
-## recovery-service/vault
+## recovery-services/vault
 
 The Recovery Services Vaults module does not currently attach the content of the identity property correctly when both user- and systemassigned identity fields are selected.
 
