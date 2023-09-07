@@ -50,6 +50,16 @@ module testDeployment '../../main.bicep' = {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '${namePrefix}${serviceShort}001'
     lock: 'CanNotDelete'
+    federatedIdentityCredentials: [
+      {
+        name: 'test-fed-cred-${serviceShort}-001'
+        audiences: [
+          'api://AzureADTokenExchange'
+        ]
+        issuer: 'https://${location}.oic.prod-aks.azure.com/${subscription().tenantId}/${guid(deployment().name)}/'
+        subject: 'system:serviceaccount:default:workload-identity-sa'
+      }
+    ]
     roleAssignments: [
       {
         roleDefinitionIdOrName: 'Reader'

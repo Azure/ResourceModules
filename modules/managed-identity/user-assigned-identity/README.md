@@ -16,7 +16,8 @@ This module deploys a User Assigned Identity.
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.ManagedIdentity/userAssignedIdentities` | [2018-11-30](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ManagedIdentity/2018-11-30/userAssignedIdentities) |
+| `Microsoft.ManagedIdentity/userAssignedIdentities` | [2023-01-31](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ManagedIdentity/2023-01-31/userAssignedIdentities) |
+| `Microsoft.ManagedIdentity/userAssignedIdentities/federatedIdentityCredentials` | [2023-01-31](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ManagedIdentity/2023-01-31/userAssignedIdentities/federatedIdentityCredentials) |
 
 ## Parameters
 
@@ -25,6 +26,7 @@ This module deploys a User Assigned Identity.
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
+| `federatedIdentityCredentials` | array | `[]` |  | The federated identity credentials list to indicate which token from the external IdP should be trusted by your application. Federated identity credentials are supported on applications only. A maximum of 20 federated identity credentials can be added per application object. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `name` | string | `[guid(resourceGroup().id)]` |  | Name of the User Assigned Identity. |
@@ -165,6 +167,16 @@ module userAssignedIdentity './managed-identity/user-assigned-identity/main.bice
   name: '${uniqueString(deployment().name, location)}-test-miuaicom'
   params: {
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    federatedIdentityCredentials: [
+      {
+        audiences: [
+          'api://AzureADTokenExchange'
+        ]
+        issuer: '<issuer>'
+        name: 'test-fed-cred-miuaicom-001'
+        subject: 'system:serviceaccount:default:workload-identity-sa'
+      }
+    ]
     lock: 'CanNotDelete'
     name: 'miuaicom001'
     roleAssignments: [
@@ -200,6 +212,18 @@ module userAssignedIdentity './managed-identity/user-assigned-identity/main.bice
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     },
+    "federatedIdentityCredentials": {
+      "value": [
+        {
+          "audiences": [
+            "api://AzureADTokenExchange"
+          ],
+          "issuer": "<issuer>",
+          "name": "test-fed-cred-miuaicom-001",
+          "subject": "system:serviceaccount:default:workload-identity-sa"
+        }
+      ]
+    },
     "lock": {
       "value": "CanNotDelete"
     },
@@ -223,6 +247,43 @@ module userAssignedIdentity './managed-identity/user-assigned-identity/main.bice
         "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2: Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module userAssignedIdentity './managed-identity/user-assigned-identity/main.bicep' = {
+  name: '${uniqueString(deployment().name, location)}-test-miuaimin'
+  params: {
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }
