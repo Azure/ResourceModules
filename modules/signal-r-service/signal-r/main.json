@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.20.4.51522",
-      "templateHash": "15200712357875429742"
+      "templateHash": "13006619626089457043"
     },
     "name": "SignalR Service SignalR",
     "description": "This module deploys a SignalR Service SignalR.",
@@ -302,9 +302,7 @@
           "subnetResourceId": {
             "value": "[parameters('privateEndpoints')[copyIndex()].subnetResourceId]"
           },
-          "location": {
-            "value": "[reference(split(parameters('privateEndpoints')[copyIndex()].subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location]"
-          },
+          "location": "[if(contains(parameters('privateEndpoints')[copyIndex()], 'location'), createObject('value', parameters('privateEndpoints')[copyIndex()].location), createObject('value', reference(split(parameters('privateEndpoints')[copyIndex()].subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location))]",
           "lock": "[if(contains(parameters('privateEndpoints')[copyIndex()], 'lock'), createObject('value', parameters('privateEndpoints')[copyIndex()].lock), createObject('value', parameters('lock')))]",
           "privateDnsZoneGroup": "[if(contains(parameters('privateEndpoints')[copyIndex()], 'privateDnsZoneGroup'), createObject('value', parameters('privateEndpoints')[copyIndex()].privateDnsZoneGroup), createObject('value', createObject()))]",
           "roleAssignments": "[if(contains(parameters('privateEndpoints')[copyIndex()], 'roleAssignments'), createObject('value', parameters('privateEndpoints')[copyIndex()].roleAssignments), createObject('value', createArray()))]",

@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.20.4.51522",
-      "templateHash": "15864855878909112039"
+      "templateHash": "122893928024047546"
     },
     "name": "Event Grid Domains",
     "description": "This module deploys an Event Grid Domain.",
@@ -398,9 +398,7 @@
           "enableDefaultTelemetry": {
             "value": "[variables('enableReferencedModulesTelemetry')]"
           },
-          "location": {
-            "value": "[reference(split(parameters('privateEndpoints')[copyIndex()].subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location]"
-          },
+          "location": "[if(contains(parameters('privateEndpoints')[copyIndex()], 'location'), createObject('value', parameters('privateEndpoints')[copyIndex()].location), createObject('value', reference(split(parameters('privateEndpoints')[copyIndex()].subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location))]",
           "lock": "[if(contains(parameters('privateEndpoints')[copyIndex()], 'lock'), createObject('value', parameters('privateEndpoints')[copyIndex()].lock), createObject('value', parameters('lock')))]",
           "privateDnsZoneGroup": "[if(contains(parameters('privateEndpoints')[copyIndex()], 'privateDnsZoneGroup'), createObject('value', parameters('privateEndpoints')[copyIndex()].privateDnsZoneGroup), createObject('value', createObject()))]",
           "roleAssignments": "[if(contains(parameters('privateEndpoints')[copyIndex()], 'roleAssignments'), createObject('value', parameters('privateEndpoints')[copyIndex()].roleAssignments), createObject('value', createArray()))]",
