@@ -121,6 +121,42 @@ module testDeployment '../../main.bicep' = {
     diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
     diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
     enableHttp2: true
+    privateLinkConfigurations: [
+      {
+        name: 'pvtlink01'
+        id: '${appGWExpectedResourceID}/privateLinkConfigurations/pvtlink01'
+        properties: {
+          ipConfigurations: [
+            {
+              name: 'privateLinkIpConfig1'
+              id: '${appGWExpectedResourceID}/privateLinkConfigurations/pvtlink01/ipConfigurations/privateLinkIpConfig1'
+              properties: {
+                privateIPAllocationMethod: 'Dynamic'
+                primary: false
+                subnet: {
+                  id: nestedDependencies.outputs.privateLinkSubnetResourceId
+                }
+              }
+            }
+          ]
+        }
+      }
+    ]
+    privateEndpoints: [
+      {
+        privateDnsZoneGroup: {
+          privateDNSResourceIds: [
+            nestedDependencies.outputs.privateDNSZoneResourceId
+          ]
+        }
+        service: 'public'
+        subnetResourceId: nestedDependencies.outputs.privateLinkSubnetResourceId
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
+      }
+    ]
     frontendIPConfigurations: [
       {
         name: 'private'
@@ -128,7 +164,7 @@ module testDeployment '../../main.bicep' = {
           privateIPAddress: '10.0.0.20'
           privateIPAllocationMethod: 'Static'
           subnet: {
-            id: nestedDependencies.outputs.subnetResourceId
+            id: nestedDependencies.outputs.defaultSubnetResourceId
           }
         }
       }
@@ -138,6 +174,9 @@ module testDeployment '../../main.bicep' = {
           privateIPAllocationMethod: 'Dynamic'
           publicIPAddress: {
             id: nestedDependencies.outputs.publicIPResourceId
+          }
+          privateLinkConfiguration: {
+            id: '${appGWExpectedResourceID}/privateLinkConfigurations/pvtlink01'
           }
         }
       }
@@ -173,7 +212,7 @@ module testDeployment '../../main.bicep' = {
         name: 'apw-ip-configuration'
         properties: {
           subnet: {
-            id: nestedDependencies.outputs.subnetResourceId
+            id: nestedDependencies.outputs.defaultSubnetResourceId
           }
         }
       }
