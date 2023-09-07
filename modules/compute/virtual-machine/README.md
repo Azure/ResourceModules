@@ -1599,6 +1599,9 @@ module virtualMachine './compute/virtual-machine/main.bicep' = {
     configurationProfile: '/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction'
     disablePasswordAuthentication: true
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    extensionMonitoringAgentConfig: {
+      enabled: true
+    }
     location: '<location>'
     name: 'cvmlinatmg'
     publicKeys: [
@@ -1689,6 +1692,11 @@ module virtualMachine './compute/virtual-machine/main.bicep' = {
     },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
+    },
+    "extensionMonitoringAgentConfig": {
+      "value": {
+        "enabled": true
+      }
     },
     "location": {
       "value": "<location>"
@@ -2443,6 +2451,9 @@ module virtualMachine './compute/virtual-machine/main.bicep' = {
     adminPassword: '<adminPassword>'
     configurationProfile: '/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    extensionMonitoringAgentConfig: {
+      enabled: true
+    }
     location: '<location>'
     name: 'cvmwinatmg'
     tags: {
@@ -2514,6 +2525,11 @@ module virtualMachine './compute/virtual-machine/main.bicep' = {
     },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
+    },
+    "extensionMonitoringAgentConfig": {
+      "value": {
+        "enabled": true
+      }
     },
     "location": {
       "value": "<location>"
@@ -2706,6 +2722,9 @@ module virtualMachine './compute/virtual-machine/main.bicep' = {
       }
     ]
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    extensionMonitoringAgentConfig: {
+      enabled: true
+    }
     location: '<location>'
     name: 'cvmwincmk'
     tags: {
@@ -2790,6 +2809,11 @@ module virtualMachine './compute/virtual-machine/main.bicep' = {
     },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
+    },
+    "extensionMonitoringAgentConfig": {
+      "value": {
+        "enabled": true
+      }
     },
     "location": {
       "value": "<location>"
