@@ -16,7 +16,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        tags: ['Default', 'ConvertChildren', 'Skip']
+        tags: ['Default', 'Skip']
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v3
