@@ -6,8 +6,9 @@ This section provides an overview of the most impactful limitations and known is
 
 - [Module specific](#module-specific)
   - [aad/domain-service](#aaddomain-service)
+  - [managed-services/registration-definition](#managed-servicesregistration-definition)
   - [management/management-group](#managementmanagement-group)
-  - [recovery-services-vault](#recovery-servicevault)
+  - [recovery-services/vault](#recovery-servicesvault)
   - [network/network-manager](#networknetwork-manager)
 - [CI environment specific](#ci-environment-specific)
   - [Static validation](#static-validation)
@@ -33,6 +34,13 @@ Therefore, the module was manually tested in a dedicated environment.
 
 For the general prerequisites, please refer to the [official docs](https://learn.microsoft.com/en-us/azure/active-directory-domain-services/tutorial-create-instance#prerequisites).
 
+## managed-services/registration-definition
+
+The Lighthouse module pipeline is expected to fail in our development/validation environment because:
+- It requires registered principals on a dedicated tenant for testing. As we currently don't have a dedicated tenant available
+
+The module was validated up until recently (2023-09) and will continuously be tested in the static validation.
+
 ## management/management-group
 
 The Management Group module does not currently include the role assignments extension resource.
@@ -43,7 +51,7 @@ A related issue has been opened to the Bicep board [#6832](https://github.com/Az
 
 Further details are also provided in issue [#1342](https://github.com/Azure/ResourceModules/issues/1342).
 
-## recovery-service/vault
+## recovery-services/vault
 
 The Recovery Services Vaults module does not currently attach the content of the identity property correctly when both user- and systemassigned identity fields are selected.
 
