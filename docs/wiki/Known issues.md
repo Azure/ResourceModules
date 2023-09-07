@@ -39,7 +39,7 @@ For the general prerequisites, please refer to the [official docs](https://learn
 The Lighthouse module pipeline is expected to fail in our development/validation environment because:
 - It requires registered principals on a dedicated tenant for testing. As we currently don't have a dedicated tenant available
 
-The module was validated up until recently (2023-09) and will continuously tested in the static validation.
+The module was validated up until recently (2023-09) and will continuously be tested in the static validation.
 
 ## management/management-group
 
