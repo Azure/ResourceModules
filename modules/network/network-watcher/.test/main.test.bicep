@@ -17,6 +17,5 @@ module common 'common/main.test.bicep' = {
 // TEST 2 - MIN
 module min 'min/main.test.bicep' = {
   name: '${uniqueString(deployment().name)}-min-test'
-  params: {
-  }
+  params: {}
 }
