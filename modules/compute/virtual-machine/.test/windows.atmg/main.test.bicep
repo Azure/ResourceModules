@@ -83,6 +83,9 @@ module testDeployment '../../main.bicep' = {
     vmSize: 'Standard_DS2_v2'
     adminPassword: password
     configurationProfile: '/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction'
+    extensionMonitoringAgentConfig: {
+      enabled: true
+    }
     tags: {
       'hidden-title': 'This is visible in the resource name'
       Environment: 'Non-Prod'

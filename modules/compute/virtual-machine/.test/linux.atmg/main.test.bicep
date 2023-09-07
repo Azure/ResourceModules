@@ -99,6 +99,9 @@ module testDeployment '../../main.bicep' = {
     osType: 'Linux'
     vmSize: 'Standard_DS2_v2'
     configurationProfile: '/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction'
+    extensionMonitoringAgentConfig: {
+      enabled: true
+    }
     disablePasswordAuthentication: true
     publicKeys: [
       {
