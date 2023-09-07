@@ -40,9 +40,9 @@ Describe 'Test default behavior' -Tag 'Default' {
         ConvertTo-ARMTemplate -RootPath $rootPath -Verbose -RunSynchronous
     }
 
-    It 'All [<topLevelBicepDeployFilesCount>] top-level [main.bicep] files are converted to [main.json]' {
+    It 'All [<allBicepDeployFilesCount>] [main.bicep] files are converted to [main.json]' {
         $deployJsonFilesCount = (Get-ChildItem -Recurse $modulesFolderPath | Where-Object { $_.FullName -match 'main.json' }).Count
-        $deployJsonFilesCount | Should -Be $topLevelBicepDeployFilesCount
+        $deployJsonFilesCount | Should -Be $allBicepDeployFilesCount
     }
 
     It 'All [<bicepTestFilesCount>] [main.test.bicep] files are converted to [main.test.json]' {
@@ -95,7 +95,7 @@ Describe 'Test flags that skip logic' -Tag 'Skip' {
 
     It 'All [<allBicepDeployFilesCount>] main.bicep files are converted to main.json' {
         $deployJsonFilesCount = (Get-ChildItem -Recurse $modulesFolderPath | Where-Object { $_.FullName -match 'main.json' }).Count
-        $deployJsonFilesCount | Should -Be $topLevelBicepDeployFilesCount
+        $deployJsonFilesCount | Should -Be $allBicepDeployFilesCount
     }
 
     It 'All [<allBicepFilesCount>] bicep files are still there' {
