@@ -581,6 +581,7 @@ module vm_azureMonitorAgentExtension 'extension/main.bicep' = if (extensionMonit
       workspaceId: !empty(monitoringWorkspaceId) ? vm_logAnalyticsWorkspace.properties.customerId : ''
       GCS_AUTO_CONFIG: osType == 'Linux' ? true : null
     }
+
     tags: contains(extensionMonitoringAgentConfig, 'tags') ? extensionMonitoringAgentConfig.tags : {}
     protectedSettings: {
       workspaceKey: !empty(monitoringWorkspaceId) ? vm_logAnalyticsWorkspace.listKeys().primarySharedKey : ''
