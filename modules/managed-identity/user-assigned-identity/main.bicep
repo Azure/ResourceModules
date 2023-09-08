@@ -8,6 +8,9 @@ param name string = guid(resourceGroup().id)
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
 
+@description('Optional. The federated identity credentials list to indicate which token from the external IdP should be trusted by your application. Federated identity credentials are supported on applications only. A maximum of 20 federated identity credentials can be added per application object.')
+param federatedIdentityCredentials array = []
+
 @allowed([
   ''
   'CanNotDelete'
@@ -25,6 +28,8 @@ param tags object = {}
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
+var enableReferencedModulesTelemetry = false
+
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
   properties: {
@@ -37,7 +42,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource userMsi 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' = {
+resource userMsi 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' = {
   name: name
   location: location
   tags: tags
@@ -51,6 +56,18 @@ resource userMsi_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lo
   }
   scope: userMsi
 }
+
+module userMsi_federatedIdentityCredentials 'federated-identity-credential/main.bicep' = [for (federatedIdentityCredential, index) in federatedIdentityCredentials: {
+  name: '${uniqueString(deployment().name, location)}-UserMSI-FederatedIdentityCredential-${index}'
+  params: {
+    name: federatedIdentityCredential.name
+    userAssignedIdentityName: userMsi.name
+    audiences: federatedIdentityCredential.audiences
+    issuer: federatedIdentityCredential.issuer
+    subject: federatedIdentityCredential.subject
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+  }
+}]
 
 module userMsi_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-UserMSI-Rbac-${index}'
