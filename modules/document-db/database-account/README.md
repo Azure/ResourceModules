@@ -666,12 +666,12 @@ module databaseAccount './document-db/database-account/main.bicep' = {
       {
         failoverPriority: 0
         isZoneRedundant: false
-        locationName: 'West Europe'
+        locationName: '<location>'
       }
       {
         failoverPriority: 1
         isZoneRedundant: false
-        locationName: 'North Europe'
+        locationName: '<locationName>'
       }
     ]
     name: 'dddagrm002'
@@ -770,12 +770,12 @@ module databaseAccount './document-db/database-account/main.bicep' = {
         {
           "failoverPriority": 0,
           "isZoneRedundant": false,
-          "locationName": "West Europe"
+          "locationName": "<location>"
         },
         {
           "failoverPriority": 1,
           "isZoneRedundant": false,
-          "locationName": "North Europe"
+          "locationName": "<locationName>"
         }
       ]
     },
@@ -899,12 +899,12 @@ module databaseAccount './document-db/database-account/main.bicep' = {
       {
         failoverPriority: 0
         isZoneRedundant: false
-        locationName: 'West Europe'
+        locationName: '<location>'
       }
       {
         failoverPriority: 1
         isZoneRedundant: false
-        locationName: 'North Europe'
+        locationName: '<locationName>'
       }
     ]
     name: 'dddamng001'
@@ -1136,12 +1136,12 @@ module databaseAccount './document-db/database-account/main.bicep' = {
         {
           "failoverPriority": 0,
           "isZoneRedundant": false,
-          "locationName": "West Europe"
+          "locationName": "<location>"
         },
         {
           "failoverPriority": 1,
           "isZoneRedundant": false,
-          "locationName": "North Europe"
+          "locationName": "<locationName>"
         }
       ]
     },
@@ -1396,12 +1396,12 @@ module databaseAccount './document-db/database-account/main.bicep' = {
       {
         failoverPriority: 0
         isZoneRedundant: false
-        locationName: 'West Europe'
+        locationName: '<location>'
       }
       {
         failoverPriority: 1
         isZoneRedundant: false
-        locationName: 'North Europe'
+        locationName: '<locationName>'
       }
     ]
     name: 'dddapln001'
@@ -1448,12 +1448,12 @@ module databaseAccount './document-db/database-account/main.bicep' = {
         {
           "failoverPriority": 0,
           "isZoneRedundant": false,
-          "locationName": "West Europe"
+          "locationName": "<location>"
         },
         {
           "failoverPriority": 1,
           "isZoneRedundant": false,
-          "locationName": "North Europe"
+          "locationName": "<locationName>"
         }
       ]
     },
@@ -1519,12 +1519,12 @@ module databaseAccount './document-db/database-account/main.bicep' = {
       {
         failoverPriority: 0
         isZoneRedundant: false
-        locationName: 'West Europe'
+        locationName: '<location>'
       }
       {
         failoverPriority: 1
         isZoneRedundant: false
-        locationName: 'North Europe'
+        locationName: '<locationName>'
       }
     ]
     name: 'dddasql001'
@@ -1666,12 +1666,12 @@ module databaseAccount './document-db/database-account/main.bicep' = {
         {
           "failoverPriority": 0,
           "isZoneRedundant": false,
-          "locationName": "West Europe"
+          "locationName": "<location>"
         },
         {
           "failoverPriority": 1,
           "isZoneRedundant": false,
-          "locationName": "North Europe"
+          "locationName": "<locationName>"
         }
       ]
     },
