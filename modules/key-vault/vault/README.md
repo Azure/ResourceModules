@@ -34,8 +34,8 @@ This module deploys a Key Vault.
 
 **Optional parameters**
 
-| Parameter | Type | Default Value | Allowed Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
 | [`accessPolicies`](#parameter-accesspolicies) | array | All access policies to create. |
 | [`createMode`](#parameter-createmode) | string | The vault's create mode to indicate whether the vault need to be recovered or not. - recover or default. |
 | [`diagnosticEventHubAuthorizationRuleId`](#parameter-diagnosticeventhubauthorizationruleid) | string | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |

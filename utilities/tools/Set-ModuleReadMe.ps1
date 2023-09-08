@@ -85,7 +85,7 @@ function Set-ResourceTypesSection {
 
     # Build result
     if ($PSCmdlet.ShouldProcess('Original file with new resource type content', 'Merge')) {
-        $updatedFileContent = Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $SectionContent -SectionStartIdentifier $SectionStartIdentifier -contentType 'table'
+        $updatedFileContent = Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $SectionContent -SectionStartIdentifier $SectionStartIdentifier -contentType 'nextH2'
     }
     return $updatedFileContent
 }
@@ -178,16 +178,12 @@ function Set-ParametersSection {
         # Filter to relevant items
         [array] $categoryParameters = $TemplateFileContent.parameters.Values | Where-Object { $_.metadata.description -like "$category. *" } | Sort-Object -Property 'Name' -Culture 'en-US'
 
-        # Check properties for later reference
-        $hasDefault = $categoryParameters.defaultValue.count -gt 0
-        $hasAllowed = $categoryParameters.allowedValues.count -gt 0
-
         # 2. Create header including optional columns & initiate the parameter list
         $newSectionContent += @(
             ('**{0} parameters**' -f $category),
             '',
-            ('| Parameter | Type | {0}{1}Description |' -f ($hasDefault ? 'Default Value | ' : ''), ($hasAllowed ? 'Allowed Values | ' : '')),
-            ('| :-- | :-- | {0}{1}:-- |' -f ($hasDefault ? ':-- | ' : ''), ($hasAllowed ? ':-- | ' : ''))
+            '| Parameter | Type | Description |',
+            '| :-- | :-- | :-- |'
         )
 
 
@@ -322,7 +318,7 @@ function Set-OutputsSection {
 
     # Build result
     if ($PSCmdlet.ShouldProcess('Original file with new output content', 'Merge')) {
-        $updatedFileContent = Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $SectionContent -SectionStartIdentifier $SectionStartIdentifier -contentType 'table'
+        $updatedFileContent = Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $SectionContent -SectionStartIdentifier $SectionStartIdentifier -contentType 'nextH2'
     }
     return $updatedFileContent
 }
@@ -405,7 +401,7 @@ function Set-CrossReferencesSection {
 
     # Build result
     if ($PSCmdlet.ShouldProcess('Original file with new output content', 'Merge')) {
-        $updatedFileContent = Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $SectionContent -SectionStartIdentifier $SectionStartIdentifier -contentType 'none'
+        $updatedFileContent = Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $SectionContent -SectionStartIdentifier $SectionStartIdentifier -contentType 'nextH2'
     }
     return $updatedFileContent
 }
@@ -1387,7 +1383,7 @@ function Set-TableOfContent {
 
     # Build result
     if ($PSCmdlet.ShouldProcess('Original file with new parameters content', 'Merge')) {
-        $updatedFileContent = Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $newSectionContent -SectionStartIdentifier $SectionStartIdentifier -contentType 'none'
+        $updatedFileContent = Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $newSectionContent -SectionStartIdentifier $SectionStartIdentifier -contentType 'nextH2'
     }
 
     return $updatedFileContent
