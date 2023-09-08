@@ -1,4 +1,5 @@
 ﻿#requires -version 7.3
+#requires -Modules powershell-yaml
 
 <#
 .SYNOPSIS
@@ -336,7 +337,7 @@ Mandatory. The readme file content array to update
 Optional. The identifier of the 'outputs' section. Defaults to '## Cross-referenced modules'
 
 .EXAMPLE
-Set-CrossReferencesSection -ModuleRoot 'C:/KeyVault/vaults' -FullModuleIdentifier 'Microsoft.KeyVault/vaults' -TemplateFileContent @{ resource = @{}; ... } -ReadMeFileContent @('# Title', '', '## Section 1', ...)
+Set-CrossReferencesSection -ModuleRoot 'C:/key-vault/vault' -FullModuleIdentifier 'key-vault/vault' -TemplateFileContent @{ resource = @{}; ... } -ReadMeFileContent @('# Title', '', '## Section 1', ...)
 Update the given readme file's 'Cross-referenced modules' section based on the given template file content
 #>
 function Set-CrossReferencesSection {
@@ -492,13 +493,12 @@ Mandatory. The JSON parameters block to process (ideally already without 'value'
 Mandatory. A list of all required top-level (i.e. non-nested) parameter names
 
 .EXAMPLE
-Get-OrderedParametersJSON -RequiredParametersList @('name') -ParametersJSON '{ "diagnosticLogsRetentionInDays": 7,"lock": "CanNotDelete","name": "carml" }'
+Get-OrderedParametersJSON -RequiredParametersList @('name') -ParametersJSON '{ "lock": "CanNotDelete","name": "carml" }'
 
 Order the given JSON object alphabetically. Would result into:
 
 @{
     name: 'carml'
-    diagnosticLogsRetentionInDays: 7
     lock: 'CanNotDelete'
 }
 #>
@@ -551,7 +551,7 @@ Mandatory. The parameter JSON object to process
 Mandatory. A list of all required top-level (i.e. non-nested) parameter names
 
 .EXAMPLE
-Build-OrderedJSONObject -RequiredParametersList @('name') -ParametersJSON '{ "lock": { "value": "CanNotDelete" }, "name": { "value": "carml" }, "diagnosticLogsRetentionInDays": { "value": 7 } }'
+Build-OrderedJSONObject -RequiredParametersList @('name') -ParametersJSON '{ "lock": { "value": "CanNotDelete" }, "name": { "value": "carml" } }'
 
 Build a formatted Parameter-JSON object with one required parameter. Would result into:
 
@@ -564,9 +564,6 @@ Build a formatted Parameter-JSON object with one required parameter. Would resul
             "value": "carml"
         },
         // Non-required parameters
-        "diagnosticLogsRetentionInDays": {
-            "value": 7
-        },
         "lock": {
             "value": "CanNotDelete"
         }
@@ -734,6 +731,9 @@ function ConvertTo-FormattedJSONParameterObject {
             if ($line -notlike '*"*"*' -and $line -like '*.*') {
                 # In case of a array value like '[ \n -> resourceGroupResources.outputs.managedIdentityPrincipalId <- \n ]' we'll only show "<managedIdentityPrincipalId>""
                 $line = '"<{0}>"' -f $line.Split('.')[-1].Trim()
+            } elseif ($line -match '^\s*[a-zA-Z]+\s*$') {
+                # If there is simply only a value such as a variable reference, we'll wrap it as a string to replace. For example a reference of a variable `addressPrefix` will be replaced with `"<addressPrefix>"`
+                $line = '"<{0}>"' -f $line.Trim()
             }
         }
 
@@ -792,7 +792,6 @@ Convert the given JSONParameters object with one required parameter to a formatt
     // Required parameters
     name: 'carml'
     // Non-required parameters
-    diagnosticLogsRetentionInDays: 7
     lock: 'CanNotDelete'
 '
 #>
@@ -892,7 +891,7 @@ Optional. A switch to control whether or not to add a ARM-JSON-Parameter file ex
 Optional. A switch to control whether or not to add a Bicep deployment example. Defaults to true.
 
 .EXAMPLE
-Set-DeploymentExamplesSection -ModuleRoot 'C:/KeyVault/vaults' -FullModuleIdentifier 'Microsoft.KeyVault/vaults' -TemplateFileContent @{ resource = @{}; ... } -ReadMeFileContent @('# Title', '', '## Section 1', ...)
+Set-DeploymentExamplesSection -ModuleRoot 'C:/key-vault/vault' -FullModuleIdentifier 'key-vault/vault' -TemplateFileContent @{ resource = @{}; ... } -ReadMeFileContent @('# Title', '', '## Section 1', ...)
 
 Update the given readme file's 'Deployment Examples' section based on the given template file content
 #>
@@ -1387,25 +1386,25 @@ Initialize the readme file
 
 .DESCRIPTION
 If no readme file exists, the initial content is generated (e.g., the skeleton of the section headers).
-If a readme file does exist, its title and description are updated with whatever is documented in the metadata.json file.
+If a readme file does exist, its title and description are updated with whatever is documented as metadata in the template file.
 
 .PARAMETER ReadMeFilePath
 Required. The path to the readme file to initialize.
 
 .PARAMETER FullModuleIdentifier
-Required. The full identifier of the module. For example: 'sql/managed-instances/administrators'
+Required. The full identifier of the module. For example: 'sql/managed-instance/administrator'
 
 .PARAMETER TemplateFileContent
 Mandatory. The template file content object to crawl data from
 
 .EXAMPLE
-Initialize-ReadMe -ReadMeFilePath 'C:/ResourceModules/modules/sql/managed-instances/administrators/readme.md' -FullModuleIdentifier 'sql/managed-instances/administrators' -TemplateFileContent @{ resource = @{}; ... }
+Initialize-ReadMe -ReadMeFilePath 'C:/ResourceModules/modules/sql/managed-instances/administrators/readme.md' -FullModuleIdentifier 'sql/managed-instance/administrator' -TemplateFileContent @{ resource = @{}; ... }
 
-Initialize the readme of the 'sql/managed-instances/administrators' module
+Initialize the readme of the 'sql/managed-instance/administrator' module
 #>
 function Initialize-ReadMe {
 
-    [CmdletBinding(SupportsShouldProcess)]
+    [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
         [string] $ReadMeFilePath,
@@ -1417,24 +1416,11 @@ function Initialize-ReadMe {
         [hashtable] $TemplateFileContent
     )
 
-    $metadataFilePath = Join-Path (Split-Path $ReadMeFilePath -Parent) 'metadata.json'
-    $metadataFileContent = ConvertFrom-Json (Get-Content -Path $metadataFilePath -Raw)
-    $moduleName = $metadataFileContent.name
-    $moduleDescription = $metadataFileContent.summary
+    . (Join-Path $PSScriptRoot 'helper' 'Get-SpecsAlignedResourceName.ps1')
 
-    $splitHyphens = $FullModuleIdentifier.split('-')
-    $splitHyphens = $splitHyphens | ForEach-Object { $_.substring(0, 1).toupper() + $_.substring(1) }
-    $splitHyphens = $splitHyphens -join ''
-    $fullResourceType = 'Microsoft.{0}' -f $splitHyphens.Replace('-', '')
-
-    # Resolve resource type as per used API name to use matching casing
-    $relevantResourceTypeObjects = (Get-NestedResourceList $TemplateFileContent).type | Select-Object -Unique
-    $formattedResourceType = $relevantResourceTypeObjects | Where-Object { $_ -eq $fullResourceType }
-
-    if (-not $formattedResourceType) {
-        Write-Warning "Did not find module [$FullModuleIdentifier] formatted as [$fullResourceType] in the module template's resource types."
-        $formattedResourceType = $fullResourceType
-    }
+    $moduleName = $TemplateFileContent.metadata.name
+    $moduleDescription = $TemplateFileContent.metadata.description
+    $formattedResourceType = Get-SpecsAlignedResourceName -ResourceIdentifier $FullModuleIdentifier
 
     if (-not (Test-Path $ReadMeFilePath) -or ([String]::IsNullOrEmpty((Get-Content $ReadMeFilePath -Raw)))) {
 
@@ -1457,7 +1443,7 @@ function Initialize-ReadMe {
         # We want to inject the description right below the header and before the [Resource Types] section
 
         # Find start- and end-index of description section
-        $startIndex = 1 # One ofter the readme header
+        $startIndex = 1 # One after the readme header
         $endIndex = $startIndex
 
         while (-not ($endIndex -ge $readMeFileContent.Count - 1) -and -not $readMeFileContent[$endIndex].StartsWith('#')) {
@@ -1510,22 +1496,22 @@ Set-ModuleReadMe -TemplateFilePath 'C:\main.bicep'
 Update the readme in path 'C:\README.md' based on the bicep template in path 'C:\main.bicep'
 
 .EXAMPLE
-Set-ModuleReadMe -TemplateFilePath 'C:/Network/loadBalancers/main.bicep' -SectionsToRefresh @('Parameters', 'Outputs')
+Set-ModuleReadMe -TemplateFilePath 'C:/network/load-balancer/main.bicep' -SectionsToRefresh @('Parameters', 'Outputs')
 
 Generate the Module ReadMe only for specific sections. Updates only the sections `Parameters` & `Outputs`. Other sections remain untouched.
 
 .EXAMPLE
-Set-ModuleReadMe -TemplateFilePath 'C:/Network/loadBalancers/main.bicep' -TemplateFileContent @{...}
+Set-ModuleReadMe -TemplateFilePath 'C:/network/load-balancer/main.bicep' -TemplateFileContent @{...}
 
 (Re)Generate the readme file for template 'loadBalancer' based on the content provided in the TemplateFileContent parameter
 
 .EXAMPLE
-Set-ModuleReadMe -TemplateFilePath 'C:/Network/loadBalancers/main.bicep' -ReadMeFilePath 'C:/differentFolder'
+Set-ModuleReadMe -TemplateFilePath 'C:/network/load-balancer/main.bicep' -ReadMeFilePath 'C:/differentFolder'
 
 Generate the Module ReadMe files into a specific folder path
 
 .EXAMPLE
-$templatePaths = (Get-ChildItem 'C:/Network' -Filter 'main.bicep' -Recurse).FullName
+$templatePaths = (Get-ChildItem 'C:/network' -Filter 'main.bicep' -Recurse).FullName
 $templatePaths | ForEach-Object -Parallel { . '<PathToRepo>/utilities/tools/Set-ModuleReadMe.ps1' ; Set-ModuleReadMe -TemplateFilePath $_ }
 
 Generate the Module ReadMe for any template in a folder path
@@ -1593,9 +1579,9 @@ function Set-ModuleReadMe {
     }
 
     $moduleRoot = Split-Path $TemplateFilePath -Parent
-    $fullModuleIdentifier = $moduleRoot.Replace('\', '/').split('modules/')[1]
+    $fullModuleIdentifier = $moduleRoot.Replace('\', '/').split('modules/')[-1]
     # Custom modules are modules having the same resource type but different properties based on the name
-    # E.g., web/sites/config--appsettings vs web/sites/config--authsettingsv2
+    # E.g., web/site/config--appsetting vs web/site/config--authsettingv2
     $customModuleSeparator = '--'
     if ($fullModuleIdentifier.Contains($customModuleSeparator)) {
         $fullModuleIdentifier = $fullModuleIdentifier.split($customModuleSeparator)[0]

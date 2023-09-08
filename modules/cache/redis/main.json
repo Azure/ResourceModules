@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.18.4.5664",
-      "templateHash": "14533299523821808446"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "10989484367118565473"
+    },
+    "name": "Redis Cache",
+    "description": "This module deploys a Redis Cache.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "location": {
@@ -25,14 +28,14 @@
     "lock": {
       "type": "string",
       "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Specify the type of lock."
-      },
       "allowedValues": [
         "",
         "CanNotDelete",
         "ReadOnly"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Specify the type of lock."
+      }
     },
     "roleAssignments": {
       "type": "array",
@@ -72,14 +75,14 @@
     "minimumTlsVersion": {
       "type": "string",
       "defaultValue": "1.2",
-      "metadata": {
-        "description": "Optional. Requires clients to use a specified TLS version (or higher) to connect."
-      },
       "allowedValues": [
         "1.0",
         "1.1",
         "1.2"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Requires clients to use a specified TLS version (or higher) to connect."
+      }
     },
     "publicNetworkAccess": {
       "type": "string",
@@ -103,44 +106,41 @@
     "redisVersion": {
       "type": "string",
       "defaultValue": "6",
-      "metadata": {
-        "description": "Optional. Redis version. Only major version will be used in PUT/PATCH request with current valid values: (4, 6)."
-      },
       "allowedValues": [
         "4",
         "6"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. Redis version. Only major version will be used in PUT/PATCH request with current valid values: (4, 6)."
+      }
     },
     "replicasPerMaster": {
       "type": "int",
       "defaultValue": 1,
+      "minValue": 1,
       "metadata": {
         "description": "Optional. The number of replicas to be created per primary."
-      },
-      "minValue": 1
+      }
     },
     "replicasPerPrimary": {
       "type": "int",
       "defaultValue": 1,
+      "minValue": 1,
       "metadata": {
         "description": "Optional. The number of replicas to be created per primary."
-      },
-      "minValue": 1
+      }
     },
     "shardCount": {
       "type": "int",
       "defaultValue": 1,
+      "minValue": 1,
       "metadata": {
         "description": "Optional. The number of shards to be created on a Premium Cluster Cache."
-      },
-      "minValue": 1
+      }
     },
     "capacity": {
       "type": "int",
       "defaultValue": 1,
-      "metadata": {
-        "description": "Optional. The size of the Redis cache to deploy. Valid values: for C (Basic/Standard) family (0, 1, 2, 3, 4, 5, 6), for P (Premium) family (1, 2, 3, 4)."
-      },
       "allowedValues": [
         0,
         1,
@@ -149,19 +149,22 @@
         4,
         5,
         6
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. The size of the Redis cache to deploy. Valid values: for C (Basic/Standard) family (0, 1, 2, 3, 4, 5, 6), for P (Premium) family (1, 2, 3, 4)."
+      }
     },
     "skuName": {
       "type": "string",
       "defaultValue": "Basic",
-      "metadata": {
-        "description": "Optional. The type of Redis cache to deploy."
-      },
       "allowedValues": [
         "Basic",
         "Premium",
         "Standard"
-      ]
+      ],
+      "metadata": {
+        "description": "Optional. The type of Redis cache to deploy."
+      }
     },
     "staticIP": {
       "type": "string",
@@ -212,15 +215,6 @@
         "description": "Optional. The name of the diagnostic setting, if deployed. If left empty, it defaults to \"<resourceName>-diagnosticSettings\"."
       }
     },
-    "diagnosticLogsRetentionInDays": {
-      "type": "int",
-      "defaultValue": 365,
-      "maxValue": 365,
-      "minValue": 0,
-      "metadata": {
-        "description": "Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely."
-      }
-    },
     "diagnosticStorageAccountId": {
       "type": "string",
       "defaultValue": "",
@@ -255,11 +249,12 @@
         "allLogs"
       ],
       "allowedValues": [
+        "",
         "allLogs",
         "ConnectedClientList"
       ],
       "metadata": {
-        "description": "Optional. The name of logs that will be streamed. \"allLogs\" includes all possible logs for the resource."
+        "description": "Optional. The name of logs that will be streamed. \"allLogs\" includes all possible logs for the resource. Set to '' to disable log collection."
       }
     },
     "diagnosticMetricsToEnable": {
@@ -286,14 +281,10 @@
     "copy": [
       {
         "name": "diagnosticsLogsSpecified",
-        "count": "[length(filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', not(equals(lambdaVariables('item'), 'allLogs')))))]",
+        "count": "[length(filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', and(not(equals(lambdaVariables('item'), 'allLogs')), not(equals(lambdaVariables('item'), ''))))))]",
         "input": {
-          "category": "[filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', not(equals(lambdaVariables('item'), 'allLogs'))))[copyIndex('diagnosticsLogsSpecified')]]",
-          "enabled": true,
-          "retentionPolicy": {
-            "enabled": true,
-            "days": "[parameters('diagnosticLogsRetentionInDays')]"
-          }
+          "category": "[filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', and(not(equals(lambdaVariables('item'), 'allLogs')), not(equals(lambdaVariables('item'), '')))))[copyIndex('diagnosticsLogsSpecified')]]",
+          "enabled": true
         }
       },
       {
@@ -302,16 +293,12 @@
         "input": {
           "category": "[parameters('diagnosticMetricsToEnable')[copyIndex('diagnosticsMetrics')]]",
           "timeGrain": null,
-          "enabled": true,
-          "retentionPolicy": {
-            "enabled": true,
-            "days": "[parameters('diagnosticLogsRetentionInDays')]"
-          }
+          "enabled": true
         }
       }
     ],
     "availabilityZones": "[if(equals(parameters('skuName'), 'Premium'), if(parameters('zoneRedundant'), if(not(empty(parameters('zones'))), parameters('zones'), pickZones('Microsoft.Cache', 'redis', parameters('location'), 3)), createArray()), createArray())]",
-    "diagnosticsLogs": "[if(contains(parameters('diagnosticLogCategoriesToEnable'), 'allLogs'), createArray(createObject('categoryGroup', 'allLogs', 'enabled', true(), 'retentionPolicy', createObject('enabled', true(), 'days', parameters('diagnosticLogsRetentionInDays')))), variables('diagnosticsLogsSpecified'))]",
+    "diagnosticsLogs": "[if(contains(parameters('diagnosticLogCategoriesToEnable'), 'allLogs'), createArray(createObject('categoryGroup', 'allLogs', 'enabled', true())), if(contains(parameters('diagnosticLogCategoriesToEnable'), ''), createArray(), variables('diagnosticsLogsSpecified')))]",
     "identityType": "[if(parameters('systemAssignedIdentity'), 'SystemAssigned', if(not(empty(parameters('userAssignedIdentities'))), 'UserAssigned', 'None'))]",
     "identity": {
       "type": "[variables('identityType')]",
@@ -427,8 +414,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.18.4.5664",
-              "templateHash": "12322518665721801661"
+              "version": "0.20.4.51522",
+              "templateHash": "11568465556240097908"
             }
           },
           "parameters": {
@@ -571,9 +558,7 @@
           "enableDefaultTelemetry": {
             "value": "[variables('enableReferencedModulesTelemetry')]"
           },
-          "location": {
-            "value": "[reference(split(parameters('privateEndpoints')[copyIndex()].subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location]"
-          },
+          "location": "[if(contains(parameters('privateEndpoints')[copyIndex()], 'location'), createObject('value', parameters('privateEndpoints')[copyIndex()].location), createObject('value', reference(split(parameters('privateEndpoints')[copyIndex()].subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location))]",
           "lock": "[if(contains(parameters('privateEndpoints')[copyIndex()], 'lock'), createObject('value', parameters('privateEndpoints')[copyIndex()].lock), createObject('value', parameters('lock')))]",
           "privateDnsZoneGroup": "[if(contains(parameters('privateEndpoints')[copyIndex()], 'privateDnsZoneGroup'), createObject('value', parameters('privateEndpoints')[copyIndex()].privateDnsZoneGroup), createObject('value', createObject()))]",
           "roleAssignments": "[if(contains(parameters('privateEndpoints')[copyIndex()], 'roleAssignments'), createObject('value', parameters('privateEndpoints')[copyIndex()].roleAssignments), createObject('value', createArray()))]",
@@ -590,9 +575,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.18.4.5664",
-              "templateHash": "12991773916541265724"
-            }
+              "version": "0.20.4.51522",
+              "templateHash": "13560297539192628062"
+            },
+            "name": "Private Endpoints",
+            "description": "This module deploys a Private Endpoint.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "name": {
@@ -657,14 +645,14 @@
             "lock": {
               "type": "string",
               "defaultValue": "",
-              "metadata": {
-                "description": "Optional. Specify the type of lock."
-              },
               "allowedValues": [
                 "",
                 "CanNotDelete",
                 "ReadOnly"
-              ]
+              ],
+              "metadata": {
+                "description": "Optional. Specify the type of lock."
+              }
             },
             "roleAssignments": {
               "type": "array",
@@ -722,7 +710,7 @@
             },
             {
               "type": "Microsoft.Network/privateEndpoints",
-              "apiVersion": "2022-07-01",
+              "apiVersion": "2023-04-01",
               "name": "[parameters('name')]",
               "location": "[parameters('location')]",
               "tags": "[parameters('tags')]",
@@ -787,9 +775,12 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.18.4.5664",
-                      "templateHash": "3520683536217550590"
-                    }
+                      "version": "0.20.4.51522",
+                      "templateHash": "17831763001460207830"
+                    },
+                    "name": "Private Endpoint Private DNS Zone Groups",
+                    "description": "This module deploys a Private Endpoint Private DNS Zone Group.",
+                    "owner": "Azure/module-maintainers"
                   },
                   "parameters": {
                     "privateEndpointName": {
@@ -800,8 +791,8 @@
                     },
                     "privateDNSResourceIds": {
                       "type": "array",
-                      "maxLength": 5,
                       "minLength": 1,
+                      "maxLength": 5,
                       "metadata": {
                         "description": "Required. Array of private DNS zone resource IDs. A DNS zone group can support up to 5 DNS zones."
                       }
@@ -852,7 +843,7 @@
                     },
                     {
                       "type": "Microsoft.Network/privateEndpoints/privateDnsZoneGroups",
-                      "apiVersion": "2022-07-01",
+                      "apiVersion": "2023-04-01",
                       "name": "[format('{0}/{1}', parameters('privateEndpointName'), parameters('name'))]",
                       "properties": {
                         "privateDnsZoneConfigs": "[variables('privateDnsZoneConfigs')]"
@@ -922,8 +913,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.18.4.5664",
-                      "templateHash": "11724106538771429164"
+                      "version": "0.20.4.51522",
+                      "templateHash": "11548486149222715894"
                     }
                   },
                   "parameters": {
@@ -1093,7 +1084,7 @@
               "metadata": {
                 "description": "The location the resource was deployed into."
               },
-              "value": "[reference(resourceId('Microsoft.Network/privateEndpoints', parameters('name')), '2022-07-01', 'full').location]"
+              "value": "[reference(resourceId('Microsoft.Network/privateEndpoints', parameters('name')), '2023-04-01', 'full').location]"
             }
           }
         }

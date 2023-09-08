@@ -1,3 +1,7 @@
+metadata name = 'API Management Services'
+metadata description = 'This module deploys an API Management Service.'
+metadata owner = 'Azure/module-maintainers'
+
 @description('Optional. Additional datacenter locations of the API Management service.')
 param additionalLocations array = []
 
@@ -13,11 +17,6 @@ param enableDefaultTelemetry bool = true
 
 @description('Optional. Custom properties of the API Management service.')
 param customProperties object = {}
-
-@description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
-@minValue(0)
-@maxValue(365)
-param diagnosticLogsRetentionInDays int = 365
 
 @description('Optional. Resource ID of the diagnostic storage account.')
 param diagnosticStorageAccountId string = ''
@@ -109,8 +108,9 @@ param diagnosticWorkspaceId string = ''
 @description('Optional. A list of availability zones denoting where the resource needs to come from.')
 param zones array = []
 
-@description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource.')
+@description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to \'\' to disable log collection.')
 @allowed([
+  ''
   'allLogs'
   'GatewayLogs'
 ])
@@ -169,34 +169,22 @@ var enableReferencedModulesTelemetry = false
 
 var authorizationServerList = !empty(authorizationServers) ? authorizationServers.secureList : []
 
-var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs'): {
+var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs' && item != ''): {
   category: category
   enabled: true
-  retentionPolicy: {
-    enabled: true
-    days: diagnosticLogsRetentionInDays
-  }
 }]
 
 var diagnosticsLogs = contains(diagnosticLogCategoriesToEnable, 'allLogs') ? [
   {
     categoryGroup: 'allLogs'
     enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
   }
-] : diagnosticsLogsSpecified
+] : contains(diagnosticLogCategoriesToEnable, '') ? [] : diagnosticsLogsSpecified
 
 var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   category: metric
   timeGrain: null
   enabled: true
-  retentionPolicy: {
-    enabled: true
-    days: diagnosticLogsRetentionInDays
-  }
 }]
 
 var identityType = systemAssignedIdentity ? (!empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
@@ -249,7 +237,7 @@ resource service 'Microsoft.ApiManagement/service@2021-08-01' = {
   }
 }
 
-module service_apis 'apis/main.bicep' = [for (api, index) in apis: {
+module service_apis 'api/main.bicep' = [for (api, index) in apis: {
   name: '${uniqueString(deployment().name, location)}-Apim-Api-${index}'
   params: {
     apiManagementServiceName: service.name
@@ -284,7 +272,7 @@ module service_apis 'apis/main.bicep' = [for (api, index) in apis: {
   ]
 }]
 
-module service_apiVersionSets 'api-version-sets/main.bicep' = [for (apiVersionSet, index) in apiVersionSets: {
+module service_apiVersionSets 'api-version-set/main.bicep' = [for (apiVersionSet, index) in apiVersionSets: {
   name: '${uniqueString(deployment().name, location)}-Apim-ApiVersionSet-${index}'
   params: {
     apiManagementServiceName: service.name
@@ -294,7 +282,7 @@ module service_apiVersionSets 'api-version-sets/main.bicep' = [for (apiVersionSe
   }
 }]
 
-module service_authorizationServers 'authorization-servers/main.bicep' = [for (authorizationServer, index) in authorizationServerList: {
+module service_authorizationServers 'authorization-server/main.bicep' = [for (authorizationServer, index) in authorizationServerList: {
   name: '${uniqueString(deployment().name, location)}-Apim-AuthorizationServer-${index}'
   params: {
     apiManagementServiceName: service.name
@@ -324,7 +312,7 @@ module service_authorizationServers 'authorization-servers/main.bicep' = [for (a
   }
 }]
 
-module service_backends 'backends/main.bicep' = [for (backend, index) in backends: {
+module service_backends 'backend/main.bicep' = [for (backend, index) in backends: {
   name: '${uniqueString(deployment().name, location)}-Apim-Backend-${index}'
   params: {
     apiManagementServiceName: service.name
@@ -345,7 +333,7 @@ module service_backends 'backends/main.bicep' = [for (backend, index) in backend
   }
 }]
 
-module service_caches 'caches/main.bicep' = [for (cache, index) in caches: {
+module service_caches 'cache/main.bicep' = [for (cache, index) in caches: {
   name: '${uniqueString(deployment().name, location)}-Apim-Cache-${index}'
   params: {
     apiManagementServiceName: service.name
@@ -358,7 +346,7 @@ module service_caches 'caches/main.bicep' = [for (cache, index) in caches: {
   }
 }]
 
-module service_identityProviders 'identity-providers/main.bicep' = [for (identityProvider, index) in identityProviders: {
+module service_identityProviders 'identity-provider/main.bicep' = [for (identityProvider, index) in identityProviders: {
   name: '${uniqueString(deployment().name, location)}-Apim-IdentityProvider-${index}'
   params: {
     apiManagementServiceName: service.name
@@ -378,7 +366,7 @@ module service_identityProviders 'identity-providers/main.bicep' = [for (identit
   }
 }]
 
-module service_namedValues 'named-values/main.bicep' = [for (namedValue, index) in namedValues: {
+module service_namedValues 'named-value/main.bicep' = [for (namedValue, index) in namedValues: {
   name: '${uniqueString(deployment().name, location)}-Apim-NamedValue-${index}'
   params: {
     apiManagementServiceName: service.name
@@ -392,7 +380,7 @@ module service_namedValues 'named-values/main.bicep' = [for (namedValue, index) 
   }
 }]
 
-module service_portalsettings 'portalsettings/main.bicep' = [for (portalsetting, index) in portalsettings: {
+module service_portalsettings 'portalsetting/main.bicep' = [for (portalsetting, index) in portalsettings: {
   name: '${uniqueString(deployment().name, location)}-Apim-PortalSetting-${index}'
   params: {
     apiManagementServiceName: service.name
@@ -402,7 +390,7 @@ module service_portalsettings 'portalsettings/main.bicep' = [for (portalsetting,
   }
 }]
 
-module service_policies 'policies/main.bicep' = [for (policy, index) in policies: {
+module service_policies 'policy/main.bicep' = [for (policy, index) in policies: {
   name: '${uniqueString(deployment().name, location)}-Apim-Policy-${index}'
   params: {
     apiManagementServiceName: service.name
@@ -412,7 +400,7 @@ module service_policies 'policies/main.bicep' = [for (policy, index) in policies
   }
 }]
 
-module service_products 'products/main.bicep' = [for (product, index) in products: {
+module service_products 'product/main.bicep' = [for (product, index) in products: {
   name: '${uniqueString(deployment().name, location)}-Apim-Product-${index}'
   params: {
     apiManagementServiceName: service.name
@@ -432,7 +420,7 @@ module service_products 'products/main.bicep' = [for (product, index) in product
   ]
 }]
 
-module service_subscriptions 'subscriptions/main.bicep' = [for (subscription, index) in subscriptions: {
+module service_subscriptions 'subscription/main.bicep' = [for (subscription, index) in subscriptions: {
   name: '${uniqueString(deployment().name, location)}-Apim-Subscription-${index}'
   params: {
     apiManagementServiceName: service.name

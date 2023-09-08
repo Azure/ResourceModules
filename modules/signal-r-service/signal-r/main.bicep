@@ -1,3 +1,7 @@
+metadata name = 'SignalR Service SignalR'
+metadata description = 'This module deploys a SignalR Service SignalR.'
+metadata owner = 'Azure/module-maintainers'
+
 @description('Optional. The location for the resource.')
 param location string = resourceGroup().location
 
@@ -158,7 +162,7 @@ resource signalR 'Microsoft.SignalRService/signalR@2022-02-01' = {
   }
 }
 
-module signalR_privateEndpoints '../../network/private-endpoints/main.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
+module signalR_privateEndpoints '../../network/private-endpoint/main.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
   name: '${uniqueString(deployment().name, location)}-SignalR-PrivateEndpoint-${index}'
   params: {
     groupIds: [
@@ -167,7 +171,7 @@ module signalR_privateEndpoints '../../network/private-endpoints/main.bicep' = [
     name: contains(privateEndpoint, 'name') ? privateEndpoint.name : 'pe-${last(split(signalR.id, '/'))}-${privateEndpoint.service}-${index}'
     serviceResourceId: signalR.id
     subnetResourceId: privateEndpoint.subnetResourceId
-    location: reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
+    location: contains(privateEndpoint, 'location') ? privateEndpoint.location : reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
     lock: contains(privateEndpoint, 'lock') ? privateEndpoint.lock : lock
     privateDnsZoneGroup: contains(privateEndpoint, 'privateDnsZoneGroup') ? privateEndpoint.privateDnsZoneGroup : {}
     roleAssignments: contains(privateEndpoint, 'roleAssignments') ? privateEndpoint.roleAssignments : []

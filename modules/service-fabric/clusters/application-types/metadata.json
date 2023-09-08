@@ -1,6 +1,0 @@
-{
-    "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
-    "name": "Service Fabric Cluster Application Types",
-    "summary": "This module deploys a Service Fabric Cluster Application Type.",
-    "owner": "Azure/module-maintainers"
-}

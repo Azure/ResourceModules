@@ -1,3 +1,7 @@
+metadata name = 'SignalR Web PubSub Services'
+metadata description = 'This module deploys a SignalR Web PubSub Service.'
+metadata owner = 'Azure/module-maintainers'
+
 @description('Optional. The location for the resource.')
 param location string = resourceGroup().location
 
@@ -118,7 +122,7 @@ resource webPubSub 'Microsoft.SignalRService/webPubSub@2021-10-01' = {
   }
 }
 
-module webPubSub_privateEndpoints '../../network/private-endpoints/main.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
+module webPubSub_privateEndpoints '../../network/private-endpoint/main.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
   name: '${uniqueString(deployment().name, location)}-WebPubSub-PrivateEndpoint-${index}'
   params: {
     groupIds: [
@@ -127,7 +131,7 @@ module webPubSub_privateEndpoints '../../network/private-endpoints/main.bicep' =
     name: contains(privateEndpoint, 'name') ? privateEndpoint.name : 'pe-${last(split(webPubSub.id, '/'))}-${privateEndpoint.service}-${index}'
     serviceResourceId: webPubSub.id
     subnetResourceId: privateEndpoint.subnetResourceId
-    location: reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
+    location: contains(privateEndpoint, 'location') ? privateEndpoint.location : reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
     lock: contains(privateEndpoint, 'lock') ? privateEndpoint.lock : lock
     privateDnsZoneGroup: contains(privateEndpoint, 'privateDnsZoneGroup') ? privateEndpoint.privateDnsZoneGroup : {}
     roleAssignments: contains(privateEndpoint, 'roleAssignments') ? privateEndpoint.roleAssignments : []

@@ -27,10 +27,10 @@ trigger:
       - main
   paths:
     include:
-      - '/modules/compute/virtual-machines/*'
-      - '/modules/recovery-services/vaults/protection-containers/protected-items/*'
-      - '/modules/network/public-ip-addresses/*'
-      - '/modules/network/network-interfaces/*'
+      - '/modules/compute/virtual-machine/*'
+      - '/modules/recovery-services/vault/backup-fabric/protection-container/protected-item/*'
+      - '/modules/network/public-ip-address/*'
+      - '/modules/network/network-interface/*'
       - '/.azuredevops/modulePipelines/ms.compute.virtualmachines.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
       - '/utilities/pipelines/*'
@@ -42,7 +42,7 @@ variables:
   - template: '../../settings.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/modules/compute/virtual-machines'
+    value: '/modules/compute/virtual-machine'
 
 stages:
   - template: /.azuredevops/pipelineTemplates/stages.module.yml

@@ -17,9 +17,6 @@ param serviceShort string = 'rtrg'
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-@description('Optional. A token to inject into the name of each resource.')
-param namePrefix string = '[[namePrefix]]'
-
 // ============ //
 // Dependencies //
 // ============ //
@@ -42,6 +39,7 @@ module testDeployment '../../main.bicep' = {
     onlyUpdate: false
     resourceGroupName: resourceGroup.name
     tags: {
+      'hidden-title': 'This is visible in the resource name'
       Test: 'Yes'
       TestToo: 'No'
     }

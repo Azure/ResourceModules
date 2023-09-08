@@ -1,6 +1,0 @@
-{
-    "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
-    "name": "Role Definitions (Resource Group scope)",
-    "summary": "This module deploys a Role Definition at a Resource Group scope.",
-    "owner": "Azure/module-maintainers"
-}

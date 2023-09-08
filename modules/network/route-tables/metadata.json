@@ -1,6 +1,0 @@
-{
-    "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
-    "name": "Route Tables",
-    "summary": "This module deploys a User Defined Route Table (UDR).",
-    "owner": "Azure/module-maintainers"
-}

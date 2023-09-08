@@ -388,3 +388,6 @@ FodyWeavers.xsd
 
 # MacOS
 .DS_Store
+
+# Do not include files in workloads folder
+/workloads

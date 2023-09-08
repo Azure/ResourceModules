@@ -1,13 +1,13 @@
 # Common Azure Resource Modules Library
 
-The CARML resource library provides [Bicep](https://github.com/Azure/bicep) modules which can be leveraged in your infrastructure as code project to accelerate solution development. You can re-use the code library as whole or in part. The primary aim is to provide you with re-usable building blocks, so that you can focus what matter the most.
+The CARML resource library provides [Bicep](https://github.com/Azure/bicep) modules which can be leveraged in your Infrastructure-as-Code project to accelerate solution development. You can re-use the code library as whole or in part. The primary aim is to provide you with re-usable building blocks, so that you can focus what matter the most.
 CARML accelerates your solution development, it also saves time on testing, it helps you easily integrate and overall, it provides you with commonality across your infrastructure deployments. You can integrate CARML into your CI/CD pipelines to accelerate your DevOps adoption.
 
 CARML will accelerate the deployment of complex solutions, such as Azure landing zones, landing zone accelerators or individual multi-module applications/workloads.
 
 This wiki describes the content of this repository, its modules, pipelines, and possible options on how to use them and how to contribute to this project.
 
-If you're unfamiliar with Infrastructure as Code or wonder how you can use the content of this repository in your deployments, check out [The context](./The%20context) section of this wiki.
+If you're unfamiliar with Infrastructure-as-Code or wonder how you can use the content of this repository in your deployments, check out [The context](./The%20context) section of this wiki.
 
 ### _Navigation_
 
@@ -65,6 +65,7 @@ In next section, you can find an overview of what is in scope and what is out of
 ## Out of Scope
 
 - **Orchestration:** Orchestrated, multi-module solutions, such as workloads or applications. As mentioned earlier, you can leverage modules to assemble and deploy such applications/workloads.
+  > Note: While we don't provide 'solution templates' we do provide some general guidelines you can find [here](./Solution%20creation).
 - **Languages:** Other domain-specific languages (DSL), like _Terraform_.
 
 ## Module update frequency

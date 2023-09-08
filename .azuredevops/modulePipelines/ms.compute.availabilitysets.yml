@@ -29,7 +29,7 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.compute.availabilitysets.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/modules/compute/availability-sets/*'
+      - '/modules/compute/availability-set/*'
       - '/utilities/pipelines/*'
     exclude:
       - '/utilities/pipelines/deploymentRemoval/*'
@@ -39,7 +39,7 @@ variables:
   - template: '../../settings.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/modules/compute/availability-sets'
+    value: '/modules/compute/availability-set'
 
 stages:
   - template: /.azuredevops/pipelineTemplates/stages.module.yml

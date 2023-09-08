@@ -38,62 +38,114 @@ For details on how to use the function, please refer to the script's local docum
 
 ## Example output
 
+The modules in path [ResourceModules\modules] have the following local folder references:
+
 ```PowerShell
-VERBOSE: The modules in path [ResourceModules\modules] have the following local folder references:
+VERBOSE: Resource: app-configuration/configuration-store
+VERBOSE: - network/private-endpoint
 VERBOSE:
-VERBOSE: Resource: Microsoft.ApiManagement/service
-VERBOSE: - Microsoft.ApiManagement/authorizationServers
+VERBOSE: Resource: automation/automation-account
+VERBOSE: - operational-insights/workspace/linked-service
+VERBOSE: - operations-management/solution
+VERBOSE: - network/private-endpoint
 VERBOSE:
-VERBOSE: Resource: Microsoft.ContainerRegistry/registries
-VERBOSE: - Microsoft.Network/privateEndpoints
+VERBOSE: Resource: batch/batch-account
+VERBOSE: - network/private-endpoint
 VERBOSE:
-VERBOSE: Resource: Microsoft.Web/sites
-VERBOSE: - Microsoft.Network/privateEndpoints
+VERBOSE: Resource: cache/redis
+VERBOSE: - network/private-endpoint
 VERBOSE:
-VERBOSE: Resource: Microsoft.EventHub/namespaces
-VERBOSE: - Microsoft.Network/privateEndpoints
+VERBOSE: Resource: cognitive-services/account
+VERBOSE: - network/private-endpoint
 VERBOSE:
-VERBOSE: Resource: Microsoft.MachineLearningServices/workspaces
-VERBOSE: - Microsoft.Network/privateEndpoints
+VERBOSE: Resource: compute/virtual-machine
+VERBOSE: - recovery-services/vault/protection-container/protected-item
 VERBOSE:
-VERBOSE: Resource: Microsoft.Network/bastionHosts
-VERBOSE: - Microsoft.Network/publicIPAddresses
+VERBOSE: Resource: container-registry/registry
+VERBOSE: - network/private-endpoint
 VERBOSE:
-VERBOSE: Resource: Microsoft.Sql/servers
-VERBOSE: - Microsoft.Network/privateEndpoints
+VERBOSE: Resource: container-service/managed-cluster
+VERBOSE: - kubernetes-configuration/extension
+VERBOSE: - kubernetes-configuration/flux-configuration
 VERBOSE:
-VERBOSE: Resource: Microsoft.Insights/privateLinkScopes
-VERBOSE: - Microsoft.Network/privateEndpoints
+VERBOSE: Resource: data-factory/factory
+VERBOSE: - network/private-endpoint
 VERBOSE:
-VERBOSE: Resource: Microsoft.Web/staticSites
-VERBOSE: - Microsoft.Network/privateEndpoints
+VERBOSE: Resource: digital-twins/digital-twins-instance
+VERBOSE: - network/private-endpoint
 VERBOSE:
-VERBOSE: Resource: Microsoft.Storage/storageAccounts
-VERBOSE: - Microsoft.Network/privateEndpoints
+VERBOSE: Resource: event-grid/domain
+VERBOSE: - network/private-endpoint
 VERBOSE:
-VERBOSE: Resource: Microsoft.Automation/automationAccounts
-VERBOSE: - Microsoft.Network/privateEndpoints
+VERBOSE: Resource: event-grid/topic
+VERBOSE: - network/private-endpoint
 VERBOSE:
-VERBOSE: Resource: Microsoft.ServiceBus/namespaces
-VERBOSE: - Microsoft.Network/privateEndpoints
+VERBOSE: Resource: event-hub/namespace
+VERBOSE: - network/private-endpoint
 VERBOSE:
-VERBOSE: Resource: Microsoft.Compute/virtualMachines
-VERBOSE: - Microsoft.RecoveryServices/vaults/protectionContainers/protectedItems
-VERBOSE: - Microsoft.Network/publicIPAddresses
-VERBOSE: - Microsoft.Network/networkInterfaces
+VERBOSE: Resource: insights/private-link-scope
+VERBOSE: - network/private-endpoint
 VERBOSE:
-VERBOSE: Resource: Microsoft.CognitiveServices/accounts
-VERBOSE: - Microsoft.Network/privateEndpoints
+VERBOSE: Resource: key-vault/vault
+VERBOSE: - network/private-endpoint
 VERBOSE:
-VERBOSE: Resource: Microsoft.Synapse/privateLinkHubs
-VERBOSE: - Microsoft.Network/privateEndpoints
+VERBOSE: Resource: kubernetes-configuration/extension
+VERBOSE: - kubernetes-configuration/flux-configuration
 VERBOSE:
-VERBOSE: Resource: Microsoft.AppConfiguration/configurationStores
-VERBOSE: - Microsoft.Network/privateEndpoints
+VERBOSE: Resource: machine-learning-services/workspace
+VERBOSE: - network/private-endpoint
 VERBOSE:
-VERBOSE: Resource: Microsoft.EventGrid/topics
-VERBOSE: - Microsoft.Network/privateEndpoints
+VERBOSE: Resource: network/azure-firewall
+VERBOSE: - network/public-ip-address
 VERBOSE:
-VERBOSE: Resource: Microsoft.KeyVault/vaults
-VERBOSE: - Microsoft.Network/privateEndpoints
+VERBOSE: Resource: network/bastion-host
+VERBOSE: - network/public-ip-address
+VERBOSE:
+VERBOSE: Resource: network/nat-gateway
+VERBOSE: - network/public-ip-address
+VERBOSE:
+VERBOSE: Resource: network/virtual-network-gateway
+VERBOSE: - network/public-ip-address
+VERBOSE:
+VERBOSE: Resource: operational-insights/workspace
+VERBOSE: - operations-management/solution
+VERBOSE:
+VERBOSE: Resource: purview/account
+VERBOSE: - network/private-endpoint
+VERBOSE:
+VERBOSE: Resource: recovery-services/vault
+VERBOSE: - network/private-endpoint
+VERBOSE:
+VERBOSE: Resource: relay/namespace
+VERBOSE: - network/private-endpoint
+VERBOSE:
+VERBOSE: Resource: resources/resource-group
+VERBOSE: - authorization/locks/resource-group
+VERBOSE:
+VERBOSE: Resource: service-bus/namespace
+VERBOSE: - network/private-endpoint
+VERBOSE:
+VERBOSE: Resource: signal-r-service/signal-r
+VERBOSE: - network/private-endpoint
+VERBOSE:
+VERBOSE: Resource: signal-r-service/web-pub-sub
+VERBOSE: - network/private-endpoint
+VERBOSE:
+VERBOSE: Resource: sql/server
+VERBOSE: - network/private-endpoint
+VERBOSE:
+VERBOSE: Resource: storage/storage-account
+VERBOSE: - network/private-endpoint
+VERBOSE:
+VERBOSE: Resource: synapse/private-link-hub
+VERBOSE: - network/private-endpoint
+VERBOSE:
+VERBOSE: Resource: synapse/workspace
+VERBOSE: - network/private-endpoint
+VERBOSE:
+VERBOSE: Resource: web/site
+VERBOSE: - network/private-endpoint
+VERBOSE:
+VERBOSE: Resource: web/static-site
+VERBOSE: - network/private-endpoint
 ```

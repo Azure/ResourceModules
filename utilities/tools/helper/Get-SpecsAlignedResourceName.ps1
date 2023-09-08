@@ -26,7 +26,7 @@ function Get-ReducedWordString {
         [string] $StringToReduce
     )
 
-    if ($StringToReduce -match '(.+?)(y|ii|ies|es|s)$') {
+    if ($StringToReduce -match '(.+?)(y|ii|e|ys|ies|es|s)$') {
         return $Matches[1]
     }
 
@@ -67,26 +67,56 @@ function Get-SpecsAlignedResourceName {
 
     $reducedResourceIdentifier = $ResourceIdentifier -replace '-'
 
-    $rawProviderNamespace = $reducedResourceIdentifier.Split('/')[0]
+    $rawProviderNamespace, $rawResourceType = $reducedResourceIdentifier -Split '[\/|\\]', 2 # e.g. 'keyvault' & 'vaults/keys'
+
+    # Find provider namespace
     $foundProviderNamespaceMatches = ($specs.Keys | Sort-Object) | Where-Object { $_ -like "Microsoft.$rawProviderNamespace*" }
 
     if (-not $foundProviderNamespaceMatches) {
         $providerNamespace = "Microsoft.$rawProviderNamespace"
-        Write-Warning "Failed to identifier provider namespace [$rawProviderNamespace]. Falling back to [$providerNamespace]."
+        Write-Warning "Failed to identify provider namespace [$rawProviderNamespace]. Falling back to [$providerNamespace]."
     } else {
         $providerNamespace = ($foundProviderNamespaceMatches.Count -eq 1) ? $foundProviderNamespaceMatches : $foundProviderNamespaceMatches[0]
     }
 
+    # Find resource type
     $innerResourceTypes = $specs[$providerNamespace].Keys | Sort-Object
-    $rawResourceType = Get-ReducedWordString -StringToReduce ($reducedResourceIdentifier -replace ('{0}/' -f ($reducedResourceIdentifier.Split('/')[0])), '')
-    $foundResourceTypeMatches = $innerResourceTypes | Where-Object { $_ -like "$rawResourceType*" }
 
-    if (-not $foundResourceTypeMatches) {
-        $resourceType = $reducedResourceIdentifier.Split('/')[0]
-        Write-Warning "Failed to identify resource type [$rawResourceType] in provider namespace [$providerNamespace]. Fallback to [$resourceType]."
-    } else {
-        $resourceType = ($foundResourceTypeMatches.Count -eq 1) ? $foundResourceTypeMatches : $foundResourceTypeMatches[0]
+    $rawResourceTypeElem = $rawResourceType -split '[\/|\\]'
+    $reducedResourceTypeElements = $rawResourceTypeElem | ForEach-Object { Get-ReducedWordString -StringToReduce $_ }
+
+    ## We built a regex that matches the resource type, but also the plural and singular form of it along its entire path. For example ^vault(y|ii|e|ys|ies|es|s|)(\/|$)key(y|ii|e|ys|ies|es|s|)(\/|$)$
+    ### (y|ii|e|ys|ies|es|s|) = Singular or plural form
+    ### (\/|$)                = End of string or another resource type level
+    $resourceTypeRegex = '^{0}(y|ii|e|ys|ies|es|s|ses|)(\/|$)$' -f ($reducedResourceTypeElements -join '(y|ii|e|ys|ies|es|s|ses|)(\/|$)')
+    $resourceType = $innerResourceTypes | Where-Object { $_ -match $resourceTypeRegex }
+
+    # Special case handling: Ambiguous resource types (usually incorrect RP implementations)
+    if ($resourceType.count -gt 1) {
+        switch ($rawResourceType) {
+            'service/api/policy' {
+                # Setting explicitely as both [apimanagement/service/apis/policies] & [apimanagement/service/apis/policy] exist in the specs and the later seem to have been an initial incorrect publish (only one API version exists)
+                $resourceType = 'service/apis/policies'
+            }
+            Default {
+                throw ('Found ambiguous resource types [{0}] for identifier [{1}]' -f ($resourceType -join ','), $rawResourceType)
+            }
+        }
     }
 
+    # Special case handling: If no resource type is found, fall back one level (e.g., for 'authorization\role-definition\management-group' as 'management-group' in this context is no actual resource type)
+    if (-not $resourceType) {
+        $fallbackResourceTypeRegex = '{0}$' -f ($resourceTypeRegex -split $reducedResourceTypeElements[-1])[0]
+        $resourceType = $innerResourceTypes | Where-Object { $_ -match $fallbackResourceTypeRegex }
+        if (-not $resourceType) {
+            # if we still don't find anything (because the resource type straight up does not exist, we fall back to itself as the default)
+            Write-Warning "Resource type [$rawResourceType] does not exist in the API / is custom. Falling back to it as default."
+            $resourceType = $rawResourceType
+        } else {
+            Write-Warning ('Failed to find exact match between core matched resource types and [{0}]. Fallback on [{1}].' -f $rawResourceType, (Split-Path $rawResourceType -Parent))
+        }
+    }
+
+    # Build result
     return "$providerNamespace/$resourceType"
 }

@@ -15,8 +15,13 @@ Mandatory. The Resource Group to search in
 Optional. Publish an absolute latest version.
 Note: This version may include breaking changes and is not recommended for production environments
 
+.PARAMETER UseApiSpecsAlignedName
+Optional. If set to true, the module name looked for is aligned with the Azure API naming. If not, it's one aligned with the module's folder path. See the following examples:
+- True:  microsoft.keyvault.vaults.secrets
+- False: key-vault.vault.secret
+
 .EXAMPLE
-Get-ModulesMissingFromTemplateSpecsRG -TemplateFilePath 'C:\ResourceModules\modules\key-vault\vaults\main.bicep' -TemplateSpecsRGName 'artifacts-rg'
+Get-ModulesMissingFromTemplateSpecsRG -TemplateFilePath 'C:\ResourceModules\modules\key-vault\vault\main.bicep' -TemplateSpecsRGName 'artifacts-rg'
 
 Check if either the Key Vault module or any of its children (e.g. 'secret') is missing in the Resource Group 'artifacts-rg'
 
@@ -24,37 +29,37 @@ Returns for example:
 Name                           Value
 ----                           -----
 Version                        0.4.0
-TemplateFilePath               C:\ResourceModules\modules\key-vault\vaults\access-policies\main.bicep
+TemplateFilePath               C:\ResourceModules\modules\key-vault\vault\access-policy\main.bicep
 Version                        0.4
-TemplateFilePath               C:\ResourceModules\modules\key-vault\vaults\access-policies\main.bicep
+TemplateFilePath               C:\ResourceModules\modules\key-vault\vault\access-policy\main.bicep
 Version                        0
-TemplateFilePath               C:\ResourceModules\modules\key-vault\vaults\access-policies\main.bicep
+TemplateFilePath               C:\ResourceModules\modules\key-vault\vault\access-policy\main.bicep
 Version                        latest
-TemplateFilePath               C:\ResourceModules\modules\key-vault\vaults\access-policies\main.bicep
+TemplateFilePath               C:\ResourceModules\modules\key-vault\vault\access-policy\main.bicep
 Version                        0.4.0
-TemplateFilePath               C:\ResourceModules\modules\key-vault\vaults\keys\main.bicep
+TemplateFilePath               C:\ResourceModules\modules\key-vault\vault\key\main.bicep
 Version                        0.4
-TemplateFilePath               C:\ResourceModules\modules\key-vault\vaults\keys\main.bicep
+TemplateFilePath               C:\ResourceModules\modules\key-vault\vault\key\main.bicep
 Version                        0
-TemplateFilePath               C:\ResourceModules\modules\key-vault\vaults\keys\main.bicep
+TemplateFilePath               C:\ResourceModules\modules\key-vault\vault\key\main.bicep
 Version                        latest
-TemplateFilePath               C:\ResourceModules\modules\key-vault\vaults\keys\main.bicep
+TemplateFilePath               C:\ResourceModules\modules\key-vault\vault\key\main.bicep
 Version                        0.4.0
-TemplateFilePath               C:\ResourceModules\modules\key-vault\vaults\secrets\main.bicep
+TemplateFilePath               C:\ResourceModules\modules\key-vault\vault\secret\main.bicep
 Version                        0.4
-TemplateFilePath               C:\ResourceModules\modules\key-vault\vaults\secrets\main.bicep
+TemplateFilePath               C:\ResourceModules\modules\key-vault\vault\secret\main.bicep
 Version                        0
-TemplateFilePath               C:\ResourceModules\modules\key-vault\vaults\secrets\main.bicep
+TemplateFilePath               C:\ResourceModules\modules\key-vault\vault\secret\main.bicep
 Version                        latest
-TemplateFilePath               C:\ResourceModules\modules\key-vault\vaults\secrets\main.bicep
+TemplateFilePath               C:\ResourceModules\modules\key-vault\vault\secret\main.bicep
 Version                        0.5.0
-TemplateFilePath               C:\ResourceModules\modules\key-vault\vaults\main.bicep
+TemplateFilePath               C:\ResourceModules\modules\key-vault\vault\main.bicep
 Version                        0.5
-TemplateFilePath               C:\ResourceModules\modules\key-vault\vaults\main.bicep
+TemplateFilePath               C:\ResourceModules\modules\key-vault\vault\main.bicep
 Version                        0
-TemplateFilePath               C:\ResourceModules\modules\key-vault\vaults\main.bicep
+TemplateFilePath               C:\ResourceModules\modules\key-vault\vault\main.bicep
 Version                        latest
-TemplateFilePath               C:\ResourceModules\modules\key-vault\vaults\main.bicep
+TemplateFilePath               C:\ResourceModules\modules\key-vault\vault\main.bicep
 #>
 function Get-ModulesMissingFromTemplateSpecsRG {
 
@@ -67,7 +72,10 @@ function Get-ModulesMissingFromTemplateSpecsRG {
         [string] $TemplateSpecsRGName,
 
         [Parameter(Mandatory = $false)]
-        [bool] $PublishLatest = $true
+        [bool] $PublishLatest = $true,
+
+        [Parameter(Mandatory = $false)]
+        [bool] $UseApiSpecsAlignedName = $false
     )
 
     begin {
@@ -78,8 +86,18 @@ function Get-ModulesMissingFromTemplateSpecsRG {
     }
 
     process {
-        # Get all children
-        $availableModuleTemplatePaths = (Get-ChildItem -Path (Split-Path $TemplateFilePath) -Recurse -Include @('main.bicep', 'main.json')).FullName
+        # Get all children, bicep templates only
+        $availableModuleTemplatePaths = (Get-ChildItem -Path (Split-Path $TemplateFilePath) -Recurse -Include @('main.bicep')).FullName
+
+        # Get all children, ARM templates only
+        $availableModuleTemplatePathsARM = (Get-ChildItem -Path (Split-Path $TemplateFilePath) -Recurse -Include @('main.json')).FullName
+
+        # Add ARM templates to the list of available modules only if there is no bicep template for the same module
+        foreach ($path in $availableModuleTemplatePathsARM) {
+            if ($availableModuleTemplatePaths -contains $path.Replace('.json', '.bicep')) { continue }
+            $availableModuleTemplatePaths += $path
+        }
+        $availableModuleTemplatePaths = $availableModuleTemplatePaths | Sort-Object
 
         if (-not (Get-AzResourceGroup -ResourceGroupName $TemplateSpecsRGName -ErrorAction 'SilentlyContinue')) {
             $missingTemplatePaths = $availableModuleTemplatePaths
@@ -89,7 +107,7 @@ function Get-ModulesMissingFromTemplateSpecsRG {
             foreach ($templatePath in $availableModuleTemplatePaths) {
 
                 # Get a valid Template Spec name
-                $templateSpecsIdentifier = Get-TemplateSpecsName -TemplateFilePath $templatePath
+                $templateSpecsIdentifier = Get-TemplateSpecsName -TemplateFilePath $templatePath -UseApiSpecsAlignedName $UseApiSpecsAlignedName
 
                 $null = Get-AzTemplateSpec -ResourceGroupName $TemplateSpecsRGName -Name $templateSpecsIdentifier -ErrorAction 'SilentlyContinue' -ErrorVariable 'result'
 

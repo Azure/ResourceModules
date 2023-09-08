@@ -10,9 +10,6 @@ param serviceShort string = 'rtsub'
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-@description('Optional. A token to inject into the name of each resource.')
-param namePrefix string = '[[namePrefix]]'
-
 // ============== //
 // Test Execution //
 // ============== //
@@ -22,6 +19,7 @@ module testDeployment '../../main.bicep' = {
   params: {
     onlyUpdate: true
     tags: {
+      'hidden-title': 'This is visible in the resource name'
       Test: 'Yes'
       TestToo: 'No'
     }

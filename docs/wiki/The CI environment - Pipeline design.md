@@ -48,15 +48,17 @@ This paragraph provides an overview of the three phases performed by each module
 <details>
 <summary>GitHub</summary>
 
-<img src="./media/CIEnvironment/pipelinePhasesGH.png" alt="Pipeline phases GH" height="150">
+<img src="./media/CIEnvironment/pipelinePhasesGH.png" alt="Pipeline phases GH" height="250">
 
 GitHub workflows map each pipeline phase to a dedicated composite action, to maximize code reusability.
 The mapping to the specific composite action is provided below:
 
 | Composite Action | Pipeline phase |
 | - | - |
-| **validateModulePester** | Static validation |
-| **validateModuleDeployment** | Deployment validation |
+| **Initialize pipeline** | Prepare the pipeline by (for example) publishing pipeline variables, collecting test files, etc. |
+| **Module / Static validation** | Static validation |
+| **Module / PSRule validation** | PS-Rule validation (with one job per template test file) |
+| **Module / Deployment validation** | Deployment validation (with one job per template test file) |
 | **publishModule** | Publishing |
 
 In addition, workflows leverage the following composite actions:
@@ -73,7 +75,7 @@ Technical documentation for each composite action, such as required input and ou
 <details>
 <summary>Azure DevOps</summary>
 
-<img src="./media/CIEnvironment/pipelinePhasesADO.png" alt="Pipeline phases ADO" height="300">
+<img src="./media/CIEnvironment/pipelinePhasesADO.png" alt="Pipeline phases ADO" height="400">
 
 Azure DevOps pipelines map each pipeline phase to a dedicated pipeline template, to maximize code reusability.
 The mapping to the specific YAML template file is provided below:
@@ -90,11 +92,15 @@ Technical documentation for each template, such as required input and output var
 
 ## Module pipeline inputs
 
-Each module pipeline comes with the following runtime parameters:
+Each module pipeline comes with the following runtime parameters (which are identical for GitHub & AzureDevOps):
 
-- `'Branch' dropdown`: A dropdown to select the branch to run the pipeline from.
-- `'Remove deployed module' switch`: Can be enabled or disabled and controls whether the test-deployed resources are removed after testing. It is enabled by default.
-- `'Publish prerelease module' switch`: Can be enabled or disabled and allows publishing a prerelease version for the corresponding module when running the pipeline from a branch different than `main|master`. It is disabled by default. For further information of how the input is processed refer to the [Publishing](./The%20CI%20environment%20-%20Publishing) dedicated page.
+- `'Branch'` dropdown: A dropdown to select the branch to run the pipeline from.
+- `'Execute static validation'` switch: Can be enabled or disabled. It controls whether the static tests jobs are executed during the pipeline run.
+  > **Note:** This switch cannot be used to bypass the publishing requirements, where both static tests & deployment validation jobs must be successful.
+- `'Execute deployment validation'` switch: Can be enabled or disabled. It controls whether the deployment validation jobs are executed during the pipeline run.
+- `'Remove deployed module'` switch: Can be enabled or disabled. It controls whether the test-deployed resources are removed after the deployment validation jobs. It is enabled by default.
+  > **Note:** This switch cannot be used to bypass the publishing requirements, where both the static tests & deployment validation jobs must be successful.
+- `'Publish prerelease module'` switch: Can be enabled or disabled. It allows publishing a `pre-release` version for the corresponding module when running the pipeline from a different branch than `main | master`. It is disabled by default. For further information of how the input is processed refer to the [Publishing Guide](./The%20CI%20environment%20-%20Publishing) dedicated page.
 
   <img src="./media/CIEnvironment/modulePipelineInput.png" alt="Module Pipeline Input" height="300">
 
@@ -107,6 +113,7 @@ In addition to module pipelines, the repository includes several platform pipeli
 - [ReadMe pipeline](#readme-pipeline)
 - [Wiki pipeline](#wiki-pipeline)
 - [PSRule Pre-Flight validation pipeline](#psrule-pre-flight-validation-pipeline)
+- [Deployment history cleanup](./The%20CI%20environment%20-%20Deployment%20history%20cleanup)
 
 ## ReadMe pipeline
 

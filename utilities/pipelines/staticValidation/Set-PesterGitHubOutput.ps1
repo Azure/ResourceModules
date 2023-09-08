@@ -34,9 +34,9 @@ Mandatory. The Pester tests results to parse. Can be fetched by running Pester w
     Failed                = ''
     FailedBlocks          = ''
     FailedContainers      = ''
-    Passed                = '[+] [Microsoft.KeyVault/vaults/secrets] Module should contain a [main.json/main.bicep] file. [+] ...'
+    Passed                = '[+] [key-vault/vault/secret] Module should contain a [main.json/main.bicep] file. [+] ...'
     NotRun                = ''
-    Tests                 = '[+] [Microsoft.KeyVault/vaults/secrets] Module should contain a [main.json/main.bicep] file. [+] ...'
+    Tests                 = '[+] [key-vault/vault/secret] Module should contain a [main.json/main.bicep] file. [+] ...'
     CodeCoverage          = null
 }
 
@@ -129,7 +129,7 @@ function Set-PesterGitHubOutput {
 
             $errorTestLine = $failedTest.ErrorRecord.TargetObject.Line
             $errorTestFile = (Split-Path $failedTest.ErrorRecord.TargetObject.File -Leaf).Trim()
-            $errorMessage = $failedTest.ErrorRecord.TargetObject.Message.Trim()
+            $errorMessage = $failedTest.ErrorRecord.TargetObject.Message.Trim() -replace '\n', '<br>' # Replace new lines with <br> to enable line breaks in markdown
 
             $testReference = '{0}:{1}' -f $errorTestFile, $errorTestLine
             if (-not [String]::IsNullOrEmpty($GitHubRepository) -and -not [String]::IsNullOrEmpty($BranchName)) {

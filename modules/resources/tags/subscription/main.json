@@ -1,0 +1,138 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.20.4.51522",
+      "templateHash": "17445460813956994133"
+    },
+    "name": "Resources Tags Subscription Scope",
+    "description": "This module deploys a Resource Tag on a Subscription scope.",
+    "owner": "Azure/module-maintainers"
+  },
+  "parameters": {
+    "tags": {
+      "type": "object",
+      "defaultValue": {},
+      "metadata": {
+        "description": "Optional. Tags for the resource group. If not provided, removes existing tags."
+      }
+    },
+    "onlyUpdate": {
+      "type": "bool",
+      "defaultValue": false,
+      "metadata": {
+        "description": "Optional. Instead of overwriting the existing tags, combine them with the new tags."
+      }
+    },
+    "location": {
+      "type": "string",
+      "defaultValue": "[deployment().location]",
+      "metadata": {
+        "description": "Optional. Location deployment metadata."
+      }
+    },
+    "enableDefaultTelemetry": {
+      "type": "bool",
+      "defaultValue": true,
+      "metadata": {
+        "description": "Optional. Enable telemetry via a Globally Unique Identifier (GUID)."
+      }
+    }
+  },
+  "resources": [
+    {
+      "condition": "[parameters('enableDefaultTelemetry')]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2021-04-01",
+      "name": "[format('pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-{0}', uniqueString(deployment().name, parameters('location')))]",
+      "location": "[parameters('location')]",
+      "properties": {
+        "mode": "Incremental",
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "resources": []
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/tags",
+      "apiVersion": "2021-04-01",
+      "name": "default",
+      "properties": {
+        "tags": "[if(parameters('onlyUpdate'), union(reference(subscriptionResourceId('Microsoft.Resources/deployments', format('{0}-ReadTags', deployment().name)), '2022-09-01').outputs.existingTags.value, parameters('tags')), parameters('tags'))]"
+      },
+      "dependsOn": [
+        "[subscriptionResourceId('Microsoft.Resources/deployments', format('{0}-ReadTags', deployment().name))]"
+      ]
+    },
+    {
+      "condition": "[parameters('onlyUpdate')]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2022-09-01",
+      "name": "[format('{0}-ReadTags', deployment().name)]",
+      "location": "[deployment().location]",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.20.4.51522",
+              "templateHash": "373680921396677494"
+            }
+          },
+          "parameters": {
+            "name": {
+              "type": "string",
+              "defaultValue": "default",
+              "metadata": {
+                "description": "Optional. The name of the tags resource."
+              }
+            }
+          },
+          "resources": [],
+          "outputs": {
+            "existingTags": {
+              "type": "object",
+              "metadata": {
+                "description": "Tags currently applied to the subscription level."
+              },
+              "value": "[if(contains(reference(subscriptionResourceId('Microsoft.Resources/tags', parameters('name')), '2021-04-01'), 'tags'), reference(subscriptionResourceId('Microsoft.Resources/tags', parameters('name')), '2021-04-01').tags, createObject())]"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "name": {
+      "type": "string",
+      "metadata": {
+        "description": "The name of the tags resource."
+      },
+      "value": "default"
+    },
+    "tags": {
+      "type": "object",
+      "metadata": {
+        "description": "The applied tags."
+      },
+      "value": "[if(parameters('onlyUpdate'), union(reference(subscriptionResourceId('Microsoft.Resources/deployments', format('{0}-ReadTags', deployment().name)), '2022-09-01').outputs.existingTags.value, parameters('tags')), parameters('tags'))]"
+    },
+    "resourceId": {
+      "type": "string",
+      "metadata": {
+        "description": "The resource ID of the applied tags."
+      },
+      "value": "[subscriptionResourceId('Microsoft.Resources/tags', 'default')]"
+    }
+  }
+}

@@ -84,7 +84,7 @@ jobs:
             . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
 
             # Define PS modules to install on the runner
-            $Modules = @(
+            $modules = @(
                 # This is the latest tested Pester version. Uncomment the next line in case of a future breaking change in the default version installed on the runner.
                 # @{ Name = 'Pester'; Version = '5.3.1' }
                 @{ Name = 'Az.Resources' }
@@ -92,7 +92,7 @@ jobs:
             )
 
             # Set agent up
-            Set-EnvironmentOnAgent -PSModules $Modules
+            Set-EnvironmentOnAgent -PSModules $modules
 
       # [Module Pester Test] task(s)
       #-----------------------------
@@ -154,7 +154,7 @@ jobs:
             }
 
             Write-Verbose 'Invoke test with' -Verbose
-            Write-Verbose ($testContainerData | ConvertTo-Json | Out-String) -Verbose
+            Write-Verbose ($testContainerData | ConvertTo-Json -Depth 5 | Out-String) -Verbose
 
             Invoke-Pester -Configuration @{
               Run        = @{

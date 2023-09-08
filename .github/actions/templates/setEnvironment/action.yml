@@ -50,7 +50,7 @@ runs:
         . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
 
         # Define PS modules to install on the runner
-        $Modules = @(
+        $modules = @(
             @{ Name = 'Az.Accounts' },
             @{ Name = 'Az.Resources' },
             @{ Name = 'powershell-yaml'; Version = '0.4.2'}
@@ -58,10 +58,11 @@ runs:
 
         # Additional PS modules need to be installed for the deployment validation removal step in case it is enabled
         if (('${{ github.job}}' -eq 'job_module_deploy_validation') -and ('${{ inputs.removeDeployment}}' -eq 'true')) {
-          $Modules += @(
+          $modules += @(
             @{ Name = 'Az.CognitiveServices' },
             @{ Name = 'Az.Compute' },
             @{ Name = 'Az.KeyVault' },
+            @{ Name = 'Az.MachineLearningServices' },
             @{ Name = 'Az.Monitor' },
             @{ Name = 'Az.OperationalInsights' },
             @{ Name = 'Az.RecoveryServices' }
@@ -70,13 +71,13 @@ runs:
 
         # Additional PS modules need to be installed for the publish job
         if ('${{ github.job}}' -eq 'job_publish_module') {
-          $Modules += @(
+          $modules += @(
             @{ Name = 'Az.ContainerRegistry' }
           )
         }
 
         # Set agent up
-        Set-EnvironmentOnAgent -PSModules $Modules
+        Set-EnvironmentOnAgent -PSModules $modules
 
         Write-Output '::endgroup::'
 
