@@ -111,7 +111,7 @@ function Merge-FileWithNewContent {
         [string] $SectionStartIdentifier,
 
         [Parameter(Mandatory = $false)]
-        [ValidateSet('table', 'list', 'none')]
+        [ValidateSet('table', 'list', 'none', 'nextH2')]
         [string] $ContentType = 'none'
     )
 
@@ -214,6 +214,16 @@ function Merge-FileWithNewContent {
                         $endContent = $OldContent[$endIndex..($OldContent.Count - 1)]
                     }
                 }
+            }
+            'nextH2' {
+                $endIndex = $startIndex + 1
+
+                while (-not $OldContent[$endIndex].StartsWith('## ') -and -not (($endIndex + 1) -ge $OldContent.count)) {
+                    $endIndex++
+                }
+
+                $startContent = $OldContent[0..($startIndex)]
+                $endContent = $OldContent[$endIndex..($OldContent.Count - 1)]
             }
             Default {}
         }
