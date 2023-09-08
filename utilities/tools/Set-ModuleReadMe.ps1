@@ -145,23 +145,7 @@ function Set-ParametersSection {
             foreach ($sourceFile in $resourceUsageSourceFiles.FullName) {
                 $parameterName = (Split-Path $sourceFile -LeafBase).Replace('resourceUsage-', '')
 
-                $parameterUsageContentMap[$parameterName] = (Get-Content $sourceFile -Raw).Trim()
-
-                # if ($templateFileContent.parameters.Keys -contains $parameterName) {
-                #     $subSectionStartIdentifier = '### Parameter Usage: `{0}`' -f $ParameterName
-
-                #     # Build result
-                #     $updateParameterUsageInputObject = @{
-                #         OldContent             = $updatedFileContent
-                #         NewContent             =
-                #         SectionStartIdentifier = $subSectionStartIdentifier
-                #         ParentStartIdentifier  = $SectionStartIdentifier
-                #         ContentType            = 'none'
-                #     }
-                #     if ($PSCmdlet.ShouldProcess(('Original file with new parameter usage [{0}] content' -f $parameterName), 'Merge')) {
-                #         $updatedFileContent = Merge-FileWithNewContent @updateParameterUsageInputObject
-                #     }
-                # }
+                $parameterUsageContentMap[$parameterName] = Get-Content $sourceFile -Raw
             }
         }
     }
@@ -204,7 +188,7 @@ function Set-ParametersSection {
             ('| :-- | :-- | {0}{1}:-- |' -f ($hasDefault ? ':-- | ' : ''), ($hasAllowed ? ':-- | ' : ''))
         )
 
-        $parameterListArray = [System.Collections.ArrayList]@()
+        $parameterList = [System.Collections.ArrayList]@()
 
         # 3. Add individual parameters
         foreach ($parameter in $categoryParameters) {
@@ -242,33 +226,49 @@ function Set-ParametersSection {
             # Update parameter table content based on parameter category
             ## Remove category from parameter description
             $description = $description.substring("$category. ".Length)
-            # TODO: Move to default & allowed to parameter list
             $newSectionContent += ('| [`{0}`]({1}) | {2} | {3} |' -f $parameter.name, $nameHeader, $type, $description)
 
-            $parameterListArray += @(
-                ('### Parameter: `{0}`' -f $parameter.name),
-                '',
-                $description,
-                ('- Required: {0}' -f ((-not $defaultValue) ? 'Yes' : 'No')),
-                ('- Type: {0}' -f $type),
-                ((-not [String]::IsNullOrEmpty($defaultValue)) ? ('- Default: `{0}`' -f $defaultValue) : $null),
-                ((-not [String]::IsNullOrEmpty($allowedValue)) ? ('- Allowed: `{0}`' -f $allowedValue) : $null),
-                '',
-                (($parameterUsageContentMap.Keys -contains $parameter.name) ? $parameterUsageContentMap[$parameter.name] : $null)
-            ) | Where-Object { $null -ne $_ }
+            $parameterList += @(
+                @{
+                    $parameter.name = @(
+                        ('### Parameter: `{0}`' -f $parameter.name),
+                        '',
+                        $description,
+                        ('- Required: {0}' -f ((-not $defaultValue) ? 'Yes' : 'No')),
+                        ('- Type: {0}' -f $type),
+                        ((-not [String]::IsNullOrEmpty($defaultValue)) ? ('- Default: `{0}`' -f $defaultValue) : $null),
+                        ((-not [String]::IsNullOrEmpty($allowedValue)) ? ('- Allowed: `{0}`' -f $allowedValue) : $null),
+                        '',
+                        (($parameterUsageContentMap.Keys -contains $parameter.name) ? $parameterUsageContentMap[$parameter.name] : $null)
+                    ) | Where-Object { $null -ne $_ }
+                }
+            )
         }
         $newSectionContent += ''
     }
 
-    $newSectionContent += $parameterListArray
+    # $newSectionContent += $parameterList
 
     # Build result
     if ($PSCmdlet.ShouldProcess('Original file with new parameters content', 'Merge')) {
-        $updatedFileContent = Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $newSectionContent -SectionStartIdentifier $SectionStartIdentifier -contentType 'none'
+        $updatedFileContent = Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $newSectionContent -SectionStartIdentifier $SectionStartIdentifier -contentType 'subheaders'
     }
 
-    # Build sub-section 'ParameterUsage'
-    # TODO: Replace with parameter list
+    foreach ($parameterName in ($parameterList.Keys | Sort-Object)) {
+
+        # Build result
+        $updateParameterUsageInputObject = @{
+            OldContent             = $updatedFileContent
+            NewContent             = $parameterList[$parameterName]
+            SectionStartIdentifier = $parameterList[$parameterName][0]
+            ParentStartIdentifier  = $SectionStartIdentifier
+            ContentType            = 'none'
+        }
+        if ($PSCmdlet.ShouldProcess(('Original file with new parameter usage [{0}] content' -f $parameterName), 'Merge')) {
+            $updatedFileContent = Merge-FileWithNewContent @updateParameterUsageInputObject
+        }
+
+    }
 
 
     return $updatedFileContent
