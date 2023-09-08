@@ -213,7 +213,7 @@ function Set-ParametersSection {
 
             # Prepare the links to local headers
             $paramHeader = '### Parameter: `{0}`' -f $parameter.name
-            $paramHeaderIdentifier = '#{0}' -f (('### Parameter: `{0}`' -f 'hello').TrimStart('#').Trim() -replace '[:|`]' -replace ' ', '-').ToLower()
+            $paramHeaderIdentifier = '#{0}' -f ($paramHeader.TrimStart('#').Trim() -replace '[:|`]' -replace ' ', '-').ToLower()
 
             # Add external single quotes to all default values of type string except for those using functions
             $defaultValue = ($parameter.defaultValue -is [array]) ? ('[{0}]' -f (($parameter.defaultValue | Sort-Object) -join ', ')) : (($parameter.defaultValue -is [hashtable]) ? '{object}' : (($parameter.defaultValue -is [string]) -and ($parameter.defaultValue -notmatch '\[\w+\(.*\).*\]') ? '''' + $parameter.defaultValue + '''' : $parameter.defaultValue))
@@ -231,8 +231,8 @@ function Set-ParametersSection {
 
 
             $parameterList[$paramHeader] = @(
-                $paramHeader,
-                '',
+                # $paramHeader, TODO: Remove
+                # '',
                 $description,
                         ('- Required: {0}' -f ((-not $defaultValue) ? 'Yes' : 'No')),
                         ('- Type: {0}' -f $type),
@@ -258,7 +258,7 @@ function Set-ParametersSection {
         $updateParameterUsageInputObject = @{
             OldContent             = $updatedFileContent
             NewContent             = $parameterList[$parameterName]
-            SectionStartIdentifier = $parameterList[$parameterName][0]
+            SectionStartIdentifier = $parameterName
             ParentStartIdentifier  = $SectionStartIdentifier
             ContentType            = 'none'
         }
