@@ -169,7 +169,7 @@ function Set-ParametersSection {
     $TemplateFileContent.parameters.Keys | ForEach-Object { $TemplateFileContent.parameters[$_]['name'] = $_ }
 
     $newSectionContent = [System.Collections.ArrayList]@()
-    $parameterListArray = [System.Collections.ArrayList]@()
+    $parameterList = @{}
 
     # Create parameter blocks
     foreach ($category in $sortedParamCategories) {
@@ -213,7 +213,8 @@ function Set-ParametersSection {
             }
 
             # Prepare the links to local headers
-            $nameHeader = '#parameter-{0}' -f $parameter.name
+            $paramHeader = '### Parameter: `{0}`' -f $parameter.name
+            $paramIdentifier = ('#{0}' -f $paramHeader.TrimStart('#').Trim().ToLower()) -replace '[:|`]' -replace ' ', '-'
 
             # Add external single quotes to all default values of type string except for those using functions
             $defaultValue = ($parameter.defaultValue -is [array]) ? ('[{0}]' -f (($parameter.defaultValue | Sort-Object) -join ', ')) : (($parameter.defaultValue -is [hashtable]) ? '{object}' : (($parameter.defaultValue -is [string]) -and ($parameter.defaultValue -notmatch '\[\w+\(.*\).*\]') ? '''' + $parameter.defaultValue + '''' : $parameter.defaultValue))
@@ -227,24 +228,30 @@ function Set-ParametersSection {
             # Update parameter table content based on parameter category
             ## Remove category from parameter description
             $description = $description.substring("$category. ".Length)
-            $newSectionContent += ('| [`{0}`]({1}) | {2} | {3} |' -f $parameter.name, $nameHeader, $type, $description)
+            $newSectionContent += ('| [`{0}`]({1}) | {2} | {3} |' -f $parameter.name, $paramIdentifier, $type, $description)
 
-            $parameterListArray += @(
-                ('### Parameter: `{0}`' -f $parameter.name),
-                '',
-                $description,
+            $parameterList += @{
+                $paramIdentifier = @(
+                    $paramHeader,
+                    '',
+                    $description,
                 ('- Required: {0}' -f ((-not $defaultValue) ? 'Yes' : 'No')),
                 ('- Type: {0}' -f $type),
                 ((-not [String]::IsNullOrEmpty($defaultValue)) ? ('- Default: `{0}`' -f $defaultValue) : $null),
                 ((-not [String]::IsNullOrEmpty($allowedValue)) ? ('- Allowed: `{0}`' -f $allowedValue) : $null),
-                '',
+                    '',
                 (($parameterUsageContentMap.Keys -contains $parameter.name) ? $parameterUsageContentMap[$parameter.name] : $null)
-            ) | Where-Object { $null -ne $_ }
+                ) | Where-Object { $null -ne $_ }
+            }
         }
         $newSectionContent += ''
     }
 
-    $newSectionContent += $parameterListArray
+    $sortedFlatParamList = [System.Collections.ArrayList]@()
+    foreach ($key in ($parameterList.Keys | Sort-Object)) {
+        $sortedFlatParamList += $parameterList[$key]
+    }
+    $newSectionContent += $sortedFlatParamList
 
     # Build result
     if ($PSCmdlet.ShouldProcess('Original file with new parameters content', 'Merge')) {
