@@ -95,11 +95,28 @@ module testDeployment '../../main.bicep' = {
     ]
     diagnosticSettings: [
       {
-        // name:
         // logAnalyticsDestinationType:
-        // logCategoriesAndGroups:
         // marketplacePartnerResourceId:
-        // metricCategories:
+        name: 'customSetting'
+        metricCategories: [
+          {
+            category: 'AllMetrics'
+          }
+        ]
+        logCategoriesAndGroups: [
+          {
+            category: 'AzurePolicyEvaluationDetails'
+          }
+          {
+            category: 'AuditEvent'
+          }
+        ]
+        eventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
+        eventHubAuthorizationRuleResourceId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
+        storageAccountResourceId: diagnosticDependencies.outputs.storageAccountResourceId
+        workspaceResourceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
+      }
+      {
         eventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
         eventHubAuthorizationRuleResourceId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
         storageAccountResourceId: diagnosticDependencies.outputs.storageAccountResourceId
