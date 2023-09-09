@@ -81,16 +81,31 @@ param privateEndpoints array = []
 @description('Optional. Resource tags.')
 param tags object = {}
 
+type metricCategories = {
+
+  @description('Name of a Diagnostic Metric category for a resource type this setting is applied to. Set to `AllMetrics` to collect all metrics.')
+  category: string
+}[]
+
+type logCategoriesAndGroups = {
+
+  @description('Name of a Diagnostic Log category for a resource type this setting is applied to. Set the specific logs to collect here.')
+  category: string?
+
+  @description('Name of a Diagnostic Log category group for a resource type this setting is applied to. Set to `allLogs` to collect all logs.')
+  categoryGroup: string?
+}[]
+
 @description('Optional. The diagnostic settings of the service.')
 param diagnosticSettings {
   @description('Optional. The name of diagnostic setting.')
   name: string?
 
   @description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to \'\' to disable log collection.')
-  logCategoriesAndGroups: array?
+  logCategoriesAndGroups: logCategoriesAndGroups?
 
   @description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to \'\' to disable log collection.')
-  metricCategories: array?
+  metricCategories: metricCategories?
 
   @description('A string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destination type.')
   logAnalyticsDestinationType: ('Dedicated' | 'AzureDiagnostics' | null)?
