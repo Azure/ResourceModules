@@ -36,6 +36,7 @@ module nestedDependencies 'dependencies.bicep' = {
   name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
     managedIdentityName: 'dep-${namePrefix}-msi-${serviceShort}'
+    pairedRegionScriptName: 'dep-${namePrefix}-ds-${serviceShort}'
   }
 }
 
@@ -67,12 +68,12 @@ module testDeployment '../../main.bicep' = {
       {
         failoverPriority: 0
         isZoneRedundant: false
-        locationName: 'West Europe'
+        locationName: location
       }
       {
         failoverPriority: 1
         isZoneRedundant: false
-        locationName: 'North Europe'
+        locationName: nestedDependencies.outputs.pairedRegionName
       }
     ]
     capabilitiesToAdd: [

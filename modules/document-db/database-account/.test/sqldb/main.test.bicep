@@ -37,6 +37,7 @@ module nestedDependencies 'dependencies.bicep' = {
   params: {
     managedIdentityName: 'dep-${namePrefix}-msi-${serviceShort}'
     virtualNetworkName: 'dep-${namePrefix}-vnet-${serviceShort}'
+    pairedRegionScriptName: 'dep-${namePrefix}-ds-${serviceShort}'
   }
 }
 
@@ -68,12 +69,12 @@ module testDeployment '../../main.bicep' = {
       {
         failoverPriority: 0
         isZoneRedundant: false
-        locationName: 'West Europe'
+        locationName: location
       }
       {
         failoverPriority: 1
         isZoneRedundant: false
-        locationName: 'North Europe'
+        locationName: nestedDependencies.outputs.pairedRegionName
       }
     ]
     diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
