@@ -81,9 +81,7 @@ param privateEndpoints array = []
 @description('Optional. Resource tags.')
 param tags object = {}
 
-type logAnalyticsDestinationType = 'Dedicated' | 'AzureDiagnostics' | null
-
-@description('')
+@description('Optional. The diagnostic settings of the service.')
 param diagnosticSettings {
   @description('Optional. The name of diagnostic setting.')
   name: string?
@@ -95,7 +93,7 @@ param diagnosticSettings {
   metricCategories: array?
 
   @description('A string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destination type.')
-  logAnalyticsDestinationType: logAnalyticsDestinationType?
+  logAnalyticsDestinationType: ('Dedicated' | 'AzureDiagnostics' | null)?
 
   @description('Optional. Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.')
   workspaceResourceId: string?
@@ -183,19 +181,6 @@ resource keyVault_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(l
   }
   scope: keyVault
 }
-
-// resource keyVault_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {
-//   name: !empty(diagnosticSettingsName) ? diagnosticSettingsName : '${name}-diagnosticSettings'
-//   properties: {
-//     storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
-//     workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null
-//     eventHubAuthorizationRuleId: !empty(diagnosticEventHubAuthorizationRuleId) ? diagnosticEventHubAuthorizationRuleId : null
-//     eventHubName: !empty(diagnosticEventHubName) ? diagnosticEventHubName : null
-//     metrics: diagnosticsMetrics
-//     logs: diagnosticsLogs
-//   }
-//   scope: keyVault
-// }
 
 resource keyVault_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = [for (diagnosticSetting, index) in diagnosticSettings: {
   name: diagnosticSetting.?name ?? '${name}-diagnosticSettings'

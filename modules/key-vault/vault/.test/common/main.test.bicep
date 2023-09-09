@@ -18,7 +18,7 @@ param serviceShort string = 'kvvcom'
 param enableDefaultTelemetry bool = true
 
 @description('Optional. A token to inject into the name of each resource.')
-param namePrefix string = '[[namePrefix]]'
+param namePrefix string = 'carml'
 
 // ============ //
 // Dependencies //
@@ -95,11 +95,11 @@ module testDeployment '../../main.bicep' = {
     ]
     diagnosticSettings: [
       {
+        // name:
         // logAnalyticsDestinationType:
         // logCategoriesAndGroups:
         // marketplacePartnerResourceId:
         // metricCategories:
-        // name:
         eventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
         eventHubAuthorizationRuleResourceId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
         storageAccountResourceId: diagnosticDependencies.outputs.storageAccountResourceId
