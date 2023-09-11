@@ -1,4 +1,4 @@
-metadata name = 'DBforPostgreSQL Flexible Server Administrators '
+metadata name = 'DBforPostgreSQL Flexible Server Administrators'
 metadata description = 'This module deploys a DBforPostgreSQL Flexible Server Administrator.'
 metadata owner = 'Azure/module-maintainers'
 

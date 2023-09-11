@@ -1,4 +1,4 @@
-# DBforPostgreSQL Flexible Server Administrators  `[Microsoft.DBforPostgreSQL/flexibleServers/administrators]`
+# DBforPostgreSQL Flexible Server Administrators `[Microsoft.DBforPostgreSQL/flexibleServers/administrators]`
 
 This module deploys a DBforPostgreSQL Flexible Server Administrator.
 
