@@ -256,13 +256,13 @@ module keyVault_privateEndpoints '../../network/private-endpoint/main.bicep' = [
     enableDefaultTelemetry: enableReferencedModulesTelemetry
     location: privateEndpoint.?location ?? reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
     lock: privateEndpoint.?lock ?? lock
-    privateDnsZoneGroup: privateEndpoint.?privateDnsZoneResourceIds ?? [] // TODO changed to plural string array
+    privateDnsZoneResourceIds: privateEndpoint.?privateDnsZoneResourceIds ?? []
     roleAssignments: privateEndpoint.?roleAssignments ?? []
     tags: privateEndpoint.?tags ?? {}
     manualPrivateLinkServiceConnections: privateEndpoint.?manualPrivateLinkServiceConnections ?? []
     customDnsConfigs: privateEndpoint.?customDnsConfigs ?? []
     ipConfigurations: privateEndpoint.?ipConfigurations ?? []
-    applicationSecurityGroups: privateEndpoint.?applicationSecurityGroupResourceIds ?? [] // todo: changed from object to string array
+    applicationSecurityGroupResourceIds: privateEndpoint.?applicationSecurityGroupResourceIds ?? []
     customNetworkInterfaceName: privateEndpoint.?customNetworkInterfaceName ?? ''
   }
 }]
@@ -409,9 +409,6 @@ type privateEndpointType = {
 
   @description('Optional. Tags to be applied on all resources/resource groups in this deployment.')
   tags: object?
-
-  @description('Optional. The diagnostic settings of the service.')
-  diagnosticSettings: diagnosticSettingType[]?
 
   @description('Optional. Manual PrivateLink Service Connections.')
   manualPrivateLinkServiceConnections: array?

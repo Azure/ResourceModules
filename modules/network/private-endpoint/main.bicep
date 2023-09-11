@@ -12,7 +12,7 @@ param subnetResourceId string
 param serviceResourceId string
 
 @description('Optional. Application security groups in which the private endpoint IP configuration is included.')
-param applicationSecurityGroups array = []
+param applicationSecurityGroupResourceIds array = []
 
 @description('Optional. The custom name of the network interface attached to the private endpoint.')
 param customNetworkInterfaceName string = ''
@@ -23,8 +23,8 @@ param ipConfigurations array = []
 @description('Required. Subtype(s) of the connection to be created. The allowed values depend on the type serviceResourceId refers to.')
 param groupIds array
 
-@description('Optional. The private DNS zone group configuration used to associate the private endpoint with one or multiple private DNS zones. A DNS zone group can support up to 5 DNS zones.')
-param privateDnsZoneGroup object = {}
+@description('Optional. The private DNS zone groups to associate the private endpoint. A DNS zone group can support up to 5 DNS zones.')
+param privateDnsZoneResourceIds array = []
 
 @description('Optional. Location for all Resources.')
 param location string = resourceGroup().location
@@ -71,7 +71,9 @@ resource privateEndpoint 'Microsoft.Network/privateEndpoints@2023-04-01' = {
   location: location
   tags: tags
   properties: {
-    applicationSecurityGroups: applicationSecurityGroups
+    applicationSecurityGroups: [for applicationSecurityGroupResourceId in applicationSecurityGroupResourceIds: {
+      id: applicationSecurityGroupResourceId
+    }]
     customDnsConfigs: customDnsConfigs
     customNetworkInterfaceName: customNetworkInterfaceName
     ipConfigurations: ipConfigurations
@@ -92,10 +94,10 @@ resource privateEndpoint 'Microsoft.Network/privateEndpoints@2023-04-01' = {
   }
 }
 
-module privateEndpoint_privateDnsZoneGroup 'private-dns-zone-group/main.bicep' = if (!empty(privateDnsZoneGroup)) {
+module privateEndpoint_privateDnsZoneGroup 'private-dns-zone-group/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-PrivateEndpoint-PrivateDnsZoneGroup'
   params: {
-    privateDNSResourceIds: privateDnsZoneGroup.privateDNSResourceIds
+    privateDNSResourceIds: privateDnsZoneResourceIds
     privateEndpointName: privateEndpoint.name
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
