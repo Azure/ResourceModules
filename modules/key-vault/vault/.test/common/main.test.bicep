@@ -193,6 +193,13 @@ module testDeployment '../../main.bicep' = {
           Environment: 'Non-Prod'
           Role: 'DeploymentValidation'
         }
+        roleAssignments: [
+          {
+            roleDefinitionIdOrName: 'Reader'
+            principalId: nestedDependencies.outputs.managedIdentityPrincipalId
+            principalType: 'ServicePrincipal'
+          }
+        ]
       }
     ]
     roleAssignments: [
