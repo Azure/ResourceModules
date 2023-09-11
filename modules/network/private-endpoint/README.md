@@ -17,7 +17,6 @@ This module deploys a Private Endpoint.
 | `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Network/privateEndpoints` | [2023-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-04-01/privateEndpoints) |
-| `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2023-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-04-01/privateEndpoints/privateDnsZoneGroups) |
 
 ### Resource dependency
 
@@ -44,7 +43,7 @@ The following resources are required to be able to deploy this resource:
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `applicationSecurityGroups` | array | `[]` |  | Application security groups in which the private endpoint IP configuration is included. |
+| `applicationSecurityGroupResourceIds` | array | `[]` |  | Application security groups in which the private endpoint IP configuration is included. |
 | `customDnsConfigs` | array | `[]` |  | Custom DNS configurations. |
 | `customNetworkInterfaceName` | string | `''` |  | The custom name of the network interface attached to the private endpoint. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
@@ -52,7 +51,7 @@ The following resources are required to be able to deploy this resource:
 | `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `manualPrivateLinkServiceConnections` | array | `[]` |  | Manual PrivateLink Service Connections. |
-| `privateDnsZoneGroup` | _[privateDnsZoneGroup](private-dns-zone-group/README.md)_ object | `{object}` |  | The private DNS zone group configuration used to associate the private endpoint with one or multiple private DNS zones. A DNS zone group can support up to 5 DNS zones. |
+| `privateDnsZoneResourceIds` | array | `[]` |  | The private DNS zone groups to associate the private endpoint. A DNS zone group can support up to 5 DNS zones. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `tags` | object | `{object}` |  | Tags to be applied on all resources/resource groups in this deployment. |
 
@@ -308,10 +307,8 @@ module privateEndpoint './network/private-endpoint/main.bicep' = {
     serviceResourceId: '<serviceResourceId>'
     subnetResourceId: '<subnetResourceId>'
     // Non-required parameters
-    applicationSecurityGroups: [
-      {
-        id: '<id>'
-      }
+    applicationSecurityGroupResourceIds: [
+      '<applicationSecurityGroupResourceId>'
     ]
     customNetworkInterfaceName: 'npecom001nic'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
@@ -326,16 +323,12 @@ module privateEndpoint './network/private-endpoint/main.bicep' = {
       }
     ]
     lock: 'CanNotDelete'
-    privateDnsZoneGroup: {
-      privateDNSResourceIds: [
-        '<privateDNSZoneResourceId>'
-      ]
-    }
+    privateDnsZoneResourceIds: [
+      '<privateDNSZoneResourceId>'
+    ]
     roleAssignments: [
       {
-        principalIds: [
-          '<managedIdentityPrincipalId>'
-        ]
+        principalId: '<principalId>'
         principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
@@ -377,11 +370,9 @@ module privateEndpoint './network/private-endpoint/main.bicep' = {
       "value": "<subnetResourceId>"
     },
     // Non-required parameters
-    "applicationSecurityGroups": {
+    "applicationSecurityGroupResourceIds": {
       "value": [
-        {
-          "id": "<id>"
-        }
+        "<applicationSecurityGroupResourceId>"
       ]
     },
     "customNetworkInterfaceName": {
@@ -405,19 +396,15 @@ module privateEndpoint './network/private-endpoint/main.bicep' = {
     "lock": {
       "value": "CanNotDelete"
     },
-    "privateDnsZoneGroup": {
-      "value": {
-        "privateDNSResourceIds": [
-          "<privateDNSZoneResourceId>"
-        ]
-      }
+    "privateDnsZoneResourceIds": {
+      "value": [
+        "<privateDNSZoneResourceId>"
+      ]
     },
     "roleAssignments": {
       "value": [
         {
-          "principalIds": [
-            "<managedIdentityPrincipalId>"
-          ],
+          "principalId": "<principalId>",
           "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
