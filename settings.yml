@@ -13,7 +13,7 @@ variables:
 
   # the 'localToken_' prefix will be removed from the key name when the pipelines run.
   # e.g. if you have a token in your parameter file as [[customKey]], then the token defined in this file looks like "localToken_customKey": 'value'
-  localToken_namePrefix: '' # A 3-5 character length unique string, included in the resources names (e.g. 'cntso'). Used for local module testing and pipelines.
+  localToken_namePrefix: 'jedi' # A 3-5 character length unique string, included in the resources names (e.g. 'cntso'). Used for local module testing and pipelines.
 
   # this determines the starting prefix and ending suffix of the token in your file.
   tokenPrefix: '[['
@@ -59,8 +59,8 @@ variables:
   # Template-Spec settings #
   # ---------------------- #
 
-  templateSpecsDoPublish: true # Set to true, if you would like to publish module templates as template specs
-  templateSpecsRGName: 'artifacts-rg' # The name of the resource group to publish to. If the resource group does not exist, it will be created.
+  templateSpecsDoPublish: false # Set to true, if you would like to publish module templates as template specs
+  templateSpecsRGName: 'rg-artifacts' # The name of the resource group to publish to. If the resource group does not exist, it will be created.
   templateSpecsRGLocation: 'West Europe' # The location of the resource group to publish to
   templateSpecsDescription: components # The description to add to template specs published by this platform
 
@@ -68,9 +68,9 @@ variables:
   # Private Bicep Registry settings #
   # ------------------------------- #
 
-  bicepRegistryDoPublish: true # Set to true, if you would like to publish module templates to a bicep registry
-  bicepRegistryName: adpsxxazacrx001 # The name of the bicep registry (ACR) to publish to. If it does not exist, it will be created.
-  bicepRegistryRGName: 'artifacts-rg' # The resource group that hosts the private bicep registry (ACR)
+  bicepRegistryDoPublish: false # Set to true, if you would like to publish module templates to a bicep registry
+  bicepRegistryName: brjedidev001 # The name of the bicep registry (ACR) to publish to. If it does not exist, it will be created.
+  bicepRegistryRGName: 'rg-artifacts' # The resource group that hosts the private bicep registry (ACR)
   bicepRegistryRgLocation: 'West Europe' # The location of the resource group to publish to
 
   ###########################################################################################################################
