@@ -79,7 +79,7 @@ This module deploys a DBforPostgreSQL Flexible Server.
 | `storageSizeGB` | int | `32` | `[32, 64, 128, 256, 512, 1024, 2048, 4096, 8192, 16384]` | Max storage allowed for a server. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `tenantId` | string | `''` |  | Tenant id of the server. |
-| `version` | string | `'13'` | `[11, 12, 13, 14]` | PostgreSQL Server version. |
+| `version` | string | `'15'` | `[11, 12, 13, 14, 15]` | PostgreSQL Server version. |
 
 
 ### Parameter Usage: `roleAssignments`
