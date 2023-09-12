@@ -213,10 +213,28 @@ module maintenanceConfiguration './maintenance/maintenance-configuration/main.bi
     name: 'mmccom001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    extensionProperties: {}
+    extensionProperties: {
+      InGuestPatchMode: 'User'
+    }
+    installPatches: {
+      linuxParameters: {
+        classificationsToInclude: '<classificationsToInclude>'
+        packageNameMasksToExclude: '<packageNameMasksToExclude>'
+        packageNameMasksToInclude: '<packageNameMasksToInclude>'
+      }
+      rebootSetting: 'IfRequired'
+      windowsParameters: {
+        classificationsToInclude: [
+          'Critical'
+          'Security'
+        ]
+        kbNumbersToExclude: '<kbNumbersToExclude>'
+        kbNumbersToInclude: '<kbNumbersToInclude>'
+      }
+    }
     lock: 'CanNotDelete'
     maintenanceWindow: {
-      duration: '05:00'
+      duration: '03:00'
       expirationDateTime: '9999-12-31 23:59:59'
       recurEvery: 'Day'
       startDateTime: '2022-12-31 13:00'
@@ -263,14 +281,34 @@ module maintenanceConfiguration './maintenance/maintenance-configuration/main.bi
       "value": "<enableDefaultTelemetry>"
     },
     "extensionProperties": {
-      "value": {}
+      "value": {
+        "InGuestPatchMode": "User"
+      }
+    },
+    "installPatches": {
+      "value": {
+        "linuxParameters": {
+          "classificationsToInclude": "<classificationsToInclude>",
+          "packageNameMasksToExclude": "<packageNameMasksToExclude>",
+          "packageNameMasksToInclude": "<packageNameMasksToInclude>"
+        },
+        "rebootSetting": "IfRequired",
+        "windowsParameters": {
+          "classificationsToInclude": [
+            "Critical",
+            "Security"
+          ],
+          "kbNumbersToExclude": "<kbNumbersToExclude>",
+          "kbNumbersToInclude": "<kbNumbersToInclude>"
+        }
+      }
     },
     "lock": {
       "value": "CanNotDelete"
     },
     "maintenanceWindow": {
       "value": {
-        "duration": "05:00",
+        "duration": "03:00",
         "expirationDateTime": "9999-12-31 23:59:59",
         "recurEvery": "Day",
         "startDateTime": "2022-12-31 13:00",
