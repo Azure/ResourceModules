@@ -24,7 +24,6 @@ This module deploys a DBforPostgreSQL Flexible Server Administrator.
 | `objectId` | string |  | The objectId of the Active Directory administrator. |
 | `principalName` | string |  | Active Directory administrator principal name. |
 | `principalType` | string | `[Group, ServicePrincipal, Unknown, User]` | The principal type used to represent the type of Active Directory Administrator. |
-| `tenantId` | string |  | The tenantId of the Active Directory administrator. |
 
 **Conditional parameters**
 
@@ -38,6 +37,7 @@ This module deploys a DBforPostgreSQL Flexible Server Administrator.
 | :-- | :-- | :-- | :-- |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `location` | string | `[resourceGroup().location]` | Location for all resources. |
+| `tenantId` | string | `[tenant().tenantId]` | The tenantId of the Active Directory administrator. |
 
 
 ## Outputs

@@ -20,8 +20,8 @@ param principalName string
 @description('Required. The principal type used to represent the type of Active Directory Administrator.')
 param principalType string
 
-@description('Required. The tenantId of the Active Directory administrator.')
-param tenantId string
+@description('Optional. The tenantId of the Active Directory administrator.')
+param tenantId string = tenant().tenantId
 
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location

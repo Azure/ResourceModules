@@ -72,8 +72,13 @@ module testDeployment '../../main.bicep' = {
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '${namePrefix}${serviceShort}001'
-    administratorLogin: 'adminUserName'
-    administratorLoginPassword: password
+    administrators: [
+      {
+        objectId: nestedDependencies.outputs.managedIdentityClientId
+        principalName: nestedDependencies.outputs.managedIdentityName
+        principalType: 'ServicePrincipal'
+      }
+    ]
     skuName: 'Standard_D2s_v3'
     tier: 'GeneralPurpose'
     availabilityZone: '1'

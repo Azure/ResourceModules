@@ -24,6 +24,7 @@ param activeDirectoryAuth string = 'Enabled'
   'Enabled'
 ])
 @description('Optional. If Enabled, password authentication is enabled.')
+#disable-next-line secure-secrets-in-params
 param passwordAuth string = 'Disabled'
 
 @description('Optional. Tenant id of the server.')
@@ -362,7 +363,7 @@ module flexibleServer_administrators 'administrator/main.bicep' = [for (administ
     objectId: administrator.objectId
     principalName: administrator.principalName
     principalType: administrator.principalType
-    tenantId: administrator.tenantId
+    tenantId: contains(administrator, 'tenantId') ? administrator.tenantId : tenant().tenantId
   }
 }]
 

@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.21.1.54444",
-      "templateHash": "12855050974164502649"
+      "templateHash": "16240139018001575474"
     },
     "name": "DBforPostgreSQL Flexible Servers",
     "description": "This module deploys a DBforPostgreSQL Flexible Server.",
@@ -1063,9 +1063,7 @@
           "principalType": {
             "value": "[parameters('administrators')[copyIndex()].principalType]"
           },
-          "tenantId": {
-            "value": "[parameters('administrators')[copyIndex()].tenantId]"
-          }
+          "tenantId": "[if(contains(parameters('administrators')[copyIndex()], 'tenantId'), createObject('value', parameters('administrators')[copyIndex()].tenantId), createObject('value', tenant().tenantId))]"
         },
         "template": {
           "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
@@ -1074,9 +1072,9 @@
             "_generator": {
               "name": "bicep",
               "version": "0.21.1.54444",
-              "templateHash": "5950920282464628930"
+              "templateHash": "14812998248518641282"
             },
-            "name": "DBforPostgreSQL Flexible Server Administrators ",
+            "name": "DBforPostgreSQL Flexible Server Administrators",
             "description": "This module deploys a DBforPostgreSQL Flexible Server Administrator.",
             "owner": "Azure/module-maintainers"
           },
@@ -1113,8 +1111,9 @@
             },
             "tenantId": {
               "type": "string",
+              "defaultValue": "[tenant().tenantId]",
               "metadata": {
-                "description": "Required. The tenantId of the Active Directory administrator."
+                "description": "Optional. The tenantId of the Active Directory administrator."
               }
             },
             "location": {

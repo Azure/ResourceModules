@@ -603,8 +603,13 @@ module flexibleServer './db-for-postgre-sql/flexible-server/main.bicep' = {
     skuName: 'Standard_D2s_v3'
     tier: 'GeneralPurpose'
     // Non-required parameters
-    administratorLogin: 'adminUserName'
-    administratorLoginPassword: '<administratorLoginPassword>'
+    administrators: [
+      {
+        objectId: '<objectId>'
+        principalName: '<principalName>'
+        principalType: 'ServicePrincipal'
+      }
+    ]
     availabilityZone: '1'
     backupRetentionDays: 20
     cMKKeyName: '<cMKKeyName>'
@@ -689,11 +694,14 @@ module flexibleServer './db-for-postgre-sql/flexible-server/main.bicep' = {
       "value": "GeneralPurpose"
     },
     // Non-required parameters
-    "administratorLogin": {
-      "value": "adminUserName"
-    },
-    "administratorLoginPassword": {
-      "value": "<administratorLoginPassword>"
+    "administrators": {
+      "value": [
+        {
+          "objectId": "<objectId>",
+          "principalName": "<principalName>",
+          "principalType": "ServicePrincipal"
+        }
+      ]
     },
     "availabilityZone": {
       "value": "1"
