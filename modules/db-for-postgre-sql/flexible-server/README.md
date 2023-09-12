@@ -17,6 +17,7 @@ This module deploys a DBforPostgreSQL Flexible Server.
 | `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.DBforPostgreSQL/flexibleServers` | [2022-12-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DBforPostgreSQL/2022-12-01/flexibleServers) |
+| `Microsoft.DBforPostgreSQL/flexibleServers/administrators` | [2022-12-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DBforPostgreSQL/2022-12-01/flexibleServers/administrators) |
 | `Microsoft.DBforPostgreSQL/flexibleServers/configurations` | [2022-12-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DBforPostgreSQL/2022-12-01/flexibleServers/configurations) |
 | `Microsoft.DBforPostgreSQL/flexibleServers/databases` | [2022-12-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DBforPostgreSQL/2022-12-01/flexibleServers/databases) |
 | `Microsoft.DBforPostgreSQL/flexibleServers/firewallRules` | [2022-12-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DBforPostgreSQL/2022-12-01/flexibleServers/firewallRules) |
@@ -28,8 +29,6 @@ This module deploys a DBforPostgreSQL Flexible Server.
 
 | Parameter Name | Type | Allowed Values | Description |
 | :-- | :-- | :-- | :-- |
-| `administratorLogin` | string |  | The administrator login name of a server. Can only be specified when the PostgreSQL server is being created. |
-| `administratorLoginPassword` | securestring |  | The administrator login password. |
 | `name` | string |  | The name of the PostgreSQL flexible server. |
 | `skuName` | string |  | The name of the sku, typically, tier + family + cores, e.g. Standard_D4s_v3. |
 | `tier` | string | `[Burstable, GeneralPurpose, MemoryOptimized]` | The tier of the particular SKU. Tier must align with the "skuName" property. Example, tier cannot be "Burstable" if skuName is "Standard_D4s_v3". |
@@ -48,6 +47,10 @@ This module deploys a DBforPostgreSQL Flexible Server.
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
+| `activeDirectoryAuth` | string | `'Enabled'` | `[Disabled, Enabled]` | If Enabled, Azure Active Directory authentication is enabled. |
+| `administratorLogin` | string | `''` |  | The administrator login name of a server. Can only be specified when the PostgreSQL server is being created. |
+| `administratorLoginPassword` | securestring | `''` |  | The administrator login password. |
+| `administrators` | array | `[]` |  | The Azure AD administrators when AAD authentication enabled. |
 | `availabilityZone` | string | `''` | `['', 1, 2, 3]` | Availability zone information of the server. Default will have no preference set. |
 | `backupRetentionDays` | int | `7` |  | Backup retention days for the server. |
 | `cMKKeyName` | string | `''` |  | The name of the customer managed key to use for encryption. |
@@ -70,10 +73,12 @@ This module deploys a DBforPostgreSQL Flexible Server.
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `maintenanceWindow` | object | `{object}` |  | Properties for the maintenence window. If provided, "customWindow" property must exist and set to "Enabled". |
+| `passwordAuth` | string | `'Disabled'` | `[Disabled, Enabled]` | If Enabled, password authentication is enabled. |
 | `privateDnsZoneArmResourceId` | string | `''` |  | Private dns zone arm resource ID. Used when the desired connectivity mode is "Private Access" and required when "delegatedSubnetResourceId" is used. The Private DNS Zone must be lined to the Virtual Network referenced in "delegatedSubnetResourceId". |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `storageSizeGB` | int | `32` | `[32, 64, 128, 256, 512, 1024, 2048, 4096, 8192, 16384]` | Max storage allowed for a server. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
+| `tenantId` | string | `''` |  | Tenant id of the server. |
 | `version` | string | `'15'` | `[11, 12, 13, 14, 15]` | PostgreSQL Server version. |
 
 
@@ -384,12 +389,12 @@ module flexibleServer './db-for-postgre-sql/flexible-server/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-dfpsfsmin'
   params: {
     // Required parameters
-    administratorLogin: 'adminUserName'
-    administratorLoginPassword: '<administratorLoginPassword>'
     name: 'dfpsfsmin001'
     skuName: 'Standard_B2s'
     tier: 'Burstable'
     // Non-required parameters
+    administratorLogin: 'adminUserName'
+    administratorLoginPassword: '<administratorLoginPassword>'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
@@ -408,12 +413,6 @@ module flexibleServer './db-for-postgre-sql/flexible-server/main.bicep' = {
   "contentVersion": "1.0.0.0",
   "parameters": {
     // Required parameters
-    "administratorLogin": {
-      "value": "adminUserName"
-    },
-    "administratorLoginPassword": {
-      "value": "<administratorLoginPassword>"
-    },
     "name": {
       "value": "dfpsfsmin001"
     },
@@ -424,6 +423,12 @@ module flexibleServer './db-for-postgre-sql/flexible-server/main.bicep' = {
       "value": "Burstable"
     },
     // Non-required parameters
+    "administratorLogin": {
+      "value": "adminUserName"
+    },
+    "administratorLoginPassword": {
+      "value": "<administratorLoginPassword>"
+    },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     }
@@ -445,12 +450,12 @@ module flexibleServer './db-for-postgre-sql/flexible-server/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-dfpsfspvt'
   params: {
     // Required parameters
-    administratorLogin: 'adminUserName'
-    administratorLoginPassword: '<administratorLoginPassword>'
     name: 'dfpsfspvt001'
     skuName: 'Standard_D2s_v3'
     tier: 'GeneralPurpose'
     // Non-required parameters
+    administratorLogin: 'adminUserName'
+    administratorLoginPassword: '<administratorLoginPassword>'
     configurations: [
       {
         name: 'log_min_messages'
@@ -503,12 +508,6 @@ module flexibleServer './db-for-postgre-sql/flexible-server/main.bicep' = {
   "contentVersion": "1.0.0.0",
   "parameters": {
     // Required parameters
-    "administratorLogin": {
-      "value": "adminUserName"
-    },
-    "administratorLoginPassword": {
-      "value": "<administratorLoginPassword>"
-    },
     "name": {
       "value": "dfpsfspvt001"
     },
@@ -519,6 +518,12 @@ module flexibleServer './db-for-postgre-sql/flexible-server/main.bicep' = {
       "value": "GeneralPurpose"
     },
     // Non-required parameters
+    "administratorLogin": {
+      "value": "adminUserName"
+    },
+    "administratorLoginPassword": {
+      "value": "<administratorLoginPassword>"
+    },
     "configurations": {
       "value": [
         {
@@ -594,12 +599,17 @@ module flexibleServer './db-for-postgre-sql/flexible-server/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-dfpsfsp'
   params: {
     // Required parameters
-    administratorLogin: 'adminUserName'
-    administratorLoginPassword: '<administratorLoginPassword>'
     name: 'dfpsfsp001'
     skuName: 'Standard_D2s_v3'
     tier: 'GeneralPurpose'
     // Non-required parameters
+    administrators: [
+      {
+        objectId: '<objectId>'
+        principalName: '<principalName>'
+        principalType: 'ServicePrincipal'
+      }
+    ]
     availabilityZone: '1'
     backupRetentionDays: 20
     cMKKeyName: '<cMKKeyName>'
@@ -674,12 +684,6 @@ module flexibleServer './db-for-postgre-sql/flexible-server/main.bicep' = {
   "contentVersion": "1.0.0.0",
   "parameters": {
     // Required parameters
-    "administratorLogin": {
-      "value": "adminUserName"
-    },
-    "administratorLoginPassword": {
-      "value": "<administratorLoginPassword>"
-    },
     "name": {
       "value": "dfpsfsp001"
     },
@@ -690,6 +694,15 @@ module flexibleServer './db-for-postgre-sql/flexible-server/main.bicep' = {
       "value": "GeneralPurpose"
     },
     // Non-required parameters
+    "administrators": {
+      "value": [
+        {
+          "objectId": "<objectId>",
+          "principalName": "<principalName>",
+          "principalType": "ServicePrincipal"
+        }
+      ]
+    },
     "availabilityZone": {
       "value": "1"
     },
