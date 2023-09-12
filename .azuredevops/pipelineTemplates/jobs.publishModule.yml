@@ -179,7 +179,7 @@ jobs:
             $missingModules = Get-ModulesMissingFromUniversalArtifactsFeed @missingInputObject -BearerToken $env:TOKEN
 
             foreach($missingModule in $missingModules) {
-              if($modulsToPublish.TemplateFilePath -notcontains $missingModule.TemplateFilePath) {
+              if($modulesToPublish.TemplateFilePath -notcontains $missingModule.TemplateFilePath) {
                 $modulesToPublish += $missingModule
               }
             }
@@ -288,7 +288,7 @@ jobs:
             $missingModules = Get-ModulesMissingFromTemplateSpecsRG @missingInputObject
 
             foreach($missingModule in $missingModules) {
-              if($modulsToPublish.TemplateFilePath -notcontains $missingModule.TemplateFilePath) {
+              if($modulesToPublish.TemplateFilePath -notcontains $missingModule.TemplateFilePath) {
                 $modulesToPublish += $missingModule
               }
             }
@@ -397,17 +397,17 @@ jobs:
 
             $missingModules = Get-ModulesMissingFromPrivateBicepRegistry @missingInputObject
 
+            foreach($missingModule in $missingModules) {
+              if($modulesToPublish.TemplateFilePath -notcontains $missingModule.TemplateFilePath) {
+                $modulesToPublish += $missingModule
+              }
+            }
+
             # Filter modules to publish 'prerelease' only if branch is not main/master
             $BranchName = '$(Build.SourceBranch)'
             if ($BranchName -ne 'refs/heads/main' -and $BranchName -ne 'refs/heads/master') {
               Write-Verbose "Filtering modules to only publish a [prerelease] version as the current branch [$BranchName] is not [main/master]." -Verbose
               $modulesToPublish = $modulesToPublish | Where-Object -Property version -like '*-prerelease'
-            }
-
-            foreach($missingModule in $missingModules) {
-              if($modulsToPublish.TemplateFilePath -notcontains $missingModule.TemplateFilePath) {
-                $modulesToPublish += $missingModule
-              }
             }
 
             #################
