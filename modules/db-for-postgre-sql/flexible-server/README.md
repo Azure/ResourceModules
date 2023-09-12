@@ -74,7 +74,7 @@ This module deploys a DBforPostgreSQL Flexible Server.
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `storageSizeGB` | int | `32` | `[32, 64, 128, 256, 512, 1024, 2048, 4096, 8192, 16384]` | Max storage allowed for a server. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
-| `version` | string | `'13'` | `[11, 12, 13, 14]` | PostgreSQL Server version. |
+| `version` | string | `'15'` | `[11, 12, 13, 14, 15]` | PostgreSQL Server version. |
 
 
 ### Parameter Usage: `roleAssignments`
