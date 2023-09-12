@@ -275,7 +275,7 @@ resource roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = [
     description: roleAssignment.?description ?? null
     principalType: roleAssignment.?principalType ?? null
     condition: roleAssignment.?condition ?? null
-    conditionVersion: roleAssignment.?conditionVersion ?? '2.0'
+    conditionVersion: roleAssignment.?conditionVersion ?? ((contains(roleAssignment, 'condition') && !empty(roleAssignment.condition)) ? '2.0' : null) // Must only be set if condtion is set
     delegatedManagedIdentityResourceId: roleAssignment.?delegatedManagedIdentityResourceId ?? null
   }
   scope: keyVault
