@@ -8,11 +8,11 @@ The CI environment supports both ARM and Bicep and can be leveraged using GitHub
 
 <h1 style="color: steelblue;">Upcoming breaking changes</h1>
 
-In between now and the release of version `0.11.0`, the `main` branch is subject to several upcoming breaking changes that will affect all modules (e.g., the renaming of folders and files).
+The most recet release [`0.11.0`](https://github.com/Azure/ResourceModules/releases/tag/v0.11.0) of CARML is simultaneously the last in which the library (i.e., the modules) and CI environment are hosted in one location. Going forward, the maintainers of CARML will implement the remaining changes required to align the modules to the developed [Azure Verified Modules](aka.ms/avm) specifications. This will enable us to move & publish the library in the official [Public Bicep Registry](https://github.com/Azure/bicep-registry-modules).
 
-The rationale is an ongoing effort to prepare our modules for a release in the official [Public Bicep Registry](https://github.com/Azure/bicep-registry-modules), forcing us to align the structural requirements.
+Please note that these changes will affect many interfaces (e.g., the diagnostic settings). We intend to keep this period as small as possible, but are limited by our own available capacity.
 
-For more details, please refer to the issue #3131.
+Once the move concluded, the library & CI environment will continue to exist and be maintained. However, several changes to the CARML CI-Environment will become necessary to ensure a low entry barrier when onbordining both (for example, we will need to be less restrictive in our tests).
 
 ## Get started
 
