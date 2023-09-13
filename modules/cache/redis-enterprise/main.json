@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.21.1.54444",
-      "templateHash": "1782588459974283676"
+      "templateHash": "11103107364849919148"
     },
     "name": "Redis Cache Enterprise",
     "description": "This module deploys a Redis Cache Enterprise.",
@@ -217,7 +217,7 @@
     },
     {
       "type": "Microsoft.Cache/redisEnterprise",
-      "apiVersion": "2023-07-01",
+      "apiVersion": "2022-01-01",
       "name": "[parameters('name')]",
       "location": "[parameters('location')]",
       "tags": "[parameters('tags')]",
@@ -1003,14 +1003,14 @@
       "metadata": {
         "description": "Redis hostname."
       },
-      "value": "[reference(resourceId('Microsoft.Cache/redisEnterprise', parameters('name')), '2023-07-01').hostName]"
+      "value": "[reference(resourceId('Microsoft.Cache/redisEnterprise', parameters('name')), '2022-01-01').hostName]"
     },
     "location": {
       "type": "string",
       "metadata": {
         "description": "The location the resource was deployed into."
       },
-      "value": "[reference(resourceId('Microsoft.Cache/redisEnterprise', parameters('name')), '2023-07-01', 'full').location]"
+      "value": "[reference(resourceId('Microsoft.Cache/redisEnterprise', parameters('name')), '2022-01-01', 'full').location]"
     }
   }
 }

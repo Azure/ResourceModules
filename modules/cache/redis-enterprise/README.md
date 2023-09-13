@@ -1,6 +1,6 @@
-# Redis Cache `[Microsoft.Cache/Redis]`
+# Redis Cache Enterprise `[Microsoft.Cache/redisEnterprise]`
 
-This module deploys a Redis Cache.
+This module deploys a Redis Cache Enterprise.
 
 ## Navigation
 
@@ -16,7 +16,7 @@ This module deploys a Redis Cache.
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.Cache/redis` | [2021-06-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Cache/2021-06-01/redis) |
+| `Microsoft.Cache/redisEnterprise` | [2022-01-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Cache/2022-01-01/redisEnterprise) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 | `Microsoft.Network/privateEndpoints` | [2023-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-04-01/privateEndpoints) |
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2023-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-04-01/privateEndpoints/privateDnsZoneGroups) |
@@ -33,7 +33,7 @@ This module deploys a Redis Cache.
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `capacity` | int | `1` | `[0, 1, 2, 3, 4, 5, 6]` | The size of the Redis cache to deploy. Valid values: for C (Basic/Standard) family (0, 1, 2, 3, 4, 5, 6), for P (Premium) family (1, 2, 3, 4). |
+| `capacity` | int | `2` |  | The size of the RedisEnterprise cluster. Defaults to 2. Valid values are (2, 4, 6, ...) for Enterprise SKUs and (3, 9, 15, ...) for Flash SKUs. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
 | `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `['', allLogs, ConnectedClientList]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
@@ -42,25 +42,13 @@ This module deploys a Redis Cache.
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `enableNonSslPort` | bool | `False` |  | Specifies whether the non-ssl Redis server port (6379) is enabled. |
 | `location` | string | `[resourceGroup().location]` |  | The location to deploy the Redis cache service. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `minimumTlsVersion` | string | `'1.2'` | `[1.0, 1.1, 1.2]` | Requires clients to use a specified TLS version (or higher) to connect. |
 | `privateEndpoints` | array | `[]` |  | Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
-| `publicNetworkAccess` | string | `''` | `['', Disabled, Enabled]` | Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set. |
-| `redisConfiguration` | object | `{object}` |  | All Redis Settings. Few possible keys: rdb-backup-enabled,rdb-storage-connection-string,rdb-backup-frequency,maxmemory-delta,maxmemory-policy,notify-keyspace-events,maxmemory-samples,slowlog-log-slower-than,slowlog-max-len,list-max-ziplist-entries,list-max-ziplist-value,hash-max-ziplist-entries,hash-max-ziplist-value,set-max-intset-entries,zset-max-ziplist-entries,zset-max-ziplist-value etc. |
-| `redisVersion` | string | `'6'` | `[4, 6]` | Redis version. Only major version will be used in PUT/PATCH request with current valid values: (4, 6). |
-| `replicasPerMaster` | int | `1` |  | The number of replicas to be created per primary. |
-| `replicasPerPrimary` | int | `1` |  | The number of replicas to be created per primary. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| `shardCount` | int | `1` |  | The number of shards to be created on a Premium Cluster Cache. |
-| `skuName` | string | `'Basic'` | `[Basic, Premium, Standard]` | The type of Redis cache to deploy. |
-| `staticIP` | string | `''` |  | Static IP address. Optionally, may be specified when deploying a Redis cache inside an existing Azure Virtual Network; auto assigned by default. |
-| `subnetId` | string | `''` |  | The full resource ID of a subnet in a virtual network to deploy the Redis cache in. Example format: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/Microsoft.{Network|ClassicNetwork}/VirtualNetworks/vnet1/subnets/subnet1. |
-| `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
+| `skuName` | string | `'Enterprise_E10'` | `[Enterprise_E10, Enterprise_E100, Enterprise_E20, Enterprise_E50, EnterpriseFlash_F1500, EnterpriseFlash_F300, EnterpriseFlash_F700]` | The type of RedisEnterprise cluster to deploy. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
-| `tenantSettings` | object | `{object}` |  | A dictionary of tenant settings. |
-| `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
 | `zoneRedundant` | bool | `True` |  | When true, replicas will be provisioned in availability zones specified in the zones parameter. |
 | `zones` | array | `[]` |  | If the zoneRedundant parameter is true, replicas will be provisioned in the availability zones specified here. Otherwise, the service will choose where replicas are deployed. |
 
@@ -337,11 +325,9 @@ privateEndpoints:  [
 | :-- | :-- | :-- |
 | `hostName` | string | Redis hostname. |
 | `location` | string | The location the resource was deployed into. |
-| `name` | string | The resource name. |
-| `resourceGroupName` | string | The name of the resource group the Redis cache was created in. |
-| `resourceId` | string | The resource ID. |
-| `sslPort` | int | Redis SSL port. |
-| `subnetId` | string | The full resource ID of a subnet in a virtual network where the Redis cache was deployed in. |
+| `name` | string | The name of the redis cache enterprise. |
+| `resourceGroupName` | string | The name of the resource group the redis cache enterprise was created in. |
+| `resourceId` | string | The resource ID of the redis cache enterprise. |
 
 ## Cross-referenced modules
 
@@ -365,11 +351,11 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module redis './cache/redis/main.bicep' = {
-  name: '${uniqueString(deployment().name, location)}-test-crcom'
+module redisEnterprise './cache/redis-enterprise/main.bicep' = {
+  name: '${uniqueString(deployment().name, location)}-test-crecom'
   params: {
     // Required parameters
-    name: 'crcom001'
+    name: 'crecom001'
     // Non-required parameters
     capacity: 2
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
@@ -378,7 +364,6 @@ module redis './cache/redis/main.bicep' = {
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    enableNonSslPort: true
     lock: 'CanNotDelete'
     minimumTlsVersion: '1.2'
     privateEndpoints: [
@@ -397,11 +382,6 @@ module redis './cache/redis/main.bicep' = {
         }
       }
     ]
-    publicNetworkAccess: 'Enabled'
-    redisVersion: '6'
-    shardCount: 1
-    skuName: 'Premium'
-    systemAssignedIdentity: true
     tags: {
       'hidden-title': 'This is visible in the resource name'
       resourceType: 'Redis Cache'
@@ -429,7 +409,7 @@ module redis './cache/redis/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "crcom001"
+      "value": "crecom001"
     },
     // Non-required parameters
     "capacity": {
@@ -452,9 +432,6 @@ module redis './cache/redis/main.bicep' = {
     },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
-    },
-    "enableNonSslPort": {
-      "value": true
     },
     "lock": {
       "value": "CanNotDelete"
@@ -479,21 +456,6 @@ module redis './cache/redis/main.bicep' = {
           }
         }
       ]
-    },
-    "publicNetworkAccess": {
-      "value": "Enabled"
-    },
-    "redisVersion": {
-      "value": "6"
-    },
-    "shardCount": {
-      "value": 1
-    },
-    "skuName": {
-      "value": "Premium"
-    },
-    "systemAssignedIdentity": {
-      "value": true
     },
     "tags": {
       "value": {
@@ -524,11 +486,11 @@ module redis './cache/redis/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module redis './cache/redis/main.bicep' = {
-  name: '${uniqueString(deployment().name, location)}-test-crmin'
+module redisEnterprise './cache/redis-enterprise/main.bicep' = {
+  name: '${uniqueString(deployment().name, location)}-test-cremin'
   params: {
     // Required parameters
-    name: 'crmin001'
+    name: 'cremin001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
@@ -549,7 +511,7 @@ module redis './cache/redis/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "crmin001"
+      "value": "cremin001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {

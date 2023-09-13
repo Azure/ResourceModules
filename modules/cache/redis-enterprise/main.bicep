@@ -124,7 +124,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource redisCacheEnterprise 'Microsoft.Cache/redisEnterprise@2023-07-01' = {
+resource redisCacheEnterprise 'Microsoft.Cache/redisEnterprise@2022-01-01' = {
   name: name
   location: location
   tags: tags
