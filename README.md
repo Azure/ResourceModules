@@ -15,7 +15,8 @@ Please note that these changes will affect many interfaces (e.g., the diagnostic
 Possible changes include (but are not limited to):
 - An update of the extension resource interfaces (i.e., diagnostic settings, RBAC, etc.)
 - An update of the `README.md` that comes with each module (including an update of the utility itself) to allow for a more detailed parameter description
-- ...
+- An update to individual folder names
+- The addition of several user defined types (requiring Bicep version `0.21.1`)
 
 Once the move concluded, the library & CI environment will continue to exist and be maintained. However, several changes to the CARML CI-Environment will become necessary to ensure a low entry barrier when onbordining both (for example, we will need to be less restrictive in our tests).
 
