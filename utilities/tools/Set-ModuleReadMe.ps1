@@ -1427,8 +1427,13 @@ function Initialize-ReadMe {
     $moduleDescription = $TemplateFileContent.metadata.description
     $formattedResourceType = Get-SpecsAlignedResourceName -ResourceIdentifier $FullModuleIdentifier
 
-    $inTemplateResourceType = (Get-NestedResourceList $TemplateFileContent).type | Where-Object {
+    $inTemplateResourceType = (Get-NestedResourceList $TemplateFileContent).type | Select-Object -Unique | Where-Object {
         $_ -match "^$formattedResourceType$"
+    }
+
+    if (-not $inTemplateResourceType) {
+        Write-Warning "No resource type like [$formattedResourceType] found in template. Falling back to it as identifier."
+        $inTemplateResourceType = $formattedResourceType
     }
 
     if (-not (Test-Path $ReadMeFilePath) -or ([String]::IsNullOrEmpty((Get-Content $ReadMeFilePath -Raw)))) {
