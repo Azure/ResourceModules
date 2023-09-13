@@ -117,6 +117,9 @@ function Get-SpecsAlignedResourceName {
         }
     }
 
+    # Format provider namespace as some are inconsistely formatted
+    $providerNamespace = (Get-Culture -Name 'en-US').TextInfo.ToTitleCase($providerNamespace)
+
     # Build result
     return "$providerNamespace/$resourceType"
 }
