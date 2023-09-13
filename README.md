@@ -18,7 +18,7 @@ Possible changes include (but are not limited to):
 - An update to individual folder names
 - The addition of several user defined types (requiring Bicep version `0.21.1`)
 
-Once the move concluded, the library & CI environment will continue to exist and be maintained. However, several changes to the CARML CI-Environment will become necessary to ensure a low entry barrier when onbordining both (for example, we will need to be less restrictive in our tests).
+Once the move concluded, the library & CI environment will continue to exist and be maintained. However, several changes to the CARML CI-Environment will become necessary to ensure a low entry barrier when onbordining both (for example, as per the AVM specs we will need to be less restrictive in our tests).
 
 ## Get started
 
