@@ -77,7 +77,6 @@ module testDeployment '../../main.bicep' = {
     }
     namespace: '${serviceShort}ns'
     visibility: 'Custom'
-
     installPatches: {
       linuxParameters: {
         classificationsToInclude: null
