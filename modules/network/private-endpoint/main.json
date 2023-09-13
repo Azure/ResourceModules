@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.21.1.54444",
-      "templateHash": "3971972784103067638"
+      "templateHash": "4423813200196370400"
     },
     "name": "Private Endpoints",
     "description": "This module deploys a Private Endpoint.",
@@ -265,9 +265,9 @@
         "privateEndpoint"
       ]
     },
-    "roleAssignment": {
+    "privateEndpoint_roleAssignments": {
       "copy": {
-        "name": "roleAssignment",
+        "name": "privateEndpoint_roleAssignments",
         "count": "[length(parameters('roleAssignments'))]"
       },
       "type": "Microsoft.Authorization/roleAssignments",
@@ -280,7 +280,7 @@
         "description": "[coalesce(tryGet(parameters('roleAssignments')[copyIndex()], 'description'), null())]",
         "principalType": "[coalesce(tryGet(parameters('roleAssignments')[copyIndex()], 'principalType'), null())]",
         "condition": "[coalesce(tryGet(parameters('roleAssignments')[copyIndex()], 'condition'), null())]",
-        "conditionVersion": "[coalesce(tryGet(parameters('roleAssignments')[copyIndex()], 'conditionVersion'), '2.0')]",
+        "conditionVersion": "[if(not(empty(tryGet(parameters('roleAssignments')[copyIndex()], 'condition'))), coalesce(tryGet(parameters('roleAssignments')[copyIndex()], 'conditionVersion'), '2.0'), null())]",
         "delegatedManagedIdentityResourceId": "[coalesce(tryGet(parameters('roleAssignments')[copyIndex()], 'delegatedManagedIdentityResourceId'), null())]"
       },
       "dependsOn": [
@@ -288,6 +288,7 @@
       ]
     },
     "privateEndpoint_privateDnsZoneGroup": {
+      "condition": "[not(empty(parameters('privateDnsZoneResourceIds')))]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
       "name": "[format('{0}-PrivateEndpoint-PrivateDnsZoneGroup', uniqueString(deployment().name, parameters('location')))]",
