@@ -44,6 +44,9 @@ function Set-ResourceTypesSection {
         [string[]] $ResourceTypesToExclude = @('Microsoft.Resources/deployments')
     )
 
+    # Loading used functions
+    . (Join-Path (Split-Path $PSScriptRoot -Parent) 'pipelines' 'sharedScripts' 'Get-NestedResourceList.ps1')
+
     # Process content
     $SectionContent = [System.Collections.ArrayList]@(
         '| Resource Type | API Version |',
