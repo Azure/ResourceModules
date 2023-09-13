@@ -12,6 +12,11 @@ Following the recent release of [`0.11.0`](https://github.com/Azure/ResourceModu
 
 Please note that these changes will affect many interfaces (e.g., the diagnostic settings). We intend to keep this period as small as possible, but are limited by our own available capacity. As we want to avoid one 'big bang' migration, we will incrementally align & move modules, but keep a copy in this repository until the move is concluded. For modules that were already published, we will redirect the proposed changes to the new [repository](https://github.com/Azure/bicep-registry-modules) and it's AVM folder. In its final state, this folder will continue all modules you can currently find in this repository's 'modules' folder.
 
+Possible changes include (but are not limited to):
+- An update of the extension resource interfaces (i.e., diagnostic settings, RBAC, etc.)
+- An update of the `README.md` that comes with each module (including an update of the utility itself) to allow for a more detailed parameter description
+- ...
+
 Once the move concluded, the library & CI environment will continue to exist and be maintained. However, several changes to the CARML CI-Environment will become necessary to ensure a low entry barrier when onbordining both (for example, we will need to be less restrictive in our tests).
 
 ## Get started
