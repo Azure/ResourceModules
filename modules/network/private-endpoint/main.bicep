@@ -125,7 +125,7 @@ resource privateEndpoint_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!
   scope: privateEndpoint
 }
 
-resource roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = [for (roleAssignment, index) in roleAssignments: {
+resource privateEndpoint_roleAssignments 'Microsoft.Authorization/roleAssignments@2022-04-01' = [for (roleAssignment, index) in roleAssignments: {
   name: guid(privateEndpoint.id, roleAssignment.principalId, roleAssignment.roleDefinitionIdOrName)
   properties: {
     roleDefinitionId: contains(builtInRoleNames, roleAssignment.roleDefinitionIdOrName) ? builtInRoleNames[roleAssignment.roleDefinitionIdOrName] : roleAssignment.roleDefinitionIdOrName
@@ -133,7 +133,7 @@ resource roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = [
     description: roleAssignment.?description ?? null
     principalType: roleAssignment.?principalType ?? null
     condition: roleAssignment.?condition ?? null
-    conditionVersion: roleAssignment.?conditionVersion ?? '2.0'
+    conditionVersion: !empty(roleAssignment.?condition) ? (roleAssignment.?conditionVersion ?? '2.0') : null // Must only be set if condtion is set
     delegatedManagedIdentityResourceId: roleAssignment.?delegatedManagedIdentityResourceId ?? null
   }
   scope: privateEndpoint
