@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.21.1.54444",
-      "templateHash": "6685144849617645027"
+      "templateHash": "12569603126606584530"
     },
     "name": "Redis Cache",
     "description": "This module deploys a Redis Cache.",
@@ -323,7 +323,7 @@
     },
     {
       "type": "Microsoft.Cache/redis",
-      "apiVersion": "2021-06-01",
+      "apiVersion": "2022-06-01",
       "name": "[parameters('name')]",
       "location": "[parameters('location')]",
       "tags": "[parameters('tags')]",
@@ -1121,28 +1121,28 @@
       "metadata": {
         "description": "Redis hostname."
       },
-      "value": "[reference(resourceId('Microsoft.Cache/redis', parameters('name')), '2021-06-01').hostName]"
+      "value": "[reference(resourceId('Microsoft.Cache/redis', parameters('name')), '2022-06-01').hostName]"
     },
     "sslPort": {
       "type": "int",
       "metadata": {
         "description": "Redis SSL port."
       },
-      "value": "[reference(resourceId('Microsoft.Cache/redis', parameters('name')), '2021-06-01').sslPort]"
+      "value": "[reference(resourceId('Microsoft.Cache/redis', parameters('name')), '2022-06-01').sslPort]"
     },
     "subnetId": {
       "type": "string",
       "metadata": {
         "description": "The full resource ID of a subnet in a virtual network where the Redis Cache was deployed in."
       },
-      "value": "[if(not(empty(parameters('subnetId'))), reference(resourceId('Microsoft.Cache/redis', parameters('name')), '2021-06-01').subnetId, '')]"
+      "value": "[if(not(empty(parameters('subnetId'))), reference(resourceId('Microsoft.Cache/redis', parameters('name')), '2022-06-01').subnetId, '')]"
     },
     "location": {
       "type": "string",
       "metadata": {
         "description": "The location the resource was deployed into."
       },
-      "value": "[reference(resourceId('Microsoft.Cache/redis', parameters('name')), '2021-06-01', 'full').location]"
+      "value": "[reference(resourceId('Microsoft.Cache/redis', parameters('name')), '2022-06-01', 'full').location]"
     }
   }
 }
