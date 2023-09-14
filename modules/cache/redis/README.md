@@ -1,4 +1,4 @@
-# Redis Cache `[Microsoft.Cache/Redis]`
+# Redis Cache `[Microsoft.Cache/redis]`
 
 This module deploys a Redis Cache.
 
@@ -337,11 +337,11 @@ privateEndpoints:  [
 | :-- | :-- | :-- |
 | `hostName` | string | Redis hostname. |
 | `location` | string | The location the resource was deployed into. |
-| `name` | string | The resource name. |
-| `resourceGroupName` | string | The name of the resource group the Redis cache was created in. |
-| `resourceId` | string | The resource ID. |
+| `name` | string | The name of the Redis Cache. |
+| `resourceGroupName` | string | The name of the resource group the Redis Cache was created in. |
+| `resourceId` | string | The resource ID of the Redis Cache. |
 | `sslPort` | int | Redis SSL port. |
-| `subnetId` | string | The full resource ID of a subnet in a virtual network where the Redis cache was deployed in. |
+| `subnetId` | string | The full resource ID of a subnet in a virtual network where the Redis Cache was deployed in. |
 
 ## Cross-referenced modules
 
