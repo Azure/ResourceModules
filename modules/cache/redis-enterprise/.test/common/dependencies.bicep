@@ -27,7 +27,7 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2023-04-01' = {
 }
 
 resource privateDNSZone 'Microsoft.Network/privateDnsZones@2020-06-01' = {
-  name: 'privatelink.azuresynapse.net'
+  name: 'privatelink.redisenterprise.cache.azure.net'
   location: 'global'
 
   resource virtualNetworkLinks 'virtualNetworkLinks@2020-06-01' = {

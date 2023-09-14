@@ -72,7 +72,7 @@ module testDeployment '../../main.bicep' = {
     lock: 'CanNotDelete'
     minimumTlsVersion: '1.2'
     zoneRedundant: true
-    zones: [ 1, 2 ]
+    zones: [ 1, 2, 3 ]
     privateEndpoints: [
       {
         privateDnsZoneGroup: {
@@ -80,7 +80,7 @@ module testDeployment '../../main.bicep' = {
             nestedDependencies.outputs.privateDNSResourceId
           ]
         }
-        service: 'redisCache'
+        service: 'redisEnterprise'
         subnetResourceId: nestedDependencies.outputs.subnetResourceId
         tags: {
           'hidden-title': 'This is visible in the resource name'

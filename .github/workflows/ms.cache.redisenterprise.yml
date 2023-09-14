@@ -37,7 +37,7 @@ on:
       - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/cache/redis'
+  modulePath: 'modules/cache/redis-enterprise'
   workflowPath: '.github/workflows/ms.cache.redisenterprise.yml'
 
 concurrency:

@@ -373,7 +373,7 @@ module redisEnterprise './cache/redis-enterprise/main.bicep' = {
             '<privateDNSResourceId>'
           ]
         }
-        service: 'redisCache'
+        service: 'redisEnterprise'
         subnetResourceId: '<subnetResourceId>'
         tags: {
           Environment: 'Non-Prod'
@@ -390,6 +390,7 @@ module redisEnterprise './cache/redis-enterprise/main.bicep' = {
     zones: [
       1
       2
+      3
     ]
   }
 }
@@ -447,7 +448,7 @@ module redisEnterprise './cache/redis-enterprise/main.bicep' = {
               "<privateDNSResourceId>"
             ]
           },
-          "service": "redisCache",
+          "service": "redisEnterprise",
           "subnetResourceId": "<subnetResourceId>",
           "tags": {
             "Environment": "Non-Prod",
@@ -469,7 +470,8 @@ module redisEnterprise './cache/redis-enterprise/main.bicep' = {
     "zones": {
       "value": [
         1,
-        2
+        2,
+        3
       ]
     }
   }
