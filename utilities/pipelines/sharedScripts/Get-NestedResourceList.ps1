@@ -30,6 +30,8 @@ function Get-NestedResourceList {
             # With the introduction of user defined types, a compiled template's resources are not part of an ordered hashtable instead of an array.
             $currLevelResources += $TemplateFileContent.resources.Keys | ForEach-Object {
                 $TemplateFileContent.resources[$_]
+            } | Where-Object {
+                $_.existing -ne $true
             }
         } else {
             # Default array
