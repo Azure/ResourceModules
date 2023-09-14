@@ -184,7 +184,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource redisCache 'Microsoft.Cache/redis@2021-06-01' = {
+resource redisCache 'Microsoft.Cache/redis@2022-06-01' = {
   name: name
   location: location
   tags: tags
@@ -268,13 +268,13 @@ module redisCache_privateEndpoints '../../network/private-endpoint/main.bicep' =
   }
 }]
 
-@description('The resource name.')
+@description('The name of the Redis Cache.')
 output name string = redisCache.name
 
-@description('The resource ID.')
+@description('The resource ID of the Redis Cache.')
 output resourceId string = redisCache.id
 
-@description('The name of the resource group the Redis cache was created in.')
+@description('The name of the resource group the Redis Cache was created in.')
 output resourceGroupName string = resourceGroup().name
 
 @description('Redis hostname.')
@@ -283,7 +283,7 @@ output hostName string = redisCache.properties.hostName
 @description('Redis SSL port.')
 output sslPort int = redisCache.properties.sslPort
 
-@description('The full resource ID of a subnet in a virtual network where the Redis cache was deployed in.')
+@description('The full resource ID of a subnet in a virtual network where the Redis Cache was deployed in.')
 output subnetId string = !empty(subnetId) ? redisCache.properties.subnetId : ''
 
 @description('The location the resource was deployed into.')
