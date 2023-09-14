@@ -12,6 +12,9 @@ Mandatory. The template file content object to crawl data from
 Get-NestedResourceList -TemplateFileContent @{ resource = @{}; ... }
 
 Returns a list of all resources in the given template object
+
+.NOTES
+With the introduction of user defined types, a compiled template's resources are not part of an ordered hashtable instead of an array.
 #>
 function Get-NestedResourceList {
 
