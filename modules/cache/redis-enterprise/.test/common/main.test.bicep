@@ -72,7 +72,6 @@ module testDeployment '../../main.bicep' = {
     lock: 'CanNotDelete'
     minimumTlsVersion: '1.2'
     zoneRedundant: true
-    zones: [ 1, 2, 3 ]
     privateEndpoints: [
       {
         privateDnsZoneGroup: {
@@ -86,6 +85,43 @@ module testDeployment '../../main.bicep' = {
           'hidden-title': 'This is visible in the resource name'
           Environment: 'Non-Prod'
           Role: 'DeploymentValidation'
+        }
+      }
+    ]
+    databases: [
+      {
+        name: '${namePrefix}${serviceShort}-db-01'
+      }
+      {
+        name: '${namePrefix}${serviceShort}-db-02'
+        clusteringPolicy: 'EnterpriseCluster'
+        evictionPolicy: 'AllKeysLFU'
+        persistenceAofEnabled: true
+        persistenceAofFrequency: 'always'
+        persistenceRdbEnabled: true
+        persistenceRdbFrequency: '12h'
+        port: 5000
+      }
+      {
+        name: '${namePrefix}${serviceShort}-db-03'
+        persistenceAofEnabled: true
+        persistenceRdbEnabled: true
+        port: 6000
+        modules: [
+          {
+            name: 'RedisBloom'
+          }
+          {
+            name: 'RedisTimeSeries'
+          }
+        ]
+        geoReplication: {
+          groupNickname: '${namePrefix}${serviceShort}-db-03-rep'
+          linkedDatabases: [
+            {
+              id: '${namePrefix}${serviceShort}-db-01'
+            }
+          ]
         }
       }
     ]

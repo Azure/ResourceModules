@@ -14,12 +14,13 @@ This module deploys a Redis Cache Enterprise.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
-| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.Cache/redisEnterprise` | [2022-01-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Cache/2022-01-01/redisEnterprise) |
-| `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
-| `Microsoft.Network/privateEndpoints` | [2023-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-04-01/privateEndpoints) |
-| `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2023-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-04-01/privateEndpoints/privateDnsZoneGroups) |
+| `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates) |
+| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates) |
+| `Microsoft.Cache/redisEnterprise` | [2022-01-01](https://learn.microsoft.com/en-us/azure/templates) |
+| `Microsoft.Cache/redisEnterprise/databases` | [2022-01-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Cache/redisEnterprise) |
+| `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://learn.microsoft.com/en-us/azure/templates) |
+| `Microsoft.Network/privateEndpoints` | [2023-04-01](https://learn.microsoft.com/en-us/azure/templates) |
+| `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2023-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/privateEndpoints) |
 
 ## Parameters
 
@@ -27,30 +28,30 @@ This module deploys a Redis Cache Enterprise.
 
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the Redis cache resource. |
+| `name` | string | The name of the Redis Cache Enerprise resource. |
 
 **Optional parameters**
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `capacity` | int | `2` |  | The size of the RedisEnterprise cluster. Defaults to 2. Valid values are (2, 4, 6, ...) for Enterprise SKUs and (3, 9, 15, ...) for Flash SKUs. |
+| `capacity` | int | `2` |  | The size of the Redis Enterprise Cluster. Defaults to 2. Valid values are (2, 4, 6, ...) for Enterprise SKUs and (3, 9, 15, ...) for Flash SKUs. |
+| `databases` | array | `[]` |  | The databases to create in the Redis Cache Enterprise Cluster. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
-| `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `['', allLogs, ConnectedClientList]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
+| `diagnosticLogCategoriesToEnable` | array | `[]` | `['', allLogs, audit, ConnectionEvents]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
 | `diagnosticMetricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | The name of metrics that will be streamed. |
 | `diagnosticSettingsName` | string | `''` |  | The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings". |
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `location` | string | `[resourceGroup().location]` |  | The location to deploy the Redis cache service. |
+| `location` | string | `[resourceGroup().location]` |  | The geo-location where the resource lives. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `minimumTlsVersion` | string | `'1.2'` | `[1.0, 1.1, 1.2]` | Requires clients to use a specified TLS version (or higher) to connect. |
 | `privateEndpoints` | array | `[]` |  | Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| `skuName` | string | `'Enterprise_E10'` | `[Enterprise_E10, Enterprise_E100, Enterprise_E20, Enterprise_E50, EnterpriseFlash_F1500, EnterpriseFlash_F300, EnterpriseFlash_F700]` | The type of RedisEnterprise cluster to deploy. |
+| `skuName` | string | `'Enterprise_E10'` | `[Enterprise_E10, Enterprise_E100, Enterprise_E20, Enterprise_E50, EnterpriseFlash_F1500, EnterpriseFlash_F300, EnterpriseFlash_F700]` | The type of Redis Enterprise Cluster to deploy. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
-| `zoneRedundant` | bool | `True` |  | When true, replicas will be provisioned in availability zones specified in the zones parameter. |
-| `zones` | array | `[]` |  | If the zoneRedundant parameter is true, replicas will be provisioned in the availability zones specified here. Otherwise, the service will choose where replicas are deployed. |
+| `zoneRedundant` | bool | `True` |  | When true, the cluster will be deployed across availability zones. |
 
 
 ### Parameter Usage: `roleAssignments`
@@ -358,6 +359,43 @@ module redisEnterprise './cache/redis-enterprise/main.bicep' = {
     name: 'crecom001'
     // Non-required parameters
     capacity: 2
+    databases: [
+      {
+        name: 'crecom-db-01'
+      }
+      {
+        clusteringPolicy: 'EnterpriseCluster'
+        evictionPolicy: 'AllKeysLFU'
+        name: 'crecom-db-02'
+        persistenceAofEnabled: true
+        persistenceAofFrequency: 'always'
+        persistenceRdbEnabled: true
+        persistenceRdbFrequency: '12h'
+        port: 5000
+      }
+      {
+        geoReplication: {
+          groupNickname: 'crecom-db-03-rep'
+          linkedDatabases: [
+            {
+              id: 'crecom-db-01'
+            }
+          ]
+        }
+        modules: [
+          {
+            name: 'RedisBloom'
+          }
+          {
+            name: 'RedisTimeSeries'
+          }
+        ]
+        name: 'crecom-db-03'
+        persistenceAofEnabled: true
+        persistenceRdbEnabled: true
+        port: 6000
+      }
+    ]
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
     diagnosticSettingsName: 'redisdiagnostics'
@@ -387,11 +425,6 @@ module redisEnterprise './cache/redis-enterprise/main.bicep' = {
       resourceType: 'Redis Cache'
     }
     zoneRedundant: true
-    zones: [
-      1
-      2
-      3
-    ]
   }
 }
 ```
@@ -415,6 +448,45 @@ module redisEnterprise './cache/redis-enterprise/main.bicep' = {
     // Non-required parameters
     "capacity": {
       "value": 2
+    },
+    "databases": {
+      "value": [
+        {
+          "name": "crecom-db-01"
+        },
+        {
+          "clusteringPolicy": "EnterpriseCluster",
+          "evictionPolicy": "AllKeysLFU",
+          "name": "crecom-db-02",
+          "persistenceAofEnabled": true,
+          "persistenceAofFrequency": "always",
+          "persistenceRdbEnabled": true,
+          "persistenceRdbFrequency": "12h",
+          "port": 5000
+        },
+        {
+          "geoReplication": {
+            "groupNickname": "crecom-db-03-rep",
+            "linkedDatabases": [
+              {
+                "id": "crecom-db-01"
+              }
+            ]
+          },
+          "modules": [
+            {
+              "name": "RedisBloom"
+            },
+            {
+              "name": "RedisTimeSeries"
+            }
+          ],
+          "name": "crecom-db-03",
+          "persistenceAofEnabled": true,
+          "persistenceRdbEnabled": true,
+          "port": 6000
+        }
+      ]
     },
     "diagnosticEventHubAuthorizationRuleId": {
       "value": "<diagnosticEventHubAuthorizationRuleId>"
@@ -466,13 +538,6 @@ module redisEnterprise './cache/redis-enterprise/main.bicep' = {
     },
     "zoneRedundant": {
       "value": true
-    },
-    "zones": {
-      "value": [
-        1,
-        2,
-        3
-      ]
     }
   }
 }

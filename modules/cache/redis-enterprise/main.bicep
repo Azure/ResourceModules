@@ -2,10 +2,10 @@ metadata name = 'Redis Cache Enterprise'
 metadata description = 'This module deploys a Redis Cache Enterprise.'
 metadata owner = 'Azure/module-maintainers'
 
-@description('Optional. The location to deploy the Redis cache service.')
+@description('Optional. The geo-location where the resource lives.')
 param location string = resourceGroup().location
 
-@description('Required. The name of the Redis cache resource.')
+@description('Required. The name of the Redis Cache Enerprise resource.')
 param name string
 
 @allowed([
@@ -30,7 +30,7 @@ param tags object = {}
 @description('Optional. Requires clients to use a specified TLS version (or higher) to connect.')
 param minimumTlsVersion string = '1.2'
 
-@description('Optional. The size of the RedisEnterprise cluster. Defaults to 2. Valid values are (2, 4, 6, ...) for Enterprise SKUs and (3, 9, 15, ...) for Flash SKUs.')
+@description('Optional. The size of the Redis Enterprise Cluster. Defaults to 2. Valid values are (2, 4, 6, ...) for Enterprise SKUs and (3, 9, 15, ...) for Flash SKUs.')
 param capacity int = 2
 
 @allowed([
@@ -42,17 +42,17 @@ param capacity int = 2
   'Enterprise_E20'
   'Enterprise_E50'
 ])
-@description('Optional. The type of RedisEnterprise cluster to deploy.')
+@description('Optional. The type of Redis Enterprise Cluster to deploy.')
 param skuName string = 'Enterprise_E10'
 
-@description('Optional. When true, replicas will be provisioned in availability zones specified in the zones parameter.')
+@description('Optional. When true, the cluster will be deployed across availability zones.')
 param zoneRedundant bool = true
-
-@description('Optional. If the zoneRedundant parameter is true, replicas will be provisioned in the availability zones specified here. Otherwise, the service will choose where replicas are deployed.')
-param zones array = []
 
 @description('Optional. Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.')
 param privateEndpoints array = []
+
+@description('Optional. The databases to create in the Redis Cache Enterprise Cluster.')
+param databases array = []
 
 @description('Optional. The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings".')
 param diagnosticSettingsName string = ''
@@ -73,10 +73,11 @@ param diagnosticEventHubName string = ''
 @allowed([
   ''
   'allLogs'
-  'ConnectedClientList'
+  'ConnectionEvents'
+  'audit'
 ])
 param diagnosticLogCategoriesToEnable array = [
-  'allLogs'
+  ''
 ]
 
 @description('Optional. The name of metrics that will be streamed.')
@@ -90,7 +91,7 @@ param diagnosticMetricsToEnable array = [
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-var availabilityZones = zoneRedundant ? !empty(zones) ? zones : pickZones('Microsoft.Cache', 'redisEnterprise', location, 3) : []
+var availabilityZones = zoneRedundant ? pickZones('Microsoft.Cache', 'redisEnterprise', location, 3) : []
 
 var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs' && item != ''): {
   category: category
@@ -173,6 +174,26 @@ module redisCacheEnterprise_rbac '.bicep/nested_roleAssignments.bicep' = [for (r
   }
 }]
 
+module redisCacheEnterprise_databases 'database/main.bicep' = [for (database, index) in databases: {
+  name: '${uniqueString(deployment().name, location)}-redisCacheEnterprise-DB-${index}'
+  params: {
+    name: database.name
+    redisCacheEnterpriseName: redisCacheEnterprise.name
+    location: location
+    clientProtocol: contains(database, 'clientProtocol') ? database.clientProtocol : 'Encrypted'
+    clusteringPolicy: contains(database, 'clusteringPolicy') ? database.clusteringPolicy : 'OSSCluster'
+    evictionPolicy: contains(database, 'evictionPolicy') ? database.evictionPolicy : 'VolatileLRU'
+    geoReplication: contains(database, 'geoReplication') ? database.geoReplication : {}
+    modules: contains(database, 'modules') ? database.modules : []
+    persistenceAofEnabled: contains(database, 'persistenceAofEnabled') ? database.persistenceAofEnabled : false
+    persistenceAofFrequency: contains(database, 'persistenceAofFrequency') ? database.persistenceAofFrequency : ''
+    persistenceRdbEnabled: contains(database, 'persistenceRdbEnabled') ? database.persistenceRdbEnabled : false
+    persistenceRdbFrequency: contains(database, 'persistenceRdbFrequency') ? database.persistenceRdbFrequency : ''
+    port: contains(database, 'port') ? database.port : -1
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+  }
+}]
+
 module redisCacheEnterprise_privateEndpoints '../../network/private-endpoint/main.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
   name: '${uniqueString(deployment().name, location)}-redisCacheEnterprise-PrivateEndpoint-${index}'
   params: {
@@ -207,9 +228,6 @@ output resourceGroupName string = resourceGroup().name
 
 @description('Redis hostname.')
 output hostName string = redisCacheEnterprise.properties.hostName
-
-//@description('The full resource ID of a subnet in a virtual network where the Redis cache was deployed in.')
-//output subnetId string = !empty(subnetId) ? redisCacheEnterprise.properties.subnetId : ''
 
 @description('The location the resource was deployed into.')
 output location string = redisCacheEnterprise.location

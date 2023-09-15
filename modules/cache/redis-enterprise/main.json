@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.21.1.54444",
-      "templateHash": "11103107364849919148"
+      "templateHash": "11003351351537958776"
     },
     "name": "Redis Cache Enterprise",
     "description": "This module deploys a Redis Cache Enterprise.",
@@ -16,13 +16,13 @@
       "type": "string",
       "defaultValue": "[resourceGroup().location]",
       "metadata": {
-        "description": "Optional. The location to deploy the Redis cache service."
+        "description": "Optional. The geo-location where the resource lives."
       }
     },
     "name": {
       "type": "string",
       "metadata": {
-        "description": "Required. The name of the Redis cache resource."
+        "description": "Required. The name of the Redis Cache Enerprise resource."
       }
     },
     "lock": {
@@ -67,7 +67,7 @@
       "type": "int",
       "defaultValue": 2,
       "metadata": {
-        "description": "Optional. The size of the RedisEnterprise cluster. Defaults to 2. Valid values are (2, 4, 6, ...) for Enterprise SKUs and (3, 9, 15, ...) for Flash SKUs."
+        "description": "Optional. The size of the Redis Enterprise Cluster. Defaults to 2. Valid values are (2, 4, 6, ...) for Enterprise SKUs and (3, 9, 15, ...) for Flash SKUs."
       }
     },
     "skuName": {
@@ -83,21 +83,14 @@
         "Enterprise_E50"
       ],
       "metadata": {
-        "description": "Optional. The type of RedisEnterprise cluster to deploy."
+        "description": "Optional. The type of Redis Enterprise Cluster to deploy."
       }
     },
     "zoneRedundant": {
       "type": "bool",
       "defaultValue": true,
       "metadata": {
-        "description": "Optional. When true, replicas will be provisioned in availability zones specified in the zones parameter."
-      }
-    },
-    "zones": {
-      "type": "array",
-      "defaultValue": [],
-      "metadata": {
-        "description": "Optional. If the zoneRedundant parameter is true, replicas will be provisioned in the availability zones specified here. Otherwise, the service will choose where replicas are deployed."
+        "description": "Optional. When true, the cluster will be deployed across availability zones."
       }
     },
     "privateEndpoints": {
@@ -105,6 +98,13 @@
       "defaultValue": [],
       "metadata": {
         "description": "Optional. Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible."
+      }
+    },
+    "databases": {
+      "type": "array",
+      "defaultValue": [],
+      "metadata": {
+        "description": "Optional. The databases to create in the Redis Cache Enterprise Cluster."
       }
     },
     "diagnosticSettingsName": {
@@ -145,12 +145,13 @@
     "diagnosticLogCategoriesToEnable": {
       "type": "array",
       "defaultValue": [
-        "allLogs"
+        ""
       ],
       "allowedValues": [
         "",
         "allLogs",
-        "ConnectedClientList"
+        "ConnectionEvents",
+        "audit"
       ],
       "metadata": {
         "description": "Optional. The name of logs that will be streamed. \"allLogs\" includes all possible logs for the resource. Set to '' to disable log collection."
@@ -196,7 +197,7 @@
         }
       }
     ],
-    "availabilityZones": "[if(parameters('zoneRedundant'), if(not(empty(parameters('zones'))), parameters('zones'), pickZones('Microsoft.Cache', 'redisEnterprise', parameters('location'), 3)), createArray())]",
+    "availabilityZones": "[if(parameters('zoneRedundant'), pickZones('Microsoft.Cache', 'redisEnterprise', parameters('location'), 3), createArray())]",
     "diagnosticsLogs": "[if(contains(parameters('diagnosticLogCategoriesToEnable'), 'allLogs'), createArray(createObject('categoryGroup', 'allLogs', 'enabled', true())), if(contains(parameters('diagnosticLogCategoriesToEnable'), ''), createArray(), variables('diagnosticsLogsSpecified')))]",
     "enableReferencedModulesTelemetry": false
   },
@@ -405,6 +406,247 @@
               }
             }
           ]
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Cache/redisEnterprise', parameters('name'))]"
+      ]
+    },
+    {
+      "copy": {
+        "name": "redisCacheEnterprise_databases",
+        "count": "[length(parameters('databases'))]"
+      },
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2022-09-01",
+      "name": "[format('{0}-redisCacheEnterprise-DB-{1}', uniqueString(deployment().name, parameters('location')), copyIndex())]",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "name": {
+            "value": "[parameters('databases')[copyIndex()].name]"
+          },
+          "redisCacheEnterpriseName": {
+            "value": "[parameters('name')]"
+          },
+          "location": {
+            "value": "[parameters('location')]"
+          },
+          "clientProtocol": "[if(contains(parameters('databases')[copyIndex()], 'clientProtocol'), createObject('value', parameters('databases')[copyIndex()].clientProtocol), createObject('value', 'Encrypted'))]",
+          "clusteringPolicy": "[if(contains(parameters('databases')[copyIndex()], 'clusteringPolicy'), createObject('value', parameters('databases')[copyIndex()].clusteringPolicy), createObject('value', 'OSSCluster'))]",
+          "evictionPolicy": "[if(contains(parameters('databases')[copyIndex()], 'evictionPolicy'), createObject('value', parameters('databases')[copyIndex()].evictionPolicy), createObject('value', 'VolatileLRU'))]",
+          "geoReplication": "[if(contains(parameters('databases')[copyIndex()], 'geoReplication'), createObject('value', parameters('databases')[copyIndex()].geoReplication), createObject('value', createObject()))]",
+          "modules": "[if(contains(parameters('databases')[copyIndex()], 'modules'), createObject('value', parameters('databases')[copyIndex()].modules), createObject('value', createArray()))]",
+          "persistenceAofEnabled": "[if(contains(parameters('databases')[copyIndex()], 'persistenceAofEnabled'), createObject('value', parameters('databases')[copyIndex()].persistenceAofEnabled), createObject('value', false()))]",
+          "persistenceAofFrequency": "[if(contains(parameters('databases')[copyIndex()], 'persistenceAofFrequency'), createObject('value', parameters('databases')[copyIndex()].persistenceAofFrequency), createObject('value', ''))]",
+          "persistenceRdbEnabled": "[if(contains(parameters('databases')[copyIndex()], 'persistenceRdbEnabled'), createObject('value', parameters('databases')[copyIndex()].persistenceRdbEnabled), createObject('value', false()))]",
+          "persistenceRdbFrequency": "[if(contains(parameters('databases')[copyIndex()], 'persistenceRdbFrequency'), createObject('value', parameters('databases')[copyIndex()].persistenceRdbFrequency), createObject('value', ''))]",
+          "port": "[if(contains(parameters('databases')[copyIndex()], 'port'), createObject('value', parameters('databases')[copyIndex()].port), createObject('value', -1))]",
+          "enableDefaultTelemetry": {
+            "value": "[variables('enableReferencedModulesTelemetry')]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.21.1.54444",
+              "templateHash": "17740766783826706234"
+            },
+            "name": "Redis Cache Enterprise Databases",
+            "description": "This module deploys a Redis Cache Enterprise Database.",
+            "owner": "Azure/module-maintainers"
+          },
+          "parameters": {
+            "name": {
+              "type": "string",
+              "metadata": {
+                "description": "Required. The name of the database."
+              }
+            },
+            "redisCacheEnterpriseName": {
+              "type": "string",
+              "metadata": {
+                "description": "Conditional. The name of the parent Redis Cache Enterprise Cluster. Required if the template is used in a standalone deployment."
+              }
+            },
+            "clientProtocol": {
+              "type": "string",
+              "defaultValue": "Encrypted",
+              "allowedValues": [
+                "Encrypted",
+                "Plaintext"
+              ],
+              "metadata": {
+                "description": "Optional. Specifies whether redis clients can connect using TLS-encrypted or plaintext redis protocols. Default is TLS-encrypted."
+              }
+            },
+            "clusteringPolicy": {
+              "type": "string",
+              "defaultValue": "OSSCluster",
+              "allowedValues": [
+                "EnterpriseCluster",
+                "OSSCluster"
+              ],
+              "metadata": {
+                "description": "Optional. Clustering policy - default is OSSCluster. Specified at create time."
+              }
+            },
+            "evictionPolicy": {
+              "type": "string",
+              "defaultValue": "VolatileLRU",
+              "allowedValues": [
+                "AllKeysLFU",
+                "AllKeysLRU",
+                "AllKeysRandom",
+                "NoEviction",
+                "VolatileLFU",
+                "VolatileLRU",
+                "VolatileRandom",
+                "VolatileTTL"
+              ],
+              "metadata": {
+                "description": "Optional. Redis eviction policy - default is VolatileLRU."
+              }
+            },
+            "geoReplication": {
+              "type": "object",
+              "defaultValue": {},
+              "metadata": {
+                "description": "Optional. Optional set of properties to configure geo replication for this database."
+              }
+            },
+            "modules": {
+              "type": "array",
+              "defaultValue": [],
+              "metadata": {
+                "description": "Optional. Optional set of redis modules to enable in this database - modules can only be added at creation time."
+              }
+            },
+            "persistenceAofEnabled": {
+              "type": "bool",
+              "defaultValue": false,
+              "metadata": {
+                "description": "Conditional. Sets whether AOF is enabled. Required if setting AOF frequency."
+              }
+            },
+            "persistenceAofFrequency": {
+              "type": "string",
+              "defaultValue": "",
+              "allowedValues": [
+                "",
+                "1s",
+                "always"
+              ],
+              "metadata": {
+                "description": "Optional. Sets the frequency at which data is written to disk. Can be set when AOF is enabled."
+              }
+            },
+            "persistenceRdbEnabled": {
+              "type": "bool",
+              "defaultValue": false,
+              "metadata": {
+                "description": "Conditional. Sets whether RDB is enabled. Required if setting RDB frequency."
+              }
+            },
+            "persistenceRdbFrequency": {
+              "type": "string",
+              "defaultValue": "",
+              "allowedValues": [
+                "",
+                "12h",
+                "1h",
+                "6h"
+              ],
+              "metadata": {
+                "description": "Optional. Sets the frequency at which a snapshot of the database is created. Can be set when RDB is enabled."
+              }
+            },
+            "port": {
+              "type": "int",
+              "defaultValue": -1,
+              "metadata": {
+                "description": "Optional. TCP port of the database endpoint. Specified at create time. Default is (-1) meaning value is not set and defaults to an available port."
+              }
+            },
+            "location": {
+              "type": "string",
+              "defaultValue": "[resourceGroup().location]",
+              "metadata": {
+                "description": "Optional. Location for all resources."
+              }
+            },
+            "enableDefaultTelemetry": {
+              "type": "bool",
+              "defaultValue": true,
+              "metadata": {
+                "description": "Optional. Enable telemetry via a Globally Unique Identifier (GUID)."
+              }
+            }
+          },
+          "resources": [
+            {
+              "condition": "[parameters('enableDefaultTelemetry')]",
+              "type": "Microsoft.Resources/deployments",
+              "apiVersion": "2022-09-01",
+              "name": "[format('pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-{0}', uniqueString(deployment().name, parameters('location')))]",
+              "properties": {
+                "mode": "Incremental",
+                "template": {
+                  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                  "contentVersion": "1.0.0.0",
+                  "resources": []
+                }
+              }
+            },
+            {
+              "type": "Microsoft.Cache/redisEnterprise/databases",
+              "apiVersion": "2022-01-01",
+              "name": "[format('{0}/{1}', parameters('redisCacheEnterpriseName'), parameters('name'))]",
+              "properties": {
+                "clientProtocol": "[if(not(empty(parameters('clientProtocol'))), parameters('clientProtocol'), null())]",
+                "clusteringPolicy": "[if(not(empty(parameters('clusteringPolicy'))), parameters('clusteringPolicy'), null())]",
+                "evictionPolicy": "[if(not(empty(parameters('evictionPolicy'))), parameters('evictionPolicy'), null())]",
+                "geoReplication": "[if(not(empty(parameters('geoReplication'))), parameters('geoReplication'), null())]",
+                "modules": "[if(not(empty(parameters('modules'))), parameters('modules'), null())]",
+                "persistence": {
+                  "aofEnabled": "[parameters('persistenceAofEnabled')]",
+                  "aofFrequency": "[if(not(empty(parameters('persistenceAofFrequency'))), parameters('persistenceAofFrequency'), null())]",
+                  "rdbEnabled": "[parameters('persistenceRdbEnabled')]",
+                  "rdbFrequency": "[if(not(empty(parameters('persistenceRdbFrequency'))), parameters('persistenceRdbFrequency'), null())]"
+                },
+                "port": "[if(not(equals(parameters('port'), -1)), parameters('port'), null())]"
+              }
+            }
+          ],
+          "outputs": {
+            "name": {
+              "type": "string",
+              "metadata": {
+                "description": "The name of the deployed database."
+              },
+              "value": "[parameters('name')]"
+            },
+            "resourceId": {
+              "type": "string",
+              "metadata": {
+                "description": "The resource ID of the deployed database."
+              },
+              "value": "[resourceId('Microsoft.Cache/redisEnterprise/databases', parameters('redisCacheEnterpriseName'), parameters('name'))]"
+            },
+            "resourceGroupName": {
+              "type": "string",
+              "metadata": {
+                "description": "The resource group of the deployed database."
+              },
+              "value": "[resourceGroup().name]"
+            }
+          }
         }
       },
       "dependsOn": [
