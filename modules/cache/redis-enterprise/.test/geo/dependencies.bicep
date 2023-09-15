@@ -24,7 +24,7 @@ resource redisCacheEnterprise 'Microsoft.Cache/redisEnterprise@2022-01-01' = {
     name: 'default'
     properties: {
       clusteringPolicy: 'EnterpriseCluster'
-      evictionPolicy: 'AllKeysLFU'
+      evictionPolicy: 'NoEviction'
       modules: [
         {
           name: 'RediSearch'

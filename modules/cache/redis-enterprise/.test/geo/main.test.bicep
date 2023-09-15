@@ -54,7 +54,7 @@ module testDeployment '../../main.bicep' = {
     databases: [
       {
         clusteringPolicy: 'EnterpriseCluster'
-        evictionPolicy: 'AllKeysLFU'
+        evictionPolicy: 'NoEviction'
         modules: [
           {
             name: 'RediSearch'

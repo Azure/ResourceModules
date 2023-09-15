@@ -523,7 +523,7 @@ module redisEnterprise './cache/redis-enterprise/main.bicep' = {
     databases: [
       {
         clusteringPolicy: 'EnterpriseCluster'
-        evictionPolicy: 'AllKeysLFU'
+        evictionPolicy: 'NoEviction'
         geoReplication: {
           groupNickname: 'cregeo-geo-grp'
           linkedDatabases: [
@@ -576,7 +576,7 @@ module redisEnterprise './cache/redis-enterprise/main.bicep' = {
       "value": [
         {
           "clusteringPolicy": "EnterpriseCluster",
-          "evictionPolicy": "AllKeysLFU",
+          "evictionPolicy": "NoEviction",
           "geoReplication": {
             "groupNickname": "cregeo-geo-grp",
             "linkedDatabases": [
