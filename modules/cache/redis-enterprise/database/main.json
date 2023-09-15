@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.21.1.54444",
-      "templateHash": "6399828648151211255"
+      "templateHash": "14063731469491395921"
     },
     "name": "Redis Cache Enterprise Databases",
     "description": "This module deploys a Redis Cache Enterprise Database.",
@@ -61,7 +61,7 @@
       "type": "object",
       "defaultValue": {},
       "metadata": {
-        "description": "Optional. Optional set of properties to configure geo replication for this database."
+        "description": "Optional. Optional set of properties to configure geo replication for this database. Geo replication prerequisites must be met. See \"https://learn.microsoft.com/en-us/azure/azure-cache-for-redis/cache-how-to-active-geo-replication#active-geo-replication-prerequisites\" for more information."
       }
     },
     "modules": {
@@ -75,7 +75,7 @@
       "type": "bool",
       "defaultValue": false,
       "metadata": {
-        "description": "Conditional. Sets whether AOF is enabled. Required if setting AOF frequency. AOF and RDB cannot be enabled at the same time."
+        "description": "Conditional. Sets whether AOF is enabled. Required if setting AOF frequency. AOF and RDB persistence cannot be enabled at the same time."
       }
     },
     "persistenceAofFrequency": {
@@ -94,7 +94,7 @@
       "type": "bool",
       "defaultValue": false,
       "metadata": {
-        "description": "Conditional. Sets whether RDB is enabled. Required if setting RDB frequency. AOF and RDB cannot be enabled at the same time."
+        "description": "Conditional. Sets whether RDB is enabled. Required if setting RDB frequency. RDB and AOF persistence cannot be enabled at the same time."
       }
     },
     "persistenceRdbFrequency": {

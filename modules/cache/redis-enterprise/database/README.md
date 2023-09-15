@@ -21,8 +21,8 @@ This module deploys a Redis Cache Enterprise Database.
 
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
-| `persistenceAofEnabled` | bool | `False` | Sets whether AOF is enabled. Required if setting AOF frequency. AOF and RDB cannot be enabled at the same time. |
-| `persistenceRdbEnabled` | bool | `False` | Sets whether RDB is enabled. Required if setting RDB frequency. AOF and RDB cannot be enabled at the same time. |
+| `persistenceAofEnabled` | bool | `False` | Sets whether AOF is enabled. Required if setting AOF frequency. AOF and RDB persistence cannot be enabled at the same time. |
+| `persistenceRdbEnabled` | bool | `False` | Sets whether RDB is enabled. Required if setting RDB frequency. RDB and AOF persistence cannot be enabled at the same time. |
 | `redisCacheEnterpriseName` | string |  | The name of the parent Redis Cache Enterprise Cluster. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
@@ -33,7 +33,7 @@ This module deploys a Redis Cache Enterprise Database.
 | `clusteringPolicy` | string | `'OSSCluster'` | `[EnterpriseCluster, OSSCluster]` | Clustering policy - default is OSSCluster. Specified at create time. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `evictionPolicy` | string | `'VolatileLRU'` | `[AllKeysLFU, AllKeysLRU, AllKeysRandom, NoEviction, VolatileLFU, VolatileLRU, VolatileRandom, VolatileTTL]` | Redis eviction policy - default is VolatileLRU. |
-| `geoReplication` | object | `{object}` |  | Optional set of properties to configure geo replication for this database. |
+| `geoReplication` | object | `{object}` |  | Optional set of properties to configure geo replication for this database. Geo replication prerequisites must be met. See "https://learn.microsoft.com/en-us/azure/azure-cache-for-redis/cache-how-to-active-geo-replication#active-geo-replication-prerequisites" for more information. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `modules` | array | `[]` |  | Optional set of redis modules to enable in this database - modules can only be added at creation time. |
 | `persistenceAofFrequency` | string | `''` | `['', 1s, always]` | Sets the frequency at which data is written to disk. Can be set when AOF is enabled. |

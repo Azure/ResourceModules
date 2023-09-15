@@ -12,7 +12,7 @@ param resourceGroupName string = 'ms.cache.redisenterprise-${serviceShort}-rg'
 param location string = deployment().location
 
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints.')
-param serviceShort string = 'crecom'
+param serviceShort string = 'cregeo'
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
@@ -35,21 +35,7 @@ module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
-    virtualNetworkName: 'dep-${namePrefix}-vnet-${serviceShort}'
-  }
-}
-
-// Diagnostics
-// ===========
-module diagnosticDependencies '../../../../.shared/.templates/diagnostic.dependencies.bicep' = {
-  scope: resourceGroup
-  name: '${uniqueString(deployment().name, location)}-diagnosticDependencies'
-  params: {
-    storageAccountName: 'dep${namePrefix}diasa${serviceShort}01'
-    logAnalyticsWorkspaceName: 'dep-${namePrefix}-law-${serviceShort}'
-    eventHubNamespaceEventHubName: 'dep-${namePrefix}-evh-${serviceShort}'
-    eventHubNamespaceName: 'dep-${namePrefix}-evhns-${serviceShort}'
-    location: location
+    redisCacheEnterpriseName: 'dep-${namePrefix}-rce-${serviceShort}'
   }
 }
 
@@ -64,45 +50,27 @@ module testDeployment '../../main.bicep' = {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '${namePrefix}${serviceShort}001'
     capacity: 2
-    diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
-    diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
-    diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
-    diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
-    diagnosticSettingsName: 'redisdiagnostics'
-    lock: 'CanNotDelete'
-    minimumTlsVersion: '1.2'
     zoneRedundant: true
-    privateEndpoints: [
-      {
-        privateDnsZoneGroup: {
-          privateDNSResourceIds: [
-            nestedDependencies.outputs.privateDNSResourceId
-          ]
-        }
-        service: 'redisEnterprise'
-        subnetResourceId: nestedDependencies.outputs.subnetResourceId
-        tags: {
-          'hidden-title': 'This is visible in the resource name'
-          Environment: 'Non-Prod'
-          Role: 'DeploymentValidation'
-        }
-      }
-    ]
     databases: [
       {
         clusteringPolicy: 'EnterpriseCluster'
         evictionPolicy: 'AllKeysLFU'
         modules: [
           {
-            name: 'RedisBloom'
+            name: 'RediSearch'
           }
           {
-            name: 'RedisTimeSeries'
+            name: 'RedisJSON'
           }
         ]
-        persistenceAofEnabled: true
-        persistenceAofFrequency: 'always'
-        port: 10000
+        geoReplication: {
+          groupNickname: '${namePrefix}${serviceShort}-geo-grp'
+          linkedDatabases: [
+            {
+              id: nestedDependencies.outputs.redisCacheEnterpriseDatabaseResourceId
+            }
+          ]
+        }
       }
     ]
     tags: {

@@ -32,13 +32,13 @@ param clusteringPolicy string = 'OSSCluster'
 @description('Optional. Redis eviction policy - default is VolatileLRU.')
 param evictionPolicy string = 'VolatileLRU'
 
-@description('Optional. Optional set of properties to configure geo replication for this database.')
+@description('Optional. Optional set of properties to configure geo replication for this database. Geo replication prerequisites must be met. See "https://learn.microsoft.com/en-us/azure/azure-cache-for-redis/cache-how-to-active-geo-replication#active-geo-replication-prerequisites" for more information.')
 param geoReplication object = {}
 
 @description('Optional. Optional set of redis modules to enable in this database - modules can only be added at creation time.')
 param modules array = []
 
-@description('Conditional. Sets whether AOF is enabled. Required if setting AOF frequency. AOF and RDB cannot be enabled at the same time.')
+@description('Conditional. Sets whether AOF is enabled. Required if setting AOF frequency. AOF and RDB persistence cannot be enabled at the same time.')
 param persistenceAofEnabled bool = false
 
 @allowed([
@@ -49,7 +49,7 @@ param persistenceAofEnabled bool = false
 @description('Optional. Sets the frequency at which data is written to disk. Can be set when AOF is enabled.')
 param persistenceAofFrequency string = ''
 
-@description('Conditional. Sets whether RDB is enabled. Required if setting RDB frequency. AOF and RDB cannot be enabled at the same time.')
+@description('Conditional. Sets whether RDB is enabled. Required if setting RDB frequency. RDB and AOF persistence cannot be enabled at the same time.')
 param persistenceRdbEnabled bool = false
 
 @allowed([

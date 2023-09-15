@@ -402,7 +402,7 @@ module redisEnterprise './cache/redis-enterprise/main.bicep' = {
     ]
     tags: {
       'hidden-title': 'This is visible in the resource name'
-      resourceType: 'Redis Cache'
+      resourceType: 'Redis Cache Enterprise'
     }
     zoneRedundant: true
   }
@@ -493,7 +493,7 @@ module redisEnterprise './cache/redis-enterprise/main.bicep' = {
     "tags": {
       "value": {
         "hidden-title": "This is visible in the resource name",
-        "resourceType": "Redis Cache"
+        "resourceType": "Redis Cache Enterprise"
       }
     },
     "zoneRedundant": {
@@ -506,7 +506,116 @@ module redisEnterprise './cache/redis-enterprise/main.bicep' = {
 </details>
 <p>
 
-<h3>Example 2: Min</h3>
+<h3>Example 2: Geo</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module redisEnterprise './cache/redis-enterprise/main.bicep' = {
+  name: '${uniqueString(deployment().name, location)}-test-cregeo'
+  params: {
+    // Required parameters
+    name: 'cregeo001'
+    // Non-required parameters
+    capacity: 2
+    databases: [
+      {
+        clusteringPolicy: 'EnterpriseCluster'
+        evictionPolicy: 'AllKeysLFU'
+        geoReplication: {
+          groupNickname: 'cregeo-geo-grp'
+          linkedDatabases: [
+            {
+              id: '<id>'
+            }
+          ]
+        }
+        modules: [
+          {
+            name: 'RediSearch'
+          }
+          {
+            name: 'RedisJSON'
+          }
+        ]
+      }
+    ]
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    tags: {
+      'hidden-title': 'This is visible in the resource name'
+      resourceType: 'Redis Cache Enterprise'
+    }
+    zoneRedundant: true
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "cregeo001"
+    },
+    // Non-required parameters
+    "capacity": {
+      "value": 2
+    },
+    "databases": {
+      "value": [
+        {
+          "clusteringPolicy": "EnterpriseCluster",
+          "evictionPolicy": "AllKeysLFU",
+          "geoReplication": {
+            "groupNickname": "cregeo-geo-grp",
+            "linkedDatabases": [
+              {
+                "id": "<id>"
+              }
+            ]
+          },
+          "modules": [
+            {
+              "name": "RediSearch"
+            },
+            {
+              "name": "RedisJSON"
+            }
+          ]
+        }
+      ]
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "tags": {
+      "value": {
+        "hidden-title": "This is visible in the resource name",
+        "resourceType": "Redis Cache Enterprise"
+      }
+    },
+    "zoneRedundant": {
+      "value": true
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 3: Min</h3>
 
 <details>
 
