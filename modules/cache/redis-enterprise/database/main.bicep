@@ -2,9 +2,6 @@ metadata name = 'Redis Cache Enterprise Databases'
 metadata description = 'This module deploys a Redis Cache Enterprise Database.'
 metadata owner = 'Azure/module-maintainers'
 
-@description('Required. The name of the database.')
-param name string
-
 @description('Conditional. The name of the parent Redis Cache Enterprise Cluster. Required if the template is used in a standalone deployment.')
 param redisCacheEnterpriseName string
 
@@ -41,7 +38,7 @@ param geoReplication object = {}
 @description('Optional. Optional set of redis modules to enable in this database - modules can only be added at creation time.')
 param modules array = []
 
-@description('Conditional. Sets whether AOF is enabled. Required if setting AOF frequency.')
+@description('Conditional. Sets whether AOF is enabled. Required if setting AOF frequency. AOF and RDB cannot be enabled at the same time.')
 param persistenceAofEnabled bool = false
 
 @allowed([
@@ -52,7 +49,7 @@ param persistenceAofEnabled bool = false
 @description('Optional. Sets the frequency at which data is written to disk. Can be set when AOF is enabled.')
 param persistenceAofFrequency string = ''
 
-@description('Conditional. Sets whether RDB is enabled. Required if setting RDB frequency.')
+@description('Conditional. Sets whether RDB is enabled. Required if setting RDB frequency. AOF and RDB cannot be enabled at the same time.')
 param persistenceRdbEnabled bool = false
 
 @allowed([
@@ -64,7 +61,7 @@ param persistenceRdbEnabled bool = false
 @description('Optional. Sets the frequency at which a snapshot of the database is created. Can be set when RDB is enabled.')
 param persistenceRdbFrequency string = ''
 
-@description('Optional. TCP port of the database endpoint. Specified at create time. Default is (-1) meaning value is not set and defaults to an available port.')
+@description('Optional. TCP port of the database endpoint. Specified at create time. Default is (-1) meaning value is not set and defaults to an available port. Current supported port is 10000.')
 param port int = -1
 
 @description('Optional. Location for all resources.')
@@ -90,7 +87,7 @@ resource redisCacheEnterprise 'Microsoft.Cache/redisEnterprise@2022-01-01' exist
 }
 
 resource database 'Microsoft.Cache/redisEnterprise/databases@2022-01-01' = {
-  name: name
+  name: 'default'
   parent: redisCacheEnterprise
   properties: {
     clientProtocol: !empty(clientProtocol) ? clientProtocol : null

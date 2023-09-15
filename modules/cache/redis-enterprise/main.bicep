@@ -177,7 +177,6 @@ module redisCacheEnterprise_rbac '.bicep/nested_roleAssignments.bicep' = [for (r
 module redisCacheEnterprise_databases 'database/main.bicep' = [for (database, index) in databases: {
   name: '${uniqueString(deployment().name, location)}-redisCacheEnterprise-DB-${index}'
   params: {
-    name: database.name
     redisCacheEnterpriseName: redisCacheEnterprise.name
     location: location
     clientProtocol: contains(database, 'clientProtocol') ? database.clientProtocol : 'Encrypted'

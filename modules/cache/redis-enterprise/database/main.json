@@ -5,19 +5,13 @@
     "_generator": {
       "name": "bicep",
       "version": "0.21.1.54444",
-      "templateHash": "17740766783826706234"
+      "templateHash": "6399828648151211255"
     },
     "name": "Redis Cache Enterprise Databases",
     "description": "This module deploys a Redis Cache Enterprise Database.",
     "owner": "Azure/module-maintainers"
   },
   "parameters": {
-    "name": {
-      "type": "string",
-      "metadata": {
-        "description": "Required. The name of the database."
-      }
-    },
     "redisCacheEnterpriseName": {
       "type": "string",
       "metadata": {
@@ -81,7 +75,7 @@
       "type": "bool",
       "defaultValue": false,
       "metadata": {
-        "description": "Conditional. Sets whether AOF is enabled. Required if setting AOF frequency."
+        "description": "Conditional. Sets whether AOF is enabled. Required if setting AOF frequency. AOF and RDB cannot be enabled at the same time."
       }
     },
     "persistenceAofFrequency": {
@@ -100,7 +94,7 @@
       "type": "bool",
       "defaultValue": false,
       "metadata": {
-        "description": "Conditional. Sets whether RDB is enabled. Required if setting RDB frequency."
+        "description": "Conditional. Sets whether RDB is enabled. Required if setting RDB frequency. AOF and RDB cannot be enabled at the same time."
       }
     },
     "persistenceRdbFrequency": {
@@ -120,7 +114,7 @@
       "type": "int",
       "defaultValue": -1,
       "metadata": {
-        "description": "Optional. TCP port of the database endpoint. Specified at create time. Default is (-1) meaning value is not set and defaults to an available port."
+        "description": "Optional. TCP port of the database endpoint. Specified at create time. Default is (-1) meaning value is not set and defaults to an available port. Current supported port is 10000."
       }
     },
     "location": {
@@ -156,7 +150,7 @@
     {
       "type": "Microsoft.Cache/redisEnterprise/databases",
       "apiVersion": "2022-01-01",
-      "name": "[format('{0}/{1}', parameters('redisCacheEnterpriseName'), parameters('name'))]",
+      "name": "[format('{0}/{1}', parameters('redisCacheEnterpriseName'), 'default')]",
       "properties": {
         "clientProtocol": "[if(not(empty(parameters('clientProtocol'))), parameters('clientProtocol'), null())]",
         "clusteringPolicy": "[if(not(empty(parameters('clusteringPolicy'))), parameters('clusteringPolicy'), null())]",
@@ -179,14 +173,14 @@
       "metadata": {
         "description": "The name of the deployed database."
       },
-      "value": "[parameters('name')]"
+      "value": "default"
     },
     "resourceId": {
       "type": "string",
       "metadata": {
         "description": "The resource ID of the deployed database."
       },
-      "value": "[resourceId('Microsoft.Cache/redisEnterprise/databases', parameters('redisCacheEnterpriseName'), parameters('name'))]"
+      "value": "[resourceId('Microsoft.Cache/redisEnterprise/databases', parameters('redisCacheEnterpriseName'), 'default')]"
     },
     "resourceGroupName": {
       "type": "string",

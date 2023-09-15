@@ -14,13 +14,13 @@ This module deploys a Redis Cache Enterprise.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates) |
-| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates) |
-| `Microsoft.Cache/redisEnterprise` | [2022-01-01](https://learn.microsoft.com/en-us/azure/templates) |
-| `Microsoft.Cache/redisEnterprise/databases` | [2022-01-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Cache/redisEnterprise) |
-| `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://learn.microsoft.com/en-us/azure/templates) |
-| `Microsoft.Network/privateEndpoints` | [2023-04-01](https://learn.microsoft.com/en-us/azure/templates) |
-| `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2023-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/privateEndpoints) |
+| `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
+| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
+| `Microsoft.Cache/redisEnterprise` | [2022-01-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Cache/2022-01-01/redisEnterprise) |
+| `Microsoft.Cache/redisEnterprise/databases` | [2022-01-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Cache/2022-01-01/redisEnterprise/databases) |
+| `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
+| `Microsoft.Network/privateEndpoints` | [2023-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-04-01/privateEndpoints) |
+| `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2023-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-04-01/privateEndpoints/privateDnsZoneGroups) |
 
 ## Parameters
 
@@ -361,27 +361,8 @@ module redisEnterprise './cache/redis-enterprise/main.bicep' = {
     capacity: 2
     databases: [
       {
-        name: 'crecom-db-01'
-      }
-      {
         clusteringPolicy: 'EnterpriseCluster'
         evictionPolicy: 'AllKeysLFU'
-        name: 'crecom-db-02'
-        persistenceAofEnabled: true
-        persistenceAofFrequency: 'always'
-        persistenceRdbEnabled: true
-        persistenceRdbFrequency: '12h'
-        port: 5000
-      }
-      {
-        geoReplication: {
-          groupNickname: 'crecom-db-03-rep'
-          linkedDatabases: [
-            {
-              id: 'crecom-db-01'
-            }
-          ]
-        }
         modules: [
           {
             name: 'RedisBloom'
@@ -390,10 +371,9 @@ module redisEnterprise './cache/redis-enterprise/main.bicep' = {
             name: 'RedisTimeSeries'
           }
         ]
-        name: 'crecom-db-03'
         persistenceAofEnabled: true
-        persistenceRdbEnabled: true
-        port: 6000
+        persistenceAofFrequency: 'always'
+        port: 10000
       }
     ]
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
@@ -452,27 +432,8 @@ module redisEnterprise './cache/redis-enterprise/main.bicep' = {
     "databases": {
       "value": [
         {
-          "name": "crecom-db-01"
-        },
-        {
           "clusteringPolicy": "EnterpriseCluster",
           "evictionPolicy": "AllKeysLFU",
-          "name": "crecom-db-02",
-          "persistenceAofEnabled": true,
-          "persistenceAofFrequency": "always",
-          "persistenceRdbEnabled": true,
-          "persistenceRdbFrequency": "12h",
-          "port": 5000
-        },
-        {
-          "geoReplication": {
-            "groupNickname": "crecom-db-03-rep",
-            "linkedDatabases": [
-              {
-                "id": "crecom-db-01"
-              }
-            ]
-          },
           "modules": [
             {
               "name": "RedisBloom"
@@ -481,10 +442,9 @@ module redisEnterprise './cache/redis-enterprise/main.bicep' = {
               "name": "RedisTimeSeries"
             }
           ],
-          "name": "crecom-db-03",
           "persistenceAofEnabled": true,
-          "persistenceRdbEnabled": true,
-          "port": 6000
+          "persistenceAofFrequency": "always",
+          "port": 10000
         }
       ]
     },
