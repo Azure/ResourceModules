@@ -245,7 +245,7 @@ module logAnalyticsWorkspace_linkedStorageAccounts 'linked-storage-account/main.
   }
 }]
 
-module logAnalyticsWorkspace_savedSearches 'saved-searche/main.bicep' = [for (savedSearch, index) in savedSearches: {
+module logAnalyticsWorkspace_savedSearches 'saved-search/main.bicep' = [for (savedSearch, index) in savedSearches: {
   name: '${uniqueString(deployment().name, location)}-LAW-SavedSearch-${index}'
   params: {
     logAnalyticsWorkspaceName: logAnalyticsWorkspace.name

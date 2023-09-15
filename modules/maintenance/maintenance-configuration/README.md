@@ -16,7 +16,7 @@ This module deploys a Maintenance Configuration.
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.Maintenance/maintenanceConfigurations` | [2021-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Maintenance/2021-05-01/maintenanceConfigurations) |
+| `Microsoft.Maintenance/maintenanceConfigurations` | [2023-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Maintenance/2023-04-01/maintenanceConfigurations) |
 
 ## Parameters
 
@@ -32,6 +32,7 @@ This module deploys a Maintenance Configuration.
 | :-- | :-- | :-- | :-- | :-- |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `extensionProperties` | object | `{object}` |  | Gets or sets extensionProperties of the maintenanceConfiguration. |
+| `installPatches` | object | `{object}` |  | Configuration settings for VM guest patching with Azure Update Manager. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `maintenanceScope` | string | `'Host'` | `[Extension, Host, InGuestPatch, OSImage, SQLDB, SQLManagedInstance]` | Gets or sets maintenanceScope of the configuration. |
@@ -212,10 +213,28 @@ module maintenanceConfiguration './maintenance/maintenance-configuration/main.bi
     name: 'mmccom001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    extensionProperties: {}
+    extensionProperties: {
+      InGuestPatchMode: 'User'
+    }
+    installPatches: {
+      linuxParameters: {
+        classificationsToInclude: '<classificationsToInclude>'
+        packageNameMasksToExclude: '<packageNameMasksToExclude>'
+        packageNameMasksToInclude: '<packageNameMasksToInclude>'
+      }
+      rebootSetting: 'IfRequired'
+      windowsParameters: {
+        classificationsToInclude: [
+          'Critical'
+          'Security'
+        ]
+        kbNumbersToExclude: '<kbNumbersToExclude>'
+        kbNumbersToInclude: '<kbNumbersToInclude>'
+      }
+    }
     lock: 'CanNotDelete'
     maintenanceWindow: {
-      duration: '05:00'
+      duration: '03:00'
       expirationDateTime: '9999-12-31 23:59:59'
       recurEvery: 'Day'
       startDateTime: '2022-12-31 13:00'
@@ -262,14 +281,34 @@ module maintenanceConfiguration './maintenance/maintenance-configuration/main.bi
       "value": "<enableDefaultTelemetry>"
     },
     "extensionProperties": {
-      "value": {}
+      "value": {
+        "InGuestPatchMode": "User"
+      }
+    },
+    "installPatches": {
+      "value": {
+        "linuxParameters": {
+          "classificationsToInclude": "<classificationsToInclude>",
+          "packageNameMasksToExclude": "<packageNameMasksToExclude>",
+          "packageNameMasksToInclude": "<packageNameMasksToInclude>"
+        },
+        "rebootSetting": "IfRequired",
+        "windowsParameters": {
+          "classificationsToInclude": [
+            "Critical",
+            "Security"
+          ],
+          "kbNumbersToExclude": "<kbNumbersToExclude>",
+          "kbNumbersToInclude": "<kbNumbersToInclude>"
+        }
+      }
     },
     "lock": {
       "value": "CanNotDelete"
     },
     "maintenanceWindow": {
       "value": {
-        "duration": "05:00",
+        "duration": "03:00",
         "expirationDateTime": "9999-12-31 23:59:59",
         "recurEvery": "Day",
         "startDateTime": "2022-12-31 13:00",
