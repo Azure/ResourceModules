@@ -109,5 +109,12 @@ module testDeployment '../../main.bicep' = {
     diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
     diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
     diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
+    administrators: [
+      {
+        identityResourceId: nestedDependencies.outputs.managedIdentityResourceId
+        login: nestedDependencies.outputs.managedIdentityName
+        sid: nestedDependencies.outputs.managedIdentityPrincipalId
+      }
+    ]
   }
 }
