@@ -30,7 +30,7 @@ This module deploys a Redis Cache Enterprise Database.
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `clientProtocol` | string | `'Encrypted'` | `[Encrypted, Plaintext]` | Specifies whether redis clients can connect using TLS-encrypted or plaintext redis protocols. Default is TLS-encrypted. |
-| `clusteringPolicy` | string | `'OSSCluster'` | `[EnterpriseCluster, OSSCluster]` | Clustering policy - default is OSSCluster. Specified at create time. |
+| `clusteringPolicy` | string | `'OSSCluster'` | `[EnterpriseCluster, OSSCluster]` | Specifies the clustering policy to enable at creation time of the Redis Cache Enterprise Cluster. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `evictionPolicy` | string | `'VolatileLRU'` | `[AllKeysLFU, AllKeysLRU, AllKeysRandom, NoEviction, VolatileLFU, VolatileLRU, VolatileRandom, VolatileTTL]` | Redis eviction policy - default is VolatileLRU. |
 | `geoReplication` | object | `{object}` |  | Optional set of properties to configure geo replication for this database. Geo replication prerequisites must be met. See "https://learn.microsoft.com/en-us/azure/azure-cache-for-redis/cache-how-to-active-geo-replication#active-geo-replication-prerequisites" for more information. |

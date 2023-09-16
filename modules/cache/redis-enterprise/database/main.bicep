@@ -16,7 +16,7 @@ param clientProtocol string = 'Encrypted'
   'EnterpriseCluster'
   'OSSCluster'
 ])
-@description('Optional. Clustering policy - default is OSSCluster. Specified at create time.')
+@description('Optional. Specifies the clustering policy to enable at creation time of the Redis Cache Enterprise Cluster.')
 param clusteringPolicy string = 'OSSCluster'
 
 @allowed([

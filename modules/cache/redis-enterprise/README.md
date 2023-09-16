@@ -401,6 +401,15 @@ module redisEnterprise './cache/redis-enterprise/main.bicep' = {
         }
       }
     ]
+    roleAssignments: [
+      {
+        principalIds: [
+          '<managedIdentityPrincipalId>'
+        ]
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
     tags: {
       'hidden-title': 'This is visible in the resource name'
       resourceType: 'Redis Cache Enterprise'
@@ -489,6 +498,17 @@ module redisEnterprise './cache/redis-enterprise/main.bicep' = {
             "hidden-title": "This is visible in the resource name",
             "Role": "DeploymentValidation"
           }
+        }
+      ]
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "<managedIdentityPrincipalId>"
+          ],
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
         }
       ]
     },

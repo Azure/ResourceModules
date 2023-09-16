@@ -36,6 +36,7 @@ module nestedDependencies 'dependencies.bicep' = {
   name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
     virtualNetworkName: 'dep-${namePrefix}-vnet-${serviceShort}'
+    managedIdentityName: 'dep-${namePrefix}-msi-ds-${serviceShort}'
   }
 }
 
@@ -70,6 +71,15 @@ module testDeployment '../../main.bicep' = {
     diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
     diagnosticSettingsName: 'redisdiagnostics'
     lock: 'CanNotDelete'
+    roleAssignments: [
+      {
+        roleDefinitionIdOrName: 'Reader'
+        principalIds: [
+          nestedDependencies.outputs.managedIdentityPrincipalId
+        ]
+        principalType: 'ServicePrincipal'
+      }
+    ]
     minimumTlsVersion: '1.2'
     zoneRedundant: true
     privateEndpoints: [

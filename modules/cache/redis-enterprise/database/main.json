@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.21.1.54444",
-      "templateHash": "16974139838344848652"
+      "templateHash": "16731424701559883139"
     },
     "name": "Redis Cache Enterprise Databases",
     "description": "This module deploys a Redis Cache Enterprise Database.",
@@ -37,7 +37,7 @@
         "OSSCluster"
       ],
       "metadata": {
-        "description": "Optional. Clustering policy - default is OSSCluster. Specified at create time."
+        "description": "Optional. Specifies the clustering policy to enable at creation time of the Redis Cache Enterprise Cluster."
       }
     },
     "evictionPolicy": {
