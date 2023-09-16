@@ -373,6 +373,7 @@ module redisEnterprise './cache/redis-enterprise/main.bicep' = {
         ]
         persistenceAofEnabled: true
         persistenceAofFrequency: '1s'
+        persistenceRdbEnabled: false
         port: 10000
       }
     ]
@@ -444,6 +445,7 @@ module redisEnterprise './cache/redis-enterprise/main.bicep' = {
           ],
           "persistenceAofEnabled": true,
           "persistenceAofFrequency": "1s",
+          "persistenceRdbEnabled": false,
           "port": 10000
         }
       ]
