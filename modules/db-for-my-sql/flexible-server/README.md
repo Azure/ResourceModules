@@ -28,8 +28,6 @@ This module deploys a DBforMySQL Flexible Server.
 
 | Parameter Name | Type | Allowed Values | Description |
 | :-- | :-- | :-- | :-- |
-| `administratorLogin` | string |  | The administrator login name of a server. Can only be specified when the MySQL server is being created. |
-| `administratorLoginPassword` | securestring |  | The administrator login password. |
 | `name` | string |  | The name of the MySQL flexible server. |
 | `skuName` | string |  | The name of the sku, typically, tier + family + cores, e.g. Standard_D4s_v3. |
 | `tier` | string | `[Burstable, GeneralPurpose, MemoryOptimized]` | The tier of the particular SKU. Tier must align with the "skuName" property. Example, tier cannot be "Burstable" if skuName is "Standard_D4s_v3". |
@@ -52,6 +50,8 @@ This module deploys a DBforMySQL Flexible Server.
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
+| `administratorLogin` | string | `''` |  | The administrator login name of a server. Can only be specified when the MySQL server is being created. |
+| `administratorLoginPassword` | securestring | `''` |  | The administrator login password. |
 | `administrators` | array | `[]` |  | The Azure AD administrators when AAD authentication enabled. |
 | `availabilityZone` | string | `''` | `['', 1, 2, 3]` | Availability zone information of the server. Default will have no preference set. |
 | `backupRetentionDays` | int | `7` |  | Backup retention days for the server. |
@@ -249,12 +249,12 @@ module flexibleServer './db-for-my-sql/flexible-server/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-dfmsfsmin'
   params: {
     // Required parameters
-    administratorLogin: 'adminUserName'
-    administratorLoginPassword: '<administratorLoginPassword>'
     name: 'dfmsfsmin001'
     skuName: 'Standard_B1ms'
     tier: 'Burstable'
     // Non-required parameters
+    administratorLogin: 'adminUserName'
+    administratorLoginPassword: '<administratorLoginPassword>'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
@@ -273,12 +273,6 @@ module flexibleServer './db-for-my-sql/flexible-server/main.bicep' = {
   "contentVersion": "1.0.0.0",
   "parameters": {
     // Required parameters
-    "administratorLogin": {
-      "value": "adminUserName"
-    },
-    "administratorLoginPassword": {
-      "value": "<administratorLoginPassword>"
-    },
     "name": {
       "value": "dfmsfsmin001"
     },
@@ -289,6 +283,12 @@ module flexibleServer './db-for-my-sql/flexible-server/main.bicep' = {
       "value": "Burstable"
     },
     // Non-required parameters
+    "administratorLogin": {
+      "value": "adminUserName"
+    },
+    "administratorLoginPassword": {
+      "value": "<administratorLoginPassword>"
+    },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     }
@@ -310,12 +310,12 @@ module flexibleServer './db-for-my-sql/flexible-server/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-dfmsfspvt'
   params: {
     // Required parameters
-    administratorLogin: 'adminUserName'
-    administratorLoginPassword: '<administratorLoginPassword>'
     name: 'dfmsfspvt001'
     skuName: 'Standard_D2ds_v4'
     tier: 'GeneralPurpose'
     // Non-required parameters
+    administratorLogin: 'adminUserName'
+    administratorLoginPassword: '<administratorLoginPassword>'
     administrators: [
       {
         identityResourceId: '<identityResourceId>'
@@ -377,12 +377,6 @@ module flexibleServer './db-for-my-sql/flexible-server/main.bicep' = {
   "contentVersion": "1.0.0.0",
   "parameters": {
     // Required parameters
-    "administratorLogin": {
-      "value": "adminUserName"
-    },
-    "administratorLoginPassword": {
-      "value": "<administratorLoginPassword>"
-    },
     "name": {
       "value": "dfmsfspvt001"
     },
@@ -393,6 +387,12 @@ module flexibleServer './db-for-my-sql/flexible-server/main.bicep' = {
       "value": "GeneralPurpose"
     },
     // Non-required parameters
+    "administratorLogin": {
+      "value": "adminUserName"
+    },
+    "administratorLoginPassword": {
+      "value": "<administratorLoginPassword>"
+    },
     "administrators": {
       "value": [
         {
@@ -495,12 +495,12 @@ module flexibleServer './db-for-my-sql/flexible-server/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-dfmsfsp'
   params: {
     // Required parameters
-    administratorLogin: 'adminUserName'
-    administratorLoginPassword: '<administratorLoginPassword>'
     name: 'dfmsfsp001'
     skuName: 'Standard_D2ds_v4'
     tier: 'GeneralPurpose'
     // Non-required parameters
+    administratorLogin: 'adminUserName'
+    administratorLoginPassword: '<administratorLoginPassword>'
     availabilityZone: '1'
     backupRetentionDays: 20
     cMKKeyName: '<cMKKeyName>'
@@ -585,12 +585,6 @@ module flexibleServer './db-for-my-sql/flexible-server/main.bicep' = {
   "contentVersion": "1.0.0.0",
   "parameters": {
     // Required parameters
-    "administratorLogin": {
-      "value": "adminUserName"
-    },
-    "administratorLoginPassword": {
-      "value": "<administratorLoginPassword>"
-    },
     "name": {
       "value": "dfmsfsp001"
     },
@@ -601,6 +595,12 @@ module flexibleServer './db-for-my-sql/flexible-server/main.bicep' = {
       "value": "GeneralPurpose"
     },
     // Non-required parameters
+    "administratorLogin": {
+      "value": "adminUserName"
+    },
+    "administratorLoginPassword": {
+      "value": "<administratorLoginPassword>"
+    },
     "availabilityZone": {
       "value": "1"
     },

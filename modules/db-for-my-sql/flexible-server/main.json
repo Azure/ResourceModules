@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.21.1.54444",
-      "templateHash": "5052409641732809878"
+      "templateHash": "11042164284975783101"
     },
     "name": "DBforMySQL Flexible Servers",
     "description": "This module deploys a DBforMySQL Flexible Server.",
@@ -46,14 +46,16 @@
     },
     "administratorLogin": {
       "type": "string",
+      "defaultValue": "",
       "metadata": {
-        "description": "Required. The administrator login name of a server. Can only be specified when the MySQL server is being created."
+        "description": "Optional. The administrator login name of a server. Can only be specified when the MySQL server is being created."
       }
     },
     "administratorLoginPassword": {
       "type": "securestring",
+      "defaultValue": "",
       "metadata": {
-        "description": "Required. The administrator login password."
+        "description": "Optional. The administrator login password."
       }
     },
     "administrators": {
@@ -453,8 +455,8 @@
       },
       "identity": "[variables('identity')]",
       "properties": {
-        "administratorLogin": "[parameters('administratorLogin')]",
-        "administratorLoginPassword": "[parameters('administratorLoginPassword')]",
+        "administratorLogin": "[if(not(empty(parameters('administratorLogin'))), parameters('administratorLogin'), null())]",
+        "administratorLoginPassword": "[if(not(empty(parameters('administratorLoginPassword'))), parameters('administratorLoginPassword'), null())]",
         "availabilityZone": "[parameters('availabilityZone')]",
         "backup": {
           "backupRetentionDays": "[parameters('backupRetentionDays')]",

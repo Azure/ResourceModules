@@ -19,12 +19,12 @@ param location string = resourceGroup().location
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Required. The administrator login name of a server. Can only be specified when the MySQL server is being created.')
-param administratorLogin string
+@description('Optional. The administrator login name of a server. Can only be specified when the MySQL server is being created.')
+param administratorLogin string = ''
 
-@description('Required. The administrator login password.')
+@description('Optional. The administrator login password.')
 @secure()
-param administratorLoginPassword string
+param administratorLoginPassword string = ''
 
 @description('Optional. The Azure AD administrators when AAD authentication enabled.')
 param administrators array = []
@@ -283,8 +283,8 @@ resource flexibleServer 'Microsoft.DBforMySQL/flexibleServers@2022-09-30-preview
   }
   identity: identity
   properties: {
-    administratorLogin: administratorLogin
-    administratorLoginPassword: administratorLoginPassword
+    administratorLogin: !empty(administratorLogin) ? administratorLogin : null
+    administratorLoginPassword: !empty(administratorLoginPassword) ? administratorLoginPassword : null
     availabilityZone: availabilityZone
     backup: {
       backupRetentionDays: backupRetentionDays
