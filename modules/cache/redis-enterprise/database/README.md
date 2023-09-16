@@ -41,6 +41,57 @@ This module deploys a Redis Cache Enterprise Database.
 | `port` | int | `-1` |  | TCP port of the database endpoint. Specified at create time. Default is (-1) meaning value is not set and defaults to an available port. Current supported port is 10000. |
 
 
+### Parameter Usage: `modules`
+
+Optional set of Redis modules to enable in this database. Modules can only be added at creation time. Each module requires a name (e.g. 'RedisBloom', 'RediSearch', 'RedisTimeSeries') and optionally an argument (e.g. 'ERROR_RATE 0.01 INITIAL_SIZE 400'). See [Redis Cache modules documentation](https://learn.microsoft.com/en-us/azure/azure-cache-for-redis/cache-redis-modules) for more information.
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"modules": {
+    "value": [
+      {
+        "name": "RedisBloom",
+        "args": "ERROR_RATE 0.00 INITIAL_SIZE 400"
+      },
+      {
+        "name": "RedisTimeSeries",
+        "args": "RETENTION_POLICY 20"
+      },
+      {
+        "name": "RediSearch"
+      }
+    ]
+}
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+modules: [
+    {
+        name: 'RedisBloom'
+        args: 'ERROR_RATE 0.00 INITIAL_SIZE 400'
+    }
+    {
+        name: 'RedisTimeSeries'
+        args: 'RETENTION_POLICY 20'
+    }
+    {
+        name: 'RediSearch'
+    }
+]
+```
+
+</details>
+<p>
+
 ## Outputs
 
 | Output Name | Type | Description |

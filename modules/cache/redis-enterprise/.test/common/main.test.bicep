@@ -105,9 +105,11 @@ module testDeployment '../../main.bicep' = {
         modules: [
           {
             name: 'RedisBloom'
+            args: 'ERROR_RATE 0.00 INITIAL_SIZE 400'
           }
           {
             name: 'RedisTimeSeries'
+            args: 'RETENTION_POLICY 20'
           }
         ]
         persistenceAofEnabled: true
