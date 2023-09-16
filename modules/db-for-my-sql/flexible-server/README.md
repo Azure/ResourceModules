@@ -17,6 +17,7 @@ This module deploys a DBforMySQL Flexible Server.
 | `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.DBforMySQL/flexibleServers` | [2022-09-30-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DBforMySQL/2022-09-30-preview/flexibleServers) |
+| `Microsoft.DBforMySQL/flexibleServers/administrators` | [2022-01-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DBforMySQL/2022-01-01/flexibleServers/administrators) |
 | `Microsoft.DBforMySQL/flexibleServers/databases` | [2022-01-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DBforMySQL/2022-01-01/flexibleServers/databases) |
 | `Microsoft.DBforMySQL/flexibleServers/firewallRules` | [2022-01-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DBforMySQL/2022-01-01/flexibleServers/firewallRules) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
@@ -51,6 +52,7 @@ This module deploys a DBforMySQL Flexible Server.
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
+| `administrators` | array | `[]` |  | The Azure AD administrators when AAD authentication enabled. |
 | `availabilityZone` | string | `''` | `['', 1, 2, 3]` | Availability zone information of the server. Default will have no preference set. |
 | `backupRetentionDays` | int | `7` |  | Backup retention days for the server. |
 | `cMKKeyName` | string | `''` |  | The name of the customer managed key to use for encryption. |
@@ -314,6 +316,14 @@ module flexibleServer './db-for-my-sql/flexible-server/main.bicep' = {
     skuName: 'Standard_D2ds_v4'
     tier: 'GeneralPurpose'
     // Non-required parameters
+    administrators: [
+      {
+        identityResourceId: '<identityResourceId>'
+        login: 'adminUserName'
+        sid: '<sid>'
+        tenantId: '<tenantId>'
+      }
+    ]
     backupRetentionDays: 10
     databases: [
       {
@@ -384,6 +394,16 @@ module flexibleServer './db-for-my-sql/flexible-server/main.bicep' = {
       "value": "GeneralPurpose"
     },
     // Non-required parameters
+    "administrators": {
+      "value": [
+        {
+          "identityResourceId": "<identityResourceId>",
+          "login": "adminUserName",
+          "sid": "<sid>",
+          "tenantId": "<tenantId>"
+        }
+      ]
+    },
     "backupRetentionDays": {
       "value": 10
     },

@@ -26,6 +26,9 @@ param administratorLogin string
 @secure()
 param administratorLoginPassword string
 
+@description('Optional. The Azure AD administrators when AAD authentication enabled.')
+param administrators array = []
+
 @description('Required. The name of the sku, typically, tier + family + cores, e.g. Standard_D4s_v3.')
 param skuName string
 
@@ -363,6 +366,17 @@ module flexibleServer_firewallRules 'firewall-rule/main.bicep' = [for (firewallR
     startIpAddress: firewallRule.startIpAddress
     endIpAddress: firewallRule.endIpAddress
     enableDefaultTelemetry: enableReferencedModulesTelemetry
+  }
+}]
+
+module flexibleServer_administrators 'administrator/main.bicep' = [for (administrator, index) in administrators: {
+  name: '${uniqueString(deployment().name, location)}-MySQL-Administrators-${index}'
+  params: {
+    flexibleServerName: flexibleServer.name
+    login: administrator.login
+    sid: administrator.sid
+    identityResourceId: administrator.identityResourceId
+    tenantId: contains(administrator, 'tenantId') ? administrator.tenantId : tenant().tenantId
   }
 }]
 
