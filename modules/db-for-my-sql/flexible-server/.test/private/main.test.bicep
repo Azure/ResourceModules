@@ -112,9 +112,8 @@ module testDeployment '../../main.bicep' = {
     administrators: [
       {
         identityResourceId: nestedDependencies.outputs.managedIdentityResourceId
-        login: 'adminUserName'
+        login: nestedDependencies.outputs.managedIdentityName
         sid: nestedDependencies.outputs.managedIdentityPrincipalId
-        tenantId: subscription().tenantId
       }
     ]
   }

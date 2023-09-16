@@ -319,9 +319,8 @@ module flexibleServer './db-for-my-sql/flexible-server/main.bicep' = {
     administrators: [
       {
         identityResourceId: '<identityResourceId>'
-        login: 'adminUserName'
+        login: '<login>'
         sid: '<sid>'
-        tenantId: '<tenantId>'
       }
     ]
     backupRetentionDays: 10
@@ -398,9 +397,8 @@ module flexibleServer './db-for-my-sql/flexible-server/main.bicep' = {
       "value": [
         {
           "identityResourceId": "<identityResourceId>",
-          "login": "adminUserName",
-          "sid": "<sid>",
-          "tenantId": "<tenantId>"
+          "login": "<login>",
+          "sid": "<sid>"
         }
       ]
     },
