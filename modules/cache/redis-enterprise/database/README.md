@@ -77,7 +77,7 @@ Optional set of Redis modules to enable in this database. Modules can only be ad
 modules: [
     {
         name: 'RedisBloom'
-        args: 'ERROR_RATE 0.00 INITIAL_SIZE 400'
+        args: 'ERROR_RATE 1.00 INITIAL_SIZE 400'
     }
     {
         name: 'RedisTimeSeries'
