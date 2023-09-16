@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.21.1.54444",
-      "templateHash": "14063731469491395921"
+      "templateHash": "16974139838344848652"
     },
     "name": "Redis Cache Enterprise Databases",
     "description": "This module deploys a Redis Cache Enterprise Database.",
@@ -75,7 +75,7 @@
       "type": "bool",
       "defaultValue": false,
       "metadata": {
-        "description": "Conditional. Sets whether AOF is enabled. Required if setting AOF frequency. AOF and RDB persistence cannot be enabled at the same time."
+        "description": "Optional. Sets whether AOF is enabled. Required if setting AOF frequency. AOF and RDB persistence cannot be enabled at the same time."
       }
     },
     "persistenceAofFrequency": {
@@ -87,14 +87,14 @@
         "always"
       ],
       "metadata": {
-        "description": "Optional. Sets the frequency at which data is written to disk. Can be set when AOF is enabled."
+        "description": "Conditional. Sets the frequency at which data is written to disk. Required if AOF persistence is enabled."
       }
     },
     "persistenceRdbEnabled": {
       "type": "bool",
       "defaultValue": false,
       "metadata": {
-        "description": "Conditional. Sets whether RDB is enabled. Required if setting RDB frequency. RDB and AOF persistence cannot be enabled at the same time."
+        "description": "Optional. Sets whether RDB is enabled. RDB and AOF persistence cannot be enabled at the same time."
       }
     },
     "persistenceRdbFrequency": {
@@ -107,7 +107,7 @@
         "6h"
       ],
       "metadata": {
-        "description": "Optional. Sets the frequency at which a snapshot of the database is created. Can be set when RDB is enabled."
+        "description": "Conditional. Sets the frequency at which a snapshot of the database is created. Required if RDB persistence is enabled."
       }
     },
     "port": {

@@ -37,7 +37,7 @@ This module deploys a Redis Cache Enterprise Database.
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `modules` | array | `[]` |  | Optional set of redis modules to enable in this database - modules can only be added at creation time. |
 | `persistenceAofEnabled` | bool | `False` |  | Sets whether AOF is enabled. Required if setting AOF frequency. AOF and RDB persistence cannot be enabled at the same time. |
-| `persistenceRdbEnabled` | bool | `False` |  | Sets whether RDB is enabled. RDB and AOF persistence cannot be enabled at the same time |
+| `persistenceRdbEnabled` | bool | `False` |  | Sets whether RDB is enabled. RDB and AOF persistence cannot be enabled at the same time. |
 | `port` | int | `-1` |  | TCP port of the database endpoint. Specified at create time. Default is (-1) meaning value is not set and defaults to an available port. Current supported port is 10000. |
 
 

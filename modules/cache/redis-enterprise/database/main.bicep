@@ -49,7 +49,7 @@ param persistenceAofEnabled bool = false
 @description('Conditional. Sets the frequency at which data is written to disk. Required if AOF persistence is enabled.')
 param persistenceAofFrequency string = ''
 
-@description('Optional. Sets whether RDB is enabled. RDB and AOF persistence cannot be enabled at the same time')
+@description('Optional. Sets whether RDB is enabled. RDB and AOF persistence cannot be enabled at the same time.')
 param persistenceRdbEnabled bool = false
 
 @allowed([
