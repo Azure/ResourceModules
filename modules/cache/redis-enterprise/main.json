@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.21.1.54444",
-      "templateHash": "944049645680553986"
+      "templateHash": "14564256646537619194"
     },
     "name": "Redis Cache Enterprise",
     "description": "This module deploys a Redis Cache Enterprise.",
@@ -149,12 +149,11 @@
       ],
       "allowedValues": [
         "",
-        "allLogs",
         "ConnectionEvents",
         "audit"
       ],
       "metadata": {
-        "description": "Optional. The name of logs that will be streamed. \"allLogs\" includes all possible logs for the resource. Set to '' to disable log collection."
+        "description": "Optional. The name of logs that will be streamed. \"allLogs\" includes all possible logs for the resource, but currently not supported for Redis Cache Enterprise. Set to '' to disable log collection."
       }
     },
     "diagnosticMetricsToEnable": {
