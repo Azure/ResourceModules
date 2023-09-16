@@ -57,6 +57,7 @@ module testDeployment '../../main.bicep' = {
           privateDNSResourceIds: [
             nestedDependencies.outputs.privateDNSResourceId
           ]
+          privateEndpointName: 'dep-${namePrefix}-pe-${serviceShort}'
         }
         service: 'vault'
         subnetResourceId: nestedDependencies.outputs.subnetResourceId
