@@ -365,7 +365,6 @@ module redisEnterprise './cache/redis-enterprise/main.bicep' = {
         evictionPolicy: 'AllKeysLFU'
         modules: [
           {
-            args: 'ERROR_RATE 1.00 INITIAL_SIZE 400'
             name: 'RedisBloom'
           }
           {
@@ -448,7 +447,6 @@ module redisEnterprise './cache/redis-enterprise/main.bicep' = {
           "evictionPolicy": "AllKeysLFU",
           "modules": [
             {
-              "args": "ERROR_RATE 1.00 INITIAL_SIZE 400",
               "name": "RedisBloom"
             },
             {

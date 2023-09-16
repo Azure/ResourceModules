@@ -105,7 +105,6 @@ module testDeployment '../../main.bicep' = {
         modules: [
           {
             name: 'RedisBloom'
-            args: 'ERROR_RATE 1.00 INITIAL_SIZE 400'
           }
           {
             name: 'RedisTimeSeries'
