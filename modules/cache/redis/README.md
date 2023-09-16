@@ -1,4 +1,4 @@
-# Redis Cache `[Microsoft.Cache/Redis]`
+# Redis Cache `[Microsoft.Cache/redis]`
 
 This module deploys a Redis Cache.
 
@@ -16,7 +16,7 @@ This module deploys a Redis Cache.
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.Cache/redis` | [2021-06-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Cache/2021-06-01/redis) |
+| `Microsoft.Cache/redis` | [2022-06-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Cache/2022-06-01/redis) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 | `Microsoft.Network/privateEndpoints` | [2023-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-04-01/privateEndpoints) |
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2023-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-04-01/privateEndpoints/privateDnsZoneGroups) |
@@ -337,11 +337,11 @@ privateEndpoints:  [
 | :-- | :-- | :-- |
 | `hostName` | string | Redis hostname. |
 | `location` | string | The location the resource was deployed into. |
-| `name` | string | The resource name. |
-| `resourceGroupName` | string | The name of the resource group the Redis cache was created in. |
-| `resourceId` | string | The resource ID. |
+| `name` | string | The name of the Redis Cache. |
+| `resourceGroupName` | string | The name of the resource group the Redis Cache was created in. |
+| `resourceId` | string | The resource ID of the Redis Cache. |
 | `sslPort` | int | Redis SSL port. |
-| `subnetId` | string | The full resource ID of a subnet in a virtual network where the Redis cache was deployed in. |
+| `subnetId` | string | The full resource ID of a subnet in a virtual network where the Redis Cache was deployed in. |
 
 ## Cross-referenced modules
 

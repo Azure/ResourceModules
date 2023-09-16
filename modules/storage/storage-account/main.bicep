@@ -291,7 +291,7 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2022-09-01' = {
     supportsHttpsTrafficOnly: supportsHttpsTrafficOnly
     isHnsEnabled: enableHierarchicalNamespace ? enableHierarchicalNamespace : null
     isSftpEnabled: enableSftp
-    isNfsV3Enabled: enableNfsV3 ? enableNfsV3 : null
+    isNfsV3Enabled: enableNfsV3 ? enableNfsV3 : any('')
     largeFileSharesState: (skuName == 'Standard_LRS') || (skuName == 'Standard_ZRS') ? largeFileSharesState : null
     minimumTlsVersion: minimumTlsVersion
     networkAcls: !empty(networkAcls) ? {

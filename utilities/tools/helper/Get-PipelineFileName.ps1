@@ -32,7 +32,7 @@ function Get-PipelineFileName {
     $provider, $parentType, $childTypeString = $ResourceIdentifier -split '[\/|\\]', 3
     $parentResourceIdentifier = $provider, $parentType -join '/'
     $formattedParentResourceType = Get-SpecsAlignedResourceName -ResourceIdentifier $parentResourceIdentifier
-    $pipelineFileName = '{0}.yml' -f $formattedParentResourceType.Replace('Microsoft.', 'ms.').Replace('/', '.').ToLower()
+    $pipelineFileName = '{0}.yml' -f (($formattedParentResourceType -replace 'Microsoft\.', 'ms.') -replace '\/', '.').ToLower()
 
     return $pipelineFileName
 }

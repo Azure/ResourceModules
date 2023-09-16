@@ -1,4 +1,4 @@
-# Azure Monitor Private Link Scopes `[Microsoft.Insights/privateLinkScopes]`
+# Azure Monitor Private Link Scopes `[microsoft.insights/privateLinkScopes]`
 
 This module deploys an Azure Monitor Private Link Scope.
 

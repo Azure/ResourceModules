@@ -19,12 +19,15 @@ param location string = resourceGroup().location
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Required. The administrator login name of a server. Can only be specified when the MySQL server is being created.')
-param administratorLogin string
+@description('Optional. The administrator login name of a server. Can only be specified when the MySQL server is being created.')
+param administratorLogin string = ''
 
-@description('Required. The administrator login password.')
+@description('Optional. The administrator login password.')
 @secure()
-param administratorLoginPassword string
+param administratorLoginPassword string = ''
+
+@description('Optional. The Azure AD administrators when AAD authentication enabled.')
+param administrators array = []
 
 @description('Required. The name of the sku, typically, tier + family + cores, e.g. Standard_D4s_v3.')
 param skuName string
@@ -280,8 +283,8 @@ resource flexibleServer 'Microsoft.DBforMySQL/flexibleServers@2022-09-30-preview
   }
   identity: identity
   properties: {
-    administratorLogin: administratorLogin
-    administratorLoginPassword: administratorLoginPassword
+    administratorLogin: !empty(administratorLogin) ? administratorLogin : null
+    administratorLoginPassword: !empty(administratorLoginPassword) ? administratorLoginPassword : null
     availabilityZone: availabilityZone
     backup: {
       backupRetentionDays: backupRetentionDays
@@ -363,6 +366,17 @@ module flexibleServer_firewallRules 'firewall-rule/main.bicep' = [for (firewallR
     startIpAddress: firewallRule.startIpAddress
     endIpAddress: firewallRule.endIpAddress
     enableDefaultTelemetry: enableReferencedModulesTelemetry
+  }
+}]
+
+module flexibleServer_administrators 'administrator/main.bicep' = [for (administrator, index) in administrators: {
+  name: '${uniqueString(deployment().name, location)}-MySQL-Administrators-${index}'
+  params: {
+    flexibleServerName: flexibleServer.name
+    login: administrator.login
+    sid: administrator.sid
+    identityResourceId: administrator.identityResourceId
+    tenantId: contains(administrator, 'tenantId') ? administrator.tenantId : tenant().tenantId
   }
 }]
 

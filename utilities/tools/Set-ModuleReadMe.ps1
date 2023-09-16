@@ -44,6 +44,9 @@ function Set-ResourceTypesSection {
         [string[]] $ResourceTypesToExclude = @('Microsoft.Resources/deployments')
     )
 
+    # Loading used functions
+    . (Join-Path (Split-Path $PSScriptRoot -Parent) 'pipelines' 'sharedScripts' 'Get-NestedResourceList.ps1')
+
     # Process content
     $SectionContent = [System.Collections.ArrayList]@(
         '| Resource Type | API Version |',
@@ -1417,15 +1420,26 @@ function Initialize-ReadMe {
     )
 
     . (Join-Path $PSScriptRoot 'helper' 'Get-SpecsAlignedResourceName.ps1')
+    . (Join-Path (Split-Path $PSScriptRoot -Parent) 'pipelines' 'sharedScripts' 'Get-NestedResourceList.ps1')
+
 
     $moduleName = $TemplateFileContent.metadata.name
     $moduleDescription = $TemplateFileContent.metadata.description
     $formattedResourceType = Get-SpecsAlignedResourceName -ResourceIdentifier $FullModuleIdentifier
 
+    $inTemplateResourceType = (Get-NestedResourceList $TemplateFileContent).type | Select-Object -Unique | Where-Object {
+        $_ -match "^$formattedResourceType$"
+    }
+
+    if (-not $inTemplateResourceType) {
+        Write-Warning "No resource type like [$formattedResourceType] found in template. Falling back to it as identifier."
+        $inTemplateResourceType = $formattedResourceType
+    }
+
     if (-not (Test-Path $ReadMeFilePath) -or ([String]::IsNullOrEmpty((Get-Content $ReadMeFilePath -Raw)))) {
 
         $initialContent = @(
-            "# $moduleName ``[$formattedResourceType]``",
+            "# $moduleName ``[$inTemplateResourceType]``",
             '',
             $moduleDescription,
             ''
@@ -1438,7 +1452,7 @@ function Initialize-ReadMe {
         $readMeFileContent = $initialContent
     } else {
         $readMeFileContent = Get-Content -Path $ReadMeFilePath -Encoding 'utf8'
-        $readMeFileContent[0] = "# $moduleName ``[$formattedResourceType]``"
+        $readMeFileContent[0] = "# $moduleName ``[$inTemplateResourceType]``"
 
         # We want to inject the description right below the header and before the [Resource Types] section
 
@@ -1557,7 +1571,6 @@ function Set-ModuleReadMe {
 
     # Load external functions
     . (Join-Path $PSScriptRoot 'helper' 'Merge-FileWithNewContent.ps1')
-    . (Join-Path (Split-Path $PSScriptRoot -Parent) 'pipelines' 'sharedScripts' 'Get-NestedResourceList.ps1')
 
     # Check template & make full path
     $TemplateFilePath = Resolve-Path -Path $TemplateFilePath -ErrorAction Stop
