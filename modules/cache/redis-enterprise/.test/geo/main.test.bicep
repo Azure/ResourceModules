@@ -43,18 +43,22 @@ module nestedDependencies 'dependencies.bicep' = {
 // Test Execution //
 // ============== //
 
+var redisCacheEnterpriseName = '${namePrefix}${serviceShort}001'
+var redisCacheEnterpriseExpectedResourceID = '${resourceGroup.id}/providers/Microsoft.Cache/redisEnterprise/${redisCacheEnterpriseName}'
+
 module testDeployment '../../main.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
-    name: '${namePrefix}${serviceShort}001'
+    name: redisCacheEnterpriseName
     capacity: 2
     zoneRedundant: true
     databases: [
       {
         clusteringPolicy: 'EnterpriseCluster'
         evictionPolicy: 'NoEviction'
+        port: 10000
         modules: [
           {
             name: 'RediSearch'
@@ -64,13 +68,18 @@ module testDeployment '../../main.bicep' = {
           }
         ]
         geoReplication: {
-          groupNickname: '${namePrefix}${serviceShort}-geo-grp'
+          groupNickname: nestedDependencies.outputs.redisCacheEnterpriseDatabaseGeoReplicationGroupNickname
           linkedDatabases: [
             {
               id: nestedDependencies.outputs.redisCacheEnterpriseDatabaseResourceId
             }
+            {
+              id: '${redisCacheEnterpriseExpectedResourceID}/databases/default'
+            }
           ]
         }
+        persistenceAofEnabled: false
+        persistenceRdbEnabled: false
       }
     ]
     tags: {

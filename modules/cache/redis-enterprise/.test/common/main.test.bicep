@@ -101,7 +101,7 @@ module testDeployment '../../main.bicep' = {
           }
         ]
         persistenceAofEnabled: true
-        persistenceAofFrequency: 'always'
+        persistenceAofFrequency: '1s'
         port: 10000
       }
     ]

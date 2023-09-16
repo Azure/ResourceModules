@@ -38,7 +38,7 @@ param geoReplication object = {}
 @description('Optional. Optional set of redis modules to enable in this database - modules can only be added at creation time.')
 param modules array = []
 
-@description('Conditional. Sets whether AOF is enabled. Required if setting AOF frequency. AOF and RDB persistence cannot be enabled at the same time.')
+@description('Optional. Sets whether AOF is enabled. Required if setting AOF frequency. AOF and RDB persistence cannot be enabled at the same time.')
 param persistenceAofEnabled bool = false
 
 @allowed([
@@ -46,10 +46,10 @@ param persistenceAofEnabled bool = false
   '1s'
   'always'
 ])
-@description('Optional. Sets the frequency at which data is written to disk. Can be set when AOF is enabled.')
+@description('Conditional. Sets the frequency at which data is written to disk. Required if AOF persistence is enabled.')
 param persistenceAofFrequency string = ''
 
-@description('Conditional. Sets whether RDB is enabled. Required if setting RDB frequency. RDB and AOF persistence cannot be enabled at the same time.')
+@description('Optional. Sets whether RDB is enabled. RDB and AOF persistence cannot be enabled at the same time')
 param persistenceRdbEnabled bool = false
 
 @allowed([
@@ -58,7 +58,7 @@ param persistenceRdbEnabled bool = false
   '1h'
   '6h'
 ])
-@description('Optional. Sets the frequency at which a snapshot of the database is created. Can be set when RDB is enabled.')
+@description('Conditional. Sets the frequency at which a snapshot of the database is created. Required if RDB persistence is enabled.')
 param persistenceRdbFrequency string = ''
 
 @description('Optional. TCP port of the database endpoint. Specified at create time. Default is (-1) meaning value is not set and defaults to an available port. Current supported port is 10000.')

@@ -4,6 +4,8 @@ param location string = resourceGroup().location
 @description('Required. The name of the Redis Cache Enterprise to create.')
 param redisCacheEnterpriseName string
 
+var redisCacheEnterpriseExpectedResourceID = '${resourceGroup().id}/providers/Microsoft.Cache/redisEnterprise/${redisCacheEnterpriseName}'
+
 resource redisCacheEnterprise 'Microsoft.Cache/redisEnterprise@2022-01-01' = {
   name: redisCacheEnterpriseName
   location: location
@@ -25,17 +27,33 @@ resource redisCacheEnterprise 'Microsoft.Cache/redisEnterprise@2022-01-01' = {
     properties: {
       clusteringPolicy: 'EnterpriseCluster'
       evictionPolicy: 'NoEviction'
+      persistence: {
+        aofEnabled: false
+        rdbEnabled: false
+      }
       modules: [
-        {
-          name: 'RediSearch'
-        }
         {
           name: 'RedisJSON'
         }
+        {
+          name: 'RediSearch'
+        }
       ]
+      geoReplication: {
+        groupNickname: '${redisCacheEnterpriseName}-geo-group'
+        linkedDatabases: [
+          {
+            id: '${redisCacheEnterpriseExpectedResourceID}/databases/default'
+          }
+        ]
+      }
+      port: 10000
     }
   }
 }
 
 @description('The resource ID of the created Redis Cache Enterprise database.')
 output redisCacheEnterpriseDatabaseResourceId string = redisCacheEnterprise::database.id
+
+@description('The geo replication group nickname of the created Redis Cache Enterprise database.')
+output redisCacheEnterpriseDatabaseGeoReplicationGroupNickname string = redisCacheEnterprise::database.properties.geoReplication.groupNickname

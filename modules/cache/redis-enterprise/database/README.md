@@ -19,11 +19,11 @@ This module deploys a Redis Cache Enterprise Database.
 
 **Conditional parameters**
 
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `persistenceAofEnabled` | bool | `False` | Sets whether AOF is enabled. Required if setting AOF frequency. AOF and RDB persistence cannot be enabled at the same time. |
-| `persistenceRdbEnabled` | bool | `False` | Sets whether RDB is enabled. Required if setting RDB frequency. RDB and AOF persistence cannot be enabled at the same time. |
-| `redisCacheEnterpriseName` | string |  | The name of the parent Redis Cache Enterprise Cluster. Required if the template is used in a standalone deployment. |
+| Parameter Name | Type | Default Value | Allowed Values | Description |
+| :-- | :-- | :-- | :-- | :-- |
+| `persistenceAofFrequency` | string | `''` | `['', 1s, always]` | Sets the frequency at which data is written to disk. Required if AOF persistence is enabled. |
+| `persistenceRdbFrequency` | string | `''` | `['', 12h, 1h, 6h]` | Sets the frequency at which a snapshot of the database is created. Required if RDB persistence is enabled. |
+| `redisCacheEnterpriseName` | string |  |  | The name of the parent Redis Cache Enterprise Cluster. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 
@@ -36,8 +36,8 @@ This module deploys a Redis Cache Enterprise Database.
 | `geoReplication` | object | `{object}` |  | Optional set of properties to configure geo replication for this database. Geo replication prerequisites must be met. See "https://learn.microsoft.com/en-us/azure/azure-cache-for-redis/cache-how-to-active-geo-replication#active-geo-replication-prerequisites" for more information. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `modules` | array | `[]` |  | Optional set of redis modules to enable in this database - modules can only be added at creation time. |
-| `persistenceAofFrequency` | string | `''` | `['', 1s, always]` | Sets the frequency at which data is written to disk. Can be set when AOF is enabled. |
-| `persistenceRdbFrequency` | string | `''` | `['', 12h, 1h, 6h]` | Sets the frequency at which a snapshot of the database is created. Can be set when RDB is enabled. |
+| `persistenceAofEnabled` | bool | `False` |  | Sets whether AOF is enabled. Required if setting AOF frequency. AOF and RDB persistence cannot be enabled at the same time. |
+| `persistenceRdbEnabled` | bool | `False` |  | Sets whether RDB is enabled. RDB and AOF persistence cannot be enabled at the same time |
 | `port` | int | `-1` |  | TCP port of the database endpoint. Specified at create time. Default is (-1) meaning value is not set and defaults to an available port. Current supported port is 10000. |
 
 

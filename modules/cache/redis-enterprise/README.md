@@ -372,7 +372,7 @@ module redisEnterprise './cache/redis-enterprise/main.bicep' = {
           }
         ]
         persistenceAofEnabled: true
-        persistenceAofFrequency: 'always'
+        persistenceAofFrequency: '1s'
         port: 10000
       }
     ]
@@ -443,7 +443,7 @@ module redisEnterprise './cache/redis-enterprise/main.bicep' = {
             }
           ],
           "persistenceAofEnabled": true,
-          "persistenceAofFrequency": "always",
+          "persistenceAofFrequency": "1s",
           "port": 10000
         }
       ]
@@ -517,7 +517,7 @@ module redisEnterprise './cache/redis-enterprise/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-cregeo'
   params: {
     // Required parameters
-    name: 'cregeo001'
+    name: '<name>'
     // Non-required parameters
     capacity: 2
     databases: [
@@ -525,8 +525,11 @@ module redisEnterprise './cache/redis-enterprise/main.bicep' = {
         clusteringPolicy: 'EnterpriseCluster'
         evictionPolicy: 'NoEviction'
         geoReplication: {
-          groupNickname: 'cregeo-geo-grp'
+          groupNickname: '<groupNickname>'
           linkedDatabases: [
+            {
+              id: '<id>'
+            }
             {
               id: '<id>'
             }
@@ -540,6 +543,9 @@ module redisEnterprise './cache/redis-enterprise/main.bicep' = {
             name: 'RedisJSON'
           }
         ]
+        persistenceAofEnabled: false
+        persistenceRdbEnabled: false
+        port: 10000
       }
     ]
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
@@ -566,7 +572,7 @@ module redisEnterprise './cache/redis-enterprise/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "cregeo001"
+      "value": "<name>"
     },
     // Non-required parameters
     "capacity": {
@@ -578,8 +584,11 @@ module redisEnterprise './cache/redis-enterprise/main.bicep' = {
           "clusteringPolicy": "EnterpriseCluster",
           "evictionPolicy": "NoEviction",
           "geoReplication": {
-            "groupNickname": "cregeo-geo-grp",
+            "groupNickname": "<groupNickname>",
             "linkedDatabases": [
+              {
+                "id": "<id>"
+              },
               {
                 "id": "<id>"
               }
@@ -592,7 +601,10 @@ module redisEnterprise './cache/redis-enterprise/main.bicep' = {
             {
               "name": "RedisJSON"
             }
-          ]
+          ],
+          "persistenceAofEnabled": false,
+          "persistenceRdbEnabled": false,
+          "port": 10000
         }
       ]
     },
