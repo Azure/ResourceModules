@@ -56,13 +56,17 @@ module testDeployment '../../main.bicep' = {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '${namePrefix}${serviceShort}001'
     kind: 'SpeechServices'
-    cMKKeyVaultResourceId: nestedDependencies.outputs.keyVaultResourceId
-    cMKKeyName: nestedDependencies.outputs.keyVaultKeyName
-    cMKUserAssignedIdentityResourceId: nestedDependencies.outputs.managedIdentityResourceId
+    customerManagedKey: {
+      keyName: nestedDependencies.outputs.keyVaultKeyName
+      keyVaultResourceId: nestedDependencies.outputs.keyVaultResourceId
+      userAssignedIdentityResourceId: nestedDependencies.outputs.managedIdentityResourceId
+    }
     publicNetworkAccess: 'Enabled'
     sku: 'S0'
-    userAssignedIdentities: {
-      '${nestedDependencies.outputs.managedIdentityResourceId}': {}
+    managedIdentities: {
+      userAssignedResourcesIds: [
+        nestedDependencies.outputs.managedIdentityResourceId
+      ]
     }
     restrictOutboundNetworkAccess: false
   }
