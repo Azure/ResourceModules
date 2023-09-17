@@ -742,7 +742,86 @@ module account './cognitive-services/account/main.bicep' = {
 </details>
 <p>
 
-<h3>Example 3: Min</h3>
+<h3>Example 3: Encr-Sys</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module account './cognitive-services/account/main.bicep' = {
+  name: '${uniqueString(deployment().name, location)}-test-csaecrs'
+  params: {
+    // Required parameters
+    customerManagedKey: {
+      keyName: '<keyName>'
+      keyVaultResourceId: '<keyVaultResourceId>'
+    }
+    kind: 'SpeechServices'
+    managedIdentities: {
+      systemAssigned: true
+    }
+    name: '<name>'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    publicNetworkAccess: 'Enabled'
+    restrictOutboundNetworkAccess: false
+    sku: 'S0'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "customerManagedKey": {
+      "value": {
+        "keyName": "<keyName>",
+        "keyVaultResourceId": "<keyVaultResourceId>"
+      }
+    },
+    "kind": {
+      "value": "SpeechServices"
+    },
+    "managedIdentities": {
+      "value": {
+        "systemAssigned": true
+      }
+    },
+    "name": {
+      "value": "<name>"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "publicNetworkAccess": {
+      "value": "Enabled"
+    },
+    "restrictOutboundNetworkAccess": {
+      "value": false
+    },
+    "sku": {
+      "value": "S0"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 4: Min</h3>
 
 <details>
 
@@ -789,7 +868,7 @@ module account './cognitive-services/account/main.bicep' = {
 </details>
 <p>
 
-<h3>Example 4: Speech</h3>
+<h3>Example 5: Speech</h3>
 
 <details>
 

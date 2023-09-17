@@ -126,9 +126,10 @@ param enableDefaultTelemetry bool = true
 
 var enableReferencedModulesTelemetry = false
 
+var formattedUserAssignedIdentities = reduce(map((managedIdentities.?userAssignedResourcesIds ?? []), (id) => { '${id}': {} }), {}, (cur, next) => union(cur, next)) // Converts the flat array to an object like { '${id1}': {}, '${id2}': {} }
 var identity = !empty(managedIdentities) ? {
   type: (managedIdentities.?systemAssigned ?? false) ? (!empty(managedIdentities.?userAssignedResourcesIds ?? {}) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(managedIdentities.?userAssignedResourcesIds ?? {}) ? 'UserAssigned' : null)
-  userAssignedIdentities: reduce(map((managedIdentities.?userAssignedResourcesIds ?? []), (id) => { '${id}': {} }), {}, (cur, next) => union(cur, next)) // Converts the flat array to an object like { '${id1}': {}, '${id2}': {} }
+  userAssignedIdentities: !empty(formattedUserAssignedIdentities) ? formattedUserAssignedIdentities : null
 } : null
 
 var builtInRoleNames = {
@@ -212,7 +213,7 @@ resource cognitiveService 'Microsoft.CognitiveServices/accounts@2022-12-01' = {
     encryption: !empty(customerManagedKey) ? {
       keySource: 'Microsoft.KeyVault'
       keyVaultProperties: {
-        identityClientId: cMKUserAssignedIdentity.properties.clientId
+        identityClientId: !empty(customerManagedKey.?userAssignedIdentityResourceId ?? '') ? cMKUserAssignedIdentity.properties.clientId : null
         keyVaultUri: cMKKeyVault.properties.vaultUri
         keyName: customerManagedKey!.keyName
         keyVersion: !empty(customerManagedKey.?keyVersion ?? '') ? customerManagedKey!.keyVersion : last(split(cMKKeyVault::cMKKey.properties.keyUriWithVersion, '/'))
