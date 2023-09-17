@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.21.1.54444",
-      "templateHash": "12925419708818857539"
+      "templateHash": "1697666856877018625"
     },
     "name": "Cognitive Services",
     "description": "This module deploys a Cognitive Service.",
@@ -323,6 +323,61 @@
           }
         }
       }
+    },
+    "managedIdentitiesType": {
+      "type": "object",
+      "properties": {
+        "systemAssigned": {
+          "type": "bool",
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Enables system assigned managed identity on the resource."
+          }
+        },
+        "userAssignedResourcesIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. The resource ID(s) to assign to the resource. Required if a user assigned identity is used for encryption."
+          }
+        }
+      },
+      "nullable": true
+    },
+    "customerManagedKeyType": {
+      "type": "object",
+      "properties": {
+        "keyVaultResourceId": {
+          "type": "string",
+          "metadata": {
+            "description": "Required. The resource ID of a key vault to reference a customer managed key for encryption from."
+          }
+        },
+        "keyName": {
+          "type": "string",
+          "metadata": {
+            "description": "Required. The name of the customer managed key to use for encryption."
+          }
+        },
+        "keyVersion": {
+          "type": "string",
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. The version of the customer managed key to reference for encryption. If not provided, using 'latest'."
+          }
+        },
+        "userAssignedIdentityResourceId": {
+          "type": "string",
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. User assigned identity to use when fetching the customer managed key. Required if no system assigned identity is available for use."
+          }
+        }
+      },
+      "nullable": true
     }
   },
   "parameters": {
@@ -433,23 +488,12 @@
     },
     "privateEndpoints": {
       "type": "array",
+      "items": {
+        "$ref": "#/definitions/privateEndpointType"
+      },
       "defaultValue": [],
       "metadata": {
         "description": "Optional. Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible."
-      }
-    },
-    "systemAssignedIdentity": {
-      "type": "bool",
-      "defaultValue": false,
-      "metadata": {
-        "description": "Optional. Enables system assigned managed identity on the resource."
-      }
-    },
-    "userAssignedIdentities": {
-      "type": "object",
-      "defaultValue": {},
-      "metadata": {
-        "description": "Conditional. The ID(s) to assign to the resource. Required if a user assigned identity is used for encryption."
       }
     },
     "lock": {
@@ -466,6 +510,9 @@
     },
     "roleAssignments": {
       "type": "array",
+      "items": {
+        "$ref": "#/definitions/roleAssignmentType"
+      },
       "defaultValue": [],
       "metadata": {
         "description": "Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'."
@@ -499,32 +546,10 @@
         "description": "Optional. Allow only Azure AD authentication. Should be enabled for security reasons."
       }
     },
-    "cMKKeyVaultResourceId": {
-      "type": "string",
-      "defaultValue": "",
+    "customerManagedKey": {
+      "$ref": "#/definitions/customerManagedKeyType",
       "metadata": {
-        "description": "Conditional. The resource ID of a key vault to reference a customer managed key for encryption from. Required if 'cMKKeyName' is not empty."
-      }
-    },
-    "cMKKeyName": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": "Optional. The name of the customer managed key to use for encryption. Cannot be deployed together with the parameter 'systemAssignedIdentity' enabled."
-      }
-    },
-    "cMKUserAssignedIdentityResourceId": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": "Conditional. User assigned identity to use when fetching the customer managed key. Required if 'cMKKeyName' is not empty."
-      }
-    },
-    "cMKKeyVersion": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": "Optional. The version of the customer managed key to reference for encryption. If not provided, latest is used."
+        "description": "Optional. The customer managed key definition."
       }
     },
     "dynamicThrottlingEnabled": {
@@ -562,6 +587,12 @@
         "description": "Optional. The storage accounts for this resource."
       }
     },
+    "managedIdentities": {
+      "$ref": "#/definitions/managedIdentitiesType",
+      "metadata": {
+        "description": "Optional. The managed identity definition for this resource"
+      }
+    },
     "enableDefaultTelemetry": {
       "type": "bool",
       "defaultValue": true,
@@ -571,9 +602,17 @@
     }
   },
   "variables": {
+    "copy": [
+      {
+        "name": "formattedUserAssignedIdentities",
+        "count": "[length(coalesce(tryGet(parameters('managedIdentities'), 'userAssignedResourcesIds'), createArray()))]",
+        "input": {
+          "[format('{0}', coalesce(tryGet(parameters('managedIdentities'), 'userAssignedResourcesIds'), createArray())[copyIndex('formattedUserAssignedIdentities')])]": {}
+        }
+      }
+    ],
     "enableReferencedModulesTelemetry": false,
-    "identityType": "[if(parameters('systemAssignedIdentity'), if(not(empty(parameters('userAssignedIdentities'))), 'SystemAssigned,UserAssigned', 'SystemAssigned'), if(not(empty(parameters('userAssignedIdentities'))), 'UserAssigned', 'None'))]",
-    "identity": "[if(not(equals(variables('identityType'), 'None')), createObject('type', variables('identityType'), 'userAssignedIdentities', if(not(empty(parameters('userAssignedIdentities'))), parameters('userAssignedIdentities'), null())), null())]",
+    "identity": "[if(not(empty(parameters('managedIdentities'))), createObject('type', if(coalesce(tryGet(parameters('managedIdentities'), 'systemAssigned'), false()), if(not(empty(coalesce(tryGet(parameters('managedIdentities'), 'userAssignedResourcesIds'), createObject()))), 'SystemAssigned,UserAssigned', 'SystemAssigned'), if(not(empty(coalesce(tryGet(parameters('managedIdentities'), 'userAssignedResourcesIds'), createObject()))), 'UserAssigned', null())), 'userAssignedIdentities', if(not(empty(variables('formattedUserAssignedIdentities'))), variables('formattedUserAssignedIdentities'), null())), null())]",
     "builtInRoleNames": {
       "Cognitive Services Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '25fbc0a9-bd7c-42a3-aa1a-3b75d497ee68')]",
       "Cognitive Services Custom Vision Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'c1ff6cc2-c111-46fe-8896-e0ef812ad9f3')]",
@@ -622,31 +661,31 @@
       }
     },
     "cMKKeyVault": {
-      "condition": "[not(empty(parameters('cMKKeyVaultResourceId')))]",
+      "condition": "[and(not(empty(parameters('customerManagedKey'))), not(empty(coalesce(tryGet(parameters('customerManagedKey'), 'keyVaultResourceId'), ''))))]",
       "existing": true,
       "type": "Microsoft.KeyVault/vaults",
       "apiVersion": "2023-02-01",
-      "subscriptionId": "[split(parameters('cMKKeyVaultResourceId'), '/')[2]]",
-      "resourceGroup": "[split(parameters('cMKKeyVaultResourceId'), '/')[4]]",
-      "name": "[last(split(parameters('cMKKeyVaultResourceId'), '/'))]"
+      "subscriptionId": "[split(parameters('customerManagedKey').keyVaultResourceId, '/')[2]]",
+      "resourceGroup": "[split(parameters('customerManagedKey').keyVaultResourceId, '/')[4]]",
+      "name": "[if(and(not(empty(parameters('customerManagedKey'))), contains(parameters('customerManagedKey'), 'keyVaultResourceId')), last(split(coalesce(tryGet(parameters('customerManagedKey'), 'keyVaultResourceId'), 'dummyVault1'), '/')), 'dummyVault1n')]"
     },
-    "cMKKeyVaultKey": {
-      "condition": "[and(not(empty(parameters('cMKKeyVaultResourceId'))), not(empty(parameters('cMKKeyName'))))]",
+    "cMKKey": {
+      "condition": "[and(not(empty(coalesce(tryGet(parameters('customerManagedKey'), 'keyVaultResourceId'), ''))), not(empty(coalesce(tryGet(parameters('customerManagedKey'), 'keyName'), ''))))]",
       "existing": true,
       "type": "Microsoft.KeyVault/vaults/keys",
       "apiVersion": "2023-02-01",
-      "subscriptionId": "[split(parameters('cMKKeyVaultResourceId'), '/')[2]]",
-      "resourceGroup": "[split(parameters('cMKKeyVaultResourceId'), '/')[4]]",
-      "name": "[format('{0}/{1}', last(split(parameters('cMKKeyVaultResourceId'), '/')), parameters('cMKKeyName'))]"
+      "subscriptionId": "[split(parameters('customerManagedKey').keyVaultResourceId, '/')[2]]",
+      "resourceGroup": "[split(parameters('customerManagedKey').keyVaultResourceId, '/')[4]]",
+      "name": "[format('{0}/{1}', coalesce(tryGet(parameters('customerManagedKey'), 'keyVaultResourceId'), 'dummyVault2'), coalesce(tryGet(parameters('customerManagedKey'), 'keyName'), 'dummyKey'))]"
     },
     "cMKUserAssignedIdentity": {
-      "condition": "[not(empty(parameters('cMKUserAssignedIdentityResourceId')))]",
+      "condition": "[not(empty(coalesce(tryGet(parameters('customerManagedKey'), 'userAssignedIdentityResourceId'), '')))]",
       "existing": true,
       "type": "Microsoft.ManagedIdentity/userAssignedIdentities",
       "apiVersion": "2023-01-31",
-      "subscriptionId": "[split(parameters('cMKUserAssignedIdentityResourceId'), '/')[2]]",
-      "resourceGroup": "[split(parameters('cMKUserAssignedIdentityResourceId'), '/')[4]]",
-      "name": "[last(split(parameters('cMKUserAssignedIdentityResourceId'), '/'))]"
+      "subscriptionId": "[split(parameters('customerManagedKey').userAssignedIdentityResourceId, '/')[2]]",
+      "resourceGroup": "[split(parameters('customerManagedKey').userAssignedIdentityResourceId, '/')[4]]",
+      "name": "[last(split(coalesce(tryGet(parameters('customerManagedKey'), 'userAssignedIdentityResourceId'), 'dummyMsi'), '/'))]"
     },
     "cognitiveService": {
       "type": "Microsoft.CognitiveServices/accounts",
@@ -666,7 +705,7 @@
         "allowedFqdnList": "[parameters('allowedFqdnList')]",
         "apiProperties": "[parameters('apiProperties')]",
         "disableLocalAuth": "[parameters('disableLocalAuth')]",
-        "encryption": "[if(not(empty(parameters('cMKKeyName'))), createObject('keySource', 'Microsoft.KeyVault', 'keyVaultProperties', createObject('identityClientId', reference('cMKUserAssignedIdentity').clientId, 'keyVaultUri', reference('cMKKeyVault').vaultUri, 'keyName', parameters('cMKKeyName'), 'keyVersion', if(not(empty(parameters('cMKKeyVersion'))), parameters('cMKKeyVersion'), last(split(reference('cMKKeyVaultKey').keyUriWithVersion, '/'))))), null())]",
+        "encryption": "[if(not(empty(parameters('customerManagedKey'))), createObject('keySource', 'Microsoft.KeyVault', 'keyVaultProperties', createObject('identityClientId', reference('cMKUserAssignedIdentity').clientId, 'keyVaultUri', reference('cMKKeyVault').vaultUri, 'keyName', parameters('customerManagedKey').keyName, 'keyVersion', if(not(empty(coalesce(tryGet(parameters('customerManagedKey'), 'keyVersion'), ''))), parameters('customerManagedKey').keyVersion, last(split(reference('cMKKey').keyUriWithVersion, '/'))))), null())]",
         "migrationToken": "[if(not(empty(parameters('migrationToken'))), parameters('migrationToken'), null())]",
         "restore": "[parameters('restore')]",
         "restrictOutboundNetworkAccess": "[parameters('restrictOutboundNetworkAccess')]",
@@ -674,8 +713,8 @@
         "dynamicThrottlingEnabled": "[parameters('dynamicThrottlingEnabled')]"
       },
       "dependsOn": [
+        "cMKKey",
         "cMKKeyVault",
-        "cMKKeyVaultKey",
         "cMKUserAssignedIdentity"
       ]
     },
@@ -1292,7 +1331,7 @@
       "metadata": {
         "description": "The principal ID of the system assigned identity."
       },
-      "value": "[if(and(parameters('systemAssignedIdentity'), contains(reference('cognitiveService', '2022-12-01', 'full').identity, 'principalId')), reference('cognitiveService', '2022-12-01', 'full').identity.principalId, '')]"
+      "value": "[if(and(coalesce(tryGet(parameters('managedIdentities'), 'systemAssigned'), false()), contains(reference('cognitiveService', '2022-12-01', 'full').identity, 'principalId')), reference('cognitiveService', '2022-12-01', 'full').identity.principalId, '')]"
     },
     "location": {
       "type": "string",

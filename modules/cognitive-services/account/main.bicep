@@ -75,7 +75,7 @@ param customSubDomainName string = ''
 param networkAcls object = {}
 
 @description('Optional. Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.')
-param privateEndpoints array = []
+param privateEndpoints privateEndpointType[] = []
 
 @allowed([
   ''
@@ -86,7 +86,7 @@ param privateEndpoints array = []
 param lock string = ''
 
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
-param roleAssignments array = []
+param roleAssignments roleAssignmentType[] = []
 
 @description('Optional. Tags of the resource.')
 param tags object = {}
@@ -100,17 +100,8 @@ param apiProperties object = {}
 @description('Optional. Allow only Azure AD authentication. Should be enabled for security reasons.')
 param disableLocalAuth bool = true
 
-@description('Conditional. The resource ID of a key vault to reference a customer managed key for encryption from. Required if \'cMKKeyName\' is not empty.')
-param cMKKeyVaultResourceId string = ''
-
-@description('Optional. The name of the customer managed key to use for encryption. Cannot be deployed together with the parameter \'systemAssignedIdentity\' enabled.')
-param cMKKeyName string = ''
-
-@description('Conditional. User assigned identity to use when fetching the customer managed key. Required if \'cMKKeyName\' is not empty.')
-param cMKUserAssignedIdentityResourceId string = ''
-
-@description('Optional. The version of the customer managed key to reference for encryption. If not provided, latest is used.')
-param cMKKeyVersion string = ''
+@description('Optional. The customer managed key definition.')
+param customerManagedKey customerManagedKeyType
 
 @description('Optional. The flag to enable dynamic throttling.')
 param dynamicThrottlingEnabled bool = false
@@ -128,16 +119,17 @@ param restrictOutboundNetworkAccess bool = true
 param userOwnedStorage array = []
 
 @description('Optional. The managed identity definition for this resource')
-param managedIdentities managedIdentitiesType = {}
+param managedIdentities managedIdentitiesType
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 var enableReferencedModulesTelemetry = false
 
+var formattedUserAssignedIdentities = [for resourceId in (managedIdentities.?userAssignedResourcesIds ?? []): { '${resourceId}': {} }]
 var identity = !empty(managedIdentities) ? {
   type: (managedIdentities.?systemAssigned ?? false) ? (!empty(managedIdentities.?userAssignedResourcesIds ?? {}) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(managedIdentities.?userAssignedResourcesIds ?? {}) ? 'UserAssigned' : null)
-  userAssignedIdentities: managedIdentities.?userAssignedResourcesIds ?? null
+  userAssignedIdentities: !empty(formattedUserAssignedIdentities) ? formattedUserAssignedIdentities : null
 } : null
 
 var builtInRoleNames = {
@@ -184,19 +176,18 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2022-09-01' = if (ena
   }
 }
 
-resource cMKKeyVault 'Microsoft.KeyVault/vaults@2023-02-01' existing = if (!empty(cMKKeyVaultResourceId)) {
-  name: last(split(cMKKeyVaultResourceId, '/'))!
-  scope: resourceGroup(split(cMKKeyVaultResourceId, '/')[2], split(cMKKeyVaultResourceId, '/')[4])
+resource cMKKeyVault 'Microsoft.KeyVault/vaults@2023-02-01' existing = if (!empty(customerManagedKey) && !empty(customerManagedKey.?keyVaultResourceId ?? '')) {
+  name: last(split(customerManagedKey.?keyVaultResourceId ?? 'dummyVault1', '/'))
+  scope: resourceGroup(split(customerManagedKey!.keyVaultResourceId, '/')[2], split(customerManagedKey!.keyVaultResourceId, '/')[4])
 }
 
-resource cMKKeyVaultKey 'Microsoft.KeyVault/vaults/keys@2023-02-01' existing = if (!empty(cMKKeyVaultResourceId) && !empty(cMKKeyName)) {
-  name: '${last(split(cMKKeyVaultResourceId, '/'))}/${cMKKeyName}'!
-  scope: resourceGroup(split(cMKKeyVaultResourceId, '/')[2], split(cMKKeyVaultResourceId, '/')[4])
+resource cMKKey 'Microsoft.KeyVault/vaults/keys@2023-02-01' existing = if (!empty(customerManagedKey.?keyVaultResourceId ?? '') && !empty(customerManagedKey.?keyName ?? '')) {
+  name: '${customerManagedKey.?keyVaultResourceId ?? 'dummyVault2'}/${customerManagedKey.?keyName ?? 'dummyKey'}'
+  scope: resourceGroup(split(customerManagedKey!.keyVaultResourceId, '/')[2], split(customerManagedKey!.keyVaultResourceId, '/')[4])
 }
-
-resource cMKUserAssignedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' existing = if (!empty(cMKUserAssignedIdentityResourceId)) {
-  name: last(split(cMKUserAssignedIdentityResourceId, '/'))!
-  scope: resourceGroup(split(cMKUserAssignedIdentityResourceId, '/')[2], split(cMKUserAssignedIdentityResourceId, '/')[4])
+resource cMKUserAssignedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' existing = if (!empty(customerManagedKey.?userAssignedIdentityResourceId ?? '')) {
+  name: last(split(customerManagedKey.?userAssignedIdentityResourceId ?? 'dummyMsi', '/'))
+  scope: resourceGroup(split(customerManagedKey!.userAssignedIdentityResourceId!, '/')[2], split(customerManagedKey!.userAssignedIdentityResourceId!, '/')[4])
 }
 
 resource cognitiveService 'Microsoft.CognitiveServices/accounts@2022-12-01' = {
@@ -219,13 +210,13 @@ resource cognitiveService 'Microsoft.CognitiveServices/accounts@2022-12-01' = {
     allowedFqdnList: allowedFqdnList
     apiProperties: apiProperties
     disableLocalAuth: disableLocalAuth
-    encryption: !empty(cMKKeyName) ? {
+    encryption: !empty(customerManagedKey) ? {
       keySource: 'Microsoft.KeyVault'
       keyVaultProperties: {
         identityClientId: cMKUserAssignedIdentity.properties.clientId
         keyVaultUri: cMKKeyVault.properties.vaultUri
-        keyName: cMKKeyName
-        keyVersion: !empty(cMKKeyVersion) ? cMKKeyVersion : last(split(cMKKeyVaultKey.properties.keyUriWithVersion, '/'))
+        keyName: customerManagedKey!.keyName
+        keyVersion: !empty(customerManagedKey.?keyVersion ?? '') ? customerManagedKey!.keyVersion : last(split(cMKKey.properties.keyUriWithVersion, '/'))
       }
     } : null
     migrationToken: !empty(migrationToken) ? migrationToken : null
@@ -450,4 +441,18 @@ type managedIdentitiesType = {
 
   @description('Optional. The resource ID(s) to assign to the resource. Required if a user assigned identity is used for encryption.')
   userAssignedResourcesIds: string[]?
-}
+}?
+
+type customerManagedKeyType = {
+  @description('Required. The resource ID of a key vault to reference a customer managed key for encryption from.')
+  keyVaultResourceId: string
+
+  @description('Required. The name of the customer managed key to use for encryption.')
+  keyName: string
+
+  @description('Optional. The version of the customer managed key to reference for encryption. If not provided, using \'latest\'.')
+  keyVersion: string?
+
+  @description('Optional. User assigned identity to use when fetching the customer managed key. Required if no system assigned identity is available for use.')
+  userAssignedIdentityResourceId: string?
+}?
