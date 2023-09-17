@@ -801,17 +801,21 @@ module account './cognitive-services/account/main.bicep' = {
   params: {
     // Required parameters
     kind: 'SpeechServices'
+    managedIdentities: {
+      systemAssigned: true
+      userAssignedResourcesIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
     name: 'csaspeech001'
     // Non-required parameters
     customSubDomainName: 'speechdomain'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     privateEndpoints: [
       {
-        privateDnsZoneGroup: {
-          privateDNSResourceIds: [
-            '<privateDNSZoneResourceId>'
-          ]
-        }
+        privateDnsZoneResourceIds: [
+          '<privateDNSZoneResourceId>'
+        ]
         service: 'account'
         subnetResourceId: '<subnetResourceId>'
         tags: {
@@ -822,14 +826,10 @@ module account './cognitive-services/account/main.bicep' = {
       }
     ]
     sku: 'S0'
-    systemAssignedIdentity: true
     tags: {
       Environment: 'Non-Prod'
       'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
-    }
-    userAssignedIdentities: {
-      '<managedIdentityResourceId>': {}
     }
   }
 }
@@ -851,6 +851,14 @@ module account './cognitive-services/account/main.bicep' = {
     "kind": {
       "value": "SpeechServices"
     },
+    "managedIdentities": {
+      "value": {
+        "systemAssigned": true,
+        "userAssignedResourcesIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
+    },
     "name": {
       "value": "csaspeech001"
     },
@@ -864,11 +872,9 @@ module account './cognitive-services/account/main.bicep' = {
     "privateEndpoints": {
       "value": [
         {
-          "privateDnsZoneGroup": {
-            "privateDNSResourceIds": [
-              "<privateDNSZoneResourceId>"
-            ]
-          },
+          "privateDnsZoneResourceIds": [
+            "<privateDNSZoneResourceId>"
+          ],
           "service": "account",
           "subnetResourceId": "<subnetResourceId>",
           "tags": {
@@ -882,19 +888,11 @@ module account './cognitive-services/account/main.bicep' = {
     "sku": {
       "value": "S0"
     },
-    "systemAssignedIdentity": {
-      "value": true
-    },
     "tags": {
       "value": {
         "Environment": "Non-Prod",
         "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
-      }
-    },
-    "userAssignedIdentities": {
-      "value": {
-        "<managedIdentityResourceId>": {}
       }
     }
   }
