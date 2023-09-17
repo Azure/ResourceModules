@@ -176,23 +176,18 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2022-09-01' = if (ena
   }
 }
 
-resource cMKKeyVault 'Microsoft.KeyVault/vaults@2023-02-01' existing = if (!empty(customerManagedKey.?keyVaultResourceId ?? '')) {
-  name: last(split((customerManagedKey.?keyVaultResourceId ?? 'dummyVault1'), '/'))
-  scope: resourceGroup(split((customerManagedKey.?keyVaultResourceId ?? 'dummyVault1//'), '/')[2], split((customerManagedKey.?keyVaultResourceId ?? 'dummyVault1////'), '/')[4])
+resource cMKKeyVault 'Microsoft.KeyVault/vaults@2023-02-01' existing = if (!empty(customerManagedKey.?keyVaultResourceId)) {
+  name: last(split((customerManagedKey.?keyVaultResourceId ?? 'dummyVault'), '/'))
+  scope: resourceGroup(split((customerManagedKey.?keyVaultResourceId ?? '//'), '/')[2], split((customerManagedKey.?keyVaultResourceId ?? '////'), '/')[4])
 
-  resource cMKKey 'keys@2023-02-01' existing = if (!empty(customerManagedKey.?keyVaultResourceId ?? '') && !empty(customerManagedKey.?keyName ?? '')) {
+  resource cMKKey 'keys@2023-02-01' existing = if (!empty(customerManagedKey.?keyVaultResourceId) && !empty(customerManagedKey.?keyName)) {
     name: customerManagedKey.?keyName ?? 'dummyKey'
   }
 }
 
-// resource cMKKey 'Microsoft.KeyVault/vaults/keys@2023-02-01' existing = if (!empty(customerManagedKey.?keyVaultResourceId ?? '') && !empty(customerManagedKey.?keyName ?? '')) {
-//   name: '${customerManagedKey.?keyVaultResourceId ?? 'dummyVault2'}/${customerManagedKey.?keyName ?? 'dummyKey'}'
-//   scope: resourceGroup(split((customerManagedKey.?keyVaultResourceId ?? 'dummyVault1//'), '/')[2], split((customerManagedKey.?keyVaultResourceId ?? 'dummyVault1////'), '/')[4])
-// }
-
-resource cMKUserAssignedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' existing = if (!empty(customerManagedKey.?userAssignedIdentityResourceId ?? '')) {
+resource cMKUserAssignedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' existing = if (!empty(customerManagedKey.?userAssignedIdentityResourceId)) {
   name: last(split(customerManagedKey.?userAssignedIdentityResourceId ?? 'dummyMsi', '/'))
-  scope: resourceGroup(split((customerManagedKey.?userAssignedIdentityResourceId ?? 'dummyMsi//'), '/')[2], split((customerManagedKey.?userAssignedIdentityResourceId ?? 'dummyMsi////'), '/')[4])
+  scope: resourceGroup(split((customerManagedKey.?userAssignedIdentityResourceId ?? '//'), '/')[2], split((customerManagedKey.?userAssignedIdentityResourceId ?? '////'), '/')[4])
 }
 
 resource cognitiveService 'Microsoft.CognitiveServices/accounts@2022-12-01' = {
