@@ -17,7 +17,9 @@ resource cognitiveService 'Microsoft.CognitiveServices/accounts@2023-05-01' = {
     type: 'SystemAssigned'
   }
   kind: 'SpeechServices'
-  properties: {}
+  properties: {
+    publicNetworkAccess: 'Enabled'
+  }
 }
 
 resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
