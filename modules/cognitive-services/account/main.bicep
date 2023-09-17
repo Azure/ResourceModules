@@ -77,12 +77,6 @@ param networkAcls object = {}
 @description('Optional. Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.')
 param privateEndpoints array = []
 
-@description('Optional. Enables system assigned managed identity on the resource.')
-param systemAssignedIdentity bool = false
-
-@description('Conditional. The ID(s) to assign to the resource. Required if a user assigned identity is used for encryption.')
-param userAssignedIdentities object = {}
-
 @allowed([
   ''
   'CanNotDelete'
@@ -133,16 +127,17 @@ param restrictOutboundNetworkAccess bool = true
 @description('Optional. The storage accounts for this resource.')
 param userOwnedStorage array = []
 
+@description('Optional. The managed identity definition for this resource')
+param managedIdentities managedIdentitiesType = {}
+
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 var enableReferencedModulesTelemetry = false
 
-var identityType = systemAssignedIdentity ? (!empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
-
-var identity = identityType != 'None' ? {
-  type: identityType
-  userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
+var identity = !empty(managedIdentities) ? {
+  type: (managedIdentities.?systemAssigned ?? false) ? (!empty(managedIdentities.?userAssignedResourcesIds ?? {}) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(managedIdentities.?userAssignedResourcesIds ?? {}) ? 'UserAssigned' : null)
+  userAssignedIdentities: managedIdentities.?userAssignedResourcesIds ?? null
 } : null
 
 var builtInRoleNames = {
@@ -326,7 +321,7 @@ output resourceGroupName string = resourceGroup().name
 output endpoint string = cognitiveService.properties.endpoint
 
 @description('The principal ID of the system assigned identity.')
-output systemAssignedPrincipalId string = systemAssignedIdentity && contains(cognitiveService.identity, 'principalId') ? cognitiveService.identity.principalId : ''
+output systemAssignedPrincipalId string = (managedIdentities.?systemAssigned ?? false) && contains(cognitiveService.identity, 'principalId') ? cognitiveService.identity.principalId : ''
 
 @description('The location the resource was deployed into.')
 output location string = cognitiveService.location
@@ -447,4 +442,12 @@ type privateEndpointType = {
 
   @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
   enableDefaultTelemetry: bool?
+}
+
+type managedIdentitiesType = {
+  @description('Optional. Enables system assigned managed identity on the resource.')
+  systemAssigned: bool?
+
+  @description('Optional. The resource ID(s) to assign to the resource. Required if a user assigned identity is used for encryption.')
+  userAssignedResourcesIds: string[]?
 }
