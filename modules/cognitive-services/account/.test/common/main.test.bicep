@@ -31,28 +31,28 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2022-09-01' = {
   location: location
 }
 
-// module nestedDependencies 'dependencies.bicep' = {
-//   scope: resourceGroup
-//   name: '${uniqueString(deployment().name, location)}-nestedDependencies'
-//   params: {
-//     virtualNetworkName: 'dep-${namePrefix}-vnet-${serviceShort}'
-//     managedIdentityName: 'dep-${namePrefix}-msi-${serviceShort}'
-//   }
-// }
+module nestedDependencies 'dependencies.bicep' = {
+  scope: resourceGroup
+  name: '${uniqueString(deployment().name, location)}-nestedDependencies'
+  params: {
+    virtualNetworkName: 'dep-${namePrefix}-vnet-${serviceShort}'
+    managedIdentityName: 'dep-${namePrefix}-msi-${serviceShort}'
+  }
+}
 
 // Diagnostics
 // ===========
-// module diagnosticDependencies '../../../../.shared/.templates/diagnostic.dependencies.bicep' = {
-//   scope: resourceGroup
-//   name: '${uniqueString(deployment().name, location)}-diagnosticDependencies'
-//   params: {
-//     storageAccountName: 'dep${namePrefix}diasa${serviceShort}01'
-//     logAnalyticsWorkspaceName: 'dep-${namePrefix}-law-${serviceShort}'
-//     eventHubNamespaceEventHubName: 'dep-${namePrefix}-evh-${serviceShort}'
-//     eventHubNamespaceName: 'dep-${namePrefix}-evhns-${serviceShort}'
-//     location: location
-//   }
-// }
+module diagnosticDependencies '../../../../.shared/.templates/diagnostic.dependencies.bicep' = {
+  scope: resourceGroup
+  name: '${uniqueString(deployment().name, location)}-diagnosticDependencies'
+  params: {
+    storageAccountName: 'dep${namePrefix}diasa${serviceShort}01'
+    logAnalyticsWorkspaceName: 'dep-${namePrefix}-law-${serviceShort}'
+    eventHubNamespaceEventHubName: 'dep-${namePrefix}-evh-${serviceShort}'
+    eventHubNamespaceName: 'dep-${namePrefix}-evhns-${serviceShort}'
+    location: location
+  }
+}
 
 // ============== //
 // Test Execution //
@@ -66,37 +66,37 @@ module testDeployment '../../main.bicep' = {
     name: '${namePrefix}${serviceShort}001'
     kind: 'Face'
     customSubDomainName: '${namePrefix}xdomain'
-    // diagnosticSettings: [
-    //   {
-    //     // logAnalyticsDestinationType:
-    //     // marketplacePartnerResourceId:
-    //     name: 'customSetting'
-    //     metricCategories: [
-    //       {
-    //         category: 'AllMetrics'
-    //       }
-    //     ]
-    //     logCategoriesAndGroups: [
-    //       {
-    //         category: 'RequestResponse'
-    //       }
-    //       {
-    //         category: 'Audit'
-    //       }
-    //     ]
-    //     eventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
-    //     eventHubAuthorizationRuleResourceId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
-    //     storageAccountResourceId: diagnosticDependencies.outputs.storageAccountResourceId
-    //     workspaceResourceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
-    //   }
-    //   {
-    //     eventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
-    //     eventHubAuthorizationRuleResourceId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
-    //     storageAccountResourceId: diagnosticDependencies.outputs.storageAccountResourceId
-    //     workspaceResourceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
-    //   }
-    // ]
-    //lock: 'CanNotDelete'
+    diagnosticSettings: [
+      {
+        // logAnalyticsDestinationType:
+        // marketplacePartnerResourceId:
+        name: 'customSetting'
+        metricCategories: [
+          {
+            category: 'AllMetrics'
+          }
+        ]
+        logCategoriesAndGroups: [
+          {
+            category: 'RequestResponse'
+          }
+          {
+            category: 'Audit'
+          }
+        ]
+        eventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
+        eventHubAuthorizationRuleResourceId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
+        storageAccountResourceId: diagnosticDependencies.outputs.storageAccountResourceId
+        workspaceResourceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
+      }
+      {
+        eventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
+        eventHubAuthorizationRuleResourceId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
+        storageAccountResourceId: diagnosticDependencies.outputs.storageAccountResourceId
+        workspaceResourceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
+      }
+    ]
+    lock: 'CanNotDelete'
     networkAcls: {
       defaultAction: 'Deny'
       ipRules: [
@@ -106,8 +106,7 @@ module testDeployment '../../main.bicep' = {
       ]
       virtualNetworkRules: [
         {
-          // id: nestedDependencies.outputs.subnetResourceId
-          id: '/subscriptions/[[subscriptionId]]/resourceGroups/ms.cognitiveservices.accounts-csacom-rg/providers/Microsoft.Network/virtualNetworks/dep-[[namePrefix]]-vnet-csacom/subnets/defaultSubnet'
+          id: nestedDependencies.outputs.subnetResourceId
           ignoreMissingVnetServiceEndpoint: false
         }
       ]
@@ -115,8 +114,7 @@ module testDeployment '../../main.bicep' = {
     roleAssignments: [
       {
         roleDefinitionIdOrName: 'Reader'
-        // principalId: nestedDependencies.outputs.managedIdentityPrincipalId
-        principalId: '3cd458fe-6c10-4208-b70a-d6aee16f7ea6'
+        principalId: nestedDependencies.outputs.managedIdentityPrincipalId
         principalType: 'ServicePrincipal'
       }
     ]
@@ -124,19 +122,16 @@ module testDeployment '../../main.bicep' = {
     managedIdentities: {
       systemAssigned: true
       userAssignedResourcesIds: [
-        // nestedDependencies.outputs.managedIdentityResourceId
-        '/subscriptions/[[subscriptionId]]/resourceGroups/ms.cognitiveservices.accounts-csacom-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/dep-[[namePrefix]]-msi-csacom'
+        nestedDependencies.outputs.managedIdentityResourceId
       ]
     }
     privateEndpoints: [
       {
         privateDnsZoneResourceIds: [
-          // nestedDependencies.outputs.privateDNSZoneResourceId
-          '/subscriptions/[[subscriptionId]]/resourceGroups/ms.cognitiveservices.accounts-csacom-rg/providers/Microsoft.Network/privateDnsZones/privatelink.cognitiveservices.azure.com'
+          nestedDependencies.outputs.privateDNSZoneResourceId
         ]
         service: 'account'
-        // subnetResourceId: nestedDependencies.outputs.subnetResourceId
-        subnetResourceId: '/subscriptions/[[subscriptionId]]/resourceGroups/ms.cognitiveservices.accounts-csacom-rg/providers/Microsoft.Network/virtualNetworks/dep-[[namePrefix]]-vnet-csacom/subnets/defaultSubnet'
+        subnetResourceId: nestedDependencies.outputs.subnetResourceId
         tags: {
           'hidden-title': 'This is visible in the resource name'
           Environment: 'Non-Prod'
