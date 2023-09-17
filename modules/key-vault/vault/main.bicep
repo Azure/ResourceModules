@@ -307,20 +307,20 @@ type diagnosticSettingType = {
 
   @description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to \'\' to disable log collection.')
   logCategoriesAndGroups: {
-    @description('Name of a Diagnostic Log category for a resource type this setting is applied to. Set the specific logs to collect here.')
+    @description('Optional. Name of a Diagnostic Log category for a resource type this setting is applied to. Set the specific logs to collect here.')
     category: string?
 
-    @description('Name of a Diagnostic Log category group for a resource type this setting is applied to. Set to `allLogs` to collect all logs.')
+    @description('Optional. Name of a Diagnostic Log category group for a resource type this setting is applied to. Set to `allLogs` to collect all logs.')
     categoryGroup: string?
   }[]?
 
   @description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to \'\' to disable log collection.')
   metricCategories: {
-    @description('Name of a Diagnostic Metric category for a resource type this setting is applied to. Set to `AllMetrics` to collect all metrics.')
+    @description('Required. Name of a Diagnostic Metric category for a resource type this setting is applied to. Set to `AllMetrics` to collect all metrics.')
     category: string
   }[]?
 
-  @description('A string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destination type.')
+  @description('Optional. A string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destination type.')
   logAnalyticsDestinationType: ('Dedicated' | 'AzureDiagnostics' | null)?
 
   @description('Optional. Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.')
@@ -335,7 +335,7 @@ type diagnosticSettingType = {
   @description('Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.')
   eventHubName: string?
 
-  @description('The full ARM resource ID of the Marketplace resource to which you would like to send Diagnostic Logs.')
+  @description('Optional. The full ARM resource ID of the Marketplace resource to which you would like to send Diagnostic Logs.')
   marketplacePartnerResourceId: string?
 }
 
@@ -346,7 +346,7 @@ type roleAssignmentType = {
   @description('Required. The principal ID of the principal (user/group/identity) to assign the role to.')
   principalId: string
 
-  @description('The principal type of the assigned principal ID.')
+  @description('Optional. The principal type of the assigned principal ID.')
   principalType: ('ServicePrincipal' | 'Group' | 'User' | 'ForeignGroup' | 'Device' | null)?
 
   @description('Optional. The description of the role assignment.')
