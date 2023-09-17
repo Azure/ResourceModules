@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.21.1.54444",
-      "templateHash": "4423813200196370400"
+      "templateHash": "4111833939868956587"
     },
     "name": "Private Endpoints",
     "description": "This module deploys a Private Endpoint.",
@@ -39,7 +39,7 @@
           ],
           "nullable": true,
           "metadata": {
-            "description": "The principal type of the assigned principal ID."
+            "description": "Optional. The principal type of the assigned principal ID."
           }
         },
         "description": {

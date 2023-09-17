@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.21.1.54444",
-      "templateHash": "13643413812580553547"
+      "templateHash": "6295156672343677769"
     },
     "name": "Cognitive Services",
     "description": "This module deploys a Cognitive Service.",
@@ -32,14 +32,14 @@
                 "type": "string",
                 "nullable": true,
                 "metadata": {
-                  "description": "Name of a Diagnostic Log category for a resource type this setting is applied to. Set the specific logs to collect here."
+                  "description": "Optional. Name of a Diagnostic Log category for a resource type this setting is applied to. Set the specific logs to collect here."
                 }
               },
               "categoryGroup": {
                 "type": "string",
                 "nullable": true,
                 "metadata": {
-                  "description": "Name of a Diagnostic Log category group for a resource type this setting is applied to. Set to `allLogs` to collect all logs."
+                  "description": "Optional. Name of a Diagnostic Log category group for a resource type this setting is applied to. Set to `allLogs` to collect all logs."
                 }
               }
             }
@@ -57,7 +57,7 @@
               "category": {
                 "type": "string",
                 "metadata": {
-                  "description": "Name of a Diagnostic Metric category for a resource type this setting is applied to. Set to `AllMetrics` to collect all metrics."
+                  "description": "Required. Name of a Diagnostic Metric category for a resource type this setting is applied to. Set to `AllMetrics` to collect all metrics."
                 }
               }
             }
@@ -75,7 +75,7 @@
           ],
           "nullable": true,
           "metadata": {
-            "description": "A string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destination type."
+            "description": "Optional. A string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destination type."
           }
         },
         "workspaceResourceId": {
@@ -110,7 +110,7 @@
           "type": "string",
           "nullable": true,
           "metadata": {
-            "description": "The full ARM resource ID of the Marketplace resource to which you would like to send Diagnostic Logs."
+            "description": "Optional. The full ARM resource ID of the Marketplace resource to which you would like to send Diagnostic Logs."
           }
         }
       }
@@ -141,7 +141,7 @@
           ],
           "nullable": true,
           "metadata": {
-            "description": "The principal type of the assigned principal ID."
+            "description": "Optional. The principal type of the assigned principal ID."
           }
         },
         "description": {
@@ -344,8 +344,7 @@
             "description": "Optional. The resource ID(s) to assign to the resource. Required if a user assigned identity is used for encryption."
           }
         }
-      },
-      "nullable": true
+      }
     },
     "customerManagedKeyType": {
       "type": "object",
@@ -602,17 +601,8 @@
     }
   },
   "variables": {
-    "copy": [
-      {
-        "name": "formattedUserAssignedIdentities",
-        "count": "[length(coalesce(tryGet(parameters('managedIdentities'), 'userAssignedResourcesIds'), createArray()))]",
-        "input": {
-          "[format('{0}', coalesce(tryGet(parameters('managedIdentities'), 'userAssignedResourcesIds'), createArray())[copyIndex('formattedUserAssignedIdentities')])]": {}
-        }
-      }
-    ],
     "enableReferencedModulesTelemetry": false,
-    "identity": "[if(not(empty(parameters('managedIdentities'))), createObject('type', if(coalesce(tryGet(parameters('managedIdentities'), 'systemAssigned'), false()), if(not(empty(coalesce(tryGet(parameters('managedIdentities'), 'userAssignedResourcesIds'), createObject()))), 'SystemAssigned,UserAssigned', 'SystemAssigned'), if(not(empty(coalesce(tryGet(parameters('managedIdentities'), 'userAssignedResourcesIds'), createObject()))), 'UserAssigned', null())), 'userAssignedIdentities', if(not(empty(variables('formattedUserAssignedIdentities'))), variables('formattedUserAssignedIdentities'), null())), null())]",
+    "identity": "[if(not(empty(parameters('managedIdentities'))), createObject('type', if(coalesce(tryGet(parameters('managedIdentities'), 'systemAssigned'), false()), if(not(empty(coalesce(tryGet(parameters('managedIdentities'), 'userAssignedResourcesIds'), createObject()))), 'SystemAssigned,UserAssigned', 'SystemAssigned'), if(not(empty(coalesce(tryGet(parameters('managedIdentities'), 'userAssignedResourcesIds'), createObject()))), 'UserAssigned', null())), 'userAssignedIdentities', reduce(map(coalesce(tryGet(parameters('managedIdentities'), 'userAssignedResourcesIds'), createArray()), lambda('id', createObject(format('{0}', lambdaVariables('id')), createObject()))), createObject(), lambda('cur', 'next', union(lambdaVariables('cur'), lambdaVariables('next'))))), null())]",
     "builtInRoleNames": {
       "Cognitive Services Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '25fbc0a9-bd7c-42a3-aa1a-3b75d497ee68')]",
       "Cognitive Services Custom Vision Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'c1ff6cc2-c111-46fe-8896-e0ef812ad9f3')]",
@@ -646,6 +636,18 @@
     }
   },
   "resources": {
+    "cMKKeyVault::cMKKey": {
+      "condition": "[and(not(empty(tryGet(parameters('customerManagedKey'), 'keyVaultResourceId'))), and(not(empty(tryGet(parameters('customerManagedKey'), 'keyVaultResourceId'))), not(empty(tryGet(parameters('customerManagedKey'), 'keyName')))))]",
+      "existing": true,
+      "type": "Microsoft.KeyVault/vaults/keys",
+      "apiVersion": "2023-02-01",
+      "subscriptionId": "[split(coalesce(tryGet(parameters('customerManagedKey'), 'keyVaultResourceId'), '//'), '/')[2]]",
+      "resourceGroup": "[split(coalesce(tryGet(parameters('customerManagedKey'), 'keyVaultResourceId'), '////'), '/')[4]]",
+      "name": "[format('{0}/{1}', last(split(coalesce(tryGet(parameters('customerManagedKey'), 'keyVaultResourceId'), 'dummyVault'), '/')), coalesce(tryGet(parameters('customerManagedKey'), 'keyName'), 'dummyKey'))]",
+      "dependsOn": [
+        "cMKKeyVault"
+      ]
+    },
     "defaultTelemetry": {
       "condition": "[parameters('enableDefaultTelemetry')]",
       "type": "Microsoft.Resources/deployments",
@@ -661,30 +663,21 @@
       }
     },
     "cMKKeyVault": {
-      "condition": "[not(empty(coalesce(tryGet(parameters('customerManagedKey'), 'keyVaultResourceId'), '')))]",
+      "condition": "[not(empty(tryGet(parameters('customerManagedKey'), 'keyVaultResourceId')))]",
       "existing": true,
       "type": "Microsoft.KeyVault/vaults",
       "apiVersion": "2023-02-01",
-      "subscriptionId": "[split(coalesce(tryGet(parameters('customerManagedKey'), 'keyVaultResourceId'), 'dummyVault1//'), '/')[2]]",
-      "resourceGroup": "[split(coalesce(tryGet(parameters('customerManagedKey'), 'keyVaultResourceId'), 'dummyVault1///'), '/')[4]]",
-      "name": "[last(split(coalesce(tryGet(parameters('customerManagedKey'), 'keyVaultResourceId'), 'dummyVault1'), '/'))]"
-    },
-    "cMKKey": {
-      "condition": "[and(not(empty(coalesce(tryGet(parameters('customerManagedKey'), 'keyVaultResourceId'), ''))), not(empty(coalesce(tryGet(parameters('customerManagedKey'), 'keyName'), ''))))]",
-      "existing": true,
-      "type": "Microsoft.KeyVault/vaults/keys",
-      "apiVersion": "2023-02-01",
-      "subscriptionId": "[split(parameters('customerManagedKey').keyVaultResourceId, '/')[2]]",
-      "resourceGroup": "[split(parameters('customerManagedKey').keyVaultResourceId, '/')[4]]",
-      "name": "[format('{0}/{1}', coalesce(tryGet(parameters('customerManagedKey'), 'keyVaultResourceId'), 'dummyVault2'), coalesce(tryGet(parameters('customerManagedKey'), 'keyName'), 'dummyKey'))]"
+      "subscriptionId": "[split(coalesce(tryGet(parameters('customerManagedKey'), 'keyVaultResourceId'), '//'), '/')[2]]",
+      "resourceGroup": "[split(coalesce(tryGet(parameters('customerManagedKey'), 'keyVaultResourceId'), '////'), '/')[4]]",
+      "name": "[last(split(coalesce(tryGet(parameters('customerManagedKey'), 'keyVaultResourceId'), 'dummyVault'), '/'))]"
     },
     "cMKUserAssignedIdentity": {
-      "condition": "[not(empty(coalesce(tryGet(parameters('customerManagedKey'), 'userAssignedIdentityResourceId'), '')))]",
+      "condition": "[not(empty(tryGet(parameters('customerManagedKey'), 'userAssignedIdentityResourceId')))]",
       "existing": true,
       "type": "Microsoft.ManagedIdentity/userAssignedIdentities",
       "apiVersion": "2023-01-31",
-      "subscriptionId": "[split(parameters('customerManagedKey').userAssignedIdentityResourceId, '/')[2]]",
-      "resourceGroup": "[split(parameters('customerManagedKey').userAssignedIdentityResourceId, '/')[4]]",
+      "subscriptionId": "[split(coalesce(tryGet(parameters('customerManagedKey'), 'userAssignedIdentityResourceId'), '//'), '/')[2]]",
+      "resourceGroup": "[split(coalesce(tryGet(parameters('customerManagedKey'), 'userAssignedIdentityResourceId'), '////'), '/')[4]]",
       "name": "[last(split(coalesce(tryGet(parameters('customerManagedKey'), 'userAssignedIdentityResourceId'), 'dummyMsi'), '/'))]"
     },
     "cognitiveService": {
@@ -705,7 +698,7 @@
         "allowedFqdnList": "[parameters('allowedFqdnList')]",
         "apiProperties": "[parameters('apiProperties')]",
         "disableLocalAuth": "[parameters('disableLocalAuth')]",
-        "encryption": "[if(not(empty(parameters('customerManagedKey'))), createObject('keySource', 'Microsoft.KeyVault', 'keyVaultProperties', createObject('identityClientId', reference('cMKUserAssignedIdentity').clientId, 'keyVaultUri', reference('cMKKeyVault').vaultUri, 'keyName', parameters('customerManagedKey').keyName, 'keyVersion', if(not(empty(coalesce(tryGet(parameters('customerManagedKey'), 'keyVersion'), ''))), parameters('customerManagedKey').keyVersion, last(split(reference('cMKKey').keyUriWithVersion, '/'))))), null())]",
+        "encryption": "[if(not(empty(parameters('customerManagedKey'))), createObject('keySource', 'Microsoft.KeyVault', 'keyVaultProperties', createObject('identityClientId', reference('cMKUserAssignedIdentity').clientId, 'keyVaultUri', reference('cMKKeyVault').vaultUri, 'keyName', parameters('customerManagedKey').keyName, 'keyVersion', if(not(empty(coalesce(tryGet(parameters('customerManagedKey'), 'keyVersion'), ''))), parameters('customerManagedKey').keyVersion, last(split(reference('cMKKeyVault::cMKKey').keyUriWithVersion, '/'))))), null())]",
         "migrationToken": "[if(not(empty(parameters('migrationToken'))), parameters('migrationToken'), null())]",
         "restore": "[parameters('restore')]",
         "restrictOutboundNetworkAccess": "[parameters('restrictOutboundNetworkAccess')]",
@@ -713,7 +706,6 @@
         "dynamicThrottlingEnabled": "[parameters('dynamicThrottlingEnabled')]"
       },
       "dependsOn": [
-        "cMKKey",
         "cMKKeyVault",
         "cMKUserAssignedIdentity"
       ]
@@ -847,7 +839,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.21.1.54444",
-              "templateHash": "4423813200196370400"
+              "templateHash": "4111833939868956587"
             },
             "name": "Private Endpoints",
             "description": "This module deploys a Private Endpoint.",
@@ -880,7 +872,7 @@
                   ],
                   "nullable": true,
                   "metadata": {
-                    "description": "The principal type of the assigned principal ID."
+                    "description": "Optional. The principal type of the assigned principal ID."
                   }
                 },
                 "description": {
