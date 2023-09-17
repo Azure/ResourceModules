@@ -440,7 +440,7 @@ type managedIdentitiesType = {
 
   @description('Optional. The resource ID(s) to assign to the resource. Required if a user assigned identity is used for encryption.')
   userAssignedResourcesIds: string[]?
-}
+}?
 
 type customerManagedKeyType = {
   @description('Required. The resource ID of a key vault to reference a customer managed key for encryption from.')
