@@ -69,6 +69,7 @@ module testDeployment '../../main.bicep' = {
     diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
     // Only for testing purposes
     enablePurgeProtection: false
+    enableRbacAuthorization: true
     networkAcls: {
       bypass: 'AzureServices'
       defaultAction: 'Deny'

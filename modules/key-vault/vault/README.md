@@ -413,44 +413,13 @@ module vault './key-vault/vault/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-kvvcom'
   params: {
     name: 'kvvcom002'
-    accessPolicies: [
-      {
-        objectId: '<objectId>'
-        permissions: {
-          keys: [
-            'get'
-            'list'
-            'update'
-          ]
-          secrets: [
-            'get'
-            'list'
-          ]
-        }
-        tenantId: '<tenantId>'
-      }
-      {
-        objectId: '<objectId>'
-        permissions: {
-          certificates: [
-            'backup'
-            'create'
-            'delete'
-          ]
-          secrets: [
-            'get'
-            'list'
-          ]
-        }
-      }
-    ]
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     enablePurgeProtection: false
-    enableRbacAuthorization: false
+    enableRbacAuthorization: true
     keys: [
       {
         attributesExp: 1725109032
@@ -576,39 +545,6 @@ module vault './key-vault/vault/main.bicep' = {
     "name": {
       "value": "kvvcom002"
     },
-    "accessPolicies": {
-      "value": [
-        {
-          "objectId": "<objectId>",
-          "permissions": {
-            "keys": [
-              "get",
-              "list",
-              "update"
-            ],
-            "secrets": [
-              "get",
-              "list"
-            ]
-          },
-          "tenantId": "<tenantId>"
-        },
-        {
-          "objectId": "<objectId>",
-          "permissions": {
-            "certificates": [
-              "backup",
-              "create",
-              "delete"
-            ],
-            "secrets": [
-              "get",
-              "list"
-            ]
-          }
-        }
-      ]
-    },
     "diagnosticEventHubAuthorizationRuleId": {
       "value": "<diagnosticEventHubAuthorizationRuleId>"
     },
@@ -628,7 +564,7 @@ module vault './key-vault/vault/main.bicep' = {
       "value": false
     },
     "enableRbacAuthorization": {
-      "value": false
+      "value": true
     },
     "keys": {
       "value": [
@@ -774,6 +710,7 @@ module vault './key-vault/vault/main.bicep' = {
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     enablePurgeProtection: false
+    enableRbacAuthorization: true
   }
 }
 ```
@@ -800,6 +737,9 @@ module vault './key-vault/vault/main.bicep' = {
     },
     "enablePurgeProtection": {
       "value": false
+    },
+    "enableRbacAuthorization": {
+      "value": true
     }
   }
 }
@@ -827,6 +767,7 @@ module vault './key-vault/vault/main.bicep' = {
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     enablePurgeProtection: false
+    enableRbacAuthorization: true
     networkAcls: {
       bypass: 'AzureServices'
       defaultAction: 'Deny'
@@ -902,6 +843,9 @@ module vault './key-vault/vault/main.bicep' = {
     },
     "enablePurgeProtection": {
       "value": false
+    },
+    "enableRbacAuthorization": {
+      "value": true
     },
     "networkAcls": {
       "value": {
