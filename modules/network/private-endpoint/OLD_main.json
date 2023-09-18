@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.20.4.51522",
-      "templateHash": "1710908911445964270"
+      "templateHash": "13560297539192628062"
     },
     "name": "Private Endpoints",
     "description": "This module deploys a Private Endpoint.",
@@ -117,10 +117,6 @@
       "metadata": {
         "description": "Optional. Enable telemetry via a Globally Unique Identifier (GUID)."
       }
-    },
-    "uniqueGUID": {
-      "type": "string",
-      "defaultValue": "ffdd"
     }
   },
   "variables": {
@@ -185,7 +181,7 @@
       "condition": "[not(empty(parameters('privateDnsZoneGroup')))]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
-      "name": "PE-PrivateDnsZoneGroup",
+      "name": "[format('{0}-PrivateEndpoint-PrivateDnsZoneGroup', uniqueString(deployment().name, parameters('location')))]",
       "properties": {
         "expressionEvaluationOptions": {
           "scope": "inner"
