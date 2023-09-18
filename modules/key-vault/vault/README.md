@@ -825,6 +825,7 @@ module vault './key-vault/vault/main.bicep' = {
           privateDNSResourceIds: [
             '<privateDNSResourceId>'
           ]
+          privateEndpointName: 'dep-pe-kvvpe'
         }
         service: 'vault'
         subnetResourceId: '<subnetResourceId>'
@@ -873,7 +874,8 @@ module vault './key-vault/vault/main.bicep' = {
           "privateDnsZoneGroup": {
             "privateDNSResourceIds": [
               "<privateDNSResourceId>"
-            ]
+            ],
+            "privateEndpointName": "dep-pe-kvvpe"
           },
           "service": "vault",
           "subnetResourceId": "<subnetResourceId>",
