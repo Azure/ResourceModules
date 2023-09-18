@@ -82,7 +82,7 @@ The diagnostic settings of the service.
 
 <details>
 
-<summary>diagnosticSettings</summary>
+<summary>diagnosticSettings Details</summary>
 
 | Name | Required | Type | Description |
 | :-- | :-- | :--| :-- |
@@ -98,56 +98,56 @@ The diagnostic settings of the service.
 
 ### Parameter: `diagnosticSettings.eventHubAuthorizationRuleResourceId`
 
-Optional. Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.
+Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.
 
 - Required: No
 - Type: string
 
 ### Parameter: `diagnosticSettings.eventHubName`
 
-Optional. Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.
+Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.
 
 - Required: No
 - Type: string
 
 ### Parameter: `diagnosticSettings.logAnalyticsDestinationType`
 
-Optional. Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.
+Optional. A string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destination type.
 
 - Required: No
 - Type: string
 
 ### Parameter: `diagnosticSettings.logCategoriesAndGroups`
 
-Optional. Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.
+Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection.
 
 - Required: No
-- Type: string
+- Type: array
 
 ### Parameter: `diagnosticSettings.marketplacePartnerResourceId`
 
-Optional. Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.
+Optional. The full ARM resource ID of the Marketplace resource to which you would like to send Diagnostic Logs.
 
 - Required: No
 - Type: string
 
 ### Parameter: `diagnosticSettings.metricCategories`
 
-Optional. Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.
+Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection.
 
 - Required: No
-- Type: string
+- Type: array
 
 ### Parameter: `diagnosticSettings.name`
 
-Optional. Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.
+Optional. The name of diagnostic setting.
 
 - Required: No
 - Type: string
 
 ### Parameter: `diagnosticSettings.storageAccountResourceId`
 
-Optional. Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.
+Optional. Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.
 
 - Required: No
 - Type: string
@@ -353,7 +353,7 @@ privateEndpoints:  [
 
 <details>
 
-<summary>privateEndpoints</summary>
+<summary>privateEndpoints Details</summary>
 
 | Name | Required | Type | Description |
 | :-- | :-- | :--| :-- |
@@ -374,94 +374,94 @@ privateEndpoints:  [
 
 ### Parameter: `privateEndpoints.applicationSecurityGroupResourceIds`
 
-Optional. Tags to be applied on all resources/resource groups in this deployment.
+Optional. Application security groups in which the private endpoint IP configuration is included.
 
 - Required: No
-- Type: object
+- Type: array
 
 ### Parameter: `privateEndpoints.customDnsConfigs`
 
-Optional. Tags to be applied on all resources/resource groups in this deployment.
+Optional. Custom DNS configurations.
 
 - Required: No
-- Type: object
+- Type: array
 
 ### Parameter: `privateEndpoints.customNetworkInterfaceName`
 
-Optional. Tags to be applied on all resources/resource groups in this deployment.
+Optional. The custom name of the network interface attached to the private endpoint.
 
 - Required: No
-- Type: object
+- Type: string
 
 ### Parameter: `privateEndpoints.enableDefaultTelemetry`
 
-Optional. Tags to be applied on all resources/resource groups in this deployment.
+Optional. Enable telemetry via a Globally Unique Identifier (GUID).
 
 - Required: No
-- Type: object
+- Type: bool
 
 ### Parameter: `privateEndpoints.ipConfigurations`
 
-Optional. Tags to be applied on all resources/resource groups in this deployment.
+Optional. A list of IP configurations of the private endpoint. This will be used to map to the First Party Service endpoints.
 
 - Required: No
-- Type: object
+- Type: array
 
 ### Parameter: `privateEndpoints.location`
 
-Optional. Tags to be applied on all resources/resource groups in this deployment.
+Optional. The location to deploy the private endpoint to.
 
 - Required: No
-- Type: object
+- Type: string
 
 ### Parameter: `privateEndpoints.lock`
 
-Optional. Tags to be applied on all resources/resource groups in this deployment.
+Optional. Specify the type of lock.
 
 - Required: No
-- Type: object
+- Type: string
 
 ### Parameter: `privateEndpoints.manualPrivateLinkServiceConnections`
 
-Optional. Tags to be applied on all resources/resource groups in this deployment.
+Optional. Manual PrivateLink Service Connections.
 
 - Required: No
-- Type: object
+- Type: array
 
 ### Parameter: `privateEndpoints.name`
 
-Optional. Tags to be applied on all resources/resource groups in this deployment.
+Optional. The name of the private endpoint.
 
 - Required: No
-- Type: object
+- Type: string
 
 ### Parameter: `privateEndpoints.privateDnsZoneResourceIds`
 
-Optional. Tags to be applied on all resources/resource groups in this deployment.
+Optional. The private DNS zone groups to associate the private endpoint with. A DNS zone group can support up to 5 DNS zones.
 
 - Required: No
-- Type: object
+- Type: array
 
 ### Parameter: `privateEndpoints.roleAssignments`
 
-Optional. Tags to be applied on all resources/resource groups in this deployment.
+Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
 
 - Required: No
-- Type: object
+- Type: array
 
 ### Parameter: `privateEndpoints.service`
 
-Optional. Tags to be applied on all resources/resource groups in this deployment.
+Required. The service (sub-) type to deploy the private endpoint for. For example "vault" or "blob".
 
-- Required: No
-- Type: object
+- Required: Yes
+- Type: string
 
 ### Parameter: `privateEndpoints.subnetResourceId`
 
-Optional. Tags to be applied on all resources/resource groups in this deployment.
+Required. Resource ID of the subnet where the endpoint needs to be created.
 
-- Required: No
-- Type: object
+- Required: Yes
+- Type: string
 
 ### Parameter: `privateEndpoints.tags`
 
@@ -547,7 +547,7 @@ roleAssignments: [
 
 <details>
 
-<summary>roleAssignments</summary>
+<summary>roleAssignments Details</summary>
 
 | Name | Required | Type | Description |
 | :-- | :-- | :--| :-- |
@@ -561,44 +561,44 @@ roleAssignments: [
 
 ### Parameter: `roleAssignments.condition`
 
-Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead.
+Optional. The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container"
 
-- Required: Yes
+- Required: No
 - Type: string
 
 ### Parameter: `roleAssignments.conditionVersion`
 
-Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead.
+Optional. Version of the condition.
 
-- Required: Yes
+- Required: No
 - Type: string
 
 ### Parameter: `roleAssignments.delegatedManagedIdentityResourceId`
 
-Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead.
+Optional. The Resource Id of the delegated managed identity resource.
 
-- Required: Yes
+- Required: No
 - Type: string
 
 ### Parameter: `roleAssignments.description`
 
-Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead.
+Optional. The description of the role assignment.
 
-- Required: Yes
+- Required: No
 - Type: string
 
 ### Parameter: `roleAssignments.principalId`
 
-Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead.
+Required. The principal ID of the principal (user/group/identity) to assign the role to.
 
 - Required: Yes
 - Type: string
 
 ### Parameter: `roleAssignments.principalType`
 
-Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead.
+Optional. The principal type of the assigned principal ID.
 
-- Required: Yes
+- Required: No
 - Type: string
 
 ### Parameter: `roleAssignments.roleDefinitionIdOrName`

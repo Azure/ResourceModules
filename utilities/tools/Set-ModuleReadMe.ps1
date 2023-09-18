@@ -332,6 +332,7 @@ function Set-DefinitionSection {
     #build flat list for definition properties
     foreach ($parameterName in $property.Keys | Sort-Object) {
         $paramIdentifier = '{0}.{1}' -f $ParentName, $parameterName
+        $parameterValue = $property[$parameterName]
 
         $newSectionContent += @(
             '',
@@ -342,6 +343,12 @@ function Set-DefinitionSection {
             ('- Required: {0}' -f ($parameterValue['nullable'] ? 'No' : 'Yes')),
             ('- Type: {0}' -f $parameterValue['type'])
         )
+
+        #recursive call for children
+        if ($parameterValue.ContainsKey('items')) {
+            $Test = ''
+            # $newSectionContent += Set-DefinitionSection -TemplateFileContent $TemplateFileContent -Identifier $identifier -ParentName $parameter.name -ParentIdentifier $paramIdentifier
+        }
     }
 
     $newSectionContent += @(
