@@ -226,13 +226,6 @@ function Set-ParametersSection {
             $description = $description.substring("$category. ".Length)
             $newSectionContent += ('| [`{0}`]({1}) | {2} | {3} |' -f $parameter.name, $paramIdentifier, $type, $description)
 
-            if (($parameter.Keys -contains '$ref') -or ($parameter.Keys -contains 'items' -and $parameter.items.Keys -contains '$ref')) {
-                # Has a user-defined type
-                $identifier = ($parameter.Keys -contains '$ref') ? (Split-Path $parameter.'$ref' -Leaf) : (Split-Path $parameter.items.'$ref' -Leaf)
-                $definition = $TemplateFileContent.definitions[$identifier]
-                $definition # TODO: Implement recursive function to resolve multi-level types
-            }
-
             $parameterList += @{
                 $paramIdentifier = @(
                     $paramHeader,
@@ -245,6 +238,12 @@ function Set-ParametersSection {
                     '',
                 (($parameterUsageContentMap.Keys -contains $parameter.name) ? $parameterUsageContentMap[$parameter.name] : $null)
                 ) | Where-Object { $null -ne $_ }
+            }
+
+            if (($parameter.Keys -contains '$ref') -or ($parameter.Keys -contains 'items' -and $parameter.items.Keys -contains '$ref')) {
+                # Has a user-defined type
+                $identifier = ($parameter.Keys -contains '$ref') ? (Split-Path $parameter.'$ref' -Leaf) : (Split-Path $parameter.items.'$ref' -Leaf)
+                $parameterList[$paramIdentifier] += Set-DefinitionSection -TemplateFileContent $TemplateFileContent -Identifier $identifier -ParentName $parameter.name -ParentIdentifier $paramIdentifier
             }
         }
         $newSectionContent += ''
@@ -262,6 +261,95 @@ function Set-ParametersSection {
     }
 
     return $updatedFileContent
+}
+
+function Set-DefinitionSection {
+    <#
+    .SYNOPSIS
+    Short description
+
+    .DESCRIPTION
+    Long description
+
+    .PARAMETER TemplateFileContent
+    Parameter description
+
+    .PARAMETER Identifier
+    Parameter description
+
+    .PARAMETER ParentName
+    Parameter description
+
+    .PARAMETER ParentIdentifier
+    Parameter description
+
+    .EXAMPLE
+    An example
+
+    .NOTES
+    General notes
+    #>
+    # [CmdletBinding(SupportsShouldProcess)]
+    param (
+        [Parameter(Mandatory)]
+        [hashtable] $TemplateFileContent,
+
+        [Parameter(Mandatory)]
+        [string] $Identifier,
+
+        [Parameter(Mandatory)]
+        [string] $ParentName,
+
+        [Parameter(Mandatory)]
+        [string] $ParentIdentifier
+    )
+
+    $newSectionContent = [System.Collections.ArrayList]@()
+    $definition = $TemplateFileContent.definitions[$identifier]
+
+    $newSectionContent += @(
+        '',
+        '<details>',
+        '',
+        ('<summary>{0} Details</summary>' -f $ParentName),
+        ''
+    )
+
+    # build table for definition properties
+    foreach ($property in ($definition['properties'] | Sort-Object)) {
+        $newSectionContent += @(
+            '| Name | Required | Type | Description |',
+            '| :-- | :-- | :--| :-- |'
+        )
+
+        foreach ($parameterName in $property.Keys | Sort-Object) {
+            $parameterValue = $property[$parameterName]
+            $paramIdentifier = '{0}.{1}' -f $ParentIdentifier, $parameterName
+            $newSectionContent += ('| [`{0}`]({1}) | {2} | {3} | {4} |' -f $parameterName, $paramIdentifier, ($parameterValue['nullable'] ? 'No' : 'Yes'), $parameterValue['type'], $parameterValue['metadata']['description'])
+        }
+    }
+
+    #build flat list for definition properties
+    foreach ($parameterName in $property.Keys | Sort-Object) {
+        $paramIdentifier = '{0}.{1}' -f $ParentName, $parameterName
+
+        $newSectionContent += @(
+            '',
+            ('### Parameter: `{0}`' -f $paramIdentifier),
+            '',
+            ($parameterValue['metadata']['description']),
+            '',
+            ('- Required: {0}' -f ($parameterValue['nullable'] ? 'No' : 'Yes')),
+            ('- Type: {0}' -f $parameterValue['type'])
+        )
+    }
+
+    $newSectionContent += @(
+        '',
+        '</details>',
+        '')
+
+    return $newSectionContent
 }
 
 <#
