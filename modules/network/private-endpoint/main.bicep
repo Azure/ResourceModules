@@ -52,7 +52,7 @@ param manualPrivateLinkServiceConnections array = []
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-param uniqueGUID string = newGuid()
+param uniqueGUID string = 'ffdd'
 
 var enableReferencedModulesTelemetry = false
 
