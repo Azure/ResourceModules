@@ -74,7 +74,8 @@ module testDeployment '../../main.bicep' = {
             'update'
           ]
           secrets: [
-            'all'
+            'get'
+            'list'
           ]
         }
         tenantId: tenant().tenantId
@@ -88,7 +89,8 @@ module testDeployment '../../main.bicep' = {
             'delete'
           ]
           secrets: [
-            'all'
+            'get'
+            'list'
           ]
         }
       }
