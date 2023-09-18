@@ -226,6 +226,13 @@ function Set-ParametersSection {
             $description = $description.substring("$category. ".Length)
             $newSectionContent += ('| [`{0}`]({1}) | {2} | {3} |' -f $parameter.name, $paramIdentifier, $type, $description)
 
+            if (($parameter.Keys -contains '$ref') -or ($parameter.Keys -contains 'items' -and $parameter.items.Keys -contains '$ref')) {
+                # Has a user-defined type
+                $identifier = ($parameter.Keys -contains '$ref') ? (Split-Path $parameter.'$ref' -Leaf) : (Split-Path $parameter.items.'$ref' -Leaf)
+                $definition = $TemplateFileContent.definitions[$identifier]
+                $definition # TODO: Implement recursive function to resolve multi-level types
+            }
+
             $parameterList += @{
                 $paramIdentifier = @(
                     $paramHeader,
