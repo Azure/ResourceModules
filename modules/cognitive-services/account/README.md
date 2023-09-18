@@ -26,44 +26,151 @@ This module deploys a Cognitive Service.
 
 **Required parameters**
 
-| Parameter Name | Type | Allowed Values | Description |
-| :-- | :-- | :-- | :-- |
-| `kind` | string | `[AnomalyDetector, Bing.Autosuggest.v7, Bing.CustomSearch, Bing.EntitySearch, Bing.Search.v7, Bing.SpellCheck.v7, CognitiveServices, ComputerVision, ContentModerator, CustomVision.Prediction, CustomVision.Training, Face, FormRecognizer, ImmersiveReader, Internal.AllInOne, LUIS, LUIS.Authoring, Personalizer, QnAMaker, SpeechServices, TextAnalytics, TextTranslation]` | Kind of the Cognitive Services. Use 'Get-AzCognitiveServicesAccountSku' to determine a valid combinations of 'kind' and 'SKU' for your Azure region. |
-| `name` | string |  | The name of Cognitive Services account. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`kind`](#parameter-kind) | string | Kind of the Cognitive Services. Use 'Get-AzCognitiveServicesAccountSku' to determine a valid combinations of 'kind' and 'SKU' for your Azure region. |
+| [`name`](#parameter-name) | string | The name of Cognitive Services account. |
 
 **Conditional parameters**
 
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `customSubDomainName` | string | `''` | Subdomain name used for token-based authentication. Required if 'networkAcls' or 'privateEndpoints' are set. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`customSubDomainName`](#parameter-customsubdomainname) | string | Subdomain name used for token-based authentication. Required if 'networkAcls' or 'privateEndpoints' are set. |
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Allowed Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `allowedFqdnList` | array | `[]` |  | List of allowed FQDN. |
-| `apiProperties` | object | `{object}` |  | The API properties for special APIs. |
-| `customerManagedKey` |  |  |  | The customer managed key definition. |
-| `diagnosticSettings` | array | `[]` |  | The diagnostic settings of the service. |
-| `disableLocalAuth` | bool | `True` |  | Allow only Azure AD authentication. Should be enabled for security reasons. |
-| `dynamicThrottlingEnabled` | bool | `False` |  | The flag to enable dynamic throttling. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
-| `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
-| `managedIdentities` |  |  |  | The managed identity definition for this resource |
-| `migrationToken` | string | `''` |  | Resource migration token. |
-| `networkAcls` | object | `{object}` |  | A collection of rules governing the accessibility from specific network locations. |
-| `privateEndpoints` | array | `[]` |  | Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
-| `publicNetworkAccess` | string | `''` | `['', Disabled, Enabled]` | Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set and networkAcls are not set. |
-| `restore` | bool | `False` |  | Restore a soft-deleted cognitive service at deployment time. Will fail if no such soft-deleted resource exists. |
-| `restrictOutboundNetworkAccess` | bool | `True` |  | Restrict outbound network access. |
-| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| `sku` | string | `'S0'` | `[C2, C3, C4, F0, F1, S, S0, S1, S10, S2, S3, S4, S5, S6, S7, S8, S9]` | SKU of the Cognitive Services resource. Use 'Get-AzCognitiveServicesAccountSku' to determine a valid combinations of 'kind' and 'SKU' for your Azure region. |
-| `tags` | object | `{object}` |  | Tags of the resource. |
-| `userOwnedStorage` | array | `[]` |  | The storage accounts for this resource. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`allowedFqdnList`](#parameter-allowedfqdnlist) | array | List of allowed FQDN. |
+| [`apiProperties`](#parameter-apiproperties) | object | The API properties for special APIs. |
+| [`customerManagedKey`](#parameter-customermanagedkey) |  | The customer managed key definition. |
+| [`diagnosticSettings`](#parameter-diagnosticsettings) | array | The diagnostic settings of the service. |
+| [`disableLocalAuth`](#parameter-disablelocalauth) | bool | Allow only Azure AD authentication. Should be enabled for security reasons. |
+| [`dynamicThrottlingEnabled`](#parameter-dynamicthrottlingenabled) | bool | The flag to enable dynamic throttling. |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`location`](#parameter-location) | string | Location for all Resources. |
+| [`lock`](#parameter-lock) | string | Specify the type of lock. |
+| [`managedIdentities`](#parameter-managedidentities) |  | The managed identity definition for this resource |
+| [`migrationToken`](#parameter-migrationtoken) | string | Resource migration token. |
+| [`networkAcls`](#parameter-networkacls) | object | A collection of rules governing the accessibility from specific network locations. |
+| [`privateEndpoints`](#parameter-privateendpoints) | array | Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
+| [`publicNetworkAccess`](#parameter-publicnetworkaccess) | string | Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set and networkAcls are not set. |
+| [`restore`](#parameter-restore) | bool | Restore a soft-deleted cognitive service at deployment time. Will fail if no such soft-deleted resource exists. |
+| [`restrictOutboundNetworkAccess`](#parameter-restrictoutboundnetworkaccess) | bool | Restrict outbound network access. |
+| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| [`sku`](#parameter-sku) | string | SKU of the Cognitive Services resource. Use 'Get-AzCognitiveServicesAccountSku' to determine a valid combinations of 'kind' and 'SKU' for your Azure region. |
+| [`tags`](#parameter-tags) | object | Tags of the resource. |
+| [`userOwnedStorage`](#parameter-userownedstorage) | array | The storage accounts for this resource. |
 
+### Parameter: `allowedFqdnList`
 
-### Parameter Usage: `privateEndpoints`
+List of allowed FQDN.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `apiProperties`
+
+The API properties for special APIs.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `customerManagedKey`
+
+The customer managed key definition.
+- Required: Yes
+- Type: 
+
+### Parameter: `customSubDomainName`
+
+Subdomain name used for token-based authentication. Required if 'networkAcls' or 'privateEndpoints' are set.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `diagnosticSettings`
+
+The diagnostic settings of the service.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `disableLocalAuth`
+
+Allow only Azure AD authentication. Should be enabled for security reasons.
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `dynamicThrottlingEnabled`
+
+The flag to enable dynamic throttling.
+- Required: Yes
+- Type: bool
+- Default: `False`
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `kind`
+
+Kind of the Cognitive Services. Use 'Get-AzCognitiveServicesAccountSku' to determine a valid combinations of 'kind' and 'SKU' for your Azure region.
+- Required: Yes
+- Type: string
+- Allowed: `[AnomalyDetector, Bing.Autosuggest.v7, Bing.CustomSearch, Bing.EntitySearch, Bing.Search.v7, Bing.SpellCheck.v7, CognitiveServices, ComputerVision, ContentModerator, CustomVision.Prediction, CustomVision.Training, Face, FormRecognizer, ImmersiveReader, Internal.AllInOne, LUIS, LUIS.Authoring, Personalizer, QnAMaker, SpeechServices, TextAnalytics, TextTranslation]`
+
+### Parameter: `location`
+
+Location for all Resources.
+- Required: No
+- Type: string
+- Default: `[resourceGroup().location]`
+
+### Parameter: `lock`
+
+Specify the type of lock.
+- Required: No
+- Type: string
+- Default: `''`
+- Allowed: `['', CanNotDelete, ReadOnly]`
+
+### Parameter: `managedIdentities`
+
+The managed identity definition for this resource
+- Required: Yes
+- Type: 
+
+### Parameter: `migrationToken`
+
+Resource migration token.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `name`
+
+The name of Cognitive Services account.
+- Required: Yes
+- Type: string
+
+### Parameter: `networkAcls`
+
+A collection of rules governing the accessibility from specific network locations.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `privateEndpoints`
+
+Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.
+- Required: No
+- Type: array
+- Default: `[]`
 
 To use Private Endpoint the following dependencies must be deployed:
 
@@ -163,59 +270,34 @@ privateEndpoints:  [
 </details>
 <p>
 
-### Parameter Usage: `encryption`
+### Parameter: `publicNetworkAccess`
 
-<details>
+Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set and networkAcls are not set.
+- Required: No
+- Type: string
+- Default: `''`
+- Allowed: `['', Disabled, Enabled]`
 
-<summary>Parameter JSON format</summary>
+### Parameter: `restore`
 
-```json
-// With customer-managed key
-"encryption": {
-    "value": {
-        "keySource": "Microsoft.KeyVault",
-        "keyVaultProperties": {
-            "identityClientId": "12345678-1234-1234-1234-123456789012", // ID must be updated for new identity
-            "keyVaultUri": "https://adp-[[namePrefix]]-az-kv-nopr-002.vault.azure.net/",
-            "keyName": "keyEncryptionKey",
-            "keyversion": "1111111111111111111111111111111" // Version must be updated for new keys
-        }
-    }
-}
-// With service-managed key
-"encryption": {
-    "value": {
-        "keySource": "Microsoft.CognitiveServices"
-    }
-}
-```
+Restore a soft-deleted cognitive service at deployment time. Will fail if no such soft-deleted resource exists.
+- Required: Yes
+- Type: bool
+- Default: `False`
 
-</details>
+### Parameter: `restrictOutboundNetworkAccess`
 
-<details>
+Restrict outbound network access.
+- Required: No
+- Type: bool
+- Default: `True`
 
-<summary>Bicep format</summary>
+### Parameter: `roleAssignments`
 
-```bicep
-// With customer managed key
-encryption: {
-    keySource: 'Microsoft.KeyVault'
-    keyVaultProperties: {
-        identityClientId: '12345678-1234-1234-1234-123456789012' // ID must be updated for new identity
-        keyVaultUri: 'https://adp-[[namePrefix]]-az-kv-nopr-002.vault.azure.net/'
-        keyName: 'keyEncryptionKey'
-        keyversion: '1111111111111111111111111111111' // Version must be updated for new keys
-    }
-}
-// With service-managed key
-encryption: {
-    keySource: 'Microsoft.CognitiveServices'
-}
-```
-
-</details>
-<p>
-### Parameter Usage: `roleAssignments`
+Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
+- Required: No
+- Type: array
+- Default: `[]`
 
 Create a role assignment for the given resource. If you want to assign a service principal / managed identity that is created in the same deployment, make sure to also specify the `'principalType'` parameter and set it to `'ServicePrincipal'`. This will ensure the role assignment waits for the principal's propagation in Azure.
 
@@ -274,7 +356,20 @@ roleAssignments: [
 </details>
 <p>
 
-### Parameter Usage: `tags`
+### Parameter: `sku`
+
+SKU of the Cognitive Services resource. Use 'Get-AzCognitiveServicesAccountSku' to determine a valid combinations of 'kind' and 'SKU' for your Azure region.
+- Required: No
+- Type: string
+- Default: `'S0'`
+- Allowed: `[C2, C3, C4, F0, F1, S, S0, S1, S10, S2, S3, S4, S5, S6, S7, S8, S9]`
+
+### Parameter: `tags`
+
+Tags of the resource.
+- Required: No
+- Type: object
+- Default: `{object}`
 
 Tag names and tag values can be provided as needed. A tag can be left without a value.
 
@@ -315,99 +410,17 @@ tags: {
 </details>
 <p>
 
-### Parameter Usage: `networkAcls`
+### Parameter: `userOwnedStorage`
 
-<details>
+The storage accounts for this resource.
+- Required: No
+- Type: array
+- Default: `[]`
 
-<summary>Parameter JSON format</summary>
-
-```json
-"networkAcls": {
-  "value": {
-    "defaultAction": "Deny",
-    "virtualNetworkRules": [
-      {
-        "id": "/subscriptions/<subscription-ID>/resourceGroups/resourceGroup/providers/Microsoft.Network/virtualNetworks/<vnet-name>/subnets/<subnet-name>",
-        "ignoreMissingVnetServiceEndpoint": false
-      }
-    ],
-    "ipRules": [
-      {
-        "value": "1.1.1.1"
-      },
-      {
-        "value": "<IP address or CIDR>"
-      }
-    ]
-  }
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-networkAcls: {
-    defaultAction: 'Deny'
-    virtualNetworkRules: [
-        {
-            id: '/subscriptions/<subscription-ID>/resourceGroups/resourceGroup/providers/Microsoft.Network/virtualNetworks/<vnet-name>/subnets/<subnet-name>'
-            ignoreMissingVnetServiceEndpoint: false
-        }
-    ]
-    ipRules: [
-        {
-            value: '1.1.1.1'
-        }
-        {
-            value: '<IP address or CIDR>'
-        }
-    ]
-}
-```
-
-</details>
-<p>
-
-### Parameter Usage: `userAssignedIdentities`
-
-You can specify multiple user assigned identities to a resource by providing additional resource IDs using the following format:
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"userAssignedIdentities": {
-    "value": {
-        "/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
-        "/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
-    }
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-userAssignedIdentities: {
-    '/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
-    '/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
-}
-```
-
-</details>
-<p>
 
 ## Outputs
 
-| Output Name | Type | Description |
+| Output | Type | Description |
 | :-- | :-- | :-- |
 | `endpoint` | string | The service endpoint of the cognitive services account. |
 | `location` | string | The location the resource was deployed into. |
