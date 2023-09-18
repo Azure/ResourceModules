@@ -29,6 +29,8 @@ param privateDnsZoneGroup object = {}
 @description('Optional. Location for all Resources.')
 param location string = resourceGroup().location
 
+param uniquetimestamp string = utcNow()
+
 @allowed([
   ''
   'CanNotDelete'
@@ -93,7 +95,7 @@ resource privateEndpoint 'Microsoft.Network/privateEndpoints@2023-04-01' = {
 }
 
 module privateEndpoint_privateDnsZoneGroup 'private-dns-zone-group/main.bicep' = if (!empty(privateDnsZoneGroup)) {
-  name: '${uniqueString(deployment().name, location)}-PrivateEndpoint-PrivateDnsZoneGroup'
+  name: '${uniqueString(deployment().name, uniquetimestamp)}-PrivateEndpoint-PrivateDnsZoneGroup'
   params: {
     privateDNSResourceIds: privateDnsZoneGroup.privateDNSResourceIds
     privateEndpointName: privateEndpoint.name
