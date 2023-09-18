@@ -423,7 +423,8 @@ module vault './key-vault/vault/main.bicep' = {
             'update'
           ]
           secrets: [
-            'all'
+            'get'
+            'list'
           ]
         }
         tenantId: '<tenantId>'
@@ -437,7 +438,8 @@ module vault './key-vault/vault/main.bicep' = {
             'delete'
           ]
           secrets: [
-            'all'
+            'get'
+            'list'
           ]
         }
       }
@@ -585,7 +587,8 @@ module vault './key-vault/vault/main.bicep' = {
               "update"
             ],
             "secrets": [
-              "all"
+              "get",
+              "list"
             ]
           },
           "tenantId": "<tenantId>"
@@ -599,7 +602,8 @@ module vault './key-vault/vault/main.bicep' = {
               "delete"
             ],
             "secrets": [
-              "all"
+              "get",
+              "list"
             ]
           }
         }
