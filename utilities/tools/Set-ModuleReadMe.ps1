@@ -85,7 +85,7 @@ function Set-ResourceTypesSection {
 
     # Build result
     if ($PSCmdlet.ShouldProcess('Original file with new resource type content', 'Merge')) {
-        $updatedFileContent = Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $SectionContent -SectionStartIdentifier $SectionStartIdentifier -contentType 'table'
+        $updatedFileContent = Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $SectionContent -SectionStartIdentifier $SectionStartIdentifier -contentType 'nextH2'
     }
     return $updatedFileContent
 }
@@ -138,6 +138,18 @@ function Set-ParametersSection {
         [string[]] $ColumnsInOrder = @('Required', 'Conditional', 'Optional', 'Generated')
     )
 
+    # Collect sources for parameter usage section
+    $parameterUsageContentMap = @{}
+    if (Test-Path (Join-Path $PSScriptRoot 'moduleReadMeSource')) {
+        if ($resourceUsageSourceFiles = Get-ChildItem (Join-Path $PSScriptRoot 'moduleReadMeSource') -Recurse -Filter 'resourceUsage-*') {
+            foreach ($sourceFile in $resourceUsageSourceFiles.FullName) {
+                $parameterName = (Split-Path $sourceFile -LeafBase).Replace('resourceUsage-', '')
+
+                $parameterUsageContentMap[$parameterName] = Get-Content $sourceFile -Raw
+            }
+        }
+    }
+
     # Get all descriptions
     $descriptions = $TemplateFileContent.parameters.Values.metadata.description
 
@@ -157,6 +169,8 @@ function Set-ParametersSection {
     $TemplateFileContent.parameters.Keys | ForEach-Object { $TemplateFileContent.parameters[$_]['name'] = $_ }
 
     $newSectionContent = [System.Collections.ArrayList]@()
+    $parameterList = @{}
+
     # Create parameter blocks
     foreach ($category in $sortedParamCategories) {
 
@@ -164,17 +178,14 @@ function Set-ParametersSection {
         # Filter to relevant items
         [array] $categoryParameters = $TemplateFileContent.parameters.Values | Where-Object { $_.metadata.description -like "$category. *" } | Sort-Object -Property 'Name' -Culture 'en-US'
 
-        # Check properties for later reference
-        $hasDefault = $categoryParameters.defaultValue.count -gt 0
-        $hasAllowed = $categoryParameters.allowedValues.count -gt 0
-
-        # 2. Create header including optional columns
+        # 2. Create header including optional columns & initiate the parameter list
         $newSectionContent += @(
             ('**{0} parameters**' -f $category),
             '',
-            ('| Parameter Name | Type | {0}{1}Description |' -f ($hasDefault ? 'Default Value | ' : ''), ($hasAllowed ? 'Allowed Values | ' : '')),
-            ('| :-- | :-- | {0}{1}:-- |' -f ($hasDefault ? ':-- | ' : ''), ($hasAllowed ? ':-- | ' : ''))
+            '| Parameter | Type | Description |',
+            '| :-- | :-- | :-- |'
         )
+
 
         # 3. Add individual parameters
         foreach ($parameter in $categoryParameters) {
@@ -197,6 +208,10 @@ function Set-ParametersSection {
                 $type = $parameter.type
             }
 
+            # Prepare the links to local headers
+            $paramHeader = '### Parameter: `{0}`' -f $parameter.name
+            $paramIdentifier = ('#{0}' -f $paramHeader.TrimStart('#').Trim().ToLower()) -replace '[:|`]' -replace ' ', '-'
+
             # Add external single quotes to all default values of type string except for those using functions
             $defaultValue = ($parameter.defaultValue -is [array]) ? ('[{0}]' -f (($parameter.defaultValue | Sort-Object) -join ', ')) : (($parameter.defaultValue -is [hashtable]) ? '{object}' : (($parameter.defaultValue -is [string]) -and ($parameter.defaultValue -notmatch '\[\w+\(.*\).*\]') ? '''' + $parameter.defaultValue + '''' : $parameter.defaultValue))
             $description = $parameter.metadata.description.Replace("`r`n", '<p>').Replace("`n", '<p>')
@@ -209,40 +224,34 @@ function Set-ParametersSection {
             # Update parameter table content based on parameter category
             ## Remove category from parameter description
             $description = $description.substring("$category. ".Length)
-            $defaultValueColumnValue = ($hasDefault ? (-not [String]::IsNullOrEmpty($defaultValue) ? "``$defaultValue`` | " : ' | ') : '')
-            $allowedValueColumnValue = ($hasAllowed ? (-not [String]::IsNullOrEmpty($allowedValue) ? "``$allowedValue`` | " : ' | ') : '')
-            $newSectionContent += ('| `{0}` | {1} | {2}{3}{4} |' -f $parameter.name, $type, $defaultValueColumnValue, $allowedValueColumnValue, $description)
+            $newSectionContent += ('| [`{0}`]({1}) | {2} | {3} |' -f $parameter.name, $paramIdentifier, $type, $description)
+
+            $parameterList += @{
+                $paramIdentifier = @(
+                    $paramHeader,
+                    '',
+                    $description,
+                ('- Required: {0}' -f ((-not $defaultValue) ? 'Yes' : 'No')),
+                ('- Type: {0}' -f $type),
+                ((-not [String]::IsNullOrEmpty($defaultValue)) ? ('- Default: `{0}`' -f $defaultValue) : $null),
+                ((-not [String]::IsNullOrEmpty($allowedValue)) ? ('- Allowed: `{0}`' -f $allowedValue) : $null),
+                    '',
+                (($parameterUsageContentMap.Keys -contains $parameter.name) ? $parameterUsageContentMap[$parameter.name] : $null)
+                ) | Where-Object { $null -ne $_ }
+            }
         }
         $newSectionContent += ''
     }
 
+    $sortedFlatParamList = [System.Collections.ArrayList]@()
+    foreach ($key in ($parameterList.Keys | Sort-Object)) {
+        $sortedFlatParamList += $parameterList[$key]
+    }
+    $newSectionContent += $sortedFlatParamList
+
     # Build result
     if ($PSCmdlet.ShouldProcess('Original file with new parameters content', 'Merge')) {
-        $updatedFileContent = Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $newSectionContent -SectionStartIdentifier $SectionStartIdentifier -contentType 'none'
-    }
-
-    # Build sub-section 'ParameterUsage'
-    if (Test-Path (Join-Path $PSScriptRoot 'moduleReadMeSource')) {
-        if ($resourceUsageSourceFiles = Get-ChildItem (Join-Path $PSScriptRoot 'moduleReadMeSource') -Recurse -Filter 'resourceUsage-*') {
-            foreach ($sourceFile in $resourceUsageSourceFiles.FullName) {
-                $parameterName = (Split-Path $sourceFile -LeafBase).Replace('resourceUsage-', '')
-                if ($templateFileContent.parameters.Keys -contains $parameterName) {
-                    $subSectionStartIdentifier = '### Parameter Usage: `{0}`' -f $ParameterName
-
-                    # Build result
-                    $updateParameterUsageInputObject = @{
-                        OldContent             = $updatedFileContent
-                        NewContent             = (Get-Content $sourceFile -Raw).Trim()
-                        SectionStartIdentifier = $subSectionStartIdentifier
-                        ParentStartIdentifier  = $SectionStartIdentifier
-                        ContentType            = 'none'
-                    }
-                    if ($PSCmdlet.ShouldProcess(('Original file with new parameter usage [{0}] content' -f $parameterName), 'Merge')) {
-                        $updatedFileContent = Merge-FileWithNewContent @updateParameterUsageInputObject
-                    }
-                }
-            }
-        }
+        $updatedFileContent = Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $newSectionContent -SectionStartIdentifier $SectionStartIdentifier -contentType 'nextH2'
     }
 
     return $updatedFileContent
@@ -288,7 +297,7 @@ function Set-OutputsSection {
     if ($TemplateFileContent.outputs.Values.metadata) {
         # Template has output descriptions
         $SectionContent = [System.Collections.ArrayList]@(
-            '| Output Name | Type | Description |',
+            '| Output | Type | Description |',
             '| :-- | :-- | :-- |'
         )
         foreach ($outputName in ($templateFileContent.outputs.Keys | Sort-Object -Culture 'en-US')) {
@@ -298,7 +307,7 @@ function Set-OutputsSection {
         }
     } else {
         $SectionContent = [System.Collections.ArrayList]@(
-            '| Output Name | Type |',
+            '| Output | Type |',
             '| :-- | :-- |'
         )
         foreach ($outputName in ($templateFileContent.outputs.Keys | Sort-Object -Culture 'en-US')) {
@@ -309,7 +318,7 @@ function Set-OutputsSection {
 
     # Build result
     if ($PSCmdlet.ShouldProcess('Original file with new output content', 'Merge')) {
-        $updatedFileContent = Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $SectionContent -SectionStartIdentifier $SectionStartIdentifier -contentType 'table'
+        $updatedFileContent = Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $SectionContent -SectionStartIdentifier $SectionStartIdentifier -contentType 'nextH2'
     }
     return $updatedFileContent
 }
@@ -392,7 +401,7 @@ function Set-CrossReferencesSection {
 
     # Build result
     if ($PSCmdlet.ShouldProcess('Original file with new output content', 'Merge')) {
-        $updatedFileContent = Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $SectionContent -SectionStartIdentifier $SectionStartIdentifier -contentType 'none'
+        $updatedFileContent = Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $SectionContent -SectionStartIdentifier $SectionStartIdentifier -contentType 'nextH2'
     }
     return $updatedFileContent
 }
@@ -1374,7 +1383,7 @@ function Set-TableOfContent {
 
     # Build result
     if ($PSCmdlet.ShouldProcess('Original file with new parameters content', 'Merge')) {
-        $updatedFileContent = Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $newSectionContent -SectionStartIdentifier $SectionStartIdentifier -contentType 'none'
+        $updatedFileContent = Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $newSectionContent -SectionStartIdentifier $SectionStartIdentifier -contentType 'nextH2'
     }
 
     return $updatedFileContent
