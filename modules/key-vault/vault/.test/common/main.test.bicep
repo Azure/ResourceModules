@@ -64,37 +64,7 @@ module testDeployment '../../main.bicep' = {
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '${namePrefix}${serviceShort}002'
-    // accessPolicies: [
-    //   {
-    //     objectId: nestedDependencies.outputs.managedIdentityPrincipalId
-    //     permissions: {
-    //       keys: [
-    //         'get'
-    //         'list'
-    //         'update'
-    //       ]
-    //       secrets: [
-    //         'get'
-    //         'list'
-    //       ]
-    //     }
-    //     tenantId: tenant().tenantId
-    //   }
-    //   {
-    //     objectId: nestedDependencies.outputs.managedIdentityPrincipalId
-    //     permissions: {
-    //       certificates: [
-    //         'backup'
-    //         'create'
-    //         'delete'
-    //       ]
-    //       secrets: [
-    //         'get'
-    //         'list'
-    //       ]
-    //     }
-    //   }
-    // ]
+
     diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
     diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
     diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
