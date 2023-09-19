@@ -54,7 +54,7 @@ Further details are also provided in issue [#1342](https://github.com/Azure/Reso
 
 ## recovery-services/vault
 
-The Recovery Services Vaults module does not currently attach the content of the identity property correctly when both user and system-assigned identity fields are selected.
+The Recovery Services Vaults module does not currently attach the content of the identity property correctly when both user- and system-assigned identity fields are selected.
 
 The pipeline shows a success but the assignment of both identities never happens although both identities (system-assigned or user-assigned) get created successfully.
 
