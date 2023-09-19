@@ -5,7 +5,7 @@ metadata owner = 'Azure/module-maintainers'
 @description('Optional. The geo-location where the resource lives.')
 param location string = resourceGroup().location
 
-@description('Required. The name of the Redis Cache Enerprise resource.')
+@description('Required. The name of the Redis Cache Enterprise resource.')
 param name string
 
 @allowed([

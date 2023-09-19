@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.21.1.54444",
-      "templateHash": "14564256646537619194"
+      "templateHash": "9175405114330234869"
     },
     "name": "Redis Cache Enterprise",
     "description": "This module deploys a Redis Cache Enterprise.",
@@ -22,7 +22,7 @@
     "name": {
       "type": "string",
       "metadata": {
-        "description": "Required. The name of the Redis Cache Enerprise resource."
+        "description": "Required. The name of the Redis Cache Enterprise resource."
       }
     },
     "lock": {
