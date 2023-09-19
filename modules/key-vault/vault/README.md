@@ -417,14 +417,10 @@ Optional. Custom DNS configurations.
 | [`ipAddresses`](#parameter-privateendpoints.customDnsConfigs.ipAddresses) | Yes | array |  |
 
 ### Parameter: `privateEndpoints.customDnsConfigs.fqdn`
-
-
 - Required: No
 - Type: string
 
 ### Parameter: `privateEndpoints.customDnsConfigs.ipAddresses`
-
-
 - Required: Yes
 - Type: array
 
@@ -460,26 +456,18 @@ Optional. A list of IP configurations of the private endpoint. This will be used
 | [`privateIpAddress`](#parameter-privateendpoints.ipConfigurations.privateIpAddress) | Yes | string |  |
 
 ### Parameter: `privateEndpoints.ipConfigurations.groupId`
-
-
 - Required: Yes
 - Type: string
 
 ### Parameter: `privateEndpoints.ipConfigurations.memberName`
-
-
 - Required: Yes
 - Type: string
 
 ### Parameter: `privateEndpoints.ipConfigurations.name`
-
-
 - Required: Yes
 - Type: string
 
 ### Parameter: `privateEndpoints.ipConfigurations.privateIpAddress`
-
-
 - Required: Yes
 - Type: string
 

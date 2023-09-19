@@ -300,13 +300,13 @@ function Set-DefinitionSection {
             #build flat list for definition properties
             $listSectionContent += @(
                 '',
-            ('### Parameter: `{0}`' -f $paramIdentifier),
-                '',
-            ($parameterValue.ContainsKey('metadata') ? $parameterValue['metadata']['description'] : $null),
-                '',
-            ('- Required: {0}' -f ($parameterValue['nullable'] ? 'No' : 'Yes')),
-            ('- Type: {0}' -f $parameterValue['type']),
-            (($parameterValue.ContainsKey('allowedValues')) ? ('- Allowed: `{0}`' -f ($parameterValue['allowedValues'] -join ',')) : $null)
+                ('### Parameter: `{0}`' -f $paramIdentifier),
+                ($parameterValue.ContainsKey('metadata') ? '' : $null),
+                ($parameterValue.ContainsKey('metadata') ? $parameterValue['metadata']['description'] : $null),
+                ($parameterValue.ContainsKey('metadata') ? '' : $null),
+                ('- Required: {0}' -f ($parameterValue['nullable'] ? 'No' : 'Yes')),
+                ('- Type: {0}' -f $parameterValue['type']),
+                (($parameterValue.ContainsKey('allowedValues')) ? ('- Allowed: `{0}`' -f ($parameterValue['allowedValues'] -join ',')) : $null)
             ) | Where-Object { $null -ne $_ }
 
             #recursive call for children
