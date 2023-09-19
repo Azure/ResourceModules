@@ -1,3 +1,17 @@
+<h1 style="color: steelblue;">⚠️ Upcoming breaking changes ⚠️</h1>
+
+Following the recent release of [`0.11.0`](https://github.com/Azure/ResourceModules/releases/tag/v0.11.0), the upcoming period will focus on implementing the remaining changes required to align CARML's modules to the specifications of [Azure Verified Modules](https://aka.ms/avm) (currently in development). This will enable us to move & publish the modules of the CARML library to the official [Public Bicep Registry](https://github.com/Azure/bicep-registry-modules). You can read more about CARML's future in AVM [here](https://azure.github.io/Azure-Verified-Modules/faq/#what-is-happening-to-existing-initiatives-like-carml-and-tfvm).
+
+Please note that these changes will affect many interfaces (e.g., the diagnostic settings). We intend to keep this period as short as possible, but are limited by our own available capacity. As we want to avoid one 'big bang' migration, we will incrementally align & move modules, and keep a copy in this repository until the move is concluded. For modules that were already published, we will redirect the proposed changes to the `AVM` folder of the new [repository](https://github.com/Azure/bicep-registry-modules). In its final state, this `AVM` folder will contain all modules you can currently find in the `modules` folder of this repository.
+
+Possible changes include (but are not limited to):
+- An update of the extension resource interfaces (i.e., diagnostic settings, RBAC, etc.)
+- An update of the `README.md` that comes with each module (including an update of the utility itself) to allow for a more detailed parameter description
+- An update to individual folder names
+- The addition of several user defined types (requiring Bicep version `0.21.1`)
+
+Once the move concluded, the library & CI environment is planned to be maintained. However, several changes to the CARML CI environment will become necessary to ensure a low entry barrier when onboarding both (for example, as per the AVM specs we will need to be less restrictive in our tests).
+
 # ![AzureIcon] Common Azure Resource Modules Library
 
 ## Description
@@ -5,14 +19,6 @@
 This repository includes a library of mature and curated [Bicep][Bicep] modules as well as a Continuous Integration (CI) environment leveraged for modules' validation and versioned publishing.
 
 The CI environment supports both ARM and Bicep and can be leveraged using GitHub actions as well as Azure DevOps pipelines.
-
-<h1 style="color: steelblue;">Upcoming breaking changes</h1>
-
-In between now and the release of version `0.11.0`, the `main` branch is subject to several upcoming breaking changes that will affect all modules (e.g., the renaming of folders and files).
-
-The rationale is an ongoing effort to prepare our modules for a release in the official [Public Bicep Registry](https://github.com/Azure/bicep-registry-modules), forcing us to align the structural requirements.
-
-For more details, please refer to the issue #3131.
 
 ## Get started
 
