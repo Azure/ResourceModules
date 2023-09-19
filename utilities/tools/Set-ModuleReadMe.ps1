@@ -290,7 +290,7 @@ function Set-DefinitionSection {
     foreach ($parameterName in $Properties.Keys | Sort-Object) {
         $parameterValue = $Properties[$parameterName]
         $paramIdentifier = '{0}.{1}' -f $ParentName, $parameterName
-        $paramIdentifierLink = '{0}.{1}' -f $ParentIdentifierLink, $parameterName
+        $paramIdentifierLink = ('{0}{1}' -f $ParentIdentifierLink, $parameterName).ToLower()
 
         # build table for definition properties
         $tableSectionContent += ('| [`{0}`]({1}) | {2} | {3} | {4} |' -f $parameterName, $paramIdentifierLink, ($parameterValue['nullable'] ? 'No' : 'Yes'), $parameterValue['type'], ($parameterValue.ContainsKey('metadata') ? $parameterValue['metadata']['description'] : $null))
@@ -298,13 +298,13 @@ function Set-DefinitionSection {
         #build flat list for definition properties
         $listSectionContent += @(
             '',
-                ('### Parameter: `{0}`' -f $paramIdentifier),
-                ($parameterValue.ContainsKey('metadata') ? '' : $null),
-                ($parameterValue.ContainsKey('metadata') ? $parameterValue['metadata']['description'] : $null),
-                ($parameterValue.ContainsKey('metadata') ? '' : $null),
-                ('- Required: {0}' -f ($parameterValue['nullable'] ? 'No' : 'Yes')),
-                ('- Type: {0}' -f $parameterValue['type']),
-                (($parameterValue.ContainsKey('allowedValues')) ? ('- Allowed: `{0}`' -f ($parameterValue['allowedValues'] -join ',')) : $null)
+            ('### Parameter: `{0}`' -f $paramIdentifier),
+            ($parameterValue.ContainsKey('metadata') ? '' : $null),
+            ($parameterValue.ContainsKey('metadata') ? $parameterValue['metadata']['description'] : $null),
+            ($parameterValue.ContainsKey('metadata') ? '' : $null),
+            ('- Required: {0}' -f ($parameterValue['nullable'] ? 'No' : 'Yes')),
+            ('- Type: {0}' -f $parameterValue['type']),
+            (($parameterValue.ContainsKey('allowedValues')) ? ('- Allowed: `{0}`' -f ($parameterValue['allowedValues'] -join ',')) : $null)
         ) | Where-Object { $null -ne $_ }
 
         #recursive call for children
@@ -316,7 +316,6 @@ function Set-DefinitionSection {
 
     $newSectionContent += $tableSectionContent
     $newSectionContent += $listSectionContent
-
     $newSectionContent += ''
 
     return $newSectionContent
