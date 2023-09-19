@@ -244,7 +244,8 @@ function Set-ParametersSection {
                 # Has a user-defined type
                 $identifier = ($parameter.Keys -contains '$ref') ? (Split-Path $parameter.'$ref' -Leaf) : (Split-Path $parameter.items.'$ref' -Leaf)
                 $definition = $TemplateFileContent.definitions[$identifier]
-                $parameterList[$paramIdentifier] += Set-DefinitionSection -TemplateFileContent $TemplateFileContent -Definition $definition -ParentName $parameter.name -ParentIdentifierLink $paramIdentifier
+                $properties = $definition['properties']
+                $parameterList[$paramIdentifier] += Set-DefinitionSection -TemplateFileContent $TemplateFileContent -Properties $properties -ParentName $parameter.name -ParentIdentifierLink $paramIdentifier
             }
         }
         $newSectionContent += ''
@@ -270,7 +271,7 @@ function Set-DefinitionSection {
         [hashtable] $TemplateFileContent,
 
         [Parameter(Mandatory)]
-        [hashtable] $Definition,
+        [hashtable] $Properties,
 
         [Parameter(Mandatory)]
         [string] $ParentName,
@@ -280,26 +281,24 @@ function Set-DefinitionSection {
     )
     $newSectionContent = [System.Collections.ArrayList]@()
     $newSectionContent += ''
+    $newSectionContent += @(
+        '| Name | Required | Type | Description |',
+        '| :-- | :-- | :--| :-- |'
+    )
+    $tableSectionContent = [System.Collections.ArrayList]@()
+    $listSectionContent = [System.Collections.ArrayList]@()
 
-    foreach ($property in ($Definition['properties'] | Sort-Object)) {
-        $newSectionContent += @(
-            '| Name | Required | Type | Description |',
-            '| :-- | :-- | :--| :-- |'
-        )
-        $tableSectionContent = [System.Collections.ArrayList]@()
-        $listSectionContent = [System.Collections.ArrayList]@()
+    foreach ($parameterName in $Properties.Keys | Sort-Object) {
+        $parameterValue = $Properties[$parameterName]
+        $paramIdentifier = '{0}.{1}' -f $ParentName, $parameterName
+        $paramIdentifierLink = '{0}.{1}' -f $ParentIdentifierLink, $parameterName
 
-        foreach ($parameterName in $property.Keys | Sort-Object) {
-            $parameterValue = $property[$parameterName]
-            $paramIdentifier = '{0}.{1}' -f $ParentName, $parameterName
-            $paramIdentifierLink = '{0}.{1}' -f $ParentIdentifierLink, $parameterName
+        # build table for definition properties
+        $tableSectionContent += ('| [`{0}`]({1}) | {2} | {3} | {4} |' -f $parameterName, $paramIdentifierLink, ($parameterValue['nullable'] ? 'No' : 'Yes'), $parameterValue['type'], ($parameterValue.ContainsKey('metadata') ? $parameterValue['metadata']['description'] : $null))
 
-            # build table for definition properties
-            $tableSectionContent += ('| [`{0}`]({1}) | {2} | {3} | {4} |' -f $parameterName, $paramIdentifierLink, ($parameterValue['nullable'] ? 'No' : 'Yes'), $parameterValue['type'], ($parameterValue.ContainsKey('metadata') ? $parameterValue['metadata']['description'] : $null))
-
-            #build flat list for definition properties
-            $listSectionContent += @(
-                '',
+        #build flat list for definition properties
+        $listSectionContent += @(
+            '',
                 ('### Parameter: `{0}`' -f $paramIdentifier),
                 ($parameterValue.ContainsKey('metadata') ? '' : $null),
                 ($parameterValue.ContainsKey('metadata') ? $parameterValue['metadata']['description'] : $null),
@@ -307,18 +306,17 @@ function Set-DefinitionSection {
                 ('- Required: {0}' -f ($parameterValue['nullable'] ? 'No' : 'Yes')),
                 ('- Type: {0}' -f $parameterValue['type']),
                 (($parameterValue.ContainsKey('allowedValues')) ? ('- Allowed: `{0}`' -f ($parameterValue['allowedValues'] -join ',')) : $null)
-            ) | Where-Object { $null -ne $_ }
+        ) | Where-Object { $null -ne $_ }
 
-            #recursive call for children
-            if ($parameterValue.ContainsKey('items')) {
-                $childDefinition = $parameterValue['items']
-                $listSectionContent += Set-DefinitionSection -TemplateFileContent $TemplateFileContent -Definition $childDefinition -ParentName $paramIdentifier -ParentIdentifierLink $paramIdentifierLink
-            }
+        #recursive call for children
+        if ($parameterValue.ContainsKey('items') -and $parameterValue['items'].ContainsKey('properties')) {
+            $childProperties = $parameterValue['items']['properties']
+            $listSectionContent += Set-DefinitionSection -TemplateFileContent $TemplateFileContent -Properties $childProperties -ParentName $paramIdentifier -ParentIdentifierLink $paramIdentifierLink
         }
-
-        $newSectionContent += $tableSectionContent
-        $newSectionContent += $listSectionContent
     }
+
+    $newSectionContent += $tableSectionContent
+    $newSectionContent += $listSectionContent
 
     $newSectionContent += ''
 
