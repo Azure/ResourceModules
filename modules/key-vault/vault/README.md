@@ -80,10 +80,6 @@ The diagnostic settings of the service.
 - Default: `[]`
 
 
-<details>
-
-<summary>diagnosticSettings Details</summary>
-
 | Name | Required | Type | Description |
 | :-- | :-- | :--| :-- |
 | [`eventHubAuthorizationRuleResourceId`](#parameter-diagnosticsettings.eventHubAuthorizationRuleResourceId) | No | string | Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
@@ -158,8 +154,6 @@ Optional. Resource ID of the diagnostic log analytics workspace. For security re
 
 - Required: No
 - Type: string
-
-</details>
 
 ### Parameter: `enableDefaultTelemetry`
 
@@ -351,10 +345,6 @@ privateEndpoints:  [
 <p>
 
 
-<details>
-
-<summary>privateEndpoints Details</summary>
-
 | Name | Required | Type | Description |
 | :-- | :-- | :--| :-- |
 | [`applicationSecurityGroupResourceIds`](#parameter-privateendpoints.applicationSecurityGroupResourceIds) | No | array | Optional. Application security groups in which the private endpoint IP configuration is included. |
@@ -470,8 +460,6 @@ Optional. Tags to be applied on all resources/resource groups in this deployment
 - Required: No
 - Type: object
 
-</details>
-
 ### Parameter: `publicNetworkAccess`
 
 Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set and networkAcls are not set.
@@ -545,10 +533,6 @@ roleAssignments: [
 <p>
 
 
-<details>
-
-<summary>roleAssignments Details</summary>
-
 | Name | Required | Type | Description |
 | :-- | :-- | :--| :-- |
 | [`condition`](#parameter-roleassignments.condition) | No | string | Optional. The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container" |
@@ -607,8 +591,6 @@ Required. The name of the role to assign. If it cannot be found you can specify 
 
 - Required: Yes
 - Type: string
-
-</details>
 
 ### Parameter: `secrets`
 
