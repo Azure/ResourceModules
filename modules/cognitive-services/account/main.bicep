@@ -236,7 +236,7 @@ resource cognitiveService_lock 'Microsoft.Authorization/locks@2020-05-01' = if (
   scope: cognitiveService
 }
 
-resource cognitiveService_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = [for (diagnosticSetting, index) in diagnosticSettings: {
+resource cognitiveService_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = [for (diagnosticSetting, index) in (diagnosticSettings ?? []): {
   name: diagnosticSetting.?name ?? '${name}-diagnosticSettings'
   properties: {
     storageAccountId: diagnosticSetting.?storageAccountResourceId ?? null
@@ -262,7 +262,7 @@ resource cognitiveService_diagnosticSettings 'Microsoft.Insights/diagnosticSetti
   scope: cognitiveService
 }]
 
-module cognitiveService_privateEndpoints '../../network/private-endpoint/main.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
+module cognitiveService_privateEndpoints '../../network/private-endpoint/main.bicep' = [for (privateEndpoint, index) in (privateEndpoints ?? []): {
   name: '${uniqueString(deployment().name, location)}-CognitiveService-PrivateEndpoint-${index}'
   params: {
     groupIds: [
@@ -285,7 +285,7 @@ module cognitiveService_privateEndpoints '../../network/private-endpoint/main.bi
   }
 }]
 
-resource cognitiveService_roleAssignments 'Microsoft.Authorization/roleAssignments@2022-04-01' = [for (roleAssignment, index) in roleAssignments: {
+resource cognitiveService_roleAssignments 'Microsoft.Authorization/roleAssignments@2022-04-01' = [for (roleAssignment, index) in (roleAssignments ?? []): {
   name: guid(cognitiveService.id, roleAssignment.principalId, roleAssignment.roleDefinitionIdOrName)
   properties: {
     roleDefinitionId: contains(builtInRoleNames, roleAssignment.roleDefinitionIdOrName) ? builtInRoleNames[roleAssignment.roleDefinitionIdOrName] : roleAssignment.roleDefinitionIdOrName
