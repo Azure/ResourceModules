@@ -112,6 +112,7 @@ Optional. A string indicating whether the export to Log Analytics should use the
 
 - Required: No
 - Type: string
+- Allowed: `AzureDiagnostics,Dedicated`
 
 ### Parameter: `diagnosticSettings.logCategoriesAndGroups`
 
@@ -410,6 +411,7 @@ Optional. Specify the type of lock.
 
 - Required: No
 - Type: string
+- Allowed: `,CanNotDelete,ReadOnly`
 
 ### Parameter: `privateEndpoints.manualPrivateLinkServiceConnections`
 
@@ -556,6 +558,7 @@ Optional. Version of the condition.
 
 - Required: No
 - Type: string
+- Allowed: `2.0`
 
 ### Parameter: `roleAssignments.delegatedManagedIdentityResourceId`
 
@@ -584,6 +587,7 @@ Optional. The principal type of the assigned principal ID.
 
 - Required: No
 - Type: string
+- Allowed: `Device,ForeignGroup,Group,ServicePrincipal,User`
 
 ### Parameter: `roleAssignments.roleDefinitionIdOrName`
 
