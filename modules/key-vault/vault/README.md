@@ -402,7 +402,180 @@ The following module usage examples are retrieved from the content of the files 
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Common</h3>
+<h3>Example 1: Accesspolicies</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module vault './key-vault/vault/main.bicep' = {
+  name: '${uniqueString(deployment().name, location)}-test-kvvaccesspolicy'
+  params: {
+    // Required parameters
+    name: 'kvvaccesspolicy002'
+    // Non-required parameters
+    accessPolicies: [
+      {
+        objectId: '<objectId>'
+        permissions: {
+          keys: [
+            'get'
+            'list'
+            'update'
+          ]
+          secrets: [
+            'get'
+            'list'
+          ]
+        }
+        tenantId: '<tenantId>'
+      }
+      {
+        objectId: '<objectId>'
+        permissions: {
+          certificates: [
+            'backup'
+            'create'
+            'delete'
+          ]
+          secrets: [
+            'get'
+            'list'
+          ]
+        }
+      }
+    ]
+    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<diagnosticEventHubName>'
+    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
+    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    enablePurgeProtection: false
+    networkAcls: {
+      bypass: 'AzureServices'
+      defaultAction: 'Deny'
+      ipRules: [
+        {
+          value: '40.74.28.0/23'
+        }
+      ]
+      virtualNetworkRules: [
+        {
+          id: '<id>'
+          ignoreMissingVnetServiceEndpoint: false
+        }
+      ]
+    }
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "kvvaccesspolicy002"
+    },
+    // Non-required parameters
+    "accessPolicies": {
+      "value": [
+        {
+          "objectId": "<objectId>",
+          "permissions": {
+            "keys": [
+              "get",
+              "list",
+              "update"
+            ],
+            "secrets": [
+              "get",
+              "list"
+            ]
+          },
+          "tenantId": "<tenantId>"
+        },
+        {
+          "objectId": "<objectId>",
+          "permissions": {
+            "certificates": [
+              "backup",
+              "create",
+              "delete"
+            ],
+            "secrets": [
+              "get",
+              "list"
+            ]
+          }
+        }
+      ]
+    },
+    "diagnosticEventHubAuthorizationRuleId": {
+      "value": "<diagnosticEventHubAuthorizationRuleId>"
+    },
+    "diagnosticEventHubName": {
+      "value": "<diagnosticEventHubName>"
+    },
+    "diagnosticStorageAccountId": {
+      "value": "<diagnosticStorageAccountId>"
+    },
+    "diagnosticWorkspaceId": {
+      "value": "<diagnosticWorkspaceId>"
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "enablePurgeProtection": {
+      "value": false
+    },
+    "networkAcls": {
+      "value": {
+        "bypass": "AzureServices",
+        "defaultAction": "Deny",
+        "ipRules": [
+          {
+            "value": "40.74.28.0/23"
+          }
+        ],
+        "virtualNetworkRules": [
+          {
+            "id": "<id>",
+            "ignoreMissingVnetServiceEndpoint": false
+          }
+        ]
+      }
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2: Common</h3>
 
 <details>
 
@@ -695,7 +868,7 @@ module vault './key-vault/vault/main.bicep' = {
 </details>
 <p>
 
-<h3>Example 2: Min</h3>
+<h3>Example 3: Min</h3>
 
 <details>
 
@@ -748,7 +921,7 @@ module vault './key-vault/vault/main.bicep' = {
 </details>
 <p>
 
-<h3>Example 3: Pe</h3>
+<h3>Example 4: Pe</h3>
 
 <details>
 
