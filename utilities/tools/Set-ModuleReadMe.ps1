@@ -278,9 +278,7 @@ function Set-DefinitionSection {
         [Parameter(Mandatory)]
         [string] $ParentIdentifierLink
     )
-
     $newSectionContent = [System.Collections.ArrayList]@()
-
     $newSectionContent += ''
 
     foreach ($property in ($Definition['properties'] | Sort-Object)) {
@@ -297,14 +295,14 @@ function Set-DefinitionSection {
             $paramIdentifierLink = '{0}.{1}' -f $ParentIdentifierLink, $parameterName
 
             # build table for definition properties
-            $tableSectionContent += ('| [`{0}`]({1}) | {2} | {3} | {4} |' -f $parameterName, $paramIdentifierLink, ($parameterValue['nullable'] ? 'No' : 'Yes'), $parameterValue['type'], $parameterValue['metadata']['description'])
+            $tableSectionContent += ('| [`{0}`]({1}) | {2} | {3} | {4} |' -f $parameterName, $paramIdentifierLink, ($parameterValue['nullable'] ? 'No' : 'Yes'), $parameterValue['type'], ($parameterValue.ContainsKey('metadata') ? $parameterValue['metadata']['description'] : $null))
 
             #build flat list for definition properties
             $listSectionContent += @(
                 '',
             ('### Parameter: `{0}`' -f $paramIdentifier),
                 '',
-            ($parameterValue['metadata']['description']),
+            ($parameterValue.ContainsKey('metadata') ? $parameterValue['metadata']['description'] : $null),
                 '',
             ('- Required: {0}' -f ($parameterValue['nullable'] ? 'No' : 'Yes')),
             ('- Type: {0}' -f $parameterValue['type']),
@@ -314,17 +312,12 @@ function Set-DefinitionSection {
             #recursive call for children
             if ($parameterValue.ContainsKey('items')) {
                 $childDefinition = $parameterValue['items']
-                #$listSectionContent += Set-DefinitionSection -TemplateFileContent $TemplateFileContent -Definition $childDefinition -ParentName $paramIdentifier -ParentIdentifierLink $paramIdentifierLink
+                $listSectionContent += Set-DefinitionSection -TemplateFileContent $TemplateFileContent -Definition $childDefinition -ParentName $paramIdentifier -ParentIdentifierLink $paramIdentifierLink
             }
         }
 
         $newSectionContent += $tableSectionContent
         $newSectionContent += $listSectionContent
-
-        foreach ($parameterName in $property.Keys | Sort-Object) {
-            $paramIdentifier = '{0}.{1}' -f $ParentName, $parameterName
-            $parameterValue = $property[$parameterName]
-        }
     }
 
     $newSectionContent += ''

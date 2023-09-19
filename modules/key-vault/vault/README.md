@@ -121,6 +121,26 @@ Optional. The name of logs that will be streamed. "allLogs" includes all possibl
 - Required: No
 - Type: array
 
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`category`](#parameter-diagnosticsettings.logCategoriesAndGroups.category) | No | string | Optional. Name of a Diagnostic Log category for a resource type this setting is applied to. Set the specific logs to collect here. |
+| [`categoryGroup`](#parameter-diagnosticsettings.logCategoriesAndGroups.categoryGroup) | No | string | Optional. Name of a Diagnostic Log category group for a resource type this setting is applied to. Set to `allLogs` to collect all logs. |
+
+### Parameter: `diagnosticSettings.logCategoriesAndGroups.category`
+
+Optional. Name of a Diagnostic Log category for a resource type this setting is applied to. Set the specific logs to collect here.
+
+- Required: No
+- Type: string
+
+### Parameter: `diagnosticSettings.logCategoriesAndGroups.categoryGroup`
+
+Optional. Name of a Diagnostic Log category group for a resource type this setting is applied to. Set to `allLogs` to collect all logs.
+
+- Required: No
+- Type: string
+
+
 ### Parameter: `diagnosticSettings.marketplacePartnerResourceId`
 
 Optional. The full ARM resource ID of the Marketplace resource to which you would like to send Diagnostic Logs.
@@ -134,6 +154,18 @@ Optional. The name of logs that will be streamed. "allLogs" includes all possibl
 
 - Required: No
 - Type: array
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`category`](#parameter-diagnosticsettings.metricCategories.category) | Yes | string | Required. Name of a Diagnostic Metric category for a resource type this setting is applied to. Set to `AllMetrics` to collect all metrics. |
+
+### Parameter: `diagnosticSettings.metricCategories.category`
+
+Required. Name of a Diagnostic Metric category for a resource type this setting is applied to. Set to `AllMetrics` to collect all metrics.
+
+- Required: Yes
+- Type: string
+
 
 ### Parameter: `diagnosticSettings.name`
 
@@ -370,12 +402,34 @@ Optional. Application security groups in which the private endpoint IP configura
 - Required: No
 - Type: array
 
+
+
 ### Parameter: `privateEndpoints.customDnsConfigs`
 
 Optional. Custom DNS configurations.
 
 - Required: No
 - Type: array
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`fqdn`](#parameter-privateendpoints.customDnsConfigs.fqdn) | No | string |  |
+| [`ipAddresses`](#parameter-privateendpoints.customDnsConfigs.ipAddresses) | Yes | array |  |
+
+### Parameter: `privateEndpoints.customDnsConfigs.fqdn`
+
+
+- Required: No
+- Type: string
+
+### Parameter: `privateEndpoints.customDnsConfigs.ipAddresses`
+
+
+- Required: Yes
+- Type: array
+
+
+
 
 ### Parameter: `privateEndpoints.customNetworkInterfaceName`
 
@@ -397,6 +451,38 @@ Optional. A list of IP configurations of the private endpoint. This will be used
 
 - Required: No
 - Type: array
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`groupId`](#parameter-privateendpoints.ipConfigurations.groupId) | Yes | string |  |
+| [`memberName`](#parameter-privateendpoints.ipConfigurations.memberName) | Yes | string |  |
+| [`name`](#parameter-privateendpoints.ipConfigurations.name) | Yes | string |  |
+| [`privateIpAddress`](#parameter-privateendpoints.ipConfigurations.privateIpAddress) | Yes | string |  |
+
+### Parameter: `privateEndpoints.ipConfigurations.groupId`
+
+
+- Required: Yes
+- Type: string
+
+### Parameter: `privateEndpoints.ipConfigurations.memberName`
+
+
+- Required: Yes
+- Type: string
+
+### Parameter: `privateEndpoints.ipConfigurations.name`
+
+
+- Required: Yes
+- Type: string
+
+### Parameter: `privateEndpoints.ipConfigurations.privateIpAddress`
+
+
+- Required: Yes
+- Type: string
+
 
 ### Parameter: `privateEndpoints.location`
 
@@ -434,12 +520,16 @@ Optional. The private DNS zone groups to associate the private endpoint with. A 
 - Required: No
 - Type: array
 
+
+
 ### Parameter: `privateEndpoints.roleAssignments`
 
 Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
 
 - Required: No
 - Type: array
+
+
 
 ### Parameter: `privateEndpoints.service`
 
