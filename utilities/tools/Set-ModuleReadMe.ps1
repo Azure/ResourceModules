@@ -279,9 +279,8 @@ function Set-DefinitionSection {
         [Parameter(Mandatory)]
         [string] $ParentIdentifierLink
     )
-    $newSectionContent = [System.Collections.ArrayList]@()
-    $newSectionContent += ''
-    $newSectionContent += @(
+    $newSectionContent = @(
+        '',
         '| Name | Required | Type | Description |',
         '| :-- | :-- | :--| :-- |'
     )
