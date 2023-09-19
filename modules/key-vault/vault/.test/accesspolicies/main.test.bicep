@@ -12,7 +12,7 @@ param resourceGroupName string = 'ms.keyvault.vaults-${serviceShort}-rg'
 param location string = deployment().location
 
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints.')
-param serviceShort string = 'kvvaccesspolicies'
+param serviceShort string = 'kvvaccesspolicy'
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
@@ -116,6 +116,11 @@ module testDeployment '../../main.bicep' = {
           ignoreMissingVnetServiceEndpoint: false
         }
       ]
+    }
+    tags: {
+      'hidden-title': 'This is visible in the resource name'
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
     }
   }
 }
