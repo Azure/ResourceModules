@@ -964,11 +964,11 @@ Optional. A switch to control whether or not to add a ARM-JSON-Parameter file ex
 Optional. A switch to control whether or not to add a Bicep usage example. Defaults to true.
 
 .EXAMPLE
-Set-DeploymentExamplesSection -ModuleRoot 'C:/key-vault/vault' -FullModuleIdentifier 'key-vault/vault' -TemplateFileContent @{ resource = @{}; ... } -ReadMeFileContent @('# Title', '', '## Section 1', ...)
+Set-UsageExamplesSection -ModuleRoot 'C:/key-vault/vault' -FullModuleIdentifier 'key-vault/vault' -TemplateFileContent @{ resource = @{}; ... } -ReadMeFileContent @('# Title', '', '## Section 1', ...)
 
 Update the given readme file's 'Usage Examples' section based on the given template file content
 #>
-function Set-DeploymentExamplesSection {
+function Set-UsageExamplesSection {
 
     [CmdletBinding(SupportsShouldProcess)]
     param (
@@ -1723,7 +1723,7 @@ function Set-ModuleReadMe {
             ReadMeFileContent    = $readMeFileContent
             TemplateFileContent  = $templateFileContent
         }
-        $readMeFileContent = Set-DeploymentExamplesSection @inputObject
+        $readMeFileContent = Set-UsageExamplesSection @inputObject
     }
 
     if ($SectionsToRefresh -contains 'Navigation') {

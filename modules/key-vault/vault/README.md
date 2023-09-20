@@ -8,7 +8,7 @@ This module deploys a Key Vault.
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
-- [Deployment examples](#Deployment-examples)
+- [Usage examples](#Usage-examples)
 
 ## Resource Types
 
@@ -753,7 +753,7 @@ This section gives you an overview of all local-referenced module files (i.e., o
 | :-- | :-- |
 | `network/private-endpoint` | Local reference |
 
-## Deployment examples
+## Usage examples
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
    >**Note**: The name of each example is based on the name of the file from which it is taken.
