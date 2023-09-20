@@ -12,7 +12,7 @@ param resourceGroupName string = 'ms.keyvault.vaults-${serviceShort}-rg'
 param location string = deployment().location
 
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints.')
-param serviceShort string = 'kvvaccesspolicy'
+param serviceShort string = 'kvaccesspol'
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
@@ -46,7 +46,7 @@ module diagnosticDependencies '../../../../.shared/.templates/diagnostic.depende
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-diagnosticDependencies'
   params: {
-    storageAccountName: 'dep${namePrefix}sa${serviceShort}03'
+    storageAccountName: 'dep${namePrefix}diasa${serviceShort}03'
     logAnalyticsWorkspaceName: 'dep-${namePrefix}-law-${serviceShort}'
     eventHubNamespaceEventHubName: 'dep-${namePrefix}-evh-${serviceShort}01'
     eventHubNamespaceName: 'dep-${namePrefix}-evhns-${serviceShort}01'
