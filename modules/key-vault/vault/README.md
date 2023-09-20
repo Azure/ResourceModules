@@ -410,10 +410,10 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module vault './key-vault/vault/main.bicep' = {
-  name: '${uniqueString(deployment().name, location)}-test-kvvaccesspol'
+  name: '${uniqueString(deployment().name, location)}-test-kvvrbac'
   params: {
     // Required parameters
-    name: 'kvvaccesspol002'
+    name: 'kvvrbac002'
     // Non-required parameters
     accessPolicies: [
       {
@@ -490,7 +490,7 @@ module vault './key-vault/vault/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "kvvaccesspol002"
+      "value": "kvvrbac002"
     },
     // Non-required parameters
     "accessPolicies": {
