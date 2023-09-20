@@ -6,17 +6,13 @@ targetScope = 'subscription'
 
 @description('Optional. The name of the resource group to deploy for testing purposes.')
 @maxLength(90)
-param resourceGroupName string = 'ms.dbformysql.flexibleservers-${serviceShort}-rg'
+param resourceGroupName string = 'ms.cache.redisenterprise-${serviceShort}-rg'
 
 @description('Optional. The location to deploy resources to.')
 param location string = deployment().location
 
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints.')
-param serviceShort string = 'dfmsfspvt'
-
-@description('Optional. The password to leverage for the login.')
-@secure()
-param password string = newGuid()
+param serviceShort string = 'crecom'
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
@@ -30,7 +26,7 @@ param namePrefix string = '[[namePrefix]]'
 
 // General resources
 // =================
-resource resourceGroup 'Microsoft.Resources/resourceGroups@2022-09-01' = {
+resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   name: resourceGroupName
   location: location
 }
@@ -40,7 +36,7 @@ module nestedDependencies 'dependencies.bicep' = {
   name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
     virtualNetworkName: 'dep-${namePrefix}-vnet-${serviceShort}'
-    managedIdentityName: 'dep-${namePrefix}-msi-${serviceShort}'
+    managedIdentityName: 'dep-${namePrefix}-msi-ds-${serviceShort}'
   }
 }
 
@@ -68,7 +64,12 @@ module testDeployment '../../main.bicep' = {
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '${namePrefix}${serviceShort}001'
-    location: resourceGroup.location
+    capacity: 2
+    diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
+    diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
+    diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
+    diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
+    diagnosticSettingsName: 'redisdiagnostics'
     lock: 'CanNotDelete'
     roleAssignments: [
       {
@@ -79,42 +80,46 @@ module testDeployment '../../main.bicep' = {
         principalType: 'ServicePrincipal'
       }
     ]
-    tags: {
-      'hidden-title': 'This is visible in the resource name'
-      resourceType: 'MySQL Flexible Server'
-      serverName: '${namePrefix}${serviceShort}001'
-    }
-    administratorLogin: 'adminUserName'
-    administratorLoginPassword: password
-    skuName: 'Standard_D2ds_v4'
-    tier: 'GeneralPurpose'
-    delegatedSubnetResourceId: nestedDependencies.outputs.subnetResourceId
-    privateDnsZoneResourceId: nestedDependencies.outputs.privateDNSResourceId
-    storageAutoIoScaling: 'Enabled'
-    storageSizeGB: 64
-    storageIOPS: 400
-    backupRetentionDays: 10
+    minimumTlsVersion: '1.2'
+    zoneRedundant: true
+    privateEndpoints: [
+      {
+        privateDnsZoneGroup: {
+          privateDNSResourceIds: [
+            nestedDependencies.outputs.privateDNSResourceId
+          ]
+        }
+        service: 'redisEnterprise'
+        subnetResourceId: nestedDependencies.outputs.subnetResourceId
+        tags: {
+          'hidden-title': 'This is visible in the resource name'
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
+      }
+    ]
     databases: [
       {
-
-        name: 'testdb1'
+        clusteringPolicy: 'EnterpriseCluster'
+        evictionPolicy: 'AllKeysLFU'
+        modules: [
+          {
+            name: 'RedisBloom'
+          }
+          {
+            name: 'RedisTimeSeries'
+            args: 'RETENTION_POLICY 20'
+          }
+        ]
+        persistenceAofEnabled: true
+        persistenceAofFrequency: '1s'
+        persistenceRdbEnabled: false
+        port: 10000
       }
     ]
-    highAvailability: 'SameZone'
-    storageAutoGrow: 'Enabled'
-    userAssignedIdentities: {
-      '${nestedDependencies.outputs.managedIdentityResourceId}': {}
+    tags: {
+      'hidden-title': 'This is visible in the resource name'
+      resourceType: 'Redis Cache Enterprise'
     }
-    diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
-    diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
-    diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
-    diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
-    administrators: [
-      {
-        identityResourceId: nestedDependencies.outputs.managedIdentityResourceId
-        login: nestedDependencies.outputs.managedIdentityName
-        sid: nestedDependencies.outputs.managedIdentityPrincipalId
-      }
-    ]
   }
 }

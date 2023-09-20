@@ -1,0 +1,51 @@
+name: 'Cache - Redis Enterprise'
+
+parameters:
+  - name: staticValidation
+    displayName: Execute static validation
+    type: boolean
+    default: true
+  - name: deploymentValidation
+    displayName: Execute deployment validation
+    type: boolean
+    default: true
+  - name: removeDeployment
+    displayName: Remove deployed module
+    type: boolean
+    default: true
+  - name: prerelease
+    displayName: Publish prerelease module
+    type: boolean
+    default: false
+
+pr: none
+
+trigger:
+  batch: true
+  branches:
+    include:
+      - main
+  paths:
+    include:
+      - '/modules/cache/redis-enterprise/*'
+      - '/modules/network/private-endpoint/*'
+      - '/.azuredevops/modulePipelines/ms.cache.redisenterprise.yml'
+      - '/.azuredevops/pipelineTemplates/*.yml'
+      - '/utilities/pipelines/*'
+    exclude:
+      - '/utilities/pipelines/deploymentRemoval/*'
+      - '/**/*.md'
+
+variables:
+  - template: '../../settings.yml'
+  - group: 'PLATFORM_VARIABLES'
+  - name: modulePath
+    value: '/modules/cache/redis-enterprise'
+
+stages:
+  - template: /.azuredevops/pipelineTemplates/stages.module.yml
+    parameters:
+      staticValidation: '${{ parameters.staticValidation }}'
+      deploymentValidation: '${{ parameters.deploymentValidation }}'
+      removeDeployment: '${{ parameters.removeDeployment }}'
+      prerelease: '${{ parameters.prerelease }}'

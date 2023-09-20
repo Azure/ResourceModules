@@ -23,14 +23,6 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2023-04-01' = {
         name: 'defaultSubnet'
         properties: {
           addressPrefix: cidrSubnet(addressPrefix, 16, 0)
-          delegations: [
-            {
-              name: 'Microsoft.DBforMySQL.flexibleServers'
-              properties: {
-                serviceName: 'Microsoft.DBforMySQL/flexibleServers'
-              }
-            }
-          ]
         }
       }
     ]
@@ -38,7 +30,7 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2023-04-01' = {
 }
 
 resource privateDNSZone 'Microsoft.Network/privateDnsZones@2020-06-01' = {
-  name: 'private.mysql.database.azure.com'
+  name: 'privatelink.redisenterprise.cache.azure.net'
   location: 'global'
 
   resource virtualNetworkLinks 'virtualNetworkLinks@2020-06-01' = {
@@ -53,7 +45,7 @@ resource privateDNSZone 'Microsoft.Network/privateDnsZones@2020-06-01' = {
   }
 }
 
-resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' = {
+resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' = {
   name: managedIdentityName
   location: location
 }
@@ -63,12 +55,6 @@ output subnetResourceId string = virtualNetwork.properties.subnets[0].id
 
 @description('The resource ID of the created Private DNS Zone.')
 output privateDNSResourceId string = privateDNSZone.id
-
-@description('The name of the created Managed Identity.')
-output managedIdentityName string = managedIdentity.name
-
-@description('The resource ID of the created Managed Identity.')
-output managedIdentityResourceId string = managedIdentity.id
 
 @description('The principal ID of the created Managed Identity.')
 output managedIdentityPrincipalId string = managedIdentity.properties.principalId
