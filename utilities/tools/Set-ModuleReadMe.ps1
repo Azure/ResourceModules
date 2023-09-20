@@ -1504,9 +1504,13 @@ function Initialize-ReadMe {
             ''
             '## Resource Types',
             '',
+            '## Usage examples',
+            '',
             '## Parameters',
             '',
-            '## Outputs'
+            '## Outputs',
+            '',
+            '## Cross-referenced modules'
         )
         $readMeFileContent = $initialContent
     } else {
@@ -1610,21 +1614,21 @@ function Set-ModuleReadMe {
         [Parameter(Mandatory = $false)]
         [ValidateSet(
             'Resource Types',
+            'Usage examples',
             'Parameters',
             'Outputs',
             'CrossReferences',
             'Template references',
-            'Navigation',
-            'Usage examples'
+            'Navigation'
         )]
         [string[]] $SectionsToRefresh = @(
             'Resource Types',
+            'Usage examples',
             'Parameters',
             'Outputs',
             'CrossReferences',
             'Template references',
-            'Navigation',
-            'Usage examples'
+            'Navigation'
         )
     )
 
@@ -1679,6 +1683,20 @@ function Set-ModuleReadMe {
         $readMeFileContent = Set-ResourceTypesSection @inputObject
     }
 
+    $testFolderPath = Join-Path $moduleRoot '.test'
+    $hasTests = (Test-Path $testFolderPath) ? (Get-ChildItem -Path $testFolderPath -Recurse -Include 'main.test.*').count -gt 0 : $false
+    if ($SectionsToRefresh -contains 'Usage examples' -and $hasTests) {
+        # Handle [Usage examples] section
+        # ===================================
+        $inputObject = @{
+            ModuleRoot           = $ModuleRoot
+            FullModuleIdentifier = $fullModuleIdentifier
+            ReadMeFileContent    = $readMeFileContent
+            TemplateFileContent  = $templateFileContent
+        }
+        $readMeFileContent = Set-UsageExamplesSection @inputObject
+    }
+
     if ($SectionsToRefresh -contains 'Parameters') {
         # Handle [Parameters] section
         # ===========================
@@ -1710,20 +1728,6 @@ function Set-ModuleReadMe {
             TemplateFileContent  = $templateFileContent
         }
         $readMeFileContent = Set-CrossReferencesSection @inputObject
-    }
-
-    $testFolderPath = Join-Path $moduleRoot '.test'
-    $hasTests = (Test-Path $testFolderPath) ? (Get-ChildItem -Path $testFolderPath -Recurse -Include 'main.test.*').count -gt 0 : $false
-    if ($SectionsToRefresh -contains 'Usage examples' -and $hasTests) {
-        # Handle [Usage examples] section
-        # ===================================
-        $inputObject = @{
-            ModuleRoot           = $ModuleRoot
-            FullModuleIdentifier = $fullModuleIdentifier
-            ReadMeFileContent    = $readMeFileContent
-            TemplateFileContent  = $templateFileContent
-        }
-        $readMeFileContent = Set-UsageExamplesSection @inputObject
     }
 
     if ($SectionsToRefresh -contains 'Navigation') {
