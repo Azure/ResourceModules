@@ -47,7 +47,7 @@ This module deploys a Key Vault.
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `enablePurgeProtection` | bool | `True` |  | Provide 'true' to enable Key Vault's purge protection feature. |
-| `enableRbacAuthorization` | bool | `False` |  | Property that controls how data actions are authorized. When true, the key vault will use Role Based Access Control (RBAC) for authorization of data actions, and the access policies specified in vault properties will be ignored (warning: this is a preview feature). When false, the key vault will use the access policies specified in vault properties, and any policy stored on Azure Resource Manager will be ignored. If null or not specified, the vault is created with the default value of false. Note that management actions are always authorized with RBAC. |
+| `enableRbacAuthorization` | bool | `True` |  | Property that controls how data actions are authorized. When true, the key vault will use Role Based Access Control (RBAC) for authorization of data actions, and the access policies specified in vault properties will be ignored (warning: this is a preview feature). When false, the key vault will use the access policies specified in vault properties, and any policy stored on Azure Resource Manager will be ignored. If null or not specified, the vault is created with the default value of false. Note that management actions are always authorized with RBAC. |
 | `enableSoftDelete` | bool | `True` |  | Switch to enable/disable Key Vault's soft delete feature. |
 | `enableVaultForDeployment` | bool | `True` |  | Specifies if the vault is enabled for deployment by script or compute. |
 | `enableVaultForDiskEncryption` | bool | `True` |  | Specifies if the azure platform has access to the vault for enabling disk encryption scenarios. |
@@ -883,7 +883,6 @@ module vault './key-vault/vault/main.bicep' = {
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     enablePurgeProtection: false
-    enableRbacAuthorization: true
   }
 }
 ```
@@ -910,9 +909,6 @@ module vault './key-vault/vault/main.bicep' = {
     },
     "enablePurgeProtection": {
       "value": false
-    },
-    "enableRbacAuthorization": {
-      "value": true
     }
   }
 }
