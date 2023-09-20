@@ -937,10 +937,10 @@ function ConvertTo-FormattedBicep {
 
 <#
 .SYNOPSIS
-Generate 'Deployment examples' for the ReadMe out of the parameter files currently used to test the template
+Generate 'Usage examples' for the ReadMe out of the parameter files currently used to test the template
 
 .DESCRIPTION
-Generate 'Deployment examples' for the ReadMe out of the parameter files currently used to test the template
+Generate 'Usage examples' for the ReadMe out of the parameter files currently used to test the template
 
 .PARAMETER ModuleRoot
 Mandatory. The file path to the module's root
@@ -955,18 +955,18 @@ Mandatory. The template file content object to crawl data from
 Mandatory. The readme file content array to update
 
 .PARAMETER SectionStartIdentifier
-Optional. The identifier of the 'outputs' section. Defaults to '## Deployment examples'
+Optional. The identifier of the 'outputs' section. Defaults to '## Usage examples'
 
 .PARAMETER addJson
 Optional. A switch to control whether or not to add a ARM-JSON-Parameter file example. Defaults to true.
 
 .PARAMETER addBicep
-Optional. A switch to control whether or not to add a Bicep deployment example. Defaults to true.
+Optional. A switch to control whether or not to add a Bicep usage example. Defaults to true.
 
 .EXAMPLE
 Set-DeploymentExamplesSection -ModuleRoot 'C:/key-vault/vault' -FullModuleIdentifier 'key-vault/vault' -TemplateFileContent @{ resource = @{}; ... } -ReadMeFileContent @('# Title', '', '## Section 1', ...)
 
-Update the given readme file's 'Deployment Examples' section based on the given template file content
+Update the given readme file's 'Usage Examples' section based on the given template file content
 #>
 function Set-DeploymentExamplesSection {
 
@@ -991,7 +991,7 @@ function Set-DeploymentExamplesSection {
         [bool] $addBicep = $true,
 
         [Parameter(Mandatory = $false)]
-        [string] $SectionStartIdentifier = '## Deployment examples'
+        [string] $SectionStartIdentifier = '## Usage examples'
     )
 
     # Load used function(s)
@@ -1615,7 +1615,7 @@ function Set-ModuleReadMe {
             'CrossReferences',
             'Template references',
             'Navigation',
-            'Deployment examples'
+            'Usage examples'
         )]
         [string[]] $SectionsToRefresh = @(
             'Resource Types',
@@ -1624,7 +1624,7 @@ function Set-ModuleReadMe {
             'CrossReferences',
             'Template references',
             'Navigation',
-            'Deployment examples'
+            'Usage examples'
         )
     )
 
@@ -1714,8 +1714,8 @@ function Set-ModuleReadMe {
 
     $testFolderPath = Join-Path $moduleRoot '.test'
     $hasTests = (Test-Path $testFolderPath) ? (Get-ChildItem -Path $testFolderPath -Recurse -Include 'main.test.*').count -gt 0 : $false
-    if ($SectionsToRefresh -contains 'Deployment examples' -and $hasTests) {
-        # Handle [Deployment examples] section
+    if ($SectionsToRefresh -contains 'Usage examples' -and $hasTests) {
+        # Handle [Usage examples] section
         # ===================================
         $inputObject = @{
             ModuleRoot           = $ModuleRoot
