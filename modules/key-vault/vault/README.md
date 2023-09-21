@@ -47,7 +47,7 @@ This module deploys a Key Vault.
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `enablePurgeProtection` | bool | `True` |  | Provide 'true' to enable Key Vault's purge protection feature. |
-| `enableRbacAuthorization` | bool | `False` |  | Property that controls how data actions are authorized. When true, the key vault will use Role Based Access Control (RBAC) for authorization of data actions, and the access policies specified in vault properties will be ignored (warning: this is a preview feature). When false, the key vault will use the access policies specified in vault properties, and any policy stored on Azure Resource Manager will be ignored. If null or not specified, the vault is created with the default value of false. Note that management actions are always authorized with RBAC. |
+| `enableRbacAuthorization` | bool | `True` |  | Property that controls how data actions are authorized. When true, the key vault will use Role Based Access Control (RBAC) for authorization of data actions, and the access policies specified in vault properties will be ignored. When false, the key vault will use the access policies specified in vault properties, and any policy stored on Azure Resource Manager will be ignored. Note that management actions are always authorized with RBAC. |
 | `enableSoftDelete` | bool | `True` |  | Switch to enable/disable Key Vault's soft delete feature. |
 | `enableVaultForDeployment` | bool | `True` |  | Specifies if the vault is enabled for deployment by script or compute. |
 | `enableVaultForDiskEncryption` | bool | `True` |  | Specifies if the azure platform has access to the vault for enabling disk encryption scenarios. |
@@ -402,7 +402,7 @@ The following module usage examples are retrieved from the content of the files 
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Common</h3>
+<h3>Example 1: Accesspolicies</h3>
 
 <details>
 
@@ -410,9 +410,11 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module vault './key-vault/vault/main.bicep' = {
-  name: '${uniqueString(deployment().name, location)}-test-kvvcom'
+  name: '${uniqueString(deployment().name, location)}-test-kvvap'
   params: {
-    name: 'kvvcom002'
+    // Required parameters
+    name: 'kvvap002'
+    // Non-required parameters
     accessPolicies: [
       {
         objectId: '<objectId>'
@@ -423,7 +425,8 @@ module vault './key-vault/vault/main.bicep' = {
             'update'
           ]
           secrets: [
-            'all'
+            'get'
+            'list'
           ]
         }
         tenantId: '<tenantId>'
@@ -437,7 +440,8 @@ module vault './key-vault/vault/main.bicep' = {
             'delete'
           ]
           secrets: [
-            'all'
+            'get'
+            'list'
           ]
         }
       }
@@ -448,7 +452,147 @@ module vault './key-vault/vault/main.bicep' = {
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     enablePurgeProtection: false
-    enableRbacAuthorization: false
+    networkAcls: {
+      bypass: 'AzureServices'
+      defaultAction: 'Deny'
+      ipRules: [
+        {
+          value: '40.74.28.0/23'
+        }
+      ]
+      virtualNetworkRules: [
+        {
+          id: '<id>'
+          ignoreMissingVnetServiceEndpoint: false
+        }
+      ]
+    }
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "kvvap002"
+    },
+    // Non-required parameters
+    "accessPolicies": {
+      "value": [
+        {
+          "objectId": "<objectId>",
+          "permissions": {
+            "keys": [
+              "get",
+              "list",
+              "update"
+            ],
+            "secrets": [
+              "get",
+              "list"
+            ]
+          },
+          "tenantId": "<tenantId>"
+        },
+        {
+          "objectId": "<objectId>",
+          "permissions": {
+            "certificates": [
+              "backup",
+              "create",
+              "delete"
+            ],
+            "secrets": [
+              "get",
+              "list"
+            ]
+          }
+        }
+      ]
+    },
+    "diagnosticEventHubAuthorizationRuleId": {
+      "value": "<diagnosticEventHubAuthorizationRuleId>"
+    },
+    "diagnosticEventHubName": {
+      "value": "<diagnosticEventHubName>"
+    },
+    "diagnosticStorageAccountId": {
+      "value": "<diagnosticStorageAccountId>"
+    },
+    "diagnosticWorkspaceId": {
+      "value": "<diagnosticWorkspaceId>"
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "enablePurgeProtection": {
+      "value": false
+    },
+    "networkAcls": {
+      "value": {
+        "bypass": "AzureServices",
+        "defaultAction": "Deny",
+        "ipRules": [
+          {
+            "value": "40.74.28.0/23"
+          }
+        ],
+        "virtualNetworkRules": [
+          {
+            "id": "<id>",
+            "ignoreMissingVnetServiceEndpoint": false
+          }
+        ]
+      }
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2: Common</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module vault './key-vault/vault/main.bicep' = {
+  name: '${uniqueString(deployment().name, location)}-test-kvvcom'
+  params: {
+    name: 'kvvcom002'
+    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<diagnosticEventHubName>'
+    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
+    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    enablePurgeProtection: false
+    enableRbacAuthorization: true
     keys: [
       {
         attributesExp: 1725109032
@@ -574,37 +718,6 @@ module vault './key-vault/vault/main.bicep' = {
     "name": {
       "value": "kvvcom002"
     },
-    "accessPolicies": {
-      "value": [
-        {
-          "objectId": "<objectId>",
-          "permissions": {
-            "keys": [
-              "get",
-              "list",
-              "update"
-            ],
-            "secrets": [
-              "all"
-            ]
-          },
-          "tenantId": "<tenantId>"
-        },
-        {
-          "objectId": "<objectId>",
-          "permissions": {
-            "certificates": [
-              "backup",
-              "create",
-              "delete"
-            ],
-            "secrets": [
-              "all"
-            ]
-          }
-        }
-      ]
-    },
     "diagnosticEventHubAuthorizationRuleId": {
       "value": "<diagnosticEventHubAuthorizationRuleId>"
     },
@@ -624,7 +737,7 @@ module vault './key-vault/vault/main.bicep' = {
       "value": false
     },
     "enableRbacAuthorization": {
-      "value": false
+      "value": true
     },
     "keys": {
       "value": [
@@ -755,7 +868,7 @@ module vault './key-vault/vault/main.bicep' = {
 </details>
 <p>
 
-<h3>Example 2: Min</h3>
+<h3>Example 3: Min</h3>
 
 <details>
 
@@ -804,7 +917,7 @@ module vault './key-vault/vault/main.bicep' = {
 </details>
 <p>
 
-<h3>Example 3: Pe</h3>
+<h3>Example 4: Pe</h3>
 
 <details>
 
@@ -817,14 +930,35 @@ module vault './key-vault/vault/main.bicep' = {
     // Required parameters
     name: 'kvvpe001'
     // Non-required parameters
+    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<diagnosticEventHubName>'
+    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
+    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     enablePurgeProtection: false
+    enableRbacAuthorization: true
+    networkAcls: {
+      bypass: 'AzureServices'
+      defaultAction: 'Deny'
+      ipRules: [
+        {
+          value: '40.74.28.0/23'
+        }
+      ]
+      virtualNetworkRules: [
+        {
+          id: '<id>'
+          ignoreMissingVnetServiceEndpoint: false
+        }
+      ]
+    }
     privateEndpoints: [
       {
         privateDnsZoneGroup: {
           privateDNSResourceIds: [
             '<privateDNSResourceId>'
           ]
+          privateEndpointName: 'dep-pe-kvvpe'
         }
         service: 'vault'
         subnetResourceId: '<subnetResourceId>'
@@ -861,11 +995,43 @@ module vault './key-vault/vault/main.bicep' = {
       "value": "kvvpe001"
     },
     // Non-required parameters
+    "diagnosticEventHubAuthorizationRuleId": {
+      "value": "<diagnosticEventHubAuthorizationRuleId>"
+    },
+    "diagnosticEventHubName": {
+      "value": "<diagnosticEventHubName>"
+    },
+    "diagnosticStorageAccountId": {
+      "value": "<diagnosticStorageAccountId>"
+    },
+    "diagnosticWorkspaceId": {
+      "value": "<diagnosticWorkspaceId>"
+    },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     },
     "enablePurgeProtection": {
       "value": false
+    },
+    "enableRbacAuthorization": {
+      "value": true
+    },
+    "networkAcls": {
+      "value": {
+        "bypass": "AzureServices",
+        "defaultAction": "Deny",
+        "ipRules": [
+          {
+            "value": "40.74.28.0/23"
+          }
+        ],
+        "virtualNetworkRules": [
+          {
+            "id": "<id>",
+            "ignoreMissingVnetServiceEndpoint": false
+          }
+        ]
+      }
     },
     "privateEndpoints": {
       "value": [
@@ -873,7 +1039,8 @@ module vault './key-vault/vault/main.bicep' = {
           "privateDnsZoneGroup": {
             "privateDNSResourceIds": [
               "<privateDNSResourceId>"
-            ]
+            ],
+            "privateEndpointName": "dep-pe-kvvpe"
           },
           "service": "vault",
           "subnetResourceId": "<subnetResourceId>",

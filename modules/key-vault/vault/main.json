@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.20.4.51522",
-      "templateHash": "2793046889488207368"
+      "version": "0.21.1.54444",
+      "templateHash": "7677613016975773230"
     },
     "name": "Key Vaults",
     "description": "This module deploys a Key Vault.",
@@ -84,9 +84,9 @@
     },
     "enableRbacAuthorization": {
       "type": "bool",
-      "defaultValue": false,
+      "defaultValue": true,
       "metadata": {
-        "description": "Optional. Property that controls how data actions are authorized. When true, the key vault will use Role Based Access Control (RBAC) for authorization of data actions, and the access policies specified in vault properties will be ignored (warning: this is a preview feature). When false, the key vault will use the access policies specified in vault properties, and any policy stored on Azure Resource Manager will be ignored. If null or not specified, the vault is created with the default value of false. Note that management actions are always authorized with RBAC."
+        "description": "Optional. Property that controls how data actions are authorized. When true, the key vault will use Role Based Access Control (RBAC) for authorization of data actions, and the access policies specified in vault properties will be ignored. When false, the key vault will use the access policies specified in vault properties, and any policy stored on Azure Resource Manager will be ignored. Note that management actions are always authorized with RBAC."
       }
     },
     "createMode": {
@@ -369,8 +369,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.20.4.51522",
-              "templateHash": "7542638391604115549"
+              "version": "0.21.1.54444",
+              "templateHash": "10458348557666655329"
             },
             "name": "Key Vault Access Policies",
             "description": "This module deploys a Key Vault Access Policy.",
@@ -504,8 +504,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.20.4.51522",
-              "templateHash": "3581368535918618501"
+              "version": "0.21.1.54444",
+              "templateHash": "4314059595515029873"
             },
             "name": "Key Vault Secrets",
             "description": "This module deploys a Key Vault Secret.",
@@ -644,8 +644,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.20.4.51522",
-                      "templateHash": "4251680927905962776"
+                      "version": "0.21.1.54444",
+                      "templateHash": "15814620610091788537"
                     }
                   },
                   "parameters": {
@@ -839,8 +839,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.20.4.51522",
-              "templateHash": "7510105499462799965"
+              "version": "0.21.1.54444",
+              "templateHash": "13427300513937033652"
             },
             "name": "Key Vault Keys",
             "description": "This module deploys a Key Vault Key.",
@@ -1025,8 +1025,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.20.4.51522",
-                      "templateHash": "3968881335142586299"
+                      "version": "0.21.1.54444",
+                      "templateHash": "8510219443070850278"
                     }
                   },
                   "parameters": {
@@ -1226,8 +1226,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.20.4.51522",
-              "templateHash": "13560297539192628062"
+              "version": "0.21.1.54444",
+              "templateHash": "17036874096652764314"
             },
             "name": "Private Endpoints",
             "description": "This module deploys a Private Endpoint.",
@@ -1426,8 +1426,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.20.4.51522",
-                      "templateHash": "17831763001460207830"
+                      "version": "0.21.1.54444",
+                      "templateHash": "2469208411936339153"
                     },
                     "name": "Private Endpoint Private DNS Zone Groups",
                     "description": "This module deploys a Private Endpoint Private DNS Zone Group.",
@@ -1564,8 +1564,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.20.4.51522",
-                      "templateHash": "11548486149222715894"
+                      "version": "0.21.1.54444",
+                      "templateHash": "13032708393704093995"
                     }
                   },
                   "parameters": {
@@ -1778,8 +1778,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.20.4.51522",
-              "templateHash": "18089760146236492183"
+              "version": "0.21.1.54444",
+              "templateHash": "12411629325302614699"
             }
           },
           "parameters": {

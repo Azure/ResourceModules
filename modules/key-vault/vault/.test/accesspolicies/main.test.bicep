@@ -12,7 +12,7 @@ param resourceGroupName string = 'ms.keyvault.vaults-${serviceShort}-rg'
 param location string = deployment().location
 
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints.')
-param serviceShort string = 'kvvcom'
+param serviceShort string = 'kvvap'
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
@@ -35,8 +35,8 @@ module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
-    virtualNetworkName: 'dep-${namePrefix}-vnet-${serviceShort}'
     managedIdentityName: 'dep-${namePrefix}-msi-${serviceShort}'
+    virtualNetworkName: 'dep-${namePrefix}-vnet-${serviceShort}'
   }
 }
 
@@ -64,54 +64,42 @@ module testDeployment '../../main.bicep' = {
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '${namePrefix}${serviceShort}002'
-
     diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
     diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
     diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
     diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
-    // Only for testing purposes
     enablePurgeProtection: false
-    enableRbacAuthorization: true
-    keys: [
+    accessPolicies: [
       {
-        attributesExp: 1725109032
-        attributesNbf: 10000
-        name: 'keyName'
-        roleAssignments: [
-          {
-            roleDefinitionIdOrName: 'Reader'
-            principalIds: [
-              nestedDependencies.outputs.managedIdentityPrincipalId
-            ]
-            principalType: 'ServicePrincipal'
-          }
-        ]
-        rotationPolicy: {
-          attributes: {
-            expiryTime: 'P2Y'
-          }
-          lifetimeActions: [
-            {
-              trigger: {
-                timeBeforeExpiry: 'P2M'
-              }
-              action: {
-                type: 'Rotate'
-              }
-            }
-            {
-              trigger: {
-                timeBeforeExpiry: 'P30D'
-              }
-              action: {
-                type: 'Notify'
-              }
-            }
+        objectId: nestedDependencies.outputs.managedIdentityPrincipalId
+        permissions: {
+          keys: [
+            'get'
+            'list'
+            'update'
+          ]
+          secrets: [
+            'get'
+            'list'
+          ]
+        }
+        tenantId: tenant().tenantId
+      }
+      {
+        objectId: nestedDependencies.outputs.managedIdentityPrincipalId
+        permissions: {
+          certificates: [
+            'backup'
+            'create'
+            'delete'
+          ]
+          secrets: [
+            'get'
+            'list'
           ]
         }
       }
     ]
-    lock: 'CanNotDelete'
     networkAcls: {
       bypass: 'AzureServices'
       defaultAction: 'Deny'
@@ -127,52 +115,6 @@ module testDeployment '../../main.bicep' = {
         }
       ]
     }
-    privateEndpoints: [
-      {
-        privateDnsZoneGroup: {
-          privateDNSResourceIds: [
-            nestedDependencies.outputs.privateDNSResourceId
-          ]
-        }
-        service: 'vault'
-        subnetResourceId: nestedDependencies.outputs.subnetResourceId
-        tags: {
-          'hidden-title': 'This is visible in the resource name'
-          Environment: 'Non-Prod'
-          Role: 'DeploymentValidation'
-        }
-      }
-    ]
-    roleAssignments: [
-      {
-        roleDefinitionIdOrName: 'Reader'
-        principalIds: [
-          nestedDependencies.outputs.managedIdentityPrincipalId
-        ]
-        principalType: 'ServicePrincipal'
-      }
-    ]
-    secrets: {
-      secureList: [
-        {
-          attributesExp: 1702648632
-          attributesNbf: 10000
-          contentType: 'Something'
-          name: 'secretName'
-          roleAssignments: [
-            {
-              roleDefinitionIdOrName: 'Reader'
-              principalIds: [
-                nestedDependencies.outputs.managedIdentityPrincipalId
-              ]
-              principalType: 'ServicePrincipal'
-            }
-          ]
-          value: 'secretValue'
-        }
-      ]
-    }
-    softDeleteRetentionInDays: 7
     tags: {
       'hidden-title': 'This is visible in the resource name'
       Environment: 'Non-Prod'
