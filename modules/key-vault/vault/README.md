@@ -31,6 +31,8 @@ The following module usage examples are retrieved from the content of the files 
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
+   >**Note**: To reference the module, please use the following syntax `br/public:avm-res-keyvault-vault:1.0.0`.
+
 <h3>Example 1: Common</h3>
 
 <details>
@@ -1292,4 +1294,6 @@ This section gives you an overview of all local-referenced module files (i.e., o
 
 | Reference | Type |
 | :-- | :-- |
+| `network/private-endpoint` | Local reference |
+
 | `network/private-endpoint` | Local reference |

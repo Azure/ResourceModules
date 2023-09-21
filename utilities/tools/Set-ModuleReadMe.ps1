@@ -996,6 +996,9 @@ function Set-UsageExamplesSection {
 
     # Load used function(s)
     . (Join-Path (Split-Path $PSScriptRoot -Parent) 'pipelines' 'sharedScripts' 'Get-ModuleTestFileList.ps1')
+    . (Join-Path (Split-Path $PSScriptRoot -Parent) 'tools' 'Get-BRMRepositoryName.ps1')
+
+    $brLink = Get-BRMRepositoryName -TemplateFilePath $TemplateFilePath
 
     # Process content
     $SectionContent = [System.Collections.ArrayList]@(
@@ -1003,6 +1006,8 @@ function Set-UsageExamplesSection {
         '   >**Note**: The name of each example is based on the name of the file from which it is taken.',
         '',
         '   >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.',
+        '',
+        ('   >**Note**: To reference the module, please use the following syntax `br/public:{0}:1.0.0`.' -f $brLink),
         ''
     )
 
