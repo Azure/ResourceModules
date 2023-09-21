@@ -40,7 +40,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module vault './key-vault/vault/main.bicep' = {
+module vault 'br/public:avm-res-keyvault-vault:1.0.0' = {
   name: '${uniqueString(deployment().name, location)}-test-kvvcom'
   params: {
     name: 'kvvcom002'
@@ -433,7 +433,7 @@ module vault './key-vault/vault/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module vault './key-vault/vault/main.bicep' = {
+module vault 'br/public:avm-res-keyvault-vault:1.0.0' = {
   name: '${uniqueString(deployment().name, location)}-test-kvvmin'
   params: {
     // Required parameters
@@ -482,7 +482,7 @@ module vault './key-vault/vault/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module vault './key-vault/vault/main.bicep' = {
+module vault 'br/public:avm-res-keyvault-vault:1.0.0' = {
   name: '${uniqueString(deployment().name, location)}-test-kvvpe'
   params: {
     // Required parameters

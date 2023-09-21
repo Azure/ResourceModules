@@ -1086,9 +1086,8 @@ function Set-UsageExamplesSection {
 
             # [3/6] Format header, remove scope property & any empty line
             $rawBicepExample = $rawBicepExampleString -split '\n'
-            $rawBicepExample[0] = "module $moduleNameCamelCase './$fullModuleIdentifier/main.bicep' = {"
+            $rawBicepExample[0] = "module $moduleNameCamelCase 'br/public:$($brLink):1.0.0' = {"
             $rawBicepExample = $rawBicepExample | Where-Object { $_ -notmatch 'scope: *' } | Where-Object { -not [String]::IsNullOrEmpty($_) }
-
             # [4/6] Extract param block
             $rawBicepExampleArray = $rawBicepExample -split '\n'
             $moduleDeploymentPropertyIndent = ([regex]::Match($rawBicepExampleArray[1], '^(\s+).*')).Captures.Groups[1].Value.Length
