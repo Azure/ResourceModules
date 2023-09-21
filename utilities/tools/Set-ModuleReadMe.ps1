@@ -265,6 +265,31 @@ function Set-ParametersSection {
     return $updatedFileContent
 }
 
+<#
+.SYNOPSIS
+Update parts of the 'parameters' section of the given readme file, if user defined types are used
+
+.DESCRIPTION
+Adds user defined types to the 'parameters' section of the given readme file
+
+.PARAMETER TemplateFileContent
+Mandatory. The template file content object to crawl data from
+
+.PARAMETER Properties
+Mandatory. Hashtable of the user defined properties
+
+.PARAMETER ParentName
+Mandatory. Name of the parameter, that has the user defined types
+
+.PARAMETER ParentIdentifierLink
+Mandatory. Link of the parameter, that has the user defined types
+
+.EXAMPLE
+Set-DefinitionSection -TemplateFileContent @{ resource = @{}; ... } -Properties @{ resource = @{}; ... } -ParentName 'diagnosticSettings' -ParentIdentifierLink '#parameter-diagnosticsettings'
+
+.NOTES
+The function is recursive and will also output grand, great grand children, ... .
+#>
 function Set-DefinitionSection {
     param (
         [Parameter(Mandatory)]
