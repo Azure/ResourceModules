@@ -184,7 +184,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource redisCache 'Microsoft.Cache/redis@2021-06-01' = {
+resource redisCache 'Microsoft.Cache/redis@2022-06-01' = {
   name: name
   location: location
   tags: tags
@@ -233,7 +233,7 @@ resource redisCache_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@20
 }
 
 module redisCache_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: '${uniqueString(deployment().name, location)}-AppGateway-Rbac-${index}'
+  name: '${uniqueString(deployment().name, location)}-redisCache-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
     principalIds: roleAssignment.principalIds
@@ -255,7 +255,7 @@ module redisCache_privateEndpoints '../../network/private-endpoint/main.bicep' =
     serviceResourceId: redisCache.id
     subnetResourceId: privateEndpoint.subnetResourceId
     enableDefaultTelemetry: enableReferencedModulesTelemetry
-    location: reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
+    location: contains(privateEndpoint, 'location') ? privateEndpoint.location : reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
     lock: contains(privateEndpoint, 'lock') ? privateEndpoint.lock : lock
     privateDnsZoneGroup: contains(privateEndpoint, 'privateDnsZoneGroup') ? privateEndpoint.privateDnsZoneGroup : {}
     roleAssignments: contains(privateEndpoint, 'roleAssignments') ? privateEndpoint.roleAssignments : []
@@ -268,13 +268,13 @@ module redisCache_privateEndpoints '../../network/private-endpoint/main.bicep' =
   }
 }]
 
-@description('The resource name.')
+@description('The name of the Redis Cache.')
 output name string = redisCache.name
 
-@description('The resource ID.')
+@description('The resource ID of the Redis Cache.')
 output resourceId string = redisCache.id
 
-@description('The name of the resource group the Redis cache was created in.')
+@description('The name of the resource group the Redis Cache was created in.')
 output resourceGroupName string = resourceGroup().name
 
 @description('Redis hostname.')
@@ -283,7 +283,7 @@ output hostName string = redisCache.properties.hostName
 @description('Redis SSL port.')
 output sslPort int = redisCache.properties.sslPort
 
-@description('The full resource ID of a subnet in a virtual network where the Redis cache was deployed in.')
+@description('The full resource ID of a subnet in a virtual network where the Redis Cache was deployed in.')
 output subnetId string = !empty(subnetId) ? redisCache.properties.subnetId : ''
 
 @description('The location the resource was deployed into.')

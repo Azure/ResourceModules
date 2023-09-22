@@ -136,7 +136,7 @@ runs:
           $missingModules = Get-ModulesMissingFromTemplateSpecsRG @missingInputObject
 
           foreach($missingModule in $missingModules) {
-            if($modulsToPublish.TemplateFilePath -notcontains $missingModule.TemplateFilePath) {
+            if($modulesToPublish.TemplateFilePath -notcontains $missingModule.TemplateFilePath) {
               $modulesToPublish += $missingModule
             }
           }
@@ -224,7 +224,7 @@ runs:
           $missingModules = Get-ModulesMissingFromPrivateBicepRegistry @missingInputObject
 
           foreach($missingModule in $missingModules) {
-            if($modulsToPublish.TemplateFilePath -notcontains $missingModule.TemplateFilePath) {
+            if($modulesToPublish.TemplateFilePath -notcontains $missingModule.TemplateFilePath) {
               $modulesToPublish += $missingModule
             }
           }

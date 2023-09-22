@@ -171,7 +171,7 @@ module signalR_privateEndpoints '../../network/private-endpoint/main.bicep' = [f
     name: contains(privateEndpoint, 'name') ? privateEndpoint.name : 'pe-${last(split(signalR.id, '/'))}-${privateEndpoint.service}-${index}'
     serviceResourceId: signalR.id
     subnetResourceId: privateEndpoint.subnetResourceId
-    location: reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
+    location: contains(privateEndpoint, 'location') ? privateEndpoint.location : reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
     lock: contains(privateEndpoint, 'lock') ? privateEndpoint.lock : lock
     privateDnsZoneGroup: contains(privateEndpoint, 'privateDnsZoneGroup') ? privateEndpoint.privateDnsZoneGroup : {}
     roleAssignments: contains(privateEndpoint, 'roleAssignments') ? privateEndpoint.roleAssignments : []

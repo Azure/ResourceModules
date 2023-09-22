@@ -31,6 +31,7 @@ on:
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.network.applicationgateways.yml'
       - 'modules/network/application-gateway/**'
+      - 'modules/network/private-endpoint/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
       - '!*/**/README.md'

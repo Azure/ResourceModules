@@ -39,6 +39,20 @@ module nestedDependencies 'dependencies.bicep' = {
   }
 }
 
+// Diagnostics
+// ===========
+module diagnosticDependencies '../../../../.shared/.templates/diagnostic.dependencies.bicep' = {
+  scope: resourceGroup
+  name: '${uniqueString(deployment().name, location)}-diagnosticDependencies'
+  params: {
+    storageAccountName: 'dep${namePrefix}diasa${serviceShort}03'
+    logAnalyticsWorkspaceName: 'dep-${namePrefix}-law-${serviceShort}'
+    eventHubNamespaceEventHubName: 'dep-${namePrefix}-evh-${serviceShort}01'
+    eventHubNamespaceName: 'dep-${namePrefix}-evhns-${serviceShort}01'
+    location: location
+  }
+}
+
 // ============== //
 // Test Execution //
 // ============== //
@@ -49,14 +63,35 @@ module testDeployment '../../main.bicep' = {
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '${namePrefix}${serviceShort}001'
+    diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
+    diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
+    diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
+    diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
     // Only for testing purposes
     enablePurgeProtection: false
+    enableRbacAuthorization: true
+    networkAcls: {
+      bypass: 'AzureServices'
+      defaultAction: 'Deny'
+      ipRules: [
+        {
+          value: '40.74.28.0/23'
+        }
+      ]
+      virtualNetworkRules: [
+        {
+          id: nestedDependencies.outputs.subnetResourceId
+          ignoreMissingVnetServiceEndpoint: false
+        }
+      ]
+    }
     privateEndpoints: [
       {
         privateDnsZoneGroup: {
           privateDNSResourceIds: [
             nestedDependencies.outputs.privateDNSResourceId
           ]
+          privateEndpointName: 'dep-${namePrefix}-pe-${serviceShort}'
         }
         service: 'vault'
         subnetResourceId: nestedDependencies.outputs.subnetResourceId

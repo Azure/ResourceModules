@@ -49,7 +49,9 @@ module testDeployment '../../main.bicep' = {
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '${namePrefix}${serviceShort}001'
-    extensionProperties: {}
+    extensionProperties: {
+      InGuestPatchMode: 'User'
+    }
     lock: 'CanNotDelete'
     tags: {
       'hidden-title': 'This is visible in the resource name'
@@ -65,9 +67,9 @@ module testDeployment '../../main.bicep' = {
         principalType: 'ServicePrincipal'
       }
     ]
-    maintenanceScope: 'OSImage'
+    maintenanceScope: 'InGuestPatch'
     maintenanceWindow: {
-      duration: '05:00'
+      duration: '03:00'
       expirationDateTime: '9999-12-31 23:59:59'
       recurEvery: 'Day'
       startDateTime: '2022-12-31 13:00'
@@ -75,5 +77,21 @@ module testDeployment '../../main.bicep' = {
     }
     namespace: '${serviceShort}ns'
     visibility: 'Custom'
+    installPatches: {
+      linuxParameters: {
+        classificationsToInclude: null
+        packageNameMasksToExclude: null
+        packageNameMasksToInclude: null
+      }
+      rebootSetting: 'IfRequired'
+      windowsParameters: {
+        classificationsToInclude: [
+          'Critical'
+          'Security'
+        ]
+        kbNumbersToExclude: null
+        kbNumbersToInclude: null
+      }
+    }
   }
 }

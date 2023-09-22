@@ -57,6 +57,9 @@ param tags object = {}
 ])
 param visibility string = ''
 
+@description('Optional. Configuration settings for VM guest patching with Azure Update Manager.')
+param installPatches object = {}
+
 // =============== //
 //   Deployments   //
 // =============== //
@@ -73,7 +76,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource maintenanceConfiguration 'Microsoft.Maintenance/maintenanceConfigurations@2021-05-01' = {
+resource maintenanceConfiguration 'Microsoft.Maintenance/maintenanceConfigurations@2023-04-01' = {
   location: location
   name: name
   tags: tags
@@ -83,6 +86,7 @@ resource maintenanceConfiguration 'Microsoft.Maintenance/maintenanceConfiguratio
     maintenanceWindow: maintenanceWindow
     namespace: namespace
     visibility: visibility
+    installPatches: (maintenanceScope == 'InGuestPatch') ? installPatches : null
   }
 }
 
