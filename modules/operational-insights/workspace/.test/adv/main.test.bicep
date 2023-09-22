@@ -158,10 +158,33 @@ module testDeployment '../../main.bicep' = {
         state: 'Enabled'
       }
     ]
-    diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
-    diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
-    diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
-    diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
+    diagnosticSettings: [
+      {
+        // logAnalyticsDestinationType:
+        // marketplacePartnerResourceId:
+        name: 'customSetting'
+        metricCategories: [
+          {
+            category: 'AllMetrics'
+          }
+        ]
+        logCategoriesAndGroups: [
+          {
+            category: 'Audit'
+          }
+        ]
+        eventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
+        eventHubAuthorizationRuleResourceId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
+        storageAccountResourceId: diagnosticDependencies.outputs.storageAccountResourceId
+        workspaceResourceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
+      }
+      {
+        eventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
+        eventHubAuthorizationRuleResourceId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
+        storageAccountResourceId: diagnosticDependencies.outputs.storageAccountResourceId
+        workspaceResourceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
+      }
+    ]
     gallerySolutions: [
       {
         name: 'AzureAutomation'
