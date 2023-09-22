@@ -179,7 +179,9 @@ module testDeployment '../../main.bicep' = {
         resourceId: nestedDependencies.outputs.storageAccountResourceId
       }
     ]
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+    }
     publicNetworkAccessForIngestion: 'Disabled'
     publicNetworkAccessForQuery: 'Disabled'
     savedSearches: [

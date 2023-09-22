@@ -181,7 +181,10 @@ module testDeployment '../../main.bicep' = {
         resourceId: nestedDependencies.outputs.storageAccountResourceId
       }
     ]
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'Log Analytics Workspace Lock - Do Not Delete'
+    }
     publicNetworkAccessForIngestion: 'Disabled'
     publicNetworkAccessForQuery: 'Disabled'
     savedSearches: [
