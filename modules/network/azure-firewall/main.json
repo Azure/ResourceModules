@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.20.4.51522",
-      "templateHash": "16299423526459095141"
+      "version": "0.21.1.54444",
+      "templateHash": "16427563395284292213"
     },
     "name": "Azure Firewalls",
     "description": "This module deploys an Azure Firewall.",
@@ -417,8 +417,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.20.4.51522",
-              "templateHash": "7444990895328873286"
+              "version": "0.21.1.54444",
+              "templateHash": "4549627603480081601"
             },
             "name": "Public IP Addresses",
             "description": "This module deploys a Public IP Address.",
@@ -451,7 +451,7 @@
             },
             "skuName": {
               "type": "string",
-              "defaultValue": "Basic",
+              "defaultValue": "Standard",
               "allowedValues": [
                 "Basic",
                 "Standard"
@@ -751,8 +751,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.20.4.51522",
-                      "templateHash": "11249227806125160411"
+                      "version": "0.21.1.54444",
+                      "templateHash": "7328126239184883887"
                     }
                   },
                   "parameters": {
@@ -988,8 +988,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.20.4.51522",
-              "templateHash": "7444990895328873286"
+              "version": "0.21.1.54444",
+              "templateHash": "4549627603480081601"
             },
             "name": "Public IP Addresses",
             "description": "This module deploys a Public IP Address.",
@@ -1022,7 +1022,7 @@
             },
             "skuName": {
               "type": "string",
-              "defaultValue": "Basic",
+              "defaultValue": "Standard",
               "allowedValues": [
                 "Basic",
                 "Standard"
@@ -1322,8 +1322,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.20.4.51522",
-                      "templateHash": "11249227806125160411"
+                      "version": "0.21.1.54444",
+                      "templateHash": "7328126239184883887"
                     }
                   },
                   "parameters": {
@@ -1540,8 +1540,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.20.4.51522",
-              "templateHash": "5756838136756954963"
+              "version": "0.21.1.54444",
+              "templateHash": "4956524931122744714"
             }
           },
           "parameters": {
