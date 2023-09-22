@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.21.1.54444",
-      "templateHash": "8801009910598295224"
+      "templateHash": "17208156201497944921"
     },
     "name": "Bastion Hosts",
     "description": "This module deploys a Bastion Host.",
@@ -327,7 +327,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.21.1.54444",
-              "templateHash": "4549627603480081601"
+              "templateHash": "1887898957722092173"
             },
             "name": "Public IP Addresses",
             "description": "This module deploys a Public IP Address.",
@@ -349,7 +349,7 @@
             },
             "publicIPAllocationMethod": {
               "type": "string",
-              "defaultValue": "Dynamic",
+              "defaultValue": "Static",
               "allowedValues": [
                 "Dynamic",
                 "Static"
