@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.20.4.51522",
-      "templateHash": "17994275321989817378"
+      "version": "0.21.1.54444",
+      "templateHash": "18377917753202643188"
     },
     "name": "Disk Encryption Sets",
     "description": "This module deploys a Disk Encryption Set.",
@@ -210,8 +210,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.20.4.51522",
-              "templateHash": "12898111153359655939"
+              "version": "0.21.1.54444",
+              "templateHash": "1230112027833486150"
             }
           },
           "parameters": {
@@ -286,8 +286,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.20.4.51522",
-                      "templateHash": "10065918419981417666"
+                      "version": "0.21.1.54444",
+                      "templateHash": "7222366309271203422"
                     }
                   },
                   "parameters": {
@@ -358,8 +358,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.20.4.51522",
-                      "templateHash": "7542638391604115549"
+                      "version": "0.21.1.54444",
+                      "templateHash": "10458348557666655329"
                     },
                     "name": "Key Vault Access Policies",
                     "description": "This module deploys a Key Vault Access Policy.",
@@ -492,8 +492,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.20.4.51522",
-              "templateHash": "14948408905344933172"
+              "version": "0.21.1.54444",
+              "templateHash": "13165233376501361165"
             }
           },
           "parameters": {

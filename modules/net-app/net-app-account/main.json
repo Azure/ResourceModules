@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.20.4.51522",
-      "templateHash": "4504561559399937088"
+      "version": "0.21.1.54444",
+      "templateHash": "5672083206908645861"
     },
     "name": "Azure NetApp Files",
     "description": "This module deploys an Azure NetApp File.",
@@ -204,8 +204,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.20.4.51522",
-              "templateHash": "4042341328592599874"
+              "version": "0.21.1.54444",
+              "templateHash": "7683969196599898101"
             }
           },
           "parameters": {
@@ -361,8 +361,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.20.4.51522",
-              "templateHash": "13333372953499047799"
+              "version": "0.21.1.54444",
+              "templateHash": "10886668033150864965"
             },
             "name": "Azure NetApp Files Capacity Pools",
             "description": "This module deploys an Azure NetApp Files Capacity Pool.",
@@ -548,8 +548,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.20.4.51522",
-                      "templateHash": "5724175752968001086"
+                      "version": "0.21.1.54444",
+                      "templateHash": "5786364369491933087"
                     },
                     "name": "Azure NetApp Files Capacity Pool Volumes",
                     "description": "This module deploys an Azure NetApp Files Capacity Pool Volume.",
@@ -705,8 +705,8 @@
                           "metadata": {
                             "_generator": {
                               "name": "bicep",
-                              "version": "0.20.4.51522",
-                              "templateHash": "6579931820257793193"
+                              "version": "0.21.1.54444",
+                              "templateHash": "9382580519288369520"
                             }
                           },
                           "parameters": {
@@ -890,8 +890,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.20.4.51522",
-                      "templateHash": "6567527079478034080"
+                      "version": "0.21.1.54444",
+                      "templateHash": "3927269100657288300"
                     }
                   },
                   "parameters": {

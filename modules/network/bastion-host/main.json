@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.20.4.51522",
-      "templateHash": "419717336724554916"
+      "version": "0.21.1.54444",
+      "templateHash": "8801009910598295224"
     },
     "name": "Bastion Hosts",
     "description": "This module deploys a Bastion Host.",
@@ -326,8 +326,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.20.4.51522",
-              "templateHash": "7444990895328873286"
+              "version": "0.21.1.54444",
+              "templateHash": "4549627603480081601"
             },
             "name": "Public IP Addresses",
             "description": "This module deploys a Public IP Address.",
@@ -360,7 +360,7 @@
             },
             "skuName": {
               "type": "string",
-              "defaultValue": "Basic",
+              "defaultValue": "Standard",
               "allowedValues": [
                 "Basic",
                 "Standard"
@@ -660,8 +660,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.20.4.51522",
-                      "templateHash": "11249227806125160411"
+                      "version": "0.21.1.54444",
+                      "templateHash": "7328126239184883887"
                     }
                   },
                   "parameters": {
@@ -878,8 +878,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.20.4.51522",
-              "templateHash": "14708512190775235887"
+              "version": "0.21.1.54444",
+              "templateHash": "5797020701488147835"
             }
           },
           "parameters": {

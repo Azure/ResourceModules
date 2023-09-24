@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.20.4.51522",
-      "templateHash": "13367766135108394301"
+      "version": "0.21.1.54444",
+      "templateHash": "4833803167028402953"
     },
     "name": "Virtual Network Gateways",
     "description": "This module deploys a Virtual Network Gateway.",
@@ -539,8 +539,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.20.4.51522",
-              "templateHash": "7444990895328873286"
+              "version": "0.21.1.54444",
+              "templateHash": "4549627603480081601"
             },
             "name": "Public IP Addresses",
             "description": "This module deploys a Public IP Address.",
@@ -573,7 +573,7 @@
             },
             "skuName": {
               "type": "string",
-              "defaultValue": "Basic",
+              "defaultValue": "Standard",
               "allowedValues": [
                 "Basic",
                 "Standard"
@@ -873,8 +873,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.20.4.51522",
-                      "templateHash": "11249227806125160411"
+                      "version": "0.21.1.54444",
+                      "templateHash": "7328126239184883887"
                     }
                   },
                   "parameters": {
@@ -1092,8 +1092,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.20.4.51522",
-              "templateHash": "15664896159925545005"
+              "version": "0.21.1.54444",
+              "templateHash": "483133118459920914"
             },
             "name": "VPN Gateway NAT Rules",
             "description": "This module deploys a Virtual Network Gateway NAT Rule.",
@@ -1256,8 +1256,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.20.4.51522",
-              "templateHash": "6647636585152280249"
+              "version": "0.21.1.54444",
+              "templateHash": "10035364843796427917"
             }
           },
           "parameters": {

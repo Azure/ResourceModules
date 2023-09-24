@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.20.4.51522",
-      "templateHash": "8748704169658147866"
+      "version": "0.21.1.54444",
+      "templateHash": "13433747178095563994"
     },
     "name": "App Service Environments",
     "description": "This module deploys an App Service Environment.",
@@ -412,8 +412,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.20.4.51522",
-              "templateHash": "16351992787760940933"
+              "version": "0.21.1.54444",
+              "templateHash": "11895516864893390983"
             },
             "name": "Hosting Environment Network Configuration",
             "description": "This module deploys a Hosting Environment Network Configuration.",
@@ -551,8 +551,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.20.4.51522",
-              "templateHash": "11788859333407565296"
+              "version": "0.21.1.54444",
+              "templateHash": "15244434465859250047"
             },
             "name": "Hosting Environment Custom DNS Suffix Configuration",
             "description": "This module deploys a Hosting Environment Custom DNS Suffix Configuration.",
@@ -680,8 +680,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.20.4.51522",
-              "templateHash": "16350418428946694714"
+              "version": "0.21.1.54444",
+              "templateHash": "17589810269723384288"
             }
           },
           "parameters": {

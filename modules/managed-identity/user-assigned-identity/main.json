@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.20.4.51522",
-      "templateHash": "1062908047639134335"
+      "version": "0.21.1.54444",
+      "templateHash": "5028263176846859457"
     },
     "name": "User Assigned Identities",
     "description": "This module deploys a User Assigned Identity.",
@@ -145,8 +145,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.20.4.51522",
-              "templateHash": "13014227007294077055"
+              "version": "0.21.1.54444",
+              "templateHash": "961909405436269630"
             },
             "name": "User Assigned Identity Federated Identity Credential",
             "description": "This module deploys a User Assigned Identity Federated Identity Credential.",
@@ -280,8 +280,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.20.4.51522",
-              "templateHash": "7489087194642478460"
+              "version": "0.21.1.54444",
+              "templateHash": "5263933546195004806"
             }
           },
           "parameters": {
