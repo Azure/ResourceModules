@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.20.4.51522",
-      "templateHash": "17525971950172483496"
+      "version": "0.21.1.54444",
+      "templateHash": "8483631788691370434"
     },
     "name": "Public IP Prefixes",
     "description": "This module deploys a Public IP Prefix.",
@@ -153,8 +153,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.20.4.51522",
-              "templateHash": "12022352001401552775"
+              "version": "0.21.1.54444",
+              "templateHash": "12600348536826609497"
             }
           },
           "parameters": {
