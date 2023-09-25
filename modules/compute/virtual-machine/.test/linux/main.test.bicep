@@ -100,7 +100,6 @@ module testDeployment '../../main.bicep' = {
             name: 'ipconfig01'
             pipConfiguration: {
               publicIpNameSuffix: '-pip-01'
-
               roleAssignments: [
                 {
                   roleDefinitionIdOrName: 'Reader'
