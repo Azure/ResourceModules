@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.21.1.54444",
-      "templateHash": "16427563395284292213"
+      "templateHash": "1618306039549240547"
     },
     "name": "Azure Firewalls",
     "description": "This module deploys an Azure Firewall.",
@@ -418,7 +418,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.21.1.54444",
-              "templateHash": "4549627603480081601"
+              "templateHash": "1887898957722092173"
             },
             "name": "Public IP Addresses",
             "description": "This module deploys a Public IP Address.",
@@ -440,7 +440,7 @@
             },
             "publicIPAllocationMethod": {
               "type": "string",
-              "defaultValue": "Dynamic",
+              "defaultValue": "Static",
               "allowedValues": [
                 "Dynamic",
                 "Static"
@@ -989,7 +989,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.21.1.54444",
-              "templateHash": "4549627603480081601"
+              "templateHash": "1887898957722092173"
             },
             "name": "Public IP Addresses",
             "description": "This module deploys a Public IP Address.",
@@ -1011,7 +1011,7 @@
             },
             "publicIPAllocationMethod": {
               "type": "string",
-              "defaultValue": "Dynamic",
+              "defaultValue": "Static",
               "allowedValues": [
                 "Dynamic",
                 "Static"
