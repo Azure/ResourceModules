@@ -277,7 +277,7 @@ resource app 'Microsoft.Web/sites@2021-03-01' = {
     hostNameSslStates: hostNameSslStates
     hyperV: hyperV
     redundancyMode: redundancyMode
-    publicNetworkAccess: publicNetworkAccess
+    publicNetworkAccess: !empty(publicNetworkAccess) ? any(publicNetworkAccess) : (!empty(privateEndpoints) ? 'Disabled' : 'Enabled')
   }
 }
 
