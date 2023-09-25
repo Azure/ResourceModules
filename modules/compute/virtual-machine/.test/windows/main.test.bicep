@@ -103,11 +103,6 @@ module testDeployment '../../main.bicep' = {
             name: 'ipconfig01'
             pipConfiguration: {
               publicIpNameSuffix: '-pip-01'
-              zones: [
-                '1'
-                '2'
-                '3'
-              ]
               roleAssignments: [
                 {
                   roleDefinitionIdOrName: 'Reader'
@@ -118,6 +113,11 @@ module testDeployment '../../main.bicep' = {
                 }
               ]
             }
+            zones: [
+              '1'
+              '2'
+              '3'
+            ]
             subnetResourceId: nestedDependencies.outputs.subnetResourceId
           }
         ]
