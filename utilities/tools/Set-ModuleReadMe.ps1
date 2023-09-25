@@ -992,7 +992,7 @@ function Set-DeploymentExamplesSection {
             # ------------------------- #
 
             # [1/6] Search for the relevant parameter start & end index
-            $bicepTestStartIndex = ($rawContentArray | Select-String ("^module testDeployment '..\/.*main.bicep' = {$") | ForEach-Object { $_.LineNumber - 1 })[0]
+            $bicepTestStartIndex = ($rawContentArray | Select-String ("^module testDeployment '..\/.*main.bicep' = $") | ForEach-Object { $_.LineNumber - 1 })[0]
 
             $bicepTestEndIndex = $bicepTestStartIndex
             do {
