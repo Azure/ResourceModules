@@ -1317,14 +1317,13 @@ Describe 'Test file tests' -Tag 'TestTemplate' {
             }
         }
 
-        It "[<moduleFolderName>] Bicep test deployment files should invoke test like [`module testDeployment '../.*main.bicep' = {`]" -TestCases ($deploymentTestFileTestCases | Where-Object { (Split-Path $_.testFilePath -Extension) -eq '.bicep' }) {
+        It "[<moduleFolderName>] Bicep test deployment files should invoke test like [`module testDeployment '../.*main.bicep' = `]" -TestCases ($deploymentTestFileTestCases | Where-Object { (Split-Path $_.testFilePath -Extension) -eq '.bicep' }) {
 
             param(
                 [object[]] $testFileContent
             )
 
-            $testIndex = ($testFileContent | Select-String ("^module testDeployment '..\/.*main.bicep' = {$") | ForEach-Object { $_.LineNumber - 1 })[0]
-
+            $testIndex = ($testFileContent | Select-String ("^module testDeployment '..\/.*main.bicep' = (\[for .+: )?{$") | ForEach-Object { $_.LineNumber - 1 })[0]
             $testIndex -ne -1 | Should -Be $true -Because 'the module test invocation should be in the expected format to allow identification.'
         }
 
