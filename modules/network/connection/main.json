@@ -19,7 +19,7 @@
       }
     },
     "vpnSharedKey": {
-      "type": "string",
+      "type": "securestring",
       "defaultValue": "",
       "metadata": {
         "description": "Optional. Specifies a VPN shared key. The same value has to be specified on both Virtual Network Gateways."
