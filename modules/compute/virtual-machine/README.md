@@ -1081,6 +1081,11 @@ module virtualMachine './compute/virtual-machine/main.bicep' = {
                   roleDefinitionIdOrName: 'Reader'
                 }
               ]
+              zones: [
+                '1'
+                '2'
+                '3'
+              ]
             }
             subnetResourceId: '<subnetResourceId>'
           }
@@ -1301,6 +1306,11 @@ module virtualMachine './compute/virtual-machine/main.bicep' = {
                     "principalType": "ServicePrincipal",
                     "roleDefinitionIdOrName": "Reader"
                   }
+                ],
+                "zones": [
+                  "1",
+                  "2",
+                  "3"
                 ]
               },
               "subnetResourceId": "<subnetResourceId>"
@@ -1575,6 +1585,11 @@ module virtualMachine './compute/virtual-machine/main.bicep' = {
                 'hidden-title': 'This is visible in the resource name'
                 Role: 'DeploymentValidation'
               }
+              zones: [
+                '1'
+                '2'
+                '3'
+              ]
             }
             subnetResourceId: '<subnetResourceId>'
           }
@@ -1652,7 +1667,12 @@ module virtualMachine './compute/virtual-machine/main.bicep' = {
                   "Environment": "Non-Prod",
                   "hidden-title": "This is visible in the resource name",
                   "Role": "DeploymentValidation"
-                }
+                },
+                "zones": [
+                  "1",
+                  "2",
+                  "3"
+                ]
               },
               "subnetResourceId": "<subnetResourceId>"
             }
@@ -1900,6 +1920,11 @@ module virtualMachine './compute/virtual-machine/main.bicep' = {
                   roleDefinitionIdOrName: 'Reader'
                 }
               ]
+              zones: [
+                '1'
+                '2'
+                '3'
+              ]
             }
             subnetResourceId: '<subnetResourceId>'
           }
@@ -2138,6 +2163,11 @@ module virtualMachine './compute/virtual-machine/main.bicep' = {
                     "principalType": "ServicePrincipal",
                     "roleDefinitionIdOrName": "Reader"
                   }
+                ],
+                "zones": [
+                  "1",
+                  "2",
+                  "3"
                 ]
               },
               "subnetResourceId": "<subnetResourceId>"
