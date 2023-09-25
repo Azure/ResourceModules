@@ -196,6 +196,9 @@ param basicPublishingCredentialsPolicies array = []
 @description('Optional. Names of hybrid connection relays to connect app with.')
 param hybridConnectionRelays array = []
 
+@description('Optional. Property to allow or block all public traffic. Allowed Values: "Enabled", "Disabled" or an empty string.')
+param publicNetworkAccess string = ''
+
 // =========== //
 // Variables   //
 // =========== //
@@ -269,6 +272,7 @@ resource app 'Microsoft.Web/sites@2021-03-01' = {
     hostNameSslStates: hostNameSslStates
     hyperV: hyperV
     redundancyMode: redundancyMode
+    publicNetworkAccess: publicNetworkAccess
   }
 }
 
