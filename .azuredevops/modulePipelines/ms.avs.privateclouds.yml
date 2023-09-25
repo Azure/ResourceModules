@@ -1,0 +1,40 @@
+name: 'AVS - PrivateClouds'
+
+parameters:
+  - name: removeDeployment
+    displayName: Remove deployed module
+    type: boolean
+    default: true
+  - name: prerelease
+    displayName: Publish prerelease module
+    type: boolean
+    default: false
+
+pr: none
+
+trigger:
+  batch: true
+  branches:
+    include:
+      - main
+  paths:
+    include:
+      - '/.azuredevops/modulePipelines/ms.avs.privateclouds.yml'
+      - '/.azuredevops/pipelineTemplates/*.yml'
+      - '/modules/Microsoft.AVS/privateClouds/*'
+      - '/utilities/pipelines/*'
+    exclude:
+      - '/utilities/pipelines/dependencies/*'
+      - '/**/*.md'
+
+variables:
+  - template: '../../settings.yml'
+  - group: 'PLATFORM_VARIABLES'
+  - name: modulePath
+    value: '/modules/Microsoft.AVS/privateClouds'
+
+stages:
+  - template: /.azuredevops/pipelineTemplates/stages.module.yml
+    parameters:
+      removeDeployment: '${{ parameters.removeDeployment }}'
+      prerelease: '${{ parameters.prerelease }}'
