@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.20.4.51522",
-      "templateHash": "16568762636851429677"
+      "version": "0.21.1.54444",
+      "templateHash": "9210756491180563718"
     },
     "name": "VPN Gateway VPN Connections",
     "description": "This module deploys a VPN Gateway VPN Connection.",
@@ -113,7 +113,7 @@
       }
     },
     "sharedKey": {
-      "type": "string",
+      "type": "securestring",
       "defaultValue": "",
       "metadata": {
         "description": "Optional. SharedKey for the VPN connection."

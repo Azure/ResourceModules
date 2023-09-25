@@ -6,6 +6,7 @@ metadata owner = 'Azure/module-maintainers'
 param name string
 
 @description('Optional. Specifies a VPN shared key. The same value has to be specified on both Virtual Network Gateways.')
+@secure()
 param vpnSharedKey string = ''
 
 @description('Optional. Location for all resources.')

@@ -49,7 +49,7 @@ This module deploys a Virtual Network Gateway Connection.
 | `useLocalAzureIpAddress` | bool | `False` |  | Use private local Azure IP for the connection. Only available for IPSec Virtual Network Gateways that use the Azure Private IP Property. |
 | `usePolicyBasedTrafficSelectors` | bool | `False` |  | Enable policy-based traffic selectors. |
 | `virtualNetworkGateway2` | object | `{object}` |  | The remote Virtual Network Gateway. Used for connection connectionType [Vnet2Vnet]. |
-| `vpnSharedKey` | string | `''` |  | Specifies a VPN shared key. The same value has to be specified on both Virtual Network Gateways. |
+| `vpnSharedKey` | securestring | `''` |  | Specifies a VPN shared key. The same value has to be specified on both Virtual Network Gateways. |
 
 
 ### Parameter Usage: `virtualNetworkGateway1`
