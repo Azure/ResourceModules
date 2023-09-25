@@ -249,7 +249,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource app 'Microsoft.Web/sites@2021-03-01' = {
+resource app 'Microsoft.Web/sites@2022-03-01' = {
   name: name
   location: location
   kind: kind
