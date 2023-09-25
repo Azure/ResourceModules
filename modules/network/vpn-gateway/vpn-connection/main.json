@@ -113,7 +113,7 @@
       }
     },
     "sharedKey": {
-      "type": "string",
+      "type": "securestring",
       "defaultValue": "",
       "metadata": {
         "description": "Optional. SharedKey for the VPN connection."
