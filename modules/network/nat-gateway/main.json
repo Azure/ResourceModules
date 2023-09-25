@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.21.1.54444",
-      "templateHash": "14336161879132511159"
+      "templateHash": "17115862672942509492"
     },
     "name": "NAT Gateways",
     "description": "This module deploys a NAT Gateway.",
@@ -308,7 +308,11 @@
             "_generator": {
               "name": "bicep",
               "version": "0.21.1.54444",
+              <<<<<<< HEAD
               "templateHash": "1887898957722092173"
+              =======
+              "templateHash": "4549627603480081601"
+              >>>>>>> c86a9225bb2e0781e93815a184757344d98a2c6f
             },
             "name": "Public IP Addresses",
             "description": "This module deploys a Public IP Address.",

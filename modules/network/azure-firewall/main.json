@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.21.1.54444",
-      "templateHash": "1618306039549240547"
+      "templateHash": "16427563395284292213"
     },
     "name": "Azure Firewalls",
     "description": "This module deploys an Azure Firewall.",
@@ -418,7 +418,11 @@
             "_generator": {
               "name": "bicep",
               "version": "0.21.1.54444",
+              <<<<<<< HEAD
               "templateHash": "1887898957722092173"
+              =======
+              "templateHash": "4549627603480081601"
+              >>>>>>> c86a9225bb2e0781e93815a184757344d98a2c6f
             },
             "name": "Public IP Addresses",
             "description": "This module deploys a Public IP Address.",
@@ -989,7 +993,11 @@
             "_generator": {
               "name": "bicep",
               "version": "0.21.1.54444",
+              <<<<<<< HEAD
               "templateHash": "1887898957722092173"
+              =======
+              "templateHash": "4549627603480081601"
+              >>>>>>> c86a9225bb2e0781e93815a184757344d98a2c6f
             },
             "name": "Public IP Addresses",
             "description": "This module deploys a Public IP Address.",

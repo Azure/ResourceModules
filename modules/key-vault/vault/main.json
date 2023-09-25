@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.21.1.54444",
-      "templateHash": "7677613016975773230"
+      "templateHash": "9452615051960144682"
     },
     "name": "Key Vaults",
     "description": "This module deploys a Key Vault.",
@@ -1227,7 +1227,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.21.1.54444",
-              "templateHash": "17036874096652764314"
+              "templateHash": "14580007913383558904"
             },
             "name": "Private Endpoints",
             "description": "This module deploys a Private Endpoint.",
@@ -1403,7 +1403,7 @@
               "condition": "[not(empty(parameters('privateDnsZoneGroup')))]",
               "type": "Microsoft.Resources/deployments",
               "apiVersion": "2022-09-01",
-              "name": "[format('{0}-PrivateEndpoint-PrivateDnsZoneGroup', uniqueString(deployment().name, parameters('location')))]",
+              "name": "[format('{0}-PE-PrivateDnsZoneGroup', uniqueString(deployment().name))]",
               "properties": {
                 "expressionEvaluationOptions": {
                   "scope": "inner"

@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.21.1.54444",
-      "templateHash": "12569603126606584530"
+      "templateHash": "9970933369999379119"
     },
     "name": "Redis Cache",
     "description": "This module deploys a Redis Cache.",
@@ -576,7 +576,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.21.1.54444",
-              "templateHash": "17036874096652764314"
+              "templateHash": "14580007913383558904"
             },
             "name": "Private Endpoints",
             "description": "This module deploys a Private Endpoint.",
@@ -752,7 +752,7 @@
               "condition": "[not(empty(parameters('privateDnsZoneGroup')))]",
               "type": "Microsoft.Resources/deployments",
               "apiVersion": "2022-09-01",
-              "name": "[format('{0}-PrivateEndpoint-PrivateDnsZoneGroup', uniqueString(deployment().name, parameters('location')))]",
+              "name": "[format('{0}-PE-PrivateDnsZoneGroup', uniqueString(deployment().name))]",
               "properties": {
                 "expressionEvaluationOptions": {
                   "scope": "inner"

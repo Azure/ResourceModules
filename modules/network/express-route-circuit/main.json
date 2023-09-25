@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.20.4.51522",
-      "templateHash": "2220842335649593450"
+      "version": "0.21.1.54444",
+      "templateHash": "6824996198660601155"
     },
     "name": "ExpressRoute Circuits",
     "description": "This module deploys an Express Route Circuit.",
@@ -382,8 +382,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.20.4.51522",
-              "templateHash": "3704217573510649158"
+              "version": "0.21.1.54444",
+              "templateHash": "1993477429002621283"
             }
           },
           "parameters": {

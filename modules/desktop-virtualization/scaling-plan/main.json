@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.20.4.51522",
-      "templateHash": "10391957957992354423"
+      "version": "0.21.1.54444",
+      "templateHash": "6944405808593930056"
     },
     "name": "Azure Virtual Desktop (AVD) Scaling Plans",
     "description": "This module deploys an Azure Virtual Desktop (AVD) Scaling Plan.",
@@ -276,8 +276,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.20.4.51522",
-              "templateHash": "3278048928000577121"
+              "version": "0.21.1.54444",
+              "templateHash": "5284850760210698082"
             }
           },
           "parameters": {

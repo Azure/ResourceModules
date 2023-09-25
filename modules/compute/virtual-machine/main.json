@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.21.1.54444",
-      "templateHash": "8956159626460319190"
+      "templateHash": "8529849238090339815"
     },
     "name": "Virtual Machines",
     "description": "This module deploys a Virtual Machine with one or multiple NICs and optionally one or multiple public IPs.",
@@ -845,7 +845,11 @@
             "_generator": {
               "name": "bicep",
               "version": "0.21.1.54444",
+              <<<<<<< HEAD
               "templateHash": "17678163563393779135"
+              =======
+              "templateHash": "2650784319014561705"
+              >>>>>>> c86a9225bb2e0781e93815a184757344d98a2c6f
             }
           },
           "parameters": {
@@ -1000,7 +1004,11 @@
                     "_generator": {
                       "name": "bicep",
                       "version": "0.21.1.54444",
+                      <<<<<<< HEAD
                       "templateHash": "1887898957722092173"
+                      =======
+                      "templateHash": "4549627603480081601"
+                      >>>>>>> c86a9225bb2e0781e93815a184757344d98a2c6f
                     },
                     "name": "Public IP Addresses",
                     "description": "This module deploys a Public IP Address.",
