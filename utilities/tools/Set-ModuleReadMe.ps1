@@ -997,9 +997,14 @@ function Set-DeploymentExamplesSection {
             $bicepTestEndIndex = $bicepTestStartIndex
             do {
                 $bicepTestEndIndex++
-            } while ($rawContentArray[$bicepTestEndIndex] -ne '}')
+            } while ($rawContentArray[$bicepTestEndIndex] -notin @('}', '}]'))
 
             $rawBicepExample = $rawContentArray[$bicepTestStartIndex..$bicepTestEndIndex]
+
+            # In case a loop was used for the test
+            if ($rawBicepExample[-1] -eq '}]') {
+                $rawBicepExample[-1] = '}'
+            }
 
             # [2/6] Replace placeholders
             $serviceShort = ([regex]::Match($rawContent, "(?m)^param serviceShort string = '(.+)'\s*$")).Captures.Groups[1].Value
