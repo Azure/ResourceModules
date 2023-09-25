@@ -196,7 +196,12 @@ param basicPublishingCredentialsPolicies array = []
 @description('Optional. Names of hybrid connection relays to connect app with.')
 param hybridConnectionRelays array = []
 
-@description('Optional. Property to allow or block all public traffic. Allowed Values: "Enabled", "Disabled" or an empty string.')
+@description('Optional. Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set.')
+@allowed([
+  ''
+  'Enabled'
+  'Disabled'
+])
 param publicNetworkAccess string = ''
 
 // =========== //
