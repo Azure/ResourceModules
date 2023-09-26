@@ -196,6 +196,14 @@ param basicPublishingCredentialsPolicies array = []
 @description('Optional. Names of hybrid connection relays to connect app with.')
 param hybridConnectionRelays array = []
 
+@description('Optional. Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set.')
+@allowed([
+  ''
+  'Enabled'
+  'Disabled'
+])
+param publicNetworkAccess string = ''
+
 // =========== //
 // Variables   //
 // =========== //
@@ -241,7 +249,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource app 'Microsoft.Web/sites@2021-03-01' = {
+resource app 'Microsoft.Web/sites@2022-03-01' = {
   name: name
   location: location
   kind: kind
@@ -269,6 +277,7 @@ resource app 'Microsoft.Web/sites@2021-03-01' = {
     hostNameSslStates: hostNameSslStates
     hyperV: hyperV
     redundancyMode: redundancyMode
+    publicNetworkAccess: !empty(publicNetworkAccess) ? any(publicNetworkAccess) : (!empty(privateEndpoints) ? 'Disabled' : 'Enabled')
   }
 }
 
