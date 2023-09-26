@@ -69,9 +69,9 @@ function Get-ReferenceObject {
     $involvedFilePaths = Get-LocallyReferencedFileList -FilePath $ModuleTemplateFilePath
 
     $resultSet = @{
-        resourceReferences = @()
-        remoteReferences   = @()
-        localReferences    = $involvedFilePaths | Where-Object {
+        resourceReferences  = @()
+        remoteReferences    = @()
+        localPathReferences = $involvedFilePaths | Where-Object {
             $involvedFilePath = $_
             # We only care about module templates
             (Split-Path $involvedFilePath -Leaf) -eq 'main.bicep' -and
@@ -90,9 +90,9 @@ function Get-ReferenceObject {
     }
 
     return @{
-        resourceReferences = $resultSet.resourceReferences | Sort-Object -Unique
-        remoteReferences   = $resultSet.remoteReferences | Sort-Object -Unique
-        localReferences    = $resultSet.localReferences | Sort-Object -Unique
+        resourceReferences  = $resultSet.resourceReferences | Sort-Object -Unique
+        remoteReferences    = $resultSet.remoteReferences | Sort-Object -Unique
+        localPathReferences = $resultSet.localPathReferences | Sort-Object -Unique
     }
 }
 <#
