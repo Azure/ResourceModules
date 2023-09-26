@@ -64,6 +64,9 @@ This module deploys a Key Vault.
 | `tags` | object | `{object}` |  | Resource tags. |
 | `vaultSku` | string | `'premium'` | `[premium, standard]` | Specifies the SKU for the vault. |
 
+
+### Parameter Usage: `privateEndpoints`
+
 To use Private Endpoint the following dependencies must be deployed:
 
 - Destination subnet must be created with the following configuration option - `"privateEndpointNetworkPolicies": "Disabled"`. Setting this option acknowledges that NSG rules are not applied to Private Endpoints (this capability is coming soon). A full example is available in the Virtual Network Module.
@@ -162,6 +165,8 @@ privateEndpoints:  [
 </details>
 <p>
 
+### Parameter Usage: `roleAssignments`
+
 Create a role assignment for the given resource. If you want to assign a service principal / managed identity that is created in the same deployment, make sure to also specify the `'principalType'` parameter and set it to `'ServicePrincipal'`. This will ensure the role assignment waits for the principal's propagation in Azure.
 
 <details>
@@ -218,6 +223,8 @@ roleAssignments: [
 
 </details>
 <p>
+
+### Parameter Usage: `tags`
 
 Tag names and tag values can be provided as needed. A tag can be left without a value.
 
