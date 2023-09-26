@@ -131,7 +131,15 @@ jobs:
 
             # Get target files
             $moduleTestFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(moduleTestFilePath)'
-            $targetFileList = @($moduleTestFilePath)
+
+            # Get target files
+            $targetFileList = @(
+              $moduleTestFilePath
+            )
+
+            # Add all module template files as they may contain tokens
+            $targetFileList += (Get-LocallyReferencedFileList -FilePath $moduleTestFilePath)
+            $targetFileList = $targetFileList | Sort-Object -Unique
 
             # Construct Token Function Input
             $ConvertTokensInputs = @{
