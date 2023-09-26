@@ -884,6 +884,7 @@ module site './web/site/main.bicep' = {
         }
       }
     ]
+    publicNetworkAccess: 'Disabled'
     roleAssignments: [
       {
         principalIds: [
@@ -1042,6 +1043,9 @@ module site './web/site/main.bicep' = {
           }
         }
       ]
+    },
+    "publicNetworkAccess": {
+      "value": "Disabled"
     },
     "roleAssignments": {
       "value": [

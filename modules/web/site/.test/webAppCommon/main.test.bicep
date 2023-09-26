@@ -182,5 +182,6 @@ module testDeployment '../../main.bicep' = {
     vnetContentShareEnabled: true
     vnetImagePullEnabled: true
     vnetRouteAllEnabled: true
+    publicNetworkAccess: 'Disabled'
   }
 }
