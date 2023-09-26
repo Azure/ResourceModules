@@ -30,11 +30,11 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource webApp 'Microsoft.Web/sites@2022-03-01' existing = {
+resource webApp 'Microsoft.Web/sites@2022-09-01' existing = {
   name: webAppName
 }
 
-resource basicPublishingCredentialsPolicy 'Microsoft.Web/sites/basicPublishingCredentialsPolicies@2022-03-01' = {
+resource basicPublishingCredentialsPolicy 'Microsoft.Web/sites/basicPublishingCredentialsPolicies@2022-09-01' = {
   name: name
   location: location
   parent: webApp

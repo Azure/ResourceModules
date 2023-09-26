@@ -178,5 +178,9 @@ module testDeployment '../../main.bicep' = {
         sendKeyName: 'defaultSender'
       }
     ]
+    scmSiteAlsoStopped: true
+    vnetContentShareEnabled: true
+    vnetImagePullEnabled: true
+    vnetRouteAllEnabled: true
   }
 }
