@@ -76,7 +76,7 @@ function Get-ReferenceObject {
             # We only care about module templates
             (Split-Path $involvedFilePath -Leaf) -eq 'main.bicep' -and
             # We only care about a direct references and no children when it comes to returning local references
-            (@($involvedFilePaths + $ModuleTemplateFilePath) | Where-Object {
+            (@(@($involvedFilePaths) + @($ModuleTemplateFilePath)) | Where-Object {
                 (Split-Path $involvedFilePath) -match ('{0}[\/|\\].+' -f [Regex]::Escape((Split-Path $_ -Parent))) # i.e., if a path has its parent in the list, kick it out
             }).count -eq 0
         }
@@ -145,12 +145,22 @@ function Get-CrossReferencedModuleList {
         [string] $Path = (Join-Path (Split-Path (Split-Path $PSScriptRoot -Parent) -Parent) 'modules')
     )
 
+    $repoRoot = ($Path -split '[\/|\\]{1}modules[\/|\\]{1}')[0]
     $resultSet = [ordered]@{}
 
     $moduleTemplatePaths = (Get-ChildItem -Path $Path -Recurse -File -Filter 'main.bicep').FullName
     foreach ($moduleTemplatePath in $moduleTemplatePaths) {
 
         $referenceObject = Get-ReferenceObject -ModuleTemplateFilePath $moduleTemplatePath
+
+        # Convert local absolute references to relative references
+        $referenceObject.localPathReferences = $referenceObject.localPathReferences | ForEach-Object {
+            $result = $_ -replace ('{0}[\/|\\]' -f [Regex]::Escape($repoRoot)), '' # Remove root
+            $result = Split-Path $result -Parent # Use only folder name
+            $result = $result -replace '\\', '/' # Replaces slashes
+            return $result
+        }
+
         $moduleFolderPath = Split-Path $moduleTemplatePath -Parent
         ## avm/res/<provider>/<resourceType>
         $resourceTypeIdentifier = ($moduleFolderPath -split '[\/|\\]{1}modules[\/|\\]{1}')[1] -replace '\\', '/'
