@@ -146,9 +146,9 @@ This section provides an overview of the library's feature set.
 | 131 | web<p>connection | [![Web - Connections](https://github.com/Azure/ResourceModules/workflows/Web%20-%20Connections/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.web.connections.yml) | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  |  | 90 |
 | 132 | web<p>hosting-environment | [![Web - HostingEnvironments](https://github.com/Azure/ResourceModules/workflows/Web%20-%20HostingEnvironments/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.web.hostingenvironments.yml) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  | [L1:2] | 227 |
 | 133 | web<p>serverfarm | [![Web - Serverfarms](https://github.com/Azure/ResourceModules/workflows/Web%20-%20Serverfarms/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.web.serverfarms.yml) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  | 154 |
-| 134 | web<p>site | [![Web - Sites](https://github.com/Azure/ResourceModules/workflows/Web%20-%20Sites/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.web.sites.yml) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  | [L1:5, L2:4, L3:1] | 386 |
+| 134 | web<p>site | [![Web - Sites](https://github.com/Azure/ResourceModules/workflows/Web%20-%20Sites/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.web.sites.yml) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  | [L1:5, L2:4, L3:1] | 385 |
 | 135 | web<p>static-site | [![Web - StaticSites](https://github.com/Azure/ResourceModules/workflows/Web%20-%20StaticSites/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.web.staticsites.yml) | :white_check_mark: | :white_check_mark: | :white_check_mark: |  | :white_check_mark: |  | [L1:3] | 196 |
-| Sum | | | 110 | 109 | 118 | 57 | 30 | 2 | 226 | 24236 |
+| Sum | | | 110 | 109 | 118 | 57 | 30 | 2 | 226 | 24235 |
 
 ## Legend
 
