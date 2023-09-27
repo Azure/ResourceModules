@@ -49,6 +49,7 @@ param connectionBandwidth int = 10
 param vpnConnectionProtocolType string = 'IKEv2'
 
 @description('Optional. SharedKey for the VPN connection.')
+@secure()
 param sharedKey string = ''
 
 @description('Optional. Reference to a VPN site to link to.')

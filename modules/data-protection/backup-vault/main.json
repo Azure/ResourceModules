@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.20.4.51522",
-      "templateHash": "15185666267532719646"
+      "version": "0.21.1.54444",
+      "templateHash": "9192043285599381556"
     },
     "name": "Data Protection Backup Vaults",
     "description": "This module deploys a Data Protection Backup Vault.",
@@ -212,8 +212,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.20.4.51522",
-              "templateHash": "13351591046039775322"
+              "version": "0.21.1.54444",
+              "templateHash": "7012714576885585177"
             },
             "name": "Data Protection Backup Vault Backup Policies",
             "description": "This module deploys a Data Protection Backup Vault Backup Policy.",
@@ -333,8 +333,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.20.4.51522",
-              "templateHash": "10253116074794957898"
+              "version": "0.21.1.54444",
+              "templateHash": "5799522460784182968"
             }
           },
           "parameters": {

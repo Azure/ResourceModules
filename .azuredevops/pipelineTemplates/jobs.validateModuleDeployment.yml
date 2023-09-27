@@ -128,10 +128,20 @@ jobs:
           inline: |
             # Load used functions
             . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFileList.ps1')
+            . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'sharedScripts' 'Get-LocallyReferencedFileList.ps1')
+
 
             # Get target files
             $moduleTestFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(moduleTestFilePath)'
-            $targetFileList = @($moduleTestFilePath)
+
+            # Get target files
+            $targetFileList = @(
+              $moduleTestFilePath
+            )
+
+            # Add all module template files as they may contain tokens
+            $targetFileList += (Get-LocallyReferencedFileList -FilePath $moduleTestFilePath)
+            $targetFileList = $targetFileList | Sort-Object -Unique
 
             # Construct Token Function Input
             $ConvertTokensInputs = @{

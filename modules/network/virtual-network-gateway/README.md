@@ -294,6 +294,8 @@ module virtualNetworkGateway './network/virtual-network-gateway/main.bicep' = {
     lock: 'CanNotDelete'
     publicIpZones: [
       '1'
+      '2'
+      '3'
     ]
     roleAssignments: [
       {
@@ -379,7 +381,9 @@ module virtualNetworkGateway './network/virtual-network-gateway/main.bicep' = {
     },
     "publicIpZones": {
       "value": [
-        "1"
+        "1",
+        "2",
+        "3"
       ]
     },
     "roleAssignments": {
@@ -448,6 +452,11 @@ module virtualNetworkGateway './network/virtual-network-gateway/main.bicep' = {
     ]
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     gatewayPipName: 'pip-nvger'
+    publicIpZones: [
+      '1'
+      '2'
+      '3'
+    ]
     roleAssignments: [
       {
         principalIds: [
@@ -517,6 +526,13 @@ module virtualNetworkGateway './network/virtual-network-gateway/main.bicep' = {
     },
     "gatewayPipName": {
       "value": "pip-nvger"
+    },
+    "publicIpZones": {
+      "value": [
+        "1",
+        "2",
+        "3"
+      ]
     },
     "roleAssignments": {
       "value": [
@@ -613,6 +629,8 @@ module virtualNetworkGateway './network/virtual-network-gateway/main.bicep' = {
     ]
     publicIpZones: [
       '1'
+      '2'
+      '3'
     ]
     roleAssignments: [
       {
@@ -738,7 +756,9 @@ module virtualNetworkGateway './network/virtual-network-gateway/main.bicep' = {
     },
     "publicIpZones": {
       "value": [
-        "1"
+        "1",
+        "2",
+        "3"
       ]
     },
     "roleAssignments": {

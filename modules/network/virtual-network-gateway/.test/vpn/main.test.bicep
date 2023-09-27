@@ -80,6 +80,8 @@ module testDeployment '../../main.bicep' = {
     lock: 'CanNotDelete'
     publicIpZones: [
       '1'
+      '2'
+      '3'
     ]
     roleAssignments: [
       {

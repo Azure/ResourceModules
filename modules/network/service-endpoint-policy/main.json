@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.20.4.51522",
-      "templateHash": "3871903400441194755"
+      "version": "0.21.1.54444",
+      "templateHash": "7581628455026938381"
     },
     "name": "Service Endpoint Policies",
     "description": "This module deploys a Service Endpoint Policy.",
@@ -155,8 +155,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.20.4.51522",
-              "templateHash": "11744949434447908326"
+              "version": "0.21.1.54444",
+              "templateHash": "15055971962075100955"
             }
           },
           "parameters": {

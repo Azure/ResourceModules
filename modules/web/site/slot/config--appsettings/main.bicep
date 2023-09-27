@@ -2,9 +2,6 @@ metadata name = 'Site Slot App Settings'
 metadata description = 'This module deploys a Site Slot App Setting.'
 metadata owner = 'Azure/module-maintainers'
 
-// ================ //
-// Parameters       //
-// ================ //
 @description('Required. Slot name to be configured.')
 param slotName string
 
@@ -36,9 +33,6 @@ param appSettingsKeyValuePairs object = {}
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
-// =========== //
-// Variables   //
-// =========== //
 var azureWebJobsValues = !empty(storageAccountResourceId) ? union({
     AzureWebJobsStorage: 'DefaultEndpointsProtocol=https;AccountName=${storageAccount.name};AccountKey=${storageAccount.listKeys().keys[0].value};'
   }, ((setAzureWebJobsDashboard == true) ? {
@@ -52,10 +46,7 @@ var appInsightsValues = !empty(appInsightResourceId) ? {
 
 var expandedAppSettings = union(appSettingsKeyValuePairs, azureWebJobsValues, appInsightsValues)
 
-// =================== //
-// Existing resources //
-// =================== //
-resource app 'Microsoft.Web/sites@2022-03-01' existing = {
+resource app 'Microsoft.Web/sites@2022-09-01' existing = {
   name: appName
 
   resource slot 'slots' existing = {
@@ -68,14 +59,11 @@ resource appInsight 'Microsoft.Insights/components@2020-02-02' existing = if (!e
   scope: resourceGroup(split(appInsightResourceId, '/')[2], split(appInsightResourceId, '/')[4])
 }
 
-resource storageAccount 'Microsoft.Storage/storageAccounts@2021-02-01' existing = if (!empty(storageAccountResourceId)) {
+resource storageAccount 'Microsoft.Storage/storageAccounts@2023-01-01' existing = if (!empty(storageAccountResourceId)) {
   name: last(split(storageAccountResourceId, '/'))!
   scope: resourceGroup(split(storageAccountResourceId, '/')[2], split(storageAccountResourceId, '/')[4])
 }
 
-// =========== //
-// Deployments //
-// =========== //
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name)}'
   properties: {
@@ -88,16 +76,13 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource slotSettings 'Microsoft.Web/sites/slots/config@2022-03-01' = {
+resource slotSettings 'Microsoft.Web/sites/slots/config@2022-09-01' = {
   name: 'appsettings'
   kind: kind
   parent: app::slot
   properties: expandedAppSettings
 }
 
-// =========== //
-// Outputs     //
-// =========== //
 @description('The name of the slot config.')
 output name string = slotSettings.name
 

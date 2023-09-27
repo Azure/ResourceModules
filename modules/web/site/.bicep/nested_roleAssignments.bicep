@@ -56,7 +56,7 @@ var builtInRoleNames = {
   'Website Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'de139f84-1756-47ae-9be6-808fbbe84772')
 }
 
-resource app 'Microsoft.Web/sites@2020-12-01' existing = {
+resource app 'Microsoft.Web/sites@2022-09-01' existing = {
   name: last(split(resourceId, '/'))!
 }
 

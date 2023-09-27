@@ -1083,6 +1083,11 @@ module virtualMachine './compute/virtual-machine/main.bicep' = {
               ]
             }
             subnetResourceId: '<subnetResourceId>'
+            zones: [
+              '1'
+              '2'
+              '3'
+            ]
           }
         ]
         nicSuffix: '-nic-01'
@@ -1303,7 +1308,12 @@ module virtualMachine './compute/virtual-machine/main.bicep' = {
                   }
                 ]
               },
-              "subnetResourceId": "<subnetResourceId>"
+              "subnetResourceId": "<subnetResourceId>",
+              "zones": [
+                "1",
+                "2",
+                "3"
+              ]
             }
           ],
           "nicSuffix": "-nic-01",
@@ -1577,6 +1587,11 @@ module virtualMachine './compute/virtual-machine/main.bicep' = {
               }
             }
             subnetResourceId: '<subnetResourceId>'
+            zones: [
+              '1'
+              '2'
+              '3'
+            ]
           }
         ]
         nicSuffix: '-nic-01'
@@ -1654,7 +1669,12 @@ module virtualMachine './compute/virtual-machine/main.bicep' = {
                   "Role": "DeploymentValidation"
                 }
               },
-              "subnetResourceId": "<subnetResourceId>"
+              "subnetResourceId": "<subnetResourceId>",
+              "zones": [
+                "1",
+                "2",
+                "3"
+              ]
             }
           ],
           "nicSuffix": "-nic-01",
@@ -1902,6 +1922,11 @@ module virtualMachine './compute/virtual-machine/main.bicep' = {
               ]
             }
             subnetResourceId: '<subnetResourceId>'
+            zones: [
+              '1'
+              '2'
+              '3'
+            ]
           }
         ]
         nicSuffix: '-nic-01'
@@ -2140,7 +2165,12 @@ module virtualMachine './compute/virtual-machine/main.bicep' = {
                   }
                 ]
               },
-              "subnetResourceId": "<subnetResourceId>"
+              "subnetResourceId": "<subnetResourceId>",
+              "zones": [
+                "1",
+                "2",
+                "3"
+              ]
             }
           ],
           "nicSuffix": "-nic-01",
