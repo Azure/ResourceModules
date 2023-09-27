@@ -13,7 +13,7 @@ This module deploys a Web Site Basic Publishing Credentials Policy.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Web/sites/basicPublishingCredentialsPolicies` | [2022-03-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/sites) |
+| `Microsoft.Web/sites/basicPublishingCredentialsPolicies` | [2022-09-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/sites) |
 
 ## Parameters
 

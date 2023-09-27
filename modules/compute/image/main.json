@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.20.4.51522",
-      "templateHash": "13634156293178921650"
+      "version": "0.21.1.54444",
+      "templateHash": "2820072627955480116"
     },
     "name": "Images",
     "description": "This module deploys a Compute Image.",
@@ -221,8 +221,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.20.4.51522",
-              "templateHash": "15836902918863510796"
+              "version": "0.21.1.54444",
+              "templateHash": "18299600248178146819"
             }
           },
           "parameters": {

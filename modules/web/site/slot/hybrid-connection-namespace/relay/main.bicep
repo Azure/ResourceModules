@@ -45,7 +45,7 @@ resource namespace 'Microsoft.Relay/namespaces@2021-11-01' existing = {
   }
 }
 
-resource hybridConnectionRelay 'Microsoft.Web/sites/slots/hybridConnectionNamespaces/relays@2022-03-01' = {
+resource hybridConnectionRelay 'Microsoft.Web/sites/slots/hybridConnectionNamespaces/relays@2022-09-01' = {
   name: '${appName}/${slotName}/${namespace.name}/${namespace::hybridConnection.name}'
   properties: {
     serviceBusNamespace: namespace.name
@@ -59,9 +59,6 @@ resource hybridConnectionRelay 'Microsoft.Web/sites/slots/hybridConnectionNamesp
   }
 }
 
-// =========== //
-// Outputs     //
-// =========== //
 @description('The name of the hybrid connection relay..')
 output name string = hybridConnectionRelay.name
 

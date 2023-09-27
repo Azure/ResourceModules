@@ -2,9 +2,6 @@ metadata name = 'Site Auth Settings V2 Config'
 metadata description = 'This module deploys a Site Auth Settings V2 Configuration.'
 metadata owner = 'Azure/module-maintainers'
 
-// ================ //
-// Parameters       //
-// ================ //
 @description('Conditional. The name of the parent site resource. Required if the template is used in a standalone deployment.')
 param appName string
 
@@ -24,16 +21,10 @@ param authSettingV2Configuration object
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-// =========== //
-// Existing resources //
-// =========== //
-resource app 'Microsoft.Web/sites@2022-03-01' existing = {
+resource app 'Microsoft.Web/sites@2022-09-01' existing = {
   name: appName
 }
 
-// ============ //
-// Dependencies //
-// ============ //
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name)}'
   properties: {
@@ -46,16 +37,13 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource appSettings 'Microsoft.Web/sites/config@2022-03-01' = {
+resource appSettings 'Microsoft.Web/sites/config@2022-09-01' = {
   name: 'authsettingsV2'
   kind: kind
   parent: app
   properties: authSettingV2Configuration
 }
 
-// =========== //
-// Outputs     //
-// =========== //
 @description('The name of the site config.')
 output name string = appSettings.name
 

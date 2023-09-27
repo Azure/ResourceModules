@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.20.4.51522",
-      "templateHash": "17294788707800776152"
+      "version": "0.21.1.54444",
+      "templateHash": "13551710672251370699"
     },
     "name": "Metric Alerts",
     "description": "This module deploys a Metric Alert.",
@@ -245,8 +245,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.20.4.51522",
-              "templateHash": "10158771102272403472"
+              "version": "0.21.1.54444",
+              "templateHash": "8947238026152055709"
             }
           },
           "parameters": {

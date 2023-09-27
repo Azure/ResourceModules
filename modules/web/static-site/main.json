@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.20.4.51522",
-      "templateHash": "10612080778789698126"
+      "version": "0.21.1.54444",
+      "templateHash": "18252581681683363361"
     },
     "name": "Static Web Apps",
     "description": "This module deploys a Static Web App.",
@@ -279,8 +279,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.20.4.51522",
-              "templateHash": "7461352396319136343"
+              "version": "0.21.1.54444",
+              "templateHash": "16239200301217299333"
             },
             "name": "Static Web App Site Linked Backends",
             "description": "This module deploys a Custom Function App into a Static Web App Site using the Linked Backends property.",
@@ -412,8 +412,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.20.4.51522",
-              "templateHash": "5981963633647576119"
+              "version": "0.21.1.54444",
+              "templateHash": "14542116541399181875"
             },
             "name": "Static Web App Site Config",
             "description": "This module deploys a Static Web App Site Config.",
@@ -538,8 +538,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.20.4.51522",
-              "templateHash": "5981963633647576119"
+              "version": "0.21.1.54444",
+              "templateHash": "14542116541399181875"
             },
             "name": "Static Web App Site Config",
             "description": "This module deploys a Static Web App Site Config.",
@@ -665,8 +665,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.20.4.51522",
-              "templateHash": "12334533883169216576"
+              "version": "0.21.1.54444",
+              "templateHash": "8695148534740362749"
             },
             "name": "Static Web App Site Custom Domains",
             "description": "This module deploys a Static Web App Site Custom Domain.",
@@ -790,8 +790,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.20.4.51522",
-              "templateHash": "16510980031659768154"
+              "version": "0.21.1.54444",
+              "templateHash": "10006606949676096242"
             }
           },
           "parameters": {
@@ -901,8 +901,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.20.4.51522",
-              "templateHash": "13560297539192628062"
+              "version": "0.21.1.54444",
+              "templateHash": "14580007913383558904"
             },
             "name": "Private Endpoints",
             "description": "This module deploys a Private Endpoint.",
@@ -1078,7 +1078,7 @@
               "condition": "[not(empty(parameters('privateDnsZoneGroup')))]",
               "type": "Microsoft.Resources/deployments",
               "apiVersion": "2022-09-01",
-              "name": "[format('{0}-PrivateEndpoint-PrivateDnsZoneGroup', uniqueString(deployment().name, parameters('location')))]",
+              "name": "[format('{0}-PE-PrivateDnsZoneGroup', uniqueString(deployment().name))]",
               "properties": {
                 "expressionEvaluationOptions": {
                   "scope": "inner"
@@ -1101,8 +1101,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.20.4.51522",
-                      "templateHash": "17831763001460207830"
+                      "version": "0.21.1.54444",
+                      "templateHash": "2469208411936339153"
                     },
                     "name": "Private Endpoint Private DNS Zone Groups",
                     "description": "This module deploys a Private Endpoint Private DNS Zone Group.",
@@ -1239,8 +1239,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.20.4.51522",
-                      "templateHash": "11548486149222715894"
+                      "version": "0.21.1.54444",
+                      "templateHash": "13032708393704093995"
                     }
                   },
                   "parameters": {

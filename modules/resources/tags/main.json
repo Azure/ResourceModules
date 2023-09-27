@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.20.4.51522",
-      "templateHash": "15599858722775223607"
+      "version": "0.21.1.54444",
+      "templateHash": "15623552838363512630"
     },
     "name": "Resources Tags",
     "description": "This module deploys a Resource Tag at a Subscription or Resource Group scope.",
@@ -105,8 +105,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.20.4.51522",
-              "templateHash": "17445460813956994133"
+              "version": "0.21.1.54444",
+              "templateHash": "791889452516757013"
             },
             "name": "Resources Tags Subscription Scope",
             "description": "This module deploys a Resource Tag on a Subscription scope.",
@@ -186,8 +186,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.20.4.51522",
-                      "templateHash": "373680921396677494"
+                      "version": "0.21.1.54444",
+                      "templateHash": "9008008606560089334"
                     }
                   },
                   "parameters": {
@@ -267,8 +267,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.20.4.51522",
-              "templateHash": "4275347865908810280"
+              "version": "0.21.1.54444",
+              "templateHash": "11114375852398740809"
             },
             "name": "Resources Tags Resource Group",
             "description": "This module deploys a Resource Tag on a Resource Group scope.",
@@ -339,8 +339,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.20.4.51522",
-                      "templateHash": "5447313974004996573"
+                      "version": "0.21.1.54444",
+                      "templateHash": "4678848348426348914"
                     }
                   },
                   "parameters": {
