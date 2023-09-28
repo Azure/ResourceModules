@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.21.1.54444",
-      "templateHash": "8541603970286068274"
+      "templateHash": "1411508113014099928"
     },
     "name": "Azure Kubernetes Service (AKS) Managed Clusters",
     "description": "This module deploys an Azure Kubernetes Service (AKS) Managed Cluster.",
@@ -2113,14 +2113,14 @@
       "metadata": {
         "description": "The Object ID of the Key Vault Secrets Provider identity."
       },
-      "value": "[if(contains(reference(resourceId('Microsoft.ContainerService/managedClusters', parameters('name')), '2023-06-02-preview'), 'addonProfiles'), if(contains(reference(resourceId('Microsoft.ContainerService/managedClusters', parameters('name')), '2023-06-02-preview').addonProfiles, 'azureKeyvaultSecretsPorvider'), if(contains(reference(resourceId('Microsoft.ContainerService/managedClusters', parameters('name')), '2023-06-02-preview').addonProfiles.omsagent, 'identity'), reference(resourceId('Microsoft.ContainerService/managedClusters', parameters('name')), '2023-06-02-preview').addonProfiles.azureKeyvaultSecretsPorvider.identity.objectId, ''), ''), '')]"
+      "value": "[if(contains(reference(resourceId('Microsoft.ContainerService/managedClusters', parameters('name')), '2023-06-02-preview'), 'addonProfiles'), if(contains(reference(resourceId('Microsoft.ContainerService/managedClusters', parameters('name')), '2023-06-02-preview').addonProfiles, 'azureKeyvaultSecretsProvider'), if(contains(reference(resourceId('Microsoft.ContainerService/managedClusters', parameters('name')), '2023-06-02-preview').addonProfiles.azureKeyvaultSecretsProvider, 'identity'), reference(resourceId('Microsoft.ContainerService/managedClusters', parameters('name')), '2023-06-02-preview').addonProfiles.azureKeyvaultSecretsProvider.identity.objectId, ''), ''), '')]"
     },
     "keyvaultIdentityClientId": {
       "type": "string",
       "metadata": {
         "description": "The Client ID of the Key Vault Secrets Provider identity."
       },
-      "value": "[if(contains(reference(resourceId('Microsoft.ContainerService/managedClusters', parameters('name')), '2023-06-02-preview'), 'addonProfiles'), if(contains(reference(resourceId('Microsoft.ContainerService/managedClusters', parameters('name')), '2023-06-02-preview').addonProfiles, 'azureKeyvaultSecretsPorvider'), if(contains(reference(resourceId('Microsoft.ContainerService/managedClusters', parameters('name')), '2023-06-02-preview').addonProfiles.omsagent, 'identity'), reference(resourceId('Microsoft.ContainerService/managedClusters', parameters('name')), '2023-06-02-preview').addonProfiles.azureKeyvaultSecretsPorvider.identity.clientId, ''), ''), '')]"
+      "value": "[if(contains(reference(resourceId('Microsoft.ContainerService/managedClusters', parameters('name')), '2023-06-02-preview'), 'addonProfiles'), if(contains(reference(resourceId('Microsoft.ContainerService/managedClusters', parameters('name')), '2023-06-02-preview').addonProfiles, 'azureKeyvaultSecretsProvider'), if(contains(reference(resourceId('Microsoft.ContainerService/managedClusters', parameters('name')), '2023-06-02-preview').addonProfiles.azureKeyvaultSecretsProvider, 'identity'), reference(resourceId('Microsoft.ContainerService/managedClusters', parameters('name')), '2023-06-02-preview').addonProfiles.azureKeyvaultSecretsProvider.identity.clientId, ''), ''), '')]"
     },
     "location": {
       "type": "string",
