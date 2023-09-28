@@ -736,10 +736,10 @@ output kubeletidentityObjectId string = contains(managedCluster.properties, 'ide
 output omsagentIdentityObjectId string = contains(managedCluster.properties, 'addonProfiles') ? contains(managedCluster.properties.addonProfiles, 'omsagent') ? contains(managedCluster.properties.addonProfiles.omsagent, 'identity') ? managedCluster.properties.addonProfiles.omsagent.identity.objectId : '' : '' : ''
 
 @description('The Object ID of the Key Vault Secrets Provider identity.')
-output keyvaultIdentityObjectId string = contains(managedCluster.properties, 'addonProfiles') ? contains(managedCluster.properties.addonProfiles, 'azureKeyvaultSecretsPorvider') ? contains(managedCluster.properties.addonProfiles.omsagent, 'identity') ? managedCluster.properties.addonProfiles.azureKeyvaultSecretsPorvider.identity.objectId : '' : '' : ''
+output keyvaultIdentityObjectId string = contains(managedCluster.properties, 'addonProfiles') ? contains(managedCluster.properties.addonProfiles, 'azureKeyvaultSecretsProvider') ? contains(managedCluster.properties.addonProfiles.azureKeyvaultSecretsProvider, 'identity') ? managedCluster.properties.addonProfiles.azureKeyvaultSecretsProvider.identity.objectId : '' : '' : ''
 
 @description('The Client ID of the Key Vault Secrets Provider identity.')
-output keyvaultIdentityClientId string = contains(managedCluster.properties, 'addonProfiles') ? contains(managedCluster.properties.addonProfiles, 'azureKeyvaultSecretsPorvider') ? contains(managedCluster.properties.addonProfiles.omsagent, 'identity') ? managedCluster.properties.addonProfiles.azureKeyvaultSecretsPorvider.identity.clientId : '' : '' : ''
+output keyvaultIdentityClientId string = contains(managedCluster.properties, 'addonProfiles') ? contains(managedCluster.properties.addonProfiles, 'azureKeyvaultSecretsProvider') ? contains(managedCluster.properties.addonProfiles.azureKeyvaultSecretsProvider, 'identity') ? managedCluster.properties.addonProfiles.azureKeyvaultSecretsProvider.identity.clientId : '' : '' : ''
 
 @description('The location the resource was deployed into.')
 output location string = managedCluster.location

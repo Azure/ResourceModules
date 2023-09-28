@@ -46,6 +46,7 @@ module nestedDependencies 'dependencies.bicep' = {
     // Adding base time to make the name unique as purge protection must be enabled (but may not be longer than 24 characters total)
     keyVaultName: 'dep-${namePrefix}-kv-${serviceShort}-${substring(uniqueString(baseTime), 0, 3)}'
     dnsZoneName: 'dep-${namePrefix}-dns-${serviceShort}.com'
+    logAnalyticsWorkspaceName: 'dep-${namePrefix}-law-${serviceShort}'
   }
 }
 
@@ -171,6 +172,11 @@ module testDeployment '../../main.bicep' = {
         resourceId: nestedDependencies.outputs.managedIdentityKubeletIdentityResourceId
       }
     }
+    omsAgentEnabled: true
+    monitoringWorkspaceId: nestedDependencies.outputs.logAnalyticsWorkspaceResourceId
+    enableAzureDefender: true
+    enableKeyvaultSecretsProvider: true
+    enablePodSecurityPolicy: false
     lock: 'CanNotDelete'
     roleAssignments: [
       {
