@@ -6,8 +6,8 @@ on:
     branches:
       - main
     paths:
-      - '.github/workflows/platform.updateStaticTestDocs.yml'
-      - 'utilities/pipelines/staticValidation/module.tests.ps1'
+      - ".github/workflows/platform.updateStaticTestDocs.yml"
+      - "utilities/pipelines/staticValidation/module.tests.ps1"
       - utilities/tools/platform/Set-StaticTestDocumentation.ps1
 
 env:
@@ -21,7 +21,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: "Checkout"
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
           token: "${{ secrets.PLATFORM_REPO_UPDATE_PAT }}" # Sets general GIT credentials up

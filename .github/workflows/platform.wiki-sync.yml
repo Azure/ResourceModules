@@ -2,7 +2,7 @@
 # This pipeline requires a secret 'PLATFORM_REPO_UPDATE_PAT' set up in the GitHub secrets.
 # The secret's value should be a PAT token with the permissions to push to the repository's main branch.
 
-name: '.Platform: Sync Docs/Wiki'
+name: ".Platform: Sync Docs/Wiki"
 
 on:
   workflow_dispatch:
@@ -10,15 +10,15 @@ on:
     branches:
       - main
     paths:
-      - 'docs/wiki/**'
+      - "docs/wiki/**"
 
 env:
-  wiki_source_repo: '${{ github.repository }}'
-  wiki_source_repo_dir: '${{ github.repository }}/docs/wiki'
-  wiki_target_repo: '${{ github.repository }}.wiki'
-  github_commit_message: 'Wiki Sync from docs/wiki'
-  pipelinePrincipalGitUserName: 'CARMLPipelinePrincipal'
-  pipelinePrincipalGitUserEmail: 'CARML@noreply.microsoft.com'
+  wiki_source_repo: "${{ github.repository }}"
+  wiki_source_repo_dir: "${{ github.repository }}/docs/wiki"
+  wiki_target_repo: "${{ github.repository }}.wiki"
+  github_commit_message: "Wiki Sync from docs/wiki"
+  pipelinePrincipalGitUserName: "CARMLPipelinePrincipal"
+  pipelinePrincipalGitUserEmail: "CARML@noreply.microsoft.com"
 
 jobs:
   sync-wiki:
@@ -26,18 +26,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Source Repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: ${{ env.wiki_source_repo }}
           path: ${{ env.wiki_source_repo }}
-          token: '${{ secrets.PLATFORM_REPO_UPDATE_PAT }}' # Sets general GIT credentials up
+          token: "${{ secrets.PLATFORM_REPO_UPDATE_PAT }}" # Sets general GIT credentials up
 
       - name: Checkout Wiki Repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: ${{ env.wiki_target_repo }}
           path: ${{ env.wiki_target_repo }}
-          token: '${{ secrets.PLATFORM_REPO_UPDATE_PAT }}' # Sets general GIT credentials up
+          token: "${{ secrets.PLATFORM_REPO_UPDATE_PAT }}" # Sets general GIT credentials up
 
       - name: Configure Local Git
         run: |

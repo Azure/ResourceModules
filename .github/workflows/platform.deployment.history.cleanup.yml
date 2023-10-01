@@ -1,29 +1,29 @@
-name: '.Platform: Clean up deployment history'
+name: ".Platform: Clean up deployment history"
 
 on:
   workflow_dispatch:
     inputs:
       handleSubscriptionScope:
         type: boolean
-        description: 'Include Subscription deployments'
+        description: "Include Subscription deployments"
         required: false
         default: true # Note: This requires your service principal to have permissions on the subscription scope.
       handleManagementGroupScope:
         type: boolean
-        description: 'Include Management Group deployments'
+        description: "Include Management Group deployments"
         required: false
         default: true # Note: This requires your service principal to have permissions on the management group scope.
       maxDeploymentRetentionInDays:
         type: string
-        description: 'The number of days to keep deployments with status [failed]' # 'Running' are always excluded
+        description: "The number of days to keep deployments with status [failed]" # 'Running' are always excluded
         required: false
-        default: '14'
+        default: "14"
   schedule:
-    - cron: '0 0 * * *'
+    - cron: "0 0 * * *"
 
 env:
-  variablesPath: 'settings.yml'
-  workflowPath: '.github/workflows/platform.deployment.history.cleanup.yml'
+  variablesPath: "settings.yml"
+  workflowPath: ".github/workflows/platform.deployment.history.cleanup.yml"
 
 jobs:
   ###########################
@@ -31,17 +31,17 @@ jobs:
   ###########################
   job_initialize_pipeline:
     runs-on: ubuntu-20.04
-    name: 'Initialize pipeline'
+    name: "Initialize pipeline"
     steps:
-      - name: 'Checkout'
-        uses: actions/checkout@v3
+      - name: "Checkout"
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: 'Set input parameters to output variables'
+      - name: "Set input parameters to output variables"
         id: get-workflow-param
         uses: ./.github/actions/templates/getWorkflowInput
         with:
-          workflowPath: '${{ env.workflowPath}}'
+          workflowPath: "${{ env.workflowPath}}"
     outputs:
       workflowInput: ${{ steps.get-workflow-param.outputs.workflowInput }}
 
@@ -50,13 +50,13 @@ jobs:
   ###############
   job_cleanup_subscription_deployments:
     runs-on: ubuntu-20.04
-    name: 'Remove Subscription deployments'
+    name: "Remove Subscription deployments"
     needs:
       - job_initialize_pipeline
     if: ${{ (fromJson(needs.job_initialize_pipeline.outputs.workflowInput)).handleSubscriptionScope == 'true' }}
     steps:
-      - name: 'Checkout'
-        uses: actions/checkout@v3
+      - name: "Checkout"
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
@@ -87,17 +87,17 @@ jobs:
             Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
             Clear-SubscriptionDeploymentHistory @functionInput
-          azPSVersion: 'latest'
+          azPSVersion: "latest"
 
   job_cleanup_managementGroup_deployments:
     runs-on: ubuntu-20.04
-    name: 'Remove Management Group deployments'
+    name: "Remove Management Group deployments"
     needs:
       - job_initialize_pipeline
     if: ${{ (fromJson(needs.job_initialize_pipeline.outputs.workflowInput)).handleManagementGroupScope == 'true' }}
     steps:
-      - name: 'Checkout'
-        uses: actions/checkout@v3
+      - name: "Checkout"
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
@@ -128,4 +128,4 @@ jobs:
             Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
             Clear-ManagementGroupDeploymentHistory @functionInput
-          azPSVersion: 'latest'
+          azPSVersion: "latest"

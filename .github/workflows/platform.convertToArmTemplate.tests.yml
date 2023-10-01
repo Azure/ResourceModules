@@ -1,4 +1,4 @@
-name: '.Platform: Test - ConvertTo-ARMTemplate.ps1'
+name: ".Platform: Test - ConvertTo-ARMTemplate.ps1"
 
 on:
   workflow_dispatch:
@@ -6,23 +6,23 @@ on:
     branches:
       - main
     paths:
-      - 'utilities/tools/ConvertTo-ARMTemplate.ps1'
-      - 'utilities/tools/tests/ConvertTo-ARMTemplate**'
+      - "utilities/tools/ConvertTo-ARMTemplate.ps1"
+      - "utilities/tools/tests/ConvertTo-ARMTemplate**"
 
 jobs:
   job_test_convert:
     runs-on: ubuntu-latest
-    name: 'Test with parameter'
+    name: "Test with parameter"
     strategy:
       fail-fast: false
       matrix:
-        tags: ['Default', 'Skip']
+        tags: ["Default", "Skip"]
     steps:
-      - name: 'Checkout'
-        uses: actions/checkout@v3
+      - name: "Checkout"
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: 'Run Pester tests'
+      - name: "Run Pester tests"
         shell: pwsh
         run: |
           Invoke-Pester -Configuration @{
@@ -48,4 +48,4 @@ jobs:
         uses: EnricoMi/publish-unit-test-result-action@v2
         if: always()
         with:
-          junit_files: 'utilities/tools/tests/conversion-testResults-${{ matrix.tags }}.xml'
+          junit_files: "utilities/tools/tests/conversion-testResults-${{ matrix.tags }}.xml"
