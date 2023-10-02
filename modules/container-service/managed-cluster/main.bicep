@@ -307,6 +307,9 @@ param enableStorageProfileFileCSIDriver bool = false
 @description('Optional. Whether the snapshot controller for the storage profile is enabled.')
 param enableStorageProfileSnapshotController bool = false
 
+@description('Optional. Whether the metric state of the kubenetes cluster is enabled.')
+param enableAzureMonitorProfileMetrics bool = false
+
 @allowed([
   'AKSLongTermSupport'
   'KubernetesOfficial'
@@ -391,6 +394,12 @@ param diagnosticMetricsToEnable array = [
 
 @description('Optional. The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings".')
 param diagnosticSettingsName string = ''
+
+@description('Optional. A list of kubernetes cluster metrics labels.')
+param metricLabelsAllowlist string = ''
+
+@description('Optional. A list of Kubernetes cluster metrics annotations.')
+param metricAnnotationsAllowList string = ''
 
 var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs' && item != ''): {
   category: category
@@ -601,6 +610,15 @@ resource managedCluster 'Microsoft.ContainerService/managedClusters@2023-06-02-p
         enabled: enableStorageProfileSnapshotController
       }
     }
+    azureMonitorProfile: {
+      metrics: {
+      enabled: enableAzureMonitorProfileMetrics
+      kubeStateMetrics: {
+        metricLabelsAllowlist: metricLabelsAllowlist
+        metricAnnotationsAllowList: metricAnnotationsAllowList
+      }
+    }
+  }
     supportPlan: supportPlan
   }
 }
