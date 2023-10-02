@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.21.1.54444",
-      "templateHash": "17715240433467527898"
+      "version": "0.20.4.51522",
+      "templateHash": "3921972851086507308"
     },
     "name": "SQL Managed Instances",
     "description": "This module deploys a SQL Managed Instance.",
@@ -507,8 +507,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "18305177688296262732"
+              "version": "0.20.4.51522",
+              "templateHash": "10149117624574107754"
             }
           },
           "parameters": {
@@ -677,8 +677,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "12439489569253043438"
+              "version": "0.20.4.51522",
+              "templateHash": "7819487658736647657"
             },
             "name": "SQL Managed Instance Databases",
             "description": "This module deploys a SQL Managed Instance Database.",
@@ -984,8 +984,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.21.1.54444",
-                      "templateHash": "8451378478264821514"
+                      "version": "0.20.4.51522",
+                      "templateHash": "6931213919610871740"
                     },
                     "name": "SQL Managed Instance Database Backup Short-Term Retention Policies",
                     "description": "This module deploys a SQL Managed Instance Database Backup Short-Term Retention Policy.",
@@ -1112,8 +1112,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.21.1.54444",
-                      "templateHash": "2590589748306696562"
+                      "version": "0.20.4.51522",
+                      "templateHash": "18038719600656297152"
                     },
                     "name": "SQL Managed Instance Database Backup Long-Term Retention Policies",
                     "description": "This module deploys a SQL Managed Instance Database Backup Long-Term Retention Policy.",
@@ -1296,8 +1296,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "5862626500667784950"
+              "version": "0.20.4.51522",
+              "templateHash": "15021129035939475675"
             },
             "name": "SQL Managed Instance Security Alert Policies",
             "description": "This module deploys a SQL Managed Instance Security Alert Policy.",
@@ -1419,7 +1419,7 @@
           "storageAccountResourceId": {
             "value": "[parameters('vulnerabilityAssessmentsObj').storageAccountResourceId]"
           },
-          "storageAccountFirewallOrVnet": "[if(contains(parameters('vulnerabilityAssessmentsObj'), 'storageAccountFirewallOrVnet'), createObject('value', parameters('vulnerabilityAssessmentsObj').storageAccountFirewallOrVnet), createObject('value', false()))]",
+          "useStorageAccountAccessKey": "[if(contains(parameters('vulnerabilityAssessmentsObj'), 'useStorageAccountAccessKey'), createObject('value', parameters('vulnerabilityAssessmentsObj').useStorageAccountAccessKey), createObject('value', true()))]",
           "enableDefaultTelemetry": {
             "value": "[variables('enableReferencedModulesTelemetry')]"
           }
@@ -1430,8 +1430,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "11796941454379555787"
+              "version": "0.20.4.51522",
+              "templateHash": "5140663055486624881"
             },
             "name": "SQL Managed Instance Vulnerability Assessments",
             "description": "This module deploys a SQL Managed Instance Vulnerability Assessment.",
@@ -1477,11 +1477,11 @@
                 "description": "Required. A blob storage to hold the scan results."
               }
             },
-            "storageAccountFirewallOrVnet": {
+            "useStorageAccountAccessKey": {
               "type": "bool",
-              "defaultValue": false,
+              "defaultValue": true,
               "metadata": {
-                "description": "Optional. Specifies that the storage account selected to store vulnerability assessment scan results is behind a firewall or in a virtual network."
+                "description": "Optional. Use Access Key to access the storage account. When set to false, the SQL MI managed identity must be assigned the Storage Blob Contributor role."
               }
             },
             "enableDefaultTelemetry": {
@@ -1514,10 +1514,18 @@
               "type": "Microsoft.Sql/managedInstances/vulnerabilityAssessments",
               "apiVersion": "2022-02-01-preview",
               "name": "[format('{0}/{1}', parameters('managedInstanceName'), parameters('name'))]",
-              "properties": "[union(createObject('storageContainerPath', format('https://{0}.blob.{1}/vulnerability-assessment/', last(split(parameters('storageAccountResourceId'), '/')), environment().suffixes.storage), 'recurringScans', createObject('isEnabled', parameters('recurringScansIsEnabled'), 'emailSubscriptionAdmins', parameters('recurringScansEmailSubscriptionAdmins'), 'emails', parameters('recurringScansEmails'))), if(not(parameters('storageAccountFirewallOrVnet')), createObject('storageAccountAccessKey', listKeys(parameters('storageAccountResourceId'), '2019-06-01').keys[0].value), createObject()))]"
+              "properties": {
+                "storageContainerPath": "[format('https://{0}.blob.{1}/vulnerability-assessment/', last(split(parameters('storageAccountResourceId'), '/')), environment().suffixes.storage)]",
+                "storageAccountAccessKey": "[if(parameters('useStorageAccountAccessKey'), listKeys(parameters('storageAccountResourceId'), '2019-06-01').keys[0].value, null())]",
+                "recurringScans": {
+                  "isEnabled": "[parameters('recurringScansIsEnabled')]",
+                  "emailSubscriptionAdmins": "[parameters('recurringScansEmailSubscriptionAdmins')]",
+                  "emails": "[parameters('recurringScansEmails')]"
+                }
+              }
             },
             {
-              "condition": "[parameters('storageAccountFirewallOrVnet')]",
+              "condition": "[not(parameters('useStorageAccountAccessKey'))]",
               "type": "Microsoft.Resources/deployments",
               "apiVersion": "2022-09-01",
               "name": "[guid(resourceId('Microsoft.Sql/managedInstances', parameters('managedInstanceName')), parameters('managedInstanceName'), 'Storage Blob Data Contributor')]",
@@ -1638,8 +1646,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "3183276214939752427"
+              "version": "0.20.4.51522",
+              "templateHash": "12303930012308222652"
             },
             "name": "SQL Managed Instance Keys",
             "description": "This module deploys a SQL Managed Instance Key.",
@@ -1771,8 +1779,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "2261010047023688229"
+              "version": "0.20.4.51522",
+              "templateHash": "3596420230929102349"
             },
             "name": "SQL Managed Instance Encryption Protector",
             "description": "This module deploys a SQL Managed Instance Encryption Protector.",
@@ -1904,8 +1912,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "12390588638319517954"
+              "version": "0.20.4.51522",
+              "templateHash": "94742246961044490"
             },
             "name": "SQL Managed Instances Administrator",
             "description": "This module deploys a SQL Managed Instance Administrator.",

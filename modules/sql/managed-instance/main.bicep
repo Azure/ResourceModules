@@ -340,7 +340,7 @@ module managedInstance_vulnerabilityAssessment 'vulnerability-assessment/main.bi
     recurringScansEmailSubscriptionAdmins: contains(vulnerabilityAssessmentsObj, 'recurringScansEmailSubscriptionAdmins') ? vulnerabilityAssessmentsObj.recurringScansEmailSubscriptionAdmins : false
     recurringScansIsEnabled: contains(vulnerabilityAssessmentsObj, 'recurringScansIsEnabled') ? vulnerabilityAssessmentsObj.recurringScansIsEnabled : false
     storageAccountResourceId: vulnerabilityAssessmentsObj.storageAccountResourceId
-    storageAccountFirewallOrVnet: contains(vulnerabilityAssessmentsObj, 'storageAccountFirewallOrVnet') ? vulnerabilityAssessmentsObj.storageAccountFirewallOrVnet : false
+    useStorageAccountAccessKey: contains(vulnerabilityAssessmentsObj, 'useStorageAccountAccessKey') ? vulnerabilityAssessmentsObj.useStorageAccountAccessKey : true
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
   dependsOn: [
