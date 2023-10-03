@@ -14,9 +14,6 @@ param location string = deployment().location
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints.')
 param serviceShort string = 'csmaz'
 
-// @description('Generated. Used as a basis for unique resource names.')
-// param baseTime string = utcNow('u')
-
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
@@ -38,13 +35,7 @@ module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
-    virtualNetworkName: 'dep-${namePrefix}-vnet-${serviceShort}'
     managedIdentityName: 'dep-${namePrefix}-msi-${serviceShort}'
-    managedIdentityKubeletIdentityName: 'dep-${namePrefix}-msiki-${serviceShort}'
-    //diskEncryptionSetName: 'dep-${namePrefix}-des-${serviceShort}'
-    //proximityPlacementGroupName: 'dep-${namePrefix}-ppg-${serviceShort}'
-    // Adding base time to make the name unique as purge protection must be enabled (but may not be longer than 24 characters total)
-    //keyVaultName: 'dep-${namePrefix}-kv-${serviceShort}-${substring(uniqueString(baseTime), 0, 3)}'
     dnsZoneName: 'dep-${namePrefix}-dns-${serviceShort}.com'
     monitoringWorkspaceName: 'dep-${namePrefix}-law-${serviceShort}'
   }
@@ -92,7 +83,6 @@ module testDeployment '../../main.bicep' = {
         storageProfile: 'ManagedDisks'
         type: 'VirtualMachineScaleSets'
         vmSize: 'Standard_DS2_v2'
-        vnetSubnetID: nestedDependencies.outputs.subnetResourceIds[0]
       }
     ]
     agentPools: [
@@ -119,8 +109,6 @@ module testDeployment '../../main.bicep' = {
         storageProfile: 'ManagedDisks'
         type: 'VirtualMachineScaleSets'
         vmSize: 'Standard_DS2_v2'
-        vnetSubnetID: nestedDependencies.outputs.subnetResourceIds[1]
-       // proximityPlacementGroupResourceId: nestedDependencies.outputs.proximityPlacementGroupResourceId
       }
       {
         availabilityZones: [
@@ -145,7 +133,6 @@ module testDeployment '../../main.bicep' = {
         storageProfile: 'ManagedDisks'
         type: 'VirtualMachineScaleSets'
         vmSize: 'Standard_DS2_v2'
-        vnetSubnetID: nestedDependencies.outputs.subnetResourceIds[2]
       }
     ]
     autoUpgradeProfileUpgradeChannel: 'stable'
@@ -158,7 +145,6 @@ module testDeployment '../../main.bicep' = {
     diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
     diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
     diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
-    //diskEncryptionSetID: nestedDependencies.outputs.diskEncryptionSetResourceId
     openServiceMeshEnabled: true
     enableStorageProfileBlobCSIDriver: true
     enableStorageProfileDiskCSIDriver: true
@@ -166,11 +152,6 @@ module testDeployment '../../main.bicep' = {
     enableStorageProfileSnapshotController: true
     userAssignedIdentities: {
       '${nestedDependencies.outputs.managedIdentityResourceId}': {}
-    }
-    identityProfile: {
-      kubeletidentity: {
-        resourceId: nestedDependencies.outputs.managedIdentityKubeletIdentityResourceId
-      }
     }
     omsAgentEnabled: true
     monitoringWorkspaceId: nestedDependencies.outputs.workspaceResourceId
