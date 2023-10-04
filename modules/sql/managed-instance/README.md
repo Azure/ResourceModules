@@ -297,10 +297,12 @@ The following module usage examples are retrieved from the content of the files 
 module managedInstance './sql/managed-instance/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-sqlmicom'
   params: {
+    // Required parameters
     administratorLogin: 'adminUserName'
     administratorLoginPassword: '<administratorLoginPassword>'
     name: 'sqlmicom'
     subnetId: '<subnetId>'
+    // Non-required parameters
     collation: 'SQL_Latin1_General_CP1_CI_AS'
     databases: [
       {
