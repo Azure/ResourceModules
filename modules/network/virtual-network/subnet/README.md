@@ -113,7 +113,6 @@ delegations: [
 
 </details>
 
-
 <details>
 
 <summary>Bicep format</summary>
