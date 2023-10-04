@@ -31,10 +31,33 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2023-04-01' = {
       {
         name: 'defaultSubnet'
         properties: {
-          addressPrefix: cidrSubnet(addressPrefix, 16, 0)
+          addressPrefix: cidrSubnet(addressPrefix, 24, 0)
+        }
+      }
+      {
+        name: 'privateLinkSubnet'
+        properties:{
+          addressPrefix: cidrSubnet(addressPrefix, 24, 1)
+          privateLinkServiceNetworkPolicies: 'Disabled'
         }
       }
     ]
+  }
+}
+
+resource privateDNSZone 'Microsoft.Network/privateDnsZones@2020-06-01' = {
+  name: 'privatelink.appgateway.net'
+  location: 'global'
+
+  resource virtualNetworkLinks 'virtualNetworkLinks@2020-06-01' = {
+    name: '${virtualNetwork.name}-vnetlink'
+    location: 'global'
+    properties: {
+      virtualNetwork: {
+        id: virtualNetwork.id
+      }
+      registrationEnabled: false
+    }
   }
 }
 
@@ -101,8 +124,11 @@ resource certDeploymentScript 'Microsoft.Resources/deploymentScripts@2020-10-01'
   }
 }
 
-@description('The resource ID of the created Virtual Network Subnet.')
-output subnetResourceId string = virtualNetwork.properties.subnets[0].id
+@description('The resource ID of the created Virtual Network default subnet.')
+output defaultSubnetResourceId string = virtualNetwork.properties.subnets[0].id
+
+@description('The resource ID of the created Virtual Network private link subnet.')
+output privateLinkSubnetResourceId string = virtualNetwork.properties.subnets[1].id
 
 @description('The resource ID of the created Public IP.')
 output publicIPResourceId string = publicIP.id
@@ -115,3 +141,6 @@ output certificateSecretUrl string = certDeploymentScript.properties.outputs.sec
 
 @description('The principal ID of the created Managed Identity.')
 output managedIdentityPrincipalId string = managedIdentity.properties.principalId
+
+@description('The resource ID of the created Private DNS Zone.')
+output privateDNSZoneResourceId string = privateDNSZone.id

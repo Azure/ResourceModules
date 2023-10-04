@@ -9,7 +9,7 @@ param name string
 param location string = resourceGroup().location
 
 @description('Optional. Specifies the DNS prefix specified when creating the managed cluster.')
-param aksClusterDnsPrefix string = name
+param dnsPrefix string = name
 
 @description('Optional. Enables system assigned managed identity on the resource.')
 param systemAssignedIdentity bool = false
@@ -17,13 +17,28 @@ param systemAssignedIdentity bool = false
 @description('Optional. The ID(s) to assign to the resource.')
 param userAssignedIdentities object = {}
 
-@description('Optional. Specifies the network plugin used for building Kubernetes network. - azure or kubenet.')
+@description('Optional. Network dataplane used in the Kubernetes cluster. Not compatible with kubenet network plugin.')
+@allowed([
+  ''
+  'azure'
+  'cilium'
+])
+param networkDataplane string = ''
+
+@description('Optional. Specifies the network plugin used for building Kubernetes network.')
 @allowed([
   ''
   'azure'
   'kubenet'
 ])
-param aksClusterNetworkPlugin string = ''
+param networkPlugin string = ''
+
+@description('Optional. Network plugin mode used for building the Kubernetes network. Not compatible with kubenet network plugin.')
+@allowed([
+  ''
+  'overlay'
+])
+param networkPluginMode string = ''
 
 @description('Optional. Specifies the network policy used for building Kubernetes network. - calico or azure.')
 @allowed([
@@ -31,23 +46,23 @@ param aksClusterNetworkPlugin string = ''
   'azure'
   'calico'
 ])
-param aksClusterNetworkPolicy string = ''
+param networkPolicy string = ''
 
 @description('Optional. Specifies the CIDR notation IP range from which to assign pod IPs when kubenet is used.')
-param aksClusterPodCidr string = ''
+param podCidr string = ''
 
 @description('Optional. A CIDR notation IP range from which to assign service cluster IPs. It must not overlap with any Subnet IP ranges.')
-param aksClusterServiceCidr string = ''
+param serviceCidr string = ''
 
 @description('Optional. Specifies the IP address assigned to the Kubernetes DNS service. It must be within the Kubernetes service address range specified in serviceCidr.')
-param aksClusterDnsServiceIP string = ''
+param dnsServiceIP string = ''
 
 @description('Optional. Specifies the sku of the load balancer used by the virtual machine scale sets used by nodepools.')
 @allowed([
   'basic'
   'standard'
 ])
-param aksClusterLoadBalancerSku string = 'standard'
+param loadBalancerSku string = 'standard'
 
 @description('Optional. Outbound IP Count for the Load balancer.')
 param managedOutboundIPCount int = 0
@@ -57,26 +72,26 @@ param managedOutboundIPCount int = 0
   'loadBalancer'
   'userDefinedRouting'
 ])
-param aksClusterOutboundType string = 'loadBalancer'
+param outboundType string = 'loadBalancer'
 
-@description('Optional. Tier of a managed cluster SKU. - Free or Paid.')
+@description('Optional. Tier of a managed cluster SKU. - Free or Standard.')
 @allowed([
   'Free'
   'Premium'
   'Standard'
 ])
-param aksClusterSkuTier string = 'Free'
+param skuTier string = 'Free'
 
 @description('Optional. Version of Kubernetes specified when creating the managed cluster.')
-param aksClusterKubernetesVersion string = ''
+param kubernetesVersion string = ''
 
 @description('Optional. Specifies the administrator username of Linux virtual machines.')
-param aksClusterAdminUsername string = 'azureuser'
+param adminUsername string = 'azureuser'
 
 @description('Optional. Specifies the SSH RSA public key string for the Linux nodes.')
-param aksClusterSshPublicKey string = ''
+param sshPublicKey string = ''
 
-@description('Optional. Information about a service principal identity for the cluster to use for manipulating Azure APIs.')
+@description('Conditional. Information about a service principal identity for the cluster to use for manipulating Azure APIs. Required if no managed identities are assigned to the cluster.')
 param aksServicePrincipalProfile object = {}
 
 @description('Optional. The client AAD application ID.')
@@ -245,6 +260,17 @@ param autoScalerProfileSkipNodesWithLocalStorage string = 'true'
 @description('Optional. Specifies if nodes with system pods should be skipped for the auto-scaler of the AKS cluster.')
 param autoScalerProfileSkipNodesWithSystemPods string = 'true'
 
+@allowed([
+  'node-image'
+  'none'
+  'patch'
+  'rapid'
+  'stable'
+  ''
+])
+@description('Optional. Auto-upgrade channel on the AKS cluster.')
+param autoUpgradeProfileUpgradeChannel string = ''
+
 @description('Optional. Running in Kubenet is disabled by default due to the security related nature of AAD Pod Identity and the risks of IP spoofing.')
 param podIdentityProfileAllowNetworkPluginKubenet bool = false
 
@@ -260,11 +286,33 @@ param podIdentityProfileUserAssignedIdentityExceptions array = []
 @description('Optional. Whether the The OIDC issuer profile of the Managed Cluster is enabled.')
 param enableOidcIssuerProfile bool = false
 
+@description('Optional. Whether to enable Workload Identity. Requires OIDC issuer profile to be enabled.')
+param enableWorkloadIdentity bool = false
+
 @description('Optional. Whether to enable Azure Defender.')
 param enableAzureDefender bool = false
 
-@description('Optional. Whether to enable Kubernetes pod security policy.')
+@description('Optional. Whether to enable Kubernetes pod security policy. Requires enabling the pod security policy feature flag on the subscription.')
 param enablePodSecurityPolicy bool = false
+
+@description('Optional. Whether the AzureBlob CSI Driver for the storage profile is enabled.')
+param enableStorageProfileBlobCSIDriver bool = false
+
+@description('Optional. Whether the AzureDisk CSI Driver for the storage profile is enabled.')
+param enableStorageProfileDiskCSIDriver bool = false
+
+@description('Optional. Whether the AzureFile CSI Driver for the storage profile is enabled.')
+param enableStorageProfileFileCSIDriver bool = false
+
+@description('Optional. Whether the snapshot controller for the storage profile is enabled.')
+param enableStorageProfileSnapshotController bool = false
+
+@allowed([
+  'AKSLongTermSupport'
+  'KubernetesOfficial'
+])
+@description('Optional. The support plan for the Managed Cluster.')
+param supportPlan string = 'KubernetesOfficial'
 
 @description('Optional. Resource ID of the diagnostic storage account.')
 param diagnosticStorageAccountId string = ''
@@ -310,6 +358,12 @@ param fluxConfigurationProtectedSettings object = {}
 
 @description('Optional. Settings and configurations for the flux extension.')
 param fluxExtension object = {}
+
+@description('Optional. Configurations for provisioning the cluster with HTTP proxy servers.')
+param httpProxyConfig object = {}
+
+@description('Optional. Identities associated with the cluster.')
+param identityProfile object = {}
 
 @description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to \'\' to disable log collection.')
 @allowed([
@@ -363,12 +417,12 @@ var identity = {
   userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
 }
 
-var aksClusterLinuxProfile = {
-  adminUsername: aksClusterAdminUsername
+var linuxProfile = {
+  adminUsername: adminUsername
   ssh: {
     publicKeys: [
       {
-        keyData: aksClusterSshPublicKey
+        keyData: sshPublicKey
       }
     ]
   }
@@ -395,21 +449,23 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2022-09-01' = if (ena
   }
 }
 
-resource managedCluster 'Microsoft.ContainerService/managedClusters@2023-05-02-preview' = {
+resource managedCluster 'Microsoft.ContainerService/managedClusters@2023-06-02-preview' = {
   name: name
   location: location
   tags: tags
   identity: identity
   sku: {
     name: 'Base'
-    tier: aksClusterSkuTier
+    tier: skuTier
   }
   properties: {
+    httpProxyConfig: !empty(httpProxyConfig) ? httpProxyConfig : null
+    identityProfile: !empty(identityProfile) ? identityProfile : null
     diskEncryptionSetID: !empty(diskEncryptionSetID) ? diskEncryptionSetID : null
-    kubernetesVersion: (empty(aksClusterKubernetesVersion) ? null : aksClusterKubernetesVersion)
-    dnsPrefix: aksClusterDnsPrefix
+    kubernetesVersion: (empty(kubernetesVersion) ? null : kubernetesVersion)
+    dnsPrefix: dnsPrefix
     agentPoolProfiles: primaryAgentPoolProfile
-    linuxProfile: (empty(aksClusterSshPublicKey) ? null : aksClusterLinuxProfile)
+    linuxProfile: (empty(sshPublicKey) ? null : linuxProfile)
     servicePrincipalProfile: (empty(aksServicePrincipalProfile) ? null : aksServicePrincipalProfile)
     ingressProfile: {
       webAppRouting: {
@@ -465,13 +521,15 @@ resource managedCluster 'Microsoft.ContainerService/managedClusters@2023-05-02-p
     nodeResourceGroup: nodeResourceGroup
     enablePodSecurityPolicy: enablePodSecurityPolicy
     networkProfile: {
-      networkPlugin: !empty(aksClusterNetworkPlugin) ? any(aksClusterNetworkPlugin) : null
-      networkPolicy: !empty(aksClusterNetworkPolicy) ? any(aksClusterNetworkPolicy) : null
-      podCidr: !empty(aksClusterPodCidr) ? aksClusterPodCidr : null
-      serviceCidr: !empty(aksClusterServiceCidr) ? aksClusterServiceCidr : null
-      dnsServiceIP: !empty(aksClusterDnsServiceIP) ? aksClusterDnsServiceIP : null
-      outboundType: aksClusterOutboundType
-      loadBalancerSku: aksClusterLoadBalancerSku
+      networkDataplane: !empty(networkDataplane) ? any(networkDataplane) : null
+      networkPlugin: !empty(networkPlugin) ? any(networkPlugin) : null
+      networkPluginMode: !empty(networkPluginMode) ? any(networkPluginMode) : null
+      networkPolicy: !empty(networkPolicy) ? any(networkPolicy) : null
+      podCidr: !empty(podCidr) ? podCidr : null
+      serviceCidr: !empty(serviceCidr) ? serviceCidr : null
+      dnsServiceIP: !empty(dnsServiceIP) ? dnsServiceIP : null
+      outboundType: outboundType
+      loadBalancerSku: loadBalancerSku
       loadBalancerProfile: managedOutboundIPCount != 0 ? lbProfile : null
     }
     aadProfile: {
@@ -502,6 +560,9 @@ resource managedCluster 'Microsoft.ContainerService/managedClusters@2023-05-02-p
       'skip-nodes-with-local-storage': autoScalerProfileSkipNodesWithLocalStorage
       'skip-nodes-with-system-pods': autoScalerProfileSkipNodesWithSystemPods
     }
+    autoUpgradeProfile: {
+      upgradeChannel: !empty(autoUpgradeProfileUpgradeChannel) ? autoUpgradeProfileUpgradeChannel : null
+    }
     apiServerAccessProfile: {
       authorizedIPRanges: authorizedIPRanges
       disableRunCommand: disableRunCommand
@@ -515,12 +576,32 @@ resource managedCluster 'Microsoft.ContainerService/managedClusters@2023-05-02-p
       userAssignedIdentities: podIdentityProfileUserAssignedIdentities
       userAssignedIdentityExceptions: podIdentityProfileUserAssignedIdentityExceptions
     }
-    securityProfile: enableAzureDefender ? {
-      azureDefender: {
-        enabled: enableAzureDefender
+    securityProfile: {
+      defender: enableAzureDefender ? {
+        securityMonitoring: {
+          enabled: enableAzureDefender
+        }
         logAnalyticsWorkspaceResourceId: !empty(monitoringWorkspaceId) ? monitoringWorkspaceId : null
+      } : null
+      workloadIdentity: enableWorkloadIdentity ? {
+        enabled: enableWorkloadIdentity
+      } : null
+    }
+    storageProfile: {
+      blobCSIDriver: {
+        enabled: enableStorageProfileBlobCSIDriver
       }
-    } : null
+      diskCSIDriver: {
+        enabled: enableStorageProfileDiskCSIDriver
+      }
+      fileCSIDriver: {
+        enabled: enableStorageProfileFileCSIDriver
+      }
+      snapshotController: {
+        enabled: enableStorageProfileSnapshotController
+      }
+    }
+    supportPlan: supportPlan
   }
 }
 
@@ -546,7 +627,7 @@ module managedCluster_agentPools 'agent-pool/main.bicep' = [for (agentPool, inde
     nodeLabels: contains(agentPool, 'nodeLabels') ? agentPool.nodeLabels : {}
     nodePublicIpPrefixId: contains(agentPool, 'nodePublicIpPrefixId') ? agentPool.nodePublicIpPrefixId : ''
     nodeTaints: contains(agentPool, 'nodeTaints') ? agentPool.nodeTaints : []
-    orchestratorVersion: contains(agentPool, 'orchestratorVersion') ? agentPool.orchestratorVersion : aksClusterKubernetesVersion
+    orchestratorVersion: contains(agentPool, 'orchestratorVersion') ? agentPool.orchestratorVersion : kubernetesVersion
     osDiskSizeGB: contains(agentPool, 'osDiskSizeGB') ? agentPool.osDiskSizeGB : -1
     osDiskType: contains(agentPool, 'osDiskType') ? agentPool.osDiskType : ''
     osSku: contains(agentPool, 'osSku') ? agentPool.osSku : ''
@@ -654,8 +735,17 @@ output kubeletidentityObjectId string = contains(managedCluster.properties, 'ide
 @description('The Object ID of the OMS agent identity.')
 output omsagentIdentityObjectId string = contains(managedCluster.properties, 'addonProfiles') ? contains(managedCluster.properties.addonProfiles, 'omsagent') ? contains(managedCluster.properties.addonProfiles.omsagent, 'identity') ? managedCluster.properties.addonProfiles.omsagent.identity.objectId : '' : '' : ''
 
+@description('The Object ID of the Key Vault Secrets Provider identity.')
+output keyvaultIdentityObjectId string = contains(managedCluster.properties, 'addonProfiles') ? contains(managedCluster.properties.addonProfiles, 'azureKeyvaultSecretsProvider') ? contains(managedCluster.properties.addonProfiles.azureKeyvaultSecretsProvider, 'identity') ? managedCluster.properties.addonProfiles.azureKeyvaultSecretsProvider.identity.objectId : '' : '' : ''
+
+@description('The Client ID of the Key Vault Secrets Provider identity.')
+output keyvaultIdentityClientId string = contains(managedCluster.properties, 'addonProfiles') ? contains(managedCluster.properties.addonProfiles, 'azureKeyvaultSecretsProvider') ? contains(managedCluster.properties.addonProfiles.azureKeyvaultSecretsProvider, 'identity') ? managedCluster.properties.addonProfiles.azureKeyvaultSecretsProvider.identity.clientId : '' : '' : ''
+
 @description('The location the resource was deployed into.')
 output location string = managedCluster.location
 
 @description('The OIDC token issuer URL.')
 output oidcIssuerUrl string = enableOidcIssuerProfile ? managedCluster.properties.oidcIssuerProfile.issuerURL : ''
+
+@description('The addonProfiles of the Kubernetes cluster.')
+output addonProfiles object = contains(managedCluster.properties, 'addonProfiles') ? managedCluster.properties.addonProfiles : {}

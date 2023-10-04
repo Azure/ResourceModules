@@ -42,7 +42,7 @@ This module deploys a VPN Gateway VPN Connection.
 | `remoteVpnSiteResourceId` | string | `''` |  | Reference to a VPN site to link to. |
 | `routingConfiguration` | object | `{object}` |  | Routing configuration indicating the associated and propagated route tables for this connection. |
 | `routingWeight` | int | `0` |  | Routing weight for VPN connection. |
-| `sharedKey` | string | `''` |  | SharedKey for the VPN connection. |
+| `sharedKey` | securestring | `''` |  | SharedKey for the VPN connection. |
 | `trafficSelectorPolicies` | array | `[]` |  | The traffic selector policies to be considered by this connection. |
 | `useLocalAzureIpAddress` | bool | `False` |  | Use local Azure IP to initiate connection. |
 | `usePolicyBasedTrafficSelectors` | bool | `False` |  | Enable policy-based traffic selectors. |

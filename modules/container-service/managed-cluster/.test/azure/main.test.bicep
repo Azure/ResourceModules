@@ -40,11 +40,13 @@ module nestedDependencies 'dependencies.bicep' = {
   params: {
     virtualNetworkName: 'dep-${namePrefix}-vnet-${serviceShort}'
     managedIdentityName: 'dep-${namePrefix}-msi-${serviceShort}'
+    managedIdentityKubeletIdentityName: 'dep-${namePrefix}-msiki-${serviceShort}'
     diskEncryptionSetName: 'dep-${namePrefix}-des-${serviceShort}'
     proximityPlacementGroupName: 'dep-${namePrefix}-ppg-${serviceShort}'
     // Adding base time to make the name unique as purge protection must be enabled (but may not be longer than 24 characters total)
     keyVaultName: 'dep-${namePrefix}-kv-${serviceShort}-${substring(uniqueString(baseTime), 0, 3)}'
     dnsZoneName: 'dep-${namePrefix}-dns-${serviceShort}.com'
+    logAnalyticsWorkspaceName: 'dep-${namePrefix}-law-${serviceShort}'
   }
 }
 
@@ -146,13 +148,35 @@ module testDeployment '../../main.bicep' = {
         vnetSubnetID: nestedDependencies.outputs.subnetResourceIds[2]
       }
     ]
-    aksClusterNetworkPlugin: 'azure'
+    autoUpgradeProfileUpgradeChannel: 'stable'
+    enableWorkloadIdentity: true
+    enableOidcIssuerProfile: true
+    networkPlugin: 'azure'
+    networkDataplane: 'azure'
+    networkPluginMode: 'overlay'
     diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
     diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
     diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
     diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
     diskEncryptionSetID: nestedDependencies.outputs.diskEncryptionSetResourceId
     openServiceMeshEnabled: true
+    enableStorageProfileBlobCSIDriver: true
+    enableStorageProfileDiskCSIDriver: true
+    enableStorageProfileFileCSIDriver: true
+    enableStorageProfileSnapshotController: true
+    userAssignedIdentities: {
+      '${nestedDependencies.outputs.managedIdentityResourceId}': {}
+    }
+    identityProfile: {
+      kubeletidentity: {
+        resourceId: nestedDependencies.outputs.managedIdentityKubeletIdentityResourceId
+      }
+    }
+    omsAgentEnabled: true
+    monitoringWorkspaceId: nestedDependencies.outputs.logAnalyticsWorkspaceResourceId
+    enableAzureDefender: true
+    enableKeyvaultSecretsProvider: true
+    enablePodSecurityPolicy: false
     lock: 'CanNotDelete'
     roleAssignments: [
       {
@@ -163,7 +187,6 @@ module testDeployment '../../main.bicep' = {
         principalType: 'ServicePrincipal'
       }
     ]
-    systemAssignedIdentity: true
     tags: {
       'hidden-title': 'This is visible in the resource name'
       Environment: 'Non-Prod'

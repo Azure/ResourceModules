@@ -92,5 +92,10 @@ module testDeployment '../../main.bicep' = {
       Role: 'DeploymentValidation'
       ServiceName: 'DeploymentValidation'
     }
+    publicIpZones: [
+      '1'
+      '2'
+      '3'
+    ]
   }
 }

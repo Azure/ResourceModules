@@ -6,12 +6,14 @@ metadata:
   name: 'SuppressMin'
 spec:
   rule:
-   - Azure.Resource.UseTags
-   - Azure.KeyVault.Logs
-   - Azure.VMSS.AMA
-   - Azure.Policy.ExemptionDescriptors
-   - Azure.Policy.Descriptors
-   - Azure.Policy.AssignmentDescriptors
+    - Azure.Resource.UseTags
+    - Azure.KeyVault.Logs
+    - Azure.KeyVault.Firewall
+    - Azure.VMSS.AMA
+    - Azure.Policy.ExemptionDescriptors
+    - Azure.Policy.Descriptors
+    - Azure.Policy.AssignmentDescriptors
+    - Azure.PublicIP.AvailabilityZone
   if:
     name: '.'
     contains:

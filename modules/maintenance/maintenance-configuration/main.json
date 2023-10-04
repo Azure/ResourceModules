@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.20.4.51522",
-      "templateHash": "16739611821824144982"
+      "version": "0.21.1.54444",
+      "templateHash": "11249408608442094590"
     },
     "name": "Maintenance Configurations",
     "description": "This module deploys a Maintenance Configuration.",
@@ -105,6 +105,13 @@
       "metadata": {
         "description": "Optional. Gets or sets the visibility of the configuration. The default value is 'Custom'."
       }
+    },
+    "installPatches": {
+      "type": "object",
+      "defaultValue": {},
+      "metadata": {
+        "description": "Optional. Configuration settings for VM guest patching with Azure Update Manager."
+      }
     }
   },
   "resources": [
@@ -124,7 +131,7 @@
     },
     {
       "type": "Microsoft.Maintenance/maintenanceConfigurations",
-      "apiVersion": "2021-05-01",
+      "apiVersion": "2023-04-01",
       "name": "[parameters('name')]",
       "location": "[parameters('location')]",
       "tags": "[parameters('tags')]",
@@ -133,7 +140,8 @@
         "maintenanceScope": "[parameters('maintenanceScope')]",
         "maintenanceWindow": "[parameters('maintenanceWindow')]",
         "namespace": "[parameters('namespace')]",
-        "visibility": "[parameters('visibility')]"
+        "visibility": "[parameters('visibility')]",
+        "installPatches": "[if(equals(parameters('maintenanceScope'), 'InGuestPatch'), parameters('installPatches'), null())]"
       }
     },
     {
@@ -184,8 +192,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.20.4.51522",
-              "templateHash": "7156539886562733404"
+              "version": "0.21.1.54444",
+              "templateHash": "13667533049136172110"
             }
           },
           "parameters": {
@@ -327,7 +335,7 @@
       "metadata": {
         "description": "The location the Maintenance Configuration was created in."
       },
-      "value": "[reference(resourceId('Microsoft.Maintenance/maintenanceConfigurations', parameters('name')), '2021-05-01', 'full').location]"
+      "value": "[reference(resourceId('Microsoft.Maintenance/maintenanceConfigurations', parameters('name')), '2023-04-01', 'full').location]"
     }
   }
 }

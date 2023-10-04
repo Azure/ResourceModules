@@ -37,6 +37,7 @@ module nestedDependencies 'dependencies.bicep' = {
   params: {
     virtualWANName: 'dep-${namePrefix}-vwan-${serviceShort}'
     virtualHubName: 'dep-${namePrefix}-hub-${serviceShort}'
+    managedIdentityName: 'dep-${namePrefix}-msi-${serviceShort}'
   }
 }
 // ============== //
@@ -56,5 +57,15 @@ module testDeployment '../../main.bicep' = {
     autoScaleConfigurationBoundsMin: 2
     autoScaleConfigurationBoundsMax: 3
     virtualHubId: nestedDependencies.outputs.virtualHubResourceId
+    lock: 'CanNotDelete'
+    roleAssignments: [
+      {
+        roleDefinitionIdOrName: 'Reader'
+        principalIds: [
+          nestedDependencies.outputs.managedIdentityPrincipalId
+        ]
+        principalType: 'ServicePrincipal'
+      }
+    ]
   }
 }

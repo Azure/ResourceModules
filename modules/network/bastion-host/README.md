@@ -469,6 +469,11 @@ module bastionHost './network/bastion-host/main.bicep' = {
       ]
       skuName: 'Standard'
       skuTier: 'Regional'
+      zones: [
+        '1'
+        '2'
+        '3'
+      ]
     }
     tags: {
       Environment: 'Non-Prod'
@@ -525,7 +530,12 @@ module bastionHost './network/bastion-host/main.bicep' = {
           }
         ],
         "skuName": "Standard",
-        "skuTier": "Regional"
+        "skuTier": "Regional",
+        "zones": [
+          "1",
+          "2",
+          "3"
+        ]
       }
     },
     "tags": {
