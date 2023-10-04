@@ -473,7 +473,9 @@ module vault './key-vault/vault/main.bicep' = {
 module vault './key-vault/vault/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-kvvcom'
   params: {
+    // Required parameters
     name: 'kvvcom002'
+    // Non-required parameters
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'

@@ -442,7 +442,9 @@ module server './sql/server/main.bicep' = {
 module server './sql/server/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-sqlscom'
   params: {
+    // Required parameters
     name: 'sqlscom'
+    // Non-required parameters
     administratorLogin: 'adminUserName'
     administratorLoginPassword: '<administratorLoginPassword>'
     databases: [
