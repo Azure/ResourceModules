@@ -56,3 +56,4 @@ rule:
   exclude:
   # Ignore the following rules for all resources
    - Azure.KeyVault.PurgeProtect
+   - Azure.Resource.AllowedRegions
