@@ -822,7 +822,7 @@ function ConvertTo-FormattedBicep {
     }
 
     # [1/5] Order parameters recursively
-    if ($JSONParametersWithoutValue.Keys.Count -gt 0) {
+    if ($JSONParametersWithoutValue.psbase.Keys.Count -gt 0) {
         $orderedJSONParameters = Get-OrderedParametersJSON -ParametersJSON ($JSONParametersWithoutValue | ConvertTo-Json -Depth 99) -RequiredParametersList $RequiredParametersList
     } else {
         $orderedJSONParameters = @{}
@@ -858,7 +858,7 @@ function ConvertTo-FormattedBicep {
     $splitInputObject = @{
         BicepParams            = $bicepParams
         RequiredParametersList = $RequiredParametersList
-        AllParametersList      = $JSONParameters.Keys
+        AllParametersList      = $JSONParameters.psbase.Keys
     }
     $commentedBicepParams = Add-BicepParameterTypeComment @splitInputObject
 
