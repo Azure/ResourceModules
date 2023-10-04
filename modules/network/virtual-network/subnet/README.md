@@ -96,10 +96,18 @@ delegations: [
 
 ```json
 "serviceEndpoints": [
-    "Microsoft.EventHub",
-    "Microsoft.Sql",
-    "Microsoft.Storage",
-    "Microsoft.KeyVault"
+    {
+        "service": "Microsoft.EventHub"
+    },
+    {
+        "service": "Microsoft.Sql"
+    },
+    {
+        "service": "Microsoft.Storage"
+    },
+    {
+        "service": "Microsoft.KeyVault"
+    }
 ]
 ```
 
@@ -112,10 +120,18 @@ delegations: [
 
 ```bicep
 serviceEndpoints: [
-    'Microsoft.EventHub'
-    'Microsoft.Sql'
-    'Microsoft.Storage'
-    'Microsoft.KeyVault'
+    {
+        name: 'Microsoft.EventHub'
+    }
+    {
+        name: 'Microsoft.Sql'
+    }
+    {
+        name: 'Microsoft.Storage'
+    }
+    {
+        name: 'Microsoft.KeyVault'
+    }
 ]
 ```
 
