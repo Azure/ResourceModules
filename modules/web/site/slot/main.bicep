@@ -2,10 +2,6 @@ metadata name = 'Web/Function App Deployment Slots'
 metadata description = 'This module deploys a Web or Function App Deployment Slot.'
 metadata owner = 'Azure/module-maintainers'
 
-// ================ //
-// Parameters       //
-// ================ //
-// General
 @description('Required. Name of the slot.')
 param name string
 
@@ -52,7 +48,6 @@ param storageAccountRequired bool = false
 @description('Optional. Azure Resource Manager ID of the Virtual network and subnet to be joined by Regional VNET Integration. This must be of the form /subscriptions/{subscriptionName}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{vnetName}/subnets/{subnetName}.')
 param virtualNetworkSubnetId string = ''
 
-// slot Config
 @description('Optional. The site config object.')
 param siteConfig object = {}
 
@@ -71,7 +66,6 @@ param appSettingsKeyValuePairs object = {}
 @description('Optional. The auth settings V2 configuration.')
 param authSettingV2Configuration object = {}
 
-// Lock
 @allowed([
   ''
   'CanNotDelete'
@@ -80,23 +74,17 @@ param authSettingV2Configuration object = {}
 @description('Optional. Specify the type of lock.')
 param lock string = ''
 
-// Private Endpoints
 @description('Optional. Configuration details for private endpoints.')
 param privateEndpoints array = []
 
-// Tags
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-// PID
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
-// Role Assignments
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
-
-// Diagnostic Settings
 
 @description('Optional. Resource ID of the diagnostic storage account.')
 param diagnosticStorageAccountId string = ''
@@ -207,9 +195,6 @@ param vnetRouteAllEnabled bool = false
 @description('Optional. Names of hybrid connection relays to connect app with.')
 param hybridConnectionRelays array = []
 
-// =========== //
-// Variables   //
-// =========== //
 var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
   category: category
   enabled: true
@@ -230,16 +215,10 @@ var identity = identityType != 'None' ? {
 
 var enableReferencedModulesTelemetry = false
 
-// ================== //
-// Existing resources //
-// ================== //
 resource app 'Microsoft.Web/sites@2021-03-01' existing = {
   name: appName
 }
 
-// ============ //
-// Dependencies //
-// ============ //
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
   properties: {
@@ -252,7 +231,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource slot 'Microsoft.Web/sites/slots@2022-03-01' = {
+resource slot 'Microsoft.Web/sites/slots@2022-09-01' = {
   name: name
   parent: app
   location: location
@@ -377,9 +356,6 @@ module slot_privateEndpoints '../../../network/private-endpoint/main.bicep' = [f
   }
 }]
 
-// =========== //
-// Outputs     //
-// =========== //
 @description('The name of the slot.')
 output name string = slot.name
 

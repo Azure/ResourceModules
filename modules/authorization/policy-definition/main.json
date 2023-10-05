@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.20.4.51522",
-      "templateHash": "14526788352544918663"
+      "version": "0.21.1.54444",
+      "templateHash": "15749498802750084340"
     },
     "name": "Policy Definitions (All scopes)",
     "description": "This module deploys a Policy Definition at a Management Group or Subscription scope.",
@@ -156,8 +156,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.20.4.51522",
-              "templateHash": "14890815799488372081"
+              "version": "0.21.1.54444",
+              "templateHash": "17859945353406314149"
             },
             "name": "Policy Definitions (Management Group scope)",
             "description": "This module deploys a Policy Definition at a Management Group scope.",
@@ -332,8 +332,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.20.4.51522",
-              "templateHash": "14434059777291440353"
+              "version": "0.21.1.54444",
+              "templateHash": "7453988849629465072"
             },
             "name": "Policy Definitions (Subscription scope)",
             "description": "This module deploys a Policy Definition at a Subscription scope.",

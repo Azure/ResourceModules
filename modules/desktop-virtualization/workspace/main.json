@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.20.4.51522",
-      "templateHash": "5583996217532008926"
+      "version": "0.21.1.54444",
+      "templateHash": "10679736874154725054"
     },
     "name": "Azure Virtual Desktop (AVD) Workspaces",
     "description": "This module deploys an Azure Virtual Desktop (AVD) Workspace.",
@@ -237,8 +237,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.20.4.51522",
-              "templateHash": "9018764467732457380"
+              "version": "0.21.1.54444",
+              "templateHash": "12071774351316031070"
             }
           },
           "parameters": {

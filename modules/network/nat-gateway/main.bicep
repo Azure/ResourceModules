@@ -127,6 +127,11 @@ module publicIPAddress '../public-ip-address/main.bicep' = if (natGatewayPublicI
     publicIPPrefixResourceId: publicIPPrefixResourceId
     tags: tags
     skuName: 'Standard'
+    zones: [
+      '1'
+      '2'
+      '3'
+    ]
   }
 }
 

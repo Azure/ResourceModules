@@ -74,6 +74,11 @@ module testDeployment '../../main.bicep' = {
       ]
       skuName: 'Standard'
       skuTier: 'Regional'
+      zones: [
+        '1'
+        '2'
+        '3'
+      ]
     }
     tags: {
       'hidden-title': 'This is visible in the resource name'

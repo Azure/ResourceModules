@@ -69,9 +69,19 @@ runs:
 
           # Load used functions
           . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFileList.ps1')
+          . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Get-LocallyReferencedFileList.ps1')
 
           # Get target files
-          $targetFileList = @('${{ inputs.templateFilePath }}')
+          $templateFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
+
+          # Get target files
+          $targetFileList = @(
+            $templateFilePath
+          )
+
+          # Add all module template files as they may contain tokens
+          $targetFileList += (Get-LocallyReferencedFileList -FilePath $templateFilePath)
+          $targetFileList = $targetFileList | Sort-Object -Unique
 
           # Construct Token Function Input
           $ConvertTokensInputs = @{

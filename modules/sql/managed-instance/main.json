@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.20.4.51522",
-      "templateHash": "225988996484492227"
+      "templateHash": "15067027960339653100"
     },
     "name": "SQL Managed Instances",
     "description": "This module deploys a SQL Managed Instance.",
@@ -1397,7 +1397,7 @@
       ]
     },
     {
-      "condition": "[not(empty(parameters('vulnerabilityAssessmentsObj')))]",
+      "condition": "[and(not(empty(parameters('vulnerabilityAssessmentsObj'))), parameters('systemAssignedIdentity'))]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
       "name": "[format('{0}-SqlMi-VulnAssessm', uniqueString(deployment().name, parameters('location')))]",
@@ -1416,7 +1416,11 @@
           "recurringScansEmails": "[if(contains(parameters('vulnerabilityAssessmentsObj'), 'recurringScansEmails'), createObject('value', parameters('vulnerabilityAssessmentsObj').recurringScansEmails), createObject('value', createArray()))]",
           "recurringScansEmailSubscriptionAdmins": "[if(contains(parameters('vulnerabilityAssessmentsObj'), 'recurringScansEmailSubscriptionAdmins'), createObject('value', parameters('vulnerabilityAssessmentsObj').recurringScansEmailSubscriptionAdmins), createObject('value', false()))]",
           "recurringScansIsEnabled": "[if(contains(parameters('vulnerabilityAssessmentsObj'), 'recurringScansIsEnabled'), createObject('value', parameters('vulnerabilityAssessmentsObj').recurringScansIsEnabled), createObject('value', false()))]",
-          "storageAccountResourceId": "[if(contains(parameters('vulnerabilityAssessmentsObj'), 'storageAccountResourceId'), createObject('value', parameters('vulnerabilityAssessmentsObj').storageAccountResourceId), createObject('value', ''))]",
+          "storageAccountResourceId": {
+            "value": "[parameters('vulnerabilityAssessmentsObj').storageAccountResourceId]"
+          },
+          "useStorageAccountAccessKey": "[if(contains(parameters('vulnerabilityAssessmentsObj'), 'useStorageAccountAccessKey'), createObject('value', parameters('vulnerabilityAssessmentsObj').useStorageAccountAccessKey), createObject('value', false()))]",
+          "createStorageRoleAssignment": "[if(contains(parameters('vulnerabilityAssessmentsObj'), 'createStorageRoleAssignment'), createObject('value', parameters('vulnerabilityAssessmentsObj').createStorageRoleAssignment), createObject('value', true()))]",
           "enableDefaultTelemetry": {
             "value": "[variables('enableReferencedModulesTelemetry')]"
           }
@@ -1428,7 +1432,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.20.4.51522",
-              "templateHash": "6142359620217113835"
+              "templateHash": "16824260265514306931"
             },
             "name": "SQL Managed Instance Vulnerability Assessments",
             "description": "This module deploys a SQL Managed Instance Vulnerability Assessment.",
@@ -1470,9 +1474,22 @@
             },
             "storageAccountResourceId": {
               "type": "string",
-              "defaultValue": "",
               "metadata": {
-                "description": "Optional. A blob storage to hold the scan results."
+                "description": "Required. A blob storage to hold the scan results."
+              }
+            },
+            "useStorageAccountAccessKey": {
+              "type": "bool",
+              "defaultValue": false,
+              "metadata": {
+                "description": "Optional. Use Access Key to access the storage account. The storage account cannot be behind a firewall or virtual network. If an access key is not used, the SQL MI system assigned managed identity must be assigned the Storage Blob Data Contributor role on the storage account."
+              }
+            },
+            "createStorageRoleAssignment": {
+              "type": "bool",
+              "defaultValue": true,
+              "metadata": {
+                "description": "Optional. Create the Storage Blob Data Contributor role assignment on the storage account. Note, the role assignment must not already exist on the storage account."
               }
             },
             "enableDefaultTelemetry": {
@@ -1482,6 +1499,9 @@
                 "description": "Optional. Enable telemetry via a Globally Unique Identifier (GUID)."
               }
             }
+          },
+          "variables": {
+            "splitStorageAccountResourceId": "[split(parameters('storageAccountResourceId'), '/')]"
           },
           "resources": [
             {
@@ -1504,11 +1524,64 @@
               "name": "[format('{0}/{1}', parameters('managedInstanceName'), parameters('name'))]",
               "properties": {
                 "storageContainerPath": "[format('https://{0}.blob.{1}/vulnerability-assessment/', last(split(parameters('storageAccountResourceId'), '/')), environment().suffixes.storage)]",
-                "storageAccountAccessKey": "[listKeys(parameters('storageAccountResourceId'), '2019-06-01').keys[0].value]",
+                "storageAccountAccessKey": "[if(parameters('useStorageAccountAccessKey'), listKeys(parameters('storageAccountResourceId'), '2019-06-01').keys[0].value, null())]",
                 "recurringScans": {
                   "isEnabled": "[parameters('recurringScansIsEnabled')]",
                   "emailSubscriptionAdmins": "[parameters('recurringScansEmailSubscriptionAdmins')]",
                   "emails": "[parameters('recurringScansEmails')]"
+                }
+              }
+            },
+            {
+              "condition": "[and(not(parameters('useStorageAccountAccessKey')), parameters('createStorageRoleAssignment'))]",
+              "type": "Microsoft.Resources/deployments",
+              "apiVersion": "2022-09-01",
+              "name": "[format('{0}-sbdc-rbac', parameters('managedInstanceName'))]",
+              "resourceGroup": "[variables('splitStorageAccountResourceId')[4]]",
+              "properties": {
+                "expressionEvaluationOptions": {
+                  "scope": "inner"
+                },
+                "mode": "Incremental",
+                "parameters": {
+                  "storageAccountName": {
+                    "value": "[last(variables('splitStorageAccountResourceId'))]"
+                  },
+                  "managedInstanceIdentityPrincipalId": {
+                    "value": "[reference(resourceId('Microsoft.Sql/managedInstances', parameters('managedInstanceName')), '2022-02-01-preview', 'full').identity.principalId]"
+                  }
+                },
+                "template": {
+                  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                  "contentVersion": "1.0.0.0",
+                  "metadata": {
+                    "_generator": {
+                      "name": "bicep",
+                      "version": "0.20.4.51522",
+                      "templateHash": "5906561113326922902"
+                    }
+                  },
+                  "parameters": {
+                    "storageAccountName": {
+                      "type": "string"
+                    },
+                    "managedInstanceIdentityPrincipalId": {
+                      "type": "string"
+                    }
+                  },
+                  "resources": [
+                    {
+                      "type": "Microsoft.Authorization/roleAssignments",
+                      "apiVersion": "2022-04-01",
+                      "scope": "[format('Microsoft.Storage/storageAccounts/{0}', parameters('storageAccountName'))]",
+                      "name": "[guid(format('{0}-{1}-Storage-Blob-Data-Contributor', resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName')), parameters('managedInstanceIdentityPrincipalId')))]",
+                      "properties": {
+                        "roleDefinitionId": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'ba92f5b4-2d11-453d-a403-e96b0029c9fe')]",
+                        "principalId": "[parameters('managedInstanceIdentityPrincipalId')]",
+                        "principalType": "ServicePrincipal"
+                      }
+                    }
+                  ]
                 }
               }
             }

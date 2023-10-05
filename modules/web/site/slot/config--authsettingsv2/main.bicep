@@ -2,9 +2,6 @@ metadata name = 'Site Slot Auth Settings V2 Config'
 metadata description = 'This module deploys a Site Auth Settings V2 Configuration.'
 metadata owner = 'Azure/module-maintainers'
 
-// ================ //
-// Parameters       //
-// ================ //
 @description('Conditional. The name of the parent site resource. Required if the template is used in a standalone deployment.')
 param appName string
 
@@ -27,10 +24,7 @@ param authSettingV2Configuration object
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
-// =================== //
-// Existing resources //
-// =================== //
-resource app 'Microsoft.Web/sites@2022-03-01' existing = {
+resource app 'Microsoft.Web/sites@2022-09-01' existing = {
   name: appName
 
   resource slot 'slots' existing = {
@@ -38,9 +32,6 @@ resource app 'Microsoft.Web/sites@2022-03-01' existing = {
   }
 }
 
-// =========== //
-// Deployments //
-// =========== //
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name)}'
   properties: {
@@ -53,16 +44,13 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource slotSettings 'Microsoft.Web/sites/slots/config@2022-03-01' = {
+resource slotSettings 'Microsoft.Web/sites/slots/config@2022-09-01' = {
   name: 'authsettingsV2'
   kind: kind
   parent: app::slot
   properties: authSettingV2Configuration
 }
 
-// =========== //
-// Outputs     //
-// =========== //
 @description('The name of the slot config.')
 output name string = slotSettings.name
 

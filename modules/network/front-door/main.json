@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.20.4.51522",
-      "templateHash": "14479303029874640056"
+      "version": "0.21.1.54444",
+      "templateHash": "18085582863238637831"
     },
     "name": "Azure Front Doors",
     "description": "This module deploys an Azure Front Door.",
@@ -298,8 +298,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.20.4.51522",
-              "templateHash": "7790989344899751422"
+              "version": "0.21.1.54444",
+              "templateHash": "15530628531766056415"
             }
           },
           "parameters": {
