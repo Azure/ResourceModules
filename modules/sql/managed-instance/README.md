@@ -593,7 +593,7 @@ module managedInstance './sql/managed-instance/main.bicep' = {
 </details>
 <p>
 
-<h3>Example 3: Varbac</h3>
+<h3>Example 3: Vulnassm</h3>
 
 <details>
 
@@ -601,12 +601,12 @@ module managedInstance './sql/managed-instance/main.bicep' = {
 
 ```bicep
 module managedInstance './sql/managed-instance/main.bicep' = {
-  name: '${uniqueString(deployment().name, location)}-test-sqlmimin'
+  name: '${uniqueString(deployment().name, location)}-test-sqlmivln'
   params: {
     // Required parameters
     administratorLogin: 'adminUserName'
     administratorLoginPassword: '<administratorLoginPassword>'
-    name: 'sqlmimin'
+    name: 'sqlmivln'
     subnetId: '<subnetId>'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
@@ -657,7 +657,7 @@ module managedInstance './sql/managed-instance/main.bicep' = {
       "value": "<administratorLoginPassword>"
     },
     "name": {
-      "value": "sqlmimin"
+      "value": "sqlmivln"
     },
     "subnetId": {
       "value": "<subnetId>"

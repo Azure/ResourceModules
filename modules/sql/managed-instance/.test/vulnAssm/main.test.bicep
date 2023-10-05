@@ -12,7 +12,7 @@ param resourceGroupName string = 'ms.sql.managedinstances-${serviceShort}-rg'
 param location string = deployment().location
 
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints.')
-param serviceShort string = 'sqlmivarbac'
+param serviceShort string = 'sqlmivln'
 
 @description('Optional. The password to leverage for the login.')
 @secure()
@@ -22,7 +22,7 @@ param password string = newGuid()
 param enableDefaultTelemetry bool = true
 
 @description('Optional. A token to inject into the name of each resource.')
-param namePrefix string = 'lsno'
+param namePrefix string = '[[namePrefix]]'
 
 // ============ //
 // Dependencies //
