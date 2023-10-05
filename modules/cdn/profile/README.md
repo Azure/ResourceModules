@@ -405,10 +405,10 @@ module profile './cdn/profile/main.bicep' = {
 
 ```bicep
 module profile './cdn/profile/main.bicep' = {
-  name: '${uniqueString(deployment().name, location)}-test-cdnpmin'
+  name: '${uniqueString(deployment().name, location)}-test-cdnpcom'
   params: {
     // Required parameters
-    name: 'dep-test-cdnpmin'
+    name: 'dep-test-cdnpcom'
     sku: 'Standard_Verizon'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
@@ -472,7 +472,7 @@ module profile './cdn/profile/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "dep-test-cdnpmin"
+      "value": "dep-test-cdnpcom"
     },
     "sku": {
       "value": "Standard_Verizon"
