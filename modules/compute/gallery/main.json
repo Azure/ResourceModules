@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.20.4.51522",
-      "templateHash": "15984862915086923960"
+      "version": "0.21.1.54444",
+      "templateHash": "9949380945514738513"
     },
     "name": "Azure Compute Galleries",
     "description": "This module deploys an Azure Compute Gallery (formerly known as Shared Image Gallery).",
@@ -158,8 +158,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.20.4.51522",
-              "templateHash": "889221691935593360"
+              "version": "0.21.1.54444",
+              "templateHash": "4214079490664881100"
             }
           },
           "parameters": {
@@ -333,8 +333,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.20.4.51522",
-              "templateHash": "302763326863799273"
+              "version": "0.21.1.54444",
+              "templateHash": "3432608104011360661"
             },
             "name": "Compute Galleries Applications",
             "description": "This module deploys an Azure Compute Gallery Application.",
@@ -501,8 +501,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.20.4.51522",
-                      "templateHash": "3891555929973685105"
+                      "version": "0.21.1.54444",
+                      "templateHash": "1432477963725169802"
                     }
                   },
                   "parameters": {
@@ -726,8 +726,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.20.4.51522",
-              "templateHash": "14112753208892308004"
+              "version": "0.21.1.54444",
+              "templateHash": "11726406803846510228"
             },
             "name": "Compute Galleries Image Definitions",
             "description": "This module deploys an Azure Compute Gallery Image Definition.",
@@ -1055,8 +1055,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.20.4.51522",
-                      "templateHash": "5875220683176267757"
+                      "version": "0.21.1.54444",
+                      "templateHash": "9996928759826468102"
                     }
                   },
                   "parameters": {

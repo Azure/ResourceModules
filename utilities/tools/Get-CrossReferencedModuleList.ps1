@@ -42,6 +42,61 @@ function Resolve-DependencyList {
 
 <#
 .SYNOPSIS
+Get all references of a given module template
+
+.DESCRIPTION
+Get all references of a given module template.
+This includes local references, online/remote references & resource deployments
+
+.PARAMETER ModuleTemplateFilePath
+Mandatory. The path to the template to search the references for
+
+.EXAMPLE
+Get-ReferenceObject -ModuleTemplateFilePath 'C:\dev\key-vault\vault\main.bicep'
+
+Search all references for module 'key-vault\vault'
+#>
+function Get-ReferenceObject {
+
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory = $true)]
+        [string] $ModuleTemplateFilePath
+    )
+
+    . (Join-Path (Get-Item $PSScriptRoot).Parent 'pipelines' 'sharedScripts' 'Get-LocallyReferencedFileList.ps1')
+
+    $involvedFilePaths = Get-LocallyReferencedFileList -FilePath $ModuleTemplateFilePath
+
+    $resultSet = @{
+        resourceReferences  = @()
+        remoteReferences    = @()
+        localPathReferences = $involvedFilePaths | Where-Object {
+            $involvedFilePath = $_
+            # We only care about module templates
+            (Split-Path $involvedFilePath -Leaf) -eq 'main.bicep' -and
+            # We only care about a direct references and no children when it comes to returning local references
+            (@(@($involvedFilePaths) + @($ModuleTemplateFilePath)) | Where-Object {
+                (Split-Path $involvedFilePath) -match ('{0}[\/|\\].+' -f [Regex]::Escape((Split-Path $_ -Parent))) # i.e., if a path has its parent in the list, kick it out
+            }).count -eq 0
+        }
+    }
+
+    foreach ($involvedFilePath in (@($ModuleTemplateFilePath) + @($involvedFilePaths))) {
+        $moduleContent = Get-Content -Path $involvedFilePath
+
+        $resultSet.resourceReferences += @() + $moduleContent | Where-Object { $_ -match "^resource .+ '(.+)' .+$" } | ForEach-Object { $matches[1] }
+        $resultSet.remoteReferences += @() + $moduleContent | Where-Object { $_ -match "^module .+ '(.+:.+)' .+$" } | ForEach-Object { $matches[1] }
+    }
+
+    return @{
+        resourceReferences  = $resultSet.resourceReferences | Sort-Object -Unique
+        remoteReferences    = $resultSet.remoteReferences | Sort-Object -Unique
+        localPathReferences = $resultSet.localPathReferences | Sort-Object -Unique
+    }
+}
+<#
+.SYNOPSIS
 Get a list of all resource/module references in a given module path
 
 .DESCRIPTION
@@ -90,89 +145,31 @@ function Get-CrossReferencedModuleList {
         [string] $Path = (Join-Path (Split-Path (Split-Path $PSScriptRoot -Parent) -Parent) 'modules')
     )
 
+    $repoRoot = ($Path -split '[\/|\\]{1}modules[\/|\\]{1}')[0]
     $resultSet = [ordered]@{}
 
-    # Get all top-level module folders (i.e. one level below the Resource Provider folder)
-    $topLevelFolderPaths = (Get-ChildItem -Path $path -Depth 1 -Directory).FullName | Where-Object {
-        $_ -notlike '*.shared*' -and # Ignore shared templates
-        (($_ -split '[\\|\/]modules[\\|\/]')[1] -split '[\\|/]').Count -eq 2 # From '/modules/' only consider those which have 2 more path elements (i.e., are resource type folders)
-    }
+    $moduleTemplatePaths = (Get-ChildItem -Path $Path -Recurse -File -Filter 'main.bicep').FullName
+    foreach ($moduleTemplatePath in $moduleTemplatePaths) {
 
-    foreach ($topLevelFolderPath in $topLevelFolderPaths) {
+        $referenceObject = Get-ReferenceObject -ModuleTemplateFilePath $moduleTemplatePath
 
-        $moduleTemplatePaths = (Get-ChildItem -Path $topLevelFolderPath -Recurse -Include '*.bicep' -File -Force).FullName | Where-Object {
-            $_ -notmatch '.+[\/|\\].test[\/|\\].+'
+        # Convert local absolute references to relative references
+        $referenceObject.localPathReferences = $referenceObject.localPathReferences | ForEach-Object {
+            $result = $_ -replace ('{0}[\/|\\]' -f [Regex]::Escape($repoRoot)), '' # Remove root
+            $result = Split-Path $result -Parent # Use only folder name
+            $result = $result -replace '\\', '/' # Replaces slashes
+            return $result
         }
 
-        $resourceReferences = [System.Collections.ArrayList]@()
-        $localPathReferences = [System.Collections.ArrayList]@()
-        $remoteReferences = [System.Collections.ArrayList]@()
+        $moduleFolderPath = Split-Path $moduleTemplatePath -Parent
+        ## avm/res/<provider>/<resourceType>
+        $resourceTypeIdentifier = ($moduleFolderPath -split '[\/|\\]{1}modules[\/|\\]{1}')[1] -replace '\\', '/'
 
-        foreach ($templatePath in $moduleTemplatePaths) {
-            $content = Get-Content -Path $templatePath
+        $providerNamespace = ($resourceTypeIdentifier -split '[\/|\\]')[0]
+        $resourceType = $resourceTypeIdentifier -replace "$providerNamespace[\/|\\]", ''
 
-            $resourceReferences += $content | Where-Object { $_ -match "^resource .+ '(.+)' .+$" } | ForEach-Object { $matches[1] }
-            $localPathReferences += $content | Where-Object { $_ -match "^module .+ '(.+.bicep)' .+$" } | ForEach-Object { $matches[1] }
-            $remoteReferences += $content | Where-Object { $_ -match "^module .+ '(.+:.+)' .+$" } | ForEach-Object { $matches[1] }
-        }
-
-        $providerNamespace = Split-Path (Split-Path $topLevelFolderPath -Parent) -Leaf
-        $resourceType = Split-Path $topLevelFolderPath -Leaf
-
-        $resultSet["$providerNamespace/$resourceType"] = @{
-            resourceReferences  = $resourceReferences | Select-Object -Unique
-            localPathReferences = $localPathReferences | Select-Object -Unique
-            remoteReferences    = $remoteReferences | Select-Object -Unique
-        }
+        $resultSet["$providerNamespace/$resourceType"] = $referenceObject
     }
 
-    # Expand local references recursively
-    $localReferencesResultSet = [ordered]@{}
-    foreach ($resourceType in ($resultSet.Keys | Sort-Object)) {
-        $relevantLocalReferences = $resultSet[$resourceType].localPathReferences | Where-Object { $_ -match '^\.\..*$' } # e.g. '../
-        if ($relevantLocalReferences) {
-            $relevantLocalReferences = $relevantLocalReferences | ForEach-Object {
-                # remove main.bicep
-                Split-Path $_ -Parent
-            } | ForEach-Object {
-                # remove leading path elements
-                ($_ -replace '\\', '/') -match '^[\.\/]*(.+)$'
-            } | ForEach-Object {
-                # We have to differentate the case that the referenced resources is inside or outside the same provider namespace (e.g. '../public-ip-address')
-                if ($matches[1] -like '*/*') {
-                    # Reference outside of namespace
-                    $matches[1]
-                } else {
-                    # Reference inside of namespace (-> we rebuild the namespace)
-                    '{0}/{1}' -f (Split-Path $resourceType -Parent), $matches[1]
-                }
-            }
-            $localReferencesResultSet[$resourceType] = @() + $relevantLocalReferences
-        }
-    }
-
-    # Add nested dependencies
-    $resolvedlocalReferencesResultSet = @{}
-    foreach ($resourceType in $localReferencesResultSet.Keys) {
-        $resolvedDependencies = $localReferencesResultSet[$resourceType]
-        foreach ($dependency in $localReferencesResultSet[$resourceType]) {
-            $resolvedDependencies += Resolve-DependencyList -DependencyMap $localReferencesResultSet -ResourceType $resourceType
-        }
-        $resolvedlocalReferencesResultSet[$resourceType] = $resolvedDependencies | Select-Object -Unique
-    }
-    $localReferencesResultSet = $resolvedlocalReferencesResultSet
-
-    foreach ($resourceType in ($resultSet.Keys | Sort-Object)) {
-        $resultSet[$resourceType].localPathReferences = $resolvedlocalReferencesResultSet[$resourceType]
-    }
-
-    Write-Verbose "The modules in path [$path] have the following local folder dependencies:"
-    foreach ($resourceType in $resolvedlocalReferencesResultSet.Keys) {
-        Write-Verbose ''
-        Write-Verbose "Resource: $resourceType"
-        $resolvedlocalReferencesResultSet[$resourceType] | ForEach-Object {
-            Write-Verbose "- $_"
-        }
-    }
     return $resultSet
 }

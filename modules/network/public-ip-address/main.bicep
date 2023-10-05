@@ -13,7 +13,7 @@ param publicIPPrefixResourceId string = ''
   'Dynamic'
   'Static'
 ])
-param publicIPAllocationMethod string = 'Dynamic'
+param publicIPAllocationMethod string = 'Static'
 
 @description('Optional. Name of a public IP address SKU.')
 @allowed([

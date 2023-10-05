@@ -822,7 +822,7 @@ function ConvertTo-FormattedBicep {
     }
 
     # [1/5] Order parameters recursively
-    if ($JSONParametersWithoutValue.Keys.Count -gt 0) {
+    if ($JSONParametersWithoutValue.psbase.Keys.Count -gt 0) {
         $orderedJSONParameters = Get-OrderedParametersJSON -ParametersJSON ($JSONParametersWithoutValue | ConvertTo-Json -Depth 99) -RequiredParametersList $RequiredParametersList
     } else {
         $orderedJSONParameters = @{}
@@ -858,7 +858,7 @@ function ConvertTo-FormattedBicep {
     $splitInputObject = @{
         BicepParams            = $bicepParams
         RequiredParametersList = $RequiredParametersList
-        AllParametersList      = $JSONParameters.Keys
+        AllParametersList      = $JSONParameters.psbase.Keys
     }
     $commentedBicepParams = Add-BicepParameterTypeComment @splitInputObject
 
@@ -992,14 +992,19 @@ function Set-DeploymentExamplesSection {
             # ------------------------- #
 
             # [1/6] Search for the relevant parameter start & end index
-            $bicepTestStartIndex = ($rawContentArray | Select-String ("^module testDeployment '..\/.*main.bicep' = {$") | ForEach-Object { $_.LineNumber - 1 })[0]
+            $bicepTestStartIndex = ($rawContentArray | Select-String ("^module testDeployment '..\/.*main.bicep' = ") | ForEach-Object { $_.LineNumber - 1 })[0]
 
             $bicepTestEndIndex = $bicepTestStartIndex
             do {
                 $bicepTestEndIndex++
-            } while ($rawContentArray[$bicepTestEndIndex] -ne '}')
+            } while ($rawContentArray[$bicepTestEndIndex] -notin @('}', '}]'))
 
             $rawBicepExample = $rawContentArray[$bicepTestStartIndex..$bicepTestEndIndex]
+
+            # In case a loop was used for the test
+            if ($rawBicepExample[-1] -eq '}]') {
+                $rawBicepExample[-1] = '}'
+            }
 
             # [2/6] Replace placeholders
             $serviceShort = ([regex]::Match($rawContent, "(?m)^param serviceShort string = '(.+)'\s*$")).Captures.Groups[1].Value

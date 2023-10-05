@@ -297,10 +297,12 @@ The following module usage examples are retrieved from the content of the files 
 module managedInstance './sql/managed-instance/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-sqlmicom'
   params: {
+    // Required parameters
     administratorLogin: 'adminUserName'
     administratorLoginPassword: '<administratorLoginPassword>'
     name: 'sqlmicom'
     subnetId: '<subnetId>'
+    // Non-required parameters
     collation: 'SQL_Latin1_General_CP1_CI_AS'
     databases: [
       {
@@ -585,6 +587,115 @@ module managedInstance './sql/managed-instance/main.bicep' = {
     // Non-required parameters
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 3: Vulnassm</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module managedInstance './sql/managed-instance/main.bicep' = {
+  name: '${uniqueString(deployment().name, location)}-test-sqlmivln'
+  params: {
+    // Required parameters
+    administratorLogin: 'adminUserName'
+    administratorLoginPassword: '<administratorLoginPassword>'
+    name: 'sqlmivln'
+    subnetId: '<subnetId>'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    securityAlertPoliciesObj: {
+      emailAccountAdmins: true
+      name: 'default'
+      state: 'Enabled'
+    }
+    systemAssignedIdentity: true
+    vulnerabilityAssessmentsObj: {
+      createStorageRoleAssignment: true
+      emailSubscriptionAdmins: true
+      name: 'default'
+      recurringScansEmails: [
+        'test1@contoso.com'
+        'test2@contoso.com'
+      ]
+      recurringScansIsEnabled: true
+      storageAccountResourceId: '<storageAccountResourceId>'
+      tags: {
+        Environment: 'Non-Prod'
+        'hidden-title': 'This is visible in the resource name'
+        Role: 'DeploymentValidation'
+      }
+      useStorageAccountAccessKey: false
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "administratorLogin": {
+      "value": "adminUserName"
+    },
+    "administratorLoginPassword": {
+      "value": "<administratorLoginPassword>"
+    },
+    "name": {
+      "value": "sqlmivln"
+    },
+    "subnetId": {
+      "value": "<subnetId>"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "securityAlertPoliciesObj": {
+      "value": {
+        "emailAccountAdmins": true,
+        "name": "default",
+        "state": "Enabled"
+      }
+    },
+    "systemAssignedIdentity": {
+      "value": true
+    },
+    "vulnerabilityAssessmentsObj": {
+      "value": {
+        "createStorageRoleAssignment": true,
+        "emailSubscriptionAdmins": true,
+        "name": "default",
+        "recurringScansEmails": [
+          "test1@contoso.com",
+          "test2@contoso.com"
+        ],
+        "recurringScansIsEnabled": true,
+        "storageAccountResourceId": "<storageAccountResourceId>",
+        "tags": {
+          "Environment": "Non-Prod",
+          "hidden-title": "This is visible in the resource name",
+          "Role": "DeploymentValidation"
+        },
+        "useStorageAccountAccessKey": false
+      }
     }
   }
 }

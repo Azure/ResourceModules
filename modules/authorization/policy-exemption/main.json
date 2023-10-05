@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.20.4.51522",
-      "templateHash": "2976809537385212941"
+      "version": "0.21.1.54444",
+      "templateHash": "7537469788100455482"
     },
     "name": "Policy Exemptions (All scopes)",
     "description": "This module deploys a Policy Exemption at a Management Group, Subscription or Resource Group scope.",
@@ -202,8 +202,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.20.4.51522",
-              "templateHash": "17592627855612646241"
+              "version": "0.21.1.54444",
+              "templateHash": "5811278633353778987"
             },
             "name": "Policy Exemptions (Management Group scope)",
             "description": "This module deploys a Policy Exemption at a Management Group scope.",
@@ -413,8 +413,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.20.4.51522",
-              "templateHash": "5067037150154630010"
+              "version": "0.21.1.54444",
+              "templateHash": "16790622898117117515"
             },
             "name": "Policy Exemptions (Subscription scope)",
             "description": "This module deploys a Policy Exemption at a Subscription scope.",
@@ -621,8 +621,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.20.4.51522",
-              "templateHash": "13048294777047698866"
+              "version": "0.21.1.54444",
+              "templateHash": "15066914920145194393"
             },
             "name": "Policy Exemptions (Resource Group scope)",
             "description": "This module deploys a Policy Exemption at a Resource Group scope.",

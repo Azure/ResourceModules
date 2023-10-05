@@ -46,7 +46,7 @@ var builtInRoleNames = {
 
 var appName = split(resourceId, '/')[indexOf(split(resourceId, '/'), 'sites') + 1]
 
-resource app 'Microsoft.Web/sites@2020-12-01' existing = {
+resource app 'Microsoft.Web/sites@2022-09-01' existing = {
   name: appName
   resource slot 'slots' existing = {
     name: last(split(resourceId, '/'))!

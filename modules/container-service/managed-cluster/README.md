@@ -543,8 +543,11 @@ module managedCluster './container-service/managed-cluster/main.bicep' = {
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     diskEncryptionSetID: '<diskEncryptionSetID>'
+    enableAzureDefender: true
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    enableKeyvaultSecretsProvider: true
     enableOidcIssuerProfile: true
+    enablePodSecurityPolicy: false
     enableStorageProfileBlobCSIDriver: true
     enableStorageProfileDiskCSIDriver: true
     enableStorageProfileFileCSIDriver: true
@@ -612,9 +615,11 @@ module managedCluster './container-service/managed-cluster/main.bicep' = {
       }
     }
     lock: 'CanNotDelete'
+    monitoringWorkspaceId: '<monitoringWorkspaceId>'
     networkDataplane: 'azure'
     networkPlugin: 'azure'
     networkPluginMode: 'overlay'
+    omsAgentEnabled: true
     openServiceMeshEnabled: true
     roleAssignments: [
       {
@@ -750,11 +755,20 @@ module managedCluster './container-service/managed-cluster/main.bicep' = {
     "diskEncryptionSetID": {
       "value": "<diskEncryptionSetID>"
     },
+    "enableAzureDefender": {
+      "value": true
+    },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     },
+    "enableKeyvaultSecretsProvider": {
+      "value": true
+    },
     "enableOidcIssuerProfile": {
       "value": true
+    },
+    "enablePodSecurityPolicy": {
+      "value": false
     },
     "enableStorageProfileBlobCSIDriver": {
       "value": true
@@ -839,6 +853,9 @@ module managedCluster './container-service/managed-cluster/main.bicep' = {
     "lock": {
       "value": "CanNotDelete"
     },
+    "monitoringWorkspaceId": {
+      "value": "<monitoringWorkspaceId>"
+    },
     "networkDataplane": {
       "value": "azure"
     },
@@ -847,6 +864,9 @@ module managedCluster './container-service/managed-cluster/main.bicep' = {
     },
     "networkPluginMode": {
       "value": "overlay"
+    },
+    "omsAgentEnabled": {
+      "value": true
     },
     "openServiceMeshEnabled": {
       "value": true
