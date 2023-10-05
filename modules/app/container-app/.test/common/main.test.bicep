@@ -58,8 +58,10 @@ module testDeployment '../../main.bicep' = {
     environmentId: nestedDependencies.outputs.managedEnvironmentResourceId
     location: location
     lock: 'CanNotDelete'
-    userAssignedIdentities: {
-      '${nestedDependencies.outputs.managedIdentityResourceId}': {}
+    managedIdentities: {
+      userAssignedResourcesIds: [
+        nestedDependencies.outputs.managedIdentityResourceId
+      ]
     }
     secrets: {
       secureList: [
