@@ -119,7 +119,7 @@ module testDeployment '../../main.bicep' = {
             customDomainName: 'dep-${namePrefix}-test-${serviceShort}-custom-domain'
             ruleSets: [
               {
-                name: 'dep${namePrefix}test${serviceShort}ruleset1'
+                name: 'dep${namePrefix}test${serviceShort}ruleset'
               }
             ]
           }

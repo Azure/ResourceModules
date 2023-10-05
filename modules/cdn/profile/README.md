@@ -206,7 +206,7 @@ module profile './cdn/profile/main.bicep' = {
             originGroupName: 'dep-test-cdnpafd-origin-group'
             ruleSets: [
               {
-                name: 'deptestcdnpafdruleset1'
+                name: 'deptestcdnpafdruleset'
               }
             ]
           }
@@ -307,7 +307,7 @@ module profile './cdn/profile/main.bicep' = {
               "originGroupName": "dep-test-cdnpafd-origin-group",
               "ruleSets": [
                 {
-                  "name": "deptestcdnpafdruleset1"
+                  "name": "deptestcdnpafdruleset"
                 }
               ]
             }
