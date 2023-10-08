@@ -32,7 +32,7 @@ This module deploys a CDN Profile Endpoint Origin.
 | `priority` | int | `-1` | The priority of origin in given origin group for load balancing. Required if `weight` is provided. |
 | `privateLinkAlias` | string |  | The private link alias of the origin. Required if privateLinkLocation is provided. |
 | `privateLinkLocation` | string |  | The private link location of the origin. Required if privateLinkAlias is provided. |
-| `weight` | int | `-1` | The weight of the origin used for load balancing. Required if `priority` is provided.. |
+| `weight` | int | `-1` | The weight of the origin used for load balancing. Required if `priority` is provided. |
 
 **Optional parameters**
 
