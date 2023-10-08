@@ -55,9 +55,8 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
 resource profile 'Microsoft.Cdn/profiles@2023-05-01' existing = {
   name: profileName
 
-  resource profile_secrect 'Microsoft.Cdn/profiles/secrets@2023-05-01' existing = if (!empty(secretName)) {
+  resource profile_secrect 'secrets@2023-05-01' existing = if (!empty(secretName)) {
     name: secretName
-    parent: profile
   }
 }
 

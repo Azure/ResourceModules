@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.21.1.54444",
-      "templateHash": "5566399114499316168"
+      "version": "0.22.6.54827",
+      "templateHash": "6401260748375374430"
     },
     "name": "CDN Profiles Origin",
     "description": "This module deploys a CDN Profile Origin.",
@@ -147,7 +147,7 @@
     "resourceId": {
       "type": "string",
       "metadata": {
-        "description": "The id of the origin."
+        "description": "The resource id of the origin."
       },
       "value": "[resourceId('Microsoft.Cdn/profiles/originGroups/origins', parameters('profileName'), parameters('originGroupName'), parameters('name'))]"
     },

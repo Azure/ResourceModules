@@ -60,7 +60,7 @@ resource originGroup 'Microsoft.Cdn/profiles/originGroups@2023-05-01' = {
 }
 
 module origin 'origin/main.bicep' = [for (origion, index) in origins: {
-  name: '${uniqueString(deployment().name)}-OriginGroup-Origin-${origion.name}-${index}'
+  name: '${uniqueString(deployment().name)}-OriginGroup-Origin-${index}'
   params: {
     name: origion.name
     profileName: profileName
@@ -88,4 +88,4 @@ output resourceId string = originGroup.id
 output resourceGroupName string = resourceGroup().name
 
 @description('The location the resource was deployed into.')
-output location string = originGroup.location
+output location string = profile.location

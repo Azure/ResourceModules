@@ -37,7 +37,7 @@ resource rule_set 'Microsoft.Cdn/profiles/ruleSets@2023-05-01' = {
 }
 
 module rule 'rule/main.bicep' = [for (rule, index) in rules: {
-  name: '${uniqueString(deployment().name, location)}-RuleSet-Rule-${index}'
+  name: '${uniqueString(deployment().name)}-RuleSet-Rule-${rule.name}-${index}'
   params: {
     profileName: profileName
     ruleSetName: name
@@ -46,7 +46,7 @@ module rule 'rule/main.bicep' = [for (rule, index) in rules: {
     actions: rule.actions
     conditions: contains(rule, 'conditions') ? rule.conditions : []
     matchProcessingBehavior: contains(rule, 'matchProcessingBehavior') ? rule.matchProcessingBehavior : 'Continue'
-     enableDefaultTelemetry: enableReferencedModulesTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
 

@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.21.1.54444",
-      "templateHash": "903611219402574720"
+      "version": "0.22.6.54827",
+      "templateHash": "14280184708897109589"
     },
     "name": "CDN Profiles",
     "description": "This module deploys a CDN Profile.",
@@ -215,8 +215,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "16078911369309632762"
+              "version": "0.22.6.54827",
+              "templateHash": "6345074970145673737"
             }
           },
           "parameters": {
@@ -368,8 +368,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "412020395518768145"
+              "version": "0.22.6.54827",
+              "templateHash": "66122595863754952"
             },
             "name": "CDN Profiles Endpoints",
             "description": "This module deploys a CDN Profile Endpoint.",
@@ -489,8 +489,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.21.1.54444",
-                      "templateHash": "13738228451876261606"
+                      "version": "0.22.6.54827",
+                      "templateHash": "5759722302271159823"
                     },
                     "name": "CDN Profiles Endpoints Origins",
                     "description": "This module deploys a CDN Profile Endpoint Origin.",
@@ -695,7 +695,7 @@
       },
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
-      "name": "[format('{0}-Profile-Secret', uniqueString(deployment().name, parameters('secrets')[copyIndex()].name))]",
+      "name": "[format('{0}-Profile-Secret-{1}', uniqueString(deployment().name), copyIndex())]",
       "properties": {
         "expressionEvaluationOptions": {
           "scope": "inner"
@@ -729,8 +729,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "7022374705301214155"
+              "version": "0.22.6.54827",
+              "templateHash": "10634340039151667854"
             },
             "name": "CDN Profiles Secret",
             "description": "This module deploys a CDN Profile Secret.",
@@ -858,7 +858,7 @@
       },
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
-      "name": "[format('{0}-CustomDomain', uniqueString(deployment().name, parameters('customDomains')[copyIndex()].name))]",
+      "name": "[format('{0}-CustomDomain-{1}', uniqueString(deployment().name), copyIndex())]",
       "properties": {
         "expressionEvaluationOptions": {
           "scope": "inner"
@@ -892,8 +892,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "11501478645054187251"
+              "version": "0.22.6.54827",
+              "templateHash": "1547160911539181378"
             },
             "name": "CDN Profiles Custom Domains",
             "description": "This module deploys a CDN Profile Custom Domains.",
@@ -1044,7 +1044,7 @@
       },
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
-      "name": "[format('{0}-Profile-OrigionGroup', uniqueString(deployment().name, parameters('origionGroups')[copyIndex()].name))]",
+      "name": "[format('{0}-Profile-OrigionGroup-{1}', uniqueString(deployment().name), copyIndex())]",
       "properties": {
         "expressionEvaluationOptions": {
           "scope": "inner"
@@ -1076,8 +1076,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "8059862261753810230"
+              "version": "0.22.6.54827",
+              "templateHash": "5730470112775090005"
             },
             "name": "CDN Profiles Origin Group",
             "description": "This module deploys a CDN Profile Origin Group.",
@@ -1142,6 +1142,9 @@
               }
             }
           },
+          "variables": {
+            "enableReferencedModulesTelemetry": false
+          },
           "resources": [
             {
               "condition": "[parameters('enableDefaultTelemetry')]",
@@ -1175,7 +1178,7 @@
               },
               "type": "Microsoft.Resources/deployments",
               "apiVersion": "2022-09-01",
-              "name": "[format('{0}-OriginGroup-Origin-{1}', uniqueString(deployment().name, parameters('origins')[copyIndex()].name), parameters('origins')[copyIndex()].name)]",
+              "name": "[format('{0}-OriginGroup-Origin-{1}', uniqueString(deployment().name), copyIndex())]",
               "properties": {
                 "expressionEvaluationOptions": {
                   "scope": "inner"
@@ -1201,7 +1204,10 @@
                   "originHostHeader": "[if(contains(parameters('origins')[copyIndex()], 'originHostHeader'), createObject('value', parameters('origins')[copyIndex()].originHostHeader), createObject('value', parameters('origins')[copyIndex()].hostName))]",
                   "priority": "[if(contains(parameters('origins')[copyIndex()], 'priority'), createObject('value', parameters('origins')[copyIndex()].priority), createObject('value', 1))]",
                   "weight": "[if(contains(parameters('origins')[copyIndex()], 'weight'), createObject('value', parameters('origins')[copyIndex()].weight), createObject('value', 1000))]",
-                  "sharedPrivateLinkResource": "[if(contains(parameters('origins')[copyIndex()], 'sharedPrivateLinkResource'), createObject('value', parameters('origins')[copyIndex()].sharedPrivateLinkResource), createObject('value', null()))]"
+                  "sharedPrivateLinkResource": "[if(contains(parameters('origins')[copyIndex()], 'sharedPrivateLinkResource'), createObject('value', parameters('origins')[copyIndex()].sharedPrivateLinkResource), createObject('value', null()))]",
+                  "enableDefaultTelemetry": {
+                    "value": "[variables('enableReferencedModulesTelemetry')]"
+                  }
                 },
                 "template": {
                   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
@@ -1209,8 +1215,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.21.1.54444",
-                      "templateHash": "5566399114499316168"
+                      "version": "0.22.6.54827",
+                      "templateHash": "6401260748375374430"
                     },
                     "name": "CDN Profiles Origin",
                     "description": "This module deploys a CDN Profile Origin.",
@@ -1352,7 +1358,7 @@
                     "resourceId": {
                       "type": "string",
                       "metadata": {
-                        "description": "The id of the origin."
+                        "description": "The resource id of the origin."
                       },
                       "value": "[resourceId('Microsoft.Cdn/profiles/originGroups/origins', parameters('profileName'), parameters('originGroupName'), parameters('name'))]"
                     },
@@ -1414,7 +1420,7 @@
       },
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
-      "name": "[format('{0}-Profile-RuleSet', uniqueString(deployment().name, parameters('ruleSets')[copyIndex()].name))]",
+      "name": "[format('{0}-Profile-RuleSet-{1}', uniqueString(deployment().name), copyIndex())]",
       "properties": {
         "expressionEvaluationOptions": {
           "scope": "inner"
@@ -1440,8 +1446,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "18406791730999732243"
+              "version": "0.22.6.54827",
+              "templateHash": "2165712570349315066"
             },
             "name": "CDN Profiles Rule Sets",
             "description": "This module deploys a CDN Profile rule set.",
@@ -1475,6 +1481,9 @@
               }
             }
           },
+          "variables": {
+            "enableReferencedModulesTelemetry": false
+          },
           "resources": [
             {
               "condition": "[parameters('enableDefaultTelemetry')]",
@@ -1502,7 +1511,7 @@
               },
               "type": "Microsoft.Resources/deployments",
               "apiVersion": "2022-09-01",
-              "name": "[parameters('rules')[copyIndex()].name]",
+              "name": "[format('{0}-RuleSet-Rule-{1}-{2}', uniqueString(deployment().name), parameters('rules')[copyIndex()].name, copyIndex())]",
               "properties": {
                 "expressionEvaluationOptions": {
                   "scope": "inner"
@@ -1525,7 +1534,10 @@
                     "value": "[parameters('rules')[copyIndex()].actions]"
                   },
                   "conditions": "[if(contains(parameters('rules')[copyIndex()], 'conditions'), createObject('value', parameters('rules')[copyIndex()].conditions), createObject('value', createArray()))]",
-                  "matchProcessingBehavior": "[if(contains(parameters('rules')[copyIndex()], 'matchProcessingBehavior'), createObject('value', parameters('rules')[copyIndex()].matchProcessingBehavior), createObject('value', 'Continue'))]"
+                  "matchProcessingBehavior": "[if(contains(parameters('rules')[copyIndex()], 'matchProcessingBehavior'), createObject('value', parameters('rules')[copyIndex()].matchProcessingBehavior), createObject('value', 'Continue'))]",
+                  "enableDefaultTelemetry": {
+                    "value": "[variables('enableReferencedModulesTelemetry')]"
+                  }
                 },
                 "template": {
                   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
@@ -1533,8 +1545,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.21.1.54444",
-                      "templateHash": "13726803083834981403"
+                      "version": "0.22.6.54827",
+                      "templateHash": "17627422900186578144"
                     },
                     "name": "CDN Profiles Rules",
                     "description": "This module deploys a CDN Profile rule.",
@@ -1687,7 +1699,7 @@
       },
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
-      "name": "[format('{0}-Profile-AfdEndpoint', uniqueString(deployment().name, parameters('afdEndpoints')[copyIndex()].name))]",
+      "name": "[format('{0}-Profile-AfdEndpoint-{1}', uniqueString(deployment().name), copyIndex())]",
       "properties": {
         "expressionEvaluationOptions": {
           "scope": "inner"
@@ -1717,8 +1729,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "15349941269499499427"
+              "version": "0.22.6.54827",
+              "templateHash": "11941850826145778575"
             },
             "name": "CDN Profiles AFD Endpoints",
             "description": "This module deploys a CDN Profile AFD Endpoint.",
@@ -1790,6 +1802,9 @@
               }
             }
           },
+          "variables": {
+            "enableReferencedModulesTelemetry": false
+          },
           "resources": [
             {
               "condition": "[parameters('enableDefaultTelemetry')]",
@@ -1849,7 +1864,10 @@
                   "originPath": "[if(contains(parameters('routes')[copyIndex()], 'originPath'), createObject('value', parameters('routes')[copyIndex()].originPath), createObject('value', ''))]",
                   "patternsToMatch": "[if(contains(parameters('routes')[copyIndex()], 'patternsToMatch'), createObject('value', parameters('routes')[copyIndex()].patternsToMatch), createObject('value', createArray()))]",
                   "ruleSets": "[if(contains(parameters('routes')[copyIndex()], 'ruleSets'), createObject('value', parameters('routes')[copyIndex()].ruleSets), createObject('value', createArray()))]",
-                  "supportedProtocols": "[if(contains(parameters('routes')[copyIndex()], 'supportedProtocols'), createObject('value', parameters('routes')[copyIndex()].supportedProtocols), createObject('value', createArray()))]"
+                  "supportedProtocols": "[if(contains(parameters('routes')[copyIndex()], 'supportedProtocols'), createObject('value', parameters('routes')[copyIndex()].supportedProtocols), createObject('value', createArray()))]",
+                  "enableDefaultTelemetry": {
+                    "value": "[variables('enableReferencedModulesTelemetry')]"
+                  }
                 },
                 "template": {
                   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
@@ -1857,8 +1875,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.21.1.54444",
-                      "templateHash": "15004452445928633592"
+                      "version": "0.22.6.54827",
+                      "templateHash": "13253134886056545686"
                     },
                     "name": "CDN Profiles AFD Endpoint Route",
                     "description": "This module deploys a CDN Profile AFD Endpoint route.",

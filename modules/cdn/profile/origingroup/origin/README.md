@@ -47,7 +47,7 @@ This module deploys a CDN Profile Origin.
 | :-- | :-- | :-- |
 | `name` | string | The name of the origin. |
 | `resourceGroupName` | string | The name of the resource group the origin was created in. |
-| `resourceId` | string | The id of the origin. |
+| `resourceId` | string | The resource id of the origin. |
 
 ## Cross-referenced modules
 

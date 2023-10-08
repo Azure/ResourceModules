@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.21.1.54444",
-      "templateHash": "18406791730999732243"
+      "version": "0.22.6.54827",
+      "templateHash": "2165712570349315066"
     },
     "name": "CDN Profiles Rule Sets",
     "description": "This module deploys a CDN Profile rule set.",
@@ -39,6 +39,9 @@
       }
     }
   },
+  "variables": {
+    "enableReferencedModulesTelemetry": false
+  },
   "resources": [
     {
       "condition": "[parameters('enableDefaultTelemetry')]",
@@ -66,7 +69,7 @@
       },
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
-      "name": "[parameters('rules')[copyIndex()].name]",
+      "name": "[format('{0}-RuleSet-Rule-{1}-{2}', uniqueString(deployment().name), parameters('rules')[copyIndex()].name, copyIndex())]",
       "properties": {
         "expressionEvaluationOptions": {
           "scope": "inner"
@@ -89,7 +92,10 @@
             "value": "[parameters('rules')[copyIndex()].actions]"
           },
           "conditions": "[if(contains(parameters('rules')[copyIndex()], 'conditions'), createObject('value', parameters('rules')[copyIndex()].conditions), createObject('value', createArray()))]",
-          "matchProcessingBehavior": "[if(contains(parameters('rules')[copyIndex()], 'matchProcessingBehavior'), createObject('value', parameters('rules')[copyIndex()].matchProcessingBehavior), createObject('value', 'Continue'))]"
+          "matchProcessingBehavior": "[if(contains(parameters('rules')[copyIndex()], 'matchProcessingBehavior'), createObject('value', parameters('rules')[copyIndex()].matchProcessingBehavior), createObject('value', 'Continue'))]",
+          "enableDefaultTelemetry": {
+            "value": "[variables('enableReferencedModulesTelemetry')]"
+          }
         },
         "template": {
           "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
@@ -97,8 +103,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "13726803083834981403"
+              "version": "0.22.6.54827",
+              "templateHash": "17627422900186578144"
             },
             "name": "CDN Profiles Rules",
             "description": "This module deploys a CDN Profile rule.",

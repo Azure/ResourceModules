@@ -60,10 +60,9 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
 resource profile 'Microsoft.Cdn/profiles@2023-05-01' existing = {
   name: profileName
 
-  resource originGroup 'Microsoft.Cdn/profiles/originGroups@2023-05-01' existing = {
+  resource originGroup 'originGroups@2023-05-01' existing = {
     name: originGroupName
-    parent: profile
-}
+  }
 }
 
 resource origin 'Microsoft.Cdn/profiles/originGroups/origins@2023-05-01' = {

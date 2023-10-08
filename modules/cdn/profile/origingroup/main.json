@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.21.1.54444",
-      "templateHash": "8059862261753810230"
+      "version": "0.22.6.54827",
+      "templateHash": "5730470112775090005"
     },
     "name": "CDN Profiles Origin Group",
     "description": "This module deploys a CDN Profile Origin Group.",
@@ -70,6 +70,9 @@
       }
     }
   },
+  "variables": {
+    "enableReferencedModulesTelemetry": false
+  },
   "resources": [
     {
       "condition": "[parameters('enableDefaultTelemetry')]",
@@ -103,7 +106,7 @@
       },
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
-      "name": "[format('{0}-OriginGroup-Origin-{1}', uniqueString(deployment().name, parameters('origins')[copyIndex()].name), parameters('origins')[copyIndex()].name)]",
+      "name": "[format('{0}-OriginGroup-Origin-{1}', uniqueString(deployment().name), copyIndex())]",
       "properties": {
         "expressionEvaluationOptions": {
           "scope": "inner"
@@ -129,7 +132,10 @@
           "originHostHeader": "[if(contains(parameters('origins')[copyIndex()], 'originHostHeader'), createObject('value', parameters('origins')[copyIndex()].originHostHeader), createObject('value', parameters('origins')[copyIndex()].hostName))]",
           "priority": "[if(contains(parameters('origins')[copyIndex()], 'priority'), createObject('value', parameters('origins')[copyIndex()].priority), createObject('value', 1))]",
           "weight": "[if(contains(parameters('origins')[copyIndex()], 'weight'), createObject('value', parameters('origins')[copyIndex()].weight), createObject('value', 1000))]",
-          "sharedPrivateLinkResource": "[if(contains(parameters('origins')[copyIndex()], 'sharedPrivateLinkResource'), createObject('value', parameters('origins')[copyIndex()].sharedPrivateLinkResource), createObject('value', null()))]"
+          "sharedPrivateLinkResource": "[if(contains(parameters('origins')[copyIndex()], 'sharedPrivateLinkResource'), createObject('value', parameters('origins')[copyIndex()].sharedPrivateLinkResource), createObject('value', null()))]",
+          "enableDefaultTelemetry": {
+            "value": "[variables('enableReferencedModulesTelemetry')]"
+          }
         },
         "template": {
           "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
@@ -137,8 +143,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "5566399114499316168"
+              "version": "0.22.6.54827",
+              "templateHash": "6401260748375374430"
             },
             "name": "CDN Profiles Origin",
             "description": "This module deploys a CDN Profile Origin.",
@@ -280,7 +286,7 @@
             "resourceId": {
               "type": "string",
               "metadata": {
-                "description": "The id of the origin."
+                "description": "The resource id of the origin."
               },
               "value": "[resourceId('Microsoft.Cdn/profiles/originGroups/origins', parameters('profileName'), parameters('originGroupName'), parameters('name'))]"
             },
