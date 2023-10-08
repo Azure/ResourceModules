@@ -15,9 +15,9 @@ This module deploys an Event Hub Namespace Event Hub.
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.EventHub/namespaces/eventhubs` | [2022-01-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.EventHub/2022-01-01-preview/namespaces/eventhubs) |
-| `Microsoft.EventHub/namespaces/eventhubs/authorizationRules` | [2022-01-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.EventHub/2022-01-01-preview/namespaces/eventhubs/authorizationRules) |
-| `Microsoft.EventHub/namespaces/eventhubs/consumergroups` | [2022-01-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.EventHub/2022-01-01-preview/namespaces/eventhubs/consumergroups) |
+| `Microsoft.EventHub/namespaces/eventhubs` | [2022-10-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.EventHub/2022-10-01-preview/namespaces/eventhubs) |
+| `Microsoft.EventHub/namespaces/eventhubs/authorizationRules` | [2022-10-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.EventHub/2022-10-01-preview/namespaces/eventhubs/authorizationRules) |
+| `Microsoft.EventHub/namespaces/eventhubs/consumergroups` | [2022-10-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.EventHub/2022-10-01-preview/namespaces/eventhubs/consumergroups) |
 
 ## Parameters
 
@@ -50,8 +50,11 @@ This module deploys an Event Hub Namespace Event Hub.
 | `consumergroups` | array | `[System.Management.Automation.OrderedHashtable]` |  | The consumer groups to create in this event hub instance. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
-| `messageRetentionInDays` | int | `1` |  | Number of days to retain the events for this Event Hub, value should be 1 to 7 days. |
+| `messageRetentionInDays` | int | `1` |  | Number of days to retain the events for this Event Hub, value should be 1 to 7 days. Will be automatically set to infinite retention if cleanup policy is set to "Compact". |
 | `partitionCount` | int | `2` |  | Number of partitions created for the Event Hub, allowed values are from 1 to 32 partitions. |
+| `retentionDescriptionCleanupPolicy` | string | `'Delete'` | `[Compact, Delete]` | Retention cleanup policy. Enumerates the possible values for cleanup policy. |
+| `retentionDescriptionRetentionTimeInHours` | int | `1` |  | Retention time in hours. Number of hours to retain the events for this Event Hub. This value is only used when cleanupPolicy is Delete. If cleanupPolicy is Compact the returned value of this property is Long.MaxValue. |
+| `retentionDescriptionTombstoneRetentionTimeInHours` | int | `1` |  | Retention cleanup policy. Number of hours to retain the tombstone markers of a compacted Event Hub. This value is only used when cleanupPolicy is Compact. Consumer must complete reading the tombstone marker within this specified amount of time if consumer begins from starting offset to ensure they get a valid snapshot for the specific key described by the tombstone marker within the compacted Event Hub. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `status` | string | `'Active'` | `[Active, Creating, Deleting, Disabled, ReceiveDisabled, Renaming, Restoring, SendDisabled, Unknown]` | Enumerates the possible values for the status of the Event Hub. |
 

@@ -13,7 +13,7 @@ This module deploys an Event Hub Namespace Event Hub Authorization Rule.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.EventHub/namespaces/eventhubs/authorizationRules` | [2022-01-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.EventHub/2022-01-01-preview/namespaces/eventhubs/authorizationRules) |
+| `Microsoft.EventHub/namespaces/eventhubs/authorizationRules` | [2022-10-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.EventHub/2022-10-01-preview/namespaces/eventhubs/authorizationRules) |
 
 ## Parameters
 

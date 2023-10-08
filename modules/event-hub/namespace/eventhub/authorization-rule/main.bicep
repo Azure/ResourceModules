@@ -34,15 +34,15 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource namespace 'Microsoft.EventHub/namespaces@2022-01-01-preview' existing = {
+resource namespace 'Microsoft.EventHub/namespaces@2022-10-01-preview' existing = {
   name: namespaceName
 
-  resource eventhub 'eventhubs@2022-01-01-preview' existing = {
+  resource eventhub 'eventhubs@2022-10-01-preview' existing = {
     name: eventHubName
   }
 }
 
-resource authorizationRule 'Microsoft.EventHub/namespaces/eventhubs/authorizationRules@2022-01-01-preview' = {
+resource authorizationRule 'Microsoft.EventHub/namespaces/eventhubs/authorizationRules@2022-10-01-preview' = {
   name: name
   parent: namespace::eventhub
   properties: {

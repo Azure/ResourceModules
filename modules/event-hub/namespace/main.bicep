@@ -192,7 +192,7 @@ resource cMKKeyVault 'Microsoft.KeyVault/vaults@2023-02-01' existing = if (!empt
   name: last(split(cMKKeyVaultResourceId, '/'))!
   scope: resourceGroup(split(cMKKeyVaultResourceId, '/')[2], split(cMKKeyVaultResourceId, '/')[4])
 
-  resource cMKKey 'keys@2022-07-01' existing = if (!empty(cMKKeyName)) {
+  resource cMKKey 'keys@2023-02-01' existing = if (!empty(cMKKeyName)) {
     name: cMKKeyName
   }
 }
@@ -209,7 +209,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource eventHubNamespace 'Microsoft.EventHub/namespaces@2022-01-01-preview' = {
+resource eventHubNamespace 'Microsoft.EventHub/namespaces@2022-10-01-preview' = {
   name: name
   location: location
   tags: tags
@@ -294,6 +294,9 @@ module eventHubNamespace_eventhubs 'eventhub/main.bicep' = [for (eventHub, index
     partitionCount: contains(eventHub, 'partitionCount') ? eventHub.partitionCount : 2
     roleAssignments: contains(eventHub, 'roleAssignments') ? eventHub.roleAssignments : []
     status: contains(eventHub, 'status') ? eventHub.status : 'Active'
+    retentionDescriptionCleanupPolicy: contains(eventHub, 'retentionDescriptionCleanupPolicy') ? eventHub.retentionDescriptionCleanupPolicy : 'Delete'
+    retentionDescriptionRetentionTimeInHours: contains(eventHub, 'retentionDescriptionRetentionTimeInHours') ? eventHub.retentionDescriptionRetentionTimeInHours : 1
+    retentionDescriptionTombstoneRetentionTimeInHours: contains(eventHub, 'retentionDescriptionTombstoneRetentionTimeInHours') ? eventHub.retentionDescriptionTombstoneRetentionTimeInHours : 1
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
