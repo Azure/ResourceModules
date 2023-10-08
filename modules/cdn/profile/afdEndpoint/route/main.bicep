@@ -79,47 +79,47 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
 
 resource profile 'Microsoft.Cdn/profiles@2023-05-01' existing = {
   name: profileName
-}
 
-resource afd_endpoint 'Microsoft.Cdn/profiles/afdEndpoints@2023-05-01' existing = {
-  name: afdEndpointName
-  parent: profile
-}
+  resource afd_endpoint 'Microsoft.Cdn/profiles/afdEndpoints@2023-05-01' existing = {
+    name: afdEndpointName
+    parent: profile
+  }
 
-resource custom_domain 'Microsoft.Cdn/profiles/customDomains@2023-05-01' existing = if (!empty(customDomainName)) {
-  name: customDomainName
-  parent: profile
-}
+  resource custom_domain 'Microsoft.Cdn/profiles/customDomains@2023-05-01' existing = if (!empty(customDomainName)) {
+    name: customDomainName
+    parent: profile
+  }
 
-resource originGroup 'Microsoft.Cdn/profiles/originGroups@2023-05-01' existing = {
-  name: originGroupName
-  parent: profile
-}
+  resource originGroup 'Microsoft.Cdn/profiles/originGroups@2023-05-01' existing = {
+    name: originGroupName
+    parent: profile
+  }
 
-resource rule_set 'Microsoft.Cdn/profiles/ruleSets@2023-05-01' existing = [for ruleSet in ruleSets: {
-  name: ruleSet.name
-  parent: profile
-}]
+  resource rule_set 'Microsoft.Cdn/profiles/ruleSets@2023-05-01' existing = [for ruleSet in ruleSets: {
+    name: ruleSet.name
+    parent: profile
+  }]
+}
 
 resource afd_endpoint_route 'Microsoft.Cdn/profiles/afdEndpoints/routes@2023-05-01' = {
   name: name
-  parent: afd_endpoint
+  parent: profile::afd_endpoint
   properties: {
     cacheConfiguration: !empty(cacheConfiguration) ? cacheConfiguration : null
     customDomains: !empty(customDomainName) ? [ {
-        id: custom_domain.id
+        id: profile::custom_domain.id
       } ] : []
     enabledState: enabledState
     forwardingProtocol: forwardingProtocol
     httpsRedirect: httpsRedirect
     linkToDefaultDomain: linkToDefaultDomain
     originGroup: {
-      id: originGroup.id
+      id: profile::originGroup.id
     }
     originPath: !empty(originPath) ? originPath : null
     patternsToMatch: patternsToMatch
     ruleSets: [for (item, index) in ruleSets: {
-      id: rule_set[index].id
+      id: profile::rule_set[index].id
     }]
     supportedProtocols: !empty(supportedProtocols) ? supportedProtocols : null
   }

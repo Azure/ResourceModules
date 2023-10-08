@@ -126,8 +126,8 @@ module profile_endpoint 'endpoint/main.bicep' = if (!empty(endpointProperties)) 
   }
 }
 
-module profile_secret 'secret/main.bicep' = [for secret in secrets: {
-  name: '${uniqueString(deployment().name, secret.name)}-Profile-Secret'
+module profile_secret 'secret/main.bicep' = [for (secret, index) in secrets: {
+  name: '${uniqueString(deployment().name)}-Profile-Secret-${index}'
   params: {
     name: secret.name
     profileName: profile.name
@@ -140,8 +140,8 @@ module profile_secret 'secret/main.bicep' = [for secret in secrets: {
   }
 }]
 
-module profile_custom_domain 'customdomain/main.bicep' = [for customDomain in customDomains: {
-  name: '${uniqueString(deployment().name, customDomain.name)}-CustomDomain'
+module profile_custom_domain 'customdomain/main.bicep' = [for (customDomain, index) in customDomains: {
+  name: '${uniqueString(deployment().name)}-CustomDomain-${index}'
   dependsOn: [
     profile_secret
   ]
@@ -159,8 +159,8 @@ module profile_custom_domain 'customdomain/main.bicep' = [for customDomain in cu
   }
 }]
 
-module profile_origionGroup 'origingroup/main.bicep' = [for origingroup in origionGroups: {
-  name: '${uniqueString(deployment().name, origingroup.name)}-Profile-OrigionGroup'
+module profile_origionGroup 'origingroup/main.bicep' = [for (origingroup, index) in origionGroups: {
+  name: '${uniqueString(deployment().name)}-Profile-OrigionGroup-${index}'
   params: {
     name: origingroup.name
     profileName: profile.name
@@ -173,8 +173,8 @@ module profile_origionGroup 'origingroup/main.bicep' = [for origingroup in origi
   }
 }]
 
-module profile_ruleSet 'ruleset/main.bicep' = [for ruleSet in ruleSets: {
-  name: '${uniqueString(deployment().name, ruleSet.name)}-Profile-RuleSet'
+module profile_ruleSet 'ruleset/main.bicep' = [for (ruleSet, index) in ruleSets: {
+  name: '${uniqueString(deployment().name)}-Profile-RuleSet-${index}'
   params: {
     name: ruleSet.name
     profileName: profile.name
@@ -183,8 +183,8 @@ module profile_ruleSet 'ruleset/main.bicep' = [for ruleSet in ruleSets: {
   }
 }]
 
-module profile_afdEndpoint 'afdEndpoint/main.bicep' = [for afdEndpoint in afdEndpoints: {
-  name: '${uniqueString(deployment().name, afdEndpoint.name)}-Profile-AfdEndpoint'
+module profile_afdEndpoint 'afdEndpoint/main.bicep' = [for (afdEndpoint, index) in afdEndpoints: {
+  name: '${uniqueString(deployment().name)}-Profile-AfdEndpoint-${index}'
   dependsOn: [
     profile_origionGroup
     profile_custom_domain

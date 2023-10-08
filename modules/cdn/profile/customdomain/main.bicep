@@ -54,14 +54,14 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
 
 resource profile 'Microsoft.Cdn/profiles@2023-05-01' existing = {
   name: profileName
+
+  resource profile_secrect 'Microsoft.Cdn/profiles/secrets@2023-05-01' existing = if (!empty(secretName)) {
+    name: secretName
+    parent: profile
+  }
 }
 
-resource profile_secrect 'Microsoft.Cdn/profiles/secrets@2023-05-01' existing = if (!empty(secretName)) {
-  name: secretName
-  parent: profile
-}
-
-resource prifile_custom_domain 'Microsoft.Cdn/profiles/customDomains@2023-05-01' = {
+resource profile_custom_domain 'Microsoft.Cdn/profiles/customDomains@2023-05-01' = {
   name: name
   parent: profile
   properties: {
@@ -77,17 +77,17 @@ resource prifile_custom_domain 'Microsoft.Cdn/profiles/customDomains@2023-05-01'
       certificateType: certificateType
       minimumTlsVersion: minimumTlsVersion
       secret: !(empty(secretName)) ? {
-        id: profile_secrect.id
+        id: profile::profile_secrect.id
       } : null
     }
   }
 }
 
 @description('The name of the custom domain.')
-output name string = prifile_custom_domain.name
+output name string = profile_custom_domain.name
 
 @description('The resource id of the custom domain.')
-output resourceId string = prifile_custom_domain.id
+output resourceId string = profile_custom_domain.id
 
 @description('The name of the resource group the custom domain was created in.')
 output resourceGroupName string = resourceGroup().name

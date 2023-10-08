@@ -59,16 +59,16 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
 
 resource profile 'Microsoft.Cdn/profiles@2023-05-01' existing = {
   name: profileName
-}
 
-resource originGroup 'Microsoft.Cdn/profiles/originGroups@2023-05-01' existing = {
-  name: originGroupName
-  parent: profile
+  resource originGroup 'Microsoft.Cdn/profiles/originGroups@2023-05-01' existing = {
+    name: originGroupName
+    parent: profile
+}
 }
 
 resource origin 'Microsoft.Cdn/profiles/originGroups/origins@2023-05-01' = {
   name: name
-  parent: originGroup
+  parent: profile::originGroup
   properties: {
     enabledState: enabledState
     enforceCertificateNameCheck: enforceCertificateNameCheck
@@ -85,7 +85,7 @@ resource origin 'Microsoft.Cdn/profiles/originGroups/origins@2023-05-01' = {
 @description('The name of the origin.')
 output name string = origin.name
 
-@description('The id of the origin.')
+@description('The resource id of the origin.')
 output resourceId string = origin.id
 
 @description('The name of the resource group the origin was created in.')

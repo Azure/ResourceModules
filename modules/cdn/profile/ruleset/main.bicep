@@ -13,6 +13,7 @@ param rules array = []
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
+var enableReferencedModulesTelemetry = false
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name)}'
@@ -35,8 +36,8 @@ resource rule_set 'Microsoft.Cdn/profiles/ruleSets@2023-05-01' = {
   parent: profile
 }
 
-module rule 'rule/main.bicep' = [for rule in rules: {
-  name: rule.name
+module rule 'rule/main.bicep' = [for (rule, index) in rules: {
+  name: '${uniqueString(deployment().name, location)}-RuleSet-Rule-${index}'
   params: {
     profileName: profileName
     ruleSetName: name
@@ -45,6 +46,7 @@ module rule 'rule/main.bicep' = [for rule in rules: {
     actions: rule.actions
     conditions: contains(rule, 'conditions') ? rule.conditions : []
     matchProcessingBehavior: contains(rule, 'matchProcessingBehavior') ? rule.matchProcessingBehavior : 'Continue'
+     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
 

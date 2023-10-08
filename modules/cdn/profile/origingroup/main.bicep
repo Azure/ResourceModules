@@ -30,6 +30,8 @@ param origins array = []
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
+var enableReferencedModulesTelemetry = false
+
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name)}'
   properties: {
@@ -57,8 +59,8 @@ resource originGroup 'Microsoft.Cdn/profiles/originGroups@2023-05-01' = {
   }
 }
 
-module origin 'origin/main.bicep' = [for origion in origins: {
-  name: '${uniqueString(deployment().name, origion.name)}-OriginGroup-Origin-${origion.name}'
+module origin 'origin/main.bicep' = [for (origion, index) in origins: {
+  name: '${uniqueString(deployment().name)}-OriginGroup-Origin-${origion.name}-${index}'
   params: {
     name: origion.name
     profileName: profileName
@@ -72,6 +74,7 @@ module origin 'origin/main.bicep' = [for origion in origins: {
     priority: contains(origion, 'priority') ? origion.priority : 1
     weight: contains(origion, 'weight') ? origion.weight : 1000
     sharedPrivateLinkResource: contains(origion, 'sharedPrivateLinkResource') ? origion.sharedPrivateLinkResource : null
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
 
@@ -80,8 +83,9 @@ output name string = originGroup.name
 
 @description('The resource id of the origin group.')
 output resourceId string = originGroup.id
+
 @description('The name of the resource group the origin group was created in.')
 output resourceGroupName string = resourceGroup().name
 
 @description('The location the resource was deployed into.')
-output location string = profile.location
+output location string = originGroup.location

@@ -44,16 +44,16 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
 
 resource profile 'Microsoft.Cdn/profiles@2023-05-01' existing = {
   name: profileName
-}
 
-resource rule_set 'Microsoft.Cdn/profiles/ruleSets@2023-05-01' existing = {
-  name: ruleSetName
-  parent: profile
+  resource rule_set 'Microsoft.Cdn/profiles/ruleSets@2023-05-01' existing = {
+    name: ruleSetName
+    parent: profile
+  }
 }
 
 resource rule_set_rule 'Microsoft.Cdn/profiles/ruleSets/rules@2023-05-01' = {
   name: name
-  parent: rule_set
+  parent: profile::rule_set
   properties: {
     order: order
     actions: actions

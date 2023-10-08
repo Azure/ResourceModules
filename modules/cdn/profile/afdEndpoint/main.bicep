@@ -35,6 +35,7 @@ param routes array = []
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
+var enableReferencedModulesTelemetry = false
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name)}'
@@ -80,6 +81,7 @@ module afd_endpoint_route 'route/main.bicep' = [for route in routes: {
     patternsToMatch: contains(route, 'patternsToMatch') ? route.patternsToMatch : []
     ruleSets: contains(route, 'ruleSets') ? route.ruleSets : []
     supportedProtocols: contains(route, 'supportedProtocols') ? route.supportedProtocols : []
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
 
