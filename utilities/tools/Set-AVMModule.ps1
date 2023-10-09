@@ -76,6 +76,9 @@ function Set-AVMModule {
         [string] $ReadMeScriptFilePath = (Join-Path (Get-Item $PSScriptRoot).Parent.FullName 'pipelines' 'sharedScripts' 'Set-ModuleReadMe.ps1')
     )
 
+    # # Load helper scripts
+    # . (Join-Path $PSScriptRoot 'helper' 'Set-ModuleFileAndFolderSetup.ps1')
+
     # Build up module file & folder structure if not yet existing. Should only run if an actual module path was provided (and not any of their parent paths)
     # if (-not $SkipFileAndFolderSetup -and ((($ModuleFolderPath -split '\bavm\b')[1].Trim('\,/') -split '[\/|\\]').Count -gt 2)) {
     #     if ($PSCmdlet.ShouldProcess("File & folder structure for path [$ModuleFolderPath]", "Setup")) {
@@ -104,7 +107,7 @@ function Set-AVMModule {
     # Using threading to speed up the process
     if ($PSCmdlet.ShouldProcess(('Building & generation of [{0}] modules in path [{1}]' -f $threadObjects.Count, $ModuleFolderPath), 'Execute')) {
         $threadObjects | ForEach-Object -ThrottleLimit $ThrottleLimit -Parallel {
-            $resourceTypeIdentifier = 'avm-{0}' -f ($_.path -split '[\/|\\]{1}avm[\/|\\]{1}(res|ptn)[\/|\\]{1}')[2] # avm/res/<provider>/<resourceType>
+            $resourceTypeIdentifier = ((Split-Path $_.path) -split '[\/|\\]{1}modules[\/|\\]{1}')[1] # avm/res/<provider>/<resourceType>
 
             foreach ($scriptPath in $_.scriptsToLoad) {
                 . $scriptPath
@@ -126,7 +129,14 @@ function Set-AVMModule {
 
                 # If the template was just build, we can pass the JSON into the readme script to be more efficient
                 $readmeTemplateFilePath = (-not $_.SkipBuild) ? (Join-Path (Split-Path $_.path -Parent) 'main.json') : ($_.path)
+                $readMeFilePath = Join-Path (Split-Path $_.path) 'readme.md'
 
+                # Remove original readme
+                if (Test-Path $readMeFilePath) {
+                    $null = Remove-Item $readMeFilePath -Force
+                }
+
+                # Build new readme
                 Set-ModuleReadMe -TemplateFilePath $readmeTemplateFilePath
             }
         }
