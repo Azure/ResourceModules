@@ -1033,9 +1033,9 @@ function Set-UsageExamplesSection {
 
     # Load used function(s)
     . (Join-Path $PSScriptRoot 'Get-ModuleTestFileList.ps1')
-    . (Join-Path (Split-Path $PSScriptRoot -Parent) 'publish' 'helper' 'Get-BRMRepositoryName.ps1')
+    . (Join-Path (Split-Path $PSScriptRoot -Parent) 'resourcePublish' 'Get-PrivateRegistryRepositoryName.ps1')
 
-    $brLink = Get-BRMRepositoryName -TemplateFilePath $TemplateFilePath
+    $brLink = Get-PrivateRegistryRepositoryName -TemplateFilePath $TemplateFilePath
 
     # Process content
     $SectionContent = [System.Collections.ArrayList]@(
@@ -1044,7 +1044,7 @@ function Set-UsageExamplesSection {
         '',
         '   >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.',
         '',
-        ('   >**Note**: To reference the module, please use the following syntax `br/public:{0}:1.0.0`.' -f $brLink),
+        ('   >**Note**: To reference the module, please use the following syntax `br:{0}:1.0.0`.' -f $brLink),
         ''
     )
 
@@ -1157,7 +1157,7 @@ function Set-UsageExamplesSection {
 
             # [3/6] Format header, remove scope property & any empty line
             $rawBicepExample = $rawBicepExampleString -split '\n'
-            $rawBicepExample[0] = "module $moduleNameCamelCase 'br/public:$($brLink):1.0.0' = {"
+            $rawBicepExample[0] = "module $moduleNameCamelCase 'br:$($brLink):1.0.0' = {"
             $rawBicepExample = $rawBicepExample | Where-Object { $_ -notmatch 'scope: *' } | Where-Object { -not [String]::IsNullOrEmpty($_) }
             # [4/6] Extract param block
             $rawBicepExampleArray = $rawBicepExample -split '\n'
