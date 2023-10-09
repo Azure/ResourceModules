@@ -1,4 +1,5 @@
-﻿<#
+﻿#region helper functions
+<#
 .SYNOPSIS
 Find any nested dependency recursively
 
@@ -64,8 +65,7 @@ function Get-ReferenceObject {
         [string] $ModuleTemplateFilePath
     )
 
-    . (Join-Path (Get-Item $PSScriptRoot).Parent 'pipelines' 'sharedScripts' 'Get-LocallyReferencedFileList.ps1')
-
+    . (Join-Path (Get-Item $PSScriptRoot).Parent 'Get-LocallyReferencedFileList.ps1')
     $involvedFilePaths = Get-LocallyReferencedFileList -FilePath $ModuleTemplateFilePath
 
     $resultSet = @{
@@ -95,6 +95,8 @@ function Get-ReferenceObject {
         localPathReferences = $resultSet.localPathReferences | Sort-Object -Unique
     }
 }
+#endregion
+
 <#
 .SYNOPSIS
 Get a list of all resource/module references in a given module path
@@ -102,12 +104,10 @@ Get a list of all resource/module references in a given module path
 .DESCRIPTION
 As an output you will receive a hashtable that (for each provider namespace) lists the
 - Directly deployed resources (e.g. via "resource myDeployment 'Microsoft.(..)/(..)@(..)'")
-- Linked local module templates (e.g. via "module myDeployment '../../main.bicep'")
 - Linked remote module tempaltes (e.g. via "module rg 'br/modules:(..):(..)'")
 
 .PARAMETER Path
-Optional. The path to search in. Defaults to the 'modules' folder.
-Note, any local references will only be searched within this path too.
+Optional. The path to search in. Defaults to the 'res' folder.
 
 .EXAMPLE
 Get-CrossReferencedModuleList
@@ -115,12 +115,11 @@ Get-CrossReferencedModuleList
 Invoke the function with the default path. Returns an object such as:
 {
     "Compute/availabilitySets": {
-        "localPathReferences": [
-            recovery-service/vault/protection-container/protected-item
-            network/public-ip-address
-            network/network-interface
+        "remoteReferences": [
+            "avm-res-recoveryservice-vault-protectioncontainer-protecteditem",
+            "avm-res-network-publicipaddress",
+            "avm-res-network-networkinterface"
         ],
-        "remoteReferences": null,
         "resourceReferences": [
             "Microsoft.Resources/deployments@2021-04-01",
             "Microsoft.Compute/availabilitySets@2021-07-01",
@@ -142,13 +141,13 @@ function Get-CrossReferencedModuleList {
     [CmdletBinding()]
     param (
         [Parameter()]
-        [string] $Path = (Join-Path (Split-Path (Split-Path $PSScriptRoot -Parent) -Parent) 'modules')
+        [string] $Path = (Get-Item $PSScriptRoot).Parent.Parent.Parent.Parent
     )
 
-    $repoRoot = ($Path -split '[\/|\\]{1}modules[\/|\\]{1}')[0]
+    $repoRoot = ($Path -split '[\/|\\]{1}avm[\/|\\]{1}')[0]
     $resultSet = [ordered]@{}
 
-    $moduleTemplatePaths = (Get-ChildItem -Path $Path -Recurse -File -Filter 'main.bicep').FullName
+    $moduleTemplatePaths = (Get-ChildItem -Path $path -Recurse -File -Filter 'main.bicep').FullName
     foreach ($moduleTemplatePath in $moduleTemplatePaths) {
 
         $referenceObject = Get-ReferenceObject -ModuleTemplateFilePath $moduleTemplatePath
@@ -163,7 +162,7 @@ function Get-CrossReferencedModuleList {
 
         $moduleFolderPath = Split-Path $moduleTemplatePath -Parent
         ## avm/res/<provider>/<resourceType>
-        $resourceTypeIdentifier = ($moduleFolderPath -split '[\/|\\]{1}modules[\/|\\]{1}')[1] -replace '\\', '/'
+        $resourceTypeIdentifier = ($moduleFolderPath -split '[\/|\\]{1}avm[\/|\\]{1}(res|ptn)[\/|\\]{1}')[2] -replace '\\', '/'
 
         $providerNamespace = ($resourceTypeIdentifier -split '[\/|\\]')[0]
         $resourceType = $resourceTypeIdentifier -replace "$providerNamespace[\/|\\]", ''
