@@ -18,7 +18,7 @@ param serviceShort string = 'csmaz'
 param enableDefaultTelemetry bool = true
 
 @description('Optional. A token to inject into the name of each resource.')
-param namePrefix string = '[[namePrefix]]'
+param namePrefix string = 'defra'
 
 // ============ //
 // Dependencies //
@@ -37,7 +37,7 @@ module nestedDependencies 'dependencies.bicep' = {
   params: {
     managedIdentityName: 'dep-${namePrefix}-msi-${serviceShort}'
     dnsZoneName: 'dep-${namePrefix}-dns-${serviceShort}.com'
-    monitoringWorkspaceName: 'dep-${namePrefix}-law-${serviceShort}'
+    monitoringWorkspaceName: 'dep-${namePrefix}-maw-${serviceShort}'
   }
 }
 
@@ -154,6 +154,7 @@ module testDeployment '../../main.bicep' = {
       '${nestedDependencies.outputs.managedIdentityResourceId}': {}
     }
     omsAgentEnabled: true
+    //monitoringWorkspaceId: nestedDependencies.outputs.workspaceResourceId
     monitoringWorkspaceId: nestedDependencies.outputs.workspaceResourceId
     enableAzureDefender: true
     enableKeyvaultSecretsProvider: true
