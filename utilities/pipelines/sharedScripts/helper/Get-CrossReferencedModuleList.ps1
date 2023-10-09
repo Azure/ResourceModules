@@ -141,13 +141,13 @@ function Get-CrossReferencedModuleList {
     [CmdletBinding()]
     param (
         [Parameter()]
-        [string] $Path = (Get-Item $PSScriptRoot).Parent.Parent.Parent.Parent
+        [string] $Path = (Join-Path (Get-Item $PSScriptRoot).Parent.Parent.Parent.Parent 'modules')
     )
 
-    $repoRoot = ($Path -split '[\/|\\]{1}avm[\/|\\]{1}')[0]
+    $repoRoot = ($Path -split '[\/|\\]{1}modules[\/|\\]?')[0]
     $resultSet = [ordered]@{}
 
-    $moduleTemplatePaths = (Get-ChildItem -Path $path -Recurse -File -Filter 'main.bicep').FullName
+    $moduleTemplatePaths = (Get-ChildItem -Path $Path -Recurse -File -Filter 'main.bicep').FullName
     foreach ($moduleTemplatePath in $moduleTemplatePaths) {
 
         $referenceObject = Get-ReferenceObject -ModuleTemplateFilePath $moduleTemplatePath
@@ -162,7 +162,7 @@ function Get-CrossReferencedModuleList {
 
         $moduleFolderPath = Split-Path $moduleTemplatePath -Parent
         ## avm/res/<provider>/<resourceType>
-        $resourceTypeIdentifier = ($moduleFolderPath -split '[\/|\\]{1}avm[\/|\\]{1}(res|ptn)[\/|\\]{1}')[2] -replace '\\', '/'
+        $resourceTypeIdentifier = ($moduleFolderPath -split '[\/|\\]{1}modules[\/|\\]{1}')[1] -replace '\\', '/'
 
         $providerNamespace = ($resourceTypeIdentifier -split '[\/|\\]')[0]
         $resourceType = $resourceTypeIdentifier -replace "$providerNamespace[\/|\\]", ''
