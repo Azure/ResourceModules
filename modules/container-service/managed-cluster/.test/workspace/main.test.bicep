@@ -154,7 +154,6 @@ module testDeployment '../../main.bicep' = {
       '${nestedDependencies.outputs.managedIdentityResourceId}': {}
     }
     omsAgentEnabled: true
-    //monitoringWorkspaceId: nestedDependencies.outputs.workspaceResourceId
     monitoringWorkspaceId: nestedDependencies.outputs.workspaceResourceId
     enableAzureDefender: true
     enableKeyvaultSecretsProvider: true
