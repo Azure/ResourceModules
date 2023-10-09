@@ -31,26 +31,26 @@ Optional. The number of parallel threads to use for the generation. Defaults to 
 Optional. The absolute path to the `Set-ModuleReadMe` script. Relevant only if `SkipReadMe` is not set and defaults to the default path of the script in the repository.
 
 .EXAMPLE
-Set-AVMModule -ModuleFolderPath 'C:\avm\res\key-vault\vault'
+Set-Module -ModuleFolderPath 'C:\avm\res\key-vault\vault'
 
 For the [key-vault\vault] module, build the Bicep module template & generate its ReadMe.
 
 .EXAMPLE
-Set-AVMModule -ModuleFolderPath 'C:\avm\res\key-vault\vault' -Recurse
+Set-Module -ModuleFolderPath 'C:\avm\res\key-vault\vault' -Recurse
 
 For the [key-vault\vault] module or any of its children, build the Bicep module template & generate the ReadMe.
 
 .EXAMPLE
-Set-AVMModule -ModuleFolderPath 'C:\avm\res\key-vault\vault' -Recurse -SkipReadMe
+Set-Module -ModuleFolderPath 'C:\avm\res\key-vault\vault' -Recurse -SkipReadMe
 
 For the [key-vault\vault] module or any of its children, build only the Bicep module template.
 
 .EXAMPLE
-Set-AVMModule -ModuleFolderPath 'C:\avm\res' -Recurse
+Set-Module -ModuleFolderPath 'C:\avm\res' -Recurse
 
 For all modules in path [C:\avm\res], build the Bicep module template & generate the ReadMe.
 #>
-function Set-AVMModule {
+function Set-Module {
 
     [CmdletBinding(SupportsShouldProcess = $true)]
     param (
