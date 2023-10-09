@@ -115,9 +115,11 @@ Get-CrossReferencedModuleList
 Invoke the function with the default path. Returns an object such as:
 {
     "Compute/availabilitySets": {
+        "localPathReferences": [
+            recovery-service/vault/protection-container/protected-item
+            network/public-ip-address
+        ],
         "remoteReferences": [
-            "avm-res-recoveryservice-vault-protectioncontainer-protecteditem",
-            "avm-res-network-publicipaddress",
             "avm-res-network-networkinterface"
         ],
         "resourceReferences": [
