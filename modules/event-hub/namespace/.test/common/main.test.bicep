@@ -65,7 +65,9 @@ module testDeployment '../../main.bicep' = {
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '${namePrefix}${serviceShort}001'
-
+    zoneRedundant: true
+    skuName: 'Standard'
+    skuCapacity: 2
     authorizationRules: [
       {
         name: 'RootManageSharedAccessKey'
@@ -146,6 +148,13 @@ module testDeployment '../../main.bicep' = {
           }
         ]
         status: 'Active'
+        retentionDescriptionCleanupPolicy: 'Delete'
+        retentionDescriptionRetentionTimeInHours: 3
+      }
+      {
+        name: '${namePrefix}-az-evh-x-003'
+        retentionDescriptionCleanupPolicy: 'Compact'
+        retentionDescriptionTombstoneRetentionTimeInHours: 24
       }
     ]
     lock: 'CanNotDelete'
@@ -201,5 +210,9 @@ module testDeployment '../../main.bicep' = {
     }
     kafkaEnabled: true
     disableLocalAuth: true
+    isAutoInflateEnabled: true
+    minimumTlsVersion: '1.2'
+    maximumThroughputUnits: 4
+    publicNetworkAccess: 'Disabled'
   }
 }

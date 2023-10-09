@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.20.4.51522",
-      "templateHash": "2572752048492506478"
+      "version": "0.21.1.54444",
+      "templateHash": "7109134385195243655"
     },
     "name": "Event Hub Namespace Network Rule Sets",
     "description": "This module deploys an Event Hub Namespace Network Rule Set.",
@@ -98,7 +98,7 @@
     },
     {
       "type": "Microsoft.EventHub/namespaces/networkRuleSets",
-      "apiVersion": "2022-01-01-preview",
+      "apiVersion": "2022-10-01-preview",
       "name": "[format('{0}/{1}', parameters('namespaceName'), 'default')]",
       "properties": {
         "publicNetworkAccess": "[parameters('publicNetworkAccess')]",

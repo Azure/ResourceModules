@@ -20,7 +20,7 @@ param authorizationRules array = [
   }
 ]
 
-@description('Optional. Number of days to retain the events for this Event Hub, value should be 1 to 7 days.')
+@description('Optional. Number of days to retain the events for this Event Hub, value should be 1 to 7 days. Will be automatically set to infinite retention if cleanup policy is set to "Compact".')
 @minValue(1)
 @maxValue(7)
 param messageRetentionInDays int = 1
@@ -97,20 +97,40 @@ param captureDescriptionSizeLimitInBytes int = 314572800
 @description('Optional. A value that indicates whether to Skip Empty Archives.')
 param captureDescriptionSkipEmptyArchives bool = false
 
+@allowed([
+  'Compact'
+  'Delete'
+])
+@description('Optional. Retention cleanup policy. Enumerates the possible values for cleanup policy.')
+param retentionDescriptionCleanupPolicy string = 'Delete'
+
+@minValue(1)
+@maxValue(168)
+@description('Optional. Retention time in hours. Number of hours to retain the events for this Event Hub. This value is only used when cleanupPolicy is Delete. If cleanupPolicy is Compact the returned value of this property is Long.MaxValue.')
+param retentionDescriptionRetentionTimeInHours int = 1
+
+@minValue(1)
+@maxValue(168)
+@description('Optional. Retention cleanup policy. Number of hours to retain the tombstone markers of a compacted Event Hub. This value is only used when cleanupPolicy is Compact. Consumer must complete reading the tombstone marker within this specified amount of time if consumer begins from starting offset to ensure they get a valid snapshot for the specific key described by the tombstone marker within the compacted Event Hub.')
+param retentionDescriptionTombstoneRetentionTimeInHours int = 1
+
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 var enableReferencedModulesTelemetry = false
 
-var eventHubPropertiesSimple = {
+var eventHubProperties = {
   messageRetentionInDays: messageRetentionInDays
   partitionCount: partitionCount
   status: status
+  retentionDescription: {
+    cleanupPolicy: retentionDescriptionCleanupPolicy
+    retentionTimeInHours: retentionDescriptionCleanupPolicy == 'Delete' ? retentionDescriptionRetentionTimeInHours : null
+    tombstoneRetentionTimeInHours: retentionDescriptionCleanupPolicy == 'Compact' ? retentionDescriptionTombstoneRetentionTimeInHours : null
+  }
 }
-var eventHubPropertiesWithCapture = {
-  messageRetentionInDays: messageRetentionInDays
-  partitionCount: partitionCount
-  status: status
+
+var eventHubPropertiesCapture = {
   captureDescription: {
     destination: {
       name: captureDescriptionDestinationName
@@ -140,14 +160,14 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource namespace 'Microsoft.EventHub/namespaces@2022-01-01-preview' existing = {
+resource namespace 'Microsoft.EventHub/namespaces@2022-10-01-preview' existing = {
   name: namespaceName
 }
 
-resource eventHub 'Microsoft.EventHub/namespaces/eventhubs@2022-01-01-preview' = {
+resource eventHub 'Microsoft.EventHub/namespaces/eventhubs@2022-10-01-preview' = {
   name: name
   parent: namespace
-  properties: captureDescriptionEnabled ? eventHubPropertiesWithCapture : eventHubPropertiesSimple
+  properties: captureDescriptionEnabled ? union(eventHubProperties, eventHubPropertiesCapture) : eventHubProperties
 }
 
 resource eventHub_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
