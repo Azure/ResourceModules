@@ -49,6 +49,9 @@ module testDeployment '../../main.bicep' = {
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '${namePrefix}${serviceShort}001'
+    skuName: 'Premium'
+    skuCapacity: 2
+    zoneRedundant: true
     privateEndpoints: [
       {
         privateDnsZoneGroup: {

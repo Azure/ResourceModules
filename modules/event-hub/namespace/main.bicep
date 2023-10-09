@@ -25,7 +25,7 @@ param skuCapacity int = 1
 @description('Optional. Switch to make the Event Hub Namespace zone redundant.')
 param zoneRedundant bool = false
 
-@description('Optional. Switch to enable the Auto Inflate feature of Event Hub.')
+@description('Optional. Switch to enable the Auto Inflate feature of Event Hub. Auto Inflate is not supported in Premium SKU EventHub.')
 param isAutoInflateEnabled bool = false
 
 @description('Optional. Upper limit of throughput units when AutoInflate is enabled, value should be within 0 to 20 throughput units.')

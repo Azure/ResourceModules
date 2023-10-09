@@ -60,7 +60,7 @@ This module deploys an Event Hub Namespace.
 | `disasterRecoveryConfig` | _[disasterRecoveryConfig](disaster-recovery-config/README.md)_ object | `{object}` |  | The disaster recovery config for this namespace. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `eventhubs` | array | `[]` |  | The event hubs to deploy into this namespace. |
-| `isAutoInflateEnabled` | bool | `False` |  | Switch to enable the Auto Inflate feature of Event Hub. |
+| `isAutoInflateEnabled` | bool | `False` |  | Switch to enable the Auto Inflate feature of Event Hub. Auto Inflate is not supported in Premium SKU EventHub. |
 | `kafkaEnabled` | bool | `False` |  | Value that indicates whether Kafka is enabled for Event Hubs Namespace. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
@@ -488,6 +488,8 @@ module namespace './event-hub/namespace/main.bicep' = {
         roleDefinitionIdOrName: 'Reader'
       }
     ]
+    skuCapacity: 2
+    skuName: 'Standard'
     systemAssignedIdentity: true
     tags: {
       Environment: 'Non-Prod'
@@ -691,6 +693,12 @@ module namespace './event-hub/namespace/main.bicep' = {
         }
       ]
     },
+    "skuCapacity": {
+      "value": 2
+    },
+    "skuName": {
+      "value": "Standard"
+    },
     "systemAssignedIdentity": {
       "value": true
     },
@@ -884,11 +892,14 @@ module namespace './event-hub/namespace/main.bicep' = {
         }
       }
     ]
+    skuCapacity: 2
+    skuName: 'Premium'
     tags: {
       Environment: 'Non-Prod'
       'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
     }
+    zoneRedundant: true
   }
 }
 ```
@@ -931,12 +942,21 @@ module namespace './event-hub/namespace/main.bicep' = {
         }
       ]
     },
+    "skuCapacity": {
+      "value": 2
+    },
+    "skuName": {
+      "value": "Premium"
+    },
     "tags": {
       "value": {
         "Environment": "Non-Prod",
         "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
+    },
+    "zoneRedundant": {
+      "value": true
     }
   }
 }

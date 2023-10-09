@@ -66,6 +66,8 @@ module testDeployment '../../main.bicep' = {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '${namePrefix}${serviceShort}001'
     zoneRedundant: true
+    skuName: 'Standard'
+    skuCapacity: 2
     authorizationRules: [
       {
         name: 'RootManageSharedAccessKey'
