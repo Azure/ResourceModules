@@ -1514,7 +1514,7 @@ function Set-TableOfContent {
     $newSectionContent = [System.Collections.ArrayList]@()
 
     $contentPointer = 1
-    while ($ReadMeFileContent[$contentPointer] -notlike '#*') {
+    while ($ReadMeFileContent[$contentPointer] -notlike '## *') {
         $contentPointer++
     }
 

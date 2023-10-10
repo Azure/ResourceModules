@@ -4,11 +4,11 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.21.1.54444",
-      "templateHash": "5043907679276521852"
+      "version": "0.22.6.54827",
+      "templateHash": "12283599182969590217"
     },
     "name": "Azure Active Directory Domain Services",
-    "description": "This module deploys an Azure Active Directory Domain Services (AADDS).",
+    "description": "This module deploys an Azure Active Directory Domain Services (AADDS).\r\n\r\n## Considerations\r\n\r\n- A network security group has to be created and assigned to the designated AADDS subnet before deploying this module\r\n  - The following inbound rules should be allowed on the network security group\r\n    | Name | Protocol | Source Port Range | Source Address Prefix | Destination Port Range | Destination Address Prefix |\r\n    | - | - | - | - | - | - |\r\n    | AllowSyncWithAzureAD | TCP | `*` | `AzureActiveDirectoryDomainServices` | `443` | `*` |\r\n    | AllowPSRemoting | TCP | `*` | `AzureActiveDirectoryDomainServices` | `5986` | `*` |\r\n- Associating a route table to the AADDS subnet is not recommended\r\n- The network used for AADDS must have its DNS Servers [configured](https://learn.microsoft.com/en-us/azure/active-directory-domain-services/tutorial-configure-networking#configure-dns-servers-in-the-peered-virtual-network) (e.g. with IPs `10.0.1.4` & `10.0.1.5`)\r\n- Your Azure Active Directory must have the 'Domain Controller Services' service principal registered. If that's not  the case, you can register it by executing the command `New-AzADServicePrincipal -ApplicationId '2565bd9d-da50-47d4-8b85-4c97f669dc36'` with an eligible user.\r\n\r\n### Create self-signed certificate for secure LDAP\r\nFollow the below PowerShell commands to get base64 encoded string of a self-signed certificate (with a `pfxCertificatePassword`)\r\n\r\n```PowerShell\r\n$pfxCertificatePassword = ConvertTo-SecureString '[[YourPfxCertificatePassword]]' -AsPlainText -Force\r\n$certInputObject = @{\r\n    Subject           = 'CN=*.[[YourDomainName]]'\r\n    DnsName           = '*.[[YourDomainName]]'\r\n    CertStoreLocation = 'cert:\\LocalMachine\\My'\r\n    KeyExportPolicy   = 'Exportable'\r\n    Provider          = 'Microsoft Enhanced RSA and AES Cryptographic Provider'\r\n    NotAfter          = (Get-Date).AddMonths(3)\r\n    HashAlgorithm     = 'SHA256'\r\n}\r\n$rawCert = New-SelfSignedCertificate @certInputObject\r\nExport-PfxCertificate -Cert ('Cert:\\localmachine\\my\\' + $rawCert.Thumbprint) -FilePath \"$home/aadds.pfx\" -Password $pfxCertificatePassword -Force\r\n$rawCertByteStream = Get-Content \"$home/aadds.pfx\" -AsByteStream\r\n$pfxCertificate = [System.Convert]::ToBase64String($rawCertByteStream)\r\n```",
     "owner": "Azure/module-maintainers"
   },
   "parameters": {
@@ -410,8 +410,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "4015790044658504688"
+              "version": "0.22.6.54827",
+              "templateHash": "4984019978971427023"
             }
           },
           "parameters": {
