@@ -99,10 +99,6 @@ This module deploys an API Management Service.
 | `resourceId` | string | The resource ID of the API management service. |
 | `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
 
-## Considerations
-
-- _None_
-
 ## Cross-referenced modules
 
 _None_
