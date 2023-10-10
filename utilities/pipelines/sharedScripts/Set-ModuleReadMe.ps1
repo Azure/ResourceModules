@@ -470,7 +470,9 @@ function Set-CrossReferencesSection {
         [string] $SectionStartIdentifier = '## Cross-referenced modules'
     )
 
-    . (Join-Path $PSScriptRoot 'helper' 'Get-CrossReferencedModuleList.ps1')
+    # Load helper scripts
+    $utilitiesRoot = (Get-Item $PSScriptRoot).Parent.Parent
+    . (Join-Path $utilitiesRoot 'tools' 'Get-CrossReferencedModuleList.ps1')
 
     # Process content
     $SectionContent = [System.Collections.ArrayList]@(
