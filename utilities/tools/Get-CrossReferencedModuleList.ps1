@@ -65,7 +65,7 @@ function Get-ReferenceObject {
         [string] $ModuleTemplateFilePath
     )
 
-    . (Join-Path $PSScriptRoot 'helper' 'Get-LocallyReferencedFileList.ps1')
+    . (Join-Path (Get-Item $PSScriptRoot).Parent 'pipelines' 'sharedScripts' 'Get-LocallyReferencedFileList.ps1')
     $involvedFilePaths = Get-LocallyReferencedFileList -FilePath $ModuleTemplateFilePath
 
     $resultSet = @{
