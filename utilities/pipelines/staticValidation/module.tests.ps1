@@ -221,7 +221,7 @@ Describe 'Pipeline tests' -Tag 'Pipeline' {
 
             $missingCrossModuleReferenceTriggers = [System.Collections.ArrayList] @()
             foreach ($localReference in $localReferences) {
-                $expectedPath = "modules/$localReference/**"
+                $expectedPath = "$localReference/**"
                 if ($workflowModuleTriggerPaths -notcontains $expectedPath) {
                     $missingCrossModuleReferenceTriggers += $expectedPath
                 }
@@ -291,7 +291,7 @@ Describe 'Pipeline tests' -Tag 'Pipeline' {
 
             $missingCrossModuleReferenceTriggers = [System.Collections.ArrayList] @()
             foreach ($localReference in $localReferences) {
-                $expectedPath = "/modules/$localReference/*"
+                $expectedPath = "/$localReference/*"
                 if ($moduleTriggerPaths -notcontains $expectedPath) {
                     $missingCrossModuleReferenceTriggers += $expectedPath
                 }
