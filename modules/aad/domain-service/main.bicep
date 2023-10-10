@@ -12,25 +12,6 @@ metadata notes = '''### Considerations
 - Associating a route table to the AADDS subnet is not recommended
 - The network used for AADDS must have its DNS Servers [configured](https://learn.microsoft.com/en-us/azure/active-directory-domain-services/tutorial-configure-networking#configure-dns-servers-in-the-peered-virtual-network) (e.g. with IPs `10.0.1.4` & `10.0.1.5`)
 - Your Azure Active Directory must have the 'Domain Controller Services' service principal registered. If that's not  the case, you can register it by executing the command `New-AzADServicePrincipal -ApplicationId '2565bd9d-da50-47d4-8b85-4c97f669dc36'` with an eligible user.
-
-#### Create self-signed certificate for secure LDAP
-Follow the below PowerShell commands to get base64 encoded string of a self-signed certificate (with a `pfxCertificatePassword`)
-
-```PowerShell
-$pfxCertificatePassword = ConvertTo-SecureString '[[YourPfxCertificatePassword]]' -AsPlainText -Force
-$certInputObject = @{
-    Subject           = 'CN=*.[[YourDomainName]]'
-    DnsName           = '*.[[YourDomainName]]'
-    CertStoreLocation = 'cert:\LocalMachine\My'
-    KeyExportPolicy   = 'Exportable'
-    Provider          = 'Microsoft Enhanced RSA and AES Cryptographic Provider'
-    NotAfter          = (Get-Date).AddMonths(3)
-    HashAlgorithm     = 'SHA256'
-}
-$rawCert = New-SelfSignedCertificate @certInputObject
-Export-PfxCertificate -Cert ('Cert:\localmachine\my\' + $rawCert.Thumbprint) -FilePath "$home/aadds.pfx" -Password $pfxCertificatePassword -Force
-$rawCertByteStream = Get-Content "$home/aadds.pfx" -AsByteStream
-$pfxCertificate = [System.Convert]::ToBase64String($rawCertByteStream)
 ```'''
 
 @description('Optional. The name of the AADDS resource. Defaults to the domain name specific to the Azure ADDS service.')
