@@ -428,7 +428,7 @@ function Get-ModulesAsMarkdownTable {
     )
 
     # Load external functions
-    $utilitiesRoot = (Get-Item -Path $PSScriptRoot).Parent.Parent.Parent
+    $utilitiesRoot = (Get-Item -Path $PSScriptRoot).Parent.Parent
     . (Join-Path $utilitiesRoot 'tools' 'helper' 'Get-PipelineStatusUrl.ps1')
     . (Join-Path $utilitiesRoot 'pipelines' 'sharedScripts' 'helper' 'Get-SpecsAlignedResourceName.ps1')
 
