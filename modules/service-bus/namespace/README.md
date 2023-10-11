@@ -434,7 +434,7 @@ module namespace './service-bus/namespace/main.bicep' = {
         }
       ]
     }
-    premiumMessagingPartitions: 2
+    premiumMessagingPartitions: 1
     privateEndpoints: [
       {
         privateDnsZoneGroup: {
@@ -536,6 +536,7 @@ module namespace './service-bus/namespace/main.bicep' = {
     userAssignedIdentities: {
       '<managedIdentityResourceId>': {}
     }
+    zoneRedundant: true
   }
 }
 ```
@@ -623,7 +624,7 @@ module namespace './service-bus/namespace/main.bicep' = {
       }
     },
     "premiumMessagingPartitions": {
-      "value": 2
+      "value": 1
     },
     "privateEndpoints": {
       "value": [
@@ -745,6 +746,9 @@ module namespace './service-bus/namespace/main.bicep' = {
       "value": {
         "<managedIdentityResourceId>": {}
       }
+    },
+    "zoneRedundant": {
+      "value": true
     }
   }
 }

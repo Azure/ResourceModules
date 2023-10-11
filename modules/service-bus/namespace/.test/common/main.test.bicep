@@ -18,7 +18,7 @@ param serviceShort string = 'sbncom'
 param enableDefaultTelemetry bool = true
 
 @description('Optional. A token to inject into the name of each resource.')
-param namePrefix string = '[[namePrefix]]'
+param namePrefix string = 'casee'
 
 // ============ //
 // Dependencies //
@@ -67,7 +67,8 @@ module testDeployment '../../main.bicep' = {
     lock: 'CanNotDelete'
     skuName: 'Premium'
     skuCapacity: 2
-    premiumMessagingPartitions: 2
+    premiumMessagingPartitions: 1
+    zoneRedundant: true
     tags: {
       'hidden-title': 'This is visible in the resource name'
       Environment: 'Non-Prod'
