@@ -55,8 +55,79 @@ This module deploys a Firewall Policy.
 | `workspaces` | array | `[]` |  | List of workspaces for Firewall Policy Insights. |
 
 
+### Parameter Usage: `tags`
 
+Tag names and tag values can be provided as needed. A tag can be left without a value.
 
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"tags": {
+    "value": {
+        "Environment": "Non-Prod",
+        "Contact": "test.user@testcompany.com",
+        "PurchaseOrder": "1234",
+        "CostCenter": "7890",
+        "ServiceName": "DeploymentValidation",
+        "Role": "DeploymentValidation"
+    }
+}
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+tags: {
+    Environment: 'Non-Prod'
+    Contact: 'test.user@testcompany.com'
+    PurchaseOrder: '1234'
+    CostCenter: '7890'
+    ServiceName: 'DeploymentValidation'
+    Role: 'DeploymentValidation'
+}
+```
+
+</details>
+<p>
+
+### Parameter Usage: `userAssignedIdentities`
+
+You can specify multiple user assigned identities to a resource by providing additional resource IDs using the following format:
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"userAssignedIdentities": {
+    "value": {
+        "/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
+        "/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
+    }
+}
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+userAssignedIdentities: {
+    '/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
+    '/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
+}
+```
+
+</details>
+<p>
 
 ## Outputs
 

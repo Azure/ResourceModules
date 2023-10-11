@@ -89,6 +89,171 @@ This module deploys an API Management Service.
 | `virtualNetworkType` | string | `'None'` | `[External, Internal, None]` | The type of VPN in which API Management service needs to be configured in. None (Default Value) means the API Management service is not part of any Virtual Network, External means the API Management deployment is set up inside a Virtual Network having an internet Facing Endpoint, and Internal means that API Management deployment is setup inside a Virtual Network having an Intranet Facing Endpoint only. |
 | `zones` | array | `[]` |  | A list of availability zones denoting where the resource needs to come from. |
 
+
+### Parameter Usage: `roleAssignments`
+
+Create a role assignment for the given resource. If you want to assign a service principal / managed identity that is created in the same deployment, make sure to also specify the `'principalType'` parameter and set it to `'ServicePrincipal'`. This will ensure the role assignment waits for the principal's propagation in Azure.
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"roleAssignments": {
+    "value": [
+        {
+            "roleDefinitionIdOrName": "Reader",
+            "description": "Reader Role Assignment",
+            "principalIds": [
+                "12345678-1234-1234-1234-123456789012", // object 1
+                "78945612-1234-1234-1234-123456789012" // object 2
+            ]
+        },
+        {
+            "roleDefinitionIdOrName": "/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11",
+            "principalIds": [
+                "12345678-1234-1234-1234-123456789012" // object 1
+            ],
+            "principalType": "ServicePrincipal"
+        }
+    ]
+}
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+roleAssignments: [
+    {
+        roleDefinitionIdOrName: 'Reader'
+        description: 'Reader Role Assignment'
+        principalIds: [
+            '12345678-1234-1234-1234-123456789012' // object 1
+            '78945612-1234-1234-1234-123456789012' // object 2
+        ]
+    }
+    {
+        roleDefinitionIdOrName: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'
+        principalIds: [
+            '12345678-1234-1234-1234-123456789012' // object 1
+        ]
+        principalType: 'ServicePrincipal'
+    }
+]
+```
+
+</details>
+<p>
+
+### Parameter Usage: `tags`
+
+Tag names and tag values can be provided as needed. A tag can be left without a value.
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"tags": {
+    "value": {
+        "Environment": "Non-Prod",
+        "Contact": "test.user@testcompany.com",
+        "PurchaseOrder": "1234",
+        "CostCenter": "7890",
+        "ServiceName": "DeploymentValidation",
+        "Role": "DeploymentValidation"
+    }
+}
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+tags: {
+    Environment: 'Non-Prod'
+    Contact: 'test.user@testcompany.com'
+    PurchaseOrder: '1234'
+    CostCenter: '7890'
+    ServiceName: 'DeploymentValidation'
+    Role: 'DeploymentValidation'
+}
+```
+
+</details>
+<p>
+
+### Parameter Usage: `apiManagementServicePolicy`
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"apiManagementServicePolicy": {
+    "value": {
+        "value":"<policies> <inbound> <rate-limit-by-key calls='250' renewal-period='60' counter-key='@(context.Request.IpAddress)' /> </inbound> <backend> <forward-request /> </backend> <outbound> </outbound> </policies>",
+        "format":"xml"
+    }
+}
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+apiManagementServicePolicy: {
+    value:'<policies> <inbound> <rate-limit-by-key calls=\'250\' renewal-period='60' counter-key=\'@(context.Request.IpAddress)\' /> </inbound> <backend> <forward-request /> </backend> <outbound> </outbound> </policies>'
+    format:'xml'
+}
+```
+
+</details>
+<p>
+
+### Parameter Usage: `userAssignedIdentities`
+
+You can specify multiple user assigned identities to a resource by providing additional resource IDs using the following format:
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"userAssignedIdentities": {
+    "value": {
+        "/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
+        "/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
+    }
+}
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+userAssignedIdentities: {
+    '/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
+    '/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
+}
+```
+
+</details>
+<p>
+
 ## Outputs
 
 | Output Name | Type | Description |
@@ -98,6 +263,10 @@ This module deploys an API Management Service.
 | `resourceGroupName` | string | The resource group the API management service was deployed into. |
 | `resourceId` | string | The resource ID of the API management service. |
 | `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
+
+## Considerations
+
+- _None_
 
 ## Cross-referenced modules
 

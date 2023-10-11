@@ -39,7 +39,46 @@ This module deploys a Log Analytics Workspace Linked Service.
 | `writeAccessResourceId` | string | `''` | The resource ID of the resource that will be linked to the workspace. This should be used for linking resources which require write access. |
 
 
+### Parameter Usage: `tags`
 
+Tag names and tag values can be provided as needed. A tag can be left without a value.
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"tags": {
+    "value": {
+        "Environment": "Non-Prod",
+        "Contact": "test.user@testcompany.com",
+        "PurchaseOrder": "1234",
+        "CostCenter": "7890",
+        "ServiceName": "DeploymentValidation",
+        "Role": "DeploymentValidation"
+    }
+}
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+tags: {
+    Environment: 'Non-Prod'
+    Contact: 'test.user@testcompany.com'
+    PurchaseOrder: '1234'
+    CostCenter: '7890'
+    ServiceName: 'DeploymentValidation'
+    Role: 'DeploymentValidation'
+}
+```
+
+</details>
+<p>
 
 ## Outputs
 
