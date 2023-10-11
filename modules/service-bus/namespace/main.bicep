@@ -17,6 +17,17 @@ param location string = resourceGroup().location
 ])
 param skuName string = 'Basic'
 
+@description('Optional. The specified messaging units for the tier. Only used for Premium Sku tier.')
+@allowed([
+  1
+  2
+  4
+  8
+  16
+  32
+])
+param skuCapacity int = 1
+
 @description('Optional. Enabling this property creates a Premium Service Bus Namespace in regions supported availability zones.')
 param zoneRedundant bool = false
 
@@ -202,6 +213,7 @@ resource serviceBusNamespace 'Microsoft.ServiceBus/namespaces@2022-10-01-preview
   tags: empty(tags) ? null : tags
   sku: {
     name: skuName
+    capacity: skuName == 'Premium' ? skuCapacity : null
   }
   identity: identity
   properties: {
@@ -210,7 +222,7 @@ resource serviceBusNamespace 'Microsoft.ServiceBus/namespaces@2022-10-01-preview
     alternateName: !empty(alternateName) ? alternateName : null
     zoneRedundant: zoneRedundant
     disableLocalAuth: disableLocalAuth
-    premiumMessagingPartitions: skuName == 'Premium' ? premiumMessagingPartitions : null
+    premiumMessagingPartitions: skuName == 'Premium' ? premiumMessagingPartitions : 0
     encryption: !empty(cMKKeyName) ? {
       keySource: 'Microsoft.KeyVault'
       keyVaultProperties: [

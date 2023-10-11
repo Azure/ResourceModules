@@ -66,6 +66,7 @@ module testDeployment '../../main.bicep' = {
     name: '${namePrefix}${serviceShort}001'
     lock: 'CanNotDelete'
     skuName: 'Premium'
+    skuCapacity: 2
     premiumMessagingPartitions: 2
     tags: {
       'hidden-title': 'This is visible in the resource name'

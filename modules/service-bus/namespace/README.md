@@ -73,6 +73,7 @@ This module deploys a Service Bus Namespace.
 | `queues` | array | `[]` |  | The queues to create in the service bus namespace. |
 | `requireInfrastructureEncryption` | bool | `True` |  | Enable infrastructure encryption (double encryption). Note, this setting requires the configuration of Customer-Managed-Keys (CMK) via the corresponding module parameters. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| `skuCapacity` | int | `1` | `[1, 2, 4, 8, 16, 32]` | The specified messaging units for the tier. Only used for Premium Sku tier. |
 | `skuName` | string | `'Basic'` | `[Basic, Premium, Standard]` | Name of this SKU. - Basic, Standard, Premium. |
 | `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
@@ -493,6 +494,7 @@ module namespace './service-bus/namespace/main.bicep' = {
         roleDefinitionIdOrName: 'Reader'
       }
     ]
+    skuCapacity: 2
     skuName: 'Premium'
     systemAssignedIdentity: true
     tags: {
@@ -689,6 +691,9 @@ module namespace './service-bus/namespace/main.bicep' = {
           "roleDefinitionIdOrName": "Reader"
         }
       ]
+    },
+    "skuCapacity": {
+      "value": 2
     },
     "skuName": {
       "value": "Premium"

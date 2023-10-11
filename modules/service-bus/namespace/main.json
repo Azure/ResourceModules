@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "2345237535344579516"
+      "templateHash": "2912791825816834309"
     },
     "name": "Service Bus Namespaces",
     "description": "This module deploys a Service Bus Namespace.",
@@ -36,6 +36,21 @@
       ],
       "metadata": {
         "description": "Optional. Name of this SKU. - Basic, Standard, Premium."
+      }
+    },
+    "skuCapacity": {
+      "type": "int",
+      "defaultValue": 1,
+      "allowedValues": [
+        1,
+        2,
+        4,
+        8,
+        16,
+        32
+      ],
+      "metadata": {
+        "description": "Optional. The specified messaging units for the tier. Only used for Premium Sku tier."
       }
     },
     "zoneRedundant": {
@@ -340,7 +355,8 @@
       "location": "[parameters('location')]",
       "tags": "[if(empty(parameters('tags')), null(), parameters('tags'))]",
       "sku": {
-        "name": "[parameters('skuName')]"
+        "name": "[parameters('skuName')]",
+        "capacity": "[if(equals(parameters('skuName'), 'Premium'), parameters('skuCapacity'), null())]"
       },
       "identity": "[variables('identity')]",
       "properties": {
@@ -349,7 +365,7 @@
         "alternateName": "[if(not(empty(parameters('alternateName'))), parameters('alternateName'), null())]",
         "zoneRedundant": "[parameters('zoneRedundant')]",
         "disableLocalAuth": "[parameters('disableLocalAuth')]",
-        "premiumMessagingPartitions": "[if(equals(parameters('skuName'), 'Premium'), parameters('premiumMessagingPartitions'), null())]",
+        "premiumMessagingPartitions": "[if(equals(parameters('skuName'), 'Premium'), parameters('premiumMessagingPartitions'), 0)]",
         "encryption": "[if(not(empty(parameters('cMKKeyName'))), createObject('keySource', 'Microsoft.KeyVault', 'keyVaultProperties', createArray(createObject('identity', if(not(empty(parameters('cMKUserAssignedIdentityResourceId'))), createObject('userAssignedIdentity', parameters('cMKUserAssignedIdentityResourceId')), null()), 'keyName', parameters('cMKKeyName'), 'keyVaultUri', reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', split(parameters('cMKKeyVaultResourceId'), '/')[2], split(parameters('cMKKeyVaultResourceId'), '/')[4]), 'Microsoft.KeyVault/vaults', last(split(parameters('cMKKeyVaultResourceId'), '/'))), '2021-10-01').vaultUri, 'keyVersion', if(not(empty(parameters('cMKKeyVersion'))), parameters('cMKKeyVersion'), last(split(reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', split(parameters('cMKKeyVaultResourceId'), '/')[2], split(parameters('cMKKeyVaultResourceId'), '/')[4]), 'Microsoft.KeyVault/vaults/keys', split(format('{0}/{1}', last(split(parameters('cMKKeyVaultResourceId'), '/')), parameters('cMKKeyName')), '/')[0], split(format('{0}/{1}', last(split(parameters('cMKKeyVaultResourceId'), '/')), parameters('cMKKeyName')), '/')[1]), '2021-10-01').keyUriWithVersion, '/'))))), 'requireInfrastructureEncryption', parameters('requireInfrastructureEncryption')), null())]"
       }
     },
