@@ -310,6 +310,18 @@ param enableStorageProfileSnapshotController bool = false
 @description('Optional. Whether the metric state of the kubenetes cluster is enabled.')
 param enableAzureMonitorProfileMetrics bool = false
 
+@description('Optional. Whether the Logs profile for the Azure Monitor Infrastructure and Application Logs is enabled.')
+param enableAzureMonitorProfileLogs bool = false
+
+@description('Optional. Indicates if Application Monitoring of the kubenetes cluster is enabled.')
+param enableAppMonitoring bool = false
+
+@description('Optional. Whether the Windows Log Collection for Azure Monitor Container Insights Logs Addon is enabled.')
+param enableWindowsHostLogs bool = false
+
+@description('Optional. Indicates if Azure Monitor Container Insights Logs Addon is enabled.')
+param enableContainerInsights bool = false
+
 @allowed([
   'AKSLongTermSupport'
   'KubernetesOfficial'
@@ -392,8 +404,11 @@ param diagnosticMetricsToEnable array = [
   'AllMetrics'
 ]
 
-@description('Optional. The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings".')
+@description('Required. The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings".')
 param diagnosticSettingsName string = ''
+
+@description('Optional. Indicates if Application Monitoring Open Telemetry Metrics is enabled.')
+param enableAppMonitoringOpenTelemetryMetrics bool = false
 
 @description('Optional. A list of kubernetes cluster metrics labels.')
 param metricLabelsAllowlist string = ''
@@ -611,13 +626,29 @@ resource managedCluster 'Microsoft.ContainerService/managedClusters@2023-06-02-p
       }
     }
     azureMonitorProfile: {
-      metrics: {
+      logs: enableAzureMonitorProfileLogs ? {
+        enabled: enableAzureMonitorProfileLogs
+        appMonitoring: {
+          enabled: enableAppMonitoring
+        }
+        containerInsights: {
+          enabled: enableContainerInsights
+          logAnalyticsWorkspaceResourceId: !empty(monitoringWorkspaceId) ? monitoringWorkspaceId : null
+          windowsHostLogs: {
+            enabled: enableWindowsHostLogs
+          }
+        }
+      } : null 
+      metrics: enableAzureMonitorProfileMetrics ? {
       enabled: enableAzureMonitorProfileMetrics
+      appMonitoringOpenTelemetryMetrics: {
+        enabled: enableAppMonitoringOpenTelemetryMetrics
+      }
       kubeStateMetrics: {
         metricLabelsAllowlist: metricLabelsAllowlist
         metricAnnotationsAllowList: metricAnnotationsAllowList
       }
-    }
+    } : null
   }
     supportPlan: supportPlan
   }
