@@ -1,18 +1,6 @@
 metadata name = 'Azure Active Directory Domain Services'
 metadata description = 'This module deploys an Azure Active Directory Domain Services (AADDS).'
 metadata owner = 'Azure/module-maintainers'
-metadata notes = '''### Considerations
-
-- A network security group has to be created and assigned to the designated AADDS subnet before deploying this module
-  - The following inbound rules should be allowed on the network security group
-    | Name | Protocol | Source Port Range | Source Address Prefix | Destination Port Range | Destination Address Prefix |
-    | - | - | - | - | - | - |
-    | AllowSyncWithAzureAD | TCP | `*` | `AzureActiveDirectoryDomainServices` | `443` | `*` |
-    | AllowPSRemoting | TCP | `*` | `AzureActiveDirectoryDomainServices` | `5986` | `*` |
-- Associating a route table to the AADDS subnet is not recommended
-- The network used for AADDS must have its DNS Servers [configured](https://learn.microsoft.com/en-us/azure/active-directory-domain-services/tutorial-configure-networking#configure-dns-servers-in-the-peered-virtual-network) (e.g. with IPs `10.0.1.4` & `10.0.1.5`)
-- Your Azure Active Directory must have the 'Domain Controller Services' service principal registered. If that's not  the case, you can register it by executing the command `New-AzADServicePrincipal -ApplicationId '2565bd9d-da50-47d4-8b85-4c97f669dc36'` with an eligible user.
-```'''
 
 @description('Optional. The name of the AADDS resource. Defaults to the domain name specific to the Azure ADDS service.')
 param name string = domainName

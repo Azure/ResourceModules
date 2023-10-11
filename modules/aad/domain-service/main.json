@@ -5,12 +5,11 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "4239750207938220880"
+      "templateHash": "10694057578652449276"
     },
     "name": "Azure Active Directory Domain Services",
     "description": "This module deploys an Azure Active Directory Domain Services (AADDS).",
-    "owner": "Azure/module-maintainers",
-    "notes": "### Considerations\r\n\r\n- A network security group has to be created and assigned to the designated AADDS subnet before deploying this module\r\n  - The following inbound rules should be allowed on the network security group\r\n    | Name | Protocol | Source Port Range | Source Address Prefix | Destination Port Range | Destination Address Prefix |\r\n    | - | - | - | - | - | - |\r\n    | AllowSyncWithAzureAD | TCP | `*` | `AzureActiveDirectoryDomainServices` | `443` | `*` |\r\n    | AllowPSRemoting | TCP | `*` | `AzureActiveDirectoryDomainServices` | `5986` | `*` |\r\n- Associating a route table to the AADDS subnet is not recommended\r\n- The network used for AADDS must have its DNS Servers [configured](https://learn.microsoft.com/en-us/azure/active-directory-domain-services/tutorial-configure-networking#configure-dns-servers-in-the-peered-virtual-network) (e.g. with IPs `10.0.1.4` & `10.0.1.5`)\r\n- Your Azure Active Directory must have the 'Domain Controller Services' service principal registered. If that's not  the case, you can register it by executing the command `New-AzADServicePrincipal -ApplicationId '2565bd9d-da50-47d4-8b85-4c97f669dc36'` with an eligible user.\r\n```"
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
