@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.20.4.51522",
-      "templateHash": "12881561992595458775"
+      "version": "0.22.6.54827",
+      "templateHash": "14235495639787970719"
     },
     "name": "Service Bus Namespace Queue",
     "description": "This module deploys a Service Bus Namespace Queue.",
@@ -26,6 +26,27 @@
       "maxLength": 50,
       "metadata": {
         "description": "Required. Name of the Service Bus Queue."
+      }
+    },
+    "autoDeleteOnIdle": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Optional. ISO 8061 timeSpan idle interval after which the queue is automatically deleted. The minimum duration is 5 minutes (PT5M)."
+      }
+    },
+    "forwardDeadLetteredMessagesTo": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Optional. Queue/Topic name to forward the Dead Letter message."
+      }
+    },
+    "forwardTo": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Optional. Queue/Topic name to forward the messages."
       }
     },
     "lockDuration": {
@@ -89,6 +110,13 @@
       "defaultValue": 10,
       "metadata": {
         "description": "Optional. The maximum delivery count. A message is automatically deadlettered after this number of deliveries. default value is 10."
+      }
+    },
+    "maxMessageSizeInKilobytes": {
+      "type": "int",
+      "defaultValue": 1024,
+      "metadata": {
+        "description": "Optional. Maximum size (in KB) of the message payload that can be accepted by the queue. This property is only used in Premium today and default is 1024."
       }
     },
     "status": {
@@ -188,21 +216,25 @@
     },
     {
       "type": "Microsoft.ServiceBus/namespaces/queues",
-      "apiVersion": "2021-06-01-preview",
+      "apiVersion": "2022-10-01-preview",
       "name": "[format('{0}/{1}', parameters('namespaceName'), parameters('name'))]",
       "properties": {
+        "autoDeleteOnIdle": "[if(not(empty(parameters('autoDeleteOnIdle'))), parameters('autoDeleteOnIdle'), null())]",
+        "defaultMessageTimeToLive": "[parameters('defaultMessageTimeToLive')]",
+        "deadLetteringOnMessageExpiration": "[parameters('deadLetteringOnMessageExpiration')]",
+        "duplicateDetectionHistoryTimeWindow": "[parameters('duplicateDetectionHistoryTimeWindow')]",
+        "enableBatchedOperations": "[parameters('enableBatchedOperations')]",
+        "enableExpress": "[parameters('enableExpress')]",
+        "enablePartitioning": "[parameters('enablePartitioning')]",
+        "forwardDeadLetteredMessagesTo": "[if(not(empty(parameters('forwardDeadLetteredMessagesTo'))), parameters('forwardDeadLetteredMessagesTo'), null())]",
+        "forwardTo": "[if(not(empty(parameters('forwardTo'))), parameters('forwardTo'), null())]",
         "lockDuration": "[parameters('lockDuration')]",
+        "maxDeliveryCount": "[parameters('maxDeliveryCount')]",
+        "maxMessageSizeInKilobytes": "[if(equals(reference(resourceId('Microsoft.ServiceBus/namespaces', parameters('namespaceName')), '2022-10-01-preview', 'full').sku.name, 'Premium'), parameters('maxMessageSizeInKilobytes'), null())]",
         "maxSizeInMegabytes": "[parameters('maxSizeInMegabytes')]",
         "requiresDuplicateDetection": "[parameters('requiresDuplicateDetection')]",
         "requiresSession": "[parameters('requiresSession')]",
-        "defaultMessageTimeToLive": "[parameters('defaultMessageTimeToLive')]",
-        "deadLetteringOnMessageExpiration": "[parameters('deadLetteringOnMessageExpiration')]",
-        "enableBatchedOperations": "[parameters('enableBatchedOperations')]",
-        "duplicateDetectionHistoryTimeWindow": "[parameters('duplicateDetectionHistoryTimeWindow')]",
-        "maxDeliveryCount": "[parameters('maxDeliveryCount')]",
-        "status": "[parameters('status')]",
-        "enablePartitioning": "[parameters('enablePartitioning')]",
-        "enableExpress": "[parameters('enableExpress')]"
+        "status": "[parameters('status')]"
       }
     },
     {
@@ -253,8 +285,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.20.4.51522",
-              "templateHash": "18039866213861972678"
+              "version": "0.22.6.54827",
+              "templateHash": "4578845431207793137"
             },
             "name": "Service Bus Namespace Queue Authorization Rules",
             "description": "This module deploys a Service Bus Namespace Queue Authorization Rule.",
@@ -316,7 +348,7 @@
             },
             {
               "type": "Microsoft.ServiceBus/namespaces/queues/authorizationRules",
-              "apiVersion": "2017-04-01",
+              "apiVersion": "2022-10-01-preview",
               "name": "[format('{0}/{1}/{2}', parameters('namespaceName'), parameters('queueName'), parameters('name'))]",
               "properties": {
                 "rights": "[parameters('rights')]"
@@ -386,8 +418,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.20.4.51522",
-              "templateHash": "18045820924353327609"
+              "version": "0.22.6.54827",
+              "templateHash": "17304766651287695230"
             }
           },
           "parameters": {

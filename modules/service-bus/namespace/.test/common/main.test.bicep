@@ -66,6 +66,7 @@ module testDeployment '../../main.bicep' = {
     name: '${namePrefix}${serviceShort}001'
     lock: 'CanNotDelete'
     skuName: 'Premium'
+    premiumMessagingPartitions: 2
     tags: {
       'hidden-title': 'This is visible in the resource name'
       Environment: 'Non-Prod'
@@ -146,6 +147,8 @@ module testDeployment '../../main.bicep' = {
             ]
           }
         ]
+        autoDeleteOnIdle: 'PT5M'
+        maxMessageSizeInKilobytes: 2048
       }
     ]
     topics: [
@@ -203,5 +206,8 @@ module testDeployment '../../main.bicep' = {
     userAssignedIdentities: {
       '${nestedDependencies.outputs.managedIdentityResourceId}': {}
     }
+    disableLocalAuth: true
+    publicNetworkAccess: 'Enabled'
+    minimumTlsVersion: '1.2'
   }
 }

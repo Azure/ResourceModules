@@ -20,6 +20,20 @@ param skuName string = 'Basic'
 @description('Optional. Enabling this property creates a Premium Service Bus Namespace in regions supported availability zones.')
 param zoneRedundant bool = false
 
+@allowed([
+  '1.0'
+  '1.1'
+  '1.2'
+])
+@description('Optional. The minimum TLS version for the cluster to support.')
+param minimumTlsVersion string = '1.2'
+
+@description('Optional. Alternate name for namespace.')
+param alternateName string = ''
+
+@description('Optional. The number of partitions of a Service Bus namespace. This property is only applicable to Premium SKU namespaces. The default value is 1 and possible values are 1, 2 and 4.')
+param premiumMessagingPartitions int = 1
+
 @description('Optional. Authorization Rules for the Service Bus namespace.')
 param authorizationRules array = [
   {
@@ -67,11 +81,23 @@ param userAssignedIdentities object = {}
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
 
+@description('Optional. Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set.')
+@allowed([
+  ''
+  'Disabled'
+  'Enabled'
+  'SecuredByPerimeter'
+])
+param publicNetworkAccess string = ''
+
 @description('Optional. Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.')
 param privateEndpoints array = []
 
 @description('Optional. Configure networking options for Premium SKU Service Bus. This object contains IPs/Subnets to allow or restrict access to private endpoints only. For security reasons, it is recommended to configure this object on the Namespace.')
 param networkRuleSets object = {}
+
+@description('Optional. This property disables SAS authentication for the Service Bus namespace.')
+param disableLocalAuth bool = true
 
 @description('Optional. Tags of the resource.')
 param tags object = {}
@@ -170,7 +196,7 @@ resource cMKKeyVaultKey 'Microsoft.KeyVault/vaults/keys@2021-10-01' existing = i
   scope: resourceGroup(split(cMKKeyVaultResourceId, '/')[2], split(cMKKeyVaultResourceId, '/')[4])
 }
 
-resource serviceBusNamespace 'Microsoft.ServiceBus/namespaces@2021-11-01' = {
+resource serviceBusNamespace 'Microsoft.ServiceBus/namespaces@2022-10-01-preview' = {
   name: name
   location: location
   tags: empty(tags) ? null : tags
@@ -179,7 +205,12 @@ resource serviceBusNamespace 'Microsoft.ServiceBus/namespaces@2021-11-01' = {
   }
   identity: identity
   properties: {
+    publicNetworkAccess: !empty(publicNetworkAccess) ? publicNetworkAccess : (!empty(privateEndpoints) && empty(networkRuleSets) ? 'Disabled' : 'Enabled')
+    minimumTlsVersion: minimumTlsVersion
+    alternateName: !empty(alternateName) ? alternateName : null
     zoneRedundant: zoneRedundant
+    disableLocalAuth: disableLocalAuth
+    premiumMessagingPartitions: skuName == 'Premium' ? premiumMessagingPartitions : null
     encryption: !empty(cMKKeyName) ? {
       keySource: 'Microsoft.KeyVault'
       keyVaultProperties: [
@@ -246,6 +277,10 @@ module serviceBusNamespace_queues 'queue/main.bicep' = [for (queue, index) in qu
   params: {
     namespaceName: serviceBusNamespace.name
     name: queue.name
+    autoDeleteOnIdle: contains(queue, 'autoDeleteOnIdle') ? queue.autoDeleteOnIdle : ''
+    forwardDeadLetteredMessagesTo: contains(queue, 'forwardDeadLetteredMessagesTo') ? queue.forwardDeadLetteredMessagesTo : ''
+    forwardTo: contains(queue, 'forwardTo') ? queue.forwardTo : ''
+    maxMessageSizeInKilobytes: contains(queue, 'maxMessageSizeInKilobytes') ? queue.maxMessageSizeInKilobytes : 1024
     authorizationRules: contains(queue, 'authorizationRules') ? queue.authorizationRules : [
       {
         name: 'RootManageSharedAccessKey'

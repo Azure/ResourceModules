@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.21.1.54444",
-      "templateHash": "2445849782386973691"
+      "version": "0.22.6.54827",
+      "templateHash": "2345237535344579516"
     },
     "name": "Service Bus Namespaces",
     "description": "This module deploys a Service Bus Namespace.",
@@ -43,6 +43,32 @@
       "defaultValue": false,
       "metadata": {
         "description": "Optional. Enabling this property creates a Premium Service Bus Namespace in regions supported availability zones."
+      }
+    },
+    "minimumTlsVersion": {
+      "type": "string",
+      "defaultValue": "1.2",
+      "allowedValues": [
+        "1.0",
+        "1.1",
+        "1.2"
+      ],
+      "metadata": {
+        "description": "Optional. The minimum TLS version for the cluster to support."
+      }
+    },
+    "alternateName": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Optional. Alternate name for namespace."
+      }
+    },
+    "premiumMessagingPartitions": {
+      "type": "int",
+      "defaultValue": 1,
+      "metadata": {
+        "description": "Optional. The number of partitions of a Service Bus namespace. This property is only applicable to Premium SKU namespaces. The default value is 1 and possible values are 1, 2 and 4."
       }
     },
     "authorizationRules": {
@@ -136,6 +162,19 @@
         "description": "Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'."
       }
     },
+    "publicNetworkAccess": {
+      "type": "string",
+      "defaultValue": "",
+      "allowedValues": [
+        "",
+        "Disabled",
+        "Enabled",
+        "SecuredByPerimeter"
+      ],
+      "metadata": {
+        "description": "Optional. Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set."
+      }
+    },
     "privateEndpoints": {
       "type": "array",
       "defaultValue": [],
@@ -148,6 +187,13 @@
       "defaultValue": {},
       "metadata": {
         "description": "Optional. Configure networking options for Premium SKU Service Bus. This object contains IPs/Subnets to allow or restrict access to private endpoints only. For security reasons, it is recommended to configure this object on the Namespace."
+      }
+    },
+    "disableLocalAuth": {
+      "type": "bool",
+      "defaultValue": true,
+      "metadata": {
+        "description": "Optional. This property disables SAS authentication for the Service Bus namespace."
       }
     },
     "tags": {
@@ -289,7 +335,7 @@
     },
     {
       "type": "Microsoft.ServiceBus/namespaces",
-      "apiVersion": "2021-11-01",
+      "apiVersion": "2022-10-01-preview",
       "name": "[parameters('name')]",
       "location": "[parameters('location')]",
       "tags": "[if(empty(parameters('tags')), null(), parameters('tags'))]",
@@ -298,7 +344,12 @@
       },
       "identity": "[variables('identity')]",
       "properties": {
+        "publicNetworkAccess": "[if(not(empty(parameters('publicNetworkAccess'))), parameters('publicNetworkAccess'), if(and(not(empty(parameters('privateEndpoints'))), empty(parameters('networkRuleSets'))), 'Disabled', 'Enabled'))]",
+        "minimumTlsVersion": "[parameters('minimumTlsVersion')]",
+        "alternateName": "[if(not(empty(parameters('alternateName'))), parameters('alternateName'), null())]",
         "zoneRedundant": "[parameters('zoneRedundant')]",
+        "disableLocalAuth": "[parameters('disableLocalAuth')]",
+        "premiumMessagingPartitions": "[if(equals(parameters('skuName'), 'Premium'), parameters('premiumMessagingPartitions'), null())]",
         "encryption": "[if(not(empty(parameters('cMKKeyName'))), createObject('keySource', 'Microsoft.KeyVault', 'keyVaultProperties', createArray(createObject('identity', if(not(empty(parameters('cMKUserAssignedIdentityResourceId'))), createObject('userAssignedIdentity', parameters('cMKUserAssignedIdentityResourceId')), null()), 'keyName', parameters('cMKKeyName'), 'keyVaultUri', reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', split(parameters('cMKKeyVaultResourceId'), '/')[2], split(parameters('cMKKeyVaultResourceId'), '/')[4]), 'Microsoft.KeyVault/vaults', last(split(parameters('cMKKeyVaultResourceId'), '/'))), '2021-10-01').vaultUri, 'keyVersion', if(not(empty(parameters('cMKKeyVersion'))), parameters('cMKKeyVersion'), last(split(reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', split(parameters('cMKKeyVaultResourceId'), '/')[2], split(parameters('cMKKeyVaultResourceId'), '/')[4]), 'Microsoft.KeyVault/vaults/keys', split(format('{0}/{1}', last(split(parameters('cMKKeyVaultResourceId'), '/')), parameters('cMKKeyName')), '/')[0], split(format('{0}/{1}', last(split(parameters('cMKKeyVaultResourceId'), '/')), parameters('cMKKeyName')), '/')[1]), '2021-10-01').keyUriWithVersion, '/'))))), 'requireInfrastructureEncryption', parameters('requireInfrastructureEncryption')), null())]"
       }
     },
@@ -365,8 +416,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "5822650086672206249"
+              "version": "0.22.6.54827",
+              "templateHash": "4747986299110708591"
             },
             "name": "Service Bus Namespace Authorization Rules",
             "description": "This module deploys a Service Bus Namespace Authorization Rule.",
@@ -424,7 +475,7 @@
             },
             {
               "type": "Microsoft.ServiceBus/namespaces/AuthorizationRules",
-              "apiVersion": "2017-04-01",
+              "apiVersion": "2022-10-01-preview",
               "name": "[format('{0}/{1}', parameters('namespaceName'), parameters('name'))]",
               "properties": {
                 "rights": "[parameters('rights')]"
@@ -487,8 +538,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "14546614417320888231"
+              "version": "0.22.6.54827",
+              "templateHash": "3706608794197885431"
             },
             "name": "Service Bus Namespace Disaster Recovery Configs",
             "description": "This module deploys a Service Bus Namespace Disaster Recovery Config",
@@ -549,7 +600,7 @@
             },
             {
               "type": "Microsoft.ServiceBus/namespaces/disasterRecoveryConfigs",
-              "apiVersion": "2017-04-01",
+              "apiVersion": "2022-10-01-preview",
               "name": "[format('{0}/{1}', parameters('namespaceName'), parameters('name'))]",
               "properties": {
                 "alternateName": "[parameters('alternateName')]",
@@ -616,8 +667,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "11354056165002886498"
+              "version": "0.22.6.54827",
+              "templateHash": "11329412672781710568"
             },
             "name": "Service Bus Namespace Migration Configuration",
             "description": "This module deploys a Service Bus Namespace Migration Configuration.",
@@ -669,7 +720,7 @@
             },
             {
               "type": "Microsoft.ServiceBus/namespaces/migrationConfigurations",
-              "apiVersion": "2017-04-01",
+              "apiVersion": "2022-10-01-preview",
               "name": "[format('{0}/{1}', parameters('namespaceName'), '$default')]",
               "properties": {
                 "targetNamespace": "[parameters('targetNamespaceResourceId')]",
@@ -735,8 +786,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "13262837949069466625"
+              "version": "0.22.6.54827",
+              "templateHash": "533952694982260366"
             },
             "name": "Service Bus Namespace Network Rule Sets",
             "description": "This module deploys a ServiceBus Namespace Network Rule Set.",
@@ -831,7 +882,7 @@
             },
             {
               "type": "Microsoft.ServiceBus/namespaces/networkRuleSets",
-              "apiVersion": "2021-11-01",
+              "apiVersion": "2022-10-01-preview",
               "name": "[format('{0}/{1}', parameters('namespaceName'), 'default')]",
               "properties": {
                 "publicNetworkAccess": "[parameters('publicNetworkAccess')]",
@@ -891,6 +942,10 @@
           "name": {
             "value": "[parameters('queues')[copyIndex()].name]"
           },
+          "autoDeleteOnIdle": "[if(contains(parameters('queues')[copyIndex()], 'autoDeleteOnIdle'), createObject('value', parameters('queues')[copyIndex()].autoDeleteOnIdle), createObject('value', ''))]",
+          "forwardDeadLetteredMessagesTo": "[if(contains(parameters('queues')[copyIndex()], 'forwardDeadLetteredMessagesTo'), createObject('value', parameters('queues')[copyIndex()].forwardDeadLetteredMessagesTo), createObject('value', ''))]",
+          "forwardTo": "[if(contains(parameters('queues')[copyIndex()], 'forwardTo'), createObject('value', parameters('queues')[copyIndex()].forwardTo), createObject('value', ''))]",
+          "maxMessageSizeInKilobytes": "[if(contains(parameters('queues')[copyIndex()], 'maxMessageSizeInKilobytes'), createObject('value', parameters('queues')[copyIndex()].maxMessageSizeInKilobytes), createObject('value', 1024))]",
           "authorizationRules": "[if(contains(parameters('queues')[copyIndex()], 'authorizationRules'), createObject('value', parameters('queues')[copyIndex()].authorizationRules), createObject('value', createArray(createObject('name', 'RootManageSharedAccessKey', 'rights', createArray('Listen', 'Manage', 'Send')))))]",
           "deadLetteringOnMessageExpiration": "[if(contains(parameters('queues')[copyIndex()], 'deadLetteringOnMessageExpiration'), createObject('value', parameters('queues')[copyIndex()].deadLetteringOnMessageExpiration), createObject('value', true()))]",
           "defaultMessageTimeToLive": "[if(contains(parameters('queues')[copyIndex()], 'defaultMessageTimeToLive'), createObject('value', parameters('queues')[copyIndex()].defaultMessageTimeToLive), createObject('value', 'P14D'))]",
@@ -916,8 +971,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "1821948784445884676"
+              "version": "0.22.6.54827",
+              "templateHash": "14235495639787970719"
             },
             "name": "Service Bus Namespace Queue",
             "description": "This module deploys a Service Bus Namespace Queue.",
@@ -938,6 +993,27 @@
               "maxLength": 50,
               "metadata": {
                 "description": "Required. Name of the Service Bus Queue."
+              }
+            },
+            "autoDeleteOnIdle": {
+              "type": "string",
+              "defaultValue": "",
+              "metadata": {
+                "description": "Optional. ISO 8061 timeSpan idle interval after which the queue is automatically deleted. The minimum duration is 5 minutes (PT5M)."
+              }
+            },
+            "forwardDeadLetteredMessagesTo": {
+              "type": "string",
+              "defaultValue": "",
+              "metadata": {
+                "description": "Optional. Queue/Topic name to forward the Dead Letter message."
+              }
+            },
+            "forwardTo": {
+              "type": "string",
+              "defaultValue": "",
+              "metadata": {
+                "description": "Optional. Queue/Topic name to forward the messages."
               }
             },
             "lockDuration": {
@@ -1001,6 +1077,13 @@
               "defaultValue": 10,
               "metadata": {
                 "description": "Optional. The maximum delivery count. A message is automatically deadlettered after this number of deliveries. default value is 10."
+              }
+            },
+            "maxMessageSizeInKilobytes": {
+              "type": "int",
+              "defaultValue": 1024,
+              "metadata": {
+                "description": "Optional. Maximum size (in KB) of the message payload that can be accepted by the queue. This property is only used in Premium today and default is 1024."
               }
             },
             "status": {
@@ -1100,21 +1183,25 @@
             },
             {
               "type": "Microsoft.ServiceBus/namespaces/queues",
-              "apiVersion": "2021-06-01-preview",
+              "apiVersion": "2022-10-01-preview",
               "name": "[format('{0}/{1}', parameters('namespaceName'), parameters('name'))]",
               "properties": {
+                "autoDeleteOnIdle": "[if(not(empty(parameters('autoDeleteOnIdle'))), parameters('autoDeleteOnIdle'), null())]",
+                "defaultMessageTimeToLive": "[parameters('defaultMessageTimeToLive')]",
+                "deadLetteringOnMessageExpiration": "[parameters('deadLetteringOnMessageExpiration')]",
+                "duplicateDetectionHistoryTimeWindow": "[parameters('duplicateDetectionHistoryTimeWindow')]",
+                "enableBatchedOperations": "[parameters('enableBatchedOperations')]",
+                "enableExpress": "[parameters('enableExpress')]",
+                "enablePartitioning": "[parameters('enablePartitioning')]",
+                "forwardDeadLetteredMessagesTo": "[if(not(empty(parameters('forwardDeadLetteredMessagesTo'))), parameters('forwardDeadLetteredMessagesTo'), null())]",
+                "forwardTo": "[if(not(empty(parameters('forwardTo'))), parameters('forwardTo'), null())]",
                 "lockDuration": "[parameters('lockDuration')]",
+                "maxDeliveryCount": "[parameters('maxDeliveryCount')]",
+                "maxMessageSizeInKilobytes": "[if(equals(reference(resourceId('Microsoft.ServiceBus/namespaces', parameters('namespaceName')), '2022-10-01-preview', 'full').sku.name, 'Premium'), parameters('maxMessageSizeInKilobytes'), null())]",
                 "maxSizeInMegabytes": "[parameters('maxSizeInMegabytes')]",
                 "requiresDuplicateDetection": "[parameters('requiresDuplicateDetection')]",
                 "requiresSession": "[parameters('requiresSession')]",
-                "defaultMessageTimeToLive": "[parameters('defaultMessageTimeToLive')]",
-                "deadLetteringOnMessageExpiration": "[parameters('deadLetteringOnMessageExpiration')]",
-                "enableBatchedOperations": "[parameters('enableBatchedOperations')]",
-                "duplicateDetectionHistoryTimeWindow": "[parameters('duplicateDetectionHistoryTimeWindow')]",
-                "maxDeliveryCount": "[parameters('maxDeliveryCount')]",
-                "status": "[parameters('status')]",
-                "enablePartitioning": "[parameters('enablePartitioning')]",
-                "enableExpress": "[parameters('enableExpress')]"
+                "status": "[parameters('status')]"
               }
             },
             {
@@ -1165,8 +1252,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.21.1.54444",
-                      "templateHash": "6101237367074313867"
+                      "version": "0.22.6.54827",
+                      "templateHash": "4578845431207793137"
                     },
                     "name": "Service Bus Namespace Queue Authorization Rules",
                     "description": "This module deploys a Service Bus Namespace Queue Authorization Rule.",
@@ -1228,7 +1315,7 @@
                     },
                     {
                       "type": "Microsoft.ServiceBus/namespaces/queues/authorizationRules",
-                      "apiVersion": "2017-04-01",
+                      "apiVersion": "2022-10-01-preview",
                       "name": "[format('{0}/{1}/{2}', parameters('namespaceName'), parameters('queueName'), parameters('name'))]",
                       "properties": {
                         "rights": "[parameters('rights')]"
@@ -1298,8 +1385,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.21.1.54444",
-                      "templateHash": "2208902932187886569"
+                      "version": "0.22.6.54827",
+                      "templateHash": "17304766651287695230"
                     }
                   },
                   "parameters": {
@@ -1489,8 +1576,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "17697996851366655443"
+              "version": "0.22.6.54827",
+              "templateHash": "7517242660485501194"
             },
             "name": "Service Bus Namespace Topic",
             "description": "This module deploys a Service Bus Namespace Topic.",
@@ -1666,7 +1753,7 @@
             },
             {
               "type": "Microsoft.ServiceBus/namespaces/topics",
-              "apiVersion": "2021-06-01-preview",
+              "apiVersion": "2022-10-01-preview",
               "name": "[format('{0}/{1}', parameters('namespaceName'), parameters('name'))]",
               "properties": {
                 "autoDeleteOnIdle": "[parameters('autoDeleteOnIdle')]",
@@ -1730,8 +1817,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.21.1.54444",
-                      "templateHash": "3386119899926443117"
+                      "version": "0.22.6.54827",
+                      "templateHash": "3590235297575239025"
                     },
                     "name": "Service Bus Namespace Topic Authorization Rules",
                     "description": "This module deploys a Service Bus Namespace Topic Authorization Rule.",
@@ -1793,7 +1880,7 @@
                     },
                     {
                       "type": "Microsoft.ServiceBus/namespaces/topics/authorizationRules",
-                      "apiVersion": "2021-06-01-preview",
+                      "apiVersion": "2022-10-01-preview",
                       "name": "[format('{0}/{1}/{2}', parameters('namespaceName'), parameters('topicName'), parameters('name'))]",
                       "properties": {
                         "rights": "[parameters('rights')]"
@@ -1863,8 +1950,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.21.1.54444",
-                      "templateHash": "1700456831485668715"
+                      "version": "0.22.6.54827",
+                      "templateHash": "13096307217253704125"
                     }
                   },
                   "parameters": {
@@ -2056,8 +2143,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "14580007913383558904"
+              "version": "0.22.6.54827",
+              "templateHash": "2884140170473394983"
             },
             "name": "Private Endpoints",
             "description": "This module deploys a Private Endpoint.",
@@ -2256,8 +2343,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.21.1.54444",
-                      "templateHash": "2469208411936339153"
+                      "version": "0.22.6.54827",
+                      "templateHash": "5610247137574346230"
                     },
                     "name": "Private Endpoint Private DNS Zone Groups",
                     "description": "This module deploys a Private Endpoint Private DNS Zone Group.",
@@ -2394,8 +2481,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.21.1.54444",
-                      "templateHash": "13032708393704093995"
+                      "version": "0.22.6.54827",
+                      "templateHash": "14351187799927334028"
                     }
                   },
                   "parameters": {
@@ -2608,8 +2695,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "18287242022549990964"
+              "version": "0.22.6.54827",
+              "templateHash": "9664927518119461996"
             }
           },
           "parameters": {
@@ -2753,14 +2840,14 @@
       "metadata": {
         "description": "The principal ID of the system assigned identity."
       },
-      "value": "[if(and(parameters('systemAssignedIdentity'), contains(reference(resourceId('Microsoft.ServiceBus/namespaces', parameters('name')), '2021-11-01', 'full').identity, 'principalId')), reference(resourceId('Microsoft.ServiceBus/namespaces', parameters('name')), '2021-11-01', 'full').identity.principalId, '')]"
+      "value": "[if(and(parameters('systemAssignedIdentity'), contains(reference(resourceId('Microsoft.ServiceBus/namespaces', parameters('name')), '2022-10-01-preview', 'full').identity, 'principalId')), reference(resourceId('Microsoft.ServiceBus/namespaces', parameters('name')), '2022-10-01-preview', 'full').identity.principalId, '')]"
     },
     "location": {
       "type": "string",
       "metadata": {
         "description": "The location the resource was deployed into."
       },
-      "value": "[reference(resourceId('Microsoft.ServiceBus/namespaces', parameters('name')), '2021-11-01', 'full').location]"
+      "value": "[reference(resourceId('Microsoft.ServiceBus/namespaces', parameters('name')), '2022-10-01-preview', 'full').location]"
     }
   }
 }
