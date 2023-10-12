@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.21.1.54444",
-      "templateHash": "7109134385195243655"
+      "version": "0.22.6.54827",
+      "templateHash": "17411238681152908216"
     },
     "name": "Event Hub Namespace Network Rule Sets",
     "description": "This module deploys an Event Hub Namespace Network Rule Set.",
@@ -51,14 +51,14 @@
       "type": "array",
       "defaultValue": [],
       "metadata": {
-        "description": "Optional. List virtual network rules. It will not be set if publicNetworkAccess is \"Disabled\". Otherwise, when used, defaultAction will be set to \"Deny\"."
+        "description": "Optional. Contains an array of objects of subnet resource IDs that this Event Hub Namespace is exposed to via Service Endpoints. You can enable the `ignoreMissingVnetServiceEndpoint` if you wish to add this virtual network to Event Hub Namespace but do not have an existing service endpoint. It will not be set if publicNetworkAccess is \"Disabled\". Otherwise, when used, defaultAction will be set to \"Deny\"."
       }
     },
     "ipRules": {
       "type": "array",
       "defaultValue": [],
       "metadata": {
-        "description": "Optional. List of IpRules. It will not be set if publicNetworkAccess is \"Disabled\". Otherwise, when used, defaultAction will be set to \"Deny\"."
+        "description": "Optional. Contains an array of objects for the public IP ranges you want to allow via the Event Hub Namespace firewall. Supports IPv4 address or CIDR. It will not be set if publicNetworkAccess is \"Disabled\". Otherwise, when used, defaultAction will be set to \"Deny\"."
       }
     },
     "enableDefaultTelemetry": {
