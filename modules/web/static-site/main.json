@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "12872096460250206815"
+      "templateHash": "6701608202439896587"
     },
     "name": "Static Web Apps",
     "description": "This module deploys a Static Web App.",
@@ -666,7 +666,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.22.6.54827",
-              "templateHash": "13208835708722733896"
+              "templateHash": "11845486297135693244"
             },
             "name": "Static Web App Site Custom Domains",
             "description": "This module deploys a Static Web App Site Custom Domain.",
@@ -676,7 +676,7 @@
             "name": {
               "type": "string",
               "metadata": {
-                "description": "Required. The custom domain name."
+                "description": "Conditional. The custom domain name. Required if the template is used in a standalone deployment."
               }
             },
             "staticSiteName": {
