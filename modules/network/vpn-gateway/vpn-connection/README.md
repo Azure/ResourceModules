@@ -48,7 +48,19 @@ This module deploys a VPN Gateway VPN Connection.
 | `usePolicyBasedTrafficSelectors` | bool | `False` |  | Enable policy-based traffic selectors. |
 | `vpnConnectionProtocolType` | string | `'IKEv2'` | `[IKEv1, IKEv2]` | Gateway connection protocol. |
 | `vpnLinkConnections` | array | `[]` |  | List of all VPN site link connections to the gateway. |
+## Outputs
 
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `name` | string | The name of the VPN connection. |
+| `resourceGroupName` | string | The name of the resource group the VPN connection was deployed into. |
+| `resourceId` | string | The resource ID of the VPN connection. |
+
+## Cross-referenced modules
+
+_None_
+
+## Notes
 
 ### Parameter Usage: `routingConfiguration`
 
@@ -106,15 +118,3 @@ routingConfiguration: {
 
 </details>
 <p>
-
-## Outputs
-
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `name` | string | The name of the VPN connection. |
-| `resourceGroupName` | string | The name of the resource group the VPN connection was deployed into. |
-| `resourceId` | string | The resource ID of the VPN connection. |
-
-## Cross-referenced modules
-
-_None_

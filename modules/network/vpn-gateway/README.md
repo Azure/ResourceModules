@@ -43,125 +43,6 @@ This module deploys a VPN Gateway.
 | `vpnConnections` | array | `[]` |  | The VPN connections to create in the VPN gateway. |
 | `vpnGatewayScaleUnit` | int | `2` |  | The scale unit for this VPN gateway. |
 
-
-### Parameter Usage: `bgpSettings`
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"bgpSettings": {
-    "asn": 65515,
-    "peerWeight": 0,
-    "bgpPeeringAddresses": [
-        {
-            "ipconfigurationId": "Instance0",
-            "defaultBgpIpAddresses": [
-                "10.0.0.12"
-            ],
-            "customBgpIpAddresses": [],
-            "tunnelIpAddresses": [
-                "20.84.35.53",
-                "10.0.0.4"
-            ]
-        },
-        {
-            "ipconfigurationId": "Instance1",
-            "defaultBgpIpAddresses": [
-                "10.0.0.13"
-            ],
-            "customBgpIpAddresses": [],
-            "tunnelIpAddresses": [
-                "20.84.34.225",
-                "10.0.0.5"
-            ]
-        }
-    ]
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-bgpSettings: {
-    asn: 65515
-    peerWeight: 0
-    bgpPeeringAddresses: [
-        {
-            ipconfigurationId: 'Instance0'
-            defaultBgpIpAddresses: [
-                '10.0.0.12'
-            ]
-            customBgpIpAddresses: []
-            tunnelIpAddresses: [
-                '20.84.35.53'
-                '10.0.0.4'
-            ]
-        }
-        {
-            ipconfigurationId: 'Instance1'
-            defaultBgpIpAddresses: [
-                '10.0.0.13'
-            ]
-            customBgpIpAddresses: []
-            tunnelIpAddresses: [
-                '20.84.34.225'
-                '10.0.0.5'
-            ]
-        }
-    ]
-}
-```
-
-</details>
-<p>
-
-### Parameter Usage: `tags`
-
-Tag names and tag values can be provided as needed. A tag can be left without a value.
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"tags": {
-    "value": {
-        "Environment": "Non-Prod",
-        "Contact": "test.user@testcompany.com",
-        "PurchaseOrder": "1234",
-        "CostCenter": "7890",
-        "ServiceName": "DeploymentValidation",
-        "Role": "DeploymentValidation"
-    }
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-tags: {
-    Environment: 'Non-Prod'
-    Contact: 'test.user@testcompany.com'
-    PurchaseOrder: '1234'
-    CostCenter: '7890'
-    ServiceName: 'DeploymentValidation'
-    Role: 'DeploymentValidation'
-}
-```
-
-</details>
-<p>
-
 ## Outputs
 
 | Output Name | Type | Description |
@@ -366,6 +247,126 @@ module vpnGateway './network/vpn-gateway/main.bicep' = {
       "value": "<enableDefaultTelemetry>"
     }
   }
+}
+```
+
+</details>
+<p>
+
+## Notes
+
+### Parameter Usage: `bgpSettings`
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"bgpSettings": {
+    "asn": 65515,
+    "peerWeight": 0,
+    "bgpPeeringAddresses": [
+        {
+            "ipconfigurationId": "Instance0",
+            "defaultBgpIpAddresses": [
+                "10.0.0.12"
+            ],
+            "customBgpIpAddresses": [],
+            "tunnelIpAddresses": [
+                "20.84.35.53",
+                "10.0.0.4"
+            ]
+        },
+        {
+            "ipconfigurationId": "Instance1",
+            "defaultBgpIpAddresses": [
+                "10.0.0.13"
+            ],
+            "customBgpIpAddresses": [],
+            "tunnelIpAddresses": [
+                "20.84.34.225",
+                "10.0.0.5"
+            ]
+        }
+    ]
+}
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+bgpSettings: {
+    asn: 65515
+    peerWeight: 0
+    bgpPeeringAddresses: [
+        {
+            ipconfigurationId: 'Instance0'
+            defaultBgpIpAddresses: [
+                '10.0.0.12'
+            ]
+            customBgpIpAddresses: []
+            tunnelIpAddresses: [
+                '20.84.35.53'
+                '10.0.0.4'
+            ]
+        }
+        {
+            ipconfigurationId: 'Instance1'
+            defaultBgpIpAddresses: [
+                '10.0.0.13'
+            ]
+            customBgpIpAddresses: []
+            tunnelIpAddresses: [
+                '20.84.34.225'
+                '10.0.0.5'
+            ]
+        }
+    ]
+}
+```
+
+</details>
+<p>
+
+### Parameter Usage: `tags`
+
+Tag names and tag values can be provided as needed. A tag can be left without a value.
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"tags": {
+    "value": {
+        "Environment": "Non-Prod",
+        "Contact": "test.user@testcompany.com",
+        "PurchaseOrder": "1234",
+        "CostCenter": "7890",
+        "ServiceName": "DeploymentValidation",
+        "Role": "DeploymentValidation"
+    }
+}
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+tags: {
+    Environment: 'Non-Prod'
+    Contact: 'test.user@testcompany.com'
+    PurchaseOrder: '1234'
+    CostCenter: '7890'
+    ServiceName: 'DeploymentValidation'
+    Role: 'DeploymentValidation'
 }
 ```
 
