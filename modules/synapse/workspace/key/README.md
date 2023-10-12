@@ -48,10 +48,6 @@ This module deploys a Synapse Workspaces Key.
 | `resourceGroupName` | string | The resource group of the deployed key. |
 | `resourceId` | string | The resource ID of the deployed key. |
 
-## Template references
-
-- [Workspaces/Keys](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Synapse/2021-06-01/workspaces/keys)
-
 ## Cross-referenced modules
 
 _None_
