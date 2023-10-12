@@ -65,7 +65,7 @@ This module deploys an Azure Virtual Desktop (AVD) Host Pool.
 | `tokenValidityLength` | string | `'PT8H'` |  | Host Pool token validity length. Usage: 'PT8H' - valid for 8 hours; 'P5D' - valid for 5 days; 'P1Y' - valid for 1 year. When not provided, the token will be valid for 8 hours. |
 | `type` | string | `'Pooled'` | `[Personal, Pooled]` | Set this parameter to Personal if you would like to enable Persistent Desktop experience. Defaults to Pooled. |
 | `validationEnvironment` | bool | `False` |  | Validation host pools allows you to test service changes before they are deployed to production. When set to true, the Host Pool will be deployed in a validation 'ring' (environment) that receives all the new features (might be less stable). Defaults to false that stands for the stable, production-ready environment. |
-| `vmTemplate` | object | `{object}` |  | The necessary information for adding more VMs to this Host Pool. |
+| `vmTemplate` | object | `{object}` |  | The necessary information for adding more VMs to this Host Pool. The object is converted to an in-line string when handed over to the resource deployment, since that only takes strings. |
 
 **Generated parameters**
 
@@ -128,90 +128,6 @@ roleAssignments: [
         principalType: 'ServicePrincipal'
     }
 ]
-```
-
-</details>
-<p>
-
-### Parameter Usage: `vmTemplate`
-
-The below parameter object is converted to an in-line string when handed over to the resource deployment, since that only takes strings.
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"vmTemplate": {
-    "value": {
-        "domain": "<yourAddsDomain>.com",
-        "galleryImageOffer": "office-365",
-        "galleryImagePublisher": "microsoftwindowsdesktop",
-        "galleryImageSKU": "19h2-evd-o365pp",
-        "imageType": "Gallery",
-        "imageUri": null,
-        "customImageId": null,
-        "namePrefix": "AVDv2",
-        "osDiskType": "StandardSSD_LRS",
-        "useManagedDisks": true,
-        "vmSize": {
-            "id": "Standard_D2s_v3",
-            "cores": 2,
-            "ram": 8
-        }
-    }
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-vmTemplate: {
-    domain: '<yourAddsDomain>.com'
-    galleryImageOffer: 'office-365'
-    galleryImagePublisher: 'microsoftwindowsdesktop'
-    galleryImageSKU: '19h2-evd-o365pp'
-    imageType: 'Gallery'
-    imageUri: null
-    customImageId: null
-    namePrefix: 'AVDv2'
-    osDiskType: 'StandardSSD_LRS'
-    useManagedDisks: true
-    vmSize: {
-        id: 'Standard_D2s_v3'
-        cores: 2
-        ram: 8
-    }
-}
-```
-
-</details>
-<p>
-
-### Parameter Usage: `customRdpProperty`
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"customRdpProperty": {
-    "value": "audiocapturemode:i:1;audiomode:i:0;drivestoredirect:s:;redirectclipboard:i:1;redirectcomports:i:1;redirectprinters:i:1;redirectsmartcards:i:1;screen mode ID:i:2;"
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-customRdpProperty: 'audiocapturemode:i:1;audiomode:i:0;drivestoredirect:s:;redirectclipboard:i:1;redirectcomports:i:1;redirectprinters:i:1;redirectsmartcards:i:1;screen mode ID:i:2;'
 ```
 
 </details>

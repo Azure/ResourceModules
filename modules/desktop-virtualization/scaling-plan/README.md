@@ -48,107 +48,6 @@ This module deploys an Azure Virtual Desktop (AVD) Scaling Plan.
 | `timeZone` | string | `'W. Europe Standard Time'` |  | Timezone to be used for the scaling plan. |
 
 
-### Parameter Usage: `schedules`
-
-Multiple schedules can be provided as needed. If a schedule is not provided, a default schedule will be created.
-
-```json
-"schedules" : {
-    "value": [
-        {
-            "rampUpStartTime": {
-                "hour": 7,
-                "minute": 0
-            },
-            "peakStartTime": {
-                "hour": 9,
-                "minute": 0
-            },
-            "rampDownStartTime": {
-                "hour": 18,
-                "minute": 0
-            },
-            "offPeakStartTime": {
-                "hour": 20,
-                "minute": 0
-            },
-            "name": "weekdays_schedule",
-            "daysOfWeek": [
-                "Monday",
-                "Tuesday",
-                "Wednesday",
-                "Thursday",
-                "Friday"
-            ],
-            "rampUpLoadBalancingAlgorithm": "DepthFirst",
-            "rampUpMinimumHostsPct": 20,
-            "rampUpCapacityThresholdPct": 60,
-            "peakLoadBalancingAlgorithm": "DepthFirst",
-            "rampDownLoadBalancingAlgorithm": "DepthFirst",
-            "rampDownMinimumHostsPct": 10,
-            "rampDownCapacityThresholdPct": 90,
-            "rampDownForceLogoffUsers": true,
-            "rampDownWaitTimeMinutes": 30,
-            "rampDownNotificationMessage": "You will be logged off in 30 min. Make sure to save your work.",
-            "rampDownStopHostsWhen": "ZeroSessions",
-            "offPeakLoadBalancingAlgorithm": "DepthFirst"
-        }
-    ]
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-'schedules': [
-    {
-        rampUpStartTime: {
-            hour: 7
-            minute: 0
-        }
-        peakStartTime: {
-            hour: 9
-            minute: 0
-        }
-        rampDownStartTime: {
-            hour: 18
-            minute: 0
-        }
-        offPeakStartTime: {
-            hour: 20
-            minute: 0
-        }
-        name: 'weekdays_schedule'
-        daysOfWeek: [
-            'Monday'
-            'Tuesday'
-            'Wednesday'
-            'Thursday'
-            'Friday'
-        ]
-        rampUpLoadBalancingAlgorithm: 'DepthFirst'
-        rampUpMinimumHostsPct: 20
-        rampUpCapacityThresholdPct: 60
-        peakLoadBalancingAlgorithm: 'DepthFirst'
-        rampDownLoadBalancingAlgorithm: 'DepthFirst'
-        rampDownMinimumHostsPct: 10
-        rampDownCapacityThresholdPct: 90
-        rampDownForceLogoffUsers: true
-        rampDownWaitTimeMinutes: 30
-        rampDownNotificationMessage: 'You will be logged off in 30 min. Make sure to save your work.'
-        rampDownStopHostsWhen: 'ZeroSessions'
-        offPeakLoadBalancingAlgorithm: 'DepthFirst'
-    }
-]
-```
-
-</details>
-<p>
-
 ### Parameter Usage: `tags`
 
 Tag names and tag values can be provided as needed. A tag can be left without a value.
@@ -299,6 +198,46 @@ module scalingPlan './desktop-virtualization/scaling-plan/main.bicep' = {
         roleDefinitionIdOrName: 'Reader'
       }
     ]
+    schedules: [
+      {
+        daysOfWeek: [
+          'Friday'
+          'Monday'
+          'Thursday'
+          'Tuesday'
+          'Wednesday'
+        ]
+        name: 'weekdays_schedule'
+        offPeakLoadBalancingAlgorithm: 'DepthFirst'
+        offPeakStartTime: {
+          hour: 20
+          minute: 0
+        }
+        peakLoadBalancingAlgorithm: 'DepthFirst'
+        peakStartTime: {
+          hour: 9
+          minute: 0
+        }
+        rampDownCapacityThresholdPct: 90
+        rampDownForceLogoffUsers: true
+        rampDownLoadBalancingAlgorithm: 'DepthFirst'
+        rampDownMinimumHostsPct: 10
+        rampDownNotificationMessage: 'You will be logged off in 30 min. Make sure to save your work.'
+        rampDownStartTime: {
+          hour: 18
+          minute: 0
+        }
+        rampDownStopHostsWhen: 'ZeroSessions'
+        rampDownWaitTimeMinutes: 30
+        rampUpCapacityThresholdPct: 60
+        rampUpLoadBalancingAlgorithm: 'DepthFirst'
+        rampUpMinimumHostsPct: 20
+        rampUpStartTime: {
+          hour: 7
+          minute: 0
+        }
+      }
+    ]
     tags: {
       Environment: 'Non-Prod'
       'hidden-title': 'This is visible in the resource name'
@@ -357,6 +296,48 @@ module scalingPlan './desktop-virtualization/scaling-plan/main.bicep' = {
           ],
           "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "schedules": {
+      "value": [
+        {
+          "daysOfWeek": [
+            "Friday",
+            "Monday",
+            "Thursday",
+            "Tuesday",
+            "Wednesday"
+          ],
+          "name": "weekdays_schedule",
+          "offPeakLoadBalancingAlgorithm": "DepthFirst",
+          "offPeakStartTime": {
+            "hour": 20,
+            "minute": 0
+          },
+          "peakLoadBalancingAlgorithm": "DepthFirst",
+          "peakStartTime": {
+            "hour": 9,
+            "minute": 0
+          },
+          "rampDownCapacityThresholdPct": 90,
+          "rampDownForceLogoffUsers": true,
+          "rampDownLoadBalancingAlgorithm": "DepthFirst",
+          "rampDownMinimumHostsPct": 10,
+          "rampDownNotificationMessage": "You will be logged off in 30 min. Make sure to save your work.",
+          "rampDownStartTime": {
+            "hour": 18,
+            "minute": 0
+          },
+          "rampDownStopHostsWhen": "ZeroSessions",
+          "rampDownWaitTimeMinutes": 30,
+          "rampUpCapacityThresholdPct": 60,
+          "rampUpLoadBalancingAlgorithm": "DepthFirst",
+          "rampUpMinimumHostsPct": 20,
+          "rampUpStartTime": {
+            "hour": 7,
+            "minute": 0
+          }
         }
       ]
     },

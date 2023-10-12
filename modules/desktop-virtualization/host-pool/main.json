@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.21.1.54444",
-      "templateHash": "14979820932920385091"
+      "version": "0.22.6.54827",
+      "templateHash": "15971169028304265471"
     },
     "name": "Azure Virtual Desktop (AVD) Host Pools",
     "description": "This module deploys an Azure Virtual Desktop (AVD) Host Pool.",
@@ -100,7 +100,7 @@
       "type": "object",
       "defaultValue": {},
       "metadata": {
-        "description": "Optional. The necessary information for adding more VMs to this Host Pool."
+        "description": "Optional. The necessary information for adding more VMs to this Host Pool. The object is converted to an in-line string when handed over to the resource deployment, since that only takes strings."
       }
     },
     "tokenValidityLength": {
@@ -465,8 +465,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "15758203474913146406"
+              "version": "0.22.6.54827",
+              "templateHash": "11172902539120316456"
             }
           },
           "parameters": {
