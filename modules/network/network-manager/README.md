@@ -71,10 +71,6 @@ This module deploys a Network Manager.
 
 _None_
 
-## Considerations
-
-In order to deploy a Network Manager with the `networkManagerScopes` property set to `managementGroups`, you need to register the `Microsoft.Network` resource provider at the Management Group first ([ref](https://learn.microsoft.com/en-us/rest/api/resources/providers/register-at-management-group-scope)).
-
 ## Deployment examples
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
@@ -529,6 +525,10 @@ module networkManager './network/network-manager/main.bicep' = {
 
 
 ## Notes
+
+### Considerations
+
+In order to deploy a Network Manager with the `networkManagerScopes` property set to `managementGroups`, you need to register the `Microsoft.Network` resource provider at the Management Group first ([ref](https://learn.microsoft.com/en-us/rest/api/resources/providers/register-at-management-group-scope)).
 
 ### Parameter Usage: `networkManagerScopes`
 
