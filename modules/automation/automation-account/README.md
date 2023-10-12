@@ -9,6 +9,7 @@ This module deploys an Azure Automation Account.
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
+- [Notes](#Notes)
 
 ## Resource Types
 
@@ -76,6 +77,7 @@ This module deploys an Azure Automation Account.
 | `tags` | object | `{object}` |  | Tags of the Automation Account resource. |
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
 | `variables` | array | `[]` |  | List of variables to be created in the automation account. |
+
 
 ### Parameter Usage: `privateEndpoints`
 
@@ -889,6 +891,7 @@ module automationAccount './automation/automation-account/main.bicep' = {
 
 </details>
 <p>
+
 
 ## Notes
 

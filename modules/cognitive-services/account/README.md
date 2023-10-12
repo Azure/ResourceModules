@@ -7,9 +7,9 @@ This module deploys a Cognitive Service.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Considerations](#Considerations)
 - [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
+- [Notes](#Notes)
 
 ## Resource types
 
@@ -702,6 +702,7 @@ module account './cognitive-services/account/main.bicep' = {
 
 </details>
 <p>
+
 
 ## Notes
 

@@ -9,6 +9,7 @@ This module deploys a Redis Cache.
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
+- [Notes](#Notes)
 
 ## Resource Types
 
@@ -63,6 +64,7 @@ This module deploys a Redis Cache.
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
 | `zoneRedundant` | bool | `True` |  | When true, replicas will be provisioned in availability zones specified in the zones parameter. |
 | `zones` | array | `[]` |  | If the zoneRedundant parameter is true, replicas will be provisioned in the availability zones specified here. Otherwise, the service will choose where replicas are deployed. |
+
 
 ### Parameter Usage: `roleAssignments`
 
@@ -527,6 +529,7 @@ module redis './cache/redis/main.bicep' = {
 
 </details>
 <p>
+
 
 ## Notes
 
