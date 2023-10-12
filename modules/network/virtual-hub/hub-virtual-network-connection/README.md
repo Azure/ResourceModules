@@ -38,11 +38,6 @@ This module deploys a Virtual Hub Virtual Network Connection.
 | `enableInternetSecurity` | bool | `True` | Enable internet security. |
 | `routingConfiguration` | object | `{object}` | Routing Configuration indicating the associated and propagated route tables for this connection. |
 
-
-### Parameter Usage: `hubVirtualNetworkConnections`
-
-...
-
 ## Outputs
 
 | Output Name | Type | Description |
