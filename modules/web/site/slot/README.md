@@ -8,7 +8,6 @@ This module deploys a Web or Function App Deployment Slot.
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
-- [Notes](#Notes)
 
 ## Resource types
 
@@ -90,27 +89,6 @@ This module deploys a Web or Function App Deployment Slot.
 | `vnetRouteAllEnabled` | bool | `False` |  | Virtual Network Route All enabled. This causes all outbound traffic to have Virtual Network Security Groups and User Defined Routes applied. |
 
 
-## Outputs
-
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of the slot. |
-| `resourceGroupName` | string | The resource group the slot was deployed into. |
-| `resourceId` | string | The resource ID of the slot. |
-| `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
-
-## Cross-referenced modules
-
-This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
-
-| Reference | Type |
-| :-- | :-- |
-| `network/private-endpoint` | Local reference |
-
-## Notes
-
-
 ### Parameter Usage: `appSettingsKeyValuePairs`
 
 AzureWebJobsStorage, AzureWebJobsDashboard, APPINSIGHTS_INSTRUMENTATIONKEY and APPLICATIONINSIGHTS_CONNECTION_STRING are set separately (check parameters storageAccountId, setAzureWebJobsDashboard, appInsightId).
@@ -122,12 +100,16 @@ For all other app settings key-value pairs use this object.
 
 ```json
 "appSettingsKeyValuePairs": {
-    "value": {
-      "AzureFunctionsJobHost__logging__logLevel__default": "Trace",
-      "EASYAUTH_SECRET": "https://adp-[[namePrefix]]-az-kv-x-001.vault.azure.net/secrets/Modules-Test-SP-Password",
-      "FUNCTIONS_EXTENSION_VERSION": "~4",
-      "FUNCTIONS_WORKER_RUNTIME": "dotnet"
-    }
+    "value": [
+        {
+            "name": "key1",
+            "value": "val1"
+        },
+        {
+            "name": "key2",
+            "value": "val2"
+        }
+    ]
 }
 ```
 
@@ -138,12 +120,78 @@ For all other app settings key-value pairs use this object.
 <summary>Bicep format</summary>
 
 ```bicep
-appSettingsKeyValuePairs: {
-  AzureFunctionsJobHost__logging__logLevel__default: 'Trace'
-  EASYAUTH_SECRET: 'https://adp-[[namePrefix]]-az-kv-x-001.vault.azure.net/secrets/Modules-Test-SP-Password'
-  FUNCTIONS_EXTENSION_VERSION: '~4'
-  FUNCTIONS_WORKER_RUNTIME: 'dotnet'
+appSettingsKeyValuePairs: [
+    {
+        name: 'key1'
+        value: 'val1'
+    }
+    {
+        name: 'key2'
+        value: 'val2'
+    }
+]
+```
+
+</details>
+<p>
+
+### Parameter Usage: `authSettingV2Configuration`
+
+The auth settings V2 configuration.
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"siteConfig": {
+    "value": [
+        // Check out https://learn.microsoft.com/en-us/azure/templates/microsoft.web/sites/config-authsettingsv2?tabs=bicep#siteauthsettingsv2properties for possible properties
+    ]
 }
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+siteConfig: [
+    // Check out https://learn.microsoft.com/en-us/azure/templates/microsoft.web/sites/config-authsettingsv2?tabs=bicep#siteauthsettingsv2properties for possible properties
+]
+```
+
+</details>
+<p>
+
+### Parameter Usage: `siteConfig`
+
+The site config.
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"siteConfig": {
+    "value": [
+        // Check out https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/sites?tabs=bicep#siteconfig for possible properties
+    ]
+}
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+siteConfig: [
+    // Check out https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/sites?tabs=bicep#siteconfig for possible properties
+]
 ```
 
 </details>
@@ -381,3 +429,21 @@ userAssignedIdentities: {
 
 </details>
 <p>
+
+## Outputs
+
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `location` | string | The location the resource was deployed into. |
+| `name` | string | The name of the slot. |
+| `resourceGroupName` | string | The resource group the slot was deployed into. |
+| `resourceId` | string | The resource ID of the slot. |
+| `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
+
+## Cross-referenced modules
+
+This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
+
+| Reference | Type |
+| :-- | :-- |
+| `network/private-endpoint` | Local reference |

@@ -36,6 +36,38 @@ This module deploys a Site Auth Settings V2 Configuration.
 | :-- | :-- | :-- | :-- |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
 
+
+### Parameter Usage: `authSettingV2Configuration`
+
+The auth settings V2 configuration.
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"siteConfig": {
+    "value": [
+        // Check out https://learn.microsoft.com/en-us/azure/templates/microsoft.web/sites/config-authsettingsv2?tabs=bicep#siteauthsettingsv2properties for possible properties
+    ]
+}
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+siteConfig: [
+    // Check out https://learn.microsoft.com/en-us/azure/templates/microsoft.web/sites/config-authsettingsv2?tabs=bicep#siteauthsettingsv2properties for possible properties
+]
+```
+
+</details>
+<p>
+
 ## Outputs
 
 | Output Name | Type | Description |
