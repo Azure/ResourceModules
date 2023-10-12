@@ -8,6 +8,7 @@ This module deploys an API Management Service Backend.
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
+- [Notes](#Notes)
 
 ## Resource types
 
@@ -43,6 +44,7 @@ This module deploys an API Management Service Backend.
 | `serviceFabricCluster` | object | `{object}` | Backend Service Fabric Cluster Properties. |
 | `title` | string | `''` | Backend Title. |
 | `tls` | object | `{object}` | Backend TLS Properties. |
+
 
 ## Outputs
 

@@ -8,6 +8,7 @@ This module deploys an API Management Service Named Value.
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
+- [Notes](#Notes)
 
 ## Resource types
 
@@ -39,6 +40,7 @@ This module deploys an API Management Service Named Value.
 | `secret` | bool | `False` | Determines whether the value is a secret and should be encrypted or not. Default value is false. |
 | `tags` | array | `[]` | Tags that when provided can be used to filter the NamedValue list. - string. |
 | `value` | string | `[newGuid()]` | Value of the NamedValue. Can contain policy expressions. It may not be empty or consist only of whitespace. This property will not be filled on 'GET' operations! Use '/listSecrets' POST request to get the value. |
+
 
 ### Parameter Usage: `tags`
 

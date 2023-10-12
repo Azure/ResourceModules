@@ -7,9 +7,9 @@ This module deploys an API Management Service.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Considerations](#Considerations)
 - [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
+- [Notes](#Notes)
 
 ## Resource types
 
@@ -787,6 +787,7 @@ module service './api-management/service/main.bicep' = {
 </details>
 <p>
 
+
 ## Notes
 
 ### Parameter Usage: `apiManagementServicePolicy`
@@ -819,4 +820,3 @@ apiManagementServicePolicy: {
 
 </details>
 <p>
-

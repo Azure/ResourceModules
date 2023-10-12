@@ -6,10 +6,10 @@ This module deploys an Azure Active Directory Domain Services (AADDS).
 
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
-- [Considerations](#Considerations)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
+- [Notes](#Notes)
 
 ## Resource types
 
@@ -301,6 +301,7 @@ module domainService './aad/domain-service/main.bicep' = {
 
 </details>
 <p>
+
 
 ## Notes
 
