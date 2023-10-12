@@ -9,6 +9,7 @@ This module deploys an Azure Container Registry (ACR).
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
+- [Notes](#Notes)
 
 ## Resource types
 
@@ -136,41 +137,6 @@ roleAssignments: [
         principalType: 'ServicePrincipal'
     }
 ]
-```
-
-</details>
-<p>
-
-### Parameter Usage: `imageRegistryCredentials`
-
-The image registry credentials by which the container group is created from.
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"acrName": {
-    "value": {
-        "server": "acrx001",
-    }
-},
-"acrAdminUserEnabled": {
-    "value": false
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-acrName: {
-    server: 'acrx001'
-}
-acrAdminUserEnabled: false
 ```
 
 </details>
@@ -835,6 +801,44 @@ module registry './container-registry/registry/main.bicep' = {
     }
   }
 }
+```
+
+</details>
+<p>
+
+
+## Notes
+
+### Parameter Usage: `imageRegistryCredentials`
+
+The image registry credentials by which the container group is created from.
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"acrName": {
+    "value": {
+        "server": "acrx001",
+    }
+},
+"acrAdminUserEnabled": {
+    "value": false
+}
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+acrName: {
+    server: 'acrx001'
+}
+acrAdminUserEnabled: false
 ```
 
 </details>
