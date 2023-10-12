@@ -8,6 +8,7 @@ This module deploys a Data Factory Managed or Self-Hosted Integration Runtime.
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
+- [Notes](#Notes)
 
 ## Resource types
 
@@ -39,7 +40,21 @@ This module deploys a Data Factory Managed or Self-Hosted Integration Runtime.
 | `typeProperties` | object | `{object}` | Integration Runtime type properties. Required if type is "Managed". |
 
 
-### Parameter Usage: [`typeProperties`](https://learn.microsoft.com/en-us/azure/templates/microsoft.datafactory/factories/integrationruntimes?tabs=bicep#integrationruntime-objects)
+## Outputs
+
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `name` | string | The name of the Integration Runtime. |
+| `resourceGroupName` | string | The name of the Resource Group the Integration Runtime was created in. |
+| `resourceId` | string | The resource ID of the Integration Runtime. |
+
+## Cross-referenced modules
+
+_None_
+
+## Notes
+
+### Parameter Usage: `typeProperties`
 
 <details>
 
@@ -69,15 +84,3 @@ typeProperties: {
 
 <details>
 <p>
-
-## Outputs
-
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `name` | string | The name of the Integration Runtime. |
-| `resourceGroupName` | string | The name of the Resource Group the Integration Runtime was created in. |
-| `resourceId` | string | The resource ID of the Integration Runtime. |
-
-## Cross-referenced modules
-
-_None_

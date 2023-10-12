@@ -8,6 +8,7 @@ This module deploys a Data Factory Managed Virtual Network.
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
+- [Notes](#Notes)
 
 ## Resource types
 
@@ -37,6 +38,20 @@ This module deploys a Data Factory Managed Virtual Network.
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `managedPrivateEndpoints` | array | `[]` | An array of managed private endpoints objects created in the Data Factory managed virtual network. |
 
+
+## Outputs
+
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `name` | string | The name of the Managed Virtual Network. |
+| `resourceGroupName` | string | The name of the Resource Group the Managed Virtual Network was created in. |
+| `resourceId` | string | The resource ID of the Managed Virtual Network. |
+
+## Cross-referenced modules
+
+_None_
+
+## Notes
 
 ### Parameter Usage: `managedPrivateEndpoints`
 
@@ -86,15 +101,3 @@ managedPrivateEndpoints:  [
 
 </details>
 <p>
-
-## Outputs
-
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `name` | string | The name of the Managed Virtual Network. |
-| `resourceGroupName` | string | The name of the Resource Group the Managed Virtual Network was created in. |
-| `resourceId` | string | The resource ID of the Managed Virtual Network. |
-
-## Cross-referenced modules
-
-_None_
