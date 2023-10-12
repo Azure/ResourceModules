@@ -109,11 +109,6 @@ This module deploys a Storage Account.
 | `resourceId` | string | The resource ID of the deployed storage account. |
 | `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
 
-## Considerations
-
-This is a generic module for deploying a Storage Account. Any customization for different storage needs (such as a diagnostic or other storage account) need to be done through the Archetype.
-The hierarchical namespace of the storage account (see parameter `enableHierarchicalNamespace`), can be only set at creation time.
-
 ## Cross-referenced modules
 
 This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
@@ -1087,6 +1082,11 @@ module storageAccount './storage/storage-account/main.bicep' = {
 <p>
 
 ## Notes
+
+## Considerations
+
+This is a generic module for deploying a Storage Account. Any customization for different storage needs (such as a diagnostic or other storage account) need to be done through the Archetype.
+The hierarchical namespace of the storage account (see parameter `enableHierarchicalNamespace`), can be only set at creation time.
 
 ### Parameter Usage: `roleAssignments`
 
