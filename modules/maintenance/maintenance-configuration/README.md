@@ -42,143 +42,6 @@ This module deploys a Maintenance Configuration.
 | `tags` | object | `{object}` |  | Gets or sets tags of the resource. |
 | `visibility` | string | `''` | `['', Custom, Public]` | Gets or sets the visibility of the configuration. The default value is 'Custom'. |
 
-
-### Parameter Usage: `maintenanceWindow`
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```JSON
-"maintenanceWindow": {
-    "value": {
-        "duration": "05:00",
-        "expirationDateTime": "9999-12-31 23:59:59",
-        "recurEvery": "Day",
-        "startDateTime": "2022-12-31 13:00",
-        "timeZone": "W. Europe Standard Time"
-    }
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-maintenanceWindow: {
-    duration: '05:00'
-    expirationDateTime: '9999-12-31 23:59:59'
-    recurEvery: 'Day'
-    startDateTime: '2022-12-31 13:00'
-    timeZone: 'W. Europe Standard Time'
-}
-```
-
-</details>
-
-### Parameter Usage: `roleAssignments`
-
-Create a role assignment for the given resource. If you want to assign a service principal / managed identity that is created in the same deployment, make sure to also specify the `'principalType'` parameter and set it to `'ServicePrincipal'`. This will ensure the role assignment waits for the principal's propagation in Azure.
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"roleAssignments": {
-    "value": [
-        {
-            "roleDefinitionIdOrName": "Reader",
-            "description": "Reader Role Assignment",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012", // object 1
-                "78945612-1234-1234-1234-123456789012" // object 2
-            ]
-        },
-        {
-            "roleDefinitionIdOrName": "/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012" // object 1
-            ],
-            "principalType": "ServicePrincipal"
-        }
-    ]
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-roleAssignments: [
-    {
-        roleDefinitionIdOrName: 'Reader'
-        description: 'Reader Role Assignment'
-        principalIds: [
-            '12345678-1234-1234-1234-123456789012' // object 1
-            '78945612-1234-1234-1234-123456789012' // object 2
-        ]
-    }
-    {
-        roleDefinitionIdOrName: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'
-        principalIds: [
-            '12345678-1234-1234-1234-123456789012' // object 1
-        ]
-        principalType: 'ServicePrincipal'
-    }
-]
-```
-
-</details>
-<p>
-
-### Parameter Usage: `tags`
-
-Tag names and tag values can be provided as needed. A tag can be left without a value.
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"tags": {
-    "value": {
-        "Environment": "Non-Prod",
-        "Contact": "test.user@testcompany.com",
-        "PurchaseOrder": "1234",
-        "CostCenter": "7890",
-        "ServiceName": "DeploymentValidation",
-        "Role": "DeploymentValidation"
-    }
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-tags: {
-    Environment: 'Non-Prod'
-    Contact: 'test.user@testcompany.com'
-    PurchaseOrder: '1234'
-    CostCenter: '7890'
-    ServiceName: 'DeploymentValidation'
-    Role: 'DeploymentValidation'
-}
-```
-
-</details>
-<p>
-
 ## Outputs
 
 | Output Name | Type | Description |
@@ -385,6 +248,108 @@ module maintenanceConfiguration './maintenance/maintenance-configuration/main.bi
       "value": "<enableDefaultTelemetry>"
     }
   }
+}
+```
+
+</details>
+<p>
+
+## Notes
+
+### Parameter Usage: `roleAssignments`
+
+Create a role assignment for the given resource. If you want to assign a service principal / managed identity that is created in the same deployment, make sure to also specify the `'principalType'` parameter and set it to `'ServicePrincipal'`. This will ensure the role assignment waits for the principal's propagation in Azure.
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"roleAssignments": {
+    "value": [
+        {
+            "roleDefinitionIdOrName": "Reader",
+            "description": "Reader Role Assignment",
+            "principalIds": [
+                "12345678-1234-1234-1234-123456789012", // object 1
+                "78945612-1234-1234-1234-123456789012" // object 2
+            ]
+        },
+        {
+            "roleDefinitionIdOrName": "/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11",
+            "principalIds": [
+                "12345678-1234-1234-1234-123456789012" // object 1
+            ],
+            "principalType": "ServicePrincipal"
+        }
+    ]
+}
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+roleAssignments: [
+    {
+        roleDefinitionIdOrName: 'Reader'
+        description: 'Reader Role Assignment'
+        principalIds: [
+            '12345678-1234-1234-1234-123456789012' // object 1
+            '78945612-1234-1234-1234-123456789012' // object 2
+        ]
+    }
+    {
+        roleDefinitionIdOrName: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'
+        principalIds: [
+            '12345678-1234-1234-1234-123456789012' // object 1
+        ]
+        principalType: 'ServicePrincipal'
+    }
+]
+```
+
+</details>
+<p>
+
+### Parameter Usage: `tags`
+
+Tag names and tag values can be provided as needed. A tag can be left without a value.
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"tags": {
+    "value": {
+        "Environment": "Non-Prod",
+        "Contact": "test.user@testcompany.com",
+        "PurchaseOrder": "1234",
+        "CostCenter": "7890",
+        "ServiceName": "DeploymentValidation",
+        "Role": "DeploymentValidation"
+    }
+}
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+tags: {
+    Environment: 'Non-Prod'
+    Contact: 'test.user@testcompany.com'
+    PurchaseOrder: '1234'
+    CostCenter: '7890'
+    ServiceName: 'DeploymentValidation'
+    Role: 'DeploymentValidation'
 }
 ```
 
