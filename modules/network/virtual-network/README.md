@@ -55,291 +55,6 @@ This module deploys a Virtual Network (vNet).
 | `vnetEncryption` | bool | `False` |  | Indicates if encryption is enabled on virtual network and if VM without encryption is allowed in encrypted VNet. Requires the EnableVNetEncryption feature to be registered for the subscription and a supported region to use this property. |
 | `vnetEncryptionEnforcement` | string | `'AllowUnencrypted'` | `[AllowUnencrypted, DropUnencrypted]` | If the encrypted VNet allows VM that does not support encryption. Can only be used when vnetEncryption is enabled. |
 
-
-### Parameter Usage: `subnets`
-
-Below you can find an example for the subnet property's usage. For all remaining properties, please refer to the _[subnet](subnet/README.md)_ readme.
-
-<details>
-
-<summary>Template JSON format</summary>
-
-```json
-"subnets": {
-    "value": [
-        {
-            "name": "GatewaySubnet",
-            "addressPrefix": "10.0.255.0/24"
-        },
-        {
-            "name": "[[namePrefix]]-az-subnet-x-001",
-            "addressPrefix": "10.0.0.0/24",
-            "networkSecurityGroupId": "/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/networkSecurityGroups/adp-[[namePrefix]]-az-nsg-x-001",
-            "serviceEndpoints": [
-                {
-                    "service": "Microsoft.Storage"
-                },
-                {
-                    "service": "Microsoft.Sql"
-                }
-            ],
-            "routeTableId": "/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/routeTables/adp-[[namePrefix]]-az-udr-x-001",
-            "delegations": [
-                {
-                    "name": "netappDel",
-                    "properties": {
-                        "serviceName": "Microsoft.Netapp/volumes"
-                    }
-                }
-            ],
-            "privateEndpointNetworkPolicies": "Disabled",
-            "privateLinkServiceNetworkPolicies": "Enabled"
-        }
-    ]
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-subnets: [
-    {
-        name: 'GatewaySubnet'
-        addressPrefix: '10.0.255.0/24'
-    }
-    {
-        name: '[[namePrefix]]-az-subnet-x-001'
-        addressPrefix: '10.0.0.0/24'
-        networkSecurityGroupId: '/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/networkSecurityGroups/adp-[[namePrefix]]-az-nsg-x-001'
-        serviceEndpoints: [
-            {
-                service: 'Microsoft.Storage'
-            }
-            {
-                service: 'Microsoft.Sql'
-            }
-        ]
-        routeTableId: '/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/routeTables/adp-[[namePrefix]]-az-udr-x-001'
-        delegations: [
-            {
-                name: 'netappDel'
-                properties: {
-                    serviceName: 'Microsoft.Netapp/volumes'
-                }
-            }
-        ]
-        privateEndpointNetworkPolicies: 'Disabled'
-        privateLinkServiceNetworkPolicies: 'Enabled'
-    }
-]
-```
-
-</details>
-<p>
-
-### Parameter Usage: `virtualNetworkPeerings`
-
-As the virtual network peering array allows you to deploy not only a one-way but also two-way peering (i.e reverse), you can use the following ***additional*** properties on top of what is documented in _[virtualNetworkPeering](virtual-network-peering/README.md)_.
-
-| Parameter Name | Type | Default Value | Possible Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `remotePeeringEnabled` | bool | `false` |  | Optional. Set to true to also deploy the reverse peering for the configured remote virtual networks to the local network |
-| `remotePeeringName` | string | `'${last(split(peering.remoteVirtualNetworkId, '/'))}-${name}'` | | Optional. The Name of Vnet Peering resource. If not provided, default value will be <remoteVnetName>-<localVnetName> |
-| `remotePeeringAllowForwardedTraffic` | bool | `true` | | Optional. Whether the forwarded traffic from the VMs in the local virtual network will be allowed/disallowed in remote virtual network. |
-| `remotePeeringAllowGatewayTransit` | bool | `false` | | Optional. If gateway links can be used in remote virtual networking to link to this virtual network. |
-| `remotePeeringAllowVirtualNetworkAccess` | bool | `true` | | Optional. Whether the VMs in the local virtual network space would be able to access the VMs in remote virtual network space. |
-| `remotePeeringDoNotVerifyRemoteGateways` | bool | `true` | | Optional. If we need to verify the provisioning state of the remote gateway. |
-| `remotePeeringUseRemoteGateways` | bool | `false` | |  Optional. If remote gateways can be used on this virtual network. If the flag is set to `true`, and allowGatewayTransit on local peering is also `true`, virtual network will use gateways of local virtual network for transit. Only one peering can have this flag set to `true`. This flag cannot be set if virtual network already has a gateway.  |
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"virtualNetworkPeerings": {
-    "value": [
-        {
-            "remoteVirtualNetworkId": "/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-[[namePrefix]]-az-vnet-x-peer01",
-            "allowForwardedTraffic": true,
-            "allowGatewayTransit": false,
-            "allowVirtualNetworkAccess": true,
-            "useRemoteGateways": false,
-            "remotePeeringEnabled": true,
-            "remotePeeringName": "customName",
-            "remotePeeringAllowVirtualNetworkAccess": true,
-            "remotePeeringAllowForwardedTraffic": true
-        }
-    ]
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-virtualNetworkPeerings: [
-    {
-        remoteVirtualNetworkId: '/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-[[namePrefix]]-az-vnet-x-peer01'
-        allowForwardedTraffic: true
-        allowGatewayTransit: false
-        allowVirtualNetworkAccess: true
-        useRemoteGateways: false
-        remotePeeringEnabled: true
-        remotePeeringName: 'customName'
-        remotePeeringAllowVirtualNetworkAccess: true
-        remotePeeringAllowForwardedTraffic: true
-    }
-]
-```
-
-</details>
-<p>
-
-### Parameter Usage: `addressPrefixes`
-
-The `addressPrefixes` parameter accepts a JSON Array of string values containing the IP Address Prefixes for the Virtual Network (vNet).
-
-Here's an example of specifying a single Address Prefix:
-
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"addressPrefixes": {
-    "value": [
-        "10.1.0.0/16"
-    ]
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-addressPrefixes: [
-    '10.1.0.0/16'
-]
-```
-
-</details>
-<p>
-
-### Parameter Usage: `roleAssignments`
-
-Create a role assignment for the given resource. If you want to assign a service principal / managed identity that is created in the same deployment, make sure to also specify the `'principalType'` parameter and set it to `'ServicePrincipal'`. This will ensure the role assignment waits for the principal's propagation in Azure.
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"roleAssignments": {
-    "value": [
-        {
-            "roleDefinitionIdOrName": "Reader",
-            "description": "Reader Role Assignment",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012", // object 1
-                "78945612-1234-1234-1234-123456789012" // object 2
-            ]
-        },
-        {
-            "roleDefinitionIdOrName": "/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012" // object 1
-            ],
-            "principalType": "ServicePrincipal"
-        }
-    ]
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-roleAssignments: [
-    {
-        roleDefinitionIdOrName: 'Reader'
-        description: 'Reader Role Assignment'
-        principalIds: [
-            '12345678-1234-1234-1234-123456789012' // object 1
-            '78945612-1234-1234-1234-123456789012' // object 2
-        ]
-    }
-    {
-        roleDefinitionIdOrName: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'
-        principalIds: [
-            '12345678-1234-1234-1234-123456789012' // object 1
-        ]
-        principalType: 'ServicePrincipal'
-    }
-]
-```
-
-</details>
-<p>
-
-### Parameter Usage: `tags`
-
-Tag names and tag values can be provided as needed. A tag can be left without a value.
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"tags": {
-    "value": {
-        "Environment": "Non-Prod",
-        "Contact": "test.user@testcompany.com",
-        "PurchaseOrder": "1234",
-        "CostCenter": "7890",
-        "ServiceName": "DeploymentValidation",
-        "Role": "DeploymentValidation"
-    }
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-tags: {
-    Environment: 'Non-Prod'
-    Contact: 'test.user@testcompany.com'
-    PurchaseOrder: '1234'
-    CostCenter: '7890'
-    ServiceName: 'DeploymentValidation'
-    Role: 'DeploymentValidation'
-}
-```
-
-</details>
-<p>
-
-## Considerations
-
-The network security group and route table resources must reside in the same resource group as the virtual network.
-
 ## Outputs
 
 | Output Name | Type | Description |
@@ -737,3 +452,125 @@ module virtualNetwork './network/virtual-network/main.bicep' = {
 
 </details>
 <p>
+
+## Notes
+
+### Considerations
+
+The network security group and route table resources must reside in the same resource group as the virtual network.
+
+### Parameter Usage: `peerings`
+
+As the virtual network peering array allows you to deploy not only a one-way but also two-way peering (i.e reverse), you can use the following ***additional*** properties on top of what is documented in _[virtualNetworkPeering](virtual-network-peering/README.md)_.
+
+| Parameter Name | Type | Default Value | Possible Values | Description |
+| :-- | :-- | :-- | :-- | :-- |
+| `remotePeeringEnabled` | bool | `false` |  | Optional. Set to true to also deploy the reverse peering for the configured remote virtual networks to the local network |
+| `remotePeeringName` | string | `'${last(split(peering.remoteVirtualNetworkId, '/'))}-${name}'` | | Optional. The Name of Vnet Peering resource. If not provided, default value will be <remoteVnetName>-<localVnetName> |
+| `remotePeeringAllowForwardedTraffic` | bool | `true` | | Optional. Whether the forwarded traffic from the VMs in the local virtual network will be allowed/disallowed in remote virtual network. |
+| `remotePeeringAllowGatewayTransit` | bool | `false` | | Optional. If gateway links can be used in remote virtual networking to link to this virtual network. |
+| `remotePeeringAllowVirtualNetworkAccess` | bool | `true` | | Optional. Whether the VMs in the local virtual network space would be able to access the VMs in remote virtual network space. |
+| `remotePeeringDoNotVerifyRemoteGateways` | bool | `true` | | Optional. If we need to verify the provisioning state of the remote gateway. |
+| `remotePeeringUseRemoteGateways` | bool | `false` | |  Optional. If remote gateways can be used on this virtual network. If the flag is set to `true`, and allowGatewayTransit on local peering is also `true`, virtual network will use gateways of local virtual network for transit. Only one peering can have this flag set to `true`. This flag cannot be set if virtual network already has a gateway.  |
+
+
+### Parameter Usage: `roleAssignments`
+
+Create a role assignment for the given resource. If you want to assign a service principal / managed identity that is created in the same deployment, make sure to also specify the `'principalType'` parameter and set it to `'ServicePrincipal'`. This will ensure the role assignment waits for the principal's propagation in Azure.
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"roleAssignments": {
+    "value": [
+        {
+            "roleDefinitionIdOrName": "Reader",
+            "description": "Reader Role Assignment",
+            "principalIds": [
+                "12345678-1234-1234-1234-123456789012", // object 1
+                "78945612-1234-1234-1234-123456789012" // object 2
+            ]
+        },
+        {
+            "roleDefinitionIdOrName": "/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11",
+            "principalIds": [
+                "12345678-1234-1234-1234-123456789012" // object 1
+            ],
+            "principalType": "ServicePrincipal"
+        }
+    ]
+}
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+roleAssignments: [
+    {
+        roleDefinitionIdOrName: 'Reader'
+        description: 'Reader Role Assignment'
+        principalIds: [
+            '12345678-1234-1234-1234-123456789012' // object 1
+            '78945612-1234-1234-1234-123456789012' // object 2
+        ]
+    }
+    {
+        roleDefinitionIdOrName: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'
+        principalIds: [
+            '12345678-1234-1234-1234-123456789012' // object 1
+        ]
+        principalType: 'ServicePrincipal'
+    }
+]
+```
+
+</details>
+<p>
+
+### Parameter Usage: `tags`
+
+Tag names and tag values can be provided as needed. A tag can be left without a value.
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"tags": {
+    "value": {
+        "Environment": "Non-Prod",
+        "Contact": "test.user@testcompany.com",
+        "PurchaseOrder": "1234",
+        "CostCenter": "7890",
+        "ServiceName": "DeploymentValidation",
+        "Role": "DeploymentValidation"
+    }
+}
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+tags: {
+    Environment: 'Non-Prod'
+    Contact: 'test.user@testcompany.com'
+    PurchaseOrder: '1234'
+    CostCenter: '7890'
+    ServiceName: 'DeploymentValidation'
+    Role: 'DeploymentValidation'
+}
+```
+
+</details>
+<p>
+
