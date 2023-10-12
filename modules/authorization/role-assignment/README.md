@@ -6,11 +6,10 @@ This module deploys a Role Assignment at a Management Group, Subscription or Res
 
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
-- [Module Usage Guidance](#Module-Usage-Guidance)
 - [Outputs](#Outputs)
-- [Considerations](#Considerations)
 - [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
+- [Notes](#Notes)
 
 ## Resource types
 
@@ -41,6 +40,7 @@ This module deploys a Role Assignment at a Management Group, Subscription or Res
 | `principalType` | string | `''` | `['', Device, ForeignGroup, Group, ServicePrincipal, User]` | The principal type of the assigned principal ID. |
 | `resourceGroupName` | string | `''` |  | Name of the Resource Group to assign the RBAC role to. If Resource Group name is provided, and Subscription ID is provided, the module deploys at resource group level, therefore assigns the provided RBAC role to the resource group. |
 | `subscriptionId` | string | `''` |  | Subscription ID of the subscription to assign the RBAC role to. If no Resource Group name is provided, the module deploys at subscription level, therefore assigns the provided RBAC role to the subscription. |
+
 
 ## Outputs
 
@@ -418,6 +418,7 @@ module roleAssignment './authorization/role-assignment/main.bicep' = {
 
 </details>
 <p>
+
 
 ## Notes
 

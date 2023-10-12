@@ -6,11 +6,11 @@ This module deploys a Policy Set Definition (Initiative) at a Management Group o
 
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
-- [Module Usage Guidance](#Module-Usage-Guidance)
 - [Outputs](#Outputs)
-- [Considerations](#Considerations)
 - [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
+- [Notes](#Notes)
+- [Module Pre-requisites](#Module-Pre-requisites)
 
 ## Resource types
 
@@ -40,6 +40,7 @@ This module deploys a Policy Set Definition (Initiative) at a Management Group o
 | `parameters` | object | `{object}` | The Set Definition (Initiative) parameters that can be used in policy definition references. |
 | `policyDefinitionGroups` | array | `[]` | The metadata describing groups of policy definition references within the Policy Set Definition (Initiative). |
 | `subscriptionId` | string | `''` | The subscription ID of the subscription (Scope). Cannot be used with managementGroupId. |
+
 
 ## Outputs
 
@@ -486,6 +487,7 @@ module policySetDefinition './authorization/policy-set-definition/main.bicep' = 
 
 </details>
 <p>
+
 
 ## Notes
 

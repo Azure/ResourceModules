@@ -6,10 +6,10 @@ This module deploys a Policy Assignment at a Management Group, Subscription or R
 
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
-- [Module Usage Guidance](#Module-Usage-Guidance)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
+- [Notes](#Notes)
 
 ## Resource types
 
@@ -48,6 +48,7 @@ This module deploys a Policy Assignment at a Management Group, Subscription or R
 | `roleDefinitionIds` | array | `[]` |  | The IDs Of the Azure Role Definition list that is used to assign permissions to the identity. You need to provide either the fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.. See https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles for the list IDs for built-in Roles. They must match on what is on the policy definition. |
 | `subscriptionId` | string | `''` |  | The Target Scope for the Policy. The subscription ID of the subscription for the policy assignment. |
 | `userAssignedIdentityId` | string | `''` |  | The Resource ID for the user assigned identity to assign to the policy assignment. |
+
 
 ## Outputs
 
@@ -872,6 +873,7 @@ module policyAssignment './authorization/policy-assignment/main.bicep' = {
 
 </details>
 <p>
+
 
 ## Notes
 

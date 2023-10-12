@@ -6,10 +6,10 @@ This module deploys a Policy Definition at a Management Group or Subscription sc
 
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
-- [Module Usage Guidance](#Module-Usage-Guidance)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
+- [Notes](#Notes)
 
 ## Resource types
 
@@ -39,6 +39,7 @@ This module deploys a Policy Definition at a Management Group or Subscription sc
 | `mode` | string | `'All'` | `[All, Indexed, Microsoft.ContainerService.Data, Microsoft.KeyVault.Data, Microsoft.Kubernetes.Data, Microsoft.Network.Data]` | The policy definition mode. Default is All, Some examples are All, Indexed, Microsoft.KeyVault.Data. |
 | `parameters` | object | `{object}` |  | The policy definition parameters that can be used in policy definition references. |
 | `subscriptionId` | string | `''` |  | The subscription ID of the subscription (Scope). Cannot be used with managementGroupId. |
+
 
 ## Outputs
 
@@ -554,6 +555,7 @@ module policyDefinition './authorization/policy-definition/main.bicep' = {
 
 </details>
 <p>
+
 
 ## Notes
 

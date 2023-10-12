@@ -6,11 +6,10 @@ This module deploys a Policy Exemption at a Management Group, Subscription or Re
 
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
-- [Module Usage Guidance](#Module-Usage-Guidance)
 - [Outputs](#Outputs)
-- [Considerations](#Considerations)
 - [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
+- [Notes](#Notes)
 
 ## Resource types
 
@@ -44,6 +43,7 @@ This module deploys a Policy Exemption at a Management Group, Subscription or Re
 | `resourceGroupName` | string | `''` |  | The name of the resource group to be exempted from the policy assignment. Must also use the subscription ID parameter. |
 | `resourceSelectors` | array | `[]` |  | The resource selector list to filter policies by resource properties. |
 | `subscriptionId` | string | `''` |  | The subscription ID of the subscription to be exempted from the policy assignment. Cannot use with management group ID parameter. |
+
 
 ## Outputs
 
@@ -549,6 +549,7 @@ module policyExemption './authorization/policy-exemption/main.bicep' = {
 
 </details>
 <p>
+
 
 ## Notes
 

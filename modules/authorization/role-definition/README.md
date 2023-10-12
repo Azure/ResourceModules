@@ -6,11 +6,10 @@ This module deploys a Role Definition at a Management Group, Subscription or Res
 
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
-- [Module Usage Guidance](#Module-Usage-Guidance)
 - [Outputs](#Outputs)
-- [Considerations](#Considerations)
 - [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
+- [Notes](#Notes)
 
 ## Resource types
 
@@ -41,6 +40,7 @@ This module deploys a Role Definition at a Management Group, Subscription or Res
 | `notDataActions` | array | `[]` | List of denied data actions. This is not supported if the assignableScopes contains Management Group Scopes. |
 | `resourceGroupName` | string | `''` | The name of the Resource Group where the Role Definition and Target Scope will be applied to. |
 | `subscriptionId` | string | `''` | The subscription ID where the Role Definition and Target Scope will be applied to. Use for both Subscription level and Resource Group Level. |
+
 
 ## Outputs
 
@@ -498,6 +498,7 @@ module roleDefinition './authorization/role-definition/main.bicep' = {
 
 </details>
 <p>
+
 
 ## Notes
 
