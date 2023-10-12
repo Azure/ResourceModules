@@ -26,14 +26,14 @@ param deadLetterUri string = ''
 @secure()
 param connectionStringPrimaryKey string = ''
 
-@description('Optional. SecondaryConnectionString of the endpoint for key-based authentication. Will be obfuscated during read.')
+@description('Optional. SecondaryConnectionString of the endpoint for key-based authentication. Will be obfuscated during read. Only used if the `authenticationType` is "KeyBased".')
 @secure()
 param connectionStringSecondaryKey string = ''
 
 @description('Optional. The EventHub name in the EventHub namespace for identity-based authentication.')
 param entityPath string = ''
 
-@description('Optional. The URL of the EventHub namespace for identity-based authentication. It must include the protocol \'sb://\'.')
+@description('Optional. The URL of the EventHub namespace for identity-based authentication. It must include the protocol \'sb://\' (i.e. sb://xyz.servicebus.windows.net).')
 param endpointUri string = ''
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')

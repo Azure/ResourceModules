@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.20.4.51522",
-      "templateHash": "10898754622351027742"
+      "version": "0.22.6.54827",
+      "templateHash": "1200386987193874100"
     },
     "name": "Digital Twins Instance EventHub Endpoint",
     "description": "This module deploys a Digital Twins Instance EventHub Endpoint.",
@@ -61,7 +61,7 @@
       "type": "securestring",
       "defaultValue": "",
       "metadata": {
-        "description": "Optional. SecondaryConnectionString of the endpoint for key-based authentication. Will be obfuscated during read."
+        "description": "Optional. SecondaryConnectionString of the endpoint for key-based authentication. Will be obfuscated during read. Only used if the `authenticationType` is \"KeyBased\"."
       }
     },
     "entityPath": {
@@ -75,7 +75,7 @@
       "type": "string",
       "defaultValue": "",
       "metadata": {
-        "description": "Optional. The URL of the EventHub namespace for identity-based authentication. It must include the protocol 'sb://'."
+        "description": "Optional. The URL of the EventHub namespace for identity-based authentication. It must include the protocol 'sb://' (i.e. sb://xyz.servicebus.windows.net)."
       }
     },
     "enableDefaultTelemetry": {
