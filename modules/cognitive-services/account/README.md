@@ -173,117 +173,6 @@ privateEndpoints:  [
 </details>
 <p>
 
-### Parameter Usage: `encryption`
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-// With customer-managed key
-"encryption": {
-    "value": {
-        "keySource": "Microsoft.KeyVault",
-        "keyVaultProperties": {
-            "identityClientId": "12345678-1234-1234-1234-123456789012", // ID must be updated for new identity
-            "keyVaultUri": "https://adp-[[namePrefix]]-az-kv-nopr-002.vault.azure.net/",
-            "keyName": "keyEncryptionKey",
-            "keyversion": "1111111111111111111111111111111" // Version must be updated for new keys
-        }
-    }
-}
-// With service-managed key
-"encryption": {
-    "value": {
-        "keySource": "Microsoft.CognitiveServices"
-    }
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-// With customer managed key
-encryption: {
-    keySource: 'Microsoft.KeyVault'
-    keyVaultProperties: {
-        identityClientId: '12345678-1234-1234-1234-123456789012' // ID must be updated for new identity
-        keyVaultUri: 'https://adp-[[namePrefix]]-az-kv-nopr-002.vault.azure.net/'
-        keyName: 'keyEncryptionKey'
-        keyversion: '1111111111111111111111111111111' // Version must be updated for new keys
-    }
-}
-// With service-managed key
-encryption: {
-    keySource: 'Microsoft.CognitiveServices'
-}
-```
-
-</details>
-<p>
-### Parameter Usage: `roleAssignments`
-
-Create a role assignment for the given resource. If you want to assign a service principal / managed identity that is created in the same deployment, make sure to also specify the `'principalType'` parameter and set it to `'ServicePrincipal'`. This will ensure the role assignment waits for the principal's propagation in Azure.
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"roleAssignments": {
-    "value": [
-        {
-            "roleDefinitionIdOrName": "Reader",
-            "description": "Reader Role Assignment",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012", // object 1
-                "78945612-1234-1234-1234-123456789012" // object 2
-            ]
-        },
-        {
-            "roleDefinitionIdOrName": "/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012" // object 1
-            ],
-            "principalType": "ServicePrincipal"
-        }
-    ]
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-roleAssignments: [
-    {
-        roleDefinitionIdOrName: 'Reader'
-        description: 'Reader Role Assignment'
-        principalIds: [
-            '12345678-1234-1234-1234-123456789012' // object 1
-            '78945612-1234-1234-1234-123456789012' // object 2
-        ]
-    }
-    {
-        roleDefinitionIdOrName: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'
-        principalIds: [
-            '12345678-1234-1234-1234-123456789012' // object 1
-        ]
-        principalType: 'ServicePrincipal'
-    }
-]
-```
-
-</details>
-<p>
-
 ### Parameter Usage: `tags`
 
 Tag names and tag values can be provided as needed. A tag can be left without a value.
@@ -319,63 +208,6 @@ tags: {
     CostCenter: '7890'
     ServiceName: 'DeploymentValidation'
     Role: 'DeploymentValidation'
-}
-```
-
-</details>
-<p>
-
-### Parameter Usage: `networkAcls`
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"networkAcls": {
-  "value": {
-    "defaultAction": "Deny",
-    "virtualNetworkRules": [
-      {
-        "id": "/subscriptions/<subscription-ID>/resourceGroups/resourceGroup/providers/Microsoft.Network/virtualNetworks/<vnet-name>/subnets/<subnet-name>",
-        "ignoreMissingVnetServiceEndpoint": false
-      }
-    ],
-    "ipRules": [
-      {
-        "value": "1.1.1.1"
-      },
-      {
-        "value": "<IP address or CIDR>"
-      }
-    ]
-  }
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-networkAcls: {
-    defaultAction: 'Deny'
-    virtualNetworkRules: [
-        {
-            id: '/subscriptions/<subscription-ID>/resourceGroups/resourceGroup/providers/Microsoft.Network/virtualNetworks/<vnet-name>/subnets/<subnet-name>'
-            ignoreMissingVnetServiceEndpoint: false
-        }
-    ]
-    ipRules: [
-        {
-            value: '1.1.1.1'
-        }
-        {
-            value: '<IP address or CIDR>'
-        }
-    ]
 }
 ```
 
@@ -425,11 +257,6 @@ userAssignedIdentities: {
 | `resourceGroupName` | string | The resource group the cognitive services account was deployed into. |
 | `resourceId` | string | The resource ID of the cognitive services account. |
 | `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
-
-## Considerations
-
-- Not all combinations of parameters `kind` and `SKU` are valid and they may vary in different Azure Regions. Please use PowerShell cmdlet `Get-AzCognitiveServicesAccountSku` or another methods to determine valid values in your region.
-- Not all kinds of Cognitive Services support virtual networks. Please visit the link below to determine supported services.
 
 ## Cross-referenced modules
 
@@ -870,6 +697,181 @@ module account './cognitive-services/account/main.bicep' = {
       }
     }
   }
+}
+```
+
+</details>
+<p>
+
+## Notes
+
+### Considerations
+
+- Not all combinations of parameters `kind` and `SKU` are valid and they may vary in different Azure Regions. Please use PowerShell cmdlet `Get-AzCognitiveServicesAccountSku` or another methods to determine valid values in your region.
+- Not all kinds of Cognitive Services support virtual networks. Please visit the link below to determine supported services.
+
+### Parameter Usage: `encryption`
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+// With customer-managed key
+"encryption": {
+    "value": {
+        "keySource": "Microsoft.KeyVault",
+        "keyVaultProperties": {
+            "identityClientId": "12345678-1234-1234-1234-123456789012", // ID must be updated for new identity
+            "keyVaultUri": "https://adp-[[namePrefix]]-az-kv-nopr-002.vault.azure.net/",
+            "keyName": "keyEncryptionKey",
+            "keyversion": "1111111111111111111111111111111" // Version must be updated for new keys
+        }
+    }
+}
+// With service-managed key
+"encryption": {
+    "value": {
+        "keySource": "Microsoft.CognitiveServices"
+    }
+}
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+// With customer managed key
+encryption: {
+    keySource: 'Microsoft.KeyVault'
+    keyVaultProperties: {
+        identityClientId: '12345678-1234-1234-1234-123456789012' // ID must be updated for new identity
+        keyVaultUri: 'https://adp-[[namePrefix]]-az-kv-nopr-002.vault.azure.net/'
+        keyName: 'keyEncryptionKey'
+        keyversion: '1111111111111111111111111111111' // Version must be updated for new keys
+    }
+}
+// With service-managed key
+encryption: {
+    keySource: 'Microsoft.CognitiveServices'
+}
+```
+
+</details>
+<p>
+### Parameter Usage: `roleAssignments`
+
+Create a role assignment for the given resource. If you want to assign a service principal / managed identity that is created in the same deployment, make sure to also specify the `'principalType'` parameter and set it to `'ServicePrincipal'`. This will ensure the role assignment waits for the principal's propagation in Azure.
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"roleAssignments": {
+    "value": [
+        {
+            "roleDefinitionIdOrName": "Reader",
+            "description": "Reader Role Assignment",
+            "principalIds": [
+                "12345678-1234-1234-1234-123456789012", // object 1
+                "78945612-1234-1234-1234-123456789012" // object 2
+            ]
+        },
+        {
+            "roleDefinitionIdOrName": "/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11",
+            "principalIds": [
+                "12345678-1234-1234-1234-123456789012" // object 1
+            ],
+            "principalType": "ServicePrincipal"
+        }
+    ]
+}
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+roleAssignments: [
+    {
+        roleDefinitionIdOrName: 'Reader'
+        description: 'Reader Role Assignment'
+        principalIds: [
+            '12345678-1234-1234-1234-123456789012' // object 1
+            '78945612-1234-1234-1234-123456789012' // object 2
+        ]
+    }
+    {
+        roleDefinitionIdOrName: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'
+        principalIds: [
+            '12345678-1234-1234-1234-123456789012' // object 1
+        ]
+        principalType: 'ServicePrincipal'
+    }
+]
+```
+
+</details>
+<p>
+
+### Parameter Usage: `networkAcls`
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"networkAcls": {
+  "value": {
+    "defaultAction": "Deny",
+    "virtualNetworkRules": [
+      {
+        "id": "/subscriptions/<subscription-ID>/resourceGroups/resourceGroup/providers/Microsoft.Network/virtualNetworks/<vnet-name>/subnets/<subnet-name>",
+        "ignoreMissingVnetServiceEndpoint": false
+      }
+    ],
+    "ipRules": [
+      {
+        "value": "1.1.1.1"
+      },
+      {
+        "value": "<IP address or CIDR>"
+      }
+    ]
+  }
+}
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+networkAcls: {
+    defaultAction: 'Deny'
+    virtualNetworkRules: [
+        {
+            id: '/subscriptions/<subscription-ID>/resourceGroups/resourceGroup/providers/Microsoft.Network/virtualNetworks/<vnet-name>/subnets/<subnet-name>'
+            ignoreMissingVnetServiceEndpoint: false
+        }
+    ]
+    ipRules: [
+        {
+            value: '1.1.1.1'
+        }
+        {
+            value: '<IP address or CIDR>'
+        }
+    ]
 }
 ```
 

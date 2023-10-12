@@ -49,119 +49,6 @@ This module deploys a Policy Assignment at a Management Group, Subscription or R
 | `subscriptionId` | string | `''` |  | The Target Scope for the Policy. The subscription ID of the subscription for the policy assignment. |
 | `userAssignedIdentityId` | string | `''` |  | The Resource ID for the user assigned identity to assign to the policy assignment. |
 
-
-### Parameter Usage: `managementGroupId`
-
-To deploy resource to a Management Group, provide the `managementGroupId` as an input parameter to the module.
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"managementGroupId": {
-    "value": "contoso-group"
-}
-```
-
-</details>
-
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-managementGroupId: 'contoso-group'
-```
-
-</details>
-<p>
-
-> `managementGroupId` is an optional parameter. If not provided, the deployment will use the management group defined in the current deployment scope (i.e. `managementGroup().name`).
-
-### Parameter Usage: `subscriptionId`
-
-To deploy resource to an Azure Subscription, provide the `subscriptionId` as an input parameter to the module. **Example**:
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"subscriptionId": {
-    "value": "12345678-b049-471c-95af-123456789012"
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-subscriptionId: '12345678-b049-471c-95af-123456789012'
-```
-
-</details>
-<p>
-
-### Parameter Usage: `resourceGroupName`
-
-To deploy resource to a Resource Group, provide the `subscriptionId` and `resourceGroupName` as an input parameter to the module. **Example**:
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"subscriptionId": {
-    "value": "12345678-b049-471c-95af-123456789012"
-},
-"resourceGroupName": {
-    "value": "target-resourceGroup"
-}
-```
-
-</details>
-
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-subscriptionId: '12345678-b049-471c-95af-123456789012'
-resourceGroupName: 'target-resourceGroup'
-```
-
-</details>
-<p>
-
-> The `subscriptionId` is used to enable deployment to a Resource Group Scope, allowing the use of the `resourceGroup()` function from a Management Group Scope. [Additional Details](https://github.com/Azure/bicep/pull/1420).
-
-## Module Usage Guidance
-
-In general, most of the resources under the `Microsoft.Authorization` namespace allows deploying resources at multiple scopes (management groups, subscriptions, resource groups). The `main.bicep` root module is simply an orchestrator module that targets sub-modules for different scopes as seen in the parameter usage section. All sub-modules for this namespace have folders that represent the target scope. For example, if the orchestrator module in the [root](main.bicep) needs to target 'subscription' level scopes. It will look at the relative path ['/subscription/main.bicep'](./subscription/main.bicep) and use this sub-module for the actual deployment, while still passing the same parameters from the root module.
-
-The above method is useful when you want to use a single point to interact with the module but rely on parameter combinations to achieve the target scope. But what if you want to incorporate this module in other modules with lower scopes? This would force you to deploy the module in scope `managementGroup` regardless and further require you to provide its ID with it. If you do not set the scope to management group, this would be the error that you can expect to face:
-
-```bicep
-Error BCP134: Scope "subscription" is not valid for this module. Permitted scopes: "managementGroup"
-```
-
-The solution is to have the option of directly targeting the sub-module that achieves the required scope. For example, if you have your own Bicep file wanting to create resources at the subscription level, and also use some of the modules from the `Microsoft.Authorization` namespace, then you can directly use the sub-module ['/subscription/main.bicep'](./subscription/main.bicep) as a path within your repository, or reference that same published module from the bicep registry. CARML also published the sub-modules so you would be able to reference it like the following:
-
-**Bicep Registry Reference**
-```bicep
-module policyassignment 'br:bicepregistry.azurecr.io/bicep/modules/authorization.policyassignments.subscription:version' = {}
-```
-**Local Path Reference**
-```bicep
-module policyassignment 'yourpath/module/Authorization.policyAssignments/subscription/main.bicep' = {}
-```
-
 ## Outputs
 
 | Output Name | Type | Description |
@@ -985,3 +872,117 @@ module policyAssignment './authorization/policy-assignment/main.bicep' = {
 
 </details>
 <p>
+
+## Notes
+
+### Module Usage Guidance
+
+In general, most of the resources under the `Microsoft.Authorization` namespace allows deploying resources at multiple scopes (management groups, subscriptions, resource groups). The `main.bicep` root module is simply an orchestrator module that targets sub-modules for different scopes as seen in the parameter usage section. All sub-modules for this namespace have folders that represent the target scope. For example, if the orchestrator module in the [root](main.bicep) needs to target 'subscription' level scopes. It will look at the relative path ['/subscription/main.bicep'](./subscription/main.bicep) and use this sub-module for the actual deployment, while still passing the same parameters from the root module.
+
+The above method is useful when you want to use a single point to interact with the module but rely on parameter combinations to achieve the target scope. But what if you want to incorporate this module in other modules with lower scopes? This would force you to deploy the module in scope `managementGroup` regardless and further require you to provide its ID with it. If you do not set the scope to management group, this would be the error that you can expect to face:
+
+```bicep
+Error BCP134: Scope "subscription" is not valid for this module. Permitted scopes: "managementGroup"
+```
+
+The solution is to have the option of directly targeting the sub-module that achieves the required scope. For example, if you have your own Bicep file wanting to create resources at the subscription level, and also use some of the modules from the `Microsoft.Authorization` namespace, then you can directly use the sub-module ['/subscription/main.bicep'](./subscription/main.bicep) as a path within your repository, or reference that same published module from the bicep registry. CARML also published the sub-modules so you would be able to reference it like the following:
+
+**Bicep Registry Reference**
+```bicep
+module policyassignment 'br:bicepregistry.azurecr.io/bicep/modules/authorization.policy-assignment.subscription:version' = {}
+```
+**Local Path Reference**
+```bicep
+module policyassignment 'yourpath/module/authorization/policy-assignment/subscription/main.bicep' = {}
+```
+
+### Parameter Usage: `managementGroupId`
+
+To deploy resource to a Management Group, provide the `managementGroupId` as an input parameter to the module.
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"managementGroupId": {
+    "value": "contoso-group"
+}
+```
+
+</details>
+
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+managementGroupId: 'contoso-group'
+```
+
+</details>
+<p>
+
+> `managementGroupId` is an optional parameter. If not provided, the deployment will use the management group defined in the current deployment scope (i.e. `managementGroup().name`).
+
+### Parameter Usage: `subscriptionId`
+
+To deploy resource to an Azure Subscription, provide the `subscriptionId` as an input parameter to the module. **Example**:
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"subscriptionId": {
+    "value": "12345678-b049-471c-95af-123456789012"
+}
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+subscriptionId: '12345678-b049-471c-95af-123456789012'
+```
+
+</details>
+<p>
+
+### Parameter Usage: `resourceGroupName`
+
+To deploy resource to a Resource Group, provide the `subscriptionId` and `resourceGroupName` as an input parameter to the module. **Example**:
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"subscriptionId": {
+    "value": "12345678-b049-471c-95af-123456789012"
+},
+"resourceGroupName": {
+    "value": "target-resourceGroup"
+}
+```
+
+</details>
+
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+subscriptionId: '12345678-b049-471c-95af-123456789012'
+resourceGroupName: 'target-resourceGroup'
+```
+
+</details>
+<p>
+
+> The `subscriptionId` is used to enable deployment to a Resource Group Scope, allowing the use of the `resourceGroup()` function from a Management Group Scope. [Additional Details](https://github.com/Azure/bicep/pull/1420).

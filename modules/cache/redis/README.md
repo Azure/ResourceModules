@@ -64,7 +64,6 @@ This module deploys a Redis Cache.
 | `zoneRedundant` | bool | `True` |  | When true, replicas will be provisioned in availability zones specified in the zones parameter. |
 | `zones` | array | `[]` |  | If the zoneRedundant parameter is true, replicas will be provisioned in the availability zones specified here. Otherwise, the service will choose where replicas are deployed. |
 
-
 ### Parameter Usage: `roleAssignments`
 
 Create a role assignment for the given resource. If you want to assign a service principal / managed identity that is created in the same deployment, make sure to also specify the `'principalType'` parameter and set it to `'ServicePrincipal'`. This will ensure the role assignment waits for the principal's propagation in Azure.
@@ -192,39 +191,6 @@ You can specify multiple user assigned identities to a resource by providing add
 userAssignedIdentities: {
     '/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
     '/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
-}
-```
-
-</details>
-<p>
-
-### Parameter Usage: `redisConfiguration`
-
-All Redis Settings. Few possible keys: rdb-backup-enabled,rdb-storage-connection-string,rdb-backup-frequency,maxmemory-delta,maxmemory-policy,notify-keyspace-events,maxmemory-samples,slowlog-log-slower-than,slowlog-max-len,list-max-ziplist-entries,list-max-ziplist-value,hash-max-ziplist-entries,hash-max-ziplist-value,set-max-intset-entries,zset-max-ziplist-entries,zset-max-ziplist-value etc..
-
-Name | Description | Value
----------|----------|---------
-aof-storage-connection-string-0 | First storage account connection string | string
-aof-storage-connection-string-1 | Second storage account connection string | string
-maxfragmentationmemory-reserved | Value in megabytes reserved for fragmentation per shard | string
-maxmemory-delta | Value in megabytes reserved for non-cache usage per shard e.g. failover. | string
-maxmemory-policy | The eviction strategy used when your data won't fit within its memory limit. | string
-maxmemory-reserved | Value in megabytes reserved for non-cache usage per shard e.g. failover. | string
-rdb-backup-enabled | Specifies whether the rdb backup is enabled | string
-rdb-backup-frequency | Specifies the frequency for creating rdb backup | string
-rdb-backup-max-snapshot-count | Specifies the maximum number of snapshots for rdb backup | string
-rdb-storage-connection-string | The storage account connection string for storing rdb file | string
-
-For more details visit [Microsoft.Cache redis reference](https://learn.microsoft.com/en-us/azure/templates/microsoft.cache/redis?tabs=bicep)
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-userAssignedIdentities: {
-    '/subscriptions/12345678-1234-1234-1234-123456789012/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
-    '/subscriptions/12345678-1234-1234-1234-123456789012/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
 }
 ```
 
@@ -556,6 +522,41 @@ module redis './cache/redis/main.bicep' = {
       "value": "<enableDefaultTelemetry>"
     }
   }
+}
+```
+
+</details>
+<p>
+
+## Notes
+
+### Parameter Usage: `redisConfiguration`
+
+All Redis Settings. Few possible keys: rdb-backup-enabled,rdb-storage-connection-string,rdb-backup-frequency,maxmemory-delta,maxmemory-policy,notify-keyspace-events,maxmemory-samples,slowlog-log-slower-than,slowlog-max-len,list-max-ziplist-entries,list-max-ziplist-value,hash-max-ziplist-entries,hash-max-ziplist-value,set-max-intset-entries,zset-max-ziplist-entries,zset-max-ziplist-value etc..
+
+Name | Description | Value
+---------|----------|---------
+aof-storage-connection-string-0 | First storage account connection string | string
+aof-storage-connection-string-1 | Second storage account connection string | string
+maxfragmentationmemory-reserved | Value in megabytes reserved for fragmentation per shard | string
+maxmemory-delta | Value in megabytes reserved for non-cache usage per shard e.g. failover. | string
+maxmemory-policy | The eviction strategy used when your data won't fit within its memory limit. | string
+maxmemory-reserved | Value in megabytes reserved for non-cache usage per shard e.g. failover. | string
+rdb-backup-enabled | Specifies whether the rdb backup is enabled | string
+rdb-backup-frequency | Specifies the frequency for creating rdb backup | string
+rdb-backup-max-snapshot-count | Specifies the maximum number of snapshots for rdb backup | string
+rdb-storage-connection-string | The storage account connection string for storing rdb file | string
+
+For more details visit [Microsoft.Cache redis reference](https://learn.microsoft.com/en-us/azure/templates/microsoft.cache/redis?tabs=bicep)
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+userAssignedIdentities: {
+    '/subscriptions/12345678-1234-1234-1234-123456789012/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
+    '/subscriptions/12345678-1234-1234-1234-123456789012/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
 }
 ```
 

@@ -190,37 +190,6 @@ tags: {
 </details>
 <p>
 
-### Parameter Usage: `apiManagementServicePolicy`
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"apiManagementServicePolicy": {
-    "value": {
-        "value":"<policies> <inbound> <rate-limit-by-key calls='250' renewal-period='60' counter-key='@(context.Request.IpAddress)' /> </inbound> <backend> <forward-request /> </backend> <outbound> </outbound> </policies>",
-        "format":"xml"
-    }
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-apiManagementServicePolicy: {
-    value:'<policies> <inbound> <rate-limit-by-key calls=\'250\' renewal-period='60' counter-key=\'@(context.Request.IpAddress)\' /> </inbound> <backend> <forward-request /> </backend> <outbound> </outbound> </policies>'
-    format:'xml'
-}
-```
-
-</details>
-<p>
-
 ### Parameter Usage: `userAssignedIdentities`
 
 You can specify multiple user assigned identities to a resource by providing additional resource IDs using the following format:
@@ -263,10 +232,6 @@ userAssignedIdentities: {
 | `resourceGroupName` | string | The resource group the API management service was deployed into. |
 | `resourceId` | string | The resource ID of the API management service. |
 | `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
-
-## Considerations
-
-- _None_
 
 ## Cross-referenced modules
 
@@ -821,3 +786,37 @@ module service './api-management/service/main.bicep' = {
 
 </details>
 <p>
+
+## Notes
+
+### Parameter Usage: `apiManagementServicePolicy`
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"apiManagementServicePolicy": {
+    "value": {
+        "value":"<policies> <inbound> <rate-limit-by-key calls='250' renewal-period='60' counter-key='@(context.Request.IpAddress)' /> </inbound> <backend> <forward-request /> </backend> <outbound> </outbound> </policies>",
+        "format":"xml"
+    }
+}
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+apiManagementServicePolicy: {
+    value:'<policies> <inbound> <rate-limit-by-key calls=\'250\' renewal-period='60' counter-key=\'@(context.Request.IpAddress)\' /> </inbound> <backend> <forward-request /> </backend> <outbound> </outbound> </policies>'
+    format:'xml'
+}
+```
+
+</details>
+<p>
+

@@ -342,7 +342,6 @@ module flexibleServer_firewallRules 'firewall-rule/main.bicep' = [for (firewallR
   ]
 }]
 
-@batchSize(1)
 module flexibleServer_configurations 'configuration/main.bicep' = [for (configuration, index) in configurations: {
   name: '${uniqueString(deployment().name, location)}-PostgreSQL-Configurations-${index}'
   params: {

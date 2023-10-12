@@ -40,38 +40,6 @@ This module deploys an API Management Service Named Value.
 | `tags` | array | `[]` | Tags that when provided can be used to filter the NamedValue list. - string. |
 | `value` | string | `[newGuid()]` | Value of the NamedValue. Can contain policy expressions. It may not be empty or consist only of whitespace. This property will not be filled on 'GET' operations! Use '/listSecrets' POST request to get the value. |
 
-
-### Parameter Usage: `keyVault`
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"keyVault": {
-    "value":{
-        "secretIdentifier":"Key vault secret identifier for fetching secret.",
-        "identityClientId":"SystemAssignedIdentity or UserAssignedIdentity Client ID which will be used to access key vault secret."
-    }
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-keyVault: {
-    secretIdentifier:'Key vault secret identifier for fetching secret.'
-    identityClientId:'SystemAssignedIdentity or UserAssignedIdentity Client ID which will be used to access key vault secret.'
-}
-```
-
-</details>
-<p>
-
 ### Parameter Usage: `tags`
 
 Tag names and tag values can be provided as needed. A tag can be left without a value.
@@ -124,3 +92,36 @@ tags: {
 ## Cross-referenced modules
 
 _None_
+
+## Notes
+
+### Parameter Usage: `keyVault`
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"keyVault": {
+    "value":{
+        "secretIdentifier":"Key vault secret identifier for fetching secret.",
+        "identityClientId":"SystemAssignedIdentity or UserAssignedIdentity Client ID which will be used to access key vault secret."
+    }
+}
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+keyVault: {
+    secretIdentifier:'Key vault secret identifier for fetching secret.'
+    identityClientId:'SystemAssignedIdentity or UserAssignedIdentity Client ID which will be used to access key vault secret.'
+}
+```
+
+</details>
+<p>

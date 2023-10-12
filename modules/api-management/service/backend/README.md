@@ -15,12 +15,6 @@ This module deploys an API Management Service Backend.
 | :-- | :-- |
 | `Microsoft.ApiManagement/service/backends` | [2021-08-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2021-08-01/service/backends) |
 
-### Resource dependency
-
-The following resources are required to be able to deploy this resource.
-
-- `Microsoft.ApiManagement/service`
-
 ## Parameters
 
 **Required parameters**
@@ -50,15 +44,19 @@ The following resources are required to be able to deploy this resource.
 | `title` | string | `''` | Backend Title. |
 | `tls` | object | `{object}` | Backend TLS Properties. |
 
+## Outputs
 
-### Parameter Usage: Credentials
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `name` | string | The name of the API management service backend. |
+| `resourceGroupName` | string | The resource group the API management service backend was deployed into. |
+| `resourceId` | string | The resource ID of the API management service backend. |
 
-| Parameter Name| Type | Default Value  | Possible values | Description |
-| :-- | :-- | :--- | :-- | :- |
-| `certificate` | array | | | Optional. List of Client Certificate Thumbprint. - string |
-| `query`  | object | | | Optional. Query Parameter description. |
-| `header` | object | | | Optional. Header Parameter description. |
-| `authorization` | object | | | Optional. Authorization header authentication |
+## Cross-referenced modules
+
+_None_
+
+## Notes
 
 ### Parameter Usage: `credentials`
 
@@ -135,15 +133,3 @@ tls: {
 
 </details>
 <p>
-
-## Outputs
-
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `name` | string | The name of the API management service backend. |
-| `resourceGroupName` | string | The resource group the API management service backend was deployed into. |
-| `resourceId` | string | The resource ID of the API management service backend. |
-
-## Cross-referenced modules
-
-_None_
