@@ -37,7 +37,7 @@ Attaching a compute is not idempotent and will fail in case you try to redeploy 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `computeLocation` | string | `[resourceGroup().location]` |  | Location for the underlying compute. Ignored when attaching a compute resource, i.e. when you provide a resource ID. |
-| `deployCompute` | bool | `True` |  | Flag to specify whether to deploy the compute. Required only for attach (i.e. providing a resource ID), as in this case the operation is not idempontent, i.e. a second deployment will fail. Therefore, this flag needs to be set to "false" as long as the compute resource exists. |
+| `deployCompute` | bool | `True` |  | Flag to specify whether to deploy the compute. Required only for attach (i.e. providing a resource ID), as in this case the operation is not idempotent, i.e. a second deployment will fail. Therefore, this flag needs to be set to "false" as long as the compute resource exists. |
 | `description` | string | `''` |  | The description of the Machine Learning compute. |
 | `disableLocalAuth` | bool | `False` |  | Opt-out of local authentication and ensure customers can use only MSI and AAD exclusively for authentication. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
@@ -49,38 +49,21 @@ Attaching a compute is not idempotent and will fail in case you try to redeploy 
 | `tags` | object | `{object}` |  | Contains resource tags defined as key-value pairs. Ignored when attaching a compute resource, i.e. when you provide a resource ID. |
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. Ignored when attaching a compute resource, i.e. when you provide a resource ID. |
 
+## Outputs
 
-### Parameter Usage: `properties`
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `location` | string | The location the resource was deployed into. |
+| `name` | string | The name of the compute. |
+| `resourceGroupName` | string | The resource group the compute was deployed into. |
+| `resourceId` | string | The resource ID of the compute. |
+| `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. Is null in case of attaching a compute resource, i.e. when you provide a resource ID. |
 
-Properties for the compute resource to create.
-Will be ignored in case a resource ID is provided.
+## Cross-referenced modules
 
-<details>
+_None_
 
-<summary>Parameter JSON format</summary>
-
-```json
-"properties": {
-    "value": {
-        // See https://learn.microsoft.com/en-us/azure/templates/microsoft.machinelearningservices/workspaces/computes?tabs=bicep#compute for the properties for the difference compute types
-    }
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-properties: {
-    // See https://learn.microsoft.com/en-us/azure/templates/microsoft.machinelearningservices/workspaces/computes?tabs=bicep#compute for the properties for the difference compute types
-}
-```
-
-</details>
-<p>
+## Notes
 
 ### Parameter Usage: `tags`
 
@@ -155,17 +138,3 @@ userAssignedIdentities: {
 
 </details>
 <p>
-
-## Outputs
-
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of the compute. |
-| `resourceGroupName` | string | The resource group the compute was deployed into. |
-| `resourceId` | string | The resource ID of the compute. |
-| `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. Is null in case of attaching a compute resource, i.e. when you provide a resource ID. |
-
-## Cross-referenced modules
-
-_None_
