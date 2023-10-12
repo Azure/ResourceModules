@@ -19,10 +19,6 @@ This module deploys a SQL Managed Instance Database.
 | `Microsoft.Sql/managedInstances/databases/backupLongTermRetentionPolicies` | [2022-02-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Sql/2022-02-01-preview/managedInstances/databases/backupLongTermRetentionPolicies) |
 | `Microsoft.Sql/managedInstances/databases/backupShortTermRetentionPolicies` | [2022-02-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Sql/2022-02-01-preview/managedInstances/databases/backupShortTermRetentionPolicies) |
 
-### Deployment prerequisites
-
-The SQL Managed Instance Database is deployed on a SQL Managed Instance.
-
 ## Parameters
 
 **Required parameters**
@@ -64,6 +60,20 @@ The SQL Managed Instance Database is deployed on a SQL Managed Instance.
 | `restorableDroppedDatabaseId` | string | `''` |  | The restorable dropped database resource ID to restore when creating this database. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 
+## Outputs
+
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `location` | string | The location the resource was deployed into. |
+| `name` | string | The name of the deployed database. |
+| `resourceGroupName` | string | The resource group the database was deployed into. |
+| `resourceId` | string | The resource ID of the deployed database. |
+
+## Cross-referenced modules
+
+_None_
+
+## Notes
 
 ### Parameter Usage: `tags`
 
@@ -105,16 +115,3 @@ tags: {
 
 </details>
 <p>
-
-## Outputs
-
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of the deployed database. |
-| `resourceGroupName` | string | The resource group the database was deployed into. |
-| `resourceId` | string | The resource ID of the deployed database. |
-
-## Cross-referenced modules
-
-_None_
