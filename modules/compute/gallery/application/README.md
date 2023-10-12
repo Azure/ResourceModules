@@ -8,6 +8,7 @@ This module deploys an Azure Compute Gallery Application.
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
+- [Notes](#Notes)
 
 ## Resource types
 
@@ -145,8 +146,6 @@ tags: {
 ```
 
 </details>
-<p>
-
 <p>
 
 ## Outputs

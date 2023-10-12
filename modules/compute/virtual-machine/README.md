@@ -6,10 +6,10 @@ This module deploys a Virtual Machine with one or multiple NICs and optionally o
 
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
-- [Considerations](#Considerations)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
+- [Notes](#Notes)
 
 ## Resource Types
 
@@ -114,6 +114,7 @@ This module deploys a Virtual Machine with one or multiple NICs and optionally o
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `baseTime` | string | `[utcNow('u')]` | Do not provide a value! This date value is used to generate a registration token. |
+
 
 ### Parameter Usage: `roleAssignments`
 
@@ -2079,6 +2080,7 @@ module virtualMachine './compute/virtual-machine/main.bicep' = {
 
 </details>
 <p>
+
 
 ## Notes
 
