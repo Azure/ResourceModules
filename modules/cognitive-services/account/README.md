@@ -73,8 +73,6 @@ This module deploys a Cognitive Service.
 | `userOwnedStorage` | array | `[]` |  | The storage accounts for this resource. |
 
 
-
-
 ## Outputs
 
 | Output Name | Type | Description |

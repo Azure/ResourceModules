@@ -39,8 +39,6 @@ This module deploys an Azure Databricks Access Connector.
 | `userAssignedIdentities` | object | `{object}` |  | The set of user assigned identities associated with the resource, the userAssignedIdentities dictionary keys will be ARM resource IDs and The dictionary values can be empty objects ({}) in requests. |
 
 
-
-
 ## Outputs
 
 | Output Name | Type | Description |

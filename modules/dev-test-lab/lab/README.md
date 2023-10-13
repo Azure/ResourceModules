@@ -71,8 +71,6 @@ This module deploys a DevTest Lab.
 | `vmCreationResourceGroupId` | string | `[resourceGroup().id]` |  | Resource Group allocation for virtual machines. If left empty, virtual machines will be deployed in their own Resource Groups. Default is the same Resource Group for DevTest Lab. |
 
 
-
-
 ## Outputs
 
 | Output Name | Type | Description |

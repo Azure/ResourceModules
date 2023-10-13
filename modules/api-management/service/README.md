@@ -90,8 +90,6 @@ This module deploys an API Management Service.
 | `zones` | array | `[]` |  | A list of availability zones denoting where the resource needs to come from. |
 
 
-
-
 ## Outputs
 
 | Output Name | Type | Description |

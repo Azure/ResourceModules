@@ -82,8 +82,6 @@ This module deploys a DBforPostgreSQL Flexible Server.
 | `version` | string | `'15'` | `[11, 12, 13, 14, 15]` | PostgreSQL Server version. |
 
 
-
-
 ## Outputs
 
 | Output Name | Type | Description |

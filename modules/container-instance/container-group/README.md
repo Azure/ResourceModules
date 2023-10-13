@@ -61,8 +61,6 @@ This module deploys a Container Instance Container Group.
 | `volumes` | array | `[]` |  | Specify if volumes (emptyDir, AzureFileShare or GitRepo) shall be attached to your containergroup. |
 
 
-
-
 ## Outputs
 
 | Output Name | Type | Description |

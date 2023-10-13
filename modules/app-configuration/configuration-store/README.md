@@ -58,8 +58,6 @@ This module deploys an App Configuration Store.
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
 
 
-
-
 ## Outputs
 
 | Output Name | Type | Description |

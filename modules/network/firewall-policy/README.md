@@ -55,8 +55,6 @@ This module deploys a Firewall Policy.
 | `workspaces` | array | `[]` |  | List of workspaces for Firewall Policy Insights. |
 
 
-
-
 ## Outputs
 
 | Output Name | Type | Description |

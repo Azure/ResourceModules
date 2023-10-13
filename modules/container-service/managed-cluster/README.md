@@ -140,8 +140,6 @@ This module deploys an Azure Kubernetes Service (AKS) Managed Cluster.
 | `webApplicationRoutingEnabled` | bool | `False` |  | Specifies whether the webApplicationRoutingEnabled add-on is enabled or not. |
 
 
-
-
 ## Outputs
 
 | Output Name | Type | Description |

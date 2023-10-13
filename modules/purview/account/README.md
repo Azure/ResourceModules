@@ -55,8 +55,6 @@ This module deploys a Purview Account.
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
 
 
-
-
 ## Outputs
 
 | Output Name | Type | Description |

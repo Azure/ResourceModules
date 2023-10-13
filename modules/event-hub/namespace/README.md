@@ -79,8 +79,6 @@ This module deploys an Event Hub Namespace.
 | `zoneRedundant` | bool | `False` |  | Switch to make the Event Hub Namespace zone redundant. |
 
 
-
-
 ## Outputs
 
 | Output Name | Type | Description |

@@ -64,8 +64,6 @@ This module deploys a Container App.
 | `workloadProfileType` | string | `''` |  | Workload profile type to pin for container app execution. |
 
 
-
-
 ## Outputs
 
 | Output Name | Type | Description |

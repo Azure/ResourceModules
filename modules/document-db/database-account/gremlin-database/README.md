@@ -44,8 +44,6 @@ This module deploys a Gremlin Database within a CosmosDB Account.
 | `userAssignedIdentities` | object | `{object}` | The ID(s) to assign to the resource. |
 
 
-
-
 ## Outputs
 
 | Output Name | Type | Description |

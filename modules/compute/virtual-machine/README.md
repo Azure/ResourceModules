@@ -116,8 +116,6 @@ This module deploys a Virtual Machine with one or multiple NICs and optionally o
 | `baseTime` | string | `[utcNow('u')]` | Do not provide a value! This date value is used to generate a registration token. |
 
 
-
-
 ## Outputs
 
 | Output Name | Type | Description |

@@ -85,8 +85,6 @@ This module deploys a DBforMySQL Flexible Server.
 | `version` | string | `'5.7'` | `[5.7, 8.0.21]` | MySQL Server version. |
 
 
-
-
 ## Outputs
 
 | Output Name | Type | Description |

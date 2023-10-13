@@ -47,8 +47,6 @@ This module deploys an Azure NetApp File.
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
 
 
-
-
 ## Outputs
 
 | Output Name | Type | Description |

@@ -66,8 +66,6 @@ This module deploys a Redis Cache.
 | `zones` | array | `[]` |  | If the zoneRedundant parameter is true, replicas will be provisioned in the availability zones specified here. Otherwise, the service will choose where replicas are deployed. |
 
 
-
-
 ## Outputs
 
 | Output Name | Type | Description |

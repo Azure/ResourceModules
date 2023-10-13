@@ -86,8 +86,6 @@ This module deploys a Network Application Gateway.
 | `zones` | array | `[]` |  | A list of availability zones denoting where the resource needs to come from. |
 
 
-
-
 ## Outputs
 
 | Output Name | Type | Description |

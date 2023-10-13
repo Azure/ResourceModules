@@ -52,8 +52,6 @@ This module deploys a Disk Encryption Set.
 | `tags` | object | `{object}` |  | Tags of the disk encryption resource. |
 
 
-
-
 ## Outputs
 
 | Output Name | Type | Description |

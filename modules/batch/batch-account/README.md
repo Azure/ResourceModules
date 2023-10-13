@@ -66,8 +66,6 @@ This module deploys a Batch Account.
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
 
 
-
-
 ## Outputs
 
 | Output Name | Type | Description |

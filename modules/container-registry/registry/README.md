@@ -82,8 +82,6 @@ This module deploys an Azure Container Registry (ACR).
 | `zoneRedundancy` | string | `'Disabled'` | `[Disabled, Enabled]` | Whether or not zone redundancy is enabled for this container registry. |
 
 
-
-
 ## Outputs
 
 | Output Name | Type | Description |

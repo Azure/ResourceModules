@@ -46,8 +46,6 @@ This module deploys a Data Protection Backup Vault.
 | `type` | string | `'GeoRedundant'` | `[GeoRedundant, LocallyRedundant, ZoneRedundant]` | The vault redundancy level to use. |
 
 
-
-
 ## Outputs
 
 | Output Name | Type | Description |

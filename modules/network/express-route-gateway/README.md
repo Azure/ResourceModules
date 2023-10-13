@@ -42,8 +42,6 @@ This module deploys an Express Route Gateway.
 | `tags` | object | `{object}` |  | Tags of the Firewall policy resource. |
 
 
-
-
 ## Outputs
 
 | Output Name | Type | Description |

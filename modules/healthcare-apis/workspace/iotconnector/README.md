@@ -57,8 +57,6 @@ This module deploys a Healthcare API Workspace IoT Connector.
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
 
 
-
-
 ## Outputs
 
 | Output Name | Type | Description |

@@ -78,8 +78,6 @@ This module deploys a Synapse Workspace.
 | `workspaceRepositoryConfiguration` | object | `{object}` |  | Git integration settings. |
 
 
-
-
 ## Outputs
 
 | Output Name | Type | Description |

@@ -120,8 +120,6 @@ The following resources are required to be able to deploy this resource.
 | `baseTime` | string | `[utcNow('u')]` | Do not provide a value! This date value is used to generate a registration token. |
 
 
-
-
 ## Outputs
 
 | Output Name | Type | Description |

@@ -78,8 +78,6 @@ This module deploys an Azure Automation Account.
 | `variables` | array | `[]` |  | List of variables to be created in the automation account. |
 
 
-
-
 ## Outputs
 
 | Output Name | Type | Description |
