@@ -39,6 +39,19 @@ This module deploys a MongoDB Database Collection.
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `throughput` | int | `400` | Name of the mongodb database. |
 
+## Outputs
+
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `name` | string | The name of the mongodb database. |
+| `resourceGroupName` | string | The name of the resource group the mongodb database was created in. |
+| `resourceId` | string | The resource ID of the mongodb database. |
+
+## Cross-referenced modules
+
+_None_
+
+## Notes
 
 ### Parameter Usage: `indexes`
 
@@ -169,15 +182,3 @@ shardKey: {
 
 </details>
 <p>
-
-## Outputs
-
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `name` | string | The name of the mongodb database. |
-| `resourceGroupName` | string | The name of the resource group the mongodb database was created in. |
-| `resourceId` | string | The resource ID of the mongodb database. |
-
-## Cross-referenced modules
-
-_None_

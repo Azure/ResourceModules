@@ -81,6 +81,20 @@ tags: {
 </details>
 <p>
 
+## Outputs
+
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `name` | string | The name of the graph. |
+| `resourceGroupName` | string | The name of the resource group the graph was created in. |
+| `resourceId` | string | The resource ID of the graph. |
+
+## Cross-referenced modules
+
+_None_
+
+## Notes
+
 ### Parameter Usage: `partitionKeyPaths`, `uniqueKeyPaths`
 
 Different kinds of paths can be provided as array of strings:
@@ -111,15 +125,3 @@ graphs: [
 
 </details>
 <p>
-
-## Outputs
-
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `name` | string | The name of the graph. |
-| `resourceGroupName` | string | The name of the resource group the graph was created in. |
-| `resourceId` | string | The resource ID of the graph. |
-
-## Cross-referenced modules
-
-_None_

@@ -46,7 +46,6 @@ This module deploys a SQL Database Container in a CosmosDB Account.
 | `throughput` | int | `400` |  | Request Units per second. Will be set to null if autoscaleSettingsMaxThroughput is used. |
 | `uniqueKeyPolicyKeys` | array | `[]` |  | The unique key policy configuration containing a list of unique keys that enforces uniqueness constraint on documents in the collection in the Azure Cosmos DB service. |
 
-
 ### Parameter Usage: `tags`
 
 Tag names and tag values can be provided as needed. A tag can be left without a value.
@@ -87,6 +86,21 @@ tags: {
 
 </details>
 <p>
+
+
+## Outputs
+
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `name` | string | The name of the container. |
+| `resourceGroupName` | string | The name of the resource group the container was created in. |
+| `resourceId` | string | The resource ID of the container. |
+
+## Cross-referenced modules
+
+_None_
+
+## Notes
 
 ### Parameter Usage: `indexingPolicy`
 
@@ -129,15 +143,3 @@ indexingPolicy: {
 
 </details>
 <p>
-
-## Outputs
-
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `name` | string | The name of the container. |
-| `resourceGroupName` | string | The name of the resource group the container was created in. |
-| `resourceId` | string | The resource ID of the container. |
-
-## Cross-referenced modules
-
-_None_

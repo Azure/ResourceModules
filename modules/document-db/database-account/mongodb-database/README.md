@@ -39,7 +39,6 @@ This module deploys a MongoDB Database within a CosmosDB Account.
 | `tags` | object | `{object}` | Tags of the resource. |
 | `throughput` | int | `400` | Name of the mongodb database. |
 
-
 ### Parameter Usage: `tags`
 
 Tag names and tag values can be provided as needed. A tag can be left without a value.
@@ -81,9 +80,6 @@ tags: {
 </details>
 <p>
 
-### Parameter Usage: `collections`
-
-Please reference the documentation for [collection](./collection/README.md)
 
 ## Outputs
 

@@ -42,63 +42,6 @@ This module deploys a Gremlin Database within a CosmosDB Account.
 | `throughput` | int | `-1` | Request Units per second (for example 10000). Cannot be set together with `maxThroughput`. |
 | `userAssignedIdentities` | object | `{object}` | The ID(s) to assign to the resource. |
 
-
-### Parameter Usage: `graphs`
-
-List of graph databaseAccounts
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"graphs": {
-  "value": [
-    {
-      "name": "graph01",
-      "automaticIndexing": true,
-      "partitionKeyPaths": [
-        "/name"
-      ]
-    },
-    {
-      "name": "graph02",
-      "automaticIndexing": true,
-      "partitionKeyPaths": [
-        "/name"
-      ]
-    }
-  ]
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-graphs: [
-  {
-    name: 'graph01'
-    automaticIndexing: true
-    partitionKeyPaths: [
-      '/name'
-    ]
-  }
-  {
-    name: 'graph02'
-    automaticIndexing: true
-    partitionKeyPaths: [
-      '/name'
-    ]
-  }
-]
-```
-
-</details>
-
 ### Parameter Usage: `tags`
 
 Tag names and tag values can be provided as needed. A tag can be left without a value.
@@ -184,3 +127,61 @@ userAssignedIdentities: {
 ## Cross-referenced modules
 
 _None_
+
+## Notes
+
+### Parameter Usage: `graphs`
+
+List of graph databaseAccounts.
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"graphs": {
+  "value": [
+    {
+      "name": "graph01",
+      "automaticIndexing": true,
+      "partitionKeyPaths": [
+        "/name"
+      ]
+    },
+    {
+      "name": "graph02",
+      "automaticIndexing": true,
+      "partitionKeyPaths": [
+        "/name"
+      ]
+    }
+  ]
+}
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+graphs: [
+  {
+    name: 'graph01'
+    automaticIndexing: true
+    partitionKeyPaths: [
+      '/name'
+    ]
+  }
+  {
+    name: 'graph02'
+    automaticIndexing: true
+    partitionKeyPaths: [
+      '/name'
+    ]
+  }
+]
+```
+
+</details>
