@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.21.1.54444",
-      "templateHash": "13551710672251370699"
+      "version": "0.22.6.54827",
+      "templateHash": "15731967065620351074"
     },
     "name": "Metric Alerts",
     "description": "This module deploys a Metric Alert.",
@@ -136,7 +136,7 @@
     "criterias": {
       "type": "array",
       "metadata": {
-        "description": "Required. Criterias to trigger the alert. Array of 'Microsoft.Azure.Monitor.SingleResourceMultipleMetricCriteria' or 'Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria' objects."
+        "description": "Required. Criterias to trigger the alert. Array of 'Microsoft.Azure.Monitor.SingleResourceMultipleMetricCriteria' or 'Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria' objects. When using MultipleResourceMultipleMetricCriteria criteria type, some parameters becomes mandatory. It is not possible to convert from SingleResourceMultipleMetricCriteria to MultipleResourceMultipleMetricCriteria. The alert must be deleted and recreated."
       }
     },
     "roleAssignments": {
@@ -245,8 +245,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "8947238026152055709"
+              "version": "0.22.6.54827",
+              "templateHash": "14564060617945907933"
             }
           },
           "parameters": {
