@@ -491,7 +491,7 @@ module policySetDefinition './authorization/policy-set-definition/main.bicep' = 
 
 ## Notes
 
-## Module Pre-requisites
+### Module Pre-requisites
 
 - Policy Set Definitions (Initiatives) have a dependency on Policy Definitions being applied before creating an initiative.
 
