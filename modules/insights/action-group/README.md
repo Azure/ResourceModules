@@ -9,6 +9,7 @@ This module deploys an Action Group.
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
+- [Notes](#Notes)
 
 ## Resource Types
 
@@ -46,71 +47,6 @@ This module deploys an Action Group.
 | `voiceReceivers` | array | `[]` | The list of voice receivers that are part of this action group. |
 | `webhookReceivers` | array | `[]` | The list of webhook receivers that are part of this action group. |
 
-
-### Parameter Usage: receivers
-
-See [Documentation](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2019-06-01/actiongroups) for description of parameters usage and syntax.
-
-<details>
-
-<summary>Parameter JSON file</summary>
-
-```json
-"emailReceivers": {
-    "value": [
-        {
-            "name": "TestUser_-EmailAction-",
-            "emailAddress": "test.user@testcompany.com",
-            "useCommonAlertSchema": true
-        },
-        {
-            "name": "TestUser2",
-            "emailAddress": "test.user2@testcompany.com",
-            "useCommonAlertSchema": true
-        }
-    ]
-},
-"smsReceivers": {
-    "value": [
-        {
-            "name": "TestUser_-SMSAction-",
-            "countryCode": "1",
-            "phoneNumber": "2345678901"
-        }
-    ]
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-emailReceivers: [
-    {
-        name: 'TestUser_-EmailAction-'
-        emailAddress: 'test.user@testcompany.com'
-        useCommonAlertSchema: true
-    }
-    {
-        name: 'TestUser2'
-        emailAddress: 'test.user2@testcompany.com'
-        useCommonAlertSchema: true
-    }
-]
-smsReceivers: [
-    {
-        name: 'TestUser_-SMSAction-'
-        countryCode: '1'
-        phoneNumber: '2345678901'
-    }
-]
-```
-
-</details>
-<p>
 
 ### Parameter Usage: `roleAssignments`
 
@@ -211,18 +147,6 @@ tags: {
 
 </details>
 <p>
-
-### Additional notes on parameters
-
-- Receiver name must be unique across the ActionGroup
-- Email, SMS, Azure App push and Voice can be grouped in the same Action. To do so, the `name` field of the receivers must be in the `RecName_-ActionType-` format where:
-  - _RecName_ is the name you want to give to the Action
-  - _ActionType_ is one of the action types that can be grouped together. Possible values are:
-    - EmailAction
-    - SMSAction
-    - AzureAppAction
-    - VoiceAction
-- To understand the impact of the `useCommonAlertSchema` field, see [here](https://learn.microsoft.com/en-us/azure/azure-monitor/platform/alerts-common-schema)
 
 ## Outputs
 
@@ -413,3 +337,19 @@ module actionGroup './insights/action-group/main.bicep' = {
 
 </details>
 <p>
+
+
+## Notes
+
+### Module Usage Considerations
+
+- Receiver name must be unique across the ActionGroup.
+- Email, SMS, Azure App push and Voice can be grouped in the same Action. To do so, the `name` field of the receivers must be in the `RecName_-ActionType-` format where:
+  - _RecName_ is the name you want to give to the Action
+  - _ActionType_ is one of the action types that can be grouped together. Possible values are:
+    - EmailAction
+    - SMSAction
+    - AzureAppAction
+    - VoiceAction
+
+- To understand the impact of the `useCommonAlertSchema` field, see [documentation](https://learn.microsoft.com/en-us/azure/azure-monitor/platform/alerts-common-schema).

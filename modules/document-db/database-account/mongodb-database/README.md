@@ -81,10 +81,6 @@ tags: {
 </details>
 <p>
 
-### Parameter Usage: `collections`
-
-Please reference the documentation for [collection](./collection/README.md)
-
 ## Outputs
 
 | Output Name | Type | Description |

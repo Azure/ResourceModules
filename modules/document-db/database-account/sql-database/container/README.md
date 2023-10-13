@@ -8,6 +8,7 @@ This module deploys a SQL Database Container in a CosmosDB Account.
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
+- [Notes](#Notes)
 
 ## Resource Types
 
@@ -88,6 +89,20 @@ tags: {
 </details>
 <p>
 
+## Outputs
+
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `name` | string | The name of the container. |
+| `resourceGroupName` | string | The name of the resource group the container was created in. |
+| `resourceId` | string | The resource ID of the container. |
+
+## Cross-referenced modules
+
+_None_
+
+## Notes
+
 ### Parameter Usage: `indexingPolicy`
 
 Tag names and tag values can be provided as needed. A tag can be left without a value.
@@ -129,15 +144,3 @@ indexingPolicy: {
 
 </details>
 <p>
-
-## Outputs
-
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `name` | string | The name of the container. |
-| `resourceGroupName` | string | The name of the resource group the container was created in. |
-| `resourceId` | string | The resource ID of the container. |
-
-## Cross-referenced modules
-
-_None_
