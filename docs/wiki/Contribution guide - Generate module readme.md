@@ -8,7 +8,6 @@ The ReadMe generator utility aims to simplify contributing to the CARML library,
 
 - [Location](#location)
 - [How it works](#how-it-works)
-  - [Special case: 'Parameter Usage' section](#special-case-parameter-usage-section)
 - [How to use it](#how-to-use-it)
 
 ---
