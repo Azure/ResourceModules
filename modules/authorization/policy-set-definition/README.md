@@ -10,7 +10,6 @@ This module deploys a Policy Set Definition (Initiative) at a Management Group o
 - [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 - [Notes](#Notes)
-- [Module Pre-requisites](#Module-Pre-requisites)
 
 ## Resource types
 
@@ -490,10 +489,6 @@ module policySetDefinition './authorization/policy-set-definition/main.bicep' = 
 
 
 ## Notes
-
-### Module Pre-requisites
-
-- Policy Set Definitions (Initiatives) have a dependency on Policy Definitions being applied before creating an initiative.
 
 ### Module Usage Guidance
 

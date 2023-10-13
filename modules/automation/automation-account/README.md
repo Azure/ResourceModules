@@ -9,7 +9,6 @@ This module deploys an Azure Automation Account.
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
-- [Notes](#Notes)
 
 ## Resource Types
 
@@ -886,64 +885,6 @@ module automationAccount './automation/automation-account/main.bicep' = {
       "value": "<enableDefaultTelemetry>"
     }
   }
-}
-```
-
-</details>
-<p>
-
-
-## Notes
-
-### Parameter Usage: `encryption`
-
-Prerequisites:
-
-- User Assigned Identity for Encryption needs `Get`, `List`, `Wrap` and `Unwrap` permissions on the key.
-- User Assigned Identity have to be one of the defined identities in userAssignedIdentities parameter block.
-- To use Azure Automation with customer managed keys, both `Soft Delete` and `Do Not Purge` features must be turned on to allow for recovery of keys in case of accidental deletion.
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"encryptionKeySource" : {
-    "value" : "Microsoft.KeyVault"
-},
-"encryptionUserAssignedIdentity": {
-    "value": "/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-[[namePrefix]]-az-msi-x-001" // this identity needs to be one of the identities defined in userAssignedIdentities section
-},
-"keyName" : {
-        "value" : "keyEncryptionKey"
-},
-"keyvaultUri" : {
-            "value" : "https://[[keyValutName]].vault.azure.net/"
-},
-"keyVersion" : {
-            "value" : "aa11b22c1234567890c3608c657cd5a2"
-},
-"userAssignedIdentities": {
-    "value": {
-        "/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-[[namePrefix]]-az-msi-x-001": {}, // same value as 'encryptionUserAssignedIdentity' parameter
-    }
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-encryptionKeySource: 'Microsoft.KeyVault'
-encryptionUserAssignedIdentity: '/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-[[namePrefix]]-az-msi-x-001' // this identity needs to be one of the identities defined in userAssignedIdentities section
-keyName : 'keyEncryptionKey'
-keyvaultUri: 'https://[[keyValutName]].vault.azure.net/'
-keyVersion: 'aa11b22c1234567890c3608c657cd5a2'
-userAssignedIdentities: {
-    '/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-[[namePrefix]]-az-msi-x-001': {} // same value as 'encryptionUserAssignedIdentity' parameter
 }
 ```
 

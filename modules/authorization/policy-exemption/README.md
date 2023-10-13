@@ -553,10 +553,6 @@ module policyExemption './authorization/policy-exemption/main.bicep' = {
 
 ## Notes
 
-### Module Pre-requisites
-
-Policy Exemptions have a dependency on Policy Assignments being applied before creating an exemption.
-
 ### Module Usage Guidance
 
 In general, most of the resources under the `Microsoft.Authorization` namespace allows deploying resources at multiple scopes (management groups, subscriptions, resource groups). The `main.bicep` root module is simply an orchestrator module that targets sub-modules for different scopes as seen in the parameter usage section. All sub-modules for this namespace have folders that represent the target scope. For example, if the orchestrator module in the [root](main.bicep) needs to target 'subscription' level scopes. It will look at the relative path ['/subscription/main.bicep'](./subscription/main.bicep) and use this sub-module for the actual deployment, while still passing the same parameters from the root module.
