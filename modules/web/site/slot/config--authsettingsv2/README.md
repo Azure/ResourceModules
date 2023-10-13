@@ -37,6 +37,7 @@ This module deploys a Site Auth Settings V2 Configuration.
 | :-- | :-- | :-- | :-- |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 
+
 ## Outputs
 
 | Output Name | Type | Description |

@@ -9,6 +9,7 @@ This module deploys an App Service Plan.
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
+- [Notes](#Notes)
 
 ## Resource Types
 
@@ -51,6 +52,7 @@ This module deploys an App Service Plan.
 | `targetWorkerSize` | int | `0` | `[0, 1, 2]` | The instance size of the hosting plan (small, medium, or large). |
 | `workerTierName` | string | `''` |  | Target worker tier assigned to the App Service plan. |
 | `zoneRedundant` | bool | `False` |  | When true, this App Service Plan will perform availability zone balancing. |
+
 
 ## Outputs
 
@@ -184,6 +186,7 @@ module serverfarm './web/serverfarm/main.bicep' = {
 
 </details>
 <p>
+
 
 ## Notes
 

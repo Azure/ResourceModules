@@ -9,6 +9,7 @@ This module deploys an App Service Environment.
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
+- [Notes](#Notes)
 
 ## Resource types
 
@@ -69,6 +70,7 @@ This module deploys an App Service Environment.
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
 | `userWhitelistedIpRanges` | array | `[]` |  | User added IP ranges to whitelist on ASE DB. Cannot be used with 'kind' `ASEv3`. |
 | `zoneRedundant` | bool | `False` |  | Switch to make the App Service Environment zone redundant. If enabled, the minimum App Service plan instance count will be three, otherwise 1. If enabled, the `dedicatedHostCount` must be set to `-1`. |
+
 
 ## Outputs
 
@@ -399,6 +401,7 @@ module hostingEnvironment './web/hosting-environment/main.bicep' = {
 
 </details>
 <p>
+
 
 ## Notes
 

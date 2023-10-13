@@ -9,6 +9,7 @@ This module deploys a Web or Function App.
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
+- [Notes](#Notes)
 
 ## Resource types
 
@@ -89,6 +90,7 @@ This module deploys a Web or Function App.
 | `vnetContentShareEnabled` | bool | `False` |  | To enable accessing content over virtual network. |
 | `vnetImagePullEnabled` | bool | `False` |  | To enable pulling image over Virtual Network. |
 | `vnetRouteAllEnabled` | bool | `False` |  | Virtual Network Route All enabled. This causes all outbound traffic to have Virtual Network Security Groups and User Defined Routes applied. |
+
 
 ## Outputs
 
@@ -868,6 +870,7 @@ module site './web/site/main.bicep' = {
 
 </details>
 <p>
+
 
 ## Notes
 
