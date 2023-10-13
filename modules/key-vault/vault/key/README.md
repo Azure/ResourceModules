@@ -8,6 +8,7 @@ This module deploys a Key Vault Key.
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
+- [Notes](#Notes)
 
 ## Resource Types
 
@@ -45,6 +46,21 @@ This module deploys a Key Vault Key.
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `rotationPolicy` | object | `{object}` |  | Key rotation policy properties object. |
 | `tags` | object | `{object}` |  | Resource tags. |
+
+
+## Outputs
+
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `name` | string | The name of the key. |
+| `resourceGroupName` | string | The name of the resource group the key was created in. |
+| `resourceId` | string | The resource ID of the key. |
+
+## Cross-referenced modules
+
+_None_
+
+## Notes
 
 
 ### Parameter Usage: `tags`
@@ -223,15 +239,3 @@ rotationPolicy: {
 
 </details>
 <p>
-
-## Outputs
-
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `name` | string | The name of the key. |
-| `resourceGroupName` | string | The name of the resource group the key was created in. |
-| `resourceId` | string | The resource ID of the key. |
-
-## Cross-referenced modules
-
-_None_

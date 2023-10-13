@@ -31,65 +31,6 @@ This module deploys a Key Vault Access Policy.
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
 
 
-### Parameter Usage: `accessPolicies`
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"accessPolicies": {
-    "value": [
-        {
-            "tenantId": null, // Optional
-            "applicationId": null, // Optional
-            "objectId": null,
-            "permissions": {
-                "certificates": [
-                    "All"
-                ],
-                "keys": [
-                    "All"
-                ],
-                "secrets": [
-                    "All"
-                ]
-            }
-        }
-    ]
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-accessPolicies: [
-    {
-        tenantId: null // Optional
-        applicationId: null // Optional
-        objectId: null
-        permissions: {
-            certificates: [
-                'All'
-            ]
-            keys: [
-                'All'
-            ]
-            secrets: [
-                'All'
-            ]
-        }
-    }
-]
-```
-
-</details>
-<p>
-
 ## Outputs
 
 | Output Name | Type | Description |

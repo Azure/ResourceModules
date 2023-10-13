@@ -9,6 +9,7 @@ This module deploys a Bastion Host.
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
+- [Notes](#Notes)
 
 ## Resource Types
 
@@ -55,227 +56,6 @@ This module deploys a Bastion Host.
 | `skuName` | string | `'Basic'` | `[Basic, Standard]` | The SKU of this Bastion Host. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 
-
-### Parameter Usage: `additionalPublicIpConfigurations`
-
-Create additional public ip configurations from existing public ips
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"additionalPublicIpConfigurations": {
-    "value": [
-        {
-            "name": "ipConfig01",
-            "publicIPAddressResourceId": "/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-[[namePrefix]]-az-pip-x-fw-01"
-        },
-        {
-            "name": "ipConfig02",
-            "publicIPAddressResourceId": "/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-[[namePrefix]]-az-pip-x-fw-02"
-        }
-    ]
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-additionalPublicIpConfigurations: [
-    {
-        name: 'ipConfig01'
-        publicIPAddressResourceId: '/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-[[namePrefix]]-az-pip-x-fw-01'
-    }
-    {
-        name: 'ipConfig02'
-        publicIPAddressResourceId: '/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-[[namePrefix]]-az-pip-x-fw-02'
-    }
-]
-```
-
-</details>
-
-
-### Parameter Usage: `publicIPAddressObject`
-
-The Public IP Address object to create as part of the module. This will be created if `isCreateDefaultPublicIP` is true (which it is by default). If not provided, the name and other configurations will be set by default.
-
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"publicIPAddressObject": {
-    "value": {
-        "name": "adp-[[namePrefix]]-az-pip-custom-x-fw",
-        "publicIPPrefixResourceId": "",
-        "publicIPAllocationMethod": "Static",
-        "skuName": "Standard",
-        "skuTier": "Regional",
-        "roleAssignments": [
-            {
-                "roleDefinitionIdOrName": "Reader",
-                "principalIds": [
-                    "<principalId>"
-                ]
-            }
-        ],
-        "diagnosticMetricsToEnable": [
-            "AllMetrics"
-        ],
-        "diagnosticLogCategoriesToEnable": [
-            "DDoSProtectionNotifications",
-            "DDoSMitigationFlowLogs",
-            "DDoSMitigationReports"
-        ]
-    }
-}
-```
-
-</details>
-
-
-
-<details>
-
-<summary>Bicep format</summary>
-
-
-```bicep
-publicIPAddressObject: {
-    name: 'mypip'
-    publicIPPrefixResourceId: '/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPPrefixes/myprefix'
-    publicIPAllocationMethod: 'Dynamic'
-    skuName: 'Basic'
-    skuTier: 'Regional'
-    roleAssignments: [
-        {
-            roleDefinitionIdOrName: 'Reader'
-            principalIds: [
-                '<principalId>'
-            ]
-        }
-    ]
-    diagnosticMetricsToEnable: [
-        'AllMetrics'
-    ]
-    diagnosticLogCategoriesToEnable: [
-        'DDoSProtectionNotifications'
-        'DDoSMitigationFlowLogs'
-        'DDoSMitigationReports'
-    ]
-}
-```
-
-</details>
-
-
-
-### Parameter Usage: `tags`
-
-Tag names and tag values can be provided as needed. A tag can be left without a value.
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"tags": {
-    "value": {
-        "Environment": "Non-Prod",
-        "Contact": "test.user@testcompany.com",
-        "PurchaseOrder": "1234",
-        "CostCenter": "7890",
-        "ServiceName": "DeploymentValidation",
-        "Role": "DeploymentValidation"
-    }
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-tags: {
-    Environment: 'Non-Prod'
-    Contact: 'test.user@testcompany.com'
-    PurchaseOrder: '1234'
-    CostCenter: '7890'
-    ServiceName: 'DeploymentValidation'
-    Role: 'DeploymentValidation'
-}
-```
-
-</details>
-<p>
-
-### Parameter Usage: `roleAssignments`
-
-Create a role assignment for the given resource. If you want to assign a service principal / managed identity that is created in the same deployment, make sure to also specify the `'principalType'` parameter and set it to `'ServicePrincipal'`. This will ensure the role assignment waits for the principal's propagation in Azure.
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"roleAssignments": {
-    "value": [
-        {
-            "roleDefinitionIdOrName": "Reader",
-            "description": "Reader Role Assignment",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012", // object 1
-                "78945612-1234-1234-1234-123456789012" // object 2
-            ]
-        },
-        {
-            "roleDefinitionIdOrName": "/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012" // object 1
-            ],
-            "principalType": "ServicePrincipal"
-        }
-    ]
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-roleAssignments: [
-    {
-        roleDefinitionIdOrName: 'Reader'
-        description: 'Reader Role Assignment'
-        principalIds: [
-            '12345678-1234-1234-1234-123456789012' // object 1
-            '78945612-1234-1234-1234-123456789012' // object 2
-        ]
-    }
-    {
-        roleDefinitionIdOrName: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'
-        principalIds: [
-            '12345678-1234-1234-1234-123456789012' // object 1
-        ]
-        principalType: 'ServicePrincipal'
-    }
-]
-```
-
-</details>
-<p>
 
 ## Outputs
 
@@ -596,6 +376,109 @@ module bastionHost './network/bastion-host/main.bicep' = {
     }
   }
 }
+```
+
+</details>
+<p>
+
+
+## Notes
+
+### Parameter Usage: `tags`
+
+Tag names and tag values can be provided as needed. A tag can be left without a value.
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"tags": {
+    "value": {
+        "Environment": "Non-Prod",
+        "Contact": "test.user@testcompany.com",
+        "PurchaseOrder": "1234",
+        "CostCenter": "7890",
+        "ServiceName": "DeploymentValidation",
+        "Role": "DeploymentValidation"
+    }
+}
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+tags: {
+    Environment: 'Non-Prod'
+    Contact: 'test.user@testcompany.com'
+    PurchaseOrder: '1234'
+    CostCenter: '7890'
+    ServiceName: 'DeploymentValidation'
+    Role: 'DeploymentValidation'
+}
+```
+
+</details>
+<p>
+
+### Parameter Usage: `roleAssignments`
+
+Create a role assignment for the given resource. If you want to assign a service principal / managed identity that is created in the same deployment, make sure to also specify the `'principalType'` parameter and set it to `'ServicePrincipal'`. This will ensure the role assignment waits for the principal's propagation in Azure.
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"roleAssignments": {
+    "value": [
+        {
+            "roleDefinitionIdOrName": "Reader",
+            "description": "Reader Role Assignment",
+            "principalIds": [
+                "12345678-1234-1234-1234-123456789012", // object 1
+                "78945612-1234-1234-1234-123456789012" // object 2
+            ]
+        },
+        {
+            "roleDefinitionIdOrName": "/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11",
+            "principalIds": [
+                "12345678-1234-1234-1234-123456789012" // object 1
+            ],
+            "principalType": "ServicePrincipal"
+        }
+    ]
+}
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+roleAssignments: [
+    {
+        roleDefinitionIdOrName: 'Reader'
+        description: 'Reader Role Assignment'
+        principalIds: [
+            '12345678-1234-1234-1234-123456789012' // object 1
+            '78945612-1234-1234-1234-123456789012' // object 2
+        ]
+    }
+    {
+        roleDefinitionIdOrName: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'
+        principalIds: [
+            '12345678-1234-1234-1234-123456789012' // object 1
+        ]
+        principalType: 'ServicePrincipal'
+    }
+]
 ```
 
 </details>

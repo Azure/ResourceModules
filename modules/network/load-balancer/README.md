@@ -52,403 +52,6 @@ This module deploys a Load Balancer.
 | `skuName` | string | `'Standard'` | `[Basic, Standard]` | Name of a load balancer SKU. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 
-
-### Parameter Usage: `frontendIPConfigurations`
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"frontendIPConfigurations": {
-    "value": [
-        {
-            "name": "p_hub-bfw-server-feip",
-            "properties": {
-                "publicIPAddressId": "[reference(variables('deploymentPIP-VPN')).outputs.publicIPAddressResourceId.value]",
-                "subnetId": "",
-                "privateIPAddress": ""
-            }
-        }
-    ]
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-frontendIPConfigurations: [
-    {
-        name: 'p_hub-bfw-server-feip'
-        properties: {
-            publicIPAddressId: '[reference(variables('deploymentPIP-VPN')).outputs.publicIPAddressResourceId.value]'
-            subnetId: ''
-            privateIPAddress: ''
-        }
-    }
-]
-```
-
-</details>
-<p>
-
-### Parameter Usage: `backendAddressPools`
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"backendAddressPools": {
-    "value": [
-        {
-            "name": "p_hub-bfw-server-bepool",
-            "properties": {
-                "loadBalancerBackendAddresses": [
-                    {
-                        "name": "iacs-sh-main-pd-01-euw-rg-network_awefwa01p-nic-int-01ipconfig-internal",
-                        "properties": {
-                            "virtualNetwork": {
-                                "id": "[reference(variables('deploymentVNET')).outputs.vNetResourceId.value]"
-                            },
-                            "ipAddress": "172.22.232.5"
-                        }
-                    },
-                    {
-                        "name": "iacs-sh-main-pd-01-euw-rg-network_awefwa01p-ha-nic-int-01ipconfig-internal",
-                        "properties": {
-                            "virtualNetwork": {
-                                "id": "[reference(variables('deploymentVNET')).outputs.vNetResourceId.value]"
-                            },
-                            "ipAddress": "172.22.232.6"
-                        }
-                    }
-                ]
-            }
-        }
-    ]
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-backendAddressPools: [
-    {
-        name: 'p_hub-bfw-server-bepool'
-        properties: {
-            loadBalancerBackendAddresses: [
-                {
-                    name: 'iacs-sh-main-pd-01-euw-rg-network_awefwa01p-nic-int-01ipconfig-internal'
-                    properties: {
-                        virtualNetwork: {
-                            id: '[reference(variables('deploymentVNET')).outputs.vNetResourceId.value]'
-                        }
-                        ipAddress: '172.22.232.5'
-                    }
-                }
-                {
-                    name: 'iacs-sh-main-pd-01-euw-rg-network_awefwa01p-ha-nic-int-01ipconfig-internal'
-                    properties: {
-                        virtualNetwork: {
-                            id: '[reference(variables('deploymentVNET')).outputs.vNetResourceId.value]'
-                        }
-                        ipAddress: '172.22.232.6'
-                    }
-                }
-            ]
-        }
-    }
-]
-```
-
-</details>
-<p>
-
-### Parameter Usage: `loadBalancingRules`
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"loadBalancingRules": {
-    "value": [
-        {
-            "name": "p_hub-bfw-server-IPSEC-IKE-lbrule",
-            "properties": {
-                "frontendIPConfigurationName": "p_hub-bfw-server-feip",
-                "backendAddressPoolName": "p_hub-bfw-server-bepool",
-                "protocol": "Udp",
-                "frontendPort": 500,
-                "backendPort": 500,
-                "enableFloatingIP": false,
-                "idleTimeoutInMinutes": 5,
-                "probeName": "p_hub-bfw-server-tcp-65001-probe"
-            }
-        },
-        {
-            "name": "p_hub-bfw-server-IPSEC-NATT-lbrule",
-            "properties": {
-                "frontendIPConfigurationName": "p_hub-bfw-server-feip",
-                "backendAddressPoolName": "p_hub-bfw-server-bepool",
-                "protocol": "Udp",
-                "frontendPort": 4500,
-                "backendPort": 4500,
-                "enableFloatingIP": false,
-                "idleTimeoutInMinutes": 5,
-                "probeName": "p_hub-bfw-server-tcp-65001-probe"
-            }
-        },
-        {
-            "name": "p_hub-bfw-server-TINA-UDP-lbrule",
-            "properties": {
-                "frontendIPConfigurationName": "p_hub-bfw-server-feip",
-                "backendAddressPoolName": "p_hub-bfw-server-bepool",
-                "protocol": "Udp",
-                "frontendPort": 691,
-                "backendPort": 691,
-                "enableFloatingIP": false,
-                "idleTimeoutInMinutes": 5,
-                "probeName": "p_hub-bfw-server-tcp-65001-probe"
-            }
-        },
-        {
-            "name": "p_hub-bfw-server-TINA-TCP-lbrule",
-            "properties": {
-                "frontendIPConfigurationName": "p_hub-bfw-server-feip",
-                "backendAddressPoolName": "p_hub-bfw-server-bepool",
-                "protocol": "Tcp",
-                "frontendPort": 691,
-                "backendPort": 691,
-                "enableFloatingIP": false,
-                "idleTimeoutInMinutes": 5,
-                "probeName": "p_hub-bfw-server-tcp-65001-probe"
-            }
-        }
-    ]
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-loadBalancingRules: [
-    {
-        name: 'p_hub-bfw-server-IPSEC-IKE-lbrule'
-        properties: {
-            frontendIPConfigurationName: 'p_hub-bfw-server-feip'
-            backendAddressPoolName: 'p_hub-bfw-server-bepool'
-            protocol: 'Udp'
-            frontendPort: 500
-            backendPort: 500
-            enableFloatingIP: false
-            idleTimeoutInMinutes: 5
-            probeName: 'p_hub-bfw-server-tcp-65001-probe'
-        }
-    }
-    {
-        name: 'p_hub-bfw-server-IPSEC-NATT-lbrule'
-        properties: {
-            frontendIPConfigurationName: 'p_hub-bfw-server-feip'
-            backendAddressPoolName: 'p_hub-bfw-server-bepool'
-            protocol: 'Udp'
-            frontendPort: 4500
-            backendPort: 4500
-            enableFloatingIP: false
-            idleTimeoutInMinutes: 5
-            probeName: 'p_hub-bfw-server-tcp-65001-probe'
-        }
-    }
-    {
-        name: 'p_hub-bfw-server-TINA-UDP-lbrule'
-        properties: {
-            frontendIPConfigurationName: 'p_hub-bfw-server-feip'
-            backendAddressPoolName: 'p_hub-bfw-server-bepool'
-            protocol: 'Udp'
-            frontendPort: 691
-            backendPort: 691
-            enableFloatingIP: false
-            idleTimeoutInMinutes: 5
-            probeName: 'p_hub-bfw-server-tcp-65001-probe'
-        }
-    }
-    {
-        name: 'p_hub-bfw-server-TINA-TCP-lbrule'
-        properties: {
-            frontendIPConfigurationName: 'p_hub-bfw-server-feip'
-            backendAddressPoolName: 'p_hub-bfw-server-bepool'
-            protocol: 'Tcp'
-            frontendPort: 691
-            backendPort: 691
-            enableFloatingIP: false
-            idleTimeoutInMinutes: 5
-            probeName: 'p_hub-bfw-server-tcp-65001-probe'
-        }
-    }
-]
-```
-
-</details>
-<p>
-
-### Parameter Usage: `probes`
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"probes": {
-    "value": [
-        {
-            "name": "p_hub-bfw-server-tcp-65001-probe",
-            "properties": {
-                "protocol": "Tcp",
-                "port": 65001,
-                "intervalInSeconds": 5,
-                "numberOfProbes": 2
-            }
-        }
-    ]
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-probes: [
-    {
-        name: 'p_hub-bfw-server-tcp-65001-probe'
-        properties: {
-            protocol: 'Tcp'
-            port: 65001
-            intervalInSeconds: 5
-            numberOfProbes: 2
-        }
-    }
-]
-```
-
-</details>
-<p>
-
-### Parameter Usage: `roleAssignments`
-
-Create a role assignment for the given resource. If you want to assign a service principal / managed identity that is created in the same deployment, make sure to also specify the `'principalType'` parameter and set it to `'ServicePrincipal'`. This will ensure the role assignment waits for the principal's propagation in Azure.
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"roleAssignments": {
-    "value": [
-        {
-            "roleDefinitionIdOrName": "Reader",
-            "description": "Reader Role Assignment",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012", // object 1
-                "78945612-1234-1234-1234-123456789012" // object 2
-            ]
-        },
-        {
-            "roleDefinitionIdOrName": "/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012" // object 1
-            ],
-            "principalType": "ServicePrincipal"
-        }
-    ]
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-roleAssignments: [
-    {
-        roleDefinitionIdOrName: 'Reader'
-        description: 'Reader Role Assignment'
-        principalIds: [
-            '12345678-1234-1234-1234-123456789012' // object 1
-            '78945612-1234-1234-1234-123456789012' // object 2
-        ]
-    }
-    {
-        roleDefinitionIdOrName: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'
-        principalIds: [
-            '12345678-1234-1234-1234-123456789012' // object 1
-        ]
-        principalType: 'ServicePrincipal'
-    }
-]
-```
-
-</details>
-<p>
-
-### Parameter Usage: `tags`
-
-Tag names and tag values can be provided as needed. A tag can be left without a value.
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"tags": {
-    "value": {
-        "Environment": "Non-Prod",
-        "Contact": "test.user@testcompany.com",
-        "PurchaseOrder": "1234",
-        "CostCenter": "7890",
-        "ServiceName": "DeploymentValidation",
-        "Role": "DeploymentValidation"
-    }
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-tags: {
-    Environment: 'Non-Prod'
-    Contact: 'test.user@testcompany.com'
-    PurchaseOrder: '1234'
-    CostCenter: '7890'
-    ServiceName: 'DeploymentValidation'
-    Role: 'DeploymentValidation'
-}
-```
-
-</details>
-<p>
-
 ## Outputs
 
 | Output Name | Type | Description |
@@ -1007,6 +610,185 @@ module loadBalancer './network/load-balancer/main.bicep' = {
       "value": "<enableDefaultTelemetry>"
     }
   }
+}
+```
+
+</details>
+<p>
+
+## Notes
+
+### Parameter Usage: `backendAddressPools`
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"backendAddressPools": {
+    "value": [
+        {
+            "name": "p_hub-bfw-server-bepool",
+            "properties": {
+                "loadBalancerBackendAddresses": [
+                    {
+                        "name": "iacs-sh-main-pd-01-euw-rg-network_awefwa01p-nic-int-01ipconfig-internal",
+                        "properties": {
+                            "virtualNetwork": {
+                                "id": "[reference(variables('deploymentVNET')).outputs.vNetResourceId.value]"
+                            },
+                            "ipAddress": "172.22.232.5"
+                        }
+                    },
+                    {
+                        "name": "iacs-sh-main-pd-01-euw-rg-network_awefwa01p-ha-nic-int-01ipconfig-internal",
+                        "properties": {
+                            "virtualNetwork": {
+                                "id": "[reference(variables('deploymentVNET')).outputs.vNetResourceId.value]"
+                            },
+                            "ipAddress": "172.22.232.6"
+                        }
+                    }
+                ]
+            }
+        }
+    ]
+}
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+backendAddressPools: [
+    {
+        name: 'p_hub-bfw-server-bepool'
+        properties: {
+            loadBalancerBackendAddresses: [
+                {
+                    name: 'iacs-sh-main-pd-01-euw-rg-network_awefwa01p-nic-int-01ipconfig-internal'
+                    properties: {
+                        virtualNetwork: {
+                            id: '[reference(variables('deploymentVNET')).outputs.vNetResourceId.value]'
+                        }
+                        ipAddress: '172.22.232.5'
+                    }
+                }
+                {
+                    name: 'iacs-sh-main-pd-01-euw-rg-network_awefwa01p-ha-nic-int-01ipconfig-internal'
+                    properties: {
+                        virtualNetwork: {
+                            id: '[reference(variables('deploymentVNET')).outputs.vNetResourceId.value]'
+                        }
+                        ipAddress: '172.22.232.6'
+                    }
+                }
+            ]
+        }
+    }
+]
+```
+
+</details>
+<p>
+
+### Parameter Usage: `roleAssignments`
+
+Create a role assignment for the given resource. If you want to assign a service principal / managed identity that is created in the same deployment, make sure to also specify the `'principalType'` parameter and set it to `'ServicePrincipal'`. This will ensure the role assignment waits for the principal's propagation in Azure.
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"roleAssignments": {
+    "value": [
+        {
+            "roleDefinitionIdOrName": "Reader",
+            "description": "Reader Role Assignment",
+            "principalIds": [
+                "12345678-1234-1234-1234-123456789012", // object 1
+                "78945612-1234-1234-1234-123456789012" // object 2
+            ]
+        },
+        {
+            "roleDefinitionIdOrName": "/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11",
+            "principalIds": [
+                "12345678-1234-1234-1234-123456789012" // object 1
+            ],
+            "principalType": "ServicePrincipal"
+        }
+    ]
+}
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+roleAssignments: [
+    {
+        roleDefinitionIdOrName: 'Reader'
+        description: 'Reader Role Assignment'
+        principalIds: [
+            '12345678-1234-1234-1234-123456789012' // object 1
+            '78945612-1234-1234-1234-123456789012' // object 2
+        ]
+    }
+    {
+        roleDefinitionIdOrName: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'
+        principalIds: [
+            '12345678-1234-1234-1234-123456789012' // object 1
+        ]
+        principalType: 'ServicePrincipal'
+    }
+]
+```
+
+</details>
+<p>
+
+### Parameter Usage: `tags`
+
+Tag names and tag values can be provided as needed. A tag can be left without a value.
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"tags": {
+    "value": {
+        "Environment": "Non-Prod",
+        "Contact": "test.user@testcompany.com",
+        "PurchaseOrder": "1234",
+        "CostCenter": "7890",
+        "ServiceName": "DeploymentValidation",
+        "Role": "DeploymentValidation"
+    }
+}
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+tags: {
+    Environment: 'Non-Prod'
+    Contact: 'test.user@testcompany.com'
+    PurchaseOrder: '1234'
+    CostCenter: '7890'
+    ServiceName: 'DeploymentValidation'
+    Role: 'DeploymentValidation'
 }
 ```
 

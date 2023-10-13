@@ -40,39 +40,19 @@ This module deploys a Private DNS Zone TXT record.
 | `ttl` | int | `3600` | The TTL (time-to-live) of the records in the record set. |
 | `txtRecords` | array | `[]` | The list of TXT records in the record set. |
 
+## Outputs
 
-### Parameter Usage: `txtRecords`
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `name` | string | The name of the deployed TXT record. |
+| `resourceGroupName` | string | The resource group of the deployed TXT record. |
+| `resourceId` | string | The resource ID of the deployed TXT record. |
 
-<details>
+## Cross-referenced modules
 
-<summary>Parameter JSON format</summary>
+_None_
 
-```json
-"txtRecords": {
-    "value": [
-      {
-        "value": [ "string" ]
-      }
-    ]
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-txtRecords: [
-    {
-        value: [ 'string' ]
-    }
-]
-```
-
-</details>
-<p>
+## Notes
 
 ### Parameter Usage: `roleAssignments`
 
@@ -132,15 +112,3 @@ roleAssignments: [
 
 </details>
 <p>
-
-## Outputs
-
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `name` | string | The name of the deployed TXT record. |
-| `resourceGroupName` | string | The resource group of the deployed TXT record. |
-| `resourceId` | string | The resource ID of the deployed TXT record. |
-
-## Cross-referenced modules
-
-_None_
