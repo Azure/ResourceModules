@@ -1061,8 +1061,3 @@ module workspace './operational-insights/workspace/main.bicep' = {
 
 </details>
 <p>
-
-
-## Notes
-
-

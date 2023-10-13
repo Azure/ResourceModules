@@ -110,7 +110,6 @@ This section gives you an overview of all local-referenced module files (i.e., o
 
 ## Notes
 
-
 ### Parameter Usage: `appSettingsKeyValuePairs`
 
 AzureWebJobsStorage, AzureWebJobsDashboard, APPINSIGHTS_INSTRUMENTATIONKEY and APPLICATIONINSIGHTS_CONNECTION_STRING are set separately (check parameters storageAccountId, setAzureWebJobsDashboard, appInsightId).

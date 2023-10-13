@@ -186,7 +186,3 @@ module serverfarm './web/serverfarm/main.bicep' = {
 
 </details>
 <p>
-
-
-## Notes
-

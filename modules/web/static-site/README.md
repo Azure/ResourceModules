@@ -301,8 +301,3 @@ module staticSite './web/static-site/main.bicep' = {
 
 </details>
 <p>
-
-
-## Notes
-
-

@@ -207,7 +207,3 @@ module routeTable './network/route-table/main.bicep' = {
 
 </details>
 <p>
-
-
-## Notes
-

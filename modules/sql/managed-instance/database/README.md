@@ -74,6 +74,3 @@ This module deploys a SQL Managed Instance Database.
 ## Cross-referenced modules
 
 _None_
-
-## Notes
-

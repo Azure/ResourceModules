@@ -783,7 +783,3 @@ module azureFirewall './network/azure-firewall/main.bicep' = {
 
 </details>
 <p>
-
-
-## Notes
-

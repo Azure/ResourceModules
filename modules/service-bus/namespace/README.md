@@ -815,8 +815,3 @@ module namespace './service-bus/namespace/main.bicep' = {
 
 </details>
 <p>
-
-
-## Notes
-
-

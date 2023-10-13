@@ -276,6 +276,3 @@ module networkInterface './network/network-interface/main.bicep' = {
 
 </details>
 <p>
-
-## Notes
-

@@ -409,9 +409,3 @@ module webPubSub './signal-r-service/web-pub-sub/main.bicep' = {
 
 </details>
 <p>
-
-
-## Notes
-
-
-

@@ -64,7 +64,3 @@ Attaching a compute is not idempotent and will fail in case you try to redeploy 
 ## Cross-referenced modules
 
 _None_
-
-## Notes
-
-

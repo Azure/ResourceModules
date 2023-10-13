@@ -624,6 +624,3 @@ module virtualNetworkGateway './network/virtual-network-gateway/main.bicep' = {
 
 </details>
 <p>
-
-
-## Notes

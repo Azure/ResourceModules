@@ -237,24 +237,3 @@ module extension './kubernetes-configuration/extension/main.bicep' = {
 
 </details>
 <p>
-
-
-## Notes
-
-### Prerequisites
-
-Registration of your subscription with the AKS-ExtensionManager feature flag. Use the following command:
-
-```powershell
-az feature register --namespace Microsoft.ContainerService --name AKS-ExtensionManager
-```
-
-Registration of the following Azure service providers. (It's OK to re-register an existing provider.)
-
-```powershell
-az provider register --namespace Microsoft.Kubernetes
-az provider register --namespace Microsoft.ContainerService
-az provider register --namespace Microsoft.KubernetesConfiguration
-```
-
-For Details see [Prerequisites](https://learn.microsoft.com/en-us/azure/azure-arc/kubernetes/tutorial-use-gitops-flux2)

@@ -62,8 +62,6 @@ _None_
 
 ## Notes
 
-
-
 ### Parameter Usage: `rotationPolicy`
 
 Configures a [auto-rotation policy](https://learn.microsoft.com/en-us/azure/key-vault/keys/how-to-configure-key-rotation) for the key.

@@ -532,6 +532,4 @@ module account './cognitive-services/account/main.bicep' = {
 
 ## Notes
 
-### Module Usage Guidance
-
-- Not all combinations of parameters `kind` and `SKU` are valid and they may vary in different Azure Regions. Please use PowerShell cmdlet `Get-AzCognitiveServicesAccountSku` or another methods to determine valid values in your region.
+Not all combinations of parameters `kind` and `SKU` are valid and they may vary in different Azure Regions. Please use PowerShell cmdlet `Get-AzCognitiveServicesAccountSku` or another methods to determine valid values in your region.

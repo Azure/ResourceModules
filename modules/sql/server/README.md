@@ -654,8 +654,6 @@ module server './sql/server/main.bicep' = {
 
 ## Notes
 
-
-
 ### Parameter Usage: `administrators`
 
 Configure Azure Active Directory Authentication method for server administrator.

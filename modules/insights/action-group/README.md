@@ -241,8 +241,6 @@ module actionGroup './insights/action-group/main.bicep' = {
 
 ## Notes
 
-### Module Usage Considerations
-
 - Receiver name must be unique across the ActionGroup.
 - Email, SMS, Azure App push and Voice can be grouped in the same Action. To do so, the `name` field of the receivers must be in the `RecName_-ActionType-` format where:
   - _RecName_ is the name you want to give to the Action

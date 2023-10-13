@@ -874,7 +874,6 @@ module site './web/site/main.bicep' = {
 
 ## Notes
 
-
 ### Parameter Usage: `appSettingsKeyValuePairs`
 
 AzureWebJobsStorage, AzureWebJobsDashboard, APPINSIGHTS_INSTRUMENTATIONKEY and APPLICATIONINSIGHTS_CONNECTION_STRING are set separately (check parameters storageAccountId, setAzureWebJobsDashboard, appInsightId).

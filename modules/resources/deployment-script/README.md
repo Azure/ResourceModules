@@ -301,8 +301,3 @@ module deploymentScript './resources/deployment-script/main.bicep' = {
 
 </details>
 <p>
-
-
-## Notes
-
-

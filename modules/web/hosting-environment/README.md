@@ -401,8 +401,3 @@ module hostingEnvironment './web/hosting-environment/main.bicep' = {
 
 </details>
 <p>
-
-
-## Notes
-
-

@@ -151,7 +151,3 @@ module dnsResolver './network/dns-resolver/main.bicep' = {
 
 </details>
 <p>
-
-
-## Notes
-
