@@ -8,6 +8,7 @@ This module deploys a Gremlin Database within a CosmosDB Account.
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
+- [Notes](#Notes)
 
 ## Resource Types
 
@@ -41,6 +42,7 @@ This module deploys a Gremlin Database within a CosmosDB Account.
 | `tags` | object | `{object}` | Tags of the Gremlin database resource. |
 | `throughput` | int | `-1` | Request Units per second (for example 10000). Cannot be set together with `maxThroughput`. |
 | `userAssignedIdentities` | object | `{object}` | The ID(s) to assign to the resource. |
+
 
 ### Parameter Usage: `tags`
 

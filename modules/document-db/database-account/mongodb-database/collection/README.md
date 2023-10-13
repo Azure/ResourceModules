@@ -8,6 +8,7 @@ This module deploys a MongoDB Database Collection.
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
+- [Notes](#Notes)
 
 ## Resource Types
 
@@ -38,6 +39,7 @@ This module deploys a MongoDB Database Collection.
 | :-- | :-- | :-- | :-- |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `throughput` | int | `400` | Name of the mongodb database. |
+
 
 ## Outputs
 

@@ -8,6 +8,7 @@ This module deploys a DocumentDB Database Accounts Gremlin Database Graph.
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
+- [Notes](#Notes)
 
 ## Resource Types
 
