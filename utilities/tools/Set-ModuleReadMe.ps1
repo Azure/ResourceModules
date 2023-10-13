@@ -224,30 +224,6 @@ function Set-ParametersSection {
         $updatedFileContent = Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $newSectionContent -SectionStartIdentifier $SectionStartIdentifier -contentType 'none'
     }
 
-    # Build sub-section 'ParameterUsage'
-    if (Test-Path (Join-Path $PSScriptRoot 'moduleReadMeSource')) {
-        if ($resourceUsageSourceFiles = Get-ChildItem (Join-Path $PSScriptRoot 'moduleReadMeSource') -Recurse -Filter 'resourceUsage-*') {
-            foreach ($sourceFile in $resourceUsageSourceFiles.FullName) {
-                $parameterName = (Split-Path $sourceFile -LeafBase).Replace('resourceUsage-', '')
-                if ($templateFileContent.parameters.Keys -contains $parameterName) {
-                    $subSectionStartIdentifier = '### Parameter Usage: `{0}`' -f $ParameterName
-
-                    # Build result
-                    $updateParameterUsageInputObject = @{
-                        OldContent             = $updatedFileContent
-                        NewContent             = (Get-Content $sourceFile -Raw).Trim()
-                        SectionStartIdentifier = $subSectionStartIdentifier
-                        ParentStartIdentifier  = $SectionStartIdentifier
-                        ContentType            = 'none'
-                    }
-                    if ($PSCmdlet.ShouldProcess(('Original file with new parameter usage [{0}] content' -f $parameterName), 'Merge')) {
-                        $updatedFileContent = Merge-FileWithNewContent @updateParameterUsageInputObject
-                    }
-                }
-            }
-        }
-    }
-
     return $updatedFileContent
 }
 
@@ -1534,11 +1510,6 @@ $templatePaths = (Get-ChildItem 'C:/network' -Filter 'main.bicep' -Recurse).Full
 $templatePaths | ForEach-Object -Parallel { . '<PathToRepo>/utilities/tools/Set-ModuleReadMe.ps1' ; Set-ModuleReadMe -TemplateFilePath $_ }
 
 Generate the Module ReadMe for any template in a folder path
-
-.NOTES
-The script autopopulates the Parameter Usage section of the ReadMe with the matching content in path './moduleReadMeSource'.
-The content is added in case the given template has a parameter that matches the suffix of one of the files in that path.
-To account for more parameter, just add another markdown file with the naming pattern 'resourceUsage-<parameterName>'
 #>
 function Set-ModuleReadMe {
 
