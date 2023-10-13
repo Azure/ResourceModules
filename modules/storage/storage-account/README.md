@@ -7,9 +7,9 @@ This module deploys a Storage Account.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Considerations](#Considerations)
 - [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
+- [Notes](#Notes)
 
 ## Resource types
 
@@ -97,6 +97,7 @@ This module deploys a Storage Account.
 | `tableServices` | object | `{object}` |  | Table service and tables to create. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
+
 
 ## Outputs
 
@@ -1081,9 +1082,10 @@ module storageAccount './storage/storage-account/main.bicep' = {
 </details>
 <p>
 
+
 ## Notes
 
-## Considerations
+### Considerations
 
 This is a generic module for deploying a Storage Account. Any customization for different storage needs (such as a diagnostic or other storage account) need to be done through the Archetype.
 The hierarchical namespace of the storage account (see parameter `enableHierarchicalNamespace`), can be only set at creation time.

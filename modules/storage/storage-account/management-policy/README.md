@@ -35,6 +35,7 @@ This module deploys a Storage Account Management Policy.
 | :-- | :-- | :-- | :-- |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
 
+
 ## Outputs
 
 | Output Name | Type | Description |

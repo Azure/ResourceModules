@@ -8,6 +8,7 @@ This module deploys a SQL Managed Instance Database.
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
+- [Notes](#Notes)
 
 ## Resource types
 
@@ -59,6 +60,7 @@ This module deploys a SQL Managed Instance Database.
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `restorableDroppedDatabaseId` | string | `''` |  | The restorable dropped database resource ID to restore when creating this database. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
+
 
 ## Outputs
 

@@ -9,6 +9,7 @@ This module deploys an Azure SQL Server.
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
+- [Notes](#Notes)
 
 ## Resource Types
 
@@ -71,6 +72,7 @@ This module deploys an Azure SQL Server.
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
 | `virtualNetworkRules` | array | `[]` |  | The virtual network rules to create in the server. |
 | `vulnerabilityAssessmentsObj` | object | `{object}` |  | The vulnerability assessment configuration. |
+
 
 ## Outputs
 
@@ -648,6 +650,7 @@ module server './sql/server/main.bicep' = {
 
 </details>
 <p>
+
 
 ## Notes
 

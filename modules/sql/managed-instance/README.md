@@ -9,6 +9,7 @@ This module deploys a SQL Managed Instance.
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
+- [Notes](#Notes)
 
 ## Resource types
 
@@ -87,6 +88,7 @@ This module deploys a SQL Managed Instance.
 | `vCores` | int | `4` |  | The number of vCores. Allowed values: 8, 16, 24, 32, 40, 64, 80. |
 | `vulnerabilityAssessmentsObj` | object | `{object}` |  | The vulnerability assessment configuration. |
 | `zoneRedundant` | bool | `False` |  | Whether or not multi-az is enabled. |
+
 
 ## Outputs
 
@@ -525,6 +527,7 @@ module managedInstance './sql/managed-instance/main.bicep' = {
 
 </details>
 <p>
+
 
 ## Notes
 

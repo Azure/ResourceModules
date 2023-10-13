@@ -7,7 +7,6 @@ This module deploys a Synapse Workspaces Key.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 - [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types

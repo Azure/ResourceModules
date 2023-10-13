@@ -9,6 +9,7 @@ This module deploys a Virtual Machine Image Template that can be consumed by Azu
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
+- [Notes](#Notes)
 
 ## Resource types
 
@@ -58,6 +59,7 @@ This module deploys a Virtual Machine Image Template that can be consumed by Azu
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `baseTime` | string | `[utcNow('yyyy-MM-dd-HH-mm-ss')]` | Do not provide a value! This date value is used to generate a unique image template name. |
+
 
 ## Outputs
 
@@ -334,6 +336,7 @@ module imageTemplate './virtual-machine-images/image-template/main.bicep' = {
 
 </details>
 <p>
+
 
 ## Notes
 

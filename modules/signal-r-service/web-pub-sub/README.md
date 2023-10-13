@@ -9,6 +9,7 @@ This module deploys a SignalR Web PubSub Service.
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
+- [Notes](#Notes)
 
 ## Resource Types
 
@@ -48,6 +49,7 @@ This module deploys a SignalR Web PubSub Service.
 | `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
+
 
 ## Outputs
 
@@ -407,6 +409,7 @@ module webPubSub './signal-r-service/web-pub-sub/main.bicep' = {
 
 </details>
 <p>
+
 
 ## Notes
 

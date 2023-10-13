@@ -54,6 +54,7 @@ This module deploys an Azure Security Center (Defender for Cloud) Configuration.
 | `storageAccountsPricingTier` | string | `'Free'` | `[Free, Standard]` | The pricing tier value for StorageAccounts. Azure Security Center is provided in two pricing tiers: free and standard, with the standard tier available with a trial period. The standard tier offers advanced security capabilities, while the free tier offers basic security features. - Free or Standard. |
 | `virtualMachinesPricingTier` | string | `'Free'` | `[Free, Standard]` | The pricing tier value for VMs. Azure Security Center is provided in two pricing tiers: free and standard, with the standard tier available with a trial period. The standard tier offers advanced security capabilities, while the free tier offers basic security features. - Free or Standard. |
 
+
 ## Outputs
 
 | Output Name | Type | Description |

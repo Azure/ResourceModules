@@ -9,6 +9,7 @@ This module deploys a Service Fabric Cluster.
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
+- [Notes](#Notes)
 
 ## Resource Types
 
@@ -64,6 +65,7 @@ This module deploys a Service Fabric Cluster.
 | `vmImage` | string | `''` |  | The VM image VMSS has been configured with. Generic names such as Windows or Linux can be used. |
 | `vmssZonalUpgradeMode` | string | `'Hierarchical'` | `[Hierarchical, Parallel]` | This property defines the upgrade mode for the virtual machine scale set, it is mandatory if a node type with multiple Availability Zones is added. |
 | `waveUpgradePaused` | bool | `False` |  | Boolean to pause automatic runtime version upgrades to the cluster. |
+
 
 ## Outputs
 
@@ -694,6 +696,7 @@ module cluster './service-fabric/cluster/main.bicep' = {
 
 </details>
 <p>
+
 
 ## Notes
 

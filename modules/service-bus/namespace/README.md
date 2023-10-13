@@ -9,6 +9,7 @@ This module deploys a Service Bus Namespace.
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
+- [Notes](#Notes)
 
 ## Resource types
 
@@ -80,6 +81,7 @@ This module deploys a Service Bus Namespace.
 | `topics` | array | `[]` |  | The topics to create in the service bus namespace. |
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
 | `zoneRedundant` | bool | `False` |  | Enabling this property creates a Premium Service Bus Namespace in regions supported availability zones. |
+
 
 ## Outputs
 
@@ -813,6 +815,7 @@ module namespace './service-bus/namespace/main.bicep' = {
 
 </details>
 <p>
+
 
 ## Notes
 
