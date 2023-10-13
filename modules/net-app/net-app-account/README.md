@@ -28,11 +28,19 @@ This module deploys an Azure NetApp File.
 | :-- | :-- | :-- |
 | `name` | string | The name of the NetApp account. |
 
+**Conditional parameters**
+
+| Parameter Name | Type | Default Value | Description |
+| :-- | :-- | :-- | :-- |
+| `cMKKeyVaultResourceId` | string | `''` | The resource ID of a key vault to reference a customer managed key for encryption from. Required if 'cMKKeyName' is not empty. |
+| `cMKUserAssignedIdentityResourceId` | string | `''` | User assigned identity to use when fetching the customer managed key. Required if 'cMKKeyName' is not empty. |
+
 **Optional parameters**
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `capacityPools` | array | `[]` |  | Capacity pools to create. |
+| `cMKKeyName` | string | `''` |  | The name of the customer managed key to use for encryption. |
 | `dnsServers` | string | `''` |  | Required if domainName is specified. Comma separated list of DNS server IP addresses (IPv4 only) required for the Active Directory (AD) domain join and SMB authentication operations to succeed. |
 | `domainJoinOU` | string | `''` |  | Used only if domainName is specified. LDAP Path for the Organization Unit (OU) where SMB Server machine accounts will be created (i.e. 'OU=SecondLevel,OU=FirstLevel'). |
 | `domainJoinPassword` | securestring | `''` |  | Required if domainName is specified. Password of the user specified in domainJoinUser parameter. |
@@ -480,14 +488,14 @@ module netAppAccount './net-app/net-app-account/main.bicep' = {
 
 ```bicep
 module netAppAccount './net-app/net-app-account/main.bicep' = {
-  name: '${uniqueString(deployment().name, location)}-test-nanaanfs41'
+  name: '${uniqueString(deployment().name, location)}-test-naanfs41'
   params: {
     // Required parameters
-    name: 'nanaanfs41001'
+    name: 'naanfs41001'
     // Non-required parameters
     capacityPools: [
       {
-        name: 'nanaanfs41-cp-001'
+        name: 'naanfs41-cp-001'
         roleAssignments: [
           {
             principalIds: [
@@ -511,7 +519,7 @@ module netAppAccount './net-app/net-app-account/main.bicep' = {
                 unixReadWrite: true
               }
             ]
-            name: 'nanaanfs41-vol-001'
+            name: 'naanfs41-vol-001'
             protocolTypes: [
               'NFSv4.1'
             ]
@@ -538,7 +546,7 @@ module netAppAccount './net-app/net-app-account/main.bicep' = {
                 unixReadWrite: true
               }
             ]
-            name: 'nanaanfs41-vol-002'
+            name: 'naanfs41-vol-002'
             protocolTypes: [
               'NFSv4.1'
             ]
@@ -548,7 +556,7 @@ module netAppAccount './net-app/net-app-account/main.bicep' = {
         ]
       }
       {
-        name: 'nanaanfs41-cp-002'
+        name: 'naanfs41-cp-002'
         roleAssignments: [
           {
             principalIds: [
@@ -563,6 +571,9 @@ module netAppAccount './net-app/net-app-account/main.bicep' = {
         volumes: []
       }
     ]
+    cMKKeyName: '<cMKKeyName>'
+    cMKKeyVaultResourceId: '<cMKKeyVaultResourceId>'
+    cMKUserAssignedIdentityResourceId: '<cMKUserAssignedIdentityResourceId>'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     roleAssignments: [
       {
@@ -603,13 +614,13 @@ module netAppAccount './net-app/net-app-account/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "nanaanfs41001"
+      "value": "naanfs41001"
     },
     // Non-required parameters
     "capacityPools": {
       "value": [
         {
-          "name": "nanaanfs41-cp-001",
+          "name": "naanfs41-cp-001",
           "roleAssignments": [
             {
               "principalIds": [
@@ -633,7 +644,7 @@ module netAppAccount './net-app/net-app-account/main.bicep' = {
                   "unixReadWrite": true
                 }
               ],
-              "name": "nanaanfs41-vol-001",
+              "name": "naanfs41-vol-001",
               "protocolTypes": [
                 "NFSv4.1"
               ],
@@ -660,7 +671,7 @@ module netAppAccount './net-app/net-app-account/main.bicep' = {
                   "unixReadWrite": true
                 }
               ],
-              "name": "nanaanfs41-vol-002",
+              "name": "naanfs41-vol-002",
               "protocolTypes": [
                 "NFSv4.1"
               ],
@@ -670,7 +681,7 @@ module netAppAccount './net-app/net-app-account/main.bicep' = {
           ]
         },
         {
-          "name": "nanaanfs41-cp-002",
+          "name": "naanfs41-cp-002",
           "roleAssignments": [
             {
               "principalIds": [
@@ -685,6 +696,15 @@ module netAppAccount './net-app/net-app-account/main.bicep' = {
           "volumes": []
         }
       ]
+    },
+    "cMKKeyName": {
+      "value": "<cMKKeyName>"
+    },
+    "cMKKeyVaultResourceId": {
+      "value": "<cMKKeyVaultResourceId>"
+    },
+    "cMKUserAssignedIdentityResourceId": {
+      "value": "<cMKUserAssignedIdentityResourceId>"
     },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
