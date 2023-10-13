@@ -7,9 +7,9 @@ This module deploys an Azure Firewall.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Considerations](#Considerations)
 - [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
+- [Notes](#Notes)
 
 ## Resource types
 
@@ -66,6 +66,7 @@ This module deploys an Azure Firewall.
 | `tags` | object | `{object}` |  | Tags of the Azure Firewall resource. |
 | `threatIntelMode` | string | `'Deny'` | `[Alert, Deny, Off]` | The operation mode for Threat Intel. |
 | `zones` | array | `[1, 2, 3]` |  | Zone numbers e.g. 1,2,3. |
+
 
 ## Outputs
 
@@ -782,6 +783,7 @@ module azureFirewall './network/azure-firewall/main.bicep' = {
 
 </details>
 <p>
+
 
 ## Notes
 

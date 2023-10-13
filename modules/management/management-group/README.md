@@ -11,9 +11,9 @@ This module has some known **limitations**:
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Considerations](#Considerations)
 - [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
+- [Notes](#Notes)
 
 ## Resource types
 
@@ -37,6 +37,7 @@ This module has some known **limitations**:
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `location` | string | `[deployment().location]` | Location deployment metadata. |
 | `parentId` | string | `[last(split(managementGroup().id, '/'))]` | The management group parent ID. Defaults to current scope. |
+
 
 ## Outputs
 
@@ -153,6 +154,7 @@ module managementGroup './management/management-group/main.bicep' = {
 
 </details>
 <p>
+
 
 ## Notes
 

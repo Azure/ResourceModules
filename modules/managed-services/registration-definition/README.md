@@ -11,9 +11,9 @@ remote/managing tenant.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Considerations](#Considerations)
 - [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
+- [Notes](#Notes)
 
 ## Resource types
 
@@ -40,6 +40,7 @@ remote/managing tenant.
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `location` | string | `[deployment().location]` | Location deployment metadata. |
 | `resourceGroupName` | string | `''` | Specify the name of the Resource Group to delegate access to. If not provided, delegation will be done on the targeted subscription. |
+
 
 ## Outputs
 
@@ -242,6 +243,7 @@ module registrationDefinition './managed-services/registration-definition/main.b
 
 </details>
 <p>
+
 
 ## Notes
 

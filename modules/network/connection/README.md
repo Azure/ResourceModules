@@ -9,6 +9,7 @@ This module deploys a Virtual Network Gateway Connection.
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
+- [Notes](#Notes)
 
 ## Resource types
 
@@ -50,6 +51,7 @@ This module deploys a Virtual Network Gateway Connection.
 | `usePolicyBasedTrafficSelectors` | bool | `False` |  | Enable policy-based traffic selectors. |
 | `virtualNetworkGateway2` | object | `{object}` |  | The remote Virtual Network Gateway. Used for connection connectionType [Vnet2Vnet]. |
 | `vpnSharedKey` | securestring | `''` |  | Specifies a VPN shared key. The same value has to be specified on both Virtual Network Gateways. |
+
 
 ## Outputs
 
@@ -159,6 +161,7 @@ module connection './network/connection/main.bicep' = {
 
 </details>
 <p>
+
 
 ## Notes
 

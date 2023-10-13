@@ -9,6 +9,7 @@ This module deploys a Logic App (Workflow).
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
+- [Notes](#Notes)
 
 ## Resource types
 
@@ -60,6 +61,7 @@ This module deploys a Logic App (Workflow).
 | `workflowParameters` | object | `{object}` |  | The definitions for one or more parameters that pass the values to use at your logic app's runtime. |
 | `workflowStaticResults` | object | `{object}` |  | The definitions for one or more static results returned by actions as mock outputs when static results are enabled on those actions. In each action definition, the runtimeConfiguration.staticResult.name attribute references the corresponding definition inside staticResults. |
 | `workflowTriggers` | object | `{object}` |  | The definitions for one or more triggers that instantiate your workflow. You can define more than one trigger, but only with the Workflow Definition Language, not visually through the Logic Apps Designer. |
+
 
 ## Outputs
 
@@ -252,6 +254,7 @@ module workflow './logic/workflow/main.bicep' = {
 
 </details>
 <p>
+
 
 ## Notes
 

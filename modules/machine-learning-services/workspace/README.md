@@ -9,6 +9,7 @@ This module deploys a Machine Learning Services Workspace.
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
+- [Notes](#Notes)
 
 ## Resource types
 
@@ -73,6 +74,7 @@ This module deploys a Machine Learning Services Workspace.
 | `serviceManagedResourcesSettings` | object | `{object}` |  | The service managed resource settings. |
 | `sharedPrivateLinkResources` | array | `[]` |  | The list of shared private link resources in this workspace. |
 | `tags` | object | `{object}` |  | Resource tags. |
+
 
 ## Outputs
 
@@ -531,6 +533,7 @@ module workspace './machine-learning-services/workspace/main.bicep' = {
 
 </details>
 <p>
+
 
 ## Notes
 

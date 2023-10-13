@@ -9,6 +9,7 @@ This module deploys a Bastion Host.
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
+- [Notes](#Notes)
 
 ## Resource Types
 
@@ -54,6 +55,7 @@ This module deploys a Bastion Host.
 | `scaleUnits` | int | `2` |  | The scale units for the Bastion Host resource. |
 | `skuName` | string | `'Basic'` | `[Basic, Standard]` | The SKU of this Bastion Host. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
+
 
 ## Outputs
 
@@ -378,6 +380,7 @@ module bastionHost './network/bastion-host/main.bicep' = {
 
 </details>
 <p>
+
 
 ## Notes
 

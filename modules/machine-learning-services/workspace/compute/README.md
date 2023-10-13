@@ -10,6 +10,7 @@ Attaching a compute is not idempotent and will fail in case you try to redeploy 
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
+- [Notes](#Notes)
 
 ## Resource Types
 
@@ -48,6 +49,7 @@ Attaching a compute is not idempotent and will fail in case you try to redeploy 
 | `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. Ignored when attaching a compute resource, i.e. when you provide a resource ID. |
 | `tags` | object | `{object}` |  | Contains resource tags defined as key-value pairs. Ignored when attaching a compute resource, i.e. when you provide a resource ID. |
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. Ignored when attaching a compute resource, i.e. when you provide a resource ID. |
+
 
 ## Outputs
 

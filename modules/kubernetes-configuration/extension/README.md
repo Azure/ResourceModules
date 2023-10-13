@@ -4,12 +4,12 @@ This module deploys a Kubernetes Configuration Extension.
 
 ## Navigation
 
-- [Prerequisites](#Prerequisites)
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
+- [Notes](#Notes)
 
 ## Resource Types
 
@@ -237,6 +237,7 @@ module extension './kubernetes-configuration/extension/main.bicep' = {
 
 </details>
 <p>
+
 
 ## Notes
 
