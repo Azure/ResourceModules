@@ -30,66 +30,6 @@ This module deploys a Key Vault Access Policy.
 | `accessPolicies` | array | `[]` | An array of 0 to 16 identities that have access to the key vault. All identities in the array must use the same tenant ID as the key vault's tenant ID. |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
 
-
-### Parameter Usage: `accessPolicies`
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"accessPolicies": {
-    "value": [
-        {
-            "tenantId": null, // Optional
-            "applicationId": null, // Optional
-            "objectId": null,
-            "permissions": {
-                "certificates": [
-                    "All"
-                ],
-                "keys": [
-                    "All"
-                ],
-                "secrets": [
-                    "All"
-                ]
-            }
-        }
-    ]
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-accessPolicies: [
-    {
-        tenantId: null // Optional
-        applicationId: null // Optional
-        objectId: null
-        permissions: {
-            certificates: [
-                'All'
-            ]
-            keys: [
-                'All'
-            ]
-            secrets: [
-                'All'
-            ]
-        }
-    }
-]
-```
-
-</details>
-<p>
-
 ## Outputs
 
 | Output Name | Type | Description |

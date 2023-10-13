@@ -46,6 +46,20 @@ This module deploys a Key Vault Key.
 | `rotationPolicy` | object | `{object}` |  | Key rotation policy properties object. |
 | `tags` | object | `{object}` |  | Resource tags. |
 
+## Outputs
+
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `name` | string | The name of the key. |
+| `resourceGroupName` | string | The name of the resource group the key was created in. |
+| `resourceId` | string | The resource ID of the key. |
+
+## Cross-referenced modules
+
+_None_
+
+## Notes
+
 
 ### Parameter Usage: `tags`
 
@@ -223,15 +237,3 @@ rotationPolicy: {
 
 </details>
 <p>
-
-## Outputs
-
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `name` | string | The name of the key. |
-| `resourceGroupName` | string | The name of the resource group the key was created in. |
-| `resourceId` | string | The resource ID of the key. |
-
-## Cross-referenced modules
-
-_None_
