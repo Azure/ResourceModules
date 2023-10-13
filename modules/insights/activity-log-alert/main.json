@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.21.1.54444",
-      "templateHash": "16456832175233219235"
+      "version": "0.22.6.54827",
+      "templateHash": "6141865158346498118"
     },
     "name": "Activity Log Alerts",
     "description": "This module deploys an Activity Log Alert.",
@@ -58,7 +58,7 @@
     "conditions": {
       "type": "array",
       "metadata": {
-        "description": "Required. The condition that will cause this alert to activate. Array of objects."
+        "description": "Required. An Array of objects containing conditions that will cause this alert to activate. Conditions can also be combined with logical operators `allOf` and `anyOf`. Each condition can specify only one field between `equals` and `containsAny`."
       }
     },
     "roleAssignments": {
@@ -162,8 +162,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "441111163887526316"
+              "version": "0.22.6.54827",
+              "templateHash": "9472664752100118667"
             }
           },
           "parameters": {

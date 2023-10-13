@@ -23,7 +23,7 @@ This module deploys an Activity Log Alert.
 
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `conditions` | array | The condition that will cause this alert to activate. Array of objects. |
+| `conditions` | array | An Array of objects containing conditions that will cause this alert to activate. Conditions can also be combined with logical operators `allOf` and `anyOf`. Each condition can specify only one field between `equals` and `containsAny`. |
 | `name` | string | The name of the alert. |
 
 **Optional parameters**
@@ -39,252 +39,6 @@ This module deploys an Activity Log Alert.
 | `scopes` | array | `[[subscription().id]]` | The list of resource IDs that this Activity Log Alert is scoped to. |
 | `tags` | object | `{object}` | Tags of the resource. |
 
-
-### Parameter Usage: actions
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"actions": {
-    "value": [
-        {
-            "actionGroupId": "/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/rgName/providers/Microsoft.Insights/actiongroups/actionGroupName",
-            "webhookProperties": {}
-        }
-    ]
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-actions: [
-    {
-        actionGroupId: '/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/rgName/providers/Microsoft.Insights/actiongroups/actionGroupName'
-        webhookProperties: {}
-    }
-]
-```
-
-</details>
-<p>
-
-`webhookProperties` is optional.
-
-If you do only want to provide actionGroupIds, a shorthand use of the parameter is available.
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"actions": {
-    "value": [
-        "/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/rgName/providers/Microsoft.Insights/actiongroups/actionGroupName"
-    ]
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-actions: [
-    '/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/rgName/providers/Microsoft.Insights/actiongroups/actionGroupName'
-]
-```
-
-</details>
-<p>
-
-### Parameter Usage: conditions
-
-**Conditions can also be combined with logical operators `allOf` and `anyOf`**
-
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-{
-  "field": "string",
-  "equals": "string",
-  "containsAny": "array"
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-{
-    field: 'string'
-    equals: 'string'
-    containsAny: 'array'
-}
-```
-
-</details>
-</p>
-
-Each condition can specify only one field between `equals` and `containsAny`.
-
-| Parameter Name | Type             | Possible values                                                                                                                                                                                                   | Description                                                                                                                             |
-| :------------- | :--------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------- |
-| `field`        | string           | `resourceId`,<br>`category`,<br>`caller`,<br>`level`,<br>`operationName`,<br>`resourceGroup`,<br>`resourceProvider`,<br>`status`,<br>`subStatus`,<br>`resourceType`,<br> or anything beginning with `properties.` | Required. The name of the field that this condition will examine.                                                                       |
-| `equals`       | string           |                                                                                                                                                                                                                   | Optional (Alternative to `containsAny`). The value to confront with.                                                                    |
-| `containsAny`  | array of strings |                                                                                                                                                                                                                   | Optional (Alternative to `equals`). Condition will be satisfied if value of the field in the event is within one of the specified here. |
-
-**Sample**
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"conditions": {
-    "value": [
-        {
-            "field": "category",
-            "equals": "Administrative"
-        },
-        {
-            "field": "resourceType",
-            "equals": "microsoft.compute/virtualmachines"
-        },
-        {
-            "field": "operationName",
-            "equals": "Microsoft.Compute/virtualMachines/performMaintenance/action"
-        }
-    ]
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-conditions: [
-    {
-        field: 'category'
-        equals: 'Administrative'
-    }
-    {
-        field: 'resourceType'
-        equals: 'microsoft.compute/virtualmachines'
-    }
-    {
-        field: 'operationName'
-        equals: 'Microsoft.Compute/virtualMachines/performMaintenance/action'
-    }
-]
-```
-
-</details>
-<p>
-
-**Sample 2**
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"conditions":{
-    "value": [
-        {
-            "field": "category",
-            "equals": "ServiceHealth"
-        },
-        {
-            "anyOf": [
-                {
-                    "field": "properties.incidentType",
-                    "equals": "Incident"
-                },
-                {
-                    "field": "properties.incidentType",
-                    "equals": "Maintenance"
-                }
-            ]
-        },
-        {
-            "field": "properties.impactedServices[*].ServiceName",
-            "containsAny": [
-                "Action Groups",
-                "Activity Logs & Alerts"
-            ]
-        },
-        {
-            "field": "properties.impactedServices[*].ImpactedRegions[*].RegionName",
-            "containsAny": [
-                "West Europe",
-                "Global"
-            ]
-        }
-    ]
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-conditions: [
-    {
-        field: 'category'
-        equals: 'ServiceHealth'
-    }
-    {
-        anyOf: [
-            {
-                field: 'properties.incidentType'
-                equals: 'Incident'
-            }
-            {
-                field: 'properties.incidentType'
-                equals: 'Maintenance'
-            }
-        ]
-    }
-    {
-        field: 'properties.impactedServices[*].ServiceName'
-        containsAny: [
-            'Action Groups'
-            'Activity Logs & Alerts'
-        ]
-    }
-    {
-        field: 'properties.impactedServices[*].ImpactedRegions[*].RegionName'
-        containsAny: [
-            'West Europe'
-            'Global'
-        ]
-    }
-]
-```
-
-</details>
-<p>
 
 ### Parameter Usage: `roleAssignments`
 
@@ -430,6 +184,36 @@ module activityLogAlert './insights/activity-log-alert/main.bicep' = {
         equals: 'Microsoft.Compute/virtualMachines/performMaintenance/action'
         field: 'operationName'
       }
+      {
+        equals: 'ServiceHealth'
+        field: 'category'
+      }
+      {
+        anyOf: [
+          {
+            equals: 'Incident'
+            field: 'properties.incidentType'
+          }
+          {
+            equals: 'Maintenance'
+            field: 'properties.incidentType'
+          }
+        ]
+      }
+      {
+        containsAny: [
+          'Action Groups'
+          'Activity Logs & Alerts'
+        ]
+        field: 'properties.impactedServices[*].ServiceName'
+      }
+      {
+        containsAny: [
+          'Global'
+          'West Europe'
+        ]
+        field: 'properties.impactedServices[*].ImpactedRegions[*].RegionName'
+      }
     ]
     name: 'ialacom001'
     // Non-required parameters
@@ -486,6 +270,36 @@ module activityLogAlert './insights/activity-log-alert/main.bicep' = {
         {
           "equals": "Microsoft.Compute/virtualMachines/performMaintenance/action",
           "field": "operationName"
+        },
+        {
+          "equals": "ServiceHealth",
+          "field": "category"
+        },
+        {
+          "anyOf": [
+            {
+              "equals": "Incident",
+              "field": "properties.incidentType"
+            },
+            {
+              "equals": "Maintenance",
+              "field": "properties.incidentType"
+            }
+          ]
+        },
+        {
+          "containsAny": [
+            "Action Groups",
+            "Activity Logs & Alerts"
+          ],
+          "field": "properties.impactedServices[*].ServiceName"
+        },
+        {
+          "containsAny": [
+            "Global",
+            "West Europe"
+          ],
+          "field": "properties.impactedServices[*].ImpactedRegions[*].RegionName"
         }
       ]
     },

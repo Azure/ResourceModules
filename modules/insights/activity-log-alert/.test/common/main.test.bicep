@@ -50,7 +50,6 @@ module testDeployment '../../main.bicep' = {
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '${namePrefix}${serviceShort}001'
-
     conditions: [
       {
         equals: 'Administrative'
@@ -63,6 +62,36 @@ module testDeployment '../../main.bicep' = {
       {
         equals: 'Microsoft.Compute/virtualMachines/performMaintenance/action'
         field: 'operationName'
+      }
+      {
+        field: 'category'
+        equals: 'ServiceHealth'
+      }
+      {
+        anyOf: [
+          {
+            field: 'properties.incidentType'
+            equals: 'Incident'
+          }
+          {
+            field: 'properties.incidentType'
+            equals: 'Maintenance'
+          }
+        ]
+      }
+      {
+        field: 'properties.impactedServices[*].ServiceName'
+        containsAny: [
+          'Action Groups'
+          'Activity Logs & Alerts'
+        ]
+      }
+      {
+        field: 'properties.impactedServices[*].ImpactedRegions[*].RegionName'
+        containsAny: [
+          'West Europe'
+          'Global'
+        ]
       }
     ]
     actions: [
