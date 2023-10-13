@@ -9,6 +9,7 @@ This module deploys a Log Analytics Workspace.
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
+- [Notes](#Notes)
 
 ## Resource types
 
@@ -75,408 +76,6 @@ This module deploys a Log Analytics Workspace.
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
 | `useResourcePermissions` | bool | `False` |  | Set to 'true' to use resource or workspace permissions and 'false' (or leave empty) to require workspace permissions. |
 
-
-### Parameter Usage: `gallerySolutions`
-
-Ref cross-referenced _[solution](../../operations-management/solution/README.md)_
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"gallerySolutions": {
-    "value": [
-        {
-            "name": "AgentHealthAssessment",
-            "product": "OMSGallery",
-            "publisher": "Microsoft"
-        },
-        {
-            "name": "AlertManagement",
-            "product": "OMSGallery",
-            "publisher": "Microsoft"
-        },
-        {
-            "name": "AntiMalware",
-            "product": "OMSGallery",
-            "publisher": "Microsoft"
-        },
-        {
-            "name": "AzureActivity",
-            "product": "OMSGallery",
-            "publisher": "Microsoft"
-        },
-        {
-            "name": "AzureAutomation",
-            "product": "OMSGallery",
-            "publisher": "Microsoft"
-        },
-        {
-            "name": "AzureCdnCoreAnalytics",
-            "product": "OMSGallery",
-            "publisher": "Microsoft"
-        },
-        {
-            "name": "AzureDataFactoryAnalytics",
-            "product": "OMSGallery",
-            "publisher": "Microsoft"
-        },
-        {
-            "name": "AzureNSGAnalytics",
-            "product": "OMSGallery",
-            "publisher": "Microsoft"
-        },
-        {
-            "name": "AzureSQLAnalytics",
-            "product": "OMSGallery",
-            "publisher": "Microsoft"
-        },
-        {
-            "name": "ChangeTracking",
-            "product": "OMSGallery",
-            "publisher": "Microsoft"
-        },
-        {
-            "name": "Containers",
-            "product": "OMSGallery",
-            "publisher": "Microsoft"
-        },
-        {
-            "name": "InfrastructureInsights",
-            "product": "OMSGallery",
-            "publisher": "Microsoft"
-        },
-        {
-            "name": "KeyVaultAnalytics",
-            "product": "OMSGallery",
-            "publisher": "Microsoft"
-        },
-        {
-            "name": "LogicAppsManagement",
-            "product": "OMSGallery",
-            "publisher": "Microsoft"
-        },
-        {
-            "name": "NetworkMonitoring",
-            "product": "OMSGallery",
-            "publisher": "Microsoft"
-        },
-        {
-            "name": "Security",
-            "product": "OMSGallery",
-            "publisher": "Microsoft"
-        },
-        {
-            "name": "SecurityCenterFree",
-            "product": "OMSGallery",
-            "publisher": "Microsoft"
-        },
-        {
-            "name": "ServiceFabric",
-            "product": "OMSGallery",
-            "publisher": "Microsoft"
-        },
-        {
-            "name": "ServiceMap",
-            "product": "OMSGallery",
-            "publisher": "Microsoft"
-        },
-        {
-            "name": "SQLAssessment",
-            "product": "OMSGallery",
-            "publisher": "Microsoft"
-        },
-        {
-            "name": "Updates",
-            "product": "OMSGallery",
-            "publisher": "Microsoft"
-        },
-        {
-            "name": "VMInsights",
-            "product": "OMSGallery",
-            "publisher": "Microsoft"
-        },
-        {
-            "name": "WireData2",
-            "product": "OMSGallery",
-            "publisher": "Microsoft"
-        },
-        {
-            "name": "WaaSUpdateInsights",
-            "product": "OMSGallery",
-            "publisher": "Microsoft"
-        }
-    ]
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-gallerySolutions: [
-    {
-        name: 'AgentHealthAssessment'
-        product: 'OMSGallery'
-        publisher: 'Microsoft'
-    }
-    {
-        name: 'AlertManagement'
-        product: 'OMSGallery'
-        publisher: 'Microsoft'
-    }
-    {
-        name: 'AntiMalware'
-        product: 'OMSGallery'
-        publisher: 'Microsoft'
-    }
-    {
-        name: 'AzureActivity'
-        product: 'OMSGallery'
-        publisher: 'Microsoft'
-    }
-    {
-        name: 'AzureAutomation'
-        product: 'OMSGallery'
-        publisher: 'Microsoft'
-    }
-    {
-        name: 'AzureCdnCoreAnalytics'
-        product: 'OMSGallery'
-        publisher: 'Microsoft'
-    }
-    {
-        name: 'AzureDataFactoryAnalytics'
-        product: 'OMSGallery'
-        publisher: 'Microsoft'
-    }
-    {
-        name: 'AzureNSGAnalytics'
-        product: 'OMSGallery'
-        publisher: 'Microsoft'
-    }
-    {
-        name: 'AzureSQLAnalytics'
-        product: 'OMSGallery'
-        publisher: 'Microsoft'
-    }
-    {
-        name: 'ChangeTracking'
-        product: 'OMSGallery'
-        publisher: 'Microsoft'
-    }
-    {
-        name: 'Containers'
-        product: 'OMSGallery'
-        publisher: 'Microsoft'
-    }
-    {
-        name: 'InfrastructureInsights'
-        product: 'OMSGallery'
-        publisher: 'Microsoft'
-    }
-    {
-        name: 'KeyVaultAnalytics'
-        product: 'OMSGallery'
-        publisher: 'Microsoft'
-    }
-    {
-        name: 'LogicAppsManagement'
-        product: 'OMSGallery'
-        publisher: 'Microsoft'
-    }
-    {
-        name: 'NetworkMonitoring'
-        product: 'OMSGallery'
-        publisher: 'Microsoft'
-    }
-    {
-        name: 'Security'
-        product: 'OMSGallery'
-        publisher: 'Microsoft'
-    }
-    {
-        name: 'SecurityCenterFree'
-        product: 'OMSGallery'
-        publisher: 'Microsoft'
-    }
-    {
-        name: 'ServiceFabric'
-        product: 'OMSGallery'
-        publisher: 'Microsoft'
-    }
-    {
-        name: 'ServiceMap'
-        product: 'OMSGallery'
-        publisher: 'Microsoft'
-    }
-    {
-        name: 'SQLAssessment'
-        product: 'OMSGallery'
-        publisher: 'Microsoft'
-    }
-    {
-        name: 'Updates'
-        product: 'OMSGallery'
-        publisher: 'Microsoft'
-    }
-    {
-        name: 'VMInsights'
-        product: 'OMSGallery'
-        publisher: 'Microsoft'
-    }
-    {
-        name: 'WireData2'
-        product: 'OMSGallery'
-        publisher: 'Microsoft'
-    }
-    {
-        name: 'WaaSUpdateInsights'
-        product: 'OMSGallery'
-        publisher: 'Microsoft'
-    }
-]
-```
-
-</details>
-<p>
-
-### Parameter Usage: `roleAssignments`
-
-Create a role assignment for the given resource. If you want to assign a service principal / managed identity that is created in the same deployment, make sure to also specify the `'principalType'` parameter and set it to `'ServicePrincipal'`. This will ensure the role assignment waits for the principal's propagation in Azure.
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"roleAssignments": {
-    "value": [
-        {
-            "roleDefinitionIdOrName": "Reader",
-            "description": "Reader Role Assignment",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012", // object 1
-                "78945612-1234-1234-1234-123456789012" // object 2
-            ]
-        },
-        {
-            "roleDefinitionIdOrName": "/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012" // object 1
-            ],
-            "principalType": "ServicePrincipal"
-        }
-    ]
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-roleAssignments: [
-    {
-        roleDefinitionIdOrName: 'Reader'
-        description: 'Reader Role Assignment'
-        principalIds: [
-            '12345678-1234-1234-1234-123456789012' // object 1
-            '78945612-1234-1234-1234-123456789012' // object 2
-        ]
-    }
-    {
-        roleDefinitionIdOrName: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'
-        principalIds: [
-            '12345678-1234-1234-1234-123456789012' // object 1
-        ]
-        principalType: 'ServicePrincipal'
-    }
-]
-```
-
-</details>
-<p>
-
-### Parameter Usage: `tags`
-
-Tag names and tag values can be provided as needed. A tag can be left without a value.
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"tags": {
-    "value": {
-        "Environment": "Non-Prod",
-        "Contact": "test.user@testcompany.com",
-        "PurchaseOrder": "1234",
-        "CostCenter": "7890",
-        "ServiceName": "DeploymentValidation",
-        "Role": "DeploymentValidation"
-    }
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-tags: {
-    Environment: 'Non-Prod'
-    Contact: 'test.user@testcompany.com'
-    PurchaseOrder: '1234'
-    CostCenter: '7890'
-    ServiceName: 'DeploymentValidation'
-    Role: 'DeploymentValidation'
-}
-```
-
-</details>
-<p>
-
-### Parameter Usage: `userAssignedIdentities`
-
-You can specify multiple user assigned identities to a resource by providing additional resource IDs using the following format:
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"userAssignedIdentities": {
-    "value": {
-        "/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
-        "/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
-    }
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-userAssignedIdentities: {
-    '/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
-    '/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
-}
-```
-
-</details>
-<p>
 
 ## Outputs
 
@@ -1457,6 +1056,142 @@ module workspace './operational-insights/workspace/main.bicep' = {
       "value": "<enableDefaultTelemetry>"
     }
   }
+}
+```
+
+</details>
+<p>
+
+
+## Notes
+
+### Parameter Usage: `roleAssignments`
+
+Create a role assignment for the given resource. If you want to assign a service principal / managed identity that is created in the same deployment, make sure to also specify the `'principalType'` parameter and set it to `'ServicePrincipal'`. This will ensure the role assignment waits for the principal's propagation in Azure.
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"roleAssignments": {
+    "value": [
+        {
+            "roleDefinitionIdOrName": "Reader",
+            "description": "Reader Role Assignment",
+            "principalIds": [
+                "12345678-1234-1234-1234-123456789012", // object 1
+                "78945612-1234-1234-1234-123456789012" // object 2
+            ]
+        },
+        {
+            "roleDefinitionIdOrName": "/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11",
+            "principalIds": [
+                "12345678-1234-1234-1234-123456789012" // object 1
+            ],
+            "principalType": "ServicePrincipal"
+        }
+    ]
+}
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+roleAssignments: [
+    {
+        roleDefinitionIdOrName: 'Reader'
+        description: 'Reader Role Assignment'
+        principalIds: [
+            '12345678-1234-1234-1234-123456789012' // object 1
+            '78945612-1234-1234-1234-123456789012' // object 2
+        ]
+    }
+    {
+        roleDefinitionIdOrName: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'
+        principalIds: [
+            '12345678-1234-1234-1234-123456789012' // object 1
+        ]
+        principalType: 'ServicePrincipal'
+    }
+]
+```
+
+</details>
+<p>
+
+### Parameter Usage: `tags`
+
+Tag names and tag values can be provided as needed. A tag can be left without a value.
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"tags": {
+    "value": {
+        "Environment": "Non-Prod",
+        "Contact": "test.user@testcompany.com",
+        "PurchaseOrder": "1234",
+        "CostCenter": "7890",
+        "ServiceName": "DeploymentValidation",
+        "Role": "DeploymentValidation"
+    }
+}
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+tags: {
+    Environment: 'Non-Prod'
+    Contact: 'test.user@testcompany.com'
+    PurchaseOrder: '1234'
+    CostCenter: '7890'
+    ServiceName: 'DeploymentValidation'
+    Role: 'DeploymentValidation'
+}
+```
+
+</details>
+<p>
+
+### Parameter Usage: `userAssignedIdentities`
+
+You can specify multiple user assigned identities to a resource by providing additional resource IDs using the following format:
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"userAssignedIdentities": {
+    "value": {
+        "/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
+        "/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
+    }
+}
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+userAssignedIdentities: {
+    '/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
+    '/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
 }
 ```
 

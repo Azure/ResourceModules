@@ -15,13 +15,6 @@ This module deploys a Virtual Network Peering.
 | :-- | :-- |
 | `Microsoft.Network/virtualNetworks/virtualNetworkPeerings` | [2023-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-04-01/virtualNetworks/virtualNetworkPeerings) |
 
-### Resource dependency
-
-The following resources are required to be able to deploy this resource.
-
-- Local Virtual Network (Identified by the `localVnetName` parameter).
-- Remote Virtual Network (Identified by the `remoteVirtualNetworkId` parameter)
-
 ## Parameters
 
 **Required parameters**

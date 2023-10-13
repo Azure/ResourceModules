@@ -9,6 +9,7 @@ This module deploys a Recovery Services Vault.
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
+- [Notes](#Notes)
 
 ## Resource Types
 
@@ -69,847 +70,6 @@ This module deploys a Recovery Services Vault.
 | `tags` | object | `{object}` |  | Tags of the Recovery Service Vault resource. |
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
 
-
-### Parameter Usage: `backupStorageConfig`
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"backupStorageConfig": {
-    "value": {
-        "storageModelType": "GeoRedundant",
-        "crossRegionRestoreFlag": true
-    }
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-backupStorageConfig: {
-    value: {
-        storageModelType: 'GeoRedundant'
-        crossRegionRestoreFlag: true
-    }
-}
-```
-
-</details>
-<p>
-
-### Parameter Usage: `roleAssignments`
-
-Create a role assignment for the given resource. If you want to assign a service principal / managed identity that is created in the same deployment, make sure to also specify the `'principalType'` parameter and set it to `'ServicePrincipal'`. This will ensure the role assignment waits for the principal's propagation in Azure.
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"roleAssignments": {
-    "value": [
-        {
-            "roleDefinitionIdOrName": "Reader",
-            "description": "Reader Role Assignment",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012", // object 1
-                "78945612-1234-1234-1234-123456789012" // object 2
-            ]
-        },
-        {
-            "roleDefinitionIdOrName": "/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012" // object 1
-            ],
-            "principalType": "ServicePrincipal"
-        }
-    ]
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-roleAssignments: [
-    {
-        roleDefinitionIdOrName: 'Reader'
-        description: 'Reader Role Assignment'
-        principalIds: [
-            '12345678-1234-1234-1234-123456789012' // object 1
-            '78945612-1234-1234-1234-123456789012' // object 2
-        ]
-    }
-    {
-        roleDefinitionIdOrName: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'
-        principalIds: [
-            '12345678-1234-1234-1234-123456789012' // object 1
-        ]
-        principalType: 'ServicePrincipal'
-    }
-]
-```
-
-</details>
-<p>
-
-### Parameter Usage: `tags`
-
-Tag names and tag values can be provided as needed. A tag can be left without a value.
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"tags": {
-    "value": {
-        "Environment": "Non-Prod",
-        "Contact": "test.user@testcompany.com",
-        "PurchaseOrder": "1234",
-        "CostCenter": "7890",
-        "ServiceName": "DeploymentValidation",
-        "Role": "DeploymentValidation"
-    }
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-tags: {
-    Environment: 'Non-Prod'
-    Contact: 'test.user@testcompany.com'
-    PurchaseOrder: '1234'
-    CostCenter: '7890'
-    ServiceName: 'DeploymentValidation'
-    Role: 'DeploymentValidation'
-}
-```
-
-</details>
-<p>
-
-### Parameter Usage: `backupPolicies`
-
-Array of backup policies. They need to be properly formatted and can be VM backup policies, SQL on VM backup policies or fileshare policies. The following example shows all three types of backup policies.
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"backupPolicies": {
-  "value": [
-    {
-      "name": "VMpolicy",
-      "type": "Microsoft.RecoveryServices/vaults/backupPolicies",
-      "properties": {
-        "backupManagementType": "AzureIaasVM",
-        "instantRPDetails": {},
-        "schedulePolicy": {
-          "schedulePolicyType": "SimpleSchedulePolicy",
-          "scheduleRunFrequency": "Daily",
-          "scheduleRunTimes": [
-            "2019-11-07T07:00:00Z"
-          ],
-          "scheduleWeeklyFrequency": 0
-        },
-        "retentionPolicy": {
-          "retentionPolicyType": "LongTermRetentionPolicy",
-          "dailySchedule": {
-            "retentionTimes": [
-              "2019-11-07T07:00:00Z"
-            ],
-            "retentionDuration": {
-              "count": 180,
-              "durationType": "Days"
-            }
-          },
-          "weeklySchedule": {
-            "daysOfTheWeek": [
-              "Sunday"
-            ],
-            "retentionTimes": [
-              "2019-11-07T07:00:00Z"
-            ],
-            "retentionDuration": {
-              "count": 12,
-              "durationType": "Weeks"
-            }
-          },
-          "monthlySchedule": {
-            "retentionScheduleFormatType": "Weekly",
-            "retentionScheduleWeekly": {
-              "daysOfTheWeek": [
-                "Sunday"
-              ],
-              "weeksOfTheMonth": [
-                "First"
-              ]
-            },
-            "retentionTimes": [
-              "2019-11-07T07:00:00Z"
-            ],
-            "retentionDuration": {
-              "count": 60,
-              "durationType": "Months"
-            }
-          },
-          "yearlySchedule": {
-            "retentionScheduleFormatType": "Weekly",
-            "monthsOfYear": [
-              "January"
-            ],
-            "retentionScheduleWeekly": {
-              "daysOfTheWeek": [
-                "Sunday"
-              ],
-              "weeksOfTheMonth": [
-                "First"
-              ]
-            },
-            "retentionTimes": [
-              "2019-11-07T07:00:00Z"
-            ],
-            "retentionDuration": {
-              "count": 10,
-              "durationType": "Years"
-            }
-          }
-        },
-        "instantRpRetentionRangeInDays": 2,
-        "timeZone": "UTC",
-        "protectedItemsCount": 0
-      }
-    },
-    {
-      "name": "sqlpolicy",
-      "type": "Microsoft.RecoveryServices/vaults/backupPolicies",
-      "properties": {
-        "backupManagementType": "AzureWorkload",
-        "workLoadType": "SQLDataBase",
-        "settings": {
-          "timeZone": "UTC",
-          "issqlcompression": true,
-          "isCompression": true
-        },
-        "subProtectionPolicy": [
-          {
-            "policyType": "Full",
-            "schedulePolicy": {
-              "schedulePolicyType": "SimpleSchedulePolicy",
-              "scheduleRunFrequency": "Weekly",
-              "scheduleRunDays": [
-                "Sunday"
-              ],
-              "scheduleRunTimes": [
-                "2019-11-07T22:00:00Z"
-              ],
-              "scheduleWeeklyFrequency": 0
-            },
-            "retentionPolicy": {
-              "retentionPolicyType": "LongTermRetentionPolicy",
-              "weeklySchedule": {
-                "daysOfTheWeek": [
-                  "Sunday"
-                ],
-                "retentionTimes": [
-                  "2019-11-07T22:00:00Z"
-                ],
-                "retentionDuration": {
-                  "count": 104,
-                  "durationType": "Weeks"
-                }
-              },
-              "monthlySchedule": {
-                "retentionScheduleFormatType": "Weekly",
-                "retentionScheduleWeekly": {
-                  "daysOfTheWeek": [
-                    "Sunday"
-                  ],
-                  "weeksOfTheMonth": [
-                    "First"
-                  ]
-                },
-                "retentionTimes": [
-                  "2019-11-07T22:00:00Z"
-                ],
-                "retentionDuration": {
-                  "count": 60,
-                  "durationType": "Months"
-                }
-              },
-              "yearlySchedule": {
-                "retentionScheduleFormatType": "Weekly",
-                "monthsOfYear": [
-                  "January"
-                ],
-                "retentionScheduleWeekly": {
-                  "daysOfTheWeek": [
-                    "Sunday"
-                  ],
-                  "weeksOfTheMonth": [
-                    "First"
-                  ]
-                },
-                "retentionTimes": [
-                  "2019-11-07T22:00:00Z"
-                ],
-                "retentionDuration": {
-                  "count": 10,
-                  "durationType": "Years"
-                }
-              }
-            }
-          },
-          {
-            "policyType": "Differential",
-            "schedulePolicy": {
-              "schedulePolicyType": "SimpleSchedulePolicy",
-              "scheduleRunFrequency": "Weekly",
-              "scheduleRunDays": [
-                "Monday"
-              ],
-              "scheduleRunTimes": [
-                "2017-03-07T02:00:00Z"
-              ],
-              "scheduleWeeklyFrequency": 0
-            },
-            "retentionPolicy": {
-              "retentionPolicyType": "SimpleRetentionPolicy",
-              "retentionDuration": {
-                "count": 30,
-                "durationType": "Days"
-              }
-            }
-          },
-          {
-            "policyType": "Log",
-            "schedulePolicy": {
-              "schedulePolicyType": "LogSchedulePolicy",
-              "scheduleFrequencyInMins": 120
-            },
-            "retentionPolicy": {
-              "retentionPolicyType": "SimpleRetentionPolicy",
-              "retentionDuration": {
-                "count": 15,
-                "durationType": "Days"
-              }
-            }
-          }
-        ],
-        "protectedItemsCount": 0
-      }
-    },
-    {
-      "name": "filesharepolicy",
-      "type": "Microsoft.RecoveryServices/vaults/backupPolicies",
-      "properties": {
-        "backupManagementType": "AzureStorage",
-        "workloadType": "AzureFileShare",
-        "schedulePolicy": {
-          "schedulePolicyType": "SimpleSchedulePolicy",
-          "scheduleRunFrequency": "Daily",
-          "scheduleRunTimes": [
-            "2019-11-07T04:30:00Z"
-          ],
-          "scheduleWeeklyFrequency": 0
-        },
-        "retentionPolicy": {
-          "retentionPolicyType": "LongTermRetentionPolicy",
-          "dailySchedule": {
-            "retentionTimes": [
-              "2019-11-07T04:30:00Z"
-            ],
-            "retentionDuration": {
-              "count": 30,
-              "durationType": "Days"
-            }
-          }
-        },
-        "timeZone": "UTC",
-        "protectedItemsCount": 0
-      }
-    }
-  ]
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-backupPolicies: [
-    {
-      name: 'VMpolicy'
-      type: 'Microsoft.RecoveryServices/vaults/backupPolicies'
-      properties: {
-        backupManagementType: 'AzureIaasVM'
-        instantRPDetails: {}
-        schedulePolicy: {
-          schedulePolicyType: 'SimpleSchedulePolicy'
-          scheduleRunFrequency: 'Daily'
-          scheduleRunTimes: [
-            '2019-11-07T07:00:00Z'
-          ]
-          scheduleWeeklyFrequency: 0
-        }
-        retentionPolicy: {
-          retentionPolicyType: 'LongTermRetentionPolicy'
-          dailySchedule: {
-            retentionTimes: [
-              '2019-11-07T07:00:00Z'
-            ]
-            retentionDuration: {
-              count: 180
-              durationType: 'Days'
-            }
-          }
-          weeklySchedule: {
-            daysOfTheWeek: [
-              'Sunday'
-            ]
-            retentionTimes: [
-              '2019-11-07T07:00:00Z'
-            ]
-            retentionDuration: {
-              count: 12
-              durationType: 'Weeks'
-            }
-          }
-          monthlySchedule: {
-            retentionScheduleFormatType: 'Weekly'
-            retentionScheduleWeekly: {
-              daysOfTheWeek: [
-                'Sunday'
-              ]
-              weeksOfTheMonth: [
-                'First'
-              ]
-            }
-            retentionTimes: [
-              '2019-11-07T07:00:00Z'
-            ]
-            retentionDuration: {
-              count: 60
-              durationType: 'Months'
-            }
-          }
-          yearlySchedule: {
-            retentionScheduleFormatType: 'Weekly'
-            monthsOfYear: [
-              'January'
-            ]
-            retentionScheduleWeekly: {
-              daysOfTheWeek: [
-                'Sunday'
-              ]
-              weeksOfTheMonth: [
-                'First'
-              ]
-            }
-            retentionTimes: [
-              '2019-11-07T07:00:00Z'
-            ]
-            retentionDuration: {
-              count: 10
-              durationType: 'Years'
-            }
-          }
-        }
-        instantRpRetentionRangeInDays: 2
-        timeZone: 'UTC'
-        protectedItemsCount: 0
-      }
-    }
-    {
-      name: 'sqlpolicy'
-      type: 'Microsoft.RecoveryServices/vaults/backupPolicies'
-      properties: {
-        backupManagementType: 'AzureWorkload'
-        workLoadType: 'SQLDataBase'
-        settings: {
-          timeZone: 'UTC'
-          issqlcompression: true
-          isCompression: true
-        }
-        subProtectionPolicy: [
-          {
-            policyType: 'Full'
-            schedulePolicy: {
-              schedulePolicyType: 'SimpleSchedulePolicy'
-              scheduleRunFrequency: 'Weekly'
-              scheduleRunDays: [
-                'Sunday'
-              ]
-              scheduleRunTimes: [
-                '2019-11-07T22:00:00Z'
-              ]
-              scheduleWeeklyFrequency: 0
-            }
-            retentionPolicy: {
-              retentionPolicyType: 'LongTermRetentionPolicy'
-              weeklySchedule: {
-                daysOfTheWeek: [
-                  'Sunday'
-                ]
-                retentionTimes: [
-                  '2019-11-07T22:00:00Z'
-                ]
-                retentionDuration: {
-                  count: 104
-                  durationType: 'Weeks'
-                }
-              }
-              monthlySchedule: {
-                retentionScheduleFormatType: 'Weekly'
-                retentionScheduleWeekly: {
-                  daysOfTheWeek: [
-                    'Sunday'
-                  ]
-                  weeksOfTheMonth: [
-                    'First'
-                  ]
-                }
-                retentionTimes: [
-                  '2019-11-07T22:00:00Z'
-                ]
-                retentionDuration: {
-                  count: 60
-                  durationType: 'Months'
-                }
-              }
-              yearlySchedule: {
-                retentionScheduleFormatType: 'Weekly'
-                monthsOfYear: [
-                  'January'
-                ]
-                retentionScheduleWeekly: {
-                  daysOfTheWeek: [
-                    'Sunday'
-                  ]
-                  weeksOfTheMonth: [
-                    'First'
-                  ]
-                }
-                retentionTimes: [
-                  '2019-11-07T22:00:00Z'
-                ]
-                retentionDuration: {
-                  count: 10
-                  durationType: 'Years'
-                }
-              }
-            }
-          }
-          {
-            policyType: 'Differential'
-            schedulePolicy: {
-              schedulePolicyType: 'SimpleSchedulePolicy'
-              scheduleRunFrequency: 'Weekly'
-              scheduleRunDays: [
-                'Monday'
-              ]
-              scheduleRunTimes: [
-                '2017-03-07T02:00:00Z'
-              ]
-              scheduleWeeklyFrequency: 0
-            }
-            retentionPolicy: {
-              retentionPolicyType: 'SimpleRetentionPolicy'
-              retentionDuration: {
-                count: 30
-                durationType: 'Days'
-              }
-            }
-          }
-          {
-            policyType: 'Log'
-            schedulePolicy: {
-              schedulePolicyType: 'LogSchedulePolicy'
-              scheduleFrequencyInMins: 120
-            }
-            retentionPolicy: {
-              retentionPolicyType: 'SimpleRetentionPolicy'
-              retentionDuration: {
-                count: 15
-                durationType: 'Days'
-              }
-            }
-          }
-        ]
-        protectedItemsCount: 0
-      }
-    }
-    {
-      name: 'filesharepolicy'
-      type: 'Microsoft.RecoveryServices/vaults/backupPolicies'
-      properties: {
-        backupManagementType: 'AzureStorage'
-        workloadType: 'AzureFileShare'
-        schedulePolicy: {
-          schedulePolicyType: 'SimpleSchedulePolicy'
-          scheduleRunFrequency: 'Daily'
-          scheduleRunTimes: [
-            '2019-11-07T04:30:00Z'
-          ]
-          scheduleWeeklyFrequency: 0
-        }
-        retentionPolicy: {
-          retentionPolicyType: 'LongTermRetentionPolicy'
-          dailySchedule: {
-            retentionTimes: [
-              '2019-11-07T04:30:00Z'
-            ]
-            retentionDuration: {
-              count: 30
-              durationType: 'Days'
-            }
-          }
-        }
-        timeZone: 'UTC'
-        protectedItemsCount: 0
-      }
-    }
-]
-```
-
-</details>
-<p>
-
-### Parameter Usage: `replicationFabrics`
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"replicationFabrics": {
-  "value": [
-      {
-          "location": "NorthEurope",
-          "replicationContainers": [
-              {
-                  "name": "ne-container1",
-                  "replicationContainerMappings": [
-                    {
-                      "policyName": "Default_values",
-                      "targetContainerFabricName": "WestEurope-Fabric",
-                      "targetContainerName": "we-conainer2"
-                    }
-                  ]
-              }
-          ]
-      },
-      {
-          "name": "WestEurope-Fabric", //Optional
-          "location": "WestEurope",
-          "replicationContainers": [
-              {
-                  "name": "we-conainer2"
-              }
-          ]
-      }
-  ]
-},
-```
-
-### Parameter Usage: `replicationPolicies`
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"replicationPolicies": {
-    "value": [
-        {
-            "name": "Default_values"
-        },
-        {
-            "name": "Custom_values",
-            "appConsistentFrequencyInMinutes": 240,
-            "crashConsistentFrequencyInMinutes": 7,
-            "multiVmSyncStatus": "Disable",
-            "recoveryPointHistory": 2880
-        }
-    ]
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-replicationPolicies: [
-    {
-        name: 'Default_values'
-    }
-    {
-        name: 'Custom_values'
-        appConsistentFrequencyInMinutes: 240
-        crashConsistentFrequencyInMinutes: 7
-        multiVmSyncStatus: 'Disable'
-        recoveryPointHistory: 2880
-    }
-]
-```
-
-</details>
-<p>
-
-### Parameter Usage: `userAssignedIdentities`
-
-You can specify multiple user assigned identities to a resource by providing additional resource IDs using the following format:
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"userAssignedIdentities": {
-    "value": {
-        "/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
-        "/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
-    }
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-userAssignedIdentities: {
-    '/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
-    '/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
-}
-```
-
-</details>
-<p>
-
-### Parameter Usage: `privateEndpoints`
-
-To use Private Endpoint the following dependencies must be deployed:
-
-- Destination subnet must be created with the following configuration option - `"privateEndpointNetworkPolicies": "Disabled"`. Setting this option acknowledges that NSG rules are not applied to Private Endpoints (this capability is coming soon). A full example is available in the Virtual Network Module.
-- Although not strictly required, it is highly recommended to first create a private DNS Zone to host Private Endpoint DNS records. See [Azure Private Endpoint DNS configuration](https://learn.microsoft.com/en-us/azure/private-link/private-endpoint-dns) for more information.
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"privateEndpoints": {
-    "value": [
-        // Example showing all available fields
-        {
-            "name": "sxx-az-pe", // Optional: Name will be automatically generated if one is not provided here
-            "subnetResourceId": "/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001",
-            "service": "<serviceName>", // e.g. vault, registry, blob
-            "privateDnsZoneGroup": {
-                "privateDNSResourceIds": [ // Optional: No DNS record will be created if a private DNS zone Resource ID is not specified
-                    "/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/<privateDnsZoneName>" // e.g. privatelink.vaultcore.azure.net, privatelink.azurecr.io, privatelink.blob.core.windows.net
-                ]
-            },
-            "ipConfigurations":[
-                {
-                    "name": "myIPconfigTest02",
-                    "properties": {
-                        "groupId": "blob",
-                        "memberName": "blob",
-                        "privateIPAddress": "10.0.0.30"
-                    }
-                }
-            ],
-            "customDnsConfigs": [
-                {
-                    "fqdn": "customname.test.local",
-                    "ipAddresses": [
-                        "10.10.10.10"
-                    ]
-                }
-            ]
-        },
-        // Example showing only mandatory fields
-        {
-            "subnetResourceId": "/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001",
-            "service": "<serviceName>" // e.g. vault, registry, blob
-        }
-    ]
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-privateEndpoints:  [
-    // Example showing all available fields
-    {
-        name: 'sxx-az-pe' // Optional: Name will be automatically generated if one is not provided here
-        subnetResourceId: '/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001'
-        service: '<serviceName>' // e.g. vault, registry, blob
-        privateDnsZoneGroup: {
-            privateDNSResourceIds: [ // Optional: No DNS record will be created if a private DNS zone Resource ID is not specified
-                '/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/<privateDnsZoneName>' // e.g. privatelink.vaultcore.azure.net, privatelink.azurecr.io, privatelink.blob.core.windows.net
-            ]
-        }
-        customDnsConfigs: [
-            {
-                fqdn: 'customname.test.local'
-                ipAddresses: [
-                    '10.10.10.10'
-                ]
-            }
-        ]
-        ipConfigurations:[
-          {
-            name: 'myIPconfigTest02'
-            properties: {
-              groupId: 'blob'
-              memberName: 'blob'
-              privateIPAddress: '10.0.0.30'
-            }
-          }
-        ]
-    }
-    // Example showing only mandatory fields
-    {
-        subnetResourceId: '/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001'
-        service: '<serviceName>' // e.g. vault, registry, blob
-    }
-]
-```
-
-</details>
-<p>
 
 ## Outputs
 
@@ -1806,6 +966,242 @@ module vault './recovery-services/vault/main.bicep' = {
     }
   }
 }
+```
+
+</details>
+<p>
+
+
+## Notes
+
+### Parameter Usage: `roleAssignments`
+
+Create a role assignment for the given resource. If you want to assign a service principal / managed identity that is created in the same deployment, make sure to also specify the `'principalType'` parameter and set it to `'ServicePrincipal'`. This will ensure the role assignment waits for the principal's propagation in Azure.
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"roleAssignments": {
+    "value": [
+        {
+            "roleDefinitionIdOrName": "Reader",
+            "description": "Reader Role Assignment",
+            "principalIds": [
+                "12345678-1234-1234-1234-123456789012", // object 1
+                "78945612-1234-1234-1234-123456789012" // object 2
+            ]
+        },
+        {
+            "roleDefinitionIdOrName": "/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11",
+            "principalIds": [
+                "12345678-1234-1234-1234-123456789012" // object 1
+            ],
+            "principalType": "ServicePrincipal"
+        }
+    ]
+}
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+roleAssignments: [
+    {
+        roleDefinitionIdOrName: 'Reader'
+        description: 'Reader Role Assignment'
+        principalIds: [
+            '12345678-1234-1234-1234-123456789012' // object 1
+            '78945612-1234-1234-1234-123456789012' // object 2
+        ]
+    }
+    {
+        roleDefinitionIdOrName: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'
+        principalIds: [
+            '12345678-1234-1234-1234-123456789012' // object 1
+        ]
+        principalType: 'ServicePrincipal'
+    }
+]
+```
+
+</details>
+<p>
+
+### Parameter Usage: `tags`
+
+Tag names and tag values can be provided as needed. A tag can be left without a value.
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"tags": {
+    "value": {
+        "Environment": "Non-Prod",
+        "Contact": "test.user@testcompany.com",
+        "PurchaseOrder": "1234",
+        "CostCenter": "7890",
+        "ServiceName": "DeploymentValidation",
+        "Role": "DeploymentValidation"
+    }
+}
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+tags: {
+    Environment: 'Non-Prod'
+    Contact: 'test.user@testcompany.com'
+    PurchaseOrder: '1234'
+    CostCenter: '7890'
+    ServiceName: 'DeploymentValidation'
+    Role: 'DeploymentValidation'
+}
+```
+
+</details>
+<p>
+
+### Parameter Usage: `userAssignedIdentities`
+
+You can specify multiple user assigned identities to a resource by providing additional resource IDs using the following format:
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"userAssignedIdentities": {
+    "value": {
+        "/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
+        "/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
+    }
+}
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+userAssignedIdentities: {
+    '/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
+    '/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
+}
+```
+
+</details>
+<p>
+
+### Parameter Usage: `privateEndpoints`
+
+To use Private Endpoint the following dependencies must be deployed:
+
+- Destination subnet must be created with the following configuration option - `"privateEndpointNetworkPolicies": "Disabled"`. Setting this option acknowledges that NSG rules are not applied to Private Endpoints (this capability is coming soon). A full example is available in the Virtual Network Module.
+- Although not strictly required, it is highly recommended to first create a private DNS Zone to host Private Endpoint DNS records. See [Azure Private Endpoint DNS configuration](https://learn.microsoft.com/en-us/azure/private-link/private-endpoint-dns) for more information.
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"privateEndpoints": {
+    "value": [
+        // Example showing all available fields
+        {
+            "name": "sxx-az-pe", // Optional: Name will be automatically generated if one is not provided here
+            "subnetResourceId": "/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001",
+            "service": "<serviceName>", // e.g. vault, registry, blob
+            "privateDnsZoneGroup": {
+                "privateDNSResourceIds": [ // Optional: No DNS record will be created if a private DNS zone Resource ID is not specified
+                    "/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/<privateDnsZoneName>" // e.g. privatelink.vaultcore.azure.net, privatelink.azurecr.io, privatelink.blob.core.windows.net
+                ]
+            },
+            "ipConfigurations":[
+                {
+                    "name": "myIPconfigTest02",
+                    "properties": {
+                        "groupId": "blob",
+                        "memberName": "blob",
+                        "privateIPAddress": "10.0.0.30"
+                    }
+                }
+            ],
+            "customDnsConfigs": [
+                {
+                    "fqdn": "customname.test.local",
+                    "ipAddresses": [
+                        "10.10.10.10"
+                    ]
+                }
+            ]
+        },
+        // Example showing only mandatory fields
+        {
+            "subnetResourceId": "/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001",
+            "service": "<serviceName>" // e.g. vault, registry, blob
+        }
+    ]
+}
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+privateEndpoints:  [
+    // Example showing all available fields
+    {
+        name: 'sxx-az-pe' // Optional: Name will be automatically generated if one is not provided here
+        subnetResourceId: '/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001'
+        service: '<serviceName>' // e.g. vault, registry, blob
+        privateDnsZoneGroup: {
+            privateDNSResourceIds: [ // Optional: No DNS record will be created if a private DNS zone Resource ID is not specified
+                '/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/<privateDnsZoneName>' // e.g. privatelink.vaultcore.azure.net, privatelink.azurecr.io, privatelink.blob.core.windows.net
+            ]
+        }
+        customDnsConfigs: [
+            {
+                fqdn: 'customname.test.local'
+                ipAddresses: [
+                    '10.10.10.10'
+                ]
+            }
+        ]
+        ipConfigurations:[
+          {
+            name: 'myIPconfigTest02'
+            properties: {
+              groupId: 'blob'
+              memberName: 'blob'
+              privateIPAddress: '10.0.0.30'
+            }
+          }
+        ]
+    }
+    // Example showing only mandatory fields
+    {
+        subnetResourceId: '/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001'
+        service: '<serviceName>' // e.g. vault, registry, blob
+    }
+]
 ```
 
 </details>

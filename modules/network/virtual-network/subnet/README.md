@@ -6,9 +6,9 @@ This module deploys a Virtual Network Subnet.
 
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
-- [Considerations](#Considerations)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
+- [Notes](#Notes)
 
 ## Resource Types
 
@@ -51,91 +51,21 @@ This module deploys a Virtual Network Subnet.
 | `serviceEndpoints` | array | `[]` |  | The service endpoints to enable on the subnet. |
 
 
-### Parameter Usage: `delegations`
+## Outputs
 
-<details>
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `name` | string | The name of the virtual network peering. |
+| `resourceGroupName` | string | The resource group the virtual network peering was deployed into. |
+| `resourceId` | string | The resource ID of the virtual network peering. |
+| `subnetAddressPrefix` | string | The address prefix for the subnet. |
+| `subnetAddressPrefixes` | array | List of address prefixes for the subnet. |
 
-<summary>Parameter JSON format</summary>
+## Cross-referenced modules
 
-```json
-"delegations": [
-    {
-        "name": "sqlMiDel",
-        "properties": {
-            "serviceName": "Microsoft.Sql/managedInstances"
-        }
-    }
-]
-```
+_None_
 
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-delegations: [
-    {
-        name: 'sqlMiDel'
-        properties: {
-            serviceName: 'Microsoft.Sql/managedInstances'
-        }
-    }
-]
-```
-
-</details>
-<p>
-
-### Parameter Usage: `serviceEndpoints`
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"serviceEndpoints": [
-    {
-        "service": "Microsoft.EventHub"
-    },
-    {
-        "service": "Microsoft.Sql"
-    },
-    {
-        "service": "Microsoft.Storage"
-    },
-    {
-        "service": "Microsoft.KeyVault"
-    }
-]
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-serviceEndpoints: [
-    {
-        name: 'Microsoft.EventHub'
-    }
-    {
-        name: 'Microsoft.Sql'
-    }
-    {
-        name: 'Microsoft.Storage'
-    }
-    {
-        name: 'Microsoft.KeyVault'
-    }
-]
-```
-
-</details>
-<p>
+## Notes
 
 ### Parameter Usage: `roleAssignments`
 
@@ -196,20 +126,6 @@ roleAssignments: [
 </details>
 <p>
 
-## Considerations
+### Considerations
 
 The `privateEndpointNetworkPolicies` property must be set to disabled for subnets that contain private endpoints. It confirms that NSGs rules will not apply to private endpoints (currently not supported, [reference](https://learn.microsoft.com/en-us/azure/private-link/private-endpoint-overview#limitations)). Default Value when not specified is "Enabled".
-
-## Outputs
-
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `name` | string | The name of the virtual network peering. |
-| `resourceGroupName` | string | The resource group the virtual network peering was deployed into. |
-| `resourceId` | string | The resource ID of the virtual network peering. |
-| `subnetAddressPrefix` | string | The address prefix for the subnet. |
-| `subnetAddressPrefixes` | array | List of address prefixes for the subnet. |
-
-## Cross-referenced modules
-
-_None_
