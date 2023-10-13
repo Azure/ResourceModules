@@ -8,6 +8,7 @@ This module deploys an Azure Compute Gallery Application.
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
+- [Notes](#Notes)
 
 ## Resource types
 
@@ -147,7 +148,21 @@ tags: {
 </details>
 <p>
 
-<p>
+## Outputs
+
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `location` | string | The location the resource was deployed into. |
+| `name` | string | The name of the image. |
+| `resourceGroupName` | string | The resource group the image was deployed into. |
+| `resourceId` | string | The resource ID of the image. |
+
+## Cross-referenced modules
+
+_None_
+
+## Notes
+
 ### Parameter Usage: `customActions`
 
 Create a list of custom actions that can be performed with all of the Gallery Application Versions within this Gallery Application.
@@ -246,16 +261,3 @@ customActions: [
 
 </details>
 <p>
-
-## Outputs
-
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of the image. |
-| `resourceGroupName` | string | The resource group the image was deployed into. |
-| `resourceId` | string | The resource ID of the image. |
-
-## Cross-referenced modules
-
-_None_

@@ -50,6 +50,7 @@ module testDeployment '../../main.bicep' = {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '${namePrefix}${serviceShort}001'
     skuName: 'Premium'
+    publicNetworkAccess: 'Disabled'
     privateEndpoints: [
       {
         service: 'namespace'

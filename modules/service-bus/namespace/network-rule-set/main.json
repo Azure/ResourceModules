@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.20.4.51522",
-      "templateHash": "16662631854898993961"
+      "version": "0.22.6.54827",
+      "templateHash": "533952694982260366"
     },
     "name": "Service Bus Namespace Network Rule Sets",
     "description": "This module deploys a ServiceBus Namespace Network Rule Set.",
@@ -100,7 +100,7 @@
     },
     {
       "type": "Microsoft.ServiceBus/namespaces/networkRuleSets",
-      "apiVersion": "2021-11-01",
+      "apiVersion": "2022-10-01-preview",
       "name": "[format('{0}/{1}', parameters('namespaceName'), 'default')]",
       "properties": {
         "publicNetworkAccess": "[parameters('publicNetworkAccess')]",

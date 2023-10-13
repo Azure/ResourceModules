@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.20.4.51522",
-      "templateHash": "921300981514456809"
+      "version": "0.22.6.54827",
+      "templateHash": "7517242660485501194"
     },
     "name": "Service Bus Namespace Topic",
     "description": "This module deploys a Service Bus Namespace Topic.",
@@ -181,7 +181,7 @@
     },
     {
       "type": "Microsoft.ServiceBus/namespaces/topics",
-      "apiVersion": "2021-06-01-preview",
+      "apiVersion": "2022-10-01-preview",
       "name": "[format('{0}/{1}', parameters('namespaceName'), parameters('name'))]",
       "properties": {
         "autoDeleteOnIdle": "[parameters('autoDeleteOnIdle')]",
@@ -245,8 +245,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.20.4.51522",
-              "templateHash": "12912382339345981506"
+              "version": "0.22.6.54827",
+              "templateHash": "3590235297575239025"
             },
             "name": "Service Bus Namespace Topic Authorization Rules",
             "description": "This module deploys a Service Bus Namespace Topic Authorization Rule.",
@@ -308,7 +308,7 @@
             },
             {
               "type": "Microsoft.ServiceBus/namespaces/topics/authorizationRules",
-              "apiVersion": "2021-06-01-preview",
+              "apiVersion": "2022-10-01-preview",
               "name": "[format('{0}/{1}/{2}', parameters('namespaceName'), parameters('topicName'), parameters('name'))]",
               "properties": {
                 "rights": "[parameters('rights')]"
@@ -378,8 +378,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.20.4.51522",
-              "templateHash": "11124682842627815351"
+              "version": "0.22.6.54827",
+              "templateHash": "13096307217253704125"
             }
           },
           "parameters": {

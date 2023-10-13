@@ -19,15 +19,15 @@ This module deploys a Service Bus Namespace.
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 | `Microsoft.Network/privateEndpoints` | [2023-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-04-01/privateEndpoints) |
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2023-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-04-01/privateEndpoints/privateDnsZoneGroups) |
-| `Microsoft.ServiceBus/namespaces` | [2021-11-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2021-11-01/namespaces) |
-| `Microsoft.ServiceBus/namespaces/AuthorizationRules` | [2017-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2017-04-01/namespaces/AuthorizationRules) |
-| `Microsoft.ServiceBus/namespaces/disasterRecoveryConfigs` | [2017-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2017-04-01/namespaces/disasterRecoveryConfigs) |
-| `Microsoft.ServiceBus/namespaces/migrationConfigurations` | [2017-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2017-04-01/namespaces/migrationConfigurations) |
-| `Microsoft.ServiceBus/namespaces/networkRuleSets` | [2021-11-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2021-11-01/namespaces/networkRuleSets) |
-| `Microsoft.ServiceBus/namespaces/queues` | [2021-06-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2021-06-01-preview/namespaces/queues) |
-| `Microsoft.ServiceBus/namespaces/queues/authorizationRules` | [2017-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2017-04-01/namespaces/queues/authorizationRules) |
-| `Microsoft.ServiceBus/namespaces/topics` | [2021-06-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2021-06-01-preview/namespaces/topics) |
-| `Microsoft.ServiceBus/namespaces/topics/authorizationRules` | [2021-06-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2021-06-01-preview/namespaces/topics/authorizationRules) |
+| `Microsoft.ServiceBus/namespaces` | [2022-10-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2022-10-01-preview/namespaces) |
+| `Microsoft.ServiceBus/namespaces/AuthorizationRules` | [2022-10-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2022-10-01-preview/namespaces/AuthorizationRules) |
+| `Microsoft.ServiceBus/namespaces/disasterRecoveryConfigs` | [2022-10-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2022-10-01-preview/namespaces/disasterRecoveryConfigs) |
+| `Microsoft.ServiceBus/namespaces/migrationConfigurations` | [2022-10-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2022-10-01-preview/namespaces/migrationConfigurations) |
+| `Microsoft.ServiceBus/namespaces/networkRuleSets` | [2022-10-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2022-10-01-preview/namespaces/networkRuleSets) |
+| `Microsoft.ServiceBus/namespaces/queues` | [2022-10-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2022-10-01-preview/namespaces/queues) |
+| `Microsoft.ServiceBus/namespaces/queues/authorizationRules` | [2022-10-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2022-10-01-preview/namespaces/queues/authorizationRules) |
+| `Microsoft.ServiceBus/namespaces/topics` | [2022-10-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2022-10-01-preview/namespaces/topics) |
+| `Microsoft.ServiceBus/namespaces/topics/authorizationRules` | [2022-10-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2022-10-01-preview/namespaces/topics/authorizationRules) |
 
 ## Parameters
 
@@ -47,6 +47,7 @@ This module deploys a Service Bus Namespace.
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
+| `alternateName` | string | `''` |  | Alternate name for namespace. |
 | `authorizationRules` | array | `[System.Management.Automation.OrderedHashtable]` |  | Authorization Rules for the Service Bus namespace. |
 | `cMKKeyName` | string | `''` |  | The name of the customer managed key to use for encryption. If not provided, encryption is automatically enabled with a Microsoft-managed key. |
 | `cMKKeyVersion` | string | `''` |  | The version of the customer managed key to reference for encryption. If not provided, the latest key version is used. |
@@ -58,16 +59,21 @@ This module deploys a Service Bus Namespace.
 | `diagnosticSettingsName` | string | `''` |  | The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings". |
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
+| `disableLocalAuth` | bool | `True` |  | This property disables SAS authentication for the Service Bus namespace. |
 | `disasterRecoveryConfigs` | object | `{object}` |  | The disaster recovery configuration. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `migrationConfigurations` | object | `{object}` |  | The migration configuration. |
+| `minimumTlsVersion` | string | `'1.2'` | `[1.0, 1.1, 1.2]` | The minimum TLS version for the cluster to support. |
 | `networkRuleSets` | object | `{object}` |  | Configure networking options for Premium SKU Service Bus. This object contains IPs/Subnets to allow or restrict access to private endpoints only. For security reasons, it is recommended to configure this object on the Namespace. |
+| `premiumMessagingPartitions` | int | `1` |  | The number of partitions of a Service Bus namespace. This property is only applicable to Premium SKU namespaces. The default value is 1 and possible values are 1, 2 and 4. |
 | `privateEndpoints` | array | `[]` |  | Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
+| `publicNetworkAccess` | string | `''` | `['', Disabled, Enabled, SecuredByPerimeter]` | Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set. |
 | `queues` | array | `[]` |  | The queues to create in the service bus namespace. |
 | `requireInfrastructureEncryption` | bool | `True` |  | Enable infrastructure encryption (double encryption). Note, this setting requires the configuration of Customer-Managed-Keys (CMK) via the corresponding module parameters. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| `skuCapacity` | int | `1` | `[1, 2, 4, 8, 16, 32]` | The specified messaging units for the tier. Only used for Premium Sku tier. |
 | `skuName` | string | `'Basic'` | `[Basic, Premium, Standard]` | Name of this SKU. - Basic, Standard, Premium. |
 | `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
@@ -134,8 +140,10 @@ module namespace './service-bus/namespace/main.bicep' = {
     diagnosticEventHubName: '<diagnosticEventHubName>'
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    disableLocalAuth: true
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
+    minimumTlsVersion: '1.2'
     networkRuleSets: {
       defaultAction: 'Deny'
       ipRules: [
@@ -156,6 +164,7 @@ module namespace './service-bus/namespace/main.bicep' = {
         }
       ]
     }
+    premiumMessagingPartitions: 1
     privateEndpoints: [
       {
         privateDnsZoneGroup: {
@@ -172,6 +181,7 @@ module namespace './service-bus/namespace/main.bicep' = {
         }
       }
     ]
+    publicNetworkAccess: 'Enabled'
     queues: [
       {
         authorizationRules: [
@@ -191,6 +201,8 @@ module namespace './service-bus/namespace/main.bicep' = {
             ]
           }
         ]
+        autoDeleteOnIdle: 'PT5M'
+        maxMessageSizeInKilobytes: 2048
         name: 'sbncomq001'
         roleAssignments: [
           {
@@ -212,6 +224,7 @@ module namespace './service-bus/namespace/main.bicep' = {
         roleDefinitionIdOrName: 'Reader'
       }
     ]
+    skuCapacity: 2
     skuName: 'Premium'
     systemAssignedIdentity: true
     tags: {
@@ -253,6 +266,7 @@ module namespace './service-bus/namespace/main.bicep' = {
     userAssignedIdentities: {
       '<managedIdentityResourceId>': {}
     }
+    zoneRedundant: true
   }
 }
 ```
@@ -305,11 +319,17 @@ module namespace './service-bus/namespace/main.bicep' = {
     "diagnosticWorkspaceId": {
       "value": "<diagnosticWorkspaceId>"
     },
+    "disableLocalAuth": {
+      "value": true
+    },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     },
     "lock": {
       "value": "CanNotDelete"
+    },
+    "minimumTlsVersion": {
+      "value": "1.2"
     },
     "networkRuleSets": {
       "value": {
@@ -333,6 +353,9 @@ module namespace './service-bus/namespace/main.bicep' = {
         ]
       }
     },
+    "premiumMessagingPartitions": {
+      "value": 1
+    },
     "privateEndpoints": {
       "value": [
         {
@@ -350,6 +373,9 @@ module namespace './service-bus/namespace/main.bicep' = {
           }
         }
       ]
+    },
+    "publicNetworkAccess": {
+      "value": "Enabled"
     },
     "queues": {
       "value": [
@@ -371,6 +397,8 @@ module namespace './service-bus/namespace/main.bicep' = {
               ]
             }
           ],
+          "autoDeleteOnIdle": "PT5M",
+          "maxMessageSizeInKilobytes": 2048,
           "name": "sbncomq001",
           "roleAssignments": [
             {
@@ -394,6 +422,9 @@ module namespace './service-bus/namespace/main.bicep' = {
           "roleDefinitionIdOrName": "Reader"
         }
       ]
+    },
+    "skuCapacity": {
+      "value": 2
     },
     "skuName": {
       "value": "Premium"
@@ -445,6 +476,9 @@ module namespace './service-bus/namespace/main.bicep' = {
       "value": {
         "<managedIdentityResourceId>": {}
       }
+    },
+    "zoneRedundant": {
+      "value": true
     }
   }
 }
@@ -711,6 +745,7 @@ module namespace './service-bus/namespace/main.bicep' = {
         }
       }
     ]
+    publicNetworkAccess: 'Disabled'
     skuName: 'Premium'
     tags: {
       Environment: 'Non-Prod'
@@ -758,6 +793,9 @@ module namespace './service-bus/namespace/main.bicep' = {
           }
         }
       ]
+    },
+    "publicNetworkAccess": {
+      "value": "Disabled"
     },
     "skuName": {
       "value": "Premium"

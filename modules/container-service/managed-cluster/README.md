@@ -9,6 +9,7 @@ This module deploys an Azure Kubernetes Service (AKS) Managed Cluster.
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
+- [Notes](#Notes)
 
 ## Resource types
 
@@ -239,100 +240,6 @@ tags: {
 </details>
 <p>
 
-### Parameter Usage: `primaryAgentPoolProfile`
-
-Provide values for primary agent pool as needed.
-For available properties check <https://learn.microsoft.com/en-us/azure/templates/microsoft.containerservice/managedclusters?tabs=json#managedclusteragentpoolprofile-object>
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"primaryAgentPoolProfile": {
-  "value": [
-    {
-      "name": "poolname",
-      "vmSize": "Standard_DS3_v2",
-      "osDiskSizeGB": 128,
-      "count": 2,
-      "osType": "Linux",
-      "maxCount": 5,
-      "minCount": 1,
-      "enableAutoScaling": true,
-      "scaleSetPriority": "Regular",
-      "scaleSetEvictionPolicy": "Delete",
-      "nodeLabels": {},
-      "nodeTaints": [
-        "CriticalAddonsOnly=true:NoSchedule"
-      ],
-      "type": "VirtualMachineScaleSets",
-      "availabilityZones": [
-          "1",
-          "2",
-          "3"
-      ],
-      "maxPods": 30,
-      "storageProfile": "ManagedDisks",
-      "mode": "System",
-      "vnetSubnetID": "/subscriptions/XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX/resourceGroups/myRg/providers/Microsoft.Network/virtualNetworks/myVnet/subnets/mySubnet",
-      "tags": {
-        "Owner": "test.user@testcompany.com",
-        "BusinessUnit": "IaCs",
-        "Environment": "PROD",
-        "Region": "USEast"
-      }
-    }
-  ]
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-primaryAgentPoolProfile: [
-    {
-        name: 'poolname'
-        vmSize: 'Standard_DS3_v2'
-        osDiskSizeGB: 128
-        count: 2
-        osType: 'Linux'
-        maxCount: 5
-        minCount: 1
-        enableAutoScaling: true
-        scaleSetPriority: 'Regular'
-        scaleSetEvictionPolicy: 'Delete'
-        nodeLabels: {}
-        nodeTaints: [
-            'CriticalAddonsOnly=true:NoSchedule'
-        ]
-        type: 'VirtualMachineScaleSets'
-        availabilityZones: [
-            '1'
-            '2'
-            '3'
-        ]
-        maxPods: 30
-        storageProfile: 'ManagedDisks'
-        mode: 'System'
-        vnetSubnetID: '/subscriptions/XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX/resourceGroups/myRg/providers/Microsoft.Network/virtualNetworks/myVnet/subnets/mySubnet'
-        tags: {
-            Owner: 'test.user@testcompany.com'
-            BusinessUnit: 'IaCs'
-            Environment: 'PROD'
-            Region: 'USEast'
-        }
-    }
-]
-```
-
-</details>
-<p>
-
 ### Parameter Usage: `userAssignedIdentities`
 
 You can specify multiple user assigned identities to a resource by providing additional resource IDs using the following format:
@@ -360,57 +267,6 @@ You can specify multiple user assigned identities to a resource by providing add
 userAssignedIdentities: {
     '/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
     '/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
-}
-```
-
-</details>
-<p>
-
-### Parameter Usage: `httpProxyConfig`
-
-Configurations for provisioning the cluster with HTTP proxy servers. You can specify in the following format:
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"httpProxyConfig": {
-    "value": {
-        "httpProxy": "http://proxy.contoso.com:8080/",
-        "httpsProxy": "http://proxy.contoso.com:8080/",
-        "noProxy": [
-            "10.0.0.0/8",
-            "127.0.0.1",
-            "168.63.129.16",
-            "169.254.169.254",
-            "azurecr.io",
-            "konnectivity",
-            "localhost"
-        ]
-    }
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-httpProxyConfig: {
-  httpProxy: 'http://proxy.contoso.com:8080/'
-  httpsProxy: 'http://proxy.contoso.com:8080/'
-  noProxy: [
-    '10.0.0.0/8'
-    '127.0.0.1'
-    '168.63.129.16'
-    '169.254.169.254'
-    'azurecr.io'
-    'konnectivity'
-    'localhost'
-  ]
 }
 ```
 
@@ -1464,6 +1320,60 @@ module managedCluster './container-service/managed-cluster/main.bicep' = {
       }
     }
   }
+}
+```
+
+</details>
+<p>
+
+
+## Notes
+
+### Parameter Usage: `httpProxyConfig`
+
+Configurations for provisioning the cluster with HTTP proxy servers. You can specify in the following format:
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"httpProxyConfig": {
+    "value": {
+        "httpProxy": "http://proxy.contoso.com:8080/",
+        "httpsProxy": "http://proxy.contoso.com:8080/",
+        "noProxy": [
+            "10.0.0.0/8",
+            "127.0.0.1",
+            "168.63.129.16",
+            "169.254.169.254",
+            "azurecr.io",
+            "konnectivity",
+            "localhost"
+        ]
+    }
+}
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+httpProxyConfig: {
+  httpProxy: 'http://proxy.contoso.com:8080/'
+  httpsProxy: 'http://proxy.contoso.com:8080/'
+  noProxy: [
+    '10.0.0.0/8'
+    '127.0.0.1'
+    '168.63.129.16'
+    '169.254.169.254'
+    'azurecr.io'
+    'konnectivity'
+    'localhost'
+  ]
 }
 ```
 

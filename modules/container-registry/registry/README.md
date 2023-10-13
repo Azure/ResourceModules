@@ -141,41 +141,6 @@ roleAssignments: [
 </details>
 <p>
 
-### Parameter Usage: `imageRegistryCredentials`
-
-The image registry credentials by which the container group is created from.
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"acrName": {
-    "value": {
-        "server": "acrx001",
-    }
-},
-"acrAdminUserEnabled": {
-    "value": false
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-acrName: {
-    server: 'acrx001'
-}
-acrAdminUserEnabled: false
-```
-
-</details>
-<p>
-
 ### Parameter Usage: `privateEndpoints`
 
 To use Private Endpoint the following dependencies must be deployed:

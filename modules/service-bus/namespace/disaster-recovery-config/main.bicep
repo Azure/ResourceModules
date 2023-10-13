@@ -31,11 +31,11 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource namespace 'Microsoft.ServiceBus/namespaces@2021-11-01' existing = {
+resource namespace 'Microsoft.ServiceBus/namespaces@2022-10-01-preview' existing = {
   name: namespaceName
 }
 
-resource disasterRecoveryConfig 'Microsoft.ServiceBus/namespaces/disasterRecoveryConfigs@2017-04-01' = {
+resource disasterRecoveryConfig 'Microsoft.ServiceBus/namespaces/disasterRecoveryConfigs@2022-10-01-preview' = {
   name: name
   parent: namespace
   properties: {

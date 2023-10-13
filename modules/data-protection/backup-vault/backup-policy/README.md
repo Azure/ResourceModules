@@ -8,6 +8,7 @@ This module deploys a Data Protection Backup Vault Backup Policy.
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
+- [Notes](#Notes)
 
 ## Resource Types
 
@@ -31,6 +32,20 @@ This module deploys a Data Protection Backup Vault Backup Policy.
 | `name` | string | `'DefaultPolicy'` | The name of the backup policy. |
 | `properties` | object | `{object}` | The properties of the backup policy. |
 
+
+## Outputs
+
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `name` | string | The name of the backup policy. |
+| `resourceGroupName` | string | The name of the resource group the backup policy was created in. |
+| `resourceId` | string | The resource ID of the backup policy. |
+
+## Cross-referenced modules
+
+_None_
+
+## Notes
 
 ### Parameter Usage: `properties`
 
@@ -169,15 +184,3 @@ properties: {
 ```
 
 </details>
-
-## Outputs
-
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `name` | string | The name of the backup policy. |
-| `resourceGroupName` | string | The name of the resource group the backup policy was created in. |
-| `resourceId` | string | The resource ID of the backup policy. |
-
-## Cross-referenced modules
-
-_None_
