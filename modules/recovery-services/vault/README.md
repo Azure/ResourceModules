@@ -9,6 +9,7 @@ This module deploys a Recovery Services Vault.
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
+- [Notes](#Notes)
 
 ## Resource Types
 
@@ -68,6 +69,7 @@ This module deploys a Recovery Services Vault.
 | `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Tags of the Recovery Service Vault resource. |
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
+
 
 ## Outputs
 
@@ -968,6 +970,7 @@ module vault './recovery-services/vault/main.bicep' = {
 
 </details>
 <p>
+
 
 ## Notes
 

@@ -9,6 +9,7 @@ This module deploys a Log Analytics Workspace.
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
+- [Notes](#Notes)
 
 ## Resource types
 
@@ -74,6 +75,7 @@ This module deploys a Log Analytics Workspace.
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
 | `useResourcePermissions` | bool | `False` |  | Set to 'true' to use resource or workspace permissions and 'false' (or leave empty) to require workspace permissions. |
+
 
 ## Outputs
 
@@ -1059,6 +1061,7 @@ module workspace './operational-insights/workspace/main.bicep' = {
 
 </details>
 <p>
+
 
 ## Notes
 

@@ -40,6 +40,7 @@ This module deploys a Recovery Services Vault Replication Protection Container.
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `replicationContainerMappings` | array | `[]` | Replication containers mappings to create. |
 
+
 ## Outputs
 
 | Output Name | Type | Description |

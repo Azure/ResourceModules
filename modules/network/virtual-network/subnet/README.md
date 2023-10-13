@@ -6,9 +6,9 @@ This module deploys a Virtual Network Subnet.
 
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
-- [Considerations](#Considerations)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
+- [Notes](#Notes)
 
 ## Resource Types
 
@@ -49,6 +49,7 @@ This module deploys a Virtual Network Subnet.
 | `routeTableId` | string | `''` |  | The resource ID of the route table to assign to the subnet. |
 | `serviceEndpointPolicies` | array | `[]` |  | An array of service endpoint policies. |
 | `serviceEndpoints` | array | `[]` |  | The service endpoints to enable on the subnet. |
+
 
 ## Outputs
 

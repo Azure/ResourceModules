@@ -9,6 +9,7 @@ This module deploys a Virtual Network Gateway.
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
+- [Notes](#Notes)
 
 ## Resource types
 
@@ -72,6 +73,7 @@ This module deploys a Virtual Network Gateway.
 | `vpnClientAddressPoolPrefix` | string | `''` |  | The IP address range from which VPN clients will receive an IP address when connected. Range specified must not overlap with on-premise network. |
 | `vpnGatewayGeneration` | string | `'None'` | `[Generation1, Generation2, None]` | The generation for this VirtualNetworkGateway. Must be None if virtualNetworkGatewayType is not VPN. |
 | `vpnType` | string | `'RouteBased'` | `[PolicyBased, RouteBased]` | Specifies the VPN type. |
+
 
 ## Outputs
 
@@ -622,6 +624,7 @@ module virtualNetworkGateway './network/virtual-network-gateway/main.bicep' = {
 
 </details>
 <p>
+
 
 ## Notes
 ### Parameter Usage: `roleAssignments`

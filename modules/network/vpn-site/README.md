@@ -9,6 +9,7 @@ This module deploys a VPN Site.
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
+- [Notes](#Notes)
 
 ## Resource Types
 
@@ -48,6 +49,7 @@ This module deploys a VPN Site.
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `vpnSiteLinks` | array | `[]` |  | List of all VPN site links. |
+
 
 ## Outputs
 
@@ -300,6 +302,7 @@ module vpnSite './network/vpn-site/main.bicep' = {
 
 </details>
 <p>
+
 
 ## Notes
 

@@ -6,10 +6,10 @@ This module deploys a Virtual Network (vNet).
 
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
-- [Considerations](#Considerations)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
+- [Notes](#Notes)
 
 ## Resource types
 
@@ -54,6 +54,7 @@ This module deploys a Virtual Network (vNet).
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `vnetEncryption` | bool | `False` |  | Indicates if encryption is enabled on virtual network and if VM without encryption is allowed in encrypted VNet. Requires the EnableVNetEncryption feature to be registered for the subscription and a supported region to use this property. |
 | `vnetEncryptionEnforcement` | string | `'AllowUnencrypted'` | `[AllowUnencrypted, DropUnencrypted]` | If the encrypted VNet allows VM that does not support encryption. Can only be used when vnetEncryption is enabled. |
+
 
 ## Outputs
 
@@ -453,6 +454,7 @@ module virtualNetwork './network/virtual-network/main.bicep' = {
 </details>
 <p>
 
+
 ## Notes
 
 ### Considerations
@@ -573,4 +575,3 @@ tags: {
 
 </details>
 <p>
-

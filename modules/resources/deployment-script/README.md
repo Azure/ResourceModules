@@ -7,9 +7,9 @@ This module deploys a Deployment Script.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Considerations](#Considerations)
 - [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
+- [Notes](#Notes)
 
 ## Resource types
 
@@ -55,6 +55,7 @@ This module deploys a Deployment Script.
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `baseTime` | string | `[utcNow('yyyy-MM-dd-HH-mm-ss')]` | Do not provide a value! This date value is used to make sure the script run every time the template is deployed. |
+
 
 ## Outputs
 
@@ -300,6 +301,7 @@ module deploymentScript './resources/deployment-script/main.bicep' = {
 
 </details>
 <p>
+
 
 ## Notes
 

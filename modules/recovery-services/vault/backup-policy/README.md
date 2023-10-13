@@ -36,6 +36,7 @@ This module deploys a Recovery Services Vault Backup Policy.
 | :-- | :-- | :-- | :-- |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
 
+
 ## Outputs
 
 | Output Name | Type | Description |

@@ -8,6 +8,7 @@ This module deploys a VPN Gateway VPN Connection.
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
+- [Notes](#Notes)
 
 ## Resource Types
 
@@ -48,6 +49,8 @@ This module deploys a VPN Gateway VPN Connection.
 | `usePolicyBasedTrafficSelectors` | bool | `False` |  | Enable policy-based traffic selectors. |
 | `vpnConnectionProtocolType` | string | `'IKEv2'` | `[IKEv1, IKEv2]` | Gateway connection protocol. |
 | `vpnLinkConnections` | array | `[]` |  | List of all VPN site link connections to the gateway. |
+
+
 ## Outputs
 
 | Output Name | Type | Description |

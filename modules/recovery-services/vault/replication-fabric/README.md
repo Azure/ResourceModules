@@ -41,6 +41,7 @@ This module deploys a Replication Fabric for Azure to Azure disaster recovery sc
 | `name` | string | `[parameters('location')]` | The name of the fabric. |
 | `replicationContainers` | array | `[]` | Replication containers to create. |
 
+
 ## Outputs
 
 | Output Name | Type | Description |

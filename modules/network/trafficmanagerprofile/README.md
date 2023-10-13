@@ -9,6 +9,7 @@ This module deploys a Traffic Manager Profile.
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
+- [Notes](#Notes)
 
 ## Resource types
 
@@ -50,6 +51,7 @@ This module deploys a Traffic Manager Profile.
 | `trafficRoutingMethod` | string | `'Performance'` | `[Geographic, MultiValue, Performance, Priority, Subnet, Weighted]` | The traffic routing method of the Traffic Manager profile. |
 | `trafficViewEnrollmentStatus` | string | `'Disabled'` | `[Disabled, Enabled]` | Indicates whether Traffic View is 'Enabled' or 'Disabled' for the Traffic Manager profile. Null, indicates 'Disabled'. Enabling this feature will increase the cost of the Traffic Manage profile. |
 | `ttl` | int | `60` |  | The DNS Time-To-Live (TTL), in seconds. This informs the local DNS resolvers and DNS clients how long to cache DNS responses provided by this Traffic Manager profile. |
+
 
 ## Outputs
 
@@ -219,6 +221,7 @@ module trafficmanagerprofile './network/trafficmanagerprofile/main.bicep' = {
 
 </details>
 <p>
+
 
 ## Notes
 

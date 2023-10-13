@@ -9,6 +9,7 @@ This module deploys a VPN Gateway.
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
+- [Notes](#Notes)
 
 ## Resource Types
 
@@ -42,6 +43,7 @@ This module deploys a VPN Gateway.
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `vpnConnections` | array | `[]` |  | The VPN connections to create in the VPN gateway. |
 | `vpnGatewayScaleUnit` | int | `2` |  | The scale unit for this VPN gateway. |
+
 
 ## Outputs
 
@@ -252,6 +254,7 @@ module vpnGateway './network/vpn-gateway/main.bicep' = {
 
 </details>
 <p>
+
 
 ## Notes
 
