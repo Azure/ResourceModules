@@ -8,6 +8,7 @@ This module deploys an Azure Automation Account Software Update Configuration.
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
+- [Notes](#Notes)
 
 ## Resource Types
 
@@ -71,6 +72,20 @@ This module deploys an Azure Automation Account Software Update Configuration.
 | :-- | :-- | :-- | :-- |
 | `baseTime` | string | `[utcNow('u')]` | Do not touch. Is used to provide the base time for time comparison for startTime. If startTime is specified in HH:MM format, baseTime is used to check if the provided startTime has passed, adding one day before setting the deployment schedule. |
 
+
+## Outputs
+
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `name` | string | The name of the deployed softwareUpdateConfiguration. |
+| `resourceGroupName` | string | The resource group of the deployed softwareUpdateConfiguration. |
+| `resourceId` | string | The resource ID of the deployed softwareUpdateConfiguration. |
+
+## Cross-referenced modules
+
+_None_
+
+## Notes
 
 ### Parameter Usage: `scopeByTags`
 
@@ -167,15 +182,3 @@ monthlyOccurrences: [
 
 </details>
 <p>
-
-## Outputs
-
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `name` | string | The name of the deployed softwareUpdateConfiguration. |
-| `resourceGroupName` | string | The resource group of the deployed softwareUpdateConfiguration. |
-| `resourceId` | string | The resource ID of the deployed softwareUpdateConfiguration. |
-
-## Cross-referenced modules
-
-_None_
