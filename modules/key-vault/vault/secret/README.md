@@ -8,7 +8,6 @@ This module deploys a Key Vault Secret.
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
-- [Notes](#Notes)
 
 ## Resource Types
 

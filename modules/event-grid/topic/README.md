@@ -52,7 +52,6 @@ This module deploys an Event Grid Topic.
 | `tags` | object | `{object}` |  | Tags of the resource. |
 
 
-
 ## Outputs
 
 | Output Name | Type | Description |

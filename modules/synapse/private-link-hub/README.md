@@ -40,7 +40,6 @@ This module deploys an Azure Synapse Analytics (Private Link Hub).
 | `tags` | object | `{object}` |  | Tags of the resource. |
 
 
-
 ## Outputs
 
 | Output Name | Type | Description |

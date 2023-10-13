@@ -59,7 +59,6 @@ This module deploys a Relay Namespace
 | `wcfRelays` | array | `[]` |  | The wcf relays to create in the relay namespace. |
 
 
-
 ## Outputs
 
 | Output Name | Type | Description |

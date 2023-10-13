@@ -65,7 +65,6 @@ This module deploys a Key Vault.
 | `vaultSku` | string | `'premium'` | `[premium, standard]` | Specifies the SKU for the vault. |
 
 
-
 ## Outputs
 
 | Output Name | Type | Description |

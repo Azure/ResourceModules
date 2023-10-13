@@ -78,7 +78,6 @@ This module deploys an Azure Databricks Workspace.
 | `vnetAddressPrefix` | string | `'10.139'` |  | Address prefix for Managed virtual network. |
 
 
-
 ## Outputs
 
 | Output Name | Type | Description |

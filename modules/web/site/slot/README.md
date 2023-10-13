@@ -147,5 +147,3 @@ appSettingsKeyValuePairs: {
 
 </details>
 <p>
-
-

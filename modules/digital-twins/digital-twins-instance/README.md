@@ -56,9 +56,6 @@ This module deploys an Azure Digital Twins Instance.
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
 
 
-
-
-<p>
 ## Outputs
 
 | Output Name | Type | Description |

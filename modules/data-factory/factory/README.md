@@ -77,9 +77,6 @@ This module deploys a Data Factory.
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
 
 
-
-
-<p>
 ## Outputs
 
 | Output Name | Type | Description |

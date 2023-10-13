@@ -60,7 +60,6 @@ This module deploys a Search Service.
 | `tags` | object | `{object}` |  | Tags to help categorize the resource in the Azure portal. |
 
 
-
 ## Outputs
 
 | Output Name | Type | Description |

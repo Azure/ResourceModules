@@ -53,7 +53,6 @@ This module deploys a SignalR Service SignalR.
 | `upstreamTemplatesToEnable` | array | `[]` |  | Upstream templates to enable. For more information, see https://learn.microsoft.com/en-us/azure/templates/microsoft.signalrservice/2022-02-01/signalr?pivots=deployment-language-bicep#upstreamtemplate. |
 
 
-
 ## Outputs
 
 | Output Name | Type | Description |

@@ -9,7 +9,6 @@ This module deploys a Kubernetes Configuration Extension.
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
-- [Notes](#Notes)
 
 ## Resource Types
 

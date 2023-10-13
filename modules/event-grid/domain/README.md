@@ -54,7 +54,6 @@ This module deploys an Event Grid Domain.
 | `topics` | array | `[]` |  | The topic names which are associated with the domain. |
 
 
-
 ## Outputs
 
 | Output Name | Type | Description |

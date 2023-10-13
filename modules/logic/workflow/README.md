@@ -355,5 +355,3 @@ module workflow './logic/workflow/main.bicep' = {
 
 </details>
 <p>
-
-

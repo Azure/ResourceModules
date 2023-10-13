@@ -9,7 +9,6 @@ This module deploys a SignalR Web PubSub Service.
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
-- [Notes](#Notes)
 
 ## Resource Types
 

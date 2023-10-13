@@ -40,6 +40,7 @@ This module deploys a Private DNS Zone TXT record.
 | `ttl` | int | `3600` | The TTL (time-to-live) of the records in the record set. |
 | `txtRecords` | array | `[]` | The list of TXT records in the record set. |
 
+
 ## Outputs
 
 | Output Name | Type | Description |

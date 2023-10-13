@@ -9,7 +9,6 @@ This module deploys a Resource Group.
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
-- [Notes](#Notes)
 
 ## Resource types
 
@@ -187,7 +186,3 @@ module resourceGroup './resources/resource-group/main.bicep' = {
 
 </details>
 <p>
-
-
-## Notes
-

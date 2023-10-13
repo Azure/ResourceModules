@@ -9,7 +9,6 @@ This module deploys an App Service Environment.
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
-- [Notes](#Notes)
 
 ## Resource types
 

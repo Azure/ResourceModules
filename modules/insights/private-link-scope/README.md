@@ -42,7 +42,6 @@ This module deploys an Azure Monitor Private Link Scope.
 | `tags` | object | `{object}` |  | Resource tags. |
 
 
-
 ## Outputs
 
 | Output Name | Type | Description |

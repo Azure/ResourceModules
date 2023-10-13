@@ -10,7 +10,6 @@ Attaching a compute is not idempotent and will fail in case you try to redeploy 
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
-- [Notes](#Notes)
 
 ## Resource Types
 

@@ -54,7 +54,6 @@ This module deploys a Redis Cache Enterprise.
 | `zoneRedundant` | bool | `True` |  | When true, the cluster will be deployed across availability zones. |
 
 
-
 ## Outputs
 
 | Output Name | Type | Description |

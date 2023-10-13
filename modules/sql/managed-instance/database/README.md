@@ -8,7 +8,6 @@ This module deploys a SQL Managed Instance Database.
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
-- [Notes](#Notes)
 
 ## Resource types
 
