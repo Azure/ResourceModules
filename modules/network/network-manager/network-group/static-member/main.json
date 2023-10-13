@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.20.4.51522",
-      "templateHash": "12393286614459840374"
+      "version": "0.22.6.54827",
+      "templateHash": "13400290933908034947"
     },
     "name": "Network Manager Network Group Static Members",
     "description": "This module deploys a Network Manager Network Group Static Member.\r\nStatic membership allows you to explicitly add virtual networks to a group by manually selecting individual virtual networks.",

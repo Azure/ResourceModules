@@ -8,7 +8,6 @@ This module deploys a Network Manager.
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
-- [Considerations](#Considerations)
 - [Deployment examples](#Deployment-examples)
 - [Notes](#Notes)
 
