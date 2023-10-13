@@ -15,8 +15,8 @@ This module deploys a Service Bus Namespace Queue.
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.ServiceBus/namespaces/queues` | [2021-06-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2021-06-01-preview/namespaces/queues) |
-| `Microsoft.ServiceBus/namespaces/queues/authorizationRules` | [2017-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2017-04-01/namespaces/queues/authorizationRules) |
+| `Microsoft.ServiceBus/namespaces/queues` | [2022-10-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2022-10-01-preview/namespaces/queues) |
+| `Microsoft.ServiceBus/namespaces/queues/authorizationRules` | [2022-10-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2022-10-01-preview/namespaces/queues/authorizationRules) |
 
 ## Parameters
 
@@ -37,6 +37,7 @@ This module deploys a Service Bus Namespace Queue.
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `authorizationRules` | array | `[System.Management.Automation.OrderedHashtable]` |  | Authorization Rules for the Service Bus Queue. |
+| `autoDeleteOnIdle` | string | `''` |  | ISO 8061 timeSpan idle interval after which the queue is automatically deleted. The minimum duration is 5 minutes (PT5M). |
 | `deadLetteringOnMessageExpiration` | bool | `True` |  | A value that indicates whether this queue has dead letter support when a message expires. |
 | `defaultMessageTimeToLive` | string | `'P14D'` |  | ISO 8601 default message timespan to live value. This is the duration after which the message expires, starting from when the message is sent to Service Bus. This is the default value used when TimeToLive is not set on a message itself. |
 | `duplicateDetectionHistoryTimeWindow` | string | `'PT10M'` |  | ISO 8601 timeSpan structure that defines the duration of the duplicate detection history. The default value is 10 minutes. |
@@ -44,9 +45,12 @@ This module deploys a Service Bus Namespace Queue.
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `enableExpress` | bool | `False` |  | A value that indicates whether Express Entities are enabled. An express queue holds a message in memory temporarily before writing it to persistent storage. |
 | `enablePartitioning` | bool | `False` |  | A value that indicates whether the queue is to be partitioned across multiple message brokers. |
+| `forwardDeadLetteredMessagesTo` | string | `''` |  | Queue/Topic name to forward the Dead Letter message. |
+| `forwardTo` | string | `''` |  | Queue/Topic name to forward the messages. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `lockDuration` | string | `'PT1M'` |  | ISO 8601 timespan duration of a peek-lock; that is, the amount of time that the message is locked for other receivers. The maximum value for LockDuration is 5 minutes; the default value is 1 minute. |
 | `maxDeliveryCount` | int | `10` |  | The maximum delivery count. A message is automatically deadlettered after this number of deliveries. default value is 10. |
+| `maxMessageSizeInKilobytes` | int | `1024` |  | Maximum size (in KB) of the message payload that can be accepted by the queue. This property is only used in Premium today and default is 1024. |
 | `maxSizeInMegabytes` | int | `1024` |  | The maximum size of the queue in megabytes, which is the size of memory allocated for the queue. Default is 1024. |
 | `requiresDuplicateDetection` | bool | `False` |  | A value indicating if this queue requires duplicate detection. |
 | `requiresSession` | bool | `False` |  | A value that indicates whether the queue supports the concept of sessions. |
