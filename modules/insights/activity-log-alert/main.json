@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "6141865158346498118"
+      "templateHash": "7845044983132371204"
     },
     "name": "Activity Log Alerts",
     "description": "This module deploys an Activity Log Alert.",
@@ -58,7 +58,7 @@
     "conditions": {
       "type": "array",
       "metadata": {
-        "description": "Required. An Array of objects containing conditions that will cause this alert to activate. Conditions can also be combined with logical operators `allOf` and `anyOf`. Each condition can specify only one field between `equals` and `containsAny`."
+        "description": "Required. An Array of objects containing conditions that will cause this alert to activate. Conditions can also be combined with logical operators `allOf` and `anyOf`. Each condition can specify only one field between `equals` and `containsAny`. An alert rule condition must have exactly one category (Administrative, ServiceHealth, ResourceHealth, Alert, Autoscale, Recommendation, Security, or Policy)."
       }
     },
     "roleAssignments": {

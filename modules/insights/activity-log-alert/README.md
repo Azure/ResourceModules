@@ -23,7 +23,7 @@ This module deploys an Activity Log Alert.
 
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `conditions` | array | An Array of objects containing conditions that will cause this alert to activate. Conditions can also be combined with logical operators `allOf` and `anyOf`. Each condition can specify only one field between `equals` and `containsAny`. |
+| `conditions` | array | An Array of objects containing conditions that will cause this alert to activate. Conditions can also be combined with logical operators `allOf` and `anyOf`. Each condition can specify only one field between `equals` and `containsAny`. An alert rule condition must have exactly one category (Administrative, ServiceHealth, ResourceHealth, Alert, Autoscale, Recommendation, Security, or Policy). |
 | `name` | string | The name of the alert. |
 
 **Optional parameters**
@@ -173,18 +173,6 @@ module activityLogAlert './insights/activity-log-alert/main.bicep' = {
     // Required parameters
     conditions: [
       {
-        equals: 'Administrative'
-        field: 'category'
-      }
-      {
-        equals: 'microsoft.compute/virtualmachines'
-        field: 'resourceType'
-      }
-      {
-        equals: 'Microsoft.Compute/virtualMachines/performMaintenance/action'
-        field: 'operationName'
-      }
-      {
         equals: 'ServiceHealth'
         field: 'category'
       }
@@ -259,18 +247,6 @@ module activityLogAlert './insights/activity-log-alert/main.bicep' = {
     // Required parameters
     "conditions": {
       "value": [
-        {
-          "equals": "Administrative",
-          "field": "category"
-        },
-        {
-          "equals": "microsoft.compute/virtualmachines",
-          "field": "resourceType"
-        },
-        {
-          "equals": "Microsoft.Compute/virtualMachines/performMaintenance/action",
-          "field": "operationName"
-        },
         {
           "equals": "ServiceHealth",
           "field": "category"

@@ -52,18 +52,6 @@ module testDeployment '../../main.bicep' = {
     name: '${namePrefix}${serviceShort}001'
     conditions: [
       {
-        equals: 'Administrative'
-        field: 'category'
-      }
-      {
-        equals: 'microsoft.compute/virtualmachines'
-        field: 'resourceType'
-      }
-      {
-        equals: 'Microsoft.Compute/virtualMachines/performMaintenance/action'
-        field: 'operationName'
-      }
-      {
         field: 'category'
         equals: 'ServiceHealth'
       }
