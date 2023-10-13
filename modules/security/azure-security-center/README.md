@@ -55,41 +55,6 @@ This module deploys an Azure Security Center (Defender for Cloud) Configuration.
 | `virtualMachinesPricingTier` | string | `'Free'` | `[Free, Standard]` | The pricing tier value for VMs. Azure Security Center is provided in two pricing tiers: free and standard, with the standard tier available with a trial period. The standard tier offers advanced security capabilities, while the free tier offers basic security features. - Free or Standard. |
 
 
-### Parameter Usage: `securityContactProperties`
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"securityContactProperties": {
-  "value": {
-      "email": "test@contoso.com",
-      "phone": "+12345678",
-      "alertNotifications": "On",
-      "alertsToAdmins": "Off"
-  }
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-securityContactProperties: {
-    email: 'test@contoso.com'
-    phone: '+12345678'
-    alertNotifications: 'On'
-    alertsToAdmins: 'Off'
-}
-```
-
-</details>
-<p>
-
 ## Outputs
 
 | Output Name | Type | Description |
