@@ -101,7 +101,7 @@ function Set-Module {
     # Using threading to speed up the process
     if ($PSCmdlet.ShouldProcess(('Building & generation of [{0}] modules in path [{1}]' -f $relevantTemplatePaths.Count, $resolvedPath), 'Execute')) {
         $relevantTemplatePaths | ForEach-Object -ThrottleLimit $ThrottleLimit -Parallel {
-            $resourceTypeIdentifier = ((Split-Path $_.path) -split '[\/|\\]{1}modules[\/|\\]{1}')[1] # avm/res/<provider>/<resourceType>
+            $resourceTypeIdentifier = ((Split-Path $_) -split '[\/|\\]{1}modules[\/|\\]{1}')[1] # avm/res/<provider>/<resourceType>
 
             . $using:ReadMeScriptFilePath
 
