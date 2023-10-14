@@ -1784,7 +1784,6 @@ function Set-ModuleReadMe {
         $null = Remove-Item $ReadMeFilePath -Force
     }
     # Make sure we preserve any manual notes a user might have added in the corresponding section
-    # TODO: Don't assume the end index is the end of the file, but instead the next `##` header
     if ($match = $readMeFileContent | Select-String -Pattern '## Notes') {
         $startIndex = $match.LineNumber
 
