@@ -61,10 +61,9 @@ module testDeployment '../../../main.bicep' = [for iteration in [ 'init', 'idem'
     ]
     roleAssignments: [
       {
-        principalIds: [
-          nestedDependencies.outputs.managedIdentityPrincipalId
-        ]
         roleDefinitionIdOrName: 'Reader'
+        principalId: nestedDependencies.outputs.managedIdentityPrincipalId
+        principalType: 'ServicePrincipal'
       }
     ]
     smsReceivers: [
