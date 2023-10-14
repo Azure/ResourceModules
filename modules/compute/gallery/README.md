@@ -5,10 +5,10 @@ This module deploys an Azure Compute Gallery (formerly known as Shared Image Gal
 ## Navigation
 
 - [Resource Types](#Resource-Types)
+- [Usage examples](#Usage-examples)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
-- [Deployment examples](#Deployment-examples)
 
 ## Resource Types
 
@@ -20,56 +20,29 @@ This module deploys an Azure Compute Gallery (formerly known as Shared Image Gal
 | `Microsoft.Compute/galleries/applications` | [2022-03-03](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Compute/2022-03-03/galleries/applications) |
 | `Microsoft.Compute/galleries/images` | [2022-03-03](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Compute/2022-03-03/galleries/images) |
 
-## Parameters
+## Usage examples
 
-**Required parameters**
-
-| Parameter Name | Type | Description |
-| :-- | :-- | :-- |
-| `name` | string | Name of the Azure Compute Gallery. |
-
-**Optional parameters**
-
-| Parameter Name | Type | Default Value | Allowed Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `applications` | array | `[]` |  | Applications to create. |
-| `description` | string | `''` |  | Description of the Azure Shared Image Gallery. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `images` | array | `[]` |  | Images to create. |
-| `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
-| `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
-| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| `tags` | object | `{object}` |  | Tags for all resources. |
-
-
-## Outputs
-
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of the deployed image gallery. |
-| `resourceGroupName` | string | The resource group of the deployed image gallery. |
-| `resourceId` | string | The resource ID of the deployed image gallery. |
-
-## Cross-referenced modules
-
-_None_
-
-## Deployment examples
-
-The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
+The following module usage examples are retrieved from the content of the files hosted in the module's `tests` folder.
    >**Note**: The name of each example is based on the name of the file from which it is taken.
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Common</h3>
+   >**Note**: To reference the module, please use the following syntax `br:bicep/modules/compute.gallery:1.0.0`.
+
+- [Using only defaults](#example-1-using-only-defaults)
+- [Using Maximum Parameters](#example-2-using-maximum-parameters)
+
+### Example 1: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module gallery './compute/gallery/main.bicep' = {
+module gallery 'br:bicep/modules/compute.gallery:1.0.0' = {
   name: '${uniqueString(deployment().name, location)}-test-cgcom'
   params: {
     // Required parameters
@@ -401,14 +374,17 @@ module gallery './compute/gallery/main.bicep' = {
 </details>
 <p>
 
-<h3>Example 2: Min</h3>
+### Example 2: _Using Maximum Parameters_
+
+This instance deploys the module with the large set of possible parameters.
+
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module gallery './compute/gallery/main.bicep' = {
+module gallery 'br:bicep/modules/compute.gallery:1.0.0' = {
   name: '${uniqueString(deployment().name, location)}-test-cgmin'
   params: {
     // Required parameters
@@ -445,3 +421,102 @@ module gallery './compute/gallery/main.bicep' = {
 
 </details>
 <p>
+
+
+## Parameters
+
+**Required parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`name`](#parameter-name) | string | Name of the Azure Compute Gallery. |
+
+**Optional parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`applications`](#parameter-applications) | array | Applications to create. |
+| [`description`](#parameter-description) | string | Description of the Azure Shared Image Gallery. |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`images`](#parameter-images) | array | Images to create. |
+| [`location`](#parameter-location) | string | Location for all resources. |
+| [`lock`](#parameter-lock) | string | Specify the type of lock. |
+| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| [`tags`](#parameter-tags) | object | Tags for all resources. |
+
+### Parameter: `applications`
+
+Applications to create.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `description`
+
+Description of the Azure Shared Image Gallery.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `images`
+
+Images to create.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `location`
+
+Location for all resources.
+- Required: No
+- Type: string
+- Default: `[resourceGroup().location]`
+
+### Parameter: `lock`
+
+Specify the type of lock.
+- Required: No
+- Type: string
+- Default: `''`
+- Allowed: `['', CanNotDelete, ReadOnly]`
+
+### Parameter: `name`
+
+Name of the Azure Compute Gallery.
+- Required: Yes
+- Type: string
+
+### Parameter: `roleAssignments`
+
+Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `tags`
+
+Tags for all resources.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+
+## Outputs
+
+| Output | Type | Description |
+| :-- | :-- | :-- |
+| `location` | string | The location the resource was deployed into. |
+| `name` | string | The name of the deployed image gallery. |
+| `resourceGroupName` | string | The resource group of the deployed image gallery. |
+| `resourceId` | string | The resource ID of the deployed image gallery. |
+
+## Cross-referenced modules
+
+_None_

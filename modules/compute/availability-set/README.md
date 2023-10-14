@@ -4,13 +4,13 @@ This module deploys an Availability Set.
 
 ## Navigation
 
-- [Resource types](#Resource-types)
+- [Resource Types](#Resource-Types)
+- [Usage examples](#Usage-examples)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
-- [Deployment examples](#Deployment-examples)
 
-## Resource types
+## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
@@ -18,57 +18,29 @@ This module deploys an Availability Set.
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Compute/availabilitySets` | [2022-11-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Compute/2022-11-01/availabilitySets) |
 
-## Parameters
+## Usage examples
 
-**Required parameters**
-
-| Parameter Name | Type | Description |
-| :-- | :-- | :-- |
-| `name` | string | The name of the availability set that is being created. |
-
-**Optional parameters**
-
-| Parameter Name | Type | Default Value | Allowed Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `location` | string | `[resourceGroup().location]` |  | Resource location. |
-| `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
-| `platformFaultDomainCount` | int | `2` |  | The number of fault domains to use. |
-| `platformUpdateDomainCount` | int | `5` |  | The number of update domains to use. |
-| `proximityPlacementGroupResourceId` | string | `''` |  | Resource ID of a proximity placement group. |
-| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| `skuName` | string | `'Aligned'` |  | SKU of the availability set.</p>- Use 'Aligned' for virtual machines with managed disks.</p>- Use 'Classic' for virtual machines with unmanaged disks. |
-| `tags` | object | `{object}` |  | Tags of the availability set resource. |
-
-
-## Outputs
-
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of the availability set. |
-| `resourceGroupName` | string | The resource group the availability set was deployed into. |
-| `resourceId` | string | The resource ID of the availability set. |
-
-## Cross-referenced modules
-
-_None_
-
-## Deployment examples
-
-The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
+The following module usage examples are retrieved from the content of the files hosted in the module's `tests` folder.
    >**Note**: The name of each example is based on the name of the file from which it is taken.
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Common</h3>
+   >**Note**: To reference the module, please use the following syntax `br:bicep/modules/compute.availability-set:1.0.0`.
+
+- [Using only defaults](#example-1-using-only-defaults)
+- [Using Maximum Parameters](#example-2-using-maximum-parameters)
+
+### Example 1: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module availabilitySet './compute/availability-set/main.bicep' = {
+module availabilitySet 'br:bicep/modules/compute.availability-set:1.0.0' = {
   name: '${uniqueString(deployment().name, location)}-test-cascom'
   params: {
     // Required parameters
@@ -146,14 +118,17 @@ module availabilitySet './compute/availability-set/main.bicep' = {
 </details>
 <p>
 
-<h3>Example 2: Min</h3>
+### Example 2: _Using Maximum Parameters_
+
+This instance deploys the module with the large set of possible parameters.
+
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module availabilitySet './compute/availability-set/main.bicep' = {
+module availabilitySet 'br:bicep/modules/compute.availability-set:1.0.0' = {
   name: '${uniqueString(deployment().name, location)}-test-casmin'
   params: {
     // Required parameters
@@ -190,3 +165,110 @@ module availabilitySet './compute/availability-set/main.bicep' = {
 
 </details>
 <p>
+
+
+## Parameters
+
+**Required parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`name`](#parameter-name) | string | The name of the availability set that is being created. |
+
+**Optional parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`location`](#parameter-location) | string | Resource location. |
+| [`lock`](#parameter-lock) | string | Specify the type of lock. |
+| [`platformFaultDomainCount`](#parameter-platformfaultdomaincount) | int | The number of fault domains to use. |
+| [`platformUpdateDomainCount`](#parameter-platformupdatedomaincount) | int | The number of update domains to use. |
+| [`proximityPlacementGroupResourceId`](#parameter-proximityplacementgroupresourceid) | string | Resource ID of a proximity placement group. |
+| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| [`skuName`](#parameter-skuname) | string | SKU of the availability set.</p>- Use 'Aligned' for virtual machines with managed disks.</p>- Use 'Classic' for virtual machines with unmanaged disks. |
+| [`tags`](#parameter-tags) | object | Tags of the availability set resource. |
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `location`
+
+Resource location.
+- Required: No
+- Type: string
+- Default: `[resourceGroup().location]`
+
+### Parameter: `lock`
+
+Specify the type of lock.
+- Required: No
+- Type: string
+- Default: `''`
+- Allowed: `['', CanNotDelete, ReadOnly]`
+
+### Parameter: `name`
+
+The name of the availability set that is being created.
+- Required: Yes
+- Type: string
+
+### Parameter: `platformFaultDomainCount`
+
+The number of fault domains to use.
+- Required: No
+- Type: int
+- Default: `2`
+
+### Parameter: `platformUpdateDomainCount`
+
+The number of update domains to use.
+- Required: No
+- Type: int
+- Default: `5`
+
+### Parameter: `proximityPlacementGroupResourceId`
+
+Resource ID of a proximity placement group.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `roleAssignments`
+
+Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `skuName`
+
+SKU of the availability set.</p>- Use 'Aligned' for virtual machines with managed disks.</p>- Use 'Classic' for virtual machines with unmanaged disks.
+- Required: No
+- Type: string
+- Default: `'Aligned'`
+
+### Parameter: `tags`
+
+Tags of the availability set resource.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+
+## Outputs
+
+| Output | Type | Description |
+| :-- | :-- | :-- |
+| `location` | string | The location the resource was deployed into. |
+| `name` | string | The name of the availability set. |
+| `resourceGroupName` | string | The resource group the availability set was deployed into. |
+| `resourceId` | string | The resource ID of the availability set. |
+
+## Cross-referenced modules
+
+_None_

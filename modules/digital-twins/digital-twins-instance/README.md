@@ -5,10 +5,10 @@ This module deploys an Azure Digital Twins Instance.
 ## Navigation
 
 - [Resource Types](#Resource-Types)
+- [Usage examples](#Usage-examples)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
-- [Deployment examples](#Deployment-examples)
 
 ## Resource Types
 
@@ -23,72 +23,29 @@ This module deploys an Azure Digital Twins Instance.
 | `Microsoft.Network/privateEndpoints` | [2023-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-04-01/privateEndpoints) |
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2023-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-04-01/privateEndpoints/privateDnsZoneGroups) |
 
-## Parameters
+## Usage examples
 
-**Required parameters**
-
-| Parameter Name | Type | Description |
-| :-- | :-- | :-- |
-| `name` | string | The name of the Digital Twin Instance. |
-
-**Optional parameters**
-
-| Parameter Name | Type | Default Value | Allowed Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
-| `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
-| `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `['', allLogs, DataHistoryOperation, DigitalTwinsOperation, EventRoutesOperation, ModelsOperation, QueryOperation, ResourceProviderOperation]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
-| `diagnosticMetricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | The name of metrics that will be streamed. |
-| `diagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the diagnostic setting, if deployed. |
-| `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
-| `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `eventGridEndpoint` | object | `{object}` |  | Event Grid Endpoint. |
-| `eventHubEndpoint` | object | `{object}` |  | Event Hub Endpoint. |
-| `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
-| `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
-| `privateEndpoints` | array | `[]` |  | Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
-| `publicNetworkAccess` | string | `''` | `['', Disabled, Enabled]` | Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set. |
-| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalIds' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| `serviceBusEndpoint` | object | `{object}` |  | Service Bus Endpoint. |
-| `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
-| `tags` | object | `{object}` |  | Resource tags. |
-| `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
-
-
-## Outputs
-
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `hostname` | string | The hostname of the Digital Twins Instance. |
-| `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of the Digital Twins Instance. |
-| `resourceGroupName` | string | The name of the resource group the resource was created in. |
-| `resourceId` | string | The resource ID of the Digital Twins Instance. |
-
-## Cross-referenced modules
-
-This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
-
-| Reference | Type |
-| :-- | :-- |
-| `network/private-endpoint` | Local reference |
-
-## Deployment examples
-
-The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
+The following module usage examples are retrieved from the content of the files hosted in the module's `tests` folder.
    >**Note**: The name of each example is based on the name of the file from which it is taken.
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Common</h3>
+   >**Note**: To reference the module, please use the following syntax `br:bicep/modules/digital-twins.digital-twins-instance:1.0.0`.
+
+- [Using only defaults](#example-1-using-only-defaults)
+- [Using Maximum Parameters](#example-2-using-maximum-parameters)
+
+### Example 1: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module digitalTwinsInstance './digital-twins/digital-twins-instance/main.bicep' = {
+module digitalTwinsInstance 'br:bicep/modules/digital-twins.digital-twins-instance:1.0.0' = {
   name: '${uniqueString(deployment().name, location)}-test-dtdticom'
   params: {
     // Required parameters
@@ -248,14 +205,17 @@ module digitalTwinsInstance './digital-twins/digital-twins-instance/main.bicep' 
 </details>
 <p>
 
-<h3>Example 2: Min</h3>
+### Example 2: _Using Maximum Parameters_
+
+This instance deploys the module with the large set of possible parameters.
+
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module digitalTwinsInstance './digital-twins/digital-twins-instance/main.bicep' = {
+module digitalTwinsInstance 'br:bicep/modules/digital-twins.digital-twins-instance:1.0.0' = {
   name: '${uniqueString(deployment().name, location)}-test-dtdtimin'
   params: {
     // Required parameters
@@ -292,3 +252,194 @@ module digitalTwinsInstance './digital-twins/digital-twins-instance/main.bicep' 
 
 </details>
 <p>
+
+
+## Parameters
+
+**Required parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`name`](#parameter-name) | string | The name of the Digital Twin Instance. |
+
+**Optional parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`diagnosticEventHubAuthorizationRuleId`](#parameter-diagnosticeventhubauthorizationruleid) | string | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
+| [`diagnosticEventHubName`](#parameter-diagnosticeventhubname) | string | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
+| [`diagnosticLogCategoriesToEnable`](#parameter-diagnosticlogcategoriestoenable) | array | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
+| [`diagnosticMetricsToEnable`](#parameter-diagnosticmetricstoenable) | array | The name of metrics that will be streamed. |
+| [`diagnosticSettingsName`](#parameter-diagnosticsettingsname) | string | The name of the diagnostic setting, if deployed. |
+| [`diagnosticStorageAccountId`](#parameter-diagnosticstorageaccountid) | string | Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
+| [`diagnosticWorkspaceId`](#parameter-diagnosticworkspaceid) | string | Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| [`eventGridEndpoint`](#parameter-eventgridendpoint) | object | Event Grid Endpoint. |
+| [`eventHubEndpoint`](#parameter-eventhubendpoint) | object | Event Hub Endpoint. |
+| [`location`](#parameter-location) | string | Location for all resources. |
+| [`lock`](#parameter-lock) | string | Specify the type of lock. |
+| [`privateEndpoints`](#parameter-privateendpoints) | array | Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
+| [`publicNetworkAccess`](#parameter-publicnetworkaccess) | string | Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set. |
+| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalIds' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| [`serviceBusEndpoint`](#parameter-servicebusendpoint) | object | Service Bus Endpoint. |
+| [`systemAssignedIdentity`](#parameter-systemassignedidentity) | bool | Enables system assigned managed identity on the resource. |
+| [`tags`](#parameter-tags) | object | Resource tags. |
+| [`userAssignedIdentities`](#parameter-userassignedidentities) | object | The ID(s) to assign to the resource. |
+
+### Parameter: `diagnosticEventHubAuthorizationRuleId`
+
+Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `diagnosticEventHubName`
+
+Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `diagnosticLogCategoriesToEnable`
+
+The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection.
+- Required: No
+- Type: array
+- Default: `[allLogs]`
+- Allowed: `['', allLogs, DataHistoryOperation, DigitalTwinsOperation, EventRoutesOperation, ModelsOperation, QueryOperation, ResourceProviderOperation]`
+
+### Parameter: `diagnosticMetricsToEnable`
+
+The name of metrics that will be streamed.
+- Required: No
+- Type: array
+- Default: `[AllMetrics]`
+- Allowed: `[AllMetrics]`
+
+### Parameter: `diagnosticSettingsName`
+
+The name of the diagnostic setting, if deployed.
+- Required: No
+- Type: string
+- Default: `[format('{0}-diagnosticSettings', parameters('name'))]`
+
+### Parameter: `diagnosticStorageAccountId`
+
+Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `diagnosticWorkspaceId`
+
+Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via the Customer Usage Attribution ID (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `eventGridEndpoint`
+
+Event Grid Endpoint.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `eventHubEndpoint`
+
+Event Hub Endpoint.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `location`
+
+Location for all resources.
+- Required: No
+- Type: string
+- Default: `[resourceGroup().location]`
+
+### Parameter: `lock`
+
+Specify the type of lock.
+- Required: No
+- Type: string
+- Default: `''`
+- Allowed: `['', CanNotDelete, ReadOnly]`
+
+### Parameter: `name`
+
+The name of the Digital Twin Instance.
+- Required: Yes
+- Type: string
+
+### Parameter: `privateEndpoints`
+
+Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `publicNetworkAccess`
+
+Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set.
+- Required: No
+- Type: string
+- Default: `''`
+- Allowed: `['', Disabled, Enabled]`
+
+### Parameter: `roleAssignments`
+
+Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalIds' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `serviceBusEndpoint`
+
+Service Bus Endpoint.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `systemAssignedIdentity`
+
+Enables system assigned managed identity on the resource.
+- Required: No
+- Type: bool
+- Default: `False`
+
+### Parameter: `tags`
+
+Resource tags.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `userAssignedIdentities`
+
+The ID(s) to assign to the resource.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+
+## Outputs
+
+| Output | Type | Description |
+| :-- | :-- | :-- |
+| `hostname` | string | The hostname of the Digital Twins Instance. |
+| `location` | string | The location the resource was deployed into. |
+| `name` | string | The name of the Digital Twins Instance. |
+| `resourceGroupName` | string | The name of the resource group the resource was created in. |
+| `resourceId` | string | The resource ID of the Digital Twins Instance. |
+
+## Cross-referenced modules
+
+_None_

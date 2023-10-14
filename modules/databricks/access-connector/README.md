@@ -5,10 +5,10 @@ This module deploys an Azure Databricks Access Connector.
 ## Navigation
 
 - [Resource Types](#Resource-Types)
+- [Usage examples](#Usage-examples)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
-- [Deployment examples](#Deployment-examples)
 
 ## Resource Types
 
@@ -18,55 +18,29 @@ This module deploys an Azure Databricks Access Connector.
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Databricks/accessConnectors` | [2022-10-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Databricks/2022-10-01-preview/accessConnectors) |
 
-## Parameters
+## Usage examples
 
-**Required parameters**
-
-| Parameter Name | Type | Description |
-| :-- | :-- | :-- |
-| `name` | string | The name of the Azure Databricks access connector to create. |
-
-**Optional parameters**
-
-| Parameter Name | Type | Default Value | Allowed Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
-| `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
-| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
-| `tags` | object | `{object}` |  | Tags of the resource. |
-| `userAssignedIdentities` | object | `{object}` |  | The set of user assigned identities associated with the resource, the userAssignedIdentities dictionary keys will be ARM resource IDs and The dictionary values can be empty objects ({}) in requests. |
-
-
-## Outputs
-
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of the deployed access connector. |
-| `resourceGroupName` | string | The resource group of the deployed access connector. |
-| `resourceId` | string | The resource ID of the deployed access connector. |
-
-## Cross-referenced modules
-
-_None_
-
-## Deployment examples
-
-The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
+The following module usage examples are retrieved from the content of the files hosted in the module's `tests` folder.
    >**Note**: The name of each example is based on the name of the file from which it is taken.
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Common</h3>
+   >**Note**: To reference the module, please use the following syntax `br:bicep/modules/databricks.access-connector:1.0.0`.
+
+- [Using only defaults](#example-1-using-only-defaults)
+- [Using Maximum Parameters](#example-2-using-maximum-parameters)
+
+### Example 1: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module accessConnector './databricks/access-connector/main.bicep' = {
+module accessConnector 'br:bicep/modules/databricks.access-connector:1.0.0' = {
   name: '${uniqueString(deployment().name, location)}-test-daccom'
   params: {
     // Required parameters
@@ -156,14 +130,17 @@ module accessConnector './databricks/access-connector/main.bicep' = {
 </details>
 <p>
 
-<h3>Example 2: Min</h3>
+### Example 2: _Using Maximum Parameters_
+
+This instance deploys the module with the large set of possible parameters.
+
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module accessConnector './databricks/access-connector/main.bicep' = {
+module accessConnector 'br:bicep/modules/databricks.access-connector:1.0.0' = {
   name: '${uniqueString(deployment().name, location)}-test-dacmin'
   params: {
     // Required parameters
@@ -200,3 +177,94 @@ module accessConnector './databricks/access-connector/main.bicep' = {
 
 </details>
 <p>
+
+
+## Parameters
+
+**Required parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`name`](#parameter-name) | string | The name of the Azure Databricks access connector to create. |
+
+**Optional parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`location`](#parameter-location) | string | Location for all Resources. |
+| [`lock`](#parameter-lock) | string | Specify the type of lock. |
+| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| [`systemAssignedIdentity`](#parameter-systemassignedidentity) | bool | Enables system assigned managed identity on the resource. |
+| [`tags`](#parameter-tags) | object | Tags of the resource. |
+| [`userAssignedIdentities`](#parameter-userassignedidentities) | object | The set of user assigned identities associated with the resource, the userAssignedIdentities dictionary keys will be ARM resource IDs and The dictionary values can be empty objects ({}) in requests. |
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `location`
+
+Location for all Resources.
+- Required: No
+- Type: string
+- Default: `[resourceGroup().location]`
+
+### Parameter: `lock`
+
+Specify the type of lock.
+- Required: No
+- Type: string
+- Default: `''`
+- Allowed: `['', CanNotDelete, ReadOnly]`
+
+### Parameter: `name`
+
+The name of the Azure Databricks access connector to create.
+- Required: Yes
+- Type: string
+
+### Parameter: `roleAssignments`
+
+Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `systemAssignedIdentity`
+
+Enables system assigned managed identity on the resource.
+- Required: No
+- Type: bool
+- Default: `False`
+
+### Parameter: `tags`
+
+Tags of the resource.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `userAssignedIdentities`
+
+The set of user assigned identities associated with the resource, the userAssignedIdentities dictionary keys will be ARM resource IDs and The dictionary values can be empty objects ({}) in requests.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+
+## Outputs
+
+| Output | Type | Description |
+| :-- | :-- | :-- |
+| `location` | string | The location the resource was deployed into. |
+| `name` | string | The name of the deployed access connector. |
+| `resourceGroupName` | string | The resource group of the deployed access connector. |
+| `resourceId` | string | The resource ID of the deployed access connector. |
+
+## Cross-referenced modules
+
+_None_

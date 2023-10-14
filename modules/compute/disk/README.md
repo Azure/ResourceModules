@@ -5,10 +5,10 @@ This module deploys a Compute Disk
 ## Navigation
 
 - [Resource Types](#Resource-Types)
+- [Usage examples](#Usage-examples)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
-- [Deployment examples](#Deployment-examples)
 
 ## Resource Types
 
@@ -18,80 +18,31 @@ This module deploys a Compute Disk
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Compute/disks` | [2022-07-02](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Compute/2022-07-02/disks) |
 
-## Parameters
+## Usage examples
 
-**Required parameters**
-
-| Parameter Name | Type | Allowed Values | Description |
-| :-- | :-- | :-- | :-- |
-| `name` | string |  | The name of the disk that is being created. |
-| `sku` | string | `[Premium_LRS, Premium_ZRS, Premium_ZRS, PremiumV2_LRS, Standard_LRS, StandardSSD_LRS, UltraSSD_LRS]` | The disks sku name. Can be . |
-
-**Conditional parameters**
-
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `diskSizeGB` | int | `0` | The size of the disk to create. Required if create option is Empty. |
-| `storageAccountId` | string | `''` | The resource ID of the storage account containing the blob to import as a disk. Required if create option is Import. |
-
-**Optional parameters**
-
-| Parameter Name | Type | Default Value | Allowed Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `acceleratedNetwork` | bool | `False` |  | True if the image from which the OS disk is created supports accelerated networking. |
-| `architecture` | string | `''` | `['', Arm64, x64]` | CPU architecture supported by an OS disk. |
-| `burstingEnabled` | bool | `False` |  | Set to true to enable bursting beyond the provisioned performance target of the disk. |
-| `completionPercent` | int | `100` |  | Percentage complete for the background copy when a resource is created via the CopyStart operation. |
-| `createOption` | string | `'Empty'` | `[Attach, Copy, CopyStart, Empty, FromImage, Import, ImportSecure, Restore, Upload, UploadPreparedSecure]` | Sources of a disk creation. |
-| `diskIOPSReadWrite` | int | `0` |  | The number of IOPS allowed for this disk; only settable for UltraSSD disks. |
-| `diskMBpsReadWrite` | int | `0` |  | The bandwidth allowed for this disk; only settable for UltraSSD disks. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `hyperVGeneration` | string | `'V2'` | `[V1, V2]` | The hypervisor generation of the Virtual Machine. Applicable to OS disks only. |
-| `imageReferenceId` | string | `''` |  | A relative uri containing either a Platform Image Repository or user image reference. |
-| `location` | string | `[resourceGroup().location]` |  | Resource location. |
-| `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
-| `logicalSectorSize` | int | `4096` |  | Logical sector size in bytes for Ultra disks. Supported values are 512 ad 4096. |
-| `maxShares` | int | `1` |  | The maximum number of VMs that can attach to the disk at the same time. Default value is 0. |
-| `networkAccessPolicy` | string | `'DenyAll'` | `[AllowAll, AllowPrivate, DenyAll]` | Policy for accessing the disk via network. |
-| `optimizedForFrequentAttach` | bool | `False` |  | Setting this property to true improves reliability and performance of data disks that are frequently (more than 5 times a day) by detached from one virtual machine and attached to another. This property should not be set for disks that are not detached and attached frequently as it causes the disks to not align with the fault domain of the virtual machine. |
-| `osType` | string | `''` | `['', Linux, Windows]` | Sources of a disk creation. |
-| `publicNetworkAccess` | string | `'Disabled'` | `[Disabled, Enabled]` | Policy for controlling export on the disk. |
-| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| `securityDataUri` | string | `''` |  | If create option is ImportSecure, this is the URI of a blob to be imported into VM guest state. |
-| `sourceResourceId` | string | `''` |  | If create option is Copy, this is the ARM ID of the source snapshot or disk. |
-| `sourceUri` | string | `''` |  | If create option is Import, this is the URI of a blob to be imported into a managed disk. |
-| `tags` | object | `{object}` |  | Tags of the availability set resource. |
-| `uploadSizeBytes` | int | `20972032` |  | If create option is Upload, this is the size of the contents of the upload including the VHD footer. |
-
-
-## Outputs
-
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of the disk. |
-| `resourceGroupName` | string | The resource group the  disk was deployed into. |
-| `resourceId` | string | The resource ID of the disk. |
-
-## Cross-referenced modules
-
-_None_
-
-## Deployment examples
-
-The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
+The following module usage examples are retrieved from the content of the files hosted in the module's `tests` folder.
    >**Note**: The name of each example is based on the name of the file from which it is taken.
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Common</h3>
+   >**Note**: To reference the module, please use the following syntax `br:bicep/modules/compute.disk:1.0.0`.
+
+- [Using only defaults](#example-1-using-only-defaults)
+- [Image](#example-2-image)
+- [Import](#example-3-import)
+- [Using Maximum Parameters](#example-4-using-maximum-parameters)
+
+### Example 1: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module disk './compute/disk/main.bicep' = {
+module disk 'br:bicep/modules/compute.disk:1.0.0' = {
   name: '${uniqueString(deployment().name, location)}-test-cdcom'
   params: {
     // Required parameters
@@ -193,14 +144,14 @@ module disk './compute/disk/main.bicep' = {
 </details>
 <p>
 
-<h3>Example 2: Image</h3>
+### Example 2: _Image_
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module disk './compute/disk/main.bicep' = {
+module disk 'br:bicep/modules/compute.disk:1.0.0' = {
   name: '${uniqueString(deployment().name, location)}-test-cdimg'
   params: {
     // Required parameters
@@ -282,14 +233,14 @@ module disk './compute/disk/main.bicep' = {
 </details>
 <p>
 
-<h3>Example 3: Import</h3>
+### Example 3: _Import_
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module disk './compute/disk/main.bicep' = {
+module disk 'br:bicep/modules/compute.disk:1.0.0' = {
   name: '${uniqueString(deployment().name, location)}-test-cdimp'
   params: {
     // Required parameters
@@ -375,14 +326,17 @@ module disk './compute/disk/main.bicep' = {
 </details>
 <p>
 
-<h3>Example 4: Min</h3>
+### Example 4: _Using Maximum Parameters_
+
+This instance deploys the module with the large set of possible parameters.
+
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module disk './compute/disk/main.bicep' = {
+module disk 'br:bicep/modules/compute.disk:1.0.0' = {
   name: '${uniqueString(deployment().name, location)}-test-cdmin'
   params: {
     // Required parameters
@@ -427,3 +381,265 @@ module disk './compute/disk/main.bicep' = {
 
 </details>
 <p>
+
+
+## Parameters
+
+**Required parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`name`](#parameter-name) | string | The name of the disk that is being created. |
+| [`sku`](#parameter-sku) | string | The disks sku name. Can be . |
+
+**Conditional parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`diskSizeGB`](#parameter-disksizegb) | int | The size of the disk to create. Required if create option is Empty. |
+| [`storageAccountId`](#parameter-storageaccountid) | string | The resource ID of the storage account containing the blob to import as a disk. Required if create option is Import. |
+
+**Optional parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`acceleratedNetwork`](#parameter-acceleratednetwork) | bool | True if the image from which the OS disk is created supports accelerated networking. |
+| [`architecture`](#parameter-architecture) | string | CPU architecture supported by an OS disk. |
+| [`burstingEnabled`](#parameter-burstingenabled) | bool | Set to true to enable bursting beyond the provisioned performance target of the disk. |
+| [`completionPercent`](#parameter-completionpercent) | int | Percentage complete for the background copy when a resource is created via the CopyStart operation. |
+| [`createOption`](#parameter-createoption) | string | Sources of a disk creation. |
+| [`diskIOPSReadWrite`](#parameter-diskiopsreadwrite) | int | The number of IOPS allowed for this disk; only settable for UltraSSD disks. |
+| [`diskMBpsReadWrite`](#parameter-diskmbpsreadwrite) | int | The bandwidth allowed for this disk; only settable for UltraSSD disks. |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`hyperVGeneration`](#parameter-hypervgeneration) | string | The hypervisor generation of the Virtual Machine. Applicable to OS disks only. |
+| [`imageReferenceId`](#parameter-imagereferenceid) | string | A relative uri containing either a Platform Image Repository or user image reference. |
+| [`location`](#parameter-location) | string | Resource location. |
+| [`lock`](#parameter-lock) | string | Specify the type of lock. |
+| [`logicalSectorSize`](#parameter-logicalsectorsize) | int | Logical sector size in bytes for Ultra disks. Supported values are 512 ad 4096. |
+| [`maxShares`](#parameter-maxshares) | int | The maximum number of VMs that can attach to the disk at the same time. Default value is 0. |
+| [`networkAccessPolicy`](#parameter-networkaccesspolicy) | string | Policy for accessing the disk via network. |
+| [`optimizedForFrequentAttach`](#parameter-optimizedforfrequentattach) | bool | Setting this property to true improves reliability and performance of data disks that are frequently (more than 5 times a day) by detached from one virtual machine and attached to another. This property should not be set for disks that are not detached and attached frequently as it causes the disks to not align with the fault domain of the virtual machine. |
+| [`osType`](#parameter-ostype) | string | Sources of a disk creation. |
+| [`publicNetworkAccess`](#parameter-publicnetworkaccess) | string | Policy for controlling export on the disk. |
+| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| [`securityDataUri`](#parameter-securitydatauri) | string | If create option is ImportSecure, this is the URI of a blob to be imported into VM guest state. |
+| [`sourceResourceId`](#parameter-sourceresourceid) | string | If create option is Copy, this is the ARM ID of the source snapshot or disk. |
+| [`sourceUri`](#parameter-sourceuri) | string | If create option is Import, this is the URI of a blob to be imported into a managed disk. |
+| [`tags`](#parameter-tags) | object | Tags of the availability set resource. |
+| [`uploadSizeBytes`](#parameter-uploadsizebytes) | int | If create option is Upload, this is the size of the contents of the upload including the VHD footer. |
+
+### Parameter: `acceleratedNetwork`
+
+True if the image from which the OS disk is created supports accelerated networking.
+- Required: No
+- Type: bool
+- Default: `False`
+
+### Parameter: `architecture`
+
+CPU architecture supported by an OS disk.
+- Required: No
+- Type: string
+- Default: `''`
+- Allowed: `['', Arm64, x64]`
+
+### Parameter: `burstingEnabled`
+
+Set to true to enable bursting beyond the provisioned performance target of the disk.
+- Required: No
+- Type: bool
+- Default: `False`
+
+### Parameter: `completionPercent`
+
+Percentage complete for the background copy when a resource is created via the CopyStart operation.
+- Required: No
+- Type: int
+- Default: `100`
+
+### Parameter: `createOption`
+
+Sources of a disk creation.
+- Required: No
+- Type: string
+- Default: `'Empty'`
+- Allowed: `[Attach, Copy, CopyStart, Empty, FromImage, Import, ImportSecure, Restore, Upload, UploadPreparedSecure]`
+
+### Parameter: `diskIOPSReadWrite`
+
+The number of IOPS allowed for this disk; only settable for UltraSSD disks.
+- Required: No
+- Type: int
+- Default: `0`
+
+### Parameter: `diskMBpsReadWrite`
+
+The bandwidth allowed for this disk; only settable for UltraSSD disks.
+- Required: No
+- Type: int
+- Default: `0`
+
+### Parameter: `diskSizeGB`
+
+The size of the disk to create. Required if create option is Empty.
+- Required: No
+- Type: int
+- Default: `0`
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `hyperVGeneration`
+
+The hypervisor generation of the Virtual Machine. Applicable to OS disks only.
+- Required: No
+- Type: string
+- Default: `'V2'`
+- Allowed: `[V1, V2]`
+
+### Parameter: `imageReferenceId`
+
+A relative uri containing either a Platform Image Repository or user image reference.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `location`
+
+Resource location.
+- Required: No
+- Type: string
+- Default: `[resourceGroup().location]`
+
+### Parameter: `lock`
+
+Specify the type of lock.
+- Required: No
+- Type: string
+- Default: `''`
+- Allowed: `['', CanNotDelete, ReadOnly]`
+
+### Parameter: `logicalSectorSize`
+
+Logical sector size in bytes for Ultra disks. Supported values are 512 ad 4096.
+- Required: No
+- Type: int
+- Default: `4096`
+
+### Parameter: `maxShares`
+
+The maximum number of VMs that can attach to the disk at the same time. Default value is 0.
+- Required: No
+- Type: int
+- Default: `1`
+
+### Parameter: `name`
+
+The name of the disk that is being created.
+- Required: Yes
+- Type: string
+
+### Parameter: `networkAccessPolicy`
+
+Policy for accessing the disk via network.
+- Required: No
+- Type: string
+- Default: `'DenyAll'`
+- Allowed: `[AllowAll, AllowPrivate, DenyAll]`
+
+### Parameter: `optimizedForFrequentAttach`
+
+Setting this property to true improves reliability and performance of data disks that are frequently (more than 5 times a day) by detached from one virtual machine and attached to another. This property should not be set for disks that are not detached and attached frequently as it causes the disks to not align with the fault domain of the virtual machine.
+- Required: No
+- Type: bool
+- Default: `False`
+
+### Parameter: `osType`
+
+Sources of a disk creation.
+- Required: No
+- Type: string
+- Default: `''`
+- Allowed: `['', Linux, Windows]`
+
+### Parameter: `publicNetworkAccess`
+
+Policy for controlling export on the disk.
+- Required: No
+- Type: string
+- Default: `'Disabled'`
+- Allowed: `[Disabled, Enabled]`
+
+### Parameter: `roleAssignments`
+
+Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `securityDataUri`
+
+If create option is ImportSecure, this is the URI of a blob to be imported into VM guest state.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `sku`
+
+The disks sku name. Can be .
+- Required: Yes
+- Type: string
+- Allowed: `[Premium_LRS, Premium_ZRS, Premium_ZRS, PremiumV2_LRS, Standard_LRS, StandardSSD_LRS, UltraSSD_LRS]`
+
+### Parameter: `sourceResourceId`
+
+If create option is Copy, this is the ARM ID of the source snapshot or disk.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `sourceUri`
+
+If create option is Import, this is the URI of a blob to be imported into a managed disk.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `storageAccountId`
+
+The resource ID of the storage account containing the blob to import as a disk. Required if create option is Import.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `tags`
+
+Tags of the availability set resource.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `uploadSizeBytes`
+
+If create option is Upload, this is the size of the contents of the upload including the VHD footer.
+- Required: No
+- Type: int
+- Default: `20972032`
+
+
+## Outputs
+
+| Output | Type | Description |
+| :-- | :-- | :-- |
+| `location` | string | The location the resource was deployed into. |
+| `name` | string | The name of the disk. |
+| `resourceGroupName` | string | The resource group the  disk was deployed into. |
+| `resourceId` | string | The resource ID of the disk. |
+
+## Cross-referenced modules
+
+_None_

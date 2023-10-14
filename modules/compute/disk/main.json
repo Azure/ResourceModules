@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.21.1.54444",
-      "templateHash": "5862388830070369227"
+      "version": "0.22.6.54827",
+      "templateHash": "12764361220335313353"
     },
     "name": "Compute Disks",
     "description": "This module deploys a Compute Disk",
@@ -353,8 +353,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "15033488944608271524"
+              "version": "0.22.6.54827",
+              "templateHash": "9743538331774034121"
             }
           },
           "parameters": {
