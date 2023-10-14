@@ -143,7 +143,7 @@ function Get-CrossReferencedModuleList {
     [CmdletBinding()]
     param (
         [Parameter()]
-        [string] $Path = (Join-Path (Get-Item $PSScriptRoot).Parent.Parent.Parent.Parent 'modules')
+        [string] $Path = (Join-Path (Get-Item $PSScriptRoot).Parent.Parent 'modules')
     )
 
     $repoRoot = ($Path -split '[\/|\\]{1}modules[\/|\\]?')[0]
