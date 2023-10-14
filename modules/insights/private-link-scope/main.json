@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.21.1.54444",
-      "templateHash": "13996279122424310340"
+      "version": "0.22.6.54827",
+      "templateHash": "9824068275707710634"
     },
     "name": "Azure Monitor Private Link Scopes",
     "description": "This module deploys an Azure Monitor Private Link Scope.",
@@ -147,8 +147,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "3902218127334936289"
+              "version": "0.22.6.54827",
+              "templateHash": "13415430389319270642"
             },
             "name": "Private Link Scope Scoped Resources",
             "description": "This module deploys a Private Link Scope Scoped Resource.",
@@ -282,8 +282,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "14580007913383558904"
+              "version": "0.22.6.54827",
+              "templateHash": "2884140170473394983"
             },
             "name": "Private Endpoints",
             "description": "This module deploys a Private Endpoint.",
@@ -482,8 +482,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.21.1.54444",
-                      "templateHash": "2469208411936339153"
+                      "version": "0.22.6.54827",
+                      "templateHash": "5610247137574346230"
                     },
                     "name": "Private Endpoint Private DNS Zone Groups",
                     "description": "This module deploys a Private Endpoint Private DNS Zone Group.",
@@ -620,8 +620,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.21.1.54444",
-                      "templateHash": "13032708393704093995"
+                      "version": "0.22.6.54827",
+                      "templateHash": "14351187799927334028"
                     }
                   },
                   "parameters": {
@@ -834,8 +834,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "10054224154652466544"
+              "version": "0.22.6.54827",
+              "templateHash": "5166949819431915903"
             }
           },
           "parameters": {

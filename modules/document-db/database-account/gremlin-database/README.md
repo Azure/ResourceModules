@@ -21,32 +21,93 @@ This module deploys a Gremlin Database within a CosmosDB Account.
 
 **Required parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | Name of the Gremlin database. |
+| [`name`](#parameter-name) | string | Name of the Gremlin database. |
 
 **Conditional parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `databaseAccountName` | string | The name of the parent Gremlin database. Required if the template is used in a standalone deployment. |
+| [`databaseAccountName`](#parameter-databaseaccountname) | string | The name of the parent Gremlin database. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `graphs` | array | `[]` | Array of graphs to deploy in the Gremlin database. |
-| `maxThroughput` | int | `4000` | Represents maximum throughput, the resource can scale up to. Cannot be set together with `throughput`. If `throughput` is set to something else than -1, this autoscale setting is ignored. |
-| `systemAssignedIdentity` | bool | `False` | Enables system assigned managed identity on the resource. |
-| `tags` | object | `{object}` | Tags of the Gremlin database resource. |
-| `throughput` | int | `-1` | Request Units per second (for example 10000). Cannot be set together with `maxThroughput`. |
-| `userAssignedIdentities` | object | `{object}` | The ID(s) to assign to the resource. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`graphs`](#parameter-graphs) | array | Array of graphs to deploy in the Gremlin database. |
+| [`maxThroughput`](#parameter-maxthroughput) | int | Represents maximum throughput, the resource can scale up to. Cannot be set together with `throughput`. If `throughput` is set to something else than -1, this autoscale setting is ignored. |
+| [`systemAssignedIdentity`](#parameter-systemassignedidentity) | bool | Enables system assigned managed identity on the resource. |
+| [`tags`](#parameter-tags) | object | Tags of the Gremlin database resource. |
+| [`throughput`](#parameter-throughput) | int | Request Units per second (for example 10000). Cannot be set together with `maxThroughput`. |
+| [`userAssignedIdentities`](#parameter-userassignedidentities) | object | The ID(s) to assign to the resource. |
+
+### Parameter: `databaseAccountName`
+
+The name of the parent Gremlin database. Required if the template is used in a standalone deployment.
+- Required: Yes
+- Type: string
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `graphs`
+
+Array of graphs to deploy in the Gremlin database.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `maxThroughput`
+
+Represents maximum throughput, the resource can scale up to. Cannot be set together with `throughput`. If `throughput` is set to something else than -1, this autoscale setting is ignored.
+- Required: No
+- Type: int
+- Default: `4000`
+
+### Parameter: `name`
+
+Name of the Gremlin database.
+- Required: Yes
+- Type: string
+
+### Parameter: `systemAssignedIdentity`
+
+Enables system assigned managed identity on the resource.
+- Required: No
+- Type: bool
+- Default: `False`
+
+### Parameter: `tags`
+
+Tags of the Gremlin database resource.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `throughput`
+
+Request Units per second (for example 10000). Cannot be set together with `maxThroughput`.
+- Required: No
+- Type: int
+- Default: `-1`
+
+### Parameter: `userAssignedIdentities`
+
+The ID(s) to assign to the resource.
+- Required: No
+- Type: object
+- Default: `{object}`
 
 
 ## Outputs
 
-| Output Name | Type | Description |
+| Output | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the Gremlin database. |
 | `resourceGroupName` | string | The name of the resource group the Gremlin database was created in. |

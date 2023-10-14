@@ -5,10 +5,10 @@ This module deploys a Data Collection Rule.
 ## Navigation
 
 - [Resource Types](#Resource-Types)
+- [Usage examples](#Usage-examples)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
-- [Deployment examples](#Deployment-examples)
 
 ## Resource Types
 
@@ -18,60 +18,30 @@ This module deploys a Data Collection Rule.
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Insights/dataCollectionRules` | [2021-09-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-09-01-preview/dataCollectionRules) |
 
-## Parameters
+## Usage examples
 
-**Required parameters**
-
-| Parameter Name | Type | Description |
-| :-- | :-- | :-- |
-| `dataFlows` | array | The specification of data flows. |
-| `dataSources` | object | Specification of data sources that will be collected. |
-| `destinations` | object | Specification of destinations that can be used in data flows. |
-| `name` | string | The name of the data collection rule. The name is case insensitive. |
-
-**Optional parameters**
-
-| Parameter Name | Type | Default Value | Allowed Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `dataCollectionEndpointId` | string | `''` |  | The resource ID of the data collection endpoint that this rule can be used with. |
-| `description` | string | `''` |  | Description of the data collection rule. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `kind` | string | `'Linux'` | `[Linux, Windows]` | The kind of the resource. |
-| `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
-| `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
-| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| `streamDeclarations` | object | `{object}` |  | Declaration of custom streams used in this rule. |
-| `tags` | object | `{object}` |  | Resource tags. |
-
-
-## Outputs
-
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of the dataCollectionRule. |
-| `resourceGroupName` | string | The name of the resource group the dataCollectionRule was created in. |
-| `resourceId` | string | The resource ID of the dataCollectionRule. |
-
-## Cross-referenced modules
-
-_None_
-
-## Deployment examples
-
-The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
+The following module usage examples are retrieved from the content of the files hosted in the module's `tests` folder.
    >**Note**: The name of each example is based on the name of the file from which it is taken.
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Customadv</h3>
+   >**Note**: To reference the module, please use the following syntax `br:bicep/modules/insights.data-collection-rule:1.0.0`.
+
+- [Customadv](#example-1-customadv)
+- [Custombasic](#example-2-custombasic)
+- [Customiis](#example-3-customiis)
+- [Linux](#example-4-linux)
+- [Using Maximum Parameters](#example-5-using-maximum-parameters)
+- [Windows](#example-6-windows)
+
+### Example 1: _Customadv_
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module dataCollectionRule './insights/data-collection-rule/main.bicep' = {
+module dataCollectionRule 'br:bicep/modules/insights.data-collection-rule:1.0.0' = {
   name: '${uniqueString(deployment().name)}-test-idcrcusadv'
   params: {
     // Required parameters
@@ -305,14 +275,14 @@ module dataCollectionRule './insights/data-collection-rule/main.bicep' = {
 </details>
 <p>
 
-<h3>Example 2: Custombasic</h3>
+### Example 2: _Custombasic_
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module dataCollectionRule './insights/data-collection-rule/main.bicep' = {
+module dataCollectionRule 'br:bicep/modules/insights.data-collection-rule:1.0.0' = {
   name: '${uniqueString(deployment().name)}-test-idcrcusbas'
   params: {
     // Required parameters
@@ -514,14 +484,14 @@ module dataCollectionRule './insights/data-collection-rule/main.bicep' = {
 </details>
 <p>
 
-<h3>Example 3: Customiis</h3>
+### Example 3: _Customiis_
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module dataCollectionRule './insights/data-collection-rule/main.bicep' = {
+module dataCollectionRule 'br:bicep/modules/insights.data-collection-rule:1.0.0' = {
   name: '${uniqueString(deployment().name)}-test-idcrcusiis'
   params: {
     // Required parameters
@@ -679,14 +649,14 @@ module dataCollectionRule './insights/data-collection-rule/main.bicep' = {
 </details>
 <p>
 
-<h3>Example 4: Linux</h3>
+### Example 4: _Linux_
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module dataCollectionRule './insights/data-collection-rule/main.bicep' = {
+module dataCollectionRule 'br:bicep/modules/insights.data-collection-rule:1.0.0' = {
   name: '${uniqueString(deployment().name)}-test-idcrlin'
   params: {
     // Required parameters
@@ -1068,14 +1038,17 @@ module dataCollectionRule './insights/data-collection-rule/main.bicep' = {
 </details>
 <p>
 
-<h3>Example 5: Min</h3>
+### Example 5: _Using Maximum Parameters_
+
+This instance deploys the module with the large set of possible parameters.
+
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module dataCollectionRule './insights/data-collection-rule/main.bicep' = {
+module dataCollectionRule 'br:bicep/modules/insights.data-collection-rule:1.0.0' = {
   name: '${uniqueString(deployment().name)}-test-idcrmin'
   params: {
     // Required parameters
@@ -1199,14 +1172,14 @@ module dataCollectionRule './insights/data-collection-rule/main.bicep' = {
 </details>
 <p>
 
-<h3>Example 6: Windows</h3>
+### Example 6: _Windows_
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module dataCollectionRule './insights/data-collection-rule/main.bicep' = {
+module dataCollectionRule 'br:bicep/modules/insights.data-collection-rule:1.0.0' = {
   name: '${uniqueString(deployment().name)}-test-idcrwin'
   params: {
     // Required parameters
@@ -1495,3 +1468,132 @@ module dataCollectionRule './insights/data-collection-rule/main.bicep' = {
 
 </details>
 <p>
+
+
+## Parameters
+
+**Required parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`dataFlows`](#parameter-dataflows) | array | The specification of data flows. |
+| [`dataSources`](#parameter-datasources) | object | Specification of data sources that will be collected. |
+| [`destinations`](#parameter-destinations) | object | Specification of destinations that can be used in data flows. |
+| [`name`](#parameter-name) | string | The name of the data collection rule. The name is case insensitive. |
+
+**Optional parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`dataCollectionEndpointId`](#parameter-datacollectionendpointid) | string | The resource ID of the data collection endpoint that this rule can be used with. |
+| [`description`](#parameter-description) | string | Description of the data collection rule. |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| [`kind`](#parameter-kind) | string | The kind of the resource. |
+| [`location`](#parameter-location) | string | Location for all Resources. |
+| [`lock`](#parameter-lock) | string | Specify the type of lock. |
+| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| [`streamDeclarations`](#parameter-streamdeclarations) | object | Declaration of custom streams used in this rule. |
+| [`tags`](#parameter-tags) | object | Resource tags. |
+
+### Parameter: `dataCollectionEndpointId`
+
+The resource ID of the data collection endpoint that this rule can be used with.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `dataFlows`
+
+The specification of data flows.
+- Required: Yes
+- Type: array
+
+### Parameter: `dataSources`
+
+Specification of data sources that will be collected.
+- Required: Yes
+- Type: object
+
+### Parameter: `description`
+
+Description of the data collection rule.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `destinations`
+
+Specification of destinations that can be used in data flows.
+- Required: Yes
+- Type: object
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via the Customer Usage Attribution ID (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `kind`
+
+The kind of the resource.
+- Required: No
+- Type: string
+- Default: `'Linux'`
+- Allowed: `[Linux, Windows]`
+
+### Parameter: `location`
+
+Location for all Resources.
+- Required: No
+- Type: string
+- Default: `[resourceGroup().location]`
+
+### Parameter: `lock`
+
+Specify the type of lock.
+- Required: No
+- Type: string
+- Default: `''`
+- Allowed: `['', CanNotDelete, ReadOnly]`
+
+### Parameter: `name`
+
+The name of the data collection rule. The name is case insensitive.
+- Required: Yes
+- Type: string
+
+### Parameter: `roleAssignments`
+
+Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `streamDeclarations`
+
+Declaration of custom streams used in this rule.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `tags`
+
+Resource tags.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+
+## Outputs
+
+| Output | Type | Description |
+| :-- | :-- | :-- |
+| `location` | string | The location the resource was deployed into. |
+| `name` | string | The name of the dataCollectionRule. |
+| `resourceGroupName` | string | The name of the resource group the dataCollectionRule was created in. |
+| `resourceId` | string | The resource ID of the dataCollectionRule. |
+
+## Cross-referenced modules
+
+_None_

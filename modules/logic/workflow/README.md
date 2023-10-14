@@ -4,14 +4,14 @@ This module deploys a Logic App (Workflow).
 
 ## Navigation
 
-- [Resource types](#Resource-types)
+- [Resource Types](#Resource-Types)
+- [Usage examples](#Usage-examples)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
-- [Deployment examples](#Deployment-examples)
 - [Notes](#Notes)
 
-## Resource types
+## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
@@ -20,78 +20,28 @@ This module deploys a Logic App (Workflow).
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 | `Microsoft.Logic/workflows` | [2019-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Logic/2019-05-01/workflows) |
 
-## Parameters
+## Usage examples
 
-**Required parameters**
-
-| Parameter Name | Type | Description |
-| :-- | :-- | :-- |
-| `name` | string | The logic app workflow name. |
-
-**Optional parameters**
-
-| Parameter Name | Type | Default Value | Allowed Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `actionsAccessControlConfiguration` | object | `{object}` |  | The access control configuration for workflow actions. |
-| `connectorEndpointsConfiguration` | object | `{object}` |  | The endpoints configuration:  Access endpoint and outgoing IP addresses for the connector. |
-| `contentsAccessControlConfiguration` | object | `{object}` |  | The access control configuration for accessing workflow run contents. |
-| `definitionParameters` | object | `{object}` |  | Parameters for the definition template. |
-| `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
-| `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
-| `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `['', allLogs, WorkflowRuntime]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
-| `diagnosticMetricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | The name of metrics that will be streamed. |
-| `diagnosticSettingsName` | string | `''` |  | The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings". |
-| `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
-| `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `integrationAccount` | object | `{object}` |  | The integration account. |
-| `integrationServiceEnvironmentResourceId` | string | `''` |  | The integration service environment Id. |
-| `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
-| `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
-| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| `state` | string | `'Enabled'` | `[Completed, Deleted, Disabled, Enabled, NotSpecified, Suspended]` | The state. - NotSpecified, Completed, Enabled, Disabled, Deleted, Suspended. |
-| `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
-| `tags` | object | `{object}` |  | Tags of the resource. |
-| `triggersAccessControlConfiguration` | object | `{object}` |  | The access control configuration for invoking workflow triggers. |
-| `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
-| `workflowActions` | object | `{object}` |  | The definitions for one or more actions to execute at workflow runtime. |
-| `workflowEndpointsConfiguration` | object | `{object}` |  | The endpoints configuration:  Access endpoint and outgoing IP addresses for the workflow. |
-| `workflowManagementAccessControlConfiguration` | object | `{object}` |  | The access control configuration for workflow management. |
-| `workflowOutputs` | object | `{object}` |  | The definitions for the outputs to return from a workflow run. |
-| `workflowParameters` | object | `{object}` |  | The definitions for one or more parameters that pass the values to use at your logic app's runtime. |
-| `workflowStaticResults` | object | `{object}` |  | The definitions for one or more static results returned by actions as mock outputs when static results are enabled on those actions. In each action definition, the runtimeConfiguration.staticResult.name attribute references the corresponding definition inside staticResults. |
-| `workflowTriggers` | object | `{object}` |  | The definitions for one or more triggers that instantiate your workflow. You can define more than one trigger, but only with the Workflow Definition Language, not visually through the Logic Apps Designer. |
-
-
-## Outputs
-
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of the logic app. |
-| `resourceGroupName` | string | The resource group the logic app was deployed into. |
-| `resourceId` | string | The resource ID of the logic app. |
-| `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
-
-## Cross-referenced modules
-
-_None_
-
-## Deployment examples
-
-The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
+The following module usage examples are retrieved from the content of the files hosted in the module's `tests` folder.
    >**Note**: The name of each example is based on the name of the file from which it is taken.
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Common</h3>
+   >**Note**: To reference the module, please use the following syntax `br:bicep/modules/logic.workflow:1.0.0`.
+
+- [Using only defaults](#example-1-using-only-defaults)
+
+### Example 1: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module workflow './logic/workflow/main.bicep' = {
+module workflow 'br:bicep/modules/logic.workflow:1.0.0' = {
   name: '${uniqueString(deployment().name, location)}-test-lwcom'
   params: {
     // Required parameters
@@ -255,6 +205,276 @@ module workflow './logic/workflow/main.bicep' = {
 </details>
 <p>
 
+
+## Parameters
+
+**Required parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`name`](#parameter-name) | string | The logic app workflow name. |
+
+**Optional parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`actionsAccessControlConfiguration`](#parameter-actionsaccesscontrolconfiguration) | object | The access control configuration for workflow actions. |
+| [`connectorEndpointsConfiguration`](#parameter-connectorendpointsconfiguration) | object | The endpoints configuration:  Access endpoint and outgoing IP addresses for the connector. |
+| [`contentsAccessControlConfiguration`](#parameter-contentsaccesscontrolconfiguration) | object | The access control configuration for accessing workflow run contents. |
+| [`definitionParameters`](#parameter-definitionparameters) | object | Parameters for the definition template. |
+| [`diagnosticEventHubAuthorizationRuleId`](#parameter-diagnosticeventhubauthorizationruleid) | string | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
+| [`diagnosticEventHubName`](#parameter-diagnosticeventhubname) | string | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
+| [`diagnosticLogCategoriesToEnable`](#parameter-diagnosticlogcategoriestoenable) | array | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
+| [`diagnosticMetricsToEnable`](#parameter-diagnosticmetricstoenable) | array | The name of metrics that will be streamed. |
+| [`diagnosticSettingsName`](#parameter-diagnosticsettingsname) | string | The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings". |
+| [`diagnosticStorageAccountId`](#parameter-diagnosticstorageaccountid) | string | Resource ID of the diagnostic storage account. |
+| [`diagnosticWorkspaceId`](#parameter-diagnosticworkspaceid) | string | Resource ID of the diagnostic log analytics workspace. |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`integrationAccount`](#parameter-integrationaccount) | object | The integration account. |
+| [`integrationServiceEnvironmentResourceId`](#parameter-integrationserviceenvironmentresourceid) | string | The integration service environment Id. |
+| [`location`](#parameter-location) | string | Location for all resources. |
+| [`lock`](#parameter-lock) | string | Specify the type of lock. |
+| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| [`state`](#parameter-state) | string | The state. - NotSpecified, Completed, Enabled, Disabled, Deleted, Suspended. |
+| [`systemAssignedIdentity`](#parameter-systemassignedidentity) | bool | Enables system assigned managed identity on the resource. |
+| [`tags`](#parameter-tags) | object | Tags of the resource. |
+| [`triggersAccessControlConfiguration`](#parameter-triggersaccesscontrolconfiguration) | object | The access control configuration for invoking workflow triggers. |
+| [`userAssignedIdentities`](#parameter-userassignedidentities) | object | The ID(s) to assign to the resource. |
+| [`workflowActions`](#parameter-workflowactions) | object | The definitions for one or more actions to execute at workflow runtime. |
+| [`workflowEndpointsConfiguration`](#parameter-workflowendpointsconfiguration) | object | The endpoints configuration:  Access endpoint and outgoing IP addresses for the workflow. |
+| [`workflowManagementAccessControlConfiguration`](#parameter-workflowmanagementaccesscontrolconfiguration) | object | The access control configuration for workflow management. |
+| [`workflowOutputs`](#parameter-workflowoutputs) | object | The definitions for the outputs to return from a workflow run. |
+| [`workflowParameters`](#parameter-workflowparameters) | object | The definitions for one or more parameters that pass the values to use at your logic app's runtime. |
+| [`workflowStaticResults`](#parameter-workflowstaticresults) | object | The definitions for one or more static results returned by actions as mock outputs when static results are enabled on those actions. In each action definition, the runtimeConfiguration.staticResult.name attribute references the corresponding definition inside staticResults. |
+| [`workflowTriggers`](#parameter-workflowtriggers) | object | The definitions for one or more triggers that instantiate your workflow. You can define more than one trigger, but only with the Workflow Definition Language, not visually through the Logic Apps Designer. |
+
+### Parameter: `actionsAccessControlConfiguration`
+
+The access control configuration for workflow actions.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `connectorEndpointsConfiguration`
+
+The endpoints configuration:  Access endpoint and outgoing IP addresses for the connector.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `contentsAccessControlConfiguration`
+
+The access control configuration for accessing workflow run contents.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `definitionParameters`
+
+Parameters for the definition template.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `diagnosticEventHubAuthorizationRuleId`
+
+Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `diagnosticEventHubName`
+
+Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `diagnosticLogCategoriesToEnable`
+
+The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection.
+- Required: No
+- Type: array
+- Default: `[allLogs]`
+- Allowed: `['', allLogs, WorkflowRuntime]`
+
+### Parameter: `diagnosticMetricsToEnable`
+
+The name of metrics that will be streamed.
+- Required: No
+- Type: array
+- Default: `[AllMetrics]`
+- Allowed: `[AllMetrics]`
+
+### Parameter: `diagnosticSettingsName`
+
+The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings".
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `diagnosticStorageAccountId`
+
+Resource ID of the diagnostic storage account.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `diagnosticWorkspaceId`
+
+Resource ID of the diagnostic log analytics workspace.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `integrationAccount`
+
+The integration account.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `integrationServiceEnvironmentResourceId`
+
+The integration service environment Id.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `location`
+
+Location for all resources.
+- Required: No
+- Type: string
+- Default: `[resourceGroup().location]`
+
+### Parameter: `lock`
+
+Specify the type of lock.
+- Required: No
+- Type: string
+- Default: `''`
+- Allowed: `['', CanNotDelete, ReadOnly]`
+
+### Parameter: `name`
+
+The logic app workflow name.
+- Required: Yes
+- Type: string
+
+### Parameter: `roleAssignments`
+
+Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `state`
+
+The state. - NotSpecified, Completed, Enabled, Disabled, Deleted, Suspended.
+- Required: No
+- Type: string
+- Default: `'Enabled'`
+- Allowed: `[Completed, Deleted, Disabled, Enabled, NotSpecified, Suspended]`
+
+### Parameter: `systemAssignedIdentity`
+
+Enables system assigned managed identity on the resource.
+- Required: No
+- Type: bool
+- Default: `False`
+
+### Parameter: `tags`
+
+Tags of the resource.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `triggersAccessControlConfiguration`
+
+The access control configuration for invoking workflow triggers.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `userAssignedIdentities`
+
+The ID(s) to assign to the resource.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `workflowActions`
+
+The definitions for one or more actions to execute at workflow runtime.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `workflowEndpointsConfiguration`
+
+The endpoints configuration:  Access endpoint and outgoing IP addresses for the workflow.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `workflowManagementAccessControlConfiguration`
+
+The access control configuration for workflow management.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `workflowOutputs`
+
+The definitions for the outputs to return from a workflow run.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `workflowParameters`
+
+The definitions for one or more parameters that pass the values to use at your logic app's runtime.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `workflowStaticResults`
+
+The definitions for one or more static results returned by actions as mock outputs when static results are enabled on those actions. In each action definition, the runtimeConfiguration.staticResult.name attribute references the corresponding definition inside staticResults.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `workflowTriggers`
+
+The definitions for one or more triggers that instantiate your workflow. You can define more than one trigger, but only with the Workflow Definition Language, not visually through the Logic Apps Designer.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+
+## Outputs
+
+| Output | Type | Description |
+| :-- | :-- | :-- |
+| `location` | string | The location the resource was deployed into. |
+| `name` | string | The name of the logic app. |
+| `resourceGroupName` | string | The resource group the logic app was deployed into. |
+| `resourceId` | string | The resource ID of the logic app. |
+| `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
+
+## Cross-referenced modules
+
+_None_
 
 ## Notes
 

@@ -20,31 +20,84 @@ This module deploys a Healthcare API Workspace IoT Connector FHIR Destination.
 
 **Required parameters**
 
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `destinationMapping` | object | `{object}` | The mapping JSON that determines how normalized data is converted to FHIR Observations. |
-| `fhirServiceResourceId` | string |  | The resource identifier of the FHIR Service to connect to. |
-| `name` | string |  | The name of the FHIR destination. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`destinationMapping`](#parameter-destinationmapping) | object | The mapping JSON that determines how normalized data is converted to FHIR Observations. |
+| [`fhirServiceResourceId`](#parameter-fhirserviceresourceid) | string | The resource identifier of the FHIR Service to connect to. |
+| [`name`](#parameter-name) | string | The name of the FHIR destination. |
 
 **Conditional parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `iotConnectorName` | string | The name of the MedTech service to add this destination to. Required if the template is used in a standalone deployment. |
-| `workspaceName` | string | The name of the parent health data services workspace. Required if the template is used in a standalone deployment. |
+| [`iotConnectorName`](#parameter-iotconnectorname) | string | The name of the MedTech service to add this destination to. Required if the template is used in a standalone deployment. |
+| [`workspaceName`](#parameter-workspacename) | string | The name of the parent health data services workspace. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Allowed Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
-| `resourceIdentityResolutionType` | string | `'Lookup'` | `[Create, Lookup]` | Determines how resource identity is resolved on the destination. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| [`location`](#parameter-location) | string | Location for all resources. |
+| [`resourceIdentityResolutionType`](#parameter-resourceidentityresolutiontype) | string | Determines how resource identity is resolved on the destination. |
+
+### Parameter: `destinationMapping`
+
+The mapping JSON that determines how normalized data is converted to FHIR Observations.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via the Customer Usage Attribution ID (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `fhirServiceResourceId`
+
+The resource identifier of the FHIR Service to connect to.
+- Required: Yes
+- Type: string
+
+### Parameter: `iotConnectorName`
+
+The name of the MedTech service to add this destination to. Required if the template is used in a standalone deployment.
+- Required: Yes
+- Type: string
+
+### Parameter: `location`
+
+Location for all resources.
+- Required: No
+- Type: string
+- Default: `[resourceGroup().location]`
+
+### Parameter: `name`
+
+The name of the FHIR destination.
+- Required: Yes
+- Type: string
+
+### Parameter: `resourceIdentityResolutionType`
+
+Determines how resource identity is resolved on the destination.
+- Required: No
+- Type: string
+- Default: `'Lookup'`
+- Allowed: `[Create, Lookup]`
+
+### Parameter: `workspaceName`
+
+The name of the parent health data services workspace. Required if the template is used in a standalone deployment.
+- Required: Yes
+- Type: string
 
 
 ## Outputs
 
-| Output Name | Type | Description |
+| Output | Type | Description |
 | :-- | :-- | :-- |
 | `iotConnectorName` | string | The name of the medtech service. |
 | `location` | string | The location the resource was deployed into. |

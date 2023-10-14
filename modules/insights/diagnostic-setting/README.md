@@ -5,10 +5,10 @@ This module deploys a Subscription wide export of the Activity Log.
 ## Navigation
 
 - [Resource Types](#Resource-Types)
+- [Usage examples](#Usage-examples)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
-- [Deployment examples](#Deployment-examples)
 
 ## Resource Types
 
@@ -16,49 +16,28 @@ This module deploys a Subscription wide export of the Activity Log.
 | :-- | :-- |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 
-## Parameters
+## Usage examples
 
-**Optional parameters**
-
-| Parameter Name | Type | Default Value | Allowed Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
-| `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
-| `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `['', Administrative, Alert, allLogs, Autoscale, Policy, Recommendation, ResourceHealth, Security, ServiceHealth]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
-| `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
-| `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `location` | string | `[deployment().location]` |  | Location deployment metadata. |
-| `name` | string | `[format('{0}-ActivityLog', uniqueString(subscription().id))]` |  | Name of the ActivityLog diagnostic settings. |
-
-
-## Outputs
-
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `name` | string | The name of the diagnostic settings. |
-| `resourceId` | string | The resource ID of the diagnostic settings. |
-| `subscriptionName` | string | The name of the subscription to deploy into. |
-
-## Cross-referenced modules
-
-_None_
-
-## Deployment examples
-
-The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
+The following module usage examples are retrieved from the content of the files hosted in the module's `tests` folder.
    >**Note**: The name of each example is based on the name of the file from which it is taken.
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Common</h3>
+   >**Note**: To reference the module, please use the following syntax `br:bicep/modules/insights.diagnostic-setting:1.0.0`.
+
+- [Using only defaults](#example-1-using-only-defaults)
+
+### Example 1: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module diagnosticSetting './insights/diagnostic-setting/main.bicep' = {
+module diagnosticSetting 'br:bicep/modules/insights.diagnostic-setting:1.0.0' = {
   name: '${uniqueString(deployment().name, location)}-test-idscom'
   params: {
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
@@ -107,3 +86,89 @@ module diagnosticSetting './insights/diagnostic-setting/main.bicep' = {
 
 </details>
 <p>
+
+
+## Parameters
+
+**Optional parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`diagnosticEventHubAuthorizationRuleId`](#parameter-diagnosticeventhubauthorizationruleid) | string | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
+| [`diagnosticEventHubName`](#parameter-diagnosticeventhubname) | string | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
+| [`diagnosticLogCategoriesToEnable`](#parameter-diagnosticlogcategoriestoenable) | array | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
+| [`diagnosticStorageAccountId`](#parameter-diagnosticstorageaccountid) | string | Resource ID of the diagnostic storage account. |
+| [`diagnosticWorkspaceId`](#parameter-diagnosticworkspaceid) | string | Resource ID of the diagnostic log analytics workspace. |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`location`](#parameter-location) | string | Location deployment metadata. |
+| [`name`](#parameter-name) | string | Name of the ActivityLog diagnostic settings. |
+
+### Parameter: `diagnosticEventHubAuthorizationRuleId`
+
+Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `diagnosticEventHubName`
+
+Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `diagnosticLogCategoriesToEnable`
+
+The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection.
+- Required: No
+- Type: array
+- Default: `[allLogs]`
+- Allowed: `['', Administrative, Alert, allLogs, Autoscale, Policy, Recommendation, ResourceHealth, Security, ServiceHealth]`
+
+### Parameter: `diagnosticStorageAccountId`
+
+Resource ID of the diagnostic storage account.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `diagnosticWorkspaceId`
+
+Resource ID of the diagnostic log analytics workspace.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `location`
+
+Location deployment metadata.
+- Required: No
+- Type: string
+- Default: `[deployment().location]`
+
+### Parameter: `name`
+
+Name of the ActivityLog diagnostic settings.
+- Required: No
+- Type: string
+- Default: `[format('{0}-ActivityLog', uniqueString(subscription().id))]`
+
+
+## Outputs
+
+| Output | Type | Description |
+| :-- | :-- | :-- |
+| `name` | string | The name of the diagnostic settings. |
+| `resourceId` | string | The resource ID of the diagnostic settings. |
+| `subscriptionName` | string | The name of the subscription to deploy into. |
+
+## Cross-referenced modules
+
+_None_

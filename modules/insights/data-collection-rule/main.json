@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.21.1.54444",
-      "templateHash": "4052867535187508575"
+      "version": "0.22.6.54827",
+      "templateHash": "12233779363216703767"
     },
     "name": "Data Collection Rules",
     "description": "This module deploys a Data Collection Rule.",
@@ -188,8 +188,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "5004939963696451046"
+              "version": "0.22.6.54827",
+              "templateHash": "15006261932688103990"
             }
           },
           "parameters": {

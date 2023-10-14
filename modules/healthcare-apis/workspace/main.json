@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.21.1.54444",
-      "templateHash": "10903561527048363978"
+      "version": "0.22.6.54827",
+      "templateHash": "5818866804276261569"
     },
     "name": "Healthcare API Workspaces",
     "description": "This module deploys a Healthcare API Workspace.",
@@ -168,8 +168,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "14482455306867053366"
+              "version": "0.22.6.54827",
+              "templateHash": "4822666259108954856"
             }
           },
           "parameters": {
@@ -356,8 +356,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "17348973963835618248"
+              "version": "0.22.6.54827",
+              "templateHash": "11687946305671678451"
             },
             "name": "Healthcare API Workspace FHIR Services",
             "description": "This module deploys a Healthcare API Workspace FHIR Service.",
@@ -798,8 +798,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.21.1.54444",
-                      "templateHash": "5237941464164481673"
+                      "version": "0.22.6.54827",
+                      "templateHash": "13260238293612966350"
                     }
                   },
                   "parameters": {
@@ -1020,8 +1020,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "14081576760153046183"
+              "version": "0.22.6.54827",
+              "templateHash": "12318721261811271092"
             },
             "name": "Healthcare API Workspace DICOM Services",
             "description": "This module deploys a Healthcare API Workspace DICOM Service.",
@@ -1365,8 +1365,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "7419022677033687481"
+              "version": "0.22.6.54827",
+              "templateHash": "3714179156189652458"
             },
             "name": "Healthcare API Workspace IoT Connectors",
             "description": "This module deploys a Healthcare API Workspace IoT Connector.",
@@ -1656,8 +1656,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.21.1.54444",
-                      "templateHash": "8944835312780233488"
+                      "version": "0.22.6.54827",
+                      "templateHash": "10973515077627017376"
                     },
                     "name": "Healthcare API Workspace IoT Connector FHIR Destinations",
                     "description": "This module deploys a Healthcare API Workspace IoT Connector FHIR Destination.",
