@@ -27,9 +27,6 @@ Optional. Set this parameter if you don't want to setup the file & folder struct
 .PARAMETER ThrottleLimit
 Optional. The number of parallel threads to use for the generation. Defaults to 5.
 
-.PARAMETER ReadMeScriptFilePath
-Optional. The absolute path to the `Set-ModuleReadMe` script. Relevant only if `SkipReadMe` is not set and defaults to the default path of the script in the repository.
-
 .EXAMPLE
 Set-Module -ModuleFolderPath 'C:\avm\res\key-vault\vault'
 
@@ -70,68 +67,62 @@ function Set-Module {
         [switch] $SkipFileAndFolderSetup,
 
         [Parameter(Mandatory = $false)]
-        [int] $ThrottleLimit = 5,
-
-        [Parameter(Mandatory = $false)]
-        [string] $ReadMeScriptFilePath = (Join-Path (Get-Item $PSScriptRoot).Parent.FullName 'pipelines' 'sharedScripts' 'Set-ModuleReadMe.ps1')
+        [int] $ThrottleLimit = 5
     )
 
     # # Load helper scripts
     # . (Join-Path $PSScriptRoot 'helper' 'Set-ModuleFileAndFolderSetup.ps1')
 
+    $resolvedPath = (Resolve-Path $ModuleFolderPath).Path
+
     # Build up module file & folder structure if not yet existing. Should only run if an actual module path was provided (and not any of their parent paths)
-    # if (-not $SkipFileAndFolderSetup -and ((($ModuleFolderPath -split '\bavm\b')[1].Trim('\,/') -split '[\/|\\]').Count -gt 2)) {
-    #     if ($PSCmdlet.ShouldProcess("File & folder structure for path [$ModuleFolderPath]", "Setup")) {
-    #         Set-ModuleFileAndFolderSetup -FullModuleFolderPath $ModuleFolderPath
+    # if (-not $SkipFileAndFolderSetup -and ((($resolvedPath -split '\bavm\b')[1].Trim('\,/') -split '[\/|\\]').Count -gt 2)) {
+    #     if ($PSCmdlet.ShouldProcess("File & folder structure for path [$resolvedPath]", "Setup")) {
+    #         Set-ModuleFileAndFolderSetup -FullModuleFolderPath $resolvedPath
     #     }
     # }
 
     if ($Recurse) {
-        $relevantTemplatePaths = (Get-ChildItem -Path $ModuleFolderPath -Recurse -File -Filter 'main.bicep').FullName
+        $relevantTemplatePaths = (Get-ChildItem -Path $resolvedPath -Recurse -File -Filter 'main.bicep').FullName
     } else {
-        $relevantTemplatePaths = Join-Path $ModuleFolderPath 'main.bicep'
+        $relevantTemplatePaths = Join-Path $resolvedPath 'main.bicep'
     }
 
-    # Building object with all information we need inside of the context of a thread
-    $threadObjects = @() + ($relevantTemplatePaths | ForEach-Object {
-            @{
-                path          = $_
-                scriptsToLoad = @(
-                    $ReadMeScriptFilePath
-                )
-                SkipBuild     = $SkipBuild
-                SkipReadMe    = $SkipReadMe
-            }
-        })
+    # Load recurring information we'll need for the modules
+    if (-not $SkipReadMe) {
+        .  (Join-Path $PSScriptRoot 'Get-CrossReferencedModuleList.ps1')
+        # load cross-references
+        $crossReferencedModuleList = Get-CrossReferencedModuleList
+
+        # create reference as it must be loaded in the thread to work
+        $ReadMeScriptFilePath = (Join-Path (Get-Item $PSScriptRoot).Parent.FullName 'pipelines' 'sharedScripts' 'Set-ModuleReadMe.ps1')
+    }
 
     # Using threading to speed up the process
-    if ($PSCmdlet.ShouldProcess(('Building & generation of [{0}] modules in path [{1}]' -f $threadObjects.Count, $ModuleFolderPath), 'Execute')) {
-        $threadObjects | ForEach-Object -ThrottleLimit $ThrottleLimit -Parallel {
-            $resourceTypeIdentifier = ((Split-Path $_.path) -split '[\/|\\]{1}modules[\/|\\]{1}')[1] # avm/res/<provider>/<resourceType>
+    if ($PSCmdlet.ShouldProcess(('Building & generation of [{0}] modules in path [{1}]' -f $relevantTemplatePaths.Count, $resolvedPath), 'Execute')) {
+        $relevantTemplatePaths | ForEach-Object -ThrottleLimit $ThrottleLimit -Parallel {
+            $resourceTypeIdentifier = 'avm-{0}' -f ($_ -split '[\/|\\]{1}avm[\/|\\]{1}(res|ptn)[\/|\\]{1}')[2] # avm/res/<provider>/<resourceType>
 
-            foreach ($scriptPath in $_.scriptsToLoad) {
-                . $scriptPath
-            }
+            . $using:ReadMeScriptFilePath
 
             ###############
             ##   Build   ##
             ###############
-            if (-not $_.SkipBuild) {
+            if (-not $using:SkipBuild) {
                 Write-Output "Building [$resourceTypeIdentifier]"
-                bicep build $_.path
+                bicep build $_
             }
 
             ################
             ##   ReadMe   ##
             ################
-            if (-not $_.SkipReadMe) {
+            if (-not $using:SkipReadMe) {
                 Write-Output "Generating readme for [$resourceTypeIdentifier]"
 
                 # If the template was just build, we can pass the JSON into the readme script to be more efficient
-                $readmeTemplateFilePath = (-not $_.SkipBuild) ? (Join-Path (Split-Path $_.path -Parent) 'main.json') : ($_.path)
+                $readmeTemplateFilePath = (-not $using:SkipBuild) ? (Join-Path (Split-Path $_ -Parent) 'main.json') : $_
 
-                # Build new readme
-                Set-ModuleReadMe -TemplateFilePath $readmeTemplateFilePath
+                Set-ModuleReadMe -TemplateFilePath $readmeTemplateFilePath -CrossReferencedModuleList $using:crossReferencedModuleList
             }
         }
     }
