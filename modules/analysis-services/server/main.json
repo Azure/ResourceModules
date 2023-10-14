@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.21.1.54444",
-      "templateHash": "1234109873215342159"
+      "version": "0.22.6.54827",
+      "templateHash": "5443858044342002150"
     },
     "name": "Analysis Services Servers",
     "description": "This module deploys an Analysis Services Server.",
@@ -268,8 +268,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "5938154849701330874"
+              "version": "0.22.6.54827",
+              "templateHash": "7231657665941581698"
             }
           },
           "parameters": {

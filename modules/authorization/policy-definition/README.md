@@ -4,70 +4,41 @@ This module deploys a Policy Definition at a Management Group or Subscription sc
 
 ## Navigation
 
-- [Resource types](#Resource-types)
+- [Resource Types](#Resource-Types)
+- [Usage examples](#Usage-examples)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
-- [Deployment examples](#Deployment-examples)
 - [Notes](#Notes)
 
-## Resource types
+## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/policyDefinitions` | [2021-06-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-06-01/policyDefinitions) |
 
-## Parameters
+## Usage examples
 
-**Required parameters**
-
-| Parameter Name | Type | Description |
-| :-- | :-- | :-- |
-| `name` | string | Specifies the name of the policy definition. Maximum length is 64 characters for management group scope and subscription scope. |
-| `policyRule` | object | The Policy Rule details for the Policy Definition. |
-
-**Optional parameters**
-
-| Parameter Name | Type | Default Value | Allowed Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `description` | string | `''` |  | The policy definition description. |
-| `displayName` | string | `''` |  | The display name of the policy definition. Maximum length is 128 characters. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `location` | string | `[deployment().location]` |  | Location deployment metadata. |
-| `managementGroupId` | string | `[managementGroup().name]` |  | The group ID of the Management Group (Scope). If not provided, will use the current scope for deployment. |
-| `metadata` | object | `{object}` |  | The policy Definition metadata. Metadata is an open ended object and is typically a collection of key-value pairs. |
-| `mode` | string | `'All'` | `[All, Indexed, Microsoft.ContainerService.Data, Microsoft.KeyVault.Data, Microsoft.Kubernetes.Data, Microsoft.Network.Data]` | The policy definition mode. Default is All, Some examples are All, Indexed, Microsoft.KeyVault.Data. |
-| `parameters` | object | `{object}` |  | The policy definition parameters that can be used in policy definition references. |
-| `subscriptionId` | string | `''` |  | The subscription ID of the subscription (Scope). Cannot be used with managementGroupId. |
-
-
-## Outputs
-
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `name` | string | Policy Definition Name. |
-| `resourceId` | string | Policy Definition resource ID. |
-| `roleDefinitionIds` | array | Policy Definition Role Definition IDs. |
-
-## Cross-referenced modules
-
-_None_
-
-## Deployment examples
-
-The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
+The following module usage examples are retrieved from the content of the files hosted in the module's `tests` folder.
    >**Note**: The name of each example is based on the name of the file from which it is taken.
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Mg.Common</h3>
+   >**Note**: To reference the module, please use the following syntax `br:bicep/modules/authorization.policy-definition:1.0.0`.
+
+- [Mg.Common](#example-1-mgcommon)
+- [Mg.Min](#example-2-mgmin)
+- [Sub.Common](#example-3-subcommon)
+- [Sub.Min](#example-4-submin)
+
+### Example 1: _Mg.Common_
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module policyDefinition './authorization/policy-definition/main.bicep' = {
+module policyDefinition 'br:bicep/modules/authorization.policy-definition:1.0.0' = {
   name: '${uniqueString(deployment().name)}-test-apdmgcom'
   params: {
     // Required parameters
@@ -215,14 +186,14 @@ module policyDefinition './authorization/policy-definition/main.bicep' = {
 </details>
 <p>
 
-<h3>Example 2: Mg.Min</h3>
+### Example 2: _Mg.Min_
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module policyDefinition './authorization/policy-definition/main.bicep' = {
+module policyDefinition 'br:bicep/modules/authorization.policy-definition:1.0.0' = {
   name: '${uniqueString(deployment().name)}-test-apdmgmin'
   params: {
     // Required parameters
@@ -308,14 +279,14 @@ module policyDefinition './authorization/policy-definition/main.bicep' = {
 </details>
 <p>
 
-<h3>Example 3: Sub.Common</h3>
+### Example 3: _Sub.Common_
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module policyDefinition './authorization/policy-definition/main.bicep' = {
+module policyDefinition 'br:bicep/modules/authorization.policy-definition:1.0.0' = {
   name: '${uniqueString(deployment().name)}-test-apdsubcom'
   params: {
     // Required parameters
@@ -463,14 +434,14 @@ module policyDefinition './authorization/policy-definition/main.bicep' = {
 </details>
 <p>
 
-<h3>Example 4: Sub.Min</h3>
+### Example 4: _Sub.Min_
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module policyDefinition './authorization/policy-definition/main.bicep' = {
+module policyDefinition 'br:bicep/modules/authorization.policy-definition:1.0.0' = {
   name: '${uniqueString(deployment().name)}-test-apdsubmin'
   params: {
     // Required parameters
@@ -556,6 +527,118 @@ module policyDefinition './authorization/policy-definition/main.bicep' = {
 </details>
 <p>
 
+
+## Parameters
+
+**Required parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`name`](#parameter-name) | string | Specifies the name of the policy definition. Maximum length is 64 characters for management group scope and subscription scope. |
+| [`policyRule`](#parameter-policyrule) | object | The Policy Rule details for the Policy Definition. |
+
+**Optional parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`description`](#parameter-description) | string | The policy definition description. |
+| [`displayName`](#parameter-displayname) | string | The display name of the policy definition. Maximum length is 128 characters. |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`location`](#parameter-location) | string | Location deployment metadata. |
+| [`managementGroupId`](#parameter-managementgroupid) | string | The group ID of the Management Group (Scope). If not provided, will use the current scope for deployment. |
+| [`metadata`](#parameter-metadata) | object | The policy Definition metadata. Metadata is an open ended object and is typically a collection of key-value pairs. |
+| [`mode`](#parameter-mode) | string | The policy definition mode. Default is All, Some examples are All, Indexed, Microsoft.KeyVault.Data. |
+| [`parameters`](#parameter-parameters) | object | The policy definition parameters that can be used in policy definition references. |
+| [`subscriptionId`](#parameter-subscriptionid) | string | The subscription ID of the subscription (Scope). Cannot be used with managementGroupId. |
+
+### Parameter: `description`
+
+The policy definition description.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `displayName`
+
+The display name of the policy definition. Maximum length is 128 characters.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `location`
+
+Location deployment metadata.
+- Required: No
+- Type: string
+- Default: `[deployment().location]`
+
+### Parameter: `managementGroupId`
+
+The group ID of the Management Group (Scope). If not provided, will use the current scope for deployment.
+- Required: No
+- Type: string
+- Default: `[managementGroup().name]`
+
+### Parameter: `metadata`
+
+The policy Definition metadata. Metadata is an open ended object and is typically a collection of key-value pairs.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `mode`
+
+The policy definition mode. Default is All, Some examples are All, Indexed, Microsoft.KeyVault.Data.
+- Required: No
+- Type: string
+- Default: `'All'`
+- Allowed: `[All, Indexed, Microsoft.ContainerService.Data, Microsoft.KeyVault.Data, Microsoft.Kubernetes.Data, Microsoft.Network.Data]`
+
+### Parameter: `name`
+
+Specifies the name of the policy definition. Maximum length is 64 characters for management group scope and subscription scope.
+- Required: Yes
+- Type: string
+
+### Parameter: `parameters`
+
+The policy definition parameters that can be used in policy definition references.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `policyRule`
+
+The Policy Rule details for the Policy Definition.
+- Required: Yes
+- Type: object
+
+### Parameter: `subscriptionId`
+
+The subscription ID of the subscription (Scope). Cannot be used with managementGroupId.
+- Required: No
+- Type: string
+- Default: `''`
+
+
+## Outputs
+
+| Output | Type | Description |
+| :-- | :-- | :-- |
+| `name` | string | Policy Definition Name. |
+| `resourceId` | string | Policy Definition resource ID. |
+| `roleDefinitionIds` | array | Policy Definition Role Definition IDs. |
+
+## Cross-referenced modules
+
+_None_
 
 ## Notes
 
