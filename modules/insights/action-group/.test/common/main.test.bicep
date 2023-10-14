@@ -62,19 +62,19 @@ module testDeployment '../../main.bicep' = {
         useCommonAlertSchema: true
       }
     ]
+    smsReceivers: [
+      {
+        countryCode: '1'
+        name: 'TestUser_-SMSAction-'
+        phoneNumber: '2345678901'
+      }
+    ]
     roleAssignments: [
       {
         principalIds: [
           nestedDependencies.outputs.managedIdentityPrincipalId
         ]
         roleDefinitionIdOrName: 'Reader'
-      }
-    ]
-    smsReceivers: [
-      {
-        countryCode: '1'
-        name: 'TestUser_-SMSAction-'
-        phoneNumber: '2345678901'
       }
     ]
     tags: {

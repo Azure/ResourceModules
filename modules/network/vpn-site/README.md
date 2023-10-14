@@ -9,6 +9,7 @@ This module deploys a VPN Site.
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
+- [Notes](#Notes)
 
 ## Resource Types
 
@@ -49,271 +50,6 @@ This module deploys a VPN Site.
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `vpnSiteLinks` | array | `[]` |  | List of all VPN site links. |
 
-
-### Parameter Usage `o365Policy`
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"o365Policy": {
-    "value": {
-        "breakOutCategories": {
-            "optimize": true,
-            "allow": true,
-            "default": true
-        }
-    }
-}
-```
-
-</details>
-
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-o365Policy: {
-    breakOutCategories: {
-        optimize: true
-        allow: true
-        default: true
-    }
-}
-```
-
-</details>
-<p>
-
-### Parameter Usage `deviceProperties`
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"deviceProperties": {
-    "value": {
-        "deviceModel": "morty",
-        "deviceVendor": "contoso",
-        "linkSpeedInMbps": 0
-    }
-}
-```
-
-</details>
-
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-deviceProperties: {
-    deviceModel: 'morty'
-    deviceVendor: 'contoso'
-    linkSpeedInMbps: 0
-}
-```
-
-</details>
-<p>
-
-### Parameter Usage `bgpProperties`
-
-The BGP properties. Note: This is a deprecated property, please use the corresponding `VpnSiteLinks` property instead.
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"bgpProperties": {
-    "value": {
-        "asn": 65010,
-        "bgpPeeringAddress": "1.1.1.1",
-        "peerWeight": 0
-    }
-}
-```
-
-</details>
-
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-bgpProperties: {
-    asn: 65010
-    bgpPeeringAddress: '1.1.1.1'
-    peerWeight: 0
-}
-```
-
-</details>
-<p>
-
-### Parameter Usage `vpnSiteLinks`
-
-An array of links. Should be used instead of the top-level `ipAddress` & `bgpProperties` properties. If using links,  one default link with same name and properties as VpnSite itself is mandatory.
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"vpnSiteLinks": {
-    "value": [
-        {
-            "name": "[[namePrefix]]-az-vSite-x-001",
-            "properties": {
-                "bgpProperties": {
-                    "asn": 65010,
-                    "bgpPeeringAddress": "1.1.1.1"
-                },
-                "ipAddress": "1.2.3.4",
-                "linkProperties": {
-                    "linkProviderName": "contoso",
-                    "linkSpeedInMbps": 5
-                }
-            }
-        }
-    ]
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-vpnSiteLinks: [
-    {
-        name: '[[namePrefix]]-az-vSite-x-001'
-        properties: {
-            bgpProperties: {
-                asn: 65010
-                bgpPeeringAddress: '1.1.1.1'
-            }
-            ipAddress: '1.2.3.4'
-            linkProperties: {
-                linkProviderName: 'contoso'
-                linkSpeedInMbps: 5
-            }
-        }
-    }
-]
-```
-
-</details>
-<p>
-
-### Parameter Usage: `tags`
-
-Tag names and tag values can be provided as needed. A tag can be left without a value.
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"tags": {
-    "value": {
-        "Environment": "Non-Prod",
-        "Contact": "test.user@testcompany.com",
-        "PurchaseOrder": "1234",
-        "CostCenter": "7890",
-        "ServiceName": "DeploymentValidation",
-        "Role": "DeploymentValidation"
-    }
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-tags: {
-    Environment: 'Non-Prod'
-    Contact: 'test.user@testcompany.com'
-    PurchaseOrder: '1234'
-    CostCenter: '7890'
-    ServiceName: 'DeploymentValidation'
-    Role: 'DeploymentValidation'
-}
-```
-
-</details>
-<p>
-
-### Parameter Usage: `roleAssignments`
-
-Create a role assignment for the given resource. If you want to assign a service principal / managed identity that is created in the same deployment, make sure to also specify the `'principalType'` parameter and set it to `'ServicePrincipal'`. This will ensure the role assignment waits for the principal's propagation in Azure.
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"roleAssignments": {
-    "value": [
-        {
-            "roleDefinitionIdOrName": "Reader",
-            "description": "Reader Role Assignment",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012", // object 1
-                "78945612-1234-1234-1234-123456789012" // object 2
-            ]
-        },
-        {
-            "roleDefinitionIdOrName": "/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012" // object 1
-            ],
-            "principalType": "ServicePrincipal"
-        }
-    ]
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-roleAssignments: [
-    {
-        roleDefinitionIdOrName: 'Reader'
-        description: 'Reader Role Assignment'
-        principalIds: [
-            '12345678-1234-1234-1234-123456789012' // object 1
-            '78945612-1234-1234-1234-123456789012' // object 2
-        ]
-    }
-    {
-        roleDefinitionIdOrName: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'
-        principalIds: [
-            '12345678-1234-1234-1234-123456789012' // object 1
-        ]
-        principalType: 'ServicePrincipal'
-    }
-]
-```
-
-</details>
-<p>
 
 ## Outputs
 
@@ -561,6 +297,43 @@ module vpnSite './network/vpn-site/main.bicep' = {
       "value": "1.2.3.4"
     }
   }
+}
+```
+
+</details>
+<p>
+
+
+## Notes
+
+### Parameter Usage `deviceProperties`
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"deviceProperties": {
+    "value": {
+        "deviceModel": "morty",
+        "deviceVendor": "contoso",
+        "linkSpeedInMbps": 0
+    }
+}
+```
+
+</details>
+
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+deviceProperties: {
+    deviceModel: 'morty'
+    deviceVendor: 'contoso'
+    linkSpeedInMbps: 0
 }
 ```
 

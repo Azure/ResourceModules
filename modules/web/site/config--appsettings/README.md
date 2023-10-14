@@ -8,6 +8,7 @@ This module deploys a Site App Setting.
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
+- [Notes](#Notes)
 
 ## Resource Types
 
@@ -39,6 +40,20 @@ This module deploys a Site App Setting.
 | `setAzureWebJobsDashboard` | bool | `[if(contains(parameters('kind'), 'functionapp'), true(), false())]` | For function apps. If true the app settings "AzureWebJobsDashboard" will be set. If false not. In case you use Application Insights it can make sense to not set it for performance reasons. |
 | `storageAccountResourceId` | string | `''` | Required if app of kind functionapp. Resource ID of the storage account to manage triggers and logging function executions. |
 
+
+## Outputs
+
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `name` | string | The name of the site config. |
+| `resourceGroupName` | string | The resource group the site config was deployed into. |
+| `resourceId` | string | The resource ID of the site config. |
+
+## Cross-referenced modules
+
+_None_
+
+## Notes
 
 ### Parameter Usage: `appSettingsKeyValuePairs`
 
@@ -85,15 +100,3 @@ appSettingsKeyValuePairs: [
 
 </details>
 <p>
-
-## Outputs
-
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `name` | string | The name of the site config. |
-| `resourceGroupName` | string | The resource group the site config was deployed into. |
-| `resourceId` | string | The resource ID of the site config. |
-
-## Cross-referenced modules
-
-_None_

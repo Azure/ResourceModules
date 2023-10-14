@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.21.1.54444",
-      "templateHash": "16548186733986998903"
+      "version": "0.22.6.54827",
+      "templateHash": "4594245496875399302"
     },
     "name": "Digital Twins Instances",
     "description": "This module deploys an Azure Digital Twins Instance.",
@@ -298,8 +298,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "14898430327900380970"
+              "version": "0.22.6.54827",
+              "templateHash": "1200386987193874100"
             },
             "name": "Digital Twins Instance EventHub Endpoint",
             "description": "This module deploys a Digital Twins Instance EventHub Endpoint.",
@@ -355,7 +355,7 @@
               "type": "securestring",
               "defaultValue": "",
               "metadata": {
-                "description": "Optional. SecondaryConnectionString of the endpoint for key-based authentication. Will be obfuscated during read."
+                "description": "Optional. SecondaryConnectionString of the endpoint for key-based authentication. Will be obfuscated during read. Only used if the `authenticationType` is \"KeyBased\"."
               }
             },
             "entityPath": {
@@ -369,7 +369,7 @@
               "type": "string",
               "defaultValue": "",
               "metadata": {
-                "description": "Optional. The URL of the EventHub namespace for identity-based authentication. It must include the protocol 'sb://'."
+                "description": "Optional. The URL of the EventHub namespace for identity-based authentication. It must include the protocol 'sb://' (i.e. sb://xyz.servicebus.windows.net)."
               }
             },
             "enableDefaultTelemetry": {
@@ -488,8 +488,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "5050137596110044755"
+              "version": "0.22.6.54827",
+              "templateHash": "15429197908359098698"
             },
             "name": "Digital Twins Instance Event Grid Endpoints",
             "description": "This module deploys a Digital Twins Instance Event Grid Endpoint.",
@@ -636,8 +636,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "9533801539124134426"
+              "version": "0.22.6.54827",
+              "templateHash": "2168121049050485718"
             },
             "name": "Digital Twins Instance ServiceBus Endpoint",
             "description": "This module deploys a Digital Twins Instance ServiceBus Endpoint.",
@@ -686,7 +686,7 @@
               "type": "string",
               "defaultValue": "",
               "metadata": {
-                "description": "Optional. The URL of the ServiceBus namespace for identity-based authentication. It must include the protocol 'sb://'."
+                "description": "Optional. The URL of the ServiceBus namespace for identity-based authentication. It must include the protocol 'sb://' (e.g. sb://xyz.servicebus.windows.net)."
               }
             },
             "entityPath": {
@@ -707,7 +707,7 @@
               "type": "securestring",
               "defaultValue": "",
               "metadata": {
-                "description": "Optional. SecondaryConnectionString of the endpoint for key-based authentication. Will be obfuscated during read."
+                "description": "Optional. SecondaryConnectionString of the endpoint for key-based authentication. Will be obfuscated during read. Only used if the `authenticationType` is \"KeyBased\"."
               }
             },
             "enableDefaultTelemetry": {
@@ -840,8 +840,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "14580007913383558904"
+              "version": "0.22.6.54827",
+              "templateHash": "2884140170473394983"
             },
             "name": "Private Endpoints",
             "description": "This module deploys a Private Endpoint.",
@@ -1040,8 +1040,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.21.1.54444",
-                      "templateHash": "2469208411936339153"
+                      "version": "0.22.6.54827",
+                      "templateHash": "5610247137574346230"
                     },
                     "name": "Private Endpoint Private DNS Zone Groups",
                     "description": "This module deploys a Private Endpoint Private DNS Zone Group.",
@@ -1178,8 +1178,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.21.1.54444",
-                      "templateHash": "13032708393704093995"
+                      "version": "0.22.6.54827",
+                      "templateHash": "14351187799927334028"
                     }
                   },
                   "parameters": {
@@ -1392,8 +1392,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "2921285895718977549"
+              "version": "0.22.6.54827",
+              "templateHash": "4249531612554442902"
             }
           },
           "parameters": {

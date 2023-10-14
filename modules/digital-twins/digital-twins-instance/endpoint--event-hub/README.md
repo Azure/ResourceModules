@@ -29,11 +29,11 @@ This module deploys a Digital Twins Instance EventHub Endpoint.
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `authenticationType` | string | `'IdentityBased'` | `[IdentityBased, KeyBased]` | Specifies the authentication type being used for connecting to the endpoint. If 'KeyBased' is selected, a connection string must be specified (at least the primary connection string). If 'IdentityBased' is selected, the endpointUri and entityPath properties must be specified. |
-| `connectionStringSecondaryKey` | securestring | `''` |  | SecondaryConnectionString of the endpoint for key-based authentication. Will be obfuscated during read. |
+| `connectionStringSecondaryKey` | securestring | `''` |  | SecondaryConnectionString of the endpoint for key-based authentication. Will be obfuscated during read. Only used if the `authenticationType` is "KeyBased". |
 | `deadLetterSecret` | securestring | `''` |  | Dead letter storage secret for key-based authentication. Will be obfuscated during read. |
 | `deadLetterUri` | string | `''` |  | Dead letter storage URL for identity-based authentication. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `endpointUri` | string | `''` |  | The URL of the EventHub namespace for identity-based authentication. It must include the protocol 'sb://'. |
+| `endpointUri` | string | `''` |  | The URL of the EventHub namespace for identity-based authentication. It must include the protocol 'sb://' (i.e. sb://xyz.servicebus.windows.net). |
 | `entityPath` | string | `''` |  | The EventHub name in the EventHub namespace for identity-based authentication. |
 | `name` | string | `'EventHubEndpoint'` |  | The name of the Digital Twin Endpoint. |
 | `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |

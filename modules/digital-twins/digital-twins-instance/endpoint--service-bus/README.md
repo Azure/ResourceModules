@@ -32,10 +32,10 @@ This module deploys a Digital Twins Instance ServiceBus Endpoint.
 | `deadLetterSecret` | securestring | `''` |  | Dead letter storage secret for key-based authentication. Will be obfuscated during read. |
 | `deadLetterUri` | string | `''` |  | Dead letter storage URL for identity-based authentication. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `endpointUri` | string | `''` |  | The URL of the ServiceBus namespace for identity-based authentication. It must include the protocol 'sb://'. |
+| `endpointUri` | string | `''` |  | The URL of the ServiceBus namespace for identity-based authentication. It must include the protocol 'sb://' (e.g. sb://xyz.servicebus.windows.net). |
 | `entityPath` | string | `''` |  | The ServiceBus Topic name for identity-based authentication. |
 | `name` | string | `'ServiceBusEndpoint'` |  | The name of the Digital Twin Endpoint. |
-| `secondaryConnectionString` | securestring | `''` |  | SecondaryConnectionString of the endpoint for key-based authentication. Will be obfuscated during read. |
+| `secondaryConnectionString` | securestring | `''` |  | SecondaryConnectionString of the endpoint for key-based authentication. Will be obfuscated during read. Only used if the `authenticationType` is "KeyBased". |
 | `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
 | `userAssignedIdentity` | string | `''` |  | The ID to assign to the resource. |
 

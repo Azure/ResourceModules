@@ -8,6 +8,7 @@ This module deploys an API Management Service Named Value.
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
+- [Notes](#Notes)
 
 ## Resource types
 
@@ -41,6 +42,20 @@ This module deploys an API Management Service Named Value.
 | `value` | string | `[newGuid()]` | Value of the NamedValue. Can contain policy expressions. It may not be empty or consist only of whitespace. This property will not be filled on 'GET' operations! Use '/listSecrets' POST request to get the value. |
 
 
+## Outputs
+
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `name` | string | The name of the named value. |
+| `resourceGroupName` | string | The resource group the named value was deployed into. |
+| `resourceId` | string | The resource ID of the named value. |
+
+## Cross-referenced modules
+
+_None_
+
+## Notes
+
 ### Parameter Usage: `keyVault`
 
 <details>
@@ -71,56 +86,3 @@ keyVault: {
 
 </details>
 <p>
-
-### Parameter Usage: `tags`
-
-Tag names and tag values can be provided as needed. A tag can be left without a value.
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"tags": {
-    "value": {
-        "Environment": "Non-Prod",
-        "Contact": "test.user@testcompany.com",
-        "PurchaseOrder": "1234",
-        "CostCenter": "7890",
-        "ServiceName": "DeploymentValidation",
-        "Role": "DeploymentValidation"
-    }
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-tags: {
-    Environment: 'Non-Prod'
-    Contact: 'test.user@testcompany.com'
-    PurchaseOrder: '1234'
-    CostCenter: '7890'
-    ServiceName: 'DeploymentValidation'
-    Role: 'DeploymentValidation'
-}
-```
-
-</details>
-<p>
-
-## Outputs
-
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `name` | string | The name of the named value. |
-| `resourceGroupName` | string | The resource group the named value was deployed into. |
-| `resourceId` | string | The resource ID of the named value. |
-
-## Cross-referenced modules
-
-_None_

@@ -8,6 +8,7 @@ This module deploys a Gremlin Database within a CosmosDB Account.
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
+- [Notes](#Notes)
 
 ## Resource Types
 
@@ -43,9 +44,23 @@ This module deploys a Gremlin Database within a CosmosDB Account.
 | `userAssignedIdentities` | object | `{object}` | The ID(s) to assign to the resource. |
 
 
+## Outputs
+
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `name` | string | The name of the Gremlin database. |
+| `resourceGroupName` | string | The name of the resource group the Gremlin database was created in. |
+| `resourceId` | string | The resource ID of the Gremlin database. |
+
+## Cross-referenced modules
+
+_None_
+
+## Notes
+
 ### Parameter Usage: `graphs`
 
-List of graph databaseAccounts
+List of graph databaseAccounts.
 
 <details>
 
@@ -98,89 +113,3 @@ graphs: [
 ```
 
 </details>
-
-### Parameter Usage: `tags`
-
-Tag names and tag values can be provided as needed. A tag can be left without a value.
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"tags": {
-    "value": {
-        "Environment": "Non-Prod",
-        "Contact": "test.user@testcompany.com",
-        "PurchaseOrder": "1234",
-        "CostCenter": "7890",
-        "ServiceName": "DeploymentValidation",
-        "Role": "DeploymentValidation"
-    }
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-tags: {
-    Environment: 'Non-Prod'
-    Contact: 'test.user@testcompany.com'
-    PurchaseOrder: '1234'
-    CostCenter: '7890'
-    ServiceName: 'DeploymentValidation'
-    Role: 'DeploymentValidation'
-}
-```
-
-</details>
-<p>
-
-### Parameter Usage: `userAssignedIdentities`
-
-You can specify multiple user assigned identities to a resource by providing additional resource IDs using the following format:
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"userAssignedIdentities": {
-    "value": {
-        "/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
-        "/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
-    }
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-userAssignedIdentities: {
-    '/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
-    '/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
-}
-```
-
-</details>
-<p>
-
-## Outputs
-
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `name` | string | The name of the Gremlin database. |
-| `resourceGroupName` | string | The name of the resource group the Gremlin database was created in. |
-| `resourceId` | string | The resource ID of the Gremlin database. |
-
-## Cross-referenced modules
-
-_None_

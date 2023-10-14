@@ -22,7 +22,7 @@ param deadLetterSecret string = ''
 @description('Optional. Dead letter storage URL for identity-based authentication.')
 param deadLetterUri string = ''
 
-@description('Optional. The URL of the ServiceBus namespace for identity-based authentication. It must include the protocol \'sb://\'.')
+@description('Optional. The URL of the ServiceBus namespace for identity-based authentication. It must include the protocol \'sb://\' (e.g. sb://xyz.servicebus.windows.net).')
 param endpointUri string = ''
 
 @description('Optional. The ServiceBus Topic name for identity-based authentication.')
@@ -32,7 +32,7 @@ param entityPath string = ''
 @secure()
 param primaryConnectionString string = ''
 
-@description('Optional. SecondaryConnectionString of the endpoint for key-based authentication. Will be obfuscated during read.')
+@description('Optional. SecondaryConnectionString of the endpoint for key-based authentication. Will be obfuscated during read. Only used if the `authenticationType` is "KeyBased".')
 @secure()
 param secondaryConnectionString string = ''
 

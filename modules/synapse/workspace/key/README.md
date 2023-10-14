@@ -7,7 +7,6 @@ This module deploys a Synapse Workspaces Key.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 - [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
@@ -47,10 +46,6 @@ This module deploys a Synapse Workspaces Key.
 | `name` | string | The name of the deployed key. |
 | `resourceGroupName` | string | The resource group of the deployed key. |
 | `resourceId` | string | The resource ID of the deployed key. |
-
-## Template references
-
-- [Workspaces/Keys](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Synapse/2021-06-01/workspaces/keys)
 
 ## Cross-referenced modules
 

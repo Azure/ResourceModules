@@ -6,9 +6,9 @@ This module deploys a Virtual Network Subnet.
 
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
-- [Considerations](#Considerations)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
+- [Notes](#Notes)
 
 ## Resource Types
 
@@ -51,155 +51,6 @@ This module deploys a Virtual Network Subnet.
 | `serviceEndpoints` | array | `[]` |  | The service endpoints to enable on the subnet. |
 
 
-### Parameter Usage: `delegations`
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"delegations": [
-    {
-        "name": "sqlMiDel",
-        "properties": {
-            "serviceName": "Microsoft.Sql/managedInstances"
-        }
-    }
-]
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-delegations: [
-    {
-        name: 'sqlMiDel'
-        properties: {
-            serviceName: 'Microsoft.Sql/managedInstances'
-        }
-    }
-]
-```
-
-</details>
-<p>
-
-### Parameter Usage: `serviceEndpoints`
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"serviceEndpoints": [
-    {
-        "service": "Microsoft.EventHub"
-    },
-    {
-        "service": "Microsoft.Sql"
-    },
-    {
-        "service": "Microsoft.Storage"
-    },
-    {
-        "service": "Microsoft.KeyVault"
-    }
-]
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-serviceEndpoints: [
-    {
-        name: 'Microsoft.EventHub'
-    }
-    {
-        name: 'Microsoft.Sql'
-    }
-    {
-        name: 'Microsoft.Storage'
-    }
-    {
-        name: 'Microsoft.KeyVault'
-    }
-]
-```
-
-</details>
-<p>
-
-### Parameter Usage: `roleAssignments`
-
-Create a role assignment for the given resource. If you want to assign a service principal / managed identity that is created in the same deployment, make sure to also specify the `'principalType'` parameter and set it to `'ServicePrincipal'`. This will ensure the role assignment waits for the principal's propagation in Azure.
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"roleAssignments": {
-    "value": [
-        {
-            "roleDefinitionIdOrName": "Reader",
-            "description": "Reader Role Assignment",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012", // object 1
-                "78945612-1234-1234-1234-123456789012" // object 2
-            ]
-        },
-        {
-            "roleDefinitionIdOrName": "/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012" // object 1
-            ],
-            "principalType": "ServicePrincipal"
-        }
-    ]
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-roleAssignments: [
-    {
-        roleDefinitionIdOrName: 'Reader'
-        description: 'Reader Role Assignment'
-        principalIds: [
-            '12345678-1234-1234-1234-123456789012' // object 1
-            '78945612-1234-1234-1234-123456789012' // object 2
-        ]
-    }
-    {
-        roleDefinitionIdOrName: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'
-        principalIds: [
-            '12345678-1234-1234-1234-123456789012' // object 1
-        ]
-        principalType: 'ServicePrincipal'
-    }
-]
-```
-
-</details>
-<p>
-
-## Considerations
-
-The `privateEndpointNetworkPolicies` property must be set to disabled for subnets that contain private endpoints. It confirms that NSGs rules will not apply to private endpoints (currently not supported, [reference](https://learn.microsoft.com/en-us/azure/private-link/private-endpoint-overview#limitations)). Default Value when not specified is "Enabled".
-
 ## Outputs
 
 | Output Name | Type | Description |
@@ -213,3 +64,7 @@ The `privateEndpointNetworkPolicies` property must be set to disabled for subnet
 ## Cross-referenced modules
 
 _None_
+
+## Notes
+
+The `privateEndpointNetworkPolicies` property must be set to disabled for subnets that contain private endpoints. It confirms that NSGs rules will not apply to private endpoints (currently not supported, [reference](https://learn.microsoft.com/en-us/azure/private-link/private-endpoint-overview#limitations)). Default Value when not specified is "Enabled".

@@ -8,6 +8,7 @@ This module deploys a Redis Cache Enterprise Database.
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
+- [Notes](#Notes)
 
 ## Resource Types
 
@@ -40,6 +41,20 @@ This module deploys a Redis Cache Enterprise Database.
 | `persistenceRdbEnabled` | bool | `False` |  | Sets whether RDB is enabled. RDB and AOF persistence cannot be enabled at the same time. |
 | `port` | int | `-1` |  | TCP port of the database endpoint. Specified at create time. Default is (-1) meaning value is not set and defaults to an available port. Current supported port is 10000. |
 
+
+## Outputs
+
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `name` | string | The name of the deployed database. |
+| `resourceGroupName` | string | The resource group of the deployed database. |
+| `resourceId` | string | The resource ID of the deployed database. |
+
+## Cross-referenced modules
+
+_None_
+
+## Notes
 
 ### Parameter Usage: `modules`
 
@@ -91,15 +106,3 @@ modules: [
 
 </details>
 <p>
-
-## Outputs
-
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `name` | string | The name of the deployed database. |
-| `resourceGroupName` | string | The resource group of the deployed database. |
-| `resourceId` | string | The resource ID of the deployed database. |
-
-## Cross-referenced modules
-
-_None_

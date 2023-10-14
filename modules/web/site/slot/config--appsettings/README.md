@@ -8,6 +8,7 @@ This module deploys a Site Slot App Setting.
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
+- [Notes](#Notes)
 
 ## Resource Types
 
@@ -41,52 +42,6 @@ This module deploys a Site Slot App Setting.
 | `storageAccountResourceId` | string | `''` | Required if app of kind functionapp. Resource ID of the storage account to manage triggers and logging function executions. |
 
 
-### Parameter Usage: `appSettingsKeyValuePairs`
-
-AzureWebJobsStorage, AzureWebJobsDashboard, APPINSIGHTS_INSTRUMENTATIONKEY and APPLICATIONINSIGHTS_CONNECTION_STRING are set separately (check parameters storageAccountId, setAzureWebJobsDashboard, appInsightId).
-For all other app settings key-value pairs use this object.
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"appSettingsKeyValuePairs": {
-    "value": [
-        {
-            "name": "key1",
-            "value": "val1"
-        },
-        {
-            "name": "key2",
-            "value": "val2"
-        }
-    ]
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-appSettingsKeyValuePairs: [
-    {
-        name: 'key1'
-        value: 'val1'
-    }
-    {
-        name: 'key2'
-        value: 'val2'
-    }
-]
-```
-
-</details>
-<p>
-
 ## Outputs
 
 | Output Name | Type | Description |
@@ -98,3 +53,46 @@ appSettingsKeyValuePairs: [
 ## Cross-referenced modules
 
 _None_
+
+## Notes
+
+### Parameter Usage: `appSettingsKeyValuePairs`
+
+AzureWebJobsStorage, AzureWebJobsDashboard, APPINSIGHTS_INSTRUMENTATIONKEY and APPLICATIONINSIGHTS_CONNECTION_STRING are set separately (check parameters storageAccountId, setAzureWebJobsDashboard, appInsightId).
+For all other app settings key-value pairs use this object.
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"appSettingsKeyValuePairs": {
+    "value": {
+      "AzureFunctionsJobHost__logging__logLevel__default": "Trace",
+      "EASYAUTH_SECRET": "https://adp-[[namePrefix]]-az-kv-x-001.vault.azure.net/secrets/Modules-Test-SP-Password",
+      "FUNCTIONS_EXTENSION_VERSION": "~4",
+      "FUNCTIONS_WORKER_RUNTIME": "dotnet"
+    }
+}
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+appSettingsKeyValuePairs: {
+  AzureFunctionsJobHost__logging__logLevel__default: 'Trace'
+  EASYAUTH_SECRET: 'https://adp-[[namePrefix]]-az-kv-x-001.vault.azure.net/secrets/Modules-Test-SP-Password'
+  FUNCTIONS_EXTENSION_VERSION: '~4'
+  FUNCTIONS_WORKER_RUNTIME: 'dotnet'
+}
+```
+
+</details>
+<p>
+
+</details>
+<p>

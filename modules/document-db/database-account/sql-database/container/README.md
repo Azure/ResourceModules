@@ -8,6 +8,7 @@ This module deploys a SQL Database Container in a CosmosDB Account.
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
+- [Notes](#Notes)
 
 ## Resource Types
 
@@ -47,46 +48,19 @@ This module deploys a SQL Database Container in a CosmosDB Account.
 | `uniqueKeyPolicyKeys` | array | `[]` |  | The unique key policy configuration containing a list of unique keys that enforces uniqueness constraint on documents in the collection in the Azure Cosmos DB service. |
 
 
-### Parameter Usage: `tags`
+## Outputs
 
-Tag names and tag values can be provided as needed. A tag can be left without a value.
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `name` | string | The name of the container. |
+| `resourceGroupName` | string | The name of the resource group the container was created in. |
+| `resourceId` | string | The resource ID of the container. |
 
-<details>
+## Cross-referenced modules
 
-<summary>Parameter JSON format</summary>
+_None_
 
-```json
-"tags": {
-    "value": {
-        "Environment": "Non-Prod",
-        "Contact": "test.user@testcompany.com",
-        "PurchaseOrder": "1234",
-        "CostCenter": "7890",
-        "ServiceName": "DeploymentValidation",
-        "Role": "DeploymentValidation"
-    }
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-tags: {
-    Environment: 'Non-Prod'
-    Contact: 'test.user@testcompany.com'
-    PurchaseOrder: '1234'
-    CostCenter: '7890'
-    ServiceName: 'DeploymentValidation'
-    Role: 'DeploymentValidation'
-}
-```
-
-</details>
-<p>
+## Notes
 
 ### Parameter Usage: `indexingPolicy`
 
@@ -129,15 +103,3 @@ indexingPolicy: {
 
 </details>
 <p>
-
-## Outputs
-
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `name` | string | The name of the container. |
-| `resourceGroupName` | string | The name of the resource group the container was created in. |
-| `resourceId` | string | The resource ID of the container. |
-
-## Cross-referenced modules
-
-_None_

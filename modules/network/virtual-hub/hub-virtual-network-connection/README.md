@@ -39,10 +39,6 @@ This module deploys a Virtual Hub Virtual Network Connection.
 | `routingConfiguration` | object | `{object}` | Routing Configuration indicating the associated and propagated route tables for this connection. |
 
 
-### Parameter Usage: `hubVirtualNetworkConnections`
-
-...
-
 ## Outputs
 
 | Output Name | Type | Description |

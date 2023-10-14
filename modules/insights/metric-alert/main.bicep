@@ -72,7 +72,7 @@ param actions array = []
 ])
 param alertCriteriaType string = 'Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria'
 
-@description('Required. Criterias to trigger the alert. Array of \'Microsoft.Azure.Monitor.SingleResourceMultipleMetricCriteria\' or \'Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria\' objects.')
+@description('Required. Criterias to trigger the alert. Array of \'Microsoft.Azure.Monitor.SingleResourceMultipleMetricCriteria\' or \'Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria\' objects. When using MultipleResourceMultipleMetricCriteria criteria type, some parameters becomes mandatory. It is not possible to convert from SingleResourceMultipleMetricCriteria to MultipleResourceMultipleMetricCriteria. The alert must be deleted and recreated.')
 param criterias array
 
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')

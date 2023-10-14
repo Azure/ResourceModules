@@ -47,7 +47,7 @@ param customRdpProperty string = 'audiocapturemode:i:1;audiomode:i:0;drivestored
 @sys.description('Optional. Validation host pools allows you to test service changes before they are deployed to production. When set to true, the Host Pool will be deployed in a validation \'ring\' (environment) that receives all the new features (might be less stable). Defaults to false that stands for the stable, production-ready environment.')
 param validationEnvironment bool = false
 
-@sys.description('Optional. The necessary information for adding more VMs to this Host Pool.')
+@sys.description('Optional. The necessary information for adding more VMs to this Host Pool. The object is converted to an in-line string when handed over to the resource deployment, since that only takes strings.')
 param vmTemplate object = {}
 
 @sys.description('Optional. Host Pool token validity length. Usage: \'PT8H\' - valid for 8 hours; \'P5D\' - valid for 5 days; \'P1Y\' - valid for 1 year. When not provided, the token will be valid for 8 hours.')

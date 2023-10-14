@@ -41,53 +41,6 @@ This module deploys a Recovery Services Vault Replication Protection Container.
 | `replicationContainerMappings` | array | `[]` | Replication containers mappings to create. |
 
 
-### Parameter Usage: `replicationContainerMappings`
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"replicationContainerMappings": {
-    "value": [
-        {
-            "targetProtectionContainerId": "/Subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.RecoveryServices/vaults/[[namePrefix]]-az-rsv-dr-001/replicationFabrics/NorthEurope/replicationProtectionContainers/ne-container1",
-            "policyId": "/Subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.RecoveryServices/vaults/[[namePrefix]]-az-rsv-dr-001/replicationPolicies/Default_values"
-        },
-        {
-            "name": null, //Optional
-            "policyName": "Default_values",
-            "targetContainerFabricName": "WestEurope",
-            "targetContainerName": "we-container"
-        }
-    ]
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-replicationContainerMappings: [
-    {
-        targetProtectionContainerId: '/Subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.RecoveryServices/vaults/[[namePrefix]]-az-rsv-dr-001/replicationFabrics/NorthEurope/replicationProtectionContainers/ne-container1'
-        policyId: '/Subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.RecoveryServices/vaults/[[namePrefix]]-az-rsv-dr-001/replicationPolicies/Default_values'
-    }
-    {
-        name: null //Optional
-        policyName: 'Default_values'
-        targetContainerFabricName: 'WestEurope'
-        targetContainerName: 'we-container'
-    }
-]
-```
-
-</details>
-<p>
-
 ## Outputs
 
 | Output Name | Type | Description |

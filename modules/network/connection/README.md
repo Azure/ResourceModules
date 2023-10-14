@@ -9,6 +9,7 @@ This module deploys a Virtual Network Gateway Connection.
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
+- [Notes](#Notes)
 
 ## Resource types
 
@@ -52,67 +53,117 @@ This module deploys a Virtual Network Gateway Connection.
 | `vpnSharedKey` | securestring | `''` |  | Specifies a VPN shared key. The same value has to be specified on both Virtual Network Gateways. |
 
 
-### Parameter Usage: `virtualNetworkGateway1`
+## Outputs
 
-The primary virtual network gateway object.
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `location` | string | The location the resource was deployed into. |
+| `name` | string | The name of the remote connection. |
+| `resourceGroupName` | string | The resource group the remote connection was deployed into. |
+| `resourceId` | string | The resource ID of the remote connection. |
+
+## Cross-referenced modules
+
+_None_
+
+## Deployment examples
+
+The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
+   >**Note**: The name of each example is based on the name of the file from which it is taken.
+
+   >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
+
+<h3>Example 1: Vnet2vnet</h3>
 
 <details>
 
-<summary>Parameter JSON format</summary>
-
-```json
-"virtualNetworkGateway1": {
-    "value": {
-        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.Network/virtualNetworkGateways/myGateway01"
-    }
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
+<summary>via Bicep module</summary>
 
 ```bicep
-virtualNetworkGateway1: {
-    id: '/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.Network/virtualNetworkGateways/myGateway01'
+module connection './network/connection/main.bicep' = {
+  name: '${uniqueString(deployment().name, location)}-test-ncvtv'
+  params: {
+    // Required parameters
+    name: 'ncvtv001'
+    virtualNetworkGateway1: {
+      id: '<id>'
+    }
+    // Non-required parameters
+    connectionType: 'Vnet2Vnet'
+    enableBgp: false
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    lock: 'CanNotDelete'
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+    virtualNetworkGateway2: {
+      id: '<id>'
+    }
+    vpnSharedKey: '<vpnSharedKey>'
+  }
 }
 ```
 
 </details>
 <p>
 
-### Parameter Usage: `virtualNetworkGateway2`
-
-The secondary virtual network gateway used for VNET to VNET connections.
-
 <details>
 
-<summary>Parameter JSON format</summary>
+<summary>via JSON Parameter file</summary>
 
 ```json
-"virtualNetworkGateway2" : {
-    "value": {
-        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.Network/virtualNetworkGateways/myGateway02"
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "ncvtv001"
+    },
+    "virtualNetworkGateway1": {
+      "value": {
+        "id": "<id>"
+      }
+    },
+    // Non-required parameters
+    "connectionType": {
+      "value": "Vnet2Vnet"
+    },
+    "enableBgp": {
+      "value": false
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "lock": {
+      "value": "CanNotDelete"
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    },
+    "virtualNetworkGateway2": {
+      "value": {
+        "id": "<id>"
+      }
+    },
+    "vpnSharedKey": {
+      "value": "<vpnSharedKey>"
     }
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-virtualNetworkGateway2 : {
-    id: '/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.Network/virtualNetworkGateways/myGateway02'
+  }
 }
 ```
 
 </details>
 <p>
+
+
+## Notes
 
 ### Parameter Usage: `localNetworkGateway2`
 
@@ -256,156 +307,6 @@ customIPSecPolicy: {
     ikeIntegrity: 'SHA256'
     dhGroup: 'DHGroup14'
     pfsGroup: 'None'
-}
-```
-
-</details>
-<p>
-
-### Parameter Usage: `tags`
-
-Tag names and tag values can be provided as needed. A tag can be left without a value.
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"tags": {
-    "value": {
-        "Environment": "Non-Prod",
-        "Contact": "test.user@testcompany.com",
-        "PurchaseOrder": "1234",
-        "CostCenter": "7890",
-        "ServiceName": "DeploymentValidation",
-        "Role": "DeploymentValidation"
-    }
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-tags: {
-    Environment: 'Non-Prod'
-    Contact: 'test.user@testcompany.com'
-    PurchaseOrder: '1234'
-    CostCenter: '7890'
-    ServiceName: 'DeploymentValidation'
-    Role: 'DeploymentValidation'
-}
-```
-
-</details>
-<p>
-
-## Outputs
-
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of the remote connection. |
-| `resourceGroupName` | string | The resource group the remote connection was deployed into. |
-| `resourceId` | string | The resource ID of the remote connection. |
-
-## Cross-referenced modules
-
-_None_
-
-## Deployment examples
-
-The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
-   >**Note**: The name of each example is based on the name of the file from which it is taken.
-
-   >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
-
-<h3>Example 1: Vnet2vnet</h3>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module connection './network/connection/main.bicep' = {
-  name: '${uniqueString(deployment().name, location)}-test-ncvtv'
-  params: {
-    // Required parameters
-    name: 'ncvtv001'
-    virtualNetworkGateway1: {
-      id: '<id>'
-    }
-    // Non-required parameters
-    connectionType: 'Vnet2Vnet'
-    enableBgp: false
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    lock: 'CanNotDelete'
-    tags: {
-      Environment: 'Non-Prod'
-      'hidden-title': 'This is visible in the resource name'
-      Role: 'DeploymentValidation'
-    }
-    virtualNetworkGateway2: {
-      id: '<id>'
-    }
-    vpnSharedKey: '<vpnSharedKey>'
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "ncvtv001"
-    },
-    "virtualNetworkGateway1": {
-      "value": {
-        "id": "<id>"
-      }
-    },
-    // Non-required parameters
-    "connectionType": {
-      "value": "Vnet2Vnet"
-    },
-    "enableBgp": {
-      "value": false
-    },
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
-    "lock": {
-      "value": "CanNotDelete"
-    },
-    "tags": {
-      "value": {
-        "Environment": "Non-Prod",
-        "hidden-title": "This is visible in the resource name",
-        "Role": "DeploymentValidation"
-      }
-    },
-    "virtualNetworkGateway2": {
-      "value": {
-        "id": "<id>"
-      }
-    },
-    "vpnSharedKey": {
-      "value": "<vpnSharedKey>"
-    }
-  }
 }
 ```
 

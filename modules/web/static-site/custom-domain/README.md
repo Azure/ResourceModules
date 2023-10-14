@@ -17,11 +17,16 @@ This module deploys a Static Web App Site Custom Domain.
 
 ## Parameters
 
+**Required parameters**
+
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `name` | string | The custom domain name. |
+
 **Conditional parameters**
 
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The custom domain name. Required if the template is used in a standalone deployment. |
 | `staticSiteName` | string | The name of the parent Static Web App. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**

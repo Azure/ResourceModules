@@ -8,6 +8,7 @@ This module deploys a Healthcare API Workspace IoT Connector FHIR Destination.
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
+- [Notes](#Notes)
 
 ## Resource Types
 
@@ -40,6 +41,22 @@ This module deploys a Healthcare API Workspace IoT Connector FHIR Destination.
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `resourceIdentityResolutionType` | string | `'Lookup'` | `[Create, Lookup]` | Determines how resource identity is resolved on the destination. |
 
+
+## Outputs
+
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `iotConnectorName` | string | The name of the medtech service. |
+| `location` | string | The location the resource was deployed into. |
+| `name` | string | The name of the FHIR destination. |
+| `resourceGroupName` | string | The resource group where the namespace is deployed. |
+| `resourceId` | string | The resource ID of the FHIR destination. |
+
+## Cross-referenced modules
+
+_None_
+
+## Notes
 
 ### Parameter Usage: `destinationMapping`
 
@@ -106,17 +123,3 @@ destinationMapping: {
 ```
 
 </details>
-
-## Outputs
-
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `iotConnectorName` | string | The name of the medtech service. |
-| `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of the FHIR destination. |
-| `resourceGroupName` | string | The resource group where the namespace is deployed. |
-| `resourceId` | string | The resource ID of the FHIR destination. |
-
-## Cross-referenced modules
-
-_None_

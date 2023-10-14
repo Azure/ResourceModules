@@ -9,6 +9,7 @@ This module deploys a Traffic Manager Profile.
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
+- [Notes](#Notes)
 
 ## Resource types
 
@@ -51,196 +52,6 @@ This module deploys a Traffic Manager Profile.
 | `trafficViewEnrollmentStatus` | string | `'Disabled'` | `[Disabled, Enabled]` | Indicates whether Traffic View is 'Enabled' or 'Disabled' for the Traffic Manager profile. Null, indicates 'Disabled'. Enabling this feature will increase the cost of the Traffic Manage profile. |
 | `ttl` | int | `60` |  | The DNS Time-To-Live (TTL), in seconds. This informs the local DNS resolvers and DNS clients how long to cache DNS responses provided by this Traffic Manager profile. |
 
-
-### Parameter Usage: `monitorConfig`
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"monitorConfig": {
-    "value": {
-        "protocol": "http",
-        "port": "80",
-        "path": "/"
-    }
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-monitorConfig: {
-    protocol: 'http'
-    port: '80'
-    path: '/'
-}
-```
-
-</details>
-<p>
-
-### Parameter Usage: `endpoints`
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"endpoints": {
-    "value": [
-        {
-            "id": "/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/<rgname>/providers/Microsoft.Network/trafficManagerProfiles/<tmname>/azureEndpoints/<endpointname>",
-            "name": "MyEndpoint001",
-            "type": "Microsoft.Network/trafficManagerProfiles/azureEndpoints",
-            "properties":
-            {
-                "endpointStatus": "Enabled",
-                "endpointMonitorStatus": "CheckingEndpoint",
-                "targetResourceId": "/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/<rgname>/providers/Microsoft.Network/publicIPAddresses/<pipname>",
-                "target": "my-pip-001.eastus.cloudapp.azure.com",
-                "weight": 1,
-                "priority": 1,
-                "endpointLocation": "East US"
-            }
-        }
-    ]
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-endpoints: [
-    {
-        id: '/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/<rgname>/providers/Microsoft.Network/trafficManagerProfiles/<tmname>/azureEndpoints/<endpointname>'
-        name: 'MyEndpoint001'
-        type: 'Microsoft.Network/trafficManagerProfiles/azureEndpoints'
-        properties:
-        {
-            endpointStatus: 'Enabled'
-            endpointMonitorStatus: 'CheckingEndpoint'
-            targetResourceId: '/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/<rgname>/providers/Microsoft.Network/publicIPAddresses/<pipname>'
-            target: 'my-pip-001.eastus.cloudapp.azure.com'
-            weight: 1
-            priority: 1
-            endpointLocation: 'East US'
-        }
-    }
-]
-```
-
-</details>
-<p>
-
-### Parameter Usage: `roleAssignments`
-
-Create a role assignment for the given resource. If you want to assign a service principal / managed identity that is created in the same deployment, make sure to also specify the `'principalType'` parameter and set it to `'ServicePrincipal'`. This will ensure the role assignment waits for the principal's propagation in Azure.
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"roleAssignments": {
-    "value": [
-        {
-            "roleDefinitionIdOrName": "Reader",
-            "description": "Reader Role Assignment",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012", // object 1
-                "78945612-1234-1234-1234-123456789012" // object 2
-            ]
-        },
-        {
-            "roleDefinitionIdOrName": "/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012" // object 1
-            ],
-            "principalType": "ServicePrincipal"
-        }
-    ]
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-roleAssignments: [
-    {
-        roleDefinitionIdOrName: 'Reader'
-        description: 'Reader Role Assignment'
-        principalIds: [
-            '12345678-1234-1234-1234-123456789012' // object 1
-            '78945612-1234-1234-1234-123456789012' // object 2
-        ]
-    }
-    {
-        roleDefinitionIdOrName: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'
-        principalIds: [
-            '12345678-1234-1234-1234-123456789012' // object 1
-        ]
-        principalType: 'ServicePrincipal'
-    }
-]
-```
-
-</details>
-<p>
-
-### Parameter Usage: `tags`
-
-Tag names and tag values can be provided as needed. A tag can be left without a value.
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"tags": {
-    "value": {
-        "Environment": "Non-Prod",
-        "Contact": "test.user@testcompany.com",
-        "PurchaseOrder": "1234",
-        "CostCenter": "7890",
-        "ServiceName": "DeploymentValidation",
-        "Role": "DeploymentValidation"
-    }
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-tags: {
-    Environment: 'Non-Prod'
-    Contact: 'test.user@testcompany.com'
-    PurchaseOrder: '1234'
-    CostCenter: '7890'
-    ServiceName: 'DeploymentValidation'
-    Role: 'DeploymentValidation'
-}
-```
-
-</details>
-<p>
 
 ## Outputs
 
@@ -406,6 +217,99 @@ module trafficmanagerprofile './network/trafficmanagerprofile/main.bicep' = {
     }
   }
 }
+```
+
+</details>
+<p>
+
+
+## Notes
+
+### Parameter Usage: `monitorConfig`
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"monitorConfig": {
+    "value": {
+        "protocol": "http",
+        "port": "80",
+        "path": "/"
+    }
+}
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+monitorConfig: {
+    protocol: 'http'
+    port: '80'
+    path: '/'
+}
+```
+
+</details>
+<p>
+
+### Parameter Usage: `endpoints`
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"endpoints": {
+    "value": [
+        {
+            "id": "/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/<rgname>/providers/Microsoft.Network/trafficManagerProfiles/<tmname>/azureEndpoints/<endpointname>",
+            "name": "MyEndpoint001",
+            "type": "Microsoft.Network/trafficManagerProfiles/azureEndpoints",
+            "properties":
+            {
+                "endpointStatus": "Enabled",
+                "endpointMonitorStatus": "CheckingEndpoint",
+                "targetResourceId": "/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/<rgname>/providers/Microsoft.Network/publicIPAddresses/<pipname>",
+                "target": "my-pip-001.eastus.cloudapp.azure.com",
+                "weight": 1,
+                "priority": 1,
+                "endpointLocation": "East US"
+            }
+        }
+    ]
+}
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+endpoints: [
+    {
+        id: '/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/<rgname>/providers/Microsoft.Network/trafficManagerProfiles/<tmname>/azureEndpoints/<endpointname>'
+        name: 'MyEndpoint001'
+        type: 'Microsoft.Network/trafficManagerProfiles/azureEndpoints'
+        properties:
+        {
+            endpointStatus: 'Enabled'
+            endpointMonitorStatus: 'CheckingEndpoint'
+            targetResourceId: '/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/<rgname>/providers/Microsoft.Network/publicIPAddresses/<pipname>'
+            target: 'my-pip-001.eastus.cloudapp.azure.com'
+            weight: 1
+            priority: 1
+            endpointLocation: 'East US'
+        }
+    }
+]
 ```
 
 </details>

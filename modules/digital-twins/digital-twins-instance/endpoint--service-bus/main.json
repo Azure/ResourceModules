@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.20.4.51522",
-      "templateHash": "13127448885590640743"
+      "version": "0.22.6.54827",
+      "templateHash": "2168121049050485718"
     },
     "name": "Digital Twins Instance ServiceBus Endpoint",
     "description": "This module deploys a Digital Twins Instance ServiceBus Endpoint.",
@@ -54,7 +54,7 @@
       "type": "string",
       "defaultValue": "",
       "metadata": {
-        "description": "Optional. The URL of the ServiceBus namespace for identity-based authentication. It must include the protocol 'sb://'."
+        "description": "Optional. The URL of the ServiceBus namespace for identity-based authentication. It must include the protocol 'sb://' (e.g. sb://xyz.servicebus.windows.net)."
       }
     },
     "entityPath": {
@@ -75,7 +75,7 @@
       "type": "securestring",
       "defaultValue": "",
       "metadata": {
-        "description": "Optional. SecondaryConnectionString of the endpoint for key-based authentication. Will be obfuscated during read."
+        "description": "Optional. SecondaryConnectionString of the endpoint for key-based authentication. Will be obfuscated during read. Only used if the `authenticationType` is \"KeyBased\"."
       }
     },
     "enableDefaultTelemetry": {

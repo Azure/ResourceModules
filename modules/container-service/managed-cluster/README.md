@@ -9,6 +9,7 @@ This module deploys an Azure Kubernetes Service (AKS) Managed Cluster.
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
+- [Notes](#Notes)
 
 ## Resource types
 
@@ -138,284 +139,6 @@ This module deploys an Azure Kubernetes Service (AKS) Managed Cluster.
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
 | `webApplicationRoutingEnabled` | bool | `False` |  | Specifies whether the webApplicationRoutingEnabled add-on is enabled or not. |
 
-
-### Parameter Usage: `roleAssignments`
-
-Create a role assignment for the given resource. If you want to assign a service principal / managed identity that is created in the same deployment, make sure to also specify the `'principalType'` parameter and set it to `'ServicePrincipal'`. This will ensure the role assignment waits for the principal's propagation in Azure.
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"roleAssignments": {
-    "value": [
-        {
-            "roleDefinitionIdOrName": "Reader",
-            "description": "Reader Role Assignment",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012", // object 1
-                "78945612-1234-1234-1234-123456789012" // object 2
-            ]
-        },
-        {
-            "roleDefinitionIdOrName": "/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012" // object 1
-            ],
-            "principalType": "ServicePrincipal"
-        }
-    ]
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-roleAssignments: [
-    {
-        roleDefinitionIdOrName: 'Reader'
-        description: 'Reader Role Assignment'
-        principalIds: [
-            '12345678-1234-1234-1234-123456789012' // object 1
-            '78945612-1234-1234-1234-123456789012' // object 2
-        ]
-    }
-    {
-        roleDefinitionIdOrName: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'
-        principalIds: [
-            '12345678-1234-1234-1234-123456789012' // object 1
-        ]
-        principalType: 'ServicePrincipal'
-    }
-]
-```
-
-</details>
-<p>
-
-### Parameter Usage: `tags`
-
-Tag names and tag values can be provided as needed. A tag can be left without a value.
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"tags": {
-    "value": {
-        "Environment": "Non-Prod",
-        "Contact": "test.user@testcompany.com",
-        "PurchaseOrder": "1234",
-        "CostCenter": "7890",
-        "ServiceName": "DeploymentValidation",
-        "Role": "DeploymentValidation"
-    }
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-tags: {
-    Environment: 'Non-Prod'
-    Contact: 'test.user@testcompany.com'
-    PurchaseOrder: '1234'
-    CostCenter: '7890'
-    ServiceName: 'DeploymentValidation'
-    Role: 'DeploymentValidation'
-}
-```
-
-</details>
-<p>
-
-### Parameter Usage: `primaryAgentPoolProfile`
-
-Provide values for primary agent pool as needed.
-For available properties check <https://learn.microsoft.com/en-us/azure/templates/microsoft.containerservice/managedclusters?tabs=json#managedclusteragentpoolprofile-object>
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"primaryAgentPoolProfile": {
-  "value": [
-    {
-      "name": "poolname",
-      "vmSize": "Standard_DS3_v2",
-      "osDiskSizeGB": 128,
-      "count": 2,
-      "osType": "Linux",
-      "maxCount": 5,
-      "minCount": 1,
-      "enableAutoScaling": true,
-      "scaleSetPriority": "Regular",
-      "scaleSetEvictionPolicy": "Delete",
-      "nodeLabels": {},
-      "nodeTaints": [
-        "CriticalAddonsOnly=true:NoSchedule"
-      ],
-      "type": "VirtualMachineScaleSets",
-      "availabilityZones": [
-          "1",
-          "2",
-          "3"
-      ],
-      "maxPods": 30,
-      "storageProfile": "ManagedDisks",
-      "mode": "System",
-      "vnetSubnetID": "/subscriptions/XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX/resourceGroups/myRg/providers/Microsoft.Network/virtualNetworks/myVnet/subnets/mySubnet",
-      "tags": {
-        "Owner": "test.user@testcompany.com",
-        "BusinessUnit": "IaCs",
-        "Environment": "PROD",
-        "Region": "USEast"
-      }
-    }
-  ]
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-primaryAgentPoolProfile: [
-    {
-        name: 'poolname'
-        vmSize: 'Standard_DS3_v2'
-        osDiskSizeGB: 128
-        count: 2
-        osType: 'Linux'
-        maxCount: 5
-        minCount: 1
-        enableAutoScaling: true
-        scaleSetPriority: 'Regular'
-        scaleSetEvictionPolicy: 'Delete'
-        nodeLabels: {}
-        nodeTaints: [
-            'CriticalAddonsOnly=true:NoSchedule'
-        ]
-        type: 'VirtualMachineScaleSets'
-        availabilityZones: [
-            '1'
-            '2'
-            '3'
-        ]
-        maxPods: 30
-        storageProfile: 'ManagedDisks'
-        mode: 'System'
-        vnetSubnetID: '/subscriptions/XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX/resourceGroups/myRg/providers/Microsoft.Network/virtualNetworks/myVnet/subnets/mySubnet'
-        tags: {
-            Owner: 'test.user@testcompany.com'
-            BusinessUnit: 'IaCs'
-            Environment: 'PROD'
-            Region: 'USEast'
-        }
-    }
-]
-```
-
-</details>
-<p>
-
-### Parameter Usage: `userAssignedIdentities`
-
-You can specify multiple user assigned identities to a resource by providing additional resource IDs using the following format:
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"userAssignedIdentities": {
-    "value": {
-        "/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
-        "/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
-    }
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-userAssignedIdentities: {
-    '/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
-    '/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
-}
-```
-
-</details>
-<p>
-
-### Parameter Usage: `httpProxyConfig`
-
-Configurations for provisioning the cluster with HTTP proxy servers. You can specify in the following format:
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"httpProxyConfig": {
-    "value": {
-        "httpProxy": "http://proxy.contoso.com:8080/",
-        "httpsProxy": "http://proxy.contoso.com:8080/",
-        "noProxy": [
-            "10.0.0.0/8",
-            "127.0.0.1",
-            "168.63.129.16",
-            "169.254.169.254",
-            "azurecr.io",
-            "konnectivity",
-            "localhost"
-        ]
-    }
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-httpProxyConfig: {
-  httpProxy: 'http://proxy.contoso.com:8080/'
-  httpsProxy: 'http://proxy.contoso.com:8080/'
-  noProxy: [
-    '10.0.0.0/8'
-    '127.0.0.1'
-    '168.63.129.16'
-    '169.254.169.254'
-    'azurecr.io'
-    'konnectivity'
-    'localhost'
-  ]
-}
-```
-
-</details>
-<p>
 
 ## Outputs
 
@@ -1464,6 +1187,60 @@ module managedCluster './container-service/managed-cluster/main.bicep' = {
       }
     }
   }
+}
+```
+
+</details>
+<p>
+
+
+## Notes
+
+### Parameter Usage: `httpProxyConfig`
+
+Configurations for provisioning the cluster with HTTP proxy servers. You can specify in the following format:
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"httpProxyConfig": {
+    "value": {
+        "httpProxy": "http://proxy.contoso.com:8080/",
+        "httpsProxy": "http://proxy.contoso.com:8080/",
+        "noProxy": [
+            "10.0.0.0/8",
+            "127.0.0.1",
+            "168.63.129.16",
+            "169.254.169.254",
+            "azurecr.io",
+            "konnectivity",
+            "localhost"
+        ]
+    }
+}
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+httpProxyConfig: {
+  httpProxy: 'http://proxy.contoso.com:8080/'
+  httpsProxy: 'http://proxy.contoso.com:8080/'
+  noProxy: [
+    '10.0.0.0/8'
+    '127.0.0.1'
+    '168.63.129.16'
+    '169.254.169.254'
+    'azurecr.io'
+    'konnectivity'
+    'localhost'
+  ]
 }
 ```
 

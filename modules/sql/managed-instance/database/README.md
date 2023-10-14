@@ -19,10 +19,6 @@ This module deploys a SQL Managed Instance Database.
 | `Microsoft.Sql/managedInstances/databases/backupLongTermRetentionPolicies` | [2022-02-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Sql/2022-02-01-preview/managedInstances/databases/backupLongTermRetentionPolicies) |
 | `Microsoft.Sql/managedInstances/databases/backupShortTermRetentionPolicies` | [2022-02-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Sql/2022-02-01-preview/managedInstances/databases/backupShortTermRetentionPolicies) |
 
-### Deployment prerequisites
-
-The SQL Managed Instance Database is deployed on a SQL Managed Instance.
-
 ## Parameters
 
 **Required parameters**
@@ -64,47 +60,6 @@ The SQL Managed Instance Database is deployed on a SQL Managed Instance.
 | `restorableDroppedDatabaseId` | string | `''` |  | The restorable dropped database resource ID to restore when creating this database. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 
-
-### Parameter Usage: `tags`
-
-Tag names and tag values can be provided as needed. A tag can be left without a value.
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"tags": {
-    "value": {
-        "Environment": "Non-Prod",
-        "Contact": "test.user@testcompany.com",
-        "PurchaseOrder": "1234",
-        "CostCenter": "7890",
-        "ServiceName": "DeploymentValidation",
-        "Role": "DeploymentValidation"
-    }
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-tags: {
-    Environment: 'Non-Prod'
-    Contact: 'test.user@testcompany.com'
-    PurchaseOrder: '1234'
-    CostCenter: '7890'
-    ServiceName: 'DeploymentValidation'
-    Role: 'DeploymentValidation'
-}
-```
-
-</details>
-<p>
 
 ## Outputs
 

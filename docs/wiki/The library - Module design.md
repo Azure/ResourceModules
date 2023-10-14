@@ -583,7 +583,6 @@ Its primary components are in order:
 - A short description
 - A **Resource types** section with a table that outlines all resources that can be deployed as part of the module.
 - A **Parameters** section with a table containing all parameters, their type, default and allowed values if any, and their description.
-- Optionally, a **Parameter Usage** section that shows how to use complex structures such as parameter objects or array of objects, e.g., roleAssignments, tags, privateEndpoints.
 - An **Outputs** section with a table that describes all outputs the module template returns.
 - A **Template references** section listing relevant resources [Azure resource reference](https://learn.microsoft.com/en-us/azure/templates).
 
