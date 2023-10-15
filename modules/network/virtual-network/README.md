@@ -31,13 +31,13 @@ The following module usage examples are retrieved from the content of the files 
 
    >**Note**: To reference the module, please use the following syntax `br:bicep/modules/network.virtual-network:1.0.0`.
 
-- [Using only defaults](#example-1-using-only-defaults)
-- [Using Maximum Parameters](#example-2-using-maximum-parameters)
+- [Using large parameter set](#example-1-using-large-parameter-set)
+- [Using only defaults](#example-2-using-only-defaults)
 - [Vnetpeering](#example-3-vnetpeering)
 
-### Example 1: _Using only defaults_
+### Example 1: _Using large parameter set_
 
-This instance deploys the module with the minimum set of required parameters.
+This instance deploys the module with most of its features enabled.
 
 
 <details>
@@ -253,9 +253,9 @@ module virtualNetwork 'br:bicep/modules/network.virtual-network:1.0.0' = {
 </details>
 <p>
 
-### Example 2: _Using Maximum Parameters_
+### Example 2: _Using only defaults_
 
-This instance deploys the module with the large set of possible parameters.
+This instance deploys the module with the minimum set of required parameters.
 
 
 <details>
