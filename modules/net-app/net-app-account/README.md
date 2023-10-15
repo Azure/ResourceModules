@@ -29,13 +29,13 @@ The following module usage examples are retrieved from the content of the files 
 
    >**Note**: To reference the module, please use the following syntax `br:bicep/modules/net-app.net-app-account:1.0.0`.
 
-- [Using Maximum Parameters](#example-1-using-maximum-parameters)
+- [Using only defaults](#example-1-using-only-defaults)
 - [Nfs3](#example-2-nfs3)
 - [Nfs41](#example-3-nfs41)
 
-### Example 1: _Using Maximum Parameters_
+### Example 1: _Using only defaults_
 
-This instance deploys the module with the large set of possible parameters.
+This instance deploys the module with the minimum set of required parameters.
 
 
 <details>

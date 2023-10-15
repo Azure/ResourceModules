@@ -31,7 +31,7 @@ The following module usage examples are retrieved from the content of the files 
 - [Custombasic](#example-2-custombasic)
 - [Customiis](#example-3-customiis)
 - [Linux](#example-4-linux)
-- [Using Maximum Parameters](#example-5-using-maximum-parameters)
+- [Using only defaults](#example-5-using-only-defaults)
 - [Windows](#example-6-windows)
 
 ### Example 1: _Customadv_
@@ -1038,9 +1038,9 @@ module dataCollectionRule 'br:bicep/modules/insights.data-collection-rule:1.0.0'
 </details>
 <p>
 
-### Example 5: _Using Maximum Parameters_
+### Example 5: _Using only defaults_
 
-This instance deploys the module with the large set of possible parameters.
+This instance deploys the module with the minimum set of required parameters.
 
 
 <details>

@@ -30,11 +30,11 @@ The following module usage examples are retrieved from the content of the files 
    >**Note**: To reference the module, please use the following syntax `br:bicep/modules/network.azure-firewall:1.0.0`.
 
 - [Addpip](#example-1-addpip)
-- [Using only defaults](#example-2-using-only-defaults)
+- [Using large parameter set](#example-2-using-large-parameter-set)
 - [Custompip](#example-3-custompip)
 - [Hubcommon](#example-4-hubcommon)
 - [Hubmin](#example-5-hubmin)
-- [Using Maximum Parameters](#example-6-using-maximum-parameters)
+- [Using only defaults](#example-6-using-only-defaults)
 
 ### Example 1: _Addpip_
 
@@ -141,9 +141,9 @@ module azureFirewall 'br:bicep/modules/network.azure-firewall:1.0.0' = {
 </details>
 <p>
 
-### Example 2: _Using only defaults_
+### Example 2: _Using large parameter set_
 
-This instance deploys the module with the minimum set of required parameters.
+This instance deploys the module with most of its features enabled.
 
 
 <details>
@@ -676,9 +676,9 @@ module azureFirewall 'br:bicep/modules/network.azure-firewall:1.0.0' = {
 </details>
 <p>
 
-### Example 6: _Using Maximum Parameters_
+### Example 6: _Using only defaults_
 
-This instance deploys the module with the large set of possible parameters.
+This instance deploys the module with the minimum set of required parameters.
 
 
 <details>
