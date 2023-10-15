@@ -1,7 +1,7 @@
 targetScope = 'managementGroup'
 
-metadata name = 'Using only defaults'
-metadata description = 'This instance deploys the module with the minimum set of required parameters.'
+metadata name = 'Using a large set of parameters'
+metadata description = 'This instance deploys the module with a large set of possible parameters.'
 
 // ========== //
 // Parameters //
