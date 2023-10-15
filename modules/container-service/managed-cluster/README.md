@@ -34,7 +34,7 @@ The following module usage examples are retrieved from the content of the files 
 
 - [Azure](#example-1-azure)
 - [Kubenet](#example-2-kubenet)
-- [Using Maximum Parameters](#example-3-using-maximum-parameters)
+- [Using only defaults](#example-3-using-only-defaults)
 - [Priv](#example-4-priv)
 
 ### Example 1: _Azure_
@@ -737,9 +737,9 @@ module managedCluster 'br:bicep/modules/container-service.managed-cluster:1.0.0'
 </details>
 <p>
 
-### Example 3: _Using Maximum Parameters_
+### Example 3: _Using only defaults_
 
-This instance deploys the module with the large set of possible parameters.
+This instance deploys the module with the minimum set of required parameters.
 
 
 <details>
@@ -1905,7 +1905,12 @@ Specifies whether the webApplicationRoutingEnabled add-on is enabled or not.
 
 ## Cross-referenced modules
 
-_None_
+This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
+
+| Reference | Type |
+| :-- | :-- |
+| `modules/kubernetes-configuration/extension` | Local reference |
+| `modules/kubernetes-configuration/flux-configuration` | Local reference |
 
 ## Notes
 

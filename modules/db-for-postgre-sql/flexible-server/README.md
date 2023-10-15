@@ -32,13 +32,13 @@ The following module usage examples are retrieved from the content of the files 
 
    >**Note**: To reference the module, please use the following syntax `br:bicep/modules/db-for-postgre-sql.flexible-server:1.0.0`.
 
-- [Using Maximum Parameters](#example-1-using-maximum-parameters)
+- [Using only defaults](#example-1-using-only-defaults)
 - [Private](#example-2-private)
 - [Public](#example-3-public)
 
-### Example 1: _Using Maximum Parameters_
+### Example 1: _Using only defaults_
 
-This instance deploys the module with the large set of possible parameters.
+This instance deploys the module with the minimum set of required parameters.
 
 
 <details>

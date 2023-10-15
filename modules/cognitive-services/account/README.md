@@ -31,14 +31,14 @@ The following module usage examples are retrieved from the content of the files 
 
    >**Note**: To reference the module, please use the following syntax `br:bicep/modules/cognitive-services.account:1.0.0`.
 
-- [Using only defaults](#example-1-using-only-defaults)
+- [Using large parameter set](#example-1-using-large-parameter-set)
 - [Encr](#example-2-encr)
-- [Using Maximum Parameters](#example-3-using-maximum-parameters)
+- [Using only defaults](#example-3-using-only-defaults)
 - [Speech](#example-4-speech)
 
-### Example 1: _Using only defaults_
+### Example 1: _Using large parameter set_
 
-This instance deploys the module with the minimum set of required parameters.
+This instance deploys the module with most of its features enabled.
 
 
 <details>
@@ -305,9 +305,9 @@ module account 'br:bicep/modules/cognitive-services.account:1.0.0' = {
 </details>
 <p>
 
-### Example 3: _Using Maximum Parameters_
+### Example 3: _Using only defaults_
 
-This instance deploys the module with the large set of possible parameters.
+This instance deploys the module with the minimum set of required parameters.
 
 
 <details>
@@ -772,7 +772,11 @@ The storage accounts for this resource.
 
 ## Cross-referenced modules
 
-_None_
+This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
+
+| Reference | Type |
+| :-- | :-- |
+| `modules/network/private-endpoint` | Local reference |
 
 ## Notes
 

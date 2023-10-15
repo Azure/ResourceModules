@@ -2467,7 +2467,13 @@ Specifies the Windows Remote Management listeners. This enables remote Windows P
 
 ## Cross-referenced modules
 
-_None_
+This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
+
+| Reference | Type |
+| :-- | :-- |
+| `modules/network/network-interface` | Local reference |
+| `modules/network/public-ip-address` | Local reference |
+| `modules/recovery-services/vault/backup-fabric/protection-container/protected-item` | Local reference |
 
 ## Notes
 
