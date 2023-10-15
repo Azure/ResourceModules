@@ -14,7 +14,7 @@ This module deploys an Azure SQL Server Database.
 | Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
-| `Microsoft.Sql/servers/databases` | [2021-11-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Sql/2021-11-01/servers/databases) |
+| `Microsoft.Sql/servers/databases` | [2022-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Sql/2022-05-01-preview/servers/databases) |
 | `Microsoft.Sql/servers/databases/backupLongTermRetentionPolicies` | [2022-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Sql/2022-05-01-preview/servers/databases/backupLongTermRetentionPolicies) |
 | `Microsoft.Sql/servers/databases/backupShortTermRetentionPolicies` | [2022-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Sql/2022-05-01-preview/servers/databases/backupShortTermRetentionPolicies) |
 
@@ -57,6 +57,7 @@ This module deploys an Azure SQL Server Database.
 | `maintenanceConfigurationId` | string | `''` |  | Maintenance configuration ID assigned to the database. This configuration defines the period when the maintenance updates will occur. |
 | `maxSizeBytes` | int | `34359738368` |  | The max size of the database expressed in bytes. |
 | `minCapacity` | string | `''` |  | Minimal capacity that database will always have allocated. |
+| `preferredEnclaveType` | string | `''` | `['', Default, VBS]` | Type of enclave requested on the database i.e. Default or VBS enclaves. |
 | `readScale` | string | `'Disabled'` | `[Disabled, Enabled]` | The state of read-only routing. |
 | `recoveryServicesRecoveryPointResourceId` | string | `''` |  | Resource ID of backup if createMode set to RestoreLongTermRetentionBackup. |
 | `requestedBackupStorageRedundancy` | string | `''` | `['', Geo, Local, Zone]` | The storage account type to be used to store backups for this database. |

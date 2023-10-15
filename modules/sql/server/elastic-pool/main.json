@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.20.4.51522",
-      "templateHash": "7347226856045672059"
+      "version": "0.22.6.54827",
+      "templateHash": "2069769222124842536"
     },
     "name": "SQL Server Elastic Pool",
     "description": "This module deploys an Azure SQL Server Elastic Pool.",
@@ -144,7 +144,7 @@
     },
     {
       "type": "Microsoft.Sql/servers/elasticPools",
-      "apiVersion": "2022-02-01-preview",
+      "apiVersion": "2022-05-01-preview",
       "name": "[format('{0}/{1}', parameters('serverName'), parameters('name'))]",
       "location": "[parameters('location')]",
       "tags": "[parameters('tags')]",
@@ -194,7 +194,7 @@
       "metadata": {
         "description": "The location the resource was deployed into."
       },
-      "value": "[reference(resourceId('Microsoft.Sql/servers/elasticPools', parameters('serverName'), parameters('name')), '2022-02-01-preview', 'full').location]"
+      "value": "[reference(resourceId('Microsoft.Sql/servers/elasticPools', parameters('serverName'), parameters('name')), '2022-05-01-preview', 'full').location]"
     }
   }
 }

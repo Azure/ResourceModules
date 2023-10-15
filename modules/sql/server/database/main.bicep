@@ -20,6 +20,14 @@ param skuName string = 'GP_Gen5_2'
 @description('Optional. Capacity of the particular SKU.')
 param skuCapacity int = -1
 
+@description('Optional. Type of enclave requested on the database i.e. Default or VBS enclaves.')
+@allowed([
+  ''
+  'Default'
+  'VBS'
+])
+param preferredEnclaveType string = ''
+
 @description('Optional. If the service has different generations of hardware, for the same SKU, then that can be captured here.')
 param skuFamily string = ''
 
@@ -202,16 +210,17 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource server 'Microsoft.Sql/servers@2021-11-01' existing = {
+resource server 'Microsoft.Sql/servers@2022-05-01-preview' existing = {
   name: serverName
 }
 
-resource database 'Microsoft.Sql/servers/databases@2021-11-01' = {
+resource database 'Microsoft.Sql/servers/databases@2022-05-01-preview' = {
   name: name
   parent: server
   location: location
   tags: tags
   properties: {
+    preferredEnclaveType: !empty(preferredEnclaveType) ? preferredEnclaveType : null
     collation: collation
     maxSizeBytes: maxSizeBytes
     sampleName: sampleName

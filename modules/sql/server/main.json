@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.21.1.54444",
-      "templateHash": "8694419597061926124"
+      "version": "0.22.6.54827",
+      "templateHash": "5248337470273502823"
     },
     "name": "Azure SQL Servers",
     "description": "This module deploys an Azure SQL Server.",
@@ -286,8 +286,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "484260346793465381"
+              "version": "0.22.6.54827",
+              "templateHash": "5938444191464090228"
             }
           },
           "parameters": {
@@ -473,8 +473,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "16360680719988023446"
+              "version": "0.22.6.54827",
+              "templateHash": "14921090017328805601"
             },
             "name": "SQL Server Database",
             "description": "This module deploys an Azure SQL Server Database.",
@@ -519,6 +519,18 @@
               "defaultValue": -1,
               "metadata": {
                 "description": "Optional. Capacity of the particular SKU."
+              }
+            },
+            "preferredEnclaveType": {
+              "type": "string",
+              "defaultValue": "",
+              "allowedValues": [
+                "",
+                "Default",
+                "VBS"
+              ],
+              "metadata": {
+                "description": "Optional. Type of enclave requested on the database i.e. Default or VBS enclaves."
               }
             },
             "skuFamily": {
@@ -825,11 +837,12 @@
             },
             {
               "type": "Microsoft.Sql/servers/databases",
-              "apiVersion": "2021-11-01",
+              "apiVersion": "2022-05-01-preview",
               "name": "[format('{0}/{1}', parameters('serverName'), parameters('name'))]",
               "location": "[parameters('location')]",
               "tags": "[parameters('tags')]",
               "properties": {
+                "preferredEnclaveType": "[if(not(empty(parameters('preferredEnclaveType'))), parameters('preferredEnclaveType'), null())]",
                 "collation": "[parameters('collation')]",
                 "maxSizeBytes": "[parameters('maxSizeBytes')]",
                 "sampleName": "[parameters('sampleName')]",
@@ -894,8 +907,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.21.1.54444",
-                      "templateHash": "4382058876460070717"
+                      "version": "0.22.6.54827",
+                      "templateHash": "11274542290979624142"
                     },
                     "name": "Azure SQL Server Database Short Term Backup Retention Policies",
                     "description": "This module deploys an Azure SQL Server Database Short-Term Backup Retention Policy.",
@@ -1017,8 +1030,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.21.1.54444",
-                      "templateHash": "15709058610853670225"
+                      "version": "0.22.6.54827",
+                      "templateHash": "8422402072460240545"
                     },
                     "name": "SQL Server Database Long Term Backup Retention Policies",
                     "description": "This module deploys an Azure SQL Server Database Long-Term Backup Retention Policy.",
@@ -1157,7 +1170,7 @@
               "metadata": {
                 "description": "The location the resource was deployed into."
               },
-              "value": "[reference(resourceId('Microsoft.Sql/servers/databases', parameters('serverName'), parameters('name')), '2021-11-01', 'full').location]"
+              "value": "[reference(resourceId('Microsoft.Sql/servers/databases', parameters('serverName'), parameters('name')), '2022-05-01-preview', 'full').location]"
             }
           }
         }
@@ -1212,8 +1225,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "9604308026054276666"
+              "version": "0.22.6.54827",
+              "templateHash": "2069769222124842536"
             },
             "name": "SQL Server Elastic Pool",
             "description": "This module deploys an Azure SQL Server Elastic Pool.",
@@ -1352,7 +1365,7 @@
             },
             {
               "type": "Microsoft.Sql/servers/elasticPools",
-              "apiVersion": "2022-02-01-preview",
+              "apiVersion": "2022-05-01-preview",
               "name": "[format('{0}/{1}', parameters('serverName'), parameters('name'))]",
               "location": "[parameters('location')]",
               "tags": "[parameters('tags')]",
@@ -1402,7 +1415,7 @@
               "metadata": {
                 "description": "The location the resource was deployed into."
               },
-              "value": "[reference(resourceId('Microsoft.Sql/servers/elasticPools', parameters('serverName'), parameters('name')), '2022-02-01-preview', 'full').location]"
+              "value": "[reference(resourceId('Microsoft.Sql/servers/elasticPools', parameters('serverName'), parameters('name')), '2022-05-01-preview', 'full').location]"
             }
           }
         }
@@ -1457,8 +1470,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "14580007913383558904"
+              "version": "0.22.6.54827",
+              "templateHash": "2884140170473394983"
             },
             "name": "Private Endpoints",
             "description": "This module deploys a Private Endpoint.",
@@ -1657,8 +1670,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.21.1.54444",
-                      "templateHash": "2469208411936339153"
+                      "version": "0.22.6.54827",
+                      "templateHash": "5610247137574346230"
                     },
                     "name": "Private Endpoint Private DNS Zone Groups",
                     "description": "This module deploys a Private Endpoint Private DNS Zone Group.",
@@ -1795,8 +1808,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.21.1.54444",
-                      "templateHash": "13032708393704093995"
+                      "version": "0.22.6.54827",
+                      "templateHash": "14351187799927334028"
                     }
                   },
                   "parameters": {
@@ -2007,8 +2020,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "7423786467503129522"
+              "version": "0.22.6.54827",
+              "templateHash": "17045860485834879442"
             },
             "name": "Azure SQL Server Firewall Rule",
             "description": "This module deploys an Azure SQL Server Firewall Rule.",
@@ -2066,7 +2079,7 @@
             },
             {
               "type": "Microsoft.Sql/servers/firewallRules",
-              "apiVersion": "2022-02-01-preview",
+              "apiVersion": "2022-05-01-preview",
               "name": "[format('{0}/{1}', parameters('serverName'), parameters('name'))]",
               "properties": {
                 "endIpAddress": "[parameters('endIpAddress')]",
@@ -2137,8 +2150,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "3695719618066271143"
+              "version": "0.22.6.54827",
+              "templateHash": "938348054010287381"
             },
             "name": "Azure SQL Server Virtual Network Rules",
             "description": "This module deploys an Azure SQL Server Virtual Network Rule.",
@@ -2195,7 +2208,7 @@
             },
             {
               "type": "Microsoft.Sql/servers/virtualNetworkRules",
-              "apiVersion": "2022-02-01-preview",
+              "apiVersion": "2022-05-01-preview",
               "name": "[format('{0}/{1}', parameters('serverName'), parameters('name'))]",
               "properties": {
                 "ignoreMissingVnetServiceEndpoint": "[parameters('ignoreMissingVnetServiceEndpoint')]",
@@ -2269,8 +2282,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "11767059399657225890"
+              "version": "0.22.6.54827",
+              "templateHash": "6325803563225314820"
             },
             "name": "Azure SQL Server Security Alert Policies",
             "description": "This module deploys an Azure SQL Server Security Alert Policy.",
@@ -2367,7 +2380,7 @@
             },
             {
               "type": "Microsoft.Sql/servers/securityAlertPolicies",
-              "apiVersion": "2022-02-01-preview",
+              "apiVersion": "2022-05-01-preview",
               "name": "[format('{0}/{1}', parameters('serverName'), parameters('name'))]",
               "properties": {
                 "disabledAlerts": "[parameters('disabledAlerts')]",
@@ -2440,8 +2453,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "7320869198261602557"
+              "version": "0.22.6.54827",
+              "templateHash": "2049927305875122003"
             },
             "name": "Azure SQL Server Vulnerability Assessments",
             "description": "This module deploys an Azure SQL Server Vulnerability Assessment.",
@@ -2513,7 +2526,7 @@
             },
             {
               "type": "Microsoft.Sql/servers/vulnerabilityAssessments",
-              "apiVersion": "2022-02-01-preview",
+              "apiVersion": "2022-05-01-preview",
               "name": "[format('{0}/{1}', parameters('serverName'), parameters('name'))]",
               "properties": {
                 "storageContainerPath": "[format('https://{0}.blob.{1}/vulnerability-assessment/', last(split(parameters('storageAccountResourceId'), '/')), environment().suffixes.storage)]",
@@ -2588,8 +2601,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "3865700430562721282"
+              "version": "0.22.6.54827",
+              "templateHash": "11118825836661698100"
             },
             "name": "Azure SQL Server Keys",
             "description": "This module deploys an Azure SQL Server Key.",
@@ -2721,8 +2734,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "16115324341422318865"
+              "version": "0.22.6.54827",
+              "templateHash": "17224807912051676418"
             },
             "name": "Azure SQL Server Encryption Protector",
             "description": "This module deploys an Azure SQL Server Encryption Protector.",
@@ -2784,7 +2797,7 @@
             },
             {
               "type": "Microsoft.Sql/servers/encryptionProtector",
-              "apiVersion": "2022-08-01-preview",
+              "apiVersion": "2022-05-01-preview",
               "name": "[format('{0}/{1}', parameters('sqlServerName'), 'current')]",
               "properties": {
                 "serverKeyType": "[parameters('serverKeyType')]",
