@@ -19,30 +19,77 @@ This module deploys a Log Analytics Workspace Storage Insight Config.
 
 **Required parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `storageAccountResourceId` | string | The Azure Resource Manager ID of the storage account resource. |
+| [`storageAccountResourceId`](#parameter-storageaccountresourceid) | string | The Azure Resource Manager ID of the storage account resource. |
 
 **Conditional parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `logAnalyticsWorkspaceName` | string | The name of the parent Log Analytics workspace. Required if the template is used in a standalone deployment. |
+| [`logAnalyticsWorkspaceName`](#parameter-loganalyticsworkspacename) | string | The name of the parent Log Analytics workspace. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `containers` | array | `[]` | The names of the blob containers that the workspace should read. |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `name` | string | `[format('{0}-stinsconfig', last(split(parameters('storageAccountResourceId'), '/')))]` | The name of the storage insights config. |
-| `tables` | array | `[]` | The names of the Azure tables that the workspace should read. |
-| `tags` | object | `{object}` | Tags to configure in the resource. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`containers`](#parameter-containers) | array | The names of the blob containers that the workspace should read. |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`name`](#parameter-name) | string | The name of the storage insights config. |
+| [`tables`](#parameter-tables) | array | The names of the Azure tables that the workspace should read. |
+| [`tags`](#parameter-tags) | object | Tags to configure in the resource. |
+
+### Parameter: `containers`
+
+The names of the blob containers that the workspace should read.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `logAnalyticsWorkspaceName`
+
+The name of the parent Log Analytics workspace. Required if the template is used in a standalone deployment.
+- Required: Yes
+- Type: string
+
+### Parameter: `name`
+
+The name of the storage insights config.
+- Required: No
+- Type: string
+- Default: `[format('{0}-stinsconfig', last(split(parameters('storageAccountResourceId'), '/')))]`
+
+### Parameter: `storageAccountResourceId`
+
+The Azure Resource Manager ID of the storage account resource.
+- Required: Yes
+- Type: string
+
+### Parameter: `tables`
+
+The names of the Azure tables that the workspace should read.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `tags`
+
+Tags to configure in the resource.
+- Required: No
+- Type: object
+- Default: `{object}`
 
 
 ## Outputs
 
-| Output Name | Type | Description |
+| Output | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the storage insights configuration. |
 | `resourceGroupName` | string | The resource group where the storage insight configuration is deployed. |

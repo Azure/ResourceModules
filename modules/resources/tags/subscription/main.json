@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.20.4.51522",
-      "templateHash": "17445460813956994133"
+      "version": "0.22.6.54827",
+      "templateHash": "17975356792950377604"
     },
     "name": "Resources Tags Subscription Scope",
     "description": "This module deploys a Resource Tag on a Subscription scope.",
@@ -85,8 +85,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.20.4.51522",
-              "templateHash": "373680921396677494"
+              "version": "0.22.6.54827",
+              "templateHash": "18269006446765776342"
             }
           },
           "parameters": {

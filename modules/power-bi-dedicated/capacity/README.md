@@ -5,10 +5,10 @@ This module deploys a Power BI Dedicated Capacity.
 ## Navigation
 
 - [Resource Types](#Resource-Types)
+- [Usage examples](#Usage-examples)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
-- [Deployment examples](#Deployment-examples)
 
 ## Resource Types
 
@@ -18,58 +18,29 @@ This module deploys a Power BI Dedicated Capacity.
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.PowerBIDedicated/capacities` | [2021-01-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.PowerBIDedicated/2021-01-01/capacities) |
 
-## Parameters
+## Usage examples
 
-**Required parameters**
-
-| Parameter Name | Type | Description |
-| :-- | :-- | :-- |
-| `members` | array | Members of the resource. |
-| `name` | string | Name of the PowerBI Embedded. |
-| `skuCapacity` | int | SkuCapacity of the resource. |
-
-**Optional parameters**
-
-| Parameter Name | Type | Default Value | Allowed Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
-| `lock` | string | `''` | `['', CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
-| `mode` | string | `'Gen2'` | `[Gen1, Gen2]` | Mode of the resource. |
-| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| `skuName` | string | `'A1'` | `[A1, A2, A3, A4, A5, A6]` | SkuCapacity of the resource. |
-| `skuTier` | string | `'PBIE_Azure'` | `[AutoPremiumHost, PBIE_Azure, Premium]` | SkuCapacity of the resource. |
-| `tags` | object | `{object}` |  | Tags of the resource. |
-
-
-## Outputs
-
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `location` | string | The location the resource was deployed into. |
-| `name` | string | The Name of the PowerBi Embedded. |
-| `resourceGroupName` | string | The name of the resource group the PowerBi Embedded was created in. |
-| `resourceId` | string | The resource ID of the PowerBi Embedded. |
-
-## Cross-referenced modules
-
-_None_
-
-## Deployment examples
-
-The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
+The following module usage examples are retrieved from the content of the files hosted in the module's `tests` folder.
    >**Note**: The name of each example is based on the name of the file from which it is taken.
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Common</h3>
+   >**Note**: To reference the module, please use the following syntax `br:bicep/modules/power-bi-dedicated.capacity:1.0.0`.
+
+- [Using only defaults](#example-1-using-only-defaults)
+- [Using Maximum Parameters](#example-2-using-maximum-parameters)
+
+### Example 1: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module capacity './power-bi-dedicated/capacity/main.bicep' = {
+module capacity 'br:bicep/modules/power-bi-dedicated.capacity:1.0.0' = {
   name: '${uniqueString(deployment().name, location)}-test-pbdcapcom'
   params: {
     // Required parameters
@@ -155,14 +126,17 @@ module capacity './power-bi-dedicated/capacity/main.bicep' = {
 </details>
 <p>
 
-<h3>Example 2: Min</h3>
+### Example 2: _Using Maximum Parameters_
+
+This instance deploys the module with the large set of possible parameters.
+
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module capacity './power-bi-dedicated/capacity/main.bicep' = {
+module capacity 'br:bicep/modules/power-bi-dedicated.capacity:1.0.0' = {
   name: '${uniqueString(deployment().name, location)}-test-pbdcapmin'
   params: {
     // Required parameters
@@ -211,3 +185,119 @@ module capacity './power-bi-dedicated/capacity/main.bicep' = {
 
 </details>
 <p>
+
+
+## Parameters
+
+**Required parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`members`](#parameter-members) | array | Members of the resource. |
+| [`name`](#parameter-name) | string | Name of the PowerBI Embedded. |
+| [`skuCapacity`](#parameter-skucapacity) | int | SkuCapacity of the resource. |
+
+**Optional parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`location`](#parameter-location) | string | Location for all Resources. |
+| [`lock`](#parameter-lock) | string | Specify the type of lock. |
+| [`mode`](#parameter-mode) | string | Mode of the resource. |
+| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| [`skuName`](#parameter-skuname) | string | SkuCapacity of the resource. |
+| [`skuTier`](#parameter-skutier) | string | SkuCapacity of the resource. |
+| [`tags`](#parameter-tags) | object | Tags of the resource. |
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `location`
+
+Location for all Resources.
+- Required: No
+- Type: string
+- Default: `[resourceGroup().location]`
+
+### Parameter: `lock`
+
+Specify the type of lock.
+- Required: No
+- Type: string
+- Default: `''`
+- Allowed: `['', CanNotDelete, NotSpecified, ReadOnly]`
+
+### Parameter: `members`
+
+Members of the resource.
+- Required: Yes
+- Type: array
+
+### Parameter: `mode`
+
+Mode of the resource.
+- Required: No
+- Type: string
+- Default: `'Gen2'`
+- Allowed: `[Gen1, Gen2]`
+
+### Parameter: `name`
+
+Name of the PowerBI Embedded.
+- Required: Yes
+- Type: string
+
+### Parameter: `roleAssignments`
+
+Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `skuCapacity`
+
+SkuCapacity of the resource.
+- Required: Yes
+- Type: int
+
+### Parameter: `skuName`
+
+SkuCapacity of the resource.
+- Required: No
+- Type: string
+- Default: `'A1'`
+- Allowed: `[A1, A2, A3, A4, A5, A6]`
+
+### Parameter: `skuTier`
+
+SkuCapacity of the resource.
+- Required: No
+- Type: string
+- Default: `'PBIE_Azure'`
+- Allowed: `[AutoPremiumHost, PBIE_Azure, Premium]`
+
+### Parameter: `tags`
+
+Tags of the resource.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+
+## Outputs
+
+| Output | Type | Description |
+| :-- | :-- | :-- |
+| `location` | string | The location the resource was deployed into. |
+| `name` | string | The Name of the PowerBi Embedded. |
+| `resourceGroupName` | string | The name of the resource group the PowerBi Embedded was created in. |
+| `resourceId` | string | The resource ID of the PowerBi Embedded. |
+
+## Cross-referenced modules
+
+_None_

@@ -5,10 +5,10 @@ This module deploys a VPN Gateway.
 ## Navigation
 
 - [Resource Types](#Resource-Types)
+- [Usage examples](#Usage-examples)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
-- [Deployment examples](#Deployment-examples)
 - [Notes](#Notes)
 
 ## Resource Types
@@ -20,59 +20,29 @@ This module deploys a VPN Gateway.
 | `Microsoft.Network/vpnGateways/natRules` | [2023-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-04-01/vpnGateways/natRules) |
 | `Microsoft.Network/vpnGateways/vpnConnections` | [2023-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-04-01/vpnGateways/vpnConnections) |
 
-## Parameters
+## Usage examples
 
-**Required parameters**
-
-| Parameter Name | Type | Description |
-| :-- | :-- | :-- |
-| `name` | string | Name of the VPN gateway. |
-| `virtualHubResourceId` | string | The resource ID of a virtual Hub to connect to. Note: The virtual Hub and Gateway must be deployed into the same location. |
-
-**Optional parameters**
-
-| Parameter Name | Type | Default Value | Allowed Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `bgpSettings` | object | `{object}` |  | BGP settings details. |
-| `enableBgpRouteTranslationForNat` | bool | `False` |  | Enable BGP routes translation for NAT on this VPN gateway. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `isRoutingPreferenceInternet` | bool | `False` |  | Enable routing preference property for the public IP interface of the VPN gateway. |
-| `location` | string | `[resourceGroup().location]` |  | Location where all resources will be created. |
-| `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
-| `natRules` | array | `[]` |  | List of all the NAT Rules to associate with the gateway. |
-| `tags` | object | `{object}` |  | Tags of the resource. |
-| `vpnConnections` | array | `[]` |  | The VPN connections to create in the VPN gateway. |
-| `vpnGatewayScaleUnit` | int | `2` |  | The scale unit for this VPN gateway. |
-
-
-## Outputs
-
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of the VPN gateway. |
-| `resourceGroupName` | string | The name of the resource group the VPN gateway was deployed into. |
-| `resourceId` | string | The resource ID of the VPN gateway. |
-
-## Cross-referenced modules
-
-_None_
-
-## Deployment examples
-
-The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
+The following module usage examples are retrieved from the content of the files hosted in the module's `tests` folder.
    >**Note**: The name of each example is based on the name of the file from which it is taken.
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Common</h3>
+   >**Note**: To reference the module, please use the following syntax `br:bicep/modules/network.vpn-gateway:1.0.0`.
+
+- [Using only defaults](#example-1-using-only-defaults)
+- [Using Maximum Parameters](#example-2-using-maximum-parameters)
+
+### Example 1: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module vpnGateway './network/vpn-gateway/main.bicep' = {
+module vpnGateway 'br:bicep/modules/network.vpn-gateway:1.0.0' = {
   name: '${uniqueString(deployment().name, location)}-test-nvgcom'
   params: {
     // Required parameters
@@ -206,14 +176,17 @@ module vpnGateway './network/vpn-gateway/main.bicep' = {
 </details>
 <p>
 
-<h3>Example 2: Min</h3>
+### Example 2: _Using Maximum Parameters_
+
+This instance deploys the module with the large set of possible parameters.
+
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module vpnGateway './network/vpn-gateway/main.bicep' = {
+module vpnGateway 'br:bicep/modules/network.vpn-gateway:1.0.0' = {
   name: '${uniqueString(deployment().name, location)}-test-nvgmin'
   params: {
     // Required parameters
@@ -255,6 +228,127 @@ module vpnGateway './network/vpn-gateway/main.bicep' = {
 </details>
 <p>
 
+
+## Parameters
+
+**Required parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`name`](#parameter-name) | string | Name of the VPN gateway. |
+| [`virtualHubResourceId`](#parameter-virtualhubresourceid) | string | The resource ID of a virtual Hub to connect to. Note: The virtual Hub and Gateway must be deployed into the same location. |
+
+**Optional parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`bgpSettings`](#parameter-bgpsettings) | object | BGP settings details. |
+| [`enableBgpRouteTranslationForNat`](#parameter-enablebgproutetranslationfornat) | bool | Enable BGP routes translation for NAT on this VPN gateway. |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`isRoutingPreferenceInternet`](#parameter-isroutingpreferenceinternet) | bool | Enable routing preference property for the public IP interface of the VPN gateway. |
+| [`location`](#parameter-location) | string | Location where all resources will be created. |
+| [`lock`](#parameter-lock) | string | Specify the type of lock. |
+| [`natRules`](#parameter-natrules) | array | List of all the NAT Rules to associate with the gateway. |
+| [`tags`](#parameter-tags) | object | Tags of the resource. |
+| [`vpnConnections`](#parameter-vpnconnections) | array | The VPN connections to create in the VPN gateway. |
+| [`vpnGatewayScaleUnit`](#parameter-vpngatewayscaleunit) | int | The scale unit for this VPN gateway. |
+
+### Parameter: `bgpSettings`
+
+BGP settings details.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `enableBgpRouteTranslationForNat`
+
+Enable BGP routes translation for NAT on this VPN gateway.
+- Required: No
+- Type: bool
+- Default: `False`
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `isRoutingPreferenceInternet`
+
+Enable routing preference property for the public IP interface of the VPN gateway.
+- Required: No
+- Type: bool
+- Default: `False`
+
+### Parameter: `location`
+
+Location where all resources will be created.
+- Required: No
+- Type: string
+- Default: `[resourceGroup().location]`
+
+### Parameter: `lock`
+
+Specify the type of lock.
+- Required: No
+- Type: string
+- Default: `''`
+- Allowed: `['', CanNotDelete, ReadOnly]`
+
+### Parameter: `name`
+
+Name of the VPN gateway.
+- Required: Yes
+- Type: string
+
+### Parameter: `natRules`
+
+List of all the NAT Rules to associate with the gateway.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `tags`
+
+Tags of the resource.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `virtualHubResourceId`
+
+The resource ID of a virtual Hub to connect to. Note: The virtual Hub and Gateway must be deployed into the same location.
+- Required: Yes
+- Type: string
+
+### Parameter: `vpnConnections`
+
+The VPN connections to create in the VPN gateway.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `vpnGatewayScaleUnit`
+
+The scale unit for this VPN gateway.
+- Required: No
+- Type: int
+- Default: `2`
+
+
+## Outputs
+
+| Output | Type | Description |
+| :-- | :-- | :-- |
+| `location` | string | The location the resource was deployed into. |
+| `name` | string | The name of the VPN gateway. |
+| `resourceGroupName` | string | The name of the resource group the VPN gateway was deployed into. |
+| `resourceId` | string | The resource ID of the VPN gateway. |
+
+## Cross-referenced modules
+
+_None_
 
 ## Notes
 

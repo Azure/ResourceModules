@@ -5,10 +5,10 @@ This module deploys an Operations Management Solution.
 ## Navigation
 
 - [Resource Types](#Resource-Types)
+- [Usage examples](#Usage-examples)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
-- [Deployment examples](#Deployment-examples)
 
 ## Resource Types
 
@@ -16,53 +16,30 @@ This module deploys an Operations Management Solution.
 | :-- | :-- |
 | `Microsoft.OperationsManagement/solutions` | [2015-11-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.OperationsManagement/2015-11-01-preview/solutions) |
 
-## Parameters
+## Usage examples
 
-**Required parameters**
-
-| Parameter Name | Type | Description |
-| :-- | :-- | :-- |
-| `logAnalyticsWorkspaceName` | string | Name of the Log Analytics workspace where the solution will be deployed/enabled. |
-| `name` | string | Name of the solution. For Microsoft published gallery solution the target solution resource name will be composed as `{name}({logAnalyticsWorkspaceName})`. |
-
-**Optional parameters**
-
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `location` | string | `[resourceGroup().location]` | Location for all resources. |
-| `product` | string | `'OMSGallery'` | The product of the deployed solution. For Microsoft published gallery solution it should be `OMSGallery` and the target solution resource product will be composed as `OMSGallery/{name}`. For third party solution, it can be anything. This is case sensitive. |
-| `publisher` | string | `'Microsoft'` | The publisher name of the deployed solution. For Microsoft published gallery solution, it is `Microsoft`. |
-
-
-## Outputs
-
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of the deployed solution. |
-| `resourceGroupName` | string | The resource group where the solution is deployed. |
-| `resourceId` | string | The resource ID of the deployed solution. |
-
-## Cross-referenced modules
-
-_None_
-
-## Deployment examples
-
-The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
+The following module usage examples are retrieved from the content of the files hosted in the module's `tests` folder.
    >**Note**: The name of each example is based on the name of the file from which it is taken.
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Min</h3>
+   >**Note**: To reference the module, please use the following syntax `br:bicep/modules/operations-management.solution:1.0.0`.
+
+- [Using Maximum Parameters](#example-1-using-maximum-parameters)
+- [Ms](#example-2-ms)
+- [Nonms](#example-3-nonms)
+
+### Example 1: _Using Maximum Parameters_
+
+This instance deploys the module with the large set of possible parameters.
+
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module solution './operations-management/solution/main.bicep' = {
+module solution 'br:bicep/modules/operations-management.solution:1.0.0' = {
   name: '${uniqueString(deployment().name, location)}-test-omsmin'
   params: {
     // Required parameters
@@ -104,14 +81,14 @@ module solution './operations-management/solution/main.bicep' = {
 </details>
 <p>
 
-<h3>Example 2: Ms</h3>
+### Example 2: _Ms_
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module solution './operations-management/solution/main.bicep' = {
+module solution 'br:bicep/modules/operations-management.solution:1.0.0' = {
   name: '${uniqueString(deployment().name, location)}-test-omsms'
   params: {
     // Required parameters
@@ -161,14 +138,14 @@ module solution './operations-management/solution/main.bicep' = {
 </details>
 <p>
 
-<h3>Example 3: Nonms</h3>
+### Example 3: _Nonms_
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module solution './operations-management/solution/main.bicep' = {
+module solution 'br:bicep/modules/operations-management.solution:1.0.0' = {
   name: '${uniqueString(deployment().name, location)}-test-omsnonms'
   params: {
     // Required parameters
@@ -217,3 +194,76 @@ module solution './operations-management/solution/main.bicep' = {
 
 </details>
 <p>
+
+
+## Parameters
+
+**Required parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`logAnalyticsWorkspaceName`](#parameter-loganalyticsworkspacename) | string | Name of the Log Analytics workspace where the solution will be deployed/enabled. |
+| [`name`](#parameter-name) | string | Name of the solution. For Microsoft published gallery solution the target solution resource name will be composed as `{name}({logAnalyticsWorkspaceName})`. |
+
+**Optional parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`location`](#parameter-location) | string | Location for all resources. |
+| [`product`](#parameter-product) | string | The product of the deployed solution. For Microsoft published gallery solution it should be `OMSGallery` and the target solution resource product will be composed as `OMSGallery/{name}`. For third party solution, it can be anything. This is case sensitive. |
+| [`publisher`](#parameter-publisher) | string | The publisher name of the deployed solution. For Microsoft published gallery solution, it is `Microsoft`. |
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `location`
+
+Location for all resources.
+- Required: No
+- Type: string
+- Default: `[resourceGroup().location]`
+
+### Parameter: `logAnalyticsWorkspaceName`
+
+Name of the Log Analytics workspace where the solution will be deployed/enabled.
+- Required: Yes
+- Type: string
+
+### Parameter: `name`
+
+Name of the solution. For Microsoft published gallery solution the target solution resource name will be composed as `{name}({logAnalyticsWorkspaceName})`.
+- Required: Yes
+- Type: string
+
+### Parameter: `product`
+
+The product of the deployed solution. For Microsoft published gallery solution it should be `OMSGallery` and the target solution resource product will be composed as `OMSGallery/{name}`. For third party solution, it can be anything. This is case sensitive.
+- Required: No
+- Type: string
+- Default: `'OMSGallery'`
+
+### Parameter: `publisher`
+
+The publisher name of the deployed solution. For Microsoft published gallery solution, it is `Microsoft`.
+- Required: No
+- Type: string
+- Default: `'Microsoft'`
+
+
+## Outputs
+
+| Output | Type | Description |
+| :-- | :-- | :-- |
+| `location` | string | The location the resource was deployed into. |
+| `name` | string | The name of the deployed solution. |
+| `resourceGroupName` | string | The resource group where the solution is deployed. |
+| `resourceId` | string | The resource ID of the deployed solution. |
+
+## Cross-referenced modules
+
+_None_
