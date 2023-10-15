@@ -7,6 +7,8 @@ The `Set-Module` utility aims to simplify contributing to the AVM library, as it
 
 To ease maintenance, you can run the utility with a `Recurse` flag from the root of your folder to update all files automatically.
 
+> **Note:** If you want to add any non-generated content to the Readme you can do so by adding it to a `## Notes` section at the bottom of the corresponding readme.
+
 ---
 
 ### _Navigation_
