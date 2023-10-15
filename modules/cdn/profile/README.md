@@ -38,7 +38,7 @@ The following module usage examples are retrieved from the content of the files 
    >**Note**: To reference the module, please use the following syntax `br:bicep/modules/cdn.profile:1.0.0`.
 
 - [Afd](#example-1-afd)
-- [Using only defaults](#example-2-using-only-defaults)
+- [Using large parameter set](#example-2-using-large-parameter-set)
 
 ### Example 1: _Afd_
 
@@ -255,9 +255,9 @@ module profile 'br:bicep/modules/cdn.profile:1.0.0' = {
 </details>
 <p>
 
-### Example 2: _Using only defaults_
+### Example 2: _Using large parameter set_
 
-This instance deploys the module with the minimum set of required parameters.
+This instance deploys the module with most of its features enabled.
 
 
 <details>
