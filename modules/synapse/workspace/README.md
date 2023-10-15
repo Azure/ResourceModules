@@ -33,15 +33,15 @@ The following module usage examples are retrieved from the content of the files 
 
    >**Note**: To reference the module, please use the following syntax `br:bicep/modules/synapse.workspace:1.0.0`.
 
-- [Using only defaults](#example-1-using-only-defaults)
+- [Using large parameter set](#example-1-using-large-parameter-set)
 - [Encrwsai](#example-2-encrwsai)
 - [Encrwuai](#example-3-encrwuai)
 - [Managedvnet](#example-4-managedvnet)
-- [Using Maximum Parameters](#example-5-using-maximum-parameters)
+- [Using only defaults](#example-5-using-only-defaults)
 
-### Example 1: _Using only defaults_
+### Example 1: _Using large parameter set_
 
-This instance deploys the module with the minimum set of required parameters.
+This instance deploys the module with most of its features enabled.
 
 
 <details>
@@ -466,9 +466,9 @@ module workspace 'br:bicep/modules/synapse.workspace:1.0.0' = {
 </details>
 <p>
 
-### Example 5: _Using Maximum Parameters_
+### Example 5: _Using only defaults_
 
-This instance deploys the module with the large set of possible parameters.
+This instance deploys the module with the minimum set of required parameters.
 
 
 <details>
