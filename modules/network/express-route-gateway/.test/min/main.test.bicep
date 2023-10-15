@@ -1,5 +1,8 @@
 targetScope = 'subscription'
 
+metadata name = 'Using Maximum Parameters'
+metadata description = 'This instance deploys the module with the large set of possible parameters.'
+
 // ========== //
 // Parameters //
 // ========== //

@@ -19,28 +19,60 @@ This module deploys a Firewall Policy Rule Collection Group.
 
 **Required parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the rule collection group to deploy. |
-| `priority` | int | Priority of the Firewall Policy Rule Collection Group resource. |
+| [`name`](#parameter-name) | string | The name of the rule collection group to deploy. |
+| [`priority`](#parameter-priority) | int | Priority of the Firewall Policy Rule Collection Group resource. |
 
 **Conditional parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `firewallPolicyName` | string | The name of the parent Firewall Policy. Required if the template is used in a standalone deployment. |
+| [`firewallPolicyName`](#parameter-firewallpolicyname) | string | The name of the parent Firewall Policy. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `ruleCollections` | array | `[]` | Group of Firewall Policy rule collections. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`ruleCollections`](#parameter-rulecollections) | array | Group of Firewall Policy rule collections. |
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `firewallPolicyName`
+
+The name of the parent Firewall Policy. Required if the template is used in a standalone deployment.
+- Required: Yes
+- Type: string
+
+### Parameter: `name`
+
+The name of the rule collection group to deploy.
+- Required: Yes
+- Type: string
+
+### Parameter: `priority`
+
+Priority of the Firewall Policy Rule Collection Group resource.
+- Required: Yes
+- Type: int
+
+### Parameter: `ruleCollections`
+
+Group of Firewall Policy rule collections.
+- Required: No
+- Type: array
+- Default: `[]`
 
 
 ## Outputs
 
-| Output Name | Type | Description |
+| Output | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the deployed rule collection group. |
 | `resourceGroupName` | string | The resource group of the deployed rule collection group. |

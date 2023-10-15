@@ -4,14 +4,14 @@ This module deploys a Load Balancer.
 
 ## Navigation
 
-- [Resource types](#Resource-types)
+- [Resource Types](#Resource-Types)
+- [Usage examples](#Usage-examples)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
-- [Deployment examples](#Deployment-examples)
 - [Notes](#Notes)
 
-## Resource types
+## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
@@ -22,67 +22,30 @@ This module deploys a Load Balancer.
 | `Microsoft.Network/loadBalancers/backendAddressPools` | [2023-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-04-01/loadBalancers/backendAddressPools) |
 | `Microsoft.Network/loadBalancers/inboundNatRules` | [2023-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-04-01/loadBalancers/inboundNatRules) |
 
-## Parameters
+## Usage examples
 
-**Required parameters**
-
-| Parameter Name | Type | Description |
-| :-- | :-- | :-- |
-| `frontendIPConfigurations` | array | Array of objects containing all frontend IP configurations. |
-| `name` | string | The Proximity Placement Groups Name. |
-
-**Optional parameters**
-
-| Parameter Name | Type | Default Value | Allowed Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `backendAddressPools` | array | `[]` |  | Collection of backend address pools used by a load balancer. |
-| `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
-| `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
-| `diagnosticMetricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | The name of metrics that will be streamed. |
-| `diagnosticSettingsName` | string | `''` |  | The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings". |
-| `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
-| `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `inboundNatRules` | array | `[]` |  | Collection of inbound NAT Rules used by a load balancer. Defining inbound NAT rules on your load balancer is mutually exclusive with defining an inbound NAT pool. Inbound NAT pools are referenced from virtual machine scale sets. NICs that are associated with individual virtual machines cannot reference an Inbound NAT pool. They have to reference individual inbound NAT rules. |
-| `loadBalancingRules` | array | `[]` |  | Array of objects containing all load balancing rules. |
-| `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
-| `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
-| `outboundRules` | array | `[]` |  | The outbound rules. |
-| `probes` | array | `[]` |  | Array of objects containing all probes, these are references in the load balancing rules. |
-| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| `skuName` | string | `'Standard'` | `[Basic, Standard]` | Name of a load balancer SKU. |
-| `tags` | object | `{object}` |  | Tags of the resource. |
-
-
-## Outputs
-
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `backendpools` | array | The backend address pools available in the load balancer. |
-| `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of the load balancer. |
-| `resourceGroupName` | string | The resource group the load balancer was deployed into. |
-| `resourceId` | string | The resource ID of the load balancer. |
-
-## Cross-referenced modules
-
-_None_
-
-## Deployment examples
-
-The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
+The following module usage examples are retrieved from the content of the files hosted in the module's `tests` folder.
    >**Note**: The name of each example is based on the name of the file from which it is taken.
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Common</h3>
+   >**Note**: To reference the module, please use the following syntax `br:bicep/modules/network.load-balancer:1.0.0`.
+
+- [Using only defaults](#example-1-using-only-defaults)
+- [Internal](#example-2-internal)
+- [Using Maximum Parameters](#example-3-using-maximum-parameters)
+
+### Example 1: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module loadBalancer './network/load-balancer/main.bicep' = {
+module loadBalancer 'br:bicep/modules/network.load-balancer:1.0.0' = {
   name: '${uniqueString(deployment().name, location)}-test-nlbcom'
   params: {
     // Required parameters
@@ -344,14 +307,14 @@ module loadBalancer './network/load-balancer/main.bicep' = {
 </details>
 <p>
 
-<h3>Example 2: Internal</h3>
+### Example 2: _Internal_
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module loadBalancer './network/load-balancer/main.bicep' = {
+module loadBalancer 'br:bicep/modules/network.load-balancer:1.0.0' = {
   name: '${uniqueString(deployment().name, location)}-test-nlbint'
   params: {
     // Required parameters
@@ -559,14 +522,17 @@ module loadBalancer './network/load-balancer/main.bicep' = {
 </details>
 <p>
 
-<h3>Example 3: Min</h3>
+### Example 3: _Using Maximum Parameters_
+
+This instance deploys the module with the large set of possible parameters.
+
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module loadBalancer './network/load-balancer/main.bicep' = {
+module loadBalancer 'br:bicep/modules/network.load-balancer:1.0.0' = {
   name: '${uniqueString(deployment().name, location)}-test-nlbmin'
   params: {
     // Required parameters
@@ -618,6 +584,186 @@ module loadBalancer './network/load-balancer/main.bicep' = {
 </details>
 <p>
 
+
+## Parameters
+
+**Required parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`frontendIPConfigurations`](#parameter-frontendipconfigurations) | array | Array of objects containing all frontend IP configurations. |
+| [`name`](#parameter-name) | string | The Proximity Placement Groups Name. |
+
+**Optional parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`backendAddressPools`](#parameter-backendaddresspools) | array | Collection of backend address pools used by a load balancer. |
+| [`diagnosticEventHubAuthorizationRuleId`](#parameter-diagnosticeventhubauthorizationruleid) | string | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
+| [`diagnosticEventHubName`](#parameter-diagnosticeventhubname) | string | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
+| [`diagnosticMetricsToEnable`](#parameter-diagnosticmetricstoenable) | array | The name of metrics that will be streamed. |
+| [`diagnosticSettingsName`](#parameter-diagnosticsettingsname) | string | The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings". |
+| [`diagnosticStorageAccountId`](#parameter-diagnosticstorageaccountid) | string | Resource ID of the diagnostic storage account. |
+| [`diagnosticWorkspaceId`](#parameter-diagnosticworkspaceid) | string | Resource ID of the diagnostic log analytics workspace. |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`inboundNatRules`](#parameter-inboundnatrules) | array | Collection of inbound NAT Rules used by a load balancer. Defining inbound NAT rules on your load balancer is mutually exclusive with defining an inbound NAT pool. Inbound NAT pools are referenced from virtual machine scale sets. NICs that are associated with individual virtual machines cannot reference an Inbound NAT pool. They have to reference individual inbound NAT rules. |
+| [`loadBalancingRules`](#parameter-loadbalancingrules) | array | Array of objects containing all load balancing rules. |
+| [`location`](#parameter-location) | string | Location for all resources. |
+| [`lock`](#parameter-lock) | string | Specify the type of lock. |
+| [`outboundRules`](#parameter-outboundrules) | array | The outbound rules. |
+| [`probes`](#parameter-probes) | array | Array of objects containing all probes, these are references in the load balancing rules. |
+| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| [`skuName`](#parameter-skuname) | string | Name of a load balancer SKU. |
+| [`tags`](#parameter-tags) | object | Tags of the resource. |
+
+### Parameter: `backendAddressPools`
+
+Collection of backend address pools used by a load balancer.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `diagnosticEventHubAuthorizationRuleId`
+
+Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `diagnosticEventHubName`
+
+Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `diagnosticMetricsToEnable`
+
+The name of metrics that will be streamed.
+- Required: No
+- Type: array
+- Default: `[AllMetrics]`
+- Allowed: `[AllMetrics]`
+
+### Parameter: `diagnosticSettingsName`
+
+The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings".
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `diagnosticStorageAccountId`
+
+Resource ID of the diagnostic storage account.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `diagnosticWorkspaceId`
+
+Resource ID of the diagnostic log analytics workspace.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `frontendIPConfigurations`
+
+Array of objects containing all frontend IP configurations.
+- Required: Yes
+- Type: array
+
+### Parameter: `inboundNatRules`
+
+Collection of inbound NAT Rules used by a load balancer. Defining inbound NAT rules on your load balancer is mutually exclusive with defining an inbound NAT pool. Inbound NAT pools are referenced from virtual machine scale sets. NICs that are associated with individual virtual machines cannot reference an Inbound NAT pool. They have to reference individual inbound NAT rules.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `loadBalancingRules`
+
+Array of objects containing all load balancing rules.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `location`
+
+Location for all resources.
+- Required: No
+- Type: string
+- Default: `[resourceGroup().location]`
+
+### Parameter: `lock`
+
+Specify the type of lock.
+- Required: No
+- Type: string
+- Default: `''`
+- Allowed: `['', CanNotDelete, ReadOnly]`
+
+### Parameter: `name`
+
+The Proximity Placement Groups Name.
+- Required: Yes
+- Type: string
+
+### Parameter: `outboundRules`
+
+The outbound rules.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `probes`
+
+Array of objects containing all probes, these are references in the load balancing rules.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `roleAssignments`
+
+Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `skuName`
+
+Name of a load balancer SKU.
+- Required: No
+- Type: string
+- Default: `'Standard'`
+- Allowed: `[Basic, Standard]`
+
+### Parameter: `tags`
+
+Tags of the resource.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+
+## Outputs
+
+| Output | Type | Description |
+| :-- | :-- | :-- |
+| `backendpools` | array | The backend address pools available in the load balancer. |
+| `location` | string | The location the resource was deployed into. |
+| `name` | string | The name of the load balancer. |
+| `resourceGroupName` | string | The resource group the load balancer was deployed into. |
+| `resourceId` | string | The resource ID of the load balancer. |
+
+## Cross-referenced modules
+
+_None_
 
 ## Notes
 

@@ -4,13 +4,13 @@ This module deploys a Network Watcher.
 
 ## Navigation
 
-- [Resource types](#Resource-types)
+- [Resource Types](#Resource-Types)
+- [Usage examples](#Usage-examples)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
-- [Deployment examples](#Deployment-examples)
 
-## Resource types
+## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
@@ -20,50 +20,29 @@ This module deploys a Network Watcher.
 | `Microsoft.Network/networkWatchers/connectionMonitors` | [2023-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-04-01/networkWatchers/connectionMonitors) |
 | `Microsoft.Network/networkWatchers/flowLogs` | [2023-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-04-01/networkWatchers/flowLogs) |
 
-## Parameters
+## Usage examples
 
-**Optional parameters**
-
-| Parameter Name | Type | Default Value | Allowed Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `connectionMonitors` | array | `[]` |  | Array that contains the Connection Monitors. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `flowLogs` | array | `[]` |  | Array that contains the Flow Logs. |
-| `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
-| `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
-| `name` | string | `[format('NetworkWatcher_{0}', parameters('location'))]` |  | Name of the Network Watcher resource (hidden). |
-| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| `tags` | object | `{object}` |  | Tags of the resource. |
-
-
-## Outputs
-
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of the deployed network watcher. |
-| `resourceGroupName` | string | The resource group the network watcher was deployed into. |
-| `resourceId` | string | The resource ID of the deployed network watcher. |
-
-## Cross-referenced modules
-
-_None_
-
-## Deployment examples
-
-The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
+The following module usage examples are retrieved from the content of the files hosted in the module's `tests` folder.
    >**Note**: The name of each example is based on the name of the file from which it is taken.
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Common</h3>
+   >**Note**: To reference the module, please use the following syntax `br:bicep/modules/network.network-watcher:1.0.0`.
+
+- [Using only defaults](#example-1-using-only-defaults)
+- [Using Maximum Parameters](#example-2-using-maximum-parameters)
+
+### Example 1: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module networkWatcher './network/network-watcher/main.bicep' = {
+module networkWatcher 'br:bicep/modules/network.network-watcher:1.0.0' = {
   name: '${uniqueString(deployment().name, testLocation)}-test-nnwcom'
   params: {
     connectionMonitors: [
@@ -275,14 +254,17 @@ module networkWatcher './network/network-watcher/main.bicep' = {
 </details>
 <p>
 
-<h3>Example 2: Min</h3>
+### Example 2: _Using Maximum Parameters_
+
+This instance deploys the module with the large set of possible parameters.
+
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module networkWatcher './network/network-watcher/main.bicep' = {
+module networkWatcher 'br:bicep/modules/network.network-watcher:1.0.0' = {
   name: '${uniqueString(deployment().name, testLocation)}-test-nnwmin'
   params: {
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
@@ -315,3 +297,90 @@ module networkWatcher './network/network-watcher/main.bicep' = {
 
 </details>
 <p>
+
+
+## Parameters
+
+**Optional parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`connectionMonitors`](#parameter-connectionmonitors) | array | Array that contains the Connection Monitors. |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`flowLogs`](#parameter-flowlogs) | array | Array that contains the Flow Logs. |
+| [`location`](#parameter-location) | string | Location for all resources. |
+| [`lock`](#parameter-lock) | string | Specify the type of lock. |
+| [`name`](#parameter-name) | string | Name of the Network Watcher resource (hidden). |
+| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| [`tags`](#parameter-tags) | object | Tags of the resource. |
+
+### Parameter: `connectionMonitors`
+
+Array that contains the Connection Monitors.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `flowLogs`
+
+Array that contains the Flow Logs.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `location`
+
+Location for all resources.
+- Required: No
+- Type: string
+- Default: `[resourceGroup().location]`
+
+### Parameter: `lock`
+
+Specify the type of lock.
+- Required: No
+- Type: string
+- Default: `''`
+- Allowed: `['', CanNotDelete, ReadOnly]`
+
+### Parameter: `name`
+
+Name of the Network Watcher resource (hidden).
+- Required: No
+- Type: string
+- Default: `[format('NetworkWatcher_{0}', parameters('location'))]`
+
+### Parameter: `roleAssignments`
+
+Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `tags`
+
+Tags of the resource.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+
+## Outputs
+
+| Output | Type | Description |
+| :-- | :-- | :-- |
+| `location` | string | The location the resource was deployed into. |
+| `name` | string | The name of the deployed network watcher. |
+| `resourceGroupName` | string | The resource group the network watcher was deployed into. |
+| `resourceId` | string | The resource ID of the deployed network watcher. |
+
+## Cross-referenced modules
+
+_None_

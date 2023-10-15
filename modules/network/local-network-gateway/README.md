@@ -4,13 +4,13 @@ This module deploys a Local Network Gateway.
 
 ## Navigation
 
-- [Resource types](#Resource-types)
+- [Resource Types](#Resource-Types)
+- [Usage examples](#Usage-examples)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
-- [Deployment examples](#Deployment-examples)
 
-## Resource types
+## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
@@ -18,59 +18,29 @@ This module deploys a Local Network Gateway.
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Network/localNetworkGateways` | [2023-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-04-01/localNetworkGateways) |
 
-## Parameters
+## Usage examples
 
-**Required parameters**
-
-| Parameter Name | Type | Description |
-| :-- | :-- | :-- |
-| `localAddressPrefixes` | array | List of the local (on-premises) IP address ranges. |
-| `localGatewayPublicIpAddress` | string | Public IP of the local gateway. |
-| `name` | string | Name of the Local Network Gateway. |
-
-**Optional parameters**
-
-| Parameter Name | Type | Default Value | Allowed Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `fqdn` | string | `''` |  | FQDN of local network gateway. |
-| `localAsn` | string | `''` |  | The BGP speaker's ASN. Not providing this value will automatically disable BGP on this Local Network Gateway resource. |
-| `localBgpPeeringAddress` | string | `''` |  | The BGP peering address and BGP identifier of this BGP speaker. Not providing this value will automatically disable BGP on this Local Network Gateway resource. |
-| `localPeerWeight` | string | `''` |  | The weight added to routes learned from this BGP speaker. This will only take effect if both the localAsn and the localBgpPeeringAddress values are provided. |
-| `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
-| `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
-| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| `tags` | object | `{object}` |  | Tags of the resource. |
-
-
-## Outputs
-
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of the local network gateway. |
-| `resourceGroupName` | string | The resource group the local network gateway was deployed into. |
-| `resourceId` | string | The resource ID of the local network gateway. |
-
-## Cross-referenced modules
-
-_None_
-
-## Deployment examples
-
-The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
+The following module usage examples are retrieved from the content of the files hosted in the module's `tests` folder.
    >**Note**: The name of each example is based on the name of the file from which it is taken.
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Common</h3>
+   >**Note**: To reference the module, please use the following syntax `br:bicep/modules/network.local-network-gateway:1.0.0`.
+
+- [Using only defaults](#example-1-using-only-defaults)
+- [Using Maximum Parameters](#example-2-using-maximum-parameters)
+
+### Example 1: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module localNetworkGateway './network/local-network-gateway/main.bicep' = {
+module localNetworkGateway 'br:bicep/modules/network.local-network-gateway:1.0.0' = {
   name: '${uniqueString(deployment().name, location)}-test-nlngcom'
   params: {
     // Required parameters
@@ -164,14 +134,17 @@ module localNetworkGateway './network/local-network-gateway/main.bicep' = {
 </details>
 <p>
 
-<h3>Example 2: Min</h3>
+### Example 2: _Using Maximum Parameters_
+
+This instance deploys the module with the large set of possible parameters.
+
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module localNetworkGateway './network/local-network-gateway/main.bicep' = {
+module localNetworkGateway 'br:bicep/modules/network.local-network-gateway:1.0.0' = {
   name: '${uniqueString(deployment().name, location)}-test-nlngmin'
   params: {
     // Required parameters
@@ -220,3 +193,124 @@ module localNetworkGateway './network/local-network-gateway/main.bicep' = {
 
 </details>
 <p>
+
+
+## Parameters
+
+**Required parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`localAddressPrefixes`](#parameter-localaddressprefixes) | array | List of the local (on-premises) IP address ranges. |
+| [`localGatewayPublicIpAddress`](#parameter-localgatewaypublicipaddress) | string | Public IP of the local gateway. |
+| [`name`](#parameter-name) | string | Name of the Local Network Gateway. |
+
+**Optional parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`fqdn`](#parameter-fqdn) | string | FQDN of local network gateway. |
+| [`localAsn`](#parameter-localasn) | string | The BGP speaker's ASN. Not providing this value will automatically disable BGP on this Local Network Gateway resource. |
+| [`localBgpPeeringAddress`](#parameter-localbgppeeringaddress) | string | The BGP peering address and BGP identifier of this BGP speaker. Not providing this value will automatically disable BGP on this Local Network Gateway resource. |
+| [`localPeerWeight`](#parameter-localpeerweight) | string | The weight added to routes learned from this BGP speaker. This will only take effect if both the localAsn and the localBgpPeeringAddress values are provided. |
+| [`location`](#parameter-location) | string | Location for all resources. |
+| [`lock`](#parameter-lock) | string | Specify the type of lock. |
+| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| [`tags`](#parameter-tags) | object | Tags of the resource. |
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `fqdn`
+
+FQDN of local network gateway.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `localAddressPrefixes`
+
+List of the local (on-premises) IP address ranges.
+- Required: Yes
+- Type: array
+
+### Parameter: `localAsn`
+
+The BGP speaker's ASN. Not providing this value will automatically disable BGP on this Local Network Gateway resource.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `localBgpPeeringAddress`
+
+The BGP peering address and BGP identifier of this BGP speaker. Not providing this value will automatically disable BGP on this Local Network Gateway resource.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `localGatewayPublicIpAddress`
+
+Public IP of the local gateway.
+- Required: Yes
+- Type: string
+
+### Parameter: `localPeerWeight`
+
+The weight added to routes learned from this BGP speaker. This will only take effect if both the localAsn and the localBgpPeeringAddress values are provided.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `location`
+
+Location for all resources.
+- Required: No
+- Type: string
+- Default: `[resourceGroup().location]`
+
+### Parameter: `lock`
+
+Specify the type of lock.
+- Required: No
+- Type: string
+- Default: `''`
+- Allowed: `['', CanNotDelete, ReadOnly]`
+
+### Parameter: `name`
+
+Name of the Local Network Gateway.
+- Required: Yes
+- Type: string
+
+### Parameter: `roleAssignments`
+
+Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `tags`
+
+Tags of the resource.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+
+## Outputs
+
+| Output | Type | Description |
+| :-- | :-- | :-- |
+| `location` | string | The location the resource was deployed into. |
+| `name` | string | The name of the local network gateway. |
+| `resourceGroupName` | string | The resource group the local network gateway was deployed into. |
+| `resourceId` | string | The resource ID of the local network gateway. |
+
+## Cross-referenced modules
+
+_None_

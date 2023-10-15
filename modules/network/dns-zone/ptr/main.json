@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.20.4.51522",
-      "templateHash": "14950916556855362521"
+      "version": "0.22.6.54827",
+      "templateHash": "10998530599333888745"
     },
     "name": "Public DNS Zone PTR record",
     "description": "This module deploys a Public DNS Zone PTR record.",
@@ -119,8 +119,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.20.4.51522",
-              "templateHash": "14048540340305231771"
+              "version": "0.22.6.54827",
+              "templateHash": "17983831737512612600"
             }
           },
           "parameters": {
