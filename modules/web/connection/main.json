@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.21.1.54444",
-      "templateHash": "8124229126186371962"
+      "version": "0.22.6.54827",
+      "templateHash": "1868688579888274089"
     },
     "name": "API Connections",
     "description": "This module deploys an Azure API Connection.",
@@ -186,8 +186,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "16133609981398716025"
+              "version": "0.22.6.54827",
+              "templateHash": "4656118963929706650"
             }
           },
           "parameters": {

@@ -4,13 +4,13 @@ This module deploys an Azure API Connection.
 
 ## Navigation
 
-- [Resource types](#Resource-types)
+- [Resource Types](#Resource-Types)
+- [Usage examples](#Usage-examples)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
-- [Deployment examples](#Deployment-examples)
 
-## Resource types
+## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
@@ -18,60 +18,28 @@ This module deploys an Azure API Connection.
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Web/connections` | [2016-06-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/2016-06-01/connections) |
 
-## Parameters
+## Usage examples
 
-**Required parameters**
-
-| Parameter Name | Type | Description |
-| :-- | :-- | :-- |
-| `displayName` | string | Display name connection. Example: 'blobconnection' when using blobs. It can change depending on the resource. |
-| `name` | string | Connection name for connection. Example: 'azureblob' when using blobs.  It can change depending on the resource. |
-
-**Optional parameters**
-
-| Parameter Name | Type | Default Value | Allowed Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `api` | object | `{object}` |  | Specific values for some API connections. |
-| `customParameterValues` | object | `{object}` |  | Customized parameter values for specific connections. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `location` | string | `[resourceGroup().location]` |  | Location of the deployment. |
-| `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
-| `nonSecretParameterValues` | object | `{object}` |  | Dictionary of nonsecret parameter values. |
-| `parameterValues` | secureObject | `{object}` |  | Connection strings or access keys for connection. Example: 'accountName' and 'accessKey' when using blobs.  It can change depending on the resource. |
-| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| `statuses` | array | `[]` |  | Status of the connection. |
-| `tags` | object | `{object}` |  | Tags of the resource. |
-| `testLinks` | array | `[]` |  | Links to test the API connection. |
-
-
-## Outputs
-
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of the connection. |
-| `resourceGroupName` | string | The resource group the connection was deployed into. |
-| `resourceId` | string | The resource ID of the connection. |
-
-## Cross-referenced modules
-
-_None_
-
-## Deployment examples
-
-The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
+The following module usage examples are retrieved from the content of the files hosted in the module's `tests` folder.
    >**Note**: The name of each example is based on the name of the file from which it is taken.
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Common</h3>
+   >**Note**: To reference the module, please use the following syntax `br:bicep/modules/web.connection:1.0.0`.
+
+- [Using only defaults](#example-1-using-only-defaults)
+
+### Example 1: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module connection './web/connection/main.bicep' = {
+module connection 'br:bicep/modules/web.connection:1.0.0' = {
   name: '${uniqueString(deployment().name, location)}-test-wccom'
   params: {
     // Required parameters
@@ -156,3 +124,133 @@ module connection './web/connection/main.bicep' = {
 
 </details>
 <p>
+
+
+## Parameters
+
+**Required parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`displayName`](#parameter-displayname) | string | Display name connection. Example: 'blobconnection' when using blobs. It can change depending on the resource. |
+| [`name`](#parameter-name) | string | Connection name for connection. Example: 'azureblob' when using blobs.  It can change depending on the resource. |
+
+**Optional parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`api`](#parameter-api) | object | Specific values for some API connections. |
+| [`customParameterValues`](#parameter-customparametervalues) | object | Customized parameter values for specific connections. |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`location`](#parameter-location) | string | Location of the deployment. |
+| [`lock`](#parameter-lock) | string | Specify the type of lock. |
+| [`nonSecretParameterValues`](#parameter-nonsecretparametervalues) | object | Dictionary of nonsecret parameter values. |
+| [`parameterValues`](#parameter-parametervalues) | secureObject | Connection strings or access keys for connection. Example: 'accountName' and 'accessKey' when using blobs.  It can change depending on the resource. |
+| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| [`statuses`](#parameter-statuses) | array | Status of the connection. |
+| [`tags`](#parameter-tags) | object | Tags of the resource. |
+| [`testLinks`](#parameter-testlinks) | array | Links to test the API connection. |
+
+### Parameter: `api`
+
+Specific values for some API connections.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `customParameterValues`
+
+Customized parameter values for specific connections.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `displayName`
+
+Display name connection. Example: 'blobconnection' when using blobs. It can change depending on the resource.
+- Required: Yes
+- Type: string
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `location`
+
+Location of the deployment.
+- Required: No
+- Type: string
+- Default: `[resourceGroup().location]`
+
+### Parameter: `lock`
+
+Specify the type of lock.
+- Required: No
+- Type: string
+- Default: `''`
+- Allowed: `['', CanNotDelete, ReadOnly]`
+
+### Parameter: `name`
+
+Connection name for connection. Example: 'azureblob' when using blobs.  It can change depending on the resource.
+- Required: Yes
+- Type: string
+
+### Parameter: `nonSecretParameterValues`
+
+Dictionary of nonsecret parameter values.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `parameterValues`
+
+Connection strings or access keys for connection. Example: 'accountName' and 'accessKey' when using blobs.  It can change depending on the resource.
+- Required: No
+- Type: secureObject
+- Default: `{object}`
+
+### Parameter: `roleAssignments`
+
+Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `statuses`
+
+Status of the connection.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `tags`
+
+Tags of the resource.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `testLinks`
+
+Links to test the API connection.
+- Required: No
+- Type: array
+- Default: `[]`
+
+
+## Outputs
+
+| Output | Type | Description |
+| :-- | :-- | :-- |
+| `location` | string | The location the resource was deployed into. |
+| `name` | string | The name of the connection. |
+| `resourceGroupName` | string | The resource group the connection was deployed into. |
+| `resourceId` | string | The resource ID of the connection. |
+
+## Cross-referenced modules
+
+_None_

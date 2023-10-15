@@ -4,14 +4,14 @@ This module deploys a SQL Managed Instance.
 
 ## Navigation
 
-- [Resource types](#Resource-types)
+- [Resource Types](#Resource-Types)
+- [Usage examples](#Usage-examples)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
-- [Deployment examples](#Deployment-examples)
 - [Notes](#Notes)
 
-## Resource types
+## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
@@ -28,97 +28,30 @@ This module deploys a SQL Managed Instance.
 | `Microsoft.Sql/managedInstances/securityAlertPolicies` | [2022-02-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Sql/2022-02-01-preview/managedInstances/securityAlertPolicies) |
 | `Microsoft.Sql/managedInstances/vulnerabilityAssessments` | [2022-02-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Sql/2022-02-01-preview/managedInstances/vulnerabilityAssessments) |
 
-## Parameters
+## Usage examples
 
-**Required parameters**
-
-| Parameter Name | Type | Description |
-| :-- | :-- | :-- |
-| `administratorLogin` | string | The username used to establish jumpbox VMs. |
-| `administratorLoginPassword` | securestring | The password given to the admin user. |
-| `name` | string | The name of the SQL managed instance. |
-| `subnetId` | string | The fully qualified resource ID of the subnet on which the SQL managed instance will be placed. |
-
-**Conditional parameters**
-
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `primaryUserAssignedIdentityId` | string | `''` | The resource ID of a user assigned identity to be used by default. Required if "userAssignedIdentities" is not empty. |
-
-**Optional parameters**
-
-| Parameter Name | Type | Default Value | Allowed Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `administratorsObj` | object | `{object}` |  | The administrator configuration. |
-| `collation` | string | `'SQL_Latin1_General_CP1_CI_AS'` |  | Collation of the managed instance. |
-| `databases` | array | `[]` |  | Databases to create in this server. |
-| `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
-| `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
-| `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `['', allLogs, ResourceUsageStats, SQLSecurityAuditEvents]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
-| `diagnosticMetricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | The name of metrics that will be streamed. |
-| `diagnosticSettingsName` | string | `''` |  | The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings". |
-| `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
-| `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
-| `dnsZonePartner` | string | `''` |  | The resource ID of another managed instance whose DNS zone this managed instance will share after creation. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `encryptionProtectorObj` | _[encryptionProtector](encryption-protector/README.md)_ object | `{object}` |  | The encryption protection configuration. |
-| `hardwareFamily` | string | `'Gen5'` |  | If the service has different generations of hardware, for the same SKU, then that can be captured here. |
-| `instancePoolResourceId` | string | `''` |  | The resource ID of the instance pool this managed server belongs to. |
-| `keys` | array | `[]` |  | The keys to configure. |
-| `licenseType` | string | `'LicenseIncluded'` | `[BasePrice, LicenseIncluded]` | The license type. Possible values are 'LicenseIncluded' (regular price inclusive of a new SQL license) and 'BasePrice' (discounted AHB price for bringing your own SQL licenses). |
-| `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
-| `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
-| `managedInstanceCreateMode` | string | `'Default'` | `[Default, PointInTimeRestore]` | Specifies the mode of database creation. Default: Regular instance creation. Restore: Creates an instance by restoring a set of backups to specific point in time. RestorePointInTime and SourceManagedInstanceId must be specified. |
-| `minimalTlsVersion` | string | `'1.2'` | `[1.0, 1.1, 1.2, None]` | Minimal TLS version allowed. |
-| `proxyOverride` | string | `'Proxy'` | `[Default, Proxy, Redirect]` | Connection type used for connecting to the instance. |
-| `publicDataEndpointEnabled` | bool | `False` |  | Whether or not the public data endpoint is enabled. |
-| `requestedBackupStorageRedundancy` | string | `'Geo'` | `[Geo, GeoZone, Local, Zone]` | The storage account type used to store backups for this database. |
-| `restorePointInTime` | string | `''` |  | Specifies the point in time (ISO8601 format) of the source database that will be restored to create the new database. |
-| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| `securityAlertPoliciesObj` | object | `{object}` |  | The security alert policy configuration. |
-| `servicePrincipal` | string | `'None'` | `[None, SystemAssigned]` | Service principal type. If using AD Authentication and applying Admin, must be set to `SystemAssigned`. Then Global Admin must allow Reader access to Azure AD for the Service Principal. |
-| `skuName` | string | `'GP_Gen5'` |  | The name of the SKU, typically, a letter + Number code, e.g. P3. |
-| `skuTier` | string | `'GeneralPurpose'` |  | The tier or edition of the particular SKU, e.g. Basic, Premium. |
-| `sourceManagedInstanceId` | string | `''` |  | The resource identifier of the source managed instance associated with create operation of this instance. |
-| `storageSizeInGB` | int | `32` |  | Storage size in GB. Minimum value: 32. Maximum value: 8192. Increments of 32 GB allowed only. |
-| `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
-| `tags` | object | `{object}` |  | Tags of the resource. |
-| `timezoneId` | string | `'UTC'` |  | ID of the timezone. Allowed values are timezones supported by Windows. |
-| `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
-| `vCores` | int | `4` |  | The number of vCores. Allowed values: 8, 16, 24, 32, 40, 64, 80. |
-| `vulnerabilityAssessmentsObj` | object | `{object}` |  | The vulnerability assessment configuration. |
-| `zoneRedundant` | bool | `False` |  | Whether or not multi-az is enabled. |
-
-
-## Outputs
-
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of the deployed managed instance. |
-| `resourceGroupName` | string | The resource group of the deployed managed instance. |
-| `resourceId` | string | The resource ID of the deployed managed instance. |
-| `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
-
-## Cross-referenced modules
-
-_None_
-
-## Deployment examples
-
-The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
+The following module usage examples are retrieved from the content of the files hosted in the module's `tests` folder.
    >**Note**: The name of each example is based on the name of the file from which it is taken.
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Common</h3>
+   >**Note**: To reference the module, please use the following syntax `br:bicep/modules/sql.managed-instance:1.0.0`.
+
+- [Using only defaults](#example-1-using-only-defaults)
+- [Using Maximum Parameters](#example-2-using-maximum-parameters)
+- [Vulnassm](#example-3-vulnassm)
+
+### Example 1: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module managedInstance './sql/managed-instance/main.bicep' = {
+module managedInstance 'br:bicep/modules/sql.managed-instance:1.0.0' = {
   name: '${uniqueString(deployment().name, location)}-test-sqlmicom'
   params: {
     // Required parameters
@@ -362,14 +295,17 @@ module managedInstance './sql/managed-instance/main.bicep' = {
 </details>
 <p>
 
-<h3>Example 2: Min</h3>
+### Example 2: _Using Maximum Parameters_
+
+This instance deploys the module with the large set of possible parameters.
+
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module managedInstance './sql/managed-instance/main.bicep' = {
+module managedInstance 'br:bicep/modules/sql.managed-instance:1.0.0' = {
   name: '${uniqueString(deployment().name, location)}-test-sqlmimin'
   params: {
     // Required parameters
@@ -419,14 +355,14 @@ module managedInstance './sql/managed-instance/main.bicep' = {
 </details>
 <p>
 
-<h3>Example 3: Vulnassm</h3>
+### Example 3: _Vulnassm_
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module managedInstance './sql/managed-instance/main.bicep' = {
+module managedInstance 'br:bicep/modules/sql.managed-instance:1.0.0' = {
   name: '${uniqueString(deployment().name, location)}-test-sqlmivln'
   params: {
     // Required parameters
@@ -528,6 +464,395 @@ module managedInstance './sql/managed-instance/main.bicep' = {
 </details>
 <p>
 
+
+## Parameters
+
+**Required parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`administratorLogin`](#parameter-administratorlogin) | string | The username used to establish jumpbox VMs. |
+| [`administratorLoginPassword`](#parameter-administratorloginpassword) | securestring | The password given to the admin user. |
+| [`name`](#parameter-name) | string | The name of the SQL managed instance. |
+| [`subnetId`](#parameter-subnetid) | string | The fully qualified resource ID of the subnet on which the SQL managed instance will be placed. |
+
+**Conditional parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`primaryUserAssignedIdentityId`](#parameter-primaryuserassignedidentityid) | string | The resource ID of a user assigned identity to be used by default. Required if "userAssignedIdentities" is not empty. |
+
+**Optional parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`administratorsObj`](#parameter-administratorsobj) | object | The administrator configuration. |
+| [`collation`](#parameter-collation) | string | Collation of the managed instance. |
+| [`databases`](#parameter-databases) | array | Databases to create in this server. |
+| [`diagnosticEventHubAuthorizationRuleId`](#parameter-diagnosticeventhubauthorizationruleid) | string | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
+| [`diagnosticEventHubName`](#parameter-diagnosticeventhubname) | string | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
+| [`diagnosticLogCategoriesToEnable`](#parameter-diagnosticlogcategoriestoenable) | array | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
+| [`diagnosticMetricsToEnable`](#parameter-diagnosticmetricstoenable) | array | The name of metrics that will be streamed. |
+| [`diagnosticSettingsName`](#parameter-diagnosticsettingsname) | string | The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings". |
+| [`diagnosticStorageAccountId`](#parameter-diagnosticstorageaccountid) | string | Resource ID of the diagnostic storage account. |
+| [`diagnosticWorkspaceId`](#parameter-diagnosticworkspaceid) | string | Resource ID of the diagnostic log analytics workspace. |
+| [`dnsZonePartner`](#parameter-dnszonepartner) | string | The resource ID of another managed instance whose DNS zone this managed instance will share after creation. |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`encryptionProtectorObj`](#parameter-encryptionprotectorobj) | object | The encryption protection configuration. |
+| [`hardwareFamily`](#parameter-hardwarefamily) | string | If the service has different generations of hardware, for the same SKU, then that can be captured here. |
+| [`instancePoolResourceId`](#parameter-instancepoolresourceid) | string | The resource ID of the instance pool this managed server belongs to. |
+| [`keys`](#parameter-keys) | array | The keys to configure. |
+| [`licenseType`](#parameter-licensetype) | string | The license type. Possible values are 'LicenseIncluded' (regular price inclusive of a new SQL license) and 'BasePrice' (discounted AHB price for bringing your own SQL licenses). |
+| [`location`](#parameter-location) | string | Location for all resources. |
+| [`lock`](#parameter-lock) | string | Specify the type of lock. |
+| [`managedInstanceCreateMode`](#parameter-managedinstancecreatemode) | string | Specifies the mode of database creation. Default: Regular instance creation. Restore: Creates an instance by restoring a set of backups to specific point in time. RestorePointInTime and SourceManagedInstanceId must be specified. |
+| [`minimalTlsVersion`](#parameter-minimaltlsversion) | string | Minimal TLS version allowed. |
+| [`proxyOverride`](#parameter-proxyoverride) | string | Connection type used for connecting to the instance. |
+| [`publicDataEndpointEnabled`](#parameter-publicdataendpointenabled) | bool | Whether or not the public data endpoint is enabled. |
+| [`requestedBackupStorageRedundancy`](#parameter-requestedbackupstorageredundancy) | string | The storage account type used to store backups for this database. |
+| [`restorePointInTime`](#parameter-restorepointintime) | string | Specifies the point in time (ISO8601 format) of the source database that will be restored to create the new database. |
+| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| [`securityAlertPoliciesObj`](#parameter-securityalertpoliciesobj) | object | The security alert policy configuration. |
+| [`servicePrincipal`](#parameter-serviceprincipal) | string | Service principal type. If using AD Authentication and applying Admin, must be set to `SystemAssigned`. Then Global Admin must allow Reader access to Azure AD for the Service Principal. |
+| [`skuName`](#parameter-skuname) | string | The name of the SKU, typically, a letter + Number code, e.g. P3. |
+| [`skuTier`](#parameter-skutier) | string | The tier or edition of the particular SKU, e.g. Basic, Premium. |
+| [`sourceManagedInstanceId`](#parameter-sourcemanagedinstanceid) | string | The resource identifier of the source managed instance associated with create operation of this instance. |
+| [`storageSizeInGB`](#parameter-storagesizeingb) | int | Storage size in GB. Minimum value: 32. Maximum value: 8192. Increments of 32 GB allowed only. |
+| [`systemAssignedIdentity`](#parameter-systemassignedidentity) | bool | Enables system assigned managed identity on the resource. |
+| [`tags`](#parameter-tags) | object | Tags of the resource. |
+| [`timezoneId`](#parameter-timezoneid) | string | ID of the timezone. Allowed values are timezones supported by Windows. |
+| [`userAssignedIdentities`](#parameter-userassignedidentities) | object | The ID(s) to assign to the resource. |
+| [`vCores`](#parameter-vcores) | int | The number of vCores. Allowed values: 8, 16, 24, 32, 40, 64, 80. |
+| [`vulnerabilityAssessmentsObj`](#parameter-vulnerabilityassessmentsobj) | object | The vulnerability assessment configuration. |
+| [`zoneRedundant`](#parameter-zoneredundant) | bool | Whether or not multi-az is enabled. |
+
+### Parameter: `administratorLogin`
+
+The username used to establish jumpbox VMs.
+- Required: Yes
+- Type: string
+
+### Parameter: `administratorLoginPassword`
+
+The password given to the admin user.
+- Required: Yes
+- Type: securestring
+
+### Parameter: `administratorsObj`
+
+The administrator configuration.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `collation`
+
+Collation of the managed instance.
+- Required: No
+- Type: string
+- Default: `'SQL_Latin1_General_CP1_CI_AS'`
+
+### Parameter: `databases`
+
+Databases to create in this server.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `diagnosticEventHubAuthorizationRuleId`
+
+Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `diagnosticEventHubName`
+
+Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `diagnosticLogCategoriesToEnable`
+
+The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection.
+- Required: No
+- Type: array
+- Default: `[allLogs]`
+- Allowed: `['', allLogs, ResourceUsageStats, SQLSecurityAuditEvents]`
+
+### Parameter: `diagnosticMetricsToEnable`
+
+The name of metrics that will be streamed.
+- Required: No
+- Type: array
+- Default: `[AllMetrics]`
+- Allowed: `[AllMetrics]`
+
+### Parameter: `diagnosticSettingsName`
+
+The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings".
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `diagnosticStorageAccountId`
+
+Resource ID of the diagnostic storage account.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `diagnosticWorkspaceId`
+
+Resource ID of the diagnostic log analytics workspace.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `dnsZonePartner`
+
+The resource ID of another managed instance whose DNS zone this managed instance will share after creation.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `encryptionProtectorObj`
+
+The encryption protection configuration.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `hardwareFamily`
+
+If the service has different generations of hardware, for the same SKU, then that can be captured here.
+- Required: No
+- Type: string
+- Default: `'Gen5'`
+
+### Parameter: `instancePoolResourceId`
+
+The resource ID of the instance pool this managed server belongs to.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `keys`
+
+The keys to configure.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `licenseType`
+
+The license type. Possible values are 'LicenseIncluded' (regular price inclusive of a new SQL license) and 'BasePrice' (discounted AHB price for bringing your own SQL licenses).
+- Required: No
+- Type: string
+- Default: `'LicenseIncluded'`
+- Allowed: `[BasePrice, LicenseIncluded]`
+
+### Parameter: `location`
+
+Location for all resources.
+- Required: No
+- Type: string
+- Default: `[resourceGroup().location]`
+
+### Parameter: `lock`
+
+Specify the type of lock.
+- Required: No
+- Type: string
+- Default: `''`
+- Allowed: `['', CanNotDelete, ReadOnly]`
+
+### Parameter: `managedInstanceCreateMode`
+
+Specifies the mode of database creation. Default: Regular instance creation. Restore: Creates an instance by restoring a set of backups to specific point in time. RestorePointInTime and SourceManagedInstanceId must be specified.
+- Required: No
+- Type: string
+- Default: `'Default'`
+- Allowed: `[Default, PointInTimeRestore]`
+
+### Parameter: `minimalTlsVersion`
+
+Minimal TLS version allowed.
+- Required: No
+- Type: string
+- Default: `'1.2'`
+- Allowed: `[1.0, 1.1, 1.2, None]`
+
+### Parameter: `name`
+
+The name of the SQL managed instance.
+- Required: Yes
+- Type: string
+
+### Parameter: `primaryUserAssignedIdentityId`
+
+The resource ID of a user assigned identity to be used by default. Required if "userAssignedIdentities" is not empty.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `proxyOverride`
+
+Connection type used for connecting to the instance.
+- Required: No
+- Type: string
+- Default: `'Proxy'`
+- Allowed: `[Default, Proxy, Redirect]`
+
+### Parameter: `publicDataEndpointEnabled`
+
+Whether or not the public data endpoint is enabled.
+- Required: No
+- Type: bool
+- Default: `False`
+
+### Parameter: `requestedBackupStorageRedundancy`
+
+The storage account type used to store backups for this database.
+- Required: No
+- Type: string
+- Default: `'Geo'`
+- Allowed: `[Geo, GeoZone, Local, Zone]`
+
+### Parameter: `restorePointInTime`
+
+Specifies the point in time (ISO8601 format) of the source database that will be restored to create the new database.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `roleAssignments`
+
+Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `securityAlertPoliciesObj`
+
+The security alert policy configuration.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `servicePrincipal`
+
+Service principal type. If using AD Authentication and applying Admin, must be set to `SystemAssigned`. Then Global Admin must allow Reader access to Azure AD for the Service Principal.
+- Required: No
+- Type: string
+- Default: `'None'`
+- Allowed: `[None, SystemAssigned]`
+
+### Parameter: `skuName`
+
+The name of the SKU, typically, a letter + Number code, e.g. P3.
+- Required: No
+- Type: string
+- Default: `'GP_Gen5'`
+
+### Parameter: `skuTier`
+
+The tier or edition of the particular SKU, e.g. Basic, Premium.
+- Required: No
+- Type: string
+- Default: `'GeneralPurpose'`
+
+### Parameter: `sourceManagedInstanceId`
+
+The resource identifier of the source managed instance associated with create operation of this instance.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `storageSizeInGB`
+
+Storage size in GB. Minimum value: 32. Maximum value: 8192. Increments of 32 GB allowed only.
+- Required: No
+- Type: int
+- Default: `32`
+
+### Parameter: `subnetId`
+
+The fully qualified resource ID of the subnet on which the SQL managed instance will be placed.
+- Required: Yes
+- Type: string
+
+### Parameter: `systemAssignedIdentity`
+
+Enables system assigned managed identity on the resource.
+- Required: No
+- Type: bool
+- Default: `False`
+
+### Parameter: `tags`
+
+Tags of the resource.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `timezoneId`
+
+ID of the timezone. Allowed values are timezones supported by Windows.
+- Required: No
+- Type: string
+- Default: `'UTC'`
+
+### Parameter: `userAssignedIdentities`
+
+The ID(s) to assign to the resource.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `vCores`
+
+The number of vCores. Allowed values: 8, 16, 24, 32, 40, 64, 80.
+- Required: No
+- Type: int
+- Default: `4`
+
+### Parameter: `vulnerabilityAssessmentsObj`
+
+The vulnerability assessment configuration.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `zoneRedundant`
+
+Whether or not multi-az is enabled.
+- Required: No
+- Type: bool
+- Default: `False`
+
+
+## Outputs
+
+| Output | Type | Description |
+| :-- | :-- | :-- |
+| `location` | string | The location the resource was deployed into. |
+| `name` | string | The name of the deployed managed instance. |
+| `resourceGroupName` | string | The resource group of the deployed managed instance. |
+| `resourceId` | string | The resource ID of the deployed managed instance. |
+| `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
+
+## Cross-referenced modules
+
+_None_
 
 ## Notes
 
