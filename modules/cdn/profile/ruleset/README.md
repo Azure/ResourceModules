@@ -20,27 +20,53 @@ This module deploys a CDN Profile rule set.
 
 **Required parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the rule set. |
-| `profileName` | string | The name of the CDN profile. |
+| [`name`](#parameter-name) | string | The name of the rule set. |
+| [`profileName`](#parameter-profilename) | string | The name of the CDN profile. |
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
 
 **Optinal parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `rules` | array | The rules to apply to the rule set. |
+| [`rules`](#parameter-rules) | array | The rules to apply to the rule set. |
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `name`
+
+The name of the rule set.
+- Required: Yes
+- Type: string
+
+### Parameter: `profileName`
+
+The name of the CDN profile.
+- Required: Yes
+- Type: string
+
+### Parameter: `rules`
+
+The rules to apply to the rule set.
+- Required: No
+- Type: array
+- Default: `[]`
 
 
 ## Outputs
 
-| Output Name | Type | Description |
+| Output | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the rule set. |
 | `resourceGroupName` | string | The name of the resource group the custom domain was created in. |

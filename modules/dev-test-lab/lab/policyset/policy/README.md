@@ -21,34 +21,109 @@ DevTest lab policies are used to modify the lab settings such as only allowing c
 
 **Required parameters**
 
-| Parameter Name | Type | Allowed Values | Description |
-| :-- | :-- | :-- | :-- |
-| `evaluatorType` | string | `[AllowedValuesPolicy, MaxValuePolicy]` | The evaluator type of the policy (i.e. AllowedValuesPolicy, MaxValuePolicy). |
-| `factName` | string | `[EnvironmentTemplate, GalleryImage, LabPremiumVmCount, LabTargetCost, LabVmCount, LabVmSize, ScheduleEditPermission, UserOwnedLabPremiumVmCount, UserOwnedLabVmCount, UserOwnedLabVmCountInSubnet]` | The fact name of the policy. |
-| `name` | string |  | The name of the policy. |
-| `threshold` | string |  | The threshold of the policy (i.e. a number for MaxValuePolicy, and a JSON array of values for AllowedValuesPolicy). |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`evaluatorType`](#parameter-evaluatortype) | string | The evaluator type of the policy (i.e. AllowedValuesPolicy, MaxValuePolicy). |
+| [`factName`](#parameter-factname) | string | The fact name of the policy. |
+| [`name`](#parameter-name) | string | The name of the policy. |
+| [`threshold`](#parameter-threshold) | string | The threshold of the policy (i.e. a number for MaxValuePolicy, and a JSON array of values for AllowedValuesPolicy). |
 
 **Conditional parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `labName` | string | The name of the parent lab. Required if the template is used in a standalone deployment. |
+| [`labName`](#parameter-labname) | string | The name of the parent lab. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Allowed Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `description` | string | `''` |  | The description of the policy. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `factData` | string | `''` |  | The fact data of the policy. |
-| `policySetName` | string | `'default'` |  | The name of the parent policy set. |
-| `status` | string | `'Enabled'` | `[Disabled, Enabled]` | The status of the policy. |
-| `tags` | object | `{object}` |  | Tags of the resource. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`description`](#parameter-description) | string | The description of the policy. |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`factData`](#parameter-factdata) | string | The fact data of the policy. |
+| [`policySetName`](#parameter-policysetname) | string | The name of the parent policy set. |
+| [`status`](#parameter-status) | string | The status of the policy. |
+| [`tags`](#parameter-tags) | object | Tags of the resource. |
+
+### Parameter: `description`
+
+The description of the policy.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `evaluatorType`
+
+The evaluator type of the policy (i.e. AllowedValuesPolicy, MaxValuePolicy).
+- Required: Yes
+- Type: string
+- Allowed: `[AllowedValuesPolicy, MaxValuePolicy]`
+
+### Parameter: `factData`
+
+The fact data of the policy.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `factName`
+
+The fact name of the policy.
+- Required: Yes
+- Type: string
+- Allowed: `[EnvironmentTemplate, GalleryImage, LabPremiumVmCount, LabTargetCost, LabVmCount, LabVmSize, ScheduleEditPermission, UserOwnedLabPremiumVmCount, UserOwnedLabVmCount, UserOwnedLabVmCountInSubnet]`
+
+### Parameter: `labName`
+
+The name of the parent lab. Required if the template is used in a standalone deployment.
+- Required: Yes
+- Type: string
+
+### Parameter: `name`
+
+The name of the policy.
+- Required: Yes
+- Type: string
+
+### Parameter: `policySetName`
+
+The name of the parent policy set.
+- Required: No
+- Type: string
+- Default: `'default'`
+
+### Parameter: `status`
+
+The status of the policy.
+- Required: No
+- Type: string
+- Default: `'Enabled'`
+- Allowed: `[Disabled, Enabled]`
+
+### Parameter: `tags`
+
+Tags of the resource.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `threshold`
+
+The threshold of the policy (i.e. a number for MaxValuePolicy, and a JSON array of values for AllowedValuesPolicy).
+- Required: Yes
+- Type: string
 
 
 ## Outputs
 
-| Output Name | Type | Description |
+| Output | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the policy. |
 | `resourceGroupName` | string | The name of the resource group the policy was created in. |

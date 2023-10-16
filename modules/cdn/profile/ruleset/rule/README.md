@@ -19,26 +19,78 @@ This module deploys a CDN Profile rule.
 
 **Required parameters**
 
-| Parameter Name | Type | Allowed Values | Description |
-| :-- | :-- | :-- | :-- |
-| `matchProcessingBehavior` | string | `[Continue, Stop]` | If this rule is a match should the rules engine continue running the remaining rules or stop. If not present, defaults to Continue. |
-| `name` | string |  | The name of the rule. |
-| `order` | int |  | The order in which this rule will be applied. Rules with a lower order are applied before rules with a higher order. |
-| `profileName` | string |  | The name of the profile. |
-| `ruleSetName` | string |  | The name of the rule set. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`matchProcessingBehavior`](#parameter-matchprocessingbehavior) | string | If this rule is a match should the rules engine continue running the remaining rules or stop. If not present, defaults to Continue. |
+| [`name`](#parameter-name) | string | The name of the rule. |
+| [`order`](#parameter-order) | int | The order in which this rule will be applied. Rules with a lower order are applied before rules with a higher order. |
+| [`profileName`](#parameter-profilename) | string | The name of the profile. |
+| [`ruleSetName`](#parameter-rulesetname) | string | The name of the rule set. |
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `actions` | array | `[]` | A list of actions that are executed when all the conditions of a rule are satisfied. |
-| `conditions` | array | `[]` | A list of conditions that must be matched for the actions to be executed. |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`actions`](#parameter-actions) | array | A list of actions that are executed when all the conditions of a rule are satisfied. |
+| [`conditions`](#parameter-conditions) | array | A list of conditions that must be matched for the actions to be executed. |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+
+### Parameter: `actions`
+
+A list of actions that are executed when all the conditions of a rule are satisfied.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `conditions`
+
+A list of conditions that must be matched for the actions to be executed.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `matchProcessingBehavior`
+
+If this rule is a match should the rules engine continue running the remaining rules or stop. If not present, defaults to Continue.
+- Required: Yes
+- Type: string
+- Allowed: `[Continue, Stop]`
+
+### Parameter: `name`
+
+The name of the rule.
+- Required: Yes
+- Type: string
+
+### Parameter: `order`
+
+The order in which this rule will be applied. Rules with a lower order are applied before rules with a higher order.
+- Required: Yes
+- Type: int
+
+### Parameter: `profileName`
+
+The name of the profile.
+- Required: Yes
+- Type: string
+
+### Parameter: `ruleSetName`
+
+The name of the rule set.
+- Required: Yes
+- Type: string
 
 
 ## Outputs
 
-| Output Name | Type | Description |
+| Output | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the rule. |
 | `resourceGroupName` | string | The name of the resource group the custom domain was created in. |

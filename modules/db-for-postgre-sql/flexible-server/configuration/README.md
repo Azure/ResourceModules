@@ -19,29 +19,69 @@ This module deploys a DBforPostgreSQL Flexible Server Configuration.
 
 **Required parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the configuration. |
+| [`name`](#parameter-name) | string | The name of the configuration. |
 
 **Conditional parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `flexibleServerName` | string | The name of the parent PostgreSQL flexible server. Required if the template is used in a standalone deployment. |
+| [`flexibleServerName`](#parameter-flexibleservername) | string | The name of the parent PostgreSQL flexible server. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `location` | string | `[resourceGroup().location]` | Location for all resources. |
-| `source` | string | `''` | Source of the configuration. |
-| `value` | string | `''` | Value of the configuration. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`location`](#parameter-location) | string | Location for all resources. |
+| [`source`](#parameter-source) | string | Source of the configuration. |
+| [`value`](#parameter-value) | string | Value of the configuration. |
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `flexibleServerName`
+
+The name of the parent PostgreSQL flexible server. Required if the template is used in a standalone deployment.
+- Required: Yes
+- Type: string
+
+### Parameter: `location`
+
+Location for all resources.
+- Required: No
+- Type: string
+- Default: `[resourceGroup().location]`
+
+### Parameter: `name`
+
+The name of the configuration.
+- Required: Yes
+- Type: string
+
+### Parameter: `source`
+
+Source of the configuration.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `value`
+
+Value of the configuration.
+- Required: No
+- Type: string
+- Default: `''`
 
 
 ## Outputs
 
-| Output Name | Type | Description |
+| Output | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the deployed configuration. |
 | `resourceGroupName` | string | The resource group of the deployed configuration. |
