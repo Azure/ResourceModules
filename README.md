@@ -13,6 +13,7 @@ Possible changes include (but are not limited to):
 - The addition of several user defined types (requiring Bicep version `0.21.1`)
 
 Modules that are already migrated to AVM will contain a file `MOVED-TO-AVM.md` to indicate that further contributions to the module should be done in the Public Bicep Registry's [repository](https://github.com/Azure/bicep-registry-modules/tree/main/avm/res).
+**Therefore, further contributions to those modules will not be integrated in the CARML repository.**
 
 Once the move concluded, the library & CI environment is planned to be maintained. However, several changes to the CARML CI environment will become necessary to ensure a low entry barrier when onboarding both (for example, as per the AVM specs we will need to be less restrictive in our tests).
 
