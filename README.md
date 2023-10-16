@@ -2,6 +2,8 @@
 
 Following the recent release of [`0.11.0`](https://github.com/Azure/ResourceModules/releases/tag/v0.11.0), the upcoming period will focus on implementing the remaining changes required to align CARML's modules to the specifications of [Azure Verified Modules](https://aka.ms/avm) (currently in development). This will enable us to move & publish the modules of the CARML library to the official [Public Bicep Registry](https://github.com/Azure/bicep-registry-modules). You can read more about CARML's future in AVM [here](https://azure.github.io/Azure-Verified-Modules/faq/#what-is-happening-to-existing-initiatives-like-carml-and-tfvm).
 
+> You can find details on the status of the migration in issue #4020.
+
 Please note that these changes will affect many interfaces (e.g., the diagnostic settings). We intend to keep this period as short as possible, but are limited by our own available capacity. As we want to avoid one 'big bang' migration, we will incrementally align & move modules, and keep a copy in this repository until the move is concluded. For modules that were already published, we will redirect the proposed changes to the `AVM` folder of the new [repository](https://github.com/Azure/bicep-registry-modules). In its final state, this `AVM` folder will contain all modules you can currently find in the `modules` folder of this repository.
 
 Possible changes include (but are not limited to):
@@ -9,6 +11,8 @@ Possible changes include (but are not limited to):
 - An update of the `README.md` that comes with each module (including an update of the utility itself) to allow for a more detailed parameter description
 - An update to individual folder names
 - The addition of several user defined types (requiring Bicep version `0.21.1`)
+
+Modules that are already migrated to AVM will contain a file `MOVED-TO-AVM.md` to indicate that further contributions to the module should be done in the Public Bicep Registry's [repository](https://github.com/Azure/bicep-registry-modules/tree/main/avm).
 
 Once the move concluded, the library & CI environment is planned to be maintained. However, several changes to the CARML CI environment will become necessary to ensure a low entry barrier when onboarding both (for example, as per the AVM specs we will need to be less restrictive in our tests).
 
