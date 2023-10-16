@@ -15,6 +15,9 @@ Mandatory. The path to the module folder to generate the content for.
 .PARAMETER Recurse
 Optional. Set this parameter if you not only want to generate the content for one module, but also any nested module in the same path.
 
+.PARAMETER Depth
+Optional. Recursion depth for the module search.
+
 .PARAMETER SkipBuild
 Optional. Set this parameter if you don't want to build/compile the JSON template(s) for the contained `main.bicep` file(s).
 
