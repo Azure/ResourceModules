@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.20.4.51522",
-      "templateHash": "17563066367289258796"
+      "version": "0.22.6.54827",
+      "templateHash": "8758167910677571979"
     },
     "name": "Virtual Network Subnets",
     "description": "This module deploys a Virtual Network Subnet.",
@@ -200,8 +200,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.20.4.51522",
-              "templateHash": "11765890115463110578"
+              "version": "0.22.6.54827",
+              "templateHash": "3698261669800089456"
             }
           },
           "parameters": {

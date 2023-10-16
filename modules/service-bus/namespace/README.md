@@ -4,13 +4,13 @@ This module deploys a Service Bus Namespace.
 
 ## Navigation
 
-- [Resource types](#Resource-types)
+- [Resource Types](#Resource-Types)
+- [Usage examples](#Usage-examples)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
-- [Deployment examples](#Deployment-examples)
 
-## Resource types
+## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
@@ -29,92 +29,31 @@ This module deploys a Service Bus Namespace.
 | `Microsoft.ServiceBus/namespaces/topics` | [2022-10-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2022-10-01-preview/namespaces/topics) |
 | `Microsoft.ServiceBus/namespaces/topics/authorizationRules` | [2022-10-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2022-10-01-preview/namespaces/topics/authorizationRules) |
 
-## Parameters
+## Usage examples
 
-**Required parameters**
-
-| Parameter Name | Type | Description |
-| :-- | :-- | :-- |
-| `name` | string | Name of the Service Bus Namespace. |
-
-**Conditional parameters**
-
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `cMKKeyVaultResourceId` | string | `''` | The resource ID of a key vault to reference a customer managed key for encryption from. Required if 'cMKKeyName' is not empty. |
-
-**Optional parameters**
-
-| Parameter Name | Type | Default Value | Allowed Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `alternateName` | string | `''` |  | Alternate name for namespace. |
-| `authorizationRules` | array | `[System.Management.Automation.OrderedHashtable]` |  | Authorization Rules for the Service Bus namespace. |
-| `cMKKeyName` | string | `''` |  | The name of the customer managed key to use for encryption. If not provided, encryption is automatically enabled with a Microsoft-managed key. |
-| `cMKKeyVersion` | string | `''` |  | The version of the customer managed key to reference for encryption. If not provided, the latest key version is used. |
-| `cMKUserAssignedIdentityResourceId` | string | `''` |  | User assigned identity to use when fetching the customer managed key. If not provided, a system-assigned identity can be used - but must be given access to the referenced key vault first. |
-| `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
-| `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
-| `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `['', allLogs, OperationalLogs]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
-| `diagnosticMetricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | The name of metrics that will be streamed. |
-| `diagnosticSettingsName` | string | `''` |  | The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings". |
-| `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
-| `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
-| `disableLocalAuth` | bool | `True` |  | This property disables SAS authentication for the Service Bus namespace. |
-| `disasterRecoveryConfigs` | object | `{object}` |  | The disaster recovery configuration. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
-| `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
-| `migrationConfigurations` | object | `{object}` |  | The migration configuration. |
-| `minimumTlsVersion` | string | `'1.2'` | `[1.0, 1.1, 1.2]` | The minimum TLS version for the cluster to support. |
-| `networkRuleSets` | object | `{object}` |  | Configure networking options for Premium SKU Service Bus. This object contains IPs/Subnets to allow or restrict access to private endpoints only. For security reasons, it is recommended to configure this object on the Namespace. |
-| `premiumMessagingPartitions` | int | `1` |  | The number of partitions of a Service Bus namespace. This property is only applicable to Premium SKU namespaces. The default value is 1 and possible values are 1, 2 and 4. |
-| `privateEndpoints` | array | `[]` |  | Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
-| `publicNetworkAccess` | string | `''` | `['', Disabled, Enabled, SecuredByPerimeter]` | Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set. |
-| `queues` | array | `[]` |  | The queues to create in the service bus namespace. |
-| `requireInfrastructureEncryption` | bool | `True` |  | Enable infrastructure encryption (double encryption). Note, this setting requires the configuration of Customer-Managed-Keys (CMK) via the corresponding module parameters. |
-| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| `skuCapacity` | int | `1` | `[1, 2, 4, 8, 16, 32]` | The specified messaging units for the tier. Only used for Premium Sku tier. |
-| `skuName` | string | `'Basic'` | `[Basic, Premium, Standard]` | Name of this SKU. - Basic, Standard, Premium. |
-| `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
-| `tags` | object | `{object}` |  | Tags of the resource. |
-| `topics` | array | `[]` |  | The topics to create in the service bus namespace. |
-| `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
-| `zoneRedundant` | bool | `False` |  | Enabling this property creates a Premium Service Bus Namespace in regions supported availability zones. |
-
-
-## Outputs
-
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of the deployed service bus namespace. |
-| `resourceGroupName` | string | The resource group of the deployed service bus namespace. |
-| `resourceId` | string | The resource ID of the deployed service bus namespace. |
-| `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
-
-## Cross-referenced modules
-
-This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
-
-| Reference | Type |
-| :-- | :-- |
-| `network/private-endpoint` | Local reference |
-
-## Deployment examples
-
-The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
+The following section provides usage examples for the module, which were used to validate and deploy the module successfully. For a full reference, please review the module's test folder in its repository.
    >**Note**: The name of each example is based on the name of the file from which it is taken.
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Common</h3>
+   >**Note**: To reference the module, please use the following syntax `br:bicep/modules/service-bus.namespace:1.0.0`.
+
+- [Using large parameter set](#example-1-using-large-parameter-set)
+- [Encr](#example-2-encr)
+- [Using only defaults](#example-3-using-only-defaults)
+- [Pe](#example-4-pe)
+
+### Example 1: _Using large parameter set_
+
+This instance deploys the module with most of its features enabled.
+
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module namespace './service-bus/namespace/main.bicep' = {
+module namespace 'br:bicep/modules/service-bus.namespace:1.0.0' = {
   name: '${uniqueString(deployment().name, location)}-test-sbncom'
   params: {
     // Required parameters
@@ -488,14 +427,14 @@ module namespace './service-bus/namespace/main.bicep' = {
 </details>
 <p>
 
-<h3>Example 2: Encr</h3>
+### Example 2: _Encr_
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module namespace './service-bus/namespace/main.bicep' = {
+module namespace 'br:bicep/modules/service-bus.namespace:1.0.0' = {
   name: '${uniqueString(deployment().name, location)}-test-sbnencr'
   params: {
     // Required parameters
@@ -671,14 +610,17 @@ module namespace './service-bus/namespace/main.bicep' = {
 </details>
 <p>
 
-<h3>Example 3: Min</h3>
+### Example 3: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module namespace './service-bus/namespace/main.bicep' = {
+module namespace 'br:bicep/modules/service-bus.namespace:1.0.0' = {
   name: '${uniqueString(deployment().name, location)}-test-sbnmin'
   params: {
     // Required parameters
@@ -716,14 +658,14 @@ module namespace './service-bus/namespace/main.bicep' = {
 </details>
 <p>
 
-<h3>Example 4: Pe</h3>
+### Example 4: _Pe_
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module namespace './service-bus/namespace/main.bicep' = {
+module namespace 'br:bicep/modules/service-bus.namespace:1.0.0' = {
   name: '${uniqueString(deployment().name, location)}-test-sbnpe'
   params: {
     // Required parameters
@@ -814,3 +756,326 @@ module namespace './service-bus/namespace/main.bicep' = {
 
 </details>
 <p>
+
+
+## Parameters
+
+**Required parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`name`](#parameter-name) | string | Name of the Service Bus Namespace. |
+
+**Conditional parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`cMKKeyVaultResourceId`](#parameter-cmkkeyvaultresourceid) | string | The resource ID of a key vault to reference a customer managed key for encryption from. Required if 'cMKKeyName' is not empty. |
+
+**Optional parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`alternateName`](#parameter-alternatename) | string | Alternate name for namespace. |
+| [`authorizationRules`](#parameter-authorizationrules) | array | Authorization Rules for the Service Bus namespace. |
+| [`cMKKeyName`](#parameter-cmkkeyname) | string | The name of the customer managed key to use for encryption. If not provided, encryption is automatically enabled with a Microsoft-managed key. |
+| [`cMKKeyVersion`](#parameter-cmkkeyversion) | string | The version of the customer managed key to reference for encryption. If not provided, the latest key version is used. |
+| [`cMKUserAssignedIdentityResourceId`](#parameter-cmkuserassignedidentityresourceid) | string | User assigned identity to use when fetching the customer managed key. If not provided, a system-assigned identity can be used - but must be given access to the referenced key vault first. |
+| [`diagnosticEventHubAuthorizationRuleId`](#parameter-diagnosticeventhubauthorizationruleid) | string | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
+| [`diagnosticEventHubName`](#parameter-diagnosticeventhubname) | string | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
+| [`diagnosticLogCategoriesToEnable`](#parameter-diagnosticlogcategoriestoenable) | array | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
+| [`diagnosticMetricsToEnable`](#parameter-diagnosticmetricstoenable) | array | The name of metrics that will be streamed. |
+| [`diagnosticSettingsName`](#parameter-diagnosticsettingsname) | string | The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings". |
+| [`diagnosticStorageAccountId`](#parameter-diagnosticstorageaccountid) | string | Resource ID of the diagnostic storage account. |
+| [`diagnosticWorkspaceId`](#parameter-diagnosticworkspaceid) | string | Resource ID of the diagnostic log analytics workspace. |
+| [`disableLocalAuth`](#parameter-disablelocalauth) | bool | This property disables SAS authentication for the Service Bus namespace. |
+| [`disasterRecoveryConfigs`](#parameter-disasterrecoveryconfigs) | object | The disaster recovery configuration. |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`location`](#parameter-location) | string | Location for all resources. |
+| [`lock`](#parameter-lock) | string | Specify the type of lock. |
+| [`migrationConfigurations`](#parameter-migrationconfigurations) | object | The migration configuration. |
+| [`minimumTlsVersion`](#parameter-minimumtlsversion) | string | The minimum TLS version for the cluster to support. |
+| [`networkRuleSets`](#parameter-networkrulesets) | object | Configure networking options for Premium SKU Service Bus. This object contains IPs/Subnets to allow or restrict access to private endpoints only. For security reasons, it is recommended to configure this object on the Namespace. |
+| [`premiumMessagingPartitions`](#parameter-premiummessagingpartitions) | int | The number of partitions of a Service Bus namespace. This property is only applicable to Premium SKU namespaces. The default value is 1 and possible values are 1, 2 and 4. |
+| [`privateEndpoints`](#parameter-privateendpoints) | array | Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
+| [`publicNetworkAccess`](#parameter-publicnetworkaccess) | string | Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set. |
+| [`queues`](#parameter-queues) | array | The queues to create in the service bus namespace. |
+| [`requireInfrastructureEncryption`](#parameter-requireinfrastructureencryption) | bool | Enable infrastructure encryption (double encryption). Note, this setting requires the configuration of Customer-Managed-Keys (CMK) via the corresponding module parameters. |
+| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| [`skuCapacity`](#parameter-skucapacity) | int | The specified messaging units for the tier. Only used for Premium Sku tier. |
+| [`skuName`](#parameter-skuname) | string | Name of this SKU. - Basic, Standard, Premium. |
+| [`systemAssignedIdentity`](#parameter-systemassignedidentity) | bool | Enables system assigned managed identity on the resource. |
+| [`tags`](#parameter-tags) | object | Tags of the resource. |
+| [`topics`](#parameter-topics) | array | The topics to create in the service bus namespace. |
+| [`userAssignedIdentities`](#parameter-userassignedidentities) | object | The ID(s) to assign to the resource. |
+| [`zoneRedundant`](#parameter-zoneredundant) | bool | Enabling this property creates a Premium Service Bus Namespace in regions supported availability zones. |
+
+### Parameter: `alternateName`
+
+Alternate name for namespace.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `authorizationRules`
+
+Authorization Rules for the Service Bus namespace.
+- Required: No
+- Type: array
+- Default: `[System.Management.Automation.OrderedHashtable]`
+
+### Parameter: `cMKKeyName`
+
+The name of the customer managed key to use for encryption. If not provided, encryption is automatically enabled with a Microsoft-managed key.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `cMKKeyVaultResourceId`
+
+The resource ID of a key vault to reference a customer managed key for encryption from. Required if 'cMKKeyName' is not empty.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `cMKKeyVersion`
+
+The version of the customer managed key to reference for encryption. If not provided, the latest key version is used.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `cMKUserAssignedIdentityResourceId`
+
+User assigned identity to use when fetching the customer managed key. If not provided, a system-assigned identity can be used - but must be given access to the referenced key vault first.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `diagnosticEventHubAuthorizationRuleId`
+
+Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `diagnosticEventHubName`
+
+Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `diagnosticLogCategoriesToEnable`
+
+The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection.
+- Required: No
+- Type: array
+- Default: `[allLogs]`
+- Allowed: `['', allLogs, OperationalLogs]`
+
+### Parameter: `diagnosticMetricsToEnable`
+
+The name of metrics that will be streamed.
+- Required: No
+- Type: array
+- Default: `[AllMetrics]`
+- Allowed: `[AllMetrics]`
+
+### Parameter: `diagnosticSettingsName`
+
+The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings".
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `diagnosticStorageAccountId`
+
+Resource ID of the diagnostic storage account.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `diagnosticWorkspaceId`
+
+Resource ID of the diagnostic log analytics workspace.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `disableLocalAuth`
+
+This property disables SAS authentication for the Service Bus namespace.
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `disasterRecoveryConfigs`
+
+The disaster recovery configuration.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `location`
+
+Location for all resources.
+- Required: No
+- Type: string
+- Default: `[resourceGroup().location]`
+
+### Parameter: `lock`
+
+Specify the type of lock.
+- Required: No
+- Type: string
+- Default: `''`
+- Allowed: `['', CanNotDelete, ReadOnly]`
+
+### Parameter: `migrationConfigurations`
+
+The migration configuration.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `minimumTlsVersion`
+
+The minimum TLS version for the cluster to support.
+- Required: No
+- Type: string
+- Default: `'1.2'`
+- Allowed: `[1.0, 1.1, 1.2]`
+
+### Parameter: `name`
+
+Name of the Service Bus Namespace.
+- Required: Yes
+- Type: string
+
+### Parameter: `networkRuleSets`
+
+Configure networking options for Premium SKU Service Bus. This object contains IPs/Subnets to allow or restrict access to private endpoints only. For security reasons, it is recommended to configure this object on the Namespace.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `premiumMessagingPartitions`
+
+The number of partitions of a Service Bus namespace. This property is only applicable to Premium SKU namespaces. The default value is 1 and possible values are 1, 2 and 4.
+- Required: No
+- Type: int
+- Default: `1`
+
+### Parameter: `privateEndpoints`
+
+Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `publicNetworkAccess`
+
+Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set.
+- Required: No
+- Type: string
+- Default: `''`
+- Allowed: `['', Disabled, Enabled, SecuredByPerimeter]`
+
+### Parameter: `queues`
+
+The queues to create in the service bus namespace.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `requireInfrastructureEncryption`
+
+Enable infrastructure encryption (double encryption). Note, this setting requires the configuration of Customer-Managed-Keys (CMK) via the corresponding module parameters.
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `roleAssignments`
+
+Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `skuCapacity`
+
+The specified messaging units for the tier. Only used for Premium Sku tier.
+- Required: No
+- Type: int
+- Default: `1`
+- Allowed: `[1, 2, 4, 8, 16, 32]`
+
+### Parameter: `skuName`
+
+Name of this SKU. - Basic, Standard, Premium.
+- Required: No
+- Type: string
+- Default: `'Basic'`
+- Allowed: `[Basic, Premium, Standard]`
+
+### Parameter: `systemAssignedIdentity`
+
+Enables system assigned managed identity on the resource.
+- Required: No
+- Type: bool
+- Default: `False`
+
+### Parameter: `tags`
+
+Tags of the resource.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `topics`
+
+The topics to create in the service bus namespace.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `userAssignedIdentities`
+
+The ID(s) to assign to the resource.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `zoneRedundant`
+
+Enabling this property creates a Premium Service Bus Namespace in regions supported availability zones.
+- Required: No
+- Type: bool
+- Default: `False`
+
+
+## Outputs
+
+| Output | Type | Description |
+| :-- | :-- | :-- |
+| `location` | string | The location the resource was deployed into. |
+| `name` | string | The name of the deployed service bus namespace. |
+| `resourceGroupName` | string | The resource group of the deployed service bus namespace. |
+| `resourceId` | string | The resource ID of the deployed service bus namespace. |
+| `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
+
+## Cross-referenced modules
+
+This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
+
+| Reference | Type |
+| :-- | :-- |
+| `modules/network/private-endpoint` | Local reference |

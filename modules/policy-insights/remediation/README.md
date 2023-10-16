@@ -5,10 +5,10 @@ This module deploys a Policy Insights Remediation.
 ## Navigation
 
 - [Resource Types](#Resource-Types)
+- [Usage examples](#Usage-examples)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
-- [Deployment examples](#Deployment-examples)
 - [Notes](#Notes)
 
 ## Resource Types
@@ -17,59 +17,30 @@ This module deploys a Policy Insights Remediation.
 | :-- | :-- |
 | `Microsoft.PolicyInsights/remediations` | [2021-10-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.PolicyInsights/2021-10-01/remediations) |
 
-## Parameters
+## Usage examples
 
-**Required parameters**
-
-| Parameter Name | Type | Description |
-| :-- | :-- | :-- |
-| `name` | string | Specifies the name of the policy remediation. |
-| `policyAssignmentId` | string | The resource ID of the policy assignment that should be remediated. |
-
-**Optional parameters**
-
-| Parameter Name | Type | Default Value | Allowed Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `failureThresholdPercentage` | string | `'1'` |  | The remediation failure threshold settings. A number between 0.0 to 1.0 representing the percentage failure threshold. The remediation will fail if the percentage of failed remediation operations (i.e. failed deployments) exceeds this threshold. 0 means that the remediation will stop after the first failure. 1 means that the remediation will not stop even if all deployments fail. |
-| `filtersLocations` | array | `[]` |  | The filters that will be applied to determine which resources to remediate. |
-| `location` | string | `[deployment().location]` |  | Location deployment metadata. |
-| `managementGroupId` | string | `[managementGroup().name]` |  | The target scope for the remediation. The name of the management group for the policy assignment. If not provided, will use the current scope for deployment. |
-| `parallelDeployments` | int | `10` |  | Determines how many resources to remediate at any given time. Can be used to increase or reduce the pace of the remediation. Can be between 1-30. Higher values will cause the remediation to complete more quickly, but increase the risk of throttling. If not provided, the default parallel deployments value is used. |
-| `policyDefinitionReferenceId` | string | `''` |  | The policy definition reference ID of the individual definition that should be remediated. Required when the policy assignment being remediated assigns a policy set definition. |
-| `resourceCount` | int | `500` |  | Determines the max number of resources that can be remediated by the remediation job. Can be between 1-50000. If not provided, the default resource count is used. |
-| `resourceDiscoveryMode` | string | `'ExistingNonCompliant'` | `[ExistingNonCompliant, ReEvaluateCompliance]` | The way resources to remediate are discovered. Defaults to ExistingNonCompliant if not specified. |
-| `resourceGroupName` | string | `''` |  | The target scope for the remediation. The name of the resource group for the policy assignment. |
-| `subscriptionId` | string | `''` |  | The target scope for the remediation. The subscription ID of the subscription for the policy assignment. |
-
-
-## Outputs
-
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of the remediation. |
-| `resourceId` | string | The resource ID of the remediation. |
-
-## Cross-referenced modules
-
-_None_
-
-## Deployment examples
-
-The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
+The following section provides usage examples for the module, which were used to validate and deploy the module successfully. For a full reference, please review the module's test folder in its repository.
    >**Note**: The name of each example is based on the name of the file from which it is taken.
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Mg.Common</h3>
+   >**Note**: To reference the module, please use the following syntax `br:bicep/modules/policy-insights.remediation:1.0.0`.
+
+- [Mg.Common](#example-1-mgcommon)
+- [Mg.Min](#example-2-mgmin)
+- [Rg.Common](#example-3-rgcommon)
+- [Rg.Min](#example-4-rgmin)
+- [Sub.Common](#example-5-subcommon)
+- [Sub.Min](#example-6-submin)
+
+### Example 1: _Mg.Common_
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module remediation './policy-insights/remediation/main.bicep' = {
+module remediation 'br:bicep/modules/policy-insights.remediation:1.0.0' = {
   name: '${uniqueString(deployment().name, location)}-test-pirmgcom'
   params: {
     // Required parameters
@@ -143,14 +114,14 @@ module remediation './policy-insights/remediation/main.bicep' = {
 </details>
 <p>
 
-<h3>Example 2: Mg.Min</h3>
+### Example 2: _Mg.Min_
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module remediation './policy-insights/remediation/main.bicep' = {
+module remediation 'br:bicep/modules/policy-insights.remediation:1.0.0' = {
   name: '${uniqueString(deployment().name)}-test-pirmgmin'
   params: {
     // Required parameters
@@ -192,14 +163,14 @@ module remediation './policy-insights/remediation/main.bicep' = {
 </details>
 <p>
 
-<h3>Example 3: Rg.Common</h3>
+### Example 3: _Rg.Common_
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module remediation './policy-insights/remediation/main.bicep' = {
+module remediation 'br:bicep/modules/policy-insights.remediation:1.0.0' = {
   name: '${uniqueString(deployment().name)}-test-pirrgcom'
   params: {
     // Required parameters
@@ -273,14 +244,14 @@ module remediation './policy-insights/remediation/main.bicep' = {
 </details>
 <p>
 
-<h3>Example 4: Rg.Min</h3>
+### Example 4: _Rg.Min_
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module remediation './policy-insights/remediation/main.bicep' = {
+module remediation 'br:bicep/modules/policy-insights.remediation:1.0.0' = {
   name: '${uniqueString(deployment().name)}-test-pirrgmin'
   params: {
     // Required parameters
@@ -322,14 +293,14 @@ module remediation './policy-insights/remediation/main.bicep' = {
 </details>
 <p>
 
-<h3>Example 5: Sub.Common</h3>
+### Example 5: _Sub.Common_
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module remediation './policy-insights/remediation/main.bicep' = {
+module remediation 'br:bicep/modules/policy-insights.remediation:1.0.0' = {
   name: '${uniqueString(deployment().name)}-test-pirsubcom'
   params: {
     // Required parameters
@@ -403,14 +374,14 @@ module remediation './policy-insights/remediation/main.bicep' = {
 </details>
 <p>
 
-<h3>Example 6: Sub.Min</h3>
+### Example 6: _Sub.Min_
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module remediation './policy-insights/remediation/main.bicep' = {
+module remediation 'br:bicep/modules/policy-insights.remediation:1.0.0' = {
   name: '${uniqueString(deployment().name)}-test-pirsubmin'
   params: {
     // Required parameters
@@ -452,6 +423,134 @@ module remediation './policy-insights/remediation/main.bicep' = {
 </details>
 <p>
 
+
+## Parameters
+
+**Required parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`name`](#parameter-name) | string | Specifies the name of the policy remediation. |
+| [`policyAssignmentId`](#parameter-policyassignmentid) | string | The resource ID of the policy assignment that should be remediated. |
+
+**Optional parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`failureThresholdPercentage`](#parameter-failurethresholdpercentage) | string | The remediation failure threshold settings. A number between 0.0 to 1.0 representing the percentage failure threshold. The remediation will fail if the percentage of failed remediation operations (i.e. failed deployments) exceeds this threshold. 0 means that the remediation will stop after the first failure. 1 means that the remediation will not stop even if all deployments fail. |
+| [`filtersLocations`](#parameter-filterslocations) | array | The filters that will be applied to determine which resources to remediate. |
+| [`location`](#parameter-location) | string | Location deployment metadata. |
+| [`managementGroupId`](#parameter-managementgroupid) | string | The target scope for the remediation. The name of the management group for the policy assignment. If not provided, will use the current scope for deployment. |
+| [`parallelDeployments`](#parameter-paralleldeployments) | int | Determines how many resources to remediate at any given time. Can be used to increase or reduce the pace of the remediation. Can be between 1-30. Higher values will cause the remediation to complete more quickly, but increase the risk of throttling. If not provided, the default parallel deployments value is used. |
+| [`policyDefinitionReferenceId`](#parameter-policydefinitionreferenceid) | string | The policy definition reference ID of the individual definition that should be remediated. Required when the policy assignment being remediated assigns a policy set definition. |
+| [`resourceCount`](#parameter-resourcecount) | int | Determines the max number of resources that can be remediated by the remediation job. Can be between 1-50000. If not provided, the default resource count is used. |
+| [`resourceDiscoveryMode`](#parameter-resourcediscoverymode) | string | The way resources to remediate are discovered. Defaults to ExistingNonCompliant if not specified. |
+| [`resourceGroupName`](#parameter-resourcegroupname) | string | The target scope for the remediation. The name of the resource group for the policy assignment. |
+| [`subscriptionId`](#parameter-subscriptionid) | string | The target scope for the remediation. The subscription ID of the subscription for the policy assignment. |
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `failureThresholdPercentage`
+
+The remediation failure threshold settings. A number between 0.0 to 1.0 representing the percentage failure threshold. The remediation will fail if the percentage of failed remediation operations (i.e. failed deployments) exceeds this threshold. 0 means that the remediation will stop after the first failure. 1 means that the remediation will not stop even if all deployments fail.
+- Required: No
+- Type: string
+- Default: `'1'`
+
+### Parameter: `filtersLocations`
+
+The filters that will be applied to determine which resources to remediate.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `location`
+
+Location deployment metadata.
+- Required: No
+- Type: string
+- Default: `[deployment().location]`
+
+### Parameter: `managementGroupId`
+
+The target scope for the remediation. The name of the management group for the policy assignment. If not provided, will use the current scope for deployment.
+- Required: No
+- Type: string
+- Default: `[managementGroup().name]`
+
+### Parameter: `name`
+
+Specifies the name of the policy remediation.
+- Required: Yes
+- Type: string
+
+### Parameter: `parallelDeployments`
+
+Determines how many resources to remediate at any given time. Can be used to increase or reduce the pace of the remediation. Can be between 1-30. Higher values will cause the remediation to complete more quickly, but increase the risk of throttling. If not provided, the default parallel deployments value is used.
+- Required: No
+- Type: int
+- Default: `10`
+
+### Parameter: `policyAssignmentId`
+
+The resource ID of the policy assignment that should be remediated.
+- Required: Yes
+- Type: string
+
+### Parameter: `policyDefinitionReferenceId`
+
+The policy definition reference ID of the individual definition that should be remediated. Required when the policy assignment being remediated assigns a policy set definition.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `resourceCount`
+
+Determines the max number of resources that can be remediated by the remediation job. Can be between 1-50000. If not provided, the default resource count is used.
+- Required: No
+- Type: int
+- Default: `500`
+
+### Parameter: `resourceDiscoveryMode`
+
+The way resources to remediate are discovered. Defaults to ExistingNonCompliant if not specified.
+- Required: No
+- Type: string
+- Default: `'ExistingNonCompliant'`
+- Allowed: `[ExistingNonCompliant, ReEvaluateCompliance]`
+
+### Parameter: `resourceGroupName`
+
+The target scope for the remediation. The name of the resource group for the policy assignment.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `subscriptionId`
+
+The target scope for the remediation. The subscription ID of the subscription for the policy assignment.
+- Required: No
+- Type: string
+- Default: `''`
+
+
+## Outputs
+
+| Output | Type | Description |
+| :-- | :-- | :-- |
+| `location` | string | The location the resource was deployed into. |
+| `name` | string | The name of the remediation. |
+| `resourceId` | string | The resource ID of the remediation. |
+
+## Cross-referenced modules
+
+_None_
 
 ## Notes
 

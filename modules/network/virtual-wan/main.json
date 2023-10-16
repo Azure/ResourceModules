@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.21.1.54444",
-      "templateHash": "2653906358986045673"
+      "version": "0.22.6.54827",
+      "templateHash": "6166970702359791938"
     },
     "name": "Virtual WANs",
     "description": "This module deploys a Virtual WAN.",
@@ -167,8 +167,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "6282617647386769433"
+              "version": "0.22.6.54827",
+              "templateHash": "2713904896388571012"
             }
           },
           "parameters": {

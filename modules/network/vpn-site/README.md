@@ -5,10 +5,10 @@ This module deploys a VPN Site.
 ## Navigation
 
 - [Resource Types](#Resource-Types)
+- [Usage examples](#Usage-examples)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
-- [Deployment examples](#Deployment-examples)
 - [Notes](#Notes)
 
 ## Resource Types
@@ -19,66 +19,29 @@ This module deploys a VPN Site.
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Network/vpnSites` | [2023-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-04-01/vpnSites) |
 
-## Parameters
+## Usage examples
 
-**Required parameters**
-
-| Parameter Name | Type | Description |
-| :-- | :-- | :-- |
-| `name` | string | Name of the VPN Site. |
-| `virtualWanId` | string | Resource ID of the virtual WAN to link to. |
-
-**Conditional parameters**
-
-| Parameter Name | Type | Description |
-| :-- | :-- | :-- |
-| `addressPrefixes` | array | An array of IP address ranges that can be used by subnets of the virtual network. Required if no bgpProperties or VPNSiteLinks are configured. |
-| `bgpProperties` | object | BGP settings details. Note: This is a deprecated property, please use the corresponding VpnSiteLinks property instead. Required if no addressPrefixes or VPNSiteLinks are configured. |
-
-**Optional parameters**
-
-| Parameter Name | Type | Default Value | Allowed Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `deviceProperties` | object | `{object}` |  | List of properties of the device. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `ipAddress` | string | `''` |  | The IP-address for the VPN-site. Note: This is a deprecated property, please use the corresponding VpnSiteLinks property instead. |
-| `isSecuritySite` | bool | `False` |  | IsSecuritySite flag. |
-| `location` | string | `[resourceGroup().location]` |  | Location where all resources will be created. |
-| `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
-| `o365Policy` | object | `{object}` |  | The Office365 breakout policy. |
-| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| `tags` | object | `{object}` |  | Tags of the resource. |
-| `vpnSiteLinks` | array | `[]` |  | List of all VPN site links. |
-
-
-## Outputs
-
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of the VPN site. |
-| `resourceGroupName` | string | The resource group the VPN site was deployed into. |
-| `resourceId` | string | The resource ID of the VPN site. |
-
-## Cross-referenced modules
-
-_None_
-
-## Deployment examples
-
-The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
+The following section provides usage examples for the module, which were used to validate and deploy the module successfully. For a full reference, please review the module's test folder in its repository.
    >**Note**: The name of each example is based on the name of the file from which it is taken.
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Common</h3>
+   >**Note**: To reference the module, please use the following syntax `br:bicep/modules/network.vpn-site:1.0.0`.
+
+- [Using large parameter set](#example-1-using-large-parameter-set)
+- [Using only defaults](#example-2-using-only-defaults)
+
+### Example 1: _Using large parameter set_
+
+This instance deploys the module with most of its features enabled.
+
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module vpnSite './network/vpn-site/main.bicep' = {
+module vpnSite 'br:bicep/modules/network.vpn-site:1.0.0' = {
   name: '${uniqueString(deployment().name, location)}-test-nvscom'
   params: {
     // Required parameters
@@ -242,14 +205,17 @@ module vpnSite './network/vpn-site/main.bicep' = {
 </details>
 <p>
 
-<h3>Example 2: Min</h3>
+### Example 2: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module vpnSite './network/vpn-site/main.bicep' = {
+module vpnSite 'br:bicep/modules/network.vpn-site:1.0.0' = {
   name: '${uniqueString(deployment().name, location)}-test-nvsmin'
   params: {
     // Required parameters
@@ -303,6 +269,148 @@ module vpnSite './network/vpn-site/main.bicep' = {
 </details>
 <p>
 
+
+## Parameters
+
+**Required parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`name`](#parameter-name) | string | Name of the VPN Site. |
+| [`virtualWanId`](#parameter-virtualwanid) | string | Resource ID of the virtual WAN to link to. |
+
+**Conditional parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`addressPrefixes`](#parameter-addressprefixes) | array | An array of IP address ranges that can be used by subnets of the virtual network. Required if no bgpProperties or VPNSiteLinks are configured. |
+| [`bgpProperties`](#parameter-bgpproperties) | object | BGP settings details. Note: This is a deprecated property, please use the corresponding VpnSiteLinks property instead. Required if no addressPrefixes or VPNSiteLinks are configured. |
+
+**Optional parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`deviceProperties`](#parameter-deviceproperties) | object | List of properties of the device. |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`ipAddress`](#parameter-ipaddress) | string | The IP-address for the VPN-site. Note: This is a deprecated property, please use the corresponding VpnSiteLinks property instead. |
+| [`isSecuritySite`](#parameter-issecuritysite) | bool | IsSecuritySite flag. |
+| [`location`](#parameter-location) | string | Location where all resources will be created. |
+| [`lock`](#parameter-lock) | string | Specify the type of lock. |
+| [`o365Policy`](#parameter-o365policy) | object | The Office365 breakout policy. |
+| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| [`tags`](#parameter-tags) | object | Tags of the resource. |
+| [`vpnSiteLinks`](#parameter-vpnsitelinks) | array | List of all VPN site links. |
+
+### Parameter: `addressPrefixes`
+
+An array of IP address ranges that can be used by subnets of the virtual network. Required if no bgpProperties or VPNSiteLinks are configured.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `bgpProperties`
+
+BGP settings details. Note: This is a deprecated property, please use the corresponding VpnSiteLinks property instead. Required if no addressPrefixes or VPNSiteLinks are configured.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `deviceProperties`
+
+List of properties of the device.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `ipAddress`
+
+The IP-address for the VPN-site. Note: This is a deprecated property, please use the corresponding VpnSiteLinks property instead.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `isSecuritySite`
+
+IsSecuritySite flag.
+- Required: No
+- Type: bool
+- Default: `False`
+
+### Parameter: `location`
+
+Location where all resources will be created.
+- Required: No
+- Type: string
+- Default: `[resourceGroup().location]`
+
+### Parameter: `lock`
+
+Specify the type of lock.
+- Required: No
+- Type: string
+- Default: `''`
+- Allowed: `['', CanNotDelete, ReadOnly]`
+
+### Parameter: `name`
+
+Name of the VPN Site.
+- Required: Yes
+- Type: string
+
+### Parameter: `o365Policy`
+
+The Office365 breakout policy.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `roleAssignments`
+
+Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `tags`
+
+Tags of the resource.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `virtualWanId`
+
+Resource ID of the virtual WAN to link to.
+- Required: Yes
+- Type: string
+
+### Parameter: `vpnSiteLinks`
+
+List of all VPN site links.
+- Required: No
+- Type: array
+- Default: `[]`
+
+
+## Outputs
+
+| Output | Type | Description |
+| :-- | :-- | :-- |
+| `location` | string | The location the resource was deployed into. |
+| `name` | string | The name of the VPN site. |
+| `resourceGroupName` | string | The resource group the VPN site was deployed into. |
+| `resourceId` | string | The resource ID of the VPN site. |
+
+## Cross-referenced modules
+
+_None_
 
 ## Notes
 

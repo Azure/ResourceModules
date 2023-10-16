@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.21.1.54444",
-      "templateHash": "7609266096220214410"
+      "version": "0.22.6.54827",
+      "templateHash": "9631635231747205865"
     },
     "name": "VPN Gateways",
     "description": "This module deploys a VPN Gateway.",
@@ -183,8 +183,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "6459241670864504569"
+              "version": "0.22.6.54827",
+              "templateHash": "4165642550711844737"
             },
             "name": "VPN Gateway NAT Rules",
             "description": "This module deploys a VPN Gateway NAT Rule.",
@@ -357,8 +357,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "9210756491180563718"
+              "version": "0.22.6.54827",
+              "templateHash": "13660788048333105050"
             },
             "name": "VPN Gateway VPN Connections",
             "description": "This module deploys a VPN Gateway VPN Connection.",
