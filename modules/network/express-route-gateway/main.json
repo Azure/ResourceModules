@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.21.1.54444",
-      "templateHash": "4204996721387656228"
+      "version": "0.22.6.54827",
+      "templateHash": "8092497363245159180"
     },
     "name": "Express Route Gateways",
     "description": "This module deploys an Express Route Gateway.",
@@ -176,8 +176,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "13068351482866901446"
+              "version": "0.22.6.54827",
+              "templateHash": "10999249246469924012"
             }
           },
           "parameters": {
