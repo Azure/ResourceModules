@@ -112,50 +112,54 @@ function Set-Module {
 
     # Using threading to speed up the process
     if ($PSCmdlet.ShouldProcess(('Building & generation of [{0}] modules in path [{1}]' -f $relevantTemplatePaths.Count, $resolvedPath), 'Execute')) {
+        try {
+            $job = $relevantTemplatePaths | ForEach-Object -ThrottleLimit $ThrottleLimit -AsJob -Parallel {
+                $resourceTypeIdentifier = ((Split-Path $_) -split '[\/|\\]{1}modules[\/|\\]{1}')[1] # avm/res/<provider>/<resourceType>
 
-        $job = $relevantTemplatePaths | ForEach-Object -ThrottleLimit $ThrottleLimit -AsJob -Parallel {
-            $resourceTypeIdentifier = ((Split-Path $_) -split '[\/|\\]{1}modules[\/|\\]{1}')[1] # avm/res/<provider>/<resourceType>
+                . $using:ReadMeScriptFilePath
 
-            . $using:ReadMeScriptFilePath
+                ###############
+                ##   Build   ##
+                ###############
+                if (-not $using:SkipBuild) {
+                    Write-Output "Building [$resourceTypeIdentifier]"
+                    bicep build $_
+                }
 
-            ###############
-            ##   Build   ##
-            ###############
-            if (-not $using:SkipBuild) {
-                Write-Output "Building [$resourceTypeIdentifier]"
-                bicep build $_
+                ################
+                ##   ReadMe   ##
+                ################
+                if (-not $using:SkipReadMe) {
+                    Write-Output "Generating readme for [$resourceTypeIdentifier]"
+
+                    # If the template was just build, we can pass the JSON into the readme script to be more efficient
+                    $readmeTemplateFilePath = (-not $using:SkipBuild) ? (Join-Path (Split-Path $_ -Parent) 'main.json') : $_
+
+                    Set-ModuleReadMe -TemplateFilePath $readmeTemplateFilePath -CrossReferencedModuleList $using:crossReferencedModuleList
+                }
             }
 
-            ################
-            ##   ReadMe   ##
-            ################
-            if (-not $using:SkipReadMe) {
-                Write-Output "Generating readme for [$resourceTypeIdentifier]"
+            do {
+                # Sleep a bit to allow the threads to run - adjust as desired.
+                Start-Sleep -Seconds 0.5
 
-                # If the template was just build, we can pass the JSON into the readme script to be more efficient
-                $readmeTemplateFilePath = (-not $using:SkipBuild) ? (Join-Path (Split-Path $_ -Parent) 'main.json') : $_
+                # Determine how many jobs have completed so far.
+                $completedJobsCount = ($job.ChildJobs | Where-Object { $_.State -notin @('NotStarted', 'Running') }).Count
 
-                Set-ModuleReadMe -TemplateFilePath $readmeTemplateFilePath -CrossReferencedModuleList $using:crossReferencedModuleList
-            }
+                # Relay any pending output from the child jobs.
+                $job | Receive-Job
+
+                # Update the progress display.
+                [int] $percent = ($completedJobsCount / $job.ChildJobs.Count) * 100
+                Write-Progress -Activity ('Processed [{0}] files' -f $relevantTemplatePaths.Count) -Status "$percent% complete" -PercentComplete $percent
+
+            } while ($completedJobsCount -lt $job.ChildJobs.Count)
+
+            # Clean up the job.
+            $job | Remove-Job
+        } finally {
+            # In case the user cancled the process, we need to make sure to stop all running jobs
+            $job | Stop-Job -ErrorAction 'SilentlyContinue'
         }
-
-        do {
-            # Sleep a bit to allow the threads to run - adjust as desired.
-            Start-Sleep -Seconds 0.5
-
-            # Determine how many jobs have completed so far.
-            $completedJobsCount = ($job.ChildJobs | Where-Object { $_.State -notin @('NotStarted', 'Running') }).Count
-
-            # Relay any pending output from the child jobs.
-            $job | Receive-Job
-
-            # Update the progress display.
-            [int] $percent = ($completedJobsCount / $job.ChildJobs.Count) * 100
-            Write-Progress -Activity ('Processed [{0}] files' -f $relevantTemplatePaths.Count) -Status "$percent% complete" -PercentComplete $percent
-
-        } while ($completedJobsCount -lt $job.ChildJobs.Count)
-
-        # Clean up the job.
-        $job | Remove-Job
     }
 }
