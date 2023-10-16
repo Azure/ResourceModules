@@ -67,7 +67,10 @@ function Set-Module {
         [switch] $SkipFileAndFolderSetup,
 
         [Parameter(Mandatory = $false)]
-        [int] $ThrottleLimit = 5
+        [int] $ThrottleLimit = 5,
+
+        [Parameter(Mandatory = $false)]
+        [int] $Depth
     )
 
     # # Load helper scripts
@@ -83,7 +86,16 @@ function Set-Module {
     # }
 
     if ($Recurse) {
-        $relevantTemplatePaths = (Get-ChildItem -Path $resolvedPath -Recurse -File -Filter 'main.bicep').FullName
+        $childInput = @{
+            Path    = $resolvedPath
+            Recurse = $Recurse
+            File    = $true
+            Filter  = 'main.bicep'
+        }
+        if ($Depth) {
+            $childInput.Depth = $Depth
+        }
+        $relevantTemplatePaths = (Get-ChildItem @childInput).FullName
     } else {
         $relevantTemplatePaths = Join-Path $resolvedPath 'main.bicep'
     }
@@ -100,7 +112,8 @@ function Set-Module {
 
     # Using threading to speed up the process
     if ($PSCmdlet.ShouldProcess(('Building & generation of [{0}] modules in path [{1}]' -f $relevantTemplatePaths.Count, $resolvedPath), 'Execute')) {
-        $relevantTemplatePaths | ForEach-Object -ThrottleLimit $ThrottleLimit -Parallel {
+
+        $job = $relevantTemplatePaths | ForEach-Object -ThrottleLimit $ThrottleLimit -AsJob -Parallel {
             $resourceTypeIdentifier = ((Split-Path $_) -split '[\/|\\]{1}modules[\/|\\]{1}')[1] # avm/res/<provider>/<resourceType>
 
             . $using:ReadMeScriptFilePath
@@ -125,5 +138,24 @@ function Set-Module {
                 Set-ModuleReadMe -TemplateFilePath $readmeTemplateFilePath -CrossReferencedModuleList $using:crossReferencedModuleList
             }
         }
+
+        do {
+            # Sleep a bit to allow the threads to run - adjust as desired.
+            Start-Sleep -Seconds 0.5
+
+            # Determine how many jobs have completed so far.
+            $completedJobsCount = ($job.ChildJobs | Where-Object { $_.State -notin @('NotStarted', 'Running') }).Count
+
+            # Relay any pending output from the child jobs.
+            $job | Receive-Job
+
+            # Update the progress display.
+            [int] $percent = ($completedJobsCount / $job.ChildJobs.Count) * 100
+            Write-Progress -Activity ('Processed [{0}] files' -f $relevantTemplatePaths.Count) -Status "$percent% complete" -PercentComplete $percent
+
+        } while ($completedJobsCount -lt $job.ChildJobs.Count)
+
+        # Clean up the job.
+        $job | Remove-Job
     }
 }
