@@ -19,40 +19,122 @@ This module deploys an Azure Automation Account Runbook.
 
 **Required parameters**
 
-| Parameter Name | Type | Allowed Values | Description |
-| :-- | :-- | :-- | :-- |
-| `name` | string |  | Name of the Automation Account runbook. |
-| `type` | string | `[Graph, GraphPowerShell, GraphPowerShellWorkflow, PowerShell, PowerShellWorkflow]` | The type of the runbook. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`name`](#parameter-name) | string | Name of the Automation Account runbook. |
+| [`type`](#parameter-type) | string | The type of the runbook. |
 
 **Conditional parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `automationAccountName` | string | The name of the parent Automation Account. Required if the template is used in a standalone deployment. |
+| [`automationAccountName`](#parameter-automationaccountname) | string | The name of the parent Automation Account. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `description` | string | `''` | The description of the runbook. |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `location` | string | `[resourceGroup().location]` | Location for all resources. |
-| `sasTokenValidityLength` | string | `'PT8H'` | SAS token validity length. Usage: 'PT8H' - valid for 8 hours; 'P5D' - valid for 5 days; 'P1Y' - valid for 1 year. When not provided, the SAS token will be valid for 8 hours. |
-| `scriptStorageAccountId` | string | `''` | ID of the runbook storage account. |
-| `tags` | object | `{object}` | Tags of the Automation Account resource. |
-| `uri` | string | `''` | The uri of the runbook content. |
-| `version` | string | `''` | The version of the runbook content. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`description`](#parameter-description) | string | The description of the runbook. |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`location`](#parameter-location) | string | Location for all resources. |
+| [`sasTokenValidityLength`](#parameter-sastokenvaliditylength) | string | SAS token validity length. Usage: 'PT8H' - valid for 8 hours; 'P5D' - valid for 5 days; 'P1Y' - valid for 1 year. When not provided, the SAS token will be valid for 8 hours. |
+| [`scriptStorageAccountId`](#parameter-scriptstorageaccountid) | string | ID of the runbook storage account. |
+| [`tags`](#parameter-tags) | object | Tags of the Automation Account resource. |
+| [`uri`](#parameter-uri) | string | The uri of the runbook content. |
+| [`version`](#parameter-version) | string | The version of the runbook content. |
 
 **Generated parameters**
 
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `baseTime` | string | `[utcNow('u')]` | Time used as a basis for e.g. the schedule start date. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`baseTime`](#parameter-basetime) | string | Time used as a basis for e.g. the schedule start date. |
+
+### Parameter: `automationAccountName`
+
+The name of the parent Automation Account. Required if the template is used in a standalone deployment.
+- Required: Yes
+- Type: string
+
+### Parameter: `baseTime`
+
+Time used as a basis for e.g. the schedule start date.
+- Required: No
+- Type: string
+- Default: `[utcNow('u')]`
+
+### Parameter: `description`
+
+The description of the runbook.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `location`
+
+Location for all resources.
+- Required: No
+- Type: string
+- Default: `[resourceGroup().location]`
+
+### Parameter: `name`
+
+Name of the Automation Account runbook.
+- Required: Yes
+- Type: string
+
+### Parameter: `sasTokenValidityLength`
+
+SAS token validity length. Usage: 'PT8H' - valid for 8 hours; 'P5D' - valid for 5 days; 'P1Y' - valid for 1 year. When not provided, the SAS token will be valid for 8 hours.
+- Required: No
+- Type: string
+- Default: `'PT8H'`
+
+### Parameter: `scriptStorageAccountId`
+
+ID of the runbook storage account.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `tags`
+
+Tags of the Automation Account resource.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `type`
+
+The type of the runbook.
+- Required: Yes
+- Type: string
+- Allowed: `[Graph, GraphPowerShell, GraphPowerShellWorkflow, PowerShell, PowerShellWorkflow]`
+
+### Parameter: `uri`
+
+The uri of the runbook content.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `version`
+
+The version of the runbook content.
+- Required: No
+- Type: string
+- Default: `''`
 
 
 ## Outputs
 
-| Output Name | Type | Description |
+| Output | Type | Description |
 | :-- | :-- | :-- |
 | `location` | string | The location the resource was deployed into. |
 | `name` | string | The name of the deployed runbook. |

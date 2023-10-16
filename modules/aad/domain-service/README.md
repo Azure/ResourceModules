@@ -4,14 +4,14 @@ This module deploys an Azure Active Directory Domain Services (AADDS).
 
 ## Navigation
 
-- [Resource types](#Resource-types)
+- [Resource Types](#Resource-Types)
+- [Usage examples](#Usage-examples)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
-- [Deployment examples](#Deployment-examples)
 - [Notes](#Notes)
 
-## Resource types
+## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
@@ -20,81 +20,28 @@ This module deploys an Azure Active Directory Domain Services (AADDS).
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 
-## Parameters
+## Usage examples
 
-**Required parameters**
-
-| Parameter Name | Type | Description |
-| :-- | :-- | :-- |
-| `domainName` | string | The domain name specific to the Azure ADDS service. |
-
-**Conditional parameters**
-
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `pfxCertificate` | securestring | `''` | The certificate required to configure Secure LDAP. Should be a base64encoded representation of the certificate PFX file. Required if secure LDAP is enabled and must be valid more than 30 days. |
-| `pfxCertificatePassword` | securestring | `''` | The password to decrypt the provided Secure LDAP certificate PFX file. Required if secure LDAP is enabled. |
-
-**Optional parameters**
-
-| Parameter Name | Type | Default Value | Allowed Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `additionalRecipients` | array | `[]` |  | The email recipient value to receive alerts. |
-| `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
-| `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
-| `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `['', AccountLogon, AccountManagement, allLogs, DetailTracking, DirectoryServiceAccess, LogonLogoff, ObjectAccess, PolicyChange, PrivilegeUse, SystemSecurity]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
-| `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
-| `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
-| `domainConfigurationType` | string | `'FullySynced'` | `[FullySynced, ResourceTrusting]` | The value is to provide domain configuration type. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `externalAccess` | string | `'Enabled'` | `[Disabled, Enabled]` | The value is to enable the Secure LDAP for external services of Azure ADDS Services. |
-| `filteredSync` | string | `'Enabled'` |  | The value is to synchronize scoped users and groups. |
-| `kerberosArmoring` | string | `'Enabled'` | `[Disabled, Enabled]` | The value is to enable to provide a protected channel between the Kerberos client and the KDC. |
-| `kerberosRc4Encryption` | string | `'Enabled'` | `[Disabled, Enabled]` | The value is to enable Kerberos requests that use RC4 encryption. |
-| `ldaps` | string | `'Enabled'` | `[Disabled, Enabled]` | A flag to determine whether or not Secure LDAP is enabled or disabled. |
-| `location` | string | `[resourceGroup().location]` |  | The location to deploy the Azure ADDS Services. |
-| `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
-| `name` | string | `[parameters('domainName')]` |  | The name of the AADDS resource. Defaults to the domain name specific to the Azure ADDS service. |
-| `notifyDcAdmins` | string | `'Enabled'` | `[Disabled, Enabled]` | The value is to notify the DC Admins. |
-| `notifyGlobalAdmins` | string | `'Enabled'` | `[Disabled, Enabled]` | The value is to notify the Global Admins. |
-| `ntlmV1` | string | `'Enabled'` | `[Disabled, Enabled]` | The value is to enable clients making request using NTLM v1. |
-| `replicaSets` | array | `[]` |  | Additional replica set for the managed domain. |
-| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| `sku` | string | `'Standard'` | `[Enterprise, Premium, Standard]` | The name of the SKU specific to Azure ADDS Services. |
-| `syncNtlmPasswords` | string | `'Enabled'` | `[Disabled, Enabled]` | The value is to enable synchronized users to use NTLM authentication. |
-| `syncOnPremPasswords` | string | `'Enabled'` | `[Disabled, Enabled]` | The value is to enable on-premises users to authenticate against managed domain. |
-| `tags` | object | `{object}` |  | Tags of the resource. |
-| `tlsV1` | string | `'Enabled'` | `[Disabled, Enabled]` | The value is to enable clients making request using TLSv1. |
-
-
-## Outputs
-
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `location` | string | The location the resource was deployed into. |
-| `name` | string | The domain name of the Azure Active Directory Domain Services(Azure ADDS). |
-| `resourceGroupName` | string | The name of the resource group the Azure Active Directory Domain Services(Azure ADDS) was created in. |
-| `resourceId` | string | The resource ID of the Azure Active Directory Domain Services(Azure ADDS). |
-
-## Cross-referenced modules
-
-_None_
-
-## Deployment examples
-
-The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
+The following section provides usage examples for the module, which were used to validate and deploy the module successfully. For a full reference, please review the module's test folder in its repository.
    >**Note**: The name of each example is based on the name of the file from which it is taken.
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Common</h3>
+   >**Note**: To reference the module, please use the following syntax `br:bicep/modules/aad.domain-service:1.0.0`.
+
+- [Using large parameter set](#example-1-using-large-parameter-set)
+
+### Example 1: _Using large parameter set_
+
+This instance deploys the module with most of its features enabled.
+
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module domainService './aad/domain-service/main.bicep' = {
+module domainService 'br:bicep/modules/aad.domain-service:1.0.0' = {
   name: '${uniqueString(deployment().name, location)}-test-aaddscom'
   params: {
     // Required parameters
@@ -202,6 +149,282 @@ module domainService './aad/domain-service/main.bicep' = {
 </details>
 <p>
 
+
+## Parameters
+
+**Required parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`domainName`](#parameter-domainname) | string | The domain name specific to the Azure ADDS service. |
+
+**Conditional parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`pfxCertificate`](#parameter-pfxcertificate) | securestring | The certificate required to configure Secure LDAP. Should be a base64encoded representation of the certificate PFX file. Required if secure LDAP is enabled and must be valid more than 30 days. |
+| [`pfxCertificatePassword`](#parameter-pfxcertificatepassword) | securestring | The password to decrypt the provided Secure LDAP certificate PFX file. Required if secure LDAP is enabled. |
+
+**Optional parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`additionalRecipients`](#parameter-additionalrecipients) | array | The email recipient value to receive alerts. |
+| [`diagnosticEventHubAuthorizationRuleId`](#parameter-diagnosticeventhubauthorizationruleid) | string | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
+| [`diagnosticEventHubName`](#parameter-diagnosticeventhubname) | string | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
+| [`diagnosticLogCategoriesToEnable`](#parameter-diagnosticlogcategoriestoenable) | array | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
+| [`diagnosticStorageAccountId`](#parameter-diagnosticstorageaccountid) | string | Resource ID of the diagnostic storage account. |
+| [`diagnosticWorkspaceId`](#parameter-diagnosticworkspaceid) | string | Resource ID of the diagnostic log analytics workspace. |
+| [`domainConfigurationType`](#parameter-domainconfigurationtype) | string | The value is to provide domain configuration type. |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`externalAccess`](#parameter-externalaccess) | string | The value is to enable the Secure LDAP for external services of Azure ADDS Services. |
+| [`filteredSync`](#parameter-filteredsync) | string | The value is to synchronize scoped users and groups. |
+| [`kerberosArmoring`](#parameter-kerberosarmoring) | string | The value is to enable to provide a protected channel between the Kerberos client and the KDC. |
+| [`kerberosRc4Encryption`](#parameter-kerberosrc4encryption) | string | The value is to enable Kerberos requests that use RC4 encryption. |
+| [`ldaps`](#parameter-ldaps) | string | A flag to determine whether or not Secure LDAP is enabled or disabled. |
+| [`location`](#parameter-location) | string | The location to deploy the Azure ADDS Services. |
+| [`lock`](#parameter-lock) | string | Specify the type of lock. |
+| [`name`](#parameter-name) | string | The name of the AADDS resource. Defaults to the domain name specific to the Azure ADDS service. |
+| [`notifyDcAdmins`](#parameter-notifydcadmins) | string | The value is to notify the DC Admins. |
+| [`notifyGlobalAdmins`](#parameter-notifyglobaladmins) | string | The value is to notify the Global Admins. |
+| [`ntlmV1`](#parameter-ntlmv1) | string | The value is to enable clients making request using NTLM v1. |
+| [`replicaSets`](#parameter-replicasets) | array | Additional replica set for the managed domain. |
+| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| [`sku`](#parameter-sku) | string | The name of the SKU specific to Azure ADDS Services. |
+| [`syncNtlmPasswords`](#parameter-syncntlmpasswords) | string | The value is to enable synchronized users to use NTLM authentication. |
+| [`syncOnPremPasswords`](#parameter-synconprempasswords) | string | The value is to enable on-premises users to authenticate against managed domain. |
+| [`tags`](#parameter-tags) | object | Tags of the resource. |
+| [`tlsV1`](#parameter-tlsv1) | string | The value is to enable clients making request using TLSv1. |
+
+### Parameter: `additionalRecipients`
+
+The email recipient value to receive alerts.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `diagnosticEventHubAuthorizationRuleId`
+
+Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `diagnosticEventHubName`
+
+Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `diagnosticLogCategoriesToEnable`
+
+The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection.
+- Required: No
+- Type: array
+- Default: `[allLogs]`
+- Allowed: `['', AccountLogon, AccountManagement, allLogs, DetailTracking, DirectoryServiceAccess, LogonLogoff, ObjectAccess, PolicyChange, PrivilegeUse, SystemSecurity]`
+
+### Parameter: `diagnosticStorageAccountId`
+
+Resource ID of the diagnostic storage account.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `diagnosticWorkspaceId`
+
+Resource ID of the diagnostic log analytics workspace.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `domainConfigurationType`
+
+The value is to provide domain configuration type.
+- Required: No
+- Type: string
+- Default: `'FullySynced'`
+- Allowed: `[FullySynced, ResourceTrusting]`
+
+### Parameter: `domainName`
+
+The domain name specific to the Azure ADDS service.
+- Required: Yes
+- Type: string
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `externalAccess`
+
+The value is to enable the Secure LDAP for external services of Azure ADDS Services.
+- Required: No
+- Type: string
+- Default: `'Enabled'`
+- Allowed: `[Disabled, Enabled]`
+
+### Parameter: `filteredSync`
+
+The value is to synchronize scoped users and groups.
+- Required: No
+- Type: string
+- Default: `'Enabled'`
+
+### Parameter: `kerberosArmoring`
+
+The value is to enable to provide a protected channel between the Kerberos client and the KDC.
+- Required: No
+- Type: string
+- Default: `'Enabled'`
+- Allowed: `[Disabled, Enabled]`
+
+### Parameter: `kerberosRc4Encryption`
+
+The value is to enable Kerberos requests that use RC4 encryption.
+- Required: No
+- Type: string
+- Default: `'Enabled'`
+- Allowed: `[Disabled, Enabled]`
+
+### Parameter: `ldaps`
+
+A flag to determine whether or not Secure LDAP is enabled or disabled.
+- Required: No
+- Type: string
+- Default: `'Enabled'`
+- Allowed: `[Disabled, Enabled]`
+
+### Parameter: `location`
+
+The location to deploy the Azure ADDS Services.
+- Required: No
+- Type: string
+- Default: `[resourceGroup().location]`
+
+### Parameter: `lock`
+
+Specify the type of lock.
+- Required: No
+- Type: string
+- Default: `''`
+- Allowed: `['', CanNotDelete, ReadOnly]`
+
+### Parameter: `name`
+
+The name of the AADDS resource. Defaults to the domain name specific to the Azure ADDS service.
+- Required: No
+- Type: string
+- Default: `[parameters('domainName')]`
+
+### Parameter: `notifyDcAdmins`
+
+The value is to notify the DC Admins.
+- Required: No
+- Type: string
+- Default: `'Enabled'`
+- Allowed: `[Disabled, Enabled]`
+
+### Parameter: `notifyGlobalAdmins`
+
+The value is to notify the Global Admins.
+- Required: No
+- Type: string
+- Default: `'Enabled'`
+- Allowed: `[Disabled, Enabled]`
+
+### Parameter: `ntlmV1`
+
+The value is to enable clients making request using NTLM v1.
+- Required: No
+- Type: string
+- Default: `'Enabled'`
+- Allowed: `[Disabled, Enabled]`
+
+### Parameter: `pfxCertificate`
+
+The certificate required to configure Secure LDAP. Should be a base64encoded representation of the certificate PFX file. Required if secure LDAP is enabled and must be valid more than 30 days.
+- Required: No
+- Type: securestring
+- Default: `''`
+
+### Parameter: `pfxCertificatePassword`
+
+The password to decrypt the provided Secure LDAP certificate PFX file. Required if secure LDAP is enabled.
+- Required: No
+- Type: securestring
+- Default: `''`
+
+### Parameter: `replicaSets`
+
+Additional replica set for the managed domain.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `roleAssignments`
+
+Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `sku`
+
+The name of the SKU specific to Azure ADDS Services.
+- Required: No
+- Type: string
+- Default: `'Standard'`
+- Allowed: `[Enterprise, Premium, Standard]`
+
+### Parameter: `syncNtlmPasswords`
+
+The value is to enable synchronized users to use NTLM authentication.
+- Required: No
+- Type: string
+- Default: `'Enabled'`
+- Allowed: `[Disabled, Enabled]`
+
+### Parameter: `syncOnPremPasswords`
+
+The value is to enable on-premises users to authenticate against managed domain.
+- Required: No
+- Type: string
+- Default: `'Enabled'`
+- Allowed: `[Disabled, Enabled]`
+
+### Parameter: `tags`
+
+Tags of the resource.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `tlsV1`
+
+The value is to enable clients making request using TLSv1.
+- Required: No
+- Type: string
+- Default: `'Enabled'`
+- Allowed: `[Disabled, Enabled]`
+
+
+## Outputs
+
+| Output | Type | Description |
+| :-- | :-- | :-- |
+| `location` | string | The location the resource was deployed into. |
+| `name` | string | The domain name of the Azure Active Directory Domain Services(Azure ADDS). |
+| `resourceGroupName` | string | The name of the resource group the Azure Active Directory Domain Services(Azure ADDS) was created in. |
+| `resourceId` | string | The resource ID of the Azure Active Directory Domain Services(Azure ADDS). |
+
+## Cross-referenced modules
+
+_None_
 
 ## Notes
 

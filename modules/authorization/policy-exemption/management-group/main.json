@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.20.4.51522",
-      "templateHash": "17592627855612646241"
+      "version": "0.22.6.54827",
+      "templateHash": "5606667569084267633"
     },
     "name": "Policy Exemptions (Management Group scope)",
     "description": "This module deploys a Policy Exemption at a Management Group scope.",
