@@ -37,11 +37,10 @@ This module deploys an API Management Service.
 ## Usage examples
 
 The following section provides usage examples for the module, which were used to validate and deploy the module successfully. For a full reference, please review the module's test folder in its repository.
-   >**Note**: The name of each example is based on the name of the file from which it is taken.
 
-   >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
+>**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-   >**Note**: To reference the module, please use the following syntax `br:bicep/modules/api-management.service:1.0.0`.
+>**Note**: To reference the module, please use the following syntax `br:bicep/modules/api-management.service:1.0.0`.
 
 - [Using large parameter set](#example-1-using-large-parameter-set)
 - [Max](#example-2-max)

@@ -30,11 +30,10 @@ This module deploys a DocumentDB Database Account.
 ## Usage examples
 
 The following section provides usage examples for the module, which were used to validate and deploy the module successfully. For a full reference, please review the module's test folder in its repository.
-   >**Note**: The name of each example is based on the name of the file from which it is taken.
 
-   >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
+>**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-   >**Note**: To reference the module, please use the following syntax `br:bicep/modules/document-db.database-account:1.0.0`.
+>**Note**: To reference the module, please use the following syntax `br:bicep/modules/document-db.database-account:1.0.0`.
 
 - [Gremlindb](#example-1-gremlindb)
 - [Mongodb](#example-2-mongodb)
