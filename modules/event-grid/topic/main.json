@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.21.1.54444",
-      "templateHash": "2223845646859059604"
+      "version": "0.22.6.54827",
+      "templateHash": "17347618398012771479"
     },
     "name": "Event Grid Topics",
     "description": "This module deploys an Event Grid Topic.",
@@ -275,8 +275,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "6395050115112731120"
+              "version": "0.22.6.54827",
+              "templateHash": "2222106647839764321"
             },
             "name": "EventGrid Topic Event Subscriptions",
             "description": "This module deploys an Event Grid Topic Event Subscription.",
@@ -492,8 +492,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "14580007913383558904"
+              "version": "0.22.6.54827",
+              "templateHash": "2884140170473394983"
             },
             "name": "Private Endpoints",
             "description": "This module deploys a Private Endpoint.",
@@ -692,8 +692,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.21.1.54444",
-                      "templateHash": "2469208411936339153"
+                      "version": "0.22.6.54827",
+                      "templateHash": "5610247137574346230"
                     },
                     "name": "Private Endpoint Private DNS Zone Groups",
                     "description": "This module deploys a Private Endpoint Private DNS Zone Group.",
@@ -830,8 +830,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.21.1.54444",
-                      "templateHash": "13032708393704093995"
+                      "version": "0.22.6.54827",
+                      "templateHash": "14351187799927334028"
                     }
                   },
                   "parameters": {
@@ -1044,8 +1044,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "13615997203559529091"
+              "version": "0.22.6.54827",
+              "templateHash": "8293298385688392206"
             }
           },
           "parameters": {

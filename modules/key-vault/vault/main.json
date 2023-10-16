@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.21.1.54444",
-      "templateHash": "9452615051960144682"
+      "version": "0.22.6.54827",
+      "templateHash": "2257250292452239694"
     },
     "name": "Key Vaults",
     "description": "This module deploys a Key Vault.",
@@ -369,8 +369,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "10458348557666655329"
+              "version": "0.22.6.54827",
+              "templateHash": "2131300650084383528"
             },
             "name": "Key Vault Access Policies",
             "description": "This module deploys a Key Vault Access Policy.",
@@ -504,8 +504,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "4314059595515029873"
+              "version": "0.22.6.54827",
+              "templateHash": "15496955101876834904"
             },
             "name": "Key Vault Secrets",
             "description": "This module deploys a Key Vault Secret.",
@@ -644,8 +644,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.21.1.54444",
-                      "templateHash": "15814620610091788537"
+                      "version": "0.22.6.54827",
+                      "templateHash": "17395736576734421648"
                     }
                   },
                   "parameters": {
@@ -839,8 +839,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "13427300513937033652"
+              "version": "0.22.6.54827",
+              "templateHash": "3444180240240001557"
             },
             "name": "Key Vault Keys",
             "description": "This module deploys a Key Vault Key.",
@@ -1025,8 +1025,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.21.1.54444",
-                      "templateHash": "8510219443070850278"
+                      "version": "0.22.6.54827",
+                      "templateHash": "14547096535874536511"
                     }
                   },
                   "parameters": {
@@ -1226,8 +1226,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "14580007913383558904"
+              "version": "0.22.6.54827",
+              "templateHash": "2884140170473394983"
             },
             "name": "Private Endpoints",
             "description": "This module deploys a Private Endpoint.",
@@ -1426,8 +1426,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.21.1.54444",
-                      "templateHash": "2469208411936339153"
+                      "version": "0.22.6.54827",
+                      "templateHash": "5610247137574346230"
                     },
                     "name": "Private Endpoint Private DNS Zone Groups",
                     "description": "This module deploys a Private Endpoint Private DNS Zone Group.",
@@ -1564,8 +1564,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.21.1.54444",
-                      "templateHash": "13032708393704093995"
+                      "version": "0.22.6.54827",
+                      "templateHash": "14351187799927334028"
                     }
                   },
                   "parameters": {
@@ -1778,8 +1778,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "12411629325302614699"
+              "version": "0.22.6.54827",
+              "templateHash": "13908410767908593601"
             }
           },
           "parameters": {

@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.21.1.54444",
-      "templateHash": "1454714316313419889"
+      "version": "0.22.6.54827",
+      "templateHash": "1301728261383253712"
     },
     "name": "Application Gateway Web Application Firewall (WAF) Policies",
     "description": "This module deploys an Application Gateway Web Application Firewall (WAF) Policy.",

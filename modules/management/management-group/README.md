@@ -8,63 +8,42 @@ This module has some known **limitations**:
 
 ## Navigation
 
-- [Resource types](#Resource-types)
+- [Resource Types](#Resource-Types)
+- [Usage examples](#Usage-examples)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
-- [Deployment examples](#Deployment-examples)
 - [Notes](#Notes)
 
-## Resource types
+## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Management/managementGroups` | [2021-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Management/2021-04-01/managementGroups) |
 
-## Parameters
+## Usage examples
 
-**Required parameters**
-
-| Parameter Name | Type | Description |
-| :-- | :-- | :-- |
-| `name` | string | The group ID of the Management group. |
-
-**Optional parameters**
-
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `displayName` | string | `''` | The friendly name of the management group. If no value is passed then this field will be set to the group ID. |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `location` | string | `[deployment().location]` | Location deployment metadata. |
-| `parentId` | string | `[last(split(managementGroup().id, '/'))]` | The management group parent ID. Defaults to current scope. |
-
-
-## Outputs
-
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `name` | string | The name of the management group. |
-| `resourceId` | string | The resource ID of the management group. |
-
-## Cross-referenced modules
-
-_None_
-
-## Deployment examples
-
-The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
+The following section provides usage examples for the module, which were used to validate and deploy the module successfully. For a full reference, please review the module's test folder in its repository.
    >**Note**: The name of each example is based on the name of the file from which it is taken.
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Common</h3>
+   >**Note**: To reference the module, please use the following syntax `br:bicep/modules/management.management-group:1.0.0`.
+
+- [Using large parameter set](#example-1-using-large-parameter-set)
+- [Using only defaults](#example-2-using-only-defaults)
+
+### Example 1: _Using large parameter set_
+
+This instance deploys the module with most of its features enabled.
+
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module managementGroup './management/management-group/main.bicep' = {
+module managementGroup 'br:bicep/modules/management.management-group:1.0.0' = {
   name: '${uniqueString(deployment().name)}-test-mmgcom'
   params: {
     // Required parameters
@@ -110,14 +89,17 @@ module managementGroup './management/management-group/main.bicep' = {
 </details>
 <p>
 
-<h3>Example 2: Min</h3>
+### Example 2: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module managementGroup './management/management-group/main.bicep' = {
+module managementGroup 'br:bicep/modules/management.management-group:1.0.0' = {
   name: '${uniqueString(deployment().name)}-test-mmgmin'
   params: {
     // Required parameters
@@ -155,6 +137,69 @@ module managementGroup './management/management-group/main.bicep' = {
 </details>
 <p>
 
+
+## Parameters
+
+**Required parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`name`](#parameter-name) | string | The group ID of the Management group. |
+
+**Optional parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`displayName`](#parameter-displayname) | string | The friendly name of the management group. If no value is passed then this field will be set to the group ID. |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`location`](#parameter-location) | string | Location deployment metadata. |
+| [`parentId`](#parameter-parentid) | string | The management group parent ID. Defaults to current scope. |
+
+### Parameter: `displayName`
+
+The friendly name of the management group. If no value is passed then this field will be set to the group ID.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `location`
+
+Location deployment metadata.
+- Required: No
+- Type: string
+- Default: `[deployment().location]`
+
+### Parameter: `name`
+
+The group ID of the Management group.
+- Required: Yes
+- Type: string
+
+### Parameter: `parentId`
+
+The management group parent ID. Defaults to current scope.
+- Required: No
+- Type: string
+- Default: `[last(split(managementGroup().id, '/'))]`
+
+
+## Outputs
+
+| Output | Type | Description |
+| :-- | :-- | :-- |
+| `name` | string | The name of the management group. |
+| `resourceId` | string | The resource ID of the management group. |
+
+## Cross-referenced modules
+
+_None_
 
 ## Notes
 

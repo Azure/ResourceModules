@@ -5,10 +5,10 @@ This module deploys a DocumentDB Database Account.
 ## Navigation
 
 - [Resource Types](#Resource-Types)
+- [Usage examples](#Usage-examples)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
-- [Deployment examples](#Deployment-examples)
 
 ## Resource Types
 
@@ -27,85 +27,28 @@ This module deploys a DocumentDB Database Account.
 | `Microsoft.Network/privateEndpoints` | [2023-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-04-01/privateEndpoints) |
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2023-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-04-01/privateEndpoints/privateDnsZoneGroups) |
 
-## Parameters
+## Usage examples
 
-**Required parameters**
-
-| Parameter Name | Type | Description |
-| :-- | :-- | :-- |
-| `locations` | array | Locations enabled for the Cosmos DB account. |
-| `name` | string | Name of the Database Account. |
-
-**Optional parameters**
-
-| Parameter Name | Type | Default Value | Allowed Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `automaticFailover` | bool | `True` |  | Enable automatic failover for regions. |
-| `backupIntervalInMinutes` | int | `240` |  | An integer representing the interval in minutes between two backups. Only applies to periodic backup type. |
-| `backupPolicyContinuousTier` | string | `'Continuous30Days'` | `[Continuous30Days, Continuous7Days]` | Configuration values for continuous mode backup. |
-| `backupPolicyType` | string | `'Continuous'` | `[Continuous, Periodic]` | Describes the mode of backups. |
-| `backupRetentionIntervalInHours` | int | `8` |  | An integer representing the time (in hours) that each backup is retained. Only applies to periodic backup type. |
-| `backupStorageRedundancy` | string | `'Local'` | `[Geo, Local, Zone]` | Enum to indicate type of backup residency. Only applies to periodic backup type. |
-| `capabilitiesToAdd` | array | `[]` | `[DisableRateLimitingResponses, EnableCassandra, EnableGremlin, EnableMongo, EnableServerless, EnableTable]` | List of Cosmos DB capabilities for the account. |
-| `databaseAccountOfferType` | string | `'Standard'` | `[Standard]` | The offer type for the Cosmos DB database account. |
-| `defaultConsistencyLevel` | string | `'Session'` | `[BoundedStaleness, ConsistentPrefix, Eventual, Session, Strong]` | The default consistency level of the Cosmos DB account. |
-| `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
-| `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
-| `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `['', allLogs, CassandraRequests, ControlPlaneRequests, DataPlaneRequests, GremlinRequests, MongoRequests, PartitionKeyRUConsumption, PartitionKeyStatistics, QueryRuntimeStatistics, TableApiRequests]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
-| `diagnosticMetricsToEnable` | array | `[Requests]` | `[Requests]` | The name of metrics that will be streamed. |
-| `diagnosticSettingsName` | string | `''` |  | The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings". |
-| `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
-| `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the log analytics workspace. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `enableFreeTier` | bool | `False` |  | Flag to indicate whether Free Tier is enabled. |
-| `gremlinDatabases` | array | `[]` |  | Gremlin Databases configurations. |
-| `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
-| `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
-| `maxIntervalInSeconds` | int | `300` |  | Max lag time (minutes). Required for BoundedStaleness. Valid ranges, Single Region: 5 to 84600. Multi Region: 300 to 86400. |
-| `maxStalenessPrefix` | int | `100000` |  | Max stale requests. Required for BoundedStaleness. Valid ranges, Single Region: 10 to 1000000. Multi Region: 100000 to 1000000. |
-| `mongodbDatabases` | array | `[]` |  | MongoDB Databases configurations. |
-| `privateEndpoints` | array | `[]` |  | Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
-| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalIds' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| `serverVersion` | string | `'4.2'` | `[3.2, 3.6, 4.0, 4.2]` | Specifies the MongoDB server version to use. |
-| `sqlDatabases` | array | `[]` |  | SQL Databases configurations. |
-| `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
-| `tags` | object | `{object}` |  | Tags of the Database Account resource. |
-| `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
-
-
-## Outputs
-
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of the database account. |
-| `resourceGroupName` | string | The name of the resource group the database account was created in. |
-| `resourceId` | string | The resource ID of the database account. |
-| `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
-
-## Cross-referenced modules
-
-This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
-
-| Reference | Type |
-| :-- | :-- |
-| `network/private-endpoint` | Local reference |
-
-## Deployment examples
-
-The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
+The following section provides usage examples for the module, which were used to validate and deploy the module successfully. For a full reference, please review the module's test folder in its repository.
    >**Note**: The name of each example is based on the name of the file from which it is taken.
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Gremlindb</h3>
+   >**Note**: To reference the module, please use the following syntax `br:bicep/modules/document-db.database-account:1.0.0`.
+
+- [Gremlindb](#example-1-gremlindb)
+- [Mongodb](#example-2-mongodb)
+- [Plain](#example-3-plain)
+- [Sqldb](#example-4-sqldb)
+
+### Example 1: _Gremlindb_
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module databaseAccount './document-db/database-account/main.bicep' = {
+module databaseAccount 'br:bicep/modules/document-db.database-account:1.0.0' = {
   name: '${uniqueString(deployment().name, location)}-test-dddagrm'
   params: {
     // Required parameters
@@ -331,14 +274,14 @@ module databaseAccount './document-db/database-account/main.bicep' = {
 </details>
 <p>
 
-<h3>Example 2: Mongodb</h3>
+### Example 2: _Mongodb_
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module databaseAccount './document-db/database-account/main.bicep' = {
+module databaseAccount 'br:bicep/modules/document-db.database-account:1.0.0' = {
   name: '${uniqueString(deployment().name, location)}-test-dddamng'
   params: {
     // Required parameters
@@ -828,14 +771,14 @@ module databaseAccount './document-db/database-account/main.bicep' = {
 </details>
 <p>
 
-<h3>Example 3: Plain</h3>
+### Example 3: _Plain_
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module databaseAccount './document-db/database-account/main.bicep' = {
+module databaseAccount 'br:bicep/modules/document-db.database-account:1.0.0' = {
   name: '${uniqueString(deployment().name, location)}-test-dddapln'
   params: {
     // Required parameters
@@ -951,14 +894,14 @@ module databaseAccount './document-db/database-account/main.bicep' = {
 </details>
 <p>
 
-<h3>Example 4: Sqldb</h3>
+### Example 4: _Sqldb_
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module databaseAccount './document-db/database-account/main.bicep' = {
+module databaseAccount 'br:bicep/modules/document-db.database-account:1.0.0' = {
   name: '${uniqueString(deployment().name, location)}-test-dddasql'
   params: {
     // Required parameters
@@ -1269,3 +1212,307 @@ module databaseAccount './document-db/database-account/main.bicep' = {
 
 </details>
 <p>
+
+
+## Parameters
+
+**Required parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`locations`](#parameter-locations) | array | Locations enabled for the Cosmos DB account. |
+| [`name`](#parameter-name) | string | Name of the Database Account. |
+
+**Optional parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`automaticFailover`](#parameter-automaticfailover) | bool | Enable automatic failover for regions. |
+| [`backupIntervalInMinutes`](#parameter-backupintervalinminutes) | int | An integer representing the interval in minutes between two backups. Only applies to periodic backup type. |
+| [`backupPolicyContinuousTier`](#parameter-backuppolicycontinuoustier) | string | Configuration values for continuous mode backup. |
+| [`backupPolicyType`](#parameter-backuppolicytype) | string | Describes the mode of backups. |
+| [`backupRetentionIntervalInHours`](#parameter-backupretentionintervalinhours) | int | An integer representing the time (in hours) that each backup is retained. Only applies to periodic backup type. |
+| [`backupStorageRedundancy`](#parameter-backupstorageredundancy) | string | Enum to indicate type of backup residency. Only applies to periodic backup type. |
+| [`capabilitiesToAdd`](#parameter-capabilitiestoadd) | array | List of Cosmos DB capabilities for the account. |
+| [`databaseAccountOfferType`](#parameter-databaseaccountoffertype) | string | The offer type for the Cosmos DB database account. |
+| [`defaultConsistencyLevel`](#parameter-defaultconsistencylevel) | string | The default consistency level of the Cosmos DB account. |
+| [`diagnosticEventHubAuthorizationRuleId`](#parameter-diagnosticeventhubauthorizationruleid) | string | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
+| [`diagnosticEventHubName`](#parameter-diagnosticeventhubname) | string | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
+| [`diagnosticLogCategoriesToEnable`](#parameter-diagnosticlogcategoriestoenable) | array | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
+| [`diagnosticMetricsToEnable`](#parameter-diagnosticmetricstoenable) | array | The name of metrics that will be streamed. |
+| [`diagnosticSettingsName`](#parameter-diagnosticsettingsname) | string | The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings". |
+| [`diagnosticStorageAccountId`](#parameter-diagnosticstorageaccountid) | string | Resource ID of the diagnostic storage account. |
+| [`diagnosticWorkspaceId`](#parameter-diagnosticworkspaceid) | string | Resource ID of the log analytics workspace. |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`enableFreeTier`](#parameter-enablefreetier) | bool | Flag to indicate whether Free Tier is enabled. |
+| [`gremlinDatabases`](#parameter-gremlindatabases) | array | Gremlin Databases configurations. |
+| [`location`](#parameter-location) | string | Location for all resources. |
+| [`lock`](#parameter-lock) | string | Specify the type of lock. |
+| [`maxIntervalInSeconds`](#parameter-maxintervalinseconds) | int | Max lag time (minutes). Required for BoundedStaleness. Valid ranges, Single Region: 5 to 84600. Multi Region: 300 to 86400. |
+| [`maxStalenessPrefix`](#parameter-maxstalenessprefix) | int | Max stale requests. Required for BoundedStaleness. Valid ranges, Single Region: 10 to 1000000. Multi Region: 100000 to 1000000. |
+| [`mongodbDatabases`](#parameter-mongodbdatabases) | array | MongoDB Databases configurations. |
+| [`privateEndpoints`](#parameter-privateendpoints) | array | Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
+| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalIds' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| [`serverVersion`](#parameter-serverversion) | string | Specifies the MongoDB server version to use. |
+| [`sqlDatabases`](#parameter-sqldatabases) | array | SQL Databases configurations. |
+| [`systemAssignedIdentity`](#parameter-systemassignedidentity) | bool | Enables system assigned managed identity on the resource. |
+| [`tags`](#parameter-tags) | object | Tags of the Database Account resource. |
+| [`userAssignedIdentities`](#parameter-userassignedidentities) | object | The ID(s) to assign to the resource. |
+
+### Parameter: `automaticFailover`
+
+Enable automatic failover for regions.
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `backupIntervalInMinutes`
+
+An integer representing the interval in minutes between two backups. Only applies to periodic backup type.
+- Required: No
+- Type: int
+- Default: `240`
+
+### Parameter: `backupPolicyContinuousTier`
+
+Configuration values for continuous mode backup.
+- Required: No
+- Type: string
+- Default: `'Continuous30Days'`
+- Allowed: `[Continuous30Days, Continuous7Days]`
+
+### Parameter: `backupPolicyType`
+
+Describes the mode of backups.
+- Required: No
+- Type: string
+- Default: `'Continuous'`
+- Allowed: `[Continuous, Periodic]`
+
+### Parameter: `backupRetentionIntervalInHours`
+
+An integer representing the time (in hours) that each backup is retained. Only applies to periodic backup type.
+- Required: No
+- Type: int
+- Default: `8`
+
+### Parameter: `backupStorageRedundancy`
+
+Enum to indicate type of backup residency. Only applies to periodic backup type.
+- Required: No
+- Type: string
+- Default: `'Local'`
+- Allowed: `[Geo, Local, Zone]`
+
+### Parameter: `capabilitiesToAdd`
+
+List of Cosmos DB capabilities for the account.
+- Required: No
+- Type: array
+- Default: `[]`
+- Allowed: `[DisableRateLimitingResponses, EnableCassandra, EnableGremlin, EnableMongo, EnableServerless, EnableTable]`
+
+### Parameter: `databaseAccountOfferType`
+
+The offer type for the Cosmos DB database account.
+- Required: No
+- Type: string
+- Default: `'Standard'`
+- Allowed: `[Standard]`
+
+### Parameter: `defaultConsistencyLevel`
+
+The default consistency level of the Cosmos DB account.
+- Required: No
+- Type: string
+- Default: `'Session'`
+- Allowed: `[BoundedStaleness, ConsistentPrefix, Eventual, Session, Strong]`
+
+### Parameter: `diagnosticEventHubAuthorizationRuleId`
+
+Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `diagnosticEventHubName`
+
+Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `diagnosticLogCategoriesToEnable`
+
+The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection.
+- Required: No
+- Type: array
+- Default: `[allLogs]`
+- Allowed: `['', allLogs, CassandraRequests, ControlPlaneRequests, DataPlaneRequests, GremlinRequests, MongoRequests, PartitionKeyRUConsumption, PartitionKeyStatistics, QueryRuntimeStatistics, TableApiRequests]`
+
+### Parameter: `diagnosticMetricsToEnable`
+
+The name of metrics that will be streamed.
+- Required: No
+- Type: array
+- Default: `[Requests]`
+- Allowed: `[Requests]`
+
+### Parameter: `diagnosticSettingsName`
+
+The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings".
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `diagnosticStorageAccountId`
+
+Resource ID of the diagnostic storage account.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `diagnosticWorkspaceId`
+
+Resource ID of the log analytics workspace.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `enableFreeTier`
+
+Flag to indicate whether Free Tier is enabled.
+- Required: No
+- Type: bool
+- Default: `False`
+
+### Parameter: `gremlinDatabases`
+
+Gremlin Databases configurations.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `location`
+
+Location for all resources.
+- Required: No
+- Type: string
+- Default: `[resourceGroup().location]`
+
+### Parameter: `locations`
+
+Locations enabled for the Cosmos DB account.
+- Required: Yes
+- Type: array
+
+### Parameter: `lock`
+
+Specify the type of lock.
+- Required: No
+- Type: string
+- Default: `''`
+- Allowed: `['', CanNotDelete, ReadOnly]`
+
+### Parameter: `maxIntervalInSeconds`
+
+Max lag time (minutes). Required for BoundedStaleness. Valid ranges, Single Region: 5 to 84600. Multi Region: 300 to 86400.
+- Required: No
+- Type: int
+- Default: `300`
+
+### Parameter: `maxStalenessPrefix`
+
+Max stale requests. Required for BoundedStaleness. Valid ranges, Single Region: 10 to 1000000. Multi Region: 100000 to 1000000.
+- Required: No
+- Type: int
+- Default: `100000`
+
+### Parameter: `mongodbDatabases`
+
+MongoDB Databases configurations.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `name`
+
+Name of the Database Account.
+- Required: Yes
+- Type: string
+
+### Parameter: `privateEndpoints`
+
+Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `roleAssignments`
+
+Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalIds' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `serverVersion`
+
+Specifies the MongoDB server version to use.
+- Required: No
+- Type: string
+- Default: `'4.2'`
+- Allowed: `[3.2, 3.6, 4.0, 4.2]`
+
+### Parameter: `sqlDatabases`
+
+SQL Databases configurations.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `systemAssignedIdentity`
+
+Enables system assigned managed identity on the resource.
+- Required: No
+- Type: bool
+- Default: `False`
+
+### Parameter: `tags`
+
+Tags of the Database Account resource.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `userAssignedIdentities`
+
+The ID(s) to assign to the resource.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+
+## Outputs
+
+| Output | Type | Description |
+| :-- | :-- | :-- |
+| `location` | string | The location the resource was deployed into. |
+| `name` | string | The name of the database account. |
+| `resourceGroupName` | string | The name of the resource group the database account was created in. |
+| `resourceId` | string | The resource ID of the database account. |
+| `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
+
+## Cross-referenced modules
+
+This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
+
+| Reference | Type |
+| :-- | :-- |
+| `modules/network/private-endpoint` | Local reference |
