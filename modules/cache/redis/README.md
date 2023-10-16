@@ -31,10 +31,13 @@ The following section provides usage examples for the module, which were used to
 
    >**Note**: To reference the module, please use the following syntax `br:bicep/modules/cache.redis:1.0.0`.
 
-- [Common](#example-1-common)
-- [Min](#example-2-min)
+- [Using large parameter set](#example-1-using-large-parameter-set)
+- [Using only defaults](#example-2-using-only-defaults)
 
-### Example 1: _Common_
+### Example 1: _Using large parameter set_
+
+This instance deploys the module with most of its features enabled.
+
 
 <details>
 
@@ -193,7 +196,10 @@ module redis 'br:bicep/modules/cache.redis:1.0.0' = {
 </details>
 <p>
 
-### Example 2: _Min_
+### Example 2: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
 
 <details>
 

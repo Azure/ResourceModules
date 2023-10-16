@@ -19,30 +19,114 @@ This module deploys a Policy Exemption at a Management Group scope.
 
 **Required parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | Specifies the name of the policy exemption. Maximum length is 64 characters for management group scope. |
-| `policyAssignmentId` | string | The resource ID of the policy assignment that is being exempted. |
+| [`name`](#parameter-name) | string | Specifies the name of the policy exemption. Maximum length is 64 characters for management group scope. |
+| [`policyAssignmentId`](#parameter-policyassignmentid) | string | The resource ID of the policy assignment that is being exempted. |
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Allowed Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `assignmentScopeValidation` | string | `''` | `['', Default, DoNotValidate]` | The option whether validate the exemption is at or under the assignment scope. |
-| `description` | string | `''` |  | The description of the policy exemption. |
-| `displayName` | string | `''` |  | The display name of the policy assignment. Maximum length is 128 characters. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `exemptionCategory` | string | `'Mitigated'` | `[Mitigated, Waiver]` | The policy exemption category. Possible values are Waiver and Mitigated. Default is Mitigated. |
-| `expiresOn` | string | `''` |  | The expiration date and time (in UTC ISO 8601 format yyyy-MM-ddTHH:mm:ssZ) of the policy exemption. e.g. 2021-10-02T03:57:00.000Z. |
-| `location` | string | `[deployment().location]` |  | Location deployment metadata. |
-| `metadata` | object | `{object}` |  | The policy exemption metadata. Metadata is an open ended object and is typically a collection of key-value pairs. |
-| `policyDefinitionReferenceIds` | array | `[]` |  | The policy definition reference ID list when the associated policy assignment is an assignment of a policy set definition. |
-| `resourceSelectors` | array | `[]` |  | The resource selector list to filter policies by resource properties. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`assignmentScopeValidation`](#parameter-assignmentscopevalidation) | string | The option whether validate the exemption is at or under the assignment scope. |
+| [`description`](#parameter-description) | string | The description of the policy exemption. |
+| [`displayName`](#parameter-displayname) | string | The display name of the policy assignment. Maximum length is 128 characters. |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`exemptionCategory`](#parameter-exemptioncategory) | string | The policy exemption category. Possible values are Waiver and Mitigated. Default is Mitigated. |
+| [`expiresOn`](#parameter-expireson) | string | The expiration date and time (in UTC ISO 8601 format yyyy-MM-ddTHH:mm:ssZ) of the policy exemption. e.g. 2021-10-02T03:57:00.000Z. |
+| [`location`](#parameter-location) | string | Location deployment metadata. |
+| [`metadata`](#parameter-metadata) | object | The policy exemption metadata. Metadata is an open ended object and is typically a collection of key-value pairs. |
+| [`policyDefinitionReferenceIds`](#parameter-policydefinitionreferenceids) | array | The policy definition reference ID list when the associated policy assignment is an assignment of a policy set definition. |
+| [`resourceSelectors`](#parameter-resourceselectors) | array | The resource selector list to filter policies by resource properties. |
+
+### Parameter: `assignmentScopeValidation`
+
+The option whether validate the exemption is at or under the assignment scope.
+- Required: No
+- Type: string
+- Default: `''`
+- Allowed: `['', Default, DoNotValidate]`
+
+### Parameter: `description`
+
+The description of the policy exemption.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `displayName`
+
+The display name of the policy assignment. Maximum length is 128 characters.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `exemptionCategory`
+
+The policy exemption category. Possible values are Waiver and Mitigated. Default is Mitigated.
+- Required: No
+- Type: string
+- Default: `'Mitigated'`
+- Allowed: `[Mitigated, Waiver]`
+
+### Parameter: `expiresOn`
+
+The expiration date and time (in UTC ISO 8601 format yyyy-MM-ddTHH:mm:ssZ) of the policy exemption. e.g. 2021-10-02T03:57:00.000Z.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `location`
+
+Location deployment metadata.
+- Required: No
+- Type: string
+- Default: `[deployment().location]`
+
+### Parameter: `metadata`
+
+The policy exemption metadata. Metadata is an open ended object and is typically a collection of key-value pairs.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `name`
+
+Specifies the name of the policy exemption. Maximum length is 64 characters for management group scope.
+- Required: Yes
+- Type: string
+
+### Parameter: `policyAssignmentId`
+
+The resource ID of the policy assignment that is being exempted.
+- Required: Yes
+- Type: string
+
+### Parameter: `policyDefinitionReferenceIds`
+
+The policy definition reference ID list when the associated policy assignment is an assignment of a policy set definition.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `resourceSelectors`
+
+The resource selector list to filter policies by resource properties.
+- Required: No
+- Type: array
+- Default: `[]`
 
 
 ## Outputs
 
-| Output Name | Type | Description |
+| Output | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | Policy Exemption Name. |
 | `resourceId` | string | Policy Exemption resource ID. |

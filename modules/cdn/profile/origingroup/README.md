@@ -20,26 +20,80 @@ This module deploys a CDN Profile Origin Group.
 
 **Required parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `loadBalancingSettings` | object | Load balancing settings for a backend pool. |
-| `name` | string | The name of the origin group. |
-| `origins` | array | The list of origins within the origin group. |
-| `profileName` | string | The name of the CDN profile. |
+| [`loadBalancingSettings`](#parameter-loadbalancingsettings) | object | Load balancing settings for a backend pool. |
+| [`name`](#parameter-name) | string | The name of the origin group. |
+| [`origins`](#parameter-origins) | array | The list of origins within the origin group. |
+| [`profileName`](#parameter-profilename) | string | The name of the CDN profile. |
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Allowed Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `healthProbeSettings` | object | `{object}` |  | Health probe settings to the origin that is used to determine the health of the origin. |
-| `sessionAffinityState` | string | `'Disabled'` | `[Disabled, Enabled]` | Whether to allow session affinity on this host. |
-| `trafficRestorationTimeToHealedOrNewEndpointsInMinutes` | int | `10` |  | Time in minutes to shift the traffic to the endpoint gradually when an unhealthy endpoint comes healthy or a new endpoint is added. Default is 10 mins. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`healthProbeSettings`](#parameter-healthprobesettings) | object | Health probe settings to the origin that is used to determine the health of the origin. |
+| [`sessionAffinityState`](#parameter-sessionaffinitystate) | string | Whether to allow session affinity on this host. |
+| [`trafficRestorationTimeToHealedOrNewEndpointsInMinutes`](#parameter-trafficrestorationtimetohealedornewendpointsinminutes) | int | Time in minutes to shift the traffic to the endpoint gradually when an unhealthy endpoint comes healthy or a new endpoint is added. Default is 10 mins. |
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `healthProbeSettings`
+
+Health probe settings to the origin that is used to determine the health of the origin.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `loadBalancingSettings`
+
+Load balancing settings for a backend pool.
+- Required: Yes
+- Type: object
+
+### Parameter: `name`
+
+The name of the origin group.
+- Required: Yes
+- Type: string
+
+### Parameter: `origins`
+
+The list of origins within the origin group.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `profileName`
+
+The name of the CDN profile.
+- Required: Yes
+- Type: string
+
+### Parameter: `sessionAffinityState`
+
+Whether to allow session affinity on this host.
+- Required: No
+- Type: string
+- Default: `'Disabled'`
+- Allowed: `[Disabled, Enabled]`
+
+### Parameter: `trafficRestorationTimeToHealedOrNewEndpointsInMinutes`
+
+Time in minutes to shift the traffic to the endpoint gradually when an unhealthy endpoint comes healthy or a new endpoint is added. Default is 10 mins.
+- Required: No
+- Type: int
+- Default: `10`
 
 
 ## Outputs
 
-| Output Name | Type | Description |
+| Output | Type | Description |
 | :-- | :-- | :-- |
 | `location` | string | The location the resource was deployed into. |
 | `name` | string | The name of the origin group. |

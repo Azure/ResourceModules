@@ -5,10 +5,10 @@ This module deploys a DBforMySQL Flexible Server.
 ## Navigation
 
 - [Resource Types](#Resource-Types)
+- [Usage examples](#Usage-examples)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
-- [Deployment examples](#Deployment-examples)
 
 ## Resource Types
 
@@ -22,97 +22,30 @@ This module deploys a DBforMySQL Flexible Server.
 | `Microsoft.DBforMySQL/flexibleServers/firewallRules` | [2022-01-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DBforMySQL/2022-01-01/flexibleServers/firewallRules) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 
-## Parameters
+## Usage examples
 
-**Required parameters**
-
-| Parameter Name | Type | Allowed Values | Description |
-| :-- | :-- | :-- | :-- |
-| `name` | string |  | The name of the MySQL flexible server. |
-| `skuName` | string |  | The name of the sku, typically, tier + family + cores, e.g. Standard_D4s_v3. |
-| `tier` | string | `[Burstable, GeneralPurpose, MemoryOptimized]` | The tier of the particular SKU. Tier must align with the "skuName" property. Example, tier cannot be "Burstable" if skuName is "Standard_D4s_v3". |
-
-**Conditional parameters**
-
-| Parameter Name | Type | Default Value | Allowed Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `cMKKeyVaultResourceId` | string | `''` |  | The resource ID of a key vault to reference a customer managed key for encryption from. Required if "cMKKeyName" is not empty. |
-| `cMKUserAssignedIdentityResourceId` | string | `''` |  | User assigned identity to use when fetching the customer managed key. The identity should have key usage permissions on the Key Vault Key. Required if "cMKKeyName" is not empty. |
-| `geoBackupCMKKeyVaultResourceId` | string | `''` |  | The resource ID of a key vault to reference a customer managed key for encryption from. Required if "cMKKeyName" is not empty and geoRedundantBackup is "Enabled". |
-| `geoBackupCMKUserAssignedIdentityResourceId` | string | `''` |  | Geo backup user identity resource ID as identity cant cross region, need identity in same region as geo backup. The identity should have key usage permissions on the Key Vault Key. Required if "cMKKeyName" is not empty and geoRedundantBackup is "Enabled". |
-| `privateDnsZoneResourceId` | string | `''` |  | Private dns zone arm resource ID. Used when the desired connectivity mode is "Private Access". Required if "delegatedSubnetResourceId" is used and the Private DNS Zone name must end with mysql.database.azure.com in order to be linked to the MySQL Flexible Server. |
-| `restorePointInTime` | string | `''` |  | Restore point creation time (ISO8601 format), specifying the time to restore from. Required if "createMode" is set to "PointInTimeRestore". |
-| `sourceServerResourceId` | string | `''` |  | The source MySQL server ID. Required if "createMode" is set to "PointInTimeRestore". |
-| `storageAutoGrow` | string | `'Disabled'` | `[Disabled, Enabled]` | Enable Storage Auto Grow or not. Storage auto-growth prevents a server from running out of storage and becoming read-only. Required if "highAvailability" is not "Disabled". |
-| `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. Required if "cMKKeyName" is not empty. |
-
-**Optional parameters**
-
-| Parameter Name | Type | Default Value | Allowed Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `administratorLogin` | string | `''` |  | The administrator login name of a server. Can only be specified when the MySQL server is being created. |
-| `administratorLoginPassword` | securestring | `''` |  | The administrator login password. |
-| `administrators` | array | `[]` |  | The Azure AD administrators when AAD authentication enabled. |
-| `availabilityZone` | string | `''` | `['', 1, 2, 3]` | Availability zone information of the server. Default will have no preference set. |
-| `backupRetentionDays` | int | `7` |  | Backup retention days for the server. |
-| `cMKKeyName` | string | `''` |  | The name of the customer managed key to use for encryption. |
-| `cMKKeyVersion` | string | `''` |  | The version of the customer managed key to reference for encryption. If not provided, the latest key version is used. |
-| `createMode` | string | `'Default'` | `[Default, GeoRestore, PointInTimeRestore, Replica]` | The mode to create a new MySQL server. |
-| `databases` | array | `[]` |  | The databases to create in the server. |
-| `delegatedSubnetResourceId` | string | `''` |  | Delegated subnet arm resource ID. Used when the desired connectivity mode is "Private Access" - virtual network integration. Delegation must be enabled on the subnet for MySQL Flexible Servers and subnet CIDR size is /29. |
-| `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
-| `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
-| `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `['', allLogs, MySqlAuditLogs, MySqlSlowLogs]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
-| `diagnosticMetricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | The name of metrics that will be streamed. |
-| `diagnosticSettingsName` | string | `''` |  | The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings". |
-| `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
-| `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `firewallRules` | array | `[]` |  | The firewall rules to create in the MySQL flexible server. |
-| `geoBackupCMKKeyName` | string | `''` |  | The name of the customer managed key to use for encryption when geoRedundantBackup is "Enabled". |
-| `geoBackupCMKKeyVersion` | string | `''` |  | The version of the customer managed key to reference for encryption when geoRedundantBackup is "Enabled". If not provided, the latest key version is used. |
-| `geoRedundantBackup` | string | `'Disabled'` | `[Disabled, Enabled]` | A value indicating whether Geo-Redundant backup is enabled on the server. If "Enabled" and "cMKKeyName" is not empty, then "geoBackupCMKKeyVaultResourceId" and "cMKUserAssignedIdentityResourceId" are also required. |
-| `highAvailability` | string | `'Disabled'` | `[Disabled, SameZone, ZoneRedundant]` | The mode for High Availability (HA). It is not supported for the Burstable pricing tier and Zone redundant HA can only be set during server provisioning. |
-| `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
-| `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
-| `maintenanceWindow` | object | `{object}` |  | Properties for the maintenence window. If provided, "customWindow" property must exist and set to "Enabled". |
-| `replicationRole` | string | `'None'` | `[None, Replica, Source]` | The replication role. |
-| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the "roleDefinitionIdOrName" and "principalId" to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: "/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11". |
-| `storageAutoIoScaling` | string | `'Disabled'` | `[Disabled, Enabled]` | Enable IO Auto Scaling or not. The server scales IOPs up or down automatically depending on your workload needs. |
-| `storageIOPS` | int | `1000` |  | Storage IOPS for a server. Max IOPS are determined by compute size. |
-| `storageSizeGB` | int | `64` | `[20, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192, 16384]` | Max storage allowed for a server. In all compute tiers, the minimum storage supported is 20 GiB and maximum is 16 TiB. |
-| `tags` | object | `{object}` |  | Tags of the resource. |
-| `version` | string | `'5.7'` | `[5.7, 8.0.21]` | MySQL Server version. |
-
-
-## Outputs
-
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of the deployed MySQL Flexible server. |
-| `resourceGroupName` | string | The resource group of the deployed MySQL Flexible server. |
-| `resourceId` | string | The resource ID of the deployed MySQL Flexible server. |
-
-## Cross-referenced modules
-
-_None_
-
-## Deployment examples
-
-The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
+The following section provides usage examples for the module, which were used to validate and deploy the module successfully. For a full reference, please review the module's test folder in its repository.
    >**Note**: The name of each example is based on the name of the file from which it is taken.
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Min</h3>
+   >**Note**: To reference the module, please use the following syntax `br:bicep/modules/db-for-my-sql.flexible-server:1.0.0`.
+
+- [Using only defaults](#example-1-using-only-defaults)
+- [Private](#example-2-private)
+- [Public](#example-3-public)
+
+### Example 1: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module flexibleServer './db-for-my-sql/flexible-server/main.bicep' = {
+module flexibleServer 'br:bicep/modules/db-for-my-sql.flexible-server:1.0.0' = {
   name: '${uniqueString(deployment().name, location)}-test-dfmsfsmin'
   params: {
     // Required parameters
@@ -166,14 +99,14 @@ module flexibleServer './db-for-my-sql/flexible-server/main.bicep' = {
 </details>
 <p>
 
-<h3>Example 2: Private</h3>
+### Example 2: _Private_
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module flexibleServer './db-for-my-sql/flexible-server/main.bicep' = {
+module flexibleServer 'br:bicep/modules/db-for-my-sql.flexible-server:1.0.0' = {
   name: '${uniqueString(deployment().name, location)}-test-dfmsfspvt'
   params: {
     // Required parameters
@@ -351,14 +284,14 @@ module flexibleServer './db-for-my-sql/flexible-server/main.bicep' = {
 </details>
 <p>
 
-<h3>Example 3: Public</h3>
+### Example 3: _Public_
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module flexibleServer './db-for-my-sql/flexible-server/main.bicep' = {
+module flexibleServer 'br:bicep/modules/db-for-my-sql.flexible-server:1.0.0' = {
   name: '${uniqueString(deployment().name, location)}-test-dfmsfsp'
   params: {
     // Required parameters
@@ -595,3 +528,405 @@ module flexibleServer './db-for-my-sql/flexible-server/main.bicep' = {
 
 </details>
 <p>
+
+
+## Parameters
+
+**Required parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`name`](#parameter-name) | string | The name of the MySQL flexible server. |
+| [`skuName`](#parameter-skuname) | string | The name of the sku, typically, tier + family + cores, e.g. Standard_D4s_v3. |
+| [`tier`](#parameter-tier) | string | The tier of the particular SKU. Tier must align with the "skuName" property. Example, tier cannot be "Burstable" if skuName is "Standard_D4s_v3". |
+
+**Conditional parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`cMKKeyVaultResourceId`](#parameter-cmkkeyvaultresourceid) | string | The resource ID of a key vault to reference a customer managed key for encryption from. Required if "cMKKeyName" is not empty. |
+| [`cMKUserAssignedIdentityResourceId`](#parameter-cmkuserassignedidentityresourceid) | string | User assigned identity to use when fetching the customer managed key. The identity should have key usage permissions on the Key Vault Key. Required if "cMKKeyName" is not empty. |
+| [`geoBackupCMKKeyVaultResourceId`](#parameter-geobackupcmkkeyvaultresourceid) | string | The resource ID of a key vault to reference a customer managed key for encryption from. Required if "cMKKeyName" is not empty and geoRedundantBackup is "Enabled". |
+| [`geoBackupCMKUserAssignedIdentityResourceId`](#parameter-geobackupcmkuserassignedidentityresourceid) | string | Geo backup user identity resource ID as identity cant cross region, need identity in same region as geo backup. The identity should have key usage permissions on the Key Vault Key. Required if "cMKKeyName" is not empty and geoRedundantBackup is "Enabled". |
+| [`privateDnsZoneResourceId`](#parameter-privatednszoneresourceid) | string | Private dns zone arm resource ID. Used when the desired connectivity mode is "Private Access". Required if "delegatedSubnetResourceId" is used and the Private DNS Zone name must end with mysql.database.azure.com in order to be linked to the MySQL Flexible Server. |
+| [`restorePointInTime`](#parameter-restorepointintime) | string | Restore point creation time (ISO8601 format), specifying the time to restore from. Required if "createMode" is set to "PointInTimeRestore". |
+| [`sourceServerResourceId`](#parameter-sourceserverresourceid) | string | The source MySQL server ID. Required if "createMode" is set to "PointInTimeRestore". |
+| [`storageAutoGrow`](#parameter-storageautogrow) | string | Enable Storage Auto Grow or not. Storage auto-growth prevents a server from running out of storage and becoming read-only. Required if "highAvailability" is not "Disabled". |
+| [`userAssignedIdentities`](#parameter-userassignedidentities) | object | The ID(s) to assign to the resource. Required if "cMKKeyName" is not empty. |
+
+**Optional parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`administratorLogin`](#parameter-administratorlogin) | string | The administrator login name of a server. Can only be specified when the MySQL server is being created. |
+| [`administratorLoginPassword`](#parameter-administratorloginpassword) | securestring | The administrator login password. |
+| [`administrators`](#parameter-administrators) | array | The Azure AD administrators when AAD authentication enabled. |
+| [`availabilityZone`](#parameter-availabilityzone) | string | Availability zone information of the server. Default will have no preference set. |
+| [`backupRetentionDays`](#parameter-backupretentiondays) | int | Backup retention days for the server. |
+| [`cMKKeyName`](#parameter-cmkkeyname) | string | The name of the customer managed key to use for encryption. |
+| [`cMKKeyVersion`](#parameter-cmkkeyversion) | string | The version of the customer managed key to reference for encryption. If not provided, the latest key version is used. |
+| [`createMode`](#parameter-createmode) | string | The mode to create a new MySQL server. |
+| [`databases`](#parameter-databases) | array | The databases to create in the server. |
+| [`delegatedSubnetResourceId`](#parameter-delegatedsubnetresourceid) | string | Delegated subnet arm resource ID. Used when the desired connectivity mode is "Private Access" - virtual network integration. Delegation must be enabled on the subnet for MySQL Flexible Servers and subnet CIDR size is /29. |
+| [`diagnosticEventHubAuthorizationRuleId`](#parameter-diagnosticeventhubauthorizationruleid) | string | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
+| [`diagnosticEventHubName`](#parameter-diagnosticeventhubname) | string | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
+| [`diagnosticLogCategoriesToEnable`](#parameter-diagnosticlogcategoriestoenable) | array | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
+| [`diagnosticMetricsToEnable`](#parameter-diagnosticmetricstoenable) | array | The name of metrics that will be streamed. |
+| [`diagnosticSettingsName`](#parameter-diagnosticsettingsname) | string | The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings". |
+| [`diagnosticStorageAccountId`](#parameter-diagnosticstorageaccountid) | string | Resource ID of the diagnostic storage account. |
+| [`diagnosticWorkspaceId`](#parameter-diagnosticworkspaceid) | string | Resource ID of the diagnostic log analytics workspace. |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`firewallRules`](#parameter-firewallrules) | array | The firewall rules to create in the MySQL flexible server. |
+| [`geoBackupCMKKeyName`](#parameter-geobackupcmkkeyname) | string | The name of the customer managed key to use for encryption when geoRedundantBackup is "Enabled". |
+| [`geoBackupCMKKeyVersion`](#parameter-geobackupcmkkeyversion) | string | The version of the customer managed key to reference for encryption when geoRedundantBackup is "Enabled". If not provided, the latest key version is used. |
+| [`geoRedundantBackup`](#parameter-georedundantbackup) | string | A value indicating whether Geo-Redundant backup is enabled on the server. If "Enabled" and "cMKKeyName" is not empty, then "geoBackupCMKKeyVaultResourceId" and "cMKUserAssignedIdentityResourceId" are also required. |
+| [`highAvailability`](#parameter-highavailability) | string | The mode for High Availability (HA). It is not supported for the Burstable pricing tier and Zone redundant HA can only be set during server provisioning. |
+| [`location`](#parameter-location) | string | Location for all resources. |
+| [`lock`](#parameter-lock) | string | Specify the type of lock. |
+| [`maintenanceWindow`](#parameter-maintenancewindow) | object | Properties for the maintenence window. If provided, "customWindow" property must exist and set to "Enabled". |
+| [`replicationRole`](#parameter-replicationrole) | string | The replication role. |
+| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the "roleDefinitionIdOrName" and "principalId" to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: "/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11". |
+| [`storageAutoIoScaling`](#parameter-storageautoioscaling) | string | Enable IO Auto Scaling or not. The server scales IOPs up or down automatically depending on your workload needs. |
+| [`storageIOPS`](#parameter-storageiops) | int | Storage IOPS for a server. Max IOPS are determined by compute size. |
+| [`storageSizeGB`](#parameter-storagesizegb) | int | Max storage allowed for a server. In all compute tiers, the minimum storage supported is 20 GiB and maximum is 16 TiB. |
+| [`tags`](#parameter-tags) | object | Tags of the resource. |
+| [`version`](#parameter-version) | string | MySQL Server version. |
+
+### Parameter: `administratorLogin`
+
+The administrator login name of a server. Can only be specified when the MySQL server is being created.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `administratorLoginPassword`
+
+The administrator login password.
+- Required: No
+- Type: securestring
+- Default: `''`
+
+### Parameter: `administrators`
+
+The Azure AD administrators when AAD authentication enabled.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `availabilityZone`
+
+Availability zone information of the server. Default will have no preference set.
+- Required: No
+- Type: string
+- Default: `''`
+- Allowed: `['', 1, 2, 3]`
+
+### Parameter: `backupRetentionDays`
+
+Backup retention days for the server.
+- Required: No
+- Type: int
+- Default: `7`
+
+### Parameter: `cMKKeyName`
+
+The name of the customer managed key to use for encryption.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `cMKKeyVaultResourceId`
+
+The resource ID of a key vault to reference a customer managed key for encryption from. Required if "cMKKeyName" is not empty.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `cMKKeyVersion`
+
+The version of the customer managed key to reference for encryption. If not provided, the latest key version is used.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `cMKUserAssignedIdentityResourceId`
+
+User assigned identity to use when fetching the customer managed key. The identity should have key usage permissions on the Key Vault Key. Required if "cMKKeyName" is not empty.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `createMode`
+
+The mode to create a new MySQL server.
+- Required: No
+- Type: string
+- Default: `'Default'`
+- Allowed: `[Default, GeoRestore, PointInTimeRestore, Replica]`
+
+### Parameter: `databases`
+
+The databases to create in the server.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `delegatedSubnetResourceId`
+
+Delegated subnet arm resource ID. Used when the desired connectivity mode is "Private Access" - virtual network integration. Delegation must be enabled on the subnet for MySQL Flexible Servers and subnet CIDR size is /29.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `diagnosticEventHubAuthorizationRuleId`
+
+Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `diagnosticEventHubName`
+
+Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `diagnosticLogCategoriesToEnable`
+
+The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection.
+- Required: No
+- Type: array
+- Default: `[allLogs]`
+- Allowed: `['', allLogs, MySqlAuditLogs, MySqlSlowLogs]`
+
+### Parameter: `diagnosticMetricsToEnable`
+
+The name of metrics that will be streamed.
+- Required: No
+- Type: array
+- Default: `[AllMetrics]`
+- Allowed: `[AllMetrics]`
+
+### Parameter: `diagnosticSettingsName`
+
+The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings".
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `diagnosticStorageAccountId`
+
+Resource ID of the diagnostic storage account.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `diagnosticWorkspaceId`
+
+Resource ID of the diagnostic log analytics workspace.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `firewallRules`
+
+The firewall rules to create in the MySQL flexible server.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `geoBackupCMKKeyName`
+
+The name of the customer managed key to use for encryption when geoRedundantBackup is "Enabled".
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `geoBackupCMKKeyVaultResourceId`
+
+The resource ID of a key vault to reference a customer managed key for encryption from. Required if "cMKKeyName" is not empty and geoRedundantBackup is "Enabled".
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `geoBackupCMKKeyVersion`
+
+The version of the customer managed key to reference for encryption when geoRedundantBackup is "Enabled". If not provided, the latest key version is used.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `geoBackupCMKUserAssignedIdentityResourceId`
+
+Geo backup user identity resource ID as identity cant cross region, need identity in same region as geo backup. The identity should have key usage permissions on the Key Vault Key. Required if "cMKKeyName" is not empty and geoRedundantBackup is "Enabled".
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `geoRedundantBackup`
+
+A value indicating whether Geo-Redundant backup is enabled on the server. If "Enabled" and "cMKKeyName" is not empty, then "geoBackupCMKKeyVaultResourceId" and "cMKUserAssignedIdentityResourceId" are also required.
+- Required: No
+- Type: string
+- Default: `'Disabled'`
+- Allowed: `[Disabled, Enabled]`
+
+### Parameter: `highAvailability`
+
+The mode for High Availability (HA). It is not supported for the Burstable pricing tier and Zone redundant HA can only be set during server provisioning.
+- Required: No
+- Type: string
+- Default: `'Disabled'`
+- Allowed: `[Disabled, SameZone, ZoneRedundant]`
+
+### Parameter: `location`
+
+Location for all resources.
+- Required: No
+- Type: string
+- Default: `[resourceGroup().location]`
+
+### Parameter: `lock`
+
+Specify the type of lock.
+- Required: No
+- Type: string
+- Default: `''`
+- Allowed: `['', CanNotDelete, ReadOnly]`
+
+### Parameter: `maintenanceWindow`
+
+Properties for the maintenence window. If provided, "customWindow" property must exist and set to "Enabled".
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `name`
+
+The name of the MySQL flexible server.
+- Required: Yes
+- Type: string
+
+### Parameter: `privateDnsZoneResourceId`
+
+Private dns zone arm resource ID. Used when the desired connectivity mode is "Private Access". Required if "delegatedSubnetResourceId" is used and the Private DNS Zone name must end with mysql.database.azure.com in order to be linked to the MySQL Flexible Server.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `replicationRole`
+
+The replication role.
+- Required: No
+- Type: string
+- Default: `'None'`
+- Allowed: `[None, Replica, Source]`
+
+### Parameter: `restorePointInTime`
+
+Restore point creation time (ISO8601 format), specifying the time to restore from. Required if "createMode" is set to "PointInTimeRestore".
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `roleAssignments`
+
+Array of role assignment objects that contain the "roleDefinitionIdOrName" and "principalId" to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: "/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11".
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `skuName`
+
+The name of the sku, typically, tier + family + cores, e.g. Standard_D4s_v3.
+- Required: Yes
+- Type: string
+
+### Parameter: `sourceServerResourceId`
+
+The source MySQL server ID. Required if "createMode" is set to "PointInTimeRestore".
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `storageAutoGrow`
+
+Enable Storage Auto Grow or not. Storage auto-growth prevents a server from running out of storage and becoming read-only. Required if "highAvailability" is not "Disabled".
+- Required: No
+- Type: string
+- Default: `'Disabled'`
+- Allowed: `[Disabled, Enabled]`
+
+### Parameter: `storageAutoIoScaling`
+
+Enable IO Auto Scaling or not. The server scales IOPs up or down automatically depending on your workload needs.
+- Required: No
+- Type: string
+- Default: `'Disabled'`
+- Allowed: `[Disabled, Enabled]`
+
+### Parameter: `storageIOPS`
+
+Storage IOPS for a server. Max IOPS are determined by compute size.
+- Required: No
+- Type: int
+- Default: `1000`
+
+### Parameter: `storageSizeGB`
+
+Max storage allowed for a server. In all compute tiers, the minimum storage supported is 20 GiB and maximum is 16 TiB.
+- Required: No
+- Type: int
+- Default: `64`
+- Allowed: `[20, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192, 16384]`
+
+### Parameter: `tags`
+
+Tags of the resource.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `tier`
+
+The tier of the particular SKU. Tier must align with the "skuName" property. Example, tier cannot be "Burstable" if skuName is "Standard_D4s_v3".
+- Required: Yes
+- Type: string
+- Allowed: `[Burstable, GeneralPurpose, MemoryOptimized]`
+
+### Parameter: `userAssignedIdentities`
+
+The ID(s) to assign to the resource. Required if "cMKKeyName" is not empty.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `version`
+
+MySQL Server version.
+- Required: No
+- Type: string
+- Default: `'5.7'`
+- Allowed: `[5.7, 8.0.21]`
+
+
+## Outputs
+
+| Output | Type | Description |
+| :-- | :-- | :-- |
+| `location` | string | The location the resource was deployed into. |
+| `name` | string | The name of the deployed MySQL Flexible server. |
+| `resourceGroupName` | string | The resource group of the deployed MySQL Flexible server. |
+| `resourceId` | string | The resource ID of the deployed MySQL Flexible server. |
+
+## Cross-referenced modules
+
+_None_

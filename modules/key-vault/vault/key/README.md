@@ -21,36 +21,128 @@ This module deploys a Key Vault Key.
 
 **Required parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the key. |
+| [`name`](#parameter-name) | string | The name of the key. |
 
 **Conditional parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `keyVaultName` | string | The name of the parent key vault. Required if the template is used in a standalone deployment. |
+| [`keyVaultName`](#parameter-keyvaultname) | string | The name of the parent key vault. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Allowed Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `attributesEnabled` | bool | `True` |  | Determines whether the object is enabled. |
-| `attributesExp` | int | `-1` |  | Expiry date in seconds since 1970-01-01T00:00:00Z. For security reasons, it is recommended to set an expiration date whenever possible. |
-| `attributesNbf` | int | `-1` |  | Not before date in seconds since 1970-01-01T00:00:00Z. |
-| `curveName` | string | `'P-256'` | `[P-256, P-256K, P-384, P-521]` | The elliptic curve name. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `keyOps` | array | `[]` | `[decrypt, encrypt, import, sign, unwrapKey, verify, wrapKey]` | Array of JsonWebKeyOperation. |
-| `keySize` | int | `-1` |  | The key size in bits. For example: 2048, 3072, or 4096 for RSA. |
-| `kty` | string | `'EC'` | `[EC, EC-HSM, RSA, RSA-HSM]` | The type of the key. |
-| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| `rotationPolicy` | object | `{object}` |  | Key rotation policy properties object. |
-| `tags` | object | `{object}` |  | Resource tags. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`attributesEnabled`](#parameter-attributesenabled) | bool | Determines whether the object is enabled. |
+| [`attributesExp`](#parameter-attributesexp) | int | Expiry date in seconds since 1970-01-01T00:00:00Z. For security reasons, it is recommended to set an expiration date whenever possible. |
+| [`attributesNbf`](#parameter-attributesnbf) | int | Not before date in seconds since 1970-01-01T00:00:00Z. |
+| [`curveName`](#parameter-curvename) | string | The elliptic curve name. |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`keyOps`](#parameter-keyops) | array | Array of JsonWebKeyOperation. |
+| [`keySize`](#parameter-keysize) | int | The key size in bits. For example: 2048, 3072, or 4096 for RSA. |
+| [`kty`](#parameter-kty) | string | The type of the key. |
+| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| [`rotationPolicy`](#parameter-rotationpolicy) | object | Key rotation policy properties object. |
+| [`tags`](#parameter-tags) | object | Resource tags. |
+
+### Parameter: `attributesEnabled`
+
+Determines whether the object is enabled.
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `attributesExp`
+
+Expiry date in seconds since 1970-01-01T00:00:00Z. For security reasons, it is recommended to set an expiration date whenever possible.
+- Required: No
+- Type: int
+- Default: `-1`
+
+### Parameter: `attributesNbf`
+
+Not before date in seconds since 1970-01-01T00:00:00Z.
+- Required: No
+- Type: int
+- Default: `-1`
+
+### Parameter: `curveName`
+
+The elliptic curve name.
+- Required: No
+- Type: string
+- Default: `'P-256'`
+- Allowed: `[P-256, P-256K, P-384, P-521]`
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `keyOps`
+
+Array of JsonWebKeyOperation.
+- Required: No
+- Type: array
+- Default: `[]`
+- Allowed: `[decrypt, encrypt, import, sign, unwrapKey, verify, wrapKey]`
+
+### Parameter: `keySize`
+
+The key size in bits. For example: 2048, 3072, or 4096 for RSA.
+- Required: No
+- Type: int
+- Default: `-1`
+
+### Parameter: `keyVaultName`
+
+The name of the parent key vault. Required if the template is used in a standalone deployment.
+- Required: Yes
+- Type: string
+
+### Parameter: `kty`
+
+The type of the key.
+- Required: No
+- Type: string
+- Default: `'EC'`
+- Allowed: `[EC, EC-HSM, RSA, RSA-HSM]`
+
+### Parameter: `name`
+
+The name of the key.
+- Required: Yes
+- Type: string
+
+### Parameter: `roleAssignments`
+
+Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `rotationPolicy`
+
+Key rotation policy properties object.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `tags`
+
+Resource tags.
+- Required: No
+- Type: object
+- Default: `{object}`
 
 
 ## Outputs
 
-| Output Name | Type | Description |
+| Output | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the key. |
 | `resourceGroupName` | string | The name of the resource group the key was created in. |

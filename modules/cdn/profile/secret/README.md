@@ -19,31 +19,86 @@ This module deploys a CDN Profile Secret.
 
 **Required parameters**
 
-| Parameter Name | Type | Default Value | Allowed Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `name` | string |  |  | The name of the secrect. |
-| `type` | string | `'AzureFirstPartyManagedCertificate'` | `[AzureFirstPartyManagedCertificate, CustomerCertificate, ManagedCertificate, UrlSigningKey]` | The type of the secrect. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`name`](#parameter-name) | string | The name of the secrect. |
+| [`type`](#parameter-type) | string | The type of the secrect. |
 
 **Conditional parameters**
 
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `profileName` | string |  | The name of the parent CDN profile. Required if the template is used in a standalone deployment. |
-| `secretSourceResourceId` | string | `''` | The resource ID of the secrect source. Required if the type is CustomerCertificate. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`profileName`](#parameter-profilename) | string | The name of the parent CDN profile. Required if the template is used in a standalone deployment. |
+| [`secretSourceResourceId`](#parameter-secretsourceresourceid) | string | The resource ID of the secrect source. Required if the type is CustomerCertificate. |
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `secretVersion` | string | `''` | The version of the secret. |
-| `subjectAlternativeNames` | array | `[]` | The subject alternative names of the secrect. |
-| `useLatestVersion` | bool | `False` | Indicates whether to use the latest version of the secrect. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`secretVersion`](#parameter-secretversion) | string | The version of the secret. |
+| [`subjectAlternativeNames`](#parameter-subjectalternativenames) | array | The subject alternative names of the secrect. |
+| [`useLatestVersion`](#parameter-uselatestversion) | bool | Indicates whether to use the latest version of the secrect. |
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `name`
+
+The name of the secrect.
+- Required: Yes
+- Type: string
+
+### Parameter: `profileName`
+
+The name of the parent CDN profile. Required if the template is used in a standalone deployment.
+- Required: Yes
+- Type: string
+
+### Parameter: `secretSourceResourceId`
+
+The resource ID of the secrect source. Required if the type is CustomerCertificate.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `secretVersion`
+
+The version of the secret.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `subjectAlternativeNames`
+
+The subject alternative names of the secrect.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `type`
+
+The type of the secrect.
+- Required: No
+- Type: string
+- Default: `'AzureFirstPartyManagedCertificate'`
+- Allowed: `[AzureFirstPartyManagedCertificate, CustomerCertificate, ManagedCertificate, UrlSigningKey]`
+
+### Parameter: `useLatestVersion`
+
+Indicates whether to use the latest version of the secrect.
+- Required: No
+- Type: bool
+- Default: `False`
 
 
 ## Outputs
 
-| Output Name | Type | Description |
+| Output | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the secrect. |
 | `resourceGroupName` | string | The name of the resource group the secret was created in. |

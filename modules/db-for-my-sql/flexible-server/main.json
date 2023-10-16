@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.21.1.54444",
-      "templateHash": "11042164284975783101"
+      "version": "0.22.6.54827",
+      "templateHash": "1515305312622683890"
     },
     "name": "DBforMySQL Flexible Servers",
     "description": "This module deploys a DBforMySQL Flexible Server.",
@@ -548,8 +548,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "17154165990398141081"
+              "version": "0.22.6.54827",
+              "templateHash": "17516117596765839904"
             }
           },
           "parameters": {
@@ -695,8 +695,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "17356615394418311167"
+              "version": "0.22.6.54827",
+              "templateHash": "16649222900362138505"
             },
             "name": "DBforMySQL Flexible Server Databases",
             "description": "This module deploys a DBforMySQL Flexible Server Database.",
@@ -834,8 +834,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "10162316213188664200"
+              "version": "0.22.6.54827",
+              "templateHash": "12840531816938690352"
             },
             "name": "DBforMySQL Flexible Server Firewall Rules",
             "description": "This module deploys a DBforMySQL Flexible Server Firewall Rule.",
@@ -962,8 +962,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "6026324512499502510"
+              "version": "0.22.6.54827",
+              "templateHash": "16367563858411209197"
             },
             "name": "DBforMySQL Flexible Server Administrators",
             "description": "This module deploys a DBforMySQL Flexible Server Administrator.",

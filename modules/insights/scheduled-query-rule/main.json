@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.21.1.54444",
-      "templateHash": "14503369793494300469"
+      "version": "0.22.6.54827",
+      "templateHash": "5166537476303359521"
     },
     "name": "Scheduled Query Rules",
     "description": "This module deploys a Scheduled Query Rule.",
@@ -230,8 +230,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "15352642791797157407"
+              "version": "0.22.6.54827",
+              "templateHash": "10545808551952818846"
             }
           },
           "parameters": {

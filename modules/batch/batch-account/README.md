@@ -30,11 +30,14 @@ The following section provides usage examples for the module, which were used to
 
    >**Note**: To reference the module, please use the following syntax `br:bicep/modules/batch.batch-account:1.0.0`.
 
-- [Common](#example-1-common)
+- [Using large parameter set](#example-1-using-large-parameter-set)
 - [Encr](#example-2-encr)
-- [Min](#example-3-min)
+- [Using only defaults](#example-3-using-only-defaults)
 
-### Example 1: _Common_
+### Example 1: _Using large parameter set_
+
+This instance deploys the module with most of its features enabled.
+
 
 <details>
 
@@ -306,7 +309,10 @@ module batchAccount 'br:bicep/modules/batch.batch-account:1.0.0' = {
 </details>
 <p>
 
-### Example 3: _Min_
+### Example 3: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
 
 <details>
 

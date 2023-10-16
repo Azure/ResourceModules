@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.20.4.51522",
-      "templateHash": "3532154338917341406"
+      "version": "0.22.6.54827",
+      "templateHash": "2407789138740487733"
     },
     "name": "Data Factory Integration RunTimes",
     "description": "This module deploys a Data Factory Managed or Self-Hosted Integration Runtime.",
