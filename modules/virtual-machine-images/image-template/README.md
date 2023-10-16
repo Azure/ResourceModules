@@ -4,14 +4,14 @@ This module deploys a Virtual Machine Image Template that can be consumed by Azu
 
 ## Navigation
 
-- [Resource types](#Resource-types)
+- [Resource Types](#Resource-Types)
+- [Usage examples](#Usage-examples)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
-- [Deployment examples](#Deployment-examples)
 - [Notes](#Notes)
 
-## Resource types
+## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
@@ -19,78 +19,29 @@ This module deploys a Virtual Machine Image Template that can be consumed by Azu
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.VirtualMachineImages/imageTemplates` | [2022-02-14](https://learn.microsoft.com/en-us/azure/templates/Microsoft.VirtualMachineImages/2022-02-14/imageTemplates) |
 
-## Parameters
+## Usage examples
 
-**Required parameters**
-
-| Parameter Name | Type | Description |
-| :-- | :-- | :-- |
-| `customizationSteps` | array | Customization steps to be run when building the VM image. |
-| `imageSource` | object | Image source definition in object format. |
-| `name` | string | Name prefix of the Image Template to be built by the Azure Image Builder service. |
-| `userMsiName` | string | Name of the User Assigned Identity to be used to deploy Image Templates in Azure Image Builder. |
-
-**Optional parameters**
-
-| Parameter Name | Type | Default Value | Allowed Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `buildTimeoutInMinutes` | int | `0` |  | Image build timeout in minutes. Allowed values: 0-960. 0 means the default 240 minutes. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `excludeFromLatest` | bool | `False` |  | Exclude the created Azure Compute Gallery image version from the latest. |
-| `imageReplicationRegions` | array | `[]` |  | List of the regions the image produced by this solution should be stored in the Shared Image Gallery. When left empty, the deployment's location will be taken as a default value. |
-| `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
-| `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
-| `managedImageName` | string | `''` |  | Name of the managed image that will be created in the AIB resourcegroup. |
-| `osDiskSizeGB` | int | `128` |  | Specifies the size of OS disk. |
-| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| `sigImageDefinitionId` | string | `''` |  | Resource ID of Shared Image Gallery to distribute image to, e.g.: /subscriptions/<subscriptionID>/resourceGroups/<SIG resourcegroup>/providers/Microsoft.Compute/galleries/<SIG name>/images/<image definition>. |
-| `sigImageVersion` | string | `''` |  | Version of the Shared Image Gallery Image. Supports the following Version Syntax: Major.Minor.Build (i.e., '1.1.1' or '10.1.2'). |
-| `stagingResourceGroup` | string | `''` |  | Resource ID of the staging resource group in the same subscription and location as the image template that will be used to build the image.</p>If this field is empty, a resource group with a random name will be created.</p>If the resource group specified in this field doesn't exist, it will be created with the same name.</p>If the resource group specified exists, it must be empty and in the same region as the image template.</p>The resource group created will be deleted during template deletion if this field is empty or the resource group specified doesn't exist,</p>but if the resource group specified exists the resources created in the resource group will be deleted during template deletion and the resource group itself will remain. |
-| `storageAccountType` | string | `'Standard_LRS'` | `[Standard_LRS, Standard_ZRS]` | Storage account type to be used to store the image in the Azure Compute Gallery. |
-| `subnetId` | string | `''` |  | Resource ID of an already existing subnet, e.g.: /subscriptions/<subscriptionId>/resourceGroups/<resourceGroupName>/providers/Microsoft.Network/virtualNetworks/<vnetName>/subnets/<subnetName>.</p>If no value is provided, a new temporary VNET and subnet will be created in the staging resource group and will be deleted along with the remaining temporary resources. |
-| `tags` | object | `{object}` |  | Tags of the resource. |
-| `unManagedImageName` | string | `''` |  | Name of the unmanaged image that will be created in the AIB resourcegroup. |
-| `userAssignedIdentities` | array | `[]` |  | List of User-Assigned Identities associated to the Build VM for accessing Azure resources such as Key Vaults from your customizer scripts.</p>Be aware, the user assigned identity specified in the 'userMsiName' parameter must have the 'Managed Identity Operator' role assignment on all the user assigned identities specified in this parameter for Azure Image Builder to be able to associate them to the build VM. |
-| `userMsiResourceGroup` | string | `[resourceGroup().name]` |  | Resource group of the user assigned identity. |
-| `vmSize` | string | `'Standard_D2s_v3'` |  | Specifies the size for the VM. |
-
-**Generated parameters**
-
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `baseTime` | string | `[utcNow('yyyy-MM-dd-HH-mm-ss')]` | Do not provide a value! This date value is used to generate a unique image template name. |
-
-
-## Outputs
-
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `location` | string | The location the resource was deployed into. |
-| `name` | string | The full name of the deployed image template. |
-| `namePrefix` | string | The prefix of the image template name provided as input. |
-| `resourceGroupName` | string | The resource group the image template was deployed into. |
-| `resourceId` | string | The resource ID of the image template. |
-| `runThisCommand` | string | The command to run in order to trigger the image build. |
-
-## Cross-referenced modules
-
-_None_
-
-## Deployment examples
-
-The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
+The following section provides usage examples for the module, which were used to validate and deploy the module successfully. For a full reference, please review the module's test folder in its repository.
    >**Note**: The name of each example is based on the name of the file from which it is taken.
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Common</h3>
+   >**Note**: To reference the module, please use the following syntax `br:bicep/modules/virtual-machine-images.image-template:1.0.0`.
+
+- [Using large parameter set](#example-1-using-large-parameter-set)
+- [Using only defaults](#example-2-using-only-defaults)
+
+### Example 1: _Using large parameter set_
+
+This instance deploys the module with most of its features enabled.
+
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module imageTemplate './virtual-machine-images/image-template/main.bicep' = {
+module imageTemplate 'br:bicep/modules/virtual-machine-images.image-template:1.0.0' = {
   name: '${uniqueString(deployment().name, location)}-test-vmiitcom'
   params: {
     // Required parameters
@@ -250,14 +201,17 @@ module imageTemplate './virtual-machine-images/image-template/main.bicep' = {
 </details>
 <p>
 
-<h3>Example 2: Min</h3>
+### Example 2: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module imageTemplate './virtual-machine-images/image-template/main.bicep' = {
+module imageTemplate 'br:bicep/modules/virtual-machine-images.image-template:1.0.0' = {
   name: '${uniqueString(deployment().name, location)}-test-vmiitmin'
   params: {
     // Required parameters
@@ -337,6 +291,229 @@ module imageTemplate './virtual-machine-images/image-template/main.bicep' = {
 </details>
 <p>
 
+
+## Parameters
+
+**Required parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`customizationSteps`](#parameter-customizationsteps) | array | Customization steps to be run when building the VM image. |
+| [`imageSource`](#parameter-imagesource) | object | Image source definition in object format. |
+| [`name`](#parameter-name) | string | Name prefix of the Image Template to be built by the Azure Image Builder service. |
+| [`userMsiName`](#parameter-usermsiname) | string | Name of the User Assigned Identity to be used to deploy Image Templates in Azure Image Builder. |
+
+**Optional parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`buildTimeoutInMinutes`](#parameter-buildtimeoutinminutes) | int | Image build timeout in minutes. Allowed values: 0-960. 0 means the default 240 minutes. |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`excludeFromLatest`](#parameter-excludefromlatest) | bool | Exclude the created Azure Compute Gallery image version from the latest. |
+| [`imageReplicationRegions`](#parameter-imagereplicationregions) | array | List of the regions the image produced by this solution should be stored in the Shared Image Gallery. When left empty, the deployment's location will be taken as a default value. |
+| [`location`](#parameter-location) | string | Location for all resources. |
+| [`lock`](#parameter-lock) | string | Specify the type of lock. |
+| [`managedImageName`](#parameter-managedimagename) | string | Name of the managed image that will be created in the AIB resourcegroup. |
+| [`osDiskSizeGB`](#parameter-osdisksizegb) | int | Specifies the size of OS disk. |
+| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| [`sigImageDefinitionId`](#parameter-sigimagedefinitionid) | string | Resource ID of Shared Image Gallery to distribute image to, e.g.: /subscriptions/<subscriptionID>/resourceGroups/<SIG resourcegroup>/providers/Microsoft.Compute/galleries/<SIG name>/images/<image definition>. |
+| [`sigImageVersion`](#parameter-sigimageversion) | string | Version of the Shared Image Gallery Image. Supports the following Version Syntax: Major.Minor.Build (i.e., '1.1.1' or '10.1.2'). |
+| [`stagingResourceGroup`](#parameter-stagingresourcegroup) | string | Resource ID of the staging resource group in the same subscription and location as the image template that will be used to build the image.</p>If this field is empty, a resource group with a random name will be created.</p>If the resource group specified in this field doesn't exist, it will be created with the same name.</p>If the resource group specified exists, it must be empty and in the same region as the image template.</p>The resource group created will be deleted during template deletion if this field is empty or the resource group specified doesn't exist,</p>but if the resource group specified exists the resources created in the resource group will be deleted during template deletion and the resource group itself will remain. |
+| [`storageAccountType`](#parameter-storageaccounttype) | string | Storage account type to be used to store the image in the Azure Compute Gallery. |
+| [`subnetId`](#parameter-subnetid) | string | Resource ID of an already existing subnet, e.g.: /subscriptions/<subscriptionId>/resourceGroups/<resourceGroupName>/providers/Microsoft.Network/virtualNetworks/<vnetName>/subnets/<subnetName>.</p>If no value is provided, a new temporary VNET and subnet will be created in the staging resource group and will be deleted along with the remaining temporary resources. |
+| [`tags`](#parameter-tags) | object | Tags of the resource. |
+| [`unManagedImageName`](#parameter-unmanagedimagename) | string | Name of the unmanaged image that will be created in the AIB resourcegroup. |
+| [`userAssignedIdentities`](#parameter-userassignedidentities) | array | List of User-Assigned Identities associated to the Build VM for accessing Azure resources such as Key Vaults from your customizer scripts.</p>Be aware, the user assigned identity specified in the 'userMsiName' parameter must have the 'Managed Identity Operator' role assignment on all the user assigned identities specified in this parameter for Azure Image Builder to be able to associate them to the build VM. |
+| [`userMsiResourceGroup`](#parameter-usermsiresourcegroup) | string | Resource group of the user assigned identity. |
+| [`vmSize`](#parameter-vmsize) | string | Specifies the size for the VM. |
+
+**Generated parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`baseTime`](#parameter-basetime) | string | Do not provide a value! This date value is used to generate a unique image template name. |
+
+### Parameter: `baseTime`
+
+Do not provide a value! This date value is used to generate a unique image template name.
+- Required: No
+- Type: string
+- Default: `[utcNow('yyyy-MM-dd-HH-mm-ss')]`
+
+### Parameter: `buildTimeoutInMinutes`
+
+Image build timeout in minutes. Allowed values: 0-960. 0 means the default 240 minutes.
+- Required: No
+- Type: int
+- Default: `0`
+
+### Parameter: `customizationSteps`
+
+Customization steps to be run when building the VM image.
+- Required: Yes
+- Type: array
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `excludeFromLatest`
+
+Exclude the created Azure Compute Gallery image version from the latest.
+- Required: No
+- Type: bool
+- Default: `False`
+
+### Parameter: `imageReplicationRegions`
+
+List of the regions the image produced by this solution should be stored in the Shared Image Gallery. When left empty, the deployment's location will be taken as a default value.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `imageSource`
+
+Image source definition in object format.
+- Required: Yes
+- Type: object
+
+### Parameter: `location`
+
+Location for all resources.
+- Required: No
+- Type: string
+- Default: `[resourceGroup().location]`
+
+### Parameter: `lock`
+
+Specify the type of lock.
+- Required: No
+- Type: string
+- Default: `''`
+- Allowed: `['', CanNotDelete, ReadOnly]`
+
+### Parameter: `managedImageName`
+
+Name of the managed image that will be created in the AIB resourcegroup.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `name`
+
+Name prefix of the Image Template to be built by the Azure Image Builder service.
+- Required: Yes
+- Type: string
+
+### Parameter: `osDiskSizeGB`
+
+Specifies the size of OS disk.
+- Required: No
+- Type: int
+- Default: `128`
+
+### Parameter: `roleAssignments`
+
+Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `sigImageDefinitionId`
+
+Resource ID of Shared Image Gallery to distribute image to, e.g.: /subscriptions/<subscriptionID>/resourceGroups/<SIG resourcegroup>/providers/Microsoft.Compute/galleries/<SIG name>/images/<image definition>.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `sigImageVersion`
+
+Version of the Shared Image Gallery Image. Supports the following Version Syntax: Major.Minor.Build (i.e., '1.1.1' or '10.1.2').
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `stagingResourceGroup`
+
+Resource ID of the staging resource group in the same subscription and location as the image template that will be used to build the image.</p>If this field is empty, a resource group with a random name will be created.</p>If the resource group specified in this field doesn't exist, it will be created with the same name.</p>If the resource group specified exists, it must be empty and in the same region as the image template.</p>The resource group created will be deleted during template deletion if this field is empty or the resource group specified doesn't exist,</p>but if the resource group specified exists the resources created in the resource group will be deleted during template deletion and the resource group itself will remain.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `storageAccountType`
+
+Storage account type to be used to store the image in the Azure Compute Gallery.
+- Required: No
+- Type: string
+- Default: `'Standard_LRS'`
+- Allowed: `[Standard_LRS, Standard_ZRS]`
+
+### Parameter: `subnetId`
+
+Resource ID of an already existing subnet, e.g.: /subscriptions/<subscriptionId>/resourceGroups/<resourceGroupName>/providers/Microsoft.Network/virtualNetworks/<vnetName>/subnets/<subnetName>.</p>If no value is provided, a new temporary VNET and subnet will be created in the staging resource group and will be deleted along with the remaining temporary resources.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `tags`
+
+Tags of the resource.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `unManagedImageName`
+
+Name of the unmanaged image that will be created in the AIB resourcegroup.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `userAssignedIdentities`
+
+List of User-Assigned Identities associated to the Build VM for accessing Azure resources such as Key Vaults from your customizer scripts.</p>Be aware, the user assigned identity specified in the 'userMsiName' parameter must have the 'Managed Identity Operator' role assignment on all the user assigned identities specified in this parameter for Azure Image Builder to be able to associate them to the build VM.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `userMsiName`
+
+Name of the User Assigned Identity to be used to deploy Image Templates in Azure Image Builder.
+- Required: Yes
+- Type: string
+
+### Parameter: `userMsiResourceGroup`
+
+Resource group of the user assigned identity.
+- Required: No
+- Type: string
+- Default: `[resourceGroup().name]`
+
+### Parameter: `vmSize`
+
+Specifies the size for the VM.
+- Required: No
+- Type: string
+- Default: `'Standard_D2s_v3'`
+
+
+## Outputs
+
+| Output | Type | Description |
+| :-- | :-- | :-- |
+| `location` | string | The location the resource was deployed into. |
+| `name` | string | The full name of the deployed image template. |
+| `namePrefix` | string | The prefix of the image template name provided as input. |
+| `resourceGroupName` | string | The resource group the image template was deployed into. |
+| `resourceId` | string | The resource ID of the image template. |
+| `runThisCommand` | string | The command to run in order to trigger the image build. |
+
+## Cross-referenced modules
+
+_None_
 
 ## Notes
 
