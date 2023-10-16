@@ -161,7 +161,7 @@ function Set-Module {
             # Clean up the job.
             $job | Remove-Job
         } finally {
-            # In case the user cancled the process, we need to make sure to stop all running jobs
+            # In case the user cancelled the process, we need to make sure to stop all running jobs
             $job | Remove-Job -Force -ErrorAction 'SilentlyContinue'
         }
     }
