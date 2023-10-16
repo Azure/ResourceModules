@@ -56,7 +56,7 @@ Mandatory. The path to the template to search the references for
 Mandatory. The hashtable of templatePath-templateContent to search in
 
 .EXAMPLE
-Get-ReferenceObject -ModuleTemplateFilePath 'C:\dev\key-vault\vault\main.bicep'
+Get-ReferenceObject -ModuleTemplateFilePath 'C:\dev\key-vault\vault\main.bicep' -TemplateMap @{ 'C:\modules\key-vault\vault\main.bicep' = @{ '$schema' = '...'; parameters = @( ... ); resources = @{ ... } } }
 
 Search all references for module 'key-vault\vault'
 #>
