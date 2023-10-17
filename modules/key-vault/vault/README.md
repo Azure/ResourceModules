@@ -1,8 +1,11 @@
+# Key Vaults `[Microsoft.KeyVault/vaults]`
+
 This module deploys a Key Vault.
 
 ## Navigation
 
 - [Resource Types](#Resource-Types)
+- [Usage examples](#Usage-examples)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
@@ -20,6 +23,692 @@ This module deploys a Key Vault.
 | `Microsoft.KeyVault/vaults/secrets` | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.KeyVault/2022-07-01/vaults/secrets) |
 | `Microsoft.Network/privateEndpoints` | [2023-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-04-01/privateEndpoints) |
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2023-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-04-01/privateEndpoints/privateDnsZoneGroups) |
+
+## Usage examples
+
+The following section provides usage examples for the module, which were used to validate and deploy the module successfully. For a full reference, please review the module's test folder in its repository.
+
+>**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
+
+>**Note**: To reference the module, please use the following syntax `br:bicep/modules/key-vault.vault:1.0.0`.
+
+- [Accesspolicies](#example-1-accesspolicies)
+- [Using large parameter set](#example-2-using-large-parameter-set)
+- [Using only defaults](#example-3-using-only-defaults)
+- [Pe](#example-4-pe)
+
+### Example 1: _Accesspolicies_
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module vault 'br:bicep/modules/key-vault.vault:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-kvvap'
+  params: {
+    // Required parameters
+    name: 'kvvap002'
+    // Non-required parameters
+    accessPolicies: [
+      {
+        objectId: '<objectId>'
+        permissions: {
+          keys: [
+            'get'
+            'list'
+            'update'
+          ]
+          secrets: [
+            'get'
+            'list'
+          ]
+        }
+        tenantId: '<tenantId>'
+      }
+      {
+        objectId: '<objectId>'
+        permissions: {
+          certificates: [
+            'backup'
+            'create'
+            'delete'
+          ]
+          secrets: [
+            'get'
+            'list'
+          ]
+        }
+      }
+    ]
+    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<diagnosticEventHubName>'
+    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
+    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    enablePurgeProtection: false
+    networkAcls: {
+      bypass: 'AzureServices'
+      defaultAction: 'Deny'
+      ipRules: [
+        {
+          value: '40.74.28.0/23'
+        }
+      ]
+      virtualNetworkRules: [
+        {
+          id: '<id>'
+          ignoreMissingVnetServiceEndpoint: false
+        }
+      ]
+    }
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "kvvap002"
+    },
+    // Non-required parameters
+    "accessPolicies": {
+      "value": [
+        {
+          "objectId": "<objectId>",
+          "permissions": {
+            "keys": [
+              "get",
+              "list",
+              "update"
+            ],
+            "secrets": [
+              "get",
+              "list"
+            ]
+          },
+          "tenantId": "<tenantId>"
+        },
+        {
+          "objectId": "<objectId>",
+          "permissions": {
+            "certificates": [
+              "backup",
+              "create",
+              "delete"
+            ],
+            "secrets": [
+              "get",
+              "list"
+            ]
+          }
+        }
+      ]
+    },
+    "diagnosticEventHubAuthorizationRuleId": {
+      "value": "<diagnosticEventHubAuthorizationRuleId>"
+    },
+    "diagnosticEventHubName": {
+      "value": "<diagnosticEventHubName>"
+    },
+    "diagnosticStorageAccountId": {
+      "value": "<diagnosticStorageAccountId>"
+    },
+    "diagnosticWorkspaceId": {
+      "value": "<diagnosticWorkspaceId>"
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "enablePurgeProtection": {
+      "value": false
+    },
+    "networkAcls": {
+      "value": {
+        "bypass": "AzureServices",
+        "defaultAction": "Deny",
+        "ipRules": [
+          {
+            "value": "40.74.28.0/23"
+          }
+        ],
+        "virtualNetworkRules": [
+          {
+            "id": "<id>",
+            "ignoreMissingVnetServiceEndpoint": false
+          }
+        ]
+      }
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 2: _Using large parameter set_
+
+This instance deploys the module with most of its features enabled.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module vault 'br:bicep/modules/key-vault.vault:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-kvvcom'
+  params: {
+    // Required parameters
+    name: 'kvvcom002'
+    // Non-required parameters
+    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<diagnosticEventHubName>'
+    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
+    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    enablePurgeProtection: false
+    enableRbacAuthorization: true
+    keys: [
+      {
+        attributesExp: 1725109032
+        attributesNbf: 10000
+        name: 'keyName'
+        roleAssignments: [
+          {
+            principalIds: [
+              '<managedIdentityPrincipalId>'
+            ]
+            principalType: 'ServicePrincipal'
+            roleDefinitionIdOrName: 'Reader'
+          }
+        ]
+        rotationPolicy: {
+          attributes: {
+            expiryTime: 'P2Y'
+          }
+          lifetimeActions: [
+            {
+              action: {
+                type: 'Rotate'
+              }
+              trigger: {
+                timeBeforeExpiry: 'P2M'
+              }
+            }
+            {
+              action: {
+                type: 'Notify'
+              }
+              trigger: {
+                timeBeforeExpiry: 'P30D'
+              }
+            }
+          ]
+        }
+      }
+    ]
+    lock: 'CanNotDelete'
+    networkAcls: {
+      bypass: 'AzureServices'
+      defaultAction: 'Deny'
+      ipRules: [
+        {
+          value: '40.74.28.0/23'
+        }
+      ]
+      virtualNetworkRules: [
+        {
+          id: '<id>'
+          ignoreMissingVnetServiceEndpoint: false
+        }
+      ]
+    }
+    privateEndpoints: [
+      {
+        privateDnsZoneGroup: {
+          privateDNSResourceIds: [
+            '<privateDNSResourceId>'
+          ]
+        }
+        service: 'vault'
+        subnetResourceId: '<subnetResourceId>'
+        tags: {
+          Environment: 'Non-Prod'
+          'hidden-title': 'This is visible in the resource name'
+          Role: 'DeploymentValidation'
+        }
+      }
+    ]
+    roleAssignments: [
+      {
+        principalIds: [
+          '<managedIdentityPrincipalId>'
+        ]
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    secrets: {
+      secureList: [
+        {
+          attributesExp: 1702648632
+          attributesNbf: 10000
+          contentType: 'Something'
+          name: 'secretName'
+          roleAssignments: [
+            {
+              principalIds: [
+                '<managedIdentityPrincipalId>'
+              ]
+              principalType: 'ServicePrincipal'
+              roleDefinitionIdOrName: 'Reader'
+            }
+          ]
+          value: 'secretValue'
+        }
+      ]
+    }
+    softDeleteRetentionInDays: 7
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "kvvcom002"
+    },
+    "diagnosticEventHubAuthorizationRuleId": {
+      "value": "<diagnosticEventHubAuthorizationRuleId>"
+    },
+    "diagnosticEventHubName": {
+      "value": "<diagnosticEventHubName>"
+    },
+    "diagnosticStorageAccountId": {
+      "value": "<diagnosticStorageAccountId>"
+    },
+    "diagnosticWorkspaceId": {
+      "value": "<diagnosticWorkspaceId>"
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "enablePurgeProtection": {
+      "value": false
+    },
+    "enableRbacAuthorization": {
+      "value": true
+    },
+    "keys": {
+      "value": [
+        {
+          "attributesExp": 1725109032,
+          "attributesNbf": 10000,
+          "name": "keyName",
+          "roleAssignments": [
+            {
+              "principalIds": [
+                "<managedIdentityPrincipalId>"
+              ],
+              "principalType": "ServicePrincipal",
+              "roleDefinitionIdOrName": "Reader"
+            }
+          ],
+          "rotationPolicy": {
+            "attributes": {
+              "expiryTime": "P2Y"
+            },
+            "lifetimeActions": [
+              {
+                "action": {
+                  "type": "Rotate"
+                },
+                "trigger": {
+                  "timeBeforeExpiry": "P2M"
+                }
+              },
+              {
+                "action": {
+                  "type": "Notify"
+                },
+                "trigger": {
+                  "timeBeforeExpiry": "P30D"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "lock": {
+      "value": "CanNotDelete"
+    },
+    "networkAcls": {
+      "value": {
+        "bypass": "AzureServices",
+        "defaultAction": "Deny",
+        "ipRules": [
+          {
+            "value": "40.74.28.0/23"
+          }
+        ],
+        "virtualNetworkRules": [
+          {
+            "id": "<id>",
+            "ignoreMissingVnetServiceEndpoint": false
+          }
+        ]
+      }
+    },
+    "privateEndpoints": {
+      "value": [
+        {
+          "privateDnsZoneGroup": {
+            "privateDNSResourceIds": [
+              "<privateDNSResourceId>"
+            ]
+          },
+          "service": "vault",
+          "subnetResourceId": "<subnetResourceId>",
+          "tags": {
+            "Environment": "Non-Prod",
+            "hidden-title": "This is visible in the resource name",
+            "Role": "DeploymentValidation"
+          }
+        }
+      ]
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "<managedIdentityPrincipalId>"
+          ],
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "secrets": {
+      "value": {
+        "secureList": [
+          {
+            "attributesExp": 1702648632,
+            "attributesNbf": 10000,
+            "contentType": "Something",
+            "name": "secretName",
+            "roleAssignments": [
+              {
+                "principalIds": [
+                  "<managedIdentityPrincipalId>"
+                ],
+                "principalType": "ServicePrincipal",
+                "roleDefinitionIdOrName": "Reader"
+              }
+            ],
+            "value": "secretValue"
+          }
+        ]
+      }
+    },
+    "softDeleteRetentionInDays": {
+      "value": 7
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 3: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module vault 'br:bicep/modules/key-vault.vault:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-kvvmin'
+  params: {
+    // Required parameters
+    name: 'kvvmin002'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    enablePurgeProtection: false
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "kvvmin002"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "enablePurgeProtection": {
+      "value": false
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 4: _Pe_
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module vault 'br:bicep/modules/key-vault.vault:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-kvvpe'
+  params: {
+    // Required parameters
+    name: 'kvvpe001'
+    // Non-required parameters
+    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<diagnosticEventHubName>'
+    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
+    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    enablePurgeProtection: false
+    enableRbacAuthorization: true
+    networkAcls: {
+      bypass: 'AzureServices'
+      defaultAction: 'Deny'
+      ipRules: [
+        {
+          value: '40.74.28.0/23'
+        }
+      ]
+      virtualNetworkRules: [
+        {
+          id: '<id>'
+          ignoreMissingVnetServiceEndpoint: false
+        }
+      ]
+    }
+    privateEndpoints: [
+      {
+        privateDnsZoneGroup: {
+          privateDNSResourceIds: [
+            '<privateDNSResourceId>'
+          ]
+          privateEndpointName: 'dep-pe-kvvpe'
+        }
+        service: 'vault'
+        subnetResourceId: '<subnetResourceId>'
+        tags: {
+          Environment: 'Non-Prod'
+          'hidden-title': 'This is visible in the resource name'
+          Role: 'DeploymentValidation'
+        }
+      }
+    ]
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "kvvpe001"
+    },
+    // Non-required parameters
+    "diagnosticEventHubAuthorizationRuleId": {
+      "value": "<diagnosticEventHubAuthorizationRuleId>"
+    },
+    "diagnosticEventHubName": {
+      "value": "<diagnosticEventHubName>"
+    },
+    "diagnosticStorageAccountId": {
+      "value": "<diagnosticStorageAccountId>"
+    },
+    "diagnosticWorkspaceId": {
+      "value": "<diagnosticWorkspaceId>"
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "enablePurgeProtection": {
+      "value": false
+    },
+    "enableRbacAuthorization": {
+      "value": true
+    },
+    "networkAcls": {
+      "value": {
+        "bypass": "AzureServices",
+        "defaultAction": "Deny",
+        "ipRules": [
+          {
+            "value": "40.74.28.0/23"
+          }
+        ],
+        "virtualNetworkRules": [
+          {
+            "id": "<id>",
+            "ignoreMissingVnetServiceEndpoint": false
+          }
+        ]
+      }
+    },
+    "privateEndpoints": {
+      "value": [
+        {
+          "privateDnsZoneGroup": {
+            "privateDNSResourceIds": [
+              "<privateDNSResourceId>"
+            ],
+            "privateEndpointName": "dep-pe-kvvpe"
+          },
+          "service": "vault",
+          "subnetResourceId": "<subnetResourceId>",
+          "tags": {
+            "Environment": "Non-Prod",
+            "hidden-title": "This is visible in the resource name",
+            "Role": "DeploymentValidation"
+          }
+        }
+      ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
 
 ## Parameters
 
