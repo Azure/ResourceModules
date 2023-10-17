@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.21.1.54444",
-      "templateHash": "6445435320297948317"
+      "version": "0.22.6.54827",
+      "templateHash": "8705022781837382520"
     },
     "name": "Azure Virtual Desktop (AVD) Application Groups",
     "description": "This module deploys an Azure Virtual Desktop (AVD) Application Group.",
@@ -261,8 +261,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "110356307048121387"
+              "version": "0.22.6.54827",
+              "templateHash": "10616827856455579307"
             },
             "name": "Azure Virtual Desktop (AVD) Application Group Applications",
             "description": "This module deploys an Azure Virtual Desktop (AVD) Application Group Application.",
@@ -442,8 +442,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "9771114878684828045"
+              "version": "0.22.6.54827",
+              "templateHash": "16875966944342044136"
             }
           },
           "parameters": {

@@ -20,30 +20,77 @@ This module deploys a Public DNS Zone CAA record.
 
 **Required parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the CAA record. |
+| [`name`](#parameter-name) | string | The name of the CAA record. |
 
 **Conditional parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `dnsZoneName` | string | The name of the parent DNS zone. Required if the template is used in a standalone deployment. |
+| [`dnsZoneName`](#parameter-dnszonename) | string | The name of the parent DNS zone. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `caaRecords` | array | `[]` | The list of CAA records in the record set. |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `metadata` | object | `{object}` | The metadata attached to the record set. |
-| `roleAssignments` | array | `[]` | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| `ttl` | int | `3600` | The TTL (time-to-live) of the records in the record set. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`caaRecords`](#parameter-caarecords) | array | The list of CAA records in the record set. |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`metadata`](#parameter-metadata) | object | The metadata attached to the record set. |
+| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| [`ttl`](#parameter-ttl) | int | The TTL (time-to-live) of the records in the record set. |
+
+### Parameter: `caaRecords`
+
+The list of CAA records in the record set.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `dnsZoneName`
+
+The name of the parent DNS zone. Required if the template is used in a standalone deployment.
+- Required: Yes
+- Type: string
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `metadata`
+
+The metadata attached to the record set.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `name`
+
+The name of the CAA record.
+- Required: Yes
+- Type: string
+
+### Parameter: `roleAssignments`
+
+Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `ttl`
+
+The TTL (time-to-live) of the records in the record set.
+- Required: No
+- Type: int
+- Default: `3600`
 
 
 ## Outputs
 
-| Output Name | Type | Description |
+| Output | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the deployed CAA record. |
 | `resourceGroupName` | string | The resource group of the deployed CAA record. |

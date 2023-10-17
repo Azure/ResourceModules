@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.21.1.54444",
-      "templateHash": "16731424701559883139"
+      "version": "0.22.6.54827",
+      "templateHash": "8155705065039005753"
     },
     "name": "Redis Cache Enterprise Databases",
     "description": "This module deploys a Redis Cache Enterprise Database.",

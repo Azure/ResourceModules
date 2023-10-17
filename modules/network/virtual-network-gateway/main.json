@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.21.1.54444",
-      "templateHash": "8459366170014558708"
+      "version": "0.22.6.54827",
+      "templateHash": "1318421731566619997"
     },
     "name": "Virtual Network Gateways",
     "description": "This module deploys a Virtual Network Gateway.",
@@ -539,8 +539,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "1887898957722092173"
+              "version": "0.22.6.54827",
+              "templateHash": "4317747709004918530"
             },
             "name": "Public IP Addresses",
             "description": "This module deploys a Public IP Address.",
@@ -873,8 +873,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.21.1.54444",
-                      "templateHash": "7328126239184883887"
+                      "version": "0.22.6.54827",
+                      "templateHash": "9976109177347918049"
                     }
                   },
                   "parameters": {
@@ -1092,8 +1092,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "483133118459920914"
+              "version": "0.22.6.54827",
+              "templateHash": "14778714560462406442"
             },
             "name": "VPN Gateway NAT Rules",
             "description": "This module deploys a Virtual Network Gateway NAT Rule.",
@@ -1256,8 +1256,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "10035364843796427917"
+              "version": "0.22.6.54827",
+              "templateHash": "3489304115292603489"
             }
           },
           "parameters": {

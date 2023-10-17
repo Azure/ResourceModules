@@ -19,28 +19,102 @@ This module deploys a Recovery Services Vault Backup Config.
 
 **Conditional parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `recoveryVaultName` | string | The name of the parent Azure Recovery Service Vault. Required if the template is used in a standalone deployment. |
+| [`recoveryVaultName`](#parameter-recoveryvaultname) | string | The name of the parent Azure Recovery Service Vault. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Allowed Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `enhancedSecurityState` | string | `'Enabled'` | `[Disabled, Enabled]` | Enable this setting to protect hybrid backups against accidental deletes and add additional layer of authentication for critical operations. |
-| `isSoftDeleteFeatureStateEditable` | bool | `True` |  | Is soft delete feature state editable. |
-| `name` | string | `'vaultconfig'` |  | Name of the Azure Recovery Service Vault Backup Policy. |
-| `resourceGuardOperationRequests` | array | `[]` |  | ResourceGuard Operation Requests. |
-| `softDeleteFeatureState` | string | `'Enabled'` | `[Disabled, Enabled]` | Enable this setting to protect backup data for Azure VM, SQL Server in Azure VM and SAP HANA in Azure VM from accidental deletes. |
-| `storageModelType` | string | `'GeoRedundant'` | `[GeoRedundant, LocallyRedundant, ReadAccessGeoZoneRedundant, ZoneRedundant]` | Storage type. |
-| `storageType` | string | `'GeoRedundant'` | `[GeoRedundant, LocallyRedundant, ReadAccessGeoZoneRedundant, ZoneRedundant]` | Storage type. |
-| `storageTypeState` | string | `'Locked'` | `[Locked, Unlocked]` | Once a machine is registered against a resource, the storageTypeState is always Locked. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`enhancedSecurityState`](#parameter-enhancedsecuritystate) | string | Enable this setting to protect hybrid backups against accidental deletes and add additional layer of authentication for critical operations. |
+| [`isSoftDeleteFeatureStateEditable`](#parameter-issoftdeletefeaturestateeditable) | bool | Is soft delete feature state editable. |
+| [`name`](#parameter-name) | string | Name of the Azure Recovery Service Vault Backup Policy. |
+| [`resourceGuardOperationRequests`](#parameter-resourceguardoperationrequests) | array | ResourceGuard Operation Requests. |
+| [`softDeleteFeatureState`](#parameter-softdeletefeaturestate) | string | Enable this setting to protect backup data for Azure VM, SQL Server in Azure VM and SAP HANA in Azure VM from accidental deletes. |
+| [`storageModelType`](#parameter-storagemodeltype) | string | Storage type. |
+| [`storageType`](#parameter-storagetype) | string | Storage type. |
+| [`storageTypeState`](#parameter-storagetypestate) | string | Once a machine is registered against a resource, the storageTypeState is always Locked. |
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `enhancedSecurityState`
+
+Enable this setting to protect hybrid backups against accidental deletes and add additional layer of authentication for critical operations.
+- Required: No
+- Type: string
+- Default: `'Enabled'`
+- Allowed: `[Disabled, Enabled]`
+
+### Parameter: `isSoftDeleteFeatureStateEditable`
+
+Is soft delete feature state editable.
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `name`
+
+Name of the Azure Recovery Service Vault Backup Policy.
+- Required: No
+- Type: string
+- Default: `'vaultconfig'`
+
+### Parameter: `recoveryVaultName`
+
+The name of the parent Azure Recovery Service Vault. Required if the template is used in a standalone deployment.
+- Required: Yes
+- Type: string
+
+### Parameter: `resourceGuardOperationRequests`
+
+ResourceGuard Operation Requests.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `softDeleteFeatureState`
+
+Enable this setting to protect backup data for Azure VM, SQL Server in Azure VM and SAP HANA in Azure VM from accidental deletes.
+- Required: No
+- Type: string
+- Default: `'Enabled'`
+- Allowed: `[Disabled, Enabled]`
+
+### Parameter: `storageModelType`
+
+Storage type.
+- Required: No
+- Type: string
+- Default: `'GeoRedundant'`
+- Allowed: `[GeoRedundant, LocallyRedundant, ReadAccessGeoZoneRedundant, ZoneRedundant]`
+
+### Parameter: `storageType`
+
+Storage type.
+- Required: No
+- Type: string
+- Default: `'GeoRedundant'`
+- Allowed: `[GeoRedundant, LocallyRedundant, ReadAccessGeoZoneRedundant, ZoneRedundant]`
+
+### Parameter: `storageTypeState`
+
+Once a machine is registered against a resource, the storageTypeState is always Locked.
+- Required: No
+- Type: string
+- Default: `'Locked'`
+- Allowed: `[Locked, Unlocked]`
 
 
 ## Outputs
 
-| Output Name | Type | Description |
+| Output | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the backup config. |
 | `resourceGroupName` | string | The name of the resource group the backup config was created in. |

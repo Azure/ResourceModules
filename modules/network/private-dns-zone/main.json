@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.21.1.54444",
-      "templateHash": "13683700730440109473"
+      "version": "0.22.6.54827",
+      "templateHash": "7094231343264488816"
     },
     "name": "Private DNS Zones",
     "description": "This module deploys a Private DNS zone.",
@@ -195,8 +195,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "3023625235674916080"
+              "version": "0.22.6.54827",
+              "templateHash": "3286674755199812485"
             },
             "name": "Private DNS Zone A record",
             "description": "This module deploys a Private DNS Zone A record.",
@@ -310,8 +310,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.21.1.54444",
-                      "templateHash": "3091185834162670777"
+                      "version": "0.22.6.54827",
+                      "templateHash": "13885309482367640092"
                     }
                   },
                   "parameters": {
@@ -517,8 +517,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "9619664849560898729"
+              "version": "0.22.6.54827",
+              "templateHash": "17200265918515224034"
             },
             "name": "Private DNS Zone AAAA record",
             "description": "This module deploys a Private DNS Zone AAAA record.",
@@ -632,8 +632,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.21.1.54444",
-                      "templateHash": "16612032211561905990"
+                      "version": "0.22.6.54827",
+                      "templateHash": "370590810970469037"
                     }
                   },
                   "parameters": {
@@ -839,8 +839,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "18350416636780213220"
+              "version": "0.22.6.54827",
+              "templateHash": "1218346372201244802"
             },
             "name": "Private DNS Zone CNAME record",
             "description": "This module deploys a Private DNS Zone CNAME record.",
@@ -954,8 +954,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.21.1.54444",
-                      "templateHash": "12449188823441255969"
+                      "version": "0.22.6.54827",
+                      "templateHash": "3701509590842402185"
                     }
                   },
                   "parameters": {
@@ -1167,8 +1167,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "5407325770336305290"
+              "version": "0.22.6.54827",
+              "templateHash": "498719698216860438"
             },
             "name": "Private DNS Zone MX record",
             "description": "This module deploys a Private DNS Zone MX record.",
@@ -1282,8 +1282,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.21.1.54444",
-                      "templateHash": "5166139968688256157"
+                      "version": "0.22.6.54827",
+                      "templateHash": "3875667684091614842"
                     }
                   },
                   "parameters": {
@@ -1489,8 +1489,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "7429124351513910459"
+              "version": "0.22.6.54827",
+              "templateHash": "15278019758073479253"
             },
             "name": "Private DNS Zone PTR record",
             "description": "This module deploys a Private DNS Zone PTR record.",
@@ -1604,8 +1604,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.21.1.54444",
-                      "templateHash": "9774124555582341628"
+                      "version": "0.22.6.54827",
+                      "templateHash": "1115653551360161833"
                     }
                   },
                   "parameters": {
@@ -1811,8 +1811,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "6237133824894088471"
+              "version": "0.22.6.54827",
+              "templateHash": "2312801328936888366"
             },
             "name": "Private DNS Zone SOA record",
             "description": "This module deploys a Private DNS Zone SOA record.",
@@ -1926,8 +1926,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.21.1.54444",
-                      "templateHash": "13019341765980531210"
+                      "version": "0.22.6.54827",
+                      "templateHash": "7407904296801266090"
                     }
                   },
                   "parameters": {
@@ -2133,8 +2133,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "8022373880556162081"
+              "version": "0.22.6.54827",
+              "templateHash": "5952665052269893806"
             },
             "name": "Private DNS Zone SRV record",
             "description": "This module deploys a Private DNS Zone SRV record.",
@@ -2248,8 +2248,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.21.1.54444",
-                      "templateHash": "18406157225832506146"
+                      "version": "0.22.6.54827",
+                      "templateHash": "7603100820795358011"
                     }
                   },
                   "parameters": {
@@ -2455,8 +2455,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "9882979825935476673"
+              "version": "0.22.6.54827",
+              "templateHash": "1124215030878784014"
             },
             "name": "Private DNS Zone TXT record",
             "description": "This module deploys a Private DNS Zone TXT record.",
@@ -2570,8 +2570,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.21.1.54444",
-                      "templateHash": "3370209117297708556"
+                      "version": "0.22.6.54827",
+                      "templateHash": "16791864516622438253"
                     }
                   },
                   "parameters": {
@@ -2777,8 +2777,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "2352064432983921161"
+              "version": "0.22.6.54827",
+              "templateHash": "12342244725180262876"
             },
             "name": "Private DNS Zone Virtual Network Link",
             "description": "This module deploys a Private DNS Zone Virtual Network Link.",
@@ -2932,8 +2932,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "13504974986686820957"
+              "version": "0.22.6.54827",
+              "templateHash": "2044377995221762227"
             }
           },
           "parameters": {

@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.21.1.54444",
-      "templateHash": "3813984795397304605"
+      "version": "0.22.6.54827",
+      "templateHash": "3515911577845014451"
     },
     "name": "Network Watchers",
     "description": "This module deploys a Network Watcher.",
@@ -149,8 +149,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "4655888316956810002"
+              "version": "0.22.6.54827",
+              "templateHash": "9894011822541177112"
             }
           },
           "parameters": {
@@ -326,8 +326,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "4201838654770127390"
+              "version": "0.22.6.54827",
+              "templateHash": "11763235795280157018"
             },
             "name": "Network Watchers Connection Monitors",
             "description": "This module deploys a Network Watcher Connection Monitor.",
@@ -505,8 +505,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "11547142807846840674"
+              "version": "0.22.6.54827",
+              "templateHash": "17949647288095694070"
             },
             "name": "NSG Flow Logs",
             "description": "This module controls the Network Security Group Flow Logs and analytics settings.\r\n**Note: this module must be run on the Resource Group where Network Watcher is deployed**",

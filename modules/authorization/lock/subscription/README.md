@@ -19,22 +19,50 @@ This module deploys an Authorization Lock at a Subscription scope.
 
 **Required parameters**
 
-| Parameter Name | Type | Allowed Values | Description |
-| :-- | :-- | :-- | :-- |
-| `level` | string | `[CanNotDelete, ReadOnly]` | Set lock level. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`level`](#parameter-level) | string | Set lock level. |
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `name` | string | `[format('{0}-lock', parameters('level'))]` | The name of the lock. |
-| `notes` | string | `[if(equals(parameters('level'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot modify the resource or child resources.')]` | The decription attached to the lock. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`name`](#parameter-name) | string | The name of the lock. |
+| [`notes`](#parameter-notes) | string | The decription attached to the lock. |
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `level`
+
+Set lock level.
+- Required: Yes
+- Type: string
+- Allowed: `[CanNotDelete, ReadOnly]`
+
+### Parameter: `name`
+
+The name of the lock.
+- Required: No
+- Type: string
+- Default: `[format('{0}-lock', parameters('level'))]`
+
+### Parameter: `notes`
+
+The decription attached to the lock.
+- Required: No
+- Type: string
+- Default: `[if(equals(parameters('level'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot modify the resource or child resources.')]`
 
 
 ## Outputs
 
-| Output Name | Type | Description |
+| Output | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the lock. |
 | `resourceId` | string | The resource ID of the lock. |

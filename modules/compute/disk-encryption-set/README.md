@@ -4,13 +4,13 @@ This module deploys a Disk Encryption Set.
 
 ## Navigation
 
-- [Resource types](#Resource-types)
+- [Resource Types](#Resource-Types)
+- [Usage examples](#Usage-examples)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
-- [Deployment examples](#Deployment-examples)
 
-## Resource types
+## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
@@ -20,73 +20,25 @@ This module deploys a Disk Encryption Set.
 | `Microsoft.KeyVault/vaults/accessPolicies` | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.KeyVault/2022-07-01/vaults/accessPolicies) |
 | `Microsoft.ManagedIdentity/userAssignedIdentities` | [2018-11-30](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ManagedIdentity/2018-11-30/userAssignedIdentities) |
 
-## Parameters
+## Usage examples
 
-**Required parameters**
+The following section provides usage examples for the module, which were used to validate and deploy the module successfully. For a full reference, please review the module's test folder in its repository.
 
-| Parameter Name | Type | Description |
-| :-- | :-- | :-- |
-| `keyName` | string | Key URL (with version) pointing to a key or secret in KeyVault. |
-| `keyVaultResourceId` | string | Resource ID of the KeyVault containing the key or secret. |
-| `name` | string | The name of the disk encryption set that is being created. |
+>**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-**Conditional parameters**
+>**Note**: To reference the module, please use the following syntax `br:bicep/modules/compute.disk-encryption-set:1.0.0`.
 
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `systemAssignedIdentity` | bool | `True` | Enables system assigned managed identity on the resource. Required if userAssignedIdentities is empty. |
-| `userAssignedIdentities` | object | `{object}` | The ID(s) to assign to the resource. Required if systemAssignedIdentity is set to "false". |
+- [Accesspolicies](#example-1-accesspolicies)
+- [Using large parameter set](#example-2-using-large-parameter-set)
 
-**Optional parameters**
-
-| Parameter Name | Type | Default Value | Allowed Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `encryptionType` | string | `'EncryptionAtRestWithPlatformAndCustomerKeys'` | `[EncryptionAtRestWithCustomerKey, EncryptionAtRestWithPlatformAndCustomerKeys]` | The type of key used to encrypt the data of the disk. For security reasons, it is recommended to set encryptionType to EncryptionAtRestWithPlatformAndCustomerKeys. |
-| `federatedClientId` | string | `'None'` |  | Multi-tenant application client ID to access key vault in a different tenant. Setting the value to "None" will clear the property. |
-| `keyVersion` | string | `''` |  | The version of the customer managed key to reference for encryption. If not provided, the latest key version is used. |
-| `location` | string | `[resourceGroup().location]` |  | Resource location. |
-| `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
-| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| `rotationToLatestKeyVersionEnabled` | bool | `False` |  | Set this flag to true to enable auto-updating of this disk encryption set to the latest key version. |
-| `tags` | object | `{object}` |  | Tags of the disk encryption resource. |
-
-
-## Outputs
-
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `identities` | object | The idenities of the disk encryption set. |
-| `keyVaultName` | string | The name of the key vault with the disk encryption key. |
-| `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of the disk encryption set. |
-| `principalId` | string | The principal ID of the disk encryption set. |
-| `resourceGroupName` | string | The resource group the disk encryption set was deployed into. |
-| `resourceId` | string | The resource ID of the disk encryption set. |
-
-## Cross-referenced modules
-
-This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
-
-| Reference | Type |
-| :-- | :-- |
-| `key-vault/vault/access-policy` | Local reference |
-
-## Deployment examples
-
-The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
-   >**Note**: The name of each example is based on the name of the file from which it is taken.
-
-   >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
-
-<h3>Example 1: Accesspolicies</h3>
+### Example 1: _Accesspolicies_
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module diskEncryptionSet './compute/disk-encryption-set/main.bicep' = {
+module diskEncryptionSet 'br:bicep/modules/compute.disk-encryption-set:1.0.0' = {
   name: '${uniqueString(deployment().name, location)}-test-cdesap'
   params: {
     // Required parameters
@@ -176,14 +128,17 @@ module diskEncryptionSet './compute/disk-encryption-set/main.bicep' = {
 </details>
 <p>
 
-<h3>Example 2: Common</h3>
+### Example 2: _Using large parameter set_
+
+This instance deploys the module with most of its features enabled.
+
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module diskEncryptionSet './compute/disk-encryption-set/main.bicep' = {
+module diskEncryptionSet 'br:bicep/modules/compute.disk-encryption-set:1.0.0' = {
   name: '${uniqueString(deployment().name, location)}-test-cdescom'
   params: {
     // Required parameters
@@ -276,3 +231,153 @@ module diskEncryptionSet './compute/disk-encryption-set/main.bicep' = {
 
 </details>
 <p>
+
+
+## Parameters
+
+**Required parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`keyName`](#parameter-keyname) | string | Key URL (with version) pointing to a key or secret in KeyVault. |
+| [`keyVaultResourceId`](#parameter-keyvaultresourceid) | string | Resource ID of the KeyVault containing the key or secret. |
+| [`name`](#parameter-name) | string | The name of the disk encryption set that is being created. |
+
+**Conditional parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`systemAssignedIdentity`](#parameter-systemassignedidentity) | bool | Enables system assigned managed identity on the resource. Required if userAssignedIdentities is empty. |
+| [`userAssignedIdentities`](#parameter-userassignedidentities) | object | The ID(s) to assign to the resource. Required if systemAssignedIdentity is set to "false". |
+
+**Optional parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`encryptionType`](#parameter-encryptiontype) | string | The type of key used to encrypt the data of the disk. For security reasons, it is recommended to set encryptionType to EncryptionAtRestWithPlatformAndCustomerKeys. |
+| [`federatedClientId`](#parameter-federatedclientid) | string | Multi-tenant application client ID to access key vault in a different tenant. Setting the value to "None" will clear the property. |
+| [`keyVersion`](#parameter-keyversion) | string | The version of the customer managed key to reference for encryption. If not provided, the latest key version is used. |
+| [`location`](#parameter-location) | string | Resource location. |
+| [`lock`](#parameter-lock) | string | Specify the type of lock. |
+| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| [`rotationToLatestKeyVersionEnabled`](#parameter-rotationtolatestkeyversionenabled) | bool | Set this flag to true to enable auto-updating of this disk encryption set to the latest key version. |
+| [`tags`](#parameter-tags) | object | Tags of the disk encryption resource. |
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `encryptionType`
+
+The type of key used to encrypt the data of the disk. For security reasons, it is recommended to set encryptionType to EncryptionAtRestWithPlatformAndCustomerKeys.
+- Required: No
+- Type: string
+- Default: `'EncryptionAtRestWithPlatformAndCustomerKeys'`
+- Allowed: `[EncryptionAtRestWithCustomerKey, EncryptionAtRestWithPlatformAndCustomerKeys]`
+
+### Parameter: `federatedClientId`
+
+Multi-tenant application client ID to access key vault in a different tenant. Setting the value to "None" will clear the property.
+- Required: No
+- Type: string
+- Default: `'None'`
+
+### Parameter: `keyName`
+
+Key URL (with version) pointing to a key or secret in KeyVault.
+- Required: Yes
+- Type: string
+
+### Parameter: `keyVaultResourceId`
+
+Resource ID of the KeyVault containing the key or secret.
+- Required: Yes
+- Type: string
+
+### Parameter: `keyVersion`
+
+The version of the customer managed key to reference for encryption. If not provided, the latest key version is used.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `location`
+
+Resource location.
+- Required: No
+- Type: string
+- Default: `[resourceGroup().location]`
+
+### Parameter: `lock`
+
+Specify the type of lock.
+- Required: No
+- Type: string
+- Default: `''`
+- Allowed: `['', CanNotDelete, ReadOnly]`
+
+### Parameter: `name`
+
+The name of the disk encryption set that is being created.
+- Required: Yes
+- Type: string
+
+### Parameter: `roleAssignments`
+
+Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `rotationToLatestKeyVersionEnabled`
+
+Set this flag to true to enable auto-updating of this disk encryption set to the latest key version.
+- Required: No
+- Type: bool
+- Default: `False`
+
+### Parameter: `systemAssignedIdentity`
+
+Enables system assigned managed identity on the resource. Required if userAssignedIdentities is empty.
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `tags`
+
+Tags of the disk encryption resource.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `userAssignedIdentities`
+
+The ID(s) to assign to the resource. Required if systemAssignedIdentity is set to "false".
+- Required: No
+- Type: object
+- Default: `{object}`
+
+
+## Outputs
+
+| Output | Type | Description |
+| :-- | :-- | :-- |
+| `identities` | object | The idenities of the disk encryption set. |
+| `keyVaultName` | string | The name of the key vault with the disk encryption key. |
+| `location` | string | The location the resource was deployed into. |
+| `name` | string | The name of the disk encryption set. |
+| `principalId` | string | The principal ID of the disk encryption set. |
+| `resourceGroupName` | string | The resource group the disk encryption set was deployed into. |
+| `resourceId` | string | The resource ID of the disk encryption set. |
+
+## Cross-referenced modules
+
+This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
+
+| Reference | Type |
+| :-- | :-- |
+| `modules/key-vault/vault/access-policy` | Local reference |

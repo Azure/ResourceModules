@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.21.1.54444",
-      "templateHash": "3727820015033589972"
+      "version": "0.22.6.54827",
+      "templateHash": "317150262818676597"
     },
     "name": "DNS Resolvers",
     "description": "This module deploys a DNS Resolver.",
@@ -197,8 +197,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "8749643017224763236"
+              "version": "0.22.6.54827",
+              "templateHash": "14781577945075842659"
             }
           },
           "parameters": {

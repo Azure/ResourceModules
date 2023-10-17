@@ -8,7 +8,6 @@ This template deploys Forwarding Rule in a Dns Forwarding Ruleset.
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
-- [Deployment examples](#Deployment-examples)
 
 ## Resource Types
 
@@ -20,31 +19,84 @@ This template deploys Forwarding Rule in a Dns Forwarding Ruleset.
 
 **Required parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `domainName` | string | The domain name for the forwarding rule. |
-| `name` | string | Name of the Forwarding Rule. |
-| `targetDnsServers` | array | DNS servers to forward the DNS query to. |
+| [`domainName`](#parameter-domainname) | string | The domain name for the forwarding rule. |
+| [`name`](#parameter-name) | string | Name of the Forwarding Rule. |
+| [`targetDnsServers`](#parameter-targetdnsservers) | array | DNS servers to forward the DNS query to. |
 
 **Conditional parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `dnsForwardingRulesetName` | string | Name of the parent DNS Forwarding Ruleset. Required if the template is used in a standalone deployment. |
+| [`dnsForwardingRulesetName`](#parameter-dnsforwardingrulesetname) | string | Name of the parent DNS Forwarding Ruleset. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Allowed Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `forwardingRuleState` | string | `'Enabled'` | `[Disabled, Enabled]` | The state of forwarding rule. |
-| `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
-| `metadata` | object | `{object}` |  | Metadata attached to the forwarding rule. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`forwardingRuleState`](#parameter-forwardingrulestate) | string | The state of forwarding rule. |
+| [`location`](#parameter-location) | string | Location for all resources. |
+| [`metadata`](#parameter-metadata) | object | Metadata attached to the forwarding rule. |
+
+### Parameter: `dnsForwardingRulesetName`
+
+Name of the parent DNS Forwarding Ruleset. Required if the template is used in a standalone deployment.
+- Required: Yes
+- Type: string
+
+### Parameter: `domainName`
+
+The domain name for the forwarding rule.
+- Required: Yes
+- Type: string
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `forwardingRuleState`
+
+The state of forwarding rule.
+- Required: No
+- Type: string
+- Default: `'Enabled'`
+- Allowed: `[Disabled, Enabled]`
+
+### Parameter: `location`
+
+Location for all resources.
+- Required: No
+- Type: string
+- Default: `[resourceGroup().location]`
+
+### Parameter: `metadata`
+
+Metadata attached to the forwarding rule.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `name`
+
+Name of the Forwarding Rule.
+- Required: Yes
+- Type: string
+
+### Parameter: `targetDnsServers`
+
+DNS servers to forward the DNS query to.
+- Required: Yes
+- Type: array
 
 
 ## Outputs
 
-| Output Name | Type | Description |
+| Output | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the Forwarding Rule. |
 | `resourceGroupName` | string | The resource group the Forwarding Rule was deployed into. |
@@ -53,69 +105,3 @@ This template deploys Forwarding Rule in a Dns Forwarding Ruleset.
 ## Cross-referenced modules
 
 _None_
-
-## Deployment examples
-
-The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
-   >**Note**: The name of each example is based on the name of the file from which it is taken.
-
-   >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
-
-<h3>Example 1: Common</h3>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module dnsForwardingRulesets './Microsoft.Network/dnsForwardingRulesets/deploy.bicep' = {
-  name: '${uniqueString(deployment().name, location)}-test-ndfrscom'
-  params: {
-    // Required parameters
-    dnsResolverOutboundEndpointId: '<dnsResolverOutboundEndpointId>'
-    name: '[[namePrefix]]ndfrscom001'
-    // Non-required parameters
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    tags: {
-      Environment: 'Non-Prod'
-      Role: 'DeploymentValidation'
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "dnsResolverOutboundEndpointId": {
-      "value": "<dnsResolverOutboundEndpointId>"
-    },
-    "name": {
-      "value": "[[namePrefix]]ndfrscom001"
-    },
-    // Non-required parameters
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
-    "tags": {
-      "value": {
-        "Environment": "Non-Prod",
-        "Role": "DeploymentValidation"
-      }
-    }
-  }
-}
-```
-
-</details>
-<p>

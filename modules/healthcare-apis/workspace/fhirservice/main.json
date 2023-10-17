@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.20.4.51522",
-      "templateHash": "3716031618750035294"
+      "version": "0.22.6.54827",
+      "templateHash": "11687946305671678451"
     },
     "name": "Healthcare API Workspace FHIR Services",
     "description": "This module deploys a Healthcare API Workspace FHIR Service.",
@@ -446,8 +446,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.20.4.51522",
-              "templateHash": "13975136606830731755"
+              "version": "0.22.6.54827",
+              "templateHash": "13260238293612966350"
             }
           },
           "parameters": {

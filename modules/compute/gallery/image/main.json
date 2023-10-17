@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.20.4.51522",
-      "templateHash": "14112753208892308004"
+      "version": "0.22.6.54827",
+      "templateHash": "12756969313323460277"
     },
     "name": "Compute Galleries Image Definitions",
     "description": "This module deploys an Azure Compute Gallery Image Definition.",
@@ -333,8 +333,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.20.4.51522",
-              "templateHash": "5875220683176267757"
+              "version": "0.22.6.54827",
+              "templateHash": "11966293152836776526"
             }
           },
           "parameters": {

@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.21.1.54444",
-      "templateHash": "18141386081798006601"
+      "version": "0.22.6.54827",
+      "templateHash": "8282781227910546878"
     },
     "name": "Azure Databricks Access Connectors",
     "description": "This module deploys an Azure Databricks Access Connector.",
@@ -149,8 +149,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "8744521398620405286"
+              "version": "0.22.6.54827",
+              "templateHash": "9290418788736930611"
             }
           },
           "parameters": {

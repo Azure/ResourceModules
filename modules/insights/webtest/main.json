@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.21.1.54444",
-      "templateHash": "16956370635999680512"
+      "version": "0.22.6.54827",
+      "templateHash": "17812769147790423288"
     },
     "name": "Web Tests",
     "description": "This module deploys a Web Test.",
@@ -245,8 +245,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "10303500513207854110"
+              "version": "0.22.6.54827",
+              "templateHash": "13954103255282067786"
             }
           },
           "parameters": {

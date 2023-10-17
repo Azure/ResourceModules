@@ -4,80 +4,43 @@ This module deploys a Policy Assignment at a Management Group, Subscription or R
 
 ## Navigation
 
-- [Resource types](#Resource-types)
+- [Resource Types](#Resource-Types)
+- [Usage examples](#Usage-examples)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
-- [Deployment examples](#Deployment-examples)
 - [Notes](#Notes)
 
-## Resource types
+## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/policyAssignments` | [2022-06-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-06-01/policyAssignments) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 
-## Parameters
+## Usage examples
 
-**Required parameters**
+The following section provides usage examples for the module, which were used to validate and deploy the module successfully. For a full reference, please review the module's test folder in its repository.
 
-| Parameter Name | Type | Description |
-| :-- | :-- | :-- |
-| `name` | string | Specifies the name of the policy assignment. Maximum length is 24 characters for management group scope, 64 characters for subscription and resource group scopes. |
-| `policyDefinitionId` | string | Specifies the ID of the policy definition or policy set definition being assigned. |
+>**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-**Optional parameters**
+>**Note**: To reference the module, please use the following syntax `br:bicep/modules/authorization.policy-assignment:1.0.0`.
 
-| Parameter Name | Type | Default Value | Allowed Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `description` | string | `''` |  | This message will be part of response in case of policy violation. |
-| `displayName` | string | `''` |  | The display name of the policy assignment. Maximum length is 128 characters. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `enforcementMode` | string | `'Default'` | `[Default, DoNotEnforce]` | The policy assignment enforcement mode. Possible values are Default and DoNotEnforce. - Default or DoNotEnforce. |
-| `identity` | string | `'SystemAssigned'` | `[None, SystemAssigned, UserAssigned]` | The managed identity associated with the policy assignment. Policy assignments must include a resource identity when assigning 'Modify' policy definitions. |
-| `location` | string | `[deployment().location]` |  | Location for all resources. |
-| `managementGroupId` | string | `[managementGroup().name]` |  | The Target Scope for the Policy. The name of the management group for the policy assignment. If not provided, will use the current scope for deployment. |
-| `metadata` | object | `{object}` |  | The policy assignment metadata. Metadata is an open ended object and is typically a collection of key-value pairs. |
-| `nonComplianceMessages` | array | `[]` |  | The messages that describe why a resource is non-compliant with the policy. |
-| `notScopes` | array | `[]` |  | The policy excluded scopes. |
-| `overrides` | array | `[]` |  | The policy property value override. Allows changing the effect of a policy definition without modifying the underlying policy definition or using a parameterized effect in the policy definition. |
-| `parameters` | object | `{object}` |  | Parameters for the policy assignment if needed. |
-| `resourceGroupName` | string | `''` |  | The Target Scope for the Policy. The name of the resource group for the policy assignment. |
-| `resourceSelectors` | array | `[]` |  | The resource selector list to filter policies by resource properties. Facilitates safe deployment practices (SDP) by enabling gradual roll out policy assignments based on factors like resource location, resource type, or whether a resource has a location. |
-| `roleDefinitionIds` | array | `[]` |  | The IDs Of the Azure Role Definition list that is used to assign permissions to the identity. You need to provide either the fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.. See https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles for the list IDs for built-in Roles. They must match on what is on the policy definition. |
-| `subscriptionId` | string | `''` |  | The Target Scope for the Policy. The subscription ID of the subscription for the policy assignment. |
-| `userAssignedIdentityId` | string | `''` |  | The Resource ID for the user assigned identity to assign to the policy assignment. |
+- [Mg.Common](#example-1-mgcommon)
+- [Mg.Min](#example-2-mgmin)
+- [Rg.Common](#example-3-rgcommon)
+- [Rg.Min](#example-4-rgmin)
+- [Sub.Common](#example-5-subcommon)
+- [Sub.Min](#example-6-submin)
 
-
-## Outputs
-
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `location` | string | The location the resource was deployed into. |
-| `name` | string | Policy Assignment Name. |
-| `principalId` | string | Policy Assignment principal ID. |
-| `resourceId` | string | Policy Assignment resource ID. |
-
-## Cross-referenced modules
-
-_None_
-
-## Deployment examples
-
-The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
-   >**Note**: The name of each example is based on the name of the file from which it is taken.
-
-   >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
-
-<h3>Example 1: Mg.Common</h3>
+### Example 1: _Mg.Common_
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module policyAssignment './authorization/policy-assignment/main.bicep' = {
+module policyAssignment 'br:bicep/modules/authorization.policy-assignment:1.0.0' = {
   name: '${uniqueString(deployment().name, location)}-test-apamgcom'
   params: {
     // Required parameters
@@ -273,14 +236,14 @@ module policyAssignment './authorization/policy-assignment/main.bicep' = {
 </details>
 <p>
 
-<h3>Example 2: Mg.Min</h3>
+### Example 2: _Mg.Min_
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module policyAssignment './authorization/policy-assignment/main.bicep' = {
+module policyAssignment 'br:bicep/modules/authorization.policy-assignment:1.0.0' = {
   name: '${uniqueString(deployment().name)}-test-apamgmin'
   params: {
     // Required parameters
@@ -330,14 +293,14 @@ module policyAssignment './authorization/policy-assignment/main.bicep' = {
 </details>
 <p>
 
-<h3>Example 3: Rg.Common</h3>
+### Example 3: _Rg.Common_
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module policyAssignment './authorization/policy-assignment/main.bicep' = {
+module policyAssignment 'br:bicep/modules/authorization.policy-assignment:1.0.0' = {
   name: '${uniqueString(deployment().name)}-test-apargcom'
   params: {
     // Required parameters
@@ -541,14 +504,14 @@ module policyAssignment './authorization/policy-assignment/main.bicep' = {
 </details>
 <p>
 
-<h3>Example 4: Rg.Min</h3>
+### Example 4: _Rg.Min_
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module policyAssignment './authorization/policy-assignment/main.bicep' = {
+module policyAssignment 'br:bicep/modules/authorization.policy-assignment:1.0.0' = {
   name: '${uniqueString(deployment().name)}-test-apargmin'
   params: {
     // Required parameters
@@ -602,14 +565,14 @@ module policyAssignment './authorization/policy-assignment/main.bicep' = {
 </details>
 <p>
 
-<h3>Example 5: Sub.Common</h3>
+### Example 5: _Sub.Common_
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module policyAssignment './authorization/policy-assignment/main.bicep' = {
+module policyAssignment 'br:bicep/modules/authorization.policy-assignment:1.0.0' = {
   name: '${uniqueString(deployment().name)}-test-apasubcom'
   params: {
     // Required parameters
@@ -809,14 +772,14 @@ module policyAssignment './authorization/policy-assignment/main.bicep' = {
 </details>
 <p>
 
-<h3>Example 6: Sub.Min</h3>
+### Example 6: _Sub.Min_
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module policyAssignment './authorization/policy-assignment/main.bicep' = {
+module policyAssignment 'br:bicep/modules/authorization.policy-assignment:1.0.0' = {
   name: '${uniqueString(deployment().name)}-test-apasubmin'
   params: {
     // Required parameters
@@ -874,6 +837,184 @@ module policyAssignment './authorization/policy-assignment/main.bicep' = {
 </details>
 <p>
 
+
+## Parameters
+
+**Required parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`name`](#parameter-name) | string | Specifies the name of the policy assignment. Maximum length is 24 characters for management group scope, 64 characters for subscription and resource group scopes. |
+| [`policyDefinitionId`](#parameter-policydefinitionid) | string | Specifies the ID of the policy definition or policy set definition being assigned. |
+
+**Optional parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`description`](#parameter-description) | string | This message will be part of response in case of policy violation. |
+| [`displayName`](#parameter-displayname) | string | The display name of the policy assignment. Maximum length is 128 characters. |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`enforcementMode`](#parameter-enforcementmode) | string | The policy assignment enforcement mode. Possible values are Default and DoNotEnforce. - Default or DoNotEnforce. |
+| [`identity`](#parameter-identity) | string | The managed identity associated with the policy assignment. Policy assignments must include a resource identity when assigning 'Modify' policy definitions. |
+| [`location`](#parameter-location) | string | Location for all resources. |
+| [`managementGroupId`](#parameter-managementgroupid) | string | The Target Scope for the Policy. The name of the management group for the policy assignment. If not provided, will use the current scope for deployment. |
+| [`metadata`](#parameter-metadata) | object | The policy assignment metadata. Metadata is an open ended object and is typically a collection of key-value pairs. |
+| [`nonComplianceMessages`](#parameter-noncompliancemessages) | array | The messages that describe why a resource is non-compliant with the policy. |
+| [`notScopes`](#parameter-notscopes) | array | The policy excluded scopes. |
+| [`overrides`](#parameter-overrides) | array | The policy property value override. Allows changing the effect of a policy definition without modifying the underlying policy definition or using a parameterized effect in the policy definition. |
+| [`parameters`](#parameter-parameters) | object | Parameters for the policy assignment if needed. |
+| [`resourceGroupName`](#parameter-resourcegroupname) | string | The Target Scope for the Policy. The name of the resource group for the policy assignment. |
+| [`resourceSelectors`](#parameter-resourceselectors) | array | The resource selector list to filter policies by resource properties. Facilitates safe deployment practices (SDP) by enabling gradual roll out policy assignments based on factors like resource location, resource type, or whether a resource has a location. |
+| [`roleDefinitionIds`](#parameter-roledefinitionids) | array | The IDs Of the Azure Role Definition list that is used to assign permissions to the identity. You need to provide either the fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.. See https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles for the list IDs for built-in Roles. They must match on what is on the policy definition. |
+| [`subscriptionId`](#parameter-subscriptionid) | string | The Target Scope for the Policy. The subscription ID of the subscription for the policy assignment. |
+| [`userAssignedIdentityId`](#parameter-userassignedidentityid) | string | The Resource ID for the user assigned identity to assign to the policy assignment. |
+
+### Parameter: `description`
+
+This message will be part of response in case of policy violation.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `displayName`
+
+The display name of the policy assignment. Maximum length is 128 characters.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `enforcementMode`
+
+The policy assignment enforcement mode. Possible values are Default and DoNotEnforce. - Default or DoNotEnforce.
+- Required: No
+- Type: string
+- Default: `'Default'`
+- Allowed: `[Default, DoNotEnforce]`
+
+### Parameter: `identity`
+
+The managed identity associated with the policy assignment. Policy assignments must include a resource identity when assigning 'Modify' policy definitions.
+- Required: No
+- Type: string
+- Default: `'SystemAssigned'`
+- Allowed: `[None, SystemAssigned, UserAssigned]`
+
+### Parameter: `location`
+
+Location for all resources.
+- Required: No
+- Type: string
+- Default: `[deployment().location]`
+
+### Parameter: `managementGroupId`
+
+The Target Scope for the Policy. The name of the management group for the policy assignment. If not provided, will use the current scope for deployment.
+- Required: No
+- Type: string
+- Default: `[managementGroup().name]`
+
+### Parameter: `metadata`
+
+The policy assignment metadata. Metadata is an open ended object and is typically a collection of key-value pairs.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `name`
+
+Specifies the name of the policy assignment. Maximum length is 24 characters for management group scope, 64 characters for subscription and resource group scopes.
+- Required: Yes
+- Type: string
+
+### Parameter: `nonComplianceMessages`
+
+The messages that describe why a resource is non-compliant with the policy.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `notScopes`
+
+The policy excluded scopes.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `overrides`
+
+The policy property value override. Allows changing the effect of a policy definition without modifying the underlying policy definition or using a parameterized effect in the policy definition.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `parameters`
+
+Parameters for the policy assignment if needed.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `policyDefinitionId`
+
+Specifies the ID of the policy definition or policy set definition being assigned.
+- Required: Yes
+- Type: string
+
+### Parameter: `resourceGroupName`
+
+The Target Scope for the Policy. The name of the resource group for the policy assignment.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `resourceSelectors`
+
+The resource selector list to filter policies by resource properties. Facilitates safe deployment practices (SDP) by enabling gradual roll out policy assignments based on factors like resource location, resource type, or whether a resource has a location.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `roleDefinitionIds`
+
+The IDs Of the Azure Role Definition list that is used to assign permissions to the identity. You need to provide either the fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.. See https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles for the list IDs for built-in Roles. They must match on what is on the policy definition.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `subscriptionId`
+
+The Target Scope for the Policy. The subscription ID of the subscription for the policy assignment.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `userAssignedIdentityId`
+
+The Resource ID for the user assigned identity to assign to the policy assignment.
+- Required: No
+- Type: string
+- Default: `''`
+
+
+## Outputs
+
+| Output | Type | Description |
+| :-- | :-- | :-- |
+| `location` | string | The location the resource was deployed into. |
+| `name` | string | Policy Assignment Name. |
+| `principalId` | string | Policy Assignment principal ID. |
+| `resourceId` | string | Policy Assignment resource ID. |
+
+## Cross-referenced modules
+
+_None_
 
 ## Notes
 

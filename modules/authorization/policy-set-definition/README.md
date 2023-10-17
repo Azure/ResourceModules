@@ -4,69 +4,40 @@ This module deploys a Policy Set Definition (Initiative) at a Management Group o
 
 ## Navigation
 
-- [Resource types](#Resource-types)
+- [Resource Types](#Resource-Types)
+- [Usage examples](#Usage-examples)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
-- [Deployment examples](#Deployment-examples)
 - [Notes](#Notes)
 
-## Resource types
+## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/policySetDefinitions` | [2021-06-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-06-01/policySetDefinitions) |
 
-## Parameters
+## Usage examples
 
-**Required parameters**
+The following section provides usage examples for the module, which were used to validate and deploy the module successfully. For a full reference, please review the module's test folder in its repository.
 
-| Parameter Name | Type | Description |
-| :-- | :-- | :-- |
-| `name` | string | Specifies the name of the policy Set Definition (Initiative). |
-| `policyDefinitions` | array | The array of Policy definitions object to include for this policy set. Each object must include the Policy definition ID, and optionally other properties like parameters. |
+>**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-**Optional parameters**
+>**Note**: To reference the module, please use the following syntax `br:bicep/modules/authorization.policy-set-definition:1.0.0`.
 
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `description` | string | `''` | The description name of the Set Definition (Initiative). |
-| `displayName` | string | `''` | The display name of the Set Definition (Initiative). Maximum length is 128 characters. |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `location` | string | `[deployment().location]` | Location deployment metadata. |
-| `managementGroupId` | string | `[managementGroup().name]` | The group ID of the Management Group (Scope). If not provided, will use the current scope for deployment. |
-| `metadata` | object | `{object}` | The Set Definition (Initiative) metadata. Metadata is an open ended object and is typically a collection of key-value pairs. |
-| `parameters` | object | `{object}` | The Set Definition (Initiative) parameters that can be used in policy definition references. |
-| `policyDefinitionGroups` | array | `[]` | The metadata describing groups of policy definition references within the Policy Set Definition (Initiative). |
-| `subscriptionId` | string | `''` | The subscription ID of the subscription (Scope). Cannot be used with managementGroupId. |
+- [Mg.Common](#example-1-mgcommon)
+- [Mg.Min](#example-2-mgmin)
+- [Sub.Common](#example-3-subcommon)
+- [Sub.Min](#example-4-submin)
 
-
-## Outputs
-
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `name` | string | Policy Set Definition Name. |
-| `resourceId` | string | Policy Set Definition resource ID. |
-
-## Cross-referenced modules
-
-_None_
-
-## Deployment examples
-
-The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
-   >**Note**: The name of each example is based on the name of the file from which it is taken.
-
-   >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
-
-<h3>Example 1: Mg.Common</h3>
+### Example 1: _Mg.Common_
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module policySetDefinition './authorization/policy-set-definition/main.bicep' = {
+module policySetDefinition 'br:bicep/modules/authorization.policy-set-definition:1.0.0' = {
   name: '${uniqueString(deployment().name)}-test-apsdmgcom'
   params: {
     // Required parameters
@@ -202,14 +173,14 @@ module policySetDefinition './authorization/policy-set-definition/main.bicep' = 
 </details>
 <p>
 
-<h3>Example 2: Mg.Min</h3>
+### Example 2: _Mg.Min_
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module policySetDefinition './authorization/policy-set-definition/main.bicep' = {
+module policySetDefinition 'br:bicep/modules/authorization.policy-set-definition:1.0.0' = {
   name: '${uniqueString(deployment().name)}-test-apsdmgmin'
   params: {
     // Required parameters
@@ -273,14 +244,14 @@ module policySetDefinition './authorization/policy-set-definition/main.bicep' = 
 </details>
 <p>
 
-<h3>Example 3: Sub.Common</h3>
+### Example 3: _Sub.Common_
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module policySetDefinition './authorization/policy-set-definition/main.bicep' = {
+module policySetDefinition 'br:bicep/modules/authorization.policy-set-definition:1.0.0' = {
   name: '${uniqueString(deployment().name)}-test-apsdsubcom'
   params: {
     // Required parameters
@@ -416,14 +387,14 @@ module policySetDefinition './authorization/policy-set-definition/main.bicep' = 
 </details>
 <p>
 
-<h3>Example 4: Sub.Min</h3>
+### Example 4: _Sub.Min_
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module policySetDefinition './authorization/policy-set-definition/main.bicep' = {
+module policySetDefinition 'br:bicep/modules/authorization.policy-set-definition:1.0.0' = {
   name: '${uniqueString(deployment().name)}-test-apsdsubmin'
   params: {
     // Required parameters
@@ -487,6 +458,116 @@ module policySetDefinition './authorization/policy-set-definition/main.bicep' = 
 </details>
 <p>
 
+
+## Parameters
+
+**Required parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`name`](#parameter-name) | string | Specifies the name of the policy Set Definition (Initiative). |
+| [`policyDefinitions`](#parameter-policydefinitions) | array | The array of Policy definitions object to include for this policy set. Each object must include the Policy definition ID, and optionally other properties like parameters. |
+
+**Optional parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`description`](#parameter-description) | string | The description name of the Set Definition (Initiative). |
+| [`displayName`](#parameter-displayname) | string | The display name of the Set Definition (Initiative). Maximum length is 128 characters. |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`location`](#parameter-location) | string | Location deployment metadata. |
+| [`managementGroupId`](#parameter-managementgroupid) | string | The group ID of the Management Group (Scope). If not provided, will use the current scope for deployment. |
+| [`metadata`](#parameter-metadata) | object | The Set Definition (Initiative) metadata. Metadata is an open ended object and is typically a collection of key-value pairs. |
+| [`parameters`](#parameter-parameters) | object | The Set Definition (Initiative) parameters that can be used in policy definition references. |
+| [`policyDefinitionGroups`](#parameter-policydefinitiongroups) | array | The metadata describing groups of policy definition references within the Policy Set Definition (Initiative). |
+| [`subscriptionId`](#parameter-subscriptionid) | string | The subscription ID of the subscription (Scope). Cannot be used with managementGroupId. |
+
+### Parameter: `description`
+
+The description name of the Set Definition (Initiative).
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `displayName`
+
+The display name of the Set Definition (Initiative). Maximum length is 128 characters.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `location`
+
+Location deployment metadata.
+- Required: No
+- Type: string
+- Default: `[deployment().location]`
+
+### Parameter: `managementGroupId`
+
+The group ID of the Management Group (Scope). If not provided, will use the current scope for deployment.
+- Required: No
+- Type: string
+- Default: `[managementGroup().name]`
+
+### Parameter: `metadata`
+
+The Set Definition (Initiative) metadata. Metadata is an open ended object and is typically a collection of key-value pairs.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `name`
+
+Specifies the name of the policy Set Definition (Initiative).
+- Required: Yes
+- Type: string
+
+### Parameter: `parameters`
+
+The Set Definition (Initiative) parameters that can be used in policy definition references.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `policyDefinitionGroups`
+
+The metadata describing groups of policy definition references within the Policy Set Definition (Initiative).
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `policyDefinitions`
+
+The array of Policy definitions object to include for this policy set. Each object must include the Policy definition ID, and optionally other properties like parameters.
+- Required: Yes
+- Type: array
+
+### Parameter: `subscriptionId`
+
+The subscription ID of the subscription (Scope). Cannot be used with managementGroupId.
+- Required: No
+- Type: string
+- Default: `''`
+
+
+## Outputs
+
+| Output | Type | Description |
+| :-- | :-- | :-- |
+| `name` | string | Policy Set Definition Name. |
+| `resourceId` | string | Policy Set Definition resource ID. |
+
+## Cross-referenced modules
+
+_None_
 
 ## Notes
 

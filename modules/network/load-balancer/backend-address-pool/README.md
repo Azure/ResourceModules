@@ -19,30 +19,78 @@ This module deploys a Load Balancer Backend Address Pools.
 
 **Required parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the backend address pool. |
+| [`name`](#parameter-name) | string | The name of the backend address pool. |
 
 **Conditional parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `loadBalancerName` | string | The name of the parent load balancer. Required if the template is used in a standalone deployment. |
+| [`loadBalancerName`](#parameter-loadbalancername) | string | The name of the parent load balancer. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Allowed Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `drainPeriodInSeconds` | int | `0` |  | Amount of seconds Load Balancer waits for before sending RESET to client and backend address. if value is 0 then this property will be set to null. Subscription must register the feature Microsoft.Network/SLBAllowConnectionDraining before using this property. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `loadBalancerBackendAddresses` | array | `[]` |  | An array of backend addresses. |
-| `syncMode` | string | `''` | `['', Automatic, Manual]` | Backend address synchronous mode for the backend pool. |
-| `tunnelInterfaces` | array | `[]` |  | An array of gateway load balancer tunnel interfaces. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`drainPeriodInSeconds`](#parameter-drainperiodinseconds) | int | Amount of seconds Load Balancer waits for before sending RESET to client and backend address. if value is 0 then this property will be set to null. Subscription must register the feature Microsoft.Network/SLBAllowConnectionDraining before using this property. |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`loadBalancerBackendAddresses`](#parameter-loadbalancerbackendaddresses) | array | An array of backend addresses. |
+| [`syncMode`](#parameter-syncmode) | string | Backend address synchronous mode for the backend pool. |
+| [`tunnelInterfaces`](#parameter-tunnelinterfaces) | array | An array of gateway load balancer tunnel interfaces. |
+
+### Parameter: `drainPeriodInSeconds`
+
+Amount of seconds Load Balancer waits for before sending RESET to client and backend address. if value is 0 then this property will be set to null. Subscription must register the feature Microsoft.Network/SLBAllowConnectionDraining before using this property.
+- Required: No
+- Type: int
+- Default: `0`
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `loadBalancerBackendAddresses`
+
+An array of backend addresses.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `loadBalancerName`
+
+The name of the parent load balancer. Required if the template is used in a standalone deployment.
+- Required: Yes
+- Type: string
+
+### Parameter: `name`
+
+The name of the backend address pool.
+- Required: Yes
+- Type: string
+
+### Parameter: `syncMode`
+
+Backend address synchronous mode for the backend pool.
+- Required: No
+- Type: string
+- Default: `''`
+- Allowed: `['', Automatic, Manual]`
+
+### Parameter: `tunnelInterfaces`
+
+An array of gateway load balancer tunnel interfaces.
+- Required: No
+- Type: array
+- Default: `[]`
 
 
 ## Outputs
 
-| Output Name | Type | Description |
+| Output | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the backend address pool. |
 | `resourceGroupName` | string | The resource group the backend address pool was deployed into. |

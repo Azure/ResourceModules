@@ -4,13 +4,13 @@ This module deploys an API Management Service Backend.
 
 ## Navigation
 
-- [Resource types](#Resource-types)
+- [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
 - [Notes](#Notes)
 
-## Resource types
+## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
@@ -20,35 +20,116 @@ This module deploys an API Management Service Backend.
 
 **Required parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | Backend Name. |
-| `url` | string | Runtime URL of the Backend. |
+| [`name`](#parameter-name) | string | Backend Name. |
+| [`url`](#parameter-url) | string | Runtime URL of the Backend. |
 
 **Conditional parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `apiManagementServiceName` | string | The name of the parent API Management service. Required if the template is used in a standalone deployment. |
+| [`apiManagementServiceName`](#parameter-apimanagementservicename) | string | The name of the parent API Management service. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `credentials` | object | `{object}` | Backend Credentials Contract Properties. |
-| `description` | string | `''` | Backend Description. |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `protocol` | string | `'http'` | Backend communication protocol. - http or soap. |
-| `proxy` | object | `{object}` | Backend Proxy Contract Properties. |
-| `resourceId` | string | `''` | Management Uri of the Resource in External System. This URL can be the Arm Resource ID of Logic Apps, Function Apps or API Apps. |
-| `serviceFabricCluster` | object | `{object}` | Backend Service Fabric Cluster Properties. |
-| `title` | string | `''` | Backend Title. |
-| `tls` | object | `{object}` | Backend TLS Properties. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`credentials`](#parameter-credentials) | object | Backend Credentials Contract Properties. |
+| [`description`](#parameter-description) | string | Backend Description. |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`protocol`](#parameter-protocol) | string | Backend communication protocol. - http or soap. |
+| [`proxy`](#parameter-proxy) | object | Backend Proxy Contract Properties. |
+| [`resourceId`](#parameter-resourceid) | string | Management Uri of the Resource in External System. This URL can be the Arm Resource ID of Logic Apps, Function Apps or API Apps. |
+| [`serviceFabricCluster`](#parameter-servicefabriccluster) | object | Backend Service Fabric Cluster Properties. |
+| [`title`](#parameter-title) | string | Backend Title. |
+| [`tls`](#parameter-tls) | object | Backend TLS Properties. |
+
+### Parameter: `apiManagementServiceName`
+
+The name of the parent API Management service. Required if the template is used in a standalone deployment.
+- Required: Yes
+- Type: string
+
+### Parameter: `credentials`
+
+Backend Credentials Contract Properties.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `description`
+
+Backend Description.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `name`
+
+Backend Name.
+- Required: Yes
+- Type: string
+
+### Parameter: `protocol`
+
+Backend communication protocol. - http or soap.
+- Required: No
+- Type: string
+- Default: `'http'`
+
+### Parameter: `proxy`
+
+Backend Proxy Contract Properties.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `resourceId`
+
+Management Uri of the Resource in External System. This URL can be the Arm Resource ID of Logic Apps, Function Apps or API Apps.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `serviceFabricCluster`
+
+Backend Service Fabric Cluster Properties.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `title`
+
+Backend Title.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `tls`
+
+Backend TLS Properties.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `url`
+
+Runtime URL of the Backend.
+- Required: Yes
+- Type: string
 
 
 ## Outputs
 
-| Output Name | Type | Description |
+| Output | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the API management service backend. |
 | `resourceGroupName` | string | The resource group the API management service backend was deployed into. |

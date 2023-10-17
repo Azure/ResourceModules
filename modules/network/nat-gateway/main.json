@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.21.1.54444",
-      "templateHash": "14895423675743454"
+      "version": "0.22.6.54827",
+      "templateHash": "9634258356447527908"
     },
     "name": "NAT Gateways",
     "description": "This module deploys a NAT Gateway.",
@@ -314,8 +314,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "1887898957722092173"
+              "version": "0.22.6.54827",
+              "templateHash": "4317747709004918530"
             },
             "name": "Public IP Addresses",
             "description": "This module deploys a Public IP Address.",
@@ -648,8 +648,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.21.1.54444",
-                      "templateHash": "7328126239184883887"
+                      "version": "0.22.6.54827",
+                      "templateHash": "9976109177347918049"
                     }
                   },
                   "parameters": {
@@ -866,8 +866,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "15916588634255073631"
+              "version": "0.22.6.54827",
+              "templateHash": "15036243165894053484"
             }
           },
           "parameters": {

@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.21.1.54444",
-      "templateHash": "6851549629737338757"
+      "version": "0.22.6.54827",
+      "templateHash": "9774189040753970370"
     },
     "name": "Public DNS Zones",
     "description": "This module deploys a Public DNS zone.",
@@ -208,8 +208,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "68732993276774389"
+              "version": "0.22.6.54827",
+              "templateHash": "6542208080967583866"
             },
             "name": "Public DNS Zone A record",
             "description": "This module deploys a Public DNS Zone A record.",
@@ -331,8 +331,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.21.1.54444",
-                      "templateHash": "5391899014295336127"
+                      "version": "0.22.6.54827",
+                      "templateHash": "12863297534613170503"
                     }
                   },
                   "parameters": {
@@ -539,8 +539,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "1399420754199725079"
+              "version": "0.22.6.54827",
+              "templateHash": "3710520452642205212"
             },
             "name": "Public DNS Zone AAAA record",
             "description": "This module deploys a Public DNS Zone AAAA record.",
@@ -662,8 +662,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.21.1.54444",
-                      "templateHash": "11088059014224151171"
+                      "version": "0.22.6.54827",
+                      "templateHash": "8289108097363297951"
                     }
                   },
                   "parameters": {
@@ -870,8 +870,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "1081451111818125712"
+              "version": "0.22.6.54827",
+              "templateHash": "9638487977820751575"
             },
             "name": "Public DNS Zone CNAME record",
             "description": "This module deploys a Public DNS Zone CNAME record.",
@@ -993,8 +993,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.21.1.54444",
-                      "templateHash": "8600790202870820366"
+                      "version": "0.22.6.54827",
+                      "templateHash": "9902709125102553327"
                     }
                   },
                   "parameters": {
@@ -1200,8 +1200,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "5673527444453988582"
+              "version": "0.22.6.54827",
+              "templateHash": "139457689749453308"
             },
             "name": "Public DNS Zone CAA record",
             "description": "This module deploys a Public DNS Zone CAA record.",
@@ -1315,8 +1315,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.21.1.54444",
-                      "templateHash": "15901517837296662514"
+                      "version": "0.22.6.54827",
+                      "templateHash": "9470565833545804306"
                     }
                   },
                   "parameters": {
@@ -1522,8 +1522,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "12122627275966612771"
+              "version": "0.22.6.54827",
+              "templateHash": "17935109453553054168"
             },
             "name": "Public DNS Zone MX record",
             "description": "This module deploys a Public DNS Zone MX record.",
@@ -1637,8 +1637,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.21.1.54444",
-                      "templateHash": "12990053881217536027"
+                      "version": "0.22.6.54827",
+                      "templateHash": "3617371994879925017"
                     }
                   },
                   "parameters": {
@@ -1844,8 +1844,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "1252842746264260293"
+              "version": "0.22.6.54827",
+              "templateHash": "5114862259619051357"
             },
             "name": "Public DNS Zone NS record",
             "description": "This module deploys a Public DNS Zone NS record.",
@@ -1959,8 +1959,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.21.1.54444",
-                      "templateHash": "4203054026416577590"
+                      "version": "0.22.6.54827",
+                      "templateHash": "14367633254025428198"
                     }
                   },
                   "parameters": {
@@ -2166,8 +2166,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "8254188493299686045"
+              "version": "0.22.6.54827",
+              "templateHash": "10998530599333888745"
             },
             "name": "Public DNS Zone PTR record",
             "description": "This module deploys a Public DNS Zone PTR record.",
@@ -2281,8 +2281,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.21.1.54444",
-                      "templateHash": "3382234855470984930"
+                      "version": "0.22.6.54827",
+                      "templateHash": "17983831737512612600"
                     }
                   },
                   "parameters": {
@@ -2488,8 +2488,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "9958980921150733070"
+              "version": "0.22.6.54827",
+              "templateHash": "10118634861239112279"
             },
             "name": "Public DNS Zone SOA record",
             "description": "This module deploys a Public DNS Zone SOA record.",
@@ -2603,8 +2603,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.21.1.54444",
-                      "templateHash": "10962387383395206364"
+                      "version": "0.22.6.54827",
+                      "templateHash": "7383644209973085042"
                     }
                   },
                   "parameters": {
@@ -2810,8 +2810,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "11054274383314435498"
+              "version": "0.22.6.54827",
+              "templateHash": "17870818057963659035"
             },
             "name": "Public DNS Zone SRV record",
             "description": "This module deploys a Public DNS Zone SRV record.",
@@ -2925,8 +2925,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.21.1.54444",
-                      "templateHash": "17186909847958573798"
+                      "version": "0.22.6.54827",
+                      "templateHash": "1743157605226588693"
                     }
                   },
                   "parameters": {
@@ -3132,8 +3132,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "4896316740645265762"
+              "version": "0.22.6.54827",
+              "templateHash": "13941492299186927650"
             },
             "name": "Public DNS Zone TXT record",
             "description": "This module deploys a Public DNS Zone TXT record.",
@@ -3247,8 +3247,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.21.1.54444",
-                      "templateHash": "2655826582817627242"
+                      "version": "0.22.6.54827",
+                      "templateHash": "7288997439030042721"
                     }
                   },
                   "parameters": {
@@ -3454,8 +3454,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "14647311365948094297"
+              "version": "0.22.6.54827",
+              "templateHash": "10745925950629635011"
             }
           },
           "parameters": {

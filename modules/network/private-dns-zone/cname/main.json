@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.20.4.51522",
-      "templateHash": "3131685819107198557"
+      "version": "0.22.6.54827",
+      "templateHash": "1218346372201244802"
     },
     "name": "Private DNS Zone CNAME record",
     "description": "This module deploys a Private DNS Zone CNAME record.",
@@ -119,8 +119,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.20.4.51522",
-              "templateHash": "14977392232463085529"
+              "version": "0.22.6.54827",
+              "templateHash": "3701509590842402185"
             }
           },
           "parameters": {

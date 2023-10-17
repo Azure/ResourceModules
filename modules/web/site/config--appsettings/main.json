@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.21.1.54444",
-      "templateHash": "113124702348316001"
+      "version": "0.22.6.54827",
+      "templateHash": "12140652943143922490"
     },
     "name": "Site App Settings",
     "description": "This module deploys a Site App Setting.",

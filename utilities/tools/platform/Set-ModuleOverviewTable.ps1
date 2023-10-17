@@ -54,9 +54,9 @@ function Set-ModuleOverviewTable {
     )
 
     # Load external functions
-    $toolsRoot = Split-Path $PSScriptRoot -Parent
-    . (Join-Path $toolsRoot 'helper' 'Merge-FileWithNewContent.ps1')
-    . (Join-Path $toolsRoot 'Get-ModulesFeatureOutline.ps1')
+    $utilitiesRoot = Split-Path (Split-Path $PSScriptRoot)
+    . (Join-Path $utilitiesRoot 'pipelines' 'sharedScripts' 'helper' 'Merge-FileWithNewContent.ps1')
+    . (Join-Path $utilitiesRoot 'tools' 'Get-ModulesFeatureOutline.ps1')
 
     # Logic
     $originalContentArray = Get-Content -Path $markdownFilePath
