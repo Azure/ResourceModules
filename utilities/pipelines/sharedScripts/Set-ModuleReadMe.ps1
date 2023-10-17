@@ -1834,7 +1834,8 @@ function Set-ModuleReadMe {
     # TODO: Remove
     Write-Verbose "Module root [$moduleRoot]" -Verbose
     Write-Verbose "Has Tests [$hasTests]" -Verbose
-    Write-Verbose ((Get-ChildItem -Path $moduleRoot -Recurse -Filter 'main.test.bicep') | Out-String) -Verbose
+    Write-Verbose 'Children' -Verbose
+    Write-Verbose ((Get-ChildItem -Path $moduleRoot -Recurse).FullName | Out-String) -Verbose
 
     if ($SectionsToRefresh -contains 'Usage examples' -and $hasTests) {
         # Handle [Usage examples] section
