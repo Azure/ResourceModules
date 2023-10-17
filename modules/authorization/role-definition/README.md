@@ -4,71 +4,42 @@ This module deploys a Role Definition at a Management Group, Subscription or Res
 
 ## Navigation
 
-- [Resource types](#Resource-types)
+- [Resource Types](#Resource-Types)
+- [Usage examples](#Usage-examples)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
-- [Deployment examples](#Deployment-examples)
 - [Notes](#Notes)
 
-## Resource types
+## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/roleDefinitions` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleDefinitions) |
 
-## Parameters
+## Usage examples
 
-**Required parameters**
+The following section provides usage examples for the module, which were used to validate and deploy the module successfully. For a full reference, please review the module's test folder in its repository.
 
-| Parameter Name | Type | Description |
-| :-- | :-- | :-- |
-| `roleName` | string | Name of the custom RBAC role to be created. |
+>**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-**Optional parameters**
+>**Note**: To reference the module, please use the following syntax `br:bicep/modules/authorization.role-definition:1.0.0`.
 
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `actions` | array | `[]` | List of allowed actions. |
-| `assignableScopes` | array | `[]` | Role definition assignable scopes. If not provided, will use the current scope provided. |
-| `dataActions` | array | `[]` | List of allowed data actions. This is not supported if the assignableScopes contains Management Group Scopes. |
-| `description` | string | `''` | Description of the custom RBAC role to be created. |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `location` | string | `[deployment().location]` | Location deployment metadata. |
-| `managementGroupId` | string | `[managementGroup().name]` | The group ID of the Management Group where the Role Definition and Target Scope will be applied to. If not provided, will use the current scope for deployment. |
-| `notActions` | array | `[]` | List of denied actions. |
-| `notDataActions` | array | `[]` | List of denied data actions. This is not supported if the assignableScopes contains Management Group Scopes. |
-| `resourceGroupName` | string | `''` | The name of the Resource Group where the Role Definition and Target Scope will be applied to. |
-| `subscriptionId` | string | `''` | The subscription ID where the Role Definition and Target Scope will be applied to. Use for both Subscription level and Resource Group Level. |
+- [Mg.Common](#example-1-mgcommon)
+- [Mg.Min](#example-2-mgmin)
+- [Rg.Common](#example-3-rgcommon)
+- [Rg.Min](#example-4-rgmin)
+- [Sub.Common](#example-5-subcommon)
+- [Sub.Min](#example-6-submin)
 
-
-## Outputs
-
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `name` | string | The GUID of the Role Definition. |
-| `resourceId` | string | The resource ID of the Role Definition. |
-| `scope` | string | The scope this Role Definition applies to. |
-
-## Cross-referenced modules
-
-_None_
-
-## Deployment examples
-
-The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
-   >**Note**: The name of each example is based on the name of the file from which it is taken.
-
-   >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
-
-<h3>Example 1: Mg.Common</h3>
+### Example 1: _Mg.Common_
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module roleDefinition './authorization/role-definition/main.bicep' = {
+module roleDefinition 'br:bicep/modules/authorization.role-definition:1.0.0' = {
   name: '${uniqueString(deployment().name)}-test-ardmgcom'
   params: {
     // Required parameters
@@ -140,14 +111,14 @@ module roleDefinition './authorization/role-definition/main.bicep' = {
 </details>
 <p>
 
-<h3>Example 2: Mg.Min</h3>
+### Example 2: _Mg.Min_
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module roleDefinition './authorization/role-definition/main.bicep' = {
+module roleDefinition 'br:bicep/modules/authorization.role-definition:1.0.0' = {
   name: '${uniqueString(deployment().name)}-test-ardmgmin'
   params: {
     // Required parameters
@@ -195,14 +166,14 @@ module roleDefinition './authorization/role-definition/main.bicep' = {
 </details>
 <p>
 
-<h3>Example 3: Rg.Common</h3>
+### Example 3: _Rg.Common_
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module roleDefinition './authorization/role-definition/main.bicep' = {
+module roleDefinition 'br:bicep/modules/authorization.role-definition:1.0.0' = {
   name: '${uniqueString(deployment().name)}-test-ardrgcom'
   params: {
     // Required parameters
@@ -290,14 +261,14 @@ module roleDefinition './authorization/role-definition/main.bicep' = {
 </details>
 <p>
 
-<h3>Example 4: Rg.Min</h3>
+### Example 4: _Rg.Min_
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module roleDefinition './authorization/role-definition/main.bicep' = {
+module roleDefinition 'br:bicep/modules/authorization.role-definition:1.0.0' = {
   name: '${uniqueString(deployment().name)}-test-ardrgmin'
   params: {
     // Required parameters
@@ -345,14 +316,14 @@ module roleDefinition './authorization/role-definition/main.bicep' = {
 </details>
 <p>
 
-<h3>Example 5: Sub.Common</h3>
+### Example 5: _Sub.Common_
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module roleDefinition './authorization/role-definition/main.bicep' = {
+module roleDefinition 'br:bicep/modules/authorization.role-definition:1.0.0' = {
   name: '${uniqueString(deployment().name)}-test-ardsubcom'
   params: {
     // Required parameters
@@ -440,14 +411,14 @@ module roleDefinition './authorization/role-definition/main.bicep' = {
 </details>
 <p>
 
-<h3>Example 6: Sub.Min</h3>
+### Example 6: _Sub.Min_
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module roleDefinition './authorization/role-definition/main.bicep' = {
+module roleDefinition 'br:bicep/modules/authorization.role-definition:1.0.0' = {
   name: '${uniqueString(deployment().name)}-test-ardsubmin'
   params: {
     // Required parameters
@@ -499,6 +470,126 @@ module roleDefinition './authorization/role-definition/main.bicep' = {
 </details>
 <p>
 
+
+## Parameters
+
+**Required parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`roleName`](#parameter-rolename) | string | Name of the custom RBAC role to be created. |
+
+**Optional parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`actions`](#parameter-actions) | array | List of allowed actions. |
+| [`assignableScopes`](#parameter-assignablescopes) | array | Role definition assignable scopes. If not provided, will use the current scope provided. |
+| [`dataActions`](#parameter-dataactions) | array | List of allowed data actions. This is not supported if the assignableScopes contains Management Group Scopes. |
+| [`description`](#parameter-description) | string | Description of the custom RBAC role to be created. |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`location`](#parameter-location) | string | Location deployment metadata. |
+| [`managementGroupId`](#parameter-managementgroupid) | string | The group ID of the Management Group where the Role Definition and Target Scope will be applied to. If not provided, will use the current scope for deployment. |
+| [`notActions`](#parameter-notactions) | array | List of denied actions. |
+| [`notDataActions`](#parameter-notdataactions) | array | List of denied data actions. This is not supported if the assignableScopes contains Management Group Scopes. |
+| [`resourceGroupName`](#parameter-resourcegroupname) | string | The name of the Resource Group where the Role Definition and Target Scope will be applied to. |
+| [`subscriptionId`](#parameter-subscriptionid) | string | The subscription ID where the Role Definition and Target Scope will be applied to. Use for both Subscription level and Resource Group Level. |
+
+### Parameter: `actions`
+
+List of allowed actions.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `assignableScopes`
+
+Role definition assignable scopes. If not provided, will use the current scope provided.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `dataActions`
+
+List of allowed data actions. This is not supported if the assignableScopes contains Management Group Scopes.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `description`
+
+Description of the custom RBAC role to be created.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `location`
+
+Location deployment metadata.
+- Required: No
+- Type: string
+- Default: `[deployment().location]`
+
+### Parameter: `managementGroupId`
+
+The group ID of the Management Group where the Role Definition and Target Scope will be applied to. If not provided, will use the current scope for deployment.
+- Required: No
+- Type: string
+- Default: `[managementGroup().name]`
+
+### Parameter: `notActions`
+
+List of denied actions.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `notDataActions`
+
+List of denied data actions. This is not supported if the assignableScopes contains Management Group Scopes.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `resourceGroupName`
+
+The name of the Resource Group where the Role Definition and Target Scope will be applied to.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `roleName`
+
+Name of the custom RBAC role to be created.
+- Required: Yes
+- Type: string
+
+### Parameter: `subscriptionId`
+
+The subscription ID where the Role Definition and Target Scope will be applied to. Use for both Subscription level and Resource Group Level.
+- Required: No
+- Type: string
+- Default: `''`
+
+
+## Outputs
+
+| Output | Type | Description |
+| :-- | :-- | :-- |
+| `name` | string | The GUID of the Role Definition. |
+| `resourceId` | string | The resource ID of the Role Definition. |
+| `scope` | string | The scope this Role Definition applies to. |
+
+## Cross-referenced modules
+
+_None_
 
 ## Notes
 

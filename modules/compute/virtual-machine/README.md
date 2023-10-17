@@ -5,10 +5,10 @@ This module deploys a Virtual Machine with one or multiple NICs and optionally o
 ## Navigation
 
 - [Resource Types](#Resource-Types)
+- [Usage examples](#Usage-examples)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
-- [Deployment examples](#Deployment-examples)
 - [Notes](#Notes)
 
 ## Resource Types
@@ -25,132 +25,30 @@ This module deploys a Virtual Machine with one or multiple NICs and optionally o
 | `Microsoft.Network/publicIPAddresses` | [2023-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-04-01/publicIPAddresses) |
 | `Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers/protectedItems` | [2023-01-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2023-01-01/vaults/backupFabrics/protectionContainers/protectedItems) |
 
-## Parameters
+## Usage examples
 
-**Required parameters**
+The following section provides usage examples for the module, which were used to validate and deploy the module successfully. For a full reference, please review the module's test folder in its repository.
 
-| Parameter Name | Type | Default Value | Allowed Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `adminUsername` | securestring |  |  | Administrator username. |
-| `configurationProfile` | string | `''` | `['', /providers/Microsoft.Automanage/bestPractices/AzureBestPracticesDevTest, /providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction]` | The configuration profile of automanage. |
-| `imageReference` | object |  |  | OS image reference. In case of marketplace images, it's the combination of the publisher, offer, sku, version attributes. In case of custom images it's the resource ID of the custom image. |
-| `nicConfigurations` | array |  |  | Configures NICs and PIPs. |
-| `osDisk` | object |  |  | Specifies the OS disk. For security reasons, it is recommended to specify DiskEncryptionSet into the osDisk object.  Restrictions: DiskEncryptionSet cannot be enabled if Azure Disk Encryption (guest-VM encryption using bitlocker/DM-Crypt) is enabled on your VMs. |
-| `osType` | string |  | `[Linux, Windows]` | The chosen OS type. |
-| `vmSize` | string |  |  | Specifies the size for the VMs. |
+>**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-**Optional parameters**
+>**Note**: To reference the module, please use the following syntax `br:bicep/modules/compute.virtual-machine:1.0.0`.
 
-| Parameter Name | Type | Default Value | Allowed Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `additionalUnattendContent` | array | `[]` |  | Specifies additional base-64 encoded XML formatted information that can be included in the Unattend.xml file, which is used by Windows Setup. - AdditionalUnattendContent object. |
-| `adminPassword` | securestring | `''` |  | When specifying a Windows Virtual Machine, this value should be passed. |
-| `allowExtensionOperations` | bool | `True` |  | Specifies whether extension operations should be allowed on the virtual machine. This may only be set to False when no extensions are present on the virtual machine. |
-| `availabilitySetResourceId` | string | `''` |  | Resource ID of an availability set. Cannot be used in combination with availability zone nor scale set. |
-| `availabilityZone` | int | `0` | `[0, 1, 2, 3]` | If set to 1, 2 or 3, the availability zone for all VMs is hardcoded to that value. If zero, then availability zones is not used. Cannot be used in combination with availability set nor scale set. |
-| `backupPolicyName` | string | `'DefaultPolicy'` |  | Backup policy the VMs should be using for backup. If not provided, it will use the DefaultPolicy from the backup recovery service vault. |
-| `backupVaultName` | string | `''` |  | Recovery service vault name to add VMs to backup. |
-| `backupVaultResourceGroup` | string | `[resourceGroup().name]` |  | Resource group of the backup recovery service vault. If not provided the current resource group name is considered by default. |
-| `bootDiagnostics` | bool | `False` |  | Whether boot diagnostics should be enabled on the Virtual Machine. Boot diagnostics will be enabled with a managed storage account if no bootDiagnosticsStorageAccountName value is provided. If bootDiagnostics and bootDiagnosticsStorageAccountName values are not provided, boot diagnostics will be disabled. |
-| `bootDiagnosticStorageAccountName` | string | `''` |  | Custom storage account used to store boot diagnostic information. Boot diagnostics will be enabled with a custom storage account if a value is provided. |
-| `bootDiagnosticStorageAccountUri` | string | `[format('.blob.{0}/', environment().suffixes.storage)]` |  | Storage account boot diagnostic base URI. |
-| `certificatesToBeInstalled` | array | `[]` |  | Specifies set of certificates that should be installed onto the virtual machine. |
-| `computerName` | string | `[parameters('name')]` |  | Can be used if the computer name needs to be different from the Azure VM resource name. If not used, the resource name will be used as computer name. |
-| `customData` | string | `''` |  | Custom data associated to the VM, this value will be automatically converted into base64 to account for the expected VM format. |
-| `dataDisks` | array | `[]` |  | Specifies the data disks. For security reasons, it is recommended to specify DiskEncryptionSet into the dataDisk object. Restrictions: DiskEncryptionSet cannot be enabled if Azure Disk Encryption (guest-VM encryption using bitlocker/DM-Crypt) is enabled on your VMs. |
-| `dedicatedHostId` | string | `''` |  | Specifies resource ID about the dedicated host that the virtual machine resides in. |
-| `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
-| `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
-| `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
-| `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
-| `disablePasswordAuthentication` | bool | `False` |  | Specifies whether password authentication should be disabled. |
-| `enableAutomaticUpdates` | bool | `True` |  | Indicates whether Automatic Updates is enabled for the Windows virtual machine. Default value is true. When patchMode is set to Manual, this parameter must be set to false. For virtual machine scale sets, this property can be updated and updates will take effect on OS reprovisioning. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `enableEvictionPolicy` | bool | `False` |  | Specifies the eviction policy for the low priority virtual machine. Will result in 'Deallocate' eviction policy. |
-| `encryptionAtHost` | bool | `True` |  | This property can be used by user in the request to enable or disable the Host Encryption for the virtual machine. This will enable the encryption for all the disks including Resource/Temp disk at host itself. For security reasons, it is recommended to set encryptionAtHost to True. Restrictions: Cannot be enabled if Azure Disk Encryption (guest-VM encryption using bitlocker/DM-Crypt) is enabled on your VMs. |
-| `extensionAadJoinConfig` | object | `{object}` |  | The configuration for the [AAD Join] extension. Must at least contain the ["enabled": true] property to be executed. |
-| `extensionAntiMalwareConfig` | object | `{object}` |  | The configuration for the [Anti Malware] extension. Must at least contain the ["enabled": true] property to be executed. |
-| `extensionAzureDiskEncryptionConfig` | object | `{object}` |  | The configuration for the [Azure Disk Encryption] extension. Must at least contain the ["enabled": true] property to be executed. Restrictions: Cannot be enabled on disks that have encryption at host enabled. Managed disks encrypted using Azure Disk Encryption cannot be encrypted using customer-managed keys. |
-| `extensionCustomScriptConfig` | object | `{object}` |  | The configuration for the [Custom Script] extension. Must at least contain the ["enabled": true] property to be executed. |
-| `extensionCustomScriptProtectedSetting` | secureObject | `{object}` |  | Any object that contains the extension specific protected settings. |
-| `extensionDependencyAgentConfig` | object | `{object}` |  | The configuration for the [Dependency Agent] extension. Must at least contain the ["enabled": true] property to be executed. |
-| `extensionDomainJoinConfig` | object | `{object}` |  | The configuration for the [Domain Join] extension. Must at least contain the ["enabled": true] property to be executed. |
-| `extensionDomainJoinPassword` | securestring | `''` |  | Required if name is specified. Password of the user specified in user parameter. |
-| `extensionDSCConfig` | object | `{object}` |  | The configuration for the [Desired State Configuration] extension. Must at least contain the ["enabled": true] property to be executed. |
-| `extensionMonitoringAgentConfig` | object | `{object}` |  | The configuration for the [Monitoring Agent] extension. Must at least contain the ["enabled": true] property to be executed. |
-| `extensionNetworkWatcherAgentConfig` | object | `{object}` |  | The configuration for the [Network Watcher Agent] extension. Must at least contain the ["enabled": true] property to be executed. |
-| `licenseType` | string | `''` | `['', Windows_Client, Windows_Server]` | Specifies that the image or disk that is being used was licensed on-premises. This element is only used for images that contain the Windows Server operating system. |
-| `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
-| `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
-| `maxPriceForLowPriorityVm` | string | `''` |  | Specifies the maximum price you are willing to pay for a low priority VM/VMSS. This price is in US Dollars. |
-| `monitoringWorkspaceId` | string | `''` |  | Resource ID of the monitoring log analytics workspace. Must be set when extensionMonitoringAgentConfig is set to true. |
-| `name` | string | `[take(toLower(uniqueString(resourceGroup().name)), 10)]` |  | The name of the virtual machine to be created. You should use a unique prefix to reduce name collisions in Active Directory. If no value is provided, a 10 character long unique string will be generated based on the Resource Group's name. |
-| `nicdiagnosticMetricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | The name of metrics that will be streamed. |
-| `nicDiagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the NIC diagnostic setting, if deployed. |
-| `patchAssessmentMode` | string | `'ImageDefault'` | `[AutomaticByPlatform, ImageDefault]` | VM guest patching assessment mode. Set it to 'AutomaticByPlatform' to enable automatically check for updates every 24 hours. |
-| `patchMode` | string | `''` | `['', AutomaticByOS, AutomaticByPlatform, ImageDefault, Manual]` | VM guest patching orchestration mode. 'AutomaticByOS' & 'Manual' are for Windows only, 'ImageDefault' for Linux only. Refer to 'https://learn.microsoft.com/en-us/azure/virtual-machines/automatic-vm-guest-patching'. |
-| `pipdiagnosticLogCategoriesToEnable` | array | `[allLogs]` | `['', allLogs, DDoSMitigationFlowLogs, DDoSMitigationReports, DDoSProtectionNotifications]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
-| `pipdiagnosticMetricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | The name of metrics that will be streamed. |
-| `pipDiagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the PIP diagnostic setting, if deployed. |
-| `plan` | object | `{object}` |  | Specifies information about the marketplace image used to create the virtual machine. This element is only used for marketplace images. Before you can use a marketplace image from an API, you must enable the image for programmatic use. |
-| `priority` | string | `'Regular'` | `[Low, Regular, Spot]` | Specifies the priority for the virtual machine. |
-| `provisionVMAgent` | bool | `True` |  | Indicates whether virtual machine agent should be provisioned on the virtual machine. When this property is not specified in the request body, default behavior is to set it to true. This will ensure that VM Agent is installed on the VM so that extensions can be added to the VM later. |
-| `proximityPlacementGroupResourceId` | string | `''` |  | Resource ID of a proximity placement group. |
-| `publicKeys` | array | `[]` |  | The list of SSH public keys used to authenticate with linux based VMs. |
-| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| `sasTokenValidityLength` | string | `'PT8H'` |  | SAS token validity length to use to download files from storage accounts. Usage: 'PT8H' - valid for 8 hours; 'P5D' - valid for 5 days; 'P1Y' - valid for 1 year. When not provided, the SAS token will be valid for 8 hours. |
-| `secureBootEnabled` | bool | `False` |  | Specifies whether secure boot should be enabled on the virtual machine. This parameter is part of the UefiSettings. SecurityType should be set to TrustedLaunch to enable UefiSettings. |
-| `securityType` | string | `''` |  | Specifies the SecurityType of the virtual machine. It is set as TrustedLaunch to enable UefiSettings. |
-| `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. The system-assigned managed identity will automatically be enabled if extensionAadJoinConfig.enabled = "True". |
-| `tags` | object | `{object}` |  | Tags of the resource. |
-| `timeZone` | string | `''` |  | Specifies the time zone of the virtual machine. e.g. 'Pacific Standard Time'. Possible values can be `TimeZoneInfo.id` value from time zones returned by `TimeZoneInfo.GetSystemTimeZones`. |
-| `ultraSSDEnabled` | bool | `False` |  | The flag that enables or disables a capability to have one or more managed data disks with UltraSSD_LRS storage account type on the VM or VMSS. Managed disks with storage account type UltraSSD_LRS can be added to a virtual machine or virtual machine scale set only if this property is enabled. |
-| `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
-| `vTpmEnabled` | bool | `False` |  | Specifies whether vTPM should be enabled on the virtual machine. This parameter is part of the UefiSettings.  SecurityType should be set to TrustedLaunch to enable UefiSettings. |
-| `winRM` | object | `{object}` |  | Specifies the Windows Remote Management listeners. This enables remote Windows PowerShell. - WinRMConfiguration object. |
+- [Linux](#example-1-linux)
+- [Linux.Atmg](#example-2-linuxatmg)
+- [Linux.Min](#example-3-linuxmin)
+- [Windows](#example-4-windows)
+- [Windows.Atmg](#example-5-windowsatmg)
+- [Windows.Min](#example-6-windowsmin)
+- [Windows.Ssecmk](#example-7-windowsssecmk)
 
-**Generated parameters**
-
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `baseTime` | string | `[utcNow('u')]` | Do not provide a value! This date value is used to generate a registration token. |
-
-
-## Outputs
-
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of the VM. |
-| `resourceGroupName` | string | The name of the resource group the VM was created in. |
-| `resourceId` | string | The resource ID of the VM. |
-| `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
-
-## Cross-referenced modules
-
-This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
-
-| Reference | Type |
-| :-- | :-- |
-| `network/network-interface` | Local reference |
-| `network/public-ip-address` | Local reference |
-| `recovery-services/vault/backup-fabric/protection-container/protected-item` | Local reference |
-
-## Deployment examples
-
-The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
-   >**Note**: The name of each example is based on the name of the file from which it is taken.
-
-   >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
-
-<h3>Example 1: Linux</h3>
+### Example 1: _Linux_
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module virtualMachine './compute/virtual-machine/main.bicep' = {
+module virtualMachine 'br:bicep/modules/compute.virtual-machine:1.0.0' = {
   name: '${uniqueString(deployment().name, location)}-test-cvmlincom'
   params: {
     // Required parameters
@@ -662,14 +560,14 @@ module virtualMachine './compute/virtual-machine/main.bicep' = {
 </details>
 <p>
 
-<h3>Example 2: Linux.Atmg</h3>
+### Example 2: _Linux.Atmg_
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module virtualMachine './compute/virtual-machine/main.bicep' = {
+module virtualMachine 'br:bicep/modules/compute.virtual-machine:1.0.0' = {
   name: '${uniqueString(deployment().name, location)}-test-cvmlinatmg'
   params: {
     // Required parameters
@@ -845,14 +743,14 @@ module virtualMachine './compute/virtual-machine/main.bicep' = {
 </details>
 <p>
 
-<h3>Example 3: Linux.Min</h3>
+### Example 3: _Linux.Min_
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module virtualMachine './compute/virtual-machine/main.bicep' = {
+module virtualMachine 'br:bicep/modules/compute.virtual-machine:1.0.0' = {
   name: '${uniqueString(deployment().name, location)}-test-cvmlinmin'
   params: {
     // Required parameters
@@ -982,14 +880,14 @@ module virtualMachine './compute/virtual-machine/main.bicep' = {
 </details>
 <p>
 
-<h3>Example 4: Windows</h3>
+### Example 4: _Windows_
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module virtualMachine './compute/virtual-machine/main.bicep' = {
+module virtualMachine 'br:bicep/modules/compute.virtual-machine:1.0.0' = {
   name: '${uniqueString(deployment().name, location)}-test-cvmwincom'
   params: {
     // Required parameters
@@ -1539,14 +1437,14 @@ module virtualMachine './compute/virtual-machine/main.bicep' = {
 </details>
 <p>
 
-<h3>Example 5: Windows.Atmg</h3>
+### Example 5: _Windows.Atmg_
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module virtualMachine './compute/virtual-machine/main.bicep' = {
+module virtualMachine 'br:bicep/modules/compute.virtual-machine:1.0.0' = {
   name: '${uniqueString(deployment().name, location)}-test-cvmwinatmg'
   params: {
     // Required parameters
@@ -1672,14 +1570,14 @@ module virtualMachine './compute/virtual-machine/main.bicep' = {
 </details>
 <p>
 
-<h3>Example 6: Windows.Min</h3>
+### Example 6: _Windows.Min_
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module virtualMachine './compute/virtual-machine/main.bicep' = {
+module virtualMachine 'br:bicep/modules/compute.virtual-machine:1.0.0' = {
   name: '${uniqueString(deployment().name, location)}-test-cvmwinmin'
   params: {
     // Required parameters
@@ -1789,14 +1687,14 @@ module virtualMachine './compute/virtual-machine/main.bicep' = {
 </details>
 <p>
 
-<h3>Example 7: Windows.Ssecmk</h3>
+### Example 7: _Windows.Ssecmk_
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module virtualMachine './compute/virtual-machine/main.bicep' = {
+module virtualMachine 'br:bicep/modules/compute.virtual-machine:1.0.0' = {
   name: '${uniqueString(deployment().name, location)}-test-cvmwincmk'
   params: {
     // Required parameters
@@ -1948,6 +1846,633 @@ module virtualMachine './compute/virtual-machine/main.bicep' = {
 </details>
 <p>
 
+
+## Parameters
+
+**Required parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`adminUsername`](#parameter-adminusername) | securestring | Administrator username. |
+| [`configurationProfile`](#parameter-configurationprofile) | string | The configuration profile of automanage. |
+| [`imageReference`](#parameter-imagereference) | object | OS image reference. In case of marketplace images, it's the combination of the publisher, offer, sku, version attributes. In case of custom images it's the resource ID of the custom image. |
+| [`nicConfigurations`](#parameter-nicconfigurations) | array | Configures NICs and PIPs. |
+| [`osDisk`](#parameter-osdisk) | object | Specifies the OS disk. For security reasons, it is recommended to specify DiskEncryptionSet into the osDisk object.  Restrictions: DiskEncryptionSet cannot be enabled if Azure Disk Encryption (guest-VM encryption using bitlocker/DM-Crypt) is enabled on your VMs. |
+| [`osType`](#parameter-ostype) | string | The chosen OS type. |
+| [`vmSize`](#parameter-vmsize) | string | Specifies the size for the VMs. |
+
+**Optional parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`additionalUnattendContent`](#parameter-additionalunattendcontent) | array | Specifies additional base-64 encoded XML formatted information that can be included in the Unattend.xml file, which is used by Windows Setup. - AdditionalUnattendContent object. |
+| [`adminPassword`](#parameter-adminpassword) | securestring | When specifying a Windows Virtual Machine, this value should be passed. |
+| [`allowExtensionOperations`](#parameter-allowextensionoperations) | bool | Specifies whether extension operations should be allowed on the virtual machine. This may only be set to False when no extensions are present on the virtual machine. |
+| [`availabilitySetResourceId`](#parameter-availabilitysetresourceid) | string | Resource ID of an availability set. Cannot be used in combination with availability zone nor scale set. |
+| [`availabilityZone`](#parameter-availabilityzone) | int | If set to 1, 2 or 3, the availability zone for all VMs is hardcoded to that value. If zero, then availability zones is not used. Cannot be used in combination with availability set nor scale set. |
+| [`backupPolicyName`](#parameter-backuppolicyname) | string | Backup policy the VMs should be using for backup. If not provided, it will use the DefaultPolicy from the backup recovery service vault. |
+| [`backupVaultName`](#parameter-backupvaultname) | string | Recovery service vault name to add VMs to backup. |
+| [`backupVaultResourceGroup`](#parameter-backupvaultresourcegroup) | string | Resource group of the backup recovery service vault. If not provided the current resource group name is considered by default. |
+| [`bootDiagnostics`](#parameter-bootdiagnostics) | bool | Whether boot diagnostics should be enabled on the Virtual Machine. Boot diagnostics will be enabled with a managed storage account if no bootDiagnosticsStorageAccountName value is provided. If bootDiagnostics and bootDiagnosticsStorageAccountName values are not provided, boot diagnostics will be disabled. |
+| [`bootDiagnosticStorageAccountName`](#parameter-bootdiagnosticstorageaccountname) | string | Custom storage account used to store boot diagnostic information. Boot diagnostics will be enabled with a custom storage account if a value is provided. |
+| [`bootDiagnosticStorageAccountUri`](#parameter-bootdiagnosticstorageaccounturi) | string | Storage account boot diagnostic base URI. |
+| [`certificatesToBeInstalled`](#parameter-certificatestobeinstalled) | array | Specifies set of certificates that should be installed onto the virtual machine. |
+| [`computerName`](#parameter-computername) | string | Can be used if the computer name needs to be different from the Azure VM resource name. If not used, the resource name will be used as computer name. |
+| [`customData`](#parameter-customdata) | string | Custom data associated to the VM, this value will be automatically converted into base64 to account for the expected VM format. |
+| [`dataDisks`](#parameter-datadisks) | array | Specifies the data disks. For security reasons, it is recommended to specify DiskEncryptionSet into the dataDisk object. Restrictions: DiskEncryptionSet cannot be enabled if Azure Disk Encryption (guest-VM encryption using bitlocker/DM-Crypt) is enabled on your VMs. |
+| [`dedicatedHostId`](#parameter-dedicatedhostid) | string | Specifies resource ID about the dedicated host that the virtual machine resides in. |
+| [`diagnosticEventHubAuthorizationRuleId`](#parameter-diagnosticeventhubauthorizationruleid) | string | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
+| [`diagnosticEventHubName`](#parameter-diagnosticeventhubname) | string | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
+| [`diagnosticStorageAccountId`](#parameter-diagnosticstorageaccountid) | string | Resource ID of the diagnostic storage account. |
+| [`diagnosticWorkspaceId`](#parameter-diagnosticworkspaceid) | string | Resource ID of the diagnostic log analytics workspace. |
+| [`disablePasswordAuthentication`](#parameter-disablepasswordauthentication) | bool | Specifies whether password authentication should be disabled. |
+| [`enableAutomaticUpdates`](#parameter-enableautomaticupdates) | bool | Indicates whether Automatic Updates is enabled for the Windows virtual machine. Default value is true. When patchMode is set to Manual, this parameter must be set to false. For virtual machine scale sets, this property can be updated and updates will take effect on OS reprovisioning. |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`enableEvictionPolicy`](#parameter-enableevictionpolicy) | bool | Specifies the eviction policy for the low priority virtual machine. Will result in 'Deallocate' eviction policy. |
+| [`encryptionAtHost`](#parameter-encryptionathost) | bool | This property can be used by user in the request to enable or disable the Host Encryption for the virtual machine. This will enable the encryption for all the disks including Resource/Temp disk at host itself. For security reasons, it is recommended to set encryptionAtHost to True. Restrictions: Cannot be enabled if Azure Disk Encryption (guest-VM encryption using bitlocker/DM-Crypt) is enabled on your VMs. |
+| [`extensionAadJoinConfig`](#parameter-extensionaadjoinconfig) | object | The configuration for the [AAD Join] extension. Must at least contain the ["enabled": true] property to be executed. |
+| [`extensionAntiMalwareConfig`](#parameter-extensionantimalwareconfig) | object | The configuration for the [Anti Malware] extension. Must at least contain the ["enabled": true] property to be executed. |
+| [`extensionAzureDiskEncryptionConfig`](#parameter-extensionazurediskencryptionconfig) | object | The configuration for the [Azure Disk Encryption] extension. Must at least contain the ["enabled": true] property to be executed. Restrictions: Cannot be enabled on disks that have encryption at host enabled. Managed disks encrypted using Azure Disk Encryption cannot be encrypted using customer-managed keys. |
+| [`extensionCustomScriptConfig`](#parameter-extensioncustomscriptconfig) | object | The configuration for the [Custom Script] extension. Must at least contain the ["enabled": true] property to be executed. |
+| [`extensionCustomScriptProtectedSetting`](#parameter-extensioncustomscriptprotectedsetting) | secureObject | Any object that contains the extension specific protected settings. |
+| [`extensionDependencyAgentConfig`](#parameter-extensiondependencyagentconfig) | object | The configuration for the [Dependency Agent] extension. Must at least contain the ["enabled": true] property to be executed. |
+| [`extensionDomainJoinConfig`](#parameter-extensiondomainjoinconfig) | object | The configuration for the [Domain Join] extension. Must at least contain the ["enabled": true] property to be executed. |
+| [`extensionDomainJoinPassword`](#parameter-extensiondomainjoinpassword) | securestring | Required if name is specified. Password of the user specified in user parameter. |
+| [`extensionDSCConfig`](#parameter-extensiondscconfig) | object | The configuration for the [Desired State Configuration] extension. Must at least contain the ["enabled": true] property to be executed. |
+| [`extensionMonitoringAgentConfig`](#parameter-extensionmonitoringagentconfig) | object | The configuration for the [Monitoring Agent] extension. Must at least contain the ["enabled": true] property to be executed. |
+| [`extensionNetworkWatcherAgentConfig`](#parameter-extensionnetworkwatcheragentconfig) | object | The configuration for the [Network Watcher Agent] extension. Must at least contain the ["enabled": true] property to be executed. |
+| [`licenseType`](#parameter-licensetype) | string | Specifies that the image or disk that is being used was licensed on-premises. This element is only used for images that contain the Windows Server operating system. |
+| [`location`](#parameter-location) | string | Location for all resources. |
+| [`lock`](#parameter-lock) | string | Specify the type of lock. |
+| [`maxPriceForLowPriorityVm`](#parameter-maxpriceforlowpriorityvm) | string | Specifies the maximum price you are willing to pay for a low priority VM/VMSS. This price is in US Dollars. |
+| [`monitoringWorkspaceId`](#parameter-monitoringworkspaceid) | string | Resource ID of the monitoring log analytics workspace. Must be set when extensionMonitoringAgentConfig is set to true. |
+| [`name`](#parameter-name) | string | The name of the virtual machine to be created. You should use a unique prefix to reduce name collisions in Active Directory. If no value is provided, a 10 character long unique string will be generated based on the Resource Group's name. |
+| [`nicdiagnosticMetricsToEnable`](#parameter-nicdiagnosticmetricstoenable) | array | The name of metrics that will be streamed. |
+| [`nicDiagnosticSettingsName`](#parameter-nicdiagnosticsettingsname) | string | The name of the NIC diagnostic setting, if deployed. |
+| [`patchAssessmentMode`](#parameter-patchassessmentmode) | string | VM guest patching assessment mode. Set it to 'AutomaticByPlatform' to enable automatically check for updates every 24 hours. |
+| [`patchMode`](#parameter-patchmode) | string | VM guest patching orchestration mode. 'AutomaticByOS' & 'Manual' are for Windows only, 'ImageDefault' for Linux only. Refer to 'https://learn.microsoft.com/en-us/azure/virtual-machines/automatic-vm-guest-patching'. |
+| [`pipdiagnosticLogCategoriesToEnable`](#parameter-pipdiagnosticlogcategoriestoenable) | array | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
+| [`pipdiagnosticMetricsToEnable`](#parameter-pipdiagnosticmetricstoenable) | array | The name of metrics that will be streamed. |
+| [`pipDiagnosticSettingsName`](#parameter-pipdiagnosticsettingsname) | string | The name of the PIP diagnostic setting, if deployed. |
+| [`plan`](#parameter-plan) | object | Specifies information about the marketplace image used to create the virtual machine. This element is only used for marketplace images. Before you can use a marketplace image from an API, you must enable the image for programmatic use. |
+| [`priority`](#parameter-priority) | string | Specifies the priority for the virtual machine. |
+| [`provisionVMAgent`](#parameter-provisionvmagent) | bool | Indicates whether virtual machine agent should be provisioned on the virtual machine. When this property is not specified in the request body, default behavior is to set it to true. This will ensure that VM Agent is installed on the VM so that extensions can be added to the VM later. |
+| [`proximityPlacementGroupResourceId`](#parameter-proximityplacementgroupresourceid) | string | Resource ID of a proximity placement group. |
+| [`publicKeys`](#parameter-publickeys) | array | The list of SSH public keys used to authenticate with linux based VMs. |
+| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| [`sasTokenValidityLength`](#parameter-sastokenvaliditylength) | string | SAS token validity length to use to download files from storage accounts. Usage: 'PT8H' - valid for 8 hours; 'P5D' - valid for 5 days; 'P1Y' - valid for 1 year. When not provided, the SAS token will be valid for 8 hours. |
+| [`secureBootEnabled`](#parameter-securebootenabled) | bool | Specifies whether secure boot should be enabled on the virtual machine. This parameter is part of the UefiSettings. SecurityType should be set to TrustedLaunch to enable UefiSettings. |
+| [`securityType`](#parameter-securitytype) | string | Specifies the SecurityType of the virtual machine. It is set as TrustedLaunch to enable UefiSettings. |
+| [`systemAssignedIdentity`](#parameter-systemassignedidentity) | bool | Enables system assigned managed identity on the resource. The system-assigned managed identity will automatically be enabled if extensionAadJoinConfig.enabled = "True". |
+| [`tags`](#parameter-tags) | object | Tags of the resource. |
+| [`timeZone`](#parameter-timezone) | string | Specifies the time zone of the virtual machine. e.g. 'Pacific Standard Time'. Possible values can be `TimeZoneInfo.id` value from time zones returned by `TimeZoneInfo.GetSystemTimeZones`. |
+| [`ultraSSDEnabled`](#parameter-ultrassdenabled) | bool | The flag that enables or disables a capability to have one or more managed data disks with UltraSSD_LRS storage account type on the VM or VMSS. Managed disks with storage account type UltraSSD_LRS can be added to a virtual machine or virtual machine scale set only if this property is enabled. |
+| [`userAssignedIdentities`](#parameter-userassignedidentities) | object | The ID(s) to assign to the resource. |
+| [`vTpmEnabled`](#parameter-vtpmenabled) | bool | Specifies whether vTPM should be enabled on the virtual machine. This parameter is part of the UefiSettings.  SecurityType should be set to TrustedLaunch to enable UefiSettings. |
+| [`winRM`](#parameter-winrm) | object | Specifies the Windows Remote Management listeners. This enables remote Windows PowerShell. - WinRMConfiguration object. |
+
+**Generated parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`baseTime`](#parameter-basetime) | string | Do not provide a value! This date value is used to generate a registration token. |
+
+### Parameter: `additionalUnattendContent`
+
+Specifies additional base-64 encoded XML formatted information that can be included in the Unattend.xml file, which is used by Windows Setup. - AdditionalUnattendContent object.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `adminPassword`
+
+When specifying a Windows Virtual Machine, this value should be passed.
+- Required: No
+- Type: securestring
+- Default: `''`
+
+### Parameter: `adminUsername`
+
+Administrator username.
+- Required: Yes
+- Type: securestring
+
+### Parameter: `allowExtensionOperations`
+
+Specifies whether extension operations should be allowed on the virtual machine. This may only be set to False when no extensions are present on the virtual machine.
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `availabilitySetResourceId`
+
+Resource ID of an availability set. Cannot be used in combination with availability zone nor scale set.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `availabilityZone`
+
+If set to 1, 2 or 3, the availability zone for all VMs is hardcoded to that value. If zero, then availability zones is not used. Cannot be used in combination with availability set nor scale set.
+- Required: No
+- Type: int
+- Default: `0`
+- Allowed: `[0, 1, 2, 3]`
+
+### Parameter: `backupPolicyName`
+
+Backup policy the VMs should be using for backup. If not provided, it will use the DefaultPolicy from the backup recovery service vault.
+- Required: No
+- Type: string
+- Default: `'DefaultPolicy'`
+
+### Parameter: `backupVaultName`
+
+Recovery service vault name to add VMs to backup.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `backupVaultResourceGroup`
+
+Resource group of the backup recovery service vault. If not provided the current resource group name is considered by default.
+- Required: No
+- Type: string
+- Default: `[resourceGroup().name]`
+
+### Parameter: `baseTime`
+
+Do not provide a value! This date value is used to generate a registration token.
+- Required: No
+- Type: string
+- Default: `[utcNow('u')]`
+
+### Parameter: `bootDiagnostics`
+
+Whether boot diagnostics should be enabled on the Virtual Machine. Boot diagnostics will be enabled with a managed storage account if no bootDiagnosticsStorageAccountName value is provided. If bootDiagnostics and bootDiagnosticsStorageAccountName values are not provided, boot diagnostics will be disabled.
+- Required: No
+- Type: bool
+- Default: `False`
+
+### Parameter: `bootDiagnosticStorageAccountName`
+
+Custom storage account used to store boot diagnostic information. Boot diagnostics will be enabled with a custom storage account if a value is provided.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `bootDiagnosticStorageAccountUri`
+
+Storage account boot diagnostic base URI.
+- Required: No
+- Type: string
+- Default: `[format('.blob.{0}/', environment().suffixes.storage)]`
+
+### Parameter: `certificatesToBeInstalled`
+
+Specifies set of certificates that should be installed onto the virtual machine.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `computerName`
+
+Can be used if the computer name needs to be different from the Azure VM resource name. If not used, the resource name will be used as computer name.
+- Required: No
+- Type: string
+- Default: `[parameters('name')]`
+
+### Parameter: `configurationProfile`
+
+The configuration profile of automanage.
+- Required: No
+- Type: string
+- Default: `''`
+- Allowed: `['', /providers/Microsoft.Automanage/bestPractices/AzureBestPracticesDevTest, /providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction]`
+
+### Parameter: `customData`
+
+Custom data associated to the VM, this value will be automatically converted into base64 to account for the expected VM format.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `dataDisks`
+
+Specifies the data disks. For security reasons, it is recommended to specify DiskEncryptionSet into the dataDisk object. Restrictions: DiskEncryptionSet cannot be enabled if Azure Disk Encryption (guest-VM encryption using bitlocker/DM-Crypt) is enabled on your VMs.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `dedicatedHostId`
+
+Specifies resource ID about the dedicated host that the virtual machine resides in.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `diagnosticEventHubAuthorizationRuleId`
+
+Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `diagnosticEventHubName`
+
+Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `diagnosticStorageAccountId`
+
+Resource ID of the diagnostic storage account.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `diagnosticWorkspaceId`
+
+Resource ID of the diagnostic log analytics workspace.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `disablePasswordAuthentication`
+
+Specifies whether password authentication should be disabled.
+- Required: No
+- Type: bool
+- Default: `False`
+
+### Parameter: `enableAutomaticUpdates`
+
+Indicates whether Automatic Updates is enabled for the Windows virtual machine. Default value is true. When patchMode is set to Manual, this parameter must be set to false. For virtual machine scale sets, this property can be updated and updates will take effect on OS reprovisioning.
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `enableEvictionPolicy`
+
+Specifies the eviction policy for the low priority virtual machine. Will result in 'Deallocate' eviction policy.
+- Required: No
+- Type: bool
+- Default: `False`
+
+### Parameter: `encryptionAtHost`
+
+This property can be used by user in the request to enable or disable the Host Encryption for the virtual machine. This will enable the encryption for all the disks including Resource/Temp disk at host itself. For security reasons, it is recommended to set encryptionAtHost to True. Restrictions: Cannot be enabled if Azure Disk Encryption (guest-VM encryption using bitlocker/DM-Crypt) is enabled on your VMs.
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `extensionAadJoinConfig`
+
+The configuration for the [AAD Join] extension. Must at least contain the ["enabled": true] property to be executed.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `extensionAntiMalwareConfig`
+
+The configuration for the [Anti Malware] extension. Must at least contain the ["enabled": true] property to be executed.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `extensionAzureDiskEncryptionConfig`
+
+The configuration for the [Azure Disk Encryption] extension. Must at least contain the ["enabled": true] property to be executed. Restrictions: Cannot be enabled on disks that have encryption at host enabled. Managed disks encrypted using Azure Disk Encryption cannot be encrypted using customer-managed keys.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `extensionCustomScriptConfig`
+
+The configuration for the [Custom Script] extension. Must at least contain the ["enabled": true] property to be executed.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `extensionCustomScriptProtectedSetting`
+
+Any object that contains the extension specific protected settings.
+- Required: No
+- Type: secureObject
+- Default: `{object}`
+
+### Parameter: `extensionDependencyAgentConfig`
+
+The configuration for the [Dependency Agent] extension. Must at least contain the ["enabled": true] property to be executed.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `extensionDomainJoinConfig`
+
+The configuration for the [Domain Join] extension. Must at least contain the ["enabled": true] property to be executed.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `extensionDomainJoinPassword`
+
+Required if name is specified. Password of the user specified in user parameter.
+- Required: No
+- Type: securestring
+- Default: `''`
+
+### Parameter: `extensionDSCConfig`
+
+The configuration for the [Desired State Configuration] extension. Must at least contain the ["enabled": true] property to be executed.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `extensionMonitoringAgentConfig`
+
+The configuration for the [Monitoring Agent] extension. Must at least contain the ["enabled": true] property to be executed.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `extensionNetworkWatcherAgentConfig`
+
+The configuration for the [Network Watcher Agent] extension. Must at least contain the ["enabled": true] property to be executed.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `imageReference`
+
+OS image reference. In case of marketplace images, it's the combination of the publisher, offer, sku, version attributes. In case of custom images it's the resource ID of the custom image.
+- Required: Yes
+- Type: object
+
+### Parameter: `licenseType`
+
+Specifies that the image or disk that is being used was licensed on-premises. This element is only used for images that contain the Windows Server operating system.
+- Required: No
+- Type: string
+- Default: `''`
+- Allowed: `['', Windows_Client, Windows_Server]`
+
+### Parameter: `location`
+
+Location for all resources.
+- Required: No
+- Type: string
+- Default: `[resourceGroup().location]`
+
+### Parameter: `lock`
+
+Specify the type of lock.
+- Required: No
+- Type: string
+- Default: `''`
+- Allowed: `['', CanNotDelete, ReadOnly]`
+
+### Parameter: `maxPriceForLowPriorityVm`
+
+Specifies the maximum price you are willing to pay for a low priority VM/VMSS. This price is in US Dollars.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `monitoringWorkspaceId`
+
+Resource ID of the monitoring log analytics workspace. Must be set when extensionMonitoringAgentConfig is set to true.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `name`
+
+The name of the virtual machine to be created. You should use a unique prefix to reduce name collisions in Active Directory. If no value is provided, a 10 character long unique string will be generated based on the Resource Group's name.
+- Required: No
+- Type: string
+- Default: `[take(toLower(uniqueString(resourceGroup().name)), 10)]`
+
+### Parameter: `nicConfigurations`
+
+Configures NICs and PIPs.
+- Required: Yes
+- Type: array
+
+### Parameter: `nicdiagnosticMetricsToEnable`
+
+The name of metrics that will be streamed.
+- Required: No
+- Type: array
+- Default: `[AllMetrics]`
+- Allowed: `[AllMetrics]`
+
+### Parameter: `nicDiagnosticSettingsName`
+
+The name of the NIC diagnostic setting, if deployed.
+- Required: No
+- Type: string
+- Default: `[format('{0}-diagnosticSettings', parameters('name'))]`
+
+### Parameter: `osDisk`
+
+Specifies the OS disk. For security reasons, it is recommended to specify DiskEncryptionSet into the osDisk object.  Restrictions: DiskEncryptionSet cannot be enabled if Azure Disk Encryption (guest-VM encryption using bitlocker/DM-Crypt) is enabled on your VMs.
+- Required: Yes
+- Type: object
+
+### Parameter: `osType`
+
+The chosen OS type.
+- Required: Yes
+- Type: string
+- Allowed: `[Linux, Windows]`
+
+### Parameter: `patchAssessmentMode`
+
+VM guest patching assessment mode. Set it to 'AutomaticByPlatform' to enable automatically check for updates every 24 hours.
+- Required: No
+- Type: string
+- Default: `'ImageDefault'`
+- Allowed: `[AutomaticByPlatform, ImageDefault]`
+
+### Parameter: `patchMode`
+
+VM guest patching orchestration mode. 'AutomaticByOS' & 'Manual' are for Windows only, 'ImageDefault' for Linux only. Refer to 'https://learn.microsoft.com/en-us/azure/virtual-machines/automatic-vm-guest-patching'.
+- Required: No
+- Type: string
+- Default: `''`
+- Allowed: `['', AutomaticByOS, AutomaticByPlatform, ImageDefault, Manual]`
+
+### Parameter: `pipdiagnosticLogCategoriesToEnable`
+
+The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection.
+- Required: No
+- Type: array
+- Default: `[allLogs]`
+- Allowed: `['', allLogs, DDoSMitigationFlowLogs, DDoSMitigationReports, DDoSProtectionNotifications]`
+
+### Parameter: `pipdiagnosticMetricsToEnable`
+
+The name of metrics that will be streamed.
+- Required: No
+- Type: array
+- Default: `[AllMetrics]`
+- Allowed: `[AllMetrics]`
+
+### Parameter: `pipDiagnosticSettingsName`
+
+The name of the PIP diagnostic setting, if deployed.
+- Required: No
+- Type: string
+- Default: `[format('{0}-diagnosticSettings', parameters('name'))]`
+
+### Parameter: `plan`
+
+Specifies information about the marketplace image used to create the virtual machine. This element is only used for marketplace images. Before you can use a marketplace image from an API, you must enable the image for programmatic use.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `priority`
+
+Specifies the priority for the virtual machine.
+- Required: No
+- Type: string
+- Default: `'Regular'`
+- Allowed: `[Low, Regular, Spot]`
+
+### Parameter: `provisionVMAgent`
+
+Indicates whether virtual machine agent should be provisioned on the virtual machine. When this property is not specified in the request body, default behavior is to set it to true. This will ensure that VM Agent is installed on the VM so that extensions can be added to the VM later.
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `proximityPlacementGroupResourceId`
+
+Resource ID of a proximity placement group.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `publicKeys`
+
+The list of SSH public keys used to authenticate with linux based VMs.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `roleAssignments`
+
+Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `sasTokenValidityLength`
+
+SAS token validity length to use to download files from storage accounts. Usage: 'PT8H' - valid for 8 hours; 'P5D' - valid for 5 days; 'P1Y' - valid for 1 year. When not provided, the SAS token will be valid for 8 hours.
+- Required: No
+- Type: string
+- Default: `'PT8H'`
+
+### Parameter: `secureBootEnabled`
+
+Specifies whether secure boot should be enabled on the virtual machine. This parameter is part of the UefiSettings. SecurityType should be set to TrustedLaunch to enable UefiSettings.
+- Required: No
+- Type: bool
+- Default: `False`
+
+### Parameter: `securityType`
+
+Specifies the SecurityType of the virtual machine. It is set as TrustedLaunch to enable UefiSettings.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `systemAssignedIdentity`
+
+Enables system assigned managed identity on the resource. The system-assigned managed identity will automatically be enabled if extensionAadJoinConfig.enabled = "True".
+- Required: No
+- Type: bool
+- Default: `False`
+
+### Parameter: `tags`
+
+Tags of the resource.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `timeZone`
+
+Specifies the time zone of the virtual machine. e.g. 'Pacific Standard Time'. Possible values can be `TimeZoneInfo.id` value from time zones returned by `TimeZoneInfo.GetSystemTimeZones`.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `ultraSSDEnabled`
+
+The flag that enables or disables a capability to have one or more managed data disks with UltraSSD_LRS storage account type on the VM or VMSS. Managed disks with storage account type UltraSSD_LRS can be added to a virtual machine or virtual machine scale set only if this property is enabled.
+- Required: No
+- Type: bool
+- Default: `False`
+
+### Parameter: `userAssignedIdentities`
+
+The ID(s) to assign to the resource.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `vmSize`
+
+Specifies the size for the VMs.
+- Required: Yes
+- Type: string
+
+### Parameter: `vTpmEnabled`
+
+Specifies whether vTPM should be enabled on the virtual machine. This parameter is part of the UefiSettings.  SecurityType should be set to TrustedLaunch to enable UefiSettings.
+- Required: No
+- Type: bool
+- Default: `False`
+
+### Parameter: `winRM`
+
+Specifies the Windows Remote Management listeners. This enables remote Windows PowerShell. - WinRMConfiguration object.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+
+## Outputs
+
+| Output | Type | Description |
+| :-- | :-- | :-- |
+| `location` | string | The location the resource was deployed into. |
+| `name` | string | The name of the VM. |
+| `resourceGroupName` | string | The name of the resource group the VM was created in. |
+| `resourceId` | string | The resource ID of the VM. |
+| `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
+
+## Cross-referenced modules
+
+This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
+
+| Reference | Type |
+| :-- | :-- |
+| `modules/network/network-interface` | Local reference |
+| `modules/network/public-ip-address` | Local reference |
+| `modules/recovery-services/vault/backup-fabric/protection-container/protected-item` | Local reference |
 
 ## Notes
 

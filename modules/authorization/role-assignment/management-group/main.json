@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.20.4.51522",
-      "templateHash": "5116103670131987468"
+      "version": "0.22.6.54827",
+      "templateHash": "3058280694250439865"
     },
     "name": "Role Assignments (Management Group scope)",
     "description": "This module deploys a Role Assignment at a Management Group scope.",

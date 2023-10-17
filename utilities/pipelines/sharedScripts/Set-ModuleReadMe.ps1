@@ -1,5 +1,4 @@
 ﻿#requires -version 7.3
-#requires -Modules powershell-yaml
 
 <#
 .SYNOPSIS
@@ -44,9 +43,6 @@ function Set-ResourceTypesSection {
         [string[]] $ResourceTypesToExclude = @('Microsoft.Resources/deployments')
     )
 
-    # Loading used functions
-    . (Join-Path (Split-Path $PSScriptRoot -Parent) 'pipelines' 'sharedScripts' 'Get-NestedResourceList.ps1')
-
     # Process content
     $SectionContent = [System.Collections.ArrayList]@(
         '| Resource Type | API Version |',
@@ -88,7 +84,7 @@ function Set-ResourceTypesSection {
 
     # Build result
     if ($PSCmdlet.ShouldProcess('Original file with new resource type content', 'Merge')) {
-        $updatedFileContent = Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $SectionContent -SectionStartIdentifier $SectionStartIdentifier -contentType 'table'
+        $updatedFileContent = Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $SectionContent -SectionStartIdentifier $SectionStartIdentifier -contentType 'nextH2'
     }
     return $updatedFileContent
 }
@@ -141,6 +137,18 @@ function Set-ParametersSection {
         [string[]] $ColumnsInOrder = @('Required', 'Conditional', 'Optional', 'Generated')
     )
 
+    # Collect sources for parameter usage section
+    $parameterUsageContentMap = @{}
+    if (Test-Path (Join-Path $PSScriptRoot 'moduleReadMeSource')) {
+        if ($resourceUsageSourceFiles = Get-ChildItem (Join-Path $PSScriptRoot 'moduleReadMeSource') -Recurse -Filter 'resourceUsage-*') {
+            foreach ($sourceFile in $resourceUsageSourceFiles.FullName) {
+                $parameterName = (Split-Path $sourceFile -LeafBase).Replace('resourceUsage-', '')
+
+                $parameterUsageContentMap[$parameterName] = Get-Content $sourceFile -Raw
+            }
+        }
+    }
+
     # Get all descriptions
     $descriptions = $TemplateFileContent.parameters.Values.metadata.description
 
@@ -152,14 +160,12 @@ function Set-ParametersSection {
     # Add all others that exist but are not specified in the columnsInOrder parameter
     $sortedParamCategories += $paramCategories | Where-Object { $ColumnsInOrder -notcontains $_ }
 
-    # Collect file information
-    $currentLevelFolders = Get-ChildItem -Path $currentFolderPath -Directory -Depth 0
-    $folderNames = ($null -ne $currentLevelFolders) ? ($currentLevelFolders.FullName | ForEach-Object { Split-Path $_ -Leaf }) : @()
-
     # Add name as property for later reference
     $TemplateFileContent.parameters.Keys | ForEach-Object { $TemplateFileContent.parameters[$_]['name'] = $_ }
 
     $newSectionContent = [System.Collections.ArrayList]@()
+    $parameterList = @{}
+
     # Create parameter blocks
     foreach ($category in $sortedParamCategories) {
 
@@ -167,64 +173,189 @@ function Set-ParametersSection {
         # Filter to relevant items
         [array] $categoryParameters = $TemplateFileContent.parameters.Values | Where-Object { $_.metadata.description -like "$category. *" } | Sort-Object -Property 'Name' -Culture 'en-US'
 
-        # Check properties for later reference
-        $hasDefault = $categoryParameters.defaultValue.count -gt 0
-        $hasAllowed = $categoryParameters.allowedValues.count -gt 0
-
-        # 2. Create header including optional columns
+        # 2. Create header including optional columns & initiate the parameter list
         $newSectionContent += @(
             ('**{0} parameters**' -f $category),
             '',
-            ('| Parameter Name | Type | {0}{1}Description |' -f ($hasDefault ? 'Default Value | ' : ''), ($hasAllowed ? 'Allowed Values | ' : '')),
-            ('| :-- | :-- | {0}{1}:-- |' -f ($hasDefault ? ':-- | ' : ''), ($hasAllowed ? ':-- | ' : ''))
+            '| Parameter | Type | Description |',
+            '| :-- | :-- | :-- |'
         )
 
         # 3. Add individual parameters
         foreach ($parameter in $categoryParameters) {
+            # User defined type
+            if ($null -eq $parameter.type -and $parameter.ContainsKey('$ref')) {
+                $identifier = Split-Path $parameter.'$ref' -Leaf
+                $definition = $TemplateFileContent.definitions[$identifier]
 
-            # Convert parameter name to kebab-case, as that would be the correspondent child module folder to refer to
-            # (?<!^): This is a negative lookbehind assertion that ensures the match is not at the beginning of the string. This is used to exclude the first character from being replaced.
-            # ([A-Z]): This captures any uppercase letter from A to Z using parentheses.
-            $parameterKebabCase = ($parameter.name -creplace '(?<!^)([A-Z])', '-$1').ToLower()
-
-            # Check for local readme references
-            if ($folderNames -and $parameterKebabCase -in $folderNames -and $parameter.type -in @('object', 'array')) {
-                if ($folderNames -contains $parameterKebabCase) {
-                    $type = '_[{0}]({1}/README.md)_ {2}' -f $parameter.name, ($folderNames | Where-Object { $_ -eq $parameterKebabCase }), $parameter.type
-                }
-            } elseif ($folderNames -and $parameterKebabCase.TrimEnd('-obj') -in $folderNames -and $parameter.type -in @('object', 'array')) {
-                if ($folderNames -contains $parameterKebabCase.TrimEnd('-obj')) {
-                    $type = '_[{0}]({1}/README.md)_ {2}' -f $parameter.name.TrimEnd('Obj'), ($folderNames | Where-Object { $_ -eq $parameterKebabCase.TrimEnd('-obj') }), $parameter.type
-                }
+                $type = $definition['type']
+                $isRequired = (-not $definition['nullable'])
+                $defaultValue = $null
+                $rawAllowedValues = $definition['allowedValues']
             } else {
                 $type = $parameter.type
+
+                if ($parameter.defaultValue -is [array]) {
+                    $defaultValue = '[{0}]' -f (($parameter.defaultValue | Sort-Object) -join ', ')
+                } elseif ($parameter.defaultValue -is [hashtable]) {
+                    $defaultValue = '{object}'
+                } elseif ($parameter.defaultValue -is [string] -and ($parameter.defaultValue -notmatch '\[\w+\(.*\).*\]')) {
+                    $defaultValue = '''' + $parameter.defaultValue + ''''
+                } else {
+                    $defaultValue = $parameter.defaultValue
+                }
+
+                $isRequired = Get-IsParameterRequired -TemplateFileContent $TemplateFileContent -Parameter $parameter
+                $rawAllowedValues = $parameter.allowedValues
             }
 
+            # Prepare the links to local headers
+            $paramHeader = '### Parameter: `{0}`' -f $parameter.name
+            $paramIdentifier = ('#{0}' -f $paramHeader.TrimStart('#').Trim().ToLower()) -replace '[:|`]' -replace ' ', '-'
+
             # Add external single quotes to all default values of type string except for those using functions
-            $defaultValue = ($parameter.defaultValue -is [array]) ? ('[{0}]' -f (($parameter.defaultValue | Sort-Object) -join ', ')) : (($parameter.defaultValue -is [hashtable]) ? '{object}' : (($parameter.defaultValue -is [string]) -and ($parameter.defaultValue -notmatch '\[\w+\(.*\).*\]') ? '''' + $parameter.defaultValue + '''' : $parameter.defaultValue))
             $description = $parameter.metadata.description.Replace("`r`n", '<p>').Replace("`n", '<p>')
-            $allowedValue = ($parameter.allowedValues -is [array]) ? ('[{0}]' -f (($parameter.allowedValues | Sort-Object) -join ', ')) : (($parameter.allowedValues -is [hashtable]) ? '{object}' : $parameter.allowedValues)
+            $allowedValues = ($rawAllowedValues -is [array]) ? ('[{0}]' -f (($rawAllowedValues | Sort-Object) -join ', ')) : (($rawAllowedValues -is [hashtable]) ? '{object}' : $rawAllowedValues)
             # Further, replace all "empty string" default values with actual visible quotes
-            if ([regex]::Match($allowedValue, '^(\[\s*,.+)|(\[.+,\s*,)|(.+,\s*\])$').Captures.Count -gt 0) {
-                $allowedValue = $allowedValue -replace '\[\s*,', "[''," -replace ',\s*,', ", ''," -replace ',\s*\]', ", '']"
+            if ([regex]::Match($allowedValues, '^(\[\s*,.+)|(\[.+,\s*,)|(.+,\s*\])$').Captures.Count -gt 0) {
+                $allowedValues = $allowedValues -replace '\[\s*,', "[''," -replace ',\s*,', ", ''," -replace ',\s*\]', ", '']"
             }
 
             # Update parameter table content based on parameter category
             ## Remove category from parameter description
             $description = $description.substring("$category. ".Length)
-            $defaultValueColumnValue = ($hasDefault ? (-not [String]::IsNullOrEmpty($defaultValue) ? "``$defaultValue`` | " : ' | ') : '')
-            $allowedValueColumnValue = ($hasAllowed ? (-not [String]::IsNullOrEmpty($allowedValue) ? "``$allowedValue`` | " : ' | ') : '')
-            $newSectionContent += ('| `{0}` | {1} | {2}{3}{4} |' -f $parameter.name, $type, $defaultValueColumnValue, $allowedValueColumnValue, $description)
+            $newSectionContent += ('| [`{0}`]({1}) | {2} | {3} |' -f $parameter.name, $paramIdentifier, $type, $description)
+
+            $parameterList += @{
+                $paramIdentifier = @(
+                    $paramHeader,
+                    '',
+                    $description,
+                ('- Required: {0}' -f ($isRequired ? 'Yes' : 'No')),
+                ('- Type: {0}' -f $type),
+                ((-not [String]::IsNullOrEmpty($defaultValue)) ? ('- Default: `{0}`' -f $defaultValue) : $null),
+                ((-not [String]::IsNullOrEmpty($allowedValues)) ? ('- Allowed: `{0}`' -f $allowedValues) : $null),
+                    '',
+                (($parameterUsageContentMap.Keys -contains $parameter.name) ? $parameterUsageContentMap[$parameter.name] : $null)
+                ) | Where-Object { $null -ne $_ }
+            }
+
+            if (($parameter.Keys -contains '$ref') -or ($parameter.Keys -contains 'items' -and $parameter.items.Keys -contains '$ref')) {
+                # Has a user-defined type
+                $identifier = ($parameter.Keys -contains '$ref') ? (Split-Path $parameter.'$ref' -Leaf) : (Split-Path $parameter.items.'$ref' -Leaf)
+                $definition = $TemplateFileContent.definitions[$identifier]
+                $properties = ($definition.Keys -contains 'items' ? $definition['items']['properties'] : $definition['properties'])
+                $parameterList[$paramIdentifier] += Set-DefinitionSection -TemplateFileContent $TemplateFileContent -Properties $properties -ParentName $parameter.name -ParentIdentifierLink $paramIdentifier
+            }
         }
         $newSectionContent += ''
     }
 
+    $sortedFlatParamList = [System.Collections.ArrayList]@()
+    foreach ($key in ($parameterList.Keys | Sort-Object)) {
+        $sortedFlatParamList += $parameterList[$key]
+    }
+    $newSectionContent += $sortedFlatParamList
+
     # Build result
     if ($PSCmdlet.ShouldProcess('Original file with new parameters content', 'Merge')) {
-        $updatedFileContent = Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $newSectionContent -SectionStartIdentifier $SectionStartIdentifier -contentType 'none'
+        $updatedFileContent = Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $newSectionContent -SectionStartIdentifier $SectionStartIdentifier -contentType 'nextH2'
     }
 
     return $updatedFileContent
+}
+
+<#
+.SYNOPSIS
+Update parts of the 'parameters' section of the given readme file, if user defined types are used
+
+.DESCRIPTION
+Adds user defined types to the 'parameters' section of the given readme file
+
+.PARAMETER TemplateFileContent
+Mandatory. The template file content object to crawl data from
+
+.PARAMETER Properties
+Mandatory. Hashtable of the user defined properties
+
+.PARAMETER ParentName
+Mandatory. Name of the parameter, that has the user defined types
+
+.PARAMETER ParentIdentifierLink
+Mandatory. Link of the parameter, that has the user defined types
+
+.EXAMPLE
+Set-DefinitionSection -TemplateFileContent @{ resource = @{}; ... } -Properties @{ resource = @{}; ... } -ParentName 'diagnosticSettings' -ParentIdentifierLink '#parameter-diagnosticsettings'
+
+.NOTES
+The function is recursive and will also output grand, great grand children, ... .
+#>
+function Set-DefinitionSection {
+    param (
+        [Parameter(Mandatory)]
+        [hashtable] $TemplateFileContent,
+
+        [Parameter(Mandatory)]
+        [hashtable] $Properties,
+
+        [Parameter(Mandatory)]
+        [string] $ParentName,
+
+        [Parameter(Mandatory)]
+        [string] $ParentIdentifierLink
+    )
+    $newSectionContent = @(
+        '',
+        '| Name | Required | Type | Description |',
+        '| :-- | :-- | :--| :-- |'
+    )
+    $tableSectionContent = [System.Collections.ArrayList]@()
+    $listSectionContent = [System.Collections.ArrayList]@()
+
+    foreach ($parameterName in $Properties.Keys | Sort-Object) {
+        $parameterValue = $Properties[$parameterName]
+        $paramIdentifier = '{0}.{1}' -f $ParentName, $parameterName
+        $paramIdentifierLink = ('{0}{1}' -f $ParentIdentifierLink, $parameterName).ToLower()
+
+        # definition type (if any)
+        if ($parameterValue.Keys -contains '$ref') {
+            $definition = $TemplateFileContent.definitions[(Split-Path $parameterValue.'$ref' -Leaf)]
+        } else {
+            $definition = $null
+        }
+
+        $isRequired = (Get-IsParameterRequired -TemplateFileContent $TemplateFileContent -Parameter $parameterValue) ? 'Yes' : 'No'
+        $type = ($parameterValue.Keys -contains '$ref') ? $definition.type : $parameterValue['type']
+        $description = $parameterValue.ContainsKey('metadata') ? $parameterValue['metadata']['description'] : $null
+
+        # build table for definition properties
+        $tableSectionContent += ('| [`{0}`]({1}) | {2} | {3} | {4} |' -f $parameterName, $paramIdentifierLink, $isRequired, $type, $description)
+        $allowedValues = ($parameterValue.ContainsKey('allowedValues')) ? (($parameterValue['allowedValues'] -is [array]) ? ('[{0}]' -f (($parameterValue['allowedValues'] | Sort-Object) -join ', ')) : (($parameterValue['allowedValues'] -is [hashtable]) ? '{object}' : $parameterValue['allowedValues'])) : $null
+
+        #build flat list for definition properties
+        $listSectionContent += @(
+            '',
+            ('### Parameter: `{0}`' -f $paramIdentifier),
+            ($parameterValue.ContainsKey('metadata') ? '' : $null),
+            ($parameterValue.ContainsKey('metadata') ? $parameterValue['metadata']['description'] : $null),
+            ($parameterValue.ContainsKey('metadata') ? '' : $null),
+            ('- Required: {0}' -f $isRequired),
+            ('- Type: {0}' -f $type),
+            (($null -ne $allowedValues) ? ('- Allowed: `{0}`' -f $allowedValues) : $null)
+        ) | Where-Object { $null -ne $_ }
+
+        #recursive call for children
+        if ($parameterValue.ContainsKey('items') -and $parameterValue['items'].ContainsKey('properties')) {
+            $childProperties = $parameterValue['items']['properties']
+            $listSectionContent += Set-DefinitionSection -TemplateFileContent $TemplateFileContent -Properties $childProperties -ParentName $paramIdentifier -ParentIdentifierLink $paramIdentifierLink
+        }
+    }
+
+    $newSectionContent += $tableSectionContent
+    $newSectionContent += $listSectionContent
+    $newSectionContent += ''
+
+    return $newSectionContent
 }
 
 <#
@@ -267,7 +398,7 @@ function Set-OutputsSection {
     if ($TemplateFileContent.outputs.Values.metadata) {
         # Template has output descriptions
         $SectionContent = [System.Collections.ArrayList]@(
-            '| Output Name | Type | Description |',
+            '| Output | Type | Description |',
             '| :-- | :-- | :-- |'
         )
         foreach ($outputName in ($templateFileContent.outputs.Keys | Sort-Object -Culture 'en-US')) {
@@ -277,7 +408,7 @@ function Set-OutputsSection {
         }
     } else {
         $SectionContent = [System.Collections.ArrayList]@(
-            '| Output Name | Type |',
+            '| Output | Type |',
             '| :-- | :-- |'
         )
         foreach ($outputName in ($templateFileContent.outputs.Keys | Sort-Object -Culture 'en-US')) {
@@ -288,7 +419,7 @@ function Set-OutputsSection {
 
     # Build result
     if ($PSCmdlet.ShouldProcess('Original file with new output content', 'Merge')) {
-        $updatedFileContent = Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $SectionContent -SectionStartIdentifier $SectionStartIdentifier -contentType 'table'
+        $updatedFileContent = Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $SectionContent -SectionStartIdentifier $SectionStartIdentifier -contentType 'nextH2'
     }
     return $updatedFileContent
 }
@@ -315,8 +446,11 @@ Mandatory. The readme file content array to update
 .PARAMETER SectionStartIdentifier
 Optional. The identifier of the 'outputs' section. Defaults to '## Cross-referenced modules'
 
+.PARAMETER CrossReferencedModuleList
+Required. The Cross Module References to consider when refreshing the readme.
+
 .EXAMPLE
-Set-CrossReferencesSection -ModuleRoot 'C:/key-vault/vault' -FullModuleIdentifier 'key-vault/vault' -TemplateFileContent @{ resource = @{}; ... } -ReadMeFileContent @('# Title', '', '## Section 1', ...)
+Set-CrossReferencesSection -ModuleRoot 'C:/key-vault/vault' -FullModuleIdentifier 'key-vault/vault' -TemplateFileContent @{ resource = @{}; ... } -ReadMeFileContent @('# Title', '', '## Section 1', ...) -CrossReferencedModuleList @{}
 Update the given readme file's 'Cross-referenced modules' section based on the given template file content
 #>
 function Set-CrossReferencesSection {
@@ -335,11 +469,12 @@ function Set-CrossReferencesSection {
         [Parameter(Mandatory)]
         [object[]] $ReadMeFileContent,
 
+        [Parameter(Mandatory)]
+        [hashtable] $CrossReferencedModuleList,
+
         [Parameter(Mandatory = $false)]
         [string] $SectionStartIdentifier = '## Cross-referenced modules'
     )
-
-    . (Join-Path (Split-Path $PSScriptRoot -Parent) 'tools' 'Get-CrossReferencedModuleList.ps1')
 
     # Process content
     $SectionContent = [System.Collections.ArrayList]@(
@@ -349,7 +484,7 @@ function Set-CrossReferencesSection {
         '| :-- | :-- |'
     )
 
-    $dependencies = (Get-CrossReferencedModuleList)[$FullModuleIdentifier]
+    $dependencies = $CrossReferencedModuleList[$FullModuleIdentifier]
 
     if ($dependencies.Keys -contains 'localPathReferences' -and $dependencies['localPathReferences']) {
         foreach ($reference in ($dependencies['localPathReferences'] | Sort-Object)) {
@@ -371,7 +506,7 @@ function Set-CrossReferencesSection {
 
     # Build result
     if ($PSCmdlet.ShouldProcess('Original file with new output content', 'Merge')) {
-        $updatedFileContent = Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $SectionContent -SectionStartIdentifier $SectionStartIdentifier -contentType 'none'
+        $updatedFileContent = Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $SectionContent -SectionStartIdentifier $SectionStartIdentifier -contentType 'nextH2'
     }
     return $updatedFileContent
 }
@@ -834,7 +969,7 @@ function ConvertTo-FormattedBicep {
     $splitInputObject = @{
         BicepParams            = $bicepParams
         RequiredParametersList = $RequiredParametersList
-        AllParametersList      = $JSONParameters.psbase.Keys
+        AllParametersList      = $JSONParameters.psBase.Keys
     }
     $commentedBicepParams = Add-BicepParameterTypeComment @splitInputObject
 
@@ -843,10 +978,60 @@ function ConvertTo-FormattedBicep {
 
 <#
 .SYNOPSIS
-Generate 'Deployment examples' for the ReadMe out of the parameter files currently used to test the template
+Based on the provided parameter metadata, determine whether the parameter is required or not
 
 .DESCRIPTION
-Generate 'Deployment examples' for the ReadMe out of the parameter files currently used to test the template
+Based on the provided parameter metadata, determine whether the parameter is required or not
+
+.PARAMETER Parameter
+The parameter metadata to analyze.
+
+For example: @{
+    type     = 'string'
+    metadata = @{
+        description = 'Required. The name of the Public IP Address.'
+    }
+}
+
+.PARAMETER TemplateFileContent
+Mandatory. The template file content object to crawl data from.
+
+.EXAMPLE
+Get-IsParameterRequired -TemplateFileContent @{ resource = @{}; ... } -Parameter @{ type = 'string'; metadata = @{ description = 'Required. The name of the Public IP Address.' } }
+
+Check the given parameter whether it is required. Would result into true.
+#>
+function Get-IsParameterRequired {
+
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory = $true)]
+        [hashtable] $Parameter,
+
+        [Parameter(Mandatory)]
+        [hashtable] $TemplateFileContent
+    )
+
+    $hasParameterNoDefault = $Parameter.Keys -notcontains 'defaultValue'
+    $isParameterNullable = $Parameter['nullable']
+    # User defined type
+    $isUserDefinedType = $Parameter.Keys -contains '$ref'
+    $isUserDefinedTypeNullable = $Parameter.Keys -contains '$ref' ? $TemplateFileContent.definitions[(Split-Path $Parameter.'$ref' -Leaf)]['nullable'] : $false
+
+    # Evaluation
+    # The parameter is required IF it
+    # - has no default value,
+    # - is not nullable
+    # - has no nullable user-defined type
+    return $hasParameterNoDefault -and -not $isParameterNullable -and -not ($isUserDefinedType -and $isUserDefinedTypeNullable)
+}
+
+<#
+.SYNOPSIS
+Generate 'Usage examples' for the ReadMe out of the parameter files currently used to test the template
+
+.DESCRIPTION
+Generate 'Usage examples' for the ReadMe out of the parameter files currently used to test the template
 
 .PARAMETER ModuleRoot
 Mandatory. The file path to the module's root
@@ -861,20 +1046,20 @@ Mandatory. The template file content object to crawl data from
 Mandatory. The readme file content array to update
 
 .PARAMETER SectionStartIdentifier
-Optional. The identifier of the 'outputs' section. Defaults to '## Deployment examples'
+Optional. The identifier of the 'outputs' section. Defaults to '## Usage examples'
 
 .PARAMETER addJson
 Optional. A switch to control whether or not to add a ARM-JSON-Parameter file example. Defaults to true.
 
 .PARAMETER addBicep
-Optional. A switch to control whether or not to add a Bicep deployment example. Defaults to true.
+Optional. A switch to control whether or not to add a Bicep usage example. Defaults to true.
 
 .EXAMPLE
-Set-DeploymentExamplesSection -ModuleRoot 'C:/key-vault/vault' -FullModuleIdentifier 'key-vault/vault' -TemplateFileContent @{ resource = @{}; ... } -ReadMeFileContent @('# Title', '', '## Section 1', ...)
+Set-UsageExamplesSection -ModuleRoot 'C:/key-vault/vault' -FullModuleIdentifier 'key-vault/vault' -TemplateFileContent @{ resource = @{}; ... } -ReadMeFileContent @('# Title', '', '## Section 1', ...)
 
-Update the given readme file's 'Deployment Examples' section based on the given template file content
+Update the given readme file's 'Usage Examples' section based on the given template file content
 #>
-function Set-DeploymentExamplesSection {
+function Set-UsageExamplesSection {
 
     [CmdletBinding(SupportsShouldProcess)]
     param (
@@ -897,18 +1082,22 @@ function Set-DeploymentExamplesSection {
         [bool] $addBicep = $true,
 
         [Parameter(Mandatory = $false)]
-        [string] $SectionStartIdentifier = '## Deployment examples'
+        [string] $SectionStartIdentifier = '## Usage examples'
     )
 
     # Load used function(s)
-    . (Join-Path (Split-Path $PSScriptRoot -Parent) 'pipelines' 'sharedScripts' 'Get-ModuleTestFileList.ps1')
+    . (Join-Path $PSScriptRoot 'Get-ModuleTestFileList.ps1')
+    . (Join-Path (Split-Path $PSScriptRoot -Parent) 'resourcePublish' 'Get-PrivateRegistryRepositoryName.ps1')
+
+    $brLink = Get-PrivateRegistryRepositoryName -TemplateFilePath $TemplateFilePath
 
     # Process content
     $SectionContent = [System.Collections.ArrayList]@(
-        'The following module usage examples are retrieved from the content of the files hosted in the module''s `.test` folder.',
-        '   >**Note**: The name of each example is based on the name of the file from which it is taken.',
+        "The following section provides usage examples for the module, which were used to validate and deploy the module successfully. For a full reference, please review the module's test folder in its repository.",
         '',
-        '   >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.',
+        '>**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.',
+        '',
+        ('>**Note**: To reference the module, please use the following syntax `br:{0}:1.0.0`.' -f $brLink),
         ''
     )
 
@@ -934,29 +1123,54 @@ function Set-DeploymentExamplesSection {
     }
 
     $testFilePaths = Get-ModuleTestFileList -ModulePath $moduleRoot | ForEach-Object { Join-Path $moduleRoot $_ }
-    $RequiredParametersList = $TemplateFileContent.parameters.Keys | Where-Object { $TemplateFileContent.parameters[$_].Keys -notcontains 'defaultValue' } | Sort-Object
+
+    $RequiredParametersList = $TemplateFileContent.parameters.Keys | Where-Object {
+        Get-IsParameterRequired -TemplateFileContent $TemplateFileContent -Parameter $TemplateFileContent.parameters[$_]
+    } | Sort-Object
 
     ############################
     ##   Process test files   ##
     ############################
     $pathIndex = 1
+    $usageExampleSectionHeaders = @()
+    $testFilesContent = @()
     foreach ($testFilePath in $testFilePaths) {
 
         # Read content
         $rawContentArray = Get-Content -Path $testFilePath
+        $compiledTestFileContent = bicep build $testFilePath --stdout | ConvertFrom-Json -AsHashtable
         $rawContent = Get-Content -Path $testFilePath -Encoding 'utf8' | Out-String
 
         # Format example header
-        if ((Split-Path (Split-Path $testFilePath -Parent) -Leaf) -ne '.test') {
-            $exampleTitle = Split-Path (Split-Path $testFilePath -Parent) -Leaf
+        if ($compiledTestFileContent.metadata.Keys -contains 'name') {
+            $exampleTitle = $compiledTestFileContent.metadata.name
         } else {
-            $exampleTitle = ((Split-Path $testFilePath -LeafBase) -replace '\.', ' ') -replace ' parameters', ''
+            if ((Split-Path (Split-Path $testFilePath -Parent) -Leaf) -ne '.test') {
+                $exampleTitle = Split-Path (Split-Path $testFilePath -Parent) -Leaf
+            } else {
+                $exampleTitle = ((Split-Path $testFilePath -LeafBase) -replace '\.', ' ') -replace ' parameters', ''
+            }
+            $textInfo = (Get-Culture -Name 'en-US').TextInfo
+            $exampleTitle = $textInfo.ToTitleCase($exampleTitle)
         }
-        $textInfo = (Get-Culture -Name 'en-US').TextInfo
-        $exampleTitle = $textInfo.ToTitleCase($exampleTitle)
-        $SectionContent += @(
-            '<h3>Example {0}: {1}</h3>' -f $pathIndex, $exampleTitle
+
+        $fullTestFileTitle = '### Example {0}: _{1}_' -f $pathIndex, $exampleTitle
+        $testFilesContent += @(
+            $fullTestFileTitle
         )
+        $usageExampleSectionHeaders += @{
+            title  = $exampleTitle
+            header = $fullTestFileTitle
+        }
+
+        # If a description is added in the template's metadata, we can add it too
+        if ($compiledTestFileContent.metadata.Keys -contains 'description') {
+            $testFilesContent += @(
+                '',
+                $compiledTestFileContent.metadata.description,
+                ''
+            )
+        }
 
         ## ----------------------------------- ##
         ##   Handle by type (Bicep vs. JSON)   ##
@@ -977,7 +1191,6 @@ function Set-DeploymentExamplesSection {
 
             $rawBicepExample = $rawContentArray[$bicepTestStartIndex..$bicepTestEndIndex]
 
-            # In case a loop was used for the test
             if ($rawBicepExample[-1] -eq '}]') {
                 $rawBicepExample[-1] = '}'
             }
@@ -989,12 +1202,12 @@ function Set-DeploymentExamplesSection {
             $rawBicepExampleString = $rawBicepExampleString -replace '\$\{serviceShort\}', $serviceShort
             $rawBicepExampleString = $rawBicepExampleString -replace '\$\{namePrefix\}[-|\.|_]?', '' # Replacing with empty to not expose prefix and avoid potential deployment conflicts
             $rawBicepExampleString = $rawBicepExampleString -replace '(?m):\s*location\s*$', ': ''<location>'''
+            $rawBicepExampleString = $rawBicepExampleString -replace '-\$\{iteration\}', ''
 
             # [3/6] Format header, remove scope property & any empty line
             $rawBicepExample = $rawBicepExampleString -split '\n'
-            $rawBicepExample[0] = "module $moduleNameCamelCase './$fullModuleIdentifier/main.bicep' = {"
+            $rawBicepExample[0] = "module $moduleNameCamelCase 'br:$($brLink):1.0.0' = {"
             $rawBicepExample = $rawBicepExample | Where-Object { $_ -notmatch 'scope: *' } | Where-Object { -not [String]::IsNullOrEmpty($_) }
-
             # [4/6] Extract param block
             $rawBicepExampleArray = $rawBicepExample -split '\n'
             $moduleDeploymentPropertyIndent = ([regex]::Match($rawBicepExampleArray[1], '^(\s+).*')).Captures.Groups[1].Value.Length
@@ -1049,7 +1262,7 @@ function Set-DeploymentExamplesSection {
                 }
 
                 # Build result
-                $SectionContent += @(
+                $testFilesContent += @(
                     '',
                     '<details>'
                     ''
@@ -1077,7 +1290,7 @@ function Set-DeploymentExamplesSection {
                 $orderedJSONExample = Build-OrderedJSONObject @orderingInputObject
 
                 # [2/2] Create the final content block
-                $SectionContent += @(
+                $testFilesContent += @(
                     '',
                     '<details>'
                     ''
@@ -1121,7 +1334,7 @@ function Set-DeploymentExamplesSection {
                         # e.g. "[format('{0}', reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, parameters('resourceGroupName')), 'Microsoft.Resources/deployments', format('{0}-paramNested', uniqueString(deployment().name, parameters('location')))), '2020-10-01').outputs.managedIdentityResourceId.value)]": {}
                         $expectedValue = $matches[1]
                     } elseif ($row -match '\[.*reference\(extensionResourceId.+\.([a-zA-Z]+).*\].*"') {
-                        # e.g. "[reference(extensionResourceId(managementGroup().id, 'Microsoft.Authorization/policySetDefinitions', format('dep-[[namePrefix]]-polSet-{0}', parameters('serviceShort'))), '2021-06-01').policyDefinitions[0].policyDefinitionReferenceId]"
+                        # e.g. "[reference(extensionResourceId(managementGroup().id, 'Microsoft.Authorization/policySetDefinitions', format('dep-#_namePrefix_#-polSet-{0}', parameters('serviceShort'))), '2021-06-01').policyDefinitions[0].policyDefinitionReferenceId]"
                         $expectedValue = $matches[1]
                     } else {
                         throw "Unhandled case [$row] in file [$testFilePath]"
@@ -1138,7 +1351,7 @@ function Set-DeploymentExamplesSection {
                     if ($jsonParameterContentArray[$index] -match '(\s*"value"): "\[.+\]"') {
                         # e.g.
                         # "policyAssignmentId": {
-                        #   "value": "[extensionResourceId(managementGroup().id, 'Microsoft.Authorization/policyAssignments', format('dep-[[namePrefix]]-psa-{0}', parameters('serviceShort')))]"
+                        #   "value": "[extensionResourceId(managementGroup().id, 'Microsoft.Authorization/policyAssignments', format('dep-#_namePrefix_#-psa-{0}', parameters('serviceShort')))]"
                         $prefix = $matches[1]
 
                         $headerIndex = $index
@@ -1156,7 +1369,7 @@ function Set-DeploymentExamplesSection {
                         # e.g.
                         # "policyDefinitionReferenceIds": {
                         #  "value": [
-                        #     "[reference(subscriptionResourceId('Microsoft.Authorization/policySetDefinitions', format('dep-[[namePrefix]]-polSet-{0}', parameters('serviceShort'))), '2021-06-01').policyDefinitions[0].policyDefinitionReferenceId]"
+                        #     "[reference(subscriptionResourceId('Microsoft.Authorization/policySetDefinitions', format('dep-#_namePrefix_#-polSet-{0}', parameters('serviceShort'))), '2021-06-01').policyDefinitions[0].policyDefinitionReferenceId]"
                         $prefix = $matches[1]
 
                         $headerIndex = $index
@@ -1238,7 +1451,7 @@ function Set-DeploymentExamplesSection {
                 # - the 'existing' Key Vault resources
                 # - a 'module' header that mimics a module deployment
                 # - all parameters in Bicep format
-                $SectionContent += @(
+                $testFilesContent += @(
                     '',
                     '<details>'
                     ''
@@ -1272,7 +1485,7 @@ function Set-DeploymentExamplesSection {
                 $orderedJSONExample = Build-OrderedJSONObject @orderingInputObject
 
                 # [2/2] Create the final content block
-                $SectionContent += @(
+                $testFilesContent += @(
                     '',
                     '<details>',
                     '',
@@ -1288,19 +1501,28 @@ function Set-DeploymentExamplesSection {
             }
         }
 
-        $SectionContent += @(
+        $testFilesContent += @(
             ''
         )
 
         $pathIndex++
     }
 
+    foreach ($rawHeader in $usageExampleSectionHeaders) {
+        $navigationHeader = (($rawHeader.header -replace '<\/?.+?>|[^A-Za-z0-9\s-]').Trim() -replace '\s+', '-').ToLower() # Remove any html and non-identifer elements
+        $SectionContent += '- [{0}](#{1})' -f $rawHeader.title, $navigationHeader
+    }
+    $SectionContent += ''
+
+
+    $SectionContent += $testFilesContent
+
     ######################
     ##   Built result   ##
     ######################
     if ($SectionContent) {
         if ($PSCmdlet.ShouldProcess('Original file with new template references content', 'Merge')) {
-            return Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $SectionContent -SectionStartIdentifier $SectionStartIdentifier
+            return Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $SectionContent -SectionStartIdentifier $SectionStartIdentifier -ContentType 'nextH2'
         }
     } else {
         return $ReadMeFileContent
@@ -1357,8 +1579,8 @@ function Set-TableOfContent {
     }
 
     # Build result
-    if ($PSCmdlet.ShouldProcess('Original file with new parameters content', 'Merge')) {
-        $updatedFileContent = Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $newSectionContent -SectionStartIdentifier $SectionStartIdentifier -contentType 'none'
+    if ($PSCmdlet.ShouldProcess('Original file with new navigation content', 'Merge')) {
+        $updatedFileContent = Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $newSectionContent -SectionStartIdentifier $SectionStartIdentifier -contentType 'nextH2'
     }
 
     return $updatedFileContent
@@ -1369,8 +1591,7 @@ function Set-TableOfContent {
 Initialize the readme file
 
 .DESCRIPTION
-If no readme file exists, the initial content is generated (e.g., the skeleton of the section headers).
-If a readme file does exist, its title and description are updated with whatever is documented as metadata in the template file.
+Create the initial skeleton of the section headers, name & description.
 
 .PARAMETER ReadMeFilePath
 Required. The path to the readme file to initialize.
@@ -1401,12 +1622,12 @@ function Initialize-ReadMe {
     )
 
     . (Join-Path $PSScriptRoot 'helper' 'Get-SpecsAlignedResourceName.ps1')
-    . (Join-Path (Split-Path $PSScriptRoot -Parent) 'pipelines' 'sharedScripts' 'Get-NestedResourceList.ps1')
-
+    . (Join-Path $PSScriptRoot 'Get-NestedResourceList.ps1')
 
     $moduleName = $TemplateFileContent.metadata.name
     $moduleDescription = $TemplateFileContent.metadata.description
     $formattedResourceType = Get-SpecsAlignedResourceName -ResourceIdentifier $FullModuleIdentifier
+    $hasTests = (Get-ChildItem -Path (Split-Path $ReadMeFilePath) -Recurse -Filter 'main.test.bicep' -File -Force).count -gt 0
 
     $inTemplateResourceType = (Get-NestedResourceList $TemplateFileContent).type | Select-Object -Unique | Where-Object {
         $_ -match "^$formattedResourceType$"
@@ -1417,47 +1638,24 @@ function Initialize-ReadMe {
         $inTemplateResourceType = $formattedResourceType
     }
 
-    if (-not (Test-Path $ReadMeFilePath) -or ([String]::IsNullOrEmpty((Get-Content $ReadMeFilePath -Raw)))) {
-
-        $initialContent = @(
-            "# $moduleName ``[$inTemplateResourceType]``",
-            '',
-            $moduleDescription,
-            ''
-            '## Resource Types',
-            '',
-            '## Parameters',
-            '',
-            '## Outputs'
-        )
-        $readMeFileContent = $initialContent
-    } else {
-        $readMeFileContent = Get-Content -Path $ReadMeFilePath -Encoding 'utf8'
-        $readMeFileContent[0] = "# $moduleName ``[$inTemplateResourceType]``"
-
-        # We want to inject the description right below the header and before the [Resource Types] section
-
-        # Find start- and end-index of description section
-        $startIndex = 1 # One after the readme header
-        $endIndex = $startIndex
-
-        while (-not ($endIndex -ge $readMeFileContent.Count - 1) -and -not $readMeFileContent[$endIndex].StartsWith('#')) {
-            $endIndex++
-        }
-
-        # Build result
-        $startContent = @(
-            $readMeFileContent[0],
-            ''
-        )
-        $newContent = @(
-            $moduleDescription,
-            ''
-        )
-        $endContent = $readMeFileContent[$endIndex..($readMeFileContent.Count - 1)]
-
-        $readMeFileContent = (($startContent + $newContent + $endContent) | Out-String).TrimEnd().Replace("`r", '').Split("`n")
-    }
+    $initialContent = @(
+        "# $moduleName ``[$inTemplateResourceType]``",
+        '',
+        $moduleDescription,
+        ''
+        '## Resource Types',
+        ''
+        ($hasTests ? '## Usage examples' : $null),
+        ($hasTests ? '' : $null),
+        '## Parameters',
+        '',
+        '## Outputs',
+        '',
+        '## Cross-referenced modules',
+        '',
+        '## Notes'
+    ) | Where-Object { $null -ne $_ } # Filter null values
+    $readMeFileContent = $initialContent
 
     return $readMeFileContent
 }
@@ -1484,6 +1682,9 @@ Optional. The path to the readme to update. If not provided assumes a 'README.md
 .PARAMETER SectionsToRefresh
 Optional. The sections to update. By default it refreshes all that are supported.
 Currently supports: 'Resource Types', 'Parameters', 'Outputs', 'Template references'
+
+.PARAMETER CrossReferencedModuleList
+Optional. Cross Module References to consider when refreshing the readme. Can be provided to speed up the generation. If not provided, is fetched by this script.
 
 .EXAMPLE
 Set-ModuleReadMe -TemplateFilePath 'C:\main.bicep'
@@ -1525,28 +1726,32 @@ function Set-ModuleReadMe {
         [string] $ReadMeFilePath = (Join-Path (Split-Path $TemplateFilePath -Parent) 'README.md'),
 
         [Parameter(Mandatory = $false)]
+        [hashtable] $CrossReferencedModuleList = @{},
+
+        [Parameter(Mandatory = $false)]
         [ValidateSet(
             'Resource Types',
+            'Usage examples',
             'Parameters',
             'Outputs',
             'CrossReferences',
             'Template references',
-            'Navigation',
-            'Deployment examples'
+            'Navigation'
         )]
         [string[]] $SectionsToRefresh = @(
             'Resource Types',
+            'Usage examples',
             'Parameters',
             'Outputs',
             'CrossReferences',
             'Template references',
-            'Navigation',
-            'Deployment examples'
+            'Navigation'
         )
     )
 
     # Load external functions
     . (Join-Path $PSScriptRoot 'helper' 'Merge-FileWithNewContent.ps1')
+    . (Join-Path $PSScriptRoot 'Get-NestedResourceList.ps1')
 
     # Check template & make full path
     $TemplateFilePath = Resolve-Path -Path $TemplateFilePath -ErrorAction Stop
@@ -1559,7 +1764,7 @@ function Set-ModuleReadMe {
         if ((Split-Path -Path $TemplateFilePath -Extension) -eq '.bicep') {
             $templateFileContent = bicep build $TemplateFilePath --stdout | ConvertFrom-Json -AsHashtable
         } else {
-            $templateFileContent = ConvertFrom-Json (Get-Content $TemplateFilePath -Encoding 'utf8' -Raw) -ErrorAction Stop -AsHashtable
+            $templateFileContent = ConvertFrom-Json (Get-Content $TemplateFilePath -Encoding 'utf8' -Raw) -ErrorAction 'Stop' -AsHashtable
         }
     }
 
@@ -1576,6 +1781,32 @@ function Set-ModuleReadMe {
         $fullModuleIdentifier = $fullModuleIdentifier.split($customModuleSeparator)[0]
     }
 
+    # ===================== #
+    #   Preparation steps   #
+    # ===================== #
+    # Read original readme, if any. Then delete it to build from scratch
+    if ((Test-Path $ReadMeFilePath) -and -not ([String]::IsNullOrEmpty((Get-Content $ReadMeFilePath -Raw)))) {
+        $readMeFileContent = Get-Content -Path $ReadMeFilePath -Encoding 'utf8'
+        # Delete original readme
+        if ($PSCmdlet.ShouldProcess("File in path [$ReadMeFilePath]", 'Delete')) {
+            $null = Remove-Item $ReadMeFilePath -Force
+        }
+    }
+    # Make sure we preserve any manual notes a user might have added in the corresponding section
+    if ($match = $readMeFileContent | Select-String -Pattern '## Notes') {
+        $startIndex = $match.LineNumber
+
+        $endIndex = $startIndex + 1
+
+        while (-not (($endIndex + 1) -gt $readMeFileContent.count) -and $readMeFileContent[($endIndex + 1)] -notlike '## *') {
+            $endIndex++
+        }
+
+        $notes = $readMeFileContent[($startIndex - 1)..$endIndex]
+    } else {
+        $notes = @()
+    }
+
     # Initialize readme
     $inputObject = @{
         ReadMeFilePath       = $ReadMeFilePath
@@ -1584,7 +1815,9 @@ function Set-ModuleReadMe {
     }
     $readMeFileContent = Initialize-ReadMe @inputObject
 
-    # Set content
+    # =============== #
+    #   Set content   #
+    # =============== #
     if ($SectionsToRefresh -contains 'Resource Types') {
         # Handle [Resource Types] section
         # ===============================
@@ -1593,6 +1826,19 @@ function Set-ModuleReadMe {
             TemplateFileContent = $templateFileContent
         }
         $readMeFileContent = Set-ResourceTypesSection @inputObject
+    }
+
+    $hasTests = (Get-ChildItem -Path $moduleRoot -Recurse -Filter 'main.test.bicep' -File -Force).count -gt 0
+    if ($SectionsToRefresh -contains 'Usage examples' -and $hasTests) {
+        # Handle [Usage examples] section
+        # ===================================
+        $inputObject = @{
+            ModuleRoot           = $ModuleRoot
+            FullModuleIdentifier = $fullModuleIdentifier
+            ReadMeFileContent    = $readMeFileContent
+            TemplateFileContent  = $templateFileContent
+        }
+        $readMeFileContent = Set-UsageExamplesSection @inputObject
     }
 
     if ($SectionsToRefresh -contains 'Parameters') {
@@ -1619,27 +1865,24 @@ function Set-ModuleReadMe {
     if ($SectionsToRefresh -contains 'CrossReferences') {
         # Handle [CrossReferences] section
         # ========================
+        if ($CrossReferencedModuleList.Count -eq 0) {
+            . (Join-Path (Get-Item $PSScriptRoot).Parent.Parent 'tools' 'Get-CrossReferencedModuleList.ps1')
+            $CrossReferencedModuleList = Get-CrossReferencedModuleList
+        }
         $inputObject = @{
-            ModuleRoot           = $ModuleRoot
-            FullModuleIdentifier = $fullModuleIdentifier
-            ReadMeFileContent    = $readMeFileContent
-            TemplateFileContent  = $templateFileContent
+            ModuleRoot                = $ModuleRoot
+            FullModuleIdentifier      = $fullModuleIdentifier
+            ReadMeFileContent         = $readMeFileContent
+            TemplateFileContent       = $templateFileContent
+            CrossReferencedModuleList = $CrossReferencedModuleList
         }
         $readMeFileContent = Set-CrossReferencesSection @inputObject
     }
-
-    $testFolderPath = Join-Path $moduleRoot '.test'
-    $hasTests = (Test-Path $testFolderPath) ? (Get-ChildItem -Path $testFolderPath -Recurse -Include 'main.test.*').count -gt 0 : $false
-    if ($SectionsToRefresh -contains 'Deployment examples' -and $hasTests) {
-        # Handle [Deployment examples] section
-        # ===================================
-        $inputObject = @{
-            ModuleRoot           = $ModuleRoot
-            FullModuleIdentifier = $fullModuleIdentifier
-            ReadMeFileContent    = $readMeFileContent
-            TemplateFileContent  = $templateFileContent
-        }
-        $readMeFileContent = Set-DeploymentExamplesSection @inputObject
+    # Handle [Notes] section
+    # ========================
+    if ($notes) {
+        $readMeFileContent += @( '' )
+        $readMeFileContent += $notes
     }
 
     if ($SectionsToRefresh -contains 'Navigation') {

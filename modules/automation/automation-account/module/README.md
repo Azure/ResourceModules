@@ -19,30 +19,76 @@ This module deploys an Azure Automation Account Module.
 
 **Required parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | Name of the Automation Account module. |
-| `uri` | string | Module package URI, e.g. https://www.powershellgallery.com/api/v2/package. |
+| [`name`](#parameter-name) | string | Name of the Automation Account module. |
+| [`uri`](#parameter-uri) | string | Module package URI, e.g. https://www.powershellgallery.com/api/v2/package. |
 
 **Conditional parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `automationAccountName` | string | The name of the parent Automation Account. Required if the template is used in a standalone deployment. |
+| [`automationAccountName`](#parameter-automationaccountname) | string | The name of the parent Automation Account. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `location` | string | `[resourceGroup().location]` | Location for all resources. |
-| `tags` | object | `{object}` | Tags of the Automation Account resource. |
-| `version` | string | `'latest'` | Module version or specify latest to get the latest version. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`location`](#parameter-location) | string | Location for all resources. |
+| [`tags`](#parameter-tags) | object | Tags of the Automation Account resource. |
+| [`version`](#parameter-version) | string | Module version or specify latest to get the latest version. |
+
+### Parameter: `automationAccountName`
+
+The name of the parent Automation Account. Required if the template is used in a standalone deployment.
+- Required: Yes
+- Type: string
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `location`
+
+Location for all resources.
+- Required: No
+- Type: string
+- Default: `[resourceGroup().location]`
+
+### Parameter: `name`
+
+Name of the Automation Account module.
+- Required: Yes
+- Type: string
+
+### Parameter: `tags`
+
+Tags of the Automation Account resource.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `uri`
+
+Module package URI, e.g. https://www.powershellgallery.com/api/v2/package.
+- Required: Yes
+- Type: string
+
+### Parameter: `version`
+
+Module version or specify latest to get the latest version.
+- Required: No
+- Type: string
+- Default: `'latest'`
 
 
 ## Outputs
 
-| Output Name | Type | Description |
+| Output | Type | Description |
 | :-- | :-- | :-- |
 | `location` | string | The location the resource was deployed into. |
 | `name` | string | The name of the deployed module. |

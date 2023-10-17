@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.21.1.54444",
-      "templateHash": "5974456600868040376"
+      "version": "0.22.6.54827",
+      "templateHash": "14479255820598719580"
     },
     "name": "Network Interface",
     "description": "This module deploys a Network Interface.",
@@ -307,8 +307,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "10645923556503351364"
+              "version": "0.22.6.54827",
+              "templateHash": "11518733977101662334"
             }
           },
           "parameters": {

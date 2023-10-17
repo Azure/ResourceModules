@@ -19,25 +19,72 @@ This module deploys an Azure SQL Server Database Long-Term Backup Retention Poli
 
 **Required parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `databaseName` | string | The name of the parent database. |
-| `serverName` | string | The name of the parent SQL Server. |
+| [`databaseName`](#parameter-databasename) | string | The name of the parent database. |
+| [`serverName`](#parameter-servername) | string | The name of the parent SQL Server. |
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `monthlyRetention` | string | `''` | Weekly retention in ISO 8601 duration format. |
-| `weeklyRetention` | string | `''` | Monthly retention in ISO 8601 duration format. |
-| `weekOfYear` | int | `1` | Week of year backup to keep for yearly retention. |
-| `yearlyRetention` | string | `''` | Yearly retention in ISO 8601 duration format. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`monthlyRetention`](#parameter-monthlyretention) | string | Weekly retention in ISO 8601 duration format. |
+| [`weeklyRetention`](#parameter-weeklyretention) | string | Monthly retention in ISO 8601 duration format. |
+| [`weekOfYear`](#parameter-weekofyear) | int | Week of year backup to keep for yearly retention. |
+| [`yearlyRetention`](#parameter-yearlyretention) | string | Yearly retention in ISO 8601 duration format. |
+
+### Parameter: `databaseName`
+
+The name of the parent database.
+- Required: Yes
+- Type: string
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `monthlyRetention`
+
+Weekly retention in ISO 8601 duration format.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `serverName`
+
+The name of the parent SQL Server.
+- Required: Yes
+- Type: string
+
+### Parameter: `weeklyRetention`
+
+Monthly retention in ISO 8601 duration format.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `weekOfYear`
+
+Week of year backup to keep for yearly retention.
+- Required: No
+- Type: int
+- Default: `1`
+
+### Parameter: `yearlyRetention`
+
+Yearly retention in ISO 8601 duration format.
+- Required: No
+- Type: string
+- Default: `''`
 
 
 ## Outputs
 
-| Output Name | Type | Description |
+| Output | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the long-term policy. |
 | `resourceGroupName` | string | The resource group the long-term policy was deployed into. |

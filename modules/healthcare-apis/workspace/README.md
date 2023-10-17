@@ -5,10 +5,10 @@ This module deploys a Healthcare API Workspace.
 ## Navigation
 
 - [Resource Types](#Resource-Types)
+- [Usage examples](#Usage-examples)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
-- [Deployment examples](#Deployment-examples)
 - [Notes](#Notes)
 
 ## Resource Types
@@ -24,155 +24,28 @@ This module deploys a Healthcare API Workspace.
 | `Microsoft.HealthcareApis/workspaces/iotconnectors/fhirdestinations` | [2022-06-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.HealthcareApis/workspaces) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 
-## Parameters
+## Usage examples
 
-**Required parameters**
+The following section provides usage examples for the module, which were used to validate and deploy the module successfully. For a full reference, please review the module's test folder in its repository.
 
-| Parameter Name | Type | Description |
-| :-- | :-- | :-- |
-| `name` | string | The name of the Health Data Services Workspace service. |
+>**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-**Optional parameters**
+>**Note**: To reference the module, please use the following syntax `br:bicep/modules/healthcare-apis.workspace:1.0.0`.
 
-| Parameter Name | Type | Default Value | Allowed Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `dicomservices` | array | `[]` |  | Deploy DICOM services. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `fhirservices` | array | `[]` |  | Deploy FHIR services. |
-| `iotconnectors` | array | `[]` |  | Deploy IOT connectors. |
-| `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
-| `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
-| `publicNetworkAccess` | string | `'Disabled'` | `[Disabled, Enabled]` | Control permission for data plane traffic coming from public networks while private endpoint is enabled. |
-| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| `tags` | object | `{object}` |  | Tags of the resource. |
+- [Using large parameter set](#example-1-using-large-parameter-set)
+- [Using only defaults](#example-2-using-only-defaults)
 
+### Example 1: _Using large parameter set_
 
-### Parameter Usage: `fhirservices`
+This instance deploys the module with most of its features enabled.
 
-Create a FHIR service with the workspace.
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"fhirServices": {
-    "value": [
-      {
-        "name": "[[namePrefix]]-az-fhir-x-001",
-        "kind": "fhir-R4",
-        "workspaceName": "[[namePrefix]]001",
-        "corsOrigins": [ "*" ],
-        "corsHeaders": [ "*" ],
-        "corsMethods": [ "GET" ],
-        "corsMaxAge": 600,
-        "corsAllowCredentials": false,
-        "location": "[[location]]",
-        "diagnosticStorageAccountId": "[[storageAccountResourceId]]",
-        "diagnosticWorkspaceId": "[[logAnalyticsWorkspaceResourceId]]",
-        "diagnosticEventHubAuthorizationRuleId": "[[eventHubAuthorizationRuleId]]",
-        "diagnosticEventHubName": "[[eventHubNamespaceEventHubName]]",
-        "publicNetworkAccess": "Enabled",
-        "resourceVersionPolicy": "versioned",
-        "smartProxyEnabled": false,
-        "enableDefaultTelemetry": false,
-        "systemAssignedIdentity": true,
-        "importEnabled": false,
-        "initialImportMode": false,
-        "userAssignedIdentities": {
-          "[[managedIdentityResourceId]]": {}
-        },
-        "roleAssignments": [
-          {
-            "roleDefinitionIdOrName": "Role Name",
-            "principalIds": [
-              "managedIdentityPrincipalId"
-            ],
-            "principalType": "ServicePrincipal"
-          }
-        ]
-      }
-    ]
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-fhirServices: [
-    {
-        name: '[[namePrefix]]-az-fhir-x-001'
-        kind: 'fhir-R4'
-        workspaceName: '[[namePrefix]]001'
-        corsOrigins: [ '*' ]
-        corsHeaders: [ '*' ]
-        corsMethods: [ 'GET' ]
-        corsMaxAge: 600
-        corsAllowCredentials: false
-        location: location
-        diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
-        diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
-        diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
-        diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
-        publicNetworkAccess: 'Enabled'
-        resourceVersionPolicy: 'versioned'
-        smartProxyEnabled: false
-        enableDefaultTelemetry: enableDefaultTelemetry
-        systemAssignedIdentity: true
-        importEnabled: false
-        initialImportMode: false
-        userAssignedIdentities: {
-          '${resourceGroupResources.outputs.managedIdentityResourceId}': {}
-        }
-        roleAssignments: [
-          {
-            roleDefinitionIdOrName: resourceId('Microsoft.Authorization/roleDefinitions', '5a1fc7df-4bf1-4951-a576-89034ee01acd')
-            principalIds: [
-              resourceGroupResources.outputs.managedIdentityPrincipalId
-            ]
-            principalType: 'ServicePrincipal'
-          }
-        ]
-      }
-]
-```
-
-</details>
-<p>
-
-
-## Outputs
-
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of the health data services workspace. |
-| `resourceGroupName` | string | The resource group where the workspace is deployed. |
-| `resourceId` | string | The resource ID of the health data services workspace. |
-
-## Cross-referenced modules
-
-_None_
-
-## Deployment examples
-
-The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
-   >**Note**: The name of each example is based on the name of the file from which it is taken.
-
-   >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
-
-<h3>Example 1: Common</h3>
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module workspace './healthcare-apis/workspace/main.bicep' = {
+module workspace 'br:bicep/modules/healthcare-apis.workspace:1.0.0' = {
   name: '${uniqueString(deployment().name)}-test-hawcom'
   params: {
     // Required parameters
@@ -378,14 +251,17 @@ module workspace './healthcare-apis/workspace/main.bicep' = {
 </details>
 <p>
 
-<h3>Example 2: Min</h3>
+### Example 2: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module workspace './healthcare-apis/workspace/main.bicep' = {
+module workspace 'br:bicep/modules/healthcare-apis.workspace:1.0.0' = {
   name: '${uniqueString(deployment().name)}-test-hawmin'
   params: {
     // Required parameters
@@ -431,6 +307,113 @@ module workspace './healthcare-apis/workspace/main.bicep' = {
 </details>
 <p>
 
+
+## Parameters
+
+**Required parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`name`](#parameter-name) | string | The name of the Health Data Services Workspace service. |
+
+**Optional parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`dicomservices`](#parameter-dicomservices) | array | Deploy DICOM services. |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| [`fhirservices`](#parameter-fhirservices) | array | Deploy FHIR services. |
+| [`iotconnectors`](#parameter-iotconnectors) | array | Deploy IOT connectors. |
+| [`location`](#parameter-location) | string | Location for all resources. |
+| [`lock`](#parameter-lock) | string | Specify the type of lock. |
+| [`publicNetworkAccess`](#parameter-publicnetworkaccess) | string | Control permission for data plane traffic coming from public networks while private endpoint is enabled. |
+| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| [`tags`](#parameter-tags) | object | Tags of the resource. |
+
+### Parameter: `dicomservices`
+
+Deploy DICOM services.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via the Customer Usage Attribution ID (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `fhirservices`
+
+Deploy FHIR services.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `iotconnectors`
+
+Deploy IOT connectors.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `location`
+
+Location for all resources.
+- Required: No
+- Type: string
+- Default: `[resourceGroup().location]`
+
+### Parameter: `lock`
+
+Specify the type of lock.
+- Required: No
+- Type: string
+- Default: `''`
+- Allowed: `['', CanNotDelete, ReadOnly]`
+
+### Parameter: `name`
+
+The name of the Health Data Services Workspace service.
+- Required: Yes
+- Type: string
+
+### Parameter: `publicNetworkAccess`
+
+Control permission for data plane traffic coming from public networks while private endpoint is enabled.
+- Required: No
+- Type: string
+- Default: `'Disabled'`
+- Allowed: `[Disabled, Enabled]`
+
+### Parameter: `roleAssignments`
+
+Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `tags`
+
+Tags of the resource.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+
+## Outputs
+
+| Output | Type | Description |
+| :-- | :-- | :-- |
+| `location` | string | The location the resource was deployed into. |
+| `name` | string | The name of the health data services workspace. |
+| `resourceGroupName` | string | The resource group where the workspace is deployed. |
+| `resourceId` | string | The resource ID of the health data services workspace. |
+
+## Cross-referenced modules
+
+_None_
 
 ## Notes
 

@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.20.4.51522",
-      "templateHash": "11308204478162486459"
+      "version": "0.22.6.54827",
+      "templateHash": "17949647288095694070"
     },
     "name": "NSG Flow Logs",
     "description": "This module controls the Network Security Group Flow Logs and analytics settings.\r\n**Note: this module must be run on the Resource Group where Network Watcher is deployed**",

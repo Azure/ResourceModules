@@ -22,29 +22,70 @@ A security admin configuration contains a set of rule collections. Each rule col
 
 **Required parameters**
 
-| Parameter Name | Type | Default Value | Allowed Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `applyOnNetworkIntentPolicyBasedServices` | array | `[None]` | `[All, AllowRulesOnly, None]` | Enum list of network intent policy based services. |
-| `name` | string |  |  | The name of the security admin configuration. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`applyOnNetworkIntentPolicyBasedServices`](#parameter-applyonnetworkintentpolicybasedservices) | array | Enum list of network intent policy based services. |
+| [`name`](#parameter-name) | string | The name of the security admin configuration. |
 
 **Conditional parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `networkManagerName` | string | The name of the parent network manager. Required if the template is used in a standalone deployment. |
+| [`networkManagerName`](#parameter-networkmanagername) | string | The name of the parent network manager. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `description` | string | `''` | A description of the security admin configuration. |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `ruleCollections` | array | `[]` | A security admin configuration contains a set of rule collections that are applied to network groups. Each rule collection contains one or more security admin rules. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`description`](#parameter-description) | string | A description of the security admin configuration. |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`ruleCollections`](#parameter-rulecollections) | array | A security admin configuration contains a set of rule collections that are applied to network groups. Each rule collection contains one or more security admin rules. |
+
+### Parameter: `applyOnNetworkIntentPolicyBasedServices`
+
+Enum list of network intent policy based services.
+- Required: No
+- Type: array
+- Default: `[None]`
+- Allowed: `[All, AllowRulesOnly, None]`
+
+### Parameter: `description`
+
+A description of the security admin configuration.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `name`
+
+The name of the security admin configuration.
+- Required: Yes
+- Type: string
+
+### Parameter: `networkManagerName`
+
+The name of the parent network manager. Required if the template is used in a standalone deployment.
+- Required: Yes
+- Type: string
+
+### Parameter: `ruleCollections`
+
+A security admin configuration contains a set of rule collections that are applied to network groups. Each rule collection contains one or more security admin rules.
+- Required: No
+- Type: array
+- Default: `[]`
 
 
 ## Outputs
 
-| Output Name | Type | Description |
+| Output | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the deployed security admin configuration. |
 | `resourceGroupName` | string | The resource group the security admin configuration was deployed into. |

@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.20.4.51522",
-      "templateHash": "318736480892502738"
+      "version": "0.22.6.54827",
+      "templateHash": "1741591761510469286"
     },
     "name": "Role Assignments (Subscription scope)",
     "description": "This module deploys a Role Assignment at a Subscription scope.",

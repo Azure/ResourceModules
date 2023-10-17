@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.20.4.51522",
-      "templateHash": "18205555090536788516"
+      "version": "0.22.6.54827",
+      "templateHash": "16339805298138761905"
     },
     "name": "Relay Namespace WCF Relays",
     "description": "This module deploys a Relay Namespace WCF Relay.",
@@ -191,8 +191,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.20.4.51522",
-              "templateHash": "13141425566828642958"
+              "version": "0.22.6.54827",
+              "templateHash": "9905508445063497603"
             },
             "name": "WCF Relay Authorization Rules",
             "description": "This module deploys a WCF Relay Authorization Rule.",
@@ -324,8 +324,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.20.4.51522",
-              "templateHash": "8507868775083821058"
+              "version": "0.22.6.54827",
+              "templateHash": "3790701104073520156"
             }
           },
           "parameters": {

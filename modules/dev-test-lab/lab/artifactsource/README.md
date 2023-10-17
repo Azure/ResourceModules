@@ -21,35 +21,118 @@ An artifact source allows you to create custom artifacts for the VMs in the lab,
 
 **Required parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the artifact source. |
-| `uri` | string | The artifact source's URI. |
+| [`name`](#parameter-name) | string | The name of the artifact source. |
+| [`uri`](#parameter-uri) | string | The artifact source's URI. |
 
 **Conditional parameters**
 
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `armTemplateFolderPath` | string | `''` | The folder containing Azure Resource Manager templates. Required if "folderPath" is empty. |
-| `folderPath` | string | `''` | The folder containing artifacts. At least one folder path is required. Required if "armTemplateFolderPath" is empty. |
-| `labName` | string |  | The name of the parent lab. Required if the template is used in a standalone deployment. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`armTemplateFolderPath`](#parameter-armtemplatefolderpath) | string | The folder containing Azure Resource Manager templates. Required if "folderPath" is empty. |
+| [`folderPath`](#parameter-folderpath) | string | The folder containing artifacts. At least one folder path is required. Required if "armTemplateFolderPath" is empty. |
+| [`labName`](#parameter-labname) | string | The name of the parent lab. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Allowed Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `branchRef` | string | `''` |  | The artifact source's branch reference (e.g. main or master). |
-| `displayName` | string | `[parameters('name')]` |  | The artifact source's display name. Default is the name of the artifact source. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `securityToken` | securestring | `''` |  | The security token to authenticate to the artifact source. |
-| `sourceType` | string | `''` | `['', GitHub, StorageAccount, VsoGit]` | The artifact source's type. |
-| `status` | string | `'Enabled'` | `[Disabled, Enabled]` | Indicates if the artifact source is enabled (values: Enabled, Disabled). Default is "Enabled". |
-| `tags` | object | `{object}` |  | Tags of the resource. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`branchRef`](#parameter-branchref) | string | The artifact source's branch reference (e.g. main or master). |
+| [`displayName`](#parameter-displayname) | string | The artifact source's display name. Default is the name of the artifact source. |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`securityToken`](#parameter-securitytoken) | securestring | The security token to authenticate to the artifact source. |
+| [`sourceType`](#parameter-sourcetype) | string | The artifact source's type. |
+| [`status`](#parameter-status) | string | Indicates if the artifact source is enabled (values: Enabled, Disabled). Default is "Enabled". |
+| [`tags`](#parameter-tags) | object | Tags of the resource. |
+
+### Parameter: `armTemplateFolderPath`
+
+The folder containing Azure Resource Manager templates. Required if "folderPath" is empty.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `branchRef`
+
+The artifact source's branch reference (e.g. main or master).
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `displayName`
+
+The artifact source's display name. Default is the name of the artifact source.
+- Required: No
+- Type: string
+- Default: `[parameters('name')]`
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `folderPath`
+
+The folder containing artifacts. At least one folder path is required. Required if "armTemplateFolderPath" is empty.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `labName`
+
+The name of the parent lab. Required if the template is used in a standalone deployment.
+- Required: Yes
+- Type: string
+
+### Parameter: `name`
+
+The name of the artifact source.
+- Required: Yes
+- Type: string
+
+### Parameter: `securityToken`
+
+The security token to authenticate to the artifact source.
+- Required: No
+- Type: securestring
+- Default: `''`
+
+### Parameter: `sourceType`
+
+The artifact source's type.
+- Required: No
+- Type: string
+- Default: `''`
+- Allowed: `['', GitHub, StorageAccount, VsoGit]`
+
+### Parameter: `status`
+
+Indicates if the artifact source is enabled (values: Enabled, Disabled). Default is "Enabled".
+- Required: No
+- Type: string
+- Default: `'Enabled'`
+- Allowed: `[Disabled, Enabled]`
+
+### Parameter: `tags`
+
+Tags of the resource.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `uri`
+
+The artifact source's URI.
+- Required: Yes
+- Type: string
 
 
 ## Outputs
 
-| Output Name | Type | Description |
+| Output | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the artifact source. |
 | `resourceGroupName` | string | The name of the resource group the artifact source was created in. |

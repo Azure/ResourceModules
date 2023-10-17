@@ -76,8 +76,8 @@ function Set-StaticTestDocumentation {
     )
 
     # Load external functions
-    $toolsRoot = Split-Path $PSScriptRoot -Parent
-    . (Join-Path $toolsRoot 'helper' 'Merge-FileWithNewContent.ps1')
+    $utilitiesRoot = Split-Path (Split-Path $PSScriptRoot)
+    . (Join-Path $utilitiesRoot 'pipelines' 'sharedScripts' 'helper' 'Merge-FileWithNewContent.ps1')
 
     # Logic
     $contentArray = Get-Content -Path $WikiFilePath

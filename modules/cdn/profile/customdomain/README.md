@@ -19,33 +19,101 @@ This module deploys a CDN Profile Custom Domains.
 
 **Required parameters**
 
-| Parameter Name | Type | Allowed Values | Description |
-| :-- | :-- | :-- | :-- |
-| `certificateType` | string | `[CustomerCertificate, ManagedCertificate]` | The type of the certificate used for secure delivery. |
-| `hostName` | string |  | The host name of the domain. Must be a domain name. |
-| `name` | string |  | The name of the custom domain. |
-| `profileName` | string |  | The name of the CDN profile. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`certificateType`](#parameter-certificatetype) | string | The type of the certificate used for secure delivery. |
+| [`hostName`](#parameter-hostname) | string | The host name of the domain. Must be a domain name. |
+| [`name`](#parameter-name) | string | The name of the custom domain. |
+| [`profileName`](#parameter-profilename) | string | The name of the CDN profile. |
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Allowed Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `extendedProperties` | object | `{object}` |  | Key-Value pair representing migration properties for domains. |
-| `minimumTlsVersion` | string | `'TLS12'` | `[TLS10, TLS12]` | The minimum TLS version required for the custom domain. Default value: TLS12. |
-| `preValidatedCustomDomainResourceId` | string | `''` |  | Resource reference to the Azure resource where custom domain ownership was prevalidated. |
-| `secretName` | string | `''` |  | The name of the secret. ie. subs/rg/profile/secret. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`extendedProperties`](#parameter-extendedproperties) | object | Key-Value pair representing migration properties for domains. |
+| [`minimumTlsVersion`](#parameter-minimumtlsversion) | string | The minimum TLS version required for the custom domain. Default value: TLS12. |
+| [`preValidatedCustomDomainResourceId`](#parameter-prevalidatedcustomdomainresourceid) | string | Resource reference to the Azure resource where custom domain ownership was prevalidated. |
+| [`secretName`](#parameter-secretname) | string | The name of the secret. ie. subs/rg/profile/secret. |
 
 **Optonal parameters**
 
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `azureDnsZoneResourceId` | string | `''` | Resource reference to the Azure DNS zone. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`azureDnsZoneResourceId`](#parameter-azurednszoneresourceid) | string | Resource reference to the Azure DNS zone. |
+
+### Parameter: `azureDnsZoneResourceId`
+
+Resource reference to the Azure DNS zone.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `certificateType`
+
+The type of the certificate used for secure delivery.
+- Required: Yes
+- Type: string
+- Allowed: `[CustomerCertificate, ManagedCertificate]`
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `extendedProperties`
+
+Key-Value pair representing migration properties for domains.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `hostName`
+
+The host name of the domain. Must be a domain name.
+- Required: Yes
+- Type: string
+
+### Parameter: `minimumTlsVersion`
+
+The minimum TLS version required for the custom domain. Default value: TLS12.
+- Required: No
+- Type: string
+- Default: `'TLS12'`
+- Allowed: `[TLS10, TLS12]`
+
+### Parameter: `name`
+
+The name of the custom domain.
+- Required: Yes
+- Type: string
+
+### Parameter: `preValidatedCustomDomainResourceId`
+
+Resource reference to the Azure resource where custom domain ownership was prevalidated.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `profileName`
+
+The name of the CDN profile.
+- Required: Yes
+- Type: string
+
+### Parameter: `secretName`
+
+The name of the secret. ie. subs/rg/profile/secret.
+- Required: No
+- Type: string
+- Default: `''`
 
 
 ## Outputs
 
-| Output Name | Type | Description |
+| Output | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the custom domain. |
 | `resourceGroupName` | string | The name of the resource group the custom domain was created in. |

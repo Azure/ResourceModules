@@ -5,10 +5,10 @@ This module deploys a Synapse Workspace.
 ## Navigation
 
 - [Resource Types](#Resource-Types)
+- [Usage examples](#Usage-examples)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
-- [Deployment examples](#Deployment-examples)
 
 ## Resource Types
 
@@ -24,94 +24,31 @@ This module deploys a Synapse Workspace.
 | `Microsoft.Synapse/workspaces/integrationRuntimes` | [2021-06-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Synapse/2021-06-01/workspaces/integrationRuntimes) |
 | `Microsoft.Synapse/workspaces/keys` | [2021-06-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Synapse/2021-06-01/workspaces/keys) |
 
-## Parameters
+## Usage examples
 
-**Required parameters**
+The following section provides usage examples for the module, which were used to validate and deploy the module successfully. For a full reference, please review the module's test folder in its repository.
 
-| Parameter Name | Type | Description |
-| :-- | :-- | :-- |
-| `defaultDataLakeStorageAccountResourceId` | string | Resource ID of the default ADLS Gen2 storage account. |
-| `defaultDataLakeStorageFilesystem` | string | The default ADLS Gen2 file system. |
-| `name` | string | The name of the Synapse Workspace. |
-| `sqlAdministratorLogin` | string | Login for administrator access to the workspace's SQL pools. |
+>**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-**Conditional parameters**
+>**Note**: To reference the module, please use the following syntax `br:bicep/modules/synapse.workspace:1.0.0`.
 
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `cMKKeyVaultResourceId` | string | `''` | The resource ID of a key vault to reference a customer managed key for encryption from. Required if 'cMKKeyName' is not empty. |
+- [Using large parameter set](#example-1-using-large-parameter-set)
+- [Encrwsai](#example-2-encrwsai)
+- [Encrwuai](#example-3-encrwuai)
+- [Managedvnet](#example-4-managedvnet)
+- [Using only defaults](#example-5-using-only-defaults)
 
-**Optional parameters**
+### Example 1: _Using large parameter set_
 
-| Parameter Name | Type | Default Value | Allowed Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `allowedAadTenantIdsForLinking` | array | `[]` |  | Allowed AAD Tenant IDs For Linking. |
-| `azureADOnlyAuthentication` | bool | `False` |  | Enable or Disable AzureADOnlyAuthentication on All Workspace sub-resource. |
-| `cMKKeyName` | string | `''` |  | The name of the customer managed key to use for encryption. |
-| `cMKUserAssignedIdentityResourceId` | string | `''` |  | The ID of User Assigned Managed identity that will be used to access your customer-managed key stored in key vault. |
-| `cMKUseSystemAssignedIdentity` | bool | `False` |  | Use System Assigned Managed identity that will be used to access your customer-managed key stored in key vault. |
-| `defaultDataLakeStorageCreateManagedPrivateEndpoint` | bool | `False` |  | Create managed private endpoint to the default storage account or not. If Yes is selected, a managed private endpoint connection request is sent to the workspace's primary Data Lake Storage Gen2 account for Spark pools to access data. This must be approved by an owner of the storage account. |
-| `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
-| `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
-| `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `['', allLogs, BuiltinSqlReqsEnded, GatewayApiRequests, IntegrationActivityRuns, IntegrationPipelineRuns, IntegrationTriggerRuns, SQLSecurityAuditEvents, SynapseLinkEvent, SynapseRbacOperations]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
-| `diagnosticSettingsName` | string | `''` |  | The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings". |
-| `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
-| `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `encryption` | bool | `False` |  | Double encryption using a customer-managed key. |
-| `encryptionActivateWorkspace` | bool | `False` |  | Activate workspace by adding the system managed identity in the KeyVault containing the customer managed key and activating the workspace. |
-| `initialWorkspaceAdminObjectID` | string | `''` |  | AAD object ID of initial workspace admin. |
-| `integrationRuntimes` | array | `[]` |  | The Integration Runtimes to create. |
-| `linkedAccessCheckOnTargetResource` | bool | `False` |  | Linked Access Check On Target Resource. |
-| `location` | string | `[resourceGroup().location]` |  | The geo-location where the resource lives. |
-| `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
-| `managedResourceGroupName` | string | `''` |  | Workspace managed resource group. The resource group name uniquely identifies the resource group within the user subscriptionId. The resource group name must be no longer than 90 characters long, and must be alphanumeric characters (Char.IsLetterOrDigit()) and '-', '_', '(', ')' and'.'. Note that the name cannot end with '.'. |
-| `managedVirtualNetwork` | bool | `False` |  | Enable this to ensure that connection from your workspace to your data sources use Azure Private Links. You can create managed private endpoints to your data sources. |
-| `preventDataExfiltration` | bool | `False` |  | Prevent Data Exfiltration. |
-| `privateEndpoints` | array | `[]` |  | Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
-| `publicNetworkAccess` | string | `'Enabled'` | `[Disabled, Enabled]` | Enable or Disable public network access to workspace. |
-| `purviewResourceID` | string | `''` |  | Purview Resource ID. |
-| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| `sqlAdministratorLoginPassword` | string | `''` |  | Password for administrator access to the workspace's SQL pools. If you don't provide a password, one will be automatically generated. You can change the password later. |
-| `tags` | object | `{object}` |  | Tags of the resource. |
-| `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
-| `workspaceRepositoryConfiguration` | object | `{object}` |  | Git integration settings. |
+This instance deploys the module with most of its features enabled.
 
-
-## Outputs
-
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `connectivityEndpoints` | object | The workspace connectivity endpoints. |
-| `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of the deployed Synapse Workspace. |
-| `resourceGroupName` | string | The resource group of the deployed Synapse Workspace. |
-| `resourceID` | string | The resource ID of the deployed Synapse Workspace. |
-| `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
-
-## Cross-referenced modules
-
-This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
-
-| Reference | Type |
-| :-- | :-- |
-| `network/private-endpoint` | Local reference |
-
-## Deployment examples
-
-The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
-   >**Note**: The name of each example is based on the name of the file from which it is taken.
-
-   >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
-
-<h3>Example 1: Common</h3>
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module workspace './synapse/workspace/main.bicep' = {
+module workspace 'br:bicep/modules/synapse.workspace:1.0.0' = {
   name: '${uniqueString(deployment().name, location)}-test-swcom'
   params: {
     // Required parameters
@@ -281,14 +218,14 @@ module workspace './synapse/workspace/main.bicep' = {
 </details>
 <p>
 
-<h3>Example 2: Encrwsai</h3>
+### Example 2: _Encrwsai_
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module workspace './synapse/workspace/main.bicep' = {
+module workspace 'br:bicep/modules/synapse.workspace:1.0.0' = {
   name: '${uniqueString(deployment().name, location)}-test-swensa'
   params: {
     // Required parameters
@@ -358,14 +295,14 @@ module workspace './synapse/workspace/main.bicep' = {
 </details>
 <p>
 
-<h3>Example 3: Encrwuai</h3>
+### Example 3: _Encrwuai_
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module workspace './synapse/workspace/main.bicep' = {
+module workspace 'br:bicep/modules/synapse.workspace:1.0.0' = {
   name: '${uniqueString(deployment().name, location)}-test-swenua'
   params: {
     // Required parameters
@@ -443,14 +380,14 @@ module workspace './synapse/workspace/main.bicep' = {
 </details>
 <p>
 
-<h3>Example 4: Managedvnet</h3>
+### Example 4: _Managedvnet_
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module workspace './synapse/workspace/main.bicep' = {
+module workspace 'br:bicep/modules/synapse.workspace:1.0.0' = {
   name: '${uniqueString(deployment().name, location)}-test-swmanv'
   params: {
     // Required parameters
@@ -528,14 +465,17 @@ module workspace './synapse/workspace/main.bicep' = {
 </details>
 <p>
 
-<h3>Example 5: Min</h3>
+### Example 5: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module workspace './synapse/workspace/main.bicep' = {
+module workspace 'br:bicep/modules/synapse.workspace:1.0.0' = {
   name: '${uniqueString(deployment().name, location)}-test-swmin'
   params: {
     // Required parameters
@@ -584,3 +524,328 @@ module workspace './synapse/workspace/main.bicep' = {
 
 </details>
 <p>
+
+
+## Parameters
+
+**Required parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`defaultDataLakeStorageAccountResourceId`](#parameter-defaultdatalakestorageaccountresourceid) | string | Resource ID of the default ADLS Gen2 storage account. |
+| [`defaultDataLakeStorageFilesystem`](#parameter-defaultdatalakestoragefilesystem) | string | The default ADLS Gen2 file system. |
+| [`name`](#parameter-name) | string | The name of the Synapse Workspace. |
+| [`sqlAdministratorLogin`](#parameter-sqladministratorlogin) | string | Login for administrator access to the workspace's SQL pools. |
+
+**Conditional parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`cMKKeyVaultResourceId`](#parameter-cmkkeyvaultresourceid) | string | The resource ID of a key vault to reference a customer managed key for encryption from. Required if 'cMKKeyName' is not empty. |
+
+**Optional parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`allowedAadTenantIdsForLinking`](#parameter-allowedaadtenantidsforlinking) | array | Allowed AAD Tenant IDs For Linking. |
+| [`azureADOnlyAuthentication`](#parameter-azureadonlyauthentication) | bool | Enable or Disable AzureADOnlyAuthentication on All Workspace sub-resource. |
+| [`cMKKeyName`](#parameter-cmkkeyname) | string | The name of the customer managed key to use for encryption. |
+| [`cMKUserAssignedIdentityResourceId`](#parameter-cmkuserassignedidentityresourceid) | string | The ID of User Assigned Managed identity that will be used to access your customer-managed key stored in key vault. |
+| [`cMKUseSystemAssignedIdentity`](#parameter-cmkusesystemassignedidentity) | bool | Use System Assigned Managed identity that will be used to access your customer-managed key stored in key vault. |
+| [`defaultDataLakeStorageCreateManagedPrivateEndpoint`](#parameter-defaultdatalakestoragecreatemanagedprivateendpoint) | bool | Create managed private endpoint to the default storage account or not. If Yes is selected, a managed private endpoint connection request is sent to the workspace's primary Data Lake Storage Gen2 account for Spark pools to access data. This must be approved by an owner of the storage account. |
+| [`diagnosticEventHubAuthorizationRuleId`](#parameter-diagnosticeventhubauthorizationruleid) | string | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
+| [`diagnosticEventHubName`](#parameter-diagnosticeventhubname) | string | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
+| [`diagnosticLogCategoriesToEnable`](#parameter-diagnosticlogcategoriestoenable) | array | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
+| [`diagnosticSettingsName`](#parameter-diagnosticsettingsname) | string | The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings". |
+| [`diagnosticStorageAccountId`](#parameter-diagnosticstorageaccountid) | string | Resource ID of the diagnostic storage account. |
+| [`diagnosticWorkspaceId`](#parameter-diagnosticworkspaceid) | string | Resource ID of the diagnostic log analytics workspace. |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`encryption`](#parameter-encryption) | bool | Double encryption using a customer-managed key. |
+| [`encryptionActivateWorkspace`](#parameter-encryptionactivateworkspace) | bool | Activate workspace by adding the system managed identity in the KeyVault containing the customer managed key and activating the workspace. |
+| [`initialWorkspaceAdminObjectID`](#parameter-initialworkspaceadminobjectid) | string | AAD object ID of initial workspace admin. |
+| [`integrationRuntimes`](#parameter-integrationruntimes) | array | The Integration Runtimes to create. |
+| [`linkedAccessCheckOnTargetResource`](#parameter-linkedaccesscheckontargetresource) | bool | Linked Access Check On Target Resource. |
+| [`location`](#parameter-location) | string | The geo-location where the resource lives. |
+| [`lock`](#parameter-lock) | string | Specify the type of lock. |
+| [`managedResourceGroupName`](#parameter-managedresourcegroupname) | string | Workspace managed resource group. The resource group name uniquely identifies the resource group within the user subscriptionId. The resource group name must be no longer than 90 characters long, and must be alphanumeric characters (Char.IsLetterOrDigit()) and '-', '_', '(', ')' and'.'. Note that the name cannot end with '.'. |
+| [`managedVirtualNetwork`](#parameter-managedvirtualnetwork) | bool | Enable this to ensure that connection from your workspace to your data sources use Azure Private Links. You can create managed private endpoints to your data sources. |
+| [`preventDataExfiltration`](#parameter-preventdataexfiltration) | bool | Prevent Data Exfiltration. |
+| [`privateEndpoints`](#parameter-privateendpoints) | array | Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
+| [`publicNetworkAccess`](#parameter-publicnetworkaccess) | string | Enable or Disable public network access to workspace. |
+| [`purviewResourceID`](#parameter-purviewresourceid) | string | Purview Resource ID. |
+| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| [`sqlAdministratorLoginPassword`](#parameter-sqladministratorloginpassword) | string | Password for administrator access to the workspace's SQL pools. If you don't provide a password, one will be automatically generated. You can change the password later. |
+| [`tags`](#parameter-tags) | object | Tags of the resource. |
+| [`userAssignedIdentities`](#parameter-userassignedidentities) | object | The ID(s) to assign to the resource. |
+| [`workspaceRepositoryConfiguration`](#parameter-workspacerepositoryconfiguration) | object | Git integration settings. |
+
+### Parameter: `allowedAadTenantIdsForLinking`
+
+Allowed AAD Tenant IDs For Linking.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `azureADOnlyAuthentication`
+
+Enable or Disable AzureADOnlyAuthentication on All Workspace sub-resource.
+- Required: No
+- Type: bool
+- Default: `False`
+
+### Parameter: `cMKKeyName`
+
+The name of the customer managed key to use for encryption.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `cMKKeyVaultResourceId`
+
+The resource ID of a key vault to reference a customer managed key for encryption from. Required if 'cMKKeyName' is not empty.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `cMKUserAssignedIdentityResourceId`
+
+The ID of User Assigned Managed identity that will be used to access your customer-managed key stored in key vault.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `cMKUseSystemAssignedIdentity`
+
+Use System Assigned Managed identity that will be used to access your customer-managed key stored in key vault.
+- Required: No
+- Type: bool
+- Default: `False`
+
+### Parameter: `defaultDataLakeStorageAccountResourceId`
+
+Resource ID of the default ADLS Gen2 storage account.
+- Required: Yes
+- Type: string
+
+### Parameter: `defaultDataLakeStorageCreateManagedPrivateEndpoint`
+
+Create managed private endpoint to the default storage account or not. If Yes is selected, a managed private endpoint connection request is sent to the workspace's primary Data Lake Storage Gen2 account for Spark pools to access data. This must be approved by an owner of the storage account.
+- Required: No
+- Type: bool
+- Default: `False`
+
+### Parameter: `defaultDataLakeStorageFilesystem`
+
+The default ADLS Gen2 file system.
+- Required: Yes
+- Type: string
+
+### Parameter: `diagnosticEventHubAuthorizationRuleId`
+
+Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `diagnosticEventHubName`
+
+Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `diagnosticLogCategoriesToEnable`
+
+The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection.
+- Required: No
+- Type: array
+- Default: `[allLogs]`
+- Allowed: `['', allLogs, BuiltinSqlReqsEnded, GatewayApiRequests, IntegrationActivityRuns, IntegrationPipelineRuns, IntegrationTriggerRuns, SQLSecurityAuditEvents, SynapseLinkEvent, SynapseRbacOperations]`
+
+### Parameter: `diagnosticSettingsName`
+
+The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings".
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `diagnosticStorageAccountId`
+
+Resource ID of the diagnostic storage account.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `diagnosticWorkspaceId`
+
+Resource ID of the diagnostic log analytics workspace.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `encryption`
+
+Double encryption using a customer-managed key.
+- Required: No
+- Type: bool
+- Default: `False`
+
+### Parameter: `encryptionActivateWorkspace`
+
+Activate workspace by adding the system managed identity in the KeyVault containing the customer managed key and activating the workspace.
+- Required: No
+- Type: bool
+- Default: `False`
+
+### Parameter: `initialWorkspaceAdminObjectID`
+
+AAD object ID of initial workspace admin.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `integrationRuntimes`
+
+The Integration Runtimes to create.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `linkedAccessCheckOnTargetResource`
+
+Linked Access Check On Target Resource.
+- Required: No
+- Type: bool
+- Default: `False`
+
+### Parameter: `location`
+
+The geo-location where the resource lives.
+- Required: No
+- Type: string
+- Default: `[resourceGroup().location]`
+
+### Parameter: `lock`
+
+Specify the type of lock.
+- Required: No
+- Type: string
+- Default: `''`
+- Allowed: `['', CanNotDelete, ReadOnly]`
+
+### Parameter: `managedResourceGroupName`
+
+Workspace managed resource group. The resource group name uniquely identifies the resource group within the user subscriptionId. The resource group name must be no longer than 90 characters long, and must be alphanumeric characters (Char.IsLetterOrDigit()) and '-', '_', '(', ')' and'.'. Note that the name cannot end with '.'.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `managedVirtualNetwork`
+
+Enable this to ensure that connection from your workspace to your data sources use Azure Private Links. You can create managed private endpoints to your data sources.
+- Required: No
+- Type: bool
+- Default: `False`
+
+### Parameter: `name`
+
+The name of the Synapse Workspace.
+- Required: Yes
+- Type: string
+
+### Parameter: `preventDataExfiltration`
+
+Prevent Data Exfiltration.
+- Required: No
+- Type: bool
+- Default: `False`
+
+### Parameter: `privateEndpoints`
+
+Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `publicNetworkAccess`
+
+Enable or Disable public network access to workspace.
+- Required: No
+- Type: string
+- Default: `'Enabled'`
+- Allowed: `[Disabled, Enabled]`
+
+### Parameter: `purviewResourceID`
+
+Purview Resource ID.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `roleAssignments`
+
+Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `sqlAdministratorLogin`
+
+Login for administrator access to the workspace's SQL pools.
+- Required: Yes
+- Type: string
+
+### Parameter: `sqlAdministratorLoginPassword`
+
+Password for administrator access to the workspace's SQL pools. If you don't provide a password, one will be automatically generated. You can change the password later.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `tags`
+
+Tags of the resource.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `userAssignedIdentities`
+
+The ID(s) to assign to the resource.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `workspaceRepositoryConfiguration`
+
+Git integration settings.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+
+## Outputs
+
+| Output | Type | Description |
+| :-- | :-- | :-- |
+| `connectivityEndpoints` | object | The workspace connectivity endpoints. |
+| `location` | string | The location the resource was deployed into. |
+| `name` | string | The name of the deployed Synapse Workspace. |
+| `resourceGroupName` | string | The resource group of the deployed Synapse Workspace. |
+| `resourceID` | string | The resource ID of the deployed Synapse Workspace. |
+| `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
+
+## Cross-referenced modules
+
+This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
+
+| Reference | Type |
+| :-- | :-- |
+| `modules/network/private-endpoint` | Local reference |
