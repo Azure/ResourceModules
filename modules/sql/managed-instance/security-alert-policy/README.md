@@ -13,7 +13,7 @@ This module deploys a SQL Managed Instance Security Alert Policy.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Sql/managedInstances/securityAlertPolicies` | [2022-02-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Sql/2022-02-01-preview/managedInstances/securityAlertPolicies) |
+| `Microsoft.Sql/managedInstances/securityAlertPolicies` | [2022-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Sql/2022-05-01-preview/managedInstances/securityAlertPolicies) |
 
 ## Parameters
 
