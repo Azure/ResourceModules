@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "6942471200332924480"
+      "templateHash": "938348054010287381"
     },
     "name": "Azure SQL Server Virtual Network Rules",
     "description": "This module deploys an Azure SQL Server Virtual Network Rule.",
@@ -62,7 +62,7 @@
     },
     {
       "type": "Microsoft.Sql/servers/virtualNetworkRules",
-      "apiVersion": "2022-02-01-preview",
+      "apiVersion": "2022-05-01-preview",
       "name": "[format('{0}/{1}', parameters('serverName'), parameters('name'))]",
       "properties": {
         "ignoreMissingVnetServiceEndpoint": "[parameters('ignoreMissingVnetServiceEndpoint')]",

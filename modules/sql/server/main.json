@@ -521,6 +521,18 @@
                 "description": "Optional. Capacity of the particular SKU."
               }
             },
+            "preferredEnclaveType": {
+              "type": "string",
+              "defaultValue": "",
+              "allowedValues": [
+                "",
+                "Default",
+                "VBS"
+              ],
+              "metadata": {
+                "description": "Optional. Type of enclave requested on the database i.e. Default or VBS enclaves."
+              }
+            },
             "skuFamily": {
               "type": "string",
               "defaultValue": "",
@@ -825,11 +837,12 @@
             },
             {
               "type": "Microsoft.Sql/servers/databases",
-              "apiVersion": "2021-11-01",
+              "apiVersion": "2022-05-01-preview",
               "name": "[format('{0}/{1}', parameters('serverName'), parameters('name'))]",
               "location": "[parameters('location')]",
               "tags": "[parameters('tags')]",
               "properties": {
+                "preferredEnclaveType": "[if(not(empty(parameters('preferredEnclaveType'))), parameters('preferredEnclaveType'), null())]",
                 "collation": "[parameters('collation')]",
                 "maxSizeBytes": "[parameters('maxSizeBytes')]",
                 "sampleName": "[parameters('sampleName')]",
@@ -1157,7 +1170,7 @@
               "metadata": {
                 "description": "The location the resource was deployed into."
               },
-              "value": "[reference(resourceId('Microsoft.Sql/servers/databases', parameters('serverName'), parameters('name')), '2021-11-01', 'full').location]"
+              "value": "[reference(resourceId('Microsoft.Sql/servers/databases', parameters('serverName'), parameters('name')), '2022-05-01-preview', 'full').location]"
             }
           }
         }
@@ -1352,7 +1365,7 @@
             },
             {
               "type": "Microsoft.Sql/servers/elasticPools",
-              "apiVersion": "2022-02-01-preview",
+              "apiVersion": "2022-05-01-preview",
               "name": "[format('{0}/{1}', parameters('serverName'), parameters('name'))]",
               "location": "[parameters('location')]",
               "tags": "[parameters('tags')]",
@@ -1402,7 +1415,7 @@
               "metadata": {
                 "description": "The location the resource was deployed into."
               },
-              "value": "[reference(resourceId('Microsoft.Sql/servers/elasticPools', parameters('serverName'), parameters('name')), '2022-02-01-preview', 'full').location]"
+              "value": "[reference(resourceId('Microsoft.Sql/servers/elasticPools', parameters('serverName'), parameters('name')), '2022-05-01-preview', 'full').location]"
             }
           }
         }
@@ -2066,7 +2079,7 @@
             },
             {
               "type": "Microsoft.Sql/servers/firewallRules",
-              "apiVersion": "2022-02-01-preview",
+              "apiVersion": "2022-05-01-preview",
               "name": "[format('{0}/{1}', parameters('serverName'), parameters('name'))]",
               "properties": {
                 "endIpAddress": "[parameters('endIpAddress')]",
@@ -2195,7 +2208,7 @@
             },
             {
               "type": "Microsoft.Sql/servers/virtualNetworkRules",
-              "apiVersion": "2022-02-01-preview",
+              "apiVersion": "2022-05-01-preview",
               "name": "[format('{0}/{1}', parameters('serverName'), parameters('name'))]",
               "properties": {
                 "ignoreMissingVnetServiceEndpoint": "[parameters('ignoreMissingVnetServiceEndpoint')]",
@@ -2367,7 +2380,7 @@
             },
             {
               "type": "Microsoft.Sql/servers/securityAlertPolicies",
-              "apiVersion": "2022-02-01-preview",
+              "apiVersion": "2022-05-01-preview",
               "name": "[format('{0}/{1}', parameters('serverName'), parameters('name'))]",
               "properties": {
                 "disabledAlerts": "[parameters('disabledAlerts')]",
@@ -2513,7 +2526,7 @@
             },
             {
               "type": "Microsoft.Sql/servers/vulnerabilityAssessments",
-              "apiVersion": "2022-02-01-preview",
+              "apiVersion": "2022-05-01-preview",
               "name": "[format('{0}/{1}', parameters('serverName'), parameters('name'))]",
               "properties": {
                 "storageContainerPath": "[format('https://{0}.blob.{1}/vulnerability-assessment/', last(split(parameters('storageAccountResourceId'), '/')), environment().suffixes.storage)]",
@@ -2784,7 +2797,7 @@
             },
             {
               "type": "Microsoft.Sql/servers/encryptionProtector",
-              "apiVersion": "2022-08-01-preview",
+              "apiVersion": "2022-05-01-preview",
               "name": "[format('{0}/{1}', parameters('sqlServerName'), 'current')]",
               "properties": {
                 "serverKeyType": "[parameters('serverKeyType')]",

@@ -13,7 +13,7 @@ This module deploys an Azure SQL Server Virtual Network Rule.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Sql/servers/virtualNetworkRules` | [2022-02-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Sql/2022-02-01-preview/servers/virtualNetworkRules) |
+| `Microsoft.Sql/servers/virtualNetworkRules` | [2022-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Sql/2022-05-01-preview/servers/virtualNetworkRules) |
 
 ## Parameters
 
