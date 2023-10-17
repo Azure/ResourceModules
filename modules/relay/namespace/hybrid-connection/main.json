@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.20.4.51522",
-      "templateHash": "5587843022604046042"
+      "version": "0.22.6.54827",
+      "templateHash": "8795172246215834185"
     },
     "name": "Relay Namespace Hybrid Connections",
     "description": "This module deploys a Relay Namespace Hybrid Connection.",
@@ -171,8 +171,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.20.4.51522",
-              "templateHash": "9718423441307347496"
+              "version": "0.22.6.54827",
+              "templateHash": "2105813068659609285"
             },
             "name": "Hybrid Connection Authorization Rules",
             "description": "This module deploys a Hybrid Connection Authorization Rule.",
@@ -304,8 +304,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.20.4.51522",
-              "templateHash": "5814555714153100571"
+              "version": "0.22.6.54827",
+              "templateHash": "9757505768958218088"
             }
           },
           "parameters": {

@@ -22,28 +22,60 @@ This module deploys a Recovery Services Vault Replication Protection Container.
 
 **Required parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the replication container. |
+| [`name`](#parameter-name) | string | The name of the replication container. |
 
 **Conditional parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `recoveryVaultName` | string | The name of the parent Azure Recovery Service Vault. Required if the template is used in a standalone deployment. |
-| `replicationFabricName` | string | The name of the parent Replication Fabric. Required if the template is used in a standalone deployment. |
+| [`recoveryVaultName`](#parameter-recoveryvaultname) | string | The name of the parent Azure Recovery Service Vault. Required if the template is used in a standalone deployment. |
+| [`replicationFabricName`](#parameter-replicationfabricname) | string | The name of the parent Replication Fabric. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `replicationContainerMappings` | array | `[]` | Replication containers mappings to create. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`replicationContainerMappings`](#parameter-replicationcontainermappings) | array | Replication containers mappings to create. |
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `name`
+
+The name of the replication container.
+- Required: Yes
+- Type: string
+
+### Parameter: `recoveryVaultName`
+
+The name of the parent Azure Recovery Service Vault. Required if the template is used in a standalone deployment.
+- Required: Yes
+- Type: string
+
+### Parameter: `replicationContainerMappings`
+
+Replication containers mappings to create.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `replicationFabricName`
+
+The name of the parent Replication Fabric. Required if the template is used in a standalone deployment.
+- Required: Yes
+- Type: string
 
 
 ## Outputs
 
-| Output Name | Type | Description |
+| Output | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the replication container. |
 | `resourceGroupName` | string | The name of the resource group the replication container was created in. |

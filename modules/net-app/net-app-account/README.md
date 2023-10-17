@@ -4,13 +4,13 @@ This module deploys an Azure NetApp File.
 
 ## Navigation
 
-- [Resource types](#Resource-types)
+- [Resource Types](#Resource-Types)
+- [Usage examples](#Usage-examples)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
-- [Deployment examples](#Deployment-examples)
 
-## Resource types
+## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
@@ -20,61 +20,29 @@ This module deploys an Azure NetApp File.
 | `Microsoft.NetApp/netAppAccounts/capacityPools` | [2022-11-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.NetApp/netAppAccounts/capacityPools) |
 | `Microsoft.NetApp/netAppAccounts/capacityPools/volumes` | [2022-11-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.NetApp/netAppAccounts/capacityPools/volumes) |
 
-## Parameters
+## Usage examples
 
-**Required parameters**
+The following section provides usage examples for the module, which were used to validate and deploy the module successfully. For a full reference, please review the module's test folder in its repository.
 
-| Parameter Name | Type | Description |
-| :-- | :-- | :-- |
-| `name` | string | The name of the NetApp account. |
+>**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-**Optional parameters**
+>**Note**: To reference the module, please use the following syntax `br:bicep/modules/net-app.net-app-account:1.0.0`.
 
-| Parameter Name | Type | Default Value | Allowed Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `capacityPools` | array | `[]` |  | Capacity pools to create. |
-| `dnsServers` | string | `''` |  | Required if domainName is specified. Comma separated list of DNS server IP addresses (IPv4 only) required for the Active Directory (AD) domain join and SMB authentication operations to succeed. |
-| `domainJoinOU` | string | `''` |  | Used only if domainName is specified. LDAP Path for the Organization Unit (OU) where SMB Server machine accounts will be created (i.e. 'OU=SecondLevel,OU=FirstLevel'). |
-| `domainJoinPassword` | securestring | `''` |  | Required if domainName is specified. Password of the user specified in domainJoinUser parameter. |
-| `domainJoinUser` | string | `''` |  | Required if domainName is specified. Username of Active Directory domain administrator, with permissions to create SMB server machine account in the AD domain. |
-| `domainName` | string | `''` |  | Fully Qualified Active Directory DNS Domain Name (e.g. 'contoso.com'). |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
-| `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
-| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| `smbServerNamePrefix` | string | `''` |  | Required if domainName is specified. NetBIOS name of the SMB server. A computer account with this prefix will be registered in the AD and used to mount volumes. |
-| `tags` | object | `{object}` |  | Tags for all resources. |
-| `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
+- [Using only defaults](#example-1-using-only-defaults)
+- [Nfs3](#example-2-nfs3)
+- [Nfs41](#example-3-nfs41)
 
+### Example 1: _Using only defaults_
 
-## Outputs
+This instance deploys the module with the minimum set of required parameters.
 
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of the NetApp account. |
-| `resourceGroupName` | string | The name of the Resource Group the NetApp account was created in. |
-| `resourceId` | string | The Resource ID of the NetApp account. |
-
-## Cross-referenced modules
-
-_None_
-
-## Deployment examples
-
-The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
-   >**Note**: The name of each example is based on the name of the file from which it is taken.
-
-   >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
-
-<h3>Example 1: Min</h3>
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module netAppAccount './net-app/net-app-account/main.bicep' = {
+module netAppAccount 'br:bicep/modules/net-app.net-app-account:1.0.0' = {
   name: '${uniqueString(deployment().name, location)}-test-nanaamin'
   params: {
     // Required parameters
@@ -112,14 +80,14 @@ module netAppAccount './net-app/net-app-account/main.bicep' = {
 </details>
 <p>
 
-<h3>Example 2: Nfs3</h3>
+### Example 2: _Nfs3_
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module netAppAccount './net-app/net-app-account/main.bicep' = {
+module netAppAccount 'br:bicep/modules/net-app.net-app-account:1.0.0' = {
   name: '${uniqueString(deployment().name, location)}-test-nanaanfs3'
   params: {
     // Required parameters
@@ -339,14 +307,14 @@ module netAppAccount './net-app/net-app-account/main.bicep' = {
 </details>
 <p>
 
-<h3>Example 3: Nfs41</h3>
+### Example 3: _Nfs41_
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module netAppAccount './net-app/net-app-account/main.bicep' = {
+module netAppAccount 'br:bicep/modules/net-app.net-app-account:1.0.0' = {
   name: '${uniqueString(deployment().name, location)}-test-nanaanfs41'
   params: {
     // Required parameters
@@ -589,3 +557,142 @@ module netAppAccount './net-app/net-app-account/main.bicep' = {
 
 </details>
 <p>
+
+
+## Parameters
+
+**Required parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`name`](#parameter-name) | string | The name of the NetApp account. |
+
+**Optional parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`capacityPools`](#parameter-capacitypools) | array | Capacity pools to create. |
+| [`dnsServers`](#parameter-dnsservers) | string | Required if domainName is specified. Comma separated list of DNS server IP addresses (IPv4 only) required for the Active Directory (AD) domain join and SMB authentication operations to succeed. |
+| [`domainJoinOU`](#parameter-domainjoinou) | string | Used only if domainName is specified. LDAP Path for the Organization Unit (OU) where SMB Server machine accounts will be created (i.e. 'OU=SecondLevel,OU=FirstLevel'). |
+| [`domainJoinPassword`](#parameter-domainjoinpassword) | securestring | Required if domainName is specified. Password of the user specified in domainJoinUser parameter. |
+| [`domainJoinUser`](#parameter-domainjoinuser) | string | Required if domainName is specified. Username of Active Directory domain administrator, with permissions to create SMB server machine account in the AD domain. |
+| [`domainName`](#parameter-domainname) | string | Fully Qualified Active Directory DNS Domain Name (e.g. 'contoso.com'). |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`location`](#parameter-location) | string | Location for all resources. |
+| [`lock`](#parameter-lock) | string | Specify the type of lock. |
+| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| [`smbServerNamePrefix`](#parameter-smbservernameprefix) | string | Required if domainName is specified. NetBIOS name of the SMB server. A computer account with this prefix will be registered in the AD and used to mount volumes. |
+| [`tags`](#parameter-tags) | object | Tags for all resources. |
+| [`userAssignedIdentities`](#parameter-userassignedidentities) | object | The ID(s) to assign to the resource. |
+
+### Parameter: `capacityPools`
+
+Capacity pools to create.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `dnsServers`
+
+Required if domainName is specified. Comma separated list of DNS server IP addresses (IPv4 only) required for the Active Directory (AD) domain join and SMB authentication operations to succeed.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `domainJoinOU`
+
+Used only if domainName is specified. LDAP Path for the Organization Unit (OU) where SMB Server machine accounts will be created (i.e. 'OU=SecondLevel,OU=FirstLevel').
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `domainJoinPassword`
+
+Required if domainName is specified. Password of the user specified in domainJoinUser parameter.
+- Required: No
+- Type: securestring
+- Default: `''`
+
+### Parameter: `domainJoinUser`
+
+Required if domainName is specified. Username of Active Directory domain administrator, with permissions to create SMB server machine account in the AD domain.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `domainName`
+
+Fully Qualified Active Directory DNS Domain Name (e.g. 'contoso.com').
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `location`
+
+Location for all resources.
+- Required: No
+- Type: string
+- Default: `[resourceGroup().location]`
+
+### Parameter: `lock`
+
+Specify the type of lock.
+- Required: No
+- Type: string
+- Default: `''`
+- Allowed: `['', CanNotDelete, ReadOnly]`
+
+### Parameter: `name`
+
+The name of the NetApp account.
+- Required: Yes
+- Type: string
+
+### Parameter: `roleAssignments`
+
+Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `smbServerNamePrefix`
+
+Required if domainName is specified. NetBIOS name of the SMB server. A computer account with this prefix will be registered in the AD and used to mount volumes.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `tags`
+
+Tags for all resources.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `userAssignedIdentities`
+
+The ID(s) to assign to the resource.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+
+## Outputs
+
+| Output | Type | Description |
+| :-- | :-- | :-- |
+| `location` | string | The location the resource was deployed into. |
+| `name` | string | The name of the NetApp account. |
+| `resourceGroupName` | string | The name of the Resource Group the NetApp account was created in. |
+| `resourceId` | string | The Resource ID of the NetApp account. |
+
+## Cross-referenced modules
+
+_None_

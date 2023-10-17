@@ -5,10 +5,10 @@ This module deploys a CDN Profile.
 ## Navigation
 
 - [Resource Types](#Resource-Types)
+- [Usage examples](#Usage-examples)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
-- [Deployment examples](#Deployment-examples)
 
 ## Resource Types
 
@@ -28,68 +28,25 @@ This module deploys a CDN Profile.
 | `Microsoft.Cdn/profiles/ruleSets/rules` | [2023-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Cdn/profiles/ruleSets/rules) |
 | `Microsoft.Cdn/profiles/secrets` | [2023-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Cdn/profiles/secrets) |
 
-## Parameters
+## Usage examples
 
-**Required parameters**
+The following section provides usage examples for the module, which were used to validate and deploy the module successfully. For a full reference, please review the module's test folder in its repository.
 
-| Parameter Name | Type | Allowed Values | Description |
-| :-- | :-- | :-- | :-- |
-| `name` | string |  | Name of the CDN profile. |
-| `sku` | string | `[Custom_Verizon, Premium_AzureFrontDoor, Premium_Verizon, Standard_955BandWidth_ChinaCdn, Standard_Akamai, Standard_AvgBandWidth_ChinaCdn, Standard_AzureFrontDoor, Standard_ChinaCdn, Standard_Microsoft, Standard_Verizon, StandardPlus_955BandWidth_ChinaCdn, StandardPlus_AvgBandWidth_ChinaCdn, StandardPlus_ChinaCdn]` | The pricing tier (defines a CDN provider, feature list and rate) of the CDN profile. |
+>**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-**Conditional parameters**
+>**Note**: To reference the module, please use the following syntax `br:bicep/modules/cdn.profile:1.0.0`.
 
-| Parameter Name | Type | Description |
-| :-- | :-- | :-- |
-| `origionGroups` | array | Array of origin group objects. Required if the afdEndpoints is specified. |
+- [Afd](#example-1-afd)
+- [Using large parameter set](#example-2-using-large-parameter-set)
 
-**Optional parameters**
-
-| Parameter Name | Type | Default Value | Allowed Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `afdEndpoints` | array | `[]` |  | Array of AFD endpoint objects. |
-| `customDomains` | array | `[]` |  | Array of custom domain objects. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `endpointName` | string | `''` |  | Name of the endpoint under the profile which is unique globally. |
-| `endpointProperties` | object | `{object}` |  | Endpoint properties (see https://learn.microsoft.com/en-us/azure/templates/microsoft.cdn/profiles/endpoints?pivots=deployment-language-bicep#endpointproperties for details). |
-| `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
-| `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
-| `originResponseTimeoutSeconds` | int | `60` |  | Send and receive timeout on forwarding request to the origin. |
-| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| `ruleSets` | array | `[]` |  | Array of rule set objects. |
-| `secrets` | array | `[]` |  | Array of secret objects. |
-| `tags` | object | `{object}` |  | Endpoint tags. |
-
-
-## Outputs
-
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of the CDN profile. |
-| `profileType` | string | The type of the CDN profile. |
-| `resourceGroupName` | string | The resource group where the CDN profile is deployed. |
-| `resourceId` | string | The resource ID of the CDN profile. |
-
-## Cross-referenced modules
-
-_None_
-
-## Deployment examples
-
-The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
-   >**Note**: The name of each example is based on the name of the file from which it is taken.
-
-   >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
-
-<h3>Example 1: Afd</h3>
+### Example 1: _Afd_
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module profile './cdn/profile/main.bicep' = {
+module profile 'br:bicep/modules/cdn.profile:1.0.0' = {
   name: '${uniqueString(deployment().name, location)}-test-cdnpafd'
   params: {
     // Required parameters
@@ -297,14 +254,17 @@ module profile './cdn/profile/main.bicep' = {
 </details>
 <p>
 
-<h3>Example 2: Common</h3>
+### Example 2: _Using large parameter set_
+
+This instance deploys the module with most of its features enabled.
+
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module profile './cdn/profile/main.bicep' = {
+module profile 'br:bicep/modules/cdn.profile:1.0.0' = {
   name: '${uniqueString(deployment().name, location)}-test-cdnpcom'
   params: {
     // Required parameters
@@ -439,3 +399,156 @@ module profile './cdn/profile/main.bicep' = {
 
 </details>
 <p>
+
+
+## Parameters
+
+**Required parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`name`](#parameter-name) | string | Name of the CDN profile. |
+| [`sku`](#parameter-sku) | string | The pricing tier (defines a CDN provider, feature list and rate) of the CDN profile. |
+
+**Conditional parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`origionGroups`](#parameter-origiongroups) | array | Array of origin group objects. Required if the afdEndpoints is specified. |
+
+**Optional parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`afdEndpoints`](#parameter-afdendpoints) | array | Array of AFD endpoint objects. |
+| [`customDomains`](#parameter-customdomains) | array | Array of custom domain objects. |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`endpointName`](#parameter-endpointname) | string | Name of the endpoint under the profile which is unique globally. |
+| [`endpointProperties`](#parameter-endpointproperties) | object | Endpoint properties (see https://learn.microsoft.com/en-us/azure/templates/microsoft.cdn/profiles/endpoints?pivots=deployment-language-bicep#endpointproperties for details). |
+| [`location`](#parameter-location) | string | Location for all Resources. |
+| [`lock`](#parameter-lock) | string | Specify the type of lock. |
+| [`originResponseTimeoutSeconds`](#parameter-originresponsetimeoutseconds) | int | Send and receive timeout on forwarding request to the origin. |
+| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| [`ruleSets`](#parameter-rulesets) | array | Array of rule set objects. |
+| [`secrets`](#parameter-secrets) | array | Array of secret objects. |
+| [`tags`](#parameter-tags) | object | Endpoint tags. |
+
+### Parameter: `afdEndpoints`
+
+Array of AFD endpoint objects.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `customDomains`
+
+Array of custom domain objects.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `endpointName`
+
+Name of the endpoint under the profile which is unique globally.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `endpointProperties`
+
+Endpoint properties (see https://learn.microsoft.com/en-us/azure/templates/microsoft.cdn/profiles/endpoints?pivots=deployment-language-bicep#endpointproperties for details).
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `location`
+
+Location for all Resources.
+- Required: No
+- Type: string
+- Default: `[resourceGroup().location]`
+
+### Parameter: `lock`
+
+Specify the type of lock.
+- Required: No
+- Type: string
+- Default: `''`
+- Allowed: `['', CanNotDelete, ReadOnly]`
+
+### Parameter: `name`
+
+Name of the CDN profile.
+- Required: Yes
+- Type: string
+
+### Parameter: `originResponseTimeoutSeconds`
+
+Send and receive timeout on forwarding request to the origin.
+- Required: No
+- Type: int
+- Default: `60`
+
+### Parameter: `origionGroups`
+
+Array of origin group objects. Required if the afdEndpoints is specified.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `roleAssignments`
+
+Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `ruleSets`
+
+Array of rule set objects.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `secrets`
+
+Array of secret objects.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `sku`
+
+The pricing tier (defines a CDN provider, feature list and rate) of the CDN profile.
+- Required: Yes
+- Type: string
+- Allowed: `[Custom_Verizon, Premium_AzureFrontDoor, Premium_Verizon, Standard_955BandWidth_ChinaCdn, Standard_Akamai, Standard_AvgBandWidth_ChinaCdn, Standard_AzureFrontDoor, Standard_ChinaCdn, Standard_Microsoft, Standard_Verizon, StandardPlus_955BandWidth_ChinaCdn, StandardPlus_AvgBandWidth_ChinaCdn, StandardPlus_ChinaCdn]`
+
+### Parameter: `tags`
+
+Endpoint tags.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+
+## Outputs
+
+| Output | Type | Description |
+| :-- | :-- | :-- |
+| `location` | string | The location the resource was deployed into. |
+| `name` | string | The name of the CDN profile. |
+| `profileType` | string | The type of the CDN profile. |
+| `resourceGroupName` | string | The resource group where the CDN profile is deployed. |
+| `resourceId` | string | The resource ID of the CDN profile. |
+
+## Cross-referenced modules
+
+_None_

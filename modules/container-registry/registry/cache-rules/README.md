@@ -19,24 +19,64 @@ Cache for Azure Container Registry (Preview) feature allows users to cache conta
 
 **Required parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `registryName` | string | The name of the parent registry. Required if the template is used in a standalone deployment. |
-| `sourceRepository` | string | Source repository pulled from upstream. |
+| [`registryName`](#parameter-registryname) | string | The name of the parent registry. Required if the template is used in a standalone deployment. |
+| [`sourceRepository`](#parameter-sourcerepository) | string | Source repository pulled from upstream. |
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `credentialSetResourceId` | string | `''` | The resource ID of the credential store which is associated with the cache rule. |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `name` | string | `[replace(replace(parameters('sourceRepository'), '/', '-'), '.', '-')]` | The name of the cache rule. Will be dereived from the source repository name if not defined. |
-| `targetRepository` | string | `[parameters('sourceRepository')]` | Target repository specified in docker pull command. E.g.: docker pull myregistry.azurecr.io/{targetRepository}:{tag}. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`credentialSetResourceId`](#parameter-credentialsetresourceid) | string | The resource ID of the credential store which is associated with the cache rule. |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`name`](#parameter-name) | string | The name of the cache rule. Will be dereived from the source repository name if not defined. |
+| [`targetRepository`](#parameter-targetrepository) | string | Target repository specified in docker pull command. E.g.: docker pull myregistry.azurecr.io/{targetRepository}:{tag}. |
+
+### Parameter: `credentialSetResourceId`
+
+The resource ID of the credential store which is associated with the cache rule.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `name`
+
+The name of the cache rule. Will be dereived from the source repository name if not defined.
+- Required: No
+- Type: string
+- Default: `[replace(replace(parameters('sourceRepository'), '/', '-'), '.', '-')]`
+
+### Parameter: `registryName`
+
+The name of the parent registry. Required if the template is used in a standalone deployment.
+- Required: Yes
+- Type: string
+
+### Parameter: `sourceRepository`
+
+Source repository pulled from upstream.
+- Required: Yes
+- Type: string
+
+### Parameter: `targetRepository`
+
+Target repository specified in docker pull command. E.g.: docker pull myregistry.azurecr.io/{targetRepository}:{tag}.
+- Required: No
+- Type: string
+- Default: `[parameters('sourceRepository')]`
 
 
 ## Outputs
 
-| Output Name | Type | Description |
+| Output | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The Name of the Cache Rule. |
 | `resourceGroupName` | string | The name of the Cache Rule. |

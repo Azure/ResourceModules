@@ -4,74 +4,42 @@ This module deploys a Policy Exemption at a Management Group, Subscription or Re
 
 ## Navigation
 
-- [Resource types](#Resource-types)
+- [Resource Types](#Resource-Types)
+- [Usage examples](#Usage-examples)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
-- [Deployment examples](#Deployment-examples)
 - [Notes](#Notes)
 
-## Resource types
+## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/policyExemptions` | [2022-07-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-07-01-preview/policyExemptions) |
 
-## Parameters
+## Usage examples
 
-**Required parameters**
+The following section provides usage examples for the module, which were used to validate and deploy the module successfully. For a full reference, please review the module's test folder in its repository.
 
-| Parameter Name | Type | Description |
-| :-- | :-- | :-- |
-| `name` | string | Specifies the name of the policy exemption. Maximum length is 64 characters for management group, subscription and resource group scopes. |
-| `policyAssignmentId` | string | The resource ID of the policy assignment that is being exempted. |
+>**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-**Optional parameters**
+>**Note**: To reference the module, please use the following syntax `br:bicep/modules/authorization.policy-exemption:1.0.0`.
 
-| Parameter Name | Type | Default Value | Allowed Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `assignmentScopeValidation` | string | `''` | `['', Default, DoNotValidate]` | The option whether validate the exemption is at or under the assignment scope. |
-| `description` | string | `''` |  | The description of the policy exemption. |
-| `displayName` | string | `''` |  | The display name of the policy exemption. Maximum length is 128 characters. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `exemptionCategory` | string | `'Mitigated'` | `[Mitigated, Waiver]` | The policy exemption category. Possible values are Waiver and Mitigated. Default is Mitigated. |
-| `expiresOn` | string | `''` |  | The expiration date and time (in UTC ISO 8601 format yyyy-MM-ddTHH:mm:ssZ) of the policy exemption. e.g. 2021-10-02T03:57:00.000Z. |
-| `location` | string | `[deployment().location]` |  | Location deployment metadata. |
-| `managementGroupId` | string | `[managementGroup().name]` |  | The group ID of the management group to be exempted from the policy assignment. If not provided, will use the current scope for deployment. |
-| `metadata` | object | `{object}` |  | The policy exemption metadata. Metadata is an open ended object and is typically a collection of key-value pairs. |
-| `policyDefinitionReferenceIds` | array | `[]` |  | The policy definition reference ID list when the associated policy assignment is an assignment of a policy set definition. |
-| `resourceGroupName` | string | `''` |  | The name of the resource group to be exempted from the policy assignment. Must also use the subscription ID parameter. |
-| `resourceSelectors` | array | `[]` |  | The resource selector list to filter policies by resource properties. |
-| `subscriptionId` | string | `''` |  | The subscription ID of the subscription to be exempted from the policy assignment. Cannot use with management group ID parameter. |
+- [Mg.Common](#example-1-mgcommon)
+- [Mg.Min](#example-2-mgmin)
+- [Rg.Common](#example-3-rgcommon)
+- [Rg.Min](#example-4-rgmin)
+- [Sub.Common](#example-5-subcommon)
+- [Sub.Min](#example-6-submin)
 
-
-## Outputs
-
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `name` | string | Policy Exemption Name. |
-| `resourceId` | string | Policy Exemption resource ID. |
-| `scope` | string | Policy Exemption Scope. |
-
-## Cross-referenced modules
-
-_None_
-
-## Deployment examples
-
-The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
-   >**Note**: The name of each example is based on the name of the file from which it is taken.
-
-   >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
-
-<h3>Example 1: Mg.Common</h3>
+### Example 1: _Mg.Common_
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module policyExemption './authorization/policy-exemption/main.bicep' = {
+module policyExemption 'br:bicep/modules/authorization.policy-exemption:1.0.0' = {
   name: '${uniqueString(deployment().name)}-test-apemgcom'
   params: {
     // Required parameters
@@ -177,14 +145,14 @@ module policyExemption './authorization/policy-exemption/main.bicep' = {
 </details>
 <p>
 
-<h3>Example 2: Mg.Min</h3>
+### Example 2: _Mg.Min_
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module policyExemption './authorization/policy-exemption/main.bicep' = {
+module policyExemption 'br:bicep/modules/authorization.policy-exemption:1.0.0' = {
   name: '${uniqueString(deployment().name)}-test-apemgmin'
   params: {
     // Required parameters
@@ -226,14 +194,14 @@ module policyExemption './authorization/policy-exemption/main.bicep' = {
 </details>
 <p>
 
-<h3>Example 3: Rg.Common</h3>
+### Example 3: _Rg.Common_
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module policyExemption './authorization/policy-exemption/main.bicep' = {
+module policyExemption 'br:bicep/modules/authorization.policy-exemption:1.0.0' = {
   name: '${uniqueString(deployment().name)}-test-apergcom'
   params: {
     // Required parameters
@@ -339,14 +307,14 @@ module policyExemption './authorization/policy-exemption/main.bicep' = {
 </details>
 <p>
 
-<h3>Example 4: Rg.Min</h3>
+### Example 4: _Rg.Min_
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module policyExemption './authorization/policy-exemption/main.bicep' = {
+module policyExemption 'br:bicep/modules/authorization.policy-exemption:1.0.0' = {
   name: '${uniqueString(deployment().name)}-test-apergmin'
   params: {
     // Required parameters
@@ -388,14 +356,14 @@ module policyExemption './authorization/policy-exemption/main.bicep' = {
 </details>
 <p>
 
-<h3>Example 5: Sub.Common</h3>
+### Example 5: _Sub.Common_
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module policyExemption './authorization/policy-exemption/main.bicep' = {
+module policyExemption 'br:bicep/modules/authorization.policy-exemption:1.0.0' = {
   name: '${uniqueString(deployment().name)}-test-apesubcom'
   params: {
     // Required parameters
@@ -501,14 +469,14 @@ module policyExemption './authorization/policy-exemption/main.bicep' = {
 </details>
 <p>
 
-<h3>Example 6: Sub.Min</h3>
+### Example 6: _Sub.Min_
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module policyExemption './authorization/policy-exemption/main.bicep' = {
+module policyExemption 'br:bicep/modules/authorization.policy-exemption:1.0.0' = {
   name: '${uniqueString(deployment().name)}-test-apesubmin'
   params: {
     // Required parameters
@@ -550,6 +518,151 @@ module policyExemption './authorization/policy-exemption/main.bicep' = {
 </details>
 <p>
 
+
+## Parameters
+
+**Required parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`name`](#parameter-name) | string | Specifies the name of the policy exemption. Maximum length is 64 characters for management group, subscription and resource group scopes. |
+| [`policyAssignmentId`](#parameter-policyassignmentid) | string | The resource ID of the policy assignment that is being exempted. |
+
+**Optional parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`assignmentScopeValidation`](#parameter-assignmentscopevalidation) | string | The option whether validate the exemption is at or under the assignment scope. |
+| [`description`](#parameter-description) | string | The description of the policy exemption. |
+| [`displayName`](#parameter-displayname) | string | The display name of the policy exemption. Maximum length is 128 characters. |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`exemptionCategory`](#parameter-exemptioncategory) | string | The policy exemption category. Possible values are Waiver and Mitigated. Default is Mitigated. |
+| [`expiresOn`](#parameter-expireson) | string | The expiration date and time (in UTC ISO 8601 format yyyy-MM-ddTHH:mm:ssZ) of the policy exemption. e.g. 2021-10-02T03:57:00.000Z. |
+| [`location`](#parameter-location) | string | Location deployment metadata. |
+| [`managementGroupId`](#parameter-managementgroupid) | string | The group ID of the management group to be exempted from the policy assignment. If not provided, will use the current scope for deployment. |
+| [`metadata`](#parameter-metadata) | object | The policy exemption metadata. Metadata is an open ended object and is typically a collection of key-value pairs. |
+| [`policyDefinitionReferenceIds`](#parameter-policydefinitionreferenceids) | array | The policy definition reference ID list when the associated policy assignment is an assignment of a policy set definition. |
+| [`resourceGroupName`](#parameter-resourcegroupname) | string | The name of the resource group to be exempted from the policy assignment. Must also use the subscription ID parameter. |
+| [`resourceSelectors`](#parameter-resourceselectors) | array | The resource selector list to filter policies by resource properties. |
+| [`subscriptionId`](#parameter-subscriptionid) | string | The subscription ID of the subscription to be exempted from the policy assignment. Cannot use with management group ID parameter. |
+
+### Parameter: `assignmentScopeValidation`
+
+The option whether validate the exemption is at or under the assignment scope.
+- Required: No
+- Type: string
+- Default: `''`
+- Allowed: `['', Default, DoNotValidate]`
+
+### Parameter: `description`
+
+The description of the policy exemption.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `displayName`
+
+The display name of the policy exemption. Maximum length is 128 characters.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `exemptionCategory`
+
+The policy exemption category. Possible values are Waiver and Mitigated. Default is Mitigated.
+- Required: No
+- Type: string
+- Default: `'Mitigated'`
+- Allowed: `[Mitigated, Waiver]`
+
+### Parameter: `expiresOn`
+
+The expiration date and time (in UTC ISO 8601 format yyyy-MM-ddTHH:mm:ssZ) of the policy exemption. e.g. 2021-10-02T03:57:00.000Z.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `location`
+
+Location deployment metadata.
+- Required: No
+- Type: string
+- Default: `[deployment().location]`
+
+### Parameter: `managementGroupId`
+
+The group ID of the management group to be exempted from the policy assignment. If not provided, will use the current scope for deployment.
+- Required: No
+- Type: string
+- Default: `[managementGroup().name]`
+
+### Parameter: `metadata`
+
+The policy exemption metadata. Metadata is an open ended object and is typically a collection of key-value pairs.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `name`
+
+Specifies the name of the policy exemption. Maximum length is 64 characters for management group, subscription and resource group scopes.
+- Required: Yes
+- Type: string
+
+### Parameter: `policyAssignmentId`
+
+The resource ID of the policy assignment that is being exempted.
+- Required: Yes
+- Type: string
+
+### Parameter: `policyDefinitionReferenceIds`
+
+The policy definition reference ID list when the associated policy assignment is an assignment of a policy set definition.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `resourceGroupName`
+
+The name of the resource group to be exempted from the policy assignment. Must also use the subscription ID parameter.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `resourceSelectors`
+
+The resource selector list to filter policies by resource properties.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `subscriptionId`
+
+The subscription ID of the subscription to be exempted from the policy assignment. Cannot use with management group ID parameter.
+- Required: No
+- Type: string
+- Default: `''`
+
+
+## Outputs
+
+| Output | Type | Description |
+| :-- | :-- | :-- |
+| `name` | string | Policy Exemption Name. |
+| `resourceId` | string | Policy Exemption resource ID. |
+| `scope` | string | Policy Exemption Scope. |
+
+## Cross-referenced modules
+
+_None_
 
 ## Notes
 

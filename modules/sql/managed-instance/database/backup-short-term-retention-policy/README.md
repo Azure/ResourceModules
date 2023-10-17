@@ -19,28 +19,60 @@ This module deploys a SQL Managed Instance Database Backup Short-Term Retention 
 
 **Required parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the Short Term Retention backup policy. For example "default". |
+| [`name`](#parameter-name) | string | The name of the Short Term Retention backup policy. For example "default". |
 
 **Conditional parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `databaseName` | string | The name of the parent SQL managed instance database. Required if the template is used in a standalone deployment. |
-| `managedInstanceName` | string | The name of the parent SQL managed instance. Required if the template is used in a standalone deployment. |
+| [`databaseName`](#parameter-databasename) | string | The name of the parent SQL managed instance database. Required if the template is used in a standalone deployment. |
+| [`managedInstanceName`](#parameter-managedinstancename) | string | The name of the parent SQL managed instance. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `retentionDays` | int | `35` | The backup retention period in days. This is how many days Point-in-Time Restore will be supported. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`retentionDays`](#parameter-retentiondays) | int | The backup retention period in days. This is how many days Point-in-Time Restore will be supported. |
+
+### Parameter: `databaseName`
+
+The name of the parent SQL managed instance database. Required if the template is used in a standalone deployment.
+- Required: Yes
+- Type: string
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `managedInstanceName`
+
+The name of the parent SQL managed instance. Required if the template is used in a standalone deployment.
+- Required: Yes
+- Type: string
+
+### Parameter: `name`
+
+The name of the Short Term Retention backup policy. For example "default".
+- Required: Yes
+- Type: string
+
+### Parameter: `retentionDays`
+
+The backup retention period in days. This is how many days Point-in-Time Restore will be supported.
+- Required: No
+- Type: int
+- Default: `35`
 
 
 ## Outputs
 
-| Output Name | Type | Description |
+| Output | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the deployed database backup short-term retention policy. |
 | `resourceGroupName` | string | The resource group of the deployed database backup short-term retention policy. |

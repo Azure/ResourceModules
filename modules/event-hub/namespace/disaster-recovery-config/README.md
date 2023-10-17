@@ -19,27 +19,53 @@ This module deploys an Event Hub Namespace Disaster Recovery Config.
 
 **Required parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the disaster recovery config. |
+| [`name`](#parameter-name) | string | The name of the disaster recovery config. |
 
 **Conditional parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `namespaceName` | string | The name of the parent event hub namespace. Required if the template is used in a standalone deployment. |
+| [`namespaceName`](#parameter-namespacename) | string | The name of the parent event hub namespace. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `partnerNamespaceId` | string | `''` | Resource ID of the Primary/Secondary event hub namespace name, which is part of GEO DR pairing. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`partnerNamespaceId`](#parameter-partnernamespaceid) | string | Resource ID of the Primary/Secondary event hub namespace name, which is part of GEO DR pairing. |
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `name`
+
+The name of the disaster recovery config.
+- Required: Yes
+- Type: string
+
+### Parameter: `namespaceName`
+
+The name of the parent event hub namespace. Required if the template is used in a standalone deployment.
+- Required: Yes
+- Type: string
+
+### Parameter: `partnerNamespaceId`
+
+Resource ID of the Primary/Secondary event hub namespace name, which is part of GEO DR pairing.
+- Required: No
+- Type: string
+- Default: `''`
 
 
 ## Outputs
 
-| Output Name | Type | Description |
+| Output | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the disaster recovery config. |
 | `resourceGroupName` | string | The name of the resource group the disaster recovery config was created in. |

@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.21.1.54444",
-      "templateHash": "4531061772881706732"
+      "version": "0.22.6.54827",
+      "templateHash": "212662749954902934"
     },
     "name": "Service Fabric Clusters",
     "description": "This module deploys a Service Fabric Cluster.",
@@ -443,8 +443,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "4382638068628666696"
+              "version": "0.22.6.54827",
+              "templateHash": "6506040938777455648"
             }
           },
           "parameters": {
@@ -588,8 +588,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "14898826188473594106"
+              "version": "0.22.6.54827",
+              "templateHash": "3441501457466891361"
             },
             "name": "Service Fabric Cluster Application Types",
             "description": "This module deploys a Service Fabric Cluster Application Type.",

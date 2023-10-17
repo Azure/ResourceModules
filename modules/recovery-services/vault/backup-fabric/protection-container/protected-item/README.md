@@ -4,12 +4,12 @@ This module deploys a Recovery Services Vault Protection Container Protected Ite
 
 ## Navigation
 
-- [Resource types](#Resource-types)
+- [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
 
-## Resource types
+## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
@@ -19,31 +19,82 @@ This module deploys a Recovery Services Vault Protection Container Protected Ite
 
 **Required parameters**
 
-| Parameter Name | Type | Allowed Values | Description |
-| :-- | :-- | :-- | :-- |
-| `name` | string |  | Name of the resource. |
-| `policyId` | string |  | ID of the backup policy with which this item is backed up. |
-| `protectedItemType` | string | `[AzureFileShareProtectedItem, AzureVmWorkloadSAPAseDatabase, AzureVmWorkloadSAPHanaDatabase, AzureVmWorkloadSQLDatabase, DPMProtectedItem, GenericProtectedItem, MabFileFolderProtectedItem, Microsoft.ClassicCompute/virtualMachines, Microsoft.Compute/virtualMachines, Microsoft.Sql/servers/databases]` | The backup item type. |
-| `sourceResourceId` | string |  | Resource ID of the resource to back up. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`name`](#parameter-name) | string | Name of the resource. |
+| [`policyId`](#parameter-policyid) | string | ID of the backup policy with which this item is backed up. |
+| [`protectedItemType`](#parameter-protecteditemtype) | string | The backup item type. |
+| [`sourceResourceId`](#parameter-sourceresourceid) | string | Resource ID of the resource to back up. |
 
 **Conditional parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `protectionContainerName` | string | Name of the Azure Recovery Service Vault Protection Container. Required if the template is used in a standalone deployment. |
-| `recoveryVaultName` | string | The name of the parent Azure Recovery Service Vault. Required if the template is used in a standalone deployment. |
+| [`protectionContainerName`](#parameter-protectioncontainername) | string | Name of the Azure Recovery Service Vault Protection Container. Required if the template is used in a standalone deployment. |
+| [`recoveryVaultName`](#parameter-recoveryvaultname) | string | The name of the parent Azure Recovery Service Vault. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `location` | string | `[resourceGroup().location]` | Location for all resources. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`location`](#parameter-location) | string | Location for all resources. |
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `location`
+
+Location for all resources.
+- Required: No
+- Type: string
+- Default: `[resourceGroup().location]`
+
+### Parameter: `name`
+
+Name of the resource.
+- Required: Yes
+- Type: string
+
+### Parameter: `policyId`
+
+ID of the backup policy with which this item is backed up.
+- Required: Yes
+- Type: string
+
+### Parameter: `protectedItemType`
+
+The backup item type.
+- Required: Yes
+- Type: string
+- Allowed: `[AzureFileShareProtectedItem, AzureVmWorkloadSAPAseDatabase, AzureVmWorkloadSAPHanaDatabase, AzureVmWorkloadSQLDatabase, DPMProtectedItem, GenericProtectedItem, MabFileFolderProtectedItem, Microsoft.ClassicCompute/virtualMachines, Microsoft.Compute/virtualMachines, Microsoft.Sql/servers/databases]`
+
+### Parameter: `protectionContainerName`
+
+Name of the Azure Recovery Service Vault Protection Container. Required if the template is used in a standalone deployment.
+- Required: Yes
+- Type: string
+
+### Parameter: `recoveryVaultName`
+
+The name of the parent Azure Recovery Service Vault. Required if the template is used in a standalone deployment.
+- Required: Yes
+- Type: string
+
+### Parameter: `sourceResourceId`
+
+Resource ID of the resource to back up.
+- Required: Yes
+- Type: string
 
 
 ## Outputs
 
-| Output Name | Type | Description |
+| Output | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The Name of the protected item. |
 | `resourceGroupName` | string | The name of the Resource Group the protected item was created in. |

@@ -5,10 +5,10 @@ This module deploys a DBforPostgreSQL Flexible Server.
 ## Navigation
 
 - [Resource Types](#Resource-Types)
+- [Usage examples](#Usage-examples)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
-- [Deployment examples](#Deployment-examples)
 
 ## Resource Types
 
@@ -23,93 +23,29 @@ This module deploys a DBforPostgreSQL Flexible Server.
 | `Microsoft.DBforPostgreSQL/flexibleServers/firewallRules` | [2022-12-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DBforPostgreSQL/2022-12-01/flexibleServers/firewallRules) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 
-## Parameters
+## Usage examples
 
-**Required parameters**
+The following section provides usage examples for the module, which were used to validate and deploy the module successfully. For a full reference, please review the module's test folder in its repository.
 
-| Parameter Name | Type | Allowed Values | Description |
-| :-- | :-- | :-- | :-- |
-| `name` | string |  | The name of the PostgreSQL flexible server. |
-| `skuName` | string |  | The name of the sku, typically, tier + family + cores, e.g. Standard_D4s_v3. |
-| `tier` | string | `[Burstable, GeneralPurpose, MemoryOptimized]` | The tier of the particular SKU. Tier must align with the "skuName" property. Example, tier cannot be "Burstable" if skuName is "Standard_D4s_v3". |
+>**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-**Conditional parameters**
+>**Note**: To reference the module, please use the following syntax `br:bicep/modules/db-for-postgre-sql.flexible-server:1.0.0`.
 
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `cMKKeyVaultResourceId` | string | `''` | The resource ID of a key vault to reference a customer managed key for encryption from. Required if 'cMKKeyName' is not empty. |
-| `cMKUserAssignedIdentityResourceId` | string | `''` | User assigned identity to use when fetching the customer managed key. The identity should have key usage permissions on the Key Vault Key. Required if 'cMKKeyName' is not empty. |
-| `pointInTimeUTC` | string | `''` | Required if "createMode" is set to "PointInTimeRestore". |
-| `sourceServerResourceId` | string | `''` | Required if "createMode" is set to "PointInTimeRestore". |
-| `userAssignedIdentities` | object | `{object}` | The ID(s) to assign to the resource. Required if 'cMKKeyName' is not empty. |
+- [Using only defaults](#example-1-using-only-defaults)
+- [Private](#example-2-private)
+- [Public](#example-3-public)
 
-**Optional parameters**
+### Example 1: _Using only defaults_
 
-| Parameter Name | Type | Default Value | Allowed Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `activeDirectoryAuth` | string | `'Enabled'` | `[Disabled, Enabled]` | If Enabled, Azure Active Directory authentication is enabled. |
-| `administratorLogin` | string | `''` |  | The administrator login name of a server. Can only be specified when the PostgreSQL server is being created. |
-| `administratorLoginPassword` | securestring | `''` |  | The administrator login password. |
-| `administrators` | array | `[]` |  | The Azure AD administrators when AAD authentication enabled. |
-| `availabilityZone` | string | `''` | `['', 1, 2, 3]` | Availability zone information of the server. Default will have no preference set. |
-| `backupRetentionDays` | int | `7` |  | Backup retention days for the server. |
-| `cMKKeyName` | string | `''` |  | The name of the customer managed key to use for encryption. |
-| `cMKKeyVersion` | string | `''` |  | The version of the customer managed key to reference for encryption. If not provided, the latest key version is used. |
-| `configurations` | array | `[]` |  | The configurations to create in the server. |
-| `createMode` | string | `'Default'` | `[Create, Default, PointInTimeRestore, Update]` | The mode to create a new PostgreSQL server. |
-| `databases` | array | `[]` |  | The databases to create in the server. |
-| `delegatedSubnetResourceId` | string | `''` |  | Delegated subnet arm resource ID. Used when the desired connectivity mode is "Private Access" - virtual network integration. |
-| `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
-| `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
-| `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `['', allLogs, PostgreSQLFlexDatabaseXacts, PostgreSQLFlexQueryStoreRuntime, PostgreSQLFlexQueryStoreWaitStats, PostgreSQLFlexSessions, PostgreSQLFlexTableStats, PostgreSQLLogs]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
-| `diagnosticMetricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | The name of metrics that will be streamed. |
-| `diagnosticSettingsName` | string | `''` |  | The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings". |
-| `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
-| `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `firewallRules` | array | `[]` |  | The firewall rules to create in the PostgreSQL flexible server. |
-| `geoRedundantBackup` | string | `'Disabled'` | `[Disabled, Enabled]` | A value indicating whether Geo-Redundant backup is enabled on the server. Should be left disabled if 'cMKKeyName' is not empty. |
-| `highAvailability` | string | `'Disabled'` | `[Disabled, SameZone, ZoneRedundant]` | The mode for high availability. |
-| `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
-| `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
-| `maintenanceWindow` | object | `{object}` |  | Properties for the maintenence window. If provided, "customWindow" property must exist and set to "Enabled". |
-| `passwordAuth` | string | `'Disabled'` | `[Disabled, Enabled]` | If Enabled, password authentication is enabled. |
-| `privateDnsZoneArmResourceId` | string | `''` |  | Private dns zone arm resource ID. Used when the desired connectivity mode is "Private Access" and required when "delegatedSubnetResourceId" is used. The Private DNS Zone must be lined to the Virtual Network referenced in "delegatedSubnetResourceId". |
-| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| `storageSizeGB` | int | `32` | `[32, 64, 128, 256, 512, 1024, 2048, 4096, 8192, 16384]` | Max storage allowed for a server. |
-| `tags` | object | `{object}` |  | Tags of the resource. |
-| `tenantId` | string | `''` |  | Tenant id of the server. |
-| `version` | string | `'15'` | `[11, 12, 13, 14, 15]` | PostgreSQL Server version. |
+This instance deploys the module with the minimum set of required parameters.
 
-
-## Outputs
-
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of the deployed PostgreSQL Flexible server. |
-| `resourceGroupName` | string | The resource group of the deployed PostgreSQL Flexible server. |
-| `resourceId` | string | The resource ID of the deployed PostgreSQL Flexible server. |
-
-## Cross-referenced modules
-
-_None_
-
-## Deployment examples
-
-The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
-   >**Note**: The name of each example is based on the name of the file from which it is taken.
-
-   >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
-
-<h3>Example 1: Min</h3>
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module flexibleServer './db-for-postgre-sql/flexible-server/main.bicep' = {
+module flexibleServer 'br:bicep/modules/db-for-postgre-sql.flexible-server:1.0.0' = {
   name: '${uniqueString(deployment().name, location)}-test-dfpsfsmin'
   params: {
     // Required parameters
@@ -163,14 +99,14 @@ module flexibleServer './db-for-postgre-sql/flexible-server/main.bicep' = {
 </details>
 <p>
 
-<h3>Example 2: Private</h3>
+### Example 2: _Private_
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module flexibleServer './db-for-postgre-sql/flexible-server/main.bicep' = {
+module flexibleServer 'br:bicep/modules/db-for-postgre-sql.flexible-server:1.0.0' = {
   name: '${uniqueString(deployment().name, location)}-test-dfpsfspvt'
   params: {
     // Required parameters
@@ -312,14 +248,14 @@ module flexibleServer './db-for-postgre-sql/flexible-server/main.bicep' = {
 </details>
 <p>
 
-<h3>Example 3: Public</h3>
+### Example 3: _Public_
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module flexibleServer './db-for-postgre-sql/flexible-server/main.bicep' = {
+module flexibleServer 'br:bicep/modules/db-for-postgre-sql.flexible-server:1.0.0' = {
   name: '${uniqueString(deployment().name, location)}-test-dfpsfsp'
   params: {
     // Required parameters
@@ -530,3 +466,372 @@ module flexibleServer './db-for-postgre-sql/flexible-server/main.bicep' = {
 
 </details>
 <p>
+
+
+## Parameters
+
+**Required parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`name`](#parameter-name) | string | The name of the PostgreSQL flexible server. |
+| [`skuName`](#parameter-skuname) | string | The name of the sku, typically, tier + family + cores, e.g. Standard_D4s_v3. |
+| [`tier`](#parameter-tier) | string | The tier of the particular SKU. Tier must align with the "skuName" property. Example, tier cannot be "Burstable" if skuName is "Standard_D4s_v3". |
+
+**Conditional parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`cMKKeyVaultResourceId`](#parameter-cmkkeyvaultresourceid) | string | The resource ID of a key vault to reference a customer managed key for encryption from. Required if 'cMKKeyName' is not empty. |
+| [`cMKUserAssignedIdentityResourceId`](#parameter-cmkuserassignedidentityresourceid) | string | User assigned identity to use when fetching the customer managed key. The identity should have key usage permissions on the Key Vault Key. Required if 'cMKKeyName' is not empty. |
+| [`pointInTimeUTC`](#parameter-pointintimeutc) | string | Required if "createMode" is set to "PointInTimeRestore". |
+| [`sourceServerResourceId`](#parameter-sourceserverresourceid) | string | Required if "createMode" is set to "PointInTimeRestore". |
+| [`userAssignedIdentities`](#parameter-userassignedidentities) | object | The ID(s) to assign to the resource. Required if 'cMKKeyName' is not empty. |
+
+**Optional parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`activeDirectoryAuth`](#parameter-activedirectoryauth) | string | If Enabled, Azure Active Directory authentication is enabled. |
+| [`administratorLogin`](#parameter-administratorlogin) | string | The administrator login name of a server. Can only be specified when the PostgreSQL server is being created. |
+| [`administratorLoginPassword`](#parameter-administratorloginpassword) | securestring | The administrator login password. |
+| [`administrators`](#parameter-administrators) | array | The Azure AD administrators when AAD authentication enabled. |
+| [`availabilityZone`](#parameter-availabilityzone) | string | Availability zone information of the server. Default will have no preference set. |
+| [`backupRetentionDays`](#parameter-backupretentiondays) | int | Backup retention days for the server. |
+| [`cMKKeyName`](#parameter-cmkkeyname) | string | The name of the customer managed key to use for encryption. |
+| [`cMKKeyVersion`](#parameter-cmkkeyversion) | string | The version of the customer managed key to reference for encryption. If not provided, the latest key version is used. |
+| [`configurations`](#parameter-configurations) | array | The configurations to create in the server. |
+| [`createMode`](#parameter-createmode) | string | The mode to create a new PostgreSQL server. |
+| [`databases`](#parameter-databases) | array | The databases to create in the server. |
+| [`delegatedSubnetResourceId`](#parameter-delegatedsubnetresourceid) | string | Delegated subnet arm resource ID. Used when the desired connectivity mode is "Private Access" - virtual network integration. |
+| [`diagnosticEventHubAuthorizationRuleId`](#parameter-diagnosticeventhubauthorizationruleid) | string | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
+| [`diagnosticEventHubName`](#parameter-diagnosticeventhubname) | string | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
+| [`diagnosticLogCategoriesToEnable`](#parameter-diagnosticlogcategoriestoenable) | array | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
+| [`diagnosticMetricsToEnable`](#parameter-diagnosticmetricstoenable) | array | The name of metrics that will be streamed. |
+| [`diagnosticSettingsName`](#parameter-diagnosticsettingsname) | string | The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings". |
+| [`diagnosticStorageAccountId`](#parameter-diagnosticstorageaccountid) | string | Resource ID of the diagnostic storage account. |
+| [`diagnosticWorkspaceId`](#parameter-diagnosticworkspaceid) | string | Resource ID of the diagnostic log analytics workspace. |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`firewallRules`](#parameter-firewallrules) | array | The firewall rules to create in the PostgreSQL flexible server. |
+| [`geoRedundantBackup`](#parameter-georedundantbackup) | string | A value indicating whether Geo-Redundant backup is enabled on the server. Should be left disabled if 'cMKKeyName' is not empty. |
+| [`highAvailability`](#parameter-highavailability) | string | The mode for high availability. |
+| [`location`](#parameter-location) | string | Location for all resources. |
+| [`lock`](#parameter-lock) | string | Specify the type of lock. |
+| [`maintenanceWindow`](#parameter-maintenancewindow) | object | Properties for the maintenence window. If provided, "customWindow" property must exist and set to "Enabled". |
+| [`passwordAuth`](#parameter-passwordauth) | string | If Enabled, password authentication is enabled. |
+| [`privateDnsZoneArmResourceId`](#parameter-privatednszonearmresourceid) | string | Private dns zone arm resource ID. Used when the desired connectivity mode is "Private Access" and required when "delegatedSubnetResourceId" is used. The Private DNS Zone must be lined to the Virtual Network referenced in "delegatedSubnetResourceId". |
+| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| [`storageSizeGB`](#parameter-storagesizegb) | int | Max storage allowed for a server. |
+| [`tags`](#parameter-tags) | object | Tags of the resource. |
+| [`tenantId`](#parameter-tenantid) | string | Tenant id of the server. |
+| [`version`](#parameter-version) | string | PostgreSQL Server version. |
+
+### Parameter: `activeDirectoryAuth`
+
+If Enabled, Azure Active Directory authentication is enabled.
+- Required: No
+- Type: string
+- Default: `'Enabled'`
+- Allowed: `[Disabled, Enabled]`
+
+### Parameter: `administratorLogin`
+
+The administrator login name of a server. Can only be specified when the PostgreSQL server is being created.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `administratorLoginPassword`
+
+The administrator login password.
+- Required: No
+- Type: securestring
+- Default: `''`
+
+### Parameter: `administrators`
+
+The Azure AD administrators when AAD authentication enabled.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `availabilityZone`
+
+Availability zone information of the server. Default will have no preference set.
+- Required: No
+- Type: string
+- Default: `''`
+- Allowed: `['', 1, 2, 3]`
+
+### Parameter: `backupRetentionDays`
+
+Backup retention days for the server.
+- Required: No
+- Type: int
+- Default: `7`
+
+### Parameter: `cMKKeyName`
+
+The name of the customer managed key to use for encryption.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `cMKKeyVaultResourceId`
+
+The resource ID of a key vault to reference a customer managed key for encryption from. Required if 'cMKKeyName' is not empty.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `cMKKeyVersion`
+
+The version of the customer managed key to reference for encryption. If not provided, the latest key version is used.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `cMKUserAssignedIdentityResourceId`
+
+User assigned identity to use when fetching the customer managed key. The identity should have key usage permissions on the Key Vault Key. Required if 'cMKKeyName' is not empty.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `configurations`
+
+The configurations to create in the server.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `createMode`
+
+The mode to create a new PostgreSQL server.
+- Required: No
+- Type: string
+- Default: `'Default'`
+- Allowed: `[Create, Default, PointInTimeRestore, Update]`
+
+### Parameter: `databases`
+
+The databases to create in the server.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `delegatedSubnetResourceId`
+
+Delegated subnet arm resource ID. Used when the desired connectivity mode is "Private Access" - virtual network integration.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `diagnosticEventHubAuthorizationRuleId`
+
+Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `diagnosticEventHubName`
+
+Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `diagnosticLogCategoriesToEnable`
+
+The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection.
+- Required: No
+- Type: array
+- Default: `[allLogs]`
+- Allowed: `['', allLogs, PostgreSQLFlexDatabaseXacts, PostgreSQLFlexQueryStoreRuntime, PostgreSQLFlexQueryStoreWaitStats, PostgreSQLFlexSessions, PostgreSQLFlexTableStats, PostgreSQLLogs]`
+
+### Parameter: `diagnosticMetricsToEnable`
+
+The name of metrics that will be streamed.
+- Required: No
+- Type: array
+- Default: `[AllMetrics]`
+- Allowed: `[AllMetrics]`
+
+### Parameter: `diagnosticSettingsName`
+
+The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings".
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `diagnosticStorageAccountId`
+
+Resource ID of the diagnostic storage account.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `diagnosticWorkspaceId`
+
+Resource ID of the diagnostic log analytics workspace.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `firewallRules`
+
+The firewall rules to create in the PostgreSQL flexible server.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `geoRedundantBackup`
+
+A value indicating whether Geo-Redundant backup is enabled on the server. Should be left disabled if 'cMKKeyName' is not empty.
+- Required: No
+- Type: string
+- Default: `'Disabled'`
+- Allowed: `[Disabled, Enabled]`
+
+### Parameter: `highAvailability`
+
+The mode for high availability.
+- Required: No
+- Type: string
+- Default: `'Disabled'`
+- Allowed: `[Disabled, SameZone, ZoneRedundant]`
+
+### Parameter: `location`
+
+Location for all resources.
+- Required: No
+- Type: string
+- Default: `[resourceGroup().location]`
+
+### Parameter: `lock`
+
+Specify the type of lock.
+- Required: No
+- Type: string
+- Default: `''`
+- Allowed: `['', CanNotDelete, ReadOnly]`
+
+### Parameter: `maintenanceWindow`
+
+Properties for the maintenence window. If provided, "customWindow" property must exist and set to "Enabled".
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `name`
+
+The name of the PostgreSQL flexible server.
+- Required: Yes
+- Type: string
+
+### Parameter: `passwordAuth`
+
+If Enabled, password authentication is enabled.
+- Required: No
+- Type: string
+- Default: `'Disabled'`
+- Allowed: `[Disabled, Enabled]`
+
+### Parameter: `pointInTimeUTC`
+
+Required if "createMode" is set to "PointInTimeRestore".
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `privateDnsZoneArmResourceId`
+
+Private dns zone arm resource ID. Used when the desired connectivity mode is "Private Access" and required when "delegatedSubnetResourceId" is used. The Private DNS Zone must be lined to the Virtual Network referenced in "delegatedSubnetResourceId".
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `roleAssignments`
+
+Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `skuName`
+
+The name of the sku, typically, tier + family + cores, e.g. Standard_D4s_v3.
+- Required: Yes
+- Type: string
+
+### Parameter: `sourceServerResourceId`
+
+Required if "createMode" is set to "PointInTimeRestore".
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `storageSizeGB`
+
+Max storage allowed for a server.
+- Required: No
+- Type: int
+- Default: `32`
+- Allowed: `[32, 64, 128, 256, 512, 1024, 2048, 4096, 8192, 16384]`
+
+### Parameter: `tags`
+
+Tags of the resource.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `tenantId`
+
+Tenant id of the server.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `tier`
+
+The tier of the particular SKU. Tier must align with the "skuName" property. Example, tier cannot be "Burstable" if skuName is "Standard_D4s_v3".
+- Required: Yes
+- Type: string
+- Allowed: `[Burstable, GeneralPurpose, MemoryOptimized]`
+
+### Parameter: `userAssignedIdentities`
+
+The ID(s) to assign to the resource. Required if 'cMKKeyName' is not empty.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `version`
+
+PostgreSQL Server version.
+- Required: No
+- Type: string
+- Default: `'15'`
+- Allowed: `[11, 12, 13, 14, 15]`
+
+
+## Outputs
+
+| Output | Type | Description |
+| :-- | :-- | :-- |
+| `location` | string | The location the resource was deployed into. |
+| `name` | string | The name of the deployed PostgreSQL Flexible server. |
+| `resourceGroupName` | string | The resource group of the deployed PostgreSQL Flexible server. |
+| `resourceId` | string | The resource ID of the deployed PostgreSQL Flexible server. |
+
+## Cross-referenced modules
+
+_None_

@@ -21,39 +21,150 @@ This module deploys a Virtual Network Subnet.
 
 **Required parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `addressPrefix` | string | The address prefix for the subnet. |
+| [`addressPrefix`](#parameter-addressprefix) | string | The address prefix for the subnet. |
 
 **Conditional parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `virtualNetworkName` | string | The name of the parent virtual network. Required if the template is used in a standalone deployment. |
+| [`virtualNetworkName`](#parameter-virtualnetworkname) | string | The name of the parent virtual network. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Allowed Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `addressPrefixes` | array | `[]` |  | List of address prefixes for the subnet. |
-| `applicationGatewayIPConfigurations` | array | `[]` |  | Application gateway IP configurations of virtual network resource. |
-| `delegations` | array | `[]` |  | The delegations to enable on the subnet. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `ipAllocations` | array | `[]` |  | Array of IpAllocation which reference this subnet. |
-| `name` | string |  |  | The Name of the subnet resource. |
-| `natGatewayId` | string | `''` |  | The resource ID of the NAT Gateway to use for the subnet. |
-| `networkSecurityGroupId` | string | `''` |  | The resource ID of the network security group to assign to the subnet. |
-| `privateEndpointNetworkPolicies` | string | `''` | `['', Disabled, Enabled]` | enable or disable apply network policies on private endpoint in the subnet. |
-| `privateLinkServiceNetworkPolicies` | string | `''` | `['', Disabled, Enabled]` | enable or disable apply network policies on private link service in the subnet. |
-| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| `routeTableId` | string | `''` |  | The resource ID of the route table to assign to the subnet. |
-| `serviceEndpointPolicies` | array | `[]` |  | An array of service endpoint policies. |
-| `serviceEndpoints` | array | `[]` |  | The service endpoints to enable on the subnet. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`addressPrefixes`](#parameter-addressprefixes) | array | List of address prefixes for the subnet. |
+| [`applicationGatewayIPConfigurations`](#parameter-applicationgatewayipconfigurations) | array | Application gateway IP configurations of virtual network resource. |
+| [`delegations`](#parameter-delegations) | array | The delegations to enable on the subnet. |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`ipAllocations`](#parameter-ipallocations) | array | Array of IpAllocation which reference this subnet. |
+| [`name`](#parameter-name) | string | The Name of the subnet resource. |
+| [`natGatewayId`](#parameter-natgatewayid) | string | The resource ID of the NAT Gateway to use for the subnet. |
+| [`networkSecurityGroupId`](#parameter-networksecuritygroupid) | string | The resource ID of the network security group to assign to the subnet. |
+| [`privateEndpointNetworkPolicies`](#parameter-privateendpointnetworkpolicies) | string | enable or disable apply network policies on private endpoint in the subnet. |
+| [`privateLinkServiceNetworkPolicies`](#parameter-privatelinkservicenetworkpolicies) | string | enable or disable apply network policies on private link service in the subnet. |
+| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| [`routeTableId`](#parameter-routetableid) | string | The resource ID of the route table to assign to the subnet. |
+| [`serviceEndpointPolicies`](#parameter-serviceendpointpolicies) | array | An array of service endpoint policies. |
+| [`serviceEndpoints`](#parameter-serviceendpoints) | array | The service endpoints to enable on the subnet. |
+
+### Parameter: `addressPrefix`
+
+The address prefix for the subnet.
+- Required: Yes
+- Type: string
+
+### Parameter: `addressPrefixes`
+
+List of address prefixes for the subnet.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `applicationGatewayIPConfigurations`
+
+Application gateway IP configurations of virtual network resource.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `delegations`
+
+The delegations to enable on the subnet.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `ipAllocations`
+
+Array of IpAllocation which reference this subnet.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `name`
+
+The Name of the subnet resource.
+- Required: Yes
+- Type: string
+
+### Parameter: `natGatewayId`
+
+The resource ID of the NAT Gateway to use for the subnet.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `networkSecurityGroupId`
+
+The resource ID of the network security group to assign to the subnet.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `privateEndpointNetworkPolicies`
+
+enable or disable apply network policies on private endpoint in the subnet.
+- Required: No
+- Type: string
+- Default: `''`
+- Allowed: `['', Disabled, Enabled]`
+
+### Parameter: `privateLinkServiceNetworkPolicies`
+
+enable or disable apply network policies on private link service in the subnet.
+- Required: No
+- Type: string
+- Default: `''`
+- Allowed: `['', Disabled, Enabled]`
+
+### Parameter: `roleAssignments`
+
+Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `routeTableId`
+
+The resource ID of the route table to assign to the subnet.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `serviceEndpointPolicies`
+
+An array of service endpoint policies.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `serviceEndpoints`
+
+The service endpoints to enable on the subnet.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `virtualNetworkName`
+
+The name of the parent virtual network. Required if the template is used in a standalone deployment.
+- Required: Yes
+- Type: string
 
 
 ## Outputs
 
-| Output Name | Type | Description |
+| Output | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the virtual network peering. |
 | `resourceGroupName` | string | The resource group the virtual network peering was deployed into. |

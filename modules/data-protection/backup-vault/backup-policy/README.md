@@ -20,22 +20,49 @@ This module deploys a Data Protection Backup Vault Backup Policy.
 
 **Required parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `backupVaultName` | string | The name of the backup vault. |
+| [`backupVaultName`](#parameter-backupvaultname) | string | The name of the backup vault. |
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `name` | string | `'DefaultPolicy'` | The name of the backup policy. |
-| `properties` | object | `{object}` | The properties of the backup policy. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`name`](#parameter-name) | string | The name of the backup policy. |
+| [`properties`](#parameter-properties) | object | The properties of the backup policy. |
+
+### Parameter: `backupVaultName`
+
+The name of the backup vault.
+- Required: Yes
+- Type: string
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `name`
+
+The name of the backup policy.
+- Required: No
+- Type: string
+- Default: `'DefaultPolicy'`
+
+### Parameter: `properties`
+
+The properties of the backup policy.
+- Required: No
+- Type: object
+- Default: `{object}`
 
 
 ## Outputs
 
-| Output Name | Type | Description |
+| Output | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the backup policy. |
 | `resourceGroupName` | string | The name of the resource group the backup policy was created in. |

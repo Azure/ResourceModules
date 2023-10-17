@@ -20,28 +20,59 @@ Static membership allows you to explicitly add virtual networks to a group by ma
 
 **Required parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the static member. |
-| `resourceId` | string | Resource ID of the virtual network. |
+| [`name`](#parameter-name) | string | The name of the static member. |
+| [`resourceId`](#parameter-resourceid) | string | Resource ID of the virtual network. |
 
 **Conditional parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `networkGroupName` | string | The name of the parent network group. Required if the template is used in a standalone deployment. |
-| `networkManagerName` | string | The name of the parent network manager. Required if the template is used in a standalone deployment. |
+| [`networkGroupName`](#parameter-networkgroupname) | string | The name of the parent network group. Required if the template is used in a standalone deployment. |
+| [`networkManagerName`](#parameter-networkmanagername) | string | The name of the parent network manager. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `name`
+
+The name of the static member.
+- Required: Yes
+- Type: string
+
+### Parameter: `networkGroupName`
+
+The name of the parent network group. Required if the template is used in a standalone deployment.
+- Required: Yes
+- Type: string
+
+### Parameter: `networkManagerName`
+
+The name of the parent network manager. Required if the template is used in a standalone deployment.
+- Required: Yes
+- Type: string
+
+### Parameter: `resourceId`
+
+Resource ID of the virtual network.
+- Required: Yes
+- Type: string
 
 
 ## Outputs
 
-| Output Name | Type | Description |
+| Output | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the deployed static member. |
 | `resourceGroupName` | string | The resource group the static member was deployed into. |

@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.20.4.51522",
-      "templateHash": "18125415207616023954"
+      "version": "0.22.6.54827",
+      "templateHash": "3441501457466891361"
     },
     "name": "Service Fabric Cluster Application Types",
     "description": "This module deploys a Service Fabric Cluster Application Type.",

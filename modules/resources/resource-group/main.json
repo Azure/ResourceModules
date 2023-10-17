@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.21.1.54444",
-      "templateHash": "3729995632350323768"
+      "version": "0.22.6.54827",
+      "templateHash": "698589074683460032"
     },
     "name": "Resource Groups",
     "description": "This module deploys a Resource Group.",
@@ -116,8 +116,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "10420976827552614779"
+              "version": "0.22.6.54827",
+              "templateHash": "8961143332409950444"
             },
             "name": "Authorization Locks (Resource Group scope)",
             "description": "This module deploys an Authorization Lock at a Resource Group scope.",
@@ -249,8 +249,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "1146156557420886689"
+              "version": "0.22.6.54827",
+              "templateHash": "9238529270860750175"
             }
           },
           "parameters": {

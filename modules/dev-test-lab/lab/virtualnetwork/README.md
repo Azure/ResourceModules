@@ -21,31 +21,84 @@ Lab virtual machines must be deployed into a virtual network. This resource type
 
 **Required parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `externalProviderResourceId` | string | The resource ID of the virtual network. |
-| `name` | string | The name of the virtual network. |
+| [`externalProviderResourceId`](#parameter-externalproviderresourceid) | string | The resource ID of the virtual network. |
+| [`name`](#parameter-name) | string | The name of the virtual network. |
 
 **Conditional parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `labName` | string | The name of the parent lab. Required if the template is used in a standalone deployment. |
+| [`labName`](#parameter-labname) | string | The name of the parent lab. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `allowedSubnets` | array | `[]` | The allowed subnets of the virtual network. |
-| `description` | string | `''` | The description of the virtual network. |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `subnetOverrides` | array | `[]` | The subnet overrides of the virtual network. |
-| `tags` | object | `{object}` | Tags of the resource. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`allowedSubnets`](#parameter-allowedsubnets) | array | The allowed subnets of the virtual network. |
+| [`description`](#parameter-description) | string | The description of the virtual network. |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`subnetOverrides`](#parameter-subnetoverrides) | array | The subnet overrides of the virtual network. |
+| [`tags`](#parameter-tags) | object | Tags of the resource. |
+
+### Parameter: `allowedSubnets`
+
+The allowed subnets of the virtual network.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `description`
+
+The description of the virtual network.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `externalProviderResourceId`
+
+The resource ID of the virtual network.
+- Required: Yes
+- Type: string
+
+### Parameter: `labName`
+
+The name of the parent lab. Required if the template is used in a standalone deployment.
+- Required: Yes
+- Type: string
+
+### Parameter: `name`
+
+The name of the virtual network.
+- Required: Yes
+- Type: string
+
+### Parameter: `subnetOverrides`
+
+The subnet overrides of the virtual network.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `tags`
+
+Tags of the resource.
+- Required: No
+- Type: object
+- Default: `{object}`
 
 
 ## Outputs
 
-| Output Name | Type | Description |
+| Output | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the lab virtual network. |
 | `resourceGroupName` | string | The name of the resource group the lab virtual network was created in. |

@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.20.4.51522",
-      "templateHash": "4275347865908810280"
+      "version": "0.22.6.54827",
+      "templateHash": "8701740381622545052"
     },
     "name": "Resources Tags Resource Group",
     "description": "This module deploys a Resource Tag on a Resource Group scope.",
@@ -76,8 +76,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.20.4.51522",
-              "templateHash": "5447313974004996573"
+              "version": "0.22.6.54827",
+              "templateHash": "8737749583083645128"
             }
           },
           "parameters": {
