@@ -1627,7 +1627,7 @@ function Initialize-ReadMe {
     $moduleName = $TemplateFileContent.metadata.name
     $moduleDescription = $TemplateFileContent.metadata.description
     $formattedResourceType = Get-SpecsAlignedResourceName -ResourceIdentifier $FullModuleIdentifier
-    $hasTests = (Get-ChildItem -Path (Split-Path $ReadMeFilePath) -Recurse -Filter 'main.test.bicep').count -gt 0
+    $hasTests = (Get-ChildItem -Path (Split-Path $ReadMeFilePath) -Recurse -Filter 'main.test.bicep' -File -Force).count -gt 0
 
     $inTemplateResourceType = (Get-NestedResourceList $TemplateFileContent).type | Select-Object -Unique | Where-Object {
         $_ -match "^$formattedResourceType$"
@@ -1829,13 +1829,13 @@ function Set-ModuleReadMe {
     }
 
 
-    $hasTests = (Get-ChildItem -Path $moduleRoot -Recurse -Filter 'main.test.bicep').count -gt 0
+    $hasTests = (Get-ChildItem -Path $moduleRoot -Recurse -Filter 'main.test.bicep' -File -Force).count -gt 0
 
     # TODO: Remove
     Write-Verbose "Module root [$moduleRoot]" -Verbose
     Write-Verbose "Has Tests [$hasTests]" -Verbose
     Write-Verbose 'Children' -Verbose
-    Write-Verbose ((Get-ChildItem -Path $moduleRoot -Recurse).FullName | Out-String) -Verbose
+    Write-Verbose ((Get-ChildItem -Path $moduleRoot -Recurse -File -Force).FullName | Out-String) -Verbose
 
     if ($SectionsToRefresh -contains 'Usage examples' -and $hasTests) {
         # Handle [Usage examples] section
