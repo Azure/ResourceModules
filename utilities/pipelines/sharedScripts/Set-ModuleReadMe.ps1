@@ -1627,7 +1627,7 @@ function Initialize-ReadMe {
     $moduleName = $TemplateFileContent.metadata.name
     $moduleDescription = $TemplateFileContent.metadata.description
     $formattedResourceType = Get-SpecsAlignedResourceName -ResourceIdentifier $FullModuleIdentifier
-    $hasTests = (Get-ChildItem -Path (Split-Path $ReadMeFilePath) -Recurse -Include 'main.test.*').count -gt 0
+    $hasTests = (Get-ChildItem -Path (Split-Path $ReadMeFilePath) -Recurse -Filter 'main.test.bicep').count -gt 0
 
     $inTemplateResourceType = (Get-NestedResourceList $TemplateFileContent).type | Select-Object -Unique | Where-Object {
         $_ -match "^$formattedResourceType$"
