@@ -1828,15 +1828,7 @@ function Set-ModuleReadMe {
         $readMeFileContent = Set-ResourceTypesSection @inputObject
     }
 
-
     $hasTests = (Get-ChildItem -Path $moduleRoot -Recurse -Filter 'main.test.bicep' -File -Force).count -gt 0
-
-    # TODO: Remove
-    Write-Verbose "Module root [$moduleRoot]" -Verbose
-    Write-Verbose "Has Tests [$hasTests]" -Verbose
-    Write-Verbose 'Children' -Verbose
-    Write-Verbose ((Get-ChildItem -Path $moduleRoot -Recurse -File -Force).FullName | Out-String) -Verbose
-
     if ($SectionsToRefresh -contains 'Usage examples' -and $hasTests) {
         # Handle [Usage examples] section
         # ===================================
