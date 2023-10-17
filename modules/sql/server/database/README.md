@@ -57,6 +57,7 @@ This module deploys an Azure SQL Server Database.
 | [`maintenanceConfigurationId`](#parameter-maintenanceconfigurationid) | string | Maintenance configuration ID assigned to the database. This configuration defines the period when the maintenance updates will occur. |
 | [`maxSizeBytes`](#parameter-maxsizebytes) | int | The max size of the database expressed in bytes. |
 | [`minCapacity`](#parameter-mincapacity) | string | Minimal capacity that database will always have allocated. |
+| [`preferredEnclaveType`](#parameter-preferredenclavetype) | string | Type of enclave requested on the database i.e. Default or VBS enclaves. |
 | [`readScale`](#parameter-readscale) | string | The state of read-only routing. |
 | [`recoveryServicesRecoveryPointResourceId`](#parameter-recoveryservicesrecoverypointresourceid) | string | Resource ID of backup if createMode set to RestoreLongTermRetentionBackup. |
 | [`requestedBackupStorageRedundancy`](#parameter-requestedbackupstorageredundancy) | string | The storage account type to be used to store backups for this database. |
@@ -227,6 +228,14 @@ Minimal capacity that database will always have allocated.
 The name of the database.
 - Required: Yes
 - Type: string
+
+### Parameter: `preferredEnclaveType`
+
+Type of enclave requested on the database i.e. Default or VBS enclaves.
+- Required: No
+- Type: string
+- Default: `''`
+- Allowed: `['', Default, VBS]`
 
 ### Parameter: `readScale`
 
