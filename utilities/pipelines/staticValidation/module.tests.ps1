@@ -391,6 +391,10 @@ Describe 'Module tests' -Tag 'Module' {
                 $diffReponse = git diff $readMeFilePath
                 Write-Warning ($diffReponse | Out-String) -Verbose
 
+                # TODO: Remove
+                Write-Verbose ('New readme') -Verbose
+                Write-Verbose (Get-Content $readMeFilePath -Raw) -Verbose
+
                 # Reset readme file to original state
                 git checkout HEAD -- $readMeFilePath
             }
