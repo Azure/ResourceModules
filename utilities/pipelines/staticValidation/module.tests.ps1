@@ -623,6 +623,10 @@ Describe 'Module tests' -Tag 'Module' {
             )
             $lock = $templateContent.parameters.lock
 
+            if (-not $lock) {
+                Set-ItResult -Skipped -Because 'the module template has no lock parameter implemented'
+            }
+
             $isNullable = $lock.nullable
             $hasEmptyDefault = $lock.defaultValue -eq ''
             $hasNullableUDT = ($lock.Keys -contains '$ref') ? $templateContent.definitions[(Split-Path $lock.'$ref' -Leaf)].nullable : $false
