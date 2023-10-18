@@ -32,11 +32,11 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource appConfiguration 'Microsoft.AppConfiguration/configurationStores@2021-10-01-preview' existing = {
+resource appConfiguration 'Microsoft.AppConfiguration/configurationStores@2023-03-01' existing = {
   name: appConfigurationName
 }
 
-resource keyValues 'Microsoft.AppConfiguration/configurationStores/keyValues@2021-10-01-preview' = {
+resource keyValues 'Microsoft.AppConfiguration/configurationStores/keyValues@2023-03-01' = {
   name: name
   parent: appConfiguration
   properties: {
