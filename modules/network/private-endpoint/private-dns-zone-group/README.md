@@ -33,7 +33,15 @@ This module deploys a Private Endpoint Private DNS Zone Group.
 
 | Parameter | Type | Description |
 | :-- | :-- | :-- |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable/Disable usage telemetry for module. |
 | [`name`](#parameter-name) | string | The name of the private DNS zone group. |
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable/Disable usage telemetry for module.
+- Required: No
+- Type: bool
+- Default: `True`
 
 ### Parameter: `name`
 
