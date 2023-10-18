@@ -13,12 +13,27 @@ param privateDNSResourceIds array
 @description('Optional. The name of the private DNS zone group.')
 param name string = 'default'
 
+@description('Optional. Enable/Disable usage telemetry for module.')
+param enableDefaultTelemetry bool = true
+
 var privateDnsZoneConfigs = [for privateDNSResourceId in privateDNSResourceIds: {
   name: last(split(privateDNSResourceId, '/'))!
   properties: {
     privateDnsZoneId: privateDNSResourceId
   }
 }]
+
+resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
+  name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name)}'
+  properties: {
+    mode: 'Incremental'
+    template: {
+      '$schema': 'https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#'
+      contentVersion: '1.0.0.0'
+      resources: []
+    }
+  }
+}
 
 resource privateEndpoint 'Microsoft.Network/privateEndpoints@2023-04-01' existing = {
   name: privateEndpointName

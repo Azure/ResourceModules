@@ -50,6 +50,8 @@ param manualPrivateLinkServiceConnections array?
 @description('Optional. Enable/Disable usage telemetry for module.')
 param enableDefaultTelemetry bool = true
 
+var enableReferencedModulesTelemetry = false
+
 var builtInRoleNames = {
   Contributor: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')
   'DNS Resolver Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '0f2ebee7-ffd4-4fc0-b3b7-664099fdad5d')
@@ -99,7 +101,6 @@ resource privateEndpoint 'Microsoft.Network/privateEndpoints@2023-04-01' = {
     subnet: {
       id: subnetResourceId
     }
-
   }
 }
 
@@ -109,6 +110,7 @@ module privateEndpoint_privateDnsZoneGroup 'private-dns-zone-group/main.bicep' =
     name: privateDnsZoneGroupName ?? 'default'
     privateDNSResourceIds: privateDnsZoneResourceIds ?? []
     privateEndpointName: privateEndpoint.name
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }
 
