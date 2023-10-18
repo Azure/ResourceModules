@@ -99,7 +99,7 @@ module factory 'br:bicep/modules/data-factory.factory:1.0.0' = {
       {
         privateDnsZoneGroup: {
           privateDNSResourceIds: [
-            '<privateDNSResourceId>'
+            '<privateDNSZoneResourceId>'
           ]
         }
         service: 'dataFactory'
@@ -225,7 +225,7 @@ module factory 'br:bicep/modules/data-factory.factory:1.0.0' = {
         {
           "privateDnsZoneGroup": {
             "privateDNSResourceIds": [
-              "<privateDNSResourceId>"
+              "<privateDNSZoneResourceId>"
             ]
           },
           "service": "dataFactory",

@@ -79,7 +79,7 @@ module signalR 'br:bicep/modules/signal-r-service.signal-r:1.0.0' = {
       {
         privateDnsZoneGroup: {
           privateDNSResourceIds: [
-            '<privateDNSResourceId>'
+            '<privateDNSZoneResourceId>'
           ]
         }
         service: 'signalr'
@@ -180,7 +180,7 @@ module signalR 'br:bicep/modules/signal-r-service.signal-r:1.0.0' = {
         {
           "privateDnsZoneGroup": {
             "privateDNSResourceIds": [
-              "<privateDNSResourceId>"
+              "<privateDNSZoneResourceId>"
             ]
           },
           "service": "signalr",

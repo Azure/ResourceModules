@@ -82,7 +82,7 @@ module redisEnterprise 'br:bicep/modules/cache.redis-enterprise:1.0.0' = {
       {
         privateDnsZoneGroup: {
           privateDNSResourceIds: [
-            '<privateDNSResourceId>'
+            '<privateDNSZoneResourceId>'
           ]
         }
         service: 'redisEnterprise'
@@ -182,7 +182,7 @@ module redisEnterprise 'br:bicep/modules/cache.redis-enterprise:1.0.0' = {
         {
           "privateDnsZoneGroup": {
             "privateDNSResourceIds": [
-              "<privateDNSResourceId>"
+              "<privateDNSZoneResourceId>"
             ]
           },
           "service": "redisEnterprise",

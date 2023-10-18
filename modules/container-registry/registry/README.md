@@ -81,11 +81,9 @@ module registry 'br:bicep/modules/container-registry.registry:1.0.0' = {
     ]
     privateEndpoints: [
       {
-        privateDnsZoneGroup: {
-          privateDNSResourceIds: [
-            '<privateDNSZoneResourceId>'
-          ]
-        }
+        privateDnsZoneResourceIds: [
+          '<privateDNSZoneResourceId>'
+        ]
         service: 'registry'
         subnetResourceId: '<subnetResourceId>'
         tags: {
@@ -203,11 +201,9 @@ module registry 'br:bicep/modules/container-registry.registry:1.0.0' = {
     "privateEndpoints": {
       "value": [
         {
-          "privateDnsZoneGroup": {
-            "privateDNSResourceIds": [
-              "<privateDNSZoneResourceId>"
-            ]
-          },
+          "privateDnsZoneResourceIds": [
+            "<privateDNSZoneResourceId>"
+          ],
           "service": "registry",
           "subnetResourceId": "<subnetResourceId>",
           "tags": {
@@ -429,11 +425,9 @@ module registry 'br:bicep/modules/container-registry.registry:1.0.0' = {
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     privateEndpoints: [
       {
-        privateDnsZoneGroup: {
-          privateDNSResourceIds: [
-            '<privateDNSZoneResourceId>'
-          ]
-        }
+        privateDnsZoneResourceIds: [
+          '<privateDNSZoneResourceId>'
+        ]
         service: 'registry'
         subnetResourceId: '<subnetResourceId>'
         tags: {
@@ -478,11 +472,9 @@ module registry 'br:bicep/modules/container-registry.registry:1.0.0' = {
     "privateEndpoints": {
       "value": [
         {
-          "privateDnsZoneGroup": {
-            "privateDNSResourceIds": [
-              "<privateDNSZoneResourceId>"
-            ]
-          },
+          "privateDnsZoneResourceIds": [
+            "<privateDNSZoneResourceId>"
+          ],
           "service": "registry",
           "subnetResourceId": "<subnetResourceId>",
           "tags": {

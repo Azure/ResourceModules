@@ -181,7 +181,7 @@ module server 'br:bicep/modules/sql.server:1.0.0' = {
       {
         privateDnsZoneGroup: {
           privateDNSResourceIds: [
-            '<privateDNSResourceId>'
+            '<privateDNSZoneResourceId>'
           ]
         }
         service: 'sqlServer'
@@ -335,7 +335,7 @@ module server 'br:bicep/modules/sql.server:1.0.0' = {
         {
           "privateDnsZoneGroup": {
             "privateDNSResourceIds": [
-              "<privateDNSResourceId>"
+              "<privateDNSZoneResourceId>"
             ]
           },
           "service": "sqlServer",
@@ -434,7 +434,7 @@ module server 'br:bicep/modules/sql.server:1.0.0' = {
       {
         privateDnsZoneGroup: {
           privateDNSResourceIds: [
-            '<privateDNSResourceId>'
+            '<privateDNSZoneResourceId>'
           ]
         }
         service: 'sqlServer'
@@ -486,7 +486,7 @@ module server 'br:bicep/modules/sql.server:1.0.0' = {
         {
           "privateDnsZoneGroup": {
             "privateDNSResourceIds": [
-              "<privateDNSResourceId>"
+              "<privateDNSZoneResourceId>"
             ]
           },
           "service": "sqlServer",

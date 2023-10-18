@@ -274,16 +274,12 @@ module searchService 'br:bicep/modules/search.search-service:1.0.0' = {
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     privateEndpoints: [
       {
-        applicationSecurityGroups: [
-          {
-            id: '<id>'
-          }
+        applicationSecurityGroupResourceIds: [
+          '<applicationSecurityGroupResourceId>'
         ]
-        privateDnsZoneGroup: {
-          privateDNSResourceIds: [
-            '<privateDNSZoneResourceId>'
-          ]
-        }
+        privateDnsZoneResourceIds: [
+          '<privateDNSZoneResourceId>'
+        ]
         service: 'searchService'
         subnetResourceId: '<subnetResourceId>'
         tags: {
@@ -338,16 +334,12 @@ module searchService 'br:bicep/modules/search.search-service:1.0.0' = {
     "privateEndpoints": {
       "value": [
         {
-          "applicationSecurityGroups": [
-            {
-              "id": "<id>"
-            }
+          "applicationSecurityGroupResourceIds": [
+            "<applicationSecurityGroupResourceId>"
           ],
-          "privateDnsZoneGroup": {
-            "privateDNSResourceIds": [
-              "<privateDNSZoneResourceId>"
-            ]
-          },
+          "privateDnsZoneResourceIds": [
+            "<privateDNSZoneResourceId>"
+          ],
           "service": "searchService",
           "subnetResourceId": "<subnetResourceId>",
           "tags": {

@@ -95,11 +95,9 @@ module workspace 'br:bicep/modules/machine-learning-services.workspace:1.0.0' = 
     primaryUserAssignedIdentity: '<primaryUserAssignedIdentity>'
     privateEndpoints: [
       {
-        privateDnsZoneGroup: {
-          privateDNSResourceIds: [
-            '<privateDNSZoneResourceId>'
-          ]
-        }
+        privateDnsZoneResourceIds: [
+          '<privateDNSZoneResourceId>'
+        ]
         service: 'amlworkspace'
         subnetResourceId: '<subnetResourceId>'
         tags: {
@@ -223,11 +221,9 @@ module workspace 'br:bicep/modules/machine-learning-services.workspace:1.0.0' = 
     "privateEndpoints": {
       "value": [
         {
-          "privateDnsZoneGroup": {
-            "privateDNSResourceIds": [
-              "<privateDNSZoneResourceId>"
-            ]
-          },
+          "privateDnsZoneResourceIds": [
+            "<privateDNSZoneResourceId>"
+          ],
           "service": "amlworkspace",
           "subnetResourceId": "<subnetResourceId>",
           "tags": {
@@ -295,11 +291,9 @@ module workspace 'br:bicep/modules/machine-learning-services.workspace:1.0.0' = 
     primaryUserAssignedIdentity: '<primaryUserAssignedIdentity>'
     privateEndpoints: [
       {
-        privateDnsZoneGroup: {
-          privateDNSResourceIds: [
-            '<privateDNSZoneResourceId>'
-          ]
-        }
+        privateDnsZoneResourceIds: [
+          '<privateDNSZoneResourceId>'
+        ]
         service: 'amlworkspace'
         subnetResourceId: '<subnetResourceId>'
         tags: {
@@ -369,11 +363,9 @@ module workspace 'br:bicep/modules/machine-learning-services.workspace:1.0.0' = 
     "privateEndpoints": {
       "value": [
         {
-          "privateDnsZoneGroup": {
-            "privateDNSResourceIds": [
-              "<privateDNSZoneResourceId>"
-            ]
-          },
+          "privateDnsZoneResourceIds": [
+            "<privateDNSZoneResourceId>"
+          ],
           "service": "amlworkspace",
           "subnetResourceId": "<subnetResourceId>",
           "tags": {

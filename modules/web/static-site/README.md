@@ -67,11 +67,9 @@ module staticSite 'br:bicep/modules/web.static-site:1.0.0' = {
     lock: 'CanNotDelete'
     privateEndpoints: [
       {
-        privateDnsZoneGroup: {
-          privateDNSResourceIds: [
-            '<privateDNSZoneResourceId>'
-          ]
-        }
+        privateDnsZoneResourceIds: [
+          '<privateDNSZoneResourceId>'
+        ]
         service: 'staticSites'
         subnetResourceId: '<subnetResourceId>'
         tags: {
@@ -154,11 +152,9 @@ module staticSite 'br:bicep/modules/web.static-site:1.0.0' = {
     "privateEndpoints": {
       "value": [
         {
-          "privateDnsZoneGroup": {
-            "privateDNSResourceIds": [
-              "<privateDNSZoneResourceId>"
-            ]
-          },
+          "privateDnsZoneResourceIds": [
+            "<privateDNSZoneResourceId>"
+          ],
           "service": "staticSites",
           "subnetResourceId": "<subnetResourceId>",
           "tags": {
