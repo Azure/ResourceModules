@@ -492,7 +492,7 @@ Describe 'Module tests' -Tag 'Module' {
             $testFileTestCases = @()
             $templateFile_Parameters = $templateContent.parameters
             $TemplateFile_AllParameterNames = $templateFile_Parameters.Keys | Sort-Object
-            $TemplateFile_RequiredParametersNames = ($templateFile_Parameters.Keys | Where-Object { -not $templateFile_Parameters[$_].ContainsKey('defaultValue') }) | Sort-Object
+            $TemplateFile_RequiredParametersNames = ($templateFile_Parameters.Keys | Where-Object { Get-IsParameterRequired -TemplateFileContent $templateContent -Parameter $templateFile_Parameters[$_] }) | Sort-Object
 
             if (Test-Path (Join-Path $moduleFolderPath '.test')) {
 
@@ -704,7 +704,6 @@ Describe 'Module tests' -Tag 'Module' {
                 [string] $moduleFolderName,
                 [hashtable] $templateContent
             )
-            $enableDefaultTelemetryFlag = @()
             $Schemaverion = $templateContent.'$schema'
             if ((($Schemaverion.Split('/')[5]).Split('.')[0]) -eq (($RGdeployment.Split('/')[5]).Split('.')[0])) {
 
