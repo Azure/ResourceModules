@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "15854210755739319953"
+      "templateHash": "11038010290222457255"
     },
     "name": "SQL Managed Instances Administrator",
     "description": "This module deploys a SQL Managed Instance Administrator.",
@@ -62,7 +62,7 @@
     },
     {
       "type": "Microsoft.Sql/managedInstances/administrators",
-      "apiVersion": "2022-02-01-preview",
+      "apiVersion": "2022-05-01-preview",
       "name": "[format('{0}/{1}', parameters('managedInstanceName'), 'ActiveDirectory')]",
       "properties": {
         "administratorType": "ActiveDirectory",

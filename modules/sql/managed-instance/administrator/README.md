@@ -13,7 +13,7 @@ This module deploys a SQL Managed Instance Administrator.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Sql/managedInstances/administrators` | [2022-02-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Sql/2022-02-01-preview/managedInstances/administrators) |
+| `Microsoft.Sql/managedInstances/administrators` | [2022-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Sql/2022-05-01-preview/managedInstances/administrators) |
 
 ## Parameters
 

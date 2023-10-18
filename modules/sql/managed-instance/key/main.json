@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "18326031332279100252"
+      "templateHash": "7006376985801799255"
     },
     "name": "SQL Managed Instance Keys",
     "description": "This module deploys a SQL Managed Instance Key.",
@@ -71,7 +71,7 @@
     },
     {
       "type": "Microsoft.Sql/managedInstances/keys",
-      "apiVersion": "2022-02-01-preview",
+      "apiVersion": "2022-05-01-preview",
       "name": "[format('{0}/{1}', parameters('managedInstanceName'), if(not(empty(parameters('name'))), parameters('name'), variables('serverKeyName')))]",
       "properties": {
         "serverKeyType": "[parameters('serverKeyType')]",
