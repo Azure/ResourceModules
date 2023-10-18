@@ -86,7 +86,7 @@ module configurationStore 'br:bicep/modules/app-configuration.configuration-stor
       }
     ]
     softDeleteRetentionInDays: 1
-    systemAssignedIdentity: true
+    systemAssignedIdentity: false
     tags: {
       Environment: 'Non-Prod'
       'hidden-title': 'This is visible in the resource name'
@@ -176,7 +176,7 @@ module configurationStore 'br:bicep/modules/app-configuration.configuration-stor
       "value": 1
     },
     "systemAssignedIdentity": {
-      "value": true
+      "value": false
     },
     "tags": {
       "value": {
@@ -208,7 +208,7 @@ module configurationStore 'br:bicep/modules/app-configuration.configuration-stor
   name: '${uniqueString(deployment().name, location)}-test-accencr'
   params: {
     // Required parameters
-    name: '<name>'
+    name: 'accencr001'
     // Non-required parameters
     cMKKeyName: '<cMKKeyName>'
     cMKKeyVaultResourceId: '<cMKKeyVaultResourceId>'
@@ -216,7 +216,7 @@ module configurationStore 'br:bicep/modules/app-configuration.configuration-stor
     createMode: 'Default'
     disableLocalAuth: false
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    enablePurgeProtection: true
+    enablePurgeProtection: false
     keyValues: [
       {
         contentType: 'contentType'
@@ -269,7 +269,7 @@ module configurationStore 'br:bicep/modules/app-configuration.configuration-stor
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<name>"
+      "value": "accencr001"
     },
     // Non-required parameters
     "cMKKeyName": {
@@ -291,7 +291,7 @@ module configurationStore 'br:bicep/modules/app-configuration.configuration-stor
       "value": "<enableDefaultTelemetry>"
     },
     "enablePurgeProtection": {
-      "value": true
+      "value": false
     },
     "keyValues": {
       "value": [

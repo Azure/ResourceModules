@@ -100,7 +100,7 @@ module testDeployment '../../main.bicep' = {
       }
     ]
     softDeleteRetentionInDays: 1
-    systemAssignedIdentity: true
+    systemAssignedIdentity: false
     userAssignedIdentities: {
       '${nestedDependencies.outputs.managedIdentityResourceId}': {}
     }

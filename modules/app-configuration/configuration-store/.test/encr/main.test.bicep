@@ -53,10 +53,10 @@ module testDeployment '../../main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
-    name: '${namePrefix}${serviceShort}${substring(uniqueString(baseTime), 0, 3)}001'
+    name: '${namePrefix}${serviceShort}001'
     createMode: 'Default'
     disableLocalAuth: false
-    enablePurgeProtection: true
+    enablePurgeProtection: false
     keyValues: [
       {
         contentType: 'contentType'
