@@ -104,11 +104,9 @@ module testDeployment '../../main.bicep' = {
     lock: 'CanNotDelete'
     privateEndpoints: [
       {
-        privateDnsZoneGroup: {
-          privateDNSResourceIds: [
-            nestedDependencies.outputs.privateDNSZoneResourceId
-          ]
-        }
+        privateDnsZoneResourceIds: [
+          nestedDependencies.outputs.privateDNSZoneResourceId
+        ]
         service: 'topic'
         subnetResourceId: nestedDependencies.outputs.subnetResourceId
         tags: {
