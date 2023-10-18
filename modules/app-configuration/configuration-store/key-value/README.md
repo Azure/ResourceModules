@@ -13,7 +13,7 @@ This module deploys an App Configuration Store Key Value.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.AppConfiguration/configurationStores/keyValues` | [2021-10-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.AppConfiguration/2021-10-01-preview/configurationStores/keyValues) |
+| `Microsoft.AppConfiguration/configurationStores/keyValues` | [2023-03-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.AppConfiguration/2023-03-01/configurationStores/keyValues) |
 
 ## Parameters
 

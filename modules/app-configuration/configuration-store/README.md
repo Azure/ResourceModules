@@ -14,8 +14,8 @@ This module deploys an App Configuration Store.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.AppConfiguration/configurationStores` | [2021-10-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.AppConfiguration/2021-10-01-preview/configurationStores) |
-| `Microsoft.AppConfiguration/configurationStores/keyValues` | [2021-10-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.AppConfiguration/2021-10-01-preview/configurationStores/keyValues) |
+| `Microsoft.AppConfiguration/configurationStores` | [2023-03-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.AppConfiguration/2023-03-01/configurationStores) |
+| `Microsoft.AppConfiguration/configurationStores/keyValues` | [2023-03-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.AppConfiguration/2023-03-01/configurationStores/keyValues) |
 | `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
@@ -50,14 +50,17 @@ module configurationStore 'br:bicep/modules/app-configuration.configuration-stor
     // Required parameters
     name: 'acccom001'
     // Non-required parameters
+    cMKKeyName: '<cMKKeyName>'
+    cMKKeyVaultResourceId: '<cMKKeyVaultResourceId>'
+    cMKUserAssignedIdentityResourceId: '<cMKUserAssignedIdentityResourceId>'
     createMode: 'Default'
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
-    disableLocalAuth: false
+    disableLocalAuth: true
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    enablePurgeProtection: false
+    enablePurgeProtection: true
     keyValues: [
       {
         contentType: 'contentType'
@@ -112,6 +115,15 @@ module configurationStore 'br:bicep/modules/app-configuration.configuration-stor
       "value": "acccom001"
     },
     // Non-required parameters
+    "cMKKeyName": {
+      "value": "<cMKKeyName>"
+    },
+    "cMKKeyVaultResourceId": {
+      "value": "<cMKKeyVaultResourceId>"
+    },
+    "cMKUserAssignedIdentityResourceId": {
+      "value": "<cMKUserAssignedIdentityResourceId>"
+    },
     "createMode": {
       "value": "Default"
     },
@@ -128,13 +140,13 @@ module configurationStore 'br:bicep/modules/app-configuration.configuration-stor
       "value": "<diagnosticWorkspaceId>"
     },
     "disableLocalAuth": {
-      "value": false
+      "value": true
     },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     },
     "enablePurgeProtection": {
-      "value": false
+      "value": true
     },
     "keyValues": {
       "value": [
@@ -352,10 +364,19 @@ module configurationStore 'br:bicep/modules/app-configuration.configuration-stor
 | :-- | :-- | :-- |
 | [`name`](#parameter-name) | string | Name of the Azure App Configuration. |
 
+**Conditional parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`cMKKeyVaultResourceId`](#parameter-cmkkeyvaultresourceid) | string | The resource ID of a key vault to reference a customer managed key for encryption from. Required if "cMKKeyName" is not empty. |
+| [`cMKUserAssignedIdentityResourceId`](#parameter-cmkuserassignedidentityresourceid) | string | User assigned identity to use when fetching the customer managed key. The identity should have key usage permissions on the Key Vault Key. Required if "cMKKeyName" is not empty. |
+
 **Optional parameters**
 
 | Parameter | Type | Description |
 | :-- | :-- | :-- |
+| [`cMKKeyName`](#parameter-cmkkeyname) | string | The name of the customer managed key to use for encryption. |
+| [`cMKKeyVersion`](#parameter-cmkkeyversion) | string | The version of the customer managed key to reference for encryption. If not provided, the latest key version is used. |
 | [`createMode`](#parameter-createmode) | string | Indicates whether the configuration store need to be recovered. |
 | [`diagnosticEventHubAuthorizationRuleId`](#parameter-diagnosticeventhubauthorizationruleid) | string | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | [`diagnosticEventHubName`](#parameter-diagnosticeventhubname) | string | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
@@ -378,6 +399,34 @@ module configurationStore 'br:bicep/modules/app-configuration.configuration-stor
 | [`systemAssignedIdentity`](#parameter-systemassignedidentity) | bool | Enables system assigned managed identity on the resource. |
 | [`tags`](#parameter-tags) | object | Tags of the resource. |
 | [`userAssignedIdentities`](#parameter-userassignedidentities) | object | The ID(s) to assign to the resource. |
+
+### Parameter: `cMKKeyName`
+
+The name of the customer managed key to use for encryption.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `cMKKeyVaultResourceId`
+
+The resource ID of a key vault to reference a customer managed key for encryption from. Required if "cMKKeyName" is not empty.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `cMKKeyVersion`
+
+The version of the customer managed key to reference for encryption. If not provided, the latest key version is used.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `cMKUserAssignedIdentityResourceId`
+
+User assigned identity to use when fetching the customer managed key. The identity should have key usage permissions on the Key Vault Key. Required if "cMKKeyName" is not empty.
+- Required: No
+- Type: string
+- Default: `''`
 
 ### Parameter: `createMode`
 
