@@ -59,7 +59,7 @@ param cMKKeyVersion string = ''
 @description('Conditional. User assigned identity to use when fetching the customer managed key. The identity should have key usage permissions on the Key Vault Key. Required if "cMKKeyName" is not empty.')
 param cMKUserAssignedIdentityResourceId string = ''
 
-@description('Optional. All Key / Values to create.')
+@description('Optional. All Key / Values to create. Requires local authentication to be enabled.')
 param keyValues array = []
 
 @description('Optional. Resource ID of the diagnostic storage account.')

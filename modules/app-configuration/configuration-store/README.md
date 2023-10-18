@@ -31,8 +31,9 @@ The following section provides usage examples for the module, which were used to
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/app-configuration.configuration-store:1.0.0`.
 
 - [Using large parameter set](#example-1-using-large-parameter-set)
-- [Using only defaults](#example-2-using-only-defaults)
-- [Pe](#example-3-pe)
+- [Encr](#example-2-encr)
+- [Using only defaults](#example-3-using-only-defaults)
+- [Pe](#example-4-pe)
 
 ### Example 1: _Using large parameter set_
 
@@ -50,15 +51,12 @@ module configurationStore 'br:bicep/modules/app-configuration.configuration-stor
     // Required parameters
     name: 'acccom001'
     // Non-required parameters
-    cMKKeyName: '<cMKKeyName>'
-    cMKKeyVaultResourceId: '<cMKKeyVaultResourceId>'
-    cMKUserAssignedIdentityResourceId: '<cMKUserAssignedIdentityResourceId>'
     createMode: 'Default'
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
-    disableLocalAuth: true
+    disableLocalAuth: false
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     enablePurgeProtection: false
     keyValues: [
@@ -94,6 +92,9 @@ module configurationStore 'br:bicep/modules/app-configuration.configuration-stor
       'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
     }
+    userAssignedIdentities: {
+      '<managedIdentityResourceId>': {}
+    }
   }
 }
 ```
@@ -115,15 +116,6 @@ module configurationStore 'br:bicep/modules/app-configuration.configuration-stor
       "value": "acccom001"
     },
     // Non-required parameters
-    "cMKKeyName": {
-      "value": "<cMKKeyName>"
-    },
-    "cMKKeyVaultResourceId": {
-      "value": "<cMKKeyVaultResourceId>"
-    },
-    "cMKUserAssignedIdentityResourceId": {
-      "value": "<cMKUserAssignedIdentityResourceId>"
-    },
     "createMode": {
       "value": "Default"
     },
@@ -140,7 +132,7 @@ module configurationStore 'br:bicep/modules/app-configuration.configuration-stor
       "value": "<diagnosticWorkspaceId>"
     },
     "disableLocalAuth": {
-      "value": true
+      "value": false
     },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
@@ -192,6 +184,11 @@ module configurationStore 'br:bicep/modules/app-configuration.configuration-stor
         "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
+    },
+    "userAssignedIdentities": {
+      "value": {
+        "<managedIdentityResourceId>": {}
+      }
     }
   }
 }
@@ -200,7 +197,154 @@ module configurationStore 'br:bicep/modules/app-configuration.configuration-stor
 </details>
 <p>
 
-### Example 2: _Using only defaults_
+### Example 2: _Encr_
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module configurationStore 'br:bicep/modules/app-configuration.configuration-store:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-accencr'
+  params: {
+    // Required parameters
+    name: '<name>'
+    // Non-required parameters
+    cMKKeyName: '<cMKKeyName>'
+    cMKKeyVaultResourceId: '<cMKKeyVaultResourceId>'
+    cMKUserAssignedIdentityResourceId: '<cMKUserAssignedIdentityResourceId>'
+    createMode: 'Default'
+    disableLocalAuth: false
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    enablePurgeProtection: true
+    keyValues: [
+      {
+        contentType: 'contentType'
+        name: 'keyName'
+        roleAssignments: [
+          {
+            principalIds: [
+              '<managedIdentityPrincipalId>'
+            ]
+            principalType: 'ServicePrincipal'
+            roleDefinitionIdOrName: 'Reader'
+          }
+        ]
+        value: 'valueName'
+      }
+    ]
+    roleAssignments: [
+      {
+        principalIds: [
+          '<managedIdentityPrincipalId>'
+        ]
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    softDeleteRetentionInDays: 1
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+    userAssignedIdentities: {
+      '<managedIdentityResourceId>': {}
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "<name>"
+    },
+    // Non-required parameters
+    "cMKKeyName": {
+      "value": "<cMKKeyName>"
+    },
+    "cMKKeyVaultResourceId": {
+      "value": "<cMKKeyVaultResourceId>"
+    },
+    "cMKUserAssignedIdentityResourceId": {
+      "value": "<cMKUserAssignedIdentityResourceId>"
+    },
+    "createMode": {
+      "value": "Default"
+    },
+    "disableLocalAuth": {
+      "value": false
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "enablePurgeProtection": {
+      "value": true
+    },
+    "keyValues": {
+      "value": [
+        {
+          "contentType": "contentType",
+          "name": "keyName",
+          "roleAssignments": [
+            {
+              "principalIds": [
+                "<managedIdentityPrincipalId>"
+              ],
+              "principalType": "ServicePrincipal",
+              "roleDefinitionIdOrName": "Reader"
+            }
+          ],
+          "value": "valueName"
+        }
+      ]
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "<managedIdentityPrincipalId>"
+          ],
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "softDeleteRetentionInDays": {
+      "value": 1
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    },
+    "userAssignedIdentities": {
+      "value": {
+        "<managedIdentityResourceId>": {}
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 3: _Using only defaults_
 
 This instance deploys the module with the minimum set of required parameters.
 
@@ -248,7 +392,7 @@ module configurationStore 'br:bicep/modules/app-configuration.configuration-stor
 </details>
 <p>
 
-### Example 3: _Pe_
+### Example 4: _Pe_
 
 <details>
 
@@ -388,7 +532,7 @@ module configurationStore 'br:bicep/modules/app-configuration.configuration-stor
 | [`disableLocalAuth`](#parameter-disablelocalauth) | bool | Disables all authentication methods other than AAD authentication. |
 | [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
 | [`enablePurgeProtection`](#parameter-enablepurgeprotection) | bool | Property specifying whether protection against purge is enabled for this configuration store. |
-| [`keyValues`](#parameter-keyvalues) | array | All Key / Values to create. |
+| [`keyValues`](#parameter-keyvalues) | array | All Key / Values to create. Requires local authentication to be enabled. |
 | [`location`](#parameter-location) | string | Location for all Resources. |
 | [`lock`](#parameter-lock) | string | Specify the type of lock. |
 | [`privateEndpoints`](#parameter-privateendpoints) | array | Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
@@ -510,7 +654,7 @@ Property specifying whether protection against purge is enabled for this configu
 
 ### Parameter: `keyValues`
 
-All Key / Values to create.
+All Key / Values to create. Requires local authentication to be enabled.
 - Required: No
 - Type: array
 - Default: `[]`

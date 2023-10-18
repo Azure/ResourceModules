@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "14870442679082304978"
+      "templateHash": "9177345783229255097"
     },
     "name": "App Configuration Stores",
     "description": "This module deploys an App Configuration Store.",
@@ -128,7 +128,7 @@
       "type": "array",
       "defaultValue": [],
       "metadata": {
-        "description": "Optional. All Key / Values to create."
+        "description": "Optional. All Key / Values to create. Requires local authentication to be enabled."
       }
     },
     "diagnosticStorageAccountId": {

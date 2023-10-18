@@ -1,8 +1,5 @@
 targetScope = 'subscription'
 
-metadata name = 'Using large parameter set'
-metadata description = 'This instance deploys the module with most of its features enabled.'
-
 // ========== //
 // Parameters //
 // ========== //
@@ -15,10 +12,13 @@ param resourceGroupName string = 'ms.appconfiguration.configurationstores-${serv
 param location string = deployment().location
 
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints.')
-param serviceShort string = 'acccom'
+param serviceShort string = 'accencr'
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
+
+@description('Generated. Used as a basis for unique resource names.')
+param baseTime string = utcNow('u')
 
 @description('Optional. A token to inject into the name of each resource.')
 param namePrefix string = '[[namePrefix]]'
@@ -38,21 +38,9 @@ module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
+    // Adding base time to make the name unique as purge protection must be enabled (but may not be longer than 24 characters total)
+    keyVaultName: 'dep-${namePrefix}-kv-${serviceShort}-${substring(uniqueString(baseTime), 0, 3)}'
     managedIdentityName: 'dep-${namePrefix}-msi-${serviceShort}'
-  }
-}
-
-// Diagnostics
-// ===========
-module diagnosticDependencies '../../../../.shared/.templates/diagnostic.dependencies.bicep' = {
-  scope: resourceGroup
-  name: '${uniqueString(deployment().name, location)}-diagnosticDependencies'
-  params: {
-    storageAccountName: 'dep${namePrefix}diasa${serviceShort}01'
-    logAnalyticsWorkspaceName: 'dep-${namePrefix}-law-${serviceShort}'
-    eventHubNamespaceEventHubName: 'dep-${namePrefix}-evh-${serviceShort}'
-    eventHubNamespaceName: 'dep-${namePrefix}-evhns-${serviceShort}'
-    location: location
   }
 }
 
@@ -65,14 +53,10 @@ module testDeployment '../../main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
-    name: '${namePrefix}${serviceShort}001'
+    name: '${namePrefix}${serviceShort}${substring(uniqueString(baseTime), 0, 3)}001'
     createMode: 'Default'
-    diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
-    diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
-    diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
-    diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
     disableLocalAuth: false
-    enablePurgeProtection: false
+    enablePurgeProtection: true
     keyValues: [
       {
         contentType: 'contentType'
@@ -89,7 +73,6 @@ module testDeployment '../../main.bicep' = {
         value: 'valueName'
       }
     ]
-    lock: 'CanNotDelete'
     roleAssignments: [
       {
         roleDefinitionIdOrName: 'Reader'
@@ -100,7 +83,6 @@ module testDeployment '../../main.bicep' = {
       }
     ]
     softDeleteRetentionInDays: 1
-    systemAssignedIdentity: true
     userAssignedIdentities: {
       '${nestedDependencies.outputs.managedIdentityResourceId}': {}
     }
@@ -109,5 +91,8 @@ module testDeployment '../../main.bicep' = {
       Environment: 'Non-Prod'
       Role: 'DeploymentValidation'
     }
+    cMKKeyVaultResourceId: nestedDependencies.outputs.keyVaultResourceId
+    cMKKeyName: nestedDependencies.outputs.keyName
+    cMKUserAssignedIdentityResourceId: nestedDependencies.outputs.managedIdentityResourceId
   }
 }
