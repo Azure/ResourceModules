@@ -711,7 +711,7 @@ Describe 'Module tests' -Tag 'Module' {
             $Schemaverion = $templateContent.'$schema'
             if ((($Schemaverion.Split('/')[5]).Split('.')[0]) -eq (($RGdeployment.Split('/')[5]).Split('.')[0])) {
 
-                if ($templateContent.resources.GetType().baseType.name -eq 'Hashtable') {
+                if ($templateContent.resources -is [hashtable]) {
                     # Template with User-defined-types
                     $templateContent.resources.Keys | Should -Contain 'defaultTelemetry'
                     $templateContent.resources['defaultTelemetry'].condition | Should -Be "[parameters('enableDefaultTelemetry')]"
