@@ -708,20 +708,18 @@ Describe 'Module tests' -Tag 'Module' {
             $Schemaverion = $templateContent.'$schema'
             if ((($Schemaverion.Split('/')[5]).Split('.')[0]) -eq (($RGdeployment.Split('/')[5]).Split('.')[0])) {
 
-                if ($TemplateFileContent.resources -is [System.Collections.Hashtable]) {
+                if ($templateContent.resources -is [System.Collections.Hashtable]) {
                     # Template with User-defined-types
                     $templateContent.resources.Keys | Should -Contain 'defaultTelemetry'
+                    $templateContent.resources['defaultTelemetry'].condition | Should -Be "[parameters('enableDefaultTelemetry')]"
                 } else {
                     # Template without User-defined-types
-                    $shouldContainTelemetryWithCondition = $templateContent.resources.type -ccontains 'Microsoft.Resources/deployments' -and $templateContent.resources.condition -like "*[parameters('enableDefaultTelemetry')]*"
-                    $condB = $templateContent.resources.resources.type -ccontains 'Microsoft.Resources/deployments' -and $templateContent.resources.resources.condition -like "*[parameters('enableDefaultTelemetry')]*"
-                    if ($shouldContainTelemetryWithCondition -or $condB) {
-                        $enableDefaultTelemetryFlag += $true
-                    } else {
-                        $enableDefaultTelemetryFlag += $false
+                    $telemetryDeployment = $templateContent.resources | Where-Object {
+                        $_.type -eq 'Microsoft.Resources/deployments' -and
+                        $_.condition -eq "[parameters('enableDefaultTelemetry')]"
                     }
+                    $telemetryDeployment | Should -Not -BeNullOrEmpty
                 }
-                $enableDefaultTelemetryFlag | Should -Not -Contain $false
             }
         }
 
