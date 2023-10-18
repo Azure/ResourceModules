@@ -60,7 +60,7 @@ module configurationStore 'br:bicep/modules/app-configuration.configuration-stor
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     disableLocalAuth: true
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    enablePurgeProtection: true
+    enablePurgeProtection: false
     keyValues: [
       {
         contentType: 'contentType'
@@ -146,7 +146,7 @@ module configurationStore 'br:bicep/modules/app-configuration.configuration-stor
       "value": "<enableDefaultTelemetry>"
     },
     "enablePurgeProtection": {
-      "value": true
+      "value": false
     },
     "keyValues": {
       "value": [

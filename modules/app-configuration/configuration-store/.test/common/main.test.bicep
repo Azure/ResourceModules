@@ -77,7 +77,7 @@ module testDeployment '../../main.bicep' = {
     diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
     diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
     disableLocalAuth: true
-    enablePurgeProtection: true
+    enablePurgeProtection: false
     keyValues: [
       {
         contentType: 'contentType'
