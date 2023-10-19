@@ -65,7 +65,10 @@ module maintenanceConfiguration 'br:bicep/modules/maintenance.maintenance-config
         kbNumbersToInclude: '<kbNumbersToInclude>'
       }
     }
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     maintenanceWindow: {
       duration: '03:00'
       expirationDateTime: '9999-12-31 23:59:59'

@@ -155,7 +155,10 @@ module storageAccount 'br:bicep/modules/storage.storage-account:1.0.0' = {
         storageAccountName: 'ssacom001'
       }
     ]
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     managementPolicyRules: [
       {
         definition: {
@@ -830,7 +833,10 @@ module storageAccount 'br:bicep/modules/storage.storage-account:1.0.0' = {
       ]
     }
     kind: 'FileStorage'
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     roleAssignments: [
       {
         principalIds: [

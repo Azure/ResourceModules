@@ -69,6 +69,9 @@ module testDeployment '../../main.bicep' = {
       RequestUrl: 'https://learn.microsoft.com/en-us/'
       HttpVerb: 'GET'
     }
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
   }
 }

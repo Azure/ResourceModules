@@ -47,7 +47,10 @@ module publicIpPrefix 'br:bicep/modules/network.public-ip-prefix:1.0.0' = {
     prefixLength: 28
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     roleAssignments: [
       {
         principalIds: [

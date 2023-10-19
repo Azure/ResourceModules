@@ -78,7 +78,10 @@ module testDeployment '../../main.bicep' = {
     enableFileCopy: false
     enableIpConnect: false
     enableShareableLink: false
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     roleAssignments: [
       {
         roleDefinitionIdOrName: 'Reader'

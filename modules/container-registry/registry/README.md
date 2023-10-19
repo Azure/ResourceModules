@@ -72,7 +72,10 @@ module registry 'br:bicep/modules/container-registry.registry:1.0.0' = {
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     exportPolicyStatus: 'enabled'
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     networkRuleSetIpRules: [
       {
         action: 'Allow'

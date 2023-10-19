@@ -51,7 +51,10 @@ module vpnSite 'br:bicep/modules/network.vpn-site:1.0.0' = {
       linkSpeedInMbps: 0
     }
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     o365Policy: {
       breakOutCategories: {
         allow: true

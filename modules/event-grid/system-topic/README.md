@@ -78,7 +78,10 @@ module systemTopic 'br:bicep/modules/event-grid.system-topic:1.0.0' = {
         }
       }
     ]
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     roleAssignments: [
       {
         principalIds: [

@@ -85,7 +85,10 @@ module topic 'br:bicep/modules/event-grid.topic:1.0.0' = {
         ipMask: '40.74.28.0/23'
       }
     ]
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     privateEndpoints: [
       {
         privateDnsZoneGroup: {

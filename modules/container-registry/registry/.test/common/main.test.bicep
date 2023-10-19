@@ -80,7 +80,10 @@ module testDeployment '../../main.bicep' = {
     azureADAuthenticationAsArmPolicyStatus: 'enabled'
     softDeletePolicyStatus: 'disabled'
     softDeletePolicyDays: 7
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     privateEndpoints: [
       {
         service: 'registry'

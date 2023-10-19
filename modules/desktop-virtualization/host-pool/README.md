@@ -71,7 +71,10 @@ module hostPool 'br:bicep/modules/desktop-virtualization.host-pool:1.0.0' = {
     friendlyName: 'AVDv2'
     loadBalancerType: 'BreadthFirst'
     location: '<location>'
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     maxSessionLimit: 99999
     personalDesktopAssignmentType: 'Automatic'
     roleAssignments: [

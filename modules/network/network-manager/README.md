@@ -100,7 +100,10 @@ module networkManager 'br:bicep/modules/network.network-manager:1.0.0' = {
       }
     ]
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     networkGroups: [
       {
         description: 'network-group-spokes description'

@@ -64,7 +64,10 @@ module staticSite 'br:bicep/modules/web.static-site:1.0.0' = {
     linkedBackend: {
       resourceId: '<resourceId>'
     }
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     privateEndpoints: [
       {
         privateDnsZoneGroup: {

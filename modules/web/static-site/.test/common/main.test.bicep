@@ -57,7 +57,10 @@ module testDeployment '../../main.bicep' = {
     name: '${namePrefix}${serviceShort}001'
     allowConfigFileUpdates: true
     enterpriseGradeCdnStatus: 'Disabled'
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     privateEndpoints: [
       {
         service: 'staticSites'

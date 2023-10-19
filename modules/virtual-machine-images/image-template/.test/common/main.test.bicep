@@ -86,7 +86,10 @@ module testDeployment '../../main.bicep' = {
     }
     buildTimeoutInMinutes: 60
     imageReplicationRegions: []
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     managedImageName: '${namePrefix}-mi-${serviceShort}-001'
     osDiskSizeGB: 127
     roleAssignments: [

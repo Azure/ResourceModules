@@ -126,7 +126,10 @@ module testDeployment '../../main.bicep' = {
         name: 'aadProvider'
       }
     ]
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     namedValues: [
       {
         displayName: 'apimkey'

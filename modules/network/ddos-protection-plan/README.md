@@ -46,7 +46,10 @@ module ddosProtectionPlan 'br:bicep/modules/network.ddos-protection-plan:1.0.0' 
     name: 'ndppcom001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     roleAssignments: [
       {
         principalIds: [

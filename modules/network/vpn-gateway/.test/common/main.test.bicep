@@ -72,7 +72,10 @@ module testDeployment '../../main.bicep' = {
         routingWeight: 0
       }
     ]
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     natRules: [
       {
         externalMappings: [

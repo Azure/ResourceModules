@@ -65,7 +65,10 @@ module service 'br:bicep/modules/api-management.service:1.0.0' = {
     publisherName: 'az-amorg-x-001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     policies: [
       {
         format: 'xml'
@@ -263,7 +266,10 @@ module service 'br:bicep/modules/api-management.service:1.0.0' = {
         name: 'aadProvider'
       }
     ]
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     namedValues: [
       {
         displayName: 'apimkey'

@@ -47,7 +47,10 @@ module query 'br:bicep/modules/resource-graph.query:1.0.0' = {
     query: 'resources | take 10'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     queryDescription: 'An example query to list first 10 resources in the subscription.'
     roleAssignments: [
       {

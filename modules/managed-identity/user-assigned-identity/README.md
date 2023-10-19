@@ -54,7 +54,10 @@ module userAssignedIdentity 'br:bicep/modules/managed-identity.user-assigned-ide
         subject: 'system:serviceaccount:default:workload-identity-sa'
       }
     ]
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     name: 'miuaicom001'
     roleAssignments: [
       {

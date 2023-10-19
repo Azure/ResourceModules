@@ -49,7 +49,10 @@ module expressRouteGateway 'br:bicep/modules/network.express-route-gateway:1.0.0
     autoScaleConfigurationBoundsMax: 3
     autoScaleConfigurationBoundsMin: 2
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     roleAssignments: [
       {
         principalIds: [

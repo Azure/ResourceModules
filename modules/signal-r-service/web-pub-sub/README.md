@@ -54,7 +54,10 @@ module webPubSub 'br:bicep/modules/signal-r-service.web-pub-sub:1.0.0' = {
     disableLocalAuth: true
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     location: '<location>'
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     networkAcls: {
       defaultAction: 'Allow'
       privateEndpoints: [

@@ -91,7 +91,10 @@ module workspace 'br:bicep/modules/machine-learning-services.workspace:1.0.0' = 
     discoveryUrl: 'http://example.com'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     imageBuildCompute: 'testcompute'
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     primaryUserAssignedIdentity: '<primaryUserAssignedIdentity>'
     privateEndpoints: [
       {

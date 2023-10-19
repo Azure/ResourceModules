@@ -104,7 +104,10 @@ module containerGroup 'br:bicep/modules/container-instance.container-group:1.0.0
         protocol: 'Tcp'
       }
     ]
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     systemAssignedIdentity: true
     tags: {
       Environment: 'Non-Prod'
@@ -296,7 +299,10 @@ module containerGroup 'br:bicep/modules/container-instance.container-group:1.0.0
         protocol: 'Tcp'
       }
     ]
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     systemAssignedIdentity: true
     tags: {
       Environment: 'Non-Prod'
@@ -609,7 +615,10 @@ module containerGroup 'br:bicep/modules/container-instance.container-group:1.0.0
       }
     ]
     ipAddressType: 'Private'
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     subnetId: '<subnetId>'
     systemAssignedIdentity: true
     tags: {

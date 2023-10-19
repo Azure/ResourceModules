@@ -59,7 +59,10 @@ module bastionHost 'br:bicep/modules/network.bastion-host:1.0.0' = {
     enableFileCopy: false
     enableIpConnect: false
     enableShareableLink: false
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     roleAssignments: [
       {
         principalIds: [

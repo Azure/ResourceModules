@@ -52,7 +52,10 @@ module disk 'br:bicep/modules/compute.disk:1.0.0' = {
     diskMBpsReadWrite: 60
     diskSizeGB: 128
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     logicalSectorSize: 512
     osType: 'Windows'
     publicNetworkAccess: 'Enabled'

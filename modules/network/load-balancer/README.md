@@ -112,7 +112,10 @@ module loadBalancer 'br:bicep/modules/network.load-balancer:1.0.0' = {
         probeName: 'probe2'
       }
     ]
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     outboundRules: [
       {
         allocatedOutboundPorts: 63984

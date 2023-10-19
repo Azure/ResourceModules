@@ -76,7 +76,10 @@ module redisEnterprise 'br:bicep/modules/cache.redis-enterprise:1.0.0' = {
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     minimumTlsVersion: '1.2'
     privateEndpoints: [
       {

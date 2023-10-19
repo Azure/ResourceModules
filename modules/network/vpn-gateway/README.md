@@ -53,7 +53,10 @@ module vpnGateway 'br:bicep/modules/network.vpn-gateway:1.0.0' = {
       peerWeight: 0
     }
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     natRules: [
       {
         externalMappings: [

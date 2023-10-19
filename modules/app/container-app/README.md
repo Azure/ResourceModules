@@ -75,7 +75,10 @@ module containerApp 'br:bicep/modules/app.container-app:1.0.0' = {
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     location: '<location>'
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     secrets: {
       secureList: [
         {

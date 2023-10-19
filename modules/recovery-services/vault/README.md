@@ -302,7 +302,10 @@ module vault 'br:bicep/modules/recovery-services.vault:1.0.0' = {
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     monitoringSettings: {
       azureMonitorAlertSettings: {
         alertsForAllJobFailures: 'Enabled'

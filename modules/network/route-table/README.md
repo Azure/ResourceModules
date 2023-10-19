@@ -46,7 +46,10 @@ module routeTable 'br:bicep/modules/network.route-table:1.0.0' = {
     name: 'nrtcom001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     roleAssignments: [
       {
         principalIds: [

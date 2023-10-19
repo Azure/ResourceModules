@@ -92,7 +92,10 @@ module account 'br:bicep/modules/purview.account:1.0.0' = {
       }
     ]
     location: '<location>'
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     managedResourceGroupName: 'pvacom001-managed-rg'
     portalPrivateEndpoints: [
       {

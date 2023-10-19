@@ -175,7 +175,10 @@ module gallery 'br:bicep/modules/compute.gallery:1.0.0' = {
         sku: '20_04-lts-gen2'
       }
     ]
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     roleAssignments: [
       {
         principalIds: [

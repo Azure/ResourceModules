@@ -92,7 +92,10 @@ module namespace 'br:bicep/modules/relay.namespace:1.0.0' = {
         userMetadata: '[{\'key\':\'endpoint\'\'value\':\'db-server.constoso.com:1433\'}]'
       }
     ]
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     networkRuleSets: {
       defaultAction: 'Deny'
       ipRules: [

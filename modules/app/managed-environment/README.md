@@ -51,7 +51,10 @@ module managedEnvironment 'br:bicep/modules/app.managed-environment:1.0.0' = {
     infrastructureSubnetId: '<infrastructureSubnetId>'
     internal: true
     location: '<location>'
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     platformReservedCidr: '172.17.17.0/24'
     platformReservedDnsIP: '172.17.17.17'
     skuName: 'Consumption'

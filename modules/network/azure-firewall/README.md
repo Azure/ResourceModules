@@ -213,7 +213,10 @@ module azureFirewall 'br:bicep/modules/network.azure-firewall:1.0.0' = {
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     networkRuleCollections: [
       {
         name: 'allow-network-rules'

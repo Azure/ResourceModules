@@ -55,7 +55,10 @@ module testDeployment '../../main.bicep' = {
     diskIOPSReadWrite: 500
     diskMBpsReadWrite: 60
     diskSizeGB: 128
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     logicalSectorSize: 512
     osType: 'Windows'
     publicNetworkAccess: 'Enabled'

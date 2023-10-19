@@ -102,7 +102,10 @@ module testDeployment '../../main.bicep' = {
         ttl: 3600
       }
     ]
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     mx: [
       {
         mxRecords: [

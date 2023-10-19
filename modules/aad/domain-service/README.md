@@ -54,7 +54,10 @@ module domainService 'br:bicep/modules/aad.domain-service:1.0.0' = {
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     name: 'aaddscom001'
     pfxCertificate: '<pfxCertificate>'
     pfxCertificatePassword: '<pfxCertificatePassword>'

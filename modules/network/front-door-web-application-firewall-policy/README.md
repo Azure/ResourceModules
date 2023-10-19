@@ -94,7 +94,10 @@ module frontDoorWebApplicationFirewallPolicy 'br:bicep/modules/network.front-doo
       ]
     }
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     managedRules: {
       managedRuleSets: [
         {

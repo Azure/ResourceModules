@@ -45,7 +45,10 @@ module applicationSecurityGroup 'br:bicep/modules/network.application-security-g
     name: 'nasgcom001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     roleAssignments: [
       {
         principalIds: [

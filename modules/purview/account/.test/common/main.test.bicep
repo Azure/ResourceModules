@@ -173,6 +173,9 @@ module testDeployment '../../main.bicep' = {
     enableDefaultTelemetry: enableDefaultTelemetry
     diagnosticLogCategoriesToEnable: [ 'allLogs' ]
     diagnosticMetricsToEnable: [ 'AllMetrics' ]
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
   }
 }

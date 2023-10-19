@@ -76,7 +76,10 @@ module virtualHub 'br:bicep/modules/network.virtual-hub:1.0.0' = {
         }
       }
     ]
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     tags: {
       Environment: 'Non-Prod'
       'hidden-title': 'This is visible in the resource name'

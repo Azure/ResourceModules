@@ -90,7 +90,10 @@ module dataCollectionRule 'br:bicep/modules/insights.data-collection-rule:1.0.0'
     description: 'Collecting custom text logs with ingestion-time transformation to columns. Expected format of a log line (comma separated values): \'<DateTime><EventLevel><EventCode><Message>\' for example: \'2023-01-25T20:15:05ZERROR404Page not found\''
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     kind: 'Windows'
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     roleAssignments: [
       {
         principalIds: [
@@ -331,7 +334,10 @@ module dataCollectionRule 'br:bicep/modules/insights.data-collection-rule:1.0.0'
     description: 'Collecting custom text logs without ingestion-time transformation.'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     kind: 'Windows'
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     roleAssignments: [
       {
         principalIds: [
@@ -533,7 +539,10 @@ module dataCollectionRule 'br:bicep/modules/insights.data-collection-rule:1.0.0'
     description: 'Collecting IIS logs.'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     kind: 'Windows'
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     roleAssignments: [
       {
         principalIds: [
@@ -811,7 +820,10 @@ module dataCollectionRule 'br:bicep/modules/insights.data-collection-rule:1.0.0'
     description: 'Collecting Linux-specific performance counters and Linux Syslog'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     kind: 'Linux'
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     roleAssignments: [
       {
         principalIds: [
@@ -1288,7 +1300,10 @@ module dataCollectionRule 'br:bicep/modules/insights.data-collection-rule:1.0.0'
     description: 'Collecting Windows-specific performance counters and Windows Event Logs'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     kind: 'Windows'
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     roleAssignments: [
       {
         principalIds: [

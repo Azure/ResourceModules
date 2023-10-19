@@ -90,7 +90,10 @@ module managedInstance 'br:bicep/modules/sql.managed-instance:1.0.0' = {
       }
     ]
     licenseType: 'LicenseIncluded'
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     primaryUserAssignedIdentityId: '<primaryUserAssignedIdentityId>'
     proxyOverride: 'Proxy'
     publicDataEndpointEnabled: false

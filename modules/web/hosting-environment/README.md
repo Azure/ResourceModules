@@ -59,7 +59,10 @@ module hostingEnvironment 'br:bicep/modules/web.hosting-environment:1.0.0' = {
     ipsslAddressCount: 2
     kind: 'ASEv2'
     location: '<location>'
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     multiSize: 'Standard_D1_V2'
     roleAssignments: [
       {
@@ -207,7 +210,10 @@ module hostingEnvironment 'br:bicep/modules/web.hosting-environment:1.0.0' = {
     inboundIpAddressOverride: '10.0.0.10'
     internalLoadBalancingMode: 'Web Publishing'
     location: '<location>'
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     remoteDebugEnabled: true
     roleAssignments: [
       {

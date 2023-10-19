@@ -168,7 +168,10 @@ module deploymentScript 'br:bicep/modules/resources.deployment-script:1.0.0' = {
     cleanupPreference: 'Always'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     kind: 'AzurePowerShell'
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     retentionInterval: 'P1D'
     runOnce: false
     scriptContent: 'Write-Host \'The cake is a lie!\''

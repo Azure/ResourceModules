@@ -77,7 +77,10 @@ module automationAccount 'br:bicep/modules/automation.automation-account:1.0.0' 
       }
     ]
     linkedWorkspaceResourceId: '<linkedWorkspaceResourceId>'
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     modules: [
       {
         name: 'PSWindowsUpdate'

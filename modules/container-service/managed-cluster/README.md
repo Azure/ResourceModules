@@ -200,7 +200,10 @@ module managedCluster 'br:bicep/modules/container-service.managed-cluster:1.0.0'
         resourceId: '<resourceId>'
       }
     }
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     monitoringWorkspaceId: '<monitoringWorkspaceId>'
     networkDataplane: 'azure'
     networkPlugin: 'azure'

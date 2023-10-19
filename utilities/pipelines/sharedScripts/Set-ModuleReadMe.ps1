@@ -538,7 +538,10 @@ Add type comments to given bicep params string, using one required parameter 'na
     // Required parameters
     name: 'carml'
     // Non-required parameters
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
 '
 #>
 function Add-BicepParameterTypeComment {
@@ -613,7 +616,10 @@ Order the given JSON object alphabetically. Would result into:
 
 @{
     name: 'carml'
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
 }
 #>
 function Get-OrderedParametersJSON {
@@ -906,7 +912,10 @@ Convert the given JSONParameters object with one required parameter to a formatt
     // Required parameters
     name: 'carml'
     // Non-required parameters
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
 '
 #>
 function ConvertTo-FormattedBicep {

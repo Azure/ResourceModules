@@ -87,7 +87,10 @@ module testDeployment '../../main.bicep' = {
     ]
     disableLocalAuth: true
     linkedWorkspaceResourceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     modules: [
       {
         name: 'PSWindowsUpdate'

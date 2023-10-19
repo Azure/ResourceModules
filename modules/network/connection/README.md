@@ -47,7 +47,10 @@ module connection 'br:bicep/modules/network.connection:1.0.0' = {
     connectionType: 'Vnet2Vnet'
     enableBgp: false
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     tags: {
       Environment: 'Non-Prod'
       'hidden-title': 'This is visible in the resource name'

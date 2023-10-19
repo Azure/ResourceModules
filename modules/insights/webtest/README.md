@@ -60,7 +60,10 @@ module webtest 'br:bicep/modules/insights.webtest:1.0.0' = {
         Id: 'emea-nl-ams-azr'
       }
     ]
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     syntheticMonitorId: 'iwtcom001'
   }
 }

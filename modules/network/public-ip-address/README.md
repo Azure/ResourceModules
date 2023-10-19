@@ -51,7 +51,10 @@ module publicIpAddress 'br:bicep/modules/network.public-ip-address:1.0.0' = {
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     publicIPAllocationMethod: 'Static'
     roleAssignments: [
       {

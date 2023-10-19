@@ -46,7 +46,10 @@ module serviceEndpointPolicy 'br:bicep/modules/network.service-endpoint-policy:1
     name: 'nsnpcom-001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     roleAssignments: [
       {
         principalIds: [

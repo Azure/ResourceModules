@@ -75,7 +75,10 @@ module applicationGroup 'br:bicep/modules/desktop-virtualization.application-gro
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     friendlyName: 'Remote Applications 1'
     location: '<location>'
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     roleAssignments: [
       {
         principalIds: [

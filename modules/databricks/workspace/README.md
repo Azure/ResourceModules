@@ -72,7 +72,10 @@ module workspace 'br:bicep/modules/databricks.workspace:1.0.0' = {
     loadBalancerBackendPoolName: '<loadBalancerBackendPoolName>'
     loadBalancerResourceId: '<loadBalancerResourceId>'
     location: '<location>'
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     managedResourceGroupResourceId: '<managedResourceGroupResourceId>'
     natGatewayName: 'nat-gateway'
     prepareEncryption: true

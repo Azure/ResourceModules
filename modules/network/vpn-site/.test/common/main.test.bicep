@@ -54,7 +54,10 @@ module testDeployment '../../main.bicep' = {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '${namePrefix}-${serviceShort}'
     virtualWanId: nestedDependencies.outputs.virtualWWANResourceId
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     tags: {
       'hidden-title': 'This is visible in the resource name'
       tagA: 'valueA'

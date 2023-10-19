@@ -224,7 +224,10 @@ module applicationGateway 'br:bicep/modules/network.application-gateway:1.0.0' =
         }
       }
     ]
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     privateEndpoints: [
       {
         privateDnsZoneGroup: {

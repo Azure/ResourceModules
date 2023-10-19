@@ -149,7 +149,10 @@ module testDeployment '../../main.bicep' = {
     extensionNetworkWatcherAgentConfig: {
       enabled: true
     }
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     nicConfigurations: [
       {
         ipConfigurations: [

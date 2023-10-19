@@ -104,7 +104,10 @@ module privateDnsZone 'br:bicep/modules/network.private-dns-zone:1.0.0' = {
       }
     ]
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     mx: [
       {
         mxRecords: [

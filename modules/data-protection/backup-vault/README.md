@@ -111,7 +111,10 @@ module backupVault 'br:bicep/modules/data-protection.backup-vault:1.0.0' = {
       }
     ]
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     roleAssignments: [
       {
         principalIds: [

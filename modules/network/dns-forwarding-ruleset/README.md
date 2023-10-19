@@ -64,7 +64,10 @@ module dnsForwardingRuleset 'br:bicep/modules/network.dns-forwarding-ruleset:1.0
         ]
       }
     ]
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     roleAssignments: [
       {
         principalIds: [

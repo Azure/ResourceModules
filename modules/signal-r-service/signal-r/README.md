@@ -54,7 +54,10 @@ module signalR 'br:bicep/modules/signal-r-service.signal-r:1.0.0' = {
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     kind: 'SignalR'
     location: '<location>'
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     networkAcls: {
       defaultAction: 'Allow'
       privateEndpoints: [

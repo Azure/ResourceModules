@@ -57,7 +57,10 @@ module workspace 'br:bicep/modules/desktop-virtualization.workspace:1.0.0' = {
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     friendlyName: 'My first AVD Workspace'
     location: '<location>'
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     roleAssignments: [
       {
         principalIds: [

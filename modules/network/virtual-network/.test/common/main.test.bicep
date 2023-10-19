@@ -80,7 +80,10 @@ module testDeployment '../../main.bicep' = {
       '10.0.1.4'
       '10.0.1.5'
     ]
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     roleAssignments: [
       {
         roleDefinitionIdOrName: 'Reader'

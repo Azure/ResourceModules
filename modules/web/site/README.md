@@ -139,7 +139,10 @@ module site 'br:bicep/modules/web.site:1.0.0' = {
       }
     ]
     keyVaultAccessIdentityResourceId: '<keyVaultAccessIdentityResourceId>'
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     privateEndpoints: [
       {
         privateDnsZoneGroup: {

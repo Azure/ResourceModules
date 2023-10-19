@@ -83,7 +83,10 @@ module factory 'br:bicep/modules/data-factory.factory:1.0.0' = {
         type: 'SelfHosted'
       }
     ]
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     managedPrivateEndpoints: [
       {
         fqdns: [

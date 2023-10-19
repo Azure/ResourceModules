@@ -55,7 +55,10 @@ module testDeployment '../../main.bicep' = {
     allowBranchToBranchTraffic: true
     allowVnetToVnetTraffic: true
     disableVpnEncryption: true
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     roleAssignments: [
       {
         roleDefinitionIdOrName: 'Reader'

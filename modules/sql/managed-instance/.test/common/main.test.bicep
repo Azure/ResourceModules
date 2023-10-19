@@ -112,7 +112,10 @@ module testDeployment '../../main.bicep' = {
       }
     ]
     licenseType: 'LicenseIncluded'
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     primaryUserAssignedIdentityId: nestedDependencies.outputs.managedIdentityResourceId
     proxyOverride: 'Proxy'
     publicDataEndpointEnabled: false

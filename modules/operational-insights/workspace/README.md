@@ -193,7 +193,10 @@ module workspace 'br:bicep/modules/operational-insights.workspace:1.0.0' = {
         resourceId: '<resourceId>'
       }
     ]
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     publicNetworkAccessForIngestion: 'Disabled'
     publicNetworkAccessForQuery: 'Disabled'
     savedSearches: [
@@ -699,7 +702,10 @@ module workspace 'br:bicep/modules/operational-insights.workspace:1.0.0' = {
         resourceId: '<resourceId>'
       }
     ]
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     publicNetworkAccessForIngestion: 'Disabled'
     publicNetworkAccessForQuery: 'Disabled'
     roleAssignments: [

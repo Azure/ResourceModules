@@ -81,7 +81,10 @@ module namespace 'br:bicep/modules/service-bus.namespace:1.0.0' = {
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     disableLocalAuth: true
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     minimumTlsVersion: '1.2'
     networkRuleSets: {
       defaultAction: 'Deny'

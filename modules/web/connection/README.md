@@ -49,7 +49,10 @@ module connection 'br:bicep/modules/web.connection:1.0.0' = {
       id: '<id>'
     }
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     roleAssignments: [
       {
         principalIds: [

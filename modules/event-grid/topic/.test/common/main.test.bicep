@@ -101,7 +101,10 @@ module testDeployment '../../main.bicep' = {
         ipMask: '40.74.28.0/23'
       }
     ]
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     privateEndpoints: [
       {
         privateDnsZoneGroup: {

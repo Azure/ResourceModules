@@ -274,7 +274,10 @@ module cluster 'br:bicep/modules/service-fabric.cluster:1.0.0' = {
         ]
       }
     ]
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     maxUnusedVersionsToKeep: 2
     notifications: [
       {

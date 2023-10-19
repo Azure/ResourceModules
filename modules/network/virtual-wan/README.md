@@ -49,7 +49,10 @@ module virtualWan 'br:bicep/modules/network.virtual-wan:1.0.0' = {
     allowVnetToVnetTraffic: true
     disableVpnEncryption: true
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     roleAssignments: [
       {
         principalIds: [

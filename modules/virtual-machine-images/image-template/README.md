@@ -63,7 +63,10 @@ module imageTemplate 'br:bicep/modules/virtual-machine-images.image-template:1.0
     buildTimeoutInMinutes: 60
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     imageReplicationRegions: []
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     managedImageName: 'mi-vmiitcom-001'
     osDiskSizeGB: 127
     roleAssignments: [

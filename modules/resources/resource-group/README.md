@@ -46,7 +46,10 @@ module resourceGroup 'br:bicep/modules/resources.resource-group:1.0.0' = {
     name: 'rrgcom001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     roleAssignments: [
       {
         principalIds: [

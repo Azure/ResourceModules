@@ -154,7 +154,10 @@ module testDeployment '../../main.bicep' = {
     ]
     enableDefaultTelemetry: enableDefaultTelemetry
     kind: 'Windows'
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     roleAssignments: [
       {
         roleDefinitionIdOrName: 'Reader'

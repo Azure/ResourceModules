@@ -110,7 +110,10 @@ module testDeployment '../../main.bicep' = {
     diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
     discoveryUrl: 'http://example.com'
     imageBuildCompute: 'testcompute'
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     primaryUserAssignedIdentity: nestedDependencies.outputs.managedIdentityResourceId
     privateEndpoints: [
       {

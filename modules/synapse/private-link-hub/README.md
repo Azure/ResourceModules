@@ -48,7 +48,10 @@ module privateLinkHub 'br:bicep/modules/synapse.private-link-hub:1.0.0' = {
     name: 'splhcom001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     privateEndpoints: [
       {
         privateDnsZoneGroup: {

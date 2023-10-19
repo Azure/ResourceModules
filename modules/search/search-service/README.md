@@ -63,7 +63,10 @@ module searchService 'br:bicep/modules/search.search-service:1.0.0' = {
     disableLocalAuth: false
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     hostingMode: 'highDensity'
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     networkRuleSet: {
       ipRules: [
         {

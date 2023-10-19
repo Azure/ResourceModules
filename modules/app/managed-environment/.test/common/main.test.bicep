@@ -60,7 +60,10 @@ module testDeployment '../../main.bicep' = {
     platformReservedCidr: '172.17.17.0/24'
     platformReservedDnsIP: '172.17.17.17'
     infrastructureSubnetId: nestedDependencies.outputs.subnetResourceId
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     tags: {
       'hidden-title': 'This is visible in the resource name'
       Env: 'test'

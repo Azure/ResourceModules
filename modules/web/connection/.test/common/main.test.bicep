@@ -57,7 +57,10 @@ module testDeployment '../../main.bicep' = {
       id: '${subscription().id}/providers/Microsoft.Web/locations/westeurope/managedApis/azuremonitorlogs'
 
     }
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     roleAssignments: [
       {
         roleDefinitionIdOrName: 'Reader'

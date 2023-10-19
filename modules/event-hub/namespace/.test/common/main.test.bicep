@@ -160,7 +160,10 @@ module testDeployment '../../main.bicep' = {
         retentionDescriptionTombstoneRetentionTimeInHours: 24
       }
     ]
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     networkRuleSets: {
       defaultAction: 'Deny'
       ipRules: [

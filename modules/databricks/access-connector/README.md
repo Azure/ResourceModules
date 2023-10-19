@@ -47,7 +47,10 @@ module accessConnector 'br:bicep/modules/databricks.access-connector:1.0.0' = {
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     location: '<location>'
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     roleAssignments: [
       {
         principalIds: [

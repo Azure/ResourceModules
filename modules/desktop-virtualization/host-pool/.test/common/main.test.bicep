@@ -76,7 +76,10 @@ module testDeployment '../../main.bicep' = {
     type: 'Pooled'
     loadBalancerType: 'BreadthFirst'
     location: location
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     maxSessionLimit: 99999
     personalDesktopAssignmentType: 'Automatic'
     roleAssignments: [

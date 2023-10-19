@@ -79,7 +79,10 @@ module profile 'br:bicep/modules/cdn.profile:1.0.0' = {
     ]
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     location: 'global'
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     originResponseTimeoutSeconds: 60
     origionGroups: [
       {
@@ -303,7 +306,10 @@ module profile 'br:bicep/modules/cdn.profile:1.0.0' = {
       queryStringCachingBehavior: 'IgnoreQueryString'
     }
     location: '<location>'
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     originResponseTimeoutSeconds: 60
     roleAssignments: [
       {

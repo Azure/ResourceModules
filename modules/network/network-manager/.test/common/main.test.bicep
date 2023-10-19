@@ -59,7 +59,10 @@ module testDeployment '../../main.bicep' = {
   params: {
     name: networkManagerName
     enableDefaultTelemetry: enableDefaultTelemetry
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     roleAssignments: [
       {
         roleDefinitionIdOrName: 'Reader'

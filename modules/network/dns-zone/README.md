@@ -109,7 +109,10 @@ module dnsZone 'br:bicep/modules/network.dns-zone:1.0.0' = {
       }
     ]
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     mx: [
       {
         mxRecords: [

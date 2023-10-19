@@ -147,7 +147,10 @@ module diskEncryptionSet 'br:bicep/modules/compute.disk-encryption-set:1.0.0' = 
     name: 'cdescom001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     roleAssignments: [
       {
         principalIds: [

@@ -63,7 +63,10 @@ module virtualNetwork 'br:bicep/modules/network.virtual-network:1.0.0' = {
     ]
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     flowTimeoutInMinutes: 20
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     roleAssignments: [
       {
         principalIds: [

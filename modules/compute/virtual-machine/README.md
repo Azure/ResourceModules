@@ -228,7 +228,10 @@ module virtualMachine 'br:bicep/modules/compute.virtual-machine:1.0.0' = {
       }
     }
     location: '<location>'
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     monitoringWorkspaceId: '<monitoringWorkspaceId>'
     name: 'cvmlincom'
     patchMode: 'AutomaticByPlatform'
@@ -1090,7 +1093,10 @@ module virtualMachine 'br:bicep/modules/compute.virtual-machine:1.0.0' = {
       }
     }
     location: '<location>'
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     monitoringWorkspaceId: '<monitoringWorkspaceId>'
     name: 'cvmwincom'
     patchMode: 'AutomaticByPlatform'

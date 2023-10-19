@@ -272,7 +272,10 @@ module vault 'br:bicep/modules/key-vault.vault:1.0.0' = {
         }
       }
     ]
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     networkAcls: {
       bypass: 'AzureServices'
       defaultAction: 'Deny'

@@ -175,7 +175,10 @@ module server 'br:bicep/modules/sql.server:1.0.0' = {
       }
     ]
     location: '<location>'
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     primaryUserAssignedIdentityId: '<primaryUserAssignedIdentityId>'
     privateEndpoints: [
       {

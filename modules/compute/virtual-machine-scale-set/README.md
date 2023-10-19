@@ -127,7 +127,10 @@ module virtualMachineScaleSet 'br:bicep/modules/compute.virtual-machine-scale-se
     extensionNetworkWatcherAgentConfig: {
       enabled: true
     }
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     nicConfigurations: [
       {
         ipConfigurations: [
@@ -801,7 +804,10 @@ module virtualMachineScaleSet 'br:bicep/modules/compute.virtual-machine-scale-se
     extensionNetworkWatcherAgentConfig: {
       enabled: true
     }
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     nicConfigurations: [
       {
         ipConfigurations: [

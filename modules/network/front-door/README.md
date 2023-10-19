@@ -135,7 +135,10 @@ module frontDoor 'br:bicep/modules/network.front-door:1.0.0' = {
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     enforceCertificateNameCheck: 'Disabled'
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     roleAssignments: [
       {
         principalIds: [

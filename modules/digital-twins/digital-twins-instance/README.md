@@ -65,7 +65,10 @@ module digitalTwinsInstance 'br:bicep/modules/digital-twins.digital-twins-instan
       entityPath: '<entityPath>'
       userAssignedIdentity: '<userAssignedIdentity>'
     }
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     privateEndpoints: [
       {
         privateDnsZoneGroup: {

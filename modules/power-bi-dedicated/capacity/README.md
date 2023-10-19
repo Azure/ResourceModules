@@ -50,7 +50,10 @@ module capacity 'br:bicep/modules/power-bi-dedicated.capacity:1.0.0' = {
     skuCapacity: 1
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     roleAssignments: [
       {
         principalIds: [

@@ -100,7 +100,10 @@ module testDeployment '../../main.bicep' = {
         type: 'SelfHosted'
       }
     ]
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     managedPrivateEndpoints: [
       {
         fqdns: [

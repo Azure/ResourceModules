@@ -73,7 +73,10 @@ module testDeployment '../../main.bicep' = {
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '${namePrefix}-${serviceShort}'
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     primaryUserAssignedIdentityId: nestedDependencies.outputs.managedIdentityResourceId
     administratorLogin: 'adminUserName'
     administratorLoginPassword: password

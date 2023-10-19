@@ -75,7 +75,10 @@ module configurationStore 'br:bicep/modules/app-configuration.configuration-stor
         value: 'valueName'
       }
     ]
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     roleAssignments: [
       {
         principalIds: [

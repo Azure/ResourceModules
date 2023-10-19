@@ -53,7 +53,10 @@ module testDeployment '../../main.bicep' = {
     azPowerShellVersion: '8.0'
     cleanupPreference: 'Always'
     kind: 'AzurePowerShell'
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     retentionInterval: 'P1D'
     runOnce: false
     scriptContent: 'Write-Host \'The cake is a lie!\''

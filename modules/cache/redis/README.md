@@ -57,7 +57,10 @@ module redis 'br:bicep/modules/cache.redis:1.0.0' = {
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     enableNonSslPort: true
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     minimumTlsVersion: '1.2'
     privateEndpoints: [
       {

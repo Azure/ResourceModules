@@ -52,7 +52,10 @@ module localNetworkGateway 'br:bicep/modules/network.local-network-gateway:1.0.0
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     localAsn: '65123'
     localBgpPeeringAddress: '192.168.1.5'
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     roleAssignments: [
       {
         principalIds: [

@@ -136,7 +136,10 @@ module flexibleServer 'br:bicep/modules/db-for-my-sql.flexible-server:1.0.0' = {
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     highAvailability: 'SameZone'
     location: '<location>'
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     privateDnsZoneResourceId: '<privateDnsZoneResourceId>'
     roleAssignments: [
       {
@@ -343,7 +346,10 @@ module flexibleServer 'br:bicep/modules/db-for-my-sql.flexible-server:1.0.0' = {
     geoRedundantBackup: 'Enabled'
     highAvailability: 'SameZone'
     location: '<location>'
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     roleAssignments: [
       {
         principalIds: [

@@ -149,7 +149,10 @@ module namespace 'br:bicep/modules/event-hub.namespace:1.0.0' = {
     ]
     isAutoInflateEnabled: true
     kafkaEnabled: true
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     maximumThroughputUnits: 4
     minimumTlsVersion: '1.2'
     networkRuleSets: {

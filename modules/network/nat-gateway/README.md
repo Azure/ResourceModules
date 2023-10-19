@@ -51,7 +51,10 @@ module natGateway 'br:bicep/modules/network.nat-gateway:1.0.0' = {
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     natGatewayPublicIpAddress: true
     roleAssignments: [
       {

@@ -97,7 +97,10 @@ module lab 'br:bicep/modules/dev-test-lab.lab:1.0.0' = {
     isolateLabResources: 'Enabled'
     labStorageType: 'Premium'
     location: '<location>'
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     managementIdentities: {
       '<managedIdentityResourceId>': {}
     }

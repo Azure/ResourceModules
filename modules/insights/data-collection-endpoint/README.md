@@ -47,7 +47,10 @@ module dataCollectionEndpoint 'br:bicep/modules/insights.data-collection-endpoin
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     kind: 'Windows'
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     publicNetworkAccess: 'Enabled'
     roleAssignments: [
       {

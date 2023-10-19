@@ -73,7 +73,10 @@ module testDeployment '../../main.bicep' = {
     diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
     diagnosticSettingsName: 'redisdiagnostics'
     enableNonSslPort: true
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     minimumTlsVersion: '1.2'
     zoneRedundant: true
     zones: [ 1, 2 ]

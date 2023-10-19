@@ -58,7 +58,10 @@ module virtualNetworkGateway 'br:bicep/modules/network.virtual-network-gateway:1
       'dm-nvngavpn'
     ]
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     publicIpZones: [
       '1'
       '2'
@@ -359,7 +362,10 @@ module virtualNetworkGateway 'br:bicep/modules/network.virtual-network-gateway:1
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     enablePrivateIpAddress: true
     gatewayDefaultSiteLocalNetworkGatewayId: '<gatewayDefaultSiteLocalNetworkGatewayId>'
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     natRules: [
       {
         externalMappings: [

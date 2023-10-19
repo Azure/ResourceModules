@@ -53,7 +53,10 @@ module testDeployment '../../main.bicep' = {
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '${namePrefix}-${serviceShort}'
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     addressPrefix: '10.1.0.0/16'
     virtualWanId: nestedDependencies.outputs.virtualWWANResourceId
     hubRouteTables: [

@@ -58,7 +58,10 @@ module proximityPlacementGroup 'br:bicep/modules/compute.proximity-placement-gro
         'Standard_B4ms'
       ]
     }
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     roleAssignments: [
       {
         principalIds: [

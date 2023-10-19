@@ -74,7 +74,10 @@ module privateLinkService 'br:bicep/modules/network.private-link-service:1.0.0' 
         id: '<id>'
       }
     ]
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     roleAssignments: [
       {
         principalIds: [
