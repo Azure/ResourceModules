@@ -14,7 +14,7 @@ This module deploys a Power BI Dedicated Capacity.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | [2016-09-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/locks) |
+| `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.PowerBIDedicated/capacities` | [2021-01-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.PowerBIDedicated/2021-01-01/capacities) |
 
@@ -26,10 +26,13 @@ The following section provides usage examples for the module, which were used to
 
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/power-bi-dedicated.capacity:1.0.0`.
 
-- [Common](#example-1-common)
+- [Using large parameter set](#example-1-using-large-parameter-set)
 - [Using only defaults](#example-2-using-only-defaults)
 
-### Example 1: _Common_
+### Example 1: _Using large parameter set_
+
+This instance deploys the module with most of its features enabled.
+
 
 <details>
 
@@ -205,7 +208,7 @@ module capacity 'br:bicep/modules/power-bi-dedicated.capacity:1.0.0' = {
 | :-- | :-- | :-- |
 | [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
 | [`location`](#parameter-location) | string | Location for all Resources. |
-| [`lock`](#parameter-lock) | string | Specify the type of lock. |
+| [`lock`](#parameter-lock) | object | The lock settings of the service. |
 | [`mode`](#parameter-mode) | string | Mode of the resource. |
 | [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | [`skuName`](#parameter-skuname) | string | SkuCapacity of the resource. |
@@ -228,11 +231,30 @@ Location for all Resources.
 
 ### Parameter: `lock`
 
-Specify the type of lock.
+The lock settings of the service.
+- Required: No
+- Type: object
+
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`kind`](#parameter-lockkind) | No | string | Optional. Specify the type of lock. |
+| [`name`](#parameter-lockname) | No | string | Optional. Specify the name of lock. |
+
+### Parameter: `lock.kind`
+
+Optional. Specify the type of lock.
+
 - Required: No
 - Type: string
-- Default: `''`
-- Allowed: `['', CanNotDelete, NotSpecified, ReadOnly]`
+- Allowed: `[CanNotDelete, None, ReadOnly]`
+
+### Parameter: `lock.name`
+
+Optional. Specify the name of lock.
+
+- Required: No
+- Type: string
 
 ### Parameter: `members`
 
