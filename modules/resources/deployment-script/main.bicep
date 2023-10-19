@@ -66,13 +66,8 @@ param timeout string = 'PT1H'
 @description('Generated. Do not provide a value! This date value is used to make sure the script run every time the template is deployed.')
 param baseTime string = utcNow('yyyy-MM-dd-HH-mm-ss')
 
-@allowed([
-  ''
-  'CanNotDelete'
-  'ReadOnly'
-])
-@description('Optional. Specify the type of lock.')
-param lock string = ''
+@description('Optional. The lock settings of the service.')
+param lock lockType
 
 @description('Optional. Tags of the resource.')
 param tags object = {}

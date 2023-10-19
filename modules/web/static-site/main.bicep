@@ -61,13 +61,8 @@ param systemAssignedIdentity bool = false
 @description('Optional. The ID(s) to assign to the resource.')
 param userAssignedIdentities object = {}
 
-@allowed([
-  ''
-  'CanNotDelete'
-  'ReadOnly'
-])
-@description('Optional. Specify the type of lock.')
-param lock string = ''
+@description('Optional. The lock settings of the service.')
+param lock lockType
 
 @description('Optional. Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. Note, requires the \'sku\' to be \'Standard\'.')
 param privateEndpoints array = []

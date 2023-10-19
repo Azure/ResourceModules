@@ -8,13 +8,8 @@ param name string
 @description('Optional. Resource location.')
 param location string = resourceGroup().location
 
-@allowed([
-  ''
-  'CanNotDelete'
-  'ReadOnly'
-])
-@description('Optional. Specify the type of lock.')
-param lock string = ''
+@description('Optional. The lock settings of the service.')
+param lock lockType
 
 @description('Required. Resource ID of the KeyVault containing the key or secret.')
 param keyVaultResourceId string

@@ -5,13 +5,8 @@ metadata owner = 'Azure/module-maintainers'
 @description('Required. The name of the MySQL flexible server.')
 param name string
 
-@allowed([
-  ''
-  'CanNotDelete'
-  'ReadOnly'
-])
-@description('Optional. Specify the type of lock.')
-param lock string = ''
+@description('Optional. The lock settings of the service.')
+param lock lockType
 
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location

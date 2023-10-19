@@ -67,13 +67,8 @@ param certificateValue string = ''
 @description('Optional. DNS suffix for the environment domain.')
 param dnsSuffix string = ''
 
-@allowed([
-  ''
-  'CanNotDelete'
-  'ReadOnly'
-])
-@description('Optional. Specify the type of lock.')
-param lock string = ''
+@description('Optional. The lock settings of the service.')
+param lock lockType
 
 @description('Optional. Workload profiles configured for the Managed Environment.')
 param workloadProfiles array = []

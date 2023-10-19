@@ -116,13 +116,8 @@ param replications array = []
 @description('Optional. All webhooks to create.')
 param webhooks array = []
 
-@allowed([
-  ''
-  'CanNotDelete'
-  'ReadOnly'
-])
-@description('Optional. Specify the type of lock.')
-param lock string = ''
+@description('Optional. The lock settings of the service.')
+param lock lockType
 
 @description('Optional. Enables system assigned managed identity on the resource.')
 param systemAssignedIdentity bool = false

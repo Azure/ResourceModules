@@ -66,13 +66,8 @@ param appSettingsKeyValuePairs object = {}
 @description('Optional. The auth settings V2 configuration.')
 param authSettingV2Configuration object = {}
 
-@allowed([
-  ''
-  'CanNotDelete'
-  'ReadOnly'
-])
-@description('Optional. Specify the type of lock.')
-param lock string = ''
+@description('Optional. The lock settings of the service.')
+param lock lockType
 
 @description('Optional. Configuration details for private endpoints.')
 param privateEndpoints array = []

@@ -45,13 +45,8 @@ param activeRevisionsMode string = 'Single'
 @description('Required. Resource ID of environment.')
 param environmentId string
 
-@allowed([
-  ''
-  'CanNotDelete'
-  'ReadOnly'
-])
-@description('Optional. Specify the type of lock.')
-param lock string = ''
+@description('Optional. The lock settings of the service.')
+param lock lockType
 
 @description('Optional. Tags of the resource.')
 param tags object = {}

@@ -45,13 +45,8 @@ param userAssignedIdentities object = {}
 @description('Optional. Location for all Resources.')
 param location string = resourceGroup().location
 
-@allowed([
-  ''
-  'CanNotDelete'
-  'ReadOnly'
-])
-@description('Optional. Specify the type of lock.')
-param lock string = ''
+@description('Optional. The lock settings of the service.')
+param lock lockType
 
 @description('Optional. Limit control plane API calls to API Management service with version equal to or newer than this value.')
 param minApiVersion string = ''

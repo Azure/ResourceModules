@@ -70,13 +70,8 @@ param hubRouteTables array = []
 @description('Optional. Virtual network connections to create for the virtual hub.')
 param hubVirtualNetworkConnections array = []
 
-@allowed([
-  ''
-  'CanNotDelete'
-  'ReadOnly'
-])
-@description('Optional. Specify the type of lock.')
-param lock string = ''
+@description('Optional. The lock settings of the service.')
+param lock lockType
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
