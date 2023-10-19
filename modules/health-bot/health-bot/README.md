@@ -16,7 +16,7 @@ This module deploys an Azure Health Bot.
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.HealthBot/healthBots` | [2022-08-08](https://learn.microsoft.com/en-us/azure/templates/Microsoft.HealthBot/healthBots) |
+| `Microsoft.HealthBot/healthBots` | [2022-08-08](https://learn.microsoft.com/en-us/azure/templates/Microsoft.HealthBot/2022-08-08/healthBots) |
 
 ## Usage examples
 
