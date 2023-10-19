@@ -212,3 +212,15 @@ output name string = containerApp.name
 
 @description('The location the resource was deployed into.')
 output location string = containerApp.location
+
+// ================ //
+// Definitions //
+// ================ //
+
+type lockType = {
+  @description('Optional. Specify the name of lock.')
+  name: string?
+
+  @description('Optional. Specify the type of lock.')
+  kind: ('CanNotDelete' | 'ReadOnly' | 'None')?
+}?

@@ -744,3 +744,15 @@ output oidcIssuerUrl string = enableOidcIssuerProfile ? managedCluster.propertie
 
 @description('The addonProfiles of the Kubernetes cluster.')
 output addonProfiles object = contains(managedCluster.properties, 'addonProfiles') ? managedCluster.properties.addonProfiles : {}
+
+// ================ //
+// Definitions //
+// ================ //
+
+type lockType = {
+  @description('Optional. Specify the name of lock.')
+  name: string?
+
+  @description('Optional. Specify the type of lock.')
+  kind: ('CanNotDelete' | 'ReadOnly' | 'None')?
+}?

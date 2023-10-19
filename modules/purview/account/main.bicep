@@ -317,3 +317,15 @@ output managedEventHubId string = account.properties.managedResources.eventHubNa
 
 @description('The principal ID of the system assigned identity.')
 output systemAssignedPrincipalId string = account.identity.principalId
+
+// ================ //
+// Definitions //
+// ================ //
+
+type lockType = {
+  @description('Optional. Specify the name of lock.')
+  name: string?
+
+  @description('Optional. Specify the type of lock.')
+  kind: ('CanNotDelete' | 'ReadOnly' | 'None')?
+}?

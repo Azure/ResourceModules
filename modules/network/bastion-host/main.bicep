@@ -244,3 +244,15 @@ output location string = azureBastion.location
 
 @description('The Public IPconfiguration object for the AzureBastionSubnet.')
 output ipConfAzureBastionSubnet object = azureBastion.properties.ipConfigurations[0]
+
+// ================ //
+// Definitions //
+// ================ //
+
+type lockType = {
+  @description('Optional. Specify the name of lock.')
+  name: string?
+
+  @description('Optional. Specify the type of lock.')
+  kind: ('CanNotDelete' | 'ReadOnly' | 'None')?
+}?

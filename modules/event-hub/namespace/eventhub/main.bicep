@@ -220,3 +220,15 @@ output resourceGroupName string = resourceGroup().name
 
 @description('The authentication rule resource ID of the event hub.')
 output resourceId string = az.resourceId('Microsoft.EventHub/namespaces/authorizationRules', namespaceName, 'RootManageSharedAccessKey')
+
+// ================ //
+// Definitions //
+// ================ //
+
+type lockType = {
+  @description('Optional. Specify the name of lock.')
+  name: string?
+
+  @description('Optional. Specify the type of lock.')
+  kind: ('CanNotDelete' | 'ReadOnly' | 'None')?
+}?

@@ -156,3 +156,15 @@ output resourceId string = topic.id
 
 @description('The resource group of the deployed topic.')
 output resourceGroupName string = resourceGroup().name
+
+// ================ //
+// Definitions //
+// ================ //
+
+type lockType = {
+  @description('Optional. Specify the name of lock.')
+  name: string?
+
+  @description('Optional. Specify the type of lock.')
+  kind: ('CanNotDelete' | 'ReadOnly' | 'None')?
+}?

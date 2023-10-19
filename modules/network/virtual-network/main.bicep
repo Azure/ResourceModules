@@ -282,3 +282,15 @@ output location string = virtualNetwork.location
 
 @description('The Diagnostic Settings of the virtual network.')
 output diagnosticsLogs array = diagnosticsLogs
+
+// ================ //
+// Definitions //
+// ================ //
+
+type lockType = {
+  @description('Optional. Specify the name of lock.')
+  name: string?
+
+  @description('Optional. Specify the type of lock.')
+  kind: ('CanNotDelete' | 'ReadOnly' | 'None')?
+}?

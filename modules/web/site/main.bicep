@@ -452,3 +452,15 @@ output location string = app.location
 
 @description('Default hostname of the app.')
 output defaultHostname string = app.properties.defaultHostName
+
+// ================ //
+// Definitions //
+// ================ //
+
+type lockType = {
+  @description('Optional. Specify the name of lock.')
+  name: string?
+
+  @description('Optional. Specify the type of lock.')
+  kind: ('CanNotDelete' | 'ReadOnly' | 'None')?
+}?
