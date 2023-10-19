@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "7307637121796009731"
+      "templateHash": "2439163015108038599"
     },
     "name": "Batch Accounts",
     "description": "This module deploys a Batch Account.",
@@ -304,6 +304,18 @@
     "enableReferencedModulesTelemetry": false
   },
   "resources": {
+    "cMKKeyVault::cMKKey": {
+      "condition": "[and(not(empty(parameters('cMKKeyVaultResourceId'))), not(empty(parameters('cMKKeyName'))))]",
+      "existing": true,
+      "type": "Microsoft.KeyVault/vaults/keys",
+      "apiVersion": "2023-02-01",
+      "subscriptionId": "[split(if(not(empty(parameters('cMKKeyVaultResourceId'))), parameters('cMKKeyVaultResourceId'), '//'), '/')[2]]",
+      "resourceGroup": "[split(if(not(empty(parameters('cMKKeyVaultResourceId'))), parameters('cMKKeyVaultResourceId'), '////'), '/')[4]]",
+      "name": "[format('{0}/{1}', last(split(if(not(empty(parameters('cMKKeyVaultResourceId'))), parameters('cMKKeyVaultResourceId'), 'dummyVault'), '/')), if(not(empty(parameters('cMKKeyName'))), parameters('cMKKeyName'), 'dummyKey'))]",
+      "dependsOn": [
+        "cMKKeyVault"
+      ]
+    },
     "defaultTelemetry": {
       "condition": "[parameters('enableDefaultTelemetry')]",
       "type": "Microsoft.Resources/deployments",
@@ -318,23 +330,14 @@
         }
       }
     },
-    "keyVaultReferenceKeyVault": {
-      "condition": "[not(empty(parameters('keyVaultReferenceResourceId')))]",
+    "cMKKeyVault": {
+      "condition": "[not(empty(parameters('cMKKeyVaultResourceId')))]",
       "existing": true,
       "type": "Microsoft.KeyVault/vaults",
       "apiVersion": "2021-10-01",
-      "subscriptionId": "[split(parameters('keyVaultReferenceResourceId'), '/')[2]]",
-      "resourceGroup": "[split(parameters('keyVaultReferenceResourceId'), '/')[4]]",
-      "name": "[last(split(parameters('keyVaultReferenceResourceId'), '/'))]"
-    },
-    "cMKKeyVaultKey": {
-      "condition": "[and(not(empty(parameters('cMKKeyVaultResourceId'))), not(empty(parameters('cMKKeyName'))))]",
-      "existing": true,
-      "type": "Microsoft.KeyVault/vaults/keys",
-      "apiVersion": "2021-10-01",
-      "subscriptionId": "[split(parameters('cMKKeyVaultResourceId'), '/')[2]]",
-      "resourceGroup": "[split(parameters('cMKKeyVaultResourceId'), '/')[4]]",
-      "name": "[format('{0}/{1}', last(split(parameters('cMKKeyVaultResourceId'), '/')), parameters('cMKKeyName'))]"
+      "subscriptionId": "[split(if(not(empty(parameters('cMKKeyVaultResourceId'))), parameters('cMKKeyVaultResourceId'), '//'), '/')[2]]",
+      "resourceGroup": "[split(if(not(empty(parameters('cMKKeyVaultResourceId'))), parameters('cMKKeyVaultResourceId'), '////'), '/')[4]]",
+      "name": "[last(split(if(not(empty(parameters('cMKKeyVaultResourceId'))), parameters('cMKKeyVaultResourceId'), 'dummyVault'), '/'))]"
     },
     "batchAccount": {
       "type": "Microsoft.Batch/batchAccounts",
@@ -346,15 +349,14 @@
       "properties": {
         "allowedAuthenticationModes": "[parameters('allowedAuthenticationModes')]",
         "autoStorage": "[variables('autoStorageConfig')]",
-        "encryption": "[if(not(empty(parameters('cMKKeyName'))), createObject('keySource', 'Microsoft.KeyVault', 'keyVaultProperties', createObject('keyIdentifier', if(not(empty(parameters('cMKKeyVersion'))), format('{0}/{1}', reference('cMKKeyVaultKey').keyUri, parameters('cMKKeyVersion')), reference('cMKKeyVaultKey').keyUriWithVersion))), null())]",
-        "keyVaultReference": "[if(equals(parameters('poolAllocationMode'), 'UserSubscription'), createObject('id', parameters('keyVaultReferenceResourceId'), 'url', reference('keyVaultReferenceKeyVault').vaultUri), null())]",
+        "encryption": "[if(not(empty(parameters('cMKKeyName'))), createObject('keySource', 'Microsoft.KeyVault', 'keyVaultProperties', createObject('keyIdentifier', if(not(empty(parameters('cMKKeyVersion'))), format('{0}/{1}', reference('cMKKeyVault::cMKKey').keyUri, parameters('cMKKeyVersion')), reference('cMKKeyVault::cMKKey').keyUriWithVersion))), null())]",
+        "keyVaultReference": "[if(equals(parameters('poolAllocationMode'), 'UserSubscription'), createObject('id', parameters('keyVaultReferenceResourceId'), 'url', reference('cMKKeyVault').vaultUri), null())]",
         "networkProfile": "[if(or(equals(parameters('publicNetworkAccess'), 'Disabled'), empty(parameters('networkProfileAllowedIpRanges'))), null(), createObject('accountAccess', createObject('defaultAction', parameters('networkProfileDefaultAction'), 'ipRules', variables('networkProfileIpRules'))))]",
         "poolAllocationMode": "[parameters('poolAllocationMode')]",
         "publicNetworkAccess": "[if(not(empty(parameters('publicNetworkAccess'))), parameters('publicNetworkAccess'), if(and(not(empty(parameters('privateEndpoints'))), empty(parameters('networkProfileAllowedIpRanges'))), 'Disabled', null()))]"
       },
       "dependsOn": [
-        "cMKKeyVaultKey",
-        "keyVaultReferenceKeyVault"
+        "cMKKeyVault"
       ]
     },
     "batchAccount_lock": {
