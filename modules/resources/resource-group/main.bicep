@@ -46,11 +46,11 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   properties: {}
 }
 
-module resourceGroup_lock '../../authorization/lock/resource-group/main.bicep' = if (!empty(lock)) {
-  name: '${uniqueString(deployment().name, location)}-${lock}-Lock'
+module resourceGroup_lock '.bicep/nested_lock.bicep' = if (!empty(lock ?? {}) && lock.?kind != 'None') {
+  name: '${uniqueString(deployment().name, location)}-RG-Lock'
   params: {
-    level: any(lock)
-    name: '${resourceGroup.name}-${lock}-lock'
+    lock: lock
+    name: resourceGroup.name
   }
   scope: resourceGroup
 }
