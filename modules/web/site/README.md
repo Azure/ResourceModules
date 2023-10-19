@@ -305,7 +305,10 @@ module site 'br:bicep/modules/web.site:1.0.0' = {
       "value": "<keyVaultAccessIdentityResourceId>"
     },
     "lock": {
-      "value": "CanNotDelete"
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
     },
     "privateEndpoints": {
       "value": [
@@ -831,7 +834,7 @@ module site 'br:bicep/modules/web.site:1.0.0' = {
 | [`hyperV`](#parameter-hyperv) | bool | Hyper-V sandbox. |
 | [`keyVaultAccessIdentityResourceId`](#parameter-keyvaultaccessidentityresourceid) | string | The resource ID of the assigned identity to be used to access a key vault with. |
 | [`location`](#parameter-location) | string | Location for all Resources. |
-| [`lock`](#parameter-lock) | string | Specify the type of lock. |
+| [`lock`](#parameter-lock) | object | The lock settings of the service. |
 | [`privateEndpoints`](#parameter-privateendpoints) | array | Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
 | [`publicNetworkAccess`](#parameter-publicnetworkaccess) | string | Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set. |
 | [`redundancyMode`](#parameter-redundancymode) | string | Site redundancy mode. |
@@ -1058,11 +1061,30 @@ Location for all Resources.
 
 ### Parameter: `lock`
 
-Specify the type of lock.
+The lock settings of the service.
+- Required: No
+- Type: object
+
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`kind`](#parameter-lockkind) | No | string | Optional. Specify the type of lock. |
+| [`name`](#parameter-lockname) | No | string | Optional. Specify the name of lock. |
+
+### Parameter: `lock.kind`
+
+Optional. Specify the type of lock.
+
 - Required: No
 - Type: string
-- Default: `''`
-- Allowed: `['', CanNotDelete, ReadOnly]`
+- Allowed: `[CanNotDelete, None, ReadOnly]`
+
+### Parameter: `lock.name`
+
+Optional. Specify the name of lock.
+
+- Required: No
+- Type: string
 
 ### Parameter: `name`
 

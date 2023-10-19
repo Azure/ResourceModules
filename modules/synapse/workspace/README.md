@@ -566,7 +566,7 @@ module workspace 'br:bicep/modules/synapse.workspace:1.0.0' = {
 | [`integrationRuntimes`](#parameter-integrationruntimes) | array | The Integration Runtimes to create. |
 | [`linkedAccessCheckOnTargetResource`](#parameter-linkedaccesscheckontargetresource) | bool | Linked Access Check On Target Resource. |
 | [`location`](#parameter-location) | string | The geo-location where the resource lives. |
-| [`lock`](#parameter-lock) | string | Specify the type of lock. |
+| [`lock`](#parameter-lock) | object | The lock settings of the service. |
 | [`managedResourceGroupName`](#parameter-managedresourcegroupname) | string | Workspace managed resource group. The resource group name uniquely identifies the resource group within the user subscriptionId. The resource group name must be no longer than 90 characters long, and must be alphanumeric characters (Char.IsLetterOrDigit()) and '-', '_', '(', ')' and'.'. Note that the name cannot end with '.'. |
 | [`managedVirtualNetwork`](#parameter-managedvirtualnetwork) | bool | Enable this to ensure that connection from your workspace to your data sources use Azure Private Links. You can create managed private endpoints to your data sources. |
 | [`preventDataExfiltration`](#parameter-preventdataexfiltration) | bool | Prevent Data Exfiltration. |
@@ -734,11 +734,30 @@ The geo-location where the resource lives.
 
 ### Parameter: `lock`
 
-Specify the type of lock.
+The lock settings of the service.
+- Required: No
+- Type: object
+
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`kind`](#parameter-lockkind) | No | string | Optional. Specify the type of lock. |
+| [`name`](#parameter-lockname) | No | string | Optional. Specify the name of lock. |
+
+### Parameter: `lock.kind`
+
+Optional. Specify the type of lock.
+
 - Required: No
 - Type: string
-- Default: `''`
-- Allowed: `['', CanNotDelete, ReadOnly]`
+- Allowed: `[CanNotDelete, None, ReadOnly]`
+
+### Parameter: `lock.name`
+
+Optional. Specify the name of lock.
+
+- Required: No
+- Type: string
 
 ### Parameter: `managedResourceGroupName`
 

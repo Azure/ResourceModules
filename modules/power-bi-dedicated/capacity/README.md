@@ -26,13 +26,10 @@ The following section provides usage examples for the module, which were used to
 
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/power-bi-dedicated.capacity:1.0.0`.
 
-- [Using large parameter set](#example-1-using-large-parameter-set)
+- [Common](#example-1-common)
 - [Using only defaults](#example-2-using-only-defaults)
 
-### Example 1: _Using large parameter set_
-
-This instance deploys the module with most of its features enabled.
-
+### Example 1: _Common_
 
 <details>
 
@@ -101,7 +98,10 @@ module capacity 'br:bicep/modules/power-bi-dedicated.capacity:1.0.0' = {
       "value": "<enableDefaultTelemetry>"
     },
     "lock": {
-      "value": "CanNotDelete"
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
     },
     "roleAssignments": {
       "value": [

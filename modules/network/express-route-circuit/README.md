@@ -124,7 +124,10 @@ module expressRouteCircuit 'br:bicep/modules/network.express-route-circuit:1.0.0
       "value": "<enableDefaultTelemetry>"
     },
     "lock": {
-      "value": "CanNotDelete"
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
     },
     "roleAssignments": {
       "value": [
@@ -246,7 +249,7 @@ module expressRouteCircuit 'br:bicep/modules/network.express-route-circuit:1.0.0
 | [`expressRoutePortResourceId`](#parameter-expressrouteportresourceid) | string | The reference to the ExpressRoutePort resource when the circuit is provisioned on an ExpressRoutePort resource. Available when configuring Express Route Direct. |
 | [`globalReachEnabled`](#parameter-globalreachenabled) | bool | Flag denoting global reach status. To enable ExpressRoute Global Reach between different geopolitical regions, your circuits must be Premium SKU. |
 | [`location`](#parameter-location) | string | Location for all resources. |
-| [`lock`](#parameter-lock) | string | Specify the type of lock. |
+| [`lock`](#parameter-lock) | object | The lock settings of the service. |
 | [`peerASN`](#parameter-peerasn) | int | The autonomous system number of the customer/connectivity provider. |
 | [`peering`](#parameter-peering) | bool | Enabled BGP peering type for the Circuit. |
 | [`peeringType`](#parameter-peeringtype) | string | BGP peering type for the Circuit. Choose from AzurePrivatePeering, AzurePublicPeering or MicrosoftPeering. |
@@ -360,11 +363,30 @@ Location for all resources.
 
 ### Parameter: `lock`
 
-Specify the type of lock.
+The lock settings of the service.
+- Required: No
+- Type: object
+
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`kind`](#parameter-lockkind) | No | string | Optional. Specify the type of lock. |
+| [`name`](#parameter-lockname) | No | string | Optional. Specify the name of lock. |
+
+### Parameter: `lock.kind`
+
+Optional. Specify the type of lock.
+
 - Required: No
 - Type: string
-- Default: `''`
-- Allowed: `['', CanNotDelete, ReadOnly]`
+- Allowed: `[CanNotDelete, None, ReadOnly]`
+
+### Parameter: `lock.name`
+
+Optional. Specify the name of lock.
+
+- Required: No
+- Type: string
 
 ### Parameter: `name`
 

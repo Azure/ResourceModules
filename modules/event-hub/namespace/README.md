@@ -342,7 +342,10 @@ module namespace 'br:bicep/modules/event-hub.namespace:1.0.0' = {
       "value": true
     },
     "lock": {
-      "value": "CanNotDelete"
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
     },
     "maximumThroughputUnits": {
       "value": 4
@@ -706,7 +709,7 @@ module namespace 'br:bicep/modules/event-hub.namespace:1.0.0' = {
 | [`isAutoInflateEnabled`](#parameter-isautoinflateenabled) | bool | Switch to enable the Auto Inflate feature of Event Hub. Auto Inflate is not supported in Premium SKU EventHub. |
 | [`kafkaEnabled`](#parameter-kafkaenabled) | bool | Value that indicates whether Kafka is enabled for Event Hubs Namespace. |
 | [`location`](#parameter-location) | string | Location for all resources. |
-| [`lock`](#parameter-lock) | string | Specify the type of lock. |
+| [`lock`](#parameter-lock) | object | The lock settings of the service. |
 | [`maximumThroughputUnits`](#parameter-maximumthroughputunits) | int | Upper limit of throughput units when AutoInflate is enabled, value should be within 0 to 20 throughput units. |
 | [`minimumTlsVersion`](#parameter-minimumtlsversion) | string | The minimum TLS version for the cluster to support. |
 | [`networkRuleSets`](#parameter-networkrulesets) | object | Configure networking options. This object contains IPs/Subnets to allow or restrict access to private endpoints only. For security reasons, it is recommended to configure this object on the Namespace. |
@@ -858,11 +861,30 @@ Location for all resources.
 
 ### Parameter: `lock`
 
-Specify the type of lock.
+The lock settings of the service.
+- Required: No
+- Type: object
+
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`kind`](#parameter-lockkind) | No | string | Optional. Specify the type of lock. |
+| [`name`](#parameter-lockname) | No | string | Optional. Specify the name of lock. |
+
+### Parameter: `lock.kind`
+
+Optional. Specify the type of lock.
+
 - Required: No
 - Type: string
-- Default: `''`
-- Allowed: `['', CanNotDelete, ReadOnly]`
+- Allowed: `[CanNotDelete, None, ReadOnly]`
+
+### Parameter: `lock.name`
+
+Optional. Specify the name of lock.
+
+- Required: No
+- Type: string
 
 ### Parameter: `maximumThroughputUnits`
 

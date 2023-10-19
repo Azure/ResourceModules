@@ -142,7 +142,8 @@ module privateEndpoint 'br:bicep/modules/network.private-endpoint:1.0.0' = {
     },
     "lock": {
       "value": {
-        "kind": "CanNotDelete"
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
       }
     },
     "privateDnsZoneResourceIds": {

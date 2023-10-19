@@ -26,13 +26,10 @@ The following section provides usage examples for the module, which were used to
 
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/maintenance.maintenance-configuration:1.0.0`.
 
-- [Using large parameter set](#example-1-using-large-parameter-set)
-- [Using only defaults](#example-2-using-only-defaults)
+- [Common](#example-1-common)
+- [Min](#example-2-min)
 
-### Example 1: _Using large parameter set_
-
-This instance deploys the module with most of its features enabled.
-
+### Example 1: _Common_
 
 <details>
 
@@ -140,7 +137,10 @@ module maintenanceConfiguration 'br:bicep/modules/maintenance.maintenance-config
       }
     },
     "lock": {
-      "value": "CanNotDelete"
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
     },
     "maintenanceWindow": {
       "value": {
@@ -182,10 +182,7 @@ module maintenanceConfiguration 'br:bicep/modules/maintenance.maintenance-config
 </details>
 <p>
 
-### Example 2: _Using only defaults_
-
-This instance deploys the module with the minimum set of required parameters.
-
+### Example 2: _Min_
 
 <details>
 

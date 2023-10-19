@@ -218,7 +218,10 @@ module dataCollectionRule 'br:bicep/modules/insights.data-collection-rule:1.0.0'
       "value": "Windows"
     },
     "lock": {
-      "value": "CanNotDelete"
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
     },
     "roleAssignments": {
       "value": [
@@ -446,7 +449,10 @@ module dataCollectionRule 'br:bicep/modules/insights.data-collection-rule:1.0.0'
       "value": "Windows"
     },
     "lock": {
-      "value": "CanNotDelete"
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
     },
     "roleAssignments": {
       "value": [
@@ -630,7 +636,10 @@ module dataCollectionRule 'br:bicep/modules/insights.data-collection-rule:1.0.0'
       "value": "Windows"
     },
     "lock": {
-      "value": "CanNotDelete"
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
     },
     "roleAssignments": {
       "value": [
@@ -1022,7 +1031,10 @@ module dataCollectionRule 'br:bicep/modules/insights.data-collection-rule:1.0.0'
       "value": "Linux"
     },
     "lock": {
-      "value": "CanNotDelete"
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
     },
     "roleAssignments": {
       "value": [
@@ -1456,7 +1468,10 @@ module dataCollectionRule 'br:bicep/modules/insights.data-collection-rule:1.0.0'
       "value": "Windows"
     },
     "lock": {
-      "value": "CanNotDelete"
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
     },
     "roleAssignments": {
       "value": [

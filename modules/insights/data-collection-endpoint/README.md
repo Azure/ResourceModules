@@ -26,13 +26,10 @@ The following section provides usage examples for the module, which were used to
 
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/insights.data-collection-endpoint:1.0.0`.
 
-- [Using large parameter set](#example-1-using-large-parameter-set)
+- [Common](#example-1-common)
 - [Using only defaults](#example-2-using-only-defaults)
 
-### Example 1: _Using large parameter set_
-
-This instance deploys the module with most of its features enabled.
-
+### Example 1: _Common_
 
 <details>
 
@@ -94,7 +91,10 @@ module dataCollectionEndpoint 'br:bicep/modules/insights.data-collection-endpoin
       "value": "Windows"
     },
     "lock": {
-      "value": "CanNotDelete"
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
     },
     "publicNetworkAccess": {
       "value": "Enabled"

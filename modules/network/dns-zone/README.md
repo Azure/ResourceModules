@@ -321,7 +321,10 @@ module dnsZone 'br:bicep/modules/network.dns-zone:1.0.0' = {
       "value": "<enableDefaultTelemetry>"
     },
     "lock": {
-      "value": "CanNotDelete"
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
     },
     "mx": {
       "value": [
@@ -535,7 +538,7 @@ module dnsZone 'br:bicep/modules/network.dns-zone:1.0.0' = {
 | [`cname`](#parameter-cname) | array | Array of CNAME records. |
 | [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
 | [`location`](#parameter-location) | string | The location of the dnsZone. Should be global. |
-| [`lock`](#parameter-lock) | string | Specify the type of lock. |
+| [`lock`](#parameter-lock) | object | The lock settings of the service. |
 | [`mx`](#parameter-mx) | array | Array of MX records. |
 | [`ns`](#parameter-ns) | array | Array of NS records. |
 | [`ptr`](#parameter-ptr) | array | Array of PTR records. |
@@ -589,11 +592,30 @@ The location of the dnsZone. Should be global.
 
 ### Parameter: `lock`
 
-Specify the type of lock.
+The lock settings of the service.
+- Required: No
+- Type: object
+
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`kind`](#parameter-lockkind) | No | string | Optional. Specify the type of lock. |
+| [`name`](#parameter-lockname) | No | string | Optional. Specify the name of lock. |
+
+### Parameter: `lock.kind`
+
+Optional. Specify the type of lock.
+
 - Required: No
 - Type: string
-- Default: `''`
-- Allowed: `['', CanNotDelete, ReadOnly]`
+- Allowed: `[CanNotDelete, None, ReadOnly]`
+
+### Parameter: `lock.name`
+
+Optional. Specify the name of lock.
+
+- Required: No
+- Type: string
 
 ### Parameter: `mx`
 
