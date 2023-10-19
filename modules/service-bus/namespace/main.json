@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "2064440867839372163"
+      "templateHash": "6124315257677108113"
     },
     "name": "Service Bus Namespaces",
     "description": "This module deploys a Service Bus Namespace.",
@@ -375,18 +375,18 @@
       "existing": true,
       "type": "Microsoft.KeyVault/vaults",
       "apiVersion": "2021-10-01",
-      "subscriptionId": "[split(parameters('cMKKeyVaultResourceId'), '/')[2]]",
-      "resourceGroup": "[split(parameters('cMKKeyVaultResourceId'), '/')[4]]",
-      "name": "[last(split(parameters('cMKKeyVaultResourceId'), '/'))]"
+      "subscriptionId": "[split(coalesce(parameters('cMKKeyVaultResourceId'), '//'), '/')[2]]",
+      "resourceGroup": "[split(coalesce(parameters('cMKKeyVaultResourceId'), '////'), '/')[4]]",
+      "name": "[last(split(if(not(empty(parameters('cMKKeyVaultResourceId'))), parameters('cMKKeyVaultResourceId'), 'dummyVault'), '/'))]"
     },
     "cMKKeyVaultKey": {
       "condition": "[and(not(empty(parameters('cMKKeyVaultResourceId'))), not(empty(parameters('cMKKeyName'))))]",
       "existing": true,
       "type": "Microsoft.KeyVault/vaults/keys",
       "apiVersion": "2021-10-01",
-      "subscriptionId": "[split(parameters('cMKKeyVaultResourceId'), '/')[2]]",
-      "resourceGroup": "[split(parameters('cMKKeyVaultResourceId'), '/')[4]]",
-      "name": "[format('{0}/{1}', last(split(parameters('cMKKeyVaultResourceId'), '/')), parameters('cMKKeyName'))]"
+      "subscriptionId": "[split(coalesce(parameters('cMKKeyVaultResourceId'), '//'), '/')[2]]",
+      "resourceGroup": "[split(coalesce(parameters('cMKKeyVaultResourceId'), '////'), '/')[4]]",
+      "name": "[format('{0}/{1}', last(split(if(not(empty(parameters('cMKKeyVaultResourceId'))), parameters('cMKKeyVaultResourceId'), 'dummyVault'), '/')), parameters('cMKKeyName'))]"
     },
     "serviceBusNamespace": {
       "type": "Microsoft.ServiceBus/namespaces",
@@ -1013,7 +1013,9 @@
           "enableBatchedOperations": "[if(contains(parameters('queues')[copyIndex()], 'enableBatchedOperations'), createObject('value', parameters('queues')[copyIndex()].enableBatchedOperations), createObject('value', true()))]",
           "enableExpress": "[if(contains(parameters('queues')[copyIndex()], 'enableExpress'), createObject('value', parameters('queues')[copyIndex()].enableExpress), createObject('value', false()))]",
           "enablePartitioning": "[if(contains(parameters('queues')[copyIndex()], 'enablePartitioning'), createObject('value', parameters('queues')[copyIndex()].enablePartitioning), createObject('value', false()))]",
-          "lock": "[if(contains(parameters('queues')[copyIndex()], 'lock'), createObject('value', parameters('queues')[copyIndex()].lock), createObject('value', ''))]",
+          "lock": {
+            "value": "[coalesce(tryGet(parameters('queues')[copyIndex()], 'lock'), parameters('lock'))]"
+          },
           "lockDuration": "[if(contains(parameters('queues')[copyIndex()], 'lockDuration'), createObject('value', parameters('queues')[copyIndex()].lockDuration), createObject('value', 'PT1M'))]",
           "maxDeliveryCount": "[if(contains(parameters('queues')[copyIndex()], 'maxDeliveryCount'), createObject('value', parameters('queues')[copyIndex()].maxDeliveryCount), createObject('value', 10))]",
           "maxSizeInMegabytes": "[if(contains(parameters('queues')[copyIndex()], 'maxSizeInMegabytes'), createObject('value', parameters('queues')[copyIndex()].maxSizeInMegabytes), createObject('value', 1024))]",
@@ -1650,7 +1652,9 @@
           "enableBatchedOperations": "[if(contains(parameters('topics')[copyIndex()], 'enableBatchedOperations'), createObject('value', parameters('topics')[copyIndex()].enableBatchedOperations), createObject('value', true()))]",
           "enableExpress": "[if(contains(parameters('topics')[copyIndex()], 'enableExpress'), createObject('value', parameters('topics')[copyIndex()].enableExpress), createObject('value', false()))]",
           "enablePartitioning": "[if(contains(parameters('topics')[copyIndex()], 'enablePartitioning'), createObject('value', parameters('topics')[copyIndex()].enablePartitioning), createObject('value', false()))]",
-          "lock": "[if(contains(parameters('topics')[copyIndex()], 'lock'), createObject('value', parameters('topics')[copyIndex()].lock), createObject('value', ''))]",
+          "lock": {
+            "value": "[coalesce(tryGet(parameters('topics')[copyIndex()], 'lock'), parameters('lock'))]"
+          },
           "maxMessageSizeInKilobytes": "[if(contains(parameters('topics')[copyIndex()], 'maxMessageSizeInKilobytes'), createObject('value', parameters('topics')[copyIndex()].maxMessageSizeInKilobytes), createObject('value', 1024))]",
           "maxSizeInMegabytes": "[if(contains(parameters('topics')[copyIndex()], 'maxSizeInMegabytes'), createObject('value', parameters('topics')[copyIndex()].maxSizeInMegabytes), createObject('value', 1024))]",
           "requiresDuplicateDetection": "[if(contains(parameters('topics')[copyIndex()], 'requiresDuplicateDetection'), createObject('value', parameters('topics')[copyIndex()].requiresDuplicateDetection), createObject('value', false()))]",
