@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "5461425938112973059"
+      "templateHash": "8110028747434281687"
     },
     "name": "Purview Accounts",
     "description": "This module deploys a Purview Account.",
@@ -322,7 +322,9 @@
             "value": "[variables('enableReferencedModulesTelemetry')]"
           },
           "location": "[if(contains(parameters('accountPrivateEndpoints')[copyIndex()], 'location'), createObject('value', parameters('accountPrivateEndpoints')[copyIndex()].location), createObject('value', reference(split(parameters('accountPrivateEndpoints')[copyIndex()].subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location))]",
-          "lock": "[if(contains(parameters('accountPrivateEndpoints')[copyIndex()], 'lock'), createObject('value', parameters('accountPrivateEndpoints')[copyIndex()].lock), createObject('value', null()))]",
+          "lock": {
+            "value": "[coalesce(tryGet(parameters('accountPrivateEndpoints')[copyIndex()], 'lock'), parameters('lock'))]"
+          },
           "privateDnsZoneGroupName": "[if(contains(parameters('accountPrivateEndpoints')[copyIndex()], 'privateDnsZoneGroupName'), createObject('value', parameters('accountPrivateEndpoints')[copyIndex()].privateDnsZoneGroupName), createObject('value', 'default'))]",
           "privateDnsZoneResourceIds": "[if(contains(parameters('accountPrivateEndpoints')[copyIndex()], 'privateDnsZoneResourceIds'), createObject('value', parameters('accountPrivateEndpoints')[copyIndex()].privateDnsZoneResourceIds), createObject('value', createArray()))]",
           "roleAssignments": "[if(contains(parameters('accountPrivateEndpoints')[copyIndex()], 'roleAssignments'), createObject('value', parameters('accountPrivateEndpoints')[copyIndex()].roleAssignments), createObject('value', createArray()))]",
@@ -849,7 +851,9 @@
             "value": "[variables('enableReferencedModulesTelemetry')]"
           },
           "location": "[if(contains(parameters('portalPrivateEndpoints')[copyIndex()], 'location'), createObject('value', parameters('portalPrivateEndpoints')[copyIndex()].location), createObject('value', reference(split(parameters('portalPrivateEndpoints')[copyIndex()].subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location))]",
-          "lock": "[if(contains(parameters('portalPrivateEndpoints')[copyIndex()], 'lock'), createObject('value', parameters('portalPrivateEndpoints')[copyIndex()].lock), createObject('value', null()))]",
+          "lock": {
+            "value": "[coalesce(tryGet(parameters('portalPrivateEndpoints')[copyIndex()], 'lock'), parameters('lock'))]"
+          },
           "privateDnsZoneGroupName": "[if(contains(parameters('portalPrivateEndpoints')[copyIndex()], 'privateDnsZoneGroupName'), createObject('value', parameters('portalPrivateEndpoints')[copyIndex()].privateDnsZoneGroupName), createObject('value', 'default'))]",
           "privateDnsZoneResourceIds": "[if(contains(parameters('portalPrivateEndpoints')[copyIndex()], 'privateDnsZoneResourceIds'), createObject('value', parameters('portalPrivateEndpoints')[copyIndex()].privateDnsZoneResourceIds), createObject('value', createArray()))]",
           "roleAssignments": "[if(contains(parameters('portalPrivateEndpoints')[copyIndex()], 'roleAssignments'), createObject('value', parameters('portalPrivateEndpoints')[copyIndex()].roleAssignments), createObject('value', createArray()))]",
@@ -1376,7 +1380,9 @@
             "value": "[variables('enableReferencedModulesTelemetry')]"
           },
           "location": "[if(contains(parameters('storageBlobPrivateEndpoints')[copyIndex()], 'location'), createObject('value', parameters('storageBlobPrivateEndpoints')[copyIndex()].location), createObject('value', reference(split(parameters('storageBlobPrivateEndpoints')[copyIndex()].subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location))]",
-          "lock": "[if(contains(parameters('storageBlobPrivateEndpoints')[copyIndex()], 'lock'), createObject('value', parameters('storageBlobPrivateEndpoints')[copyIndex()].lock), createObject('value', null()))]",
+          "lock": {
+            "value": "[coalesce(tryGet(parameters('storageBlobPrivateEndpoints')[copyIndex()], 'lock'), parameters('lock'))]"
+          },
           "privateDnsZoneGroupName": "[if(contains(parameters('storageBlobPrivateEndpoints')[copyIndex()], 'privateDnsZoneGroupName'), createObject('value', parameters('storageBlobPrivateEndpoints')[copyIndex()].privateDnsZoneGroupName), createObject('value', 'default'))]",
           "privateDnsZoneResourceIds": "[if(contains(parameters('storageBlobPrivateEndpoints')[copyIndex()], 'privateDnsZoneResourceIds'), createObject('value', parameters('storageBlobPrivateEndpoints')[copyIndex()].privateDnsZoneResourceIds), createObject('value', createArray()))]",
           "roleAssignments": "[if(contains(parameters('storageBlobPrivateEndpoints')[copyIndex()], 'roleAssignments'), createObject('value', parameters('storageBlobPrivateEndpoints')[copyIndex()].roleAssignments), createObject('value', createArray()))]",
@@ -1903,7 +1909,9 @@
             "value": "[variables('enableReferencedModulesTelemetry')]"
           },
           "location": "[if(contains(parameters('storageQueuePrivateEndpoints')[copyIndex()], 'location'), createObject('value', parameters('storageQueuePrivateEndpoints')[copyIndex()].location), createObject('value', reference(split(parameters('storageQueuePrivateEndpoints')[copyIndex()].subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location))]",
-          "lock": "[if(contains(parameters('storageQueuePrivateEndpoints')[copyIndex()], 'lock'), createObject('value', parameters('storageQueuePrivateEndpoints')[copyIndex()].lock), createObject('value', null()))]",
+          "lock": {
+            "value": "[coalesce(tryGet(parameters('storageQueuePrivateEndpoints')[copyIndex()], 'lock'), parameters('lock'))]"
+          },
           "privateDnsZoneGroupName": "[if(contains(parameters('storageQueuePrivateEndpoints')[copyIndex()], 'privateDnsZoneGroupName'), createObject('value', parameters('storageQueuePrivateEndpoints')[copyIndex()].privateDnsZoneGroupName), createObject('value', 'default'))]",
           "privateDnsZoneResourceIds": "[if(contains(parameters('storageQueuePrivateEndpoints')[copyIndex()], 'privateDnsZoneResourceIds'), createObject('value', parameters('storageQueuePrivateEndpoints')[copyIndex()].privateDnsZoneResourceIds), createObject('value', createArray()))]",
           "roleAssignments": "[if(contains(parameters('storageQueuePrivateEndpoints')[copyIndex()], 'roleAssignments'), createObject('value', parameters('storageQueuePrivateEndpoints')[copyIndex()].roleAssignments), createObject('value', createArray()))]",
@@ -2430,7 +2438,9 @@
             "value": "[variables('enableReferencedModulesTelemetry')]"
           },
           "location": "[if(contains(parameters('eventHubPrivateEndpoints')[copyIndex()], 'location'), createObject('value', parameters('eventHubPrivateEndpoints')[copyIndex()].location), createObject('value', reference(split(parameters('eventHubPrivateEndpoints')[copyIndex()].subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location))]",
-          "lock": "[if(contains(parameters('eventHubPrivateEndpoints')[copyIndex()], 'lock'), createObject('value', parameters('eventHubPrivateEndpoints')[copyIndex()].lock), createObject('value', null()))]",
+          "lock": {
+            "value": "[coalesce(tryGet(parameters('eventHubPrivateEndpoints')[copyIndex()], 'lock'), parameters('lock'))]"
+          },
           "privateDnsZoneGroupName": "[if(contains(parameters('eventHubPrivateEndpoints')[copyIndex()], 'privateDnsZoneGroupName'), createObject('value', parameters('eventHubPrivateEndpoints')[copyIndex()].privateDnsZoneGroupName), createObject('value', 'default'))]",
           "privateDnsZoneResourceIds": "[if(contains(parameters('eventHubPrivateEndpoints')[copyIndex()], 'privateDnsZoneResourceIds'), createObject('value', parameters('eventHubPrivateEndpoints')[copyIndex()].privateDnsZoneResourceIds), createObject('value', createArray()))]",
           "roleAssignments": "[if(contains(parameters('eventHubPrivateEndpoints')[copyIndex()], 'roleAssignments'), createObject('value', parameters('eventHubPrivateEndpoints')[copyIndex()].roleAssignments), createObject('value', createArray()))]",

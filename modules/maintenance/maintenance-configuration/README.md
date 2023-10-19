@@ -26,10 +26,13 @@ The following section provides usage examples for the module, which were used to
 
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/maintenance.maintenance-configuration:1.0.0`.
 
-- [Common](#example-1-common)
-- [Min](#example-2-min)
+- [Using large parameter set](#example-1-using-large-parameter-set)
+- [Using only defaults](#example-2-using-only-defaults)
 
-### Example 1: _Common_
+### Example 1: _Using large parameter set_
+
+This instance deploys the module with most of its features enabled.
+
 
 <details>
 
@@ -182,7 +185,10 @@ module maintenanceConfiguration 'br:bicep/modules/maintenance.maintenance-config
 </details>
 <p>
 
-### Example 2: _Min_
+### Example 2: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
 
 <details>
 
@@ -244,7 +250,7 @@ module maintenanceConfiguration 'br:bicep/modules/maintenance.maintenance-config
 | [`extensionProperties`](#parameter-extensionproperties) | object | Gets or sets extensionProperties of the maintenanceConfiguration. |
 | [`installPatches`](#parameter-installpatches) | object | Configuration settings for VM guest patching with Azure Update Manager. |
 | [`location`](#parameter-location) | string | Location for all Resources. |
-| [`lock`](#parameter-lock) | string | Specify the type of lock. |
+| [`lock`](#parameter-lock) | object | The lock settings of the service. |
 | [`maintenanceScope`](#parameter-maintenancescope) | string | Gets or sets maintenanceScope of the configuration. |
 | [`maintenanceWindow`](#parameter-maintenancewindow) | object | Definition of a MaintenanceWindow. |
 | [`namespace`](#parameter-namespace) | string | Gets or sets namespace of the resource. |
@@ -282,11 +288,30 @@ Location for all Resources.
 
 ### Parameter: `lock`
 
-Specify the type of lock.
+The lock settings of the service.
+- Required: No
+- Type: object
+
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`kind`](#parameter-lockkind) | No | string | Optional. Specify the type of lock. |
+| [`name`](#parameter-lockname) | No | string | Optional. Specify the name of lock. |
+
+### Parameter: `lock.kind`
+
+Optional. Specify the type of lock.
+
 - Required: No
 - Type: string
-- Default: `''`
-- Allowed: `['', CanNotDelete, ReadOnly]`
+- Allowed: `[CanNotDelete, None, ReadOnly]`
+
+### Parameter: `lock.name`
+
+Optional. Specify the name of lock.
+
+- Required: No
+- Type: string
 
 ### Parameter: `maintenanceScope`
 

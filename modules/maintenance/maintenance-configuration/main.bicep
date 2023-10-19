@@ -18,13 +18,8 @@ param extensionProperties object = {}
 @description('Optional. Location for all Resources.')
 param location string = resourceGroup().location
 
-@description('Optional. Specify the type of lock.')
-@allowed([
-  ''
-  'CanNotDelete'
-  'ReadOnly'
-])
-param lock string = ''
+@description('Optional. The lock settings of the service.')
+param lock lockType
 
 @description('Optional. Gets or sets maintenanceScope of the configuration.')
 @allowed([
@@ -127,3 +122,15 @@ output resourceGroupName string = resourceGroup().name
 
 @description('The location the Maintenance Configuration was created in.')
 output location string = maintenanceConfiguration.location
+
+// =============== //
+//   Definitions   //
+// =============== //
+
+type lockType = {
+  @description('Optional. Specify the name of lock.')
+  name: string?
+
+  @description('Optional. Specify the type of lock.')
+  kind: ('CanNotDelete' | 'ReadOnly' | 'None')?
+}?
