@@ -52,7 +52,7 @@ This instance deploys the module with most of its features enabled.
       {
         privateDnsZoneGroup: {
           privateDNSResourceIds: [
-            '<privateDNSResourceId>'
+            '<privateDNSZoneResourceId>'
           ]
         }
         service: 'azuremonitor'
@@ -113,7 +113,7 @@ This instance deploys the module with most of its features enabled.
         {
           "privateDnsZoneGroup": {
             "privateDNSResourceIds": [
-              "<privateDNSResourceId>"
+              "<privateDNSZoneResourceId>"
             ]
           },
           "service": "azuremonitor",

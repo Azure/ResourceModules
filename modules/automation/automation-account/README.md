@@ -87,11 +87,9 @@ module automationAccount 'br:bicep/modules/automation.automation-account:1.0.0' 
     ]
     privateEndpoints: [
       {
-        privateDnsZoneGroup: {
-          privateDNSResourceIds: [
-            '<privateDNSZoneResourceId>'
-          ]
-        }
+        privateDnsZoneResourceIds: [
+          '<privateDNSZoneResourceId>'
+        ]
         service: 'Webhook'
         subnetResourceId: '<subnetResourceId>'
         tags: {
@@ -101,11 +99,9 @@ module automationAccount 'br:bicep/modules/automation.automation-account:1.0.0' 
         }
       }
       {
-        privateDnsZoneGroup: {
-          privateDNSResourceIds: [
-            '<privateDNSZoneResourceId>'
-          ]
-        }
+        privateDnsZoneResourceIds: [
+          '<privateDNSZoneResourceId>'
+        ]
         service: 'DSCAndHybridWorker'
         subnetResourceId: '<subnetResourceId>'
         tags: {
@@ -312,11 +308,9 @@ module automationAccount 'br:bicep/modules/automation.automation-account:1.0.0' 
     "privateEndpoints": {
       "value": [
         {
-          "privateDnsZoneGroup": {
-            "privateDNSResourceIds": [
-              "<privateDNSZoneResourceId>"
-            ]
-          },
+          "privateDnsZoneResourceIds": [
+            "<privateDNSZoneResourceId>"
+          ],
           "service": "Webhook",
           "subnetResourceId": "<subnetResourceId>",
           "tags": {
@@ -326,11 +320,9 @@ module automationAccount 'br:bicep/modules/automation.automation-account:1.0.0' 
           }
         },
         {
-          "privateDnsZoneGroup": {
-            "privateDNSResourceIds": [
-              "<privateDNSZoneResourceId>"
-            ]
-          },
+          "privateDnsZoneResourceIds": [
+            "<privateDNSZoneResourceId>"
+          ],
           "service": "DSCAndHybridWorker",
           "subnetResourceId": "<subnetResourceId>",
           "tags": {

@@ -312,7 +312,7 @@ output customPrivateSubnetName string = virtualNetwork.properties.subnets[2].nam
 output virtualNetworkResourceId string = virtualNetwork.id
 
 @description('The resource ID of the created Private DNS Zone.')
-output privateDNSResourceId string = privateDNSZone.id
+output privateDNSZoneResourceId string = privateDNSZone.id
 
 @description('The resource ID of the created Azure Machine Learning Workspace.')
 output machineLearningWorkspaceResourceId string = machineLearningWorkspace.id

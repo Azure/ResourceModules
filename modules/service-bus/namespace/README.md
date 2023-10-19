@@ -106,11 +106,9 @@ module namespace 'br:bicep/modules/service-bus.namespace:1.0.0' = {
     premiumMessagingPartitions: 1
     privateEndpoints: [
       {
-        privateDnsZoneGroup: {
-          privateDNSResourceIds: [
-            '<privateDNSZoneResourceId>'
-          ]
-        }
+        privateDnsZoneResourceIds: [
+          '<privateDNSZoneResourceId>'
+        ]
         service: 'namespace'
         subnetResourceId: '<subnetResourceId>'
         tags: {
@@ -298,11 +296,9 @@ module namespace 'br:bicep/modules/service-bus.namespace:1.0.0' = {
     "privateEndpoints": {
       "value": [
         {
-          "privateDnsZoneGroup": {
-            "privateDNSResourceIds": [
-              "<privateDNSZoneResourceId>"
-            ]
-          },
+          "privateDnsZoneResourceIds": [
+            "<privateDNSZoneResourceId>"
+          ],
           "service": "namespace",
           "subnetResourceId": "<subnetResourceId>",
           "tags": {
@@ -673,11 +669,9 @@ module namespace 'br:bicep/modules/service-bus.namespace:1.0.0' = {
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     privateEndpoints: [
       {
-        privateDnsZoneGroup: {
-          privateDNSResourceIds: [
-            '<privateDNSZoneResourceId>'
-          ]
-        }
+        privateDnsZoneResourceIds: [
+          '<privateDNSZoneResourceId>'
+        ]
         service: 'namespace'
         subnetResourceId: '<subnetResourceId>'
         tags: {
@@ -721,11 +715,9 @@ module namespace 'br:bicep/modules/service-bus.namespace:1.0.0' = {
     "privateEndpoints": {
       "value": [
         {
-          "privateDnsZoneGroup": {
-            "privateDNSResourceIds": [
-              "<privateDNSZoneResourceId>"
-            ]
-          },
+          "privateDnsZoneResourceIds": [
+            "<privateDNSZoneResourceId>"
+          ],
           "service": "namespace",
           "subnetResourceId": "<subnetResourceId>",
           "tags": {

@@ -84,7 +84,7 @@ module workspace 'br:bicep/modules/synapse.workspace:1.0.0' = {
       {
         privateDnsZoneGroup: {
           privateDNSResourceIds: [
-            '<privateDNSResourceId>'
+            '<privateDNSZoneResourceId>'
           ]
         }
         service: 'SQL'
@@ -183,7 +183,7 @@ module workspace 'br:bicep/modules/synapse.workspace:1.0.0' = {
         {
           "privateDnsZoneGroup": {
             "privateDNSResourceIds": [
-              "<privateDNSResourceId>"
+              "<privateDNSZoneResourceId>"
             ]
           },
           "service": "SQL",

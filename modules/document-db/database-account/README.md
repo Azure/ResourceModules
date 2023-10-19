@@ -928,7 +928,7 @@ module databaseAccount 'br:bicep/modules/document-db.database-account:1.0.0' = {
       {
         privateDnsZoneGroup: {
           privateDNSResourceIds: [
-            '<privateDNSResourceId>'
+            '<privateDNSZoneResourceId>'
           ]
         }
         service: 'Sql'
@@ -1091,7 +1091,7 @@ module databaseAccount 'br:bicep/modules/document-db.database-account:1.0.0' = {
         {
           "privateDnsZoneGroup": {
             "privateDNSResourceIds": [
-              "<privateDNSResourceId>"
+              "<privateDNSZoneResourceId>"
             ]
           },
           "service": "Sql",

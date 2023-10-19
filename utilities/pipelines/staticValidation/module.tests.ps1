@@ -492,7 +492,7 @@ Describe 'Module tests' -Tag 'Module' {
             $testFileTestCases = @()
             $templateFile_Parameters = $templateContent.parameters
             $TemplateFile_AllParameterNames = $templateFile_Parameters.Keys | Sort-Object
-            $TemplateFile_RequiredParametersNames = ($templateFile_Parameters.Keys | Where-Object { -not $templateFile_Parameters[$_].ContainsKey('defaultValue') }) | Sort-Object
+            $TemplateFile_RequiredParametersNames = ($templateFile_Parameters.Keys | Where-Object { Get-IsParameterRequired -TemplateFileContent $templateContent -Parameter $templateFile_Parameters[$_] }) | Sort-Object
 
             if (Test-Path (Join-Path $moduleFolderPath '.test')) {
 
@@ -621,10 +621,17 @@ Describe 'Module tests' -Tag 'Module' {
                 [string] $moduleFolderName,
                 [hashtable] $templateContent
             )
-            if ($lock = $templateContent.parameters.lock) {
-                $lock.Keys | Should -Contain 'defaultValue'
-                $lock.defaultValue | Should -Be ''
+            $lock = $templateContent.parameters.lock
+
+            if (-not $lock) {
+                Set-ItResult -Skipped -Because 'the module template has no lock parameter implemented'
             }
+
+            $isNullable = $lock.nullable
+            $hasEmptyDefault = $lock.defaultValue -eq ''
+            $hasNullableUDT = ($lock.Keys -contains '$ref') ? $templateContent.definitions[(Split-Path $lock.'$ref' -Leaf)].nullable : $false
+
+            ($isNullable -or $hasEmptyDefault -or $hasNullableUDT) | Should -Be $true -Because 'the lock should either have an empty default value, be nullable, or have a nullable user-defined type to not enforce locks by default'
         }
 
         It '[<moduleFolderName>] Parameter names should be camel-cased (no dashes or underscores and must start with lower-case letter).' -TestCases $deploymentFolderTestCases {
@@ -701,16 +708,22 @@ Describe 'Module tests' -Tag 'Module' {
                 [string] $moduleFolderName,
                 [hashtable] $templateContent
             )
-            $enableDefaultTelemetryFlag = @()
             $Schemaverion = $templateContent.'$schema'
             if ((($Schemaverion.Split('/')[5]).Split('.')[0]) -eq (($RGdeployment.Split('/')[5]).Split('.')[0])) {
-                if (($templateContent.resources.type -ccontains 'Microsoft.Resources/deployments' -and $templateContent.resources.condition -like "*[parameters('enableDefaultTelemetry')]*") -or ($templateContent.resources.resources.type -ccontains 'Microsoft.Resources/deployments' -and $templateContent.resources.resources.condition -like "*[parameters('enableDefaultTelemetry')]*")) {
-                    $enableDefaultTelemetryFlag += $true
+
+                if ($templateContent.resources -is [hashtable]) {
+                    # Template with User-defined-types
+                    $templateContent.resources.Keys | Should -Contain 'defaultTelemetry'
+                    $templateContent.resources['defaultTelemetry'].condition | Should -Be "[parameters('enableDefaultTelemetry')]"
                 } else {
-                    $enableDefaultTelemetryFlag += $false
+                    # Template without User-defined-types
+                    $telemetryDeployment = $templateContent.resources | Where-Object {
+                        $_.type -eq 'Microsoft.Resources/deployments' -and
+                        $_.condition -eq "[parameters('enableDefaultTelemetry')]"
+                    }
+                    $telemetryDeployment | Should -Not -BeNullOrEmpty
                 }
             }
-            $enableDefaultTelemetryFlag | Should -Not -Contain $false
         }
 
         It '[<moduleFolderName>] The Location should be defined as a parameter, with the default value of [resourceGroup().Location] or global for ResourceGroup deployment scope.' -TestCases $deploymentFolderTestCases {

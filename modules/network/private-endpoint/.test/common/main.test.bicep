@@ -60,18 +60,16 @@ module testDeployment '../../main.bicep' = {
     ]
     serviceResourceId: nestedDependencies.outputs.keyVaultResourceId
     subnetResourceId: nestedDependencies.outputs.subnetResourceId
-    lock: 'CanNotDelete'
-    privateDnsZoneGroup: {
-      privateDNSResourceIds: [
-        nestedDependencies.outputs.privateDNSZoneResourceId
-      ]
+    lock: {
+      kind: 'CanNotDelete'
     }
+    privateDnsZoneResourceIds: [
+      nestedDependencies.outputs.privateDNSZoneResourceId
+    ]
     roleAssignments: [
       {
         roleDefinitionIdOrName: 'Reader'
-        principalIds: [
-          nestedDependencies.outputs.managedIdentityPrincipalId
-        ]
+        principalId: nestedDependencies.outputs.managedIdentityPrincipalId
         principalType: 'ServicePrincipal'
       }
     ]
@@ -86,10 +84,8 @@ module testDeployment '../../main.bicep' = {
       }
     ]
     customNetworkInterfaceName: '${namePrefix}${serviceShort}001nic'
-    applicationSecurityGroups: [
-      {
-        id: nestedDependencies.outputs.applicationSecurityGroupResourceId
-      }
+    applicationSecurityGroupResourceIds: [
+      nestedDependencies.outputs.applicationSecurityGroupResourceId
     ]
     tags: {
       'hidden-title': 'This is visible in the resource name'
