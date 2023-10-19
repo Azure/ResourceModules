@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "4597929736305145660"
+      "templateHash": "14046183075929419967"
     },
     "name": "Healthcare API Workspaces",
     "description": "This module deploys a Healthcare API Workspace.",
@@ -361,7 +361,9 @@
           "importStorageAccountName": "[if(contains(parameters('fhirservices')[copyIndex()], 'importStorageAccountName'), createObject('value', parameters('fhirservices')[copyIndex()].importStorageAccountName), createObject('value', ''))]",
           "importEnabled": "[if(contains(parameters('fhirservices')[copyIndex()], 'importEnabled'), createObject('value', parameters('fhirservices')[copyIndex()].importEnabled), createObject('value', false()))]",
           "initialImportMode": "[if(contains(parameters('fhirservices')[copyIndex()], 'initialImportMode'), createObject('value', parameters('fhirservices')[copyIndex()].initialImportMode), createObject('value', false()))]",
-          "lock": "[if(contains(parameters('fhirservices')[copyIndex()], 'lock'), createObject('value', parameters('fhirservices')[copyIndex()].lock), createObject('value', ''))]",
+          "lock": {
+            "value": "[coalesce(tryGet(parameters('fhirservices')[copyIndex()], 'lock'), parameters('lock'))]"
+          },
           "resourceVersionPolicy": "[if(contains(parameters('fhirservices')[copyIndex()], 'resourceVersionPolicy'), createObject('value', parameters('fhirservices')[copyIndex()].resourceVersionPolicy), createObject('value', 'versioned'))]",
           "resourceVersionOverrides": "[if(contains(parameters('fhirservices')[copyIndex()], 'resourceVersionOverrides'), createObject('value', parameters('fhirservices')[copyIndex()].resourceVersionOverrides), createObject('value', createObject()))]",
           "smartProxyEnabled": "[if(contains(parameters('fhirservices')[copyIndex()], 'smartProxyEnabled'), createObject('value', parameters('fhirservices')[copyIndex()].smartProxyEnabled), createObject('value', false()))]",
@@ -1060,7 +1062,9 @@
           "diagnosticWorkspaceId": "[if(contains(parameters('dicomservices')[copyIndex()], 'diagnosticWorkspaceId'), createObject('value', parameters('dicomservices')[copyIndex()].diagnosticWorkspaceId), createObject('value', ''))]",
           "diagnosticEventHubAuthorizationRuleId": "[if(contains(parameters('dicomservices')[copyIndex()], 'diagnosticEventHubAuthorizationRuleId'), createObject('value', parameters('dicomservices')[copyIndex()].diagnosticEventHubAuthorizationRuleId), createObject('value', ''))]",
           "diagnosticEventHubName": "[if(contains(parameters('dicomservices')[copyIndex()], 'diagnosticEventHubName'), createObject('value', parameters('dicomservices')[copyIndex()].diagnosticEventHubName), createObject('value', ''))]",
-          "lock": "[if(contains(parameters('dicomservices')[copyIndex()], 'lock'), createObject('value', parameters('dicomservices')[copyIndex()].lock), createObject('value', ''))]",
+          "lock": {
+            "value": "[coalesce(tryGet(parameters('dicomservices')[copyIndex()], 'lock'), parameters('lock'))]"
+          },
           "userAssignedIdentities": "[if(contains(parameters('dicomservices')[copyIndex()], 'userAssignedIdentities'), createObject('value', parameters('dicomservices')[copyIndex()].userAssignedIdentities), createObject('value', createObject()))]",
           "diagnosticLogCategoriesToEnable": "[if(contains(parameters('dicomservices')[copyIndex()], 'diagnosticLogCategoriesToEnable'), createObject('value', parameters('dicomservices')[copyIndex()].diagnosticLogCategoriesToEnable), createObject('value', createArray('AuditLogs')))]",
           "enableDefaultTelemetry": {
@@ -1435,7 +1439,9 @@
           "diagnosticWorkspaceId": "[if(contains(parameters('iotconnectors')[copyIndex()], 'diagnosticWorkspaceId'), createObject('value', parameters('iotconnectors')[copyIndex()].diagnosticWorkspaceId), createObject('value', ''))]",
           "diagnosticEventHubAuthorizationRuleId": "[if(contains(parameters('iotconnectors')[copyIndex()], 'diagnosticEventHubAuthorizationRuleId'), createObject('value', parameters('iotconnectors')[copyIndex()].diagnosticEventHubAuthorizationRuleId), createObject('value', ''))]",
           "diagnosticEventHubName": "[if(contains(parameters('iotconnectors')[copyIndex()], 'diagnosticEventHubName'), createObject('value', parameters('iotconnectors')[copyIndex()].diagnosticEventHubName), createObject('value', ''))]",
-          "lock": "[if(contains(parameters('iotconnectors')[copyIndex()], 'lock'), createObject('value', parameters('iotconnectors')[copyIndex()].lock), createObject('value', ''))]",
+          "lock": {
+            "value": "[coalesce(tryGet(parameters('iotconnectors')[copyIndex()], 'lock'), parameters('lock'))]"
+          },
           "userAssignedIdentities": "[if(contains(parameters('iotconnectors')[copyIndex()], 'userAssignedIdentities'), createObject('value', parameters('iotconnectors')[copyIndex()].userAssignedIdentities), createObject('value', createObject()))]",
           "diagnosticLogCategoriesToEnable": "[if(contains(parameters('iotconnectors')[copyIndex()], 'diagnosticLogCategoriesToEnable'), createObject('value', parameters('iotconnectors')[copyIndex()].diagnosticLogCategoriesToEnable), createObject('value', createArray('DiagnosticLogs')))]",
           "diagnosticMetricsToEnable": "[if(contains(parameters('iotconnectors')[copyIndex()], 'diagnosticMetricsToEnable'), createObject('value', parameters('iotconnectors')[copyIndex()].diagnosticMetricsToEnable), createObject('value', createArray('AllMetrics')))]",

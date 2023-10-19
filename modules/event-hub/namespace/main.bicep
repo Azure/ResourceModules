@@ -284,7 +284,7 @@ module eventHubNamespace_eventhubs 'eventhub/main.bicep' = [for (eventHub, index
     captureDescriptionSizeLimitInBytes: contains(eventHub, 'captureDescriptionSizeLimitInBytes') ? eventHub.captureDescriptionSizeLimitInBytes : 314572800
     captureDescriptionSkipEmptyArchives: contains(eventHub, 'captureDescriptionSkipEmptyArchives') ? eventHub.captureDescriptionSkipEmptyArchives : false
     consumergroups: contains(eventHub, 'consumergroups') ? eventHub.consumergroups : []
-    lock: contains(eventHub, 'lock') ? eventHub.lock : ''
+    lock: eventHub.?lock ?? lock
     messageRetentionInDays: contains(eventHub, 'messageRetentionInDays') ? eventHub.messageRetentionInDays : 1
     partitionCount: contains(eventHub, 'partitionCount') ? eventHub.partitionCount : 2
     roleAssignments: contains(eventHub, 'roleAssignments') ? eventHub.roleAssignments : []

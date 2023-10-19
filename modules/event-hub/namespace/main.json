@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "5400370874559204104"
+      "templateHash": "2216108787200401845"
     },
     "name": "Event Hub Namespaces",
     "description": "This module deploys an Event Hub Namespace.",
@@ -718,7 +718,9 @@
           "captureDescriptionSizeLimitInBytes": "[if(contains(parameters('eventhubs')[copyIndex()], 'captureDescriptionSizeLimitInBytes'), createObject('value', parameters('eventhubs')[copyIndex()].captureDescriptionSizeLimitInBytes), createObject('value', 314572800))]",
           "captureDescriptionSkipEmptyArchives": "[if(contains(parameters('eventhubs')[copyIndex()], 'captureDescriptionSkipEmptyArchives'), createObject('value', parameters('eventhubs')[copyIndex()].captureDescriptionSkipEmptyArchives), createObject('value', false()))]",
           "consumergroups": "[if(contains(parameters('eventhubs')[copyIndex()], 'consumergroups'), createObject('value', parameters('eventhubs')[copyIndex()].consumergroups), createObject('value', createArray()))]",
-          "lock": "[if(contains(parameters('eventhubs')[copyIndex()], 'lock'), createObject('value', parameters('eventhubs')[copyIndex()].lock), createObject('value', ''))]",
+          "lock": {
+            "value": "[coalesce(tryGet(parameters('eventhubs')[copyIndex()], 'lock'), parameters('lock'))]"
+          },
           "messageRetentionInDays": "[if(contains(parameters('eventhubs')[copyIndex()], 'messageRetentionInDays'), createObject('value', parameters('eventhubs')[copyIndex()].messageRetentionInDays), createObject('value', 1))]",
           "partitionCount": "[if(contains(parameters('eventhubs')[copyIndex()], 'partitionCount'), createObject('value', parameters('eventhubs')[copyIndex()].partitionCount), createObject('value', 2))]",
           "roleAssignments": "[if(contains(parameters('eventhubs')[copyIndex()], 'roleAssignments'), createObject('value', parameters('eventhubs')[copyIndex()].roleAssignments), createObject('value', createArray()))]",

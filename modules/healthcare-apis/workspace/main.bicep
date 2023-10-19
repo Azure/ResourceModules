@@ -114,7 +114,7 @@ module workspace_fhirservices 'fhirservice/main.bicep' = [for (fhir, index) in f
     importStorageAccountName: contains(fhir, 'importStorageAccountName') ? fhir.importStorageAccountName : ''
     importEnabled: contains(fhir, 'importEnabled') ? fhir.importEnabled : false
     initialImportMode: contains(fhir, 'initialImportMode') ? fhir.initialImportMode : false
-    lock: contains(fhir, 'lock') ? fhir.lock : ''
+    lock: fhir.?lock ?? lock
     resourceVersionPolicy: contains(fhir, 'resourceVersionPolicy') ? fhir.resourceVersionPolicy : 'versioned'
     resourceVersionOverrides: contains(fhir, 'resourceVersionOverrides') ? fhir.resourceVersionOverrides : {}
     smartProxyEnabled: contains(fhir, 'smartProxyEnabled') ? fhir.smartProxyEnabled : false
@@ -143,7 +143,7 @@ module workspace_dicomservices 'dicomservice/main.bicep' = [for (dicom, index) i
     diagnosticWorkspaceId: contains(dicom, 'diagnosticWorkspaceId') ? dicom.diagnosticWorkspaceId : ''
     diagnosticEventHubAuthorizationRuleId: contains(dicom, 'diagnosticEventHubAuthorizationRuleId') ? dicom.diagnosticEventHubAuthorizationRuleId : ''
     diagnosticEventHubName: contains(dicom, 'diagnosticEventHubName') ? dicom.diagnosticEventHubName : ''
-    lock: contains(dicom, 'lock') ? dicom.lock : ''
+    lock: dicom.?lock ?? lock
     userAssignedIdentities: contains(dicom, 'userAssignedIdentities') ? dicom.userAssignedIdentities : {}
     diagnosticLogCategoriesToEnable: contains(dicom, 'diagnosticLogCategoriesToEnable') ? dicom.diagnosticLogCategoriesToEnable : [ 'AuditLogs' ]
     enableDefaultTelemetry: enableReferencedModulesTelemetry
@@ -170,7 +170,7 @@ module workspace_iotconnector 'iotconnector/main.bicep' = [for (iotConnector, in
     diagnosticWorkspaceId: contains(iotConnector, 'diagnosticWorkspaceId') ? iotConnector.diagnosticWorkspaceId : ''
     diagnosticEventHubAuthorizationRuleId: contains(iotConnector, 'diagnosticEventHubAuthorizationRuleId') ? iotConnector.diagnosticEventHubAuthorizationRuleId : ''
     diagnosticEventHubName: contains(iotConnector, 'diagnosticEventHubName') ? iotConnector.diagnosticEventHubName : ''
-    lock: contains(iotConnector, 'lock') ? iotConnector.lock : ''
+    lock: iotConnector.?lock ?? lock
     userAssignedIdentities: contains(iotConnector, 'userAssignedIdentities') ? iotConnector.userAssignedIdentities : {}
     diagnosticLogCategoriesToEnable: contains(iotConnector, 'diagnosticLogCategoriesToEnable') ? iotConnector.diagnosticLogCategoriesToEnable : [ 'DiagnosticLogs' ]
     diagnosticMetricsToEnable: contains(iotConnector, 'diagnosticMetricsToEnable') ? iotConnector.diagnosticMetricsToEnable : [ 'AllMetrics' ]
