@@ -1,15 +1,43 @@
 {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "languageVersion": "2.0",
   "contentVersion": "1.0.0.0",
   "metadata": {
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "1580319527153380248"
+      "templateHash": "5089509635868205582"
     },
     "name": "Azure Container Registries (ACR)",
     "description": "This module deploys an Azure Container Registry (ACR).",
     "owner": "Azure/module-maintainers"
+  },
+  "definitions": {
+    "lockType": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Specify the name of lock."
+          }
+        },
+        "kind": {
+          "type": "string",
+          "allowedValues": [
+            "CanNotDelete",
+            "None",
+            "ReadOnly"
+          ],
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Specify the type of lock."
+          }
+        }
+      },
+      "nullable": true
+    }
   },
   "parameters": {
     "name": {
@@ -214,15 +242,9 @@
       }
     },
     "lock": {
-      "type": "string",
-      "defaultValue": "",
-      "allowedValues": [
-        "",
-        "CanNotDelete",
-        "ReadOnly"
-      ],
+      "$ref": "#/definitions/lockType",
       "metadata": {
-        "description": "Optional. Specify the type of lock."
+        "description": "Optional. The lock settings of the service."
       }
     },
     "systemAssignedIdentity": {
@@ -383,8 +405,8 @@
     "identity": "[if(not(equals(variables('identityType'), 'None')), createObject('type', variables('identityType'), 'userAssignedIdentities', if(not(empty(parameters('userAssignedIdentities'))), parameters('userAssignedIdentities'), null())), null())]",
     "enableReferencedModulesTelemetry": false
   },
-  "resources": [
-    {
+  "resources": {
+    "defaultTelemetry": {
       "condition": "[parameters('enableDefaultTelemetry')]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2021-04-01",
@@ -398,7 +420,25 @@
         }
       }
     },
-    {
+    "cMKUserAssignedIdentity": {
+      "condition": "[not(empty(parameters('cMKUserAssignedIdentityResourceId')))]",
+      "existing": true,
+      "type": "Microsoft.ManagedIdentity/userAssignedIdentities",
+      "apiVersion": "2018-11-30",
+      "subscriptionId": "[split(parameters('cMKUserAssignedIdentityResourceId'), '/')[2]]",
+      "resourceGroup": "[split(parameters('cMKUserAssignedIdentityResourceId'), '/')[4]]",
+      "name": "[last(split(parameters('cMKUserAssignedIdentityResourceId'), '/'))]"
+    },
+    "cMKKeyVaultKey": {
+      "condition": "[and(not(empty(parameters('cMKKeyVaultResourceId'))), not(empty(parameters('cMKKeyName'))))]",
+      "existing": true,
+      "type": "Microsoft.KeyVault/vaults/keys",
+      "apiVersion": "2021-10-01",
+      "subscriptionId": "[split(parameters('cMKKeyVaultResourceId'), '/')[2]]",
+      "resourceGroup": "[split(parameters('cMKKeyVaultResourceId'), '/')[4]]",
+      "name": "[format('{0}/{1}', last(split(parameters('cMKKeyVaultResourceId'), '/')), parameters('cMKKeyName'))]"
+    },
+    "registry": {
       "type": "Microsoft.ContainerRegistry/registries",
       "apiVersion": "2023-06-01-preview",
       "name": "[parameters('name')]",
@@ -411,7 +451,7 @@
       "properties": {
         "anonymousPullEnabled": "[parameters('anonymousPullEnabled')]",
         "adminUserEnabled": "[parameters('acrAdminUserEnabled')]",
-        "encryption": "[if(not(empty(parameters('cMKKeyName'))), createObject('status', 'enabled', 'keyVaultProperties', createObject('identity', reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', split(parameters('cMKUserAssignedIdentityResourceId'), '/')[2], split(parameters('cMKUserAssignedIdentityResourceId'), '/')[4]), 'Microsoft.ManagedIdentity/userAssignedIdentities', last(split(parameters('cMKUserAssignedIdentityResourceId'), '/'))), '2018-11-30').clientId, 'keyIdentifier', if(not(empty(parameters('cMKKeyVersion'))), format('{0}/{1}', reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', split(parameters('cMKKeyVaultResourceId'), '/')[2], split(parameters('cMKKeyVaultResourceId'), '/')[4]), 'Microsoft.KeyVault/vaults/keys', split(format('{0}/{1}', last(split(parameters('cMKKeyVaultResourceId'), '/')), parameters('cMKKeyName')), '/')[0], split(format('{0}/{1}', last(split(parameters('cMKKeyVaultResourceId'), '/')), parameters('cMKKeyName')), '/')[1]), '2021-10-01').keyUri, parameters('cMKKeyVersion')), reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', split(parameters('cMKKeyVaultResourceId'), '/')[2], split(parameters('cMKKeyVaultResourceId'), '/')[4]), 'Microsoft.KeyVault/vaults/keys', split(format('{0}/{1}', last(split(parameters('cMKKeyVaultResourceId'), '/')), parameters('cMKKeyName')), '/')[0], split(format('{0}/{1}', last(split(parameters('cMKKeyVaultResourceId'), '/')), parameters('cMKKeyName')), '/')[1]), '2021-10-01').keyUriWithVersion))), null())]",
+        "encryption": "[if(not(empty(parameters('cMKKeyName'))), createObject('status', 'enabled', 'keyVaultProperties', createObject('identity', reference('cMKUserAssignedIdentity').clientId, 'keyIdentifier', if(not(empty(parameters('cMKKeyVersion'))), format('{0}/{1}', reference('cMKKeyVaultKey').keyUri, parameters('cMKKeyVersion')), reference('cMKKeyVaultKey').keyUriWithVersion))), null())]",
         "policies": {
           "azureADAuthenticationAsArmPolicy": {
             "status": "[parameters('azureADAuthenticationAsArmPolicyStatus')]"
@@ -435,23 +475,27 @@
         "networkRuleBypassOptions": "[parameters('networkRuleBypassOptions')]",
         "networkRuleSet": "[if(not(empty(parameters('networkRuleSetIpRules'))), createObject('defaultAction', parameters('networkRuleSetDefaultAction'), 'ipRules', parameters('networkRuleSetIpRules')), null())]",
         "zoneRedundancy": "[if(equals(parameters('acrSku'), 'Premium'), parameters('zoneRedundancy'), null())]"
-      }
+      },
+      "dependsOn": [
+        "cMKKeyVaultKey",
+        "cMKUserAssignedIdentity"
+      ]
     },
-    {
-      "condition": "[not(empty(parameters('lock')))]",
+    "registry_lock": {
+      "condition": "[and(not(empty(coalesce(parameters('lock'), createObject()))), not(equals(tryGet(parameters('lock'), 'kind'), 'None')))]",
       "type": "Microsoft.Authorization/locks",
       "apiVersion": "2020-05-01",
       "scope": "[format('Microsoft.ContainerRegistry/registries/{0}', parameters('name'))]",
-      "name": "[format('{0}-{1}-lock', parameters('name'), parameters('lock'))]",
+      "name": "[coalesce(tryGet(parameters('lock'), 'name'), format('lock-{0}', parameters('name')))]",
       "properties": {
-        "level": "[parameters('lock')]",
-        "notes": "[if(equals(parameters('lock'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot modify the resource or child resources.')]"
+        "level": "[coalesce(tryGet(parameters('lock'), 'kind'), '')]",
+        "notes": "[if(equals(tryGet(parameters('lock'), 'kind'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot delete or modify the resource or child resources.')]"
       },
       "dependsOn": [
-        "[resourceId('Microsoft.ContainerRegistry/registries', parameters('name'))]"
+        "registry"
       ]
     },
-    {
+    "registry_diagnosticSettingName": {
       "condition": "[or(or(or(not(empty(parameters('diagnosticStorageAccountId'))), not(empty(parameters('diagnosticWorkspaceId')))), not(empty(parameters('diagnosticEventHubAuthorizationRuleId')))), not(empty(parameters('diagnosticEventHubName'))))]",
       "type": "Microsoft.Insights/diagnosticSettings",
       "apiVersion": "2021-05-01-preview",
@@ -466,10 +510,10 @@
         "logs": "[variables('diagnosticsLogs')]"
       },
       "dependsOn": [
-        "[resourceId('Microsoft.ContainerRegistry/registries', parameters('name'))]"
+        "registry"
       ]
     },
-    {
+    "registry_replications": {
       "copy": {
         "name": "registry_replications",
         "count": "[length(parameters('replications'))]"
@@ -625,10 +669,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.ContainerRegistry/registries', parameters('name'))]"
+        "registry"
       ]
     },
-    {
+    "registry_cacheRules": {
       "copy": {
         "name": "registry_cacheRules",
         "count": "[length(parameters('cacheRules'))]"
@@ -762,10 +806,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.ContainerRegistry/registries', parameters('name'))]"
+        "registry"
       ]
     },
-    {
+    "registry_webhooks": {
       "copy": {
         "name": "registry_webhooks",
         "count": "[length(parameters('webhooks'))]"
@@ -977,10 +1021,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.ContainerRegistry/registries', parameters('name'))]"
+        "registry"
       ]
     },
-    {
+    "registry_roleAssignments": {
       "copy": {
         "name": "registry_roleAssignments",
         "count": "[length(parameters('roleAssignments'))]"
@@ -1131,10 +1175,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.ContainerRegistry/registries', parameters('name'))]"
+        "registry"
       ]
     },
-    {
+    "registry_privateEndpoints": {
       "copy": {
         "name": "registry_privateEndpoints",
         "count": "[length(parameters('privateEndpoints'))]"
@@ -1658,10 +1702,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.ContainerRegistry/registries', parameters('name'))]"
+        "registry"
       ]
     }
-  ],
+  },
   "outputs": {
     "name": {
       "type": "string",
@@ -1696,14 +1740,14 @@
       "metadata": {
         "description": "The principal ID of the system assigned identity."
       },
-      "value": "[if(and(parameters('systemAssignedIdentity'), contains(reference(resourceId('Microsoft.ContainerRegistry/registries', parameters('name')), '2023-06-01-preview', 'full').identity, 'principalId')), reference(resourceId('Microsoft.ContainerRegistry/registries', parameters('name')), '2023-06-01-preview', 'full').identity.principalId, '')]"
+      "value": "[if(and(parameters('systemAssignedIdentity'), contains(reference('registry', '2023-06-01-preview', 'full').identity, 'principalId')), reference('registry', '2023-06-01-preview', 'full').identity.principalId, '')]"
     },
     "location": {
       "type": "string",
       "metadata": {
         "description": "The location the resource was deployed into."
       },
-      "value": "[reference(resourceId('Microsoft.ContainerRegistry/registries', parameters('name')), '2023-06-01-preview', 'full').location]"
+      "value": "[reference('registry', '2023-06-01-preview', 'full').location]"
     }
   }
 }

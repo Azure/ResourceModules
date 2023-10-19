@@ -1,15 +1,43 @@
 {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "languageVersion": "2.0",
   "contentVersion": "1.0.0.0",
   "metadata": {
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "4491569988152591675"
+      "templateHash": "7623420689086339166"
     },
     "name": "Storage Accounts",
     "description": "This module deploys a Storage Account.",
     "owner": "Azure/module-maintainers"
+  },
+  "definitions": {
+    "lockType": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Specify the name of lock."
+          }
+        },
+        "kind": {
+          "type": "string",
+          "allowedValues": [
+            "CanNotDelete",
+            "None",
+            "ReadOnly"
+          ],
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Specify the type of lock."
+          }
+        }
+      },
+      "nullable": true
+    }
   },
   "parameters": {
     "name": {
@@ -294,15 +322,9 @@
       }
     },
     "lock": {
-      "type": "string",
-      "defaultValue": "",
-      "allowedValues": [
-        "",
-        "CanNotDelete",
-        "ReadOnly"
-      ],
+      "$ref": "#/definitions/lockType",
       "metadata": {
-        "description": "Optional. Specify the type of lock."
+        "description": "Optional. The lock settings of the service."
       }
     },
     "tags": {
@@ -423,8 +445,8 @@
     "identity": "[if(not(equals(variables('identityType'), 'None')), createObject('type', variables('identityType'), 'userAssignedIdentities', if(not(empty(parameters('userAssignedIdentities'))), parameters('userAssignedIdentities'), null())), null())]",
     "enableReferencedModulesTelemetry": false
   },
-  "resources": [
-    {
+  "resources": {
+    "defaultTelemetry": {
       "condition": "[parameters('enableDefaultTelemetry')]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2021-04-01",
@@ -438,7 +460,16 @@
         }
       }
     },
-    {
+    "keyVault": {
+      "condition": "[not(empty(parameters('cMKKeyVaultResourceId')))]",
+      "existing": true,
+      "type": "Microsoft.KeyVault/vaults",
+      "apiVersion": "2021-06-01-preview",
+      "subscriptionId": "[split(parameters('cMKKeyVaultResourceId'), '/')[2]]",
+      "resourceGroup": "[split(parameters('cMKKeyVaultResourceId'), '/')[4]]",
+      "name": "[last(split(parameters('cMKKeyVaultResourceId'), '/'))]"
+    },
+    "storageAccount": {
       "type": "Microsoft.Storage/storageAccounts",
       "apiVersion": "2022-09-01",
       "name": "[parameters('name')]",
@@ -473,7 +504,7 @@
             }
           },
           "requireInfrastructureEncryption": "[if(not(equals(parameters('kind'), 'Storage')), parameters('requireInfrastructureEncryption'), null())]",
-          "keyvaultproperties": "[if(not(empty(parameters('cMKKeyName'))), createObject('keyname', parameters('cMKKeyName'), 'keyvaulturi', reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', split(parameters('cMKKeyVaultResourceId'), '/')[2], split(parameters('cMKKeyVaultResourceId'), '/')[4]), 'Microsoft.KeyVault/vaults', last(split(parameters('cMKKeyVaultResourceId'), '/'))), '2021-06-01-preview').vaultUri, 'keyversion', if(not(empty(parameters('cMKKeyVersion'))), parameters('cMKKeyVersion'), null())), null())]",
+          "keyvaultproperties": "[if(not(empty(parameters('cMKKeyName'))), createObject('keyname', parameters('cMKKeyName'), 'keyvaulturi', reference('keyVault').vaultUri, 'keyversion', if(not(empty(parameters('cMKKeyVersion'))), parameters('cMKKeyVersion'), null())), null())]",
           "identity": "[if(not(empty(parameters('cMKKeyName'))), createObject('userAssignedIdentity', parameters('cMKUserAssignedIdentityResourceId')), null())]"
         },
         "accessTier": "[if(not(equals(parameters('kind'), 'Storage')), parameters('accessTier'), null())]",
@@ -488,9 +519,12 @@
         "allowBlobPublicAccess": "[parameters('allowBlobPublicAccess')]",
         "publicNetworkAccess": "[if(not(empty(parameters('publicNetworkAccess'))), parameters('publicNetworkAccess'), if(and(not(empty(parameters('privateEndpoints'))), empty(parameters('networkAcls'))), 'Disabled', null()))]",
         "azureFilesIdentityBasedAuthentication": "[if(not(empty(parameters('azureFilesIdentityBasedAuthentication'))), parameters('azureFilesIdentityBasedAuthentication'), null())]"
-      }
+      },
+      "dependsOn": [
+        "keyVault"
+      ]
     },
-    {
+    "storageAccount_diagnosticSettings": {
       "condition": "[or(or(or(not(empty(parameters('diagnosticStorageAccountId'))), not(empty(parameters('diagnosticWorkspaceId')))), not(empty(parameters('diagnosticEventHubAuthorizationRuleId')))), not(empty(parameters('diagnosticEventHubName'))))]",
       "type": "Microsoft.Insights/diagnosticSettings",
       "apiVersion": "2021-05-01-preview",
@@ -504,24 +538,24 @@
         "metrics": "[variables('diagnosticsMetrics')]"
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Storage/storageAccounts', parameters('name'))]"
+        "storageAccount"
       ]
     },
-    {
-      "condition": "[not(empty(parameters('lock')))]",
+    "storageAccount_lock": {
+      "condition": "[and(not(empty(coalesce(parameters('lock'), createObject()))), not(equals(tryGet(parameters('lock'), 'kind'), 'None')))]",
       "type": "Microsoft.Authorization/locks",
       "apiVersion": "2020-05-01",
       "scope": "[format('Microsoft.Storage/storageAccounts/{0}', parameters('name'))]",
-      "name": "[format('{0}-{1}-lock', parameters('name'), parameters('lock'))]",
+      "name": "[coalesce(tryGet(parameters('lock'), 'name'), format('lock-{0}', parameters('name')))]",
       "properties": {
-        "level": "[parameters('lock')]",
-        "notes": "[if(equals(parameters('lock'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot modify the resource or child resources.')]"
+        "level": "[coalesce(tryGet(parameters('lock'), 'kind'), '')]",
+        "notes": "[if(equals(tryGet(parameters('lock'), 'kind'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot delete or modify the resource or child resources.')]"
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Storage/storageAccounts', parameters('name'))]"
+        "storageAccount"
       ]
     },
-    {
+    "storageAccount_roleAssignments": {
       "copy": {
         "name": "storageAccount_roleAssignments",
         "count": "[length(parameters('roleAssignments'))]"
@@ -699,10 +733,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Storage/storageAccounts', parameters('name'))]"
+        "storageAccount"
       ]
     },
-    {
+    "storageAccount_privateEndpoints": {
       "copy": {
         "name": "storageAccount_privateEndpoints",
         "count": "[length(parameters('privateEndpoints'))]"
@@ -1226,10 +1260,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Storage/storageAccounts', parameters('name'))]"
+        "storageAccount"
       ]
     },
-    {
+    "storageAccount_managementPolicies": {
       "condition": "[not(empty(parameters('managementPolicyRules')))]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
@@ -1338,11 +1372,11 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Storage/storageAccounts', parameters('name'))]",
-        "[resourceId('Microsoft.Resources/deployments', format('{0}-Storage-BlobServices', uniqueString(deployment().name, parameters('location'))))]"
+        "storageAccount",
+        "storageAccount_blobServices"
       ]
     },
-    {
+    "storageAccount_localUsers": {
       "copy": {
         "name": "storageAccount_localUsers",
         "count": "[length(parameters('localUsers'))]"
@@ -1507,10 +1541,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Storage/storageAccounts', parameters('name'))]"
+        "storageAccount"
       ]
     },
-    {
+    "storageAccount_blobServices": {
       "condition": "[not(empty(parameters('blobServices')))]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
@@ -2399,10 +2433,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Storage/storageAccounts', parameters('name'))]"
+        "storageAccount"
       ]
     },
-    {
+    "storageAccount_fileServices": {
       "condition": "[not(empty(parameters('fileServices')))]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
@@ -3005,10 +3039,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Storage/storageAccounts', parameters('name'))]"
+        "storageAccount"
       ]
     },
-    {
+    "storageAccount_queueServices": {
       "condition": "[not(empty(parameters('queueServices')))]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
@@ -3528,10 +3562,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Storage/storageAccounts', parameters('name'))]"
+        "storageAccount"
       ]
     },
-    {
+    "storageAccount_tableServices": {
       "condition": "[not(empty(parameters('tableServices')))]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
@@ -3851,10 +3885,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Storage/storageAccounts', parameters('name'))]"
+        "storageAccount"
       ]
     }
-  ],
+  },
   "outputs": {
     "resourceId": {
       "type": "string",
@@ -3889,14 +3923,14 @@
       "metadata": {
         "description": "The principal ID of the system assigned identity."
       },
-      "value": "[if(and(parameters('systemAssignedIdentity'), contains(reference(resourceId('Microsoft.Storage/storageAccounts', parameters('name')), '2022-09-01', 'full').identity, 'principalId')), reference(resourceId('Microsoft.Storage/storageAccounts', parameters('name')), '2022-09-01', 'full').identity.principalId, '')]"
+      "value": "[if(and(parameters('systemAssignedIdentity'), contains(reference('storageAccount', '2022-09-01', 'full').identity, 'principalId')), reference('storageAccount', '2022-09-01', 'full').identity.principalId, '')]"
     },
     "location": {
       "type": "string",
       "metadata": {
         "description": "The location the resource was deployed into."
       },
-      "value": "[reference(resourceId('Microsoft.Storage/storageAccounts', parameters('name')), '2022-09-01', 'full').location]"
+      "value": "[reference('storageAccount', '2022-09-01', 'full').location]"
     }
   }
 }

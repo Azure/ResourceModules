@@ -1,15 +1,43 @@
 {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "languageVersion": "2.0",
   "contentVersion": "1.0.0.0",
   "metadata": {
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "3196122826827836156"
+      "templateHash": "7574542077751658739"
     },
     "name": "Container Instances Container Groups",
     "description": "This module deploys a Container Instance Container Group.",
     "owner": "Azure/module-maintainers"
+  },
+  "definitions": {
+    "lockType": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Specify the name of lock."
+          }
+        },
+        "kind": {
+          "type": "string",
+          "allowedValues": [
+            "CanNotDelete",
+            "None",
+            "ReadOnly"
+          ],
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Specify the type of lock."
+          }
+        }
+      },
+      "nullable": true
+    }
   },
   "parameters": {
     "name": {
@@ -132,15 +160,9 @@
       }
     },
     "lock": {
-      "type": "string",
-      "defaultValue": "",
-      "allowedValues": [
-        "",
-        "CanNotDelete",
-        "ReadOnly"
-      ],
+      "$ref": "#/definitions/lockType",
       "metadata": {
-        "description": "Optional. Specify the type of lock."
+        "description": "Optional. The lock settings of the service."
       }
     },
     "systemAssignedIdentity": {
@@ -215,8 +237,8 @@
     "identityType": "[if(parameters('systemAssignedIdentity'), if(not(empty(parameters('userAssignedIdentities'))), 'SystemAssigned,UserAssigned', 'SystemAssigned'), if(not(empty(parameters('userAssignedIdentities'))), 'UserAssigned', 'None'))]",
     "identity": "[if(not(equals(variables('identityType'), 'None')), createObject('type', variables('identityType'), 'userAssignedIdentities', if(not(empty(parameters('userAssignedIdentities'))), parameters('userAssignedIdentities'), null())), null())]"
   },
-  "resources": [
-    {
+  "resources": {
+    "defaultTelemetry": {
       "condition": "[parameters('enableDefaultTelemetry')]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2021-04-01",
@@ -230,30 +252,52 @@
         }
       }
     },
-    {
+    "cmkKeyVault": {
+      "condition": "[not(empty(parameters('cMKKeyVaultResourceId')))]",
+      "existing": true,
+      "type": "Microsoft.KeyVault/vaults",
+      "apiVersion": "2021-06-01-preview",
+      "subscriptionId": "[split(parameters('cMKKeyVaultResourceId'), '/')[2]]",
+      "resourceGroup": "[split(parameters('cMKKeyVaultResourceId'), '/')[4]]",
+      "name": "[last(split(parameters('cMKKeyVaultResourceId'), '/'))]"
+    },
+    "cMKKeyVaultKey": {
+      "condition": "[and(not(empty(parameters('cMKKeyVaultResourceId'))), not(empty(parameters('cMKKeyName'))))]",
+      "existing": true,
+      "type": "Microsoft.KeyVault/vaults/keys",
+      "apiVersion": "2021-10-01",
+      "subscriptionId": "[split(parameters('cMKKeyVaultResourceId'), '/')[2]]",
+      "resourceGroup": "[split(parameters('cMKKeyVaultResourceId'), '/')[4]]",
+      "name": "[format('{0}/{1}', last(split(parameters('cMKKeyVaultResourceId'), '/')), parameters('cMKKeyName'))]"
+    },
+    "containergroup": {
       "type": "Microsoft.ContainerInstance/containerGroups",
       "apiVersion": "2022-09-01",
       "name": "[parameters('name')]",
       "location": "[parameters('location')]",
       "identity": "[variables('identity')]",
       "tags": "[parameters('tags')]",
-      "properties": "[union(createObject('containers', parameters('containers'), 'encryptionProperties', if(not(empty(parameters('cMKKeyName'))), createObject('identity', parameters('cMKUserAssignedIdentityResourceId'), 'keyName', parameters('cMKKeyName'), 'keyVersion', if(not(empty(parameters('cMKKeyVersion'))), parameters('cMKKeyVersion'), last(split(reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', split(parameters('cMKKeyVaultResourceId'), '/')[2], split(parameters('cMKKeyVaultResourceId'), '/')[4]), 'Microsoft.KeyVault/vaults/keys', split(format('{0}/{1}', last(split(parameters('cMKKeyVaultResourceId'), '/')), parameters('cMKKeyName')), '/')[0], split(format('{0}/{1}', last(split(parameters('cMKKeyVaultResourceId'), '/')), parameters('cMKKeyName')), '/')[1]), '2021-10-01').keyUriWithVersion, '/'))), 'vaultBaseUrl', reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', split(parameters('cMKKeyVaultResourceId'), '/')[2], split(parameters('cMKKeyVaultResourceId'), '/')[4]), 'Microsoft.KeyVault/vaults', last(split(parameters('cMKKeyVaultResourceId'), '/'))), '2021-06-01-preview').vaultUri), null()), 'imageRegistryCredentials', parameters('imageRegistryCredentials'), 'initContainers', parameters('initContainers'), 'restartPolicy', parameters('restartPolicy'), 'osType', parameters('osType'), 'ipAddress', createObject('type', parameters('ipAddressType'), 'autoGeneratedDomainNameLabelScope', if(not(empty(parameters('dnsNameServers'))), parameters('autoGeneratedDomainNameLabelScope'), null()), 'dnsNameLabel', parameters('dnsNameLabel'), 'ports', parameters('ipAddressPorts')), 'sku', parameters('sku'), 'subnetIds', if(not(empty(parameters('subnetId'))), createArray(createObject('id', parameters('subnetId'))), null()), 'volumes', parameters('volumes')), if(not(empty(parameters('dnsNameServers'))), createObject('dnsConfig', createObject('nameServers', parameters('dnsNameServers'), 'searchDomains', parameters('dnsSearchDomains'))), createObject()))]"
+      "properties": "[union(createObject('containers', parameters('containers'), 'encryptionProperties', if(not(empty(parameters('cMKKeyName'))), createObject('identity', parameters('cMKUserAssignedIdentityResourceId'), 'keyName', parameters('cMKKeyName'), 'keyVersion', if(not(empty(parameters('cMKKeyVersion'))), parameters('cMKKeyVersion'), last(split(reference('cMKKeyVaultKey').keyUriWithVersion, '/'))), 'vaultBaseUrl', reference('cmkKeyVault').vaultUri), null()), 'imageRegistryCredentials', parameters('imageRegistryCredentials'), 'initContainers', parameters('initContainers'), 'restartPolicy', parameters('restartPolicy'), 'osType', parameters('osType'), 'ipAddress', createObject('type', parameters('ipAddressType'), 'autoGeneratedDomainNameLabelScope', if(not(empty(parameters('dnsNameServers'))), parameters('autoGeneratedDomainNameLabelScope'), null()), 'dnsNameLabel', parameters('dnsNameLabel'), 'ports', parameters('ipAddressPorts')), 'sku', parameters('sku'), 'subnetIds', if(not(empty(parameters('subnetId'))), createArray(createObject('id', parameters('subnetId'))), null()), 'volumes', parameters('volumes')), if(not(empty(parameters('dnsNameServers'))), createObject('dnsConfig', createObject('nameServers', parameters('dnsNameServers'), 'searchDomains', parameters('dnsSearchDomains'))), createObject()))]",
+      "dependsOn": [
+        "cmkKeyVault",
+        "cMKKeyVaultKey"
+      ]
     },
-    {
-      "condition": "[not(empty(parameters('lock')))]",
+    "containergroup_lock": {
+      "condition": "[and(not(empty(coalesce(parameters('lock'), createObject()))), not(equals(tryGet(parameters('lock'), 'kind'), 'None')))]",
       "type": "Microsoft.Authorization/locks",
       "apiVersion": "2020-05-01",
       "scope": "[format('Microsoft.ContainerInstance/containerGroups/{0}', parameters('name'))]",
-      "name": "[format('{0}-{1}-lock', parameters('name'), parameters('lock'))]",
+      "name": "[coalesce(tryGet(parameters('lock'), 'name'), format('lock-{0}', parameters('name')))]",
       "properties": {
-        "level": "[parameters('lock')]",
-        "notes": "[if(equals(parameters('lock'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot modify the resource or child resources.')]"
+        "level": "[coalesce(tryGet(parameters('lock'), 'kind'), '')]",
+        "notes": "[if(equals(tryGet(parameters('lock'), 'kind'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot delete or modify the resource or child resources.')]"
       },
       "dependsOn": [
-        "[resourceId('Microsoft.ContainerInstance/containerGroups', parameters('name'))]"
+        "containergroup"
       ]
     }
-  ],
+  },
   "outputs": {
     "name": {
       "type": "string",
@@ -281,21 +325,21 @@
       "metadata": {
         "description": "The IPv4 address of the container group."
       },
-      "value": "[reference(resourceId('Microsoft.ContainerInstance/containerGroups', parameters('name')), '2022-09-01').ipAddress.ip]"
+      "value": "[reference('containergroup').ipAddress.ip]"
     },
     "systemAssignedPrincipalId": {
       "type": "string",
       "metadata": {
         "description": "The principal ID of the system assigned identity."
       },
-      "value": "[if(and(parameters('systemAssignedIdentity'), contains(reference(resourceId('Microsoft.ContainerInstance/containerGroups', parameters('name')), '2022-09-01', 'full').identity, 'principalId')), reference(resourceId('Microsoft.ContainerInstance/containerGroups', parameters('name')), '2022-09-01', 'full').identity.principalId, '')]"
+      "value": "[if(and(parameters('systemAssignedIdentity'), contains(reference('containergroup', '2022-09-01', 'full').identity, 'principalId')), reference('containergroup', '2022-09-01', 'full').identity.principalId, '')]"
     },
     "location": {
       "type": "string",
       "metadata": {
         "description": "The location the resource was deployed into."
       },
-      "value": "[reference(resourceId('Microsoft.ContainerInstance/containerGroups', parameters('name')), '2022-09-01', 'full').location]"
+      "value": "[reference('containergroup', '2022-09-01', 'full').location]"
     }
   }
 }

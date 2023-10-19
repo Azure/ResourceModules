@@ -1,15 +1,43 @@
 {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "languageVersion": "2.0",
   "contentVersion": "1.0.0.0",
   "metadata": {
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "1948691212198738102"
+      "templateHash": "10835536863288360568"
     },
     "name": "Recovery Services Vaults",
     "description": "This module deploys a Recovery Services Vault.",
     "owner": "Azure/module-maintainers"
+  },
+  "definitions": {
+    "lockType": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Specify the name of lock."
+          }
+        },
+        "kind": {
+          "type": "string",
+          "allowedValues": [
+            "CanNotDelete",
+            "None",
+            "ReadOnly"
+          ],
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Specify the type of lock."
+          }
+        }
+      },
+      "nullable": true
+    }
   },
   "parameters": {
     "name": {
@@ -120,15 +148,9 @@
       }
     },
     "lock": {
-      "type": "string",
-      "defaultValue": "",
-      "allowedValues": [
-        "",
-        "CanNotDelete",
-        "ReadOnly"
-      ],
+      "$ref": "#/definitions/lockType",
       "metadata": {
-        "description": "Optional. Specify the type of lock."
+        "description": "Optional. The lock settings of the service."
       }
     },
     "systemAssignedIdentity": {
@@ -256,8 +278,8 @@
     "identity": "[if(not(equals(variables('identityType'), 'None')), createObject('type', variables('identityType'), 'userAssignedIdentities', if(not(empty(parameters('userAssignedIdentities'))), parameters('userAssignedIdentities'), null())), null())]",
     "enableReferencedModulesTelemetry": false
   },
-  "resources": [
-    {
+  "resources": {
+    "defaultTelemetry": {
       "condition": "[parameters('enableDefaultTelemetry')]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2021-04-01",
@@ -271,7 +293,7 @@
         }
       }
     },
-    {
+    "rsv": {
       "type": "Microsoft.RecoveryServices/vaults",
       "apiVersion": "2023-01-01",
       "name": "[parameters('name')]",
@@ -288,21 +310,21 @@
         "publicNetworkAccess": "[parameters('publicNetworkAccess')]"
       }
     },
-    {
-      "condition": "[not(empty(parameters('lock')))]",
+    "rsv_lock": {
+      "condition": "[and(not(empty(coalesce(parameters('lock'), createObject()))), not(equals(tryGet(parameters('lock'), 'kind'), 'None')))]",
       "type": "Microsoft.Authorization/locks",
       "apiVersion": "2020-05-01",
       "scope": "[format('Microsoft.RecoveryServices/vaults/{0}', parameters('name'))]",
-      "name": "[format('{0}-{1}-lock', parameters('name'), parameters('lock'))]",
+      "name": "[coalesce(tryGet(parameters('lock'), 'name'), format('lock-{0}', parameters('name')))]",
       "properties": {
-        "level": "[parameters('lock')]",
-        "notes": "[if(equals(parameters('lock'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot modify the resource or child resources.')]"
+        "level": "[coalesce(tryGet(parameters('lock'), 'kind'), '')]",
+        "notes": "[if(equals(tryGet(parameters('lock'), 'kind'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot delete or modify the resource or child resources.')]"
       },
       "dependsOn": [
-        "[resourceId('Microsoft.RecoveryServices/vaults', parameters('name'))]"
+        "rsv"
       ]
     },
-    {
+    "rsv_diagnosticSettings": {
       "condition": "[or(or(or(not(empty(parameters('diagnosticStorageAccountId'))), not(empty(parameters('diagnosticWorkspaceId')))), not(empty(parameters('diagnosticEventHubAuthorizationRuleId')))), not(empty(parameters('diagnosticEventHubName'))))]",
       "type": "Microsoft.Insights/diagnosticSettings",
       "apiVersion": "2021-05-01-preview",
@@ -317,10 +339,10 @@
         "logs": "[variables('diagnosticsLogs')]"
       },
       "dependsOn": [
-        "[resourceId('Microsoft.RecoveryServices/vaults', parameters('name'))]"
+        "rsv"
       ]
     },
-    {
+    "rsv_replicationFabrics": {
       "copy": {
         "name": "rsv_replicationFabrics",
         "count": "[length(parameters('replicationFabrics'))]"
@@ -763,11 +785,11 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.RecoveryServices/vaults', parameters('name'))]",
+        "rsv",
         "rsv_replicationPolicies"
       ]
     },
-    {
+    "rsv_replicationPolicies": {
       "copy": {
         "name": "rsv_replicationPolicies",
         "count": "[length(parameters('replicationPolicies'))]"
@@ -917,10 +939,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.RecoveryServices/vaults', parameters('name'))]"
+        "rsv"
       ]
     },
-    {
+    "rsv_backupStorageConfiguration": {
       "condition": "[not(empty(parameters('backupStorageConfig')))]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
@@ -1050,10 +1072,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.RecoveryServices/vaults', parameters('name'))]"
+        "rsv"
       ]
     },
-    {
+    "rsv_backupFabric_protectionContainers": {
       "copy": {
         "name": "rsv_backupFabric_protectionContainers",
         "count": "[length(parameters('protectionContainers'))]"
@@ -1421,10 +1443,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.RecoveryServices/vaults', parameters('name'))]"
+        "rsv"
       ]
     },
-    {
+    "rsv_backupPolicies": {
       "copy": {
         "name": "rsv_backupPolicies",
         "count": "[length(parameters('backupPolicies'))]"
@@ -1539,10 +1561,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.RecoveryServices/vaults', parameters('name'))]"
+        "rsv"
       ]
     },
-    {
+    "rsv_backupConfig": {
       "condition": "[not(empty(parameters('backupConfig')))]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
@@ -1732,10 +1754,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.RecoveryServices/vaults', parameters('name'))]"
+        "rsv"
       ]
     },
-    {
+    "rsv_replicationAlertSettings": {
       "condition": "[not(empty(parameters('replicationAlertSettings')))]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
@@ -1871,10 +1893,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.RecoveryServices/vaults', parameters('name'))]"
+        "rsv"
       ]
     },
-    {
+    "rsv_privateEndpoints": {
       "copy": {
         "name": "rsv_privateEndpoints",
         "count": "[length(parameters('privateEndpoints'))]"
@@ -2398,10 +2420,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.RecoveryServices/vaults', parameters('name'))]"
+        "rsv"
       ]
     },
-    {
+    "rsv_roleAssignments": {
       "copy": {
         "name": "rsv_roleAssignments",
         "count": "[length(parameters('roleAssignments'))]"
@@ -2553,10 +2575,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.RecoveryServices/vaults', parameters('name'))]"
+        "rsv"
       ]
     }
-  ],
+  },
   "outputs": {
     "resourceId": {
       "type": "string",
@@ -2584,14 +2606,14 @@
       "metadata": {
         "description": "The principal ID of the system assigned identity."
       },
-      "value": "[if(and(parameters('systemAssignedIdentity'), contains(reference(resourceId('Microsoft.RecoveryServices/vaults', parameters('name')), '2023-01-01', 'full').identity, 'principalId')), reference(resourceId('Microsoft.RecoveryServices/vaults', parameters('name')), '2023-01-01', 'full').identity.principalId, '')]"
+      "value": "[if(and(parameters('systemAssignedIdentity'), contains(reference('rsv', '2023-01-01', 'full').identity, 'principalId')), reference('rsv', '2023-01-01', 'full').identity.principalId, '')]"
     },
     "location": {
       "type": "string",
       "metadata": {
         "description": "The location the resource was deployed into."
       },
-      "value": "[reference(resourceId('Microsoft.RecoveryServices/vaults', parameters('name')), '2023-01-01', 'full').location]"
+      "value": "[reference('rsv', '2023-01-01', 'full').location]"
     }
   }
 }

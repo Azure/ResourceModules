@@ -1,15 +1,43 @@
 {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "languageVersion": "2.0",
   "contentVersion": "1.0.0.0",
   "metadata": {
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "1438402426319950203"
+      "templateHash": "17468791848583972607"
     },
     "name": "App Configuration Stores",
     "description": "This module deploys an App Configuration Store.",
     "owner": "Azure/module-maintainers"
+  },
+  "definitions": {
+    "lockType": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Specify the name of lock."
+          }
+        },
+        "kind": {
+          "type": "string",
+          "allowedValues": [
+            "CanNotDelete",
+            "None",
+            "ReadOnly"
+          ],
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Specify the type of lock."
+          }
+        }
+      },
+      "nullable": true
+    }
   },
   "parameters": {
     "name": {
@@ -160,15 +188,9 @@
       }
     },
     "lock": {
-      "type": "string",
-      "defaultValue": "",
-      "allowedValues": [
-        "",
-        "CanNotDelete",
-        "ReadOnly"
-      ],
+      "$ref": "#/definitions/lockType",
       "metadata": {
-        "description": "Optional. Specify the type of lock."
+        "description": "Optional. The lock settings of the service."
       }
     },
     "roleAssignments": {
@@ -262,8 +284,20 @@
       "userAssignedIdentities": "[if(not(empty(parameters('userAssignedIdentities'))), parameters('userAssignedIdentities'), null())]"
     }
   },
-  "resources": [
-    {
+  "resources": {
+    "cMKKeyVault::cMKKey": {
+      "condition": "[and(not(empty(parameters('cMKKeyVaultResourceId'))), not(empty(parameters('cMKKeyName'))))]",
+      "existing": true,
+      "type": "Microsoft.KeyVault/vaults/keys",
+      "apiVersion": "2022-07-01",
+      "subscriptionId": "[split(parameters('cMKKeyVaultResourceId'), '/')[2]]",
+      "resourceGroup": "[split(parameters('cMKKeyVaultResourceId'), '/')[4]]",
+      "name": "[format('{0}/{1}', last(split(parameters('cMKKeyVaultResourceId'), '/')), parameters('cMKKeyName'))]",
+      "dependsOn": [
+        "cMKKeyVault"
+      ]
+    },
+    "defaultTelemetry": {
       "condition": "[parameters('enableDefaultTelemetry')]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2021-04-01",
@@ -277,7 +311,25 @@
         }
       }
     },
-    {
+    "cMKKeyVault": {
+      "condition": "[not(empty(parameters('cMKKeyVaultResourceId')))]",
+      "existing": true,
+      "type": "Microsoft.KeyVault/vaults",
+      "apiVersion": "2023-02-01",
+      "subscriptionId": "[split(parameters('cMKKeyVaultResourceId'), '/')[2]]",
+      "resourceGroup": "[split(parameters('cMKKeyVaultResourceId'), '/')[4]]",
+      "name": "[last(split(parameters('cMKKeyVaultResourceId'), '/'))]"
+    },
+    "cMKUserAssignedIdentity": {
+      "condition": "[not(empty(parameters('cMKUserAssignedIdentityResourceId')))]",
+      "existing": true,
+      "type": "Microsoft.ManagedIdentity/userAssignedIdentities",
+      "apiVersion": "2023-01-31",
+      "subscriptionId": "[split(parameters('cMKUserAssignedIdentityResourceId'), '/')[2]]",
+      "resourceGroup": "[split(parameters('cMKUserAssignedIdentityResourceId'), '/')[4]]",
+      "name": "[last(split(parameters('cMKUserAssignedIdentityResourceId'), '/'))]"
+    },
+    "configurationStore": {
       "type": "Microsoft.AppConfiguration/configurationStores",
       "apiVersion": "2023-03-01",
       "name": "[parameters('name')]",
@@ -291,26 +343,30 @@
         "createMode": "[parameters('createMode')]",
         "disableLocalAuth": "[parameters('disableLocalAuth')]",
         "enablePurgeProtection": "[if(equals(parameters('sku'), 'Free'), false(), parameters('enablePurgeProtection'))]",
-        "encryption": "[if(not(empty(parameters('cMKKeyName'))), createObject('keyVaultProperties', createObject('keyIdentifier', if(not(empty(parameters('cMKKeyVersion'))), format('{0}/{1}', reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', split(parameters('cMKKeyVaultResourceId'), '/')[2], split(parameters('cMKKeyVaultResourceId'), '/')[4]), 'Microsoft.KeyVault/vaults/keys', last(split(parameters('cMKKeyVaultResourceId'), '/')), parameters('cMKKeyName')), '2022-07-01').keyUri, parameters('cMKKeyVersion')), reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', split(parameters('cMKKeyVaultResourceId'), '/')[2], split(parameters('cMKKeyVaultResourceId'), '/')[4]), 'Microsoft.KeyVault/vaults/keys', last(split(parameters('cMKKeyVaultResourceId'), '/')), parameters('cMKKeyName')), '2022-07-01').keyUriWithVersion), 'identityClientId', reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', split(parameters('cMKUserAssignedIdentityResourceId'), '/')[2], split(parameters('cMKUserAssignedIdentityResourceId'), '/')[4]), 'Microsoft.ManagedIdentity/userAssignedIdentities', last(split(parameters('cMKUserAssignedIdentityResourceId'), '/'))), '2023-01-31').clientId)), null())]",
+        "encryption": "[if(not(empty(parameters('cMKKeyName'))), createObject('keyVaultProperties', createObject('keyIdentifier', if(not(empty(parameters('cMKKeyVersion'))), format('{0}/{1}', reference('cMKKeyVault::cMKKey').keyUri, parameters('cMKKeyVersion')), reference('cMKKeyVault::cMKKey').keyUriWithVersion), 'identityClientId', reference('cMKUserAssignedIdentity').clientId)), null())]",
         "publicNetworkAccess": "[if(not(empty(parameters('publicNetworkAccess'))), parameters('publicNetworkAccess'), null())]",
         "softDeleteRetentionInDays": "[if(equals(parameters('sku'), 'Free'), 0, parameters('softDeleteRetentionInDays'))]"
-      }
+      },
+      "dependsOn": [
+        "cMKKeyVault",
+        "cMKUserAssignedIdentity"
+      ]
     },
-    {
-      "condition": "[not(empty(parameters('lock')))]",
+    "configurationStore_lock": {
+      "condition": "[and(not(empty(coalesce(parameters('lock'), createObject()))), not(equals(tryGet(parameters('lock'), 'kind'), 'None')))]",
       "type": "Microsoft.Authorization/locks",
       "apiVersion": "2020-05-01",
       "scope": "[format('Microsoft.AppConfiguration/configurationStores/{0}', parameters('name'))]",
-      "name": "[format('{0}-{1}-lock', parameters('name'), parameters('lock'))]",
+      "name": "[coalesce(tryGet(parameters('lock'), 'name'), format('lock-{0}', parameters('name')))]",
       "properties": {
-        "level": "[parameters('lock')]",
-        "notes": "[if(equals(parameters('lock'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot modify the resource or child resources.')]"
+        "level": "[coalesce(tryGet(parameters('lock'), 'kind'), '')]",
+        "notes": "[if(equals(tryGet(parameters('lock'), 'kind'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot delete or modify the resource or child resources.')]"
       },
       "dependsOn": [
-        "[resourceId('Microsoft.AppConfiguration/configurationStores', parameters('name'))]"
+        "configurationStore"
       ]
     },
-    {
+    "configurationStore_diagnosticSettings": {
       "condition": "[or(or(or(not(empty(parameters('diagnosticStorageAccountId'))), not(empty(parameters('diagnosticWorkspaceId')))), not(empty(parameters('diagnosticEventHubAuthorizationRuleId')))), not(empty(parameters('diagnosticEventHubName'))))]",
       "type": "Microsoft.Insights/diagnosticSettings",
       "apiVersion": "2021-05-01-preview",
@@ -325,10 +381,10 @@
         "logs": "[variables('diagnosticsLogs')]"
       },
       "dependsOn": [
-        "[resourceId('Microsoft.AppConfiguration/configurationStores', parameters('name'))]"
+        "configurationStore"
       ]
     },
-    {
+    "configurationStore_keyValues": {
       "copy": {
         "name": "configurationStore_keyValues",
         "count": "[length(parameters('keyValues'))]"
@@ -463,10 +519,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.AppConfiguration/configurationStores', parameters('name'))]"
+        "configurationStore"
       ]
     },
-    {
+    "configurationStore_roleAssignments": {
       "copy": {
         "name": "configurationStore_roleAssignments",
         "count": "[length(parameters('roleAssignments'))]"
@@ -615,10 +671,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.AppConfiguration/configurationStores', parameters('name'))]"
+        "configurationStore"
       ]
     },
-    {
+    "configurationStore_privateEndpoints": {
       "copy": {
         "name": "configurationStore_privateEndpoints",
         "count": "[length(parameters('privateEndpoints'))]"
@@ -1142,10 +1198,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.AppConfiguration/configurationStores', parameters('name'))]"
+        "configurationStore"
       ]
     }
-  ],
+  },
   "outputs": {
     "name": {
       "type": "string",
@@ -1173,14 +1229,14 @@
       "metadata": {
         "description": "The principal ID of the system assigned identity."
       },
-      "value": "[if(and(parameters('systemAssignedIdentity'), contains(reference(resourceId('Microsoft.AppConfiguration/configurationStores', parameters('name')), '2023-03-01', 'full').identity, 'principalId')), reference(resourceId('Microsoft.AppConfiguration/configurationStores', parameters('name')), '2023-03-01', 'full').identity.principalId, '')]"
+      "value": "[if(and(parameters('systemAssignedIdentity'), contains(reference('configurationStore', '2023-03-01', 'full').identity, 'principalId')), reference('configurationStore', '2023-03-01', 'full').identity.principalId, '')]"
     },
     "location": {
       "type": "string",
       "metadata": {
         "description": "The location the resource was deployed into."
       },
-      "value": "[reference(resourceId('Microsoft.AppConfiguration/configurationStores', parameters('name')), '2023-03-01', 'full').location]"
+      "value": "[reference('configurationStore', '2023-03-01', 'full').location]"
     }
   }
 }

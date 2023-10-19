@@ -1,15 +1,43 @@
 {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "languageVersion": "2.0",
   "contentVersion": "1.0.0.0",
   "metadata": {
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "2042912837463951821"
+      "templateHash": "14721248899308225880"
     },
     "name": "Redis Cache",
     "description": "This module deploys a Redis Cache.",
     "owner": "Azure/module-maintainers"
+  },
+  "definitions": {
+    "lockType": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Specify the name of lock."
+          }
+        },
+        "kind": {
+          "type": "string",
+          "allowedValues": [
+            "CanNotDelete",
+            "None",
+            "ReadOnly"
+          ],
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Specify the type of lock."
+          }
+        }
+      },
+      "nullable": true
+    }
   },
   "parameters": {
     "location": {
@@ -26,15 +54,9 @@
       }
     },
     "lock": {
-      "type": "string",
-      "defaultValue": "",
-      "allowedValues": [
-        "",
-        "CanNotDelete",
-        "ReadOnly"
-      ],
+      "$ref": "#/definitions/lockType",
       "metadata": {
-        "description": "Optional. Specify the type of lock."
+        "description": "Optional. The lock settings of the service."
       }
     },
     "roleAssignments": {
@@ -306,8 +328,8 @@
     },
     "enableReferencedModulesTelemetry": false
   },
-  "resources": [
-    {
+  "resources": {
+    "defaultTelemetry": {
       "condition": "[parameters('enableDefaultTelemetry')]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2021-04-01",
@@ -321,7 +343,7 @@
         }
       }
     },
-    {
+    "redisCache": {
       "type": "Microsoft.Cache/redis",
       "apiVersion": "2022-06-01",
       "name": "[parameters('name')]",
@@ -348,21 +370,21 @@
       },
       "zones": "[variables('availabilityZones')]"
     },
-    {
-      "condition": "[not(empty(parameters('lock')))]",
+    "redisCache_lock": {
+      "condition": "[and(not(empty(coalesce(parameters('lock'), createObject()))), not(equals(tryGet(parameters('lock'), 'kind'), 'None')))]",
       "type": "Microsoft.Authorization/locks",
       "apiVersion": "2020-05-01",
       "scope": "[format('Microsoft.Cache/redis/{0}', parameters('name'))]",
-      "name": "[format('{0}-{1}-lock', parameters('name'), parameters('lock'))]",
+      "name": "[coalesce(tryGet(parameters('lock'), 'name'), format('lock-{0}', parameters('name')))]",
       "properties": {
-        "level": "[parameters('lock')]",
-        "notes": "[if(equals(parameters('lock'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot modify the resource or child resources.')]"
+        "level": "[coalesce(tryGet(parameters('lock'), 'kind'), '')]",
+        "notes": "[if(equals(tryGet(parameters('lock'), 'kind'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot delete or modify the resource or child resources.')]"
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Cache/redis', parameters('name'))]"
+        "redisCache"
       ]
     },
-    {
+    "redisCache_diagnosticSettings": {
       "condition": "[or(or(or(not(empty(parameters('diagnosticStorageAccountId'))), not(empty(parameters('diagnosticWorkspaceId')))), not(empty(parameters('diagnosticEventHubAuthorizationRuleId')))), not(empty(parameters('diagnosticEventHubName'))))]",
       "type": "Microsoft.Insights/diagnosticSettings",
       "apiVersion": "2021-05-01-preview",
@@ -377,10 +399,10 @@
         "logs": "[if(and(and(and(empty(parameters('diagnosticStorageAccountId')), empty(parameters('diagnosticWorkspaceId'))), empty(parameters('diagnosticEventHubAuthorizationRuleId'))), empty(parameters('diagnosticEventHubName'))), null(), variables('diagnosticsLogs'))]"
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Cache/redis', parameters('name'))]"
+        "redisCache"
       ]
     },
-    {
+    "redisCache_rbac": {
       "copy": {
         "name": "redisCache_rbac",
         "count": "[length(parameters('roleAssignments'))]"
@@ -526,10 +548,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Cache/redis', parameters('name'))]"
+        "redisCache"
       ]
     },
-    {
+    "redisCache_privateEndpoints": {
       "copy": {
         "name": "redisCache_privateEndpoints",
         "count": "[length(parameters('privateEndpoints'))]"
@@ -1053,10 +1075,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Cache/redis', parameters('name'))]"
+        "redisCache"
       ]
     }
-  ],
+  },
   "outputs": {
     "name": {
       "type": "string",
@@ -1084,28 +1106,28 @@
       "metadata": {
         "description": "Redis hostname."
       },
-      "value": "[reference(resourceId('Microsoft.Cache/redis', parameters('name')), '2022-06-01').hostName]"
+      "value": "[reference('redisCache').hostName]"
     },
     "sslPort": {
       "type": "int",
       "metadata": {
         "description": "Redis SSL port."
       },
-      "value": "[reference(resourceId('Microsoft.Cache/redis', parameters('name')), '2022-06-01').sslPort]"
+      "value": "[reference('redisCache').sslPort]"
     },
     "subnetId": {
       "type": "string",
       "metadata": {
         "description": "The full resource ID of a subnet in a virtual network where the Redis Cache was deployed in."
       },
-      "value": "[if(not(empty(parameters('subnetId'))), reference(resourceId('Microsoft.Cache/redis', parameters('name')), '2022-06-01').subnetId, '')]"
+      "value": "[if(not(empty(parameters('subnetId'))), reference('redisCache').subnetId, '')]"
     },
     "location": {
       "type": "string",
       "metadata": {
         "description": "The location the resource was deployed into."
       },
-      "value": "[reference(resourceId('Microsoft.Cache/redis', parameters('name')), '2022-06-01', 'full').location]"
+      "value": "[reference('redisCache', '2022-06-01', 'full').location]"
     }
   }
 }

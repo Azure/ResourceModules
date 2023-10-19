@@ -1,15 +1,43 @@
 {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "languageVersion": "2.0",
   "contentVersion": "1.0.0.0",
   "metadata": {
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "4323187915659355433"
+      "templateHash": "5215810648913031869"
     },
     "name": "Azure SQL Servers",
     "description": "This module deploys an Azure SQL Server.",
     "owner": "Azure/module-maintainers"
+  },
+  "definitions": {
+    "lockType": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Specify the name of lock."
+          }
+        },
+        "kind": {
+          "type": "string",
+          "allowedValues": [
+            "CanNotDelete",
+            "None",
+            "ReadOnly"
+          ],
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Specify the type of lock."
+          }
+        }
+      },
+      "nullable": true
+    }
   },
   "parameters": {
     "administratorLogin": {
@@ -61,15 +89,9 @@
       }
     },
     "lock": {
-      "type": "string",
-      "defaultValue": "",
-      "allowedValues": [
-        "",
-        "CanNotDelete",
-        "ReadOnly"
-      ],
+      "$ref": "#/definitions/lockType",
       "metadata": {
-        "description": "Optional. Specify the type of lock."
+        "description": "Optional. The lock settings of the service."
       }
     },
     "roleAssignments": {
@@ -205,8 +227,8 @@
     "identity": "[if(not(equals(variables('identityType'), 'None')), createObject('type', variables('identityType'), 'userAssignedIdentities', if(not(empty(parameters('userAssignedIdentities'))), parameters('userAssignedIdentities'), null())), null())]",
     "enableReferencedModulesTelemetry": false
   },
-  "resources": [
-    {
+  "resources": {
+    "defaultTelemetry": {
       "condition": "[parameters('enableDefaultTelemetry')]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2021-04-01",
@@ -220,7 +242,7 @@
         }
       }
     },
-    {
+    "server": {
       "type": "Microsoft.Sql/servers",
       "apiVersion": "2022-05-01-preview",
       "name": "[parameters('name')]",
@@ -238,21 +260,21 @@
         "restrictOutboundNetworkAccess": "[if(not(empty(parameters('restrictOutboundNetworkAccess'))), parameters('restrictOutboundNetworkAccess'), null())]"
       }
     },
-    {
-      "condition": "[not(empty(parameters('lock')))]",
+    "server_lock": {
+      "condition": "[and(not(empty(coalesce(parameters('lock'), createObject()))), not(equals(tryGet(parameters('lock'), 'kind'), 'None')))]",
       "type": "Microsoft.Authorization/locks",
       "apiVersion": "2020-05-01",
       "scope": "[format('Microsoft.Sql/servers/{0}', parameters('name'))]",
-      "name": "[format('{0}-{1}-lock', parameters('name'), parameters('lock'))]",
+      "name": "[coalesce(tryGet(parameters('lock'), 'name'), format('lock-{0}', parameters('name')))]",
       "properties": {
-        "level": "[parameters('lock')]",
-        "notes": "[if(equals(parameters('lock'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot modify the resource or child resources.')]"
+        "level": "[coalesce(tryGet(parameters('lock'), 'kind'), '')]",
+        "notes": "[if(equals(tryGet(parameters('lock'), 'kind'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot delete or modify the resource or child resources.')]"
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Sql/servers', parameters('name'))]"
+        "server"
       ]
     },
-    {
+    "server_roleAssignments": {
       "copy": {
         "name": "server_roleAssignments",
         "count": "[length(parameters('roleAssignments'))]"
@@ -404,10 +426,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Sql/servers', parameters('name'))]"
+        "server"
       ]
     },
-    {
+    "server_databases": {
       "copy": {
         "name": "server_databases",
         "count": "[length(parameters('databases'))]"
@@ -1176,11 +1198,11 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Sql/servers', parameters('name'))]",
+        "server",
         "server_elasticPools"
       ]
     },
-    {
+    "server_elasticPools": {
       "copy": {
         "name": "server_elasticPools",
         "count": "[length(parameters('elasticPools'))]"
@@ -1421,10 +1443,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Sql/servers', parameters('name'))]"
+        "server"
       ]
     },
-    {
+    "server_privateEndpoints": {
       "copy": {
         "name": "server_privateEndpoints",
         "count": "[length(parameters('privateEndpoints'))]"
@@ -1948,10 +1970,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Sql/servers', parameters('name'))]"
+        "server"
       ]
     },
-    {
+    "server_firewallRules": {
       "copy": {
         "name": "server_firewallRules",
         "count": "[length(parameters('firewallRules'))]"
@@ -2076,10 +2098,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Sql/servers', parameters('name'))]"
+        "server"
       ]
     },
-    {
+    "server_virtualNetworkRules": {
       "copy": {
         "name": "server_virtualNetworkRules",
         "count": "[length(parameters('virtualNetworkRules'))]"
@@ -2205,10 +2227,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Sql/servers', parameters('name'))]"
+        "server"
       ]
     },
-    {
+    "server_securityAlertPolicies": {
       "copy": {
         "name": "server_securityAlertPolicies",
         "count": "[length(parameters('securityAlertPolicies'))]"
@@ -2382,10 +2404,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Sql/servers', parameters('name'))]"
+        "server"
       ]
     },
-    {
+    "server_vulnerabilityAssessment": {
       "condition": "[not(empty(parameters('vulnerabilityAssessmentsObj')))]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
@@ -2528,11 +2550,11 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Sql/servers', parameters('name'))]",
+        "server",
         "server_securityAlertPolicies"
       ]
     },
-    {
+    "server_keys": {
       "copy": {
         "name": "server_keys",
         "count": "[length(parameters('keys'))]"
@@ -2665,10 +2687,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Sql/servers', parameters('name'))]"
+        "server"
       ]
     },
-    {
+    "server_encryptionProtector": {
       "condition": "[not(empty(parameters('encryptionProtectorObj')))]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
@@ -2795,11 +2817,11 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Sql/servers', parameters('name'))]",
+        "server",
         "server_keys"
       ]
     }
-  ],
+  },
   "outputs": {
     "name": {
       "type": "string",
@@ -2827,14 +2849,14 @@
       "metadata": {
         "description": "The principal ID of the system assigned identity."
       },
-      "value": "[if(and(parameters('systemAssignedIdentity'), contains(reference(resourceId('Microsoft.Sql/servers', parameters('name')), '2022-05-01-preview', 'full').identity, 'principalId')), reference(resourceId('Microsoft.Sql/servers', parameters('name')), '2022-05-01-preview', 'full').identity.principalId, '')]"
+      "value": "[if(and(parameters('systemAssignedIdentity'), contains(reference('server', '2022-05-01-preview', 'full').identity, 'principalId')), reference('server', '2022-05-01-preview', 'full').identity.principalId, '')]"
     },
     "location": {
       "type": "string",
       "metadata": {
         "description": "The location the resource was deployed into."
       },
-      "value": "[reference(resourceId('Microsoft.Sql/servers', parameters('name')), '2022-05-01-preview', 'full').location]"
+      "value": "[reference('server', '2022-05-01-preview', 'full').location]"
     }
   }
 }

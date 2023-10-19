@@ -1,15 +1,43 @@
 {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "languageVersion": "2.0",
   "contentVersion": "1.0.0.0",
   "metadata": {
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "11333441944276260174"
+      "templateHash": "15056932991564143086"
     },
     "name": "Azure Synapse Analytics",
     "description": "This module deploys an Azure Synapse Analytics (Private Link Hub).",
     "owner": "Azure/module-maintainers"
+  },
+  "definitions": {
+    "lockType": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Specify the name of lock."
+          }
+        },
+        "kind": {
+          "type": "string",
+          "allowedValues": [
+            "CanNotDelete",
+            "None",
+            "ReadOnly"
+          ],
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Specify the type of lock."
+          }
+        }
+      },
+      "nullable": true
+    }
   },
   "parameters": {
     "name": {
@@ -33,15 +61,9 @@
       }
     },
     "lock": {
-      "type": "string",
-      "defaultValue": "",
-      "allowedValues": [
-        "",
-        "CanNotDelete",
-        "ReadOnly"
-      ],
+      "$ref": "#/definitions/lockType",
       "metadata": {
-        "description": "Optional. Specify the type of lock."
+        "description": "Optional. The lock settings of the service."
       }
     },
     "enableDefaultTelemetry": {
@@ -69,8 +91,8 @@
   "variables": {
     "enableReferencedModulesTelemetry": false
   },
-  "resources": [
-    {
+  "resources": {
+    "defaultTelemetry": {
       "condition": "[parameters('enableDefaultTelemetry')]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2021-04-01",
@@ -84,28 +106,28 @@
         }
       }
     },
-    {
+    "privateLinkHub": {
       "type": "Microsoft.Synapse/privateLinkHubs",
       "apiVersion": "2021-06-01",
       "name": "[parameters('name')]",
       "location": "[parameters('location')]",
       "tags": "[parameters('tags')]"
     },
-    {
-      "condition": "[not(empty(parameters('lock')))]",
+    "privateLinkHub_lock": {
+      "condition": "[and(not(empty(coalesce(parameters('lock'), createObject()))), not(equals(tryGet(parameters('lock'), 'kind'), 'None')))]",
       "type": "Microsoft.Authorization/locks",
       "apiVersion": "2020-05-01",
       "scope": "[format('Microsoft.Synapse/privateLinkHubs/{0}', parameters('name'))]",
-      "name": "[format('{0}-{1}-lock', parameters('name'), parameters('lock'))]",
+      "name": "[coalesce(tryGet(parameters('lock'), 'name'), format('lock-{0}', parameters('name')))]",
       "properties": {
-        "level": "[parameters('lock')]",
-        "notes": "[if(equals(parameters('lock'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot modify the resource or child resources.')]"
+        "level": "[coalesce(tryGet(parameters('lock'), 'kind'), '')]",
+        "notes": "[if(equals(tryGet(parameters('lock'), 'kind'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot delete or modify the resource or child resources.')]"
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Synapse/privateLinkHubs', parameters('name'))]"
+        "privateLinkHub"
       ]
     },
-    {
+    "privateLinkHub_roleAssignments": {
       "copy": {
         "name": "privateLinkHub_roleAssignments",
         "count": "[length(parameters('roleAssignments'))]"
@@ -250,10 +272,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Synapse/privateLinkHubs', parameters('name'))]"
+        "privateLinkHub"
       ]
     },
-    {
+    "privateLinkHub_privateEndpoints": {
       "copy": {
         "name": "privateLinkHub_privateEndpoints",
         "count": "[length(parameters('privateEndpoints'))]"
@@ -777,10 +799,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Synapse/privateLinkHubs', parameters('name'))]"
+        "privateLinkHub"
       ]
     }
-  ],
+  },
   "outputs": {
     "resourceId": {
       "type": "string",
@@ -808,7 +830,7 @@
       "metadata": {
         "description": "The location the resource was deployed into."
       },
-      "value": "[reference(resourceId('Microsoft.Synapse/privateLinkHubs', parameters('name')), '2021-06-01', 'full').location]"
+      "value": "[reference('privateLinkHub', '2021-06-01', 'full').location]"
     }
   }
 }

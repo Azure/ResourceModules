@@ -1,15 +1,43 @@
 {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "languageVersion": "2.0",
   "contentVersion": "1.0.0.0",
   "metadata": {
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "14717079863067599908"
+      "templateHash": "15611146682849530670"
     },
     "name": "Synapse Workspaces",
     "description": "This module deploys a Synapse Workspace.",
     "owner": "Azure/module-maintainers"
+  },
+  "definitions": {
+    "lockType": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Specify the name of lock."
+          }
+        },
+        "kind": {
+          "type": "string",
+          "allowedValues": [
+            "CanNotDelete",
+            "None",
+            "ReadOnly"
+          ],
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Specify the type of lock."
+          }
+        }
+      },
+      "nullable": true
+    }
   },
   "parameters": {
     "name": {
@@ -204,15 +232,9 @@
       }
     },
     "lock": {
-      "type": "string",
-      "defaultValue": "",
-      "allowedValues": [
-        "",
-        "CanNotDelete",
-        "ReadOnly"
-      ],
+      "$ref": "#/definitions/lockType",
       "metadata": {
-        "description": "Optional. Specify the type of lock."
+        "description": "Optional. The lock settings of the service."
       }
     },
     "roleAssignments": {
@@ -306,8 +328,26 @@
     "diagnosticsLogs": "[if(contains(parameters('diagnosticLogCategoriesToEnable'), 'allLogs'), createArray(createObject('categoryGroup', 'allLogs', 'enabled', true())), if(contains(parameters('diagnosticLogCategoriesToEnable'), ''), createArray(), variables('diagnosticsLogsSpecified')))]",
     "enableReferencedModulesTelemetry": false
   },
-  "resources": [
-    {
+  "resources": {
+    "cMKKeyVault": {
+      "condition": "[not(empty(parameters('cMKKeyVaultResourceId')))]",
+      "existing": true,
+      "type": "Microsoft.KeyVault/vaults",
+      "apiVersion": "2021-10-01",
+      "subscriptionId": "[split(parameters('cMKKeyVaultResourceId'), '/')[2]]",
+      "resourceGroup": "[split(parameters('cMKKeyVaultResourceId'), '/')[4]]",
+      "name": "[last(split(parameters('cMKKeyVaultResourceId'), '/'))]"
+    },
+    "cMKKeyVaultKey": {
+      "condition": "[and(not(empty(parameters('cMKKeyVaultResourceId'))), not(empty(parameters('cMKKeyName'))))]",
+      "existing": true,
+      "type": "Microsoft.KeyVault/vaults/keys",
+      "apiVersion": "2021-10-01",
+      "subscriptionId": "[split(parameters('cMKKeyVaultResourceId'), '/')[2]]",
+      "resourceGroup": "[split(parameters('cMKKeyVaultResourceId'), '/')[4]]",
+      "name": "[format('{0}/{1}', last(split(parameters('cMKKeyVaultResourceId'), '/')), parameters('cMKKeyName'))]"
+    },
+    "defaultTelemetry": {
       "condition": "[parameters('enableDefaultTelemetry')]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2021-04-01",
@@ -321,7 +361,7 @@
         }
       }
     },
-    {
+    "workspace": {
       "type": "Microsoft.Synapse/workspaces",
       "apiVersion": "2021-06-01",
       "name": "[parameters('name')]",
@@ -337,7 +377,7 @@
           "filesystem": "[parameters('defaultDataLakeStorageFilesystem')]",
           "createManagedPrivateEndpoint": "[if(parameters('managedVirtualNetwork'), parameters('defaultDataLakeStorageCreateManagedPrivateEndpoint'), null())]"
         },
-        "encryption": "[if(parameters('encryption'), createObject('cmk', createObject('kekIdentity', createObject('userAssignedIdentity', if(not(empty(parameters('cMKUserAssignedIdentityResourceId'))), parameters('cMKUserAssignedIdentityResourceId'), null()), 'useSystemAssignedIdentity', parameters('cMKUseSystemAssignedIdentity')), 'key', createObject('keyVaultUrl', reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', split(parameters('cMKKeyVaultResourceId'), '/')[2], split(parameters('cMKKeyVaultResourceId'), '/')[4]), 'Microsoft.KeyVault/vaults/keys', split(format('{0}/{1}', last(split(parameters('cMKKeyVaultResourceId'), '/')), parameters('cMKKeyName')), '/')[0], split(format('{0}/{1}', last(split(parameters('cMKKeyVaultResourceId'), '/')), parameters('cMKKeyName')), '/')[1]), '2021-10-01').keyUri, 'name', parameters('cMKKeyName')))), null())]",
+        "encryption": "[if(parameters('encryption'), createObject('cmk', createObject('kekIdentity', createObject('userAssignedIdentity', if(not(empty(parameters('cMKUserAssignedIdentityResourceId'))), parameters('cMKUserAssignedIdentityResourceId'), null()), 'useSystemAssignedIdentity', parameters('cMKUseSystemAssignedIdentity')), 'key', createObject('keyVaultUrl', reference('cMKKeyVaultKey').keyUri, 'name', parameters('cMKKeyName')))), null())]",
         "managedResourceGroupName": "[if(not(empty(parameters('managedResourceGroupName'))), parameters('managedResourceGroupName'), null())]",
         "managedVirtualNetwork": "[if(parameters('managedVirtualNetwork'), 'default', null())]",
         "managedVirtualNetworkSettings": "[if(parameters('managedVirtualNetwork'), createObject('allowedAadTenantIdsForLinking', parameters('allowedAadTenantIdsForLinking'), 'linkedAccessCheckOnTargetResource', parameters('linkedAccessCheckOnTargetResource'), 'preventDataExfiltration', parameters('preventDataExfiltration')), null())]",
@@ -346,23 +386,26 @@
         "sqlAdministratorLogin": "[parameters('sqlAdministratorLogin')]",
         "sqlAdministratorLoginPassword": "[if(not(empty(parameters('sqlAdministratorLoginPassword'))), parameters('sqlAdministratorLoginPassword'), null())]",
         "workspaceRepositoryConfiguration": "[parameters('workspaceRepositoryConfiguration')]"
-      }
+      },
+      "dependsOn": [
+        "cMKKeyVaultKey"
+      ]
     },
-    {
-      "condition": "[not(empty(parameters('lock')))]",
+    "workspace_lock": {
+      "condition": "[and(not(empty(coalesce(parameters('lock'), createObject()))), not(equals(tryGet(parameters('lock'), 'kind'), 'None')))]",
       "type": "Microsoft.Authorization/locks",
       "apiVersion": "2020-05-01",
       "scope": "[format('Microsoft.Synapse/workspaces/{0}', parameters('name'))]",
-      "name": "[format('{0}-{1}-lock', parameters('name'), parameters('lock'))]",
+      "name": "[coalesce(tryGet(parameters('lock'), 'name'), format('lock-{0}', parameters('name')))]",
       "properties": {
-        "level": "[parameters('lock')]",
-        "notes": "[if(equals(parameters('lock'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot modify the resource or child resources.')]"
+        "level": "[coalesce(tryGet(parameters('lock'), 'kind'), '')]",
+        "notes": "[if(equals(tryGet(parameters('lock'), 'kind'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot delete or modify the resource or child resources.')]"
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Synapse/workspaces', parameters('name'))]"
+        "workspace"
       ]
     },
-    {
+    "workspace_diagnosticSettings": {
       "condition": "[or(or(or(not(empty(parameters('diagnosticStorageAccountId'))), not(empty(parameters('diagnosticWorkspaceId')))), not(empty(parameters('diagnosticEventHubAuthorizationRuleId')))), not(empty(parameters('diagnosticEventHubName'))))]",
       "type": "Microsoft.Insights/diagnosticSettings",
       "apiVersion": "2021-05-01-preview",
@@ -376,10 +419,10 @@
         "logs": "[variables('diagnosticsLogs')]"
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Synapse/workspaces', parameters('name'))]"
+        "workspace"
       ]
     },
-    {
+    "synapse_integrationRuntimes": {
       "copy": {
         "name": "synapse_integrationRuntimes",
         "count": "[length(parameters('integrationRuntimes'))]"
@@ -506,10 +549,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Synapse/workspaces', parameters('name'))]"
+        "workspace"
       ]
     },
-    {
+    "workspace_cmk_rbac": {
       "condition": "[parameters('encryptionActivateWorkspace')]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
@@ -521,10 +564,10 @@
         "mode": "Incremental",
         "parameters": {
           "workspaceIndentityPrincipalId": {
-            "value": "[reference(resourceId('Microsoft.Synapse/workspaces', parameters('name')), '2021-06-01', 'full').identity.principalId]"
+            "value": "[reference('workspace', '2021-06-01', 'full').identity.principalId]"
           },
           "keyvaultName": "[if(not(empty(parameters('cMKKeyVaultResourceId'))), createObject('value', last(split(parameters('cMKKeyVaultResourceId'), '/'))), createObject('value', ''))]",
-          "usesRbacAuthorization": "[if(not(empty(parameters('cMKKeyVaultResourceId'))), createObject('value', reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', split(parameters('cMKKeyVaultResourceId'), '/')[2], split(parameters('cMKKeyVaultResourceId'), '/')[4]), 'Microsoft.KeyVault/vaults', last(split(parameters('cMKKeyVaultResourceId'), '/'))), '2021-10-01').enableRbacAuthorization), createObject('value', true()))]"
+          "usesRbacAuthorization": "[if(not(empty(parameters('cMKKeyVaultResourceId'))), createObject('value', reference('cMKKeyVault').enableRbacAuthorization), createObject('value', true()))]"
         },
         "template": {
           "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
@@ -586,10 +629,11 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Synapse/workspaces', parameters('name'))]"
+        "cMKKeyVault",
+        "workspace"
       ]
     },
-    {
+    "workspace_key": {
       "condition": "[parameters('encryptionActivateWorkspace')]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
@@ -718,11 +762,11 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Synapse/workspaces', parameters('name'))]",
-        "[resourceId('Microsoft.Resources/deployments', format('{0}-cmk-rbac', parameters('name')))]"
+        "workspace",
+        "workspace_cmk_rbac"
       ]
     },
-    {
+    "workspace_rbac": {
       "copy": {
         "name": "workspace_rbac",
         "count": "[length(parameters('roleAssignments'))]"
@@ -803,10 +847,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Synapse/workspaces', parameters('name'))]"
+        "workspace"
       ]
     },
-    {
+    "workspace_privateEndpoints": {
       "copy": {
         "name": "workspace_privateEndpoints",
         "count": "[length(parameters('privateEndpoints'))]"
@@ -1330,10 +1374,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Synapse/workspaces', parameters('name'))]"
+        "workspace"
       ]
     }
-  ],
+  },
   "outputs": {
     "resourceID": {
       "type": "string",
@@ -1361,21 +1405,21 @@
       "metadata": {
         "description": "The workspace connectivity endpoints."
       },
-      "value": "[reference(resourceId('Microsoft.Synapse/workspaces', parameters('name')), '2021-06-01').connectivityEndpoints]"
+      "value": "[reference('workspace').connectivityEndpoints]"
     },
     "systemAssignedPrincipalId": {
       "type": "string",
       "metadata": {
         "description": "The principal ID of the system assigned identity."
       },
-      "value": "[if(contains(reference(resourceId('Microsoft.Synapse/workspaces', parameters('name')), '2021-06-01', 'full').identity, 'principalId'), reference(resourceId('Microsoft.Synapse/workspaces', parameters('name')), '2021-06-01', 'full').identity.principalId, '')]"
+      "value": "[if(contains(reference('workspace', '2021-06-01', 'full').identity, 'principalId'), reference('workspace', '2021-06-01', 'full').identity.principalId, '')]"
     },
     "location": {
       "type": "string",
       "metadata": {
         "description": "The location the resource was deployed into."
       },
-      "value": "[reference(resourceId('Microsoft.Synapse/workspaces', parameters('name')), '2021-06-01', 'full').location]"
+      "value": "[reference('workspace', '2021-06-01', 'full').location]"
     }
   }
 }
