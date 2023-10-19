@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "2216108787200401845"
+      "templateHash": "11328063440515261641"
     },
     "name": "Event Hub Namespaces",
     "description": "This module deploys an Event Hub Namespace.",
@@ -359,9 +359,9 @@
       "existing": true,
       "type": "Microsoft.KeyVault/vaults/keys",
       "apiVersion": "2023-02-01",
-      "subscriptionId": "[split(parameters('cMKKeyVaultResourceId'), '/')[2]]",
-      "resourceGroup": "[split(parameters('cMKKeyVaultResourceId'), '/')[4]]",
-      "name": "[format('{0}/{1}', last(split(parameters('cMKKeyVaultResourceId'), '/')), parameters('cMKKeyName'))]",
+      "subscriptionId": "[split(if(not(empty(parameters('cMKKeyVaultResourceId'))), parameters('cMKKeyVaultResourceId'), '//'), '/')[2]]",
+      "resourceGroup": "[split(if(not(empty(parameters('cMKKeyVaultResourceId'))), parameters('cMKKeyVaultResourceId'), '////'), '/')[4]]",
+      "name": "[format('{0}/{1}', last(split(if(not(empty(parameters('cMKKeyVaultResourceId'))), parameters('cMKKeyVaultResourceId'), 'dummyVault'), '/')), if(not(empty(parameters('cMKKeyName'))), parameters('cMKKeyName'), 'dummyKey'))]",
       "dependsOn": [
         "cMKKeyVault"
       ]
@@ -370,10 +370,10 @@
       "condition": "[not(empty(parameters('cMKKeyVaultResourceId')))]",
       "existing": true,
       "type": "Microsoft.KeyVault/vaults",
-      "apiVersion": "2023-02-01",
-      "subscriptionId": "[split(parameters('cMKKeyVaultResourceId'), '/')[2]]",
-      "resourceGroup": "[split(parameters('cMKKeyVaultResourceId'), '/')[4]]",
-      "name": "[last(split(parameters('cMKKeyVaultResourceId'), '/'))]"
+      "apiVersion": "2021-10-01",
+      "subscriptionId": "[split(if(not(empty(parameters('cMKKeyVaultResourceId'))), parameters('cMKKeyVaultResourceId'), '//'), '/')[2]]",
+      "resourceGroup": "[split(if(not(empty(parameters('cMKKeyVaultResourceId'))), parameters('cMKKeyVaultResourceId'), '////'), '/')[4]]",
+      "name": "[last(split(if(not(empty(parameters('cMKKeyVaultResourceId'))), parameters('cMKKeyVaultResourceId'), 'dummyVault'), '/'))]"
     },
     "defaultTelemetry": {
       "condition": "[parameters('enableDefaultTelemetry')]",
