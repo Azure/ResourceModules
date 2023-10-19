@@ -32,13 +32,8 @@ param associatedApplicationInsightsResourceId string
 @sys.description('Optional. The resource ID of the associated Container Registry.')
 param associatedContainerRegistryResourceId string = ''
 
-@sys.allowed([
-  ''
-  'CanNotDelete'
-  'ReadOnly'
-])
-@sys.description('Optional. Specify the type of lock.')
-param lock string = ''
+@sys.description('Optional. The lock settings of the service.')
+param lock lockType
 
 @sys.description('Optional. The flag to signal HBI data in the workspace and reduce diagnostic data collected by the service.')
 param hbiWorkspace bool = false
@@ -328,3 +323,15 @@ output principalId string = (!empty(identity) && contains(identity.type, 'System
 
 @sys.description('The location the resource was deployed into.')
 output location string = workspace.location
+
+// =============== //
+//   Definitions   //
+// =============== //
+
+type lockType = {
+  @sys.description('Optional. Specify the name of lock.')
+  name: string?
+
+  @sys.description('Optional. Specify the type of lock.')
+  kind: ('CanNotDelete' | 'ReadOnly' | 'None')?
+}?

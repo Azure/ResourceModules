@@ -154,3 +154,15 @@ output name string = networkManager.name
 
 @sys.description('The location the resource was deployed into.')
 output location string = networkManager.location
+
+// =============== //
+//   Definitions   //
+// =============== //
+
+type lockType = {
+  @sys.description('Optional. Specify the name of lock.')
+  name: string?
+
+  @sys.description('Optional. Specify the type of lock.')
+  kind: ('CanNotDelete' | 'ReadOnly' | 'None')?
+}?

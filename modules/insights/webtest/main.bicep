@@ -142,3 +142,15 @@ output resourceGroupName string = resourceGroup().name
 
 @sys.description('The location the resource was deployed into.')
 output location string = webtest.location
+
+// =============== //
+//   Definitions   //
+// =============== //
+
+type lockType = {
+  @sys.description('Optional. Specify the name of lock.')
+  name: string?
+
+  @sys.description('Optional. Specify the type of lock.')
+  kind: ('CanNotDelete' | 'ReadOnly' | 'None')?
+}?

@@ -36,13 +36,8 @@ param hostingMode string = 'default'
 @description('Optional. Location for all Resources.')
 param location string = resourceGroup().location
 
-@description('Optional. Specify the type of lock.')
-@allowed([
-  ''
-  'CanNotDelete'
-  'ReadOnly'
-])
-param lock string = ''
+@description('Optional. The lock settings of the service.')
+param lock lockType
 
 @description('Optional. Network specific rules that determine how the Azure Cognitive Search service may be reached.')
 param networkRuleSet object = {}
@@ -274,3 +269,15 @@ output resourceGroupName string = resourceGroup().name
 
 @description('The location the resource was deployed into.')
 output location string = searchService.location
+
+// =============== //
+//   Definitions   //
+// =============== //
+
+type lockType = {
+  @description('Optional. Specify the name of lock.')
+  name: string?
+
+  @description('Optional. Specify the type of lock.')
+  kind: ('CanNotDelete' | 'ReadOnly' | 'None')?
+}?
