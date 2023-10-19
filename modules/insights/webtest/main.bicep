@@ -68,13 +68,8 @@ param validationRules object = {}
 @sys.description('Optional. An XML configuration specification for a WebTest.')
 param configuration object = {}
 
-@allowed([
-  ''
-  'CanNotDelete'
-  'ReadOnly'
-])
-@sys.description('Optional. Specify the type of lock.')
-param lock string = ''
+@sys.description('Optional. The lock settings of the service.')
+param lock lockType
 
 @sys.description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
