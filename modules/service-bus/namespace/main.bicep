@@ -194,12 +194,12 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
 
 resource cMKKeyVault 'Microsoft.KeyVault/vaults@2021-10-01' existing = if (!empty(cMKKeyVaultResourceId)) {
   name: last(split(cMKKeyVaultResourceId, '/'))!
-  scope: resourceGroup(split(cMKKeyVaultResourceId, '/')[2], split(cMKKeyVaultResourceId, '/')[4])
+  scope: resourceGroup(split((cMKKeyVaultResourceId ?? '//'), '/')[2], split((cMKKeyVaultResourceId ?? '////'), '/')[4])
 }
 
 resource cMKKeyVaultKey 'Microsoft.KeyVault/vaults/keys@2021-10-01' existing = if (!empty(cMKKeyVaultResourceId) && !empty(cMKKeyName)) {
   name: '${last(split(cMKKeyVaultResourceId, '/'))}/${cMKKeyName}'!
-  scope: resourceGroup(split(cMKKeyVaultResourceId, '/')[2], split(cMKKeyVaultResourceId, '/')[4])
+  scope: resourceGroup(split((cMKKeyVaultResourceId ?? '//'), '/')[2], split((cMKKeyVaultResourceId ?? '////'), '/')[4])
 }
 
 resource serviceBusNamespace 'Microsoft.ServiceBus/namespaces@2022-10-01-preview' = {
