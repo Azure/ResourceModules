@@ -32,10 +32,13 @@ The following section provides usage examples for the module, which were used to
 
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/healthcare-apis.workspace:1.0.0`.
 
-- [Common](#example-1-common)
+- [Using large parameter set](#example-1-using-large-parameter-set)
 - [Using only defaults](#example-2-using-only-defaults)
 
-### Example 1: _Common_
+### Example 1: _Using large parameter set_
+
+This instance deploys the module with most of its features enabled.
+
 
 <details>
 
@@ -120,7 +123,10 @@ module workspace 'br:bicep/modules/healthcare-apis.workspace:1.0.0' = {
       }
     ]
     location: '<location>'
-    lock: ''
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     publicNetworkAccess: 'Enabled'
     tags: {
       Environment: 'Non-Prod'
@@ -229,7 +235,10 @@ module workspace 'br:bicep/modules/healthcare-apis.workspace:1.0.0' = {
       "value": "<location>"
     },
     "lock": {
-      "value": ""
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
     },
     "publicNetworkAccess": {
       "value": "Enabled"
