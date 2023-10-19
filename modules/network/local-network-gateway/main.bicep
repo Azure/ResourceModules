@@ -105,9 +105,9 @@ output name string = localNetworkGateway.name
 @description('The location the resource was deployed into.')
 output location string = localNetworkGateway.location
 
-// ================ //
-// Definitions //
-// ================ //
+// =============== //
+//   Definitions   //
+// =============== //
 
 type lockType = {
   @description('Optional. Specify the name of lock.')

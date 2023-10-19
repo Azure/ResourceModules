@@ -95,9 +95,9 @@ output resourceGroupName string = resourceGroup().name
 @description('The location the resource was deployed into.')
 output location string = userMsi.location
 
-// ================ //
-// Definitions //
-// ================ //
+// =============== //
+//   Definitions   //
+// =============== //
 
 type lockType = {
   @description('Optional. Specify the name of lock.')

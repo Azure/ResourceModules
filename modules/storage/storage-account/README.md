@@ -211,11 +211,9 @@ module storageAccount 'br:bicep/modules/storage.storage-account:1.0.0' = {
     }
     privateEndpoints: [
       {
-        privateDnsZoneGroup: {
-          privateDNSResourceIds: [
-            '<privateDNSZoneResourceId>'
-          ]
-        }
+        privateDnsZoneResourceIds: [
+          '<privateDNSZoneResourceId>'
+        ]
         service: 'blob'
         subnetResourceId: '<subnetResourceId>'
         tags: {
@@ -483,11 +481,9 @@ module storageAccount 'br:bicep/modules/storage.storage-account:1.0.0' = {
     "privateEndpoints": {
       "value": [
         {
-          "privateDnsZoneGroup": {
-            "privateDNSResourceIds": [
-              "<privateDNSZoneResourceId>"
-            ]
-          },
+          "privateDnsZoneResourceIds": [
+            "<privateDNSZoneResourceId>"
+          ],
           "service": "blob",
           "subnetResourceId": "<subnetResourceId>",
           "tags": {
@@ -623,11 +619,9 @@ module storageAccount 'br:bicep/modules/storage.storage-account:1.0.0' = {
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     privateEndpoints: [
       {
-        privateDnsZoneGroup: {
-          privateDNSResourceIds: [
-            '<privateDNSZoneResourceId>'
-          ]
-        }
+        privateDnsZoneResourceIds: [
+          '<privateDNSZoneResourceId>'
+        ]
         service: 'blob'
         subnetResourceId: '<subnetResourceId>'
         tags: {
@@ -710,11 +704,9 @@ module storageAccount 'br:bicep/modules/storage.storage-account:1.0.0' = {
     "privateEndpoints": {
       "value": [
         {
-          "privateDnsZoneGroup": {
-            "privateDNSResourceIds": [
-              "<privateDNSZoneResourceId>"
-            ]
-          },
+          "privateDnsZoneResourceIds": [
+            "<privateDNSZoneResourceId>"
+          ],
           "service": "blob",
           "subnetResourceId": "<subnetResourceId>",
           "tags": {

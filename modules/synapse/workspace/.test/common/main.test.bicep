@@ -89,7 +89,7 @@ module testDeployment '../../main.bicep' = {
         service: 'SQL'
         privateDnsZoneGroup: {
           privateDNSResourceIds: [
-            nestedDependencies.outputs.privateDNSResourceId
+            nestedDependencies.outputs.privateDNSZoneResourceId
           ]
         }
         tags: {

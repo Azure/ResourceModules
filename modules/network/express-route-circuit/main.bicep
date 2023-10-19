@@ -233,9 +233,9 @@ output serviceKey string = reference(expressRouteCircuits.id, '2021-02-01').serv
 @description('The location the resource was deployed into.')
 output location string = expressRouteCircuits.location
 
-// ================ //
-// Definitions //
-// ================ //
+// =============== //
+//   Definitions   //
+// =============== //
 
 type lockType = {
   @description('Optional. Specify the name of lock.')

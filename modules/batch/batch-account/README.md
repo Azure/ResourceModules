@@ -62,11 +62,9 @@ module batchAccount 'br:bicep/modules/batch.batch-account:1.0.0' = {
     poolAllocationMode: 'BatchService'
     privateEndpoints: [
       {
-        privateDnsZoneGroup: {
-          privateDNSResourceIds: [
-            '<privateDNSZoneResourceId>'
-          ]
-        }
+        privateDnsZoneResourceIds: [
+          '<privateDNSZoneResourceId>'
+        ]
         roleAssignments: [
           {
             principalIds: [
@@ -141,11 +139,9 @@ module batchAccount 'br:bicep/modules/batch.batch-account:1.0.0' = {
     "privateEndpoints": {
       "value": [
         {
-          "privateDnsZoneGroup": {
-            "privateDNSResourceIds": [
-              "<privateDNSZoneResourceId>"
-            ]
-          },
+          "privateDnsZoneResourceIds": [
+            "<privateDNSZoneResourceId>"
+          ],
           "roleAssignments": [
             {
               "principalIds": [
@@ -208,11 +204,9 @@ module batchAccount 'br:bicep/modules/batch.batch-account:1.0.0' = {
     poolAllocationMode: 'BatchService'
     privateEndpoints: [
       {
-        privateDnsZoneGroup: {
-          privateDNSResourceIds: [
-            '<privateDNSZoneResourceId>'
-          ]
-        }
+        privateDnsZoneResourceIds: [
+          '<privateDNSZoneResourceId>'
+        ]
         service: 'batchAccount'
         subnetResourceId: '<subnetResourceId>'
         tags: {
@@ -271,11 +265,9 @@ module batchAccount 'br:bicep/modules/batch.batch-account:1.0.0' = {
     "privateEndpoints": {
       "value": [
         {
-          "privateDnsZoneGroup": {
-            "privateDNSResourceIds": [
-              "<privateDNSZoneResourceId>"
-            ]
-          },
+          "privateDnsZoneResourceIds": [
+            "<privateDNSZoneResourceId>"
+          ],
           "service": "batchAccount",
           "subnetResourceId": "<subnetResourceId>",
           "tags": {

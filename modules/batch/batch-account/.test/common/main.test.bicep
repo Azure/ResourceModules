@@ -82,11 +82,9 @@ module testDeployment '../../main.bicep' = {
       {
         service: 'batchAccount'
         subnetResourceId: nestedDependencies.outputs.subnetResourceId
-        privateDnsZoneGroup: {
-          privateDNSResourceIds: [
-            nestedDependencies.outputs.privateDNSZoneResourceId
-          ]
-        }
+        privateDnsZoneResourceIds: [
+          nestedDependencies.outputs.privateDNSZoneResourceId
+        ]
         roleAssignments: [
           {
             roleDefinitionIdOrName: 'Reader'

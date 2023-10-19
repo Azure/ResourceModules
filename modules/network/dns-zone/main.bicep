@@ -242,9 +242,9 @@ output resourceId string = dnsZone.id
 @description('The location the resource was deployed into.')
 output location string = dnsZone.location
 
-// ================ //
-// Definitions //
-// ================ //
+// =============== //
+//   Definitions   //
+// =============== //
 
 type lockType = {
   @description('Optional. Specify the name of lock.')

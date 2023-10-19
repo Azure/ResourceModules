@@ -132,9 +132,9 @@ output resourceId string = wcfRelay.id
 @description('The resource group of the deployed wcf relay.')
 output resourceGroupName string = resourceGroup().name
 
-// ================ //
-// Definitions //
-// ================ //
+// =============== //
+//   Definitions   //
+// =============== //
 
 type lockType = {
   @description('Optional. Specify the name of lock.')

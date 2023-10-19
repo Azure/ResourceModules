@@ -92,7 +92,7 @@ module testDeployment '../../main.bicep' = {
     skuName: 'Standard_D2ds_v4'
     tier: 'GeneralPurpose'
     delegatedSubnetResourceId: nestedDependencies.outputs.subnetResourceId
-    privateDnsZoneResourceId: nestedDependencies.outputs.privateDNSResourceId
+    privateDnsZoneResourceId: nestedDependencies.outputs.privateDNSZoneResourceId
     storageAutoIoScaling: 'Enabled'
     storageSizeGB: 64
     storageIOPS: 400

@@ -190,9 +190,9 @@ output location string = iotConnector.location
 @description('The name of the medtech workspace.')
 output workspaceName string = workspace.name
 
-// ================ //
-// Definitions //
-// ================ //
+// =============== //
+//   Definitions   //
+// =============== //
 
 type lockType = {
   @description('Optional. Specify the name of lock.')

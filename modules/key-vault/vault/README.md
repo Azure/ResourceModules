@@ -295,7 +295,7 @@ module vault 'br:bicep/modules/key-vault.vault:1.0.0' = {
       {
         privateDnsZoneGroup: {
           privateDNSResourceIds: [
-            '<privateDNSResourceId>'
+            '<privateDNSZoneResourceId>'
           ]
         }
         service: 'vault'
@@ -448,7 +448,7 @@ module vault 'br:bicep/modules/key-vault.vault:1.0.0' = {
         {
           "privateDnsZoneGroup": {
             "privateDNSResourceIds": [
-              "<privateDNSResourceId>"
+              "<privateDNSZoneResourceId>"
             ]
           },
           "service": "vault",
@@ -602,7 +602,7 @@ module vault 'br:bicep/modules/key-vault.vault:1.0.0' = {
       {
         privateDnsZoneGroup: {
           privateDNSResourceIds: [
-            '<privateDNSResourceId>'
+            '<privateDNSZoneResourceId>'
           ]
           privateEndpointName: 'dep-pe-kvvpe'
         }
@@ -684,7 +684,7 @@ module vault 'br:bicep/modules/key-vault.vault:1.0.0' = {
         {
           "privateDnsZoneGroup": {
             "privateDNSResourceIds": [
-              "<privateDNSResourceId>"
+              "<privateDNSZoneResourceId>"
             ],
             "privateEndpointName": "dep-pe-kvvpe"
           },

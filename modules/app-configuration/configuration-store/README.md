@@ -416,7 +416,7 @@ module configurationStore 'br:bicep/modules/app-configuration.configuration-stor
       {
         privateDnsZoneGroup: {
           privateDNSResourceIds: [
-            '<privateDNSResourceId>'
+            '<privateDNSZoneResourceId>'
           ]
         }
         service: 'configurationStores'
@@ -472,7 +472,7 @@ module configurationStore 'br:bicep/modules/app-configuration.configuration-stor
         {
           "privateDnsZoneGroup": {
             "privateDNSResourceIds": [
-              "<privateDNSResourceId>"
+              "<privateDNSZoneResourceId>"
             ]
           },
           "service": "configurationStores",

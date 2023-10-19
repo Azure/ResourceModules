@@ -276,9 +276,9 @@ output location string = fhir.location
 @description('The name of the fhir workspace.')
 output workspaceName string = workspace.name
 
-// ================ //
-// Definitions //
-// ================ //
+// =============== //
+//   Definitions   //
+// =============== //
 
 type lockType = {
   @description('Optional. Specify the name of lock.')

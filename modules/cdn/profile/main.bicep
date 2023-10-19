@@ -212,9 +212,9 @@ output profileType string = profile.type
 @description('The location the resource was deployed into.')
 output location string = profile.location
 
-// ================ //
-// Definitions //
-// ================ //
+// =============== //
+//   Definitions   //
+// =============== //
 
 type lockType = {
   @description('Optional. Specify the name of lock.')

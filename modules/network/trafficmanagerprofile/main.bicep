@@ -187,9 +187,9 @@ output resourceGroupName string = resourceGroup().name
 @description('The name of the traffic manager was deployed into.')
 output name string = trafficManagerProfile.name
 
-// ================ //
-// Definitions //
-// ================ //
+// =============== //
+//   Definitions   //
+// =============== //
 
 type lockType = {
   @description('Optional. Specify the name of lock.')

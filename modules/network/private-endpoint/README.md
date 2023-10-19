@@ -51,10 +51,8 @@ module privateEndpoint 'br:bicep/modules/network.private-endpoint:1.0.0' = {
     serviceResourceId: '<serviceResourceId>'
     subnetResourceId: '<subnetResourceId>'
     // Non-required parameters
-    applicationSecurityGroups: [
-      {
-        id: '<id>'
-      }
+    applicationSecurityGroupResourceIds: [
+      '<applicationSecurityGroupResourceId>'
     ]
     customNetworkInterfaceName: 'npecom001nic'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
@@ -72,16 +70,12 @@ module privateEndpoint 'br:bicep/modules/network.private-endpoint:1.0.0' = {
       kind: 'CanNotDelete'
       name: 'myCustomLockName'
     }
-    privateDnsZoneGroup: {
-      privateDNSResourceIds: [
-        '<privateDNSZoneResourceId>'
-      ]
-    }
+    privateDnsZoneResourceIds: [
+      '<privateDNSZoneResourceId>'
+    ]
     roleAssignments: [
       {
-        principalIds: [
-          '<managedIdentityPrincipalId>'
-        ]
+        principalId: '<principalId>'
         principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
@@ -123,11 +117,9 @@ module privateEndpoint 'br:bicep/modules/network.private-endpoint:1.0.0' = {
       "value": "<subnetResourceId>"
     },
     // Non-required parameters
-    "applicationSecurityGroups": {
+    "applicationSecurityGroupResourceIds": {
       "value": [
-        {
-          "id": "<id>"
-        }
+        "<applicationSecurityGroupResourceId>"
       ]
     },
     "customNetworkInterfaceName": {
@@ -149,21 +141,19 @@ module privateEndpoint 'br:bicep/modules/network.private-endpoint:1.0.0' = {
       ]
     },
     "lock": {
-      "value": "CanNotDelete"
-    },
-    "privateDnsZoneGroup": {
       "value": {
-        "privateDNSResourceIds": [
-          "<privateDNSZoneResourceId>"
-        ]
+        "kind": "CanNotDelete"
       }
+    },
+    "privateDnsZoneResourceIds": {
+      "value": [
+        "<privateDNSZoneResourceId>"
+      ]
     },
     "roleAssignments": {
       "value": [
         {
-          "principalIds": [
-            "<managedIdentityPrincipalId>"
-          ],
+          "principalId": "<principalId>",
           "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
@@ -263,42 +253,40 @@ module privateEndpoint 'br:bicep/modules/network.private-endpoint:1.0.0' = {
 
 | Parameter | Type | Description |
 | :-- | :-- | :-- |
-| [`applicationSecurityGroups`](#parameter-applicationsecuritygroups) | array | Application security groups in which the private endpoint IP configuration is included. |
+| [`applicationSecurityGroupResourceIds`](#parameter-applicationsecuritygroupresourceids) | array | Application security groups in which the private endpoint IP configuration is included. |
 | [`customDnsConfigs`](#parameter-customdnsconfigs) | array | Custom DNS configurations. |
 | [`customNetworkInterfaceName`](#parameter-customnetworkinterfacename) | string | The custom name of the network interface attached to the private endpoint. |
-| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable/Disable usage telemetry for module. |
 | [`ipConfigurations`](#parameter-ipconfigurations) | array | A list of IP configurations of the private endpoint. This will be used to map to the First Party Service endpoints. |
 | [`location`](#parameter-location) | string | Location for all Resources. |
-| [`lock`](#parameter-lock) | string | Specify the type of lock. |
+| [`lock`](#parameter-lock) | object | The lock settings of the service. |
 | [`manualPrivateLinkServiceConnections`](#parameter-manualprivatelinkserviceconnections) | array | Manual PrivateLink Service Connections. |
-| [`privateDnsZoneGroup`](#parameter-privatednszonegroup) | object | The private DNS zone group configuration used to associate the private endpoint with one or multiple private DNS zones. A DNS zone group can support up to 5 DNS zones. |
+| [`privateDnsZoneGroupName`](#parameter-privatednszonegroupname) | string | The name of the private DNS zone group to create if `privateDnsZoneResourceIds` were provided. |
+| [`privateDnsZoneResourceIds`](#parameter-privatednszoneresourceids) | array | The private DNS zone groups to associate the private endpoint. A DNS zone group can support up to 5 DNS zones. |
 | [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | [`tags`](#parameter-tags) | object | Tags to be applied on all resources/resource groups in this deployment. |
 
-### Parameter: `applicationSecurityGroups`
+### Parameter: `applicationSecurityGroupResourceIds`
 
 Application security groups in which the private endpoint IP configuration is included.
 - Required: No
 - Type: array
-- Default: `[]`
 
 ### Parameter: `customDnsConfigs`
 
 Custom DNS configurations.
 - Required: No
 - Type: array
-- Default: `[]`
 
 ### Parameter: `customNetworkInterfaceName`
 
 The custom name of the network interface attached to the private endpoint.
 - Required: No
 - Type: string
-- Default: `''`
 
 ### Parameter: `enableDefaultTelemetry`
 
-Enable telemetry via a Globally Unique Identifier (GUID).
+Enable/Disable usage telemetry for module.
 - Required: No
 - Type: bool
 - Default: `True`
@@ -314,7 +302,6 @@ Subtype(s) of the connection to be created. The allowed values depend on the typ
 A list of IP configurations of the private endpoint. This will be used to map to the First Party Service endpoints.
 - Required: No
 - Type: array
-- Default: `[]`
 
 ### Parameter: `location`
 
@@ -325,18 +312,36 @@ Location for all Resources.
 
 ### Parameter: `lock`
 
-Specify the type of lock.
+The lock settings of the service.
+- Required: No
+- Type: object
+
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`kind`](#parameter-lockkind) | No | string | Optional. Specify the type of lock. |
+| [`name`](#parameter-lockname) | No | string | Optional. Specify the name of lock. |
+
+### Parameter: `lock.kind`
+
+Optional. Specify the type of lock.
+
 - Required: No
 - Type: string
-- Default: `''`
-- Allowed: `['', CanNotDelete, ReadOnly]`
+- Allowed: `[CanNotDelete, None, ReadOnly]`
+
+### Parameter: `lock.name`
+
+Optional. Specify the name of lock.
+
+- Required: No
+- Type: string
 
 ### Parameter: `manualPrivateLinkServiceConnections`
 
 Manual PrivateLink Service Connections.
 - Required: No
 - Type: array
-- Default: `[]`
 
 ### Parameter: `name`
 
@@ -344,19 +349,85 @@ Name of the private endpoint resource to create.
 - Required: Yes
 - Type: string
 
-### Parameter: `privateDnsZoneGroup`
+### Parameter: `privateDnsZoneGroupName`
 
-The private DNS zone group configuration used to associate the private endpoint with one or multiple private DNS zones. A DNS zone group can support up to 5 DNS zones.
+The name of the private DNS zone group to create if `privateDnsZoneResourceIds` were provided.
 - Required: No
-- Type: object
-- Default: `{object}`
+- Type: string
+
+### Parameter: `privateDnsZoneResourceIds`
+
+The private DNS zone groups to associate the private endpoint. A DNS zone group can support up to 5 DNS zones.
+- Required: No
+- Type: array
 
 ### Parameter: `roleAssignments`
 
 Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
 - Required: No
 - Type: array
-- Default: `[]`
+
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`condition`](#parameter-roleassignmentscondition) | No | string | Optional. The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container" |
+| [`conditionVersion`](#parameter-roleassignmentsconditionversion) | No | string | Optional. Version of the condition. |
+| [`delegatedManagedIdentityResourceId`](#parameter-roleassignmentsdelegatedmanagedidentityresourceid) | No | string | Optional. The Resource Id of the delegated managed identity resource. |
+| [`description`](#parameter-roleassignmentsdescription) | No | string | Optional. The description of the role assignment. |
+| [`principalId`](#parameter-roleassignmentsprincipalid) | Yes | string | Required. The principal ID of the principal (user/group/identity) to assign the role to. |
+| [`principalType`](#parameter-roleassignmentsprincipaltype) | No | string | Optional. The principal type of the assigned principal ID. |
+| [`roleDefinitionIdOrName`](#parameter-roleassignmentsroledefinitionidorname) | Yes | string | Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead. |
+
+### Parameter: `roleAssignments.condition`
+
+Optional. The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container"
+
+- Required: No
+- Type: string
+
+### Parameter: `roleAssignments.conditionVersion`
+
+Optional. Version of the condition.
+
+- Required: No
+- Type: string
+- Allowed: `[2.0]`
+
+### Parameter: `roleAssignments.delegatedManagedIdentityResourceId`
+
+Optional. The Resource Id of the delegated managed identity resource.
+
+- Required: No
+- Type: string
+
+### Parameter: `roleAssignments.description`
+
+Optional. The description of the role assignment.
+
+- Required: No
+- Type: string
+
+### Parameter: `roleAssignments.principalId`
+
+Required. The principal ID of the principal (user/group/identity) to assign the role to.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `roleAssignments.principalType`
+
+Optional. The principal type of the assigned principal ID.
+
+- Required: No
+- Type: string
+- Allowed: `[Device, ForeignGroup, Group, ServicePrincipal, User]`
+
+### Parameter: `roleAssignments.roleDefinitionIdOrName`
+
+Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead.
+
+- Required: Yes
+- Type: string
 
 ### Parameter: `serviceResourceId`
 
@@ -375,7 +446,6 @@ Resource ID of the subnet where the endpoint needs to be created.
 Tags to be applied on all resources/resource groups in this deployment.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 
 ## Outputs

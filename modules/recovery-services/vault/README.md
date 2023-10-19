@@ -318,7 +318,7 @@ module vault 'br:bicep/modules/recovery-services.vault:1.0.0' = {
       {
         privateDnsZoneGroup: {
           privateDNSResourceIds: [
-            '<privateDNSResourceId>'
+            '<privateDNSZoneResourceId>'
           ]
         }
         service: 'AzureSiteRecovery'
@@ -654,7 +654,7 @@ module vault 'br:bicep/modules/recovery-services.vault:1.0.0' = {
         {
           "privateDnsZoneGroup": {
             "privateDNSResourceIds": [
-              "<privateDNSResourceId>"
+              "<privateDNSZoneResourceId>"
             ]
           },
           "service": "AzureSiteRecovery",

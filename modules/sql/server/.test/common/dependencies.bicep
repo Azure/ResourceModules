@@ -99,7 +99,7 @@ output privateEndpointSubnetResourceId string = virtualNetwork.properties.subnet
 output serviceEndpointSubnetResourceId string = virtualNetwork.properties.subnets[1].id
 
 @description('The resource ID of the created Private DNS Zone.')
-output privateDNSResourceId string = privateDNSZone.id
+output privateDNSZoneResourceId string = privateDNSZone.id
 
 @description('The URL of the created Key Vault Encryption Key.')
 output keyVaultEncryptionKeyUrl string = keyVault::key.properties.keyUriWithVersion

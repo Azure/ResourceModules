@@ -174,9 +174,9 @@ output resourceId string = frontDoor.id
 @description('The resource group the front door was deployed into.')
 output resourceGroupName string = resourceGroup().name
 
-// ================ //
-// Definitions //
-// ================ //
+// =============== //
+//   Definitions   //
+// =============== //
 
 type lockType = {
   @description('Optional. Specify the name of lock.')

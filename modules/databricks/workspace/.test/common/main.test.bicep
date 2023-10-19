@@ -123,7 +123,7 @@ module testDeployment '../../main.bicep' = {
       {
         privateDnsZoneGroup: {
           privateDNSResourceIds: [
-            nestedDependencies.outputs.privateDNSResourceId
+            nestedDependencies.outputs.privateDNSZoneResourceId
           ]
         }
         service: 'databricks_ui_api'

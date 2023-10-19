@@ -166,9 +166,9 @@ output systemAssignedPrincipalId string = systemAssignedIdentity && contains(dic
 @description('The location the resource was deployed into.')
 output location string = dicom.location
 
-// ================ //
-// Definitions //
-// ================ //
+// =============== //
+//   Definitions   //
+// =============== //
 
 type lockType = {
   @description('Optional. Specify the name of lock.')

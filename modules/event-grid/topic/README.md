@@ -91,11 +91,9 @@ module topic 'br:bicep/modules/event-grid.topic:1.0.0' = {
     }
     privateEndpoints: [
       {
-        privateDnsZoneGroup: {
-          privateDNSResourceIds: [
-            '<privateDNSZoneResourceId>'
-          ]
-        }
+        privateDnsZoneResourceIds: [
+          '<privateDNSZoneResourceId>'
+        ]
         service: 'topic'
         subnetResourceId: '<subnetResourceId>'
         tags: {
@@ -195,11 +193,9 @@ module topic 'br:bicep/modules/event-grid.topic:1.0.0' = {
     "privateEndpoints": {
       "value": [
         {
-          "privateDnsZoneGroup": {
-            "privateDNSResourceIds": [
-              "<privateDNSZoneResourceId>"
-            ]
-          },
+          "privateDnsZoneResourceIds": [
+            "<privateDNSZoneResourceId>"
+          ],
           "service": "topic",
           "subnetResourceId": "<subnetResourceId>",
           "tags": {
@@ -299,11 +295,9 @@ module topic 'br:bicep/modules/event-grid.topic:1.0.0' = {
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     privateEndpoints: [
       {
-        privateDnsZoneGroup: {
-          privateDNSResourceIds: [
-            '<privateDNSZoneResourceId>'
-          ]
-        }
+        privateDnsZoneResourceIds: [
+          '<privateDNSZoneResourceId>'
+        ]
         service: 'topic'
         subnetResourceId: '<subnetResourceId>'
         tags: {
@@ -345,11 +339,9 @@ module topic 'br:bicep/modules/event-grid.topic:1.0.0' = {
     "privateEndpoints": {
       "value": [
         {
-          "privateDnsZoneGroup": {
-            "privateDNSResourceIds": [
-              "<privateDNSZoneResourceId>"
-            ]
-          },
+          "privateDnsZoneResourceIds": [
+            "<privateDNSZoneResourceId>"
+          ],
           "service": "topic",
           "subnetResourceId": "<subnetResourceId>",
           "tags": {

@@ -158,9 +158,9 @@ output name string = managedEnvironment.name
 @description('The resource ID of the Managed Environment.')
 output resourceId string = managedEnvironment.id
 
-// ================ //
-// Definitions //
-// ================ //
+// =============== //
+//   Definitions   //
+// =============== //
 
 type lockType = {
   @description('Optional. Specify the name of lock.')

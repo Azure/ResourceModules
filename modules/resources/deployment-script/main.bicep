@@ -150,9 +150,9 @@ output location string = deploymentScript.location
 @description('The output of the deployment script.')
 output outputs object = contains(deploymentScript.properties, 'outputs') ? deploymentScript.properties.outputs : {}
 
-// ================ //
-// Definitions //
-// ================ //
+// =============== //
+//   Definitions   //
+// =============== //
 
 type lockType = {
   @description('Optional. Specify the name of lock.')

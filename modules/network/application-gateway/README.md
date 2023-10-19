@@ -230,11 +230,9 @@ module applicationGateway 'br:bicep/modules/network.application-gateway:1.0.0' =
     }
     privateEndpoints: [
       {
-        privateDnsZoneGroup: {
-          privateDNSResourceIds: [
-            '<privateDNSZoneResourceId>'
-          ]
-        }
+        privateDnsZoneResourceIds: [
+          '<privateDNSZoneResourceId>'
+        ]
         service: 'public'
         subnetResourceId: '<subnetResourceId>'
         tags: {
@@ -690,11 +688,9 @@ module applicationGateway 'br:bicep/modules/network.application-gateway:1.0.0' =
     "privateEndpoints": {
       "value": [
         {
-          "privateDnsZoneGroup": {
-            "privateDNSResourceIds": [
-              "<privateDNSZoneResourceId>"
-            ]
-          },
+          "privateDnsZoneResourceIds": [
+            "<privateDNSZoneResourceId>"
+          ],
           "service": "public",
           "subnetResourceId": "<subnetResourceId>",
           "tags": {

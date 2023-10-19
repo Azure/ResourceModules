@@ -214,9 +214,9 @@ output ipAddress string = contains(publicIpAddress.properties, 'ipAddress') ? pu
 @description('The location the resource was deployed into.')
 output location string = publicIpAddress.location
 
-// ================ //
-// Definitions //
-// ================ //
+// =============== //
+//   Definitions   //
+// =============== //
 
 type lockType = {
   @description('Optional. Specify the name of lock.')

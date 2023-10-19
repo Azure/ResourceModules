@@ -395,9 +395,9 @@ output systemAssignedPrincipalId string = systemAssignedIdentity && contains(man
 @description('The location the resource was deployed into.')
 output location string = managedInstance.location
 
-// ================ //
-// Definitions //
-// ================ //
+// =============== //
+//   Definitions   //
+// =============== //
 
 type lockType = {
   @description('Optional. Specify the name of lock.')

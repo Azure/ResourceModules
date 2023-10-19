@@ -83,7 +83,7 @@ module workspace 'br:bicep/modules/databricks.workspace:1.0.0' = {
       {
         privateDnsZoneGroup: {
           privateDNSResourceIds: [
-            '<privateDNSResourceId>'
+            '<privateDNSZoneResourceId>'
           ]
         }
         service: 'databricks_ui_api'
@@ -217,7 +217,7 @@ module workspace 'br:bicep/modules/databricks.workspace:1.0.0' = {
         {
           "privateDnsZoneGroup": {
             "privateDNSResourceIds": [
-              "<privateDNSResourceId>"
+              "<privateDNSZoneResourceId>"
             ]
           },
           "service": "databricks_ui_api",

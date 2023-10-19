@@ -265,9 +265,9 @@ output backendpools array = loadBalancer.properties.backendAddressPools
 @description('The location the resource was deployed into.')
 output location string = loadBalancer.location
 
-// ================ //
-// Definitions //
-// ================ //
+// =============== //
+//   Definitions   //
+// =============== //
 
 type lockType = {
   @description('Optional. Specify the name of lock.')
