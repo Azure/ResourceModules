@@ -1,15 +1,43 @@
 {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "languageVersion": "2.0",
   "contentVersion": "1.0.0.0",
   "metadata": {
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "15558179031727764706"
+      "templateHash": "5461425938112973059"
     },
     "name": "Purview Accounts",
     "description": "This module deploys a Purview Account.",
     "owner": "Azure/module-maintainers"
+  },
+  "definitions": {
+    "lockType": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Specify the name of lock."
+          }
+        },
+        "kind": {
+          "type": "string",
+          "allowedValues": [
+            "CanNotDelete",
+            "None",
+            "ReadOnly"
+          ],
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Specify the type of lock."
+          }
+        }
+      },
+      "nullable": true
+    }
   },
   "parameters": {
     "name": {
@@ -173,15 +201,9 @@
       }
     },
     "lock": {
-      "type": "string",
-      "defaultValue": "",
-      "allowedValues": [
-        "",
-        "CanNotDelete",
-        "ReadOnly"
-      ],
+      "$ref": "#/definitions/lockType",
       "metadata": {
-        "description": "Optional. Specify the type of lock."
+        "description": "Optional. The lock settings of the service."
       }
     }
   },
@@ -210,8 +232,8 @@
     "identity": "[if(not(equals(variables('identityType'), 'None')), createObject('type', variables('identityType'), 'userAssignedIdentities', if(not(empty(parameters('userAssignedIdentities'))), parameters('userAssignedIdentities'), null())), null())]",
     "enableReferencedModulesTelemetry": false
   },
-  "resources": [
-    {
+  "resources": {
+    "defaultTelemetry": {
       "condition": "[parameters('enableDefaultTelemetry')]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2021-04-01",
@@ -225,7 +247,7 @@
         }
       }
     },
-    {
+    "account": {
       "type": "Microsoft.Purview/accounts",
       "apiVersion": "2021-07-01",
       "name": "[parameters('name')]",
@@ -238,21 +260,21 @@
         "publicNetworkAccess": "[parameters('publicNetworkAccess')]"
       }
     },
-    {
-      "condition": "[not(empty(parameters('lock')))]",
+    "account_lock": {
+      "condition": "[and(not(empty(coalesce(parameters('lock'), createObject()))), not(equals(tryGet(parameters('lock'), 'kind'), 'None')))]",
       "type": "Microsoft.Authorization/locks",
       "apiVersion": "2020-05-01",
       "scope": "[format('Microsoft.Purview/accounts/{0}', parameters('name'))]",
-      "name": "[format('{0}-{1}-lock', parameters('name'), parameters('lock'))]",
+      "name": "[coalesce(tryGet(parameters('lock'), 'name'), format('lock-{0}', parameters('name')))]",
       "properties": {
-        "level": "[parameters('lock')]",
-        "notes": "[if(equals(parameters('lock'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot modify the resource or child resources.')]"
+        "level": "[coalesce(tryGet(parameters('lock'), 'kind'), '')]",
+        "notes": "[if(equals(tryGet(parameters('lock'), 'kind'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot delete or modify the resource or child resources.')]"
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Purview/accounts', parameters('name'))]"
+        "account"
       ]
     },
-    {
+    "account_diagnosticSettings": {
       "condition": "[or(or(or(not(empty(parameters('diagnosticStorageAccountId'))), not(empty(parameters('diagnosticWorkspaceId')))), not(empty(parameters('diagnosticEventHubAuthorizationRuleId')))), not(empty(parameters('diagnosticEventHubName'))))]",
       "type": "Microsoft.Insights/diagnosticSettings",
       "apiVersion": "2021-05-01-preview",
@@ -267,10 +289,10 @@
         "logs": "[variables('diagnosticsLogs')]"
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Purview/accounts', parameters('name'))]"
+        "account"
       ]
     },
-    {
+    "account_privateEndpoints": {
       "copy": {
         "name": "account_privateEndpoints",
         "count": "[length(parameters('accountPrivateEndpoints'))]"
@@ -794,10 +816,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Purview/accounts', parameters('name'))]"
+        "account"
       ]
     },
-    {
+    "portal_privateEndpoints": {
       "copy": {
         "name": "portal_privateEndpoints",
         "count": "[length(parameters('portalPrivateEndpoints'))]"
@@ -1321,10 +1343,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Purview/accounts', parameters('name'))]"
+        "account"
       ]
     },
-    {
+    "blob_privateEndpoints": {
       "copy": {
         "name": "blob_privateEndpoints",
         "count": "[length(parameters('storageBlobPrivateEndpoints'))]"
@@ -1345,7 +1367,7 @@
           },
           "name": "[if(contains(parameters('storageBlobPrivateEndpoints')[copyIndex()], 'name'), createObject('value', parameters('storageBlobPrivateEndpoints')[copyIndex()].name), createObject('value', format('pe-{0}-{1}-{2}', last(split(resourceId('Microsoft.Purview/accounts', parameters('name')), '/')), parameters('storageBlobPrivateEndpoints')[copyIndex()].service, copyIndex())))]",
           "serviceResourceId": {
-            "value": "[reference(resourceId('Microsoft.Purview/accounts', parameters('name')), '2021-07-01').managedResources.storageAccount]"
+            "value": "[reference('account').managedResources.storageAccount]"
           },
           "subnetResourceId": {
             "value": "[parameters('storageBlobPrivateEndpoints')[copyIndex()].subnetResourceId]"
@@ -1848,10 +1870,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Purview/accounts', parameters('name'))]"
+        "account"
       ]
     },
-    {
+    "queue_privateEndpoints": {
       "copy": {
         "name": "queue_privateEndpoints",
         "count": "[length(parameters('storageQueuePrivateEndpoints'))]"
@@ -1872,7 +1894,7 @@
           },
           "name": "[if(contains(parameters('storageQueuePrivateEndpoints')[copyIndex()], 'name'), createObject('value', parameters('storageQueuePrivateEndpoints')[copyIndex()].name), createObject('value', format('pe-{0}-{1}-{2}', last(split(resourceId('Microsoft.Purview/accounts', parameters('name')), '/')), parameters('storageQueuePrivateEndpoints')[copyIndex()].service, copyIndex())))]",
           "serviceResourceId": {
-            "value": "[reference(resourceId('Microsoft.Purview/accounts', parameters('name')), '2021-07-01').managedResources.storageAccount]"
+            "value": "[reference('account').managedResources.storageAccount]"
           },
           "subnetResourceId": {
             "value": "[parameters('storageQueuePrivateEndpoints')[copyIndex()].subnetResourceId]"
@@ -2375,10 +2397,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Purview/accounts', parameters('name'))]"
+        "account"
       ]
     },
-    {
+    "eventHub_privateEndpoints": {
       "copy": {
         "name": "eventHub_privateEndpoints",
         "count": "[length(parameters('eventHubPrivateEndpoints'))]"
@@ -2399,7 +2421,7 @@
           },
           "name": "[if(contains(parameters('eventHubPrivateEndpoints')[copyIndex()], 'name'), createObject('value', parameters('eventHubPrivateEndpoints')[copyIndex()].name), createObject('value', format('pe-{0}-{1}-{2}', last(split(resourceId('Microsoft.Purview/accounts', parameters('name')), '/')), parameters('eventHubPrivateEndpoints')[copyIndex()].service, copyIndex())))]",
           "serviceResourceId": {
-            "value": "[reference(resourceId('Microsoft.Purview/accounts', parameters('name')), '2021-07-01').managedResources.eventHubNamespace]"
+            "value": "[reference('account').managedResources.eventHubNamespace]"
           },
           "subnetResourceId": {
             "value": "[parameters('eventHubPrivateEndpoints')[copyIndex()].subnetResourceId]"
@@ -2902,12 +2924,12 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Purview/accounts', parameters('name'))]"
+        "account"
       ]
     },
-    {
+    "account_roleAssignments": {
       "copy": {
-        "name": "purview_roleAssignments",
+        "name": "account_roleAssignments",
         "count": "[length(parameters('roleAssignments'))]"
       },
       "type": "Microsoft.Resources/deployments",
@@ -3053,10 +3075,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Purview/accounts', parameters('name'))]"
+        "account"
       ]
     }
-  ],
+  },
   "outputs": {
     "name": {
       "type": "string",
@@ -3084,42 +3106,42 @@
       "metadata": {
         "description": "The location the resource was deployed into."
       },
-      "value": "[reference(resourceId('Microsoft.Purview/accounts', parameters('name')), '2021-07-01', 'full').location]"
+      "value": "[reference('account', '2021-07-01', 'full').location]"
     },
     "managedResourceGroupName": {
       "type": "string",
       "metadata": {
         "description": "The name of the managed resource group."
       },
-      "value": "[reference(resourceId('Microsoft.Purview/accounts', parameters('name')), '2021-07-01').managedResourceGroupName]"
+      "value": "[reference('account').managedResourceGroupName]"
     },
     "managedResourceGroupId": {
       "type": "string",
       "metadata": {
         "description": "The resource ID of the managed resource group."
       },
-      "value": "[reference(resourceId('Microsoft.Purview/accounts', parameters('name')), '2021-07-01').managedResources.resourceGroup]"
+      "value": "[reference('account').managedResources.resourceGroup]"
     },
     "managedStorageAccountId": {
       "type": "string",
       "metadata": {
         "description": "The resource ID of the managed storage account."
       },
-      "value": "[reference(resourceId('Microsoft.Purview/accounts', parameters('name')), '2021-07-01').managedResources.storageAccount]"
+      "value": "[reference('account').managedResources.storageAccount]"
     },
     "managedEventHubId": {
       "type": "string",
       "metadata": {
         "description": "The resource ID of the managed Event Hub Namespace."
       },
-      "value": "[reference(resourceId('Microsoft.Purview/accounts', parameters('name')), '2021-07-01').managedResources.eventHubNamespace]"
+      "value": "[reference('account').managedResources.eventHubNamespace]"
     },
     "systemAssignedPrincipalId": {
       "type": "string",
       "metadata": {
         "description": "The principal ID of the system assigned identity."
       },
-      "value": "[reference(resourceId('Microsoft.Purview/accounts', parameters('name')), '2021-07-01', 'full').identity.principalId]"
+      "value": "[reference('account', '2021-07-01', 'full').identity.principalId]"
     }
   }
 }

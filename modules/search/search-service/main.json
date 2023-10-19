@@ -1,15 +1,43 @@
 {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "languageVersion": "2.0",
   "contentVersion": "1.0.0.0",
   "metadata": {
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "3190976543296510988"
+      "templateHash": "3130433689552802225"
     },
     "name": "Search Services",
     "description": "This module deploys a Search Service.",
     "owner": "Azure/module-maintainers"
+  },
+  "definitions": {
+    "lockType": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Specify the name of lock."
+          }
+        },
+        "kind": {
+          "type": "string",
+          "allowedValues": [
+            "CanNotDelete",
+            "None",
+            "ReadOnly"
+          ],
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Specify the type of lock."
+          }
+        }
+      },
+      "nullable": true
+    }
   },
   "parameters": {
     "name": {
@@ -70,15 +98,9 @@
       }
     },
     "lock": {
-      "type": "string",
-      "defaultValue": "",
-      "allowedValues": [
-        "",
-        "CanNotDelete",
-        "ReadOnly"
-      ],
+      "$ref": "#/definitions/lockType",
       "metadata": {
-        "description": "Optional. Specify the type of lock."
+        "description": "Optional. The lock settings of the service."
       }
     },
     "networkRuleSet": {
@@ -252,8 +274,8 @@
     "identityType": "[if(parameters('systemAssignedIdentity'), 'SystemAssigned', 'None')]",
     "identity": "[if(not(equals(variables('identityType'), 'None')), createObject('type', variables('identityType')), null())]"
   },
-  "resources": [
-    {
+  "resources": {
+    "defaultTelemetry": {
       "condition": "[parameters('enableDefaultTelemetry')]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2021-04-01",
@@ -267,7 +289,7 @@
         }
       }
     },
-    {
+    "searchService": {
       "type": "Microsoft.Search/searchServices",
       "apiVersion": "2022-09-01",
       "name": "[parameters('name')]",
@@ -290,7 +312,7 @@
         "publicNetworkAccess": "[parameters('publicNetworkAccess')]"
       }
     },
-    {
+    "searchService_diagnosticSettings": {
       "condition": "[or(or(or(not(empty(parameters('diagnosticStorageAccountId'))), not(empty(parameters('diagnosticWorkspaceId')))), not(empty(parameters('diagnosticEventHubAuthorizationRuleId')))), not(empty(parameters('diagnosticEventHubName'))))]",
       "type": "Microsoft.Insights/diagnosticSettings",
       "apiVersion": "2021-05-01-preview",
@@ -305,24 +327,24 @@
         "logs": "[variables('diagnosticsLogs')]"
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Search/searchServices', parameters('name'))]"
+        "searchService"
       ]
     },
-    {
-      "condition": "[not(empty(parameters('lock')))]",
+    "searchService_lock": {
+      "condition": "[and(not(empty(coalesce(parameters('lock'), createObject()))), not(equals(tryGet(parameters('lock'), 'kind'), 'None')))]",
       "type": "Microsoft.Authorization/locks",
       "apiVersion": "2020-05-01",
       "scope": "[format('Microsoft.Search/searchServices/{0}', parameters('name'))]",
-      "name": "[format('{0}-{1}-lock', parameters('name'), parameters('lock'))]",
+      "name": "[coalesce(tryGet(parameters('lock'), 'name'), format('lock-{0}', parameters('name')))]",
       "properties": {
-        "level": "[parameters('lock')]",
-        "notes": "[if(equals(parameters('lock'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot modify the resource or child resources.')]"
+        "level": "[coalesce(tryGet(parameters('lock'), 'kind'), '')]",
+        "notes": "[if(equals(tryGet(parameters('lock'), 'kind'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot delete or modify the resource or child resources.')]"
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Search/searchServices', parameters('name'))]"
+        "searchService"
       ]
     },
-    {
+    "searchService_roleAssignments": {
       "copy": {
         "name": "searchService_roleAssignments",
         "count": "[length(parameters('roleAssignments'))]"
@@ -471,10 +493,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Search/searchServices', parameters('name'))]"
+        "searchService"
       ]
     },
-    {
+    "searchService_privateEndpoints": {
       "copy": {
         "name": "searchService_privateEndpoints",
         "count": "[length(parameters('privateEndpoints'))]"
@@ -998,10 +1020,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Search/searchServices', parameters('name'))]"
+        "searchService"
       ]
     },
-    {
+    "searchService_sharedPrivateLinkResources": {
       "copy": {
         "name": "searchService_sharedPrivateLinkResources",
         "count": "[length(parameters('sharedPrivateLinkResources'))]",
@@ -1143,10 +1165,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Search/searchServices', parameters('name'))]"
+        "searchService"
       ]
     }
-  ],
+  },
   "outputs": {
     "name": {
       "type": "string",
@@ -1174,7 +1196,7 @@
       "metadata": {
         "description": "The location the resource was deployed into."
       },
-      "value": "[reference(resourceId('Microsoft.Search/searchServices', parameters('name')), '2022-09-01', 'full').location]"
+      "value": "[reference('searchService', '2022-09-01', 'full').location]"
     }
   }
 }
