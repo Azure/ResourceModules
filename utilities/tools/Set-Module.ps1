@@ -119,8 +119,6 @@ function Set-Module {
             $job = $relevantTemplatePaths | ForEach-Object -ThrottleLimit $ThrottleLimit -AsJob -Parallel {
                 $resourceTypeIdentifier = ((Split-Path $_) -split '[\/|\\]{1}modules[\/|\\]{1}')[1] # avm/res/<provider>/<resourceType>
 
-                . $using:ReadMeScriptFilePath
-
                 ###############
                 ##   Build   ##
                 ###############
@@ -134,6 +132,7 @@ function Set-Module {
                 ################
                 if (-not $using:SkipReadMe) {
                     Write-Output "Generating readme for [$resourceTypeIdentifier]"
+                    . $using:ReadMeScriptFilePath
 
                     # If the template was just build, we can pass the JSON into the readme script to be more efficient
                     $readmeTemplateFilePath = (-not $using:SkipBuild) ? (Join-Path (Split-Path $_ -Parent) 'main.json') : $_
