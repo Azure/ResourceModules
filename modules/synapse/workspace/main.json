@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "17488808869576693510"
+      "templateHash": "2812430715889836837"
     },
     "name": "Synapse Workspaces",
     "description": "This module deploys a Synapse Workspace.",
@@ -329,23 +329,26 @@
     "enableReferencedModulesTelemetry": false
   },
   "resources": {
+    "cMKKeyVault::cMKKey": {
+      "condition": "[and(not(empty(parameters('cMKKeyVaultResourceId'))), not(empty(parameters('cMKKeyName'))))]",
+      "existing": true,
+      "type": "Microsoft.KeyVault/vaults/keys",
+      "apiVersion": "2023-02-01",
+      "subscriptionId": "[split(if(not(empty(parameters('cMKKeyVaultResourceId'))), parameters('cMKKeyVaultResourceId'), '//'), '/')[2]]",
+      "resourceGroup": "[split(if(not(empty(parameters('cMKKeyVaultResourceId'))), parameters('cMKKeyVaultResourceId'), '////'), '/')[4]]",
+      "name": "[format('{0}/{1}', last(split(if(not(empty(parameters('cMKKeyVaultResourceId'))), parameters('cMKKeyVaultResourceId'), 'dummyVault'), '/')), if(not(empty(parameters('cMKKeyName'))), parameters('cMKKeyName'), 'dummyKey'))]",
+      "dependsOn": [
+        "cMKKeyVault"
+      ]
+    },
     "cMKKeyVault": {
       "condition": "[not(empty(parameters('cMKKeyVaultResourceId')))]",
       "existing": true,
       "type": "Microsoft.KeyVault/vaults",
       "apiVersion": "2021-10-01",
-      "subscriptionId": "[split(parameters('cMKKeyVaultResourceId'), '/')[2]]",
-      "resourceGroup": "[split(parameters('cMKKeyVaultResourceId'), '/')[4]]",
-      "name": "[last(split(parameters('cMKKeyVaultResourceId'), '/'))]"
-    },
-    "cMKKeyVaultKey": {
-      "condition": "[and(not(empty(parameters('cMKKeyVaultResourceId'))), not(empty(parameters('cMKKeyName'))))]",
-      "existing": true,
-      "type": "Microsoft.KeyVault/vaults/keys",
-      "apiVersion": "2021-10-01",
-      "subscriptionId": "[split(parameters('cMKKeyVaultResourceId'), '/')[2]]",
-      "resourceGroup": "[split(parameters('cMKKeyVaultResourceId'), '/')[4]]",
-      "name": "[format('{0}/{1}', last(split(parameters('cMKKeyVaultResourceId'), '/')), parameters('cMKKeyName'))]"
+      "subscriptionId": "[split(if(not(empty(parameters('cMKKeyVaultResourceId'))), parameters('cMKKeyVaultResourceId'), '//'), '/')[2]]",
+      "resourceGroup": "[split(if(not(empty(parameters('cMKKeyVaultResourceId'))), parameters('cMKKeyVaultResourceId'), '////'), '/')[4]]",
+      "name": "[last(split(if(not(empty(parameters('cMKKeyVaultResourceId'))), parameters('cMKKeyVaultResourceId'), 'dummyVault'), '/'))]"
     },
     "defaultTelemetry": {
       "condition": "[parameters('enableDefaultTelemetry')]",
@@ -377,7 +380,7 @@
           "filesystem": "[parameters('defaultDataLakeStorageFilesystem')]",
           "createManagedPrivateEndpoint": "[if(parameters('managedVirtualNetwork'), parameters('defaultDataLakeStorageCreateManagedPrivateEndpoint'), null())]"
         },
-        "encryption": "[if(parameters('encryption'), createObject('cmk', createObject('kekIdentity', createObject('userAssignedIdentity', if(not(empty(parameters('cMKUserAssignedIdentityResourceId'))), parameters('cMKUserAssignedIdentityResourceId'), null()), 'useSystemAssignedIdentity', parameters('cMKUseSystemAssignedIdentity')), 'key', createObject('keyVaultUrl', reference('cMKKeyVaultKey').keyUri, 'name', parameters('cMKKeyName')))), null())]",
+        "encryption": "[if(parameters('encryption'), createObject('cmk', createObject('kekIdentity', createObject('userAssignedIdentity', if(not(empty(parameters('cMKUserAssignedIdentityResourceId'))), parameters('cMKUserAssignedIdentityResourceId'), null()), 'useSystemAssignedIdentity', parameters('cMKUseSystemAssignedIdentity')), 'key', createObject('keyVaultUrl', reference('cMKKeyVault::cMKKey').keyUri, 'name', parameters('cMKKeyName')))), null())]",
         "managedResourceGroupName": "[if(not(empty(parameters('managedResourceGroupName'))), parameters('managedResourceGroupName'), null())]",
         "managedVirtualNetwork": "[if(parameters('managedVirtualNetwork'), 'default', null())]",
         "managedVirtualNetworkSettings": "[if(parameters('managedVirtualNetwork'), createObject('allowedAadTenantIdsForLinking', parameters('allowedAadTenantIdsForLinking'), 'linkedAccessCheckOnTargetResource', parameters('linkedAccessCheckOnTargetResource'), 'preventDataExfiltration', parameters('preventDataExfiltration')), null())]",
@@ -388,7 +391,7 @@
         "workspaceRepositoryConfiguration": "[parameters('workspaceRepositoryConfiguration')]"
       },
       "dependsOn": [
-        "cMKKeyVaultKey"
+        "cMKKeyVault"
       ]
     },
     "workspace_lock": {
@@ -566,7 +569,7 @@
           "workspaceIndentityPrincipalId": {
             "value": "[reference('workspace', '2021-06-01', 'full').identity.principalId]"
           },
-          "keyvaultName": "[if(not(empty(parameters('cMKKeyVaultResourceId'))), createObject('value', last(split(parameters('cMKKeyVaultResourceId'), '/'))), createObject('value', ''))]",
+          "keyvaultName": "[if(not(empty(parameters('cMKKeyVaultResourceId'))), createObject('value', last(split(if(not(empty(parameters('cMKKeyVaultResourceId'))), parameters('cMKKeyVaultResourceId'), 'dummyVault'), '/'))), createObject('value', ''))]",
           "usesRbacAuthorization": "[if(not(empty(parameters('cMKKeyVaultResourceId'))), createObject('value', reference('cMKKeyVault').enableRbacAuthorization), createObject('value', true()))]"
         },
         "template": {

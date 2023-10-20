@@ -159,13 +159,12 @@ var diagnosticsLogs = contains(diagnosticLogCategoriesToEnable, 'allLogs') ? [
 var enableReferencedModulesTelemetry = false
 
 resource cMKKeyVault 'Microsoft.KeyVault/vaults@2021-10-01' existing = if (!empty(cMKKeyVaultResourceId)) {
-  name: last(split(cMKKeyVaultResourceId, '/'))!
-  scope: resourceGroup(split(cMKKeyVaultResourceId, '/')[2], split(cMKKeyVaultResourceId, '/')[4])
-}
+  name: last(split((!empty(cMKKeyVaultResourceId) ? cMKKeyVaultResourceId : 'dummyVault'), '/'))!
+  scope: resourceGroup(split((!empty(cMKKeyVaultResourceId) ? cMKKeyVaultResourceId : '//'), '/')[2], split((!empty(cMKKeyVaultResourceId) ? cMKKeyVaultResourceId : '////'), '/')[4])
 
-resource cMKKeyVaultKey 'Microsoft.KeyVault/vaults/keys@2021-10-01' existing = if (!empty(cMKKeyVaultResourceId) && !empty(cMKKeyName)) {
-  name: '${last(split(cMKKeyVaultResourceId, '/'))}/${cMKKeyName}'!
-  scope: resourceGroup(split(cMKKeyVaultResourceId, '/')[2], split(cMKKeyVaultResourceId, '/')[4])
+  resource cMKKey 'keys@2023-02-01' existing = if (!empty(cMKKeyName)) {
+    name: !empty(cMKKeyName) ? cMKKeyName : 'dummyKey'
+  }
 }
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
@@ -203,7 +202,7 @@ resource workspace 'Microsoft.Synapse/workspaces@2021-06-01' = {
           useSystemAssignedIdentity: cMKUseSystemAssignedIdentity
         }
         key: {
-          keyVaultUrl: cMKKeyVaultKey.properties.keyUri
+          keyVaultUrl: cMKKeyVault::cMKKey.properties.keyUri
           name: cMKKeyName
         }
       }
