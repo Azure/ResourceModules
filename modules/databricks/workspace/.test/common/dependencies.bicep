@@ -56,6 +56,13 @@ resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
             kty: 'RSA'
         }
     }
+
+    resource keyDisk 'keys@2022-07-01' = {
+        name: 'keyEncryptionKeyDisk'
+        properties: {
+            kty: 'RSA'
+        }
+    }
 }
 
 resource keyPermissions 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
@@ -328,6 +335,9 @@ output loadBalancerBackendPoolName string = loadBalancer.properties.backendAddre
 
 @description('The name of the created Key Vault encryption key.')
 output keyVaultKeyName string = keyVault::key.name
+
+@description('The name of the created Key Vault Disk encryption key.')
+output keyVaultDiskKeyName string = keyVault::keyDisk.name
 
 @description('The principal ID of the created Managed Identity.')
 output managedIdentityPrincipalId string = managedIdentity.properties.principalId

@@ -101,7 +101,7 @@ module testDeployment '../../main.bicep' = {
     }
     cMKManagedServicesKeyName: nestedDependencies.outputs.keyVaultKeyName
     cMKManagedServicesKeyVaultResourceId: nestedDependencies.outputs.keyVaultResourceId
-    cMKManagedDisksKeyName: nestedDependencies.outputs.keyVaultKeyName
+    cMKManagedDisksKeyName: nestedDependencies.outputs.keyVaultDiskKeyName
     cMKManagedDisksKeyVaultResourceId: nestedDependencies.outputs.keyVaultResourceId
     cMKManagedDisksKeyRotationToLatestKeyVersionEnabled: true
     storageAccountName: 'sa${namePrefix}${serviceShort}001'
