@@ -79,11 +79,11 @@ module testDeployment '../../main.bicep' = {
     zones: [ 1, 2 ]
     privateEndpoints: [
       {
-        privateDnsZoneGroup: {
-          privateDNSResourceIds: [
-            nestedDependencies.outputs.privateDNSZoneResourceId
-          ]
-        }
+        privateDnsZoneResourceIds: [
+
+          nestedDependencies.outputs.privateDNSZoneResourceId
+
+        ]
         service: 'redisCache'
         subnetResourceId: nestedDependencies.outputs.subnetResourceId
         tags: {

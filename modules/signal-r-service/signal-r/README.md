@@ -77,11 +77,9 @@ module signalR 'br:bicep/modules/signal-r-service.signal-r:1.0.0' = {
     }
     privateEndpoints: [
       {
-        privateDnsZoneGroup: {
-          privateDNSResourceIds: [
-            '<privateDNSZoneResourceId>'
-          ]
-        }
+        privateDnsZoneResourceIds: [
+          '<privateDNSZoneResourceId>'
+        ]
         service: 'signalr'
         subnetResourceId: '<subnetResourceId>'
         tags: {
@@ -178,11 +176,9 @@ module signalR 'br:bicep/modules/signal-r-service.signal-r:1.0.0' = {
     "privateEndpoints": {
       "value": [
         {
-          "privateDnsZoneGroup": {
-            "privateDNSResourceIds": [
-              "<privateDNSZoneResourceId>"
-            ]
-          },
+          "privateDnsZoneResourceIds": [
+            "<privateDNSZoneResourceId>"
+          ],
           "service": "signalr",
           "subnetResourceId": "<subnetResourceId>",
           "tags": {

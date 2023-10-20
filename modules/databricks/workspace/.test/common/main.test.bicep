@@ -118,11 +118,11 @@ module testDeployment '../../main.bicep' = {
     customVirtualNetworkResourceId: nestedDependencies.outputs.virtualNetworkResourceId
     privateEndpoints: [
       {
-        privateDnsZoneGroup: {
-          privateDNSResourceIds: [
-            nestedDependencies.outputs.privateDNSZoneResourceId
-          ]
-        }
+        privateDnsZoneResourceIds: [
+
+          nestedDependencies.outputs.privateDNSZoneResourceId
+
+        ]
         service: 'databricks_ui_api'
         subnetResourceId: nestedDependencies.outputs.defaultSubnetResourceId
         tags: {

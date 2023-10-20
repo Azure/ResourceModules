@@ -61,11 +61,9 @@ module redis 'br:bicep/modules/cache.redis:1.0.0' = {
     minimumTlsVersion: '1.2'
     privateEndpoints: [
       {
-        privateDnsZoneGroup: {
-          privateDNSResourceIds: [
-            '<privateDNSZoneResourceId>'
-          ]
-        }
+        privateDnsZoneResourceIds: [
+          '<privateDNSZoneResourceId>'
+        ]
         service: 'redisCache'
         subnetResourceId: '<subnetResourceId>'
         tags: {
@@ -143,11 +141,9 @@ module redis 'br:bicep/modules/cache.redis:1.0.0' = {
     "privateEndpoints": {
       "value": [
         {
-          "privateDnsZoneGroup": {
-            "privateDNSResourceIds": [
-              "<privateDNSZoneResourceId>"
-            ]
-          },
+          "privateDnsZoneResourceIds": [
+            "<privateDNSZoneResourceId>"
+          ],
           "service": "redisCache",
           "subnetResourceId": "<subnetResourceId>",
           "tags": {

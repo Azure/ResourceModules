@@ -78,11 +78,9 @@ module workspace 'br:bicep/modules/databricks.workspace:1.0.0' = {
     prepareEncryption: true
     privateEndpoints: [
       {
-        privateDnsZoneGroup: {
-          privateDNSResourceIds: [
-            '<privateDNSZoneResourceId>'
-          ]
-        }
+        privateDnsZoneResourceIds: [
+          '<privateDNSZoneResourceId>'
+        ]
         service: 'databricks_ui_api'
         subnetResourceId: '<subnetResourceId>'
         tags: {
@@ -212,11 +210,9 @@ module workspace 'br:bicep/modules/databricks.workspace:1.0.0' = {
     "privateEndpoints": {
       "value": [
         {
-          "privateDnsZoneGroup": {
-            "privateDNSResourceIds": [
-              "<privateDNSZoneResourceId>"
-            ]
-          },
+          "privateDnsZoneResourceIds": [
+            "<privateDNSZoneResourceId>"
+          ],
           "service": "databricks_ui_api",
           "subnetResourceId": "<subnetResourceId>",
           "tags": {
