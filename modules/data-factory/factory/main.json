@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "12584866101218671882"
+      "templateHash": "7844406569986738481"
     },
     "name": "Data Factories",
     "description": "This module deploys a Data Factory.",
@@ -333,9 +333,9 @@
       "existing": true,
       "type": "Microsoft.KeyVault/vaults",
       "apiVersion": "2021-10-01",
-      "subscriptionId": "[split(parameters('cMKKeyVaultResourceId'), '/')[2]]",
-      "resourceGroup": "[split(parameters('cMKKeyVaultResourceId'), '/')[4]]",
-      "name": "[last(split(parameters('cMKKeyVaultResourceId'), '/'))]"
+      "subscriptionId": "[split(if(not(empty(parameters('cMKKeyVaultResourceId'))), parameters('cMKKeyVaultResourceId'), '//'), '/')[2]]",
+      "resourceGroup": "[split(if(not(empty(parameters('cMKKeyVaultResourceId'))), parameters('cMKKeyVaultResourceId'), '////'), '/')[4]]",
+      "name": "[last(split(if(not(empty(parameters('cMKKeyVaultResourceId'))), parameters('cMKKeyVaultResourceId'), 'dummyVault'), '/'))]"
     },
     "defaultTelemetry": {
       "condition": "[parameters('enableDefaultTelemetry')]",
