@@ -160,8 +160,8 @@ resource cMKKeyVault 'Microsoft.KeyVault/vaults@2021-10-01' existing = if (!empt
 }
 
 resource cMKUserAssignedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' existing = if (!empty(cMKUserAssignedIdentityResourceId)) {
-  name: last(split((!empty(cMKKeyVaultResourceId) ? cMKKeyVaultResourceId : 'dummyMsi'), '/'))!
-  scope: resourceGroup(split((!empty(cMKKeyVaultResourceId) ? cMKKeyVaultResourceId : '//'), '/')[2], split((!empty(cMKKeyVaultResourceId) ? cMKKeyVaultResourceId : '////'), '/')[4])
+  name: last(split((!empty(cMKUserAssignedIdentityResourceId) ? cMKUserAssignedIdentityResourceId : 'dummyMsi'), '/'))!
+  scope: resourceGroup(split((!empty(cMKUserAssignedIdentityResourceId) ? cMKUserAssignedIdentityResourceId : '//'), '/')[2], split((!empty(cMKUserAssignedIdentityResourceId) ? cMKUserAssignedIdentityResourceId : '////'), '/')[4])
 }
 
 resource configurationStore 'Microsoft.AppConfiguration/configurationStores@2023-03-01' = {
