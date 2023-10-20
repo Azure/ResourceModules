@@ -171,24 +171,22 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource cMKManagedDisksKeyVault 'Microsoft.KeyVault/vaults@2023-02-01' existing = if (!empty(cMKManagedDisksKeyVaultResourceId)) {
-  name: last(split(cMKManagedDisksKeyVaultResourceId, '/'))!
-  scope: resourceGroup(split(cMKManagedDisksKeyVaultResourceId, '/')[2], split(cMKManagedDisksKeyVaultResourceId, '/')[4])
+resource cMKManagedDisksKeyVault 'Microsoft.KeyVault/vaults@2021-10-01' existing = if (!empty(cMKManagedDisksKeyVaultResourceId)) {
+  name: last(split((!empty(cMKManagedDisksKeyVaultResourceId) ? cMKManagedDisksKeyVaultResourceId : 'dummyVault'), '/'))!
+  scope: resourceGroup(split((!empty(cMKManagedDisksKeyVaultResourceId) ? cMKManagedDisksKeyVaultResourceId : '//'), '/')[2], split((!empty(cMKManagedDisksKeyVaultResourceId) ? cMKManagedDisksKeyVaultResourceId : '////'), '/')[4])
+
+  resource cMKKeyDisk 'keys@2023-02-01' existing = if (!empty(cMKManagedDisksKeyName)) {
+    name: !empty(cMKManagedDisksKeyName) ? cMKManagedDisksKeyName : 'dummyKey'
+  }
 }
 
-resource cMKManagedDisksKeyVaultKey 'Microsoft.KeyVault/vaults/keys@2023-02-01' existing = if (!empty(cMKManagedDisksKeyVaultResourceId) && !empty(cMKManagedDisksKeyName)) {
-  name: '${last(split(cMKManagedDisksKeyVaultResourceId, '/'))}/${cMKManagedDisksKeyName}'!
-  scope: resourceGroup(split(cMKManagedDisksKeyVaultResourceId, '/')[2], split(cMKManagedDisksKeyVaultResourceId, '/')[4])
-}
+resource cMKManagedServicesKeyVault 'Microsoft.KeyVault/vaults@2021-10-01' existing = if (!empty(cMKManagedServicesKeyVaultResourceId)) {
+  name: last(split((!empty(cMKManagedServicesKeyVaultResourceId) ? cMKManagedServicesKeyVaultResourceId : 'dummyVault'), '/'))!
+  scope: resourceGroup(split((!empty(cMKManagedServicesKeyVaultResourceId) ? cMKManagedServicesKeyVaultResourceId : '//'), '/')[2], split((!empty(cMKManagedServicesKeyVaultResourceId) ? cMKManagedServicesKeyVaultResourceId : '////'), '/')[4])
 
-resource cMKManagedServicesKeyVault 'Microsoft.KeyVault/vaults@2023-02-01' existing = if (!empty(cMKManagedServicesKeyVaultResourceId)) {
-  name: last(split(cMKManagedServicesKeyVaultResourceId, '/'))!
-  scope: resourceGroup(split(cMKManagedServicesKeyVaultResourceId, '/')[2], split(cMKManagedServicesKeyVaultResourceId, '/')[4])
-}
-
-resource cMKManagedServicesKeyVaultKey 'Microsoft.KeyVault/vaults/keys@2023-02-01' existing = if (!empty(cMKManagedServicesKeyVaultResourceId) && !empty(cMKManagedServicesKeyName)) {
-  name: '${last(split(cMKManagedServicesKeyVaultResourceId, '/'))}/${cMKManagedServicesKeyName}'!
-  scope: resourceGroup(split(cMKManagedServicesKeyVaultResourceId, '/')[2], split(cMKManagedServicesKeyVaultResourceId, '/')[4])
+  resource cMKKey 'keys@2023-02-01' existing = if (!empty(cMKManagedServicesKeyName)) {
+    name: !empty(cMKManagedServicesKeyName) ? cMKManagedServicesKeyName : 'dummyKey'
+  }
 }
 
 resource workspace 'Microsoft.Databricks/workspaces@2023-02-01' = {
@@ -276,7 +274,7 @@ resource workspace 'Microsoft.Databricks/workspaces@2023-02-01' = {
           keyVaultProperties: {
             keyVaultUri: cMKManagedServicesKeyVault.properties.vaultUri
             keyName: cMKManagedServicesKeyName
-            keyVersion: !empty(cMKManagedServicesKeyVersion) ? cMKManagedServicesKeyVersion : last(split(cMKManagedServicesKeyVaultKey.properties.keyUriWithVersion, '/'))
+            keyVersion: !empty(cMKManagedServicesKeyVersion) ? cMKManagedServicesKeyVersion : last(split(cMKManagedServicesKeyVault::cMKKey.properties.keyUriWithVersion, '/'))
           }
         } : null
         managedDisk: !empty(cMKManagedDisksKeyName) ? {
@@ -284,7 +282,7 @@ resource workspace 'Microsoft.Databricks/workspaces@2023-02-01' = {
           keyVaultProperties: {
             keyVaultUri: cMKManagedDisksKeyVault.properties.vaultUri
             keyName: cMKManagedDisksKeyName
-            keyVersion: !empty(cMKManagedDisksKeyVersion) ? cMKManagedDisksKeyVersion : last(split(cMKManagedDisksKeyVaultKey.properties.keyUriWithVersion, '/'))
+            keyVersion: !empty(cMKManagedDisksKeyVersion) ? cMKManagedDisksKeyVersion : last(split(cMKManagedDisksKeyVault::cMKKeyDisk.properties.keyUriWithVersion, '/'))
           }
           rotationToLatestKeyVersionEnabled: cMKManagedDisksKeyRotationToLatestKeyVersionEnabled
         } : null

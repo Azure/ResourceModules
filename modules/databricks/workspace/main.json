@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "12018870674080457266"
+      "templateHash": "16205616448170164073"
     },
     "name": "Azure Databricks Workspaces",
     "description": "This module deploys an Azure Databricks Workspace.",
@@ -349,6 +349,30 @@
     "enableReferencedModulesTelemetry": false
   },
   "resources": {
+    "cMKManagedDisksKeyVault::cMKKeyDisk": {
+      "condition": "[and(not(empty(parameters('cMKManagedDisksKeyVaultResourceId'))), not(empty(parameters('cMKManagedDisksKeyName'))))]",
+      "existing": true,
+      "type": "Microsoft.KeyVault/vaults/keys",
+      "apiVersion": "2023-02-01",
+      "subscriptionId": "[split(if(not(empty(parameters('cMKManagedDisksKeyVaultResourceId'))), parameters('cMKManagedDisksKeyVaultResourceId'), '//'), '/')[2]]",
+      "resourceGroup": "[split(if(not(empty(parameters('cMKManagedDisksKeyVaultResourceId'))), parameters('cMKManagedDisksKeyVaultResourceId'), '////'), '/')[4]]",
+      "name": "[format('{0}/{1}', last(split(if(not(empty(parameters('cMKManagedDisksKeyVaultResourceId'))), parameters('cMKManagedDisksKeyVaultResourceId'), 'dummyVault'), '/')), if(not(empty(parameters('cMKManagedDisksKeyName'))), parameters('cMKManagedDisksKeyName'), 'dummyKey'))]",
+      "dependsOn": [
+        "cMKManagedDisksKeyVault"
+      ]
+    },
+    "cMKManagedServicesKeyVault::cMKKey": {
+      "condition": "[and(not(empty(parameters('cMKManagedServicesKeyVaultResourceId'))), not(empty(parameters('cMKManagedServicesKeyName'))))]",
+      "existing": true,
+      "type": "Microsoft.KeyVault/vaults/keys",
+      "apiVersion": "2023-02-01",
+      "subscriptionId": "[split(if(not(empty(parameters('cMKManagedServicesKeyVaultResourceId'))), parameters('cMKManagedServicesKeyVaultResourceId'), '//'), '/')[2]]",
+      "resourceGroup": "[split(if(not(empty(parameters('cMKManagedServicesKeyVaultResourceId'))), parameters('cMKManagedServicesKeyVaultResourceId'), '////'), '/')[4]]",
+      "name": "[format('{0}/{1}', last(split(if(not(empty(parameters('cMKManagedServicesKeyVaultResourceId'))), parameters('cMKManagedServicesKeyVaultResourceId'), 'dummyVault'), '/')), if(not(empty(parameters('cMKManagedServicesKeyName'))), parameters('cMKManagedServicesKeyName'), 'dummyKey'))]",
+      "dependsOn": [
+        "cMKManagedServicesKeyVault"
+      ]
+    },
     "defaultTelemetry": {
       "condition": "[parameters('enableDefaultTelemetry')]",
       "type": "Microsoft.Resources/deployments",
@@ -367,37 +391,19 @@
       "condition": "[not(empty(parameters('cMKManagedDisksKeyVaultResourceId')))]",
       "existing": true,
       "type": "Microsoft.KeyVault/vaults",
-      "apiVersion": "2023-02-01",
-      "subscriptionId": "[split(parameters('cMKManagedDisksKeyVaultResourceId'), '/')[2]]",
-      "resourceGroup": "[split(parameters('cMKManagedDisksKeyVaultResourceId'), '/')[4]]",
-      "name": "[last(split(parameters('cMKManagedDisksKeyVaultResourceId'), '/'))]"
-    },
-    "cMKManagedDisksKeyVaultKey": {
-      "condition": "[and(not(empty(parameters('cMKManagedDisksKeyVaultResourceId'))), not(empty(parameters('cMKManagedDisksKeyName'))))]",
-      "existing": true,
-      "type": "Microsoft.KeyVault/vaults/keys",
-      "apiVersion": "2023-02-01",
-      "subscriptionId": "[split(parameters('cMKManagedDisksKeyVaultResourceId'), '/')[2]]",
-      "resourceGroup": "[split(parameters('cMKManagedDisksKeyVaultResourceId'), '/')[4]]",
-      "name": "[format('{0}/{1}', last(split(parameters('cMKManagedDisksKeyVaultResourceId'), '/')), parameters('cMKManagedDisksKeyName'))]"
+      "apiVersion": "2021-10-01",
+      "subscriptionId": "[split(if(not(empty(parameters('cMKManagedDisksKeyVaultResourceId'))), parameters('cMKManagedDisksKeyVaultResourceId'), '//'), '/')[2]]",
+      "resourceGroup": "[split(if(not(empty(parameters('cMKManagedDisksKeyVaultResourceId'))), parameters('cMKManagedDisksKeyVaultResourceId'), '////'), '/')[4]]",
+      "name": "[last(split(if(not(empty(parameters('cMKManagedDisksKeyVaultResourceId'))), parameters('cMKManagedDisksKeyVaultResourceId'), 'dummyVault'), '/'))]"
     },
     "cMKManagedServicesKeyVault": {
       "condition": "[not(empty(parameters('cMKManagedServicesKeyVaultResourceId')))]",
       "existing": true,
       "type": "Microsoft.KeyVault/vaults",
-      "apiVersion": "2023-02-01",
-      "subscriptionId": "[split(parameters('cMKManagedServicesKeyVaultResourceId'), '/')[2]]",
-      "resourceGroup": "[split(parameters('cMKManagedServicesKeyVaultResourceId'), '/')[4]]",
-      "name": "[last(split(parameters('cMKManagedServicesKeyVaultResourceId'), '/'))]"
-    },
-    "cMKManagedServicesKeyVaultKey": {
-      "condition": "[and(not(empty(parameters('cMKManagedServicesKeyVaultResourceId'))), not(empty(parameters('cMKManagedServicesKeyName'))))]",
-      "existing": true,
-      "type": "Microsoft.KeyVault/vaults/keys",
-      "apiVersion": "2023-02-01",
-      "subscriptionId": "[split(parameters('cMKManagedServicesKeyVaultResourceId'), '/')[2]]",
-      "resourceGroup": "[split(parameters('cMKManagedServicesKeyVaultResourceId'), '/')[4]]",
-      "name": "[format('{0}/{1}', last(split(parameters('cMKManagedServicesKeyVaultResourceId'), '/')), parameters('cMKManagedServicesKeyName'))]"
+      "apiVersion": "2021-10-01",
+      "subscriptionId": "[split(if(not(empty(parameters('cMKManagedServicesKeyVaultResourceId'))), parameters('cMKManagedServicesKeyVaultResourceId'), '//'), '/')[2]]",
+      "resourceGroup": "[split(if(not(empty(parameters('cMKManagedServicesKeyVaultResourceId'))), parameters('cMKManagedServicesKeyVaultResourceId'), '////'), '/')[4]]",
+      "name": "[last(split(if(not(empty(parameters('cMKManagedServicesKeyVaultResourceId'))), parameters('cMKManagedServicesKeyVaultResourceId'), 'dummyVault'), '/'))]"
     },
     "workspace": {
       "type": "Microsoft.Databricks/workspaces",
@@ -413,13 +419,11 @@
         "parameters": "[union(createObject('enableNoPublicIp', createObject('value', parameters('disablePublicIp')), 'prepareEncryption', createObject('value', parameters('prepareEncryption')), 'vnetAddressPrefix', createObject('value', parameters('vnetAddressPrefix')), 'requireInfrastructureEncryption', createObject('value', parameters('requireInfrastructureEncryption'))), if(not(empty(parameters('customVirtualNetworkResourceId'))), createObject('customVirtualNetworkId', createObject('value', parameters('customVirtualNetworkResourceId'))), createObject()), if(not(empty(parameters('amlWorkspaceResourceId'))), createObject('amlWorkspaceId', createObject('value', parameters('amlWorkspaceResourceId'))), createObject()), if(not(empty(parameters('customPrivateSubnetName'))), createObject('customPrivateSubnetName', createObject('value', parameters('customPrivateSubnetName'))), createObject()), if(not(empty(parameters('customPublicSubnetName'))), createObject('customPublicSubnetName', createObject('value', parameters('customPublicSubnetName'))), createObject()), if(not(empty(parameters('loadBalancerBackendPoolName'))), createObject('loadBalancerBackendPoolName', createObject('value', parameters('loadBalancerBackendPoolName'))), createObject()), if(not(empty(parameters('loadBalancerResourceId'))), createObject('loadBalancerId', createObject('value', parameters('loadBalancerResourceId'))), createObject()), if(not(empty(parameters('natGatewayName'))), createObject('natGatewayName', createObject('value', parameters('natGatewayName'))), createObject()), if(not(empty(parameters('publicIpName'))), createObject('publicIpName', createObject('value', parameters('publicIpName'))), createObject()), if(not(empty(parameters('storageAccountName'))), createObject('storageAccountName', createObject('value', parameters('storageAccountName'))), createObject()), if(not(empty(parameters('storageAccountSkuName'))), createObject('storageAccountSkuName', createObject('value', parameters('storageAccountSkuName'))), createObject()))]",
         "publicNetworkAccess": "[parameters('publicNetworkAccess')]",
         "requiredNsgRules": "[parameters('requiredNsgRules')]",
-        "encryption": "[if(or(not(empty(parameters('cMKManagedServicesKeyName'))), not(empty(parameters('cMKManagedServicesKeyName')))), createObject('entities', createObject('managedServices', if(not(empty(parameters('cMKManagedServicesKeyName'))), createObject('keySource', 'Microsoft.Keyvault', 'keyVaultProperties', createObject('keyVaultUri', reference('cMKManagedServicesKeyVault').vaultUri, 'keyName', parameters('cMKManagedServicesKeyName'), 'keyVersion', if(not(empty(parameters('cMKManagedServicesKeyVersion'))), parameters('cMKManagedServicesKeyVersion'), last(split(reference('cMKManagedServicesKeyVaultKey').keyUriWithVersion, '/'))))), null()), 'managedDisk', if(not(empty(parameters('cMKManagedDisksKeyName'))), createObject('keySource', 'Microsoft.Keyvault', 'keyVaultProperties', createObject('keyVaultUri', reference('cMKManagedDisksKeyVault').vaultUri, 'keyName', parameters('cMKManagedDisksKeyName'), 'keyVersion', if(not(empty(parameters('cMKManagedDisksKeyVersion'))), parameters('cMKManagedDisksKeyVersion'), last(split(reference('cMKManagedDisksKeyVaultKey').keyUriWithVersion, '/')))), 'rotationToLatestKeyVersionEnabled', parameters('cMKManagedDisksKeyRotationToLatestKeyVersionEnabled')), null()))), null())]"
+        "encryption": "[if(or(not(empty(parameters('cMKManagedServicesKeyName'))), not(empty(parameters('cMKManagedServicesKeyName')))), createObject('entities', createObject('managedServices', if(not(empty(parameters('cMKManagedServicesKeyName'))), createObject('keySource', 'Microsoft.Keyvault', 'keyVaultProperties', createObject('keyVaultUri', reference('cMKManagedServicesKeyVault').vaultUri, 'keyName', parameters('cMKManagedServicesKeyName'), 'keyVersion', if(not(empty(parameters('cMKManagedServicesKeyVersion'))), parameters('cMKManagedServicesKeyVersion'), last(split(reference('cMKManagedServicesKeyVault::cMKKey').keyUriWithVersion, '/'))))), null()), 'managedDisk', if(not(empty(parameters('cMKManagedDisksKeyName'))), createObject('keySource', 'Microsoft.Keyvault', 'keyVaultProperties', createObject('keyVaultUri', reference('cMKManagedDisksKeyVault').vaultUri, 'keyName', parameters('cMKManagedDisksKeyName'), 'keyVersion', if(not(empty(parameters('cMKManagedDisksKeyVersion'))), parameters('cMKManagedDisksKeyVersion'), last(split(reference('cMKManagedDisksKeyVault::cMKKeyDisk').keyUriWithVersion, '/')))), 'rotationToLatestKeyVersionEnabled', parameters('cMKManagedDisksKeyRotationToLatestKeyVersionEnabled')), null()))), null())]"
       },
       "dependsOn": [
         "cMKManagedDisksKeyVault",
-        "cMKManagedDisksKeyVaultKey",
-        "cMKManagedServicesKeyVault",
-        "cMKManagedServicesKeyVaultKey"
+        "cMKManagedServicesKeyVault"
       ]
     },
     "workspace_lock": {
