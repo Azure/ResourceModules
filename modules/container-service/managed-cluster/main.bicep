@@ -465,9 +465,9 @@ resource managedCluster 'Microsoft.ContainerService/managedClusters@2023-07-02-p
     ingressProfile: {
       webAppRouting: {
         enabled: webApplicationRoutingEnabled
-        dnsZoneResourceIds: [
-          !empty(dnsZoneResourceId) ? any(dnsZoneResourceId) : null
-        ]
+        dnsZoneResourceIds: !empty(dnsZoneResourceId) ? [
+          dnsZoneResourceId
+        ] : null
       }
     }
     addonProfiles: {
@@ -698,7 +698,7 @@ module managedCluster_roleAssignments '.bicep/nested_roleAssignments.bicep' = [f
 }]
 
 resource dnsZone 'Microsoft.Network/dnsZones@2018-05-01' existing = if (dnsZoneResourceId != null && webApplicationRoutingEnabled) {
-  name: last(split((!empty(dnsZoneResourceId) ? dnsZoneResourceId : 'dummmyZone'), '/'))!
+  name: last(split((!empty(dnsZoneResourceId) ? dnsZoneResourceId : '/dummmyZone'), '/'))!
 }
 
 resource dnsZone_roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = if (enableDnsZoneContributorRoleAssignment == true && dnsZoneResourceId != null && webApplicationRoutingEnabled) {
