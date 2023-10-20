@@ -67,9 +67,7 @@ module batchAccount 'br:bicep/modules/batch.batch-account:1.0.0' = {
         ]
         roleAssignments: [
           {
-            principalIds: [
-              '<managedIdentityPrincipalId>'
-            ]
+            principalId: '<principalId>'
             principalType: 'ServicePrincipal'
             roleDefinitionIdOrName: 'Reader'
           }
@@ -147,9 +145,7 @@ module batchAccount 'br:bicep/modules/batch.batch-account:1.0.0' = {
           ],
           "roleAssignments": [
             {
-              "principalIds": [
-                "<managedIdentityPrincipalId>"
-              ],
+              "principalId": "<principalId>",
               "principalType": "ServicePrincipal",
               "roleDefinitionIdOrName": "Reader"
             }
