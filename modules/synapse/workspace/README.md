@@ -82,11 +82,9 @@ module workspace 'br:bicep/modules/synapse.workspace:1.0.0' = {
     managedVirtualNetwork: true
     privateEndpoints: [
       {
-        privateDnsZoneGroup: {
-          privateDNSResourceIds: [
-            '<privateDNSZoneResourceId>'
-          ]
-        }
+        privateDnsZoneResourceIds: [
+          '<privateDNSZoneResourceId>'
+        ]
         service: 'SQL'
         subnetResourceId: '<subnetResourceId>'
         tags: {
@@ -181,11 +179,9 @@ module workspace 'br:bicep/modules/synapse.workspace:1.0.0' = {
     "privateEndpoints": {
       "value": [
         {
-          "privateDnsZoneGroup": {
-            "privateDNSResourceIds": [
-              "<privateDNSZoneResourceId>"
-            ]
-          },
+          "privateDnsZoneResourceIds": [
+            "<privateDNSZoneResourceId>"
+          ],
           "service": "SQL",
           "subnetResourceId": "<subnetResourceId>",
           "tags": {

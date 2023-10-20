@@ -926,11 +926,9 @@ module databaseAccount 'br:bicep/modules/document-db.database-account:1.0.0' = {
     location: '<location>'
     privateEndpoints: [
       {
-        privateDnsZoneGroup: {
-          privateDNSResourceIds: [
-            '<privateDNSZoneResourceId>'
-          ]
-        }
+        privateDnsZoneResourceIds: [
+          '<privateDNSZoneResourceId>'
+        ]
         service: 'Sql'
         subnetResourceId: '<subnetResourceId>'
         tags: {
@@ -1089,11 +1087,9 @@ module databaseAccount 'br:bicep/modules/document-db.database-account:1.0.0' = {
     "privateEndpoints": {
       "value": [
         {
-          "privateDnsZoneGroup": {
-            "privateDNSResourceIds": [
-              "<privateDNSZoneResourceId>"
-            ]
-          },
+          "privateDnsZoneResourceIds": [
+            "<privateDNSZoneResourceId>"
+          ],
           "service": "Sql",
           "subnetResourceId": "<subnetResourceId>",
           "tags": {

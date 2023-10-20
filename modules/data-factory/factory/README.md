@@ -97,11 +97,9 @@ module factory 'br:bicep/modules/data-factory.factory:1.0.0' = {
     managedVirtualNetworkName: 'default'
     privateEndpoints: [
       {
-        privateDnsZoneGroup: {
-          privateDNSResourceIds: [
-            '<privateDNSZoneResourceId>'
-          ]
-        }
+        privateDnsZoneResourceIds: [
+          '<privateDNSZoneResourceId>'
+        ]
         service: 'dataFactory'
         subnetResourceId: '<subnetResourceId>'
         tags: {
@@ -223,11 +221,9 @@ module factory 'br:bicep/modules/data-factory.factory:1.0.0' = {
     "privateEndpoints": {
       "value": [
         {
-          "privateDnsZoneGroup": {
-            "privateDNSResourceIds": [
-              "<privateDNSZoneResourceId>"
-            ]
-          },
+          "privateDnsZoneResourceIds": [
+            "<privateDNSZoneResourceId>"
+          ],
           "service": "dataFactory",
           "subnetResourceId": "<subnetResourceId>",
           "tags": {

@@ -51,11 +51,11 @@ module testDeployment '../../main.bicep' = {
     name: '${namePrefix}-${serviceShort}-001'
     privateEndpoints: [
       {
-        privateDnsZoneGroup: {
-          privateDNSResourceIds: [
-            nestedDependencies.outputs.privateDNSZoneResourceId
-          ]
-        }
+        privateDnsZoneResourceIds: [
+
+          nestedDependencies.outputs.privateDNSZoneResourceId
+
+        ]
         service: 'webpubsub'
         subnetResourceId: nestedDependencies.outputs.subnetResourceId
         tags: {

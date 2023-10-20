@@ -80,11 +80,9 @@ module redisEnterprise 'br:bicep/modules/cache.redis-enterprise:1.0.0' = {
     minimumTlsVersion: '1.2'
     privateEndpoints: [
       {
-        privateDnsZoneGroup: {
-          privateDNSResourceIds: [
-            '<privateDNSZoneResourceId>'
-          ]
-        }
+        privateDnsZoneResourceIds: [
+          '<privateDNSZoneResourceId>'
+        ]
         service: 'redisEnterprise'
         subnetResourceId: '<subnetResourceId>'
         tags: {
@@ -180,11 +178,9 @@ module redisEnterprise 'br:bicep/modules/cache.redis-enterprise:1.0.0' = {
     "privateEndpoints": {
       "value": [
         {
-          "privateDnsZoneGroup": {
-            "privateDNSResourceIds": [
-              "<privateDNSZoneResourceId>"
-            ]
-          },
+          "privateDnsZoneResourceIds": [
+            "<privateDNSZoneResourceId>"
+          ],
           "service": "redisEnterprise",
           "subnetResourceId": "<subnetResourceId>",
           "tags": {
