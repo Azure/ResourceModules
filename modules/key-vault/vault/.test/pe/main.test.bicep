@@ -87,12 +87,10 @@ module testDeployment '../../main.bicep' = {
     }
     privateEndpoints: [
       {
-        privateDnsZoneGroup: {
-          privateDNSResourceIds: [
-            nestedDependencies.outputs.privateDNSZoneResourceId
-          ]
-          privateEndpointName: 'dep-${namePrefix}-pe-${serviceShort}'
-        }
+        privateDnsZoneResourceIds: [
+          nestedDependencies.outputs.privateDNSZoneResourceId
+        ]
+        name: 'dep-${namePrefix}-pe-${serviceShort}'
         service: 'vault'
         subnetResourceId: nestedDependencies.outputs.subnetResourceId
         tags: {

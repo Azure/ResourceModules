@@ -50,11 +50,9 @@ module account 'br:bicep/modules/purview.account:1.0.0' = {
     // Non-required parameters
     accountPrivateEndpoints: [
       {
-        privateDnsZoneGroup: {
-          privateDNSResourceIds: [
-            '<purviewAccountPrivateDNSResourceId>'
-          ]
-        }
+        privateDnsZoneResourceIds: [
+          '<purviewAccountPrivateDNSResourceId>'
+        ]
         service: 'account'
         subnetResourceId: '<subnetResourceId>'
         tags: {
@@ -77,11 +75,9 @@ module account 'br:bicep/modules/purview.account:1.0.0' = {
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     eventHubPrivateEndpoints: [
       {
-        privateDnsZoneGroup: {
-          privateDNSResourceIds: [
-            '<eventHubPrivateDNSResourceId>'
-          ]
-        }
+        privateDnsZoneResourceIds: [
+          '<eventHubPrivateDNSResourceId>'
+        ]
         service: 'namespace'
         subnetResourceId: '<subnetResourceId>'
         tags: {
@@ -99,11 +95,9 @@ module account 'br:bicep/modules/purview.account:1.0.0' = {
     managedResourceGroupName: 'pvacom001-managed-rg'
     portalPrivateEndpoints: [
       {
-        privateDnsZoneGroup: {
-          privateDNSResourceIds: [
-            '<purviewPortalPrivateDNSResourceId>'
-          ]
-        }
+        privateDnsZoneResourceIds: [
+          '<purviewPortalPrivateDNSResourceId>'
+        ]
         service: 'portal'
         subnetResourceId: '<subnetResourceId>'
         tags: {
@@ -125,11 +119,9 @@ module account 'br:bicep/modules/purview.account:1.0.0' = {
     ]
     storageBlobPrivateEndpoints: [
       {
-        privateDnsZoneGroup: {
-          privateDNSResourceIds: [
-            '<storageBlobPrivateDNSResourceId>'
-          ]
-        }
+        privateDnsZoneResourceIds: [
+          '<storageBlobPrivateDNSResourceId>'
+        ]
         service: 'blob'
         subnetResourceId: '<subnetResourceId>'
         tags: {
@@ -141,11 +133,9 @@ module account 'br:bicep/modules/purview.account:1.0.0' = {
     ]
     storageQueuePrivateEndpoints: [
       {
-        privateDnsZoneGroup: {
-          privateDNSResourceIds: [
-            '<storageQueuePrivateDNSResourceId>'
-          ]
-        }
+        privateDnsZoneResourceIds: [
+          '<storageQueuePrivateDNSResourceId>'
+        ]
         service: 'queue'
         subnetResourceId: '<subnetResourceId>'
         tags: {
@@ -187,11 +177,9 @@ module account 'br:bicep/modules/purview.account:1.0.0' = {
     "accountPrivateEndpoints": {
       "value": [
         {
-          "privateDnsZoneGroup": {
-            "privateDNSResourceIds": [
-              "<purviewAccountPrivateDNSResourceId>"
-            ]
-          },
+          "privateDnsZoneResourceIds": [
+            "<purviewAccountPrivateDNSResourceId>"
+          ],
           "service": "account",
           "subnetResourceId": "<subnetResourceId>",
           "tags": {
@@ -230,11 +218,9 @@ module account 'br:bicep/modules/purview.account:1.0.0' = {
     "eventHubPrivateEndpoints": {
       "value": [
         {
-          "privateDnsZoneGroup": {
-            "privateDNSResourceIds": [
-              "<eventHubPrivateDNSResourceId>"
-            ]
-          },
+          "privateDnsZoneResourceIds": [
+            "<eventHubPrivateDNSResourceId>"
+          ],
           "service": "namespace",
           "subnetResourceId": "<subnetResourceId>",
           "tags": {
@@ -260,11 +246,9 @@ module account 'br:bicep/modules/purview.account:1.0.0' = {
     "portalPrivateEndpoints": {
       "value": [
         {
-          "privateDnsZoneGroup": {
-            "privateDNSResourceIds": [
-              "<purviewPortalPrivateDNSResourceId>"
-            ]
-          },
+          "privateDnsZoneResourceIds": [
+            "<purviewPortalPrivateDNSResourceId>"
+          ],
           "service": "portal",
           "subnetResourceId": "<subnetResourceId>",
           "tags": {
@@ -292,11 +276,9 @@ module account 'br:bicep/modules/purview.account:1.0.0' = {
     "storageBlobPrivateEndpoints": {
       "value": [
         {
-          "privateDnsZoneGroup": {
-            "privateDNSResourceIds": [
-              "<storageBlobPrivateDNSResourceId>"
-            ]
-          },
+          "privateDnsZoneResourceIds": [
+            "<storageBlobPrivateDNSResourceId>"
+          ],
           "service": "blob",
           "subnetResourceId": "<subnetResourceId>",
           "tags": {
@@ -310,11 +292,9 @@ module account 'br:bicep/modules/purview.account:1.0.0' = {
     "storageQueuePrivateEndpoints": {
       "value": [
         {
-          "privateDnsZoneGroup": {
-            "privateDNSResourceIds": [
-              "<storageQueuePrivateDNSResourceId>"
-            ]
-          },
+          "privateDnsZoneResourceIds": [
+            "<storageQueuePrivateDNSResourceId>"
+          ],
           "service": "queue",
           "subnetResourceId": "<subnetResourceId>",
           "tags": {
