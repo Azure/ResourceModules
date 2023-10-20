@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "12613913283174213145"
+      "templateHash": "13715645846097523943"
     },
     "name": "Azure Container Registries (ACR)",
     "description": "This module deploys an Azure Container Registry (ACR).",
@@ -446,9 +446,9 @@
       "existing": true,
       "type": "Microsoft.ManagedIdentity/userAssignedIdentities",
       "apiVersion": "2023-01-31",
-      "subscriptionId": "[split(if(not(empty(parameters('cMKKeyVaultResourceId'))), parameters('cMKKeyVaultResourceId'), '//'), '/')[2]]",
-      "resourceGroup": "[split(if(not(empty(parameters('cMKKeyVaultResourceId'))), parameters('cMKKeyVaultResourceId'), '////'), '/')[4]]",
-      "name": "[last(split(if(not(empty(parameters('cMKKeyVaultResourceId'))), parameters('cMKKeyVaultResourceId'), 'dummyMsi'), '/'))]"
+      "subscriptionId": "[split(if(not(empty(parameters('cMKUserAssignedIdentityResourceId'))), parameters('cMKUserAssignedIdentityResourceId'), '//'), '/')[2]]",
+      "resourceGroup": "[split(if(not(empty(parameters('cMKUserAssignedIdentityResourceId'))), parameters('cMKUserAssignedIdentityResourceId'), '////'), '/')[4]]",
+      "name": "[last(split(if(not(empty(parameters('cMKUserAssignedIdentityResourceId'))), parameters('cMKUserAssignedIdentityResourceId'), 'dummyMsi'), '/'))]"
     },
     "registry": {
       "type": "Microsoft.ContainerRegistry/registries",
