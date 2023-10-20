@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "13016639761646646515"
+      "templateHash": "7851635446929911077"
     },
     "name": "Machine Learning Services Workspaces",
     "description": "This module deploys a Machine Learning Services Workspace.",
@@ -333,6 +333,18 @@
     "diagnosticsLogs": "[if(contains(parameters('diagnosticLogCategoriesToEnable'), 'allLogs'), createArray(createObject('categoryGroup', 'allLogs', 'enabled', true())), if(contains(parameters('diagnosticLogCategoriesToEnable'), ''), createArray(), variables('diagnosticsLogsSpecified')))]"
   },
   "resources": {
+    "cMKKeyVault::cMKKey": {
+      "condition": "[and(not(empty(parameters('cMKKeyVaultResourceId'))), not(empty(parameters('cMKKeyName'))))]",
+      "existing": true,
+      "type": "Microsoft.KeyVault/vaults/keys",
+      "apiVersion": "2023-02-01",
+      "subscriptionId": "[split(if(not(empty(parameters('cMKKeyVaultResourceId'))), parameters('cMKKeyVaultResourceId'), '//'), '/')[2]]",
+      "resourceGroup": "[split(if(not(empty(parameters('cMKKeyVaultResourceId'))), parameters('cMKKeyVaultResourceId'), '////'), '/')[4]]",
+      "name": "[format('{0}/{1}', last(split(if(not(empty(parameters('cMKKeyVaultResourceId'))), parameters('cMKKeyVaultResourceId'), 'dummyVault'), '/')), if(not(empty(parameters('cMKKeyName'))), parameters('cMKKeyName'), 'dummyKey'))]",
+      "dependsOn": [
+        "cMKKeyVault"
+      ]
+    },
     "defaultTelemetry": {
       "condition": "[parameters('enableDefaultTelemetry')]",
       "type": "Microsoft.Resources/deployments",
@@ -347,14 +359,14 @@
         }
       }
     },
-    "cMKKeyVaultKey": {
-      "condition": "[and(not(empty(parameters('cMKKeyVaultResourceId'))), not(empty(parameters('cMKKeyName'))))]",
+    "cMKKeyVault": {
+      "condition": "[not(empty(parameters('cMKKeyVaultResourceId')))]",
       "existing": true,
-      "type": "Microsoft.KeyVault/vaults/keys",
+      "type": "Microsoft.KeyVault/vaults",
       "apiVersion": "2021-10-01",
-      "subscriptionId": "[split(parameters('cMKKeyVaultResourceId'), '/')[2]]",
-      "resourceGroup": "[split(parameters('cMKKeyVaultResourceId'), '/')[4]]",
-      "name": "[format('{0}/{1}', last(split(parameters('cMKKeyVaultResourceId'), '/')), parameters('cMKKeyName'))]"
+      "subscriptionId": "[split(if(not(empty(parameters('cMKKeyVaultResourceId'))), parameters('cMKKeyVaultResourceId'), '//'), '/')[2]]",
+      "resourceGroup": "[split(if(not(empty(parameters('cMKKeyVaultResourceId'))), parameters('cMKKeyVaultResourceId'), '////'), '/')[4]]",
+      "name": "[last(split(if(not(empty(parameters('cMKKeyVaultResourceId'))), parameters('cMKKeyVaultResourceId'), 'dummyVault'), '/'))]"
     },
     "workspace": {
       "type": "Microsoft.MachineLearningServices/workspaces",
@@ -377,7 +389,7 @@
         "allowPublicAccessWhenBehindVnet": "[parameters('allowPublicAccessWhenBehindVnet')]",
         "description": "[parameters('description')]",
         "discoveryUrl": "[parameters('discoveryUrl')]",
-        "encryption": "[if(not(empty(parameters('cMKKeyName'))), createObject('status', 'Enabled', 'identity', if(not(empty(parameters('cMKUserAssignedIdentityResourceId'))), createObject('userAssignedIdentity', parameters('cMKUserAssignedIdentityResourceId')), null()), 'keyVaultProperties', createObject('keyVaultArmId', parameters('cMKKeyVaultResourceId'), 'keyIdentifier', if(not(empty(parameters('cMKKeyVersion'))), format('{0}/{1}', reference('cMKKeyVaultKey').keyUri, parameters('cMKKeyVersion')), reference('cMKKeyVaultKey').keyUriWithVersion))), null())]",
+        "encryption": "[if(not(empty(parameters('cMKKeyName'))), createObject('status', 'Enabled', 'identity', if(not(empty(parameters('cMKUserAssignedIdentityResourceId'))), createObject('userAssignedIdentity', parameters('cMKUserAssignedIdentityResourceId')), null()), 'keyVaultProperties', createObject('keyVaultArmId', parameters('cMKKeyVaultResourceId'), 'keyIdentifier', if(not(empty(parameters('cMKKeyVersion'))), format('{0}/{1}', reference('cMKKeyVault::cMKKey').keyUri, parameters('cMKKeyVersion')), reference('cMKKeyVault::cMKKey').keyUriWithVersion))), null())]",
         "imageBuildCompute": "[parameters('imageBuildCompute')]",
         "primaryUserAssignedIdentity": "[parameters('primaryUserAssignedIdentity')]",
         "publicNetworkAccess": "[if(not(empty(parameters('publicNetworkAccess'))), parameters('publicNetworkAccess'), if(not(empty(parameters('privateEndpoints'))), 'Disabled', 'Enabled'))]",
@@ -385,7 +397,7 @@
         "sharedPrivateLinkResources": "[parameters('sharedPrivateLinkResources')]"
       },
       "dependsOn": [
-        "cMKKeyVaultKey"
+        "cMKKeyVault"
       ]
     },
     "workspace_lock": {
