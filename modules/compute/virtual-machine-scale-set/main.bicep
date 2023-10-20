@@ -494,8 +494,8 @@ module vmss_microsoftAntiMalwareExtension 'extension/main.bicep' = if (extension
 }
 
 resource vmss_logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2021-06-01' existing = if (!empty(monitoringWorkspaceId)) {
-  name: last(split(monitoringWorkspaceId, '/'))!
-  scope: resourceGroup(split(monitoringWorkspaceId, '/')[2], split(monitoringWorkspaceId, '/')[4])
+  name: last(split((!empty(monitoringWorkspaceId) ? monitoringWorkspaceId : 'law'), '/'))!
+  scope: az.resourceGroup(split((!empty(monitoringWorkspaceId) ? monitoringWorkspaceId : '//'), '/')[2], split((!empty(monitoringWorkspaceId) ? monitoringWorkspaceId : '////'), '/')[4])
 }
 
 module vmss_microsoftMonitoringAgentExtension 'extension/main.bicep' = if (extensionMonitoringAgentConfig.enabled) {

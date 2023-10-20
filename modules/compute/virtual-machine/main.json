@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "6666222898286420921"
+      "templateHash": "6984217347675709865"
     },
     "name": "Virtual Machines",
     "description": "This module deploys a Virtual Machine with one or multiple NICs and optionally one or multiple public IPs.",
@@ -786,9 +786,9 @@
       "existing": true,
       "type": "Microsoft.OperationalInsights/workspaces",
       "apiVersion": "2021-06-01",
-      "subscriptionId": "[split(parameters('monitoringWorkspaceId'), '/')[2]]",
-      "resourceGroup": "[split(parameters('monitoringWorkspaceId'), '/')[4]]",
-      "name": "[last(split(parameters('monitoringWorkspaceId'), '/'))]"
+      "subscriptionId": "[split(if(not(empty(parameters('monitoringWorkspaceId'))), parameters('monitoringWorkspaceId'), '//'), '/')[2]]",
+      "resourceGroup": "[split(if(not(empty(parameters('monitoringWorkspaceId'))), parameters('monitoringWorkspaceId'), '////'), '/')[4]]",
+      "name": "[last(split(if(not(empty(parameters('monitoringWorkspaceId'))), parameters('monitoringWorkspaceId'), 'law'), '/'))]"
     },
     "vm_lock": {
       "condition": "[and(not(empty(coalesce(parameters('lock'), createObject()))), not(equals(tryGet(parameters('lock'), 'kind'), 'None')))]",
@@ -2834,7 +2834,7 @@
           "tags": "[if(contains(parameters('extensionMonitoringAgentConfig'), 'tags'), createObject('value', parameters('extensionMonitoringAgentConfig').tags), createObject('value', createObject()))]",
           "protectedSettings": {
             "value": {
-              "workspaceKey": "[if(not(empty(parameters('monitoringWorkspaceId'))), listKeys(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', split(parameters('monitoringWorkspaceId'), '/')[2], split(parameters('monitoringWorkspaceId'), '/')[4]), 'Microsoft.OperationalInsights/workspaces', last(split(parameters('monitoringWorkspaceId'), '/'))), '2021-06-01').primarySharedKey, '')]"
+              "workspaceKey": "[if(not(empty(parameters('monitoringWorkspaceId'))), listKeys(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', split(if(not(empty(parameters('monitoringWorkspaceId'))), parameters('monitoringWorkspaceId'), '//'), '/')[2], split(if(not(empty(parameters('monitoringWorkspaceId'))), parameters('monitoringWorkspaceId'), '////'), '/')[4]), 'Microsoft.OperationalInsights/workspaces', last(split(if(not(empty(parameters('monitoringWorkspaceId'))), parameters('monitoringWorkspaceId'), 'law'), '/'))), '2021-06-01').primarySharedKey, '')]"
             }
           },
           "enableDefaultTelemetry": {
