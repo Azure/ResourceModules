@@ -417,11 +417,9 @@ module configurationStore 'br:bicep/modules/app-configuration.configuration-stor
     enablePurgeProtection: false
     privateEndpoints: [
       {
-        privateDnsZoneGroup: {
-          privateDNSResourceIds: [
-            '<privateDNSZoneResourceId>'
-          ]
-        }
+        privateDnsZoneResourceIds: [
+          '<privateDNSZoneResourceId>'
+        ]
         service: 'configurationStores'
         subnetResourceId: '<subnetResourceId>'
         tags: {
@@ -473,11 +471,9 @@ module configurationStore 'br:bicep/modules/app-configuration.configuration-stor
     "privateEndpoints": {
       "value": [
         {
-          "privateDnsZoneGroup": {
-            "privateDNSResourceIds": [
-              "<privateDNSZoneResourceId>"
-            ]
-          },
+          "privateDnsZoneResourceIds": [
+            "<privateDNSZoneResourceId>"
+          ],
           "service": "configurationStores",
           "subnetResourceId": "<subnetResourceId>",
           "tags": {

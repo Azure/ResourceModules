@@ -182,11 +182,9 @@ module server 'br:bicep/modules/sql.server:1.0.0' = {
     primaryUserAssignedIdentityId: '<primaryUserAssignedIdentityId>'
     privateEndpoints: [
       {
-        privateDnsZoneGroup: {
-          privateDNSResourceIds: [
-            '<privateDNSZoneResourceId>'
-          ]
-        }
+        privateDnsZoneResourceIds: [
+          '<privateDNSZoneResourceId>'
+        ]
         service: 'sqlServer'
         subnetResourceId: '<subnetResourceId>'
         tags: {
@@ -339,11 +337,9 @@ module server 'br:bicep/modules/sql.server:1.0.0' = {
     "privateEndpoints": {
       "value": [
         {
-          "privateDnsZoneGroup": {
-            "privateDNSResourceIds": [
-              "<privateDNSZoneResourceId>"
-            ]
-          },
+          "privateDnsZoneResourceIds": [
+            "<privateDNSZoneResourceId>"
+          ],
           "service": "sqlServer",
           "subnetResourceId": "<subnetResourceId>",
           "tags": {
@@ -438,11 +434,9 @@ module server 'br:bicep/modules/sql.server:1.0.0' = {
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     privateEndpoints: [
       {
-        privateDnsZoneGroup: {
-          privateDNSResourceIds: [
-            '<privateDNSZoneResourceId>'
-          ]
-        }
+        privateDnsZoneResourceIds: [
+          '<privateDNSZoneResourceId>'
+        ]
         service: 'sqlServer'
         subnetResourceId: '<subnetResourceId>'
         tags: {
@@ -490,11 +484,9 @@ module server 'br:bicep/modules/sql.server:1.0.0' = {
     "privateEndpoints": {
       "value": [
         {
-          "privateDnsZoneGroup": {
-            "privateDNSResourceIds": [
-              "<privateDNSZoneResourceId>"
-            ]
-          },
+          "privateDnsZoneResourceIds": [
+            "<privateDNSZoneResourceId>"
+          ],
           "service": "sqlServer",
           "subnetResourceId": "<subnetResourceId>",
           "tags": {

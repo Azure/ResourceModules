@@ -165,11 +165,11 @@ module testDeployment '../../main.bicep' = {
       {
         subnetResourceId: nestedDependencies.outputs.privateEndpointSubnetResourceId
         service: 'sqlServer'
-        privateDnsZoneGroup: {
-          privateDNSResourceIds: [
-            nestedDependencies.outputs.privateDNSZoneResourceId
-          ]
-        }
+        privateDnsZoneResourceIds: [
+
+          nestedDependencies.outputs.privateDNSZoneResourceId
+
+        ]
         tags: {
           'hidden-title': 'This is visible in the resource name'
           Environment: 'Non-Prod'

@@ -50,11 +50,9 @@ This instance deploys the module with most of its features enabled.
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     privateEndpoints: [
       {
-        privateDnsZoneGroup: {
-          privateDNSResourceIds: [
-            '<privateDNSZoneResourceId>'
-          ]
-        }
+        privateDnsZoneResourceIds: [
+          '<privateDNSZoneResourceId>'
+        ]
         service: 'azuremonitor'
         subnetResourceId: '<subnetResourceId>'
         tags: {
@@ -111,11 +109,9 @@ This instance deploys the module with most of its features enabled.
     "privateEndpoints": {
       "value": [
         {
-          "privateDnsZoneGroup": {
-            "privateDNSResourceIds": [
-              "<privateDNSZoneResourceId>"
-            ]
-          },
+          "privateDnsZoneResourceIds": [
+            "<privateDNSZoneResourceId>"
+          ],
           "service": "azuremonitor",
           "subnetResourceId": "<subnetResourceId>",
           "tags": {

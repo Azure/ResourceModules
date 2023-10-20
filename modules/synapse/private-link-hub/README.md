@@ -54,11 +54,9 @@ module privateLinkHub 'br:bicep/modules/synapse.private-link-hub:1.0.0' = {
     }
     privateEndpoints: [
       {
-        privateDnsZoneGroup: {
-          privateDNSResourceIds: [
-            '<privateDNSZoneResourceId>'
-          ]
-        }
+        privateDnsZoneResourceIds: [
+          '<privateDNSZoneResourceId>'
+        ]
         service: 'Web'
         subnetResourceId: '<subnetResourceId>'
         tags: {
@@ -121,11 +119,9 @@ module privateLinkHub 'br:bicep/modules/synapse.private-link-hub:1.0.0' = {
     "privateEndpoints": {
       "value": [
         {
-          "privateDnsZoneGroup": {
-            "privateDNSResourceIds": [
-              "<privateDNSZoneResourceId>"
-            ]
-          },
+          "privateDnsZoneResourceIds": [
+            "<privateDNSZoneResourceId>"
+          ],
           "service": "Web",
           "subnetResourceId": "<subnetResourceId>",
           "tags": {

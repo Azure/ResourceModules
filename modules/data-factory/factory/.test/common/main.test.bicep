@@ -117,11 +117,11 @@ module testDeployment '../../main.bicep' = {
     managedVirtualNetworkName: 'default'
     privateEndpoints: [
       {
-        privateDnsZoneGroup: {
-          privateDNSResourceIds: [
-            nestedDependencies.outputs.privateDNSZoneResourceId
-          ]
-        }
+        privateDnsZoneResourceIds: [
+
+          nestedDependencies.outputs.privateDNSZoneResourceId
+
+        ]
         service: 'dataFactory'
         subnetResourceId: nestedDependencies.outputs.subnetResourceId
         tags: {

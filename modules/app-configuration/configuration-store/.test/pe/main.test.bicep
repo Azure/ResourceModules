@@ -54,11 +54,11 @@ module testDeployment '../../main.bicep' = {
     enablePurgeProtection: false
     privateEndpoints: [
       {
-        privateDnsZoneGroup: {
-          privateDNSResourceIds: [
-            nestedDependencies.outputs.privateDNSZoneResourceId
-          ]
-        }
+        privateDnsZoneResourceIds: [
+
+          nestedDependencies.outputs.privateDNSZoneResourceId
+
+        ]
         service: 'configurationStores'
         subnetResourceId: nestedDependencies.outputs.subnetResourceId
         tags: {

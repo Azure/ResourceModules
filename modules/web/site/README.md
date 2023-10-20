@@ -509,11 +509,9 @@ module site 'br:bicep/modules/web.site:1.0.0' = {
         name: 'slot1'
         privateEndpoints: [
           {
-            privateDnsZoneGroup: {
-              privateDNSResourceIds: [
-                '<privateDNSZoneResourceId>'
-              ]
-            }
+            privateDnsZoneResourceIds: [
+              '<privateDNSZoneResourceId>'
+            ]
             service: 'sites'
             subnetResourceId: '<subnetResourceId>'
             tags: {
@@ -676,11 +674,9 @@ module site 'br:bicep/modules/web.site:1.0.0' = {
           "name": "slot1",
           "privateEndpoints": [
             {
-              "privateDnsZoneGroup": {
-                "privateDNSResourceIds": [
-                  "<privateDNSZoneResourceId>"
-                ]
-              },
+              "privateDnsZoneResourceIds": [
+                "<privateDNSZoneResourceId>"
+              ],
               "service": "sites",
               "subnetResourceId": "<subnetResourceId>",
               "tags": {

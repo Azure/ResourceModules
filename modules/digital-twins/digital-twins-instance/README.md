@@ -70,11 +70,9 @@ module digitalTwinsInstance 'br:bicep/modules/digital-twins.digital-twins-instan
     }
     privateEndpoints: [
       {
-        privateDnsZoneGroup: {
-          privateDNSResourceIds: [
-            '<privateDNSZoneResourceId>'
-          ]
-        }
+        privateDnsZoneResourceIds: [
+          '<privateDNSZoneResourceId>'
+        ]
         service: 'API'
         subnetResourceId: '<subnetResourceId>'
       }
@@ -161,11 +159,9 @@ module digitalTwinsInstance 'br:bicep/modules/digital-twins.digital-twins-instan
     "privateEndpoints": {
       "value": [
         {
-          "privateDnsZoneGroup": {
-            "privateDNSResourceIds": [
-              "<privateDNSZoneResourceId>"
-            ]
-          },
+          "privateDnsZoneResourceIds": [
+            "<privateDNSZoneResourceId>"
+          ],
           "service": "API",
           "subnetResourceId": "<subnetResourceId>"
         }
