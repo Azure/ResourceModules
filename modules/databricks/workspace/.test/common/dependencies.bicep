@@ -7,6 +7,9 @@ param managedIdentityName string
 @description('Required. The name of the Key Vault to create.')
 param keyVaultName string
 
+@description('Required. The name of the Key Vault for Disk Encryption to create.')
+param keyVaultDiskName string
+
 @description('Required. The name of the Azure Machine Learning Workspace to create.')
 param amlWorkspaceName string
 
@@ -56,8 +59,27 @@ resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
             kty: 'RSA'
         }
     }
+}
 
-    resource keyDisk 'keys@2022-07-01' = {
+resource keyVaultDisk 'Microsoft.KeyVault/vaults@2022-07-01' = {
+    name: keyVaultDiskName
+    location: location
+    properties: {
+        sku: {
+            family: 'A'
+            name: 'standard'
+        }
+        tenantId: tenant().tenantId
+        enablePurgeProtection: true // Required by batch account
+        softDeleteRetentionInDays: 7
+        enabledForTemplateDeployment: true
+        enabledForDiskEncryption: true
+        enabledForDeployment: true
+        enableRbacAuthorization: true
+        accessPolicies: []
+    }
+
+    resource key 'keys@2022-07-01' = {
         name: 'keyEncryptionKeyDisk'
         properties: {
             kty: 'RSA'
@@ -327,6 +349,9 @@ output machineLearningWorkspaceResourceId string = machineLearningWorkspace.id
 @description('The resource ID of the created Key Vault.')
 output keyVaultResourceId string = keyVault.id
 
+@description('The resource ID of the created Disk Key Vault.')
+output keyVaultDiskResourceId string = keyVaultDisk.id
+
 @description('The resource ID of the created Load Balancer.')
 output loadBalancerResourceId string = loadBalancer.id
 
@@ -337,7 +362,7 @@ output loadBalancerBackendPoolName string = loadBalancer.properties.backendAddre
 output keyVaultKeyName string = keyVault::key.name
 
 @description('The name of the created Key Vault Disk encryption key.')
-output keyVaultDiskKeyName string = keyVault::keyDisk.name
+output keyVaultDiskKeyName string = keyVaultDisk::key.name
 
 @description('The principal ID of the created Managed Identity.')
 output managedIdentityPrincipalId string = managedIdentity.properties.principalId
