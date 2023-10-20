@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "18296719440990844872"
+      "templateHash": "9331368408921308569"
     },
     "name": "Cognitive Services",
     "description": "This module deploys a Cognitive Service.",
@@ -356,6 +356,18 @@
     "identity": "[if(not(equals(variables('identityType'), 'None')), createObject('type', variables('identityType'), 'userAssignedIdentities', if(not(empty(parameters('userAssignedIdentities'))), parameters('userAssignedIdentities'), null())), null())]"
   },
   "resources": {
+    "cMKKeyVault::cMKKey": {
+      "condition": "[and(not(empty(parameters('cMKKeyVaultResourceId'))), not(empty(parameters('cMKKeyName'))))]",
+      "existing": true,
+      "type": "Microsoft.KeyVault/vaults/keys",
+      "apiVersion": "2023-02-01",
+      "subscriptionId": "[split(if(not(empty(parameters('cMKKeyVaultResourceId'))), parameters('cMKKeyVaultResourceId'), '//'), '/')[2]]",
+      "resourceGroup": "[split(if(not(empty(parameters('cMKKeyVaultResourceId'))), parameters('cMKKeyVaultResourceId'), '////'), '/')[4]]",
+      "name": "[format('{0}/{1}', last(split(if(not(empty(parameters('cMKKeyVaultResourceId'))), parameters('cMKKeyVaultResourceId'), 'dummyVault'), '/')), if(not(empty(parameters('cMKKeyName'))), parameters('cMKKeyName'), 'dummyKey'))]",
+      "dependsOn": [
+        "cMKKeyVault"
+      ]
+    },
     "defaultTelemetry": {
       "condition": "[parameters('enableDefaultTelemetry')]",
       "type": "Microsoft.Resources/deployments",
@@ -374,28 +386,19 @@
       "condition": "[not(empty(parameters('cMKKeyVaultResourceId')))]",
       "existing": true,
       "type": "Microsoft.KeyVault/vaults",
-      "apiVersion": "2023-02-01",
-      "subscriptionId": "[split(parameters('cMKKeyVaultResourceId'), '/')[2]]",
-      "resourceGroup": "[split(parameters('cMKKeyVaultResourceId'), '/')[4]]",
-      "name": "[last(split(parameters('cMKKeyVaultResourceId'), '/'))]"
-    },
-    "cMKKeyVaultKey": {
-      "condition": "[and(not(empty(parameters('cMKKeyVaultResourceId'))), not(empty(parameters('cMKKeyName'))))]",
-      "existing": true,
-      "type": "Microsoft.KeyVault/vaults/keys",
-      "apiVersion": "2023-02-01",
-      "subscriptionId": "[split(parameters('cMKKeyVaultResourceId'), '/')[2]]",
-      "resourceGroup": "[split(parameters('cMKKeyVaultResourceId'), '/')[4]]",
-      "name": "[format('{0}/{1}', last(split(parameters('cMKKeyVaultResourceId'), '/')), parameters('cMKKeyName'))]"
+      "apiVersion": "2021-10-01",
+      "subscriptionId": "[split(if(not(empty(parameters('cMKKeyVaultResourceId'))), parameters('cMKKeyVaultResourceId'), '//'), '/')[2]]",
+      "resourceGroup": "[split(if(not(empty(parameters('cMKKeyVaultResourceId'))), parameters('cMKKeyVaultResourceId'), '////'), '/')[4]]",
+      "name": "[last(split(if(not(empty(parameters('cMKKeyVaultResourceId'))), parameters('cMKKeyVaultResourceId'), 'dummyVault'), '/'))]"
     },
     "cMKUserAssignedIdentity": {
       "condition": "[not(empty(parameters('cMKUserAssignedIdentityResourceId')))]",
       "existing": true,
       "type": "Microsoft.ManagedIdentity/userAssignedIdentities",
       "apiVersion": "2023-01-31",
-      "subscriptionId": "[split(parameters('cMKUserAssignedIdentityResourceId'), '/')[2]]",
-      "resourceGroup": "[split(parameters('cMKUserAssignedIdentityResourceId'), '/')[4]]",
-      "name": "[last(split(parameters('cMKUserAssignedIdentityResourceId'), '/'))]"
+      "subscriptionId": "[split(if(not(empty(parameters('cMKKeyVaultResourceId'))), parameters('cMKKeyVaultResourceId'), '//'), '/')[2]]",
+      "resourceGroup": "[split(if(not(empty(parameters('cMKKeyVaultResourceId'))), parameters('cMKKeyVaultResourceId'), '////'), '/')[4]]",
+      "name": "[last(split(if(not(empty(parameters('cMKKeyVaultResourceId'))), parameters('cMKKeyVaultResourceId'), 'dummyMsi'), '/'))]"
     },
     "cognitiveServices": {
       "type": "Microsoft.CognitiveServices/accounts",
@@ -415,7 +418,7 @@
         "allowedFqdnList": "[parameters('allowedFqdnList')]",
         "apiProperties": "[parameters('apiProperties')]",
         "disableLocalAuth": "[parameters('disableLocalAuth')]",
-        "encryption": "[if(not(empty(parameters('cMKKeyName'))), createObject('keySource', 'Microsoft.KeyVault', 'keyVaultProperties', createObject('identityClientId', reference('cMKUserAssignedIdentity').clientId, 'keyVaultUri', reference('cMKKeyVault').vaultUri, 'keyName', parameters('cMKKeyName'), 'keyVersion', if(not(empty(parameters('cMKKeyVersion'))), parameters('cMKKeyVersion'), last(split(reference('cMKKeyVaultKey').keyUriWithVersion, '/'))))), null())]",
+        "encryption": "[if(not(empty(parameters('cMKKeyName'))), createObject('keySource', 'Microsoft.KeyVault', 'keyVaultProperties', createObject('identityClientId', reference('cMKUserAssignedIdentity').clientId, 'keyVaultUri', reference('cMKKeyVault').vaultUri, 'keyName', parameters('cMKKeyName'), 'keyVersion', if(not(empty(parameters('cMKKeyVersion'))), parameters('cMKKeyVersion'), last(split(reference('cMKKeyVault::cMKKey').keyUriWithVersion, '/'))))), null())]",
         "migrationToken": "[if(not(empty(parameters('migrationToken'))), parameters('migrationToken'), null())]",
         "restore": "[parameters('restore')]",
         "restrictOutboundNetworkAccess": "[parameters('restrictOutboundNetworkAccess')]",
@@ -424,7 +427,6 @@
       },
       "dependsOn": [
         "cMKKeyVault",
-        "cMKKeyVaultKey",
         "cMKUserAssignedIdentity"
       ]
     },
