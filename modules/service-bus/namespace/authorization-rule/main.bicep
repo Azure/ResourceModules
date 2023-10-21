@@ -33,11 +33,11 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource namespace 'Microsoft.ServiceBus/namespaces@2021-11-01' existing = {
+resource namespace 'Microsoft.ServiceBus/namespaces@2022-10-01-preview' existing = {
   name: namespaceName
 }
 
-resource authorizationRule 'Microsoft.ServiceBus/namespaces/AuthorizationRules@2017-04-01' = {
+resource authorizationRule 'Microsoft.ServiceBus/namespaces/AuthorizationRules@2022-10-01-preview' = {
   name: name
   parent: namespace
   properties: {

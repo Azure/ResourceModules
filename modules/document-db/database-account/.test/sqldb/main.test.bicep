@@ -84,11 +84,11 @@ module testDeployment '../../main.bicep' = {
     location: location
     privateEndpoints: [
       {
-        privateDnsZoneGroup: {
-          privateDNSResourceIds: [
-            nestedDependencies.outputs.privateDNSResourceId
-          ]
-        }
+        privateDnsZoneResourceIds: [
+
+          nestedDependencies.outputs.privateDNSZoneResourceId
+
+        ]
         service: 'Sql'
         subnetResourceId: nestedDependencies.outputs.subnetResourceId
         tags: {

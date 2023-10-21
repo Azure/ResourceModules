@@ -345,9 +345,9 @@ output location string = logAnalyticsWorkspace.location
 @description('The principal ID of the system assigned identity.')
 output systemAssignedMIPrincipalId string = (managedIdentities.?systemAssigned ?? false) && contains(logAnalyticsWorkspace.identity, 'principalId') ? logAnalyticsWorkspace.identity.principalId : ''
 
-// ================ //
-// Definitions      //
-// ================ //
+// =============== //
+//   Definitions   //
+// =============== //
 
 type diagnosticSettingType = {
   @description('Optional. The name of diagnostic setting.')

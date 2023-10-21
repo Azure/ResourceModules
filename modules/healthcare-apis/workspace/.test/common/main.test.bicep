@@ -1,5 +1,8 @@
 targetScope = 'subscription'
 
+metadata name = 'Using large parameter set'
+metadata description = 'This instance deploys the module with most of its features enabled.'
+
 // ========== //
 // Parameters //
 // ========== //
@@ -67,7 +70,10 @@ module testDeployment '../../main.bicep' = {
     name: '${namePrefix}${serviceShort}001'
     location: location
     publicNetworkAccess: 'Enabled'
-    lock: ''
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     fhirservices: [
       {
         name: '${namePrefix}-az-fhir-x-001'

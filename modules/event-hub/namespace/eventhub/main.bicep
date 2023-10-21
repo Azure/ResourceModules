@@ -20,7 +20,7 @@ param authorizationRules array = [
   }
 ]
 
-@description('Optional. Number of days to retain the events for this Event Hub, value should be 1 to 7 days.')
+@description('Optional. Number of days to retain the events for this Event Hub, value should be 1 to 7 days. Will be automatically set to infinite retention if cleanup policy is set to "Compact".')
 @minValue(1)
 @maxValue(7)
 param messageRetentionInDays int = 1
@@ -51,13 +51,8 @@ param consumergroups array = [
   }
 ]
 
-@allowed([
-  ''
-  'CanNotDelete'
-  'ReadOnly'
-])
-@description('Optional. Specify the type of lock.')
-param lock string = ''
+@description('Optional. The lock settings of the service.')
+param lock lockType
 
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
@@ -97,20 +92,40 @@ param captureDescriptionSizeLimitInBytes int = 314572800
 @description('Optional. A value that indicates whether to Skip Empty Archives.')
 param captureDescriptionSkipEmptyArchives bool = false
 
+@allowed([
+  'Compact'
+  'Delete'
+])
+@description('Optional. Retention cleanup policy. Enumerates the possible values for cleanup policy.')
+param retentionDescriptionCleanupPolicy string = 'Delete'
+
+@minValue(1)
+@maxValue(168)
+@description('Optional. Retention time in hours. Number of hours to retain the events for this Event Hub. This value is only used when cleanupPolicy is Delete. If cleanupPolicy is Compact the returned value of this property is Long.MaxValue.')
+param retentionDescriptionRetentionTimeInHours int = 1
+
+@minValue(1)
+@maxValue(168)
+@description('Optional. Retention cleanup policy. Number of hours to retain the tombstone markers of a compacted Event Hub. This value is only used when cleanupPolicy is Compact. Consumer must complete reading the tombstone marker within this specified amount of time if consumer begins from starting offset to ensure they get a valid snapshot for the specific key described by the tombstone marker within the compacted Event Hub.')
+param retentionDescriptionTombstoneRetentionTimeInHours int = 1
+
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 var enableReferencedModulesTelemetry = false
 
-var eventHubPropertiesSimple = {
+var eventHubProperties = {
   messageRetentionInDays: messageRetentionInDays
   partitionCount: partitionCount
   status: status
+  retentionDescription: {
+    cleanupPolicy: retentionDescriptionCleanupPolicy
+    retentionTimeInHours: retentionDescriptionCleanupPolicy == 'Delete' ? retentionDescriptionRetentionTimeInHours : null
+    tombstoneRetentionTimeInHours: retentionDescriptionCleanupPolicy == 'Compact' ? retentionDescriptionTombstoneRetentionTimeInHours : null
+  }
 }
-var eventHubPropertiesWithCapture = {
-  messageRetentionInDays: messageRetentionInDays
-  partitionCount: partitionCount
-  status: status
+
+var eventHubPropertiesCapture = {
   captureDescription: {
     destination: {
       name: captureDescriptionDestinationName
@@ -140,21 +155,21 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource namespace 'Microsoft.EventHub/namespaces@2022-01-01-preview' existing = {
+resource namespace 'Microsoft.EventHub/namespaces@2022-10-01-preview' existing = {
   name: namespaceName
 }
 
-resource eventHub 'Microsoft.EventHub/namespaces/eventhubs@2022-01-01-preview' = {
+resource eventHub 'Microsoft.EventHub/namespaces/eventhubs@2022-10-01-preview' = {
   name: name
   parent: namespace
-  properties: captureDescriptionEnabled ? eventHubPropertiesWithCapture : eventHubPropertiesSimple
+  properties: captureDescriptionEnabled ? union(eventHubProperties, eventHubPropertiesCapture) : eventHubProperties
 }
 
-resource eventHub_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
-  name: '${eventHub.name}-${lock}-lock'
+resource eventHub_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock ?? {}) && lock.?kind != 'None') {
+  name: lock.?name ?? 'lock-${name}'
   properties: {
-    level: any(lock)
-    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+    level: lock.?kind ?? ''
+    notes: lock.?kind == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot delete or modify the resource or child resources.'
   }
   scope: eventHub
 }
@@ -205,3 +220,15 @@ output resourceGroupName string = resourceGroup().name
 
 @description('The authentication rule resource ID of the event hub.')
 output resourceId string = az.resourceId('Microsoft.EventHub/namespaces/authorizationRules', namespaceName, 'RootManageSharedAccessKey')
+
+// =============== //
+//   Definitions   //
+// =============== //
+
+type lockType = {
+  @description('Optional. Specify the name of lock.')
+  name: string?
+
+  @description('Optional. Specify the type of lock.')
+  kind: ('CanNotDelete' | 'ReadOnly' | 'None')?
+}?

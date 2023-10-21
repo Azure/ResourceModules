@@ -1,15 +1,43 @@
 {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "languageVersion": "2.0",
   "contentVersion": "1.0.0.0",
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.20.4.51522",
-      "templateHash": "5587843022604046042"
+      "version": "0.22.6.54827",
+      "templateHash": "5557057389279222101"
     },
     "name": "Relay Namespace Hybrid Connections",
     "description": "This module deploys a Relay Namespace Hybrid Connection.",
     "owner": "Azure/module-maintainers"
+  },
+  "definitions": {
+    "lockType": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Specify the name of lock."
+          }
+        },
+        "kind": {
+          "type": "string",
+          "allowedValues": [
+            "CanNotDelete",
+            "None",
+            "ReadOnly"
+          ],
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Specify the type of lock."
+          }
+        }
+      },
+      "nullable": true
+    }
   },
   "parameters": {
     "namespaceName": {
@@ -70,15 +98,9 @@
       }
     },
     "lock": {
-      "type": "string",
-      "defaultValue": "",
-      "allowedValues": [
-        "",
-        "CanNotDelete",
-        "ReadOnly"
-      ],
+      "$ref": "#/definitions/lockType",
       "metadata": {
-        "description": "Optional. Specify the type of lock."
+        "description": "Optional. The lock settings of the service."
       }
     },
     "roleAssignments": {
@@ -99,8 +121,8 @@
   "variables": {
     "enableReferencedModulesTelemetry": false
   },
-  "resources": [
-    {
+  "resources": {
+    "defaultTelemetry": {
       "condition": "[parameters('enableDefaultTelemetry')]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2021-04-01",
@@ -114,30 +136,39 @@
         }
       }
     },
-    {
+    "namespace": {
+      "existing": true,
+      "type": "Microsoft.Relay/namespaces",
+      "apiVersion": "2021-11-01",
+      "name": "[parameters('namespaceName')]"
+    },
+    "hybridConnection": {
       "type": "Microsoft.Relay/namespaces/hybridConnections",
       "apiVersion": "2021-11-01",
       "name": "[format('{0}/{1}', parameters('namespaceName'), parameters('name'))]",
       "properties": {
         "requiresClientAuthorization": "[parameters('requiresClientAuthorization')]",
         "userMetadata": "[parameters('userMetadata')]"
-      }
+      },
+      "dependsOn": [
+        "namespace"
+      ]
     },
-    {
-      "condition": "[not(empty(parameters('lock')))]",
+    "hybridConnection_lock": {
+      "condition": "[and(not(empty(coalesce(parameters('lock'), createObject()))), not(equals(tryGet(parameters('lock'), 'kind'), 'None')))]",
       "type": "Microsoft.Authorization/locks",
       "apiVersion": "2020-05-01",
       "scope": "[format('Microsoft.Relay/namespaces/{0}/hybridConnections/{1}', parameters('namespaceName'), parameters('name'))]",
-      "name": "[format('{0}-{1}-lock', parameters('name'), parameters('lock'))]",
+      "name": "[coalesce(tryGet(parameters('lock'), 'name'), format('lock-{0}', parameters('name')))]",
       "properties": {
-        "level": "[parameters('lock')]",
-        "notes": "[if(equals(parameters('lock'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot modify the resource or child resources.')]"
+        "level": "[coalesce(tryGet(parameters('lock'), 'kind'), '')]",
+        "notes": "[if(equals(tryGet(parameters('lock'), 'kind'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot delete or modify the resource or child resources.')]"
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Relay/namespaces/hybridConnections', parameters('namespaceName'), parameters('name'))]"
+        "hybridConnection"
       ]
     },
-    {
+    "hybridConnection_authorizationRules": {
       "copy": {
         "name": "hybridConnection_authorizationRules",
         "count": "[length(parameters('authorizationRules'))]"
@@ -171,8 +202,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.20.4.51522",
-              "templateHash": "9718423441307347496"
+              "version": "0.22.6.54827",
+              "templateHash": "2105813068659609285"
             },
             "name": "Hybrid Connection Authorization Rules",
             "description": "This module deploys a Hybrid Connection Authorization Rule.",
@@ -267,10 +298,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Relay/namespaces/hybridConnections', parameters('namespaceName'), parameters('name'))]"
+        "hybridConnection"
       ]
     },
-    {
+    "hybridConnection_roleAssignments": {
       "copy": {
         "name": "hybridConnection_roleAssignments",
         "count": "[length(parameters('roleAssignments'))]"
@@ -304,8 +335,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.20.4.51522",
-              "templateHash": "5814555714153100571"
+              "version": "0.22.6.54827",
+              "templateHash": "9757505768958218088"
             }
           },
           "parameters": {
@@ -419,10 +450,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Relay/namespaces/hybridConnections', parameters('namespaceName'), parameters('name'))]"
+        "hybridConnection"
       ]
     }
-  ],
+  },
   "outputs": {
     "name": {
       "type": "string",

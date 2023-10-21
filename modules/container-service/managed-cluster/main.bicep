@@ -338,13 +338,8 @@ param enableDefaultTelemetry bool = true
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
 
-@allowed([
-  ''
-  'CanNotDelete'
-  'ReadOnly'
-])
-@description('Optional. Specify the type of lock.')
-param lock string = ''
+@description('Optional. The lock settings of the service.')
+param lock lockType
 
 @description('Optional. Tags of the resource.')
 param tags object = {}
@@ -449,7 +444,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2022-09-01' = if (ena
   }
 }
 
-resource managedCluster 'Microsoft.ContainerService/managedClusters@2023-06-02-preview' = {
+resource managedCluster 'Microsoft.ContainerService/managedClusters@2023-07-02-preview' = {
   name: name
   location: location
   tags: tags
@@ -470,7 +465,9 @@ resource managedCluster 'Microsoft.ContainerService/managedClusters@2023-06-02-p
     ingressProfile: {
       webAppRouting: {
         enabled: webApplicationRoutingEnabled
-        dnsZoneResourceId: !empty(dnsZoneResourceId) ? any(dnsZoneResourceId) : null
+        dnsZoneResourceIds: !empty(dnsZoneResourceId) ? [
+          dnsZoneResourceId
+        ] : null
       }
     }
     addonProfiles: {
@@ -665,11 +662,11 @@ module managedCluster_extension '../../kubernetes-configuration/extension/main.b
   }
 }
 
-resource managedCluster_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
-  name: '${managedCluster.name}-${lock}-lock'
+resource managedCluster_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock ?? {}) && lock.?kind != 'None') {
+  name: lock.?name ?? 'lock-${name}'
   properties: {
-    level: any(lock)
-    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+    level: lock.?kind ?? ''
+    notes: lock.?kind == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot delete or modify the resource or child resources.'
   }
   scope: managedCluster
 }
@@ -701,7 +698,7 @@ module managedCluster_roleAssignments '.bicep/nested_roleAssignments.bicep' = [f
 }]
 
 resource dnsZone 'Microsoft.Network/dnsZones@2018-05-01' existing = if (dnsZoneResourceId != null && webApplicationRoutingEnabled) {
-  name: last(split(dnsZoneResourceId, '/'))!
+  name: last(split((!empty(dnsZoneResourceId) ? dnsZoneResourceId : '/dummmyZone'), '/'))!
 }
 
 resource dnsZone_roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = if (enableDnsZoneContributorRoleAssignment == true && dnsZoneResourceId != null && webApplicationRoutingEnabled) {
@@ -749,3 +746,15 @@ output oidcIssuerUrl string = enableOidcIssuerProfile ? managedCluster.propertie
 
 @description('The addonProfiles of the Kubernetes cluster.')
 output addonProfiles object = contains(managedCluster.properties, 'addonProfiles') ? managedCluster.properties.addonProfiles : {}
+
+// =============== //
+//   Definitions   //
+// =============== //
+
+type lockType = {
+  @description('Optional. Specify the name of lock.')
+  name: string?
+
+  @description('Optional. Specify the type of lock.')
+  kind: ('CanNotDelete' | 'ReadOnly' | 'None')?
+}?

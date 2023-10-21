@@ -1,15 +1,43 @@
 {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "languageVersion": "2.0",
   "contentVersion": "1.0.0.0",
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.21.1.54444",
-      "templateHash": "1618306039549240547"
+      "version": "0.22.6.54827",
+      "templateHash": "10604850495131804287"
     },
     "name": "Azure Firewalls",
     "description": "This module deploys an Azure Firewall.",
     "owner": "Azure/module-maintainers"
+  },
+  "definitions": {
+    "lockType": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Specify the name of lock."
+          }
+        },
+        "kind": {
+          "type": "string",
+          "allowedValues": [
+            "CanNotDelete",
+            "None",
+            "ReadOnly"
+          ],
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Specify the type of lock."
+          }
+        }
+      },
+      "nullable": true
+    }
   },
   "parameters": {
     "name": {
@@ -180,15 +208,9 @@
       }
     },
     "lock": {
-      "type": "string",
-      "defaultValue": "",
-      "allowedValues": [
-        "",
-        "CanNotDelete",
-        "ReadOnly"
-      ],
+      "$ref": "#/definitions/lockType",
       "metadata": {
-        "description": "Optional. Specify the type of lock."
+        "description": "Optional. The lock settings of the service."
       }
     },
     "roleAssignments": {
@@ -304,8 +326,8 @@
     "diagnosticsLogs": "[if(contains(parameters('diagnosticLogCategoriesToEnable'), 'allLogs'), createArray(createObject('categoryGroup', 'allLogs', 'enabled', true())), if(contains(parameters('diagnosticLogCategoriesToEnable'), ''), createArray(), variables('diagnosticsLogsSpecified')))]",
     "enableReferencedModulesTelemetry": false
   },
-  "resources": [
-    {
+  "resources": {
+    "defaultTelemetry": {
       "condition": "[parameters('enableDefaultTelemetry')]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2021-04-01",
@@ -319,34 +341,34 @@
         }
       }
     },
-    {
+    "azureFirewall": {
       "type": "Microsoft.Network/azureFirewalls",
       "apiVersion": "2023-04-01",
       "name": "[parameters('name')]",
       "location": "[parameters('location')]",
       "zones": "[if(equals(length(parameters('zones')), 0), null(), parameters('zones'))]",
       "tags": "[parameters('tags')]",
-      "properties": "[if(equals(variables('azureSkuName'), 'AZFW_VNet'), createObject('threatIntelMode', parameters('threatIntelMode'), 'firewallPolicy', if(not(empty(parameters('firewallPolicyId'))), createObject('id', parameters('firewallPolicyId')), null()), 'ipConfigurations', concat(createArray(createObject('name', if(not(empty(parameters('publicIPResourceID'))), last(split(parameters('publicIPResourceID'), '/')), reference(resourceId('Microsoft.Resources/deployments', format('{0}-Firewall-PIP', uniqueString(deployment().name, parameters('location')))), '2022-09-01').outputs.name.value), 'properties', union(variables('subnetVar'), if(not(empty(parameters('publicIPResourceID'))), variables('existingPip'), createObject()), if(parameters('isCreateDefaultPublicIP'), createObject('publicIPAddress', if(and(empty(parameters('publicIPResourceID')), parameters('isCreateDefaultPublicIP')), createObject('id', reference(resourceId('Microsoft.Resources/deployments', format('{0}-Firewall-PIP', uniqueString(deployment().name, parameters('location')))), '2022-09-01').outputs.resourceId.value), null())), createObject())))), variables('additionalPublicIpConfigurationsVar')), 'managementIpConfiguration', if(variables('requiresManagementIp'), createObject('name', if(not(empty(parameters('managementIPResourceID'))), last(split(parameters('managementIPResourceID'), '/')), reference(resourceId('Microsoft.Resources/deployments', format('{0}-Firewall-MIP', uniqueString(deployment().name, parameters('location')))), '2022-09-01').outputs.name.value), 'properties', union(variables('managementSubnetVar'), if(not(empty(parameters('managementIPResourceID'))), variables('existingMip'), createObject()), if(variables('isCreateDefaultManagementIP'), createObject('publicIPAddress', if(and(empty(parameters('managementIPResourceID')), variables('isCreateDefaultManagementIP')), createObject('id', reference(resourceId('Microsoft.Resources/deployments', format('{0}-Firewall-MIP', uniqueString(deployment().name, parameters('location')))), '2022-09-01').outputs.resourceId.value), null())), createObject()))), null()), 'sku', createObject('name', variables('azureSkuName'), 'tier', parameters('azureSkuTier')), 'applicationRuleCollections', parameters('applicationRuleCollections'), 'natRuleCollections', parameters('natRuleCollections'), 'networkRuleCollections', parameters('networkRuleCollections')), createObject('firewallPolicy', if(not(empty(parameters('firewallPolicyId'))), createObject('id', parameters('firewallPolicyId')), null()), 'sku', createObject('name', variables('azureSkuName'), 'tier', parameters('azureSkuTier')), 'hubIPAddresses', if(not(empty(parameters('hubIPAddresses'))), parameters('hubIPAddresses'), null()), 'virtualHub', if(not(empty(parameters('virtualHubId'))), createObject('id', parameters('virtualHubId')), null())))]",
+      "properties": "[if(equals(variables('azureSkuName'), 'AZFW_VNet'), createObject('threatIntelMode', parameters('threatIntelMode'), 'firewallPolicy', if(not(empty(parameters('firewallPolicyId'))), createObject('id', parameters('firewallPolicyId')), null()), 'ipConfigurations', concat(createArray(createObject('name', if(not(empty(parameters('publicIPResourceID'))), last(split(parameters('publicIPResourceID'), '/')), reference('publicIPAddress').outputs.name.value), 'properties', union(variables('subnetVar'), if(not(empty(parameters('publicIPResourceID'))), variables('existingPip'), createObject()), if(parameters('isCreateDefaultPublicIP'), createObject('publicIPAddress', if(and(empty(parameters('publicIPResourceID')), parameters('isCreateDefaultPublicIP')), createObject('id', reference('publicIPAddress').outputs.resourceId.value), null())), createObject())))), variables('additionalPublicIpConfigurationsVar')), 'managementIpConfiguration', if(variables('requiresManagementIp'), createObject('name', if(not(empty(parameters('managementIPResourceID'))), last(split(parameters('managementIPResourceID'), '/')), reference('managementIPAddress').outputs.name.value), 'properties', union(variables('managementSubnetVar'), if(not(empty(parameters('managementIPResourceID'))), variables('existingMip'), createObject()), if(variables('isCreateDefaultManagementIP'), createObject('publicIPAddress', if(and(empty(parameters('managementIPResourceID')), variables('isCreateDefaultManagementIP')), createObject('id', reference('managementIPAddress').outputs.resourceId.value), null())), createObject()))), null()), 'sku', createObject('name', variables('azureSkuName'), 'tier', parameters('azureSkuTier')), 'applicationRuleCollections', parameters('applicationRuleCollections'), 'natRuleCollections', parameters('natRuleCollections'), 'networkRuleCollections', parameters('networkRuleCollections')), createObject('firewallPolicy', if(not(empty(parameters('firewallPolicyId'))), createObject('id', parameters('firewallPolicyId')), null()), 'sku', createObject('name', variables('azureSkuName'), 'tier', parameters('azureSkuTier')), 'hubIPAddresses', if(not(empty(parameters('hubIPAddresses'))), parameters('hubIPAddresses'), null()), 'virtualHub', if(not(empty(parameters('virtualHubId'))), createObject('id', parameters('virtualHubId')), null())))]",
       "dependsOn": [
-        "[resourceId('Microsoft.Resources/deployments', format('{0}-Firewall-MIP', uniqueString(deployment().name, parameters('location'))))]",
-        "[resourceId('Microsoft.Resources/deployments', format('{0}-Firewall-PIP', uniqueString(deployment().name, parameters('location'))))]"
+        "managementIPAddress",
+        "publicIPAddress"
       ]
     },
-    {
-      "condition": "[not(empty(parameters('lock')))]",
+    "azureFirewall_lock": {
+      "condition": "[and(not(empty(coalesce(parameters('lock'), createObject()))), not(equals(tryGet(parameters('lock'), 'kind'), 'None')))]",
       "type": "Microsoft.Authorization/locks",
       "apiVersion": "2020-05-01",
       "scope": "[format('Microsoft.Network/azureFirewalls/{0}', parameters('name'))]",
-      "name": "[format('{0}-{1}-lock', parameters('name'), parameters('lock'))]",
+      "name": "[coalesce(tryGet(parameters('lock'), 'name'), format('lock-{0}', parameters('name')))]",
       "properties": {
-        "level": "[parameters('lock')]",
-        "notes": "[if(equals(parameters('lock'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot modify the resource or child resources.')]"
+        "level": "[coalesce(tryGet(parameters('lock'), 'kind'), '')]",
+        "notes": "[if(equals(tryGet(parameters('lock'), 'kind'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot delete or modify the resource or child resources.')]"
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Network/azureFirewalls', parameters('name'))]"
+        "azureFirewall"
       ]
     },
-    {
+    "azureFirewall_diagnosticSettings": {
       "condition": "[or(or(or(not(empty(parameters('diagnosticStorageAccountId'))), not(empty(parameters('diagnosticWorkspaceId')))), not(empty(parameters('diagnosticEventHubAuthorizationRuleId')))), not(empty(parameters('diagnosticEventHubName'))))]",
       "type": "Microsoft.Insights/diagnosticSettings",
       "apiVersion": "2021-05-01-preview",
@@ -361,10 +383,10 @@
         "logs": "[variables('diagnosticsLogs')]"
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Network/azureFirewalls', parameters('name'))]"
+        "azureFirewall"
       ]
     },
-    {
+    "publicIPAddress": {
       "condition": "[and(and(empty(parameters('publicIPResourceID')), parameters('isCreateDefaultPublicIP')), equals(variables('azureSkuName'), 'AZFW_VNet'))]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
@@ -413,16 +435,44 @@
         },
         "template": {
           "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "languageVersion": "2.0",
           "contentVersion": "1.0.0.0",
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "1887898957722092173"
+              "version": "0.22.6.54827",
+              "templateHash": "7177220893233117141"
             },
             "name": "Public IP Addresses",
             "description": "This module deploys a Public IP Address.",
             "owner": "Azure/module-maintainers"
+          },
+          "definitions": {
+            "lockType": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "nullable": true,
+                  "metadata": {
+                    "description": "Optional. Specify the name of lock."
+                  }
+                },
+                "kind": {
+                  "type": "string",
+                  "allowedValues": [
+                    "CanNotDelete",
+                    "None",
+                    "ReadOnly"
+                  ],
+                  "nullable": true,
+                  "metadata": {
+                    "description": "Optional. Specify the type of lock."
+                  }
+                }
+              },
+              "nullable": true
+            }
           },
           "parameters": {
             "name": {
@@ -553,15 +603,9 @@
               }
             },
             "lock": {
-              "type": "string",
-              "defaultValue": "",
-              "allowedValues": [
-                "",
-                "CanNotDelete",
-                "ReadOnly"
-              ],
+              "$ref": "#/definitions/lockType",
               "metadata": {
-                "description": "Optional. Specify the type of lock."
+                "description": "Optional. The lock settings of the service."
               }
             },
             "location": {
@@ -650,8 +694,8 @@
             ],
             "diagnosticsLogs": "[if(contains(parameters('diagnosticLogCategoriesToEnable'), 'allLogs'), createArray(createObject('categoryGroup', 'allLogs', 'enabled', true())), if(contains(parameters('diagnosticLogCategoriesToEnable'), ''), createArray(), variables('diagnosticsLogsSpecified')))]"
           },
-          "resources": [
-            {
+          "resources": {
+            "defaultTelemetry": {
               "condition": "[parameters('enableDefaultTelemetry')]",
               "type": "Microsoft.Resources/deployments",
               "apiVersion": "2021-04-01",
@@ -665,7 +709,7 @@
                 }
               }
             },
-            {
+            "publicIpAddress": {
               "type": "Microsoft.Network/publicIPAddresses",
               "apiVersion": "2023-04-01",
               "name": "[parameters('name')]",
@@ -685,21 +729,21 @@
                 "ipTags": []
               }
             },
-            {
-              "condition": "[not(empty(parameters('lock')))]",
+            "publicIpAddress_lock": {
+              "condition": "[and(not(empty(coalesce(parameters('lock'), createObject()))), not(equals(tryGet(parameters('lock'), 'kind'), 'None')))]",
               "type": "Microsoft.Authorization/locks",
               "apiVersion": "2020-05-01",
               "scope": "[format('Microsoft.Network/publicIPAddresses/{0}', parameters('name'))]",
-              "name": "[format('{0}-{1}-lock', parameters('name'), parameters('lock'))]",
+              "name": "[coalesce(tryGet(parameters('lock'), 'name'), format('lock-{0}', parameters('name')))]",
               "properties": {
-                "level": "[parameters('lock')]",
-                "notes": "[if(equals(parameters('lock'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot modify the resource or child resources.')]"
+                "level": "[coalesce(tryGet(parameters('lock'), 'kind'), '')]",
+                "notes": "[if(equals(tryGet(parameters('lock'), 'kind'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot delete or modify the resource or child resources.')]"
               },
               "dependsOn": [
-                "[resourceId('Microsoft.Network/publicIPAddresses', parameters('name'))]"
+                "publicIpAddress"
               ]
             },
-            {
+            "publicIpAddress_diagnosticSettings": {
               "condition": "[or(or(or(not(empty(parameters('diagnosticStorageAccountId'))), not(empty(parameters('diagnosticWorkspaceId')))), not(empty(parameters('diagnosticEventHubAuthorizationRuleId')))), not(empty(parameters('diagnosticEventHubName'))))]",
               "type": "Microsoft.Insights/diagnosticSettings",
               "apiVersion": "2021-05-01-preview",
@@ -714,10 +758,10 @@
                 "logs": "[variables('diagnosticsLogs')]"
               },
               "dependsOn": [
-                "[resourceId('Microsoft.Network/publicIPAddresses', parameters('name'))]"
+                "publicIpAddress"
               ]
             },
-            {
+            "publicIpAddress_roleAssignments": {
               "copy": {
                 "name": "publicIpAddress_roleAssignments",
                 "count": "[length(parameters('roleAssignments'))]"
@@ -751,8 +795,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.21.1.54444",
-                      "templateHash": "7328126239184883887"
+                      "version": "0.22.6.54827",
+                      "templateHash": "9976109177347918049"
                     }
                   },
                   "parameters": {
@@ -891,10 +935,10 @@
                 }
               },
               "dependsOn": [
-                "[resourceId('Microsoft.Network/publicIPAddresses', parameters('name'))]"
+                "publicIpAddress"
               ]
             }
-          ],
+          },
           "outputs": {
             "resourceGroupName": {
               "type": "string",
@@ -922,20 +966,20 @@
               "metadata": {
                 "description": "The public IP address of the public IP address resource."
               },
-              "value": "[if(contains(reference(resourceId('Microsoft.Network/publicIPAddresses', parameters('name')), '2023-04-01'), 'ipAddress'), reference(resourceId('Microsoft.Network/publicIPAddresses', parameters('name')), '2023-04-01').ipAddress, '')]"
+              "value": "[if(contains(reference('publicIpAddress'), 'ipAddress'), reference('publicIpAddress').ipAddress, '')]"
             },
             "location": {
               "type": "string",
               "metadata": {
                 "description": "The location the resource was deployed into."
               },
-              "value": "[reference(resourceId('Microsoft.Network/publicIPAddresses', parameters('name')), '2023-04-01', 'full').location]"
+              "value": "[reference('publicIpAddress', '2023-04-01', 'full').location]"
             }
           }
         }
       }
     },
-    {
+    "managementIPAddress": {
       "condition": "[and(and(empty(parameters('managementIPResourceID')), variables('isCreateDefaultManagementIP')), equals(variables('azureSkuName'), 'AZFW_VNet'))]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
@@ -984,16 +1028,44 @@
         },
         "template": {
           "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "languageVersion": "2.0",
           "contentVersion": "1.0.0.0",
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "1887898957722092173"
+              "version": "0.22.6.54827",
+              "templateHash": "7177220893233117141"
             },
             "name": "Public IP Addresses",
             "description": "This module deploys a Public IP Address.",
             "owner": "Azure/module-maintainers"
+          },
+          "definitions": {
+            "lockType": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "nullable": true,
+                  "metadata": {
+                    "description": "Optional. Specify the name of lock."
+                  }
+                },
+                "kind": {
+                  "type": "string",
+                  "allowedValues": [
+                    "CanNotDelete",
+                    "None",
+                    "ReadOnly"
+                  ],
+                  "nullable": true,
+                  "metadata": {
+                    "description": "Optional. Specify the type of lock."
+                  }
+                }
+              },
+              "nullable": true
+            }
           },
           "parameters": {
             "name": {
@@ -1124,15 +1196,9 @@
               }
             },
             "lock": {
-              "type": "string",
-              "defaultValue": "",
-              "allowedValues": [
-                "",
-                "CanNotDelete",
-                "ReadOnly"
-              ],
+              "$ref": "#/definitions/lockType",
               "metadata": {
-                "description": "Optional. Specify the type of lock."
+                "description": "Optional. The lock settings of the service."
               }
             },
             "location": {
@@ -1221,8 +1287,8 @@
             ],
             "diagnosticsLogs": "[if(contains(parameters('diagnosticLogCategoriesToEnable'), 'allLogs'), createArray(createObject('categoryGroup', 'allLogs', 'enabled', true())), if(contains(parameters('diagnosticLogCategoriesToEnable'), ''), createArray(), variables('diagnosticsLogsSpecified')))]"
           },
-          "resources": [
-            {
+          "resources": {
+            "defaultTelemetry": {
               "condition": "[parameters('enableDefaultTelemetry')]",
               "type": "Microsoft.Resources/deployments",
               "apiVersion": "2021-04-01",
@@ -1236,7 +1302,7 @@
                 }
               }
             },
-            {
+            "publicIpAddress": {
               "type": "Microsoft.Network/publicIPAddresses",
               "apiVersion": "2023-04-01",
               "name": "[parameters('name')]",
@@ -1256,21 +1322,21 @@
                 "ipTags": []
               }
             },
-            {
-              "condition": "[not(empty(parameters('lock')))]",
+            "publicIpAddress_lock": {
+              "condition": "[and(not(empty(coalesce(parameters('lock'), createObject()))), not(equals(tryGet(parameters('lock'), 'kind'), 'None')))]",
               "type": "Microsoft.Authorization/locks",
               "apiVersion": "2020-05-01",
               "scope": "[format('Microsoft.Network/publicIPAddresses/{0}', parameters('name'))]",
-              "name": "[format('{0}-{1}-lock', parameters('name'), parameters('lock'))]",
+              "name": "[coalesce(tryGet(parameters('lock'), 'name'), format('lock-{0}', parameters('name')))]",
               "properties": {
-                "level": "[parameters('lock')]",
-                "notes": "[if(equals(parameters('lock'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot modify the resource or child resources.')]"
+                "level": "[coalesce(tryGet(parameters('lock'), 'kind'), '')]",
+                "notes": "[if(equals(tryGet(parameters('lock'), 'kind'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot delete or modify the resource or child resources.')]"
               },
               "dependsOn": [
-                "[resourceId('Microsoft.Network/publicIPAddresses', parameters('name'))]"
+                "publicIpAddress"
               ]
             },
-            {
+            "publicIpAddress_diagnosticSettings": {
               "condition": "[or(or(or(not(empty(parameters('diagnosticStorageAccountId'))), not(empty(parameters('diagnosticWorkspaceId')))), not(empty(parameters('diagnosticEventHubAuthorizationRuleId')))), not(empty(parameters('diagnosticEventHubName'))))]",
               "type": "Microsoft.Insights/diagnosticSettings",
               "apiVersion": "2021-05-01-preview",
@@ -1285,10 +1351,10 @@
                 "logs": "[variables('diagnosticsLogs')]"
               },
               "dependsOn": [
-                "[resourceId('Microsoft.Network/publicIPAddresses', parameters('name'))]"
+                "publicIpAddress"
               ]
             },
-            {
+            "publicIpAddress_roleAssignments": {
               "copy": {
                 "name": "publicIpAddress_roleAssignments",
                 "count": "[length(parameters('roleAssignments'))]"
@@ -1322,8 +1388,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.21.1.54444",
-                      "templateHash": "7328126239184883887"
+                      "version": "0.22.6.54827",
+                      "templateHash": "9976109177347918049"
                     }
                   },
                   "parameters": {
@@ -1462,10 +1528,10 @@
                 }
               },
               "dependsOn": [
-                "[resourceId('Microsoft.Network/publicIPAddresses', parameters('name'))]"
+                "publicIpAddress"
               ]
             }
-          ],
+          },
           "outputs": {
             "resourceGroupName": {
               "type": "string",
@@ -1493,20 +1559,20 @@
               "metadata": {
                 "description": "The public IP address of the public IP address resource."
               },
-              "value": "[if(contains(reference(resourceId('Microsoft.Network/publicIPAddresses', parameters('name')), '2023-04-01'), 'ipAddress'), reference(resourceId('Microsoft.Network/publicIPAddresses', parameters('name')), '2023-04-01').ipAddress, '')]"
+              "value": "[if(contains(reference('publicIpAddress'), 'ipAddress'), reference('publicIpAddress').ipAddress, '')]"
             },
             "location": {
               "type": "string",
               "metadata": {
                 "description": "The location the resource was deployed into."
               },
-              "value": "[reference(resourceId('Microsoft.Network/publicIPAddresses', parameters('name')), '2023-04-01', 'full').location]"
+              "value": "[reference('publicIpAddress', '2023-04-01', 'full').location]"
             }
           }
         }
       }
     },
-    {
+    "azureFirewall_roleAssignments": {
       "copy": {
         "name": "azureFirewall_roleAssignments",
         "count": "[length(parameters('roleAssignments'))]"
@@ -1540,8 +1606,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "4956524931122744714"
+              "version": "0.22.6.54827",
+              "templateHash": "11885290344977420864"
             }
           },
           "parameters": {
@@ -1680,10 +1746,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Network/azureFirewalls', parameters('name'))]"
+        "azureFirewall"
       ]
     }
-  ],
+  },
   "outputs": {
     "resourceId": {
       "type": "string",
@@ -1711,14 +1777,14 @@
       "metadata": {
         "description": "The private IP of the Azure firewall."
       },
-      "value": "[if(contains(reference(resourceId('Microsoft.Network/azureFirewalls', parameters('name')), '2023-04-01'), 'ipConfigurations'), reference(resourceId('Microsoft.Network/azureFirewalls', parameters('name')), '2023-04-01').ipConfigurations[0].properties.privateIPAddress, '')]"
+      "value": "[if(contains(reference('azureFirewall'), 'ipConfigurations'), reference('azureFirewall').ipConfigurations[0].properties.privateIPAddress, '')]"
     },
     "ipConfAzureFirewallSubnet": {
       "type": "object",
       "metadata": {
         "description": "The Public IP configuration object for the Azure Firewall Subnet."
       },
-      "value": "[if(contains(reference(resourceId('Microsoft.Network/azureFirewalls', parameters('name')), '2023-04-01'), 'ipConfigurations'), reference(resourceId('Microsoft.Network/azureFirewalls', parameters('name')), '2023-04-01').ipConfigurations[0], createObject())]"
+      "value": "[if(contains(reference('azureFirewall'), 'ipConfigurations'), reference('azureFirewall').ipConfigurations[0], createObject())]"
     },
     "applicationRuleCollections": {
       "type": "array",
@@ -1746,7 +1812,7 @@
       "metadata": {
         "description": "The location the resource was deployed into."
       },
-      "value": "[reference(resourceId('Microsoft.Network/azureFirewalls', parameters('name')), '2023-04-01', 'full').location]"
+      "value": "[reference('azureFirewall', '2023-04-01', 'full').location]"
     }
   }
 }

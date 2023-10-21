@@ -5,173 +5,42 @@ This module deploys a Data Collection Rule.
 ## Navigation
 
 - [Resource Types](#Resource-Types)
+- [Usage examples](#Usage-examples)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
-- [Deployment examples](#Deployment-examples)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | [2017-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
+| `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Insights/dataCollectionRules` | [2021-09-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-09-01-preview/dataCollectionRules) |
 
-## Parameters
+## Usage examples
 
-**Required parameters**
+The following section provides usage examples for the module, which were used to validate and deploy the module successfully. For a full reference, please review the module's test folder in its repository.
 
-| Parameter Name | Type | Description |
-| :-- | :-- | :-- |
-| `dataFlows` | array | The specification of data flows. |
-| `dataSources` | object | Specification of data sources that will be collected. |
-| `destinations` | object | Specification of destinations that can be used in data flows. |
-| `name` | string | The name of the data collection rule. The name is case insensitive. |
+>**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-**Optional parameters**
+>**Note**: To reference the module, please use the following syntax `br:bicep/modules/insights.data-collection-rule:1.0.0`.
 
-| Parameter Name | Type | Default Value | Allowed Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `dataCollectionEndpointId` | string | `''` |  | The resource ID of the data collection endpoint that this rule can be used with. |
-| `description` | string | `''` |  | Description of the data collection rule. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `kind` | string | `'Linux'` | `[Linux, Windows]` | The kind of the resource. |
-| `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
-| `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
-| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| `streamDeclarations` | object | `{object}` |  | Declaration of custom streams used in this rule. |
-| `tags` | object | `{object}` |  | Resource tags. |
+- [Customadv](#example-1-customadv)
+- [Custombasic](#example-2-custombasic)
+- [Customiis](#example-3-customiis)
+- [Linux](#example-4-linux)
+- [Using only defaults](#example-5-using-only-defaults)
+- [Windows](#example-6-windows)
 
-
-### Parameter Usage: `roleAssignments`
-
-Create a role assignment for the given resource. If you want to assign a service principal / managed identity that is created in the same deployment, make sure to also specify the `'principalType'` parameter and set it to `'ServicePrincipal'`. This will ensure the role assignment waits for the principal's propagation in Azure.
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"roleAssignments": {
-    "value": [
-        {
-            "roleDefinitionIdOrName": "Reader",
-            "description": "Reader Role Assignment",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012", // object 1
-                "78945612-1234-1234-1234-123456789012" // object 2
-            ]
-        },
-        {
-            "roleDefinitionIdOrName": "/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012" // object 1
-            ],
-            "principalType": "ServicePrincipal"
-        }
-    ]
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-roleAssignments: [
-    {
-        roleDefinitionIdOrName: 'Reader'
-        description: 'Reader Role Assignment'
-        principalIds: [
-            '12345678-1234-1234-1234-123456789012' // object 1
-            '78945612-1234-1234-1234-123456789012' // object 2
-        ]
-    }
-    {
-        roleDefinitionIdOrName: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'
-        principalIds: [
-            '12345678-1234-1234-1234-123456789012' // object 1
-        ]
-        principalType: 'ServicePrincipal'
-    }
-]
-```
-
-</details>
-<p>
-
-### Parameter Usage: `tags`
-
-Tag names and tag values can be provided as needed. A tag can be left without a value.
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"tags": {
-    "value": {
-        "Environment": "Non-Prod",
-        "Contact": "test.user@testcompany.com",
-        "PurchaseOrder": "1234",
-        "CostCenter": "7890",
-        "ServiceName": "DeploymentValidation",
-        "Role": "DeploymentValidation"
-    }
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-tags: {
-    Environment: 'Non-Prod'
-    Contact: 'test.user@testcompany.com'
-    PurchaseOrder: '1234'
-    CostCenter: '7890'
-    ServiceName: 'DeploymentValidation'
-    Role: 'DeploymentValidation'
-}
-```
-
-</details>
-<p>
-
-## Outputs
-
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of the dataCollectionRule. |
-| `resourceGroupName` | string | The name of the resource group the dataCollectionRule was created in. |
-| `resourceId` | string | The resource ID of the dataCollectionRule. |
-
-## Cross-referenced modules
-
-_None_
-
-## Deployment examples
-
-The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
-   >**Note**: The name of each example is based on the name of the file from which it is taken.
-
-   >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
-
-<h3>Example 1: Customadv</h3>
+### Example 1: _Customadv_
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module dataCollectionRule './insights/data-collection-rule/main.bicep' = {
+module dataCollectionRule 'br:bicep/modules/insights.data-collection-rule:1.0.0' = {
   name: '${uniqueString(deployment().name)}-test-idcrcusadv'
   params: {
     // Required parameters
@@ -221,7 +90,10 @@ module dataCollectionRule './insights/data-collection-rule/main.bicep' = {
     description: 'Collecting custom text logs with ingestion-time transformation to columns. Expected format of a log line (comma separated values): \'<DateTime><EventLevel><EventCode><Message>\' for example: \'2023-01-25T20:15:05ZERROR404Page not found\''
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     kind: 'Windows'
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     roleAssignments: [
       {
         principalIds: [
@@ -346,7 +218,10 @@ module dataCollectionRule './insights/data-collection-rule/main.bicep' = {
       "value": "Windows"
     },
     "lock": {
-      "value": "CanNotDelete"
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
     },
     "roleAssignments": {
       "value": [
@@ -405,14 +280,14 @@ module dataCollectionRule './insights/data-collection-rule/main.bicep' = {
 </details>
 <p>
 
-<h3>Example 2: Custombasic</h3>
+### Example 2: _Custombasic_
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module dataCollectionRule './insights/data-collection-rule/main.bicep' = {
+module dataCollectionRule 'br:bicep/modules/insights.data-collection-rule:1.0.0' = {
   name: '${uniqueString(deployment().name)}-test-idcrcusbas'
   params: {
     // Required parameters
@@ -462,7 +337,10 @@ module dataCollectionRule './insights/data-collection-rule/main.bicep' = {
     description: 'Collecting custom text logs without ingestion-time transformation.'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     kind: 'Windows'
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     roleAssignments: [
       {
         principalIds: [
@@ -571,7 +449,10 @@ module dataCollectionRule './insights/data-collection-rule/main.bicep' = {
       "value": "Windows"
     },
     "lock": {
-      "value": "CanNotDelete"
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
     },
     "roleAssignments": {
       "value": [
@@ -614,14 +495,14 @@ module dataCollectionRule './insights/data-collection-rule/main.bicep' = {
 </details>
 <p>
 
-<h3>Example 3: Customiis</h3>
+### Example 3: _Customiis_
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module dataCollectionRule './insights/data-collection-rule/main.bicep' = {
+module dataCollectionRule 'br:bicep/modules/insights.data-collection-rule:1.0.0' = {
   name: '${uniqueString(deployment().name)}-test-idcrcusiis'
   params: {
     // Required parameters
@@ -664,7 +545,10 @@ module dataCollectionRule './insights/data-collection-rule/main.bicep' = {
     description: 'Collecting IIS logs.'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     kind: 'Windows'
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     roleAssignments: [
       {
         principalIds: [
@@ -752,7 +636,10 @@ module dataCollectionRule './insights/data-collection-rule/main.bicep' = {
       "value": "Windows"
     },
     "lock": {
-      "value": "CanNotDelete"
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
     },
     "roleAssignments": {
       "value": [
@@ -779,14 +666,14 @@ module dataCollectionRule './insights/data-collection-rule/main.bicep' = {
 </details>
 <p>
 
-<h3>Example 4: Linux</h3>
+### Example 4: _Linux_
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module dataCollectionRule './insights/data-collection-rule/main.bicep' = {
+module dataCollectionRule 'br:bicep/modules/insights.data-collection-rule:1.0.0' = {
   name: '${uniqueString(deployment().name)}-test-idcrlin'
   params: {
     // Required parameters
@@ -942,7 +829,10 @@ module dataCollectionRule './insights/data-collection-rule/main.bicep' = {
     description: 'Collecting Linux-specific performance counters and Linux Syslog'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     kind: 'Linux'
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     roleAssignments: [
       {
         principalIds: [
@@ -1141,7 +1031,10 @@ module dataCollectionRule './insights/data-collection-rule/main.bicep' = {
       "value": "Linux"
     },
     "lock": {
-      "value": "CanNotDelete"
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
     },
     "roleAssignments": {
       "value": [
@@ -1168,14 +1061,17 @@ module dataCollectionRule './insights/data-collection-rule/main.bicep' = {
 </details>
 <p>
 
-<h3>Example 5: Min</h3>
+### Example 5: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module dataCollectionRule './insights/data-collection-rule/main.bicep' = {
+module dataCollectionRule 'br:bicep/modules/insights.data-collection-rule:1.0.0' = {
   name: '${uniqueString(deployment().name)}-test-idcrmin'
   params: {
     // Required parameters
@@ -1299,14 +1195,14 @@ module dataCollectionRule './insights/data-collection-rule/main.bicep' = {
 </details>
 <p>
 
-<h3>Example 6: Windows</h3>
+### Example 6: _Windows_
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module dataCollectionRule './insights/data-collection-rule/main.bicep' = {
+module dataCollectionRule 'br:bicep/modules/insights.data-collection-rule:1.0.0' = {
   name: '${uniqueString(deployment().name)}-test-idcrwin'
   params: {
     // Required parameters
@@ -1416,7 +1312,10 @@ module dataCollectionRule './insights/data-collection-rule/main.bicep' = {
     description: 'Collecting Windows-specific performance counters and Windows Event Logs'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     kind: 'Windows'
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     roleAssignments: [
       {
         principalIds: [
@@ -1569,7 +1468,10 @@ module dataCollectionRule './insights/data-collection-rule/main.bicep' = {
       "value": "Windows"
     },
     "lock": {
-      "value": "CanNotDelete"
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
     },
     "roleAssignments": {
       "value": [
@@ -1595,3 +1497,151 @@ module dataCollectionRule './insights/data-collection-rule/main.bicep' = {
 
 </details>
 <p>
+
+
+## Parameters
+
+**Required parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`dataFlows`](#parameter-dataflows) | array | The specification of data flows. |
+| [`dataSources`](#parameter-datasources) | object | Specification of data sources that will be collected. |
+| [`destinations`](#parameter-destinations) | object | Specification of destinations that can be used in data flows. |
+| [`name`](#parameter-name) | string | The name of the data collection rule. The name is case insensitive. |
+
+**Optional parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`dataCollectionEndpointId`](#parameter-datacollectionendpointid) | string | The resource ID of the data collection endpoint that this rule can be used with. |
+| [`description`](#parameter-description) | string | Description of the data collection rule. |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| [`kind`](#parameter-kind) | string | The kind of the resource. |
+| [`location`](#parameter-location) | string | Location for all Resources. |
+| [`lock`](#parameter-lock) | object | The lock settings of the service. |
+| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| [`streamDeclarations`](#parameter-streamdeclarations) | object | Declaration of custom streams used in this rule. |
+| [`tags`](#parameter-tags) | object | Resource tags. |
+
+### Parameter: `dataCollectionEndpointId`
+
+The resource ID of the data collection endpoint that this rule can be used with.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `dataFlows`
+
+The specification of data flows.
+- Required: Yes
+- Type: array
+
+### Parameter: `dataSources`
+
+Specification of data sources that will be collected.
+- Required: Yes
+- Type: object
+
+### Parameter: `description`
+
+Description of the data collection rule.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `destinations`
+
+Specification of destinations that can be used in data flows.
+- Required: Yes
+- Type: object
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via the Customer Usage Attribution ID (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `kind`
+
+The kind of the resource.
+- Required: No
+- Type: string
+- Default: `'Linux'`
+- Allowed: `[Linux, Windows]`
+
+### Parameter: `location`
+
+Location for all Resources.
+- Required: No
+- Type: string
+- Default: `[resourceGroup().location]`
+
+### Parameter: `lock`
+
+The lock settings of the service.
+- Required: No
+- Type: object
+
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`kind`](#parameter-lockkind) | No | string | Optional. Specify the type of lock. |
+| [`name`](#parameter-lockname) | No | string | Optional. Specify the name of lock. |
+
+### Parameter: `lock.kind`
+
+Optional. Specify the type of lock.
+
+- Required: No
+- Type: string
+- Allowed: `[CanNotDelete, None, ReadOnly]`
+
+### Parameter: `lock.name`
+
+Optional. Specify the name of lock.
+
+- Required: No
+- Type: string
+
+### Parameter: `name`
+
+The name of the data collection rule. The name is case insensitive.
+- Required: Yes
+- Type: string
+
+### Parameter: `roleAssignments`
+
+Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `streamDeclarations`
+
+Declaration of custom streams used in this rule.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `tags`
+
+Resource tags.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+
+## Outputs
+
+| Output | Type | Description |
+| :-- | :-- | :-- |
+| `location` | string | The location the resource was deployed into. |
+| `name` | string | The name of the dataCollectionRule. |
+| `resourceGroupName` | string | The name of the resource group the dataCollectionRule was created in. |
+| `resourceId` | string | The resource ID of the dataCollectionRule. |
+
+## Cross-referenced modules
+
+_None_

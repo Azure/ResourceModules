@@ -10,7 +10,7 @@ param dnsServers array = []
 param networkSecurityGroupResourceId string = ''
 
 param ipConfigurations array
-param lock string = ''
+param lock lockType
 param diagnosticStorageAccountId string
 param diagnosticWorkspaceId string
 param diagnosticEventHubAuthorizationRuleId string
@@ -94,3 +94,15 @@ module networkInterface '../../../network/network-interface/main.bicep' = {
     networkInterface_publicIPAddresses
   ]
 }
+
+// =============== //
+//   Definitions   //
+// =============== //
+
+type lockType = {
+  @description('Optional. Specify the name of lock.')
+  name: string?
+
+  @description('Optional. Specify the type of lock.')
+  kind: ('CanNotDelete' | 'ReadOnly' | 'None')?
+}?

@@ -17,8 +17,33 @@ param location string = resourceGroup().location
 ])
 param skuName string = 'Basic'
 
+@description('Optional. The specified messaging units for the tier. Only used for Premium Sku tier.')
+@allowed([
+  1
+  2
+  4
+  8
+  16
+  32
+])
+param skuCapacity int = 1
+
 @description('Optional. Enabling this property creates a Premium Service Bus Namespace in regions supported availability zones.')
 param zoneRedundant bool = false
+
+@allowed([
+  '1.0'
+  '1.1'
+  '1.2'
+])
+@description('Optional. The minimum TLS version for the cluster to support.')
+param minimumTlsVersion string = '1.2'
+
+@description('Optional. Alternate name for namespace.')
+param alternateName string = ''
+
+@description('Optional. The number of partitions of a Service Bus namespace. This property is only applicable to Premium SKU namespaces. The default value is 1 and possible values are 1, 2 and 4.')
+param premiumMessagingPartitions int = 1
 
 @description('Optional. Authorization Rules for the Service Bus namespace.')
 param authorizationRules array = [
@@ -50,13 +75,8 @@ param diagnosticEventHubAuthorizationRuleId string = ''
 @description('Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
 param diagnosticEventHubName string = ''
 
-@allowed([
-  ''
-  'CanNotDelete'
-  'ReadOnly'
-])
-@description('Optional. Specify the type of lock.')
-param lock string = ''
+@description('Optional. The lock settings of the service.')
+param lock lockType
 
 @description('Optional. Enables system assigned managed identity on the resource.')
 param systemAssignedIdentity bool = false
@@ -67,11 +87,23 @@ param userAssignedIdentities object = {}
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
 
+@description('Optional. Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set.')
+@allowed([
+  ''
+  'Disabled'
+  'Enabled'
+  'SecuredByPerimeter'
+])
+param publicNetworkAccess string = ''
+
 @description('Optional. Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.')
 param privateEndpoints array = []
 
 @description('Optional. Configure networking options for Premium SKU Service Bus. This object contains IPs/Subnets to allow or restrict access to private endpoints only. For security reasons, it is recommended to configure this object on the Namespace.')
 param networkRuleSets object = {}
+
+@description('Optional. This property disables SAS authentication for the Service Bus namespace.')
+param disableLocalAuth bool = true
 
 @description('Optional. Tags of the resource.')
 param tags object = {}
@@ -161,25 +193,30 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
 }
 
 resource cMKKeyVault 'Microsoft.KeyVault/vaults@2021-10-01' existing = if (!empty(cMKKeyVaultResourceId)) {
-  name: last(split(cMKKeyVaultResourceId, '/'))!
-  scope: resourceGroup(split(cMKKeyVaultResourceId, '/')[2], split(cMKKeyVaultResourceId, '/')[4])
+  name: last(split((!empty(cMKKeyVaultResourceId) ? cMKKeyVaultResourceId : 'dummyVault'), '/'))!
+  scope: resourceGroup(split((!empty(cMKKeyVaultResourceId) ? cMKKeyVaultResourceId : '//'), '/')[2], split((!empty(cMKKeyVaultResourceId) ? cMKKeyVaultResourceId : '////'), '/')[4])
+
+  resource cMKKey 'keys@2023-02-01' existing = if (!empty(cMKKeyName)) {
+    name: !empty(cMKKeyName) ? cMKKeyName : 'dummyKey'
+  }
 }
 
-resource cMKKeyVaultKey 'Microsoft.KeyVault/vaults/keys@2021-10-01' existing = if (!empty(cMKKeyVaultResourceId) && !empty(cMKKeyName)) {
-  name: '${last(split(cMKKeyVaultResourceId, '/'))}/${cMKKeyName}'!
-  scope: resourceGroup(split(cMKKeyVaultResourceId, '/')[2], split(cMKKeyVaultResourceId, '/')[4])
-}
-
-resource serviceBusNamespace 'Microsoft.ServiceBus/namespaces@2021-11-01' = {
+resource serviceBusNamespace 'Microsoft.ServiceBus/namespaces@2022-10-01-preview' = {
   name: name
   location: location
   tags: empty(tags) ? null : tags
   sku: {
     name: skuName
+    capacity: skuName == 'Premium' ? skuCapacity : null
   }
   identity: identity
   properties: {
+    publicNetworkAccess: !empty(publicNetworkAccess) ? publicNetworkAccess : (!empty(privateEndpoints) && empty(networkRuleSets) ? 'Disabled' : 'Enabled')
+    minimumTlsVersion: minimumTlsVersion
+    alternateName: !empty(alternateName) ? alternateName : null
     zoneRedundant: zoneRedundant
+    disableLocalAuth: disableLocalAuth
+    premiumMessagingPartitions: skuName == 'Premium' ? premiumMessagingPartitions : 0
     encryption: !empty(cMKKeyName) ? {
       keySource: 'Microsoft.KeyVault'
       keyVaultProperties: [
@@ -189,7 +226,7 @@ resource serviceBusNamespace 'Microsoft.ServiceBus/namespaces@2021-11-01' = {
           } : null
           keyName: cMKKeyName
           keyVaultUri: cMKKeyVault.properties.vaultUri
-          keyVersion: !empty(cMKKeyVersion) ? cMKKeyVersion : last(split(cMKKeyVaultKey.properties.keyUriWithVersion, '/'))
+          keyVersion: !empty(cMKKeyVersion) ? cMKKeyVersion : last(split(cMKKeyVault::cMKKey.properties.keyUriWithVersion, '/'))
         }
       ]
       requireInfrastructureEncryption: requireInfrastructureEncryption
@@ -246,6 +283,10 @@ module serviceBusNamespace_queues 'queue/main.bicep' = [for (queue, index) in qu
   params: {
     namespaceName: serviceBusNamespace.name
     name: queue.name
+    autoDeleteOnIdle: contains(queue, 'autoDeleteOnIdle') ? queue.autoDeleteOnIdle : ''
+    forwardDeadLetteredMessagesTo: contains(queue, 'forwardDeadLetteredMessagesTo') ? queue.forwardDeadLetteredMessagesTo : ''
+    forwardTo: contains(queue, 'forwardTo') ? queue.forwardTo : ''
+    maxMessageSizeInKilobytes: contains(queue, 'maxMessageSizeInKilobytes') ? queue.maxMessageSizeInKilobytes : 1024
     authorizationRules: contains(queue, 'authorizationRules') ? queue.authorizationRules : [
       {
         name: 'RootManageSharedAccessKey'
@@ -262,7 +303,7 @@ module serviceBusNamespace_queues 'queue/main.bicep' = [for (queue, index) in qu
     enableBatchedOperations: contains(queue, 'enableBatchedOperations') ? queue.enableBatchedOperations : true
     enableExpress: contains(queue, 'enableExpress') ? queue.enableExpress : false
     enablePartitioning: contains(queue, 'enablePartitioning') ? queue.enablePartitioning : false
-    lock: contains(queue, 'lock') ? queue.lock : ''
+    lock: queue.?lock ?? lock
     lockDuration: contains(queue, 'lockDuration') ? queue.lockDuration : 'PT1M'
     maxDeliveryCount: contains(queue, 'maxDeliveryCount') ? queue.maxDeliveryCount : 10
     maxSizeInMegabytes: contains(queue, 'maxSizeInMegabytes') ? queue.maxSizeInMegabytes : 1024
@@ -295,7 +336,7 @@ module serviceBusNamespace_topics 'topic/main.bicep' = [for (topic, index) in to
     enableBatchedOperations: contains(topic, 'enableBatchedOperations') ? topic.enableBatchedOperations : true
     enableExpress: contains(topic, 'enableExpress') ? topic.enableExpress : false
     enablePartitioning: contains(topic, 'enablePartitioning') ? topic.enablePartitioning : false
-    lock: contains(topic, 'lock') ? topic.lock : ''
+    lock: topic.?lock ?? lock
     maxMessageSizeInKilobytes: contains(topic, 'maxMessageSizeInKilobytes') ? topic.maxMessageSizeInKilobytes : 1024
     maxSizeInMegabytes: contains(topic, 'maxSizeInMegabytes') ? topic.maxSizeInMegabytes : 1024
     requiresDuplicateDetection: contains(topic, 'requiresDuplicateDetection') ? topic.requiresDuplicateDetection : false
@@ -306,11 +347,11 @@ module serviceBusNamespace_topics 'topic/main.bicep' = [for (topic, index) in to
   }
 }]
 
-resource serviceBusNamespace_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
-  name: '${serviceBusNamespace.name}-${lock}-lock'
+resource serviceBusNamespace_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock ?? {}) && lock.?kind != 'None') {
+  name: lock.?name ?? 'lock-${name}'
   properties: {
-    level: any(lock)
-    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+    level: lock.?kind ?? ''
+    notes: lock.?kind == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot delete or modify the resource or child resources.'
   }
   scope: serviceBusNamespace
 }
@@ -339,14 +380,15 @@ module serviceBusNamespace_privateEndpoints '../../network/private-endpoint/main
     subnetResourceId: privateEndpoint.subnetResourceId
     enableDefaultTelemetry: enableReferencedModulesTelemetry
     location: contains(privateEndpoint, 'location') ? privateEndpoint.location : reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
-    lock: contains(privateEndpoint, 'lock') ? privateEndpoint.lock : lock
-    privateDnsZoneGroup: contains(privateEndpoint, 'privateDnsZoneGroup') ? privateEndpoint.privateDnsZoneGroup : {}
+    lock: privateEndpoint.?lock ?? lock
+    privateDnsZoneGroupName: contains(privateEndpoint, 'privateDnsZoneGroupName') ? privateEndpoint.privateDnsZoneGroupName : 'default'
+    privateDnsZoneResourceIds: contains(privateEndpoint, 'privateDnsZoneResourceIds') ? privateEndpoint.privateDnsZoneResourceIds : []
     roleAssignments: contains(privateEndpoint, 'roleAssignments') ? privateEndpoint.roleAssignments : []
     tags: contains(privateEndpoint, 'tags') ? privateEndpoint.tags : {}
     manualPrivateLinkServiceConnections: contains(privateEndpoint, 'manualPrivateLinkServiceConnections') ? privateEndpoint.manualPrivateLinkServiceConnections : []
     customDnsConfigs: contains(privateEndpoint, 'customDnsConfigs') ? privateEndpoint.customDnsConfigs : []
     ipConfigurations: contains(privateEndpoint, 'ipConfigurations') ? privateEndpoint.ipConfigurations : []
-    applicationSecurityGroups: contains(privateEndpoint, 'applicationSecurityGroups') ? privateEndpoint.applicationSecurityGroups : []
+    applicationSecurityGroupResourceIds: contains(privateEndpoint, 'applicationSecurityGroupResourceIds') ? privateEndpoint.applicationSecurityGroupResourceIds : []
     customNetworkInterfaceName: contains(privateEndpoint, 'customNetworkInterfaceName') ? privateEndpoint.customNetworkInterfaceName : ''
   }
 }]
@@ -378,3 +420,15 @@ output systemAssignedPrincipalId string = systemAssignedIdentity && contains(ser
 
 @description('The location the resource was deployed into.')
 output location string = serviceBusNamespace.location
+
+// =============== //
+//   Definitions   //
+// =============== //
+
+type lockType = {
+  @description('Optional. Specify the name of lock.')
+  name: string?
+
+  @description('Optional. Specify the type of lock.')
+  kind: ('CanNotDelete' | 'ReadOnly' | 'None')?
+}?

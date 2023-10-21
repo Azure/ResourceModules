@@ -9,13 +9,8 @@ param name string
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
 
-@allowed([
-  ''
-  'CanNotDelete'
-  'ReadOnly'
-])
-@description('Optional. Specify the type of lock.')
-param lock string = ''
+@description('Optional. The lock settings of the service.')
+param lock lockType
 
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
@@ -77,16 +72,16 @@ module dnsForwardingRuleset_virtualNetworkLinks 'virtual-network-link/main.bicep
   }
 }]
 
-resource dnsForwardingRulesets_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
-  name: '${dnsForwardingRuleset.name}-${lock}-lock'
+resource dnsForwardingRuleset_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock ?? {}) && lock.?kind != 'None') {
+  name: lock.?name ?? 'lock-${name}'
   properties: {
-    level: any(lock)
-    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+    level: lock.?kind ?? ''
+    notes: lock.?kind == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot delete or modify the resource or child resources.'
   }
   scope: dnsForwardingRuleset
 }
 
-module dnsForwardingRulesets_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module dnsForwardingRuleset_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-dnsResolver-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
@@ -110,3 +105,15 @@ output name string = dnsForwardingRuleset.name
 
 @description('The location the resource was deployed into.')
 output location string = dnsForwardingRuleset.location
+
+// =============== //
+//   Definitions   //
+// =============== //
+
+type lockType = {
+  @description('Optional. Specify the name of lock.')
+  name: string?
+
+  @description('Optional. Specify the type of lock.')
+  kind: ('CanNotDelete' | 'ReadOnly' | 'None')?
+}?

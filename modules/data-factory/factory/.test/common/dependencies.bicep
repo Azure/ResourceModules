@@ -108,7 +108,7 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-08-01' = {
 output subnetResourceId string = virtualNetwork.properties.subnets[0].id
 
 @description('The resource ID of the created Private DNS Zone.')
-output privateDNSResourceId string = privateDNSZone.id
+output privateDNSZoneResourceId string = privateDNSZone.id
 
 @description('The resource ID of the created Key Vault.')
 output keyVaultResourceId string = keyVault.id

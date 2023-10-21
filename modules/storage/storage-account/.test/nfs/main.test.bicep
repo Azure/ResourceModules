@@ -67,7 +67,10 @@ module testDeployment '../../main.bicep' = {
     kind: 'FileStorage'
     allowBlobPublicAccess: false
     supportsHttpsTrafficOnly: false
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     fileServices: {
       shares: [
         {

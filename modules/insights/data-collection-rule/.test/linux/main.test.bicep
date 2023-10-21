@@ -200,7 +200,10 @@ module testDeployment '../../main.bicep' = {
     ]
     enableDefaultTelemetry: enableDefaultTelemetry
     kind: 'Linux'
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     roleAssignments: [
       {
         roleDefinitionIdOrName: 'Reader'

@@ -1,15 +1,43 @@
 {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "languageVersion": "2.0",
   "contentVersion": "1.0.0.0",
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.21.1.54444",
-      "templateHash": "5174015576413093389"
+      "version": "0.22.6.54827",
+      "templateHash": "10984234034894076123"
     },
     "name": "Load Balancers",
     "description": "This module deploys a Load Balancer.",
     "owner": "Azure/module-maintainers"
+  },
+  "definitions": {
+    "lockType": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Specify the name of lock."
+          }
+        },
+        "kind": {
+          "type": "string",
+          "allowedValues": [
+            "CanNotDelete",
+            "None",
+            "ReadOnly"
+          ],
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Specify the type of lock."
+          }
+        }
+      },
+      "nullable": true
+    }
   },
   "parameters": {
     "name": {
@@ -93,15 +121,9 @@
       }
     },
     "lock": {
-      "type": "string",
-      "defaultValue": "",
-      "allowedValues": [
-        "",
-        "CanNotDelete",
-        "ReadOnly"
-      ],
+      "$ref": "#/definitions/lockType",
       "metadata": {
-        "description": "Optional. Specify the type of lock."
+        "description": "Optional. The lock settings of the service."
       }
     },
     "roleAssignments": {
@@ -257,8 +279,8 @@
     ],
     "enableReferencedModulesTelemetry": false
   },
-  "resources": [
-    {
+  "resources": {
+    "defaultTelemetry": {
       "condition": "[parameters('enableDefaultTelemetry')]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2021-04-01",
@@ -272,7 +294,7 @@
         }
       }
     },
-    {
+    "loadBalancer": {
       "type": "Microsoft.Network/loadBalancers",
       "apiVersion": "2023-04-01",
       "name": "[parameters('name')]",
@@ -289,21 +311,21 @@
         "probes": "[variables('probesVar')]"
       }
     },
-    {
-      "condition": "[not(empty(parameters('lock')))]",
+    "loadBalancer_lock": {
+      "condition": "[and(not(empty(coalesce(parameters('lock'), createObject()))), not(equals(tryGet(parameters('lock'), 'kind'), 'None')))]",
       "type": "Microsoft.Authorization/locks",
       "apiVersion": "2020-05-01",
       "scope": "[format('Microsoft.Network/loadBalancers/{0}', parameters('name'))]",
-      "name": "[format('{0}-{1}-lock', parameters('name'), parameters('lock'))]",
+      "name": "[coalesce(tryGet(parameters('lock'), 'name'), format('lock-{0}', parameters('name')))]",
       "properties": {
-        "level": "[parameters('lock')]",
-        "notes": "[if(equals(parameters('lock'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot modify the resource or child resources.')]"
+        "level": "[coalesce(tryGet(parameters('lock'), 'kind'), '')]",
+        "notes": "[if(equals(tryGet(parameters('lock'), 'kind'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot delete or modify the resource or child resources.')]"
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Network/loadBalancers', parameters('name'))]"
+        "loadBalancer"
       ]
     },
-    {
+    "loadBalancer_diagnosticSettings": {
       "condition": "[or(or(or(not(empty(parameters('diagnosticStorageAccountId'))), not(empty(parameters('diagnosticWorkspaceId')))), not(empty(parameters('diagnosticEventHubAuthorizationRuleId')))), not(empty(parameters('diagnosticEventHubName'))))]",
       "type": "Microsoft.Insights/diagnosticSettings",
       "apiVersion": "2021-05-01-preview",
@@ -317,10 +339,10 @@
         "metrics": "[variables('diagnosticsMetrics')]"
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Network/loadBalancers', parameters('name'))]"
+        "loadBalancer"
       ]
     },
-    {
+    "loadBalancer_backendAddressPools": {
       "copy": {
         "name": "loadBalancer_backendAddressPools",
         "count": "[length(parameters('backendAddressPools'))]"
@@ -353,8 +375,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "10695626328021788561"
+              "version": "0.22.6.54827",
+              "templateHash": "8746126160153035357"
             },
             "name": "Load Balancer Backend Address Pools",
             "description": "This module deploys a Load Balancer Backend Address Pools.",
@@ -467,10 +489,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Network/loadBalancers', parameters('name'))]"
+        "loadBalancer"
       ]
     },
-    {
+    "loadBalancer_inboundNATRules": {
       "copy": {
         "name": "loadBalancer_inboundNATRules",
         "count": "[length(parameters('inboundNatRules'))]"
@@ -514,8 +536,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "8138775732002888044"
+              "version": "0.22.6.54827",
+              "templateHash": "10708877822656641045"
             },
             "name": "Load Balancer Inbound NAT Rules",
             "description": "This module deploys a Load Balancer Inbound NAT Rules.",
@@ -684,11 +706,11 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Network/loadBalancers', parameters('name'))]",
+        "loadBalancer",
         "loadBalancer_backendAddressPools"
       ]
     },
-    {
+    "loadBalancer_roleAssignments": {
       "copy": {
         "name": "loadBalancer_roleAssignments",
         "count": "[length(parameters('roleAssignments'))]"
@@ -722,8 +744,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "5738508706605924950"
+              "version": "0.22.6.54827",
+              "templateHash": "14340033754168371744"
             }
           },
           "parameters": {
@@ -862,10 +884,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Network/loadBalancers', parameters('name'))]"
+        "loadBalancer"
       ]
     }
-  ],
+  },
   "outputs": {
     "name": {
       "type": "string",
@@ -893,14 +915,14 @@
       "metadata": {
         "description": "The backend address pools available in the load balancer."
       },
-      "value": "[reference(resourceId('Microsoft.Network/loadBalancers', parameters('name')), '2023-04-01').backendAddressPools]"
+      "value": "[reference('loadBalancer').backendAddressPools]"
     },
     "location": {
       "type": "string",
       "metadata": {
         "description": "The location the resource was deployed into."
       },
-      "value": "[reference(resourceId('Microsoft.Network/loadBalancers', parameters('name')), '2023-04-01', 'full').location]"
+      "value": "[reference('loadBalancer', '2023-04-01', 'full').location]"
     }
   }
 }

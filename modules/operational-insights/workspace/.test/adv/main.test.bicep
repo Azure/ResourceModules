@@ -206,7 +206,7 @@ module testDeployment '../../main.bicep' = {
     ]
     lock: {
       kind: 'CanNotDelete'
-      name: 'Log Analytics Workspace Lock - Do Not Delete'
+      name: 'myCustomLockName'
     }
     publicNetworkAccessForIngestion: 'Disabled'
     publicNetworkAccessForQuery: 'Disabled'

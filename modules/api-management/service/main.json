@@ -1,15 +1,43 @@
 {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "languageVersion": "2.0",
   "contentVersion": "1.0.0.0",
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.21.1.54444",
-      "templateHash": "16139014256674828272"
+      "version": "0.22.6.54827",
+      "templateHash": "7131184550588177223"
     },
     "name": "API Management Services",
     "description": "This module deploys an API Management Service.",
     "owner": "Azure/module-maintainers"
+  },
+  "definitions": {
+    "lockType": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Specify the name of lock."
+          }
+        },
+        "kind": {
+          "type": "string",
+          "allowedValues": [
+            "CanNotDelete",
+            "None",
+            "ReadOnly"
+          ],
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Specify the type of lock."
+          }
+        }
+      },
+      "nullable": true
+    }
   },
   "parameters": {
     "additionalLocations": {
@@ -111,15 +139,9 @@
       }
     },
     "lock": {
-      "type": "string",
-      "defaultValue": "",
-      "allowedValues": [
-        "",
-        "CanNotDelete",
-        "ReadOnly"
-      ],
+      "$ref": "#/definitions/lockType",
       "metadata": {
-        "description": "Optional. Specify the type of lock."
+        "description": "Optional. The lock settings of the service."
       }
     },
     "minApiVersion": {
@@ -371,8 +393,8 @@
     "identityType": "[if(parameters('systemAssignedIdentity'), if(not(empty(parameters('userAssignedIdentities'))), 'SystemAssigned,UserAssigned', 'SystemAssigned'), if(not(empty(parameters('userAssignedIdentities'))), 'UserAssigned', 'None'))]",
     "identity": "[if(not(equals(variables('identityType'), 'None')), createObject('type', variables('identityType'), 'userAssignedIdentities', if(not(empty(parameters('userAssignedIdentities'))), parameters('userAssignedIdentities'), null())), null())]"
   },
-  "resources": [
-    {
+  "resources": {
+    "defaultTelemetry": {
       "condition": "[parameters('enableDefaultTelemetry')]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2021-04-01",
@@ -386,7 +408,7 @@
         }
       }
     },
-    {
+    "service": {
       "type": "Microsoft.ApiManagement/service",
       "apiVersion": "2021-08-01",
       "name": "[parameters('name')]",
@@ -414,21 +436,21 @@
         "restore": "[parameters('restore')]"
       }
     },
-    {
-      "condition": "[not(empty(parameters('lock')))]",
+    "service_lock": {
+      "condition": "[and(not(empty(coalesce(parameters('lock'), createObject()))), not(equals(tryGet(parameters('lock'), 'kind'), 'None')))]",
       "type": "Microsoft.Authorization/locks",
       "apiVersion": "2020-05-01",
       "scope": "[format('Microsoft.ApiManagement/service/{0}', parameters('name'))]",
-      "name": "[format('{0}-{1}-lock', parameters('name'), parameters('lock'))]",
+      "name": "[coalesce(tryGet(parameters('lock'), 'name'), format('lock-{0}', parameters('name')))]",
       "properties": {
-        "level": "[parameters('lock')]",
-        "notes": "[if(equals(parameters('lock'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot modify the resource or child resources.')]"
+        "level": "[coalesce(tryGet(parameters('lock'), 'kind'), '')]",
+        "notes": "[if(equals(tryGet(parameters('lock'), 'kind'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot delete or modify the resource or child resources.')]"
       },
       "dependsOn": [
-        "[resourceId('Microsoft.ApiManagement/service', parameters('name'))]"
+        "service"
       ]
     },
-    {
+    "service_diagnosticSettings": {
       "condition": "[or(or(or(not(empty(parameters('diagnosticStorageAccountId'))), not(empty(parameters('diagnosticWorkspaceId')))), not(empty(parameters('diagnosticEventHubAuthorizationRuleId')))), not(empty(parameters('diagnosticEventHubName'))))]",
       "type": "Microsoft.Insights/diagnosticSettings",
       "apiVersion": "2021-05-01-preview",
@@ -443,10 +465,10 @@
         "logs": "[variables('diagnosticsLogs')]"
       },
       "dependsOn": [
-        "[resourceId('Microsoft.ApiManagement/service', parameters('name'))]"
+        "service"
       ]
     },
-    {
+    "service_apis": {
       "copy": {
         "name": "service_apis",
         "count": "[length(parameters('apis'))]"
@@ -501,8 +523,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "13643970540915525806"
+              "version": "0.22.6.54827",
+              "templateHash": "17340528539230351720"
             },
             "name": "API Management Service APIs",
             "description": "This module deploys an API Management Service API.",
@@ -781,8 +803,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.21.1.54444",
-                      "templateHash": "6059606679416480431"
+                      "version": "0.22.6.54827",
+                      "templateHash": "14571499926134179860"
                     },
                     "name": "API Management Service APIs Policies",
                     "description": "This module deploys an API Management Service API Policy.",
@@ -916,11 +938,11 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.ApiManagement/service', parameters('name'))]",
+        "service",
         "service_apiVersionSets"
       ]
     },
-    {
+    "service_apiVersionSets": {
       "copy": {
         "name": "service_apiVersionSets",
         "count": "[length(parameters('apiVersionSets'))]"
@@ -951,8 +973,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "17009588020697963791"
+              "version": "0.22.6.54827",
+              "templateHash": "12233980723609740158"
             },
             "name": "API Management Service API Version Sets",
             "description": "This module deploys an API Management Service API Version Set.",
@@ -1035,10 +1057,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.ApiManagement/service', parameters('name'))]"
+        "service"
       ]
     },
-    {
+    "service_authorizationServers": {
       "copy": {
         "name": "service_authorizationServers",
         "count": "[length(variables('authorizationServerList'))]"
@@ -1091,8 +1113,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "10093092890891107320"
+              "version": "0.22.6.54827",
+              "templateHash": "7988688467600216709"
             },
             "name": "API Management Service Authorization Servers",
             "description": "This module deploys an API Management Service Authorization Server.",
@@ -1297,10 +1319,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.ApiManagement/service', parameters('name'))]"
+        "service"
       ]
     },
-    {
+    "service_backends": {
       "copy": {
         "name": "service_backends",
         "count": "[length(parameters('backends'))]"
@@ -1339,8 +1361,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "15587770490550622003"
+              "version": "0.22.6.54827",
+              "templateHash": "3713166604792624713"
             },
             "name": "API Management Service Backends",
             "description": "This module deploys an API Management Service Backend.",
@@ -1492,10 +1514,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.ApiManagement/service', parameters('name'))]"
+        "service"
       ]
     },
-    {
+    "service_caches": {
       "copy": {
         "name": "service_caches",
         "count": "[length(parameters('caches'))]"
@@ -1533,8 +1555,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "12512964555569038583"
+              "version": "0.22.6.54827",
+              "templateHash": "4933923478377534151"
             },
             "name": "API Management Service Caches",
             "description": "This module deploys an API Management Service Cache.",
@@ -1640,10 +1662,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.ApiManagement/service', parameters('name'))]"
+        "service"
       ]
     },
-    {
+    "service_identityProviders": {
       "copy": {
         "name": "service_identityProviders",
         "count": "[length(parameters('identityProviders'))]"
@@ -1684,8 +1706,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "5821693072491820871"
+              "version": "0.22.6.54827",
+              "templateHash": "13822474427587974385"
             },
             "name": "API Management Service Identity Providers",
             "description": "This module deploys an API Management Service Identity Provider.",
@@ -1860,10 +1882,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.ApiManagement/service', parameters('name'))]"
+        "service"
       ]
     },
-    {
+    "service_namedValues": {
       "copy": {
         "name": "service_namedValues",
         "count": "[length(parameters('namedValues'))]"
@@ -1900,8 +1922,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "3922343729155718081"
+              "version": "0.22.6.54827",
+              "templateHash": "3581707708141744852"
             },
             "name": "API Management Service Named Values",
             "description": "This module deploys an API Management Service Named Value.",
@@ -2019,10 +2041,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.ApiManagement/service', parameters('name'))]"
+        "service"
       ]
     },
-    {
+    "service_portalsettings": {
       "copy": {
         "name": "service_portalsettings",
         "count": "[length(parameters('portalsettings'))]"
@@ -2053,8 +2075,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "869969373482543080"
+              "version": "0.22.6.54827",
+              "templateHash": "1124223085084988655"
             },
             "name": "API Management Service Portal Settings",
             "description": "This module deploys an API Management Service Portal Setting.",
@@ -2142,10 +2164,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.ApiManagement/service', parameters('name'))]"
+        "service"
       ]
     },
-    {
+    "service_policies": {
       "copy": {
         "name": "service_policies",
         "count": "[length(parameters('policies'))]"
@@ -2176,8 +2198,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "13858171935263007479"
+              "version": "0.22.6.54827",
+              "templateHash": "3650757020022888901"
             },
             "name": "API Management Service Policies",
             "description": "This module deploys an API Management Service Policy.",
@@ -2275,10 +2297,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.ApiManagement/service', parameters('name'))]"
+        "service"
       ]
     },
-    {
+    "service_products": {
       "copy": {
         "name": "service_products",
         "count": "[length(parameters('products'))]"
@@ -2316,8 +2338,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "6198741217819703348"
+              "version": "0.22.6.54827",
+              "templateHash": "2758822676627115160"
             },
             "name": "API Management Service Products",
             "description": "This module deploys an API Management Service Product.",
@@ -2465,8 +2487,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.21.1.54444",
-                      "templateHash": "4854177138271927700"
+                      "version": "0.22.6.54827",
+                      "templateHash": "16488730655399972556"
                     },
                     "name": "API Management Service Products APIs",
                     "description": "This module deploys an API Management Service Product API.",
@@ -2579,8 +2601,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.21.1.54444",
-                      "templateHash": "8500094107587576986"
+                      "version": "0.22.6.54827",
+                      "templateHash": "14085709622188800883"
                     },
                     "name": "API Management Service Products Groups",
                     "description": "This module deploys an API Management Service Product Group.",
@@ -2707,11 +2729,11 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.ApiManagement/service', parameters('name'))]",
+        "service",
         "service_apis"
       ]
     },
-    {
+    "service_subscriptions": {
       "copy": {
         "name": "service_subscriptions",
         "count": "[length(parameters('subscriptions'))]"
@@ -2745,8 +2767,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "5104726614398406453"
+              "version": "0.22.6.54827",
+              "templateHash": "10733141744485121232"
             },
             "name": "API Management Service Subscriptions",
             "description": "This module deploys an API Management Service Subscription.",
@@ -2871,12 +2893,12 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.ApiManagement/service', parameters('name'))]"
+        "service"
       ]
     },
-    {
+    "service_roleAssignments": {
       "copy": {
-        "name": "apiManagementService_roleAssignments",
+        "name": "service_roleAssignments",
         "count": "[length(parameters('roleAssignments'))]"
       },
       "type": "Microsoft.Resources/deployments",
@@ -2908,8 +2930,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "15706860856976307419"
+              "version": "0.22.6.54827",
+              "templateHash": "1194193235287598548"
             }
           },
           "parameters": {
@@ -3023,10 +3045,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.ApiManagement/service', parameters('name'))]"
+        "service"
       ]
     }
-  ],
+  },
   "outputs": {
     "name": {
       "type": "string",
@@ -3054,14 +3076,14 @@
       "metadata": {
         "description": "The principal ID of the system assigned identity."
       },
-      "value": "[if(and(parameters('systemAssignedIdentity'), contains(reference(resourceId('Microsoft.ApiManagement/service', parameters('name')), '2021-08-01', 'full').identity, 'principalId')), reference(resourceId('Microsoft.ApiManagement/service', parameters('name')), '2021-08-01', 'full').identity.principalId, '')]"
+      "value": "[if(and(parameters('systemAssignedIdentity'), contains(reference('service', '2021-08-01', 'full').identity, 'principalId')), reference('service', '2021-08-01', 'full').identity.principalId, '')]"
     },
     "location": {
       "type": "string",
       "metadata": {
         "description": "The location the resource was deployed into."
       },
-      "value": "[reference(resourceId('Microsoft.ApiManagement/service', parameters('name')), '2021-08-01', 'full').location]"
+      "value": "[reference('service', '2021-08-01', 'full').location]"
     }
   }
 }

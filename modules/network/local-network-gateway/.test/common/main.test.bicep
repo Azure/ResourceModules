@@ -1,5 +1,8 @@
 targetScope = 'subscription'
 
+metadata name = 'Using large parameter set'
+metadata description = 'This instance deploys the module with most of its features enabled.'
+
 // ========== //
 // Parameters //
 // ========== //
@@ -55,7 +58,10 @@ module testDeployment '../../main.bicep' = {
     localGatewayPublicIpAddress: '8.8.8.8'
     localAsn: '65123'
     localBgpPeeringAddress: '192.168.1.5'
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     roleAssignments: [
       {
         roleDefinitionIdOrName: 'Reader'

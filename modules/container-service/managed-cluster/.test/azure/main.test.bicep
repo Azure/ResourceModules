@@ -177,7 +177,10 @@ module testDeployment '../../main.bicep' = {
     enableAzureDefender: true
     enableKeyvaultSecretsProvider: true
     enablePodSecurityPolicy: false
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     roleAssignments: [
       {
         roleDefinitionIdOrName: 'Reader'

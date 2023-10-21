@@ -4,12 +4,13 @@ This module deploys a Web or Function App Deployment Slot.
 
 ## Navigation
 
-- [Resource types](#Resource-types)
+- [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
+- [Notes](#Notes)
 
-## Resource types
+## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
@@ -28,411 +29,422 @@ This module deploys a Web or Function App Deployment Slot.
 
 **Required parameters**
 
-| Parameter Name | Type | Allowed Values | Description |
-| :-- | :-- | :-- | :-- |
-| `kind` | string | `[app, functionapp, functionapp,linux, functionapp,workflowapp, functionapp,workflowapp,linux]` | Type of slot to deploy. |
-| `name` | string |  | Name of the slot. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`kind`](#parameter-kind) | string | Type of slot to deploy. |
+| [`name`](#parameter-name) | string | Name of the slot. |
 
 **Conditional parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `appName` | string | The name of the parent site resource. Required if the template is used in a standalone deployment. |
+| [`appName`](#parameter-appname) | string | The name of the parent site resource. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Allowed Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `appInsightResourceId` | string | `''` |  | Resource ID of the app insight to leverage for this resource. |
-| `appServiceEnvironmentResourceId` | string | `''` |  | The resource ID of the app service environment to use for this resource. |
-| `appSettingsKeyValuePairs` | object | `{object}` |  | The app settings-value pairs except for AzureWebJobsStorage, AzureWebJobsDashboard, APPINSIGHTS_INSTRUMENTATIONKEY and APPLICATIONINSIGHTS_CONNECTION_STRING. |
-| `authSettingV2Configuration` | object | `{object}` |  | The auth settings V2 configuration. |
-| `clientAffinityEnabled` | bool | `True` |  | If client affinity is enabled. |
-| `clientCertEnabled` | bool | `False` |  | To enable client certificate authentication (TLS mutual authentication). |
-| `clientCertExclusionPaths` | string | `''` |  | Client certificate authentication comma-separated exclusion paths. |
-| `clientCertMode` | string | `'Optional'` | `[Optional, OptionalInteractiveUser, Required]` | This composes with ClientCertEnabled setting.</p>- ClientCertEnabled: false means ClientCert is ignored.</p>- ClientCertEnabled: true and ClientCertMode: Required means ClientCert is required.</p>- ClientCertEnabled: true and ClientCertMode: Optional means ClientCert is optional or accepted. |
-| `cloningInfo` | object | `{object}` |  | If specified during app creation, the app is cloned from a source app. |
-| `containerSize` | int | `-1` |  | Size of the function container. |
-| `customDomainVerificationId` | string | `''` |  | Unique identifier that verifies the custom domains assigned to the app. Customer will add this ID to a txt record for verification. |
-| `dailyMemoryTimeQuota` | int | `-1` |  | Maximum allowed daily memory-time quota (applicable on dynamic apps only). |
-| `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
-| `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
-| `diagnosticLogCategoriesToEnable` | array | `[if(equals(parameters('kind'), 'functionapp'), createArray('FunctionAppLogs'), createArray('AppServiceHTTPLogs', 'AppServiceConsoleLogs', 'AppServiceAppLogs', 'AppServiceAuditLogs', 'AppServiceIPSecAuditLogs', 'AppServicePlatformLogs'))]` | `[AppServiceAppLogs, AppServiceAuditLogs, AppServiceConsoleLogs, AppServiceHTTPLogs, AppServiceIPSecAuditLogs, AppServicePlatformLogs, FunctionAppLogs]` | The name of logs that will be streamed. |
-| `diagnosticMetricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | The name of metrics that will be streamed. |
-| `diagnosticSettingsName` | string | `''` |  | The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings". |
-| `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
-| `diagnosticWorkspaceId` | string | `''` |  | Resource ID of log analytics workspace. |
-| `enabled` | bool | `True` |  | Setting this value to false disables the app (takes the app offline). |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `hostNameSslStates` | array | `[]` |  | Hostname SSL states are used to manage the SSL bindings for app's hostnames. |
-| `httpsOnly` | bool | `True` |  | Configures a slot to accept only HTTPS requests. Issues redirect for HTTP requests. |
-| `hybridConnectionRelays` | array | `[]` |  | Names of hybrid connection relays to connect app with. |
-| `hyperV` | bool | `False` |  | Hyper-V sandbox. |
-| `keyVaultAccessIdentityResourceId` | string | `''` |  | The resource ID of the assigned identity to be used to access a key vault with. |
-| `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
-| `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
-| `privateEndpoints` | array | `[]` |  | Configuration details for private endpoints. |
-| `publicNetworkAccess` | string | `''` | `['', Disabled, Enabled]` | Allow or block all public traffic. |
-| `redundancyMode` | string | `'None'` | `[ActiveActive, Failover, GeoRedundant, Manual, None]` | Site redundancy mode. |
-| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| `serverFarmResourceId` | string | `''` |  | The resource ID of the app service plan to use for the slot. |
-| `setAzureWebJobsDashboard` | bool | `[if(contains(parameters('kind'), 'functionapp'), true(), false())]` |  | For function apps. If true the app settings "AzureWebJobsDashboard" will be set. If false not. In case you use Application Insights it can make sense to not set it for performance reasons. |
-| `siteConfig` | object | `{object}` |  | The site config object. |
-| `storageAccountRequired` | bool | `False` |  | Checks if Customer provided storage account is required. |
-| `storageAccountResourceId` | string | `''` |  | Required if app of kind functionapp. Resource ID of the storage account to manage triggers and logging function executions. |
-| `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
-| `tags` | object | `{object}` |  | Tags of the resource. |
-| `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
-| `virtualNetworkSubnetId` | string | `''` |  | Azure Resource Manager ID of the Virtual network and subnet to be joined by Regional VNET Integration. This must be of the form /subscriptions/{subscriptionName}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{vnetName}/subnets/{subnetName}. |
-| `vnetContentShareEnabled` | bool | `False` |  | To enable accessing content over virtual network. |
-| `vnetImagePullEnabled` | bool | `False` |  | To enable pulling image over Virtual Network. |
-| `vnetRouteAllEnabled` | bool | `False` |  | Virtual Network Route All enabled. This causes all outbound traffic to have Virtual Network Security Groups and User Defined Routes applied. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`appInsightResourceId`](#parameter-appinsightresourceid) | string | Resource ID of the app insight to leverage for this resource. |
+| [`appServiceEnvironmentResourceId`](#parameter-appserviceenvironmentresourceid) | string | The resource ID of the app service environment to use for this resource. |
+| [`appSettingsKeyValuePairs`](#parameter-appsettingskeyvaluepairs) | object | The app settings-value pairs except for AzureWebJobsStorage, AzureWebJobsDashboard, APPINSIGHTS_INSTRUMENTATIONKEY and APPLICATIONINSIGHTS_CONNECTION_STRING. |
+| [`authSettingV2Configuration`](#parameter-authsettingv2configuration) | object | The auth settings V2 configuration. |
+| [`clientAffinityEnabled`](#parameter-clientaffinityenabled) | bool | If client affinity is enabled. |
+| [`clientCertEnabled`](#parameter-clientcertenabled) | bool | To enable client certificate authentication (TLS mutual authentication). |
+| [`clientCertExclusionPaths`](#parameter-clientcertexclusionpaths) | string | Client certificate authentication comma-separated exclusion paths. |
+| [`clientCertMode`](#parameter-clientcertmode) | string | This composes with ClientCertEnabled setting.</p>- ClientCertEnabled: false means ClientCert is ignored.</p>- ClientCertEnabled: true and ClientCertMode: Required means ClientCert is required.</p>- ClientCertEnabled: true and ClientCertMode: Optional means ClientCert is optional or accepted. |
+| [`cloningInfo`](#parameter-cloninginfo) | object | If specified during app creation, the app is cloned from a source app. |
+| [`containerSize`](#parameter-containersize) | int | Size of the function container. |
+| [`customDomainVerificationId`](#parameter-customdomainverificationid) | string | Unique identifier that verifies the custom domains assigned to the app. Customer will add this ID to a txt record for verification. |
+| [`dailyMemoryTimeQuota`](#parameter-dailymemorytimequota) | int | Maximum allowed daily memory-time quota (applicable on dynamic apps only). |
+| [`diagnosticEventHubAuthorizationRuleId`](#parameter-diagnosticeventhubauthorizationruleid) | string | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
+| [`diagnosticEventHubName`](#parameter-diagnosticeventhubname) | string | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
+| [`diagnosticLogCategoriesToEnable`](#parameter-diagnosticlogcategoriestoenable) | array | The name of logs that will be streamed. |
+| [`diagnosticMetricsToEnable`](#parameter-diagnosticmetricstoenable) | array | The name of metrics that will be streamed. |
+| [`diagnosticSettingsName`](#parameter-diagnosticsettingsname) | string | The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings". |
+| [`diagnosticStorageAccountId`](#parameter-diagnosticstorageaccountid) | string | Resource ID of the diagnostic storage account. |
+| [`diagnosticWorkspaceId`](#parameter-diagnosticworkspaceid) | string | Resource ID of log analytics workspace. |
+| [`enabled`](#parameter-enabled) | bool | Setting this value to false disables the app (takes the app offline). |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| [`hostNameSslStates`](#parameter-hostnamesslstates) | array | Hostname SSL states are used to manage the SSL bindings for app's hostnames. |
+| [`httpsOnly`](#parameter-httpsonly) | bool | Configures a slot to accept only HTTPS requests. Issues redirect for HTTP requests. |
+| [`hybridConnectionRelays`](#parameter-hybridconnectionrelays) | array | Names of hybrid connection relays to connect app with. |
+| [`hyperV`](#parameter-hyperv) | bool | Hyper-V sandbox. |
+| [`keyVaultAccessIdentityResourceId`](#parameter-keyvaultaccessidentityresourceid) | string | The resource ID of the assigned identity to be used to access a key vault with. |
+| [`location`](#parameter-location) | string | Location for all Resources. |
+| [`lock`](#parameter-lock) | object | The lock settings of the service. |
+| [`privateEndpoints`](#parameter-privateendpoints) | array | Configuration details for private endpoints. |
+| [`publicNetworkAccess`](#parameter-publicnetworkaccess) | string | Allow or block all public traffic. |
+| [`redundancyMode`](#parameter-redundancymode) | string | Site redundancy mode. |
+| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| [`serverFarmResourceId`](#parameter-serverfarmresourceid) | string | The resource ID of the app service plan to use for the slot. |
+| [`setAzureWebJobsDashboard`](#parameter-setazurewebjobsdashboard) | bool | For function apps. If true the app settings "AzureWebJobsDashboard" will be set. If false not. In case you use Application Insights it can make sense to not set it for performance reasons. |
+| [`siteConfig`](#parameter-siteconfig) | object | The site config object. |
+| [`storageAccountRequired`](#parameter-storageaccountrequired) | bool | Checks if Customer provided storage account is required. |
+| [`storageAccountResourceId`](#parameter-storageaccountresourceid) | string | Required if app of kind functionapp. Resource ID of the storage account to manage triggers and logging function executions. |
+| [`systemAssignedIdentity`](#parameter-systemassignedidentity) | bool | Enables system assigned managed identity on the resource. |
+| [`tags`](#parameter-tags) | object | Tags of the resource. |
+| [`userAssignedIdentities`](#parameter-userassignedidentities) | object | The ID(s) to assign to the resource. |
+| [`virtualNetworkSubnetId`](#parameter-virtualnetworksubnetid) | string | Azure Resource Manager ID of the Virtual network and subnet to be joined by Regional VNET Integration. This must be of the form /subscriptions/{subscriptionName}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{vnetName}/subnets/{subnetName}. |
+| [`vnetContentShareEnabled`](#parameter-vnetcontentshareenabled) | bool | To enable accessing content over virtual network. |
+| [`vnetImagePullEnabled`](#parameter-vnetimagepullenabled) | bool | To enable pulling image over Virtual Network. |
+| [`vnetRouteAllEnabled`](#parameter-vnetrouteallenabled) | bool | Virtual Network Route All enabled. This causes all outbound traffic to have Virtual Network Security Groups and User Defined Routes applied. |
 
+### Parameter: `appInsightResourceId`
 
-### Parameter Usage: `appSettingsKeyValuePairs`
+Resource ID of the app insight to leverage for this resource.
+- Required: No
+- Type: string
+- Default: `''`
 
-AzureWebJobsStorage, AzureWebJobsDashboard, APPINSIGHTS_INSTRUMENTATIONKEY and APPLICATIONINSIGHTS_CONNECTION_STRING are set separately (check parameters storageAccountId, setAzureWebJobsDashboard, appInsightId).
-For all other app settings key-value pairs use this object.
+### Parameter: `appName`
 
-<details>
+The name of the parent site resource. Required if the template is used in a standalone deployment.
+- Required: Yes
+- Type: string
 
-<summary>Parameter JSON format</summary>
+### Parameter: `appServiceEnvironmentResourceId`
 
-```json
-"appSettingsKeyValuePairs": {
-    "value": [
-        {
-            "name": "key1",
-            "value": "val1"
-        },
-        {
-            "name": "key2",
-            "value": "val2"
-        }
-    ]
-}
-```
+The resource ID of the app service environment to use for this resource.
+- Required: No
+- Type: string
+- Default: `''`
 
-</details>
+### Parameter: `appSettingsKeyValuePairs`
 
-<details>
+The app settings-value pairs except for AzureWebJobsStorage, AzureWebJobsDashboard, APPINSIGHTS_INSTRUMENTATIONKEY and APPLICATIONINSIGHTS_CONNECTION_STRING.
+- Required: No
+- Type: object
+- Default: `{object}`
 
-<summary>Bicep format</summary>
-
-```bicep
-appSettingsKeyValuePairs: [
-    {
-        name: 'key1'
-        value: 'val1'
-    }
-    {
-        name: 'key2'
-        value: 'val2'
-    }
-]
-```
-
-</details>
-<p>
-
-### Parameter Usage: `authSettingV2Configuration`
+### Parameter: `authSettingV2Configuration`
 
 The auth settings V2 configuration.
+- Required: No
+- Type: object
+- Default: `{object}`
 
-<details>
+### Parameter: `clientAffinityEnabled`
 
-<summary>Parameter JSON format</summary>
+If client affinity is enabled.
+- Required: No
+- Type: bool
+- Default: `True`
 
-```json
-"siteConfig": {
-    "value": [
-        // Check out https://learn.microsoft.com/en-us/azure/templates/microsoft.web/sites/config-authsettingsv2?tabs=bicep#siteauthsettingsv2properties for possible properties
-    ]
-}
-```
+### Parameter: `clientCertEnabled`
 
-</details>
+To enable client certificate authentication (TLS mutual authentication).
+- Required: No
+- Type: bool
+- Default: `False`
 
-<details>
+### Parameter: `clientCertExclusionPaths`
 
-<summary>Bicep format</summary>
+Client certificate authentication comma-separated exclusion paths.
+- Required: No
+- Type: string
+- Default: `''`
 
-```bicep
-siteConfig: [
-    // Check out https://learn.microsoft.com/en-us/azure/templates/microsoft.web/sites/config-authsettingsv2?tabs=bicep#siteauthsettingsv2properties for possible properties
-]
-```
+### Parameter: `clientCertMode`
 
-</details>
-<p>
+This composes with ClientCertEnabled setting.</p>- ClientCertEnabled: false means ClientCert is ignored.</p>- ClientCertEnabled: true and ClientCertMode: Required means ClientCert is required.</p>- ClientCertEnabled: true and ClientCertMode: Optional means ClientCert is optional or accepted.
+- Required: No
+- Type: string
+- Default: `'Optional'`
+- Allowed: `[Optional, OptionalInteractiveUser, Required]`
 
-### Parameter Usage: `siteConfig`
+### Parameter: `cloningInfo`
 
-The site config.
+If specified during app creation, the app is cloned from a source app.
+- Required: No
+- Type: object
+- Default: `{object}`
 
-<details>
+### Parameter: `containerSize`
 
-<summary>Parameter JSON format</summary>
+Size of the function container.
+- Required: No
+- Type: int
+- Default: `-1`
 
-```json
-"siteConfig": {
-    "value": [
-        // Check out https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/sites?tabs=bicep#siteconfig for possible properties
-    ]
-}
-```
+### Parameter: `customDomainVerificationId`
 
-</details>
+Unique identifier that verifies the custom domains assigned to the app. Customer will add this ID to a txt record for verification.
+- Required: No
+- Type: string
+- Default: `''`
 
-<details>
+### Parameter: `dailyMemoryTimeQuota`
 
-<summary>Bicep format</summary>
+Maximum allowed daily memory-time quota (applicable on dynamic apps only).
+- Required: No
+- Type: int
+- Default: `-1`
 
-```bicep
-siteConfig: [
-    // Check out https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/sites?tabs=bicep#siteconfig for possible properties
-]
-```
+### Parameter: `diagnosticEventHubAuthorizationRuleId`
 
-</details>
-<p>
+Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.
+- Required: No
+- Type: string
+- Default: `''`
 
-### Parameter Usage: `privateEndpoints`
+### Parameter: `diagnosticEventHubName`
 
-To use Private Endpoint the following dependencies must be deployed:
+Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.
+- Required: No
+- Type: string
+- Default: `''`
 
-- Destination subnet must be created with the following configuration option - `"privateEndpointNetworkPolicies": "Disabled"`. Setting this option acknowledges that NSG rules are not applied to Private Endpoints (this capability is coming soon). A full example is available in the Virtual Network Module.
-- Although not strictly required, it is highly recommended to first create a private DNS Zone to host Private Endpoint DNS records. See [Azure Private Endpoint DNS configuration](https://learn.microsoft.com/en-us/azure/private-link/private-endpoint-dns) for more information.
+### Parameter: `diagnosticLogCategoriesToEnable`
 
-<details>
+The name of logs that will be streamed.
+- Required: No
+- Type: array
+- Default: `[if(equals(parameters('kind'), 'functionapp'), createArray('FunctionAppLogs'), createArray('AppServiceHTTPLogs', 'AppServiceConsoleLogs', 'AppServiceAppLogs', 'AppServiceAuditLogs', 'AppServiceIPSecAuditLogs', 'AppServicePlatformLogs'))]`
+- Allowed: `[AppServiceAppLogs, AppServiceAuditLogs, AppServiceConsoleLogs, AppServiceHTTPLogs, AppServiceIPSecAuditLogs, AppServicePlatformLogs, FunctionAppLogs]`
 
-<summary>Parameter JSON format</summary>
+### Parameter: `diagnosticMetricsToEnable`
 
-```json
-"privateEndpoints": {
-    "value": [
-        // Example showing all available fields
-        {
-            "name": "sxx-az-pe", // Optional: Name will be automatically generated if one is not provided here
-            "subnetResourceId": "/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001",
-            "service": "<serviceName>", // e.g. vault, registry, blob
-            "privateDnsZoneGroup": {
-                "privateDNSResourceIds": [ // Optional: No DNS record will be created if a private DNS zone Resource ID is not specified
-                    "/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/<privateDnsZoneName>" // e.g. privatelink.vaultcore.azure.net, privatelink.azurecr.io, privatelink.blob.core.windows.net
-                ]
-            },
-            "ipConfigurations":[
-                {
-                    "name": "myIPconfigTest02",
-                    "properties": {
-                        "groupId": "blob",
-                        "memberName": "blob",
-                        "privateIPAddress": "10.0.0.30"
-                    }
-                }
-            ],
-            "customDnsConfigs": [
-                {
-                    "fqdn": "customname.test.local",
-                    "ipAddresses": [
-                        "10.10.10.10"
-                    ]
-                }
-            ]
-        },
-        // Example showing only mandatory fields
-        {
-            "subnetResourceId": "/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001",
-            "service": "<serviceName>" // e.g. vault, registry, blob
-        }
-    ]
-}
-```
+The name of metrics that will be streamed.
+- Required: No
+- Type: array
+- Default: `[AllMetrics]`
+- Allowed: `[AllMetrics]`
 
-</details>
+### Parameter: `diagnosticSettingsName`
 
-<details>
+The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings".
+- Required: No
+- Type: string
+- Default: `''`
 
-<summary>Bicep format</summary>
+### Parameter: `diagnosticStorageAccountId`
 
-```bicep
-privateEndpoints:  [
-    // Example showing all available fields
-    {
-        name: 'sxx-az-pe' // Optional: Name will be automatically generated if one is not provided here
-        subnetResourceId: '/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001'
-        service: '<serviceName>' // e.g. vault, registry, blob
-        privateDnsZoneGroup: {
-            privateDNSResourceIds: [ // Optional: No DNS record will be created if a private DNS zone Resource ID is not specified
-                '/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/<privateDnsZoneName>' // e.g. privatelink.vaultcore.azure.net, privatelink.azurecr.io, privatelink.blob.core.windows.net
-            ]
-        }
-        customDnsConfigs: [
-            {
-                fqdn: 'customname.test.local'
-                ipAddresses: [
-                    '10.10.10.10'
-                ]
-            }
-        ]
-        ipConfigurations:[
-          {
-            name: 'myIPconfigTest02'
-            properties: {
-              groupId: 'blob'
-              memberName: 'blob'
-              privateIPAddress: '10.0.0.30'
-            }
-          }
-        ]
-    }
-    // Example showing only mandatory fields
-    {
-        subnetResourceId: '/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001'
-        service: '<serviceName>' // e.g. vault, registry, blob
-    }
-]
-```
+Resource ID of the diagnostic storage account.
+- Required: No
+- Type: string
+- Default: `''`
 
-</details>
-<p>
+### Parameter: `diagnosticWorkspaceId`
 
-### Parameter Usage: `roleAssignments`
+Resource ID of log analytics workspace.
+- Required: No
+- Type: string
+- Default: `''`
 
-Create a role assignment for the given resource. If you want to assign a service principal / managed identity that is created in the same deployment, make sure to also specify the `'principalType'` parameter and set it to `'ServicePrincipal'`. This will ensure the role assignment waits for the principal's propagation in Azure.
+### Parameter: `enabled`
 
-<details>
+Setting this value to false disables the app (takes the app offline).
+- Required: No
+- Type: bool
+- Default: `True`
 
-<summary>Parameter JSON format</summary>
+### Parameter: `enableDefaultTelemetry`
 
-```json
-"roleAssignments": {
-    "value": [
-        {
-            "roleDefinitionIdOrName": "Reader",
-            "description": "Reader Role Assignment",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012", // object 1
-                "78945612-1234-1234-1234-123456789012" // object 2
-            ]
-        },
-        {
-            "roleDefinitionIdOrName": "/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012" // object 1
-            ],
-            "principalType": "ServicePrincipal"
-        }
-    ]
-}
-```
+Enable telemetry via the Customer Usage Attribution ID (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
 
-</details>
+### Parameter: `hostNameSslStates`
 
-<details>
+Hostname SSL states are used to manage the SSL bindings for app's hostnames.
+- Required: No
+- Type: array
+- Default: `[]`
 
-<summary>Bicep format</summary>
+### Parameter: `httpsOnly`
 
-```bicep
-roleAssignments: [
-    {
-        roleDefinitionIdOrName: 'Reader'
-        description: 'Reader Role Assignment'
-        principalIds: [
-            '12345678-1234-1234-1234-123456789012' // object 1
-            '78945612-1234-1234-1234-123456789012' // object 2
-        ]
-    }
-    {
-        roleDefinitionIdOrName: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'
-        principalIds: [
-            '12345678-1234-1234-1234-123456789012' // object 1
-        ]
-        principalType: 'ServicePrincipal'
-    }
-]
-```
+Configures a slot to accept only HTTPS requests. Issues redirect for HTTP requests.
+- Required: No
+- Type: bool
+- Default: `True`
 
-</details>
-<p>
+### Parameter: `hybridConnectionRelays`
 
-### Parameter Usage: `tags`
+Names of hybrid connection relays to connect app with.
+- Required: No
+- Type: array
+- Default: `[]`
 
-Tag names and tag values can be provided as needed. A tag can be left without a value.
+### Parameter: `hyperV`
 
-<details>
+Hyper-V sandbox.
+- Required: No
+- Type: bool
+- Default: `False`
 
-<summary>Parameter JSON format</summary>
+### Parameter: `keyVaultAccessIdentityResourceId`
 
-```json
-"tags": {
-    "value": {
-        "Environment": "Non-Prod",
-        "Contact": "test.user@testcompany.com",
-        "PurchaseOrder": "1234",
-        "CostCenter": "7890",
-        "ServiceName": "DeploymentValidation",
-        "Role": "DeploymentValidation"
-    }
-}
-```
+The resource ID of the assigned identity to be used to access a key vault with.
+- Required: No
+- Type: string
+- Default: `''`
 
-</details>
+### Parameter: `kind`
 
-<details>
+Type of slot to deploy.
+- Required: Yes
+- Type: string
+- Allowed: `[app, functionapp, functionapp,linux, functionapp,workflowapp, functionapp,workflowapp,linux]`
 
-<summary>Bicep format</summary>
+### Parameter: `location`
 
-```bicep
-tags: {
-    Environment: 'Non-Prod'
-    Contact: 'test.user@testcompany.com'
-    PurchaseOrder: '1234'
-    CostCenter: '7890'
-    ServiceName: 'DeploymentValidation'
-    Role: 'DeploymentValidation'
-}
-```
+Location for all Resources.
+- Required: No
+- Type: string
+- Default: `[resourceGroup().location]`
 
-</details>
-<p>
+### Parameter: `lock`
 
-### Parameter Usage: `userAssignedIdentities`
+The lock settings of the service.
+- Required: No
+- Type: object
 
-You can specify multiple user assigned identities to a resource by providing additional resource IDs using the following format:
 
-<details>
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`kind`](#parameter-lockkind) | No | string | Optional. Specify the type of lock. |
+| [`name`](#parameter-lockname) | No | string | Optional. Specify the name of lock. |
 
-<summary>Parameter JSON format</summary>
+### Parameter: `lock.kind`
 
-```json
-"userAssignedIdentities": {
-    "value": {
-        "/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
-        "/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
-    }
-}
-```
+Optional. Specify the type of lock.
 
-</details>
+- Required: No
+- Type: string
+- Allowed: `[CanNotDelete, None, ReadOnly]`
 
-<details>
+### Parameter: `lock.name`
 
-<summary>Bicep format</summary>
+Optional. Specify the name of lock.
 
-```bicep
-userAssignedIdentities: {
-    '/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
-    '/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
-}
-```
+- Required: No
+- Type: string
 
-</details>
-<p>
+### Parameter: `name`
+
+Name of the slot.
+- Required: Yes
+- Type: string
+
+### Parameter: `privateEndpoints`
+
+Configuration details for private endpoints.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `publicNetworkAccess`
+
+Allow or block all public traffic.
+- Required: No
+- Type: string
+- Default: `''`
+- Allowed: `['', Disabled, Enabled]`
+
+### Parameter: `redundancyMode`
+
+Site redundancy mode.
+- Required: No
+- Type: string
+- Default: `'None'`
+- Allowed: `[ActiveActive, Failover, GeoRedundant, Manual, None]`
+
+### Parameter: `roleAssignments`
+
+Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `serverFarmResourceId`
+
+The resource ID of the app service plan to use for the slot.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `setAzureWebJobsDashboard`
+
+For function apps. If true the app settings "AzureWebJobsDashboard" will be set. If false not. In case you use Application Insights it can make sense to not set it for performance reasons.
+- Required: No
+- Type: bool
+- Default: `[if(contains(parameters('kind'), 'functionapp'), true(), false())]`
+
+### Parameter: `siteConfig`
+
+The site config object.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `storageAccountRequired`
+
+Checks if Customer provided storage account is required.
+- Required: No
+- Type: bool
+- Default: `False`
+
+### Parameter: `storageAccountResourceId`
+
+Required if app of kind functionapp. Resource ID of the storage account to manage triggers and logging function executions.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `systemAssignedIdentity`
+
+Enables system assigned managed identity on the resource.
+- Required: No
+- Type: bool
+- Default: `False`
+
+### Parameter: `tags`
+
+Tags of the resource.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `userAssignedIdentities`
+
+The ID(s) to assign to the resource.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `virtualNetworkSubnetId`
+
+Azure Resource Manager ID of the Virtual network and subnet to be joined by Regional VNET Integration. This must be of the form /subscriptions/{subscriptionName}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{vnetName}/subnets/{subnetName}.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `vnetContentShareEnabled`
+
+To enable accessing content over virtual network.
+- Required: No
+- Type: bool
+- Default: `False`
+
+### Parameter: `vnetImagePullEnabled`
+
+To enable pulling image over Virtual Network.
+- Required: No
+- Type: bool
+- Default: `False`
+
+### Parameter: `vnetRouteAllEnabled`
+
+Virtual Network Route All enabled. This causes all outbound traffic to have Virtual Network Security Groups and User Defined Routes applied.
+- Required: No
+- Type: bool
+- Default: `False`
+
 
 ## Outputs
 
-| Output Name | Type | Description |
+| Output | Type | Description |
 | :-- | :-- | :-- |
 | `location` | string | The location the resource was deployed into. |
 | `name` | string | The name of the slot. |
@@ -446,4 +458,44 @@ This section gives you an overview of all local-referenced module files (i.e., o
 
 | Reference | Type |
 | :-- | :-- |
-| `network/private-endpoint` | Local reference |
+| `modules/network/private-endpoint` | Local reference |
+
+## Notes
+
+### Parameter Usage: `appSettingsKeyValuePairs`
+
+AzureWebJobsStorage, AzureWebJobsDashboard, APPINSIGHTS_INSTRUMENTATIONKEY and APPLICATIONINSIGHTS_CONNECTION_STRING are set separately (check parameters storageAccountId, setAzureWebJobsDashboard, appInsightId).
+For all other app settings key-value pairs use this object.
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"appSettingsKeyValuePairs": {
+    "value": {
+      "AzureFunctionsJobHost__logging__logLevel__default": "Trace",
+      "EASYAUTH_SECRET": "https://adp-[[namePrefix]]-az-kv-x-001.vault.azure.net/secrets/Modules-Test-SP-Password",
+      "FUNCTIONS_EXTENSION_VERSION": "~4",
+      "FUNCTIONS_WORKER_RUNTIME": "dotnet"
+    }
+}
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+appSettingsKeyValuePairs: {
+  AzureFunctionsJobHost__logging__logLevel__default: 'Trace'
+  EASYAUTH_SECRET: 'https://adp-[[namePrefix]]-az-kv-x-001.vault.azure.net/secrets/Modules-Test-SP-Password'
+  FUNCTIONS_EXTENSION_VERSION: '~4'
+  FUNCTIONS_WORKER_RUNTIME: 'dotnet'
+}
+```
+
+</details>
+<p>

@@ -5,10 +5,10 @@ This module deploys a SignalR Service SignalR.
 ## Navigation
 
 - [Resource Types](#Resource-Types)
+- [Usage examples](#Usage-examples)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
-- [Deployment examples](#Deployment-examples)
 
 ## Resource Types
 
@@ -20,271 +20,28 @@ This module deploys a SignalR Service SignalR.
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2023-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-04-01/privateEndpoints/privateDnsZoneGroups) |
 | `Microsoft.SignalRService/signalR` | [2022-02-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.SignalRService/2022-02-01/signalR) |
 
-## Parameters
+## Usage examples
 
-**Required parameters**
+The following section provides usage examples for the module, which were used to validate and deploy the module successfully. For a full reference, please review the module's test folder in its repository.
 
-| Parameter Name | Type | Description |
-| :-- | :-- | :-- |
-| `name` | string | The name of the SignalR Service resource. |
+>**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-**Optional parameters**
+>**Note**: To reference the module, please use the following syntax `br:bicep/modules/signal-r-service.signal-r:1.0.0`.
 
-| Parameter Name | Type | Default Value | Allowed Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `allowedOrigins` | array | `[*]` |  | The allowed origin settings of the resource. |
-| `capacity` | int | `1` |  | The unit count of the resource. |
-| `clientCertEnabled` | bool | `False` |  | Request client certificate during TLS handshake if enabled. |
-| `disableAadAuth` | bool | `False` |  | The disable Azure AD auth settings of the resource. |
-| `disableLocalAuth` | bool | `True` |  | The disable local auth settings of the resource. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `features` | array | `[System.Management.Automation.OrderedHashtable]` |  | The features settings of the resource, `ServiceMode` is the only required feature. See https://learn.microsoft.com/en-us/azure/templates/microsoft.signalrservice/signalr?pivots=deployment-language-bicep#signalrfeature for more information. |
-| `kind` | string | `'SignalR'` | `[RawWebSockets, SignalR]` | The kind of the service. |
-| `liveTraceCatagoriesToEnable` | array | `[ConnectivityLogs, MessagingLogs]` | `[ConnectivityLogs, MessagingLogs]` | Control permission for data plane traffic coming from public networks while private endpoint is enabled. |
-| `location` | string | `[resourceGroup().location]` |  | The location for the resource. |
-| `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
-| `networkAcls` | object | `{object}` |  | Networks ACLs, this value contains IPs to allow and/or Subnet information. Can only be set if the 'SKU' is not 'Free_F1'. For security reasons, it is recommended to set the DefaultAction Deny. |
-| `privateEndpoints` | array | `[]` |  | Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
-| `publicNetworkAccess` | string | `''` | `['', Disabled, Enabled]` | Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set. |
-| `resourceLogConfigurationsToEnable` | array | `[ConnectivityLogs, MessagingLogs]` | `[ConnectivityLogs, MessagingLogs]` | Control permission for data plane traffic coming from public networks while private endpoint is enabled. |
-| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| `sku` | string | `'Standard_S1'` | `[Free_F1, Premium_P1, Premium_P2, Premium_P3, Standard_S1, Standard_S2, Standard_S3]` | The SKU of the service. |
-| `tags` | object | `{object}` |  | The tags of the resource. |
-| `upstreamTemplatesToEnable` | array | `[]` |  | Upstream templates to enable. For more information, see https://learn.microsoft.com/en-us/azure/templates/microsoft.signalrservice/2022-02-01/signalr?pivots=deployment-language-bicep#upstreamtemplate. |
+- [Using large parameter set](#example-1-using-large-parameter-set)
+- [Using only defaults](#example-2-using-only-defaults)
 
+### Example 1: _Using large parameter set_
 
-### Parameter Usage: `privateEndpoints`
+This instance deploys the module with most of its features enabled.
 
-To use Private Endpoint the following dependencies must be deployed:
-
-- Destination subnet must be created with the following configuration option - `"privateEndpointNetworkPolicies": "Disabled"`. Setting this option acknowledges that NSG rules are not applied to Private Endpoints (this capability is coming soon). A full example is available in the Virtual Network Module.
-- Although not strictly required, it is highly recommended to first create a private DNS Zone to host Private Endpoint DNS records. See [Azure Private Endpoint DNS configuration](https://learn.microsoft.com/en-us/azure/private-link/private-endpoint-dns) for more information.
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"privateEndpoints": {
-    "value": [
-        // Example showing all available fields
-        {
-            "name": "sxx-az-pe", // Optional: Name will be automatically generated if one is not provided here
-            "subnetResourceId": "/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001",
-            "service": "<serviceName>", // e.g. vault, registry, blob
-            "privateDnsZoneGroup": {
-                "privateDNSResourceIds": [ // Optional: No DNS record will be created if a private DNS zone Resource ID is not specified
-                    "/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/<privateDnsZoneName>" // e.g. privatelink.vaultcore.azure.net, privatelink.azurecr.io, privatelink.blob.core.windows.net
-                ]
-            },
-            "ipConfigurations":[
-                {
-                    "name": "myIPconfigTest02",
-                    "properties": {
-                        "groupId": "blob",
-                        "memberName": "blob",
-                        "privateIPAddress": "10.0.0.30"
-                    }
-                }
-            ],
-            "customDnsConfigs": [
-                {
-                    "fqdn": "customname.test.local",
-                    "ipAddresses": [
-                        "10.10.10.10"
-                    ]
-                }
-            ]
-        },
-        // Example showing only mandatory fields
-        {
-            "subnetResourceId": "/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001",
-            "service": "<serviceName>" // e.g. vault, registry, blob
-        }
-    ]
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-privateEndpoints:  [
-    // Example showing all available fields
-    {
-        name: 'sxx-az-pe' // Optional: Name will be automatically generated if one is not provided here
-        subnetResourceId: '/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001'
-        service: '<serviceName>' // e.g. vault, registry, blob
-        privateDnsZoneGroup: {
-            privateDNSResourceIds: [ // Optional: No DNS record will be created if a private DNS zone Resource ID is not specified
-                '/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/<privateDnsZoneName>' // e.g. privatelink.vaultcore.azure.net, privatelink.azurecr.io, privatelink.blob.core.windows.net
-            ]
-        }
-        customDnsConfigs: [
-            {
-                fqdn: 'customname.test.local'
-                ipAddresses: [
-                    '10.10.10.10'
-                ]
-            }
-        ]
-        ipConfigurations:[
-          {
-            name: 'myIPconfigTest02'
-            properties: {
-              groupId: 'blob'
-              memberName: 'blob'
-              privateIPAddress: '10.0.0.30'
-            }
-          }
-        ]
-    }
-    // Example showing only mandatory fields
-    {
-        subnetResourceId: '/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001'
-        service: '<serviceName>' // e.g. vault, registry, blob
-    }
-]
-```
-
-</details>
-<p>
-
-### Parameter Usage: `roleAssignments`
-
-Create a role assignment for the given resource. If you want to assign a service principal / managed identity that is created in the same deployment, make sure to also specify the `'principalType'` parameter and set it to `'ServicePrincipal'`. This will ensure the role assignment waits for the principal's propagation in Azure.
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"roleAssignments": {
-    "value": [
-        {
-            "roleDefinitionIdOrName": "Reader",
-            "description": "Reader Role Assignment",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012", // object 1
-                "78945612-1234-1234-1234-123456789012" // object 2
-            ]
-        },
-        {
-            "roleDefinitionIdOrName": "/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012" // object 1
-            ],
-            "principalType": "ServicePrincipal"
-        }
-    ]
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-roleAssignments: [
-    {
-        roleDefinitionIdOrName: 'Reader'
-        description: 'Reader Role Assignment'
-        principalIds: [
-            '12345678-1234-1234-1234-123456789012' // object 1
-            '78945612-1234-1234-1234-123456789012' // object 2
-        ]
-    }
-    {
-        roleDefinitionIdOrName: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'
-        principalIds: [
-            '12345678-1234-1234-1234-123456789012' // object 1
-        ]
-        principalType: 'ServicePrincipal'
-    }
-]
-```
-
-</details>
-<p>
-
-### Parameter Usage: `tags`
-
-Tag names and tag values can be provided as needed. A tag can be left without a value.
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"tags": {
-    "value": {
-        "Environment": "Non-Prod",
-        "Contact": "test.user@testcompany.com",
-        "PurchaseOrder": "1234",
-        "CostCenter": "7890",
-        "ServiceName": "DeploymentValidation",
-        "Role": "DeploymentValidation"
-    }
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-tags: {
-    Environment: 'Non-Prod'
-    Contact: 'test.user@testcompany.com'
-    PurchaseOrder: '1234'
-    CostCenter: '7890'
-    ServiceName: 'DeploymentValidation'
-    Role: 'DeploymentValidation'
-}
-```
-
-</details>
-<p>
-
-## Outputs
-
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `location` | string | The location the resource was deployed into. |
-| `name` | string | The SignalR name. |
-| `resourceGroupName` | string | The SignalR resource group. |
-| `resourceId` | string | The SignalR resource ID. |
-
-## Cross-referenced modules
-
-This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
-
-| Reference | Type |
-| :-- | :-- |
-| `network/private-endpoint` | Local reference |
-
-## Deployment examples
-
-The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
-   >**Note**: The name of each example is based on the name of the file from which it is taken.
-
-   >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
-
-<h3>Example 1: Common</h3>
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module signalR './signal-r-service/signal-r/main.bicep' = {
+module signalR 'br:bicep/modules/signal-r-service.signal-r:1.0.0' = {
   name: '${uniqueString(deployment().name)}-test-srssrcom'
   params: {
     // Required parameters
@@ -297,7 +54,10 @@ module signalR './signal-r-service/signal-r/main.bicep' = {
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     kind: 'SignalR'
     location: '<location>'
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     networkAcls: {
       defaultAction: 'Allow'
       privateEndpoints: [
@@ -320,11 +80,9 @@ module signalR './signal-r-service/signal-r/main.bicep' = {
     }
     privateEndpoints: [
       {
-        privateDnsZoneGroup: {
-          privateDNSResourceIds: [
-            '<privateDNSResourceId>'
-          ]
-        }
+        privateDnsZoneResourceIds: [
+          '<privateDNSZoneResourceId>'
+        ]
         service: 'signalr'
         subnetResourceId: '<subnetResourceId>'
         tags: {
@@ -394,7 +152,10 @@ module signalR './signal-r-service/signal-r/main.bicep' = {
       "value": "<location>"
     },
     "lock": {
-      "value": "CanNotDelete"
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
     },
     "networkAcls": {
       "value": {
@@ -421,11 +182,9 @@ module signalR './signal-r-service/signal-r/main.bicep' = {
     "privateEndpoints": {
       "value": [
         {
-          "privateDnsZoneGroup": {
-            "privateDNSResourceIds": [
-              "<privateDNSResourceId>"
-            ]
-          },
+          "privateDnsZoneResourceIds": [
+            "<privateDNSZoneResourceId>"
+          ],
           "service": "signalr",
           "subnetResourceId": "<subnetResourceId>",
           "tags": {
@@ -468,14 +227,17 @@ module signalR './signal-r-service/signal-r/main.bicep' = {
 </details>
 <p>
 
-<h3>Example 2: Min</h3>
+### Example 2: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module signalR './signal-r-service/signal-r/main.bicep' = {
+module signalR 'br:bicep/modules/signal-r-service.signal-r:1.0.0' = {
   name: '${uniqueString(deployment().name)}-test-srsdrmin'
   params: {
     // Required parameters
@@ -512,3 +274,218 @@ module signalR './signal-r-service/signal-r/main.bicep' = {
 
 </details>
 <p>
+
+
+## Parameters
+
+**Required parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`name`](#parameter-name) | string | The name of the SignalR Service resource. |
+
+**Optional parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`allowedOrigins`](#parameter-allowedorigins) | array | The allowed origin settings of the resource. |
+| [`capacity`](#parameter-capacity) | int | The unit count of the resource. |
+| [`clientCertEnabled`](#parameter-clientcertenabled) | bool | Request client certificate during TLS handshake if enabled. |
+| [`disableAadAuth`](#parameter-disableaadauth) | bool | The disable Azure AD auth settings of the resource. |
+| [`disableLocalAuth`](#parameter-disablelocalauth) | bool | The disable local auth settings of the resource. |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`features`](#parameter-features) | array | The features settings of the resource, `ServiceMode` is the only required feature. See https://learn.microsoft.com/en-us/azure/templates/microsoft.signalrservice/signalr?pivots=deployment-language-bicep#signalrfeature for more information. |
+| [`kind`](#parameter-kind) | string | The kind of the service. |
+| [`liveTraceCatagoriesToEnable`](#parameter-livetracecatagoriestoenable) | array | Control permission for data plane traffic coming from public networks while private endpoint is enabled. |
+| [`location`](#parameter-location) | string | The location for the resource. |
+| [`lock`](#parameter-lock) | object | The lock settings of the service. |
+| [`networkAcls`](#parameter-networkacls) | object | Networks ACLs, this value contains IPs to allow and/or Subnet information. Can only be set if the 'SKU' is not 'Free_F1'. For security reasons, it is recommended to set the DefaultAction Deny. |
+| [`privateEndpoints`](#parameter-privateendpoints) | array | Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
+| [`publicNetworkAccess`](#parameter-publicnetworkaccess) | string | Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set. |
+| [`resourceLogConfigurationsToEnable`](#parameter-resourcelogconfigurationstoenable) | array | Control permission for data plane traffic coming from public networks while private endpoint is enabled. |
+| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| [`sku`](#parameter-sku) | string | The SKU of the service. |
+| [`tags`](#parameter-tags) | object | The tags of the resource. |
+| [`upstreamTemplatesToEnable`](#parameter-upstreamtemplatestoenable) | array | Upstream templates to enable. For more information, see https://learn.microsoft.com/en-us/azure/templates/microsoft.signalrservice/2022-02-01/signalr?pivots=deployment-language-bicep#upstreamtemplate. |
+
+### Parameter: `allowedOrigins`
+
+The allowed origin settings of the resource.
+- Required: No
+- Type: array
+- Default: `[*]`
+
+### Parameter: `capacity`
+
+The unit count of the resource.
+- Required: No
+- Type: int
+- Default: `1`
+
+### Parameter: `clientCertEnabled`
+
+Request client certificate during TLS handshake if enabled.
+- Required: No
+- Type: bool
+- Default: `False`
+
+### Parameter: `disableAadAuth`
+
+The disable Azure AD auth settings of the resource.
+- Required: No
+- Type: bool
+- Default: `False`
+
+### Parameter: `disableLocalAuth`
+
+The disable local auth settings of the resource.
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `features`
+
+The features settings of the resource, `ServiceMode` is the only required feature. See https://learn.microsoft.com/en-us/azure/templates/microsoft.signalrservice/signalr?pivots=deployment-language-bicep#signalrfeature for more information.
+- Required: No
+- Type: array
+- Default: `[System.Management.Automation.OrderedHashtable]`
+
+### Parameter: `kind`
+
+The kind of the service.
+- Required: No
+- Type: string
+- Default: `'SignalR'`
+- Allowed: `[RawWebSockets, SignalR]`
+
+### Parameter: `liveTraceCatagoriesToEnable`
+
+Control permission for data plane traffic coming from public networks while private endpoint is enabled.
+- Required: No
+- Type: array
+- Default: `[ConnectivityLogs, MessagingLogs]`
+- Allowed: `[ConnectivityLogs, MessagingLogs]`
+
+### Parameter: `location`
+
+The location for the resource.
+- Required: No
+- Type: string
+- Default: `[resourceGroup().location]`
+
+### Parameter: `lock`
+
+The lock settings of the service.
+- Required: No
+- Type: object
+
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`kind`](#parameter-lockkind) | No | string | Optional. Specify the type of lock. |
+| [`name`](#parameter-lockname) | No | string | Optional. Specify the name of lock. |
+
+### Parameter: `lock.kind`
+
+Optional. Specify the type of lock.
+
+- Required: No
+- Type: string
+- Allowed: `[CanNotDelete, None, ReadOnly]`
+
+### Parameter: `lock.name`
+
+Optional. Specify the name of lock.
+
+- Required: No
+- Type: string
+
+### Parameter: `name`
+
+The name of the SignalR Service resource.
+- Required: Yes
+- Type: string
+
+### Parameter: `networkAcls`
+
+Networks ACLs, this value contains IPs to allow and/or Subnet information. Can only be set if the 'SKU' is not 'Free_F1'. For security reasons, it is recommended to set the DefaultAction Deny.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `privateEndpoints`
+
+Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `publicNetworkAccess`
+
+Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set.
+- Required: No
+- Type: string
+- Default: `''`
+- Allowed: `['', Disabled, Enabled]`
+
+### Parameter: `resourceLogConfigurationsToEnable`
+
+Control permission for data plane traffic coming from public networks while private endpoint is enabled.
+- Required: No
+- Type: array
+- Default: `[ConnectivityLogs, MessagingLogs]`
+- Allowed: `[ConnectivityLogs, MessagingLogs]`
+
+### Parameter: `roleAssignments`
+
+Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `sku`
+
+The SKU of the service.
+- Required: No
+- Type: string
+- Default: `'Standard_S1'`
+- Allowed: `[Free_F1, Premium_P1, Premium_P2, Premium_P3, Standard_S1, Standard_S2, Standard_S3]`
+
+### Parameter: `tags`
+
+The tags of the resource.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `upstreamTemplatesToEnable`
+
+Upstream templates to enable. For more information, see https://learn.microsoft.com/en-us/azure/templates/microsoft.signalrservice/2022-02-01/signalr?pivots=deployment-language-bicep#upstreamtemplate.
+- Required: No
+- Type: array
+- Default: `[]`
+
+
+## Outputs
+
+| Output | Type | Description |
+| :-- | :-- | :-- |
+| `location` | string | The location the resource was deployed into. |
+| `name` | string | The SignalR name. |
+| `resourceGroupName` | string | The SignalR resource group. |
+| `resourceId` | string | The SignalR resource ID. |
+
+## Cross-referenced modules
+
+This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
+
+| Reference | Type |
+| :-- | :-- |
+| `modules/network/private-endpoint` | Local reference |

@@ -47,7 +47,7 @@ param customRdpProperty string = 'audiocapturemode:i:1;audiomode:i:0;drivestored
 @sys.description('Optional. Validation host pools allows you to test service changes before they are deployed to production. When set to true, the Host Pool will be deployed in a validation \'ring\' (environment) that receives all the new features (might be less stable). Defaults to false that stands for the stable, production-ready environment.')
 param validationEnvironment bool = false
 
-@sys.description('Optional. The necessary information for adding more VMs to this Host Pool.')
+@sys.description('Optional. The necessary information for adding more VMs to this Host Pool. The object is converted to an in-line string when handed over to the resource deployment, since that only takes strings.')
 param vmTemplate object = {}
 
 @sys.description('Optional. Host Pool token validity length. Usage: \'PT8H\' - valid for 8 hours; \'P5D\' - valid for 5 days; \'P1Y\' - valid for 1 year. When not provided, the token will be valid for 8 hours.')
@@ -68,13 +68,8 @@ param diagnosticEventHubAuthorizationRuleId string = ''
 @sys.description('Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
 param diagnosticEventHubName string = ''
 
-@allowed([
-  ''
-  'CanNotDelete'
-  'ReadOnly'
-])
-@sys.description('Optional. Specify the type of lock.')
-param lock string = ''
+@sys.description('Optional. The lock settings of the service.')
+param lock lockType
 
 @sys.description('Optional. Tags of the resource.')
 param tags object = {}
@@ -240,11 +235,11 @@ resource hostPool 'Microsoft.DesktopVirtualization/hostPools@2022-09-09' = {
   }
 }
 
-resource hostPool_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
-  name: '${hostPool.name}-${lock}-lock'
+resource hostPool_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock ?? {}) && lock.?kind != 'None') {
+  name: lock.?name ?? 'lock-${name}'
   properties: {
-    level: any(lock)
-    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+    level: lock.?kind ?? ''
+    notes: lock.?kind == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot delete or modify the resource or child resources.'
   }
   scope: hostPool
 }
@@ -288,3 +283,15 @@ output tokenExpirationTime string = dateTimeAdd(baseTime, tokenValidityLength)
 
 @sys.description('The location the resource was deployed into.')
 output location string = hostPool.location
+
+// =============== //
+//   Definitions   //
+// =============== //
+
+type lockType = {
+  @sys.description('Optional. Specify the name of lock.')
+  name: string?
+
+  @sys.description('Optional. Specify the type of lock.')
+  kind: ('CanNotDelete' | 'ReadOnly' | 'None')?
+}?

@@ -69,7 +69,10 @@ module testDeployment '../../main.bicep' = {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '${namePrefix}${serviceShort}001'
     location: resourceGroup.location
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     roleAssignments: [
       {
         roleDefinitionIdOrName: 'Reader'
@@ -89,7 +92,7 @@ module testDeployment '../../main.bicep' = {
     skuName: 'Standard_D2ds_v4'
     tier: 'GeneralPurpose'
     delegatedSubnetResourceId: nestedDependencies.outputs.subnetResourceId
-    privateDnsZoneResourceId: nestedDependencies.outputs.privateDNSResourceId
+    privateDnsZoneResourceId: nestedDependencies.outputs.privateDNSZoneResourceId
     storageAutoIoScaling: 'Enabled'
     storageSizeGB: 64
     storageIOPS: 400

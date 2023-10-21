@@ -149,13 +149,8 @@ param databases array = []
 @description('Optional. The configurations to create in the server.')
 param configurations array = []
 
-@allowed([
-  ''
-  'CanNotDelete'
-  'ReadOnly'
-])
-@description('Optional. Specify the type of lock.')
-param lock string = ''
+@description('Optional. The lock settings of the service.')
+param lock lockType
 
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
@@ -236,9 +231,13 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource cMKKeyVaultKey 'Microsoft.KeyVault/vaults/keys@2022-07-01' existing = if (!empty(cMKKeyVaultResourceId) && !empty(cMKKeyName)) {
-  name: '${last(split(cMKKeyVaultResourceId, '/'))}/${cMKKeyName}'
-  scope: resourceGroup(split(cMKKeyVaultResourceId, '/')[2], split(cMKKeyVaultResourceId, '/')[4])
+resource cMKKeyVault 'Microsoft.KeyVault/vaults@2021-10-01' existing = if (!empty(cMKKeyVaultResourceId)) {
+  name: last(split((!empty(cMKKeyVaultResourceId) ? cMKKeyVaultResourceId : 'dummyVault'), '/'))!
+  scope: resourceGroup(split((!empty(cMKKeyVaultResourceId) ? cMKKeyVaultResourceId : '//'), '/')[2], split((!empty(cMKKeyVaultResourceId) ? cMKKeyVaultResourceId : '////'), '/')[4])
+
+  resource cMKKey 'keys@2023-02-01' existing = if (!empty(cMKKeyName)) {
+    name: !empty(cMKKeyName) ? cMKKeyName : 'dummyKey'
+  }
 }
 
 resource flexibleServer 'Microsoft.DBforPostgreSQL/flexibleServers@2022-12-01' = {
@@ -268,7 +267,7 @@ resource flexibleServer 'Microsoft.DBforPostgreSQL/flexibleServers@2022-12-01' =
     }
     createMode: createMode
     dataEncryption: !empty(cMKKeyName) ? {
-      primaryKeyURI: !empty(cMKKeyVersion) ? '${cMKKeyVaultKey.properties.keyUri}/${cMKKeyVersion}' : cMKKeyVaultKey.properties.keyUriWithVersion
+      primaryKeyURI: !empty(cMKKeyVersion) ? '${cMKKeyVault::cMKKey.properties.keyUri}/${cMKKeyVersion}' : cMKKeyVault::cMKKey.properties.keyUriWithVersion
       primaryUserAssignedIdentityId: cMKUserAssignedIdentityResourceId
       type: 'AzureKeyVault'
     } : null
@@ -295,11 +294,11 @@ resource flexibleServer 'Microsoft.DBforPostgreSQL/flexibleServers@2022-12-01' =
   }
 }
 
-resource flexibleServer_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
-  name: '${flexibleServer.name}-${lock}-lock'
+resource flexibleServer_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock ?? {}) && lock.?kind != 'None') {
+  name: lock.?name ?? 'lock-${name}'
   properties: {
-    level: any(lock)
-    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+    level: lock.?kind ?? ''
+    notes: lock.?kind == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot delete or modify the resource or child resources.'
   }
   scope: flexibleServer
 }
@@ -342,6 +341,7 @@ module flexibleServer_firewallRules 'firewall-rule/main.bicep' = [for (firewallR
   ]
 }]
 
+@batchSize(1)
 module flexibleServer_configurations 'configuration/main.bicep' = [for (configuration, index) in configurations: {
   name: '${uniqueString(deployment().name, location)}-PostgreSQL-Configurations-${index}'
   params: {
@@ -391,3 +391,15 @@ output resourceGroupName string = resourceGroup().name
 
 @description('The location the resource was deployed into.')
 output location string = flexibleServer.location
+
+// =============== //
+//   Definitions   //
+// =============== //
+
+type lockType = {
+  @description('Optional. Specify the name of lock.')
+  name: string?
+
+  @description('Optional. Specify the type of lock.')
+  kind: ('CanNotDelete' | 'ReadOnly' | 'None')?
+}?

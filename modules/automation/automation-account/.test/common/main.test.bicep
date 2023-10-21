@@ -1,5 +1,8 @@
 targetScope = 'subscription'
 
+metadata name = 'Using large parameter set'
+metadata description = 'This instance deploys the module with most of its features enabled.'
+
 // ========== //
 // Parameters //
 // ========== //
@@ -84,7 +87,10 @@ module testDeployment '../../main.bicep' = {
     ]
     disableLocalAuth: true
     linkedWorkspaceResourceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     modules: [
       {
         name: 'PSWindowsUpdate'
@@ -94,11 +100,9 @@ module testDeployment '../../main.bicep' = {
     ]
     privateEndpoints: [
       {
-        privateDnsZoneGroup: {
-          privateDNSResourceIds: [
-            nestedDependencies.outputs.privateDNSZoneResourceId
-          ]
-        }
+        privateDnsZoneResourceIds: [
+          nestedDependencies.outputs.privateDNSZoneResourceId
+        ]
         service: 'Webhook'
         subnetResourceId: nestedDependencies.outputs.subnetResourceId
         tags: {
@@ -108,11 +112,9 @@ module testDeployment '../../main.bicep' = {
         }
       }
       {
-        privateDnsZoneGroup: {
-          privateDNSResourceIds: [
-            nestedDependencies.outputs.privateDNSZoneResourceId
-          ]
-        }
+        privateDnsZoneResourceIds: [
+          nestedDependencies.outputs.privateDNSZoneResourceId
+        ]
         service: 'DSCAndHybridWorker'
         subnetResourceId: nestedDependencies.outputs.subnetResourceId
         tags: {

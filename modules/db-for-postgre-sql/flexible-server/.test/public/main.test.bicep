@@ -14,10 +14,6 @@ param location string = deployment().location
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints.')
 param serviceShort string = 'dfpsfsp'
 
-@description('Optional. The password to leverage for the login.')
-@secure()
-param password string = newGuid()
-
 @description('Generated. Used as a basis for unique resource names.')
 param baseTime string = utcNow('u')
 

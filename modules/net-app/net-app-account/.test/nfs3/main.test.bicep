@@ -118,7 +118,10 @@ module testDeployment '../../main.bicep' = {
         volumes: []
       }
     ]
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     roleAssignments: [
       {
         roleDefinitionIdOrName: 'Reader'

@@ -19,57 +19,37 @@ This module deploys a Resource Tag on a Resource Group scope.
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `onlyUpdate` | bool | `False` | Instead of overwriting the existing tags, combine them with the new tags. |
-| `tags` | object | `{object}` | Tags for the resource group. If not provided, removes existing tags. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`onlyUpdate`](#parameter-onlyupdate) | bool | Instead of overwriting the existing tags, combine them with the new tags. |
+| [`tags`](#parameter-tags) | object | Tags for the resource group. If not provided, removes existing tags. |
 
+### Parameter: `enableDefaultTelemetry`
 
-### Parameter Usage: `tags`
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
 
-Tag names and tag values can be provided as needed. A tag can be left without a value.
+### Parameter: `onlyUpdate`
 
-<details>
+Instead of overwriting the existing tags, combine them with the new tags.
+- Required: No
+- Type: bool
+- Default: `False`
 
-<summary>Parameter JSON format</summary>
+### Parameter: `tags`
 
-```json
-"tags": {
-    "value": {
-        "Environment": "Non-Prod",
-        "Contact": "test.user@testcompany.com",
-        "PurchaseOrder": "1234",
-        "CostCenter": "7890",
-        "ServiceName": "DeploymentValidation",
-        "Role": "DeploymentValidation"
-    }
-}
-```
+Tags for the resource group. If not provided, removes existing tags.
+- Required: No
+- Type: object
+- Default: `{object}`
 
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-tags: {
-    Environment: 'Non-Prod'
-    Contact: 'test.user@testcompany.com'
-    PurchaseOrder: '1234'
-    CostCenter: '7890'
-    ServiceName: 'DeploymentValidation'
-    Role: 'DeploymentValidation'
-}
-```
-
-</details>
-<p>
 
 ## Outputs
 
-| Output Name | Type | Description |
+| Output | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the tags resource. |
 | `resourceGroupName` | string | The name of the resource group the tags were applied to. |

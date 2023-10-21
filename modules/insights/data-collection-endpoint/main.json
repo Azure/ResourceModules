@@ -1,15 +1,43 @@
 {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "languageVersion": "2.0",
   "contentVersion": "1.0.0.0",
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.21.1.54444",
-      "templateHash": "3728781575799278005"
+      "version": "0.22.6.54827",
+      "templateHash": "18059348054064453777"
     },
     "name": "Data Collection Endpoints",
     "description": "This module deploys a Data Collection Endpoint.",
     "owner": "Azure/module-maintainers"
+  },
+  "definitions": {
+    "lockType": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Specify the name of lock."
+          }
+        },
+        "kind": {
+          "type": "string",
+          "allowedValues": [
+            "CanNotDelete",
+            "None",
+            "ReadOnly"
+          ],
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Specify the type of lock."
+          }
+        }
+      },
+      "nullable": true
+    }
   },
   "parameters": {
     "name": {
@@ -44,15 +72,9 @@
       }
     },
     "lock": {
-      "type": "string",
-      "defaultValue": "",
-      "allowedValues": [
-        "",
-        "CanNotDelete",
-        "ReadOnly"
-      ],
+      "$ref": "#/definitions/lockType",
       "metadata": {
-        "description": "Optional. Specify the type of lock."
+        "description": "Optional. The lock settings of the service."
       }
     },
     "roleAssignments": {
@@ -81,8 +103,8 @@
       }
     }
   },
-  "resources": [
-    {
+  "resources": {
+    "defaultTelemetry": {
       "condition": "[parameters('enableDefaultTelemetry')]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2021-04-01",
@@ -96,7 +118,7 @@
         }
       }
     },
-    {
+    "dataCollectionEndpoint": {
       "type": "Microsoft.Insights/dataCollectionEndpoints",
       "apiVersion": "2021-04-01",
       "name": "[parameters('name')]",
@@ -109,21 +131,21 @@
         }
       }
     },
-    {
-      "condition": "[not(empty(parameters('lock')))]",
+    "dataCollectionEndpoint_lock": {
+      "condition": "[and(not(empty(coalesce(parameters('lock'), createObject()))), not(equals(tryGet(parameters('lock'), 'kind'), 'None')))]",
       "type": "Microsoft.Authorization/locks",
-      "apiVersion": "2017-04-01",
+      "apiVersion": "2020-05-01",
       "scope": "[format('Microsoft.Insights/dataCollectionEndpoints/{0}', parameters('name'))]",
-      "name": "[format('{0}-{1}-lock', parameters('name'), parameters('lock'))]",
+      "name": "[coalesce(tryGet(parameters('lock'), 'name'), format('lock-{0}', parameters('name')))]",
       "properties": {
-        "level": "[parameters('lock')]",
-        "notes": "[if(equals(parameters('lock'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot modify the resource or child resources.')]"
+        "level": "[coalesce(tryGet(parameters('lock'), 'kind'), '')]",
+        "notes": "[if(equals(tryGet(parameters('lock'), 'kind'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot delete or modify the resource or child resources.')]"
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Insights/dataCollectionEndpoints', parameters('name'))]"
+        "dataCollectionEndpoint"
       ]
     },
-    {
+    "dataCollectionEndpoint_roleAssignments": {
       "copy": {
         "name": "dataCollectionEndpoint_roleAssignments",
         "count": "[length(parameters('roleAssignments'))]"
@@ -157,8 +179,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "8300016643720111813"
+              "version": "0.22.6.54827",
+              "templateHash": "5079554613850149123"
             }
           },
           "parameters": {
@@ -398,10 +420,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Insights/dataCollectionEndpoints', parameters('name'))]"
+        "dataCollectionEndpoint"
       ]
     }
-  ],
+  },
   "outputs": {
     "name": {
       "type": "string",
@@ -429,7 +451,7 @@
       "metadata": {
         "description": "The location the resource was deployed into."
       },
-      "value": "[reference(resourceId('Microsoft.Insights/dataCollectionEndpoints', parameters('name')), '2021-04-01', 'full').location]"
+      "value": "[reference('dataCollectionEndpoint', '2021-04-01', 'full').location]"
     }
   }
 }

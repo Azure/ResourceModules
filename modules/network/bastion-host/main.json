@@ -1,15 +1,43 @@
 {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "languageVersion": "2.0",
   "contentVersion": "1.0.0.0",
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.21.1.54444",
-      "templateHash": "17208156201497944921"
+      "version": "0.22.6.54827",
+      "templateHash": "7681317257874084680"
     },
     "name": "Bastion Hosts",
     "description": "This module deploys a Bastion Host.",
     "owner": "Azure/module-maintainers"
+  },
+  "definitions": {
+    "lockType": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Specify the name of lock."
+          }
+        },
+        "kind": {
+          "type": "string",
+          "allowedValues": [
+            "CanNotDelete",
+            "None",
+            "ReadOnly"
+          ],
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Specify the type of lock."
+          }
+        }
+      },
+      "nullable": true
+    }
   },
   "parameters": {
     "name": {
@@ -81,15 +109,9 @@
       }
     },
     "lock": {
-      "type": "string",
-      "defaultValue": "",
-      "allowedValues": [
-        "",
-        "CanNotDelete",
-        "ReadOnly"
-      ],
+      "$ref": "#/definitions/lockType",
       "metadata": {
-        "description": "Optional. Specify the type of lock."
+        "description": "Optional. The lock settings of the service."
       }
     },
     "skuName": {
@@ -214,8 +236,8 @@
     },
     "enableReferencedModulesTelemetry": false
   },
-  "resources": [
-    {
+  "resources": {
+    "defaultTelemetry": {
       "condition": "[parameters('enableDefaultTelemetry')]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
@@ -229,7 +251,7 @@
         }
       }
     },
-    {
+    "azureBastion": {
       "type": "Microsoft.Network/bastionHosts",
       "apiVersion": "2022-11-01",
       "name": "[parameters('name')]",
@@ -238,26 +260,26 @@
       "sku": {
         "name": "[parameters('skuName')]"
       },
-      "properties": "[if(equals(parameters('skuName'), 'Standard'), createObject('scaleUnits', variables('scaleUnitsVar'), 'ipConfigurations', createArray(createObject('name', 'IpConfAzureBastionSubnet', 'properties', union(variables('subnetVar'), if(not(empty(parameters('bastionSubnetPublicIpResourceId'))), variables('existingPip'), createObject()), if(parameters('isCreateDefaultPublicIP'), createObject('publicIPAddress', if(and(empty(parameters('bastionSubnetPublicIpResourceId')), parameters('isCreateDefaultPublicIP')), createObject('id', reference(resourceId('Microsoft.Resources/deployments', format('{0}-Bastion-PIP', uniqueString(deployment().name, parameters('location')))), '2022-09-01').outputs.resourceId.value), null())), createObject())))), 'enableTunneling', variables('enableTunneling'), 'disableCopyPaste', parameters('disableCopyPaste'), 'enableFileCopy', parameters('enableFileCopy'), 'enableIpConnect', parameters('enableIpConnect'), 'enableKerberos', parameters('enableKerberos'), 'enableShareableLink', parameters('enableShareableLink')), createObject('scaleUnits', variables('scaleUnitsVar'), 'ipConfigurations', createArray(createObject('name', 'IpConfAzureBastionSubnet', 'properties', union(variables('subnetVar'), if(not(empty(parameters('bastionSubnetPublicIpResourceId'))), variables('existingPip'), createObject()), if(parameters('isCreateDefaultPublicIP'), createObject('publicIPAddress', if(and(empty(parameters('bastionSubnetPublicIpResourceId')), parameters('isCreateDefaultPublicIP')), createObject('id', reference(resourceId('Microsoft.Resources/deployments', format('{0}-Bastion-PIP', uniqueString(deployment().name, parameters('location')))), '2022-09-01').outputs.resourceId.value), null())), createObject())))), 'enableKerberos', parameters('enableKerberos')))]",
+      "properties": "[if(equals(parameters('skuName'), 'Standard'), createObject('scaleUnits', variables('scaleUnitsVar'), 'ipConfigurations', createArray(createObject('name', 'IpConfAzureBastionSubnet', 'properties', union(variables('subnetVar'), if(not(empty(parameters('bastionSubnetPublicIpResourceId'))), variables('existingPip'), createObject()), if(parameters('isCreateDefaultPublicIP'), createObject('publicIPAddress', if(and(empty(parameters('bastionSubnetPublicIpResourceId')), parameters('isCreateDefaultPublicIP')), createObject('id', reference('publicIPAddress').outputs.resourceId.value), null())), createObject())))), 'enableTunneling', variables('enableTunneling'), 'disableCopyPaste', parameters('disableCopyPaste'), 'enableFileCopy', parameters('enableFileCopy'), 'enableIpConnect', parameters('enableIpConnect'), 'enableKerberos', parameters('enableKerberos'), 'enableShareableLink', parameters('enableShareableLink')), createObject('scaleUnits', variables('scaleUnitsVar'), 'ipConfigurations', createArray(createObject('name', 'IpConfAzureBastionSubnet', 'properties', union(variables('subnetVar'), if(not(empty(parameters('bastionSubnetPublicIpResourceId'))), variables('existingPip'), createObject()), if(parameters('isCreateDefaultPublicIP'), createObject('publicIPAddress', if(and(empty(parameters('bastionSubnetPublicIpResourceId')), parameters('isCreateDefaultPublicIP')), createObject('id', reference('publicIPAddress').outputs.resourceId.value), null())), createObject())))), 'enableKerberos', parameters('enableKerberos')))]",
       "dependsOn": [
-        "[resourceId('Microsoft.Resources/deployments', format('{0}-Bastion-PIP', uniqueString(deployment().name, parameters('location'))))]"
+        "publicIPAddress"
       ]
     },
-    {
-      "condition": "[not(empty(parameters('lock')))]",
+    "azureBastion_lock": {
+      "condition": "[and(not(empty(coalesce(parameters('lock'), createObject()))), not(equals(tryGet(parameters('lock'), 'kind'), 'None')))]",
       "type": "Microsoft.Authorization/locks",
       "apiVersion": "2020-05-01",
       "scope": "[format('Microsoft.Network/bastionHosts/{0}', parameters('name'))]",
-      "name": "[format('{0}-{1}-lock', parameters('name'), parameters('lock'))]",
+      "name": "[coalesce(tryGet(parameters('lock'), 'name'), format('lock-{0}', parameters('name')))]",
       "properties": {
-        "level": "[parameters('lock')]",
-        "notes": "[if(equals(parameters('lock'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot modify the resource or child resources.')]"
+        "level": "[coalesce(tryGet(parameters('lock'), 'kind'), '')]",
+        "notes": "[if(equals(tryGet(parameters('lock'), 'kind'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot delete or modify the resource or child resources.')]"
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Network/bastionHosts', parameters('name'))]"
+        "azureBastion"
       ]
     },
-    {
+    "azureBastion_diagnosticSettings": {
       "condition": "[or(or(or(not(empty(parameters('diagnosticStorageAccountId'))), not(empty(parameters('diagnosticWorkspaceId')))), not(empty(parameters('diagnosticEventHubAuthorizationRuleId')))), not(empty(parameters('diagnosticEventHubName'))))]",
       "type": "Microsoft.Insights/diagnosticSettings",
       "apiVersion": "2021-05-01-preview",
@@ -271,10 +293,10 @@
         "logs": "[variables('diagnosticsLogs')]"
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Network/bastionHosts', parameters('name'))]"
+        "azureBastion"
       ]
     },
-    {
+    "publicIPAddress": {
       "condition": "[and(empty(parameters('bastionSubnetPublicIpResourceId')), parameters('isCreateDefaultPublicIP'))]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
@@ -322,16 +344,44 @@
         },
         "template": {
           "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "languageVersion": "2.0",
           "contentVersion": "1.0.0.0",
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "1887898957722092173"
+              "version": "0.22.6.54827",
+              "templateHash": "7177220893233117141"
             },
             "name": "Public IP Addresses",
             "description": "This module deploys a Public IP Address.",
             "owner": "Azure/module-maintainers"
+          },
+          "definitions": {
+            "lockType": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "nullable": true,
+                  "metadata": {
+                    "description": "Optional. Specify the name of lock."
+                  }
+                },
+                "kind": {
+                  "type": "string",
+                  "allowedValues": [
+                    "CanNotDelete",
+                    "None",
+                    "ReadOnly"
+                  ],
+                  "nullable": true,
+                  "metadata": {
+                    "description": "Optional. Specify the type of lock."
+                  }
+                }
+              },
+              "nullable": true
+            }
           },
           "parameters": {
             "name": {
@@ -462,15 +512,9 @@
               }
             },
             "lock": {
-              "type": "string",
-              "defaultValue": "",
-              "allowedValues": [
-                "",
-                "CanNotDelete",
-                "ReadOnly"
-              ],
+              "$ref": "#/definitions/lockType",
               "metadata": {
-                "description": "Optional. Specify the type of lock."
+                "description": "Optional. The lock settings of the service."
               }
             },
             "location": {
@@ -559,8 +603,8 @@
             ],
             "diagnosticsLogs": "[if(contains(parameters('diagnosticLogCategoriesToEnable'), 'allLogs'), createArray(createObject('categoryGroup', 'allLogs', 'enabled', true())), if(contains(parameters('diagnosticLogCategoriesToEnable'), ''), createArray(), variables('diagnosticsLogsSpecified')))]"
           },
-          "resources": [
-            {
+          "resources": {
+            "defaultTelemetry": {
               "condition": "[parameters('enableDefaultTelemetry')]",
               "type": "Microsoft.Resources/deployments",
               "apiVersion": "2021-04-01",
@@ -574,7 +618,7 @@
                 }
               }
             },
-            {
+            "publicIpAddress": {
               "type": "Microsoft.Network/publicIPAddresses",
               "apiVersion": "2023-04-01",
               "name": "[parameters('name')]",
@@ -594,21 +638,21 @@
                 "ipTags": []
               }
             },
-            {
-              "condition": "[not(empty(parameters('lock')))]",
+            "publicIpAddress_lock": {
+              "condition": "[and(not(empty(coalesce(parameters('lock'), createObject()))), not(equals(tryGet(parameters('lock'), 'kind'), 'None')))]",
               "type": "Microsoft.Authorization/locks",
               "apiVersion": "2020-05-01",
               "scope": "[format('Microsoft.Network/publicIPAddresses/{0}', parameters('name'))]",
-              "name": "[format('{0}-{1}-lock', parameters('name'), parameters('lock'))]",
+              "name": "[coalesce(tryGet(parameters('lock'), 'name'), format('lock-{0}', parameters('name')))]",
               "properties": {
-                "level": "[parameters('lock')]",
-                "notes": "[if(equals(parameters('lock'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot modify the resource or child resources.')]"
+                "level": "[coalesce(tryGet(parameters('lock'), 'kind'), '')]",
+                "notes": "[if(equals(tryGet(parameters('lock'), 'kind'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot delete or modify the resource or child resources.')]"
               },
               "dependsOn": [
-                "[resourceId('Microsoft.Network/publicIPAddresses', parameters('name'))]"
+                "publicIpAddress"
               ]
             },
-            {
+            "publicIpAddress_diagnosticSettings": {
               "condition": "[or(or(or(not(empty(parameters('diagnosticStorageAccountId'))), not(empty(parameters('diagnosticWorkspaceId')))), not(empty(parameters('diagnosticEventHubAuthorizationRuleId')))), not(empty(parameters('diagnosticEventHubName'))))]",
               "type": "Microsoft.Insights/diagnosticSettings",
               "apiVersion": "2021-05-01-preview",
@@ -623,10 +667,10 @@
                 "logs": "[variables('diagnosticsLogs')]"
               },
               "dependsOn": [
-                "[resourceId('Microsoft.Network/publicIPAddresses', parameters('name'))]"
+                "publicIpAddress"
               ]
             },
-            {
+            "publicIpAddress_roleAssignments": {
               "copy": {
                 "name": "publicIpAddress_roleAssignments",
                 "count": "[length(parameters('roleAssignments'))]"
@@ -660,8 +704,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.21.1.54444",
-                      "templateHash": "7328126239184883887"
+                      "version": "0.22.6.54827",
+                      "templateHash": "9976109177347918049"
                     }
                   },
                   "parameters": {
@@ -800,10 +844,10 @@
                 }
               },
               "dependsOn": [
-                "[resourceId('Microsoft.Network/publicIPAddresses', parameters('name'))]"
+                "publicIpAddress"
               ]
             }
-          ],
+          },
           "outputs": {
             "resourceGroupName": {
               "type": "string",
@@ -831,20 +875,20 @@
               "metadata": {
                 "description": "The public IP address of the public IP address resource."
               },
-              "value": "[if(contains(reference(resourceId('Microsoft.Network/publicIPAddresses', parameters('name')), '2023-04-01'), 'ipAddress'), reference(resourceId('Microsoft.Network/publicIPAddresses', parameters('name')), '2023-04-01').ipAddress, '')]"
+              "value": "[if(contains(reference('publicIpAddress'), 'ipAddress'), reference('publicIpAddress').ipAddress, '')]"
             },
             "location": {
               "type": "string",
               "metadata": {
                 "description": "The location the resource was deployed into."
               },
-              "value": "[reference(resourceId('Microsoft.Network/publicIPAddresses', parameters('name')), '2023-04-01', 'full').location]"
+              "value": "[reference('publicIpAddress', '2023-04-01', 'full').location]"
             }
           }
         }
       }
     },
-    {
+    "azureBastion_roleAssignments": {
       "copy": {
         "name": "azureBastion_roleAssignments",
         "count": "[length(parameters('roleAssignments'))]"
@@ -878,8 +922,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "5797020701488147835"
+              "version": "0.22.6.54827",
+              "templateHash": "7732571198100682148"
             }
           },
           "parameters": {
@@ -1018,10 +1062,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Network/bastionHosts', parameters('name'))]"
+        "azureBastion"
       ]
     }
-  ],
+  },
   "outputs": {
     "resourceGroupName": {
       "type": "string",
@@ -1049,14 +1093,14 @@
       "metadata": {
         "description": "The location the resource was deployed into."
       },
-      "value": "[reference(resourceId('Microsoft.Network/bastionHosts', parameters('name')), '2022-11-01', 'full').location]"
+      "value": "[reference('azureBastion', '2022-11-01', 'full').location]"
     },
     "ipConfAzureBastionSubnet": {
       "type": "object",
       "metadata": {
         "description": "The Public IPconfiguration object for the AzureBastionSubnet."
       },
-      "value": "[reference(resourceId('Microsoft.Network/bastionHosts', parameters('name')), '2022-11-01').ipConfigurations[0]]"
+      "value": "[reference('azureBastion').ipConfigurations[0]]"
     }
   }
 }

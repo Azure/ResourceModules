@@ -50,15 +50,14 @@ module testDeployment '../../main.bicep' = {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '${namePrefix}${serviceShort}001'
     skuName: 'Premium'
+    publicNetworkAccess: 'Disabled'
     privateEndpoints: [
       {
         service: 'namespace'
         subnetResourceId: nestedDependencies.outputs.subnetResourceId
-        privateDnsZoneGroup: {
-          privateDNSResourceIds: [
-            nestedDependencies.outputs.privateDNSZoneResourceId
-          ]
-        }
+        privateDnsZoneResourceIds: [
+          nestedDependencies.outputs.privateDNSZoneResourceId
+        ]
         tags: {
           'hidden-title': 'This is visible in the resource name'
           Environment: 'Non-Prod'

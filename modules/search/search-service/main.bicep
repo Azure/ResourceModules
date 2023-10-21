@@ -36,13 +36,8 @@ param hostingMode string = 'default'
 @description('Optional. Location for all Resources.')
 param location string = resourceGroup().location
 
-@description('Optional. Specify the type of lock.')
-@allowed([
-  ''
-  'CanNotDelete'
-  'ReadOnly'
-])
-param lock string = ''
+@description('Optional. The lock settings of the service.')
+param lock lockType
 
 @description('Optional. Network specific rules that determine how the Azure Cognitive Search service may be reached.')
 param networkRuleSet object = {}
@@ -196,11 +191,11 @@ resource searchService_diagnosticSettings 'Microsoft.Insights/diagnosticsettings
   scope: searchService
 }
 
-resource searchService_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
-  name: '${searchService.name}-${lock}-lock'
+resource searchService_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock ?? {}) && lock.?kind != 'None') {
+  name: lock.?name ?? 'lock-${name}'
   properties: {
-    level: any(lock)
-    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+    level: lock.?kind ?? ''
+    notes: lock.?kind == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot delete or modify the resource or child resources.'
   }
   scope: searchService
 }
@@ -229,14 +224,15 @@ module searchService_privateEndpoints '../../network/private-endpoint/main.bicep
     subnetResourceId: privateEndpoint.subnetResourceId
     enableDefaultTelemetry: enableReferencedModulesTelemetry
     location: contains(privateEndpoint, 'location') ? privateEndpoint.location : reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
-    lock: contains(privateEndpoint, 'lock') ? privateEndpoint.lock : lock
-    privateDnsZoneGroup: contains(privateEndpoint, 'privateDnsZoneGroup') ? privateEndpoint.privateDnsZoneGroup : {}
+    lock: privateEndpoint.?lock ?? lock
+    privateDnsZoneGroupName: contains(privateEndpoint, 'privateDnsZoneGroupName') ? privateEndpoint.privateDnsZoneGroupName : 'default'
+    privateDnsZoneResourceIds: contains(privateEndpoint, 'privateDnsZoneResourceIds') ? privateEndpoint.privateDnsZoneResourceIds : []
     roleAssignments: contains(privateEndpoint, 'roleAssignments') ? privateEndpoint.roleAssignments : []
     tags: contains(privateEndpoint, 'tags') ? privateEndpoint.tags : {}
     manualPrivateLinkServiceConnections: contains(privateEndpoint, 'manualPrivateLinkServiceConnections') ? privateEndpoint.manualPrivateLinkServiceConnections : []
     customDnsConfigs: contains(privateEndpoint, 'customDnsConfigs') ? privateEndpoint.customDnsConfigs : []
     ipConfigurations: contains(privateEndpoint, 'ipConfigurations') ? privateEndpoint.ipConfigurations : []
-    applicationSecurityGroups: contains(privateEndpoint, 'applicationSecurityGroups') ? privateEndpoint.applicationSecurityGroups : []
+    applicationSecurityGroupResourceIds: contains(privateEndpoint, 'applicationSecurityGroupResourceIds') ? privateEndpoint.applicationSecurityGroupResourceIds : []
     customNetworkInterfaceName: contains(privateEndpoint, 'customNetworkInterfaceName') ? privateEndpoint.customNetworkInterfaceName : ''
   }
 }]
@@ -273,3 +269,15 @@ output resourceGroupName string = resourceGroup().name
 
 @description('The location the resource was deployed into.')
 output location string = searchService.location
+
+// =============== //
+//   Definitions   //
+// =============== //
+
+type lockType = {
+  @description('Optional. Specify the name of lock.')
+  name: string?
+
+  @description('Optional. Specify the type of lock.')
+  kind: ('CanNotDelete' | 'ReadOnly' | 'None')?
+}?

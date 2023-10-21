@@ -5,10 +5,10 @@ This module deploys a Front Door Web Application Firewall (WAF) Policy.
 ## Navigation
 
 - [Resource Types](#Resource-Types)
+- [Usage examples](#Usage-examples)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
-- [Deployment examples](#Deployment-examples)
 
 ## Resource Types
 
@@ -18,157 +18,28 @@ This module deploys a Front Door Web Application Firewall (WAF) Policy.
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Network/FrontDoorWebApplicationFirewallPolicies` | [2022-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-05-01/FrontDoorWebApplicationFirewallPolicies) |
 
-## Parameters
+## Usage examples
 
-**Required parameters**
+The following section provides usage examples for the module, which were used to validate and deploy the module successfully. For a full reference, please review the module's test folder in its repository.
 
-| Parameter Name | Type | Description |
-| :-- | :-- | :-- |
-| `name` | string | Name of the Front Door WAF policy. |
+>**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-**Optional parameters**
+>**Note**: To reference the module, please use the following syntax `br:bicep/modules/network.front-door-web-application-firewall-policy:1.0.0`.
 
-| Parameter Name | Type | Default Value | Allowed Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `customRules` | object | `{object}` |  | The custom rules inside the policy. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `location` | string | `'global'` |  | Location for all resources. |
-| `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
-| `managedRules` | object | `{object}` |  | Describes the managedRules structure. |
-| `policySettings` | object | `{object}` |  | The PolicySettings for policy. |
-| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| `sku` | string | `'Standard_AzureFrontDoor'` | `[Premium_AzureFrontDoor, Standard_AzureFrontDoor]` | The pricing tier of the WAF profile. |
-| `tags` | object | `{object}` |  | Resource tags. |
+- [Using large parameter set](#example-1-using-large-parameter-set)
+- [Using only defaults](#example-2-using-only-defaults)
 
+### Example 1: _Using large parameter set_
 
-### Parameter Usage: `tags`
+This instance deploys the module with most of its features enabled.
 
-Tag names and tag values can be provided as needed. A tag can be left without a value.
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"tags": {
-    "value": {
-        "Environment": "Non-Prod",
-        "Contact": "test.user@testcompany.com",
-        "PurchaseOrder": "1234",
-        "CostCenter": "7890",
-        "ServiceName": "DeploymentValidation",
-        "Role": "DeploymentValidation"
-    }
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-tags: {
-    Environment: 'Non-Prod'
-    Contact: 'test.user@testcompany.com'
-    PurchaseOrder: '1234'
-    CostCenter: '7890'
-    ServiceName: 'DeploymentValidation'
-    Role: 'DeploymentValidation'
-}
-```
-
-</details>
-<p>
-
-### Parameter Usage: `roleAssignments`
-
-Create a role assignment for the given resource. If you want to assign a service principal / managed identity that is created in the same deployment, make sure to also specify the `'principalType'` parameter and set it to `'ServicePrincipal'`. This will ensure the role assignment waits for the principal's propagation in Azure.
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"roleAssignments": {
-    "value": [
-        {
-            "roleDefinitionIdOrName": "Reader",
-            "description": "Reader Role Assignment",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012", // object 1
-                "78945612-1234-1234-1234-123456789012" // object 2
-            ]
-        },
-        {
-            "roleDefinitionIdOrName": "/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012" // object 1
-            ],
-            "principalType": "ServicePrincipal"
-        }
-    ]
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-roleAssignments: [
-    {
-        roleDefinitionIdOrName: 'Reader'
-        description: 'Reader Role Assignment'
-        principalIds: [
-            '12345678-1234-1234-1234-123456789012' // object 1
-            '78945612-1234-1234-1234-123456789012' // object 2
-        ]
-    }
-    {
-        roleDefinitionIdOrName: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'
-        principalIds: [
-            '12345678-1234-1234-1234-123456789012' // object 1
-        ]
-        principalType: 'ServicePrincipal'
-    }
-]
-```
-
-</details>
-<p>
-
-## Outputs
-
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of the Front Door WAF policy. |
-| `resourceGroupName` | string | The resource group the Front Door WAF policy was deployed into. |
-| `resourceId` | string | The resource ID of the Front Door WAF policy. |
-
-## Cross-referenced modules
-
-_None_
-
-## Deployment examples
-
-The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
-   >**Note**: The name of each example is based on the name of the file from which it is taken.
-
-   >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
-
-<h3>Example 1: Common</h3>
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module frontDoorWebApplicationFirewallPolicy './network/front-door-web-application-firewall-policy/main.bicep' = {
+module frontDoorWebApplicationFirewallPolicy 'br:bicep/modules/network.front-door-web-application-firewall-policy:1.0.0' = {
   name: '${uniqueString(deployment().name, location)}-test-nagwafpcom'
   params: {
     // Required parameters
@@ -223,7 +94,10 @@ module frontDoorWebApplicationFirewallPolicy './network/front-door-web-applicati
       ]
     }
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     managedRules: {
       managedRuleSets: [
         {
@@ -328,7 +202,10 @@ module frontDoorWebApplicationFirewallPolicy './network/front-door-web-applicati
       "value": "<enableDefaultTelemetry>"
     },
     "lock": {
-      "value": "CanNotDelete"
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
     },
     "managedRules": {
       "value": {
@@ -376,14 +253,17 @@ module frontDoorWebApplicationFirewallPolicy './network/front-door-web-applicati
 </details>
 <p>
 
-<h3>Example 2: Min</h3>
+### Example 2: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module frontDoorWebApplicationFirewallPolicy './network/front-door-web-application-firewall-policy/main.bicep' = {
+module frontDoorWebApplicationFirewallPolicy 'br:bicep/modules/network.front-door-web-application-firewall-policy:1.0.0' = {
   name: '${uniqueString(deployment().name, location)}-test-nagwafpmin'
   params: {
     // Required parameters
@@ -420,3 +300,130 @@ module frontDoorWebApplicationFirewallPolicy './network/front-door-web-applicati
 
 </details>
 <p>
+
+
+## Parameters
+
+**Required parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`name`](#parameter-name) | string | Name of the Front Door WAF policy. |
+
+**Optional parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`customRules`](#parameter-customrules) | object | The custom rules inside the policy. |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`location`](#parameter-location) | string | Location for all resources. |
+| [`lock`](#parameter-lock) | object | The lock settings of the service. |
+| [`managedRules`](#parameter-managedrules) | object | Describes the managedRules structure. |
+| [`policySettings`](#parameter-policysettings) | object | The PolicySettings for policy. |
+| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| [`sku`](#parameter-sku) | string | The pricing tier of the WAF profile. |
+| [`tags`](#parameter-tags) | object | Resource tags. |
+
+### Parameter: `customRules`
+
+The custom rules inside the policy.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `location`
+
+Location for all resources.
+- Required: No
+- Type: string
+- Default: `'global'`
+
+### Parameter: `lock`
+
+The lock settings of the service.
+- Required: No
+- Type: object
+
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`kind`](#parameter-lockkind) | No | string | Optional. Specify the type of lock. |
+| [`name`](#parameter-lockname) | No | string | Optional. Specify the name of lock. |
+
+### Parameter: `lock.kind`
+
+Optional. Specify the type of lock.
+
+- Required: No
+- Type: string
+- Allowed: `[CanNotDelete, None, ReadOnly]`
+
+### Parameter: `lock.name`
+
+Optional. Specify the name of lock.
+
+- Required: No
+- Type: string
+
+### Parameter: `managedRules`
+
+Describes the managedRules structure.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `name`
+
+Name of the Front Door WAF policy.
+- Required: Yes
+- Type: string
+
+### Parameter: `policySettings`
+
+The PolicySettings for policy.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `roleAssignments`
+
+Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `sku`
+
+The pricing tier of the WAF profile.
+- Required: No
+- Type: string
+- Default: `'Standard_AzureFrontDoor'`
+- Allowed: `[Premium_AzureFrontDoor, Standard_AzureFrontDoor]`
+
+### Parameter: `tags`
+
+Resource tags.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+
+## Outputs
+
+| Output | Type | Description |
+| :-- | :-- | :-- |
+| `location` | string | The location the resource was deployed into. |
+| `name` | string | The name of the Front Door WAF policy. |
+| `resourceGroupName` | string | The resource group the Front Door WAF policy was deployed into. |
+| `resourceId` | string | The resource ID of the Front Door WAF policy. |
+
+## Cross-referenced modules
+
+_None_

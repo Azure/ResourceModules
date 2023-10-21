@@ -1,5 +1,8 @@
 targetScope = 'subscription'
 
+metadata name = 'Using large parameter set'
+metadata description = 'This instance deploys the module with most of its features enabled.'
+
 // ========== //
 // Parameters //
 // ========== //
@@ -62,19 +65,19 @@ module testDeployment '../../main.bicep' = {
         useCommonAlertSchema: true
       }
     ]
+    smsReceivers: [
+      {
+        countryCode: '1'
+        name: 'TestUser_-SMSAction-'
+        phoneNumber: '2345678901'
+      }
+    ]
     roleAssignments: [
       {
         principalIds: [
           nestedDependencies.outputs.managedIdentityPrincipalId
         ]
         roleDefinitionIdOrName: 'Reader'
-      }
-    ]
-    smsReceivers: [
-      {
-        countryCode: '1'
-        name: 'TestUser_-SMSAction-'
-        phoneNumber: '2345678901'
       }
     ]
     tags: {

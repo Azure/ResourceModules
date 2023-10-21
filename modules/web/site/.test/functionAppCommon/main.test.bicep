@@ -144,16 +144,17 @@ module testDeployment '../../main.bicep' = {
     diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
     diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
     diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     privateEndpoints: [
       {
         service: 'sites'
         subnetResourceId: nestedDependencies.outputs.subnetResourceId
-        privateDnsZoneGroup: {
-          privateDNSResourceIds: [
-            nestedDependencies.outputs.privateDNSZoneResourceId
-          ]
-        }
+        privateDnsZoneResourceIds: [
+          nestedDependencies.outputs.privateDNSZoneResourceId
+        ]
         tags: {
           'hidden-title': 'This is visible in the resource name'
           Environment: 'Non-Prod'

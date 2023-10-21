@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.20.4.51522",
-      "templateHash": "6965287962374254577"
+      "version": "0.22.6.54827",
+      "templateHash": "498719698216860438"
     },
     "name": "Private DNS Zone MX record",
     "description": "This module deploys a Private DNS Zone MX record.",
@@ -119,8 +119,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.20.4.51522",
-              "templateHash": "11594799085721281275"
+              "version": "0.22.6.54827",
+              "templateHash": "3875667684091614842"
             }
           },
           "parameters": {

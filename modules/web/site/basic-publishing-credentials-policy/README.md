@@ -19,27 +19,54 @@ This module deploys a Web Site Basic Publishing Credentials Policy.
 
 **Required parameters**
 
-| Parameter Name | Type | Allowed Values | Description |
-| :-- | :-- | :-- | :-- |
-| `name` | string | `[ftp, scm]` | The name of the resource. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`name`](#parameter-name) | string | The name of the resource. |
 
 **Conditional parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `webAppName` | string | The name of the parent web site. Required if the template is used in a standalone deployment. |
+| [`webAppName`](#parameter-webappname) | string | The name of the parent web site. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `location` | string | `[resourceGroup().location]` | Location for all Resources. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`location`](#parameter-location) | string | Location for all Resources. |
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `location`
+
+Location for all Resources.
+- Required: No
+- Type: string
+- Default: `[resourceGroup().location]`
+
+### Parameter: `name`
+
+The name of the resource.
+- Required: Yes
+- Type: string
+- Allowed: `[ftp, scm]`
+
+### Parameter: `webAppName`
+
+The name of the parent web site. Required if the template is used in a standalone deployment.
+- Required: Yes
+- Type: string
 
 
 ## Outputs
 
-| Output Name | Type | Description |
+| Output | Type | Description |
 | :-- | :-- | :-- |
 | `location` | string | The location the resource was deployed into. |
 | `name` | string | The name of the basic publishing credential policy. |

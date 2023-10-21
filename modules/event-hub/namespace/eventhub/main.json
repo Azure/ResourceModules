@@ -1,15 +1,43 @@
 {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "languageVersion": "2.0",
   "contentVersion": "1.0.0.0",
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.20.4.51522",
-      "templateHash": "443948940379129513"
+      "version": "0.22.6.54827",
+      "templateHash": "13288816158537037984"
     },
     "name": "Event Hub Namespace Event Hubs",
     "description": "This module deploys an Event Hub Namespace Event Hub.",
     "owner": "Azure/module-maintainers"
+  },
+  "definitions": {
+    "lockType": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Specify the name of lock."
+          }
+        },
+        "kind": {
+          "type": "string",
+          "allowedValues": [
+            "CanNotDelete",
+            "None",
+            "ReadOnly"
+          ],
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Specify the type of lock."
+          }
+        }
+      },
+      "nullable": true
+    }
   },
   "parameters": {
     "namespaceName": {
@@ -46,7 +74,7 @@
       "minValue": 1,
       "maxValue": 7,
       "metadata": {
-        "description": "Optional. Number of days to retain the events for this Event Hub, value should be 1 to 7 days."
+        "description": "Optional. Number of days to retain the events for this Event Hub, value should be 1 to 7 days. Will be automatically set to infinite retention if cleanup policy is set to \"Compact\"."
       }
     },
     "partitionCount": {
@@ -88,15 +116,9 @@
       }
     },
     "lock": {
-      "type": "string",
-      "defaultValue": "",
-      "allowedValues": [
-        "",
-        "CanNotDelete",
-        "ReadOnly"
-      ],
+      "$ref": "#/definitions/lockType",
       "metadata": {
-        "description": "Optional. Specify the type of lock."
+        "description": "Optional. The lock settings of the service."
       }
     },
     "roleAssignments": {
@@ -177,6 +199,35 @@
         "description": "Optional. A value that indicates whether to Skip Empty Archives."
       }
     },
+    "retentionDescriptionCleanupPolicy": {
+      "type": "string",
+      "defaultValue": "Delete",
+      "allowedValues": [
+        "Compact",
+        "Delete"
+      ],
+      "metadata": {
+        "description": "Optional. Retention cleanup policy. Enumerates the possible values for cleanup policy."
+      }
+    },
+    "retentionDescriptionRetentionTimeInHours": {
+      "type": "int",
+      "defaultValue": 1,
+      "minValue": 1,
+      "maxValue": 168,
+      "metadata": {
+        "description": "Optional. Retention time in hours. Number of hours to retain the events for this Event Hub. This value is only used when cleanupPolicy is Delete. If cleanupPolicy is Compact the returned value of this property is Long.MaxValue."
+      }
+    },
+    "retentionDescriptionTombstoneRetentionTimeInHours": {
+      "type": "int",
+      "defaultValue": 1,
+      "minValue": 1,
+      "maxValue": 168,
+      "metadata": {
+        "description": "Optional. Retention cleanup policy. Number of hours to retain the tombstone markers of a compacted Event Hub. This value is only used when cleanupPolicy is Compact. Consumer must complete reading the tombstone marker within this specified amount of time if consumer begins from starting offset to ensure they get a valid snapshot for the specific key described by the tombstone marker within the compacted Event Hub."
+      }
+    },
     "enableDefaultTelemetry": {
       "type": "bool",
       "defaultValue": true,
@@ -187,15 +238,17 @@
   },
   "variables": {
     "enableReferencedModulesTelemetry": false,
-    "eventHubPropertiesSimple": {
-      "messageRetentionInDays": "[parameters('messageRetentionInDays')]",
-      "partitionCount": "[parameters('partitionCount')]",
-      "status": "[parameters('status')]"
-    },
-    "eventHubPropertiesWithCapture": {
+    "eventHubProperties": {
       "messageRetentionInDays": "[parameters('messageRetentionInDays')]",
       "partitionCount": "[parameters('partitionCount')]",
       "status": "[parameters('status')]",
+      "retentionDescription": {
+        "cleanupPolicy": "[parameters('retentionDescriptionCleanupPolicy')]",
+        "retentionTimeInHours": "[if(equals(parameters('retentionDescriptionCleanupPolicy'), 'Delete'), parameters('retentionDescriptionRetentionTimeInHours'), null())]",
+        "tombstoneRetentionTimeInHours": "[if(equals(parameters('retentionDescriptionCleanupPolicy'), 'Compact'), parameters('retentionDescriptionTombstoneRetentionTimeInHours'), null())]"
+      }
+    },
+    "eventHubPropertiesCapture": {
       "captureDescription": {
         "destination": {
           "name": "[parameters('captureDescriptionDestinationName')]",
@@ -213,8 +266,8 @@
       }
     }
   },
-  "resources": [
-    {
+  "resources": {
+    "defaultTelemetry": {
       "condition": "[parameters('enableDefaultTelemetry')]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2021-04-01",
@@ -228,27 +281,36 @@
         }
       }
     },
-    {
-      "type": "Microsoft.EventHub/namespaces/eventhubs",
-      "apiVersion": "2022-01-01-preview",
-      "name": "[format('{0}/{1}', parameters('namespaceName'), parameters('name'))]",
-      "properties": "[if(parameters('captureDescriptionEnabled'), variables('eventHubPropertiesWithCapture'), variables('eventHubPropertiesSimple'))]"
+    "namespace": {
+      "existing": true,
+      "type": "Microsoft.EventHub/namespaces",
+      "apiVersion": "2022-10-01-preview",
+      "name": "[parameters('namespaceName')]"
     },
-    {
-      "condition": "[not(empty(parameters('lock')))]",
+    "eventHub": {
+      "type": "Microsoft.EventHub/namespaces/eventhubs",
+      "apiVersion": "2022-10-01-preview",
+      "name": "[format('{0}/{1}', parameters('namespaceName'), parameters('name'))]",
+      "properties": "[if(parameters('captureDescriptionEnabled'), union(variables('eventHubProperties'), variables('eventHubPropertiesCapture')), variables('eventHubProperties'))]",
+      "dependsOn": [
+        "namespace"
+      ]
+    },
+    "eventHub_lock": {
+      "condition": "[and(not(empty(coalesce(parameters('lock'), createObject()))), not(equals(tryGet(parameters('lock'), 'kind'), 'None')))]",
       "type": "Microsoft.Authorization/locks",
       "apiVersion": "2020-05-01",
       "scope": "[format('Microsoft.EventHub/namespaces/{0}/eventhubs/{1}', parameters('namespaceName'), parameters('name'))]",
-      "name": "[format('{0}-{1}-lock', parameters('name'), parameters('lock'))]",
+      "name": "[coalesce(tryGet(parameters('lock'), 'name'), format('lock-{0}', parameters('name')))]",
       "properties": {
-        "level": "[parameters('lock')]",
-        "notes": "[if(equals(parameters('lock'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot modify the resource or child resources.')]"
+        "level": "[coalesce(tryGet(parameters('lock'), 'kind'), '')]",
+        "notes": "[if(equals(tryGet(parameters('lock'), 'kind'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot delete or modify the resource or child resources.')]"
       },
       "dependsOn": [
-        "[resourceId('Microsoft.EventHub/namespaces/eventhubs', parameters('namespaceName'), parameters('name'))]"
+        "eventHub"
       ]
     },
-    {
+    "eventHub_consumergroups": {
       "copy": {
         "name": "eventHub_consumergroups",
         "count": "[length(parameters('consumergroups'))]"
@@ -282,8 +344,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.20.4.51522",
-              "templateHash": "4223870259264150873"
+              "version": "0.22.6.54827",
+              "templateHash": "3522913919009222120"
             },
             "name": "Event Hub Namespace Event Hub Consumer Groups",
             "description": "This module deploys an Event Hub Namespace Event Hub Consumer Group.",
@@ -340,7 +402,7 @@
             },
             {
               "type": "Microsoft.EventHub/namespaces/eventhubs/consumergroups",
-              "apiVersion": "2022-01-01-preview",
+              "apiVersion": "2022-10-01-preview",
               "name": "[format('{0}/{1}/{2}', parameters('namespaceName'), parameters('eventHubName'), parameters('name'))]",
               "properties": {
                 "userMetadata": "[if(not(empty(parameters('userMetadata'))), parameters('userMetadata'), null())]"
@@ -373,10 +435,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.EventHub/namespaces/eventhubs', parameters('namespaceName'), parameters('name'))]"
+        "eventHub"
       ]
     },
-    {
+    "eventHub_authorizationRules": {
       "copy": {
         "name": "eventHub_authorizationRules",
         "count": "[length(parameters('authorizationRules'))]"
@@ -410,8 +472,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.20.4.51522",
-              "templateHash": "12984183065402367529"
+              "version": "0.22.6.54827",
+              "templateHash": "12245634232079362340"
             },
             "name": "Event Hub Namespace Event Hub Authorization Rules",
             "description": "This module deploys an Event Hub Namespace Event Hub Authorization Rule.",
@@ -473,7 +535,7 @@
             },
             {
               "type": "Microsoft.EventHub/namespaces/eventhubs/authorizationRules",
-              "apiVersion": "2022-01-01-preview",
+              "apiVersion": "2022-10-01-preview",
               "name": "[format('{0}/{1}/{2}', parameters('namespaceName'), parameters('eventHubName'), parameters('name'))]",
               "properties": {
                 "rights": "[parameters('rights')]"
@@ -506,10 +568,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.EventHub/namespaces/eventhubs', parameters('namespaceName'), parameters('name'))]"
+        "eventHub"
       ]
     },
-    {
+    "eventHub_roleAssignments": {
       "copy": {
         "name": "eventHub_roleAssignments",
         "count": "[length(parameters('roleAssignments'))]"
@@ -543,8 +605,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.20.4.51522",
-              "templateHash": "14745150939607150150"
+              "version": "0.22.6.54827",
+              "templateHash": "5794309156960386834"
             }
           },
           "parameters": {
@@ -659,10 +721,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.EventHub/namespaces/eventhubs', parameters('namespaceName'), parameters('name'))]"
+        "eventHub"
       ]
     }
-  ],
+  },
   "outputs": {
     "name": {
       "type": "string",

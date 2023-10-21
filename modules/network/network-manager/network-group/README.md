@@ -21,28 +21,61 @@ A network group is a collection of same-type network resources that you can asso
 
 **Required parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the network group. |
+| [`name`](#parameter-name) | string | The name of the network group. |
 
 **Conditional parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `networkManagerName` | string | The name of the parent network manager. Required if the template is used in a standalone deployment. |
+| [`networkManagerName`](#parameter-networkmanagername) | string | The name of the parent network manager. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `description` | string | `''` | A description of the network group. |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `staticMembers` | array | `[]` | Static Members to create for the network group. Contains virtual networks to add to the network group. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`description`](#parameter-description) | string | A description of the network group. |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`staticMembers`](#parameter-staticmembers) | array | Static Members to create for the network group. Contains virtual networks to add to the network group. |
+
+### Parameter: `description`
+
+A description of the network group.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `name`
+
+The name of the network group.
+- Required: Yes
+- Type: string
+
+### Parameter: `networkManagerName`
+
+The name of the parent network manager. Required if the template is used in a standalone deployment.
+- Required: Yes
+- Type: string
+
+### Parameter: `staticMembers`
+
+Static Members to create for the network group. Contains virtual networks to add to the network group.
+- Required: No
+- Type: array
+- Default: `[]`
 
 
 ## Outputs
 
-| Output Name | Type | Description |
+| Output | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the deployed network group. |
 | `resourceGroupName` | string | The resource group the network group was deployed into. |

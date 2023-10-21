@@ -21,135 +21,119 @@ This module deploys an Azure NetApp Files Capacity Pool.
 
 **Required parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the capacity pool. |
-| `size` | int | Provisioned size of the pool (in bytes). Allowed values are in 4TiB chunks (value must be multiply of 4398046511104). |
+| [`name`](#parameter-name) | string | The name of the capacity pool. |
+| [`size`](#parameter-size) | int | Provisioned size of the pool (in bytes). Allowed values are in 4TiB chunks (value must be multiply of 4398046511104). |
 
 **Conditional parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `netAppAccountName` | string | The name of the parent NetApp account. Required if the template is used in a standalone deployment. |
+| [`netAppAccountName`](#parameter-netappaccountname) | string | The name of the parent NetApp account. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Allowed Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `coolAccess` | bool | `False` |  | If enabled (true) the pool can contain cool Access enabled volumes. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `encryptionType` | string | `'Single'` | `[Double, Single]` | Encryption type of the capacity pool, set encryption type for data at rest for this pool and all volumes in it. This value can only be set when creating new pool. |
-| `location` | string | `[resourceGroup().location]` |  | Location of the pool volume. |
-| `qosType` | string | `'Auto'` | `[Auto, Manual]` | The qos type of the pool. |
-| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| `serviceLevel` | string | `'Standard'` | `[Premium, Standard, StandardZRS, Ultra]` | The pool service level. |
-| `tags` | object | `{object}` |  | Tags for all resources. |
-| `volumes` | array | `[]` |  | List of volumnes to create in the capacity pool. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`coolAccess`](#parameter-coolaccess) | bool | If enabled (true) the pool can contain cool Access enabled volumes. |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`encryptionType`](#parameter-encryptiontype) | string | Encryption type of the capacity pool, set encryption type for data at rest for this pool and all volumes in it. This value can only be set when creating new pool. |
+| [`location`](#parameter-location) | string | Location of the pool volume. |
+| [`qosType`](#parameter-qostype) | string | The qos type of the pool. |
+| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| [`serviceLevel`](#parameter-servicelevel) | string | The pool service level. |
+| [`tags`](#parameter-tags) | object | Tags for all resources. |
+| [`volumes`](#parameter-volumes) | array | List of volumnes to create in the capacity pool. |
 
+### Parameter: `coolAccess`
 
-### Parameter Usage: `tags`
+If enabled (true) the pool can contain cool Access enabled volumes.
+- Required: No
+- Type: bool
+- Default: `False`
 
-Tag names and tag values can be provided as needed. A tag can be left without a value.
+### Parameter: `enableDefaultTelemetry`
 
-<details>
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
 
-<summary>Parameter JSON format</summary>
+### Parameter: `encryptionType`
 
-```json
-"tags": {
-    "value": {
-        "Environment": "Non-Prod",
-        "Contact": "test.user@testcompany.com",
-        "PurchaseOrder": "1234",
-        "CostCenter": "7890",
-        "ServiceName": "DeploymentValidation",
-        "Role": "DeploymentValidation"
-    }
-}
-```
+Encryption type of the capacity pool, set encryption type for data at rest for this pool and all volumes in it. This value can only be set when creating new pool.
+- Required: No
+- Type: string
+- Default: `'Single'`
+- Allowed: `[Double, Single]`
 
-</details>
+### Parameter: `location`
 
-<details>
+Location of the pool volume.
+- Required: No
+- Type: string
+- Default: `[resourceGroup().location]`
 
-<summary>Bicep format</summary>
+### Parameter: `name`
 
-```bicep
-tags: {
-    Environment: 'Non-Prod'
-    Contact: 'test.user@testcompany.com'
-    PurchaseOrder: '1234'
-    CostCenter: '7890'
-    ServiceName: 'DeploymentValidation'
-    Role: 'DeploymentValidation'
-}
-```
+The name of the capacity pool.
+- Required: Yes
+- Type: string
 
-</details>
-<p>
+### Parameter: `netAppAccountName`
 
-### Parameter Usage: `roleAssignments`
+The name of the parent NetApp account. Required if the template is used in a standalone deployment.
+- Required: Yes
+- Type: string
 
-Create a role assignment for the given resource. If you want to assign a service principal / managed identity that is created in the same deployment, make sure to also specify the `'principalType'` parameter and set it to `'ServicePrincipal'`. This will ensure the role assignment waits for the principal's propagation in Azure.
+### Parameter: `qosType`
 
-<details>
+The qos type of the pool.
+- Required: No
+- Type: string
+- Default: `'Auto'`
+- Allowed: `[Auto, Manual]`
 
-<summary>Parameter JSON format</summary>
+### Parameter: `roleAssignments`
 
-```json
-"roleAssignments": {
-    "value": [
-        {
-            "roleDefinitionIdOrName": "Reader",
-            "description": "Reader Role Assignment",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012", // object 1
-                "78945612-1234-1234-1234-123456789012" // object 2
-            ]
-        },
-        {
-            "roleDefinitionIdOrName": "/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012" // object 1
-            ],
-            "principalType": "ServicePrincipal"
-        }
-    ]
-}
-```
+Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
+- Required: No
+- Type: array
+- Default: `[]`
 
-</details>
+### Parameter: `serviceLevel`
 
-<details>
+The pool service level.
+- Required: No
+- Type: string
+- Default: `'Standard'`
+- Allowed: `[Premium, Standard, StandardZRS, Ultra]`
 
-<summary>Bicep format</summary>
+### Parameter: `size`
 
-```bicep
-roleAssignments: [
-    {
-        roleDefinitionIdOrName: 'Reader'
-        description: 'Reader Role Assignment'
-        principalIds: [
-            '12345678-1234-1234-1234-123456789012' // object 1
-            '78945612-1234-1234-1234-123456789012' // object 2
-        ]
-    }
-    {
-        roleDefinitionIdOrName: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'
-        principalIds: [
-            '12345678-1234-1234-1234-123456789012' // object 1
-        ]
-        principalType: 'ServicePrincipal'
-    }
-]
-```
+Provisioned size of the pool (in bytes). Allowed values are in 4TiB chunks (value must be multiply of 4398046511104).
+- Required: Yes
+- Type: int
 
-</details>
-<p>
+### Parameter: `tags`
+
+Tags for all resources.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `volumes`
+
+List of volumnes to create in the capacity pool.
+- Required: No
+- Type: array
+- Default: `[]`
+
 
 ## Outputs
 
-| Output Name | Type | Description |
+| Output | Type | Description |
 | :-- | :-- | :-- |
 | `location` | string | The location the resource was deployed into. |
 | `name` | string | The name of the Capacity Pool. |

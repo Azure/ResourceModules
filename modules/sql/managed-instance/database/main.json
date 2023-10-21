@@ -1,15 +1,43 @@
 {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "languageVersion": "2.0",
   "contentVersion": "1.0.0.0",
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.20.4.51522",
-      "templateHash": "7819487658736647657"
+      "version": "0.22.6.54827",
+      "templateHash": "6248092272830092402"
     },
     "name": "SQL Managed Instance Databases",
     "description": "This module deploys a SQL Managed Instance Database.",
     "owner": "Azure/module-maintainers"
+  },
+  "definitions": {
+    "lockType": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Specify the name of lock."
+          }
+        },
+        "kind": {
+          "type": "string",
+          "allowedValues": [
+            "CanNotDelete",
+            "None",
+            "ReadOnly"
+          ],
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Specify the type of lock."
+          }
+        }
+      },
+      "nullable": true
+    }
   },
   "parameters": {
     "name": {
@@ -137,15 +165,9 @@
       }
     },
     "lock": {
-      "type": "string",
-      "defaultValue": "",
-      "allowedValues": [
-        "",
-        "CanNotDelete",
-        "ReadOnly"
-      ],
+      "$ref": "#/definitions/lockType",
       "metadata": {
-        "description": "Optional. Specify the type of lock."
+        "description": "Optional. The lock settings of the service."
       }
     },
     "backupShortTermRetentionPoliciesObj": {
@@ -215,8 +237,8 @@
     "diagnosticsLogs": "[if(contains(parameters('diagnosticLogCategoriesToEnable'), 'allLogs'), createArray(createObject('categoryGroup', 'allLogs', 'enabled', true())), if(contains(parameters('diagnosticLogCategoriesToEnable'), ''), createArray(), variables('diagnosticsLogsSpecified')))]",
     "enableReferencedModulesTelemetry": false
   },
-  "resources": [
-    {
+  "resources": {
+    "defaultTelemetry": {
       "condition": "[parameters('enableDefaultTelemetry')]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2021-04-01",
@@ -230,9 +252,15 @@
         }
       }
     },
-    {
+    "managedInstance": {
+      "existing": true,
+      "type": "Microsoft.Sql/managedInstances",
+      "apiVersion": "2022-05-01-preview",
+      "name": "[parameters('managedInstanceName')]"
+    },
+    "database": {
       "type": "Microsoft.Sql/managedInstances/databases",
-      "apiVersion": "2022-02-01-preview",
+      "apiVersion": "2022-05-01-preview",
       "name": "[format('{0}/{1}', parameters('managedInstanceName'), parameters('name'))]",
       "location": "[parameters('location')]",
       "tags": "[parameters('tags')]",
@@ -247,9 +275,12 @@
         "storageContainerSasToken": "[if(empty(parameters('storageContainerSasToken')), null(), parameters('storageContainerSasToken'))]",
         "recoverableDatabaseId": "[if(empty(parameters('recoverableDatabaseId')), null(), parameters('recoverableDatabaseId'))]",
         "longTermRetentionBackupResourceId": "[if(empty(parameters('longTermRetentionBackupResourceId')), null(), parameters('longTermRetentionBackupResourceId'))]"
-      }
+      },
+      "dependsOn": [
+        "managedInstance"
+      ]
     },
-    {
+    "database_lock": {
       "condition": "[not(empty(parameters('lock')))]",
       "type": "Microsoft.Authorization/locks",
       "apiVersion": "2020-05-01",
@@ -260,10 +291,10 @@
         "notes": "[if(equals(parameters('lock'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot modify the resource or child resources.')]"
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Sql/managedInstances/databases', parameters('managedInstanceName'), parameters('name'))]"
+        "database"
       ]
     },
-    {
+    "database_diagnosticSettings": {
       "condition": "[or(or(or(not(empty(parameters('diagnosticStorageAccountId'))), not(empty(parameters('diagnosticWorkspaceId')))), not(empty(parameters('diagnosticEventHubAuthorizationRuleId')))), not(empty(parameters('diagnosticEventHubName'))))]",
       "type": "Microsoft.Insights/diagnosticSettings",
       "apiVersion": "2021-05-01-preview",
@@ -277,10 +308,10 @@
         "logs": "[variables('diagnosticsLogs')]"
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Sql/managedInstances/databases', parameters('managedInstanceName'), parameters('name'))]"
+        "database"
       ]
     },
-    {
+    "database_backupShortTermRetentionPolicy": {
       "condition": "[not(empty(parameters('backupShortTermRetentionPoliciesObj')))]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
@@ -311,8 +342,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.20.4.51522",
-              "templateHash": "6931213919610871740"
+              "version": "0.22.6.54827",
+              "templateHash": "1444574199601154138"
             },
             "name": "SQL Managed Instance Database Backup Short-Term Retention Policies",
             "description": "This module deploys a SQL Managed Instance Database Backup Short-Term Retention Policy.",
@@ -369,7 +400,7 @@
             },
             {
               "type": "Microsoft.Sql/managedInstances/databases/backupShortTermRetentionPolicies",
-              "apiVersion": "2022-02-01-preview",
+              "apiVersion": "2022-05-01-preview",
               "name": "[format('{0}/{1}/{2}', parameters('managedInstanceName'), parameters('databaseName'), parameters('name'))]",
               "properties": {
                 "retentionDays": "[parameters('retentionDays')]"
@@ -402,10 +433,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Sql/managedInstances/databases', parameters('managedInstanceName'), parameters('name'))]"
+        "database"
       ]
     },
-    {
+    "database_backupLongTermRetentionPolicy": {
       "condition": "[not(empty(parameters('backupLongTermRetentionPoliciesObj')))]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
@@ -439,8 +470,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.20.4.51522",
-              "templateHash": "18038719600656297152"
+              "version": "0.22.6.54827",
+              "templateHash": "10571563219835680436"
             },
             "name": "SQL Managed Instance Database Backup Long-Term Retention Policies",
             "description": "This module deploys a SQL Managed Instance Database Backup Long-Term Retention Policy.",
@@ -518,7 +549,7 @@
             },
             {
               "type": "Microsoft.Sql/managedInstances/databases/backupLongTermRetentionPolicies",
-              "apiVersion": "2022-02-01-preview",
+              "apiVersion": "2022-05-01-preview",
               "name": "[format('{0}/{1}/{2}', parameters('managedInstanceName'), parameters('databaseName'), parameters('name'))]",
               "properties": {
                 "monthlyRetention": "[parameters('monthlyRetention')]",
@@ -554,10 +585,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Sql/managedInstances/databases', parameters('managedInstanceName'), parameters('name'))]"
+        "database"
       ]
     }
-  ],
+  },
   "outputs": {
     "name": {
       "type": "string",
@@ -585,7 +616,7 @@
       "metadata": {
         "description": "The location the resource was deployed into."
       },
-      "value": "[reference(resourceId('Microsoft.Sql/managedInstances/databases', parameters('managedInstanceName'), parameters('name')), '2022-02-01-preview', 'full').location]"
+      "value": "[reference('database', '2022-05-01-preview', 'full').location]"
     }
   }
 }

@@ -1,15 +1,43 @@
 {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "languageVersion": "2.0",
   "contentVersion": "1.0.0.0",
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.21.1.54444",
-      "templateHash": "16240139018001575474"
+      "version": "0.22.6.54827",
+      "templateHash": "12105259818259511725"
     },
     "name": "DBforPostgreSQL Flexible Servers",
     "description": "This module deploys a DBforPostgreSQL Flexible Server.",
     "owner": "Azure/module-maintainers"
+  },
+  "definitions": {
+    "lockType": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Specify the name of lock."
+          }
+        },
+        "kind": {
+          "type": "string",
+          "allowedValues": [
+            "CanNotDelete",
+            "None",
+            "ReadOnly"
+          ],
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Specify the type of lock."
+          }
+        }
+      },
+      "nullable": true
+    }
   },
   "parameters": {
     "name": {
@@ -275,15 +303,9 @@
       }
     },
     "lock": {
-      "type": "string",
-      "defaultValue": "",
-      "allowedValues": [
-        "",
-        "CanNotDelete",
-        "ReadOnly"
-      ],
+      "$ref": "#/definitions/lockType",
       "metadata": {
-        "description": "Optional. Specify the type of lock."
+        "description": "Optional. The lock settings of the service."
       }
     },
     "roleAssignments": {
@@ -397,8 +419,20 @@
     "diagnosticsLogs": "[if(contains(parameters('diagnosticLogCategoriesToEnable'), 'allLogs'), createArray(createObject('categoryGroup', 'allLogs', 'enabled', true())), if(contains(parameters('diagnosticLogCategoriesToEnable'), ''), createArray(), variables('diagnosticsLogsSpecified')))]",
     "enableReferencedModulesTelemetry": false
   },
-  "resources": [
-    {
+  "resources": {
+    "cMKKeyVault::cMKKey": {
+      "condition": "[and(not(empty(parameters('cMKKeyVaultResourceId'))), not(empty(parameters('cMKKeyName'))))]",
+      "existing": true,
+      "type": "Microsoft.KeyVault/vaults/keys",
+      "apiVersion": "2023-02-01",
+      "subscriptionId": "[split(if(not(empty(parameters('cMKKeyVaultResourceId'))), parameters('cMKKeyVaultResourceId'), '//'), '/')[2]]",
+      "resourceGroup": "[split(if(not(empty(parameters('cMKKeyVaultResourceId'))), parameters('cMKKeyVaultResourceId'), '////'), '/')[4]]",
+      "name": "[format('{0}/{1}', last(split(if(not(empty(parameters('cMKKeyVaultResourceId'))), parameters('cMKKeyVaultResourceId'), 'dummyVault'), '/')), if(not(empty(parameters('cMKKeyName'))), parameters('cMKKeyName'), 'dummyKey'))]",
+      "dependsOn": [
+        "cMKKeyVault"
+      ]
+    },
+    "defaultTelemetry": {
       "condition": "[parameters('enableDefaultTelemetry')]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2021-04-01",
@@ -412,7 +446,16 @@
         }
       }
     },
-    {
+    "cMKKeyVault": {
+      "condition": "[not(empty(parameters('cMKKeyVaultResourceId')))]",
+      "existing": true,
+      "type": "Microsoft.KeyVault/vaults",
+      "apiVersion": "2021-10-01",
+      "subscriptionId": "[split(if(not(empty(parameters('cMKKeyVaultResourceId'))), parameters('cMKKeyVaultResourceId'), '//'), '/')[2]]",
+      "resourceGroup": "[split(if(not(empty(parameters('cMKKeyVaultResourceId'))), parameters('cMKKeyVaultResourceId'), '////'), '/')[4]]",
+      "name": "[last(split(if(not(empty(parameters('cMKKeyVaultResourceId'))), parameters('cMKKeyVaultResourceId'), 'dummyVault'), '/'))]"
+    },
+    "flexibleServer": {
       "type": "Microsoft.DBforPostgreSQL/flexibleServers",
       "apiVersion": "2022-12-01",
       "name": "[parameters('name')]",
@@ -440,7 +483,7 @@
           "geoRedundantBackup": "[parameters('geoRedundantBackup')]"
         },
         "createMode": "[parameters('createMode')]",
-        "dataEncryption": "[if(not(empty(parameters('cMKKeyName'))), createObject('primaryKeyURI', if(not(empty(parameters('cMKKeyVersion'))), format('{0}/{1}', reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', split(parameters('cMKKeyVaultResourceId'), '/')[2], split(parameters('cMKKeyVaultResourceId'), '/')[4]), 'Microsoft.KeyVault/vaults/keys', split(format('{0}/{1}', last(split(parameters('cMKKeyVaultResourceId'), '/')), parameters('cMKKeyName')), '/')[0], split(format('{0}/{1}', last(split(parameters('cMKKeyVaultResourceId'), '/')), parameters('cMKKeyName')), '/')[1]), '2022-07-01').keyUri, parameters('cMKKeyVersion')), reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', split(parameters('cMKKeyVaultResourceId'), '/')[2], split(parameters('cMKKeyVaultResourceId'), '/')[4]), 'Microsoft.KeyVault/vaults/keys', split(format('{0}/{1}', last(split(parameters('cMKKeyVaultResourceId'), '/')), parameters('cMKKeyName')), '/')[0], split(format('{0}/{1}', last(split(parameters('cMKKeyVaultResourceId'), '/')), parameters('cMKKeyName')), '/')[1]), '2022-07-01').keyUriWithVersion), 'primaryUserAssignedIdentityId', parameters('cMKUserAssignedIdentityResourceId'), 'type', 'AzureKeyVault'), null())]",
+        "dataEncryption": "[if(not(empty(parameters('cMKKeyName'))), createObject('primaryKeyURI', if(not(empty(parameters('cMKKeyVersion'))), format('{0}/{1}', reference('cMKKeyVault::cMKKey').keyUri, parameters('cMKKeyVersion')), reference('cMKKeyVault::cMKKey').keyUriWithVersion), 'primaryUserAssignedIdentityId', parameters('cMKUserAssignedIdentityResourceId'), 'type', 'AzureKeyVault'), null())]",
         "highAvailability": {
           "mode": "[parameters('highAvailability')]",
           "standbyAvailabilityZone": "[if(equals(parameters('highAvailability'), 'SameZone'), parameters('availabilityZone'), null())]"
@@ -453,23 +496,26 @@
           "storageSizeGB": "[parameters('storageSizeGB')]"
         },
         "version": "[parameters('version')]"
-      }
+      },
+      "dependsOn": [
+        "cMKKeyVault"
+      ]
     },
-    {
-      "condition": "[not(empty(parameters('lock')))]",
+    "flexibleServer_lock": {
+      "condition": "[and(not(empty(coalesce(parameters('lock'), createObject()))), not(equals(tryGet(parameters('lock'), 'kind'), 'None')))]",
       "type": "Microsoft.Authorization/locks",
       "apiVersion": "2020-05-01",
       "scope": "[format('Microsoft.DBforPostgreSQL/flexibleServers/{0}', parameters('name'))]",
-      "name": "[format('{0}-{1}-lock', parameters('name'), parameters('lock'))]",
+      "name": "[coalesce(tryGet(parameters('lock'), 'name'), format('lock-{0}', parameters('name')))]",
       "properties": {
-        "level": "[parameters('lock')]",
-        "notes": "[if(equals(parameters('lock'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot modify the resource or child resources.')]"
+        "level": "[coalesce(tryGet(parameters('lock'), 'kind'), '')]",
+        "notes": "[if(equals(tryGet(parameters('lock'), 'kind'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot delete or modify the resource or child resources.')]"
       },
       "dependsOn": [
-        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('name'))]"
+        "flexibleServer"
       ]
     },
-    {
+    "flexibleServer_diagnosticSettings": {
       "condition": "[or(or(or(not(empty(parameters('diagnosticStorageAccountId'))), not(empty(parameters('diagnosticWorkspaceId')))), not(empty(parameters('diagnosticEventHubAuthorizationRuleId')))), not(empty(parameters('diagnosticEventHubName'))))]",
       "type": "Microsoft.Insights/diagnosticSettings",
       "apiVersion": "2021-05-01-preview",
@@ -484,10 +530,10 @@
         "logs": "[variables('diagnosticsLogs')]"
       },
       "dependsOn": [
-        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('name'))]"
+        "flexibleServer"
       ]
     },
-    {
+    "flexibleServer_roleAssignments": {
       "copy": {
         "name": "flexibleServer_roleAssignments",
         "count": "[length(parameters('roleAssignments'))]"
@@ -521,8 +567,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "4898014763123062752"
+              "version": "0.22.6.54827",
+              "templateHash": "6100419547048418453"
             }
           },
           "parameters": {
@@ -632,10 +678,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('name'))]"
+        "flexibleServer"
       ]
     },
-    {
+    "flexibleServer_databases": {
       "copy": {
         "name": "flexibleServer_databases",
         "count": "[length(parameters('databases'))]"
@@ -667,8 +713,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "16660732763595780206"
+              "version": "0.22.6.54827",
+              "templateHash": "15866259518448635553"
             },
             "name": "DBforPostgreSQL Flexible Server Databases",
             "description": "This module deploys a DBforPostgreSQL Flexible Server Database.",
@@ -767,10 +813,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('name'))]"
+        "flexibleServer"
       ]
     },
-    {
+    "flexibleServer_firewallRules": {
       "copy": {
         "name": "flexibleServer_firewallRules",
         "count": "[length(parameters('firewallRules'))]"
@@ -806,8 +852,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "7935033505380784919"
+              "version": "0.22.6.54827",
+              "templateHash": "13418631602887252631"
             },
             "name": "DBforPostgreSQL Flexible Server Firewall Rules",
             "description": "This module deploys a DBforPostgreSQL Flexible Server Firewall Rule.",
@@ -897,14 +943,16 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('name'))]",
+        "flexibleServer",
         "flexibleServer_databases"
       ]
     },
-    {
+    "flexibleServer_configurations": {
       "copy": {
         "name": "flexibleServer_configurations",
-        "count": "[length(parameters('configurations'))]"
+        "count": "[length(parameters('configurations'))]",
+        "mode": "serial",
+        "batchSize": 1
       },
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
@@ -933,8 +981,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "10954863077388190830"
+              "version": "0.22.6.54827",
+              "templateHash": "12961146168624492771"
             },
             "name": "DBforPostgreSQL Flexible Server Configurations",
             "description": "This module deploys a DBforPostgreSQL Flexible Server Configuration.",
@@ -1033,11 +1081,11 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('name'))]",
+        "flexibleServer",
         "flexibleServer_firewallRules"
       ]
     },
-    {
+    "flexibleServer_administrators": {
       "copy": {
         "name": "flexibleServer_administrators",
         "count": "[length(parameters('administrators'))]"
@@ -1071,8 +1119,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "14812998248518641282"
+              "version": "0.22.6.54827",
+              "templateHash": "3514176123135146796"
             },
             "name": "DBforPostgreSQL Flexible Server Administrators",
             "description": "This module deploys a DBforPostgreSQL Flexible Server Administrator.",
@@ -1183,10 +1231,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('name'))]"
+        "flexibleServer"
       ]
     }
-  ],
+  },
   "outputs": {
     "name": {
       "type": "string",
@@ -1214,7 +1262,7 @@
       "metadata": {
         "description": "The location the resource was deployed into."
       },
-      "value": "[reference(resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('name')), '2022-12-01', 'full').location]"
+      "value": "[reference('flexibleServer', '2022-12-01', 'full').location]"
     }
   }
 }

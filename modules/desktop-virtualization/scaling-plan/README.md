@@ -5,10 +5,10 @@ This module deploys an Azure Virtual Desktop (AVD) Scaling Plan.
 ## Navigation
 
 - [Resource Types](#Resource-Types)
+- [Usage examples](#Usage-examples)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
-- [Deployment examples](#Deployment-examples)
 
 ## Resource Types
 
@@ -18,265 +18,28 @@ This module deploys an Azure Virtual Desktop (AVD) Scaling Plan.
 | `Microsoft.DesktopVirtualization/scalingPlans` | [2022-09-09](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DesktopVirtualization/2022-09-09/scalingPlans) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 
-## Parameters
+## Usage examples
 
-**Required parameters**
+The following section provides usage examples for the module, which were used to validate and deploy the module successfully. For a full reference, please review the module's test folder in its repository.
 
-| Parameter Name | Type | Description |
-| :-- | :-- | :-- |
-| `name` | string | Name of the scaling plan. |
+>**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-**Optional parameters**
+>**Note**: To reference the module, please use the following syntax `br:bicep/modules/desktop-virtualization.scaling-plan:1.0.0`.
 
-| Parameter Name | Type | Default Value | Allowed Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `description` | string | `[parameters('name')]` |  | Description of the scaling plan. |
-| `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
-| `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
-| `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `['', allLogs, Autoscale]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
-| `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
-| `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `exclusionTag` | string | `''` |  | Provide a tag to be used for hosts that should not be affected by the scaling plan. |
-| `friendlyName` | string | `[parameters('name')]` |  | Friendly Name of the scaling plan. |
-| `hostPoolReferences` | array | `[]` |  | An array of references to hostpools. |
-| `hostPoolType` | string | `'Pooled'` | `[Pooled]` | The type of hostpool where this scaling plan should be applied. |
-| `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
-| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalIds' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| `schedules` | array | `[System.Management.Automation.OrderedHashtable]` |  | The schedules related to this scaling plan. If no value is provided a default schedule will be provided. |
-| `tags` | object | `{object}` |  | Tags of the resource. |
-| `timeZone` | string | `'W. Europe Standard Time'` |  | Timezone to be used for the scaling plan. |
+- [Using large parameter set](#example-1-using-large-parameter-set)
+- [Using only defaults](#example-2-using-only-defaults)
 
+### Example 1: _Using large parameter set_
 
-### Parameter Usage: `schedules`
+This instance deploys the module with most of its features enabled.
 
-Multiple schedules can be provided as needed. If a schedule is not provided, a default schedule will be created.
-
-```json
-"schedules" : {
-    "value": [
-        {
-            "rampUpStartTime": {
-                "hour": 7,
-                "minute": 0
-            },
-            "peakStartTime": {
-                "hour": 9,
-                "minute": 0
-            },
-            "rampDownStartTime": {
-                "hour": 18,
-                "minute": 0
-            },
-            "offPeakStartTime": {
-                "hour": 20,
-                "minute": 0
-            },
-            "name": "weekdays_schedule",
-            "daysOfWeek": [
-                "Monday",
-                "Tuesday",
-                "Wednesday",
-                "Thursday",
-                "Friday"
-            ],
-            "rampUpLoadBalancingAlgorithm": "DepthFirst",
-            "rampUpMinimumHostsPct": 20,
-            "rampUpCapacityThresholdPct": 60,
-            "peakLoadBalancingAlgorithm": "DepthFirst",
-            "rampDownLoadBalancingAlgorithm": "DepthFirst",
-            "rampDownMinimumHostsPct": 10,
-            "rampDownCapacityThresholdPct": 90,
-            "rampDownForceLogoffUsers": true,
-            "rampDownWaitTimeMinutes": 30,
-            "rampDownNotificationMessage": "You will be logged off in 30 min. Make sure to save your work.",
-            "rampDownStopHostsWhen": "ZeroSessions",
-            "offPeakLoadBalancingAlgorithm": "DepthFirst"
-        }
-    ]
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-'schedules': [
-    {
-        rampUpStartTime: {
-            hour: 7
-            minute: 0
-        }
-        peakStartTime: {
-            hour: 9
-            minute: 0
-        }
-        rampDownStartTime: {
-            hour: 18
-            minute: 0
-        }
-        offPeakStartTime: {
-            hour: 20
-            minute: 0
-        }
-        name: 'weekdays_schedule'
-        daysOfWeek: [
-            'Monday'
-            'Tuesday'
-            'Wednesday'
-            'Thursday'
-            'Friday'
-        ]
-        rampUpLoadBalancingAlgorithm: 'DepthFirst'
-        rampUpMinimumHostsPct: 20
-        rampUpCapacityThresholdPct: 60
-        peakLoadBalancingAlgorithm: 'DepthFirst'
-        rampDownLoadBalancingAlgorithm: 'DepthFirst'
-        rampDownMinimumHostsPct: 10
-        rampDownCapacityThresholdPct: 90
-        rampDownForceLogoffUsers: true
-        rampDownWaitTimeMinutes: 30
-        rampDownNotificationMessage: 'You will be logged off in 30 min. Make sure to save your work.'
-        rampDownStopHostsWhen: 'ZeroSessions'
-        offPeakLoadBalancingAlgorithm: 'DepthFirst'
-    }
-]
-```
-
-</details>
-<p>
-
-### Parameter Usage: `tags`
-
-Tag names and tag values can be provided as needed. A tag can be left without a value.
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"tags": {
-    "value": {
-        "Environment": "Non-Prod",
-        "Contact": "test.user@testcompany.com",
-        "PurchaseOrder": "1234",
-        "CostCenter": "7890",
-        "ServiceName": "DeploymentValidation",
-        "Role": "DeploymentValidation"
-    }
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-tags: {
-    Environment: 'Non-Prod'
-    Contact: 'test.user@testcompany.com'
-    PurchaseOrder: '1234'
-    CostCenter: '7890'
-    ServiceName: 'DeploymentValidation'
-    Role: 'DeploymentValidation'
-}
-```
-
-</details>
-<p>
-
-### Parameter Usage: `roleAssignments`
-
-Create a role assignment for the given resource. If you want to assign a service principal / managed identity that is created in the same deployment, make sure to also specify the `'principalType'` parameter and set it to `'ServicePrincipal'`. This will ensure the role assignment waits for the principal's propagation in Azure.
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"roleAssignments": {
-    "value": [
-        {
-            "roleDefinitionIdOrName": "Reader",
-            "description": "Reader Role Assignment",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012", // object 1
-                "78945612-1234-1234-1234-123456789012" // object 2
-            ]
-        },
-        {
-            "roleDefinitionIdOrName": "/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012" // object 1
-            ],
-            "principalType": "ServicePrincipal"
-        }
-    ]
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-roleAssignments: [
-    {
-        roleDefinitionIdOrName: 'Reader'
-        description: 'Reader Role Assignment'
-        principalIds: [
-            '12345678-1234-1234-1234-123456789012' // object 1
-            '78945612-1234-1234-1234-123456789012' // object 2
-        ]
-    }
-    {
-        roleDefinitionIdOrName: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'
-        principalIds: [
-            '12345678-1234-1234-1234-123456789012' // object 1
-        ]
-        principalType: 'ServicePrincipal'
-    }
-]
-```
-
-</details>
-<p>
-
-## Outputs
-
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of the AVD scaling plan. |
-| `resourceGroupName` | string | The resource group the AVD scaling plan was deployed into. |
-| `resourceId` | string | The resource ID of the AVD scaling plan. |
-
-## Cross-referenced modules
-
-_None_
-
-## Deployment examples
-
-The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
-   >**Note**: The name of each example is based on the name of the file from which it is taken.
-
-   >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
-
-<h3>Example 1: Common</h3>
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module scalingPlan './desktop-virtualization/scaling-plan/main.bicep' = {
+module scalingPlan 'br:bicep/modules/desktop-virtualization.scaling-plan:1.0.0' = {
   name: '${uniqueString(deployment().name, location)}-test-dvspcom'
   params: {
     // Required parameters
@@ -297,6 +60,46 @@ module scalingPlan './desktop-virtualization/scaling-plan/main.bicep' = {
         ]
         principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    schedules: [
+      {
+        daysOfWeek: [
+          'Friday'
+          'Monday'
+          'Thursday'
+          'Tuesday'
+          'Wednesday'
+        ]
+        name: 'weekdays_schedule'
+        offPeakLoadBalancingAlgorithm: 'DepthFirst'
+        offPeakStartTime: {
+          hour: 20
+          minute: 0
+        }
+        peakLoadBalancingAlgorithm: 'DepthFirst'
+        peakStartTime: {
+          hour: 9
+          minute: 0
+        }
+        rampDownCapacityThresholdPct: 90
+        rampDownForceLogoffUsers: true
+        rampDownLoadBalancingAlgorithm: 'DepthFirst'
+        rampDownMinimumHostsPct: 10
+        rampDownNotificationMessage: 'You will be logged off in 30 min. Make sure to save your work.'
+        rampDownStartTime: {
+          hour: 18
+          minute: 0
+        }
+        rampDownStopHostsWhen: 'ZeroSessions'
+        rampDownWaitTimeMinutes: 30
+        rampUpCapacityThresholdPct: 60
+        rampUpLoadBalancingAlgorithm: 'DepthFirst'
+        rampUpMinimumHostsPct: 20
+        rampUpStartTime: {
+          hour: 7
+          minute: 0
+        }
       }
     ]
     tags: {
@@ -360,6 +163,48 @@ module scalingPlan './desktop-virtualization/scaling-plan/main.bicep' = {
         }
       ]
     },
+    "schedules": {
+      "value": [
+        {
+          "daysOfWeek": [
+            "Friday",
+            "Monday",
+            "Thursday",
+            "Tuesday",
+            "Wednesday"
+          ],
+          "name": "weekdays_schedule",
+          "offPeakLoadBalancingAlgorithm": "DepthFirst",
+          "offPeakStartTime": {
+            "hour": 20,
+            "minute": 0
+          },
+          "peakLoadBalancingAlgorithm": "DepthFirst",
+          "peakStartTime": {
+            "hour": 9,
+            "minute": 0
+          },
+          "rampDownCapacityThresholdPct": 90,
+          "rampDownForceLogoffUsers": true,
+          "rampDownLoadBalancingAlgorithm": "DepthFirst",
+          "rampDownMinimumHostsPct": 10,
+          "rampDownNotificationMessage": "You will be logged off in 30 min. Make sure to save your work.",
+          "rampDownStartTime": {
+            "hour": 18,
+            "minute": 0
+          },
+          "rampDownStopHostsWhen": "ZeroSessions",
+          "rampDownWaitTimeMinutes": 30,
+          "rampUpCapacityThresholdPct": 60,
+          "rampUpLoadBalancingAlgorithm": "DepthFirst",
+          "rampUpMinimumHostsPct": 20,
+          "rampUpStartTime": {
+            "hour": 7,
+            "minute": 0
+          }
+        }
+      ]
+    },
     "tags": {
       "value": {
         "Environment": "Non-Prod",
@@ -374,14 +219,17 @@ module scalingPlan './desktop-virtualization/scaling-plan/main.bicep' = {
 </details>
 <p>
 
-<h3>Example 2: Min</h3>
+### Example 2: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module scalingPlan './desktop-virtualization/scaling-plan/main.bicep' = {
+module scalingPlan 'br:bicep/modules/desktop-virtualization.scaling-plan:1.0.0' = {
   name: '${uniqueString(deployment().name, location)}-test-dvspmin'
   params: {
     // Required parameters
@@ -418,3 +266,167 @@ module scalingPlan './desktop-virtualization/scaling-plan/main.bicep' = {
 
 </details>
 <p>
+
+
+## Parameters
+
+**Required parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`name`](#parameter-name) | string | Name of the scaling plan. |
+
+**Optional parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`description`](#parameter-description) | string | Description of the scaling plan. |
+| [`diagnosticEventHubAuthorizationRuleId`](#parameter-diagnosticeventhubauthorizationruleid) | string | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
+| [`diagnosticEventHubName`](#parameter-diagnosticeventhubname) | string | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
+| [`diagnosticLogCategoriesToEnable`](#parameter-diagnosticlogcategoriestoenable) | array | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
+| [`diagnosticStorageAccountId`](#parameter-diagnosticstorageaccountid) | string | Resource ID of the diagnostic storage account. |
+| [`diagnosticWorkspaceId`](#parameter-diagnosticworkspaceid) | string | Resource ID of the diagnostic log analytics workspace. |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`exclusionTag`](#parameter-exclusiontag) | string | Provide a tag to be used for hosts that should not be affected by the scaling plan. |
+| [`friendlyName`](#parameter-friendlyname) | string | Friendly Name of the scaling plan. |
+| [`hostPoolReferences`](#parameter-hostpoolreferences) | array | An array of references to hostpools. |
+| [`hostPoolType`](#parameter-hostpooltype) | string | The type of hostpool where this scaling plan should be applied. |
+| [`location`](#parameter-location) | string | Location for all resources. |
+| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalIds' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| [`schedules`](#parameter-schedules) | array | The schedules related to this scaling plan. If no value is provided a default schedule will be provided. |
+| [`tags`](#parameter-tags) | object | Tags of the resource. |
+| [`timeZone`](#parameter-timezone) | string | Timezone to be used for the scaling plan. |
+
+### Parameter: `description`
+
+Description of the scaling plan.
+- Required: No
+- Type: string
+- Default: `[parameters('name')]`
+
+### Parameter: `diagnosticEventHubAuthorizationRuleId`
+
+Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `diagnosticEventHubName`
+
+Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `diagnosticLogCategoriesToEnable`
+
+The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection.
+- Required: No
+- Type: array
+- Default: `[allLogs]`
+- Allowed: `['', allLogs, Autoscale]`
+
+### Parameter: `diagnosticStorageAccountId`
+
+Resource ID of the diagnostic storage account.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `diagnosticWorkspaceId`
+
+Resource ID of the diagnostic log analytics workspace.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `exclusionTag`
+
+Provide a tag to be used for hosts that should not be affected by the scaling plan.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `friendlyName`
+
+Friendly Name of the scaling plan.
+- Required: No
+- Type: string
+- Default: `[parameters('name')]`
+
+### Parameter: `hostPoolReferences`
+
+An array of references to hostpools.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `hostPoolType`
+
+The type of hostpool where this scaling plan should be applied.
+- Required: No
+- Type: string
+- Default: `'Pooled'`
+- Allowed: `[Pooled]`
+
+### Parameter: `location`
+
+Location for all resources.
+- Required: No
+- Type: string
+- Default: `[resourceGroup().location]`
+
+### Parameter: `name`
+
+Name of the scaling plan.
+- Required: Yes
+- Type: string
+
+### Parameter: `roleAssignments`
+
+Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalIds' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `schedules`
+
+The schedules related to this scaling plan. If no value is provided a default schedule will be provided.
+- Required: No
+- Type: array
+- Default: `[System.Management.Automation.OrderedHashtable]`
+
+### Parameter: `tags`
+
+Tags of the resource.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `timeZone`
+
+Timezone to be used for the scaling plan.
+- Required: No
+- Type: string
+- Default: `'W. Europe Standard Time'`
+
+
+## Outputs
+
+| Output | Type | Description |
+| :-- | :-- | :-- |
+| `location` | string | The location the resource was deployed into. |
+| `name` | string | The name of the AVD scaling plan. |
+| `resourceGroupName` | string | The resource group the AVD scaling plan was deployed into. |
+| `resourceId` | string | The resource ID of the AVD scaling plan. |
+
+## Cross-referenced modules
+
+_None_

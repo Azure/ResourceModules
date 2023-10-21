@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.20.4.51522",
-      "templateHash": "12310194736024387290"
+      "version": "0.22.6.54827",
+      "templateHash": "14273608975905052502"
     },
     "name": "Data Factory Managed Virtual Networks",
     "description": "This module deploys a Data Factory Managed Virtual Network.",
@@ -105,8 +105,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.20.4.51522",
-              "templateHash": "17089196483393073819"
+              "version": "0.22.6.54827",
+              "templateHash": "1490870890954327678"
             },
             "name": "Data Factory Managed Virtual Network Managed PrivateEndpoints",
             "description": "This module deploys a Data Factory Managed Virtual Network Managed Private Endpoint.",

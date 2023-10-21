@@ -34,6 +34,8 @@ param conditionVersion string = '2.0'
 param delegatedManagedIdentityResourceId string = ''
 
 var builtInRoleNames = {
+  'App Compliance Automation Administrator': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '0f37683f-2463-46b6-9ce7-9b788b988ba2')
+  'App Compliance Automation Reader': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'ffc6bbe0-e443-4c3b-bf54-26581bb2f78e')
   'App Configuration Data Owner': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '5ae67dd6-50cb-40e7-96ff-dc2bfa4b606b')
   'App Configuration Data Reader': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '516239f1-63e1-4d78-a4de-a74fb236a071')
   Contributor: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')
@@ -51,7 +53,7 @@ var builtInRoleNames = {
   'User Access Administrator': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '18d7d88d-d35e-4fb5-a5c3-7773c20a72d9')
 }
 
-resource appConfiguration 'Microsoft.AppConfiguration/configurationStores@2021-10-01-preview' existing = {
+resource appConfiguration 'Microsoft.AppConfiguration/configurationStores@2023-03-01' existing = {
   name: last(split(resourceId, '/'))!
 }
 

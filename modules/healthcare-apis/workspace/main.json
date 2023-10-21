@@ -1,15 +1,43 @@
 {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "languageVersion": "2.0",
   "contentVersion": "1.0.0.0",
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.21.1.54444",
-      "templateHash": "10903561527048363978"
+      "version": "0.22.6.54827",
+      "templateHash": "14046183075929419967"
     },
     "name": "Healthcare API Workspaces",
     "description": "This module deploys a Healthcare API Workspace.",
     "owner": "Azure/module-maintainers"
+  },
+  "definitions": {
+    "lockType": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Specify the name of lock."
+          }
+        },
+        "kind": {
+          "type": "string",
+          "allowedValues": [
+            "CanNotDelete",
+            "None",
+            "ReadOnly"
+          ],
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Specify the type of lock."
+          }
+        }
+      },
+      "nullable": true
+    }
   },
   "parameters": {
     "name": {
@@ -27,15 +55,9 @@
       }
     },
     "lock": {
-      "type": "string",
-      "defaultValue": "",
-      "allowedValues": [
-        "",
-        "CanNotDelete",
-        "ReadOnly"
-      ],
+      "$ref": "#/definitions/lockType",
       "metadata": {
-        "description": "Optional. Specify the type of lock."
+        "description": "Optional. The lock settings of the service."
       }
     },
     "roleAssignments": {
@@ -95,8 +117,8 @@
   "variables": {
     "enableReferencedModulesTelemetry": false
   },
-  "resources": [
-    {
+  "resources": {
+    "defaultTelemetry": {
       "condition": "[parameters('enableDefaultTelemetry')]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2021-04-01",
@@ -110,7 +132,7 @@
         }
       }
     },
-    {
+    "workspace": {
       "type": "Microsoft.HealthcareApis/workspaces",
       "apiVersion": "2022-06-01",
       "name": "[parameters('name')]",
@@ -120,21 +142,21 @@
         "publicNetworkAccess": "[parameters('publicNetworkAccess')]"
       }
     },
-    {
-      "condition": "[not(empty(parameters('lock')))]",
+    "workspace_lock": {
+      "condition": "[and(not(empty(coalesce(parameters('lock'), createObject()))), not(equals(tryGet(parameters('lock'), 'kind'), 'None')))]",
       "type": "Microsoft.Authorization/locks",
       "apiVersion": "2020-05-01",
       "scope": "[format('Microsoft.HealthcareApis/workspaces/{0}', parameters('name'))]",
-      "name": "[format('{0}-{1}-lock', parameters('name'), parameters('lock'))]",
+      "name": "[coalesce(tryGet(parameters('lock'), 'name'), format('lock-{0}', parameters('name')))]",
       "properties": {
-        "level": "[parameters('lock')]",
-        "notes": "[if(equals(parameters('lock'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot modify the resource or child resources.')]"
+        "level": "[coalesce(tryGet(parameters('lock'), 'kind'), '')]",
+        "notes": "[if(equals(tryGet(parameters('lock'), 'kind'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot delete or modify the resource or child resources.')]"
       },
       "dependsOn": [
-        "[resourceId('Microsoft.HealthcareApis/workspaces', parameters('name'))]"
+        "workspace"
       ]
     },
-    {
+    "workspace_roleAssignments": {
       "copy": {
         "name": "workspace_roleAssignments",
         "count": "[length(parameters('roleAssignments'))]"
@@ -168,8 +190,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "14482455306867053366"
+              "version": "0.22.6.54827",
+              "templateHash": "4822666259108954856"
             }
           },
           "parameters": {
@@ -288,10 +310,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.HealthcareApis/workspaces', parameters('name'))]"
+        "workspace"
       ]
     },
-    {
+    "workspace_fhirservices": {
       "copy": {
         "name": "workspace_fhirservices",
         "count": "[length(parameters('fhirservices'))]"
@@ -339,7 +361,9 @@
           "importStorageAccountName": "[if(contains(parameters('fhirservices')[copyIndex()], 'importStorageAccountName'), createObject('value', parameters('fhirservices')[copyIndex()].importStorageAccountName), createObject('value', ''))]",
           "importEnabled": "[if(contains(parameters('fhirservices')[copyIndex()], 'importEnabled'), createObject('value', parameters('fhirservices')[copyIndex()].importEnabled), createObject('value', false()))]",
           "initialImportMode": "[if(contains(parameters('fhirservices')[copyIndex()], 'initialImportMode'), createObject('value', parameters('fhirservices')[copyIndex()].initialImportMode), createObject('value', false()))]",
-          "lock": "[if(contains(parameters('fhirservices')[copyIndex()], 'lock'), createObject('value', parameters('fhirservices')[copyIndex()].lock), createObject('value', ''))]",
+          "lock": {
+            "value": "[coalesce(tryGet(parameters('fhirservices')[copyIndex()], 'lock'), parameters('lock'))]"
+          },
           "resourceVersionPolicy": "[if(contains(parameters('fhirservices')[copyIndex()], 'resourceVersionPolicy'), createObject('value', parameters('fhirservices')[copyIndex()].resourceVersionPolicy), createObject('value', 'versioned'))]",
           "resourceVersionOverrides": "[if(contains(parameters('fhirservices')[copyIndex()], 'resourceVersionOverrides'), createObject('value', parameters('fhirservices')[copyIndex()].resourceVersionOverrides), createObject('value', createObject()))]",
           "smartProxyEnabled": "[if(contains(parameters('fhirservices')[copyIndex()], 'smartProxyEnabled'), createObject('value', parameters('fhirservices')[copyIndex()].smartProxyEnabled), createObject('value', false()))]",
@@ -352,16 +376,44 @@
         },
         "template": {
           "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "languageVersion": "2.0",
           "contentVersion": "1.0.0.0",
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "17348973963835618248"
+              "version": "0.22.6.54827",
+              "templateHash": "5251491466026222190"
             },
             "name": "Healthcare API Workspace FHIR Services",
             "description": "This module deploys a Healthcare API Workspace FHIR Service.",
             "owner": "Azure/module-maintainers"
+          },
+          "definitions": {
+            "lockType": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "nullable": true,
+                  "metadata": {
+                    "description": "Optional. Specify the name of lock."
+                  }
+                },
+                "kind": {
+                  "type": "string",
+                  "allowedValues": [
+                    "CanNotDelete",
+                    "None",
+                    "ReadOnly"
+                  ],
+                  "nullable": true,
+                  "metadata": {
+                    "description": "Optional. Specify the type of lock."
+                  }
+                }
+              },
+              "nullable": true
+            }
           },
           "parameters": {
             "name": {
@@ -530,15 +582,9 @@
               }
             },
             "lock": {
-              "type": "string",
-              "defaultValue": "",
-              "allowedValues": [
-                "",
-                "CanNotDelete",
-                "ReadOnly"
-              ],
+              "$ref": "#/definitions/lockType",
               "metadata": {
-                "description": "Optional. Specify the type of lock."
+                "description": "Optional. The lock settings of the service."
               }
             },
             "roleAssignments": {
@@ -678,8 +724,8 @@
               "storageAccountName": "[parameters('exportStorageAccountName')]"
             }
           },
-          "resources": [
-            {
+          "resources": {
+            "defaultTelemetry": {
               "condition": "[parameters('enableDefaultTelemetry')]",
               "type": "Microsoft.Resources/deployments",
               "apiVersion": "2021-04-01",
@@ -693,7 +739,13 @@
                 }
               }
             },
-            {
+            "workspace": {
+              "existing": true,
+              "type": "Microsoft.HealthcareApis/workspaces",
+              "apiVersion": "2022-06-01",
+              "name": "[parameters('workspaceName')]"
+            },
+            "fhir": {
               "type": "Microsoft.HealthcareApis/workspaces/fhirservices",
               "apiVersion": "2022-06-01",
               "name": "[format('{0}/{1}', parameters('workspaceName'), parameters('name'))]",
@@ -730,23 +782,26 @@
                   "loginServers": "[parameters('acrLoginServers')]",
                   "ociArtifacts": "[if(empty(parameters('acrOciArtifacts')), null(), parameters('acrOciArtifacts'))]"
                 }
-              }
+              },
+              "dependsOn": [
+                "workspace"
+              ]
             },
-            {
-              "condition": "[not(empty(parameters('lock')))]",
+            "fhir_lock": {
+              "condition": "[and(not(empty(coalesce(parameters('lock'), createObject()))), not(equals(tryGet(parameters('lock'), 'kind'), 'None')))]",
               "type": "Microsoft.Authorization/locks",
               "apiVersion": "2020-05-01",
               "scope": "[format('Microsoft.HealthcareApis/workspaces/{0}/fhirservices/{1}', parameters('workspaceName'), parameters('name'))]",
-              "name": "[format('{0}-{1}-lock', parameters('name'), parameters('lock'))]",
+              "name": "[coalesce(tryGet(parameters('lock'), 'name'), format('lock-{0}', parameters('name')))]",
               "properties": {
-                "level": "[parameters('lock')]",
-                "notes": "[if(equals(parameters('lock'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot modify the resource or child resources.')]"
+                "level": "[coalesce(tryGet(parameters('lock'), 'kind'), '')]",
+                "notes": "[if(equals(tryGet(parameters('lock'), 'kind'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot delete or modify the resource or child resources.')]"
               },
               "dependsOn": [
-                "[resourceId('Microsoft.HealthcareApis/workspaces/fhirservices', parameters('workspaceName'), parameters('name'))]"
+                "fhir"
               ]
             },
-            {
+            "fhir_diagnosticSettings": {
               "condition": "[or(or(or(not(empty(parameters('diagnosticStorageAccountId'))), not(empty(parameters('diagnosticWorkspaceId')))), not(empty(parameters('diagnosticEventHubAuthorizationRuleId')))), not(empty(parameters('diagnosticEventHubName'))))]",
               "type": "Microsoft.Insights/diagnosticSettings",
               "apiVersion": "2021-05-01-preview",
@@ -761,10 +816,10 @@
                 "logs": "[variables('diagnosticsLogs')]"
               },
               "dependsOn": [
-                "[resourceId('Microsoft.HealthcareApis/workspaces/fhirservices', parameters('workspaceName'), parameters('name'))]"
+                "fhir"
               ]
             },
-            {
+            "fhir_roleAssignments": {
               "copy": {
                 "name": "fhir_roleAssignments",
                 "count": "[length(parameters('roleAssignments'))]"
@@ -798,8 +853,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.21.1.54444",
-                      "templateHash": "5237941464164481673"
+                      "version": "0.22.6.54827",
+                      "templateHash": "13260238293612966350"
                     }
                   },
                   "parameters": {
@@ -918,10 +973,10 @@
                 }
               },
               "dependsOn": [
-                "[resourceId('Microsoft.HealthcareApis/workspaces/fhirservices', parameters('workspaceName'), parameters('name'))]"
+                "fhir"
               ]
             }
-          ],
+          },
           "outputs": {
             "name": {
               "type": "string",
@@ -949,14 +1004,14 @@
               "metadata": {
                 "description": "The principal ID of the system assigned identity."
               },
-              "value": "[if(and(parameters('systemAssignedIdentity'), contains(reference(resourceId('Microsoft.HealthcareApis/workspaces/fhirservices', parameters('workspaceName'), parameters('name')), '2022-06-01', 'full').identity, 'principalId')), reference(resourceId('Microsoft.HealthcareApis/workspaces/fhirservices', parameters('workspaceName'), parameters('name')), '2022-06-01', 'full').identity.principalId, '')]"
+              "value": "[if(and(parameters('systemAssignedIdentity'), contains(reference('fhir', '2022-06-01', 'full').identity, 'principalId')), reference('fhir', '2022-06-01', 'full').identity.principalId, '')]"
             },
             "location": {
               "type": "string",
               "metadata": {
                 "description": "The location the resource was deployed into."
               },
-              "value": "[reference(resourceId('Microsoft.HealthcareApis/workspaces/fhirservices', parameters('workspaceName'), parameters('name')), '2022-06-01', 'full').location]"
+              "value": "[reference('fhir', '2022-06-01', 'full').location]"
             },
             "workspaceName": {
               "type": "string",
@@ -969,10 +1024,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.HealthcareApis/workspaces', parameters('name'))]"
+        "workspace"
       ]
     },
-    {
+    "workspace_dicomservices": {
       "copy": {
         "name": "workspace_dicomservices",
         "count": "[length(parameters('dicomservices'))]"
@@ -1007,7 +1062,9 @@
           "diagnosticWorkspaceId": "[if(contains(parameters('dicomservices')[copyIndex()], 'diagnosticWorkspaceId'), createObject('value', parameters('dicomservices')[copyIndex()].diagnosticWorkspaceId), createObject('value', ''))]",
           "diagnosticEventHubAuthorizationRuleId": "[if(contains(parameters('dicomservices')[copyIndex()], 'diagnosticEventHubAuthorizationRuleId'), createObject('value', parameters('dicomservices')[copyIndex()].diagnosticEventHubAuthorizationRuleId), createObject('value', ''))]",
           "diagnosticEventHubName": "[if(contains(parameters('dicomservices')[copyIndex()], 'diagnosticEventHubName'), createObject('value', parameters('dicomservices')[copyIndex()].diagnosticEventHubName), createObject('value', ''))]",
-          "lock": "[if(contains(parameters('dicomservices')[copyIndex()], 'lock'), createObject('value', parameters('dicomservices')[copyIndex()].lock), createObject('value', ''))]",
+          "lock": {
+            "value": "[coalesce(tryGet(parameters('dicomservices')[copyIndex()], 'lock'), parameters('lock'))]"
+          },
           "userAssignedIdentities": "[if(contains(parameters('dicomservices')[copyIndex()], 'userAssignedIdentities'), createObject('value', parameters('dicomservices')[copyIndex()].userAssignedIdentities), createObject('value', createObject()))]",
           "diagnosticLogCategoriesToEnable": "[if(contains(parameters('dicomservices')[copyIndex()], 'diagnosticLogCategoriesToEnable'), createObject('value', parameters('dicomservices')[copyIndex()].diagnosticLogCategoriesToEnable), createObject('value', createArray('AuditLogs')))]",
           "enableDefaultTelemetry": {
@@ -1016,16 +1073,44 @@
         },
         "template": {
           "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "languageVersion": "2.0",
           "contentVersion": "1.0.0.0",
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "14081576760153046183"
+              "version": "0.22.6.54827",
+              "templateHash": "16609630624404769037"
             },
             "name": "Healthcare API Workspace DICOM Services",
             "description": "This module deploys a Healthcare API Workspace DICOM Service.",
             "owner": "Azure/module-maintainers"
+          },
+          "definitions": {
+            "lockType": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "nullable": true,
+                  "metadata": {
+                    "description": "Optional. Specify the name of lock."
+                  }
+                },
+                "kind": {
+                  "type": "string",
+                  "allowedValues": [
+                    "CanNotDelete",
+                    "None",
+                    "ReadOnly"
+                  ],
+                  "nullable": true,
+                  "metadata": {
+                    "description": "Optional. Specify the type of lock."
+                  }
+                }
+              },
+              "nullable": true
+            }
           },
           "parameters": {
             "name": {
@@ -1120,15 +1205,9 @@
               }
             },
             "lock": {
-              "type": "string",
-              "defaultValue": "",
-              "allowedValues": [
-                "",
-                "CanNotDelete",
-                "ReadOnly"
-              ],
+              "$ref": "#/definitions/lockType",
               "metadata": {
-                "description": "Optional. Specify the type of lock."
+                "description": "Optional. The lock settings of the service."
               }
             },
             "publicNetworkAccess": {
@@ -1204,8 +1283,8 @@
             "identityType": "[if(parameters('systemAssignedIdentity'), if(not(empty(parameters('userAssignedIdentities'))), 'SystemAssigned,UserAssigned', 'SystemAssigned'), if(not(empty(parameters('userAssignedIdentities'))), 'UserAssigned', 'None'))]",
             "identity": "[if(not(equals(variables('identityType'), 'None')), createObject('type', variables('identityType'), 'userAssignedIdentities', if(not(empty(parameters('userAssignedIdentities'))), parameters('userAssignedIdentities'), null())), null())]"
           },
-          "resources": [
-            {
+          "resources": {
+            "defaultTelemetry": {
               "condition": "[parameters('enableDefaultTelemetry')]",
               "type": "Microsoft.Resources/deployments",
               "apiVersion": "2021-04-01",
@@ -1219,7 +1298,13 @@
                 }
               }
             },
-            {
+            "workspace": {
+              "existing": true,
+              "type": "Microsoft.HealthcareApis/workspaces",
+              "apiVersion": "2022-06-01",
+              "name": "[parameters('workspaceName')]"
+            },
+            "dicom": {
               "type": "Microsoft.HealthcareApis/workspaces/dicomservices",
               "apiVersion": "2022-06-01",
               "name": "[format('{0}/{1}', parameters('workspaceName'), parameters('name'))]",
@@ -1235,23 +1320,26 @@
                   "origins": "[parameters('corsOrigins')]"
                 },
                 "publicNetworkAccess": "[parameters('publicNetworkAccess')]"
-              }
+              },
+              "dependsOn": [
+                "workspace"
+              ]
             },
-            {
-              "condition": "[not(empty(parameters('lock')))]",
+            "dicom_lock": {
+              "condition": "[and(not(empty(coalesce(parameters('lock'), createObject()))), not(equals(tryGet(parameters('lock'), 'kind'), 'None')))]",
               "type": "Microsoft.Authorization/locks",
               "apiVersion": "2020-05-01",
               "scope": "[format('Microsoft.HealthcareApis/workspaces/{0}/dicomservices/{1}', parameters('workspaceName'), parameters('name'))]",
-              "name": "[format('{0}-{1}-lock', parameters('name'), parameters('lock'))]",
+              "name": "[coalesce(tryGet(parameters('lock'), 'name'), format('lock-{0}', parameters('name')))]",
               "properties": {
-                "level": "[parameters('lock')]",
-                "notes": "[if(equals(parameters('lock'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot modify the resource or child resources.')]"
+                "level": "[coalesce(tryGet(parameters('lock'), 'kind'), '')]",
+                "notes": "[if(equals(tryGet(parameters('lock'), 'kind'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot delete or modify the resource or child resources.')]"
               },
               "dependsOn": [
-                "[resourceId('Microsoft.HealthcareApis/workspaces/dicomservices', parameters('workspaceName'), parameters('name'))]"
+                "dicom"
               ]
             },
-            {
+            "dicom_diagnosticSettings": {
               "condition": "[or(or(or(not(empty(parameters('diagnosticStorageAccountId'))), not(empty(parameters('diagnosticWorkspaceId')))), not(empty(parameters('diagnosticEventHubAuthorizationRuleId')))), not(empty(parameters('diagnosticEventHubName'))))]",
               "type": "Microsoft.Insights/diagnosticSettings",
               "apiVersion": "2021-05-01-preview",
@@ -1266,10 +1354,10 @@
                 "logs": "[variables('diagnosticsLogs')]"
               },
               "dependsOn": [
-                "[resourceId('Microsoft.HealthcareApis/workspaces/dicomservices', parameters('workspaceName'), parameters('name'))]"
+                "dicom"
               ]
             }
-          ],
+          },
           "outputs": {
             "name": {
               "type": "string",
@@ -1297,23 +1385,23 @@
               "metadata": {
                 "description": "The principal ID of the system assigned identity."
               },
-              "value": "[if(and(parameters('systemAssignedIdentity'), contains(reference(resourceId('Microsoft.HealthcareApis/workspaces/dicomservices', parameters('workspaceName'), parameters('name')), '2022-06-01', 'full').identity, 'principalId')), reference(resourceId('Microsoft.HealthcareApis/workspaces/dicomservices', parameters('workspaceName'), parameters('name')), '2022-06-01', 'full').identity.principalId, '')]"
+              "value": "[if(and(parameters('systemAssignedIdentity'), contains(reference('dicom', '2022-06-01', 'full').identity, 'principalId')), reference('dicom', '2022-06-01', 'full').identity.principalId, '')]"
             },
             "location": {
               "type": "string",
               "metadata": {
                 "description": "The location the resource was deployed into."
               },
-              "value": "[reference(resourceId('Microsoft.HealthcareApis/workspaces/dicomservices', parameters('workspaceName'), parameters('name')), '2022-06-01', 'full').location]"
+              "value": "[reference('dicom', '2022-06-01', 'full').location]"
             }
           }
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.HealthcareApis/workspaces', parameters('name'))]"
+        "workspace"
       ]
     },
-    {
+    "workspace_iotconnector": {
       "copy": {
         "name": "workspace_iotconnector",
         "count": "[length(parameters('iotconnectors'))]"
@@ -1351,7 +1439,9 @@
           "diagnosticWorkspaceId": "[if(contains(parameters('iotconnectors')[copyIndex()], 'diagnosticWorkspaceId'), createObject('value', parameters('iotconnectors')[copyIndex()].diagnosticWorkspaceId), createObject('value', ''))]",
           "diagnosticEventHubAuthorizationRuleId": "[if(contains(parameters('iotconnectors')[copyIndex()], 'diagnosticEventHubAuthorizationRuleId'), createObject('value', parameters('iotconnectors')[copyIndex()].diagnosticEventHubAuthorizationRuleId), createObject('value', ''))]",
           "diagnosticEventHubName": "[if(contains(parameters('iotconnectors')[copyIndex()], 'diagnosticEventHubName'), createObject('value', parameters('iotconnectors')[copyIndex()].diagnosticEventHubName), createObject('value', ''))]",
-          "lock": "[if(contains(parameters('iotconnectors')[copyIndex()], 'lock'), createObject('value', parameters('iotconnectors')[copyIndex()].lock), createObject('value', ''))]",
+          "lock": {
+            "value": "[coalesce(tryGet(parameters('iotconnectors')[copyIndex()], 'lock'), parameters('lock'))]"
+          },
           "userAssignedIdentities": "[if(contains(parameters('iotconnectors')[copyIndex()], 'userAssignedIdentities'), createObject('value', parameters('iotconnectors')[copyIndex()].userAssignedIdentities), createObject('value', createObject()))]",
           "diagnosticLogCategoriesToEnable": "[if(contains(parameters('iotconnectors')[copyIndex()], 'diagnosticLogCategoriesToEnable'), createObject('value', parameters('iotconnectors')[copyIndex()].diagnosticLogCategoriesToEnable), createObject('value', createArray('DiagnosticLogs')))]",
           "diagnosticMetricsToEnable": "[if(contains(parameters('iotconnectors')[copyIndex()], 'diagnosticMetricsToEnable'), createObject('value', parameters('iotconnectors')[copyIndex()].diagnosticMetricsToEnable), createObject('value', createArray('AllMetrics')))]",
@@ -1361,16 +1451,44 @@
         },
         "template": {
           "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "languageVersion": "2.0",
           "contentVersion": "1.0.0.0",
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "7419022677033687481"
+              "version": "0.22.6.54827",
+              "templateHash": "8966290140169117967"
             },
             "name": "Healthcare API Workspace IoT Connectors",
             "description": "This module deploys a Healthcare API Workspace IoT Connector.",
             "owner": "Azure/module-maintainers"
+          },
+          "definitions": {
+            "lockType": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "nullable": true,
+                  "metadata": {
+                    "description": "Optional. Specify the name of lock."
+                  }
+                },
+                "kind": {
+                  "type": "string",
+                  "allowedValues": [
+                    "CanNotDelete",
+                    "None",
+                    "ReadOnly"
+                  ],
+                  "nullable": true,
+                  "metadata": {
+                    "description": "Optional. Specify the type of lock."
+                  }
+                }
+              },
+              "nullable": true
+            }
           },
           "parameters": {
             "name": {
@@ -1458,15 +1576,9 @@
               }
             },
             "lock": {
-              "type": "string",
-              "defaultValue": "",
-              "allowedValues": [
-                "",
-                "CanNotDelete",
-                "ReadOnly"
-              ],
+              "$ref": "#/definitions/lockType",
               "metadata": {
-                "description": "Optional. Specify the type of lock."
+                "description": "Optional. The lock settings of the service."
               }
             },
             "systemAssignedIdentity": {
@@ -1553,8 +1665,8 @@
             "identity": "[if(not(equals(variables('identityType'), 'None')), createObject('type', variables('identityType'), 'userAssignedIdentities', if(not(empty(parameters('userAssignedIdentities'))), parameters('userAssignedIdentities'), null())), null())]",
             "enableReferencedModulesTelemetry": false
           },
-          "resources": [
-            {
+          "resources": {
+            "defaultTelemetry": {
               "condition": "[parameters('enableDefaultTelemetry')]",
               "type": "Microsoft.Resources/deployments",
               "apiVersion": "2021-04-01",
@@ -1568,7 +1680,13 @@
                 }
               }
             },
-            {
+            "workspace": {
+              "existing": true,
+              "type": "Microsoft.HealthcareApis/workspaces",
+              "apiVersion": "2022-06-01",
+              "name": "[parameters('workspaceName')]"
+            },
+            "iotConnector": {
               "type": "Microsoft.HealthcareApis/workspaces/iotconnectors",
               "apiVersion": "2022-06-01",
               "name": "[format('{0}/{1}', parameters('workspaceName'), parameters('name'))]",
@@ -1584,23 +1702,26 @@
                 "deviceMapping": {
                   "content": "[parameters('deviceMapping')]"
                 }
-              }
+              },
+              "dependsOn": [
+                "workspace"
+              ]
             },
-            {
-              "condition": "[not(empty(parameters('lock')))]",
+            "iotConnector_lock": {
+              "condition": "[and(not(empty(coalesce(parameters('lock'), createObject()))), not(equals(tryGet(parameters('lock'), 'kind'), 'None')))]",
               "type": "Microsoft.Authorization/locks",
               "apiVersion": "2020-05-01",
               "scope": "[format('Microsoft.HealthcareApis/workspaces/{0}/iotconnectors/{1}', parameters('workspaceName'), parameters('name'))]",
-              "name": "[format('{0}-{1}-lock', parameters('name'), parameters('lock'))]",
+              "name": "[coalesce(tryGet(parameters('lock'), 'name'), format('lock-{0}', parameters('name')))]",
               "properties": {
-                "level": "[parameters('lock')]",
-                "notes": "[if(equals(parameters('lock'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot modify the resource or child resources.')]"
+                "level": "[coalesce(tryGet(parameters('lock'), 'kind'), '')]",
+                "notes": "[if(equals(tryGet(parameters('lock'), 'kind'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot delete or modify the resource or child resources.')]"
               },
               "dependsOn": [
-                "[resourceId('Microsoft.HealthcareApis/workspaces/iotconnectors', parameters('workspaceName'), parameters('name'))]"
+                "iotConnector"
               ]
             },
-            {
+            "iotConnector_diagnosticSettings": {
               "condition": "[or(or(or(not(empty(parameters('diagnosticStorageAccountId'))), not(empty(parameters('diagnosticWorkspaceId')))), not(empty(parameters('diagnosticEventHubAuthorizationRuleId')))), not(empty(parameters('diagnosticEventHubName'))))]",
               "type": "Microsoft.Insights/diagnosticSettings",
               "apiVersion": "2021-05-01-preview",
@@ -1615,10 +1736,10 @@
                 "logs": "[variables('diagnosticsLogs')]"
               },
               "dependsOn": [
-                "[resourceId('Microsoft.HealthcareApis/workspaces/iotconnectors', parameters('workspaceName'), parameters('name'))]"
+                "iotConnector"
               ]
             },
-            {
+            "fhir_destination": {
               "condition": "[not(empty(parameters('fhirdestination')))]",
               "type": "Microsoft.Resources/deployments",
               "apiVersion": "2022-09-01",
@@ -1656,8 +1777,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.21.1.54444",
-                      "templateHash": "8944835312780233488"
+                      "version": "0.22.6.54827",
+                      "templateHash": "10973515077627017376"
                     },
                     "name": "Healthcare API Workspace IoT Connector FHIR Destinations",
                     "description": "This module deploys a Healthcare API Workspace IoT Connector FHIR Destination.",
@@ -1794,10 +1915,10 @@
                 }
               },
               "dependsOn": [
-                "[resourceId('Microsoft.HealthcareApis/workspaces/iotconnectors', parameters('workspaceName'), parameters('name'))]"
+                "iotConnector"
               ]
             }
-          ],
+          },
           "outputs": {
             "name": {
               "type": "string",
@@ -1825,14 +1946,14 @@
               "metadata": {
                 "description": "The principal ID of the system assigned identity."
               },
-              "value": "[if(and(parameters('systemAssignedIdentity'), contains(reference(resourceId('Microsoft.HealthcareApis/workspaces/iotconnectors', parameters('workspaceName'), parameters('name')), '2022-06-01', 'full').identity, 'principalId')), reference(resourceId('Microsoft.HealthcareApis/workspaces/iotconnectors', parameters('workspaceName'), parameters('name')), '2022-06-01', 'full').identity.principalId, '')]"
+              "value": "[if(and(parameters('systemAssignedIdentity'), contains(reference('iotConnector', '2022-06-01', 'full').identity, 'principalId')), reference('iotConnector', '2022-06-01', 'full').identity.principalId, '')]"
             },
             "location": {
               "type": "string",
               "metadata": {
                 "description": "The location the resource was deployed into."
               },
-              "value": "[reference(resourceId('Microsoft.HealthcareApis/workspaces/iotconnectors', parameters('workspaceName'), parameters('name')), '2022-06-01', 'full').location]"
+              "value": "[reference('iotConnector', '2022-06-01', 'full').location]"
             },
             "workspaceName": {
               "type": "string",
@@ -1845,10 +1966,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.HealthcareApis/workspaces', parameters('name'))]"
+        "workspace"
       ]
     }
-  ],
+  },
   "outputs": {
     "name": {
       "type": "string",
@@ -1876,7 +1997,7 @@
       "metadata": {
         "description": "The location the resource was deployed into."
       },
-      "value": "[reference(resourceId('Microsoft.HealthcareApis/workspaces', parameters('name')), '2022-06-01', 'full').location]"
+      "value": "[reference('workspace', '2022-06-01', 'full').location]"
     }
   }
 }

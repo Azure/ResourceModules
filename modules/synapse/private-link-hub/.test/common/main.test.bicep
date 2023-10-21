@@ -1,5 +1,8 @@
 targetScope = 'subscription'
 
+metadata name = 'Using large parameter set'
+metadata description = 'This instance deploys the module with most of its features enabled.'
+
 // ========== //
 // Parameters //
 // ========== //
@@ -51,14 +54,17 @@ module testDeployment '../../main.bicep' = {
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '${namePrefix}${serviceShort}001'
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     privateEndpoints: [
       {
-        privateDnsZoneGroup: {
-          privateDNSResourceIds: [
-            nestedDependencies.outputs.privateDNSResourceId
-          ]
-        }
+        privateDnsZoneResourceIds: [
+
+          nestedDependencies.outputs.privateDNSZoneResourceId
+
+        ]
         service: 'Web'
         subnetResourceId: nestedDependencies.outputs.subnetResourceId
         tags: {

@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.20.4.51522",
-      "templateHash": "8902545451587564927"
+      "version": "0.22.6.54827",
+      "templateHash": "14811948404877688716"
     },
     "name": "Policy Assignments (Management Group scope)",
     "description": "This module deploys a Policy Assignment at a Management Group scope.",

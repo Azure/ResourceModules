@@ -63,7 +63,10 @@ module testDeployment '../../main.bicep' = {
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '${namePrefix}${serviceShort}'
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     skuName: 'S0'
     skuCapacity: 1
     firewallSettings: {

@@ -1,15 +1,43 @@
 {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "languageVersion": "2.0",
   "contentVersion": "1.0.0.0",
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.21.1.54444",
-      "templateHash": "6851549629737338757"
+      "version": "0.22.6.54827",
+      "templateHash": "14872051751998229436"
     },
     "name": "Public DNS Zones",
     "description": "This module deploys a Public DNS zone.",
     "owner": "Azure/module-maintainers"
+  },
+  "definitions": {
+    "lockType": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Specify the name of lock."
+          }
+        },
+        "kind": {
+          "type": "string",
+          "allowedValues": [
+            "CanNotDelete",
+            "None",
+            "ReadOnly"
+          ],
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Specify the type of lock."
+          }
+        }
+      },
+      "nullable": true
+    }
   },
   "parameters": {
     "name": {
@@ -112,15 +140,9 @@
       }
     },
     "lock": {
-      "type": "string",
-      "defaultValue": "",
-      "allowedValues": [
-        "",
-        "CanNotDelete",
-        "ReadOnly"
-      ],
+      "$ref": "#/definitions/lockType",
       "metadata": {
-        "description": "Optional. Specify the type of lock."
+        "description": "Optional. The lock settings of the service."
       }
     },
     "enableDefaultTelemetry": {
@@ -134,8 +156,8 @@
   "variables": {
     "enableReferencedModulesTelemetry": false
   },
-  "resources": [
-    {
+  "resources": {
+    "defaultTelemetry": {
       "condition": "[parameters('enableDefaultTelemetry')]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2021-04-01",
@@ -149,7 +171,7 @@
         }
       }
     },
-    {
+    "dnsZone": {
       "type": "Microsoft.Network/dnsZones",
       "apiVersion": "2018-05-01",
       "name": "[parameters('name')]",
@@ -159,21 +181,21 @@
         "zoneType": "Public"
       }
     },
-    {
-      "condition": "[not(empty(parameters('lock')))]",
+    "dnsZone_lock": {
+      "condition": "[and(not(empty(coalesce(parameters('lock'), createObject()))), not(equals(tryGet(parameters('lock'), 'kind'), 'None')))]",
       "type": "Microsoft.Authorization/locks",
       "apiVersion": "2020-05-01",
       "scope": "[format('Microsoft.Network/dnsZones/{0}', parameters('name'))]",
-      "name": "[format('{0}-{1}-lock', parameters('name'), parameters('lock'))]",
+      "name": "[coalesce(tryGet(parameters('lock'), 'name'), format('lock-{0}', parameters('name')))]",
       "properties": {
-        "level": "[parameters('lock')]",
-        "notes": "[if(equals(parameters('lock'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot modify the resource or child resources.')]"
+        "level": "[coalesce(tryGet(parameters('lock'), 'kind'), '')]",
+        "notes": "[if(equals(tryGet(parameters('lock'), 'kind'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot delete or modify the resource or child resources.')]"
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Network/dnsZones', parameters('name'))]"
+        "dnsZone"
       ]
     },
-    {
+    "dnsZone_A": {
       "copy": {
         "name": "dnsZone_A",
         "count": "[length(parameters('a'))]"
@@ -208,8 +230,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "68732993276774389"
+              "version": "0.22.6.54827",
+              "templateHash": "6542208080967583866"
             },
             "name": "Public DNS Zone A record",
             "description": "This module deploys a Public DNS Zone A record.",
@@ -331,8 +353,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.21.1.54444",
-                      "templateHash": "5391899014295336127"
+                      "version": "0.22.6.54827",
+                      "templateHash": "12863297534613170503"
                     }
                   },
                   "parameters": {
@@ -501,10 +523,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Network/dnsZones', parameters('name'))]"
+        "dnsZone"
       ]
     },
-    {
+    "dnsZone_AAAA": {
       "copy": {
         "name": "dnsZone_AAAA",
         "count": "[length(parameters('aaaa'))]"
@@ -539,8 +561,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "1399420754199725079"
+              "version": "0.22.6.54827",
+              "templateHash": "3710520452642205212"
             },
             "name": "Public DNS Zone AAAA record",
             "description": "This module deploys a Public DNS Zone AAAA record.",
@@ -662,8 +684,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.21.1.54444",
-                      "templateHash": "11088059014224151171"
+                      "version": "0.22.6.54827",
+                      "templateHash": "8289108097363297951"
                     }
                   },
                   "parameters": {
@@ -832,10 +854,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Network/dnsZones', parameters('name'))]"
+        "dnsZone"
       ]
     },
-    {
+    "dnsZone_CNAME": {
       "copy": {
         "name": "dnsZone_CNAME",
         "count": "[length(parameters('cname'))]"
@@ -870,8 +892,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "1081451111818125712"
+              "version": "0.22.6.54827",
+              "templateHash": "9638487977820751575"
             },
             "name": "Public DNS Zone CNAME record",
             "description": "This module deploys a Public DNS Zone CNAME record.",
@@ -993,8 +1015,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.21.1.54444",
-                      "templateHash": "8600790202870820366"
+                      "version": "0.22.6.54827",
+                      "templateHash": "9902709125102553327"
                     }
                   },
                   "parameters": {
@@ -1163,10 +1185,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Network/dnsZones', parameters('name'))]"
+        "dnsZone"
       ]
     },
-    {
+    "dnsZone_CAA": {
       "copy": {
         "name": "dnsZone_CAA",
         "count": "[length(parameters('caa'))]"
@@ -1200,8 +1222,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "5673527444453988582"
+              "version": "0.22.6.54827",
+              "templateHash": "139457689749453308"
             },
             "name": "Public DNS Zone CAA record",
             "description": "This module deploys a Public DNS Zone CAA record.",
@@ -1315,8 +1337,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.21.1.54444",
-                      "templateHash": "15901517837296662514"
+                      "version": "0.22.6.54827",
+                      "templateHash": "9470565833545804306"
                     }
                   },
                   "parameters": {
@@ -1485,10 +1507,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Network/dnsZones', parameters('name'))]"
+        "dnsZone"
       ]
     },
-    {
+    "dnsZone_MX": {
       "copy": {
         "name": "dnsZone_MX",
         "count": "[length(parameters('mx'))]"
@@ -1522,8 +1544,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "12122627275966612771"
+              "version": "0.22.6.54827",
+              "templateHash": "17935109453553054168"
             },
             "name": "Public DNS Zone MX record",
             "description": "This module deploys a Public DNS Zone MX record.",
@@ -1637,8 +1659,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.21.1.54444",
-                      "templateHash": "12990053881217536027"
+                      "version": "0.22.6.54827",
+                      "templateHash": "3617371994879925017"
                     }
                   },
                   "parameters": {
@@ -1807,10 +1829,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Network/dnsZones', parameters('name'))]"
+        "dnsZone"
       ]
     },
-    {
+    "dnsZone_NS": {
       "copy": {
         "name": "dnsZone_NS",
         "count": "[length(parameters('ns'))]"
@@ -1844,8 +1866,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "1252842746264260293"
+              "version": "0.22.6.54827",
+              "templateHash": "5114862259619051357"
             },
             "name": "Public DNS Zone NS record",
             "description": "This module deploys a Public DNS Zone NS record.",
@@ -1959,8 +1981,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.21.1.54444",
-                      "templateHash": "4203054026416577590"
+                      "version": "0.22.6.54827",
+                      "templateHash": "14367633254025428198"
                     }
                   },
                   "parameters": {
@@ -2129,10 +2151,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Network/dnsZones', parameters('name'))]"
+        "dnsZone"
       ]
     },
-    {
+    "dnsZone_PTR": {
       "copy": {
         "name": "dnsZone_PTR",
         "count": "[length(parameters('ptr'))]"
@@ -2166,8 +2188,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "8254188493299686045"
+              "version": "0.22.6.54827",
+              "templateHash": "10998530599333888745"
             },
             "name": "Public DNS Zone PTR record",
             "description": "This module deploys a Public DNS Zone PTR record.",
@@ -2281,8 +2303,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.21.1.54444",
-                      "templateHash": "3382234855470984930"
+                      "version": "0.22.6.54827",
+                      "templateHash": "17983831737512612600"
                     }
                   },
                   "parameters": {
@@ -2451,10 +2473,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Network/dnsZones', parameters('name'))]"
+        "dnsZone"
       ]
     },
-    {
+    "dnsZone_SOA": {
       "copy": {
         "name": "dnsZone_SOA",
         "count": "[length(parameters('soa'))]"
@@ -2488,8 +2510,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "9958980921150733070"
+              "version": "0.22.6.54827",
+              "templateHash": "10118634861239112279"
             },
             "name": "Public DNS Zone SOA record",
             "description": "This module deploys a Public DNS Zone SOA record.",
@@ -2603,8 +2625,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.21.1.54444",
-                      "templateHash": "10962387383395206364"
+                      "version": "0.22.6.54827",
+                      "templateHash": "7383644209973085042"
                     }
                   },
                   "parameters": {
@@ -2773,10 +2795,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Network/dnsZones', parameters('name'))]"
+        "dnsZone"
       ]
     },
-    {
+    "dnsZone_SRV": {
       "copy": {
         "name": "dnsZone_SRV",
         "count": "[length(parameters('srv'))]"
@@ -2810,8 +2832,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "11054274383314435498"
+              "version": "0.22.6.54827",
+              "templateHash": "17870818057963659035"
             },
             "name": "Public DNS Zone SRV record",
             "description": "This module deploys a Public DNS Zone SRV record.",
@@ -2925,8 +2947,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.21.1.54444",
-                      "templateHash": "17186909847958573798"
+                      "version": "0.22.6.54827",
+                      "templateHash": "1743157605226588693"
                     }
                   },
                   "parameters": {
@@ -3095,10 +3117,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Network/dnsZones', parameters('name'))]"
+        "dnsZone"
       ]
     },
-    {
+    "dnsZone_TXT": {
       "copy": {
         "name": "dnsZone_TXT",
         "count": "[length(parameters('txt'))]"
@@ -3132,8 +3154,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "4896316740645265762"
+              "version": "0.22.6.54827",
+              "templateHash": "13941492299186927650"
             },
             "name": "Public DNS Zone TXT record",
             "description": "This module deploys a Public DNS Zone TXT record.",
@@ -3247,8 +3269,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.21.1.54444",
-                      "templateHash": "2655826582817627242"
+                      "version": "0.22.6.54827",
+                      "templateHash": "7288997439030042721"
                     }
                   },
                   "parameters": {
@@ -3417,10 +3439,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Network/dnsZones', parameters('name'))]"
+        "dnsZone"
       ]
     },
-    {
+    "dnsZone_roleAssignments": {
       "copy": {
         "name": "dnsZone_roleAssignments",
         "count": "[length(parameters('roleAssignments'))]"
@@ -3454,8 +3476,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "14647311365948094297"
+              "version": "0.22.6.54827",
+              "templateHash": "10745925950629635011"
             }
           },
           "parameters": {
@@ -3594,10 +3616,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Network/dnsZones', parameters('name'))]"
+        "dnsZone"
       ]
     }
-  ],
+  },
   "outputs": {
     "resourceGroupName": {
       "type": "string",
@@ -3625,7 +3647,7 @@
       "metadata": {
         "description": "The location the resource was deployed into."
       },
-      "value": "[reference(resourceId('Microsoft.Network/dnsZones', parameters('name')), '2018-05-01', 'full').location]"
+      "value": "[reference('dnsZone', '2018-05-01', 'full').location]"
     }
   }
 }

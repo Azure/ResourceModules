@@ -12,6 +12,15 @@ param namespaceName string
 @maxLength(50)
 param name string
 
+@description('Optional. ISO 8061 timeSpan idle interval after which the queue is automatically deleted. The minimum duration is 5 minutes (PT5M).')
+param autoDeleteOnIdle string = ''
+
+@description('Optional. Queue/Topic name to forward the Dead Letter message.')
+param forwardDeadLetteredMessagesTo string = ''
+
+@description('Optional. Queue/Topic name to forward the messages.')
+param forwardTo string = ''
+
 @description('Optional. ISO 8601 timespan duration of a peek-lock; that is, the amount of time that the message is locked for other receivers. The maximum value for LockDuration is 5 minutes; the default value is 1 minute.')
 param lockDuration string = 'PT1M'
 
@@ -38,6 +47,9 @@ param duplicateDetectionHistoryTimeWindow string = 'PT10M'
 
 @description('Optional. The maximum delivery count. A message is automatically deadlettered after this number of deliveries. default value is 10.')
 param maxDeliveryCount int = 10
+
+@description('Optional. Maximum size (in KB) of the message payload that can be accepted by the queue. This property is only used in Premium today and default is 1024.')
+param maxMessageSizeInKilobytes int = 1024
 
 @description('Optional. Enumerates the possible values for the status of a messaging entity. - Active, Disabled, Restoring, SendDisabled, ReceiveDisabled, Creating, Deleting, Renaming, Unknown.')
 @allowed([
@@ -73,13 +85,8 @@ param authorizationRules array = [
   }
 ]
 
-@allowed([
-  ''
-  'CanNotDelete'
-  'ReadOnly'
-])
-@description('Optional. Specify the type of lock.')
-param lock string = ''
+@description('Optional. The lock settings of the service.')
+param lock lockType
 
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
@@ -101,26 +108,30 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource namespace 'Microsoft.ServiceBus/namespaces@2021-11-01' existing = {
+resource namespace 'Microsoft.ServiceBus/namespaces@2022-10-01-preview' existing = {
   name: namespaceName
 }
 
-resource queue 'Microsoft.ServiceBus/namespaces/queues@2021-06-01-preview' = {
+resource queue 'Microsoft.ServiceBus/namespaces/queues@2022-10-01-preview' = {
   name: name
   parent: namespace
   properties: {
+    autoDeleteOnIdle: !empty(autoDeleteOnIdle) ? autoDeleteOnIdle : null
+    defaultMessageTimeToLive: defaultMessageTimeToLive
+    deadLetteringOnMessageExpiration: deadLetteringOnMessageExpiration
+    duplicateDetectionHistoryTimeWindow: duplicateDetectionHistoryTimeWindow
+    enableBatchedOperations: enableBatchedOperations
+    enableExpress: enableExpress
+    enablePartitioning: enablePartitioning
+    forwardDeadLetteredMessagesTo: !empty(forwardDeadLetteredMessagesTo) ? forwardDeadLetteredMessagesTo : null
+    forwardTo: !empty(forwardTo) ? forwardTo : null
     lockDuration: lockDuration
+    maxDeliveryCount: maxDeliveryCount
+    maxMessageSizeInKilobytes: namespace.sku.name == 'Premium' ? maxMessageSizeInKilobytes : null
     maxSizeInMegabytes: maxSizeInMegabytes
     requiresDuplicateDetection: requiresDuplicateDetection
     requiresSession: requiresSession
-    defaultMessageTimeToLive: defaultMessageTimeToLive
-    deadLetteringOnMessageExpiration: deadLetteringOnMessageExpiration
-    enableBatchedOperations: enableBatchedOperations
-    duplicateDetectionHistoryTimeWindow: duplicateDetectionHistoryTimeWindow
-    maxDeliveryCount: maxDeliveryCount
     status: status
-    enablePartitioning: enablePartitioning
-    enableExpress: enableExpress
   }
 }
 
@@ -135,11 +146,11 @@ module queue_authorizationRules 'authorization-rule/main.bicep' = [for (authoriz
   }
 }]
 
-resource queue_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
-  name: '${queue.name}-${lock}-lock'
+resource queue_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock ?? {}) && lock.?kind != 'None') {
+  name: lock.?name ?? 'lock-${name}'
   properties: {
-    level: any(lock)
-    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+    level: lock.?kind ?? ''
+    notes: lock.?kind == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot delete or modify the resource or child resources.'
   }
   scope: queue
 }
@@ -165,3 +176,15 @@ output resourceId string = queue.id
 
 @description('The resource group of the deployed queue.')
 output resourceGroupName string = resourceGroup().name
+
+// =============== //
+//   Definitions   //
+// =============== //
+
+type lockType = {
+  @description('Optional. Specify the name of lock.')
+  name: string?
+
+  @description('Optional. Specify the type of lock.')
+  kind: ('CanNotDelete' | 'ReadOnly' | 'None')?
+}?

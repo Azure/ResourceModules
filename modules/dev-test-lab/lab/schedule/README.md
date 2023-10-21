@@ -21,77 +21,128 @@ Lab schedules are used to modify the settings for auto-shutdown, auto-start for 
 
 **Required parameters**
 
-| Parameter Name | Type | Allowed Values | Description |
-| :-- | :-- | :-- | :-- |
-| `name` | string | `[LabVmAutoStart, LabVmsShutdown]` | The name of the schedule. |
-| `taskType` | string | `[LabVmsShutdownTask, LabVmsStartupTask]` | The task type of the schedule (e.g. LabVmsShutdownTask, LabVmsStartupTask). |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`name`](#parameter-name) | string | The name of the schedule. |
+| [`taskType`](#parameter-tasktype) | string | The task type of the schedule (e.g. LabVmsShutdownTask, LabVmsStartupTask). |
 
 **Conditional parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `labName` | string | The name of the parent lab. Required if the template is used in a standalone deployment. |
+| [`labName`](#parameter-labname) | string | The name of the parent lab. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Allowed Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `dailyRecurrence` | object | `{object}` |  | If the schedule will occur once each day of the week, specify the daily recurrence. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `hourlyRecurrence` | object | `{object}` |  | If the schedule will occur multiple times a day, specify the hourly recurrence. |
-| `notificationSettingsStatus` | string | `'Disabled'` | `[Disabled, Enabled]` | If notifications are enabled for this schedule (i.e. Enabled, Disabled). |
-| `notificationSettingsTimeInMinutes` | int | `30` |  | Time in minutes before event at which notification will be sent. Optional if "notificationSettingsStatus" is set to "Enabled". Default is 30 minutes. |
-| `status` | string | `'Enabled'` | `[Disabled, Enabled]` | The status of the schedule (i.e. Enabled, Disabled). |
-| `tags` | object | `{object}` |  | Tags of the resource. |
-| `targetResourceId` | string | `''` |  | The resource ID to which the schedule belongs. |
-| `timeZoneId` | string | `'Pacific Standard time'` |  | The time zone ID (e.g. Pacific Standard time). |
-| `weeklyRecurrence` | object | `{object}` |  | If the schedule will occur only some days of the week, specify the weekly recurrence. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`dailyRecurrence`](#parameter-dailyrecurrence) | object | If the schedule will occur once each day of the week, specify the daily recurrence. |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`hourlyRecurrence`](#parameter-hourlyrecurrence) | object | If the schedule will occur multiple times a day, specify the hourly recurrence. |
+| [`notificationSettingsStatus`](#parameter-notificationsettingsstatus) | string | If notifications are enabled for this schedule (i.e. Enabled, Disabled). |
+| [`notificationSettingsTimeInMinutes`](#parameter-notificationsettingstimeinminutes) | int | Time in minutes before event at which notification will be sent. Optional if "notificationSettingsStatus" is set to "Enabled". Default is 30 minutes. |
+| [`status`](#parameter-status) | string | The status of the schedule (i.e. Enabled, Disabled). |
+| [`tags`](#parameter-tags) | object | Tags of the resource. |
+| [`targetResourceId`](#parameter-targetresourceid) | string | The resource ID to which the schedule belongs. |
+| [`timeZoneId`](#parameter-timezoneid) | string | The time zone ID (e.g. Pacific Standard time). |
+| [`weeklyRecurrence`](#parameter-weeklyrecurrence) | object | If the schedule will occur only some days of the week, specify the weekly recurrence. |
 
+### Parameter: `dailyRecurrence`
 
-### Parameter Usage: `tags`
+If the schedule will occur once each day of the week, specify the daily recurrence.
+- Required: No
+- Type: object
+- Default: `{object}`
 
-Tag names and tag values can be provided as needed. A tag can be left without a value.
+### Parameter: `enableDefaultTelemetry`
 
-<details>
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
 
-<summary>Parameter JSON format</summary>
+### Parameter: `hourlyRecurrence`
 
-```json
-"tags": {
-    "value": {
-        "Environment": "Non-Prod",
-        "Contact": "test.user@testcompany.com",
-        "PurchaseOrder": "1234",
-        "CostCenter": "7890",
-        "ServiceName": "DeploymentValidation",
-        "Role": "DeploymentValidation"
-    }
-}
-```
+If the schedule will occur multiple times a day, specify the hourly recurrence.
+- Required: No
+- Type: object
+- Default: `{object}`
 
-</details>
+### Parameter: `labName`
 
-<details>
+The name of the parent lab. Required if the template is used in a standalone deployment.
+- Required: Yes
+- Type: string
 
-<summary>Bicep format</summary>
+### Parameter: `name`
 
-```bicep
-tags: {
-    Environment: 'Non-Prod'
-    Contact: 'test.user@testcompany.com'
-    PurchaseOrder: '1234'
-    CostCenter: '7890'
-    ServiceName: 'DeploymentValidation'
-    Role: 'DeploymentValidation'
-}
-```
+The name of the schedule.
+- Required: Yes
+- Type: string
+- Allowed: `[LabVmAutoStart, LabVmsShutdown]`
 
-</details>
-<p>
+### Parameter: `notificationSettingsStatus`
+
+If notifications are enabled for this schedule (i.e. Enabled, Disabled).
+- Required: No
+- Type: string
+- Default: `'Disabled'`
+- Allowed: `[Disabled, Enabled]`
+
+### Parameter: `notificationSettingsTimeInMinutes`
+
+Time in minutes before event at which notification will be sent. Optional if "notificationSettingsStatus" is set to "Enabled". Default is 30 minutes.
+- Required: No
+- Type: int
+- Default: `30`
+
+### Parameter: `status`
+
+The status of the schedule (i.e. Enabled, Disabled).
+- Required: No
+- Type: string
+- Default: `'Enabled'`
+- Allowed: `[Disabled, Enabled]`
+
+### Parameter: `tags`
+
+Tags of the resource.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `targetResourceId`
+
+The resource ID to which the schedule belongs.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `taskType`
+
+The task type of the schedule (e.g. LabVmsShutdownTask, LabVmsStartupTask).
+- Required: Yes
+- Type: string
+- Allowed: `[LabVmsShutdownTask, LabVmsStartupTask]`
+
+### Parameter: `timeZoneId`
+
+The time zone ID (e.g. Pacific Standard time).
+- Required: No
+- Type: string
+- Default: `'Pacific Standard time'`
+
+### Parameter: `weeklyRecurrence`
+
+If the schedule will occur only some days of the week, specify the weekly recurrence.
+- Required: No
+- Type: object
+- Default: `{object}`
+
 
 ## Outputs
 
-| Output Name | Type | Description |
+| Output | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the schedule. |
 | `resourceGroupName` | string | The name of the resource group the schedule was created in. |

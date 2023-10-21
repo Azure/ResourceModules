@@ -1,5 +1,8 @@
 targetScope = 'subscription'
 
+metadata name = 'Using large parameter set'
+metadata description = 'This instance deploys the module with most of its features enabled.'
+
 // ========== //
 // Parameters //
 // ========== //
@@ -65,7 +68,9 @@ module testDeployment '../../main.bicep' = {
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '${namePrefix}${serviceShort}001'
-
+    zoneRedundant: true
+    skuName: 'Standard'
+    skuCapacity: 2
     authorizationRules: [
       {
         name: 'RootManageSharedAccessKey'
@@ -146,9 +151,19 @@ module testDeployment '../../main.bicep' = {
           }
         ]
         status: 'Active'
+        retentionDescriptionCleanupPolicy: 'Delete'
+        retentionDescriptionRetentionTimeInHours: 3
+      }
+      {
+        name: '${namePrefix}-az-evh-x-003'
+        retentionDescriptionCleanupPolicy: 'Compact'
+        retentionDescriptionTombstoneRetentionTimeInHours: 24
       }
     ]
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     networkRuleSets: {
       defaultAction: 'Deny'
       ipRules: [
@@ -167,11 +182,9 @@ module testDeployment '../../main.bicep' = {
     }
     privateEndpoints: [
       {
-        privateDnsZoneGroup: {
-          privateDNSResourceIds: [
-            nestedDependencies.outputs.privateDNSZoneResourceId
-          ]
-        }
+        privateDnsZoneResourceIds: [
+          nestedDependencies.outputs.privateDNSZoneResourceId
+        ]
         service: 'namespace'
         subnetResourceId: nestedDependencies.outputs.subnetResourceId
         tags: {
@@ -201,5 +214,9 @@ module testDeployment '../../main.bicep' = {
     }
     kafkaEnabled: true
     disableLocalAuth: true
+    isAutoInflateEnabled: true
+    minimumTlsVersion: '1.2'
+    maximumThroughputUnits: 4
+    publicNetworkAccess: 'Disabled'
   }
 }

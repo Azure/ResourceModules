@@ -1,5 +1,8 @@
 targetScope = 'subscription'
 
+metadata name = 'Using large parameter set'
+metadata description = 'This instance deploys the module with most of its features enabled.'
+
 // ========== //
 // Parameters //
 // ========== //
@@ -107,17 +110,18 @@ module testDeployment '../../main.bicep' = {
     diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
     discoveryUrl: 'http://example.com'
     imageBuildCompute: 'testcompute'
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     primaryUserAssignedIdentity: nestedDependencies.outputs.managedIdentityResourceId
     privateEndpoints: [
       {
         service: 'amlworkspace'
         subnetResourceId: nestedDependencies.outputs.subnetResourceId
-        privateDnsZoneGroup: {
-          privateDNSResourceIds: [
-            nestedDependencies.outputs.privateDNSZoneResourceId
-          ]
-        }
+        privateDnsZoneResourceIds: [
+          nestedDependencies.outputs.privateDNSZoneResourceId
+        ]
         tags: {
           'hidden-title': 'This is visible in the resource name'
           Environment: 'Non-Prod'

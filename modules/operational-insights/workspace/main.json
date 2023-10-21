@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.21.1.54444",
-      "templateHash": "15242754159386674422"
+      "templateHash": "16403447571006085575"
     },
     "name": "Log Analytics Workspaces",
     "description": "This module deploys a Log Analytics Workspace.",
@@ -185,157 +185,6 @@
       },
       "nullable": true
     },
-    "privateEndpointType": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string",
-            "nullable": true,
-            "metadata": {
-              "description": "Optional. The name of the private endpoint."
-            }
-          },
-          "location": {
-            "type": "string",
-            "nullable": true,
-            "metadata": {
-              "description": "Optional. The location to deploy the private endpoint to."
-            }
-          },
-          "service": {
-            "type": "string",
-            "metadata": {
-              "description": "Required. The service (sub-) type to deploy the private endpoint for. For example \"vault\" or \"blob\"."
-            }
-          },
-          "subnetResourceId": {
-            "type": "string",
-            "metadata": {
-              "description": "Required. Resource ID of the subnet where the endpoint needs to be created."
-            }
-          },
-          "privateDnsZoneResourceIds": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "nullable": true,
-            "metadata": {
-              "description": "Optional. The private DNS zone groups to associate the private endpoint with. A DNS zone group can support up to 5 DNS zones."
-            }
-          },
-          "customDnsConfigs": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "fqdn": {
-                  "type": "string",
-                  "nullable": true
-                },
-                "ipAddresses": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                }
-              }
-            },
-            "nullable": true,
-            "metadata": {
-              "description": "Optional. Custom DNS configurations."
-            }
-          },
-          "ipConfigurations": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "type": "string"
-                },
-                "groupId": {
-                  "type": "string"
-                },
-                "memberName": {
-                  "type": "string"
-                },
-                "privateIpAddress": {
-                  "type": "string"
-                }
-              }
-            },
-            "nullable": true,
-            "metadata": {
-              "description": "Optional. A list of IP configurations of the private endpoint. This will be used to map to the First Party Service endpoints."
-            }
-          },
-          "applicationSecurityGroupResourceIds": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "nullable": true,
-            "metadata": {
-              "description": "Optional. Application security groups in which the private endpoint IP configuration is included."
-            }
-          },
-          "customNetworkInterfaceName": {
-            "type": "string",
-            "nullable": true,
-            "metadata": {
-              "description": "Optional. The custom name of the network interface attached to the private endpoint."
-            }
-          },
-          "lock": {
-            "type": "string",
-            "allowedValues": [
-              "",
-              "CanNotDelete",
-              "ReadOnly"
-            ],
-            "nullable": true,
-            "metadata": {
-              "description": "Optional. Specify the type of lock."
-            }
-          },
-          "roleAssignments": {
-            "type": "array",
-            "items": {
-              "$ref": "#/definitions/roleAssignmentType"
-            },
-            "nullable": true,
-            "metadata": {
-              "description": "Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'."
-            }
-          },
-          "tags": {
-            "type": "object",
-            "nullable": true,
-            "metadata": {
-              "description": "Optional. Tags to be applied on all resources/resource groups in this deployment."
-            }
-          },
-          "manualPrivateLinkServiceConnections": {
-            "type": "array",
-            "nullable": true,
-            "metadata": {
-              "description": "Optional. Manual PrivateLink Service Connections."
-            }
-          },
-          "enableTelemetry": {
-            "type": "bool",
-            "nullable": true,
-            "metadata": {
-              "description": "Optional. Enable telemetry via a Globally Unique Identifier (GUID)."
-            }
-          }
-        }
-      },
-      "nullable": true
-    },
     "managedIdentitiesType": {
       "type": "object",
       "properties": {
@@ -354,38 +203,6 @@
           "nullable": true,
           "metadata": {
             "description": "Optional. The resource ID(s) to assign to the resource. Required if a user assigned identity is used for encryption."
-          }
-        }
-      },
-      "nullable": true
-    },
-    "customerManagedKeyType": {
-      "type": "object",
-      "properties": {
-        "keyVaultResourceId": {
-          "type": "string",
-          "metadata": {
-            "description": "Required. The resource ID of a key vault to reference a customer managed key for encryption from."
-          }
-        },
-        "keyName": {
-          "type": "string",
-          "metadata": {
-            "description": "Required. The name of the customer managed key to use for encryption."
-          }
-        },
-        "keyVersion": {
-          "type": "string",
-          "nullable": true,
-          "metadata": {
-            "description": "Optional. The version of the customer managed key to reference for encryption. If not provided, using 'latest'."
-          }
-        },
-        "userAssignedIdentityResourceId": {
-          "type": "string",
-          "nullable": true,
-          "metadata": {
-            "description": "Optional. User assigned identity to use when fetching the customer managed key. Required if no system assigned identity is available for use."
           }
         }
       },

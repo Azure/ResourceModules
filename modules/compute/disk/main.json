@@ -1,15 +1,43 @@
 {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "languageVersion": "2.0",
   "contentVersion": "1.0.0.0",
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.21.1.54444",
-      "templateHash": "5862388830070369227"
+      "version": "0.22.6.54827",
+      "templateHash": "8327315950062299298"
     },
     "name": "Compute Disks",
     "description": "This module deploys a Compute Disk",
     "owner": "Azure/module-maintainers"
+  },
+  "definitions": {
+    "lockType": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Specify the name of lock."
+          }
+        },
+        "kind": {
+          "type": "string",
+          "allowedValues": [
+            "CanNotDelete",
+            "None",
+            "ReadOnly"
+          ],
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Specify the type of lock."
+          }
+        }
+      },
+      "nullable": true
+    }
   },
   "parameters": {
     "name": {
@@ -223,15 +251,9 @@
       }
     },
     "lock": {
-      "type": "string",
-      "defaultValue": "",
-      "allowedValues": [
-        "",
-        "CanNotDelete",
-        "ReadOnly"
-      ],
+      "$ref": "#/definitions/lockType",
       "metadata": {
-        "description": "Optional. Specify the type of lock."
+        "description": "Optional. The lock settings of the service."
       }
     },
     "roleAssignments": {
@@ -256,8 +278,8 @@
       }
     }
   },
-  "resources": [
-    {
+  "resources": {
+    "defaultTelemetry": {
       "condition": "[parameters('enableDefaultTelemetry')]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
@@ -271,7 +293,7 @@
         }
       }
     },
-    {
+    "disk": {
       "type": "Microsoft.Compute/disks",
       "apiVersion": "2022-07-02",
       "name": "[parameters('name')]",
@@ -305,21 +327,21 @@
         "supportedCapabilities": "[if(empty(parameters('osType')), createObject(), createObject('acceleratedNetwork', parameters('acceleratedNetwork'), 'architecture', if(empty(parameters('architecture')), null(), parameters('architecture'))))]"
       }
     },
-    {
-      "condition": "[not(empty(parameters('lock')))]",
+    "disk_lock": {
+      "condition": "[and(not(empty(coalesce(parameters('lock'), createObject()))), not(equals(tryGet(parameters('lock'), 'kind'), 'None')))]",
       "type": "Microsoft.Authorization/locks",
       "apiVersion": "2020-05-01",
       "scope": "[format('Microsoft.Compute/disks/{0}', parameters('name'))]",
-      "name": "[format('{0}-{1}-lock', parameters('name'), parameters('lock'))]",
+      "name": "[coalesce(tryGet(parameters('lock'), 'name'), format('lock-{0}', parameters('name')))]",
       "properties": {
-        "level": "[parameters('lock')]",
-        "notes": "[if(equals(parameters('lock'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot modify the resource or child resources.')]"
+        "level": "[coalesce(tryGet(parameters('lock'), 'kind'), '')]",
+        "notes": "[if(equals(tryGet(parameters('lock'), 'kind'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot delete or modify the resource or child resources.')]"
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Compute/disks', parameters('name'))]"
+        "disk"
       ]
     },
-    {
+    "disk_roleAssignments": {
       "copy": {
         "name": "disk_roleAssignments",
         "count": "[length(parameters('roleAssignments'))]"
@@ -353,8 +375,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "15033488944608271524"
+              "version": "0.22.6.54827",
+              "templateHash": "9743538331774034121"
             }
           },
           "parameters": {
@@ -486,10 +508,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Compute/disks', parameters('name'))]"
+        "disk"
       ]
     }
-  ],
+  },
   "outputs": {
     "resourceGroupName": {
       "type": "string",
@@ -517,7 +539,7 @@
       "metadata": {
         "description": "The location the resource was deployed into."
       },
-      "value": "[reference(resourceId('Microsoft.Compute/disks', parameters('name')), '2022-07-02', 'full').location]"
+      "value": "[reference('disk', '2022-07-02', 'full').location]"
     }
   }
 }

@@ -1,15 +1,43 @@
 {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "languageVersion": "2.0",
   "contentVersion": "1.0.0.0",
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.20.4.51522",
-      "templateHash": "921300981514456809"
+      "version": "0.22.6.54827",
+      "templateHash": "17853944786928243085"
     },
     "name": "Service Bus Namespace Topic",
     "description": "This module deploys a Service Bus Namespace Topic.",
     "owner": "Azure/module-maintainers"
+  },
+  "definitions": {
+    "lockType": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Specify the name of lock."
+          }
+        },
+        "kind": {
+          "type": "string",
+          "allowedValues": [
+            "CanNotDelete",
+            "None",
+            "ReadOnly"
+          ],
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Specify the type of lock."
+          }
+        }
+      },
+      "nullable": true
+    }
   },
   "parameters": {
     "namespaceName": {
@@ -135,15 +163,9 @@
       }
     },
     "lock": {
-      "type": "string",
-      "defaultValue": "",
-      "allowedValues": [
-        "",
-        "CanNotDelete",
-        "ReadOnly"
-      ],
+      "$ref": "#/definitions/lockType",
       "metadata": {
-        "description": "Optional. Specify the type of lock."
+        "description": "Optional. The lock settings of the service."
       }
     },
     "roleAssignments": {
@@ -164,8 +186,8 @@
   "variables": {
     "enableReferencedModulesTelemetry": false
   },
-  "resources": [
-    {
+  "resources": {
+    "defaultTelemetry": {
       "condition": "[parameters('enableDefaultTelemetry')]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2021-04-01",
@@ -179,9 +201,15 @@
         }
       }
     },
-    {
+    "namespace": {
+      "existing": true,
+      "type": "Microsoft.ServiceBus/namespaces",
+      "apiVersion": "2022-10-01-preview",
+      "name": "[parameters('namespaceName')]"
+    },
+    "topic": {
       "type": "Microsoft.ServiceBus/namespaces/topics",
-      "apiVersion": "2021-06-01-preview",
+      "apiVersion": "2022-10-01-preview",
       "name": "[format('{0}/{1}', parameters('namespaceName'), parameters('name'))]",
       "properties": {
         "autoDeleteOnIdle": "[parameters('autoDeleteOnIdle')]",
@@ -195,23 +223,26 @@
         "requiresDuplicateDetection": "[parameters('requiresDuplicateDetection')]",
         "status": "[parameters('status')]",
         "supportOrdering": "[parameters('supportOrdering')]"
-      }
+      },
+      "dependsOn": [
+        "namespace"
+      ]
     },
-    {
-      "condition": "[not(empty(parameters('lock')))]",
+    "topic_lock": {
+      "condition": "[and(not(empty(coalesce(parameters('lock'), createObject()))), not(equals(tryGet(parameters('lock'), 'kind'), 'None')))]",
       "type": "Microsoft.Authorization/locks",
       "apiVersion": "2020-05-01",
       "scope": "[format('Microsoft.ServiceBus/namespaces/{0}/topics/{1}', parameters('namespaceName'), parameters('name'))]",
-      "name": "[format('{0}-{1}-lock', parameters('name'), parameters('lock'))]",
+      "name": "[coalesce(tryGet(parameters('lock'), 'name'), format('lock-{0}', parameters('name')))]",
       "properties": {
-        "level": "[parameters('lock')]",
-        "notes": "[if(equals(parameters('lock'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot modify the resource or child resources.')]"
+        "level": "[coalesce(tryGet(parameters('lock'), 'kind'), '')]",
+        "notes": "[if(equals(tryGet(parameters('lock'), 'kind'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot delete or modify the resource or child resources.')]"
       },
       "dependsOn": [
-        "[resourceId('Microsoft.ServiceBus/namespaces/topics', parameters('namespaceName'), parameters('name'))]"
+        "topic"
       ]
     },
-    {
+    "topic_authorizationRules": {
       "copy": {
         "name": "topic_authorizationRules",
         "count": "[length(parameters('authorizationRules'))]"
@@ -245,8 +276,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.20.4.51522",
-              "templateHash": "12912382339345981506"
+              "version": "0.22.6.54827",
+              "templateHash": "3590235297575239025"
             },
             "name": "Service Bus Namespace Topic Authorization Rules",
             "description": "This module deploys a Service Bus Namespace Topic Authorization Rule.",
@@ -308,7 +339,7 @@
             },
             {
               "type": "Microsoft.ServiceBus/namespaces/topics/authorizationRules",
-              "apiVersion": "2021-06-01-preview",
+              "apiVersion": "2022-10-01-preview",
               "name": "[format('{0}/{1}/{2}', parameters('namespaceName'), parameters('topicName'), parameters('name'))]",
               "properties": {
                 "rights": "[parameters('rights')]"
@@ -341,10 +372,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.ServiceBus/namespaces/topics', parameters('namespaceName'), parameters('name'))]"
+        "topic"
       ]
     },
-    {
+    "topic_roleAssignments": {
       "copy": {
         "name": "topic_roleAssignments",
         "count": "[length(parameters('roleAssignments'))]"
@@ -378,8 +409,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.20.4.51522",
-              "templateHash": "11124682842627815351"
+              "version": "0.22.6.54827",
+              "templateHash": "13096307217253704125"
             }
           },
           "parameters": {
@@ -492,10 +523,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.ServiceBus/namespaces/topics', parameters('namespaceName'), parameters('name'))]"
+        "topic"
       ]
     }
-  ],
+  },
   "outputs": {
     "name": {
       "type": "string",

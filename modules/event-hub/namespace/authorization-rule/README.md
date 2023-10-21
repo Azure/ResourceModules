@@ -13,33 +13,60 @@ This module deploys an Event Hub Namespace Authorization Rule.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.EventHub/namespaces/authorizationRules` | [2022-01-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.EventHub/2022-01-01-preview/namespaces/authorizationRules) |
+| `Microsoft.EventHub/namespaces/authorizationRules` | [2022-10-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.EventHub/2022-10-01-preview/namespaces/authorizationRules) |
 
 ## Parameters
 
 **Required parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the authorization rule. |
+| [`name`](#parameter-name) | string | The name of the authorization rule. |
 
 **Conditional parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `namespaceName` | string | The name of the parent event hub namespace. Required if the template is used in a standalone deployment. |
+| [`namespaceName`](#parameter-namespacename) | string | The name of the parent event hub namespace. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Allowed Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `rights` | array | `[]` | `[Listen, Manage, Send]` | The rights associated with the rule. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`rights`](#parameter-rights) | array | The rights associated with the rule. |
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `name`
+
+The name of the authorization rule.
+- Required: Yes
+- Type: string
+
+### Parameter: `namespaceName`
+
+The name of the parent event hub namespace. Required if the template is used in a standalone deployment.
+- Required: Yes
+- Type: string
+
+### Parameter: `rights`
+
+The rights associated with the rule.
+- Required: No
+- Type: array
+- Default: `[]`
+- Allowed: `[Listen, Manage, Send]`
 
 
 ## Outputs
 
-| Output Name | Type | Description |
+| Output | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the authorization rule. |
 | `resourceGroupName` | string | The name of the resource group the authorization rule was created in. |

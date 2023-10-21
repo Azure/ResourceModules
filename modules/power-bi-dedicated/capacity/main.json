@@ -1,15 +1,43 @@
 {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "languageVersion": "2.0",
   "contentVersion": "1.0.0.0",
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.21.1.54444",
-      "templateHash": "924797605355156375"
+      "version": "0.22.6.54827",
+      "templateHash": "14918936094313843131"
     },
     "name": "Power BI Dedicated Capacities",
     "description": "This module deploys a Power BI Dedicated Capacity.",
     "owner": "Azure/module-maintainers"
+  },
+  "definitions": {
+    "lockType": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Specify the name of lock."
+          }
+        },
+        "kind": {
+          "type": "string",
+          "allowedValues": [
+            "CanNotDelete",
+            "None",
+            "ReadOnly"
+          ],
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Specify the type of lock."
+          }
+        }
+      },
+      "nullable": true
+    }
   },
   "parameters": {
     "name": {
@@ -90,16 +118,9 @@
       }
     },
     "lock": {
-      "type": "string",
-      "defaultValue": "",
-      "allowedValues": [
-        "",
-        "CanNotDelete",
-        "NotSpecified",
-        "ReadOnly"
-      ],
+      "$ref": "#/definitions/lockType",
       "metadata": {
-        "description": "Optional. Specify the type of lock."
+        "description": "Optional. The lock settings of the service."
       }
     },
     "roleAssignments": {
@@ -110,8 +131,8 @@
       }
     }
   },
-  "resources": [
-    {
+  "resources": {
+    "defaultTelemetry": {
       "condition": "[parameters('enableDefaultTelemetry')]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2021-04-01",
@@ -125,7 +146,7 @@
         }
       }
     },
-    {
+    "powerbi": {
       "type": "Microsoft.PowerBIDedicated/capacities",
       "apiVersion": "2021-01-01",
       "name": "[parameters('name')]",
@@ -143,21 +164,21 @@
         "mode": "[parameters('mode')]"
       }
     },
-    {
-      "condition": "[not(empty(parameters('lock')))]",
+    "powerbi_lock": {
+      "condition": "[and(not(empty(coalesce(parameters('lock'), createObject()))), not(equals(tryGet(parameters('lock'), 'kind'), 'None')))]",
       "type": "Microsoft.Authorization/locks",
-      "apiVersion": "2016-09-01",
+      "apiVersion": "2020-05-01",
       "scope": "[format('Microsoft.PowerBIDedicated/capacities/{0}', parameters('name'))]",
-      "name": "[format('{0}-{1}-lock', parameters('name'), parameters('lock'))]",
+      "name": "[coalesce(tryGet(parameters('lock'), 'name'), format('lock-{0}', parameters('name')))]",
       "properties": {
-        "level": "[parameters('lock')]",
-        "notes": "[if(equals(parameters('lock'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot modify the resource or child resources.')]"
+        "level": "[coalesce(tryGet(parameters('lock'), 'kind'), '')]",
+        "notes": "[if(equals(tryGet(parameters('lock'), 'kind'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot delete or modify the resource or child resources.')]"
       },
       "dependsOn": [
-        "[resourceId('Microsoft.PowerBIDedicated/capacities', parameters('name'))]"
+        "powerbi"
       ]
     },
-    {
+    "powerbi_rbac": {
       "copy": {
         "name": "powerbi_rbac",
         "count": "[length(parameters('roleAssignments'))]"
@@ -184,8 +205,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "18119555403422726514"
+              "version": "0.22.6.54827",
+              "templateHash": "4655209444733495279"
             }
           },
           "parameters": {
@@ -232,10 +253,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.PowerBIDedicated/capacities', parameters('name'))]"
+        "powerbi"
       ]
     }
-  ],
+  },
   "outputs": {
     "resourceId": {
       "type": "string",
@@ -263,7 +284,7 @@
       "metadata": {
         "description": "The location the resource was deployed into."
       },
-      "value": "[reference(resourceId('Microsoft.PowerBIDedicated/capacities', parameters('name')), '2021-01-01', 'full').location]"
+      "value": "[reference('powerbi', '2021-01-01', 'full').location]"
     }
   }
 }

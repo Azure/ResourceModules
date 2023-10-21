@@ -1,5 +1,8 @@
 targetScope = 'subscription'
 
+metadata name = 'Using large parameter set'
+metadata description = 'This instance deploys the module with most of its features enabled.'
+
 // ========== //
 // Parameters //
 // ========== //
@@ -97,7 +100,10 @@ module testDeployment '../../main.bicep' = {
         type: 'SelfHosted'
       }
     ]
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     managedPrivateEndpoints: [
       {
         fqdns: [
@@ -111,11 +117,11 @@ module testDeployment '../../main.bicep' = {
     managedVirtualNetworkName: 'default'
     privateEndpoints: [
       {
-        privateDnsZoneGroup: {
-          privateDNSResourceIds: [
-            nestedDependencies.outputs.privateDNSResourceId
-          ]
-        }
+        privateDnsZoneResourceIds: [
+
+          nestedDependencies.outputs.privateDNSZoneResourceId
+
+        ]
         service: 'dataFactory'
         subnetResourceId: nestedDependencies.outputs.subnetResourceId
         tags: {
