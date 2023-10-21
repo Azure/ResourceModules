@@ -171,9 +171,7 @@ module testDeployment '../../main.bicep' = {
     proximityPlacementGroupResourceId: nestedDependencies.outputs.proximityPlacementGroupResourceId
     roleAssignments: [
       {
-        principalIds: [
-          nestedDependencies.outputs.managedIdentityPrincipalId
-        ]
+        principalId: nestedDependencies.outputs.managedIdentityPrincipalId
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -192,3 +190,4 @@ module testDeployment '../../main.bicep' = {
     }
   }
 }
+
