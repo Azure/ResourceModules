@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "7932229736229793759"
+      "templateHash": "15301963189234048003"
     },
     "name": "Batch Accounts",
     "description": "This module deploys a Batch Account.",
@@ -79,7 +79,7 @@
     "managedIdentities": {
       "$ref": "#/definitions/managedIdentitiesType",
       "metadata": {
-        "description": "Optional. The managed identity definition for this resource"
+        "description": "Optional. The managed identity definition for this resource."
       }
     },
     "storageAccountId": {

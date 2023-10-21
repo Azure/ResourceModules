@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "4854501597877343532"
+      "templateHash": "8646728982343495413"
     },
     "name": "API Management Services",
     "description": "This module deploys an API Management Service.",
@@ -143,7 +143,7 @@
     "managedIdentities": {
       "$ref": "#/definitions/managedIdentitiesType",
       "metadata": {
-        "description": "Optional. The managed identity definition for this resource"
+        "description": "Optional. The managed identity definition for this resource."
       }
     },
     "location": {
