@@ -100,7 +100,9 @@ module testDeployment '../../main.bicep' = {
     redisVersion: '6'
     shardCount: 1
     skuName: 'Premium'
-    systemAssignedIdentity: true
+    managedIdentities: {
+      systemAssigned: true
+    }
     tags: {
       'hidden-title': 'This is visible in the resource name'
       resourceType: 'Redis Cache'

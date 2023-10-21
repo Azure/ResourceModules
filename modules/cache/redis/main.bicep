@@ -17,11 +17,8 @@ param roleAssignments array = []
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Enables system assigned managed identity on the resource.')
-param systemAssignedIdentity bool = false
-
-@description('Optional. The ID(s) to assign to the resource.')
-param userAssignedIdentities object = {}
+@description('Optional. The managed identity definition for this resource.')
+param managedIdentities managedIdentitiesType
 
 @description('Optional. Specifies whether the non-ssl Redis server port (6379) is enabled.')
 param enableNonSslPort bool = false
@@ -158,12 +155,12 @@ var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   enabled: true
 }]
 
-var identityType = systemAssignedIdentity ? 'SystemAssigned' : !empty(userAssignedIdentities) ? 'UserAssigned' : 'None'
+var formattedUserAssignedIdentities = reduce(map((managedIdentities.?userAssignedResourcesIds ?? []), (id) => { '${id}': {} }), {}, (cur, next) => union(cur, next)) // Converts the flat array to an object like { '${id1}': {}, '${id2}': {} }
 
-var identity = {
-  type: identityType
-  userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
-}
+var identity = !empty(managedIdentities) ? {
+  type: (managedIdentities.?systemAssigned ?? false) ? (!empty(managedIdentities.?userAssignedResourcesIds ?? {}) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(managedIdentities.?userAssignedResourcesIds ?? {}) ? 'UserAssigned' : null)
+  userAssignedIdentities: !empty(formattedUserAssignedIdentities) ? formattedUserAssignedIdentities : null
+} : null
 
 var enableReferencedModulesTelemetry = false
 
@@ -282,12 +279,23 @@ output sslPort int = redisCache.properties.sslPort
 @description('The full resource ID of a subnet in a virtual network where the Redis Cache was deployed in.')
 output subnetId string = !empty(subnetId) ? redisCache.properties.subnetId : ''
 
+@description('The principal ID of the system assigned identity.')
+output systemAssignedMIPrincipalId string = (managedIdentities.?systemAssigned ?? false) && contains(redisCache.identity, 'principalId') ? redisCache.identity.principalId : ''
+
 @description('The location the resource was deployed into.')
 output location string = redisCache.location
 
 // =============== //
 //   Definitions   //
 // =============== //
+
+type managedIdentitiesType = {
+  @description('Optional. Enables system assigned managed identity on the resource.')
+  systemAssigned: bool?
+
+  @description('Optional. The resource ID(s) to assign to the resource. Required if a user assigned identity is used for encryption.')
+  userAssignedResourcesIds: string[]?
+}?
 
 type lockType = {
   @description('Optional. Specify the name of lock.')

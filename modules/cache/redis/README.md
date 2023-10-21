@@ -61,6 +61,9 @@ module redis 'br:bicep/modules/cache.redis:1.0.0' = {
       kind: 'CanNotDelete'
       name: 'myCustomLockName'
     }
+    managedIdentities: {
+      systemAssigned: true
+    }
     minimumTlsVersion: '1.2'
     privateEndpoints: [
       {
@@ -80,7 +83,6 @@ module redis 'br:bicep/modules/cache.redis:1.0.0' = {
     redisVersion: '6'
     shardCount: 1
     skuName: 'Premium'
-    systemAssignedIdentity: true
     tags: {
       'hidden-title': 'This is visible in the resource name'
       resourceType: 'Redis Cache'
@@ -141,6 +143,11 @@ module redis 'br:bicep/modules/cache.redis:1.0.0' = {
         "name": "myCustomLockName"
       }
     },
+    "managedIdentities": {
+      "value": {
+        "systemAssigned": true
+      }
+    },
     "minimumTlsVersion": {
       "value": "1.2"
     },
@@ -171,9 +178,6 @@ module redis 'br:bicep/modules/cache.redis:1.0.0' = {
     },
     "skuName": {
       "value": "Premium"
-    },
-    "systemAssignedIdentity": {
-      "value": true
     },
     "tags": {
       "value": {
@@ -270,6 +274,7 @@ module redis 'br:bicep/modules/cache.redis:1.0.0' = {
 | [`enableNonSslPort`](#parameter-enablenonsslport) | bool | Specifies whether the non-ssl Redis server port (6379) is enabled. |
 | [`location`](#parameter-location) | string | The location to deploy the Redis cache service. |
 | [`lock`](#parameter-lock) | object | The lock settings of the service. |
+| [`managedIdentities`](#parameter-managedidentities) | object | The managed identity definition for this resource. |
 | [`minimumTlsVersion`](#parameter-minimumtlsversion) | string | Requires clients to use a specified TLS version (or higher) to connect. |
 | [`privateEndpoints`](#parameter-privateendpoints) | array | Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
 | [`publicNetworkAccess`](#parameter-publicnetworkaccess) | string | Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set. |
@@ -282,10 +287,8 @@ module redis 'br:bicep/modules/cache.redis:1.0.0' = {
 | [`skuName`](#parameter-skuname) | string | The type of Redis cache to deploy. |
 | [`staticIP`](#parameter-staticip) | string | Static IP address. Optionally, may be specified when deploying a Redis cache inside an existing Azure Virtual Network; auto assigned by default. |
 | [`subnetId`](#parameter-subnetid) | string | The full resource ID of a subnet in a virtual network to deploy the Redis cache in. Example format: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/Microsoft.{Network|ClassicNetwork}/VirtualNetworks/vnet1/subnets/subnet1. |
-| [`systemAssignedIdentity`](#parameter-systemassignedidentity) | bool | Enables system assigned managed identity on the resource. |
 | [`tags`](#parameter-tags) | object | Tags of the resource. |
 | [`tenantSettings`](#parameter-tenantsettings) | object | A dictionary of tenant settings. |
-| [`userAssignedIdentities`](#parameter-userassignedidentities) | object | The ID(s) to assign to the resource. |
 | [`zoneRedundant`](#parameter-zoneredundant) | bool | When true, replicas will be provisioned in availability zones specified in the zones parameter. |
 | [`zones`](#parameter-zones) | array | If the zoneRedundant parameter is true, replicas will be provisioned in the availability zones specified here. Otherwise, the service will choose where replicas are deployed. |
 
@@ -396,6 +399,32 @@ Optional. Specify the name of lock.
 - Required: No
 - Type: string
 
+### Parameter: `managedIdentities`
+
+The managed identity definition for this resource.
+- Required: No
+- Type: object
+
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`systemAssigned`](#parameter-managedidentitiessystemassigned) | No | bool | Optional. Enables system assigned managed identity on the resource. |
+| [`userAssignedResourcesIds`](#parameter-managedidentitiesuserassignedresourcesids) | No | array | Optional. The resource ID(s) to assign to the resource. Required if a user assigned identity is used for encryption. |
+
+### Parameter: `managedIdentities.systemAssigned`
+
+Optional. Enables system assigned managed identity on the resource.
+
+- Required: No
+- Type: bool
+
+### Parameter: `managedIdentities.userAssignedResourcesIds`
+
+Optional. The resource ID(s) to assign to the resource. Required if a user assigned identity is used for encryption.
+
+- Required: No
+- Type: array
+
 ### Parameter: `minimumTlsVersion`
 
 Requires clients to use a specified TLS version (or higher) to connect.
@@ -490,13 +519,6 @@ The full resource ID of a subnet in a virtual network to deploy the Redis cache 
 - Type: string
 - Default: `''`
 
-### Parameter: `systemAssignedIdentity`
-
-Enables system assigned managed identity on the resource.
-- Required: No
-- Type: bool
-- Default: `False`
-
 ### Parameter: `tags`
 
 Tags of the resource.
@@ -507,13 +529,6 @@ Tags of the resource.
 ### Parameter: `tenantSettings`
 
 A dictionary of tenant settings.
-- Required: No
-- Type: object
-- Default: `{object}`
-
-### Parameter: `userAssignedIdentities`
-
-The ID(s) to assign to the resource.
 - Required: No
 - Type: object
 - Default: `{object}`
@@ -544,6 +559,7 @@ If the zoneRedundant parameter is true, replicas will be provisioned in the avai
 | `resourceId` | string | The resource ID of the Redis Cache. |
 | `sslPort` | int | Redis SSL port. |
 | `subnetId` | string | The full resource ID of a subnet in a virtual network where the Redis Cache was deployed in. |
+| `systemAssignedMIPrincipalId` | string | The principal ID of the system assigned identity. |
 
 ## Cross-referenced modules
 
