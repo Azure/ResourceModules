@@ -413,7 +413,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-module vm_nic '.bicep/nested_networkInterface.bicep' = [for (nicConfiguration, index) in nicConfigurations: {
+module vm_nic 'modules/nested_networkInterface.bicep' = [for (nicConfiguration, index) in nicConfigurations: {
   name: '${uniqueString(deployment().name, location)}-VM-Nic-${index}'
   params: {
     networkInterfaceName: '${name}${nicConfiguration.nicSuffix}'
