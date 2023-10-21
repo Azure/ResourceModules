@@ -79,6 +79,9 @@ module configurationStore 'br:bicep/modules/app-configuration.configuration-stor
       kind: 'CanNotDelete'
       name: 'myCustomLockName'
     }
+    managedIdentities: {
+      systemAssigned: true
+    }
     roleAssignments: [
       {
         principalIds: [
@@ -89,14 +92,10 @@ module configurationStore 'br:bicep/modules/app-configuration.configuration-stor
       }
     ]
     softDeleteRetentionInDays: 1
-    systemAssignedIdentity: false
     tags: {
       Environment: 'Non-Prod'
       'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
-    }
-    userAssignedIdentities: {
-      '<managedIdentityResourceId>': {}
     }
   }
 }
@@ -167,6 +166,11 @@ module configurationStore 'br:bicep/modules/app-configuration.configuration-stor
         "name": "myCustomLockName"
       }
     },
+    "managedIdentities": {
+      "value": {
+        "systemAssigned": true
+      }
+    },
     "roleAssignments": {
       "value": [
         {
@@ -181,19 +185,11 @@ module configurationStore 'br:bicep/modules/app-configuration.configuration-stor
     "softDeleteRetentionInDays": {
       "value": 1
     },
-    "systemAssignedIdentity": {
-      "value": false
-    },
     "tags": {
       "value": {
         "Environment": "Non-Prod",
         "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
-      }
-    },
-    "userAssignedIdentities": {
-      "value": {
-        "<managedIdentityResourceId>": {}
       }
     }
   }
@@ -239,6 +235,11 @@ module configurationStore 'br:bicep/modules/app-configuration.configuration-stor
         value: 'valueName'
       }
     ]
+    managedIdentities: {
+      userAssignedResourcesIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
     roleAssignments: [
       {
         principalIds: [
@@ -253,9 +254,6 @@ module configurationStore 'br:bicep/modules/app-configuration.configuration-stor
       Environment: 'Non-Prod'
       'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
-    }
-    userAssignedIdentities: {
-      '<managedIdentityResourceId>': {}
     }
   }
 }
@@ -317,6 +315,13 @@ module configurationStore 'br:bicep/modules/app-configuration.configuration-stor
         }
       ]
     },
+    "managedIdentities": {
+      "value": {
+        "userAssignedResourcesIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
+    },
     "roleAssignments": {
       "value": [
         {
@@ -336,11 +341,6 @@ module configurationStore 'br:bicep/modules/app-configuration.configuration-stor
         "Environment": "Non-Prod",
         "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
-      }
-    },
-    "userAssignedIdentities": {
-      "value": {
-        "<managedIdentityResourceId>": {}
       }
     }
   }
@@ -537,14 +537,13 @@ module configurationStore 'br:bicep/modules/app-configuration.configuration-stor
 | [`keyValues`](#parameter-keyvalues) | array | All Key / Values to create. Requires local authentication to be enabled. |
 | [`location`](#parameter-location) | string | Location for all Resources. |
 | [`lock`](#parameter-lock) | object | The lock settings of the service. |
+| [`managedIdentities`](#parameter-managedidentities) | object | The managed identity definition for this resource |
 | [`privateEndpoints`](#parameter-privateendpoints) | array | Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
 | [`publicNetworkAccess`](#parameter-publicnetworkaccess) | string | Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set. |
 | [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | [`sku`](#parameter-sku) | string | Pricing tier of App Configuration. |
 | [`softDeleteRetentionInDays`](#parameter-softdeleteretentionindays) | int | The amount of time in days that the configuration store will be retained when it is soft deleted. |
-| [`systemAssignedIdentity`](#parameter-systemassignedidentity) | bool | Enables system assigned managed identity on the resource. |
 | [`tags`](#parameter-tags) | object | Tags of the resource. |
-| [`userAssignedIdentities`](#parameter-userassignedidentities) | object | The ID(s) to assign to the resource. |
 
 ### Parameter: `cMKKeyName`
 
@@ -695,6 +694,32 @@ Optional. Specify the name of lock.
 - Required: No
 - Type: string
 
+### Parameter: `managedIdentities`
+
+The managed identity definition for this resource
+- Required: No
+- Type: object
+
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`systemAssigned`](#parameter-managedidentitiessystemassigned) | No | bool | Optional. Enables system assigned managed identity on the resource. |
+| [`userAssignedResourcesIds`](#parameter-managedidentitiesuserassignedresourcesids) | No | array | Optional. The resource ID(s) to assign to the resource. Required if a user assigned identity is used for encryption. |
+
+### Parameter: `managedIdentities.systemAssigned`
+
+Optional. Enables system assigned managed identity on the resource.
+
+- Required: No
+- Type: bool
+
+### Parameter: `managedIdentities.userAssignedResourcesIds`
+
+Optional. The resource ID(s) to assign to the resource. Required if a user assigned identity is used for encryption.
+
+- Required: No
+- Type: array
+
 ### Parameter: `name`
 
 Name of the Azure App Configuration.
@@ -738,23 +763,9 @@ The amount of time in days that the configuration store will be retained when it
 - Type: int
 - Default: `1`
 
-### Parameter: `systemAssignedIdentity`
-
-Enables system assigned managed identity on the resource.
-- Required: No
-- Type: bool
-- Default: `False`
-
 ### Parameter: `tags`
 
 Tags of the resource.
-- Required: No
-- Type: object
-- Default: `{object}`
-
-### Parameter: `userAssignedIdentities`
-
-The ID(s) to assign to the resource.
 - Required: No
 - Type: object
 - Default: `{object}`
@@ -768,7 +779,7 @@ The ID(s) to assign to the resource.
 | `name` | string | The name of the app configuration. |
 | `resourceGroupName` | string | The resource group the app configuration store was deployed into. |
 | `resourceId` | string | The resource ID of the app configuration. |
-| `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
+| `systemAssignedMIPrincipalId` | string | The principal ID of the system assigned identity. |
 
 ## Cross-referenced modules
 

@@ -79,6 +79,11 @@ module containerApp 'br:bicep/modules/app.container-app:1.0.0' = {
       kind: 'CanNotDelete'
       name: 'myCustomLockName'
     }
+    managedIdentities: {
+      userAssignedResourcesIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
     secrets: {
       secureList: [
         {
@@ -90,9 +95,6 @@ module containerApp 'br:bicep/modules/app.container-app:1.0.0' = {
     tags: {
       Env: 'test'
       'hidden-title': 'This is visible in the resource name'
-    }
-    userAssignedIdentities: {
-      '<managedIdentityResourceId>': {}
     }
   }
 }
@@ -159,6 +161,13 @@ module containerApp 'br:bicep/modules/app.container-app:1.0.0' = {
         "name": "myCustomLockName"
       }
     },
+    "managedIdentities": {
+      "value": {
+        "userAssignedResourcesIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
+    },
     "secrets": {
       "value": {
         "secureList": [
@@ -173,11 +182,6 @@ module containerApp 'br:bicep/modules/app.container-app:1.0.0' = {
       "value": {
         "Env": "test",
         "hidden-title": "This is visible in the resource name"
-      }
-    },
-    "userAssignedIdentities": {
-      "value": {
-        "<managedIdentityResourceId>": {}
       }
     }
   }
@@ -303,6 +307,7 @@ module containerApp 'br:bicep/modules/app.container-app:1.0.0' = {
 | [`ipSecurityRestrictions`](#parameter-ipsecurityrestrictions) | array | Rules to restrict incoming IP address. |
 | [`location`](#parameter-location) | string | Location for all Resources. |
 | [`lock`](#parameter-lock) | object | The lock settings of the service. |
+| [`managedIdentities`](#parameter-managedidentities) | object | The managed identity definition for this resource |
 | [`maxInactiveRevisions`](#parameter-maxinactiverevisions) | int | Max inactive revisions a Container App can have. |
 | [`registries`](#parameter-registries) | array | Collection of private container registry credentials for containers used by the Container app. |
 | [`revisionSuffix`](#parameter-revisionsuffix) | string | User friendly suffix that is appended to the revision name. |
@@ -311,13 +316,11 @@ module containerApp 'br:bicep/modules/app.container-app:1.0.0' = {
 | [`scaleMinReplicas`](#parameter-scaleminreplicas) | int | Minimum number of container replicas. |
 | [`scaleRules`](#parameter-scalerules) | array | Scaling rules. |
 | [`secrets`](#parameter-secrets) | secureObject | The secrets of the Container App. |
-| [`systemAssignedIdentity`](#parameter-systemassignedidentity) | bool | Enables system assigned managed identity on the resource. |
 | [`tags`](#parameter-tags) | object | Tags of the resource. |
 | [`trafficLabel`](#parameter-trafficlabel) | string | Associates a traffic label with a revision. Label name should be consist of lower case alphanumeric characters or dashes. |
 | [`trafficLatestRevision`](#parameter-trafficlatestrevision) | bool | Indicates that the traffic weight belongs to a latest stable revision. |
 | [`trafficRevisionName`](#parameter-trafficrevisionname) | string | Name of a revision. |
 | [`trafficWeight`](#parameter-trafficweight) | int | Traffic weight assigned to a revision. |
-| [`userAssignedIdentities`](#parameter-userassignedidentities) | object | The set of user assigned identities associated with the resource, the userAssignedIdentities dictionary keys will be ARM resource IDs and The dictionary values can be empty objects ({}) in requests. |
 | [`volumes`](#parameter-volumes) | array | List of volume definitions for the Container App. |
 | [`workloadProfileType`](#parameter-workloadprofiletype) | string | Workload profile type to pin for container app execution. |
 
@@ -446,6 +449,32 @@ Optional. Specify the name of lock.
 - Required: No
 - Type: string
 
+### Parameter: `managedIdentities`
+
+The managed identity definition for this resource
+- Required: No
+- Type: object
+
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`systemAssigned`](#parameter-managedidentitiessystemassigned) | No | bool | Optional. Enables system assigned managed identity on the resource. |
+| [`userAssignedResourcesIds`](#parameter-managedidentitiesuserassignedresourcesids) | No | array | Optional. The resource ID(s) to assign to the resource. Required if a user assigned identity is used for encryption. |
+
+### Parameter: `managedIdentities.systemAssigned`
+
+Optional. Enables system assigned managed identity on the resource.
+
+- Required: No
+- Type: bool
+
+### Parameter: `managedIdentities.userAssignedResourcesIds`
+
+Optional. The resource ID(s) to assign to the resource. Required if a user assigned identity is used for encryption.
+
+- Required: No
+- Type: array
+
 ### Parameter: `maxInactiveRevisions`
 
 Max inactive revisions a Container App can have.
@@ -508,13 +537,6 @@ The secrets of the Container App.
 - Type: secureObject
 - Default: `{object}`
 
-### Parameter: `systemAssignedIdentity`
-
-Enables system assigned managed identity on the resource.
-- Required: No
-- Type: bool
-- Default: `False`
-
 ### Parameter: `tags`
 
 Tags of the resource.
@@ -549,13 +571,6 @@ Traffic weight assigned to a revision.
 - Required: No
 - Type: int
 - Default: `100`
-
-### Parameter: `userAssignedIdentities`
-
-The set of user assigned identities associated with the resource, the userAssignedIdentities dictionary keys will be ARM resource IDs and The dictionary values can be empty objects ({}) in requests.
-- Required: No
-- Type: object
-- Default: `{object}`
 
 ### Parameter: `volumes`
 
