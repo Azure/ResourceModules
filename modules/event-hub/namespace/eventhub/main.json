@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "10454840309301677740"
+      "templateHash": "5933888781308133415"
     },
     "name": "Event Hub Namespace Event Hubs",
     "description": "This module deploys an Event Hub Namespace Event Hub.",
@@ -392,6 +392,7 @@
       },
       "type": "Microsoft.Authorization/roleAssignments",
       "apiVersion": "2022-04-01",
+      "scope": "[format('Microsoft.EventHub/namespaces/{0}/eventhubs/{1}', parameters('namespaceName'), parameters('name'))]",
       "name": "[guid(resourceId('Microsoft.EventHub/namespaces/eventhubs', parameters('namespaceName'), parameters('name')), coalesce(parameters('roleAssignments'), createArray())[copyIndex()].principalId, coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName)]",
       "properties": {
         "roleDefinitionId": "[if(contains(variables('builtInRoleNames'), coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName), variables('builtInRoleNames')[coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName], coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName)]",
