@@ -142,6 +142,7 @@ resource metricAlert_roleAssignments 'Microsoft.Authorization/roleAssignments@20
     conditionVersion: !empty(roleAssignment.?condition) ? (roleAssignment.?conditionVersion ?? '2.0') : null // Must only be set if condtion is set
     delegatedManagedIdentityResourceId: roleAssignment.?delegatedManagedIdentityResourceId
   }
+  scope: metricAlert
 }]
 
 @description('The resource group the metric alert was deployed into.')

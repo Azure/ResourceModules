@@ -93,6 +93,7 @@ resource secret_roleAssignments 'Microsoft.Authorization/roleAssignments@2022-04
     conditionVersion: !empty(roleAssignment.?condition) ? (roleAssignment.?conditionVersion ?? '2.0') : null // Must only be set if condtion is set
     delegatedManagedIdentityResourceId: roleAssignment.?delegatedManagedIdentityResourceId
   }
+  scope: secret
 }]
 
 @description('The name of the secret.')
@@ -103,6 +104,7 @@ output resourceId string = secret.id
 
 @description('The name of the resource group the secret was created in.')
 output resourceGroupName string = resourceGroup().name
+
 // =============== //
 //   Definitions   //
 // =============== //

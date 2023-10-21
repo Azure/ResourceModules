@@ -47,7 +47,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource userMsi 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' = {
+resource userAssignedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' = {
   name: name
   location: location
   tags: tags
@@ -59,14 +59,14 @@ resource userMsi_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lo
     level: lock.?kind ?? ''
     notes: lock.?kind == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot delete or modify the resource or child resources.'
   }
-  scope: userMsi
+  scope: userAssignedIdentity
 }
 
 module userMsi_federatedIdentityCredentials 'federated-identity-credential/main.bicep' = [for (federatedIdentityCredential, index) in federatedIdentityCredentials: {
   name: '${uniqueString(deployment().name, location)}-UserMSI-FederatedIdentityCredential-${index}'
   params: {
     name: federatedIdentityCredential.name
-    userAssignedIdentityName: userMsi.name
+    userAssignedIdentityName: userAssignedIdentity.name
     audiences: federatedIdentityCredential.audiences
     issuer: federatedIdentityCredential.issuer
     subject: federatedIdentityCredential.subject
@@ -75,7 +75,7 @@ module userMsi_federatedIdentityCredentials 'federated-identity-credential/main.
 }]
 
 resource userMsi_roleAssignments 'Microsoft.Authorization/roleAssignments@2022-04-01' = [for (roleAssignment, index) in (roleAssignments ?? []): {
-  name: guid(userMsi.id, roleAssignment.principalId, roleAssignment.roleDefinitionIdOrName)
+  name: guid(userAssignedIdentity.id, roleAssignment.principalId, roleAssignment.roleDefinitionIdOrName)
   properties: {
     roleDefinitionId: contains(builtInRoleNames, roleAssignment.roleDefinitionIdOrName) ? builtInRoleNames[roleAssignment.roleDefinitionIdOrName] : roleAssignment.roleDefinitionIdOrName
     principalId: roleAssignment.principalId
@@ -85,25 +85,26 @@ resource userMsi_roleAssignments 'Microsoft.Authorization/roleAssignments@2022-0
     conditionVersion: !empty(roleAssignment.?condition) ? (roleAssignment.?conditionVersion ?? '2.0') : null // Must only be set if condtion is set
     delegatedManagedIdentityResourceId: roleAssignment.?delegatedManagedIdentityResourceId
   }
+  scope: userAssignedIdentity
 }]
 
 @description('The name of the user assigned identity.')
-output name string = userMsi.name
+output name string = userAssignedIdentity.name
 
 @description('The resource ID of the user assigned identity.')
-output resourceId string = userMsi.id
+output resourceId string = userAssignedIdentity.id
 
 @description('The principal ID (object ID) of the user assigned identity.')
-output principalId string = userMsi.properties.principalId
+output principalId string = userAssignedIdentity.properties.principalId
 
 @description('The client ID (application ID) of the user assigned identity.')
-output clientId string = userMsi.properties.clientId
+output clientId string = userAssignedIdentity.properties.clientId
 
 @description('The resource group the user assigned identity was deployed into.')
 output resourceGroupName string = resourceGroup().name
 
 @description('The location the resource was deployed into.')
-output location string = userMsi.location
+output location string = userAssignedIdentity.location
 
 // =============== //
 //   Definitions   //

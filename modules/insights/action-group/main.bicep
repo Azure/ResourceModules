@@ -104,6 +104,7 @@ resource actionGroup_roleAssignments 'Microsoft.Authorization/roleAssignments@20
     conditionVersion: !empty(roleAssignment.?condition) ? (roleAssignment.?conditionVersion ?? '2.0') : null // Must only be set if condtion is set
     delegatedManagedIdentityResourceId: roleAssignment.?delegatedManagedIdentityResourceId
   }
+  scope: actionGroup
 }]
 
 @description('The resource group the action group was deployed into.')

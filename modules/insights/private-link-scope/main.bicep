@@ -110,6 +110,7 @@ resource privateLinkScope_roleAssignments 'Microsoft.Authorization/roleAssignmen
     conditionVersion: !empty(roleAssignment.?condition) ? (roleAssignment.?conditionVersion ?? '2.0') : null // Must only be set if condtion is set
     delegatedManagedIdentityResourceId: roleAssignment.?delegatedManagedIdentityResourceId
   }
+  scope: privateLinkScope
 }]
 
 @description('The name of the private link scope.')

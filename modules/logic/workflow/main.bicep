@@ -227,6 +227,7 @@ resource logicApp_roleAssignments 'Microsoft.Authorization/roleAssignments@2022-
     conditionVersion: !empty(roleAssignment.?condition) ? (roleAssignment.?conditionVersion ?? '2.0') : null // Must only be set if condtion is set
     delegatedManagedIdentityResourceId: roleAssignment.?delegatedManagedIdentityResourceId
   }
+  scope: logicApp
 }]
 
 @description('The name of the logic app.')

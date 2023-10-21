@@ -115,6 +115,7 @@ resource netAppAccount_roleAssignments 'Microsoft.Authorization/roleAssignments@
     conditionVersion: !empty(roleAssignment.?condition) ? (roleAssignment.?conditionVersion ?? '2.0') : null // Must only be set if condtion is set
     delegatedManagedIdentityResourceId: roleAssignment.?delegatedManagedIdentityResourceId
   }
+  scope: netAppAccount
 }]
 
 module netAppAccount_capacityPools 'capacity-pool/main.bicep' = [for (capacityPool, index) in capacityPools: {
