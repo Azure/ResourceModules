@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.20.4.51522",
-      "templateHash": "1196918307822554260"
+      "version": "0.22.6.54827",
+      "templateHash": "12428378308583074618"
     },
     "name": "Recovery Services Vault Replication Fabric Replication Protection Containers",
     "description": "This module deploys a Recovery Services Vault Replication Protection Container.\r\n\r\n> **Note**: this version of the module only supports the `instanceType: 'A2A'` scenario.",
@@ -114,8 +114,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.20.4.51522",
-              "templateHash": "2149629411962083695"
+              "version": "0.22.6.54827",
+              "templateHash": "13312155038829056102"
             },
             "name": "Recovery Services Vault Replication Fabric Replication Protection Container Replication Protection Container Mappings",
             "description": "This module deploys a Recovery Services Vault (RSV) Replication Protection Container Mapping.\r\n\r\n> **Note**: this version of the module only supports the `instanceType: 'A2A'` scenario.",

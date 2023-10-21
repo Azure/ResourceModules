@@ -19,33 +19,68 @@ This module deploys a Virtual Hub Virtual Network Connection.
 
 **Required parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The connection name. |
-| `remoteVirtualNetworkId` | string | Resource ID of the virtual network to link to. |
+| [`name`](#parameter-name) | string | The connection name. |
+| [`remoteVirtualNetworkId`](#parameter-remotevirtualnetworkid) | string | Resource ID of the virtual network to link to. |
 
 **Conditional parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `virtualHubName` | string | The name of the parent virtual hub. Required if the template is used in a standalone deployment. |
+| [`virtualHubName`](#parameter-virtualhubname) | string | The name of the parent virtual hub. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `enableInternetSecurity` | bool | `True` | Enable internet security. |
-| `routingConfiguration` | object | `{object}` | Routing Configuration indicating the associated and propagated route tables for this connection. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`enableInternetSecurity`](#parameter-enableinternetsecurity) | bool | Enable internet security. |
+| [`routingConfiguration`](#parameter-routingconfiguration) | object | Routing Configuration indicating the associated and propagated route tables for this connection. |
 
+### Parameter: `enableDefaultTelemetry`
 
-### Parameter Usage: `hubVirtualNetworkConnections`
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
 
-...
+### Parameter: `enableInternetSecurity`
+
+Enable internet security.
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `name`
+
+The connection name.
+- Required: Yes
+- Type: string
+
+### Parameter: `remoteVirtualNetworkId`
+
+Resource ID of the virtual network to link to.
+- Required: Yes
+- Type: string
+
+### Parameter: `routingConfiguration`
+
+Routing Configuration indicating the associated and propagated route tables for this connection.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `virtualHubName`
+
+The name of the parent virtual hub. Required if the template is used in a standalone deployment.
+- Required: Yes
+- Type: string
+
 
 ## Outputs
 
-| Output Name | Type | Description |
+| Output | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the virtual hub connection. |
 | `resourceGroupName` | string | The resource group the virtual hub connection was deployed into. |

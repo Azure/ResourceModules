@@ -5,10 +5,10 @@ This module deploys an Activity Log Alert.
 ## Navigation
 
 - [Resource Types](#Resource-Types)
+- [Usage examples](#Usage-examples)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
-- [Deployment examples](#Deployment-examples)
 
 ## Resource Types
 
@@ -17,418 +17,60 @@ This module deploys an Activity Log Alert.
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Insights/activityLogAlerts` | [2020-10-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2020-10-01/activityLogAlerts) |
 
-## Parameters
+## Usage examples
 
-**Required parameters**
+The following section provides usage examples for the module, which were used to validate and deploy the module successfully. For a full reference, please review the module's test folder in its repository.
 
-| Parameter Name | Type | Description |
-| :-- | :-- | :-- |
-| `conditions` | array | The condition that will cause this alert to activate. Array of objects. |
-| `name` | string | The name of the alert. |
+>**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-**Optional parameters**
+>**Note**: To reference the module, please use the following syntax `br:bicep/modules/insights.activity-log-alert:1.0.0`.
 
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `actions` | array | `[]` | The list of actions to take when alert triggers. |
-| `alertDescription` | string | `''` | Description of the alert. |
-| `enabled` | bool | `True` | Indicates whether this alert is enabled. |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `location` | string | `'global'` | Location for all resources. |
-| `roleAssignments` | array | `[]` | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| `scopes` | array | `[[subscription().id]]` | The list of resource IDs that this Activity Log Alert is scoped to. |
-| `tags` | object | `{object}` | Tags of the resource. |
+- [Using large parameter set](#example-1-using-large-parameter-set)
 
+### Example 1: _Using large parameter set_
 
-### Parameter Usage: actions
+This instance deploys the module with most of its features enabled.
 
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"actions": {
-    "value": [
-        {
-            "actionGroupId": "/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/rgName/providers/Microsoft.Insights/actiongroups/actionGroupName",
-            "webhookProperties": {}
-        }
-    ]
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-actions: [
-    {
-        actionGroupId: '/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/rgName/providers/Microsoft.Insights/actiongroups/actionGroupName'
-        webhookProperties: {}
-    }
-]
-```
-
-</details>
-<p>
-
-`webhookProperties` is optional.
-
-If you do only want to provide actionGroupIds, a shorthand use of the parameter is available.
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"actions": {
-    "value": [
-        "/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/rgName/providers/Microsoft.Insights/actiongroups/actionGroupName"
-    ]
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-actions: [
-    '/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/rgName/providers/Microsoft.Insights/actiongroups/actionGroupName'
-]
-```
-
-</details>
-<p>
-
-### Parameter Usage: conditions
-
-**Conditions can also be combined with logical operators `allOf` and `anyOf`**
-
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-{
-  "field": "string",
-  "equals": "string",
-  "containsAny": "array"
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-{
-    field: 'string'
-    equals: 'string'
-    containsAny: 'array'
-}
-```
-
-</details>
-</p>
-
-Each condition can specify only one field between `equals` and `containsAny`.
-
-| Parameter Name | Type             | Possible values                                                                                                                                                                                                   | Description                                                                                                                             |
-| :------------- | :--------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------- |
-| `field`        | string           | `resourceId`,<br>`category`,<br>`caller`,<br>`level`,<br>`operationName`,<br>`resourceGroup`,<br>`resourceProvider`,<br>`status`,<br>`subStatus`,<br>`resourceType`,<br> or anything beginning with `properties.` | Required. The name of the field that this condition will examine.                                                                       |
-| `equals`       | string           |                                                                                                                                                                                                                   | Optional (Alternative to `containsAny`). The value to confront with.                                                                    |
-| `containsAny`  | array of strings |                                                                                                                                                                                                                   | Optional (Alternative to `equals`). Condition will be satisfied if value of the field in the event is within one of the specified here. |
-
-**Sample**
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"conditions": {
-    "value": [
-        {
-            "field": "category",
-            "equals": "Administrative"
-        },
-        {
-            "field": "resourceType",
-            "equals": "microsoft.compute/virtualmachines"
-        },
-        {
-            "field": "operationName",
-            "equals": "Microsoft.Compute/virtualMachines/performMaintenance/action"
-        }
-    ]
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-conditions: [
-    {
-        field: 'category'
-        equals: 'Administrative'
-    }
-    {
-        field: 'resourceType'
-        equals: 'microsoft.compute/virtualmachines'
-    }
-    {
-        field: 'operationName'
-        equals: 'Microsoft.Compute/virtualMachines/performMaintenance/action'
-    }
-]
-```
-
-</details>
-<p>
-
-**Sample 2**
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"conditions":{
-    "value": [
-        {
-            "field": "category",
-            "equals": "ServiceHealth"
-        },
-        {
-            "anyOf": [
-                {
-                    "field": "properties.incidentType",
-                    "equals": "Incident"
-                },
-                {
-                    "field": "properties.incidentType",
-                    "equals": "Maintenance"
-                }
-            ]
-        },
-        {
-            "field": "properties.impactedServices[*].ServiceName",
-            "containsAny": [
-                "Action Groups",
-                "Activity Logs & Alerts"
-            ]
-        },
-        {
-            "field": "properties.impactedServices[*].ImpactedRegions[*].RegionName",
-            "containsAny": [
-                "West Europe",
-                "Global"
-            ]
-        }
-    ]
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-conditions: [
-    {
-        field: 'category'
-        equals: 'ServiceHealth'
-    }
-    {
-        anyOf: [
-            {
-                field: 'properties.incidentType'
-                equals: 'Incident'
-            }
-            {
-                field: 'properties.incidentType'
-                equals: 'Maintenance'
-            }
-        ]
-    }
-    {
-        field: 'properties.impactedServices[*].ServiceName'
-        containsAny: [
-            'Action Groups'
-            'Activity Logs & Alerts'
-        ]
-    }
-    {
-        field: 'properties.impactedServices[*].ImpactedRegions[*].RegionName'
-        containsAny: [
-            'West Europe'
-            'Global'
-        ]
-    }
-]
-```
-
-</details>
-<p>
-
-### Parameter Usage: `roleAssignments`
-
-Create a role assignment for the given resource. If you want to assign a service principal / managed identity that is created in the same deployment, make sure to also specify the `'principalType'` parameter and set it to `'ServicePrincipal'`. This will ensure the role assignment waits for the principal's propagation in Azure.
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"roleAssignments": {
-    "value": [
-        {
-            "roleDefinitionIdOrName": "Reader",
-            "description": "Reader Role Assignment",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012", // object 1
-                "78945612-1234-1234-1234-123456789012" // object 2
-            ]
-        },
-        {
-            "roleDefinitionIdOrName": "/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012" // object 1
-            ],
-            "principalType": "ServicePrincipal"
-        }
-    ]
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-roleAssignments: [
-    {
-        roleDefinitionIdOrName: 'Reader'
-        description: 'Reader Role Assignment'
-        principalIds: [
-            '12345678-1234-1234-1234-123456789012' // object 1
-            '78945612-1234-1234-1234-123456789012' // object 2
-        ]
-    }
-    {
-        roleDefinitionIdOrName: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'
-        principalIds: [
-            '12345678-1234-1234-1234-123456789012' // object 1
-        ]
-        principalType: 'ServicePrincipal'
-    }
-]
-```
-
-</details>
-<p>
-
-### Parameter Usage: `tags`
-
-Tag names and tag values can be provided as needed. A tag can be left without a value.
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"tags": {
-    "value": {
-        "Environment": "Non-Prod",
-        "Contact": "test.user@testcompany.com",
-        "PurchaseOrder": "1234",
-        "CostCenter": "7890",
-        "ServiceName": "DeploymentValidation",
-        "Role": "DeploymentValidation"
-    }
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-tags: {
-    Environment: 'Non-Prod'
-    Contact: 'test.user@testcompany.com'
-    PurchaseOrder: '1234'
-    CostCenter: '7890'
-    ServiceName: 'DeploymentValidation'
-    Role: 'DeploymentValidation'
-}
-```
-
-</details>
-<p>
-
-## Outputs
-
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of the activity log alert. |
-| `resourceGroupName` | string | The resource group the activity log alert was deployed into. |
-| `resourceId` | string | The resource ID of the activity log alert. |
-
-## Cross-referenced modules
-
-_None_
-
-## Deployment examples
-
-The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
-   >**Note**: The name of each example is based on the name of the file from which it is taken.
-
-   >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
-
-<h3>Example 1: Common</h3>
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module activityLogAlert './insights/activity-log-alert/main.bicep' = {
+module activityLogAlert 'br:bicep/modules/insights.activity-log-alert:1.0.0' = {
   name: '${uniqueString(deployment().name, location)}-test-ialacom'
   params: {
     // Required parameters
     conditions: [
       {
-        equals: 'Administrative'
+        equals: 'ServiceHealth'
         field: 'category'
       }
       {
-        equals: 'microsoft.compute/virtualmachines'
-        field: 'resourceType'
+        anyOf: [
+          {
+            equals: 'Incident'
+            field: 'properties.incidentType'
+          }
+          {
+            equals: 'Maintenance'
+            field: 'properties.incidentType'
+          }
+        ]
       }
       {
-        equals: 'Microsoft.Compute/virtualMachines/performMaintenance/action'
-        field: 'operationName'
+        containsAny: [
+          'Action Groups'
+          'Activity Logs & Alerts'
+        ]
+        field: 'properties.impactedServices[*].ServiceName'
+      }
+      {
+        containsAny: [
+          'Global'
+          'West Europe'
+        ]
+        field: 'properties.impactedServices[*].ImpactedRegions[*].RegionName'
       }
     ]
     name: 'ialacom001'
@@ -476,16 +118,34 @@ module activityLogAlert './insights/activity-log-alert/main.bicep' = {
     "conditions": {
       "value": [
         {
-          "equals": "Administrative",
+          "equals": "ServiceHealth",
           "field": "category"
         },
         {
-          "equals": "microsoft.compute/virtualmachines",
-          "field": "resourceType"
+          "anyOf": [
+            {
+              "equals": "Incident",
+              "field": "properties.incidentType"
+            },
+            {
+              "equals": "Maintenance",
+              "field": "properties.incidentType"
+            }
+          ]
         },
         {
-          "equals": "Microsoft.Compute/virtualMachines/performMaintenance/action",
-          "field": "operationName"
+          "containsAny": [
+            "Action Groups",
+            "Activity Logs & Alerts"
+          ],
+          "field": "properties.impactedServices[*].ServiceName"
+        },
+        {
+          "containsAny": [
+            "Global",
+            "West Europe"
+          ],
+          "field": "properties.impactedServices[*].ImpactedRegions[*].RegionName"
         }
       ]
     },
@@ -532,3 +192,108 @@ module activityLogAlert './insights/activity-log-alert/main.bicep' = {
 
 </details>
 <p>
+
+
+## Parameters
+
+**Required parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`conditions`](#parameter-conditions) | array | An Array of objects containing conditions that will cause this alert to activate. Conditions can also be combined with logical operators `allOf` and `anyOf`. Each condition can specify only one field between `equals` and `containsAny`. An alert rule condition must have exactly one category (Administrative, ServiceHealth, ResourceHealth, Alert, Autoscale, Recommendation, Security, or Policy). |
+| [`name`](#parameter-name) | string | The name of the alert. |
+
+**Optional parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`actions`](#parameter-actions) | array | The list of actions to take when alert triggers. |
+| [`alertDescription`](#parameter-alertdescription) | string | Description of the alert. |
+| [`enabled`](#parameter-enabled) | bool | Indicates whether this alert is enabled. |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`location`](#parameter-location) | string | Location for all resources. |
+| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| [`scopes`](#parameter-scopes) | array | The list of resource IDs that this Activity Log Alert is scoped to. |
+| [`tags`](#parameter-tags) | object | Tags of the resource. |
+
+### Parameter: `actions`
+
+The list of actions to take when alert triggers.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `alertDescription`
+
+Description of the alert.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `conditions`
+
+An Array of objects containing conditions that will cause this alert to activate. Conditions can also be combined with logical operators `allOf` and `anyOf`. Each condition can specify only one field between `equals` and `containsAny`. An alert rule condition must have exactly one category (Administrative, ServiceHealth, ResourceHealth, Alert, Autoscale, Recommendation, Security, or Policy).
+- Required: Yes
+- Type: array
+
+### Parameter: `enabled`
+
+Indicates whether this alert is enabled.
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `location`
+
+Location for all resources.
+- Required: No
+- Type: string
+- Default: `'global'`
+
+### Parameter: `name`
+
+The name of the alert.
+- Required: Yes
+- Type: string
+
+### Parameter: `roleAssignments`
+
+Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `scopes`
+
+The list of resource IDs that this Activity Log Alert is scoped to.
+- Required: No
+- Type: array
+- Default: `[[subscription().id]]`
+
+### Parameter: `tags`
+
+Tags of the resource.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+
+## Outputs
+
+| Output | Type | Description |
+| :-- | :-- | :-- |
+| `location` | string | The location the resource was deployed into. |
+| `name` | string | The name of the activity log alert. |
+| `resourceGroupName` | string | The resource group the activity log alert was deployed into. |
+| `resourceId` | string | The resource ID of the activity log alert. |
+
+## Cross-referenced modules
+
+_None_

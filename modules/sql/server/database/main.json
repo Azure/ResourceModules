@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.20.4.51522",
-      "templateHash": "641387093656497816"
+      "version": "0.22.6.54827",
+      "templateHash": "14921090017328805601"
     },
     "name": "SQL Server Database",
     "description": "This module deploys an Azure SQL Server Database.",
@@ -50,6 +50,18 @@
       "defaultValue": -1,
       "metadata": {
         "description": "Optional. Capacity of the particular SKU."
+      }
+    },
+    "preferredEnclaveType": {
+      "type": "string",
+      "defaultValue": "",
+      "allowedValues": [
+        "",
+        "Default",
+        "VBS"
+      ],
+      "metadata": {
+        "description": "Optional. Type of enclave requested on the database i.e. Default or VBS enclaves."
       }
     },
     "skuFamily": {
@@ -356,11 +368,12 @@
     },
     {
       "type": "Microsoft.Sql/servers/databases",
-      "apiVersion": "2021-11-01",
+      "apiVersion": "2022-05-01-preview",
       "name": "[format('{0}/{1}', parameters('serverName'), parameters('name'))]",
       "location": "[parameters('location')]",
       "tags": "[parameters('tags')]",
       "properties": {
+        "preferredEnclaveType": "[if(not(empty(parameters('preferredEnclaveType'))), parameters('preferredEnclaveType'), null())]",
         "collation": "[parameters('collation')]",
         "maxSizeBytes": "[parameters('maxSizeBytes')]",
         "sampleName": "[parameters('sampleName')]",
@@ -425,8 +438,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.20.4.51522",
-              "templateHash": "2184125360304496486"
+              "version": "0.22.6.54827",
+              "templateHash": "11274542290979624142"
             },
             "name": "Azure SQL Server Database Short Term Backup Retention Policies",
             "description": "This module deploys an Azure SQL Server Database Short-Term Backup Retention Policy.",
@@ -548,8 +561,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.20.4.51522",
-              "templateHash": "9219416659486760074"
+              "version": "0.22.6.54827",
+              "templateHash": "8422402072460240545"
             },
             "name": "SQL Server Database Long Term Backup Retention Policies",
             "description": "This module deploys an Azure SQL Server Database Long-Term Backup Retention Policy.",
@@ -688,7 +701,7 @@
       "metadata": {
         "description": "The location the resource was deployed into."
       },
-      "value": "[reference(resourceId('Microsoft.Sql/servers/databases', parameters('serverName'), parameters('name')), '2021-11-01', 'full').location]"
+      "value": "[reference(resourceId('Microsoft.Sql/servers/databases', parameters('serverName'), parameters('name')), '2022-05-01-preview', 'full').location]"
     }
   }
 }

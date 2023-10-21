@@ -4,115 +4,350 @@ This module deploys a Virtual Network Gateway Connection.
 
 ## Navigation
 
-- [Resource types](#Resource-types)
+- [Resource Types](#Resource-Types)
+- [Usage examples](#Usage-examples)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
-- [Deployment examples](#Deployment-examples)
+- [Notes](#Notes)
 
-## Resource types
+## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Network/connections` | [2023-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-04-01/connections) |
 
+## Usage examples
+
+The following section provides usage examples for the module, which were used to validate and deploy the module successfully. For a full reference, please review the module's test folder in its repository.
+
+>**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
+
+>**Note**: To reference the module, please use the following syntax `br:bicep/modules/network.connection:1.0.0`.
+
+- [Vnet2vnet](#example-1-vnet2vnet)
+
+### Example 1: _Vnet2vnet_
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module connection 'br:bicep/modules/network.connection:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-ncvtv'
+  params: {
+    // Required parameters
+    name: 'ncvtv001'
+    virtualNetworkGateway1: {
+      id: '<id>'
+    }
+    // Non-required parameters
+    connectionType: 'Vnet2Vnet'
+    enableBgp: false
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+    virtualNetworkGateway2: {
+      id: '<id>'
+    }
+    vpnSharedKey: '<vpnSharedKey>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "ncvtv001"
+    },
+    "virtualNetworkGateway1": {
+      "value": {
+        "id": "<id>"
+      }
+    },
+    // Non-required parameters
+    "connectionType": {
+      "value": "Vnet2Vnet"
+    },
+    "enableBgp": {
+      "value": false
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    },
+    "virtualNetworkGateway2": {
+      "value": {
+        "id": "<id>"
+      }
+    },
+    "vpnSharedKey": {
+      "value": "<vpnSharedKey>"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+
 ## Parameters
 
 **Required parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | Remote connection name. |
-| `virtualNetworkGateway1` | object | The primary Virtual Network Gateway. |
+| [`name`](#parameter-name) | string | Remote connection name. |
+| [`virtualNetworkGateway1`](#parameter-virtualnetworkgateway1) | object | The primary Virtual Network Gateway. |
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Allowed Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `authorizationKey` | securestring | `''` |  | The Authorization Key to connect to an Express Route Circuit. Used for connection type [ExpressRoute]. |
-| `connectionMode` | string | `'Default'` | `[Default, InitiatorOnly, ResponderOnly]` | The connection connectionMode for this connection. Available for IPSec connections. |
-| `connectionProtocol` | string | `'IKEv2'` | `[IKEv1, IKEv2]` | Connection connectionProtocol used for this connection. Available for IPSec connections. |
-| `connectionType` | string | `'IPsec'` | `[ExpressRoute, IPsec, Vnet2Vnet, VPNClient]` | Gateway connection connectionType. |
-| `customIPSecPolicy` | object | `{object}` |  | The IPSec Policies to be considered by this connection. |
-| `dpdTimeoutSeconds` | int | `45` |  | The dead peer detection timeout of this connection in seconds. Setting the timeout to shorter periods will cause IKE to rekey more aggressively, causing the connection to appear to be disconnected in some instances. The general recommendation is to set the timeout between 30 to 45 seconds. |
-| `enableBgp` | bool | `False` |  | Value to specify if BGP is enabled or not. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `enablePrivateLinkFastPath` | bool | `False` |  | Bypass the ExpressRoute gateway when accessing private-links. ExpressRoute FastPath (expressRouteGatewayBypass) must be enabled. Only available when connection connectionType is Express Route. |
-| `expressRouteGatewayBypass` | bool | `False` |  | Bypass ExpressRoute Gateway for data forwarding. Only available when connection connectionType is Express Route. |
-| `localNetworkGateway2` | object | `{object}` |  | The local network gateway. Used for connection type [IPsec]. |
-| `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
-| `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the connectionType of lock. |
-| `peer` | object | `{object}` |  | The remote peer. Used for connection connectionType [ExpressRoute]. |
-| `routingWeight` | int | `-1` |  | The weight added to routes learned from this BGP speaker. |
-| `tags` | object | `{object}` |  | Tags of the resource. |
-| `useLocalAzureIpAddress` | bool | `False` |  | Use private local Azure IP for the connection. Only available for IPSec Virtual Network Gateways that use the Azure Private IP Property. |
-| `usePolicyBasedTrafficSelectors` | bool | `False` |  | Enable policy-based traffic selectors. |
-| `virtualNetworkGateway2` | object | `{object}` |  | The remote Virtual Network Gateway. Used for connection connectionType [Vnet2Vnet]. |
-| `vpnSharedKey` | securestring | `''` |  | Specifies a VPN shared key. The same value has to be specified on both Virtual Network Gateways. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`authorizationKey`](#parameter-authorizationkey) | securestring | The Authorization Key to connect to an Express Route Circuit. Used for connection type [ExpressRoute]. |
+| [`connectionMode`](#parameter-connectionmode) | string | The connection connectionMode for this connection. Available for IPSec connections. |
+| [`connectionProtocol`](#parameter-connectionprotocol) | string | Connection connectionProtocol used for this connection. Available for IPSec connections. |
+| [`connectionType`](#parameter-connectiontype) | string | Gateway connection connectionType. |
+| [`customIPSecPolicy`](#parameter-customipsecpolicy) | object | The IPSec Policies to be considered by this connection. |
+| [`dpdTimeoutSeconds`](#parameter-dpdtimeoutseconds) | int | The dead peer detection timeout of this connection in seconds. Setting the timeout to shorter periods will cause IKE to rekey more aggressively, causing the connection to appear to be disconnected in some instances. The general recommendation is to set the timeout between 30 to 45 seconds. |
+| [`enableBgp`](#parameter-enablebgp) | bool | Value to specify if BGP is enabled or not. |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`enablePrivateLinkFastPath`](#parameter-enableprivatelinkfastpath) | bool | Bypass the ExpressRoute gateway when accessing private-links. ExpressRoute FastPath (expressRouteGatewayBypass) must be enabled. Only available when connection connectionType is Express Route. |
+| [`expressRouteGatewayBypass`](#parameter-expressroutegatewaybypass) | bool | Bypass ExpressRoute Gateway for data forwarding. Only available when connection connectionType is Express Route. |
+| [`localNetworkGateway2`](#parameter-localnetworkgateway2) | object | The local network gateway. Used for connection type [IPsec]. |
+| [`location`](#parameter-location) | string | Location for all resources. |
+| [`lock`](#parameter-lock) | object | The lock settings of the service. |
+| [`peer`](#parameter-peer) | object | The remote peer. Used for connection connectionType [ExpressRoute]. |
+| [`routingWeight`](#parameter-routingweight) | int | The weight added to routes learned from this BGP speaker. |
+| [`tags`](#parameter-tags) | object | Tags of the resource. |
+| [`useLocalAzureIpAddress`](#parameter-uselocalazureipaddress) | bool | Use private local Azure IP for the connection. Only available for IPSec Virtual Network Gateways that use the Azure Private IP Property. |
+| [`usePolicyBasedTrafficSelectors`](#parameter-usepolicybasedtrafficselectors) | bool | Enable policy-based traffic selectors. |
+| [`virtualNetworkGateway2`](#parameter-virtualnetworkgateway2) | object | The remote Virtual Network Gateway. Used for connection connectionType [Vnet2Vnet]. |
+| [`vpnSharedKey`](#parameter-vpnsharedkey) | securestring | Specifies a VPN shared key. The same value has to be specified on both Virtual Network Gateways. |
+
+### Parameter: `authorizationKey`
+
+The Authorization Key to connect to an Express Route Circuit. Used for connection type [ExpressRoute].
+- Required: No
+- Type: securestring
+- Default: `''`
+
+### Parameter: `connectionMode`
+
+The connection connectionMode for this connection. Available for IPSec connections.
+- Required: No
+- Type: string
+- Default: `'Default'`
+- Allowed: `[Default, InitiatorOnly, ResponderOnly]`
+
+### Parameter: `connectionProtocol`
+
+Connection connectionProtocol used for this connection. Available for IPSec connections.
+- Required: No
+- Type: string
+- Default: `'IKEv2'`
+- Allowed: `[IKEv1, IKEv2]`
+
+### Parameter: `connectionType`
+
+Gateway connection connectionType.
+- Required: No
+- Type: string
+- Default: `'IPsec'`
+- Allowed: `[ExpressRoute, IPsec, Vnet2Vnet, VPNClient]`
+
+### Parameter: `customIPSecPolicy`
+
+The IPSec Policies to be considered by this connection.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `dpdTimeoutSeconds`
+
+The dead peer detection timeout of this connection in seconds. Setting the timeout to shorter periods will cause IKE to rekey more aggressively, causing the connection to appear to be disconnected in some instances. The general recommendation is to set the timeout between 30 to 45 seconds.
+- Required: No
+- Type: int
+- Default: `45`
+
+### Parameter: `enableBgp`
+
+Value to specify if BGP is enabled or not.
+- Required: No
+- Type: bool
+- Default: `False`
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `enablePrivateLinkFastPath`
+
+Bypass the ExpressRoute gateway when accessing private-links. ExpressRoute FastPath (expressRouteGatewayBypass) must be enabled. Only available when connection connectionType is Express Route.
+- Required: No
+- Type: bool
+- Default: `False`
+
+### Parameter: `expressRouteGatewayBypass`
+
+Bypass ExpressRoute Gateway for data forwarding. Only available when connection connectionType is Express Route.
+- Required: No
+- Type: bool
+- Default: `False`
+
+### Parameter: `localNetworkGateway2`
+
+The local network gateway. Used for connection type [IPsec].
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `location`
+
+Location for all resources.
+- Required: No
+- Type: string
+- Default: `[resourceGroup().location]`
+
+### Parameter: `lock`
+
+The lock settings of the service.
+- Required: No
+- Type: object
 
 
-### Parameter Usage: `virtualNetworkGateway1`
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`kind`](#parameter-lockkind) | No | string | Optional. Specify the type of lock. |
+| [`name`](#parameter-lockname) | No | string | Optional. Specify the name of lock. |
 
-The primary virtual network gateway object.
+### Parameter: `lock.kind`
 
-<details>
+Optional. Specify the type of lock.
 
-<summary>Parameter JSON format</summary>
+- Required: No
+- Type: string
+- Allowed: `[CanNotDelete, None, ReadOnly]`
 
-```json
-"virtualNetworkGateway1": {
-    "value": {
-        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.Network/virtualNetworkGateways/myGateway01"
-    }
-}
-```
+### Parameter: `lock.name`
 
-</details>
+Optional. Specify the name of lock.
 
-<details>
+- Required: No
+- Type: string
 
-<summary>Bicep format</summary>
+### Parameter: `name`
 
-```bicep
-virtualNetworkGateway1: {
-    id: '/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.Network/virtualNetworkGateways/myGateway01'
-}
-```
+Remote connection name.
+- Required: Yes
+- Type: string
 
-</details>
-<p>
+### Parameter: `peer`
 
-### Parameter Usage: `virtualNetworkGateway2`
+The remote peer. Used for connection connectionType [ExpressRoute].
+- Required: No
+- Type: object
+- Default: `{object}`
 
-The secondary virtual network gateway used for VNET to VNET connections.
+### Parameter: `routingWeight`
 
-<details>
+The weight added to routes learned from this BGP speaker.
+- Required: No
+- Type: int
+- Default: `-1`
 
-<summary>Parameter JSON format</summary>
+### Parameter: `tags`
 
-```json
-"virtualNetworkGateway2" : {
-    "value": {
-        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.Network/virtualNetworkGateways/myGateway02"
-    }
-}
-```
+Tags of the resource.
+- Required: No
+- Type: object
+- Default: `{object}`
 
-</details>
+### Parameter: `useLocalAzureIpAddress`
 
-<details>
+Use private local Azure IP for the connection. Only available for IPSec Virtual Network Gateways that use the Azure Private IP Property.
+- Required: No
+- Type: bool
+- Default: `False`
 
-<summary>Bicep format</summary>
+### Parameter: `usePolicyBasedTrafficSelectors`
 
-```bicep
-virtualNetworkGateway2 : {
-    id: '/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.Network/virtualNetworkGateways/myGateway02'
-}
-```
+Enable policy-based traffic selectors.
+- Required: No
+- Type: bool
+- Default: `False`
 
-</details>
-<p>
+### Parameter: `virtualNetworkGateway1`
+
+The primary Virtual Network Gateway.
+- Required: Yes
+- Type: object
+
+### Parameter: `virtualNetworkGateway2`
+
+The remote Virtual Network Gateway. Used for connection connectionType [Vnet2Vnet].
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `vpnSharedKey`
+
+Specifies a VPN shared key. The same value has to be specified on both Virtual Network Gateways.
+- Required: No
+- Type: securestring
+- Default: `''`
+
+
+## Outputs
+
+| Output | Type | Description |
+| :-- | :-- | :-- |
+| `location` | string | The location the resource was deployed into. |
+| `name` | string | The name of the remote connection. |
+| `resourceGroupName` | string | The resource group the remote connection was deployed into. |
+| `resourceId` | string | The resource ID of the remote connection. |
+
+## Cross-referenced modules
+
+_None_
+
+## Notes
 
 ### Parameter Usage: `localNetworkGateway2`
 
@@ -256,156 +491,6 @@ customIPSecPolicy: {
     ikeIntegrity: 'SHA256'
     dhGroup: 'DHGroup14'
     pfsGroup: 'None'
-}
-```
-
-</details>
-<p>
-
-### Parameter Usage: `tags`
-
-Tag names and tag values can be provided as needed. A tag can be left without a value.
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"tags": {
-    "value": {
-        "Environment": "Non-Prod",
-        "Contact": "test.user@testcompany.com",
-        "PurchaseOrder": "1234",
-        "CostCenter": "7890",
-        "ServiceName": "DeploymentValidation",
-        "Role": "DeploymentValidation"
-    }
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-tags: {
-    Environment: 'Non-Prod'
-    Contact: 'test.user@testcompany.com'
-    PurchaseOrder: '1234'
-    CostCenter: '7890'
-    ServiceName: 'DeploymentValidation'
-    Role: 'DeploymentValidation'
-}
-```
-
-</details>
-<p>
-
-## Outputs
-
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of the remote connection. |
-| `resourceGroupName` | string | The resource group the remote connection was deployed into. |
-| `resourceId` | string | The resource ID of the remote connection. |
-
-## Cross-referenced modules
-
-_None_
-
-## Deployment examples
-
-The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
-   >**Note**: The name of each example is based on the name of the file from which it is taken.
-
-   >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
-
-<h3>Example 1: Vnet2vnet</h3>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module connection './network/connection/main.bicep' = {
-  name: '${uniqueString(deployment().name, location)}-test-ncvtv'
-  params: {
-    // Required parameters
-    name: 'ncvtv001'
-    virtualNetworkGateway1: {
-      id: '<id>'
-    }
-    // Non-required parameters
-    connectionType: 'Vnet2Vnet'
-    enableBgp: false
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    lock: 'CanNotDelete'
-    tags: {
-      Environment: 'Non-Prod'
-      'hidden-title': 'This is visible in the resource name'
-      Role: 'DeploymentValidation'
-    }
-    virtualNetworkGateway2: {
-      id: '<id>'
-    }
-    vpnSharedKey: '<vpnSharedKey>'
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "ncvtv001"
-    },
-    "virtualNetworkGateway1": {
-      "value": {
-        "id": "<id>"
-      }
-    },
-    // Non-required parameters
-    "connectionType": {
-      "value": "Vnet2Vnet"
-    },
-    "enableBgp": {
-      "value": false
-    },
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
-    "lock": {
-      "value": "CanNotDelete"
-    },
-    "tags": {
-      "value": {
-        "Environment": "Non-Prod",
-        "hidden-title": "This is visible in the resource name",
-        "Role": "DeploymentValidation"
-      }
-    },
-    "virtualNetworkGateway2": {
-      "value": {
-        "id": "<id>"
-      }
-    },
-    "vpnSharedKey": {
-      "value": "<vpnSharedKey>"
-    }
-  }
 }
 ```
 

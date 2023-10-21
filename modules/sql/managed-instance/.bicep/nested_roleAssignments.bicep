@@ -34,6 +34,8 @@ param conditionVersion string = '2.0'
 param delegatedManagedIdentityResourceId string = ''
 
 var builtInRoleNames = {
+  'App Compliance Automation Administrator': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '0f37683f-2463-46b6-9ce7-9b788b988ba2')
+  'App Compliance Automation Reader': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'ffc6bbe0-e443-4c3b-bf54-26581bb2f78e')
   Contributor: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')
   'Log Analytics Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '92aaf0da-9dab-42b6-94a3-d43ce8d16293')
   'Log Analytics Reader': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '73c42c96-874c-492b-b04d-ab87d138a893')
@@ -56,7 +58,7 @@ var builtInRoleNames = {
   'User Access Administrator': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '18d7d88d-d35e-4fb5-a5c3-7773c20a72d9')
 }
 
-resource managedInstance 'Microsoft.Sql/managedInstances@2022-02-01-preview' existing = {
+resource managedInstance 'Microsoft.Sql/managedInstances@2022-05-01-preview' existing = {
   name: last(split(resourceId, '/'))!
 }
 

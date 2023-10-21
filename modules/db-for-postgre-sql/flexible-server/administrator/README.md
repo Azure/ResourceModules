@@ -19,30 +19,76 @@ This module deploys a DBforPostgreSQL Flexible Server Administrator.
 
 **Required parameters**
 
-| Parameter Name | Type | Allowed Values | Description |
-| :-- | :-- | :-- | :-- |
-| `objectId` | string |  | The objectId of the Active Directory administrator. |
-| `principalName` | string |  | Active Directory administrator principal name. |
-| `principalType` | string | `[Group, ServicePrincipal, Unknown, User]` | The principal type used to represent the type of Active Directory Administrator. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`objectId`](#parameter-objectid) | string | The objectId of the Active Directory administrator. |
+| [`principalName`](#parameter-principalname) | string | Active Directory administrator principal name. |
+| [`principalType`](#parameter-principaltype) | string | The principal type used to represent the type of Active Directory Administrator. |
 
 **Conditional parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `flexibleServerName` | string | The name of the parent PostgreSQL flexible server. Required if the template is used in a standalone deployment. |
+| [`flexibleServerName`](#parameter-flexibleservername) | string | The name of the parent PostgreSQL flexible server. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `location` | string | `[resourceGroup().location]` | Location for all resources. |
-| `tenantId` | string | `[tenant().tenantId]` | The tenantId of the Active Directory administrator. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`location`](#parameter-location) | string | Location for all resources. |
+| [`tenantId`](#parameter-tenantid) | string | The tenantId of the Active Directory administrator. |
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `flexibleServerName`
+
+The name of the parent PostgreSQL flexible server. Required if the template is used in a standalone deployment.
+- Required: Yes
+- Type: string
+
+### Parameter: `location`
+
+Location for all resources.
+- Required: No
+- Type: string
+- Default: `[resourceGroup().location]`
+
+### Parameter: `objectId`
+
+The objectId of the Active Directory administrator.
+- Required: Yes
+- Type: string
+
+### Parameter: `principalName`
+
+Active Directory administrator principal name.
+- Required: Yes
+- Type: string
+
+### Parameter: `principalType`
+
+The principal type used to represent the type of Active Directory Administrator.
+- Required: Yes
+- Type: string
+- Allowed: `[Group, ServicePrincipal, Unknown, User]`
+
+### Parameter: `tenantId`
+
+The tenantId of the Active Directory administrator.
+- Required: No
+- Type: string
+- Default: `[tenant().tenantId]`
 
 
 ## Outputs
 
-| Output Name | Type | Description |
+| Output | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the deployed administrator. |
 | `resourceGroupName` | string | The resource group of the deployed administrator. |

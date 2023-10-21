@@ -8,13 +8,8 @@ param name string
 @description('Optional. Location for all Resources.')
 param location string = resourceGroup().location
 
-@allowed([
-  ''
-  'CanNotDelete'
-  'ReadOnly'
-])
-@description('Optional. Specify the type of lock.')
-param lock string = ''
+@description('Optional. The lock settings of the service.')
+param lock lockType
 
 @description('Optional. Tags to be applied on all resources/resource groups in this deployment.')
 param tags object = {}
@@ -25,7 +20,7 @@ param extendedLocation object = {}
 @description('Optional. The auto-approval list of the private link service.')
 param autoApproval object = {}
 
-@description('Optional. Whether the private link service is enabled for proxy protocol or not.')
+@description('Optional. Lets the service provider use tcp proxy v2 to retrieve connection information about the service consumer. Service Provider is responsible for setting up receiver configs to be able to parse the proxy protocol v2 header.')
 param enableProxyProtocol bool = false
 
 @description('Optional. The list of Fqdn.')
@@ -34,10 +29,10 @@ param fqdns array = []
 @description('Optional. An array of private link service IP configurations.')
 param ipConfigurations array = []
 
-@description('Optional. An array of references to the load balancer IP configurations.')
+@description('Optional. An array of references to the load balancer IP configurations. The Private Link service is tied to the frontend IP address of a Standard Load Balancer. All traffic destined for the service will reach the frontend of the SLB. You can configure SLB rules to direct this traffic to appropriate backend pools where your applications are running. Load balancer frontend IP configurations are different than NAT IP configurations.')
 param loadBalancerFrontendIpConfigurations array = []
 
-@description('Optional. The visibility list of the private link service.')
+@description('Optional. Controls the exposure settings for your Private Link service. Service providers can choose to limit the exposure to their service to subscriptions with Azure role-based access control (Azure RBAC) permissions, a restricted set of subscriptions, or all Azure subscriptions.')
 param visibility object = {}
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
@@ -73,11 +68,11 @@ resource privateLinkService 'Microsoft.Network/privateLinkServices@2022-11-01' =
   }
 }
 
-resource privateLinkService_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
-  name: '${privateLinkService.name}-${lock}-lock'
+resource privateLinkService_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock ?? {}) && lock.?kind != 'None') {
+  name: lock.?name ?? 'lock-${name}'
   properties: {
-    level: any(lock)
-    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+    level: lock.?kind ?? ''
+    notes: lock.?kind == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot delete or modify the resource or child resources.'
   }
   scope: privateLinkService
 }
@@ -106,3 +101,15 @@ output name string = privateLinkService.name
 
 @description('The location the resource was deployed into.')
 output location string = privateLinkService.location
+
+// =============== //
+//   Definitions   //
+// =============== //
+
+type lockType = {
+  @description('Optional. Specify the name of lock.')
+  name: string?
+
+  @description('Optional. Specify the type of lock.')
+  kind: ('CanNotDelete' | 'ReadOnly' | 'None')?
+}?

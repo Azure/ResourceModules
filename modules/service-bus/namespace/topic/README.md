@@ -15,106 +15,185 @@ This module deploys a Service Bus Namespace Topic.
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.ServiceBus/namespaces/topics` | [2021-06-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2021-06-01-preview/namespaces/topics) |
-| `Microsoft.ServiceBus/namespaces/topics/authorizationRules` | [2021-06-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2021-06-01-preview/namespaces/topics/authorizationRules) |
+| `Microsoft.ServiceBus/namespaces/topics` | [2022-10-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2022-10-01-preview/namespaces/topics) |
+| `Microsoft.ServiceBus/namespaces/topics/authorizationRules` | [2022-10-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2022-10-01-preview/namespaces/topics/authorizationRules) |
 
 ## Parameters
 
 **Required parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | Name of the Service Bus Topic. |
+| [`name`](#parameter-name) | string | Name of the Service Bus Topic. |
 
 **Conditional parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `namespaceName` | string | The name of the parent Service Bus Namespace for the Service Bus Topic. Required if the template is used in a standalone deployment. |
+| [`namespaceName`](#parameter-namespacename) | string | The name of the parent Service Bus Namespace for the Service Bus Topic. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Allowed Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `authorizationRules` | array | `[System.Management.Automation.OrderedHashtable]` |  | Authorization Rules for the Service Bus Topic. |
-| `autoDeleteOnIdle` | string | `'PT5M'` |  | ISO 8601 timespan idle interval after which the topic is automatically deleted. The minimum duration is 5 minutes. |
-| `defaultMessageTimeToLive` | string | `'P14D'` |  | ISO 8601 default message timespan to live value. This is the duration after which the message expires, starting from when the message is sent to Service Bus. This is the default value used when TimeToLive is not set on a message itself. |
-| `duplicateDetectionHistoryTimeWindow` | string | `'PT10M'` |  | ISO 8601 timeSpan structure that defines the duration of the duplicate detection history. The default value is 10 minutes. |
-| `enableBatchedOperations` | bool | `True` |  | Value that indicates whether server-side batched operations are enabled. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `enableExpress` | bool | `False` |  | A value that indicates whether Express Entities are enabled. An express topic holds a message in memory temporarily before writing it to persistent storage. |
-| `enablePartitioning` | bool | `False` |  | A value that indicates whether the topic is to be partitioned across multiple message brokers. |
-| `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
-| `maxMessageSizeInKilobytes` | int | `1024` |  | Maximum size (in KB) of the message payload that can be accepted by the topic. This property is only used in Premium today and default is 1024. |
-| `maxSizeInMegabytes` | int | `1024` |  | The maximum size of the topic in megabytes, which is the size of memory allocated for the topic. Default is 1024. |
-| `requiresDuplicateDetection` | bool | `False` |  | A value indicating if this topic requires duplicate detection. |
-| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| `status` | string | `'Active'` | `[Active, Creating, Deleting, Disabled, ReceiveDisabled, Renaming, Restoring, SendDisabled, Unknown]` | Enumerates the possible values for the status of a messaging entity. - Active, Disabled, Restoring, SendDisabled, ReceiveDisabled, Creating, Deleting, Renaming, Unknown. |
-| `supportOrdering` | bool | `False` |  | Value that indicates whether the topic supports ordering. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`authorizationRules`](#parameter-authorizationrules) | array | Authorization Rules for the Service Bus Topic. |
+| [`autoDeleteOnIdle`](#parameter-autodeleteonidle) | string | ISO 8601 timespan idle interval after which the topic is automatically deleted. The minimum duration is 5 minutes. |
+| [`defaultMessageTimeToLive`](#parameter-defaultmessagetimetolive) | string | ISO 8601 default message timespan to live value. This is the duration after which the message expires, starting from when the message is sent to Service Bus. This is the default value used when TimeToLive is not set on a message itself. |
+| [`duplicateDetectionHistoryTimeWindow`](#parameter-duplicatedetectionhistorytimewindow) | string | ISO 8601 timeSpan structure that defines the duration of the duplicate detection history. The default value is 10 minutes. |
+| [`enableBatchedOperations`](#parameter-enablebatchedoperations) | bool | Value that indicates whether server-side batched operations are enabled. |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`enableExpress`](#parameter-enableexpress) | bool | A value that indicates whether Express Entities are enabled. An express topic holds a message in memory temporarily before writing it to persistent storage. |
+| [`enablePartitioning`](#parameter-enablepartitioning) | bool | A value that indicates whether the topic is to be partitioned across multiple message brokers. |
+| [`lock`](#parameter-lock) | object | The lock settings of the service. |
+| [`maxMessageSizeInKilobytes`](#parameter-maxmessagesizeinkilobytes) | int | Maximum size (in KB) of the message payload that can be accepted by the topic. This property is only used in Premium today and default is 1024. |
+| [`maxSizeInMegabytes`](#parameter-maxsizeinmegabytes) | int | The maximum size of the topic in megabytes, which is the size of memory allocated for the topic. Default is 1024. |
+| [`requiresDuplicateDetection`](#parameter-requiresduplicatedetection) | bool | A value indicating if this topic requires duplicate detection. |
+| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| [`status`](#parameter-status) | string | Enumerates the possible values for the status of a messaging entity. - Active, Disabled, Restoring, SendDisabled, ReceiveDisabled, Creating, Deleting, Renaming, Unknown. |
+| [`supportOrdering`](#parameter-supportordering) | bool | Value that indicates whether the topic supports ordering. |
+
+### Parameter: `authorizationRules`
+
+Authorization Rules for the Service Bus Topic.
+- Required: No
+- Type: array
+- Default: `[System.Management.Automation.OrderedHashtable]`
+
+### Parameter: `autoDeleteOnIdle`
+
+ISO 8601 timespan idle interval after which the topic is automatically deleted. The minimum duration is 5 minutes.
+- Required: No
+- Type: string
+- Default: `'PT5M'`
+
+### Parameter: `defaultMessageTimeToLive`
+
+ISO 8601 default message timespan to live value. This is the duration after which the message expires, starting from when the message is sent to Service Bus. This is the default value used when TimeToLive is not set on a message itself.
+- Required: No
+- Type: string
+- Default: `'P14D'`
+
+### Parameter: `duplicateDetectionHistoryTimeWindow`
+
+ISO 8601 timeSpan structure that defines the duration of the duplicate detection history. The default value is 10 minutes.
+- Required: No
+- Type: string
+- Default: `'PT10M'`
+
+### Parameter: `enableBatchedOperations`
+
+Value that indicates whether server-side batched operations are enabled.
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `enableExpress`
+
+A value that indicates whether Express Entities are enabled. An express topic holds a message in memory temporarily before writing it to persistent storage.
+- Required: No
+- Type: bool
+- Default: `False`
+
+### Parameter: `enablePartitioning`
+
+A value that indicates whether the topic is to be partitioned across multiple message brokers.
+- Required: No
+- Type: bool
+- Default: `False`
+
+### Parameter: `lock`
+
+The lock settings of the service.
+- Required: No
+- Type: object
 
 
-### Parameter Usage: `roleAssignments`
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`kind`](#parameter-lockkind) | No | string | Optional. Specify the type of lock. |
+| [`name`](#parameter-lockname) | No | string | Optional. Specify the name of lock. |
 
-Create a role assignment for the given resource. If you want to assign a service principal / managed identity that is created in the same deployment, make sure to also specify the `'principalType'` parameter and set it to `'ServicePrincipal'`. This will ensure the role assignment waits for the principal's propagation in Azure.
+### Parameter: `lock.kind`
 
-<details>
+Optional. Specify the type of lock.
 
-<summary>Parameter JSON format</summary>
+- Required: No
+- Type: string
+- Allowed: `[CanNotDelete, None, ReadOnly]`
 
-```json
-"roleAssignments": {
-    "value": [
-        {
-            "roleDefinitionIdOrName": "Reader",
-            "description": "Reader Role Assignment",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012", // object 1
-                "78945612-1234-1234-1234-123456789012" // object 2
-            ]
-        },
-        {
-            "roleDefinitionIdOrName": "/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012" // object 1
-            ],
-            "principalType": "ServicePrincipal"
-        }
-    ]
-}
-```
+### Parameter: `lock.name`
 
-</details>
+Optional. Specify the name of lock.
 
-<details>
+- Required: No
+- Type: string
 
-<summary>Bicep format</summary>
+### Parameter: `maxMessageSizeInKilobytes`
 
-```bicep
-roleAssignments: [
-    {
-        roleDefinitionIdOrName: 'Reader'
-        description: 'Reader Role Assignment'
-        principalIds: [
-            '12345678-1234-1234-1234-123456789012' // object 1
-            '78945612-1234-1234-1234-123456789012' // object 2
-        ]
-    }
-    {
-        roleDefinitionIdOrName: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'
-        principalIds: [
-            '12345678-1234-1234-1234-123456789012' // object 1
-        ]
-        principalType: 'ServicePrincipal'
-    }
-]
-```
+Maximum size (in KB) of the message payload that can be accepted by the topic. This property is only used in Premium today and default is 1024.
+- Required: No
+- Type: int
+- Default: `1024`
 
-</details>
-<p>
+### Parameter: `maxSizeInMegabytes`
+
+The maximum size of the topic in megabytes, which is the size of memory allocated for the topic. Default is 1024.
+- Required: No
+- Type: int
+- Default: `1024`
+
+### Parameter: `name`
+
+Name of the Service Bus Topic.
+- Required: Yes
+- Type: string
+
+### Parameter: `namespaceName`
+
+The name of the parent Service Bus Namespace for the Service Bus Topic. Required if the template is used in a standalone deployment.
+- Required: Yes
+- Type: string
+
+### Parameter: `requiresDuplicateDetection`
+
+A value indicating if this topic requires duplicate detection.
+- Required: No
+- Type: bool
+- Default: `False`
+
+### Parameter: `roleAssignments`
+
+Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `status`
+
+Enumerates the possible values for the status of a messaging entity. - Active, Disabled, Restoring, SendDisabled, ReceiveDisabled, Creating, Deleting, Renaming, Unknown.
+- Required: No
+- Type: string
+- Default: `'Active'`
+- Allowed: `[Active, Creating, Deleting, Disabled, ReceiveDisabled, Renaming, Restoring, SendDisabled, Unknown]`
+
+### Parameter: `supportOrdering`
+
+Value that indicates whether the topic supports ordering.
+- Required: No
+- Type: bool
+- Default: `False`
+
 
 ## Outputs
 
-| Output Name | Type | Description |
+| Output | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the deployed topic. |
 | `resourceGroupName` | string | The resource group of the deployed topic. |

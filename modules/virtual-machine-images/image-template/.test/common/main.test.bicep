@@ -1,5 +1,8 @@
 targetScope = 'subscription'
 
+metadata name = 'Using large parameter set'
+metadata description = 'This instance deploys the module with most of its features enabled.'
+
 // ========== //
 // Parameters //
 // ========== //
@@ -83,7 +86,10 @@ module testDeployment '../../main.bicep' = {
     }
     buildTimeoutInMinutes: 60
     imageReplicationRegions: []
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     managedImageName: '${namePrefix}-mi-${serviceShort}-001'
     osDiskSizeGB: 127
     roleAssignments: [

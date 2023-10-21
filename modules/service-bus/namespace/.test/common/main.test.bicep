@@ -1,5 +1,8 @@
 targetScope = 'subscription'
 
+metadata name = 'Using large parameter set'
+metadata description = 'This instance deploys the module with most of its features enabled.'
+
 // ========== //
 // Parameters //
 // ========== //
@@ -64,8 +67,14 @@ module testDeployment '../../main.bicep' = {
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '${namePrefix}${serviceShort}001'
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     skuName: 'Premium'
+    skuCapacity: 2
+    premiumMessagingPartitions: 1
+    zoneRedundant: true
     tags: {
       'hidden-title': 'This is visible in the resource name'
       Environment: 'Non-Prod'
@@ -146,6 +155,8 @@ module testDeployment '../../main.bicep' = {
             ]
           }
         ]
+        autoDeleteOnIdle: 'PT5M'
+        maxMessageSizeInKilobytes: 2048
       }
     ]
     topics: [
@@ -187,11 +198,9 @@ module testDeployment '../../main.bicep' = {
       {
         service: 'namespace'
         subnetResourceId: nestedDependencies.outputs.subnetResourceId
-        privateDnsZoneGroup: {
-          privateDNSResourceIds: [
-            nestedDependencies.outputs.privateDNSZoneResourceId
-          ]
-        }
+        privateDnsZoneResourceIds: [
+          nestedDependencies.outputs.privateDNSZoneResourceId
+        ]
         tags: {
           'hidden-title': 'This is visible in the resource name'
           Environment: 'Non-Prod'
@@ -203,5 +212,8 @@ module testDeployment '../../main.bicep' = {
     userAssignedIdentities: {
       '${nestedDependencies.outputs.managedIdentityResourceId}': {}
     }
+    disableLocalAuth: true
+    publicNetworkAccess: 'Enabled'
+    minimumTlsVersion: '1.2'
   }
 }

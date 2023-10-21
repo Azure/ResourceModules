@@ -132,7 +132,7 @@ output subnetResourceId string = virtualNetwork.properties.subnets[0].id
 output managedIdentityPrincipalResourceId string = managedIdentity.properties.principalId
 
 @description('The resource ID of the created Private DNS Zone.')
-output privateDNSResourceId string = privateDNSZone.id
+output privateDNSZoneResourceId string = privateDNSZone.id
 
 @description('The name of the Event Hub Namespace.')
 output eventhubNamespaceName string = eventHubNamespace.name

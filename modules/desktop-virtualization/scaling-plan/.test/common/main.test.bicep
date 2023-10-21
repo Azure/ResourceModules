@@ -1,5 +1,8 @@
 targetScope = 'subscription'
 
+metadata name = 'Using large parameter set'
+metadata description = 'This instance deploys the module with most of its features enabled.'
+
 // ========== //
 // Parameters //
 // ========== //
@@ -84,5 +87,44 @@ module testDeployment '../../main.bicep' = {
     hostPoolType: 'Pooled'
     friendlyName: 'My Scaling Plan'
     description: 'My Scaling Plan Description'
+    schedules: [ {
+        rampUpStartTime: {
+          hour: 7
+          minute: 0
+        }
+        peakStartTime: {
+          hour: 9
+          minute: 0
+        }
+        rampDownStartTime: {
+          hour: 18
+          minute: 0
+        }
+        offPeakStartTime: {
+          hour: 20
+          minute: 0
+        }
+        name: 'weekdays_schedule'
+        daysOfWeek: [
+          'Monday'
+          'Tuesday'
+          'Wednesday'
+          'Thursday'
+          'Friday'
+        ]
+        rampUpLoadBalancingAlgorithm: 'DepthFirst'
+        rampUpMinimumHostsPct: 20
+        rampUpCapacityThresholdPct: 60
+        peakLoadBalancingAlgorithm: 'DepthFirst'
+        rampDownLoadBalancingAlgorithm: 'DepthFirst'
+        rampDownMinimumHostsPct: 10
+        rampDownCapacityThresholdPct: 90
+        rampDownForceLogoffUsers: true
+        rampDownWaitTimeMinutes: 30
+        rampDownNotificationMessage: 'You will be logged off in 30 min. Make sure to save your work.'
+        rampDownStopHostsWhen: 'ZeroSessions'
+        offPeakLoadBalancingAlgorithm: 'DepthFirst'
+      }
+    ]
   }
 }

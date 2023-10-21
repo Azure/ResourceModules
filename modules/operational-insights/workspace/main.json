@@ -1,15 +1,43 @@
 {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "languageVersion": "2.0",
   "contentVersion": "1.0.0.0",
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.21.1.54444",
-      "templateHash": "10794410731370898440"
+      "version": "0.22.6.54827",
+      "templateHash": "8781060608655801013"
     },
     "name": "Log Analytics Workspaces",
     "description": "This module deploys a Log Analytics Workspace.",
     "owner": "Azure/module-maintainers"
+  },
+  "definitions": {
+    "lockType": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Specify the name of lock."
+          }
+        },
+        "kind": {
+          "type": "string",
+          "allowedValues": [
+            "CanNotDelete",
+            "None",
+            "ReadOnly"
+          ],
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Specify the type of lock."
+          }
+        }
+      },
+      "nullable": true
+    }
   },
   "parameters": {
     "name": {
@@ -203,15 +231,9 @@
       }
     },
     "lock": {
-      "type": "string",
-      "defaultValue": "",
-      "allowedValues": [
-        "",
-        "CanNotDelete",
-        "ReadOnly"
-      ],
+      "$ref": "#/definitions/lockType",
       "metadata": {
-        "description": "Optional. Specify the type of lock."
+        "description": "Optional. The lock settings of the service."
       }
     },
     "roleAssignments": {
@@ -295,8 +317,8 @@
     "identityType": "[if(parameters('systemAssignedIdentity'), 'SystemAssigned', if(not(empty(parameters('userAssignedIdentities'))), 'UserAssigned', 'None'))]",
     "identity": "[if(not(equals(variables('identityType'), 'None')), createObject('type', variables('identityType'), 'userAssignedIdentities', if(not(empty(parameters('userAssignedIdentities'))), parameters('userAssignedIdentities'), null())), null())]"
   },
-  "resources": [
-    {
+  "resources": {
+    "defaultTelemetry": {
       "condition": "[parameters('enableDefaultTelemetry')]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2021-04-01",
@@ -310,7 +332,7 @@
         }
       }
     },
-    {
+    "logAnalyticsWorkspace": {
       "type": "Microsoft.OperationalInsights/workspaces",
       "apiVersion": "2022-10-01",
       "name": "[parameters('name')]",
@@ -335,7 +357,7 @@
       },
       "identity": "[variables('identity')]"
     },
-    {
+    "logAnalyticsWorkspace_diagnosticSettings": {
       "condition": "[or(or(or(not(empty(parameters('diagnosticStorageAccountId'))), not(empty(parameters('diagnosticWorkspaceId')))), not(empty(parameters('diagnosticEventHubAuthorizationRuleId')))), not(empty(parameters('diagnosticEventHubName'))))]",
       "type": "Microsoft.Insights/diagnosticSettings",
       "apiVersion": "2021-05-01-preview",
@@ -350,24 +372,24 @@
         "logs": "[variables('diagnosticsLogs')]"
       },
       "dependsOn": [
-        "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('name'))]"
+        "logAnalyticsWorkspace"
       ]
     },
-    {
-      "condition": "[not(empty(parameters('lock')))]",
+    "logAnalyticsWorkspace_lock": {
+      "condition": "[and(not(empty(coalesce(parameters('lock'), createObject()))), not(equals(tryGet(parameters('lock'), 'kind'), 'None')))]",
       "type": "Microsoft.Authorization/locks",
       "apiVersion": "2020-05-01",
       "scope": "[format('Microsoft.OperationalInsights/workspaces/{0}', parameters('name'))]",
-      "name": "[format('{0}-{1}-lock', parameters('name'), parameters('lock'))]",
+      "name": "[coalesce(tryGet(parameters('lock'), 'name'), format('lock-{0}', parameters('name')))]",
       "properties": {
-        "level": "[parameters('lock')]",
-        "notes": "[if(equals(parameters('lock'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot modify the resource or child resources.')]"
+        "level": "[coalesce(tryGet(parameters('lock'), 'kind'), '')]",
+        "notes": "[if(equals(tryGet(parameters('lock'), 'kind'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot delete or modify the resource or child resources.')]"
       },
       "dependsOn": [
-        "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('name'))]"
+        "logAnalyticsWorkspace"
       ]
     },
-    {
+    "logAnalyticsWorkspace_storageInsightConfigs": {
       "copy": {
         "name": "logAnalyticsWorkspace_storageInsightConfigs",
         "count": "[length(parameters('storageInsightsConfigs'))]"
@@ -399,8 +421,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "6875862134545079569"
+              "version": "0.22.6.54827",
+              "templateHash": "6643427484780531502"
             },
             "name": "Log Analytics Workspace Storage Insight Configs",
             "description": "This module deploys a Log Analytics Workspace Storage Insight Config.",
@@ -511,10 +533,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('name'))]"
+        "logAnalyticsWorkspace"
       ]
     },
-    {
+    "logAnalyticsWorkspace_linkedServices": {
       "copy": {
         "name": "logAnalyticsWorkspace_linkedServices",
         "count": "[length(parameters('linkedServices'))]"
@@ -546,8 +568,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "7090165993767697446"
+              "version": "0.22.6.54827",
+              "templateHash": "15022791045507209174"
             },
             "name": "Log Analytics Workspace Linked Services",
             "description": "This module deploys a Log Analytics Workspace Linked Service.",
@@ -647,10 +669,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('name'))]"
+        "logAnalyticsWorkspace"
       ]
     },
-    {
+    "logAnalyticsWorkspace_linkedStorageAccounts": {
       "copy": {
         "name": "logAnalyticsWorkspace_linkedStorageAccounts",
         "count": "[length(parameters('linkedStorageAccounts'))]"
@@ -683,8 +705,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "4972790707212258352"
+              "version": "0.22.6.54827",
+              "templateHash": "2117697022066188694"
             },
             "name": "Log Analytics Workspace Linked Storage Accounts",
             "description": "This module deploys a Log Analytics Workspace Linked Storage Account.",
@@ -775,10 +797,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('name'))]"
+        "logAnalyticsWorkspace"
       ]
     },
-    {
+    "logAnalyticsWorkspace_savedSearches": {
       "copy": {
         "name": "logAnalyticsWorkspace_savedSearches",
         "count": "[length(parameters('savedSearches'))]"
@@ -821,8 +843,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "8574189144245494701"
+              "version": "0.22.6.54827",
+              "templateHash": "12667331360871593591"
             },
             "name": "Log Analytics Workspace Saved Searches",
             "description": "This module deploys a Log Analytics Workspace Saved Search.",
@@ -959,11 +981,11 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('name'))]",
+        "logAnalyticsWorkspace",
         "logAnalyticsWorkspace_linkedStorageAccounts"
       ]
     },
-    {
+    "logAnalyticsWorkspace_dataExports": {
       "copy": {
         "name": "logAnalyticsWorkspace_dataExports",
         "count": "[length(parameters('dataExports'))]"
@@ -996,8 +1018,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "13008977267947771049"
+              "version": "0.22.6.54827",
+              "templateHash": "7753879701724594327"
             },
             "name": "Log Analytics Workspace Data Exports",
             "description": "This module deploys a Log Analytics Workspace Data Export.",
@@ -1099,10 +1121,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('name'))]"
+        "logAnalyticsWorkspace"
       ]
     },
-    {
+    "logAnalyticsWorkspace_dataSources": {
       "copy": {
         "name": "logAnalyticsWorkspace_dataSources",
         "count": "[length(parameters('dataSources'))]"
@@ -1146,8 +1168,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "17869715776960241714"
+              "version": "0.22.6.54827",
+              "templateHash": "7994060758159745935"
             },
             "name": "Log Analytics Workspace Datasources",
             "description": "This module deploys a Log Analytics Workspace Data Source.",
@@ -1337,10 +1359,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('name'))]"
+        "logAnalyticsWorkspace"
       ]
     },
-    {
+    "logAnalyticsWorkspace_tables": {
       "copy": {
         "name": "logAnalyticsWorkspace_tables",
         "count": "[length(parameters('tables'))]"
@@ -1376,8 +1398,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "13305914804653693951"
+              "version": "0.22.6.54827",
+              "templateHash": "9983426146462646968"
             },
             "name": "Log Analytics Workspace Tables",
             "description": "This module deploys a Log Analytics Workspace Table.",
@@ -1509,10 +1531,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('name'))]"
+        "logAnalyticsWorkspace"
       ]
     },
-    {
+    "logAnalyticsWorkspace_solutions": {
       "copy": {
         "name": "logAnalyticsWorkspace_solutions",
         "count": "[length(parameters('gallerySolutions'))]"
@@ -1548,8 +1570,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "9052763253522380709"
+              "version": "0.22.6.54827",
+              "templateHash": "2318608107759137473"
             },
             "name": "Operations Management Solutions",
             "description": "This module deploys an Operations Management Solution.",
@@ -1665,10 +1687,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('name'))]"
+        "logAnalyticsWorkspace"
       ]
     },
-    {
+    "logAnalyticsWorkspace_roleAssignments": {
       "copy": {
         "name": "logAnalyticsWorkspace_roleAssignments",
         "count": "[length(parameters('roleAssignments'))]"
@@ -1702,8 +1724,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "3735355062180278453"
+              "version": "0.22.6.54827",
+              "templateHash": "17191832464911210338"
             }
           },
           "parameters": {
@@ -1821,10 +1843,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('name'))]"
+        "logAnalyticsWorkspace"
       ]
     }
-  ],
+  },
   "outputs": {
     "resourceId": {
       "type": "string",
@@ -1852,21 +1874,21 @@
       "metadata": {
         "description": "The ID associated with the workspace."
       },
-      "value": "[reference(resourceId('Microsoft.OperationalInsights/workspaces', parameters('name')), '2022-10-01').customerId]"
+      "value": "[reference('logAnalyticsWorkspace').customerId]"
     },
     "location": {
       "type": "string",
       "metadata": {
         "description": "The location the resource was deployed into."
       },
-      "value": "[reference(resourceId('Microsoft.OperationalInsights/workspaces', parameters('name')), '2022-10-01', 'full').location]"
+      "value": "[reference('logAnalyticsWorkspace', '2022-10-01', 'full').location]"
     },
     "systemAssignedIdentityPrincipalId": {
       "type": "string",
       "metadata": {
         "description": "The principal ID of the system assigned identity."
       },
-      "value": "[if(and(parameters('systemAssignedIdentity'), contains(reference(resourceId('Microsoft.OperationalInsights/workspaces', parameters('name')), '2022-10-01', 'full').identity, 'principalId')), reference(resourceId('Microsoft.OperationalInsights/workspaces', parameters('name')), '2022-10-01', 'full').identity.principalId, '')]"
+      "value": "[if(and(parameters('systemAssignedIdentity'), contains(reference('logAnalyticsWorkspace', '2022-10-01', 'full').identity, 'principalId')), reference('logAnalyticsWorkspace', '2022-10-01', 'full').identity.principalId, '')]"
     }
   }
 }

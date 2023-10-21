@@ -10,13 +10,8 @@ param name string
 @description('Optional. Location of the Resource Group. It uses the deployment\'s location when not provided.')
 param location string = deployment().location
 
-@allowed([
-  ''
-  'CanNotDelete'
-  'ReadOnly'
-])
-@description('Optional. Specify the type of lock.')
-param lock string = ''
+@description('Optional. The lock settings of the service.')
+param lock lockType
 
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
@@ -51,11 +46,11 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   properties: {}
 }
 
-module resourceGroup_lock '../../authorization/lock/resource-group/main.bicep' = if (!empty(lock)) {
-  name: '${uniqueString(deployment().name, location)}-${lock}-Lock'
+module resourceGroup_lock '.bicep/nested_lock.bicep' = if (!empty(lock ?? {}) && lock.?kind != 'None') {
+  name: '${uniqueString(deployment().name, location)}-RG-Lock'
   params: {
-    level: any(lock)
-    name: '${resourceGroup.name}-${lock}-lock'
+    lock: lock
+    name: resourceGroup.name
   }
   scope: resourceGroup
 }
@@ -81,3 +76,15 @@ output resourceId string = resourceGroup.id
 
 @description('The location the resource was deployed into.')
 output location string = resourceGroup.location
+
+// =============== //
+//   Definitions   //
+// =============== //
+
+type lockType = {
+  @description('Optional. Specify the name of lock.')
+  name: string?
+
+  @description('Optional. Specify the type of lock.')
+  kind: ('CanNotDelete' | 'ReadOnly' | 'None')?
+}?

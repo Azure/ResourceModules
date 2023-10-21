@@ -35,7 +35,7 @@ function Get-UniversalArtifactsName {
 
     if ($UseApiSpecsAlignedName) {
         # Load helper script
-        . (Join-Path (Get-Item -Path $PSScriptRoot).Parent.Parent 'tools' 'helper' 'Get-SpecsAlignedResourceName.ps1')
+        . (Join-Path (Get-Item -Path $PSScriptRoot).Parent.Parent 'pipelines' 'sharedScripts' 'helper' 'Get-SpecsAlignedResourceName.ps1')
         $universalPackageModuleName = Get-SpecsAlignedResourceName -ResourceIdentifier $universalPackageModuleName
     }
 

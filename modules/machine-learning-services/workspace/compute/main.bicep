@@ -31,7 +31,7 @@ param sku string = ''
 @sys.description('Optional. Contains resource tags defined as key-value pairs. Ignored when attaching a compute resource, i.e. when you provide a resource ID.')
 param tags object = {}
 
-@sys.description('Optional. Flag to specify whether to deploy the compute. Required only for attach (i.e. providing a resource ID), as in this case the operation is not idempontent, i.e. a second deployment will fail. Therefore, this flag needs to be set to "false" as long as the compute resource exists.')
+@sys.description('Optional. Flag to specify whether to deploy the compute. Required only for attach (i.e. providing a resource ID), as in this case the operation is not idempotent, i.e. a second deployment will fail. Therefore, this flag needs to be set to "false" as long as the compute resource exists.')
 param deployCompute bool = true
 
 @sys.description('Optional. Location for the underlying compute. Ignored when attaching a compute resource, i.e. when you provide a resource ID.')

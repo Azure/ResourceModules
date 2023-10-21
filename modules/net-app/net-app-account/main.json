@@ -1,15 +1,43 @@
 {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "languageVersion": "2.0",
   "contentVersion": "1.0.0.0",
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.21.1.54444",
-      "templateHash": "5672083206908645861"
+      "version": "0.22.6.54827",
+      "templateHash": "9658557760968373164"
     },
     "name": "Azure NetApp Files",
     "description": "This module deploys an Azure NetApp File.",
     "owner": "Azure/module-maintainers"
+  },
+  "definitions": {
+    "lockType": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Specify the name of lock."
+          }
+        },
+        "kind": {
+          "type": "string",
+          "allowedValues": [
+            "CanNotDelete",
+            "None",
+            "ReadOnly"
+          ],
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Specify the type of lock."
+          }
+        }
+      },
+      "nullable": true
+    }
   },
   "parameters": {
     "name": {
@@ -89,15 +117,9 @@
       }
     },
     "lock": {
-      "type": "string",
-      "defaultValue": "",
-      "allowedValues": [
-        "",
-        "CanNotDelete",
-        "ReadOnly"
-      ],
+      "$ref": "#/definitions/lockType",
       "metadata": {
-        "description": "Optional. Specify the type of lock."
+        "description": "Optional. The lock settings of the service."
       }
     },
     "tags": {
@@ -130,8 +152,8 @@
     "identityType": "[if(not(empty(parameters('userAssignedIdentities'))), 'UserAssigned', 'None')]",
     "identity": "[if(not(equals(variables('identityType'), 'None')), createObject('type', variables('identityType'), 'userAssignedIdentities', if(not(empty(parameters('userAssignedIdentities'))), parameters('userAssignedIdentities'), null())), null())]"
   },
-  "resources": [
-    {
+  "resources": {
+    "defaultTelemetry": {
       "condition": "[parameters('enableDefaultTelemetry')]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2021-04-01",
@@ -145,7 +167,7 @@
         }
       }
     },
-    {
+    "netAppAccount": {
       "type": "Microsoft.NetApp/netAppAccounts",
       "apiVersion": "2022-11-01",
       "name": "[parameters('name')]",
@@ -156,21 +178,21 @@
         "activeDirectories": "[if(not(empty(parameters('domainName'))), variables('activeDirectoryConnectionProperties'), null())]"
       }
     },
-    {
-      "condition": "[not(empty(parameters('lock')))]",
+    "netAppAccount_lock": {
+      "condition": "[and(not(empty(coalesce(parameters('lock'), createObject()))), not(equals(tryGet(parameters('lock'), 'kind'), 'None')))]",
       "type": "Microsoft.Authorization/locks",
       "apiVersion": "2020-05-01",
       "scope": "[format('Microsoft.NetApp/netAppAccounts/{0}', parameters('name'))]",
-      "name": "[format('{0}-{1}-lock', parameters('name'), parameters('lock'))]",
+      "name": "[coalesce(tryGet(parameters('lock'), 'name'), format('lock-{0}', parameters('name')))]",
       "properties": {
-        "level": "[parameters('lock')]",
-        "notes": "[if(equals(parameters('lock'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot modify the resource or child resources.')]"
+        "level": "[coalesce(tryGet(parameters('lock'), 'kind'), '')]",
+        "notes": "[if(equals(tryGet(parameters('lock'), 'kind'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot delete or modify the resource or child resources.')]"
       },
       "dependsOn": [
-        "[resourceId('Microsoft.NetApp/netAppAccounts', parameters('name'))]"
+        "netAppAccount"
       ]
     },
-    {
+    "netAppAccount_roleAssignments": {
       "copy": {
         "name": "netAppAccount_roleAssignments",
         "count": "[length(parameters('roleAssignments'))]"
@@ -204,8 +226,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "7683969196599898101"
+              "version": "0.22.6.54827",
+              "templateHash": "4540603330973895229"
             }
           },
           "parameters": {
@@ -315,10 +337,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.NetApp/netAppAccounts', parameters('name'))]"
+        "netAppAccount"
       ]
     },
-    {
+    "netAppAccount_capacityPools": {
       "copy": {
         "name": "netAppAccount_capacityPools",
         "count": "[length(parameters('capacityPools'))]"
@@ -361,8 +383,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "10886668033150864965"
+              "version": "0.22.6.54827",
+              "templateHash": "12343130799883120576"
             },
             "name": "Azure NetApp Files Capacity Pools",
             "description": "This module deploys an Azure NetApp Files Capacity Pool.",
@@ -548,8 +570,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.21.1.54444",
-                      "templateHash": "5786364369491933087"
+                      "version": "0.22.6.54827",
+                      "templateHash": "14691007687090359135"
                     },
                     "name": "Azure NetApp Files Capacity Pool Volumes",
                     "description": "This module deploys an Azure NetApp Files Capacity Pool Volume.",
@@ -705,8 +727,8 @@
                           "metadata": {
                             "_generator": {
                               "name": "bicep",
-                              "version": "0.21.1.54444",
-                              "templateHash": "9382580519288369520"
+                              "version": "0.22.6.54827",
+                              "templateHash": "11293747403075474966"
                             }
                           },
                           "parameters": {
@@ -890,8 +912,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.21.1.54444",
-                      "templateHash": "3927269100657288300"
+                      "version": "0.22.6.54827",
+                      "templateHash": "121785236396056059"
                     }
                   },
                   "parameters": {
@@ -1038,10 +1060,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.NetApp/netAppAccounts', parameters('name'))]"
+        "netAppAccount"
       ]
     }
-  ],
+  },
   "outputs": {
     "name": {
       "type": "string",
@@ -1069,7 +1091,7 @@
       "metadata": {
         "description": "The location the resource was deployed into."
       },
-      "value": "[reference(resourceId('Microsoft.NetApp/netAppAccounts', parameters('name')), '2022-11-01', 'full').location]"
+      "value": "[reference('netAppAccount', '2022-11-01', 'full').location]"
     }
   }
 }

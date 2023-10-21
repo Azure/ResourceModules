@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.20.4.51522",
-      "templateHash": "6444239705368252849"
+      "version": "0.22.6.54827",
+      "templateHash": "5952665052269893806"
     },
     "name": "Private DNS Zone SRV record",
     "description": "This module deploys a Private DNS Zone SRV record.",
@@ -119,8 +119,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.20.4.51522",
-              "templateHash": "17805809595422297514"
+              "version": "0.22.6.54827",
+              "templateHash": "7603100820795358011"
             }
           },
           "parameters": {

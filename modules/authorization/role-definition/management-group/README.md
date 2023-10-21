@@ -19,26 +19,81 @@ This module deploys a Role Definition at a Management Group scope.
 
 **Required parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `roleName` | string | Name of the custom RBAC role to be created. |
+| [`roleName`](#parameter-rolename) | string | Name of the custom RBAC role to be created. |
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `actions` | array | `[]` | List of allowed actions. |
-| `assignableScopes` | array | `[]` | Role definition assignable scopes. If not provided, will use the current scope provided. |
-| `description` | string | `''` | Description of the custom RBAC role to be created. |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `location` | string | `[deployment().location]` | Location deployment metadata. |
-| `managementGroupId` | string | `[managementGroup().name]` | The group ID of the Management Group where the Role Definition and Target Scope will be applied to. If not provided, will use the current scope for deployment. |
-| `notActions` | array | `[]` | List of denied actions. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`actions`](#parameter-actions) | array | List of allowed actions. |
+| [`assignableScopes`](#parameter-assignablescopes) | array | Role definition assignable scopes. If not provided, will use the current scope provided. |
+| [`description`](#parameter-description) | string | Description of the custom RBAC role to be created. |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`location`](#parameter-location) | string | Location deployment metadata. |
+| [`managementGroupId`](#parameter-managementgroupid) | string | The group ID of the Management Group where the Role Definition and Target Scope will be applied to. If not provided, will use the current scope for deployment. |
+| [`notActions`](#parameter-notactions) | array | List of denied actions. |
+
+### Parameter: `actions`
+
+List of allowed actions.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `assignableScopes`
+
+Role definition assignable scopes. If not provided, will use the current scope provided.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `description`
+
+Description of the custom RBAC role to be created.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `location`
+
+Location deployment metadata.
+- Required: No
+- Type: string
+- Default: `[deployment().location]`
+
+### Parameter: `managementGroupId`
+
+The group ID of the Management Group where the Role Definition and Target Scope will be applied to. If not provided, will use the current scope for deployment.
+- Required: No
+- Type: string
+- Default: `[managementGroup().name]`
+
+### Parameter: `notActions`
+
+List of denied actions.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `roleName`
+
+Name of the custom RBAC role to be created.
+- Required: Yes
+- Type: string
 
 
 ## Outputs
 
-| Output Name | Type | Description |
+| Output | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The GUID of the Role Definition. |
 | `resourceId` | string | The resource ID of the Role Definition. |

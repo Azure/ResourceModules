@@ -93,7 +93,7 @@ function Get-ModulesFeatureOutline {
 
     # Load external functions
     . (Join-Path $PSScriptRoot 'helper' 'Get-PipelineStatusUrl.ps1')
-    . (Join-Path $PSScriptRoot 'helper' 'Get-SpecsAlignedResourceName.ps1')
+    . (Join-Path (Split-Path $PSScriptRoot) 'pipelines' 'sharedScripts' 'helper' 'Get-SpecsAlignedResourceName.ps1')
 
     if ($OnlyTopLevel) {
         $moduleTemplatePaths = (Get-ChildItem $ModuleFolderPath -Recurse -Filter 'main.bicep' -Depth 2).FullName

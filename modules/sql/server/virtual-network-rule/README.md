@@ -13,34 +13,66 @@ This module deploys an Azure SQL Server Virtual Network Rule.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Sql/servers/virtualNetworkRules` | [2022-02-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Sql/2022-02-01-preview/servers/virtualNetworkRules) |
+| `Microsoft.Sql/servers/virtualNetworkRules` | [2022-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Sql/2022-05-01-preview/servers/virtualNetworkRules) |
 
 ## Parameters
 
 **Required parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the Server Virtual Network Rule. |
-| `virtualNetworkSubnetId` | string | The resource ID of the virtual network subnet. |
+| [`name`](#parameter-name) | string | The name of the Server Virtual Network Rule. |
+| [`virtualNetworkSubnetId`](#parameter-virtualnetworksubnetid) | string | The resource ID of the virtual network subnet. |
 
 **Conditional parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `serverName` | string | The name of the parent SQL Server. Required if the template is used in a standalone deployment. |
+| [`serverName`](#parameter-servername) | string | The name of the parent SQL Server. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `ignoreMissingVnetServiceEndpoint` | bool | `False` | Allow creating a firewall rule before the virtual network has vnet service endpoint enabled. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`ignoreMissingVnetServiceEndpoint`](#parameter-ignoremissingvnetserviceendpoint) | bool | Allow creating a firewall rule before the virtual network has vnet service endpoint enabled. |
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `ignoreMissingVnetServiceEndpoint`
+
+Allow creating a firewall rule before the virtual network has vnet service endpoint enabled.
+- Required: No
+- Type: bool
+- Default: `False`
+
+### Parameter: `name`
+
+The name of the Server Virtual Network Rule.
+- Required: Yes
+- Type: string
+
+### Parameter: `serverName`
+
+The name of the parent SQL Server. Required if the template is used in a standalone deployment.
+- Required: Yes
+- Type: string
+
+### Parameter: `virtualNetworkSubnetId`
+
+The resource ID of the virtual network subnet.
+- Required: Yes
+- Type: string
 
 
 ## Outputs
 
-| Output Name | Type | Description |
+| Output | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the deployed virtual network rule. |
 | `resourceGroupName` | string | The resource group of the deployed virtual network rule. |

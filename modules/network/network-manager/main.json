@@ -1,15 +1,43 @@
 {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "languageVersion": "2.0",
   "contentVersion": "1.0.0.0",
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.21.1.54444",
-      "templateHash": "17085331643244384133"
+      "version": "0.22.6.54827",
+      "templateHash": "10611241672258166058"
     },
     "name": "Network Managers",
     "description": "This module deploys a Network Manager.",
     "owner": "Azure/module-maintainers"
+  },
+  "definitions": {
+    "lockType": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Specify the name of lock."
+          }
+        },
+        "kind": {
+          "type": "string",
+          "allowedValues": [
+            "CanNotDelete",
+            "None",
+            "ReadOnly"
+          ],
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Specify the type of lock."
+          }
+        }
+      },
+      "nullable": true
+    }
   },
   "parameters": {
     "name": {
@@ -28,15 +56,9 @@
       }
     },
     "lock": {
-      "type": "string",
-      "defaultValue": "",
-      "allowedValues": [
-        "",
-        "CanNotDelete",
-        "ReadOnly"
-      ],
+      "$ref": "#/definitions/lockType",
       "metadata": {
-        "description": "Optional. Specify the type of lock."
+        "description": "Optional. The lock settings of the service."
       }
     },
     "roleAssignments": {
@@ -77,7 +99,7 @@
       "type": "array",
       "defaultValue": [],
       "metadata": {
-        "description": "Conditional. Network Groups and static members to create for the network manager. Required if using \"connectivityConfigurations\" or \"securityAdminConfigurations\" parameters."
+        "description": "Conditional. Network Groups and static members to create for the network manager. Required if using \"connectivityConfigurations\" or \"securityAdminConfigurations\" parameters. A network group is global container that includes a set of virtual network resources from any region. Then, configurations are applied to target the network group, which applies the configuration to all members of the group. The two types are group memberships are static and dynamic memberships. Static membership allows you to explicitly add virtual networks to a group by manually selecting individual virtual networks, and is available as a child module, while dynamic membership is defined through Azure policy. See [How Azure Policy works with Network Groups](https://learn.microsoft.com/en-us/azure/virtual-network-manager/concept-azure-policy-integration) for more details."
       }
     },
     "connectivityConfigurations": {
@@ -91,14 +113,14 @@
       "type": "array",
       "defaultValue": [],
       "metadata": {
-        "description": "Optional. Scope Connections to create for the network manager. Allows network manager to manage resources from another tenant."
+        "description": "Optional. Scope Connections to create for the network manager. Allows network manager to manage resources from another tenant. Supports management groups or subscriptions from another tenant."
       }
     },
     "securityAdminConfigurations": {
       "type": "array",
       "defaultValue": [],
       "metadata": {
-        "description": "Optional. Security Admin Configurations, Rule Collections and Rules to create for the network manager."
+        "description": "Optional. Security Admin Configurations, Rule Collections and Rules to create for the network manager. Azure Virtual Network Manager provides two different types of configurations you can deploy across your virtual networks, one of them being a SecurityAdmin configuration. A security admin configuration contains a set of rule collections. Each rule collection contains one or more security admin rules. You then associate the rule collection with the network groups that you want to apply the security admin rules to."
       }
     },
     "enableDefaultTelemetry": {
@@ -112,8 +134,8 @@
   "variables": {
     "enableReferencedModulesTelemetry": false
   },
-  "resources": [
-    {
+  "resources": {
+    "defaultTelemetry": {
       "condition": "[parameters('enableDefaultTelemetry')]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
@@ -127,7 +149,7 @@
         }
       }
     },
-    {
+    "networkManager": {
       "type": "Microsoft.Network/networkManagers",
       "apiVersion": "2023-02-01",
       "name": "[parameters('name')]",
@@ -139,21 +161,21 @@
         "networkManagerScopes": "[parameters('networkManagerScopes')]"
       }
     },
-    {
-      "condition": "[not(empty(parameters('lock')))]",
+    "networkManager_lock": {
+      "condition": "[and(not(empty(coalesce(parameters('lock'), createObject()))), not(equals(tryGet(parameters('lock'), 'kind'), 'None')))]",
       "type": "Microsoft.Authorization/locks",
       "apiVersion": "2020-05-01",
       "scope": "[format('Microsoft.Network/networkManagers/{0}', parameters('name'))]",
-      "name": "[format('{0}-{1}-lock', parameters('name'), parameters('lock'))]",
+      "name": "[coalesce(tryGet(parameters('lock'), 'name'), format('lock-{0}', parameters('name')))]",
       "properties": {
-        "level": "[parameters('lock')]",
-        "notes": "[if(equals(parameters('lock'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot modify the resource or child resources.')]"
+        "level": "[coalesce(tryGet(parameters('lock'), 'kind'), '')]",
+        "notes": "[if(equals(tryGet(parameters('lock'), 'kind'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot delete or modify the resource or child resources.')]"
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Network/networkManagers', parameters('name'))]"
+        "networkManager"
       ]
     },
-    {
+    "networkManager_networkGroups": {
       "copy": {
         "name": "networkManager_networkGroups",
         "count": "[length(parameters('networkGroups'))]"
@@ -185,8 +207,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "16574504470456645773"
+              "version": "0.22.6.54827",
+              "templateHash": "15734624931109113465"
             },
             "name": "Network Manager Network Groups",
             "description": "This module deploys a Network Manager Network Group.\r\nA network group is a collection of same-type network resources that you can associate with network manager configurations. You can add same-type network resources after you create the network group.",
@@ -291,8 +313,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.21.1.54444",
-                      "templateHash": "5572467876932888883"
+                      "version": "0.22.6.54827",
+                      "templateHash": "13400290933908034947"
                     },
                     "name": "Network Manager Network Group Static Members",
                     "description": "This module deploys a Network Manager Network Group Static Member.\r\nStatic membership allows you to explicitly add virtual networks to a group by manually selecting individual virtual networks.",
@@ -411,10 +433,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Network/networkManagers', parameters('name'))]"
+        "networkManager"
       ]
     },
-    {
+    "networkManager_connectivityConfigurations": {
       "copy": {
         "name": "networkManager_connectivityConfigurations",
         "count": "[length(parameters('connectivityConfigurations'))]"
@@ -454,8 +476,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "1935694739815489166"
+              "version": "0.22.6.54827",
+              "templateHash": "5280310149581848411"
             },
             "name": "Network Manager Connectivity Configurations",
             "description": "This module deploys a Network Manager Connectivity Configuration.\r\nConnectivity configurations define hub-and-spoke or mesh topologies applied to one or more network groups.",
@@ -592,11 +614,11 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Network/networkManagers', parameters('name'))]",
+        "networkManager",
         "networkManager_networkGroups"
       ]
     },
-    {
+    "networkManager_scopeConnections": {
       "copy": {
         "name": "networkManager_scopeConnections",
         "count": "[length(parameters('scopeConnections'))]"
@@ -633,8 +655,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "3939307521553261907"
+              "version": "0.22.6.54827",
+              "templateHash": "9309301917607746358"
             },
             "name": "Network Manager Scope Connections",
             "description": "This module deploys a Network Manager Scope Connection.\r\nCreate a cross-tenant connection to manage a resource from another tenant.",
@@ -734,10 +756,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Network/networkManagers', parameters('name'))]"
+        "networkManager"
       ]
     },
-    {
+    "networkManager_securityAdminConfigurations": {
       "copy": {
         "name": "networkManager_securityAdminConfigurations",
         "count": "[length(parameters('securityAdminConfigurations'))]"
@@ -772,8 +794,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "5810096593595124606"
+              "version": "0.22.6.54827",
+              "templateHash": "14740794033127814314"
             },
             "name": "Network Manager Security Admin Configurations",
             "description": "This module deploys an Network Manager Security Admin Configuration.\r\nA security admin configuration contains a set of rule collections. Each rule collection contains one or more security admin rules.",
@@ -894,8 +916,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.21.1.54444",
-                      "templateHash": "8641931937337579552"
+                      "version": "0.22.6.54827",
+                      "templateHash": "11695176114935586913"
                     },
                     "name": "Network Manager Security Admin Configuration Rule Collections",
                     "description": "This module deploys an Network Manager Security Admin Configuration Rule Collection.\r\nA security admin configuration contains a set of rule collections. Each rule collection contains one or more security admin rules. Security admin rules allows enforcing security policy criteria that matches the conditions set. Warning: A rule collection without rule will cause a deployment configuration for security admin goal state in network manager to fail.",
@@ -1029,8 +1051,8 @@
                           "metadata": {
                             "_generator": {
                               "name": "bicep",
-                              "version": "0.21.1.54444",
-                              "templateHash": "128171619204085449"
+                              "version": "0.22.6.54827",
+                              "templateHash": "8150493920671936292"
                             },
                             "name": "Network Manager Security Admin Configuration Rule Collection Rules",
                             "description": "This module deploys an Azure Virtual Network Manager (AVNM) Security Admin Configuration Rule Collection Rule.\r\nA security admin configuration contains a set of rule collections. Each rule collection contains one or more security admin rules.",
@@ -1268,11 +1290,11 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Network/networkManagers', parameters('name'))]",
+        "networkManager",
         "networkManager_networkGroups"
       ]
     },
-    {
+    "networkManager_roleAssignments": {
       "copy": {
         "name": "networkManager_roleAssignments",
         "count": "[length(parameters('roleAssignments'))]"
@@ -1306,8 +1328,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "12627653750285812361"
+              "version": "0.22.6.54827",
+              "templateHash": "11211131176904314262"
             }
           },
           "parameters": {
@@ -1446,10 +1468,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Network/networkManagers', parameters('name'))]"
+        "networkManager"
       ]
     }
-  ],
+  },
   "outputs": {
     "resourceGroupName": {
       "type": "string",
@@ -1477,7 +1499,7 @@
       "metadata": {
         "description": "The location the resource was deployed into."
       },
-      "value": "[reference(resourceId('Microsoft.Network/networkManagers', parameters('name')), '2023-02-01', 'full').location]"
+      "value": "[reference('networkManager', '2023-02-01', 'full').location]"
     }
   }
 }

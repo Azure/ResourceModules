@@ -38,15 +38,15 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource managedInstance 'Microsoft.Sql/managedInstances@2022-02-01-preview' existing = {
+resource managedInstance 'Microsoft.Sql/managedInstances@2022-05-01-preview' existing = {
   name: managedInstanceName
 
-  resource managedInstaceDatabase 'databases@2020-02-02-preview' existing = {
+  resource managedInstaceDatabase 'databases@2022-05-01-preview' existing = {
     name: databaseName
   }
 }
 
-resource backupLongTermRetentionPolicy 'Microsoft.Sql/managedInstances/databases/backupLongTermRetentionPolicies@2022-02-01-preview' = {
+resource backupLongTermRetentionPolicy 'Microsoft.Sql/managedInstances/databases/backupLongTermRetentionPolicies@2022-05-01-preview' = {
   name: name
   parent: managedInstance::managedInstaceDatabase
   properties: {

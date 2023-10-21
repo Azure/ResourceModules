@@ -19,29 +19,69 @@ This module deploys a Custom Function App into a Static Web App Site using the L
 
 **Required parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `backendResourceId` | string | The resource ID of the backend linked to the static site. |
+| [`backendResourceId`](#parameter-backendresourceid) | string | The resource ID of the backend linked to the static site. |
 
 **Conditional parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `staticSiteName` | string | The name of the parent Static Web App. Required if the template is used in a standalone deployment. |
+| [`staticSiteName`](#parameter-staticsitename) | string | The name of the parent Static Web App. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `location` | string | `[resourceGroup().location]` | Location for all resources. |
-| `name` | string | `[uniqueString(parameters('backendResourceId'))]` | Name of the backend to link to the static site. |
-| `region` | string | `[resourceGroup().location]` | The region of the backend linked to the static site. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`location`](#parameter-location) | string | Location for all resources. |
+| [`name`](#parameter-name) | string | Name of the backend to link to the static site. |
+| [`region`](#parameter-region) | string | The region of the backend linked to the static site. |
+
+### Parameter: `backendResourceId`
+
+The resource ID of the backend linked to the static site.
+- Required: Yes
+- Type: string
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `location`
+
+Location for all resources.
+- Required: No
+- Type: string
+- Default: `[resourceGroup().location]`
+
+### Parameter: `name`
+
+Name of the backend to link to the static site.
+- Required: No
+- Type: string
+- Default: `[uniqueString(parameters('backendResourceId'))]`
+
+### Parameter: `region`
+
+The region of the backend linked to the static site.
+- Required: No
+- Type: string
+- Default: `[resourceGroup().location]`
+
+### Parameter: `staticSiteName`
+
+The name of the parent Static Web App. Required if the template is used in a standalone deployment.
+- Required: Yes
+- Type: string
 
 
 ## Outputs
 
-| Output Name | Type | Description |
+| Output | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the static site linked backend. |
 | `resourceGroupName` | string | The resource group the static site linked backend was deployed into. |

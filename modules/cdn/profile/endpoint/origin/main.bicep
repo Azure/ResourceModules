@@ -26,7 +26,7 @@ param httpsPort int = 443
 @description('Conditional. The priority of origin in given origin group for load balancing. Required if `weight` is provided.')
 param priority int = -1
 
-@description('Conditional. The weight of the origin used for load balancing. Required if `priority` is provided..')
+@description('Conditional. The weight of the origin used for load balancing. Required if `priority` is provided.')
 param weight int = -1
 
 @description('Conditional. The private link alias of the origin. Required if privateLinkLocation is provided.')

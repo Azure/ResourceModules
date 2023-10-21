@@ -4,12 +4,13 @@ This module deploys an Azure Compute Gallery Application.
 
 ## Navigation
 
-- [Resource types](#Resource-types)
+- [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
+- [Notes](#Notes)
 
-## Resource types
+## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
@@ -20,134 +21,138 @@ This module deploys an Azure Compute Gallery Application.
 
 **Required parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | Name of the application definition. |
+| [`name`](#parameter-name) | string | Name of the application definition. |
 
 **Conditional parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `galleryName` | string | The name of the parent Azure Compute Gallery. Required if the template is used in a standalone deployment. |
+| [`galleryName`](#parameter-galleryname) | string | The name of the parent Azure Compute Gallery. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Allowed Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `customActions` | array | `[]` |  | A list of custom actions that can be performed with all of the Gallery Application Versions within this Gallery Application. |
-| `description` | string | `''` |  | The description of this gallery Application Definition resource. This property is updatable. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `endOfLifeDate` | string | `''` |  | The end of life date of the gallery Image Definition. This property can be used for decommissioning purposes. This property is updatable. Allowed format: 2020-01-10T23:00:00.000Z. |
-| `eula` | string | `''` |  | The Eula agreement for the gallery Application Definition. Has to be a valid URL. |
-| `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
-| `privacyStatementUri` | string | `''` |  | The privacy statement uri. Has to be a valid URL. |
-| `releaseNoteUri` | string | `''` |  | The release note uri. Has to be a valid URL. |
-| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| `supportedOSType` | string | `'Windows'` | `[Linux, Windows]` | This property allows you to specify the supported type of the OS that application is built for. |
-| `tags` | object | `{object}` |  | Tags for all resources. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`customActions`](#parameter-customactions) | array | A list of custom actions that can be performed with all of the Gallery Application Versions within this Gallery Application. |
+| [`description`](#parameter-description) | string | The description of this gallery Application Definition resource. This property is updatable. |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`endOfLifeDate`](#parameter-endoflifedate) | string | The end of life date of the gallery Image Definition. This property can be used for decommissioning purposes. This property is updatable. Allowed format: 2020-01-10T23:00:00.000Z. |
+| [`eula`](#parameter-eula) | string | The Eula agreement for the gallery Application Definition. Has to be a valid URL. |
+| [`location`](#parameter-location) | string | Location for all resources. |
+| [`privacyStatementUri`](#parameter-privacystatementuri) | string | The privacy statement uri. Has to be a valid URL. |
+| [`releaseNoteUri`](#parameter-releasenoteuri) | string | The release note uri. Has to be a valid URL. |
+| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| [`supportedOSType`](#parameter-supportedostype) | string | This property allows you to specify the supported type of the OS that application is built for. |
+| [`tags`](#parameter-tags) | object | Tags for all resources. |
+
+### Parameter: `customActions`
+
+A list of custom actions that can be performed with all of the Gallery Application Versions within this Gallery Application.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `description`
+
+The description of this gallery Application Definition resource. This property is updatable.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `endOfLifeDate`
+
+The end of life date of the gallery Image Definition. This property can be used for decommissioning purposes. This property is updatable. Allowed format: 2020-01-10T23:00:00.000Z.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `eula`
+
+The Eula agreement for the gallery Application Definition. Has to be a valid URL.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `galleryName`
+
+The name of the parent Azure Compute Gallery. Required if the template is used in a standalone deployment.
+- Required: Yes
+- Type: string
+
+### Parameter: `location`
+
+Location for all resources.
+- Required: No
+- Type: string
+- Default: `[resourceGroup().location]`
+
+### Parameter: `name`
+
+Name of the application definition.
+- Required: Yes
+- Type: string
+
+### Parameter: `privacyStatementUri`
+
+The privacy statement uri. Has to be a valid URL.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `releaseNoteUri`
+
+The release note uri. Has to be a valid URL.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `roleAssignments`
+
+Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `supportedOSType`
+
+This property allows you to specify the supported type of the OS that application is built for.
+- Required: No
+- Type: string
+- Default: `'Windows'`
+- Allowed: `[Linux, Windows]`
+
+### Parameter: `tags`
+
+Tags for all resources.
+- Required: No
+- Type: object
+- Default: `{object}`
 
 
-### Parameter Usage: `roleAssignments`
+## Outputs
 
-Create a role assignment for the given resource. If you want to assign a service principal / managed identity that is created in the same deployment, make sure to also specify the `'principalType'` parameter and set it to `'ServicePrincipal'`. This will ensure the role assignment waits for the principal's propagation in Azure.
+| Output | Type | Description |
+| :-- | :-- | :-- |
+| `location` | string | The location the resource was deployed into. |
+| `name` | string | The name of the image. |
+| `resourceGroupName` | string | The resource group the image was deployed into. |
+| `resourceId` | string | The resource ID of the image. |
 
-<details>
+## Cross-referenced modules
 
-<summary>Parameter JSON format</summary>
+_None_
 
-```json
-"roleAssignments": {
-    "value": [
-        {
-            "roleDefinitionIdOrName": "Reader",
-            "description": "Reader Role Assignment",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012", // object 1
-                "78945612-1234-1234-1234-123456789012" // object 2
-            ]
-        },
-        {
-            "roleDefinitionIdOrName": "/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012" // object 1
-            ],
-            "principalType": "ServicePrincipal"
-        }
-    ]
-}
-```
+## Notes
 
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-roleAssignments: [
-    {
-        roleDefinitionIdOrName: 'Reader'
-        description: 'Reader Role Assignment'
-        principalIds: [
-            '12345678-1234-1234-1234-123456789012' // object 1
-            '78945612-1234-1234-1234-123456789012' // object 2
-        ]
-    }
-    {
-        roleDefinitionIdOrName: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'
-        principalIds: [
-            '12345678-1234-1234-1234-123456789012' // object 1
-        ]
-        principalType: 'ServicePrincipal'
-    }
-]
-```
-
-</details>
-<p>
-
-### Parameter Usage: `tags`
-
-Tag names and tag values can be provided as needed. A tag can be left without a value.
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"tags": {
-    "value": {
-        "Environment": "Non-Prod",
-        "Contact": "test.user@testcompany.com",
-        "PurchaseOrder": "1234",
-        "CostCenter": "7890",
-        "ServiceName": "DeploymentValidation",
-        "Role": "DeploymentValidation"
-    }
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-tags: {
-    Environment: 'Non-Prod'
-    Contact: 'test.user@testcompany.com'
-    PurchaseOrder: '1234'
-    CostCenter: '7890'
-    ServiceName: 'DeploymentValidation'
-    Role: 'DeploymentValidation'
-}
-```
-
-</details>
-<p>
-
-<p>
 ### Parameter Usage: `customActions`
 
 Create a list of custom actions that can be performed with all of the Gallery Application Versions within this Gallery Application.
@@ -246,16 +251,3 @@ customActions: [
 
 </details>
 <p>
-
-## Outputs
-
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of the image. |
-| `resourceGroupName` | string | The resource group the image was deployed into. |
-| `resourceId` | string | The resource ID of the image. |
-
-## Cross-referenced modules
-
-_None_

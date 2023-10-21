@@ -13,34 +13,66 @@ This module deploys a SQL Managed Instance Administrator.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Sql/managedInstances/administrators` | [2022-02-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Sql/2022-02-01-preview/managedInstances/administrators) |
+| `Microsoft.Sql/managedInstances/administrators` | [2022-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Sql/2022-05-01-preview/managedInstances/administrators) |
 
 ## Parameters
 
 **Required parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `login` | string | Login name of the managed instance administrator. |
-| `sid` | string | SID (object ID) of the managed instance administrator. |
+| [`login`](#parameter-login) | string | Login name of the managed instance administrator. |
+| [`sid`](#parameter-sid) | string | SID (object ID) of the managed instance administrator. |
 
 **Conditional parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `managedInstanceName` | string | The name of the parent SQL managed instance. Required if the template is used in a standalone deployment. |
+| [`managedInstanceName`](#parameter-managedinstancename) | string | The name of the parent SQL managed instance. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `tenantId` | string | `''` | Tenant ID of the managed instance administrator. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`tenantId`](#parameter-tenantid) | string | Tenant ID of the managed instance administrator. |
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `login`
+
+Login name of the managed instance administrator.
+- Required: Yes
+- Type: string
+
+### Parameter: `managedInstanceName`
+
+The name of the parent SQL managed instance. Required if the template is used in a standalone deployment.
+- Required: Yes
+- Type: string
+
+### Parameter: `sid`
+
+SID (object ID) of the managed instance administrator.
+- Required: Yes
+- Type: string
+
+### Parameter: `tenantId`
+
+Tenant ID of the managed instance administrator.
+- Required: No
+- Type: string
+- Default: `''`
 
 
 ## Outputs
 
-| Output Name | Type | Description |
+| Output | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the deployed managed instance administrator. |
 | `resourceGroupName` | string | The resource group of the deployed managed instance administrator. |

@@ -1,5 +1,8 @@
 targetScope = 'subscription'
 
+metadata name = 'Using large parameter set'
+metadata description = 'This instance deploys the module with most of its features enabled.'
+
 // ========== //
 // Parameters //
 // ========== //
@@ -51,7 +54,10 @@ module testDeployment '../../main.bicep' = {
     name: '${namePrefix}${serviceShort}001'
     publisherEmail: 'apimgmt-noreply@mail.windowsazure.com'
     publisherName: '${namePrefix}-az-amorg-x-001'
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     policies: [
       {
         format: 'xml'

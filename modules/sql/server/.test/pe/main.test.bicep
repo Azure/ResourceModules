@@ -58,11 +58,11 @@ module testDeployment '../../main.bicep' = {
     administratorLoginPassword: password
     privateEndpoints: [
       {
-        privateDnsZoneGroup: {
-          privateDNSResourceIds: [
-            nestedDependencies.outputs.privateDNSResourceId
-          ]
-        }
+        privateDnsZoneResourceIds: [
+
+          nestedDependencies.outputs.privateDNSZoneResourceId
+
+        ]
         service: 'sqlServer'
         subnetResourceId: nestedDependencies.outputs.subnetResourceId
         tags: {

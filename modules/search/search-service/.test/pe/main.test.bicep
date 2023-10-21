@@ -56,16 +56,12 @@ module testDeployment '../../main.bicep' = {
     publicNetworkAccess: 'disabled'
     privateEndpoints: [
       {
-        applicationSecurityGroups: [
-          {
-            id: nestedDependencies.outputs.applicationSecurityGroupResourceId
-          }
+        applicationSecurityGroupResourceIds: [
+          nestedDependencies.outputs.applicationSecurityGroupResourceId
         ]
-        privateDnsZoneGroup: {
-          privateDNSResourceIds: [
-            nestedDependencies.outputs.privateDNSZoneResourceId
-          ]
-        }
+        privateDnsZoneResourceIds: [
+          nestedDependencies.outputs.privateDNSZoneResourceId
+        ]
         service: 'searchService'
         subnetResourceId: nestedDependencies.outputs.subnetResourceId
         tags: {

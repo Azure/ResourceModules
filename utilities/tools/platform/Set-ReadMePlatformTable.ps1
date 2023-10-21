@@ -53,9 +53,12 @@ function Set-ReadMePlatformTable {
 
     # Load external functions
     $repoRoot = (Get-Item $PSScriptRoot).Parent.Parent.Parent.FullName
-    . (Join-Path $repoRoot 'utilities' 'tools' 'helper' 'Merge-FileWithNewContent.ps1')
+    . (Join-Path $repoRoot 'utilities' 'pipelines' 'sharedScripts' 'helper' 'Merge-FileWithNewContent.ps1')
     . (Join-Path $repoRoot 'utilities' 'tools' 'helper' 'Get-PipelineStatusUrl.ps1')
     . (Join-Path $repoRoot 'utilities' 'tools' 'helper' 'Get-PipelineNameFromFile.ps1')
+
+
+
 
     # Logic
     $contentArray = Get-Content -Path $FilePath

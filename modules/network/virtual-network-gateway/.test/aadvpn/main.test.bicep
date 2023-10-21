@@ -75,7 +75,10 @@ module testDeployment '../../main.bicep' = {
     domainNameLabel: [
       '${namePrefix}-dm-${serviceShort}'
     ]
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     publicIpZones: [
       '1'
       '2'

@@ -248,7 +248,10 @@ module testDeployment '../../main.bicep' = {
         Role: 'DeploymentValidation'
       }
     }
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     monitoringWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
     publicKeys: [
       {

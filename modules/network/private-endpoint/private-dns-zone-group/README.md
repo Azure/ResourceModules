@@ -19,27 +19,53 @@ This module deploys a Private Endpoint Private DNS Zone Group.
 
 **Required parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `privateDNSResourceIds` | array | Array of private DNS zone resource IDs. A DNS zone group can support up to 5 DNS zones. |
+| [`privateDNSResourceIds`](#parameter-privatednsresourceids) | array | Array of private DNS zone resource IDs. A DNS zone group can support up to 5 DNS zones. |
 
 **Conditional parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `privateEndpointName` | string | The name of the parent private endpoint. Required if the template is used in a standalone deployment. |
+| [`privateEndpointName`](#parameter-privateendpointname) | string | The name of the parent private endpoint. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `name` | string | `'default'` | The name of the private DNS zone group. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable/Disable usage telemetry for module. |
+| [`name`](#parameter-name) | string | The name of the private DNS zone group. |
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable/Disable usage telemetry for module.
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `name`
+
+The name of the private DNS zone group.
+- Required: No
+- Type: string
+- Default: `'default'`
+
+### Parameter: `privateDNSResourceIds`
+
+Array of private DNS zone resource IDs. A DNS zone group can support up to 5 DNS zones.
+- Required: Yes
+- Type: array
+
+### Parameter: `privateEndpointName`
+
+The name of the parent private endpoint. Required if the template is used in a standalone deployment.
+- Required: Yes
+- Type: string
 
 
 ## Outputs
 
-| Output Name | Type | Description |
+| Output | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the private endpoint DNS zone group. |
 | `resourceGroupName` | string | The resource group the private endpoint DNS zone group was deployed into. |

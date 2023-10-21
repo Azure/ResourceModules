@@ -60,7 +60,7 @@ function Get-SpecsAlignedResourceName {
         [string] $ResourceIdentifier,
 
         [Parameter(Mandatory = $false)]
-        [string] $SpecsFilePath = (Join-Path (Split-Path (Split-Path $PSScriptRoot)) 'src' 'apiSpecsList.json')
+        [string] $SpecsFilePath = (Join-Path (Get-Item $PSScriptRoot).Parent.Parent.Parent 'src' 'apiSpecsList.json')
     )
 
     $specs = ConvertFrom-Json (Get-Content $specsFilePath -Raw) -AsHashtable

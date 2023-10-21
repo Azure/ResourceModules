@@ -100,7 +100,7 @@ module testDeployment '../../main.bicep' = {
     diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
     diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
     geoRedundantBackup: 'Enabled'
-    privateDnsZoneArmResourceId: nestedDependencies.outputs.privateDNSResourceId
+    privateDnsZoneArmResourceId: nestedDependencies.outputs.privateDNSZoneResourceId
     tags: {
       'hidden-title': 'This is visible in the resource name'
       Environment: 'Non-Prod'
