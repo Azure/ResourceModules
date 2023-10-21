@@ -103,7 +103,8 @@ module testDeployment '../../main.bicep' = {
               roleAssignments: [
                 {
                   roleDefinitionIdOrName: 'Reader'
-                  principalId: nestedDependencies.outputs.managedIdentityPrincipalId
+                  principalId: nestedDependencies.outputs.managedIdentityPrincipalId
+
                   principalType: 'ServicePrincipal'
                 }
               ]
@@ -120,7 +121,8 @@ module testDeployment '../../main.bicep' = {
         roleAssignments: [
           {
             roleDefinitionIdOrName: 'Reader'
-            principalId: nestedDependencies.outputs.managedIdentityPrincipalId
+            principalId: nestedDependencies.outputs.managedIdentityPrincipalId
+
             principalType: 'ServicePrincipal'
           }
         ]
@@ -216,7 +218,7 @@ module testDeployment '../../main.bicep' = {
       enabled: true
       tags: {
         'hidden-title': 'This is visible in the resource name'
-        Environment: 'Non-Prod'
+        Environment: 'Non-Prod'f
         Role: 'DeploymentValidation'
       }
     }
@@ -258,7 +260,8 @@ module testDeployment '../../main.bicep' = {
     roleAssignments: [
       {
         roleDefinitionIdOrName: 'Reader'
-        principalId: nestedDependencies.outputs.managedIdentityPrincipalId
+        principalId: nestedDependencies.outputs.managedIdentityPrincipalId
+
         principalType: 'ServicePrincipal'
       }
     ]
@@ -276,4 +279,3 @@ module testDeployment '../../main.bicep' = {
     nestedDependencies // Required to leverage `existing` SSH key reference
   ]
 }
-
