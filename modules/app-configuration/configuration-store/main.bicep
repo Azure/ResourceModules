@@ -270,9 +270,9 @@ output systemAssignedMIPrincipalId string = (managedIdentities.?systemAssigned ?
 @description('The location the resource was deployed into.')
 output location string = configurationStore.location
 
-// ================ //
-// Definitions      //
-// ================ //
+// =============== //
+//   Definitions   //
+// =============== //
 
 type managedIdentitiesType = {
   @description('Optional. Enables system assigned managed identity on the resource.')
