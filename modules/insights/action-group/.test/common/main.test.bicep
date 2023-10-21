@@ -74,7 +74,9 @@ module testDeployment '../../main.bicep' = {
     ]
     roleAssignments: [
       {
-        principalId: nestedDependencies.outputs.managedIdentityPrincipalId
+        principalIds: [
+          nestedDependencies.outputs.managedIdentityPrincipalId
+        ]
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -85,4 +87,3 @@ module testDeployment '../../main.bicep' = {
     }
   }
 }
-

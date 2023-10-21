@@ -56,7 +56,9 @@ module testDeployment '../../main.bicep' = {
         roleAssignments: [
           {
             roleDefinitionIdOrName: 'Reader'
-            principalId: nestedDependencies.outputs.managedIdentityPrincipalId
+            principalIds: [
+              nestedDependencies.outputs.managedIdentityPrincipalId
+            ]
             principalType: 'ServicePrincipal'
           }
         ]
@@ -81,7 +83,9 @@ module testDeployment '../../main.bicep' = {
             roleAssignments: [
               {
                 roleDefinitionIdOrName: 'Reader'
-                principalId: nestedDependencies.outputs.managedIdentityPrincipalId
+                principalIds: [
+                  nestedDependencies.outputs.managedIdentityPrincipalId
+                ]
                 principalType: 'ServicePrincipal'
               }
             ]
@@ -103,7 +107,9 @@ module testDeployment '../../main.bicep' = {
         roleAssignments: [
           {
             roleDefinitionIdOrName: 'Reader'
-            principalId: nestedDependencies.outputs.managedIdentityPrincipalId
+            principalIds: [
+              nestedDependencies.outputs.managedIdentityPrincipalId
+            ]
             principalType: 'ServicePrincipal'
           }
         ]
@@ -119,7 +125,9 @@ module testDeployment '../../main.bicep' = {
     roleAssignments: [
       {
         roleDefinitionIdOrName: 'Reader'
-        principalId: nestedDependencies.outputs.managedIdentityPrincipalId
+        principalIds: [
+          nestedDependencies.outputs.managedIdentityPrincipalId
+        ]
         principalType: 'ServicePrincipal'
       }
     ]
@@ -134,4 +142,3 @@ module testDeployment '../../main.bicep' = {
     }
   }
 }
-
