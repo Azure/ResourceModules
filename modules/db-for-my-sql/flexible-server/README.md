@@ -143,9 +143,7 @@ module flexibleServer 'br:bicep/modules/db-for-my-sql.flexible-server:1.0.0' = {
     privateDnsZoneResourceId: '<privateDnsZoneResourceId>'
     roleAssignments: [
       {
-        principalIds: [
-          '<managedIdentityPrincipalId>'
-        ]
+        principalId: '<principalId>'
         principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
@@ -250,9 +248,7 @@ module flexibleServer 'br:bicep/modules/db-for-my-sql.flexible-server:1.0.0' = {
     "roleAssignments": {
       "value": [
         {
-          "principalIds": [
-            "<managedIdentityPrincipalId>"
-          ],
+          "principalId": "<principalId>",
           "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
@@ -355,9 +351,7 @@ module flexibleServer 'br:bicep/modules/db-for-my-sql.flexible-server:1.0.0' = {
     }
     roleAssignments: [
       {
-        principalIds: [
-          '<managedIdentityPrincipalId>'
-        ]
+        principalId: '<principalId>'
         principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
@@ -497,9 +491,7 @@ module flexibleServer 'br:bicep/modules/db-for-my-sql.flexible-server:1.0.0' = {
     "roleAssignments": {
       "value": [
         {
-          "principalIds": [
-            "<managedIdentityPrincipalId>"
-          ],
+          "principalId": "<principalId>",
           "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
