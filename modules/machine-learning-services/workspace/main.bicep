@@ -42,7 +42,7 @@ param hbiWorkspace bool = false
 param allowPublicAccessWhenBehindVnet bool = false
 
 @sys.description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
-param roleAssignments array = []
+param roleAssignments roleAssignmentType
 
 @sys.description('Optional. Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.')
 param privateEndpoints array = []
@@ -172,6 +172,27 @@ var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
 // ================//
 // Deployments     //
 // ================//
+var builtInRoleNames = {
+  'AzureML Compute Operator': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'e503ece1-11d0-4e8e-8e2c-7a6c3bf38815')
+  'AzureML Data Scientist': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'f6c7c914-8db3-469d-8ca1-694a8f32e121')
+  'AzureML Metrics Writer (preview)': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '635dd51f-9968-44d3-b7fb-6d9a6bd613ae')
+  'AzureML Registry User': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '1823dd4f-9b8c-4ab6-ab4e-7397a3684615')
+  Contributor: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')
+  'Data Labeling - Labeler': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'c6decf44-fd0a-444c-a844-d653c394e7ab')
+  'Log Analytics Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '92aaf0da-9dab-42b6-94a3-d43ce8d16293')
+  'Log Analytics Reader': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '73c42c96-874c-492b-b04d-ab87d138a893')
+  'Managed Application Contributor Role': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '641177b8-a67a-45b9-a033-47bc880bb21e')
+  'Managed Application Operator Role': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'c7393b34-138c-406f-901b-d8cf2b17e6ae')
+  'Managed Applications Reader': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b9331d33-8a36-4f8c-b097-4f54124fdb44')
+  'Monitoring Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '749f88d5-cbae-40b8-bcfc-e573ddc772fa')
+  'Monitoring Reader': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '43d0d8ad-25c7-4714-9337-8ba259a9fe05')
+  Owner: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '8e3af657-a8ff-443c-a75c-2fe8c4bcb635')
+  Reader: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'acdd72a7-3385-48ef-bd42-f606fba81ae7')
+  'Resource Policy Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '36243c78-bf99-498c-9df9-86d9f8d28608')
+  'Role Based Access Control Administrator (Preview)': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'f58310d9-a9f6-439a-9e8d-f62e7b41a168')
+  'User Access Administrator': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '18d7d88d-d35e-4fb5-a5c3-7773c20a72d9')
+}
+
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
   properties: {
@@ -296,16 +317,16 @@ module workspace_privateEndpoints '../../network/private-endpoint/main.bicep' = 
   }
 }]
 
-module workspace_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: '${uniqueString(deployment().name, location)}-MLWorkspace-Rbac-${index}'
-  params: {
-    description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
-    principalIds: roleAssignment.principalIds
-    principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
-    roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    condition: contains(roleAssignment, 'condition') ? roleAssignment.condition : ''
-    delegatedManagedIdentityResourceId: contains(roleAssignment, 'delegatedManagedIdentityResourceId') ? roleAssignment.delegatedManagedIdentityResourceId : ''
-    resourceId: workspace.id
+resource workspace_roleAssignments 'Microsoft.Authorization/roleAssignments@2022-04-01' = [for (roleAssignment, index) in (roleAssignments ?? []): {
+  name: guid(workspace.id, roleAssignment.principalId, roleAssignment.roleDefinitionIdOrName)
+  properties: {
+    roleDefinitionId: contains(builtInRoleNames, roleAssignment.roleDefinitionIdOrName) ? builtInRoleNames[roleAssignment.roleDefinitionIdOrName] : roleAssignment.roleDefinitionIdOrName
+    principalId: roleAssignment.principalId
+    description: roleAssignment.?description
+    principalType: roleAssignment.?principalType
+    condition: roleAssignment.?condition
+    conditionVersion: !empty(roleAssignment.?condition) ? (roleAssignment.?conditionVersion ?? '2.0') : null // Must only be set if condtion is set
+    delegatedManagedIdentityResourceId: roleAssignment.?delegatedManagedIdentityResourceId
   }
 }]
 
@@ -339,3 +360,26 @@ type lockType = {
   @sys.description('Optional. Specify the type of lock.')
   kind: ('CanNotDelete' | 'ReadOnly' | 'None')?
 }?
+
+type roleAssignmentType = {
+  @sys.description('Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead.')
+  roleDefinitionIdOrName: string
+
+  @sys.description('Required. The principal ID of the principal (user/group/identity) to assign the role to.')
+  principalId: string
+
+  @sys.description('Optional. The principal type of the assigned principal ID.')
+  principalType: ('ServicePrincipal' | 'Group' | 'User' | 'ForeignGroup' | 'Device' | null)?
+
+  @sys.description('Optional. The description of the role assignment.')
+  description: string?
+
+  @sys.description('Optional. The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container"')
+  condition: string?
+
+  @sys.description('Optional. Version of the condition.')
+  conditionVersion: '2.0'?
+
+  @sys.description('Optional. The Resource Id of the delegated managed identity resource.')
+  delegatedManagedIdentityResourceId: string?
+}[]?
