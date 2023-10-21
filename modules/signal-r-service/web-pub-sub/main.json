@@ -1,15 +1,43 @@
 {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "languageVersion": "2.0",
   "contentVersion": "1.0.0.0",
   "metadata": {
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "11691998078416920042"
+      "templateHash": "13130629422708725988"
     },
     "name": "SignalR Web PubSub Services",
     "description": "This module deploys a SignalR Web PubSub Service.",
     "owner": "Azure/module-maintainers"
+  },
+  "definitions": {
+    "lockType": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Specify the name of lock."
+          }
+        },
+        "kind": {
+          "type": "string",
+          "allowedValues": [
+            "CanNotDelete",
+            "None",
+            "ReadOnly"
+          ],
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Specify the type of lock."
+          }
+        }
+      },
+      "nullable": true
+    }
   },
   "parameters": {
     "location": {
@@ -33,15 +61,9 @@
       }
     },
     "lock": {
-      "type": "string",
-      "defaultValue": "",
-      "allowedValues": [
-        "",
-        "CanNotDelete",
-        "ReadOnly"
-      ],
+      "$ref": "#/definitions/lockType",
       "metadata": {
-        "description": "Optional. Specify the type of lock."
+        "description": "Optional. The lock settings of the service."
       }
     },
     "roleAssignments": {
@@ -169,8 +191,8 @@
       "userAssignedIdentities": "[if(not(empty(parameters('userAssignedIdentities'))), parameters('userAssignedIdentities'), null())]"
     }
   },
-  "resources": [
-    {
+  "resources": {
+    "defaultTelemetry": {
       "condition": "[parameters('enableDefaultTelemetry')]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2021-04-01",
@@ -184,7 +206,7 @@
         }
       }
     },
-    {
+    "webPubSub": {
       "type": "Microsoft.SignalRService/webPubSub",
       "apiVersion": "2021-10-01",
       "name": "[parameters('name')]",
@@ -209,21 +231,21 @@
         }
       }
     },
-    {
-      "condition": "[not(empty(parameters('lock')))]",
+    "webPubSub_lock": {
+      "condition": "[and(not(empty(coalesce(parameters('lock'), createObject()))), not(equals(tryGet(parameters('lock'), 'kind'), 'None')))]",
       "type": "Microsoft.Authorization/locks",
       "apiVersion": "2020-05-01",
       "scope": "[format('Microsoft.SignalRService/webPubSub/{0}', parameters('name'))]",
-      "name": "[format('{0}-{1}-lock', parameters('name'), parameters('lock'))]",
+      "name": "[coalesce(tryGet(parameters('lock'), 'name'), format('lock-{0}', parameters('name')))]",
       "properties": {
-        "level": "[parameters('lock')]",
-        "notes": "[if(equals(parameters('lock'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot modify the resource or child resources.')]"
+        "level": "[coalesce(tryGet(parameters('lock'), 'kind'), '')]",
+        "notes": "[if(equals(tryGet(parameters('lock'), 'kind'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot delete or modify the resource or child resources.')]"
       },
       "dependsOn": [
-        "[resourceId('Microsoft.SignalRService/webPubSub', parameters('name'))]"
+        "webPubSub"
       ]
     },
-    {
+    "webPubSub_privateEndpoints": {
       "copy": {
         "name": "webPubSub_privateEndpoints",
         "count": "[length(parameters('privateEndpoints'))]"
@@ -250,7 +272,9 @@
             "value": "[parameters('privateEndpoints')[copyIndex()].subnetResourceId]"
           },
           "location": "[if(contains(parameters('privateEndpoints')[copyIndex()], 'location'), createObject('value', parameters('privateEndpoints')[copyIndex()].location), createObject('value', reference(split(parameters('privateEndpoints')[copyIndex()].subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location))]",
-          "lock": "[if(contains(parameters('privateEndpoints')[copyIndex()], 'lock'), createObject('value', parameters('privateEndpoints')[copyIndex()].lock), createObject('value', null()))]",
+          "lock": {
+            "value": "[coalesce(tryGet(parameters('privateEndpoints')[copyIndex()], 'lock'), parameters('lock'))]"
+          },
           "privateDnsZoneGroupName": "[if(contains(parameters('privateEndpoints')[copyIndex()], 'privateDnsZoneGroupName'), createObject('value', parameters('privateEndpoints')[copyIndex()].privateDnsZoneGroupName), createObject('value', 'default'))]",
           "privateDnsZoneResourceIds": "[if(contains(parameters('privateEndpoints')[copyIndex()], 'privateDnsZoneResourceIds'), createObject('value', parameters('privateEndpoints')[copyIndex()].privateDnsZoneResourceIds), createObject('value', createArray()))]",
           "roleAssignments": "[if(contains(parameters('privateEndpoints')[copyIndex()], 'roleAssignments'), createObject('value', parameters('privateEndpoints')[copyIndex()].roleAssignments), createObject('value', createArray()))]",
@@ -744,10 +768,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.SignalRService/webPubSub', parameters('name'))]"
+        "webPubSub"
       ]
     },
-    {
+    "webPubSub_rbac": {
       "copy": {
         "name": "webPubSub_rbac",
         "count": "[length(parameters('roleAssignments'))]"
@@ -900,10 +924,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.SignalRService/webPubSub', parameters('name'))]"
+        "webPubSub"
       ]
     }
-  ],
+  },
   "outputs": {
     "name": {
       "type": "string",
@@ -931,35 +955,35 @@
       "metadata": {
         "description": "The Web PubSub externalIP."
       },
-      "value": "[reference(resourceId('Microsoft.SignalRService/webPubSub', parameters('name')), '2021-10-01').externalIP]"
+      "value": "[reference('webPubSub').externalIP]"
     },
     "hostName": {
       "type": "string",
       "metadata": {
         "description": "The Web PubSub hostName."
       },
-      "value": "[reference(resourceId('Microsoft.SignalRService/webPubSub', parameters('name')), '2021-10-01').hostName]"
+      "value": "[reference('webPubSub').hostName]"
     },
     "publicPort": {
       "type": "int",
       "metadata": {
         "description": "The Web PubSub publicPort."
       },
-      "value": "[reference(resourceId('Microsoft.SignalRService/webPubSub', parameters('name')), '2021-10-01').publicPort]"
+      "value": "[reference('webPubSub').publicPort]"
     },
     "serverPort": {
       "type": "int",
       "metadata": {
         "description": "The Web PubSub serverPort."
       },
-      "value": "[reference(resourceId('Microsoft.SignalRService/webPubSub', parameters('name')), '2021-10-01').serverPort]"
+      "value": "[reference('webPubSub').serverPort]"
     },
     "location": {
       "type": "string",
       "metadata": {
         "description": "The location the resource was deployed into."
       },
-      "value": "[reference(resourceId('Microsoft.SignalRService/webPubSub', parameters('name')), '2021-10-01', 'full').location]"
+      "value": "[reference('webPubSub', '2021-10-01', 'full').location]"
     }
   }
 }

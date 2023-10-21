@@ -70,7 +70,10 @@ module testDeployment '../../main.bicep' = {
     name: '${namePrefix}${serviceShort}001'
     location: location
     publicNetworkAccess: 'Enabled'
-    lock: ''
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     fhirservices: [
       {
         name: '${namePrefix}-az-fhir-x-001'

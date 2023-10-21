@@ -1,15 +1,43 @@
 {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "languageVersion": "2.0",
   "contentVersion": "1.0.0.0",
   "metadata": {
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "8514585732181524503"
+      "templateHash": "15164808450251247513"
     },
     "name": "SQL Managed Instances",
     "description": "This module deploys a SQL Managed Instance.",
     "owner": "Azure/module-maintainers"
+  },
+  "definitions": {
+    "lockType": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Specify the name of lock."
+          }
+        },
+        "kind": {
+          "type": "string",
+          "allowedValues": [
+            "CanNotDelete",
+            "None",
+            "ReadOnly"
+          ],
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Specify the type of lock."
+          }
+        }
+      },
+      "nullable": true
+    }
   },
   "parameters": {
     "name": {
@@ -208,15 +236,9 @@
       }
     },
     "lock": {
-      "type": "string",
-      "defaultValue": "",
-      "allowedValues": [
-        "",
-        "CanNotDelete",
-        "ReadOnly"
-      ],
+      "$ref": "#/definitions/lockType",
       "metadata": {
-        "description": "Optional. Specify the type of lock."
+        "description": "Optional. The lock settings of the service."
       }
     },
     "roleAssignments": {
@@ -389,8 +411,8 @@
     "identity": "[if(not(equals(variables('identityType'), 'None')), createObject('type', variables('identityType'), 'userAssignedIdentities', if(not(empty(parameters('userAssignedIdentities'))), parameters('userAssignedIdentities'), null())), null())]",
     "enableReferencedModulesTelemetry": false
   },
-  "resources": [
-    {
+  "resources": {
+    "defaultTelemetry": {
       "condition": "[parameters('enableDefaultTelemetry')]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2021-04-01",
@@ -404,7 +426,7 @@
         }
       }
     },
-    {
+    "managedInstance": {
       "type": "Microsoft.Sql/managedInstances",
       "apiVersion": "2022-05-01-preview",
       "name": "[parameters('name')]",
@@ -441,21 +463,21 @@
         "minimalTlsVersion": "[parameters('minimalTlsVersion')]"
       }
     },
-    {
-      "condition": "[not(empty(parameters('lock')))]",
+    "managedInstance_lock": {
+      "condition": "[and(not(empty(coalesce(parameters('lock'), createObject()))), not(equals(tryGet(parameters('lock'), 'kind'), 'None')))]",
       "type": "Microsoft.Authorization/locks",
       "apiVersion": "2020-05-01",
       "scope": "[format('Microsoft.Sql/managedInstances/{0}', parameters('name'))]",
-      "name": "[format('{0}-{1}-lock', parameters('name'), parameters('lock'))]",
+      "name": "[coalesce(tryGet(parameters('lock'), 'name'), format('lock-{0}', parameters('name')))]",
       "properties": {
-        "level": "[parameters('lock')]",
-        "notes": "[if(equals(parameters('lock'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot modify the resource or child resources.')]"
+        "level": "[coalesce(tryGet(parameters('lock'), 'kind'), '')]",
+        "notes": "[if(equals(tryGet(parameters('lock'), 'kind'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot delete or modify the resource or child resources.')]"
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Sql/managedInstances', parameters('name'))]"
+        "managedInstance"
       ]
     },
-    {
+    "managedInstance_diagnosticSettings": {
       "condition": "[or(or(or(not(empty(parameters('diagnosticStorageAccountId'))), not(empty(parameters('diagnosticWorkspaceId')))), not(empty(parameters('diagnosticEventHubAuthorizationRuleId')))), not(empty(parameters('diagnosticEventHubName'))))]",
       "type": "Microsoft.Insights/diagnosticSettings",
       "apiVersion": "2021-05-01-preview",
@@ -470,10 +492,10 @@
         "logs": "[variables('diagnosticsLogs')]"
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Sql/managedInstances', parameters('name'))]"
+        "managedInstance"
       ]
     },
-    {
+    "managedInstance_roleAssignments": {
       "copy": {
         "name": "managedInstance_roleAssignments",
         "count": "[length(parameters('roleAssignments'))]"
@@ -627,10 +649,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Sql/managedInstances', parameters('name'))]"
+        "managedInstance"
       ]
     },
-    {
+    "managedInstance_databases": {
       "copy": {
         "name": "managedInstance_databases",
         "count": "[length(parameters('databases'))]"
@@ -656,8 +678,10 @@
           "diagnosticStorageAccountId": "[if(contains(parameters('databases')[copyIndex()], 'diagnosticStorageAccountId'), createObject('value', parameters('databases')[copyIndex()].diagnosticStorageAccountId), createObject('value', ''))]",
           "diagnosticEventHubAuthorizationRuleId": "[if(contains(parameters('databases')[copyIndex()], 'diagnosticEventHubAuthorizationRuleId'), createObject('value', parameters('databases')[copyIndex()].diagnosticEventHubAuthorizationRuleId), createObject('value', ''))]",
           "diagnosticEventHubName": "[if(contains(parameters('databases')[copyIndex()], 'diagnosticEventHubName'), createObject('value', parameters('databases')[copyIndex()].diagnosticEventHubName), createObject('value', ''))]",
-          "location": "[if(contains(parameters('databases')[copyIndex()], 'location'), createObject('value', parameters('databases')[copyIndex()].location), createObject('value', reference(resourceId('Microsoft.Sql/managedInstances', parameters('name')), '2022-05-01-preview', 'full').location))]",
-          "lock": "[if(contains(parameters('databases')[copyIndex()], 'lock'), createObject('value', parameters('databases')[copyIndex()].lock), createObject('value', ''))]",
+          "location": "[if(contains(parameters('databases')[copyIndex()], 'location'), createObject('value', parameters('databases')[copyIndex()].location), createObject('value', reference('managedInstance', '2022-05-01-preview', 'full').location))]",
+          "lock": {
+            "value": "[coalesce(tryGet(parameters('databases')[copyIndex()], 'lock'), parameters('lock'))]"
+          },
           "longTermRetentionBackupResourceId": "[if(contains(parameters('databases')[copyIndex()], 'longTermRetentionBackupResourceId'), createObject('value', parameters('databases')[copyIndex()].longTermRetentionBackupResourceId), createObject('value', ''))]",
           "recoverableDatabaseId": "[if(contains(parameters('databases')[copyIndex()], 'recoverableDatabaseId'), createObject('value', parameters('databases')[copyIndex()].recoverableDatabaseId), createObject('value', ''))]",
           "restorableDroppedDatabaseId": "[if(contains(parameters('databases')[copyIndex()], 'restorableDroppedDatabaseId'), createObject('value', parameters('databases')[copyIndex()].restorableDroppedDatabaseId), createObject('value', ''))]",
@@ -675,16 +699,44 @@
         },
         "template": {
           "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "languageVersion": "2.0",
           "contentVersion": "1.0.0.0",
           "metadata": {
             "_generator": {
               "name": "bicep",
               "version": "0.22.6.54827",
-              "templateHash": "6503511608072200864"
+              "templateHash": "6248092272830092402"
             },
             "name": "SQL Managed Instance Databases",
             "description": "This module deploys a SQL Managed Instance Database.",
             "owner": "Azure/module-maintainers"
+          },
+          "definitions": {
+            "lockType": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "nullable": true,
+                  "metadata": {
+                    "description": "Optional. Specify the name of lock."
+                  }
+                },
+                "kind": {
+                  "type": "string",
+                  "allowedValues": [
+                    "CanNotDelete",
+                    "None",
+                    "ReadOnly"
+                  ],
+                  "nullable": true,
+                  "metadata": {
+                    "description": "Optional. Specify the type of lock."
+                  }
+                }
+              },
+              "nullable": true
+            }
           },
           "parameters": {
             "name": {
@@ -812,15 +864,9 @@
               }
             },
             "lock": {
-              "type": "string",
-              "defaultValue": "",
-              "allowedValues": [
-                "",
-                "CanNotDelete",
-                "ReadOnly"
-              ],
+              "$ref": "#/definitions/lockType",
               "metadata": {
-                "description": "Optional. Specify the type of lock."
+                "description": "Optional. The lock settings of the service."
               }
             },
             "backupShortTermRetentionPoliciesObj": {
@@ -890,8 +936,8 @@
             "diagnosticsLogs": "[if(contains(parameters('diagnosticLogCategoriesToEnable'), 'allLogs'), createArray(createObject('categoryGroup', 'allLogs', 'enabled', true())), if(contains(parameters('diagnosticLogCategoriesToEnable'), ''), createArray(), variables('diagnosticsLogsSpecified')))]",
             "enableReferencedModulesTelemetry": false
           },
-          "resources": [
-            {
+          "resources": {
+            "defaultTelemetry": {
               "condition": "[parameters('enableDefaultTelemetry')]",
               "type": "Microsoft.Resources/deployments",
               "apiVersion": "2021-04-01",
@@ -905,7 +951,13 @@
                 }
               }
             },
-            {
+            "managedInstance": {
+              "existing": true,
+              "type": "Microsoft.Sql/managedInstances",
+              "apiVersion": "2022-05-01-preview",
+              "name": "[parameters('managedInstanceName')]"
+            },
+            "database": {
               "type": "Microsoft.Sql/managedInstances/databases",
               "apiVersion": "2022-05-01-preview",
               "name": "[format('{0}/{1}', parameters('managedInstanceName'), parameters('name'))]",
@@ -922,9 +974,12 @@
                 "storageContainerSasToken": "[if(empty(parameters('storageContainerSasToken')), null(), parameters('storageContainerSasToken'))]",
                 "recoverableDatabaseId": "[if(empty(parameters('recoverableDatabaseId')), null(), parameters('recoverableDatabaseId'))]",
                 "longTermRetentionBackupResourceId": "[if(empty(parameters('longTermRetentionBackupResourceId')), null(), parameters('longTermRetentionBackupResourceId'))]"
-              }
+              },
+              "dependsOn": [
+                "managedInstance"
+              ]
             },
-            {
+            "database_lock": {
               "condition": "[not(empty(parameters('lock')))]",
               "type": "Microsoft.Authorization/locks",
               "apiVersion": "2020-05-01",
@@ -935,10 +990,10 @@
                 "notes": "[if(equals(parameters('lock'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot modify the resource or child resources.')]"
               },
               "dependsOn": [
-                "[resourceId('Microsoft.Sql/managedInstances/databases', parameters('managedInstanceName'), parameters('name'))]"
+                "database"
               ]
             },
-            {
+            "database_diagnosticSettings": {
               "condition": "[or(or(or(not(empty(parameters('diagnosticStorageAccountId'))), not(empty(parameters('diagnosticWorkspaceId')))), not(empty(parameters('diagnosticEventHubAuthorizationRuleId')))), not(empty(parameters('diagnosticEventHubName'))))]",
               "type": "Microsoft.Insights/diagnosticSettings",
               "apiVersion": "2021-05-01-preview",
@@ -952,10 +1007,10 @@
                 "logs": "[variables('diagnosticsLogs')]"
               },
               "dependsOn": [
-                "[resourceId('Microsoft.Sql/managedInstances/databases', parameters('managedInstanceName'), parameters('name'))]"
+                "database"
               ]
             },
-            {
+            "database_backupShortTermRetentionPolicy": {
               "condition": "[not(empty(parameters('backupShortTermRetentionPoliciesObj')))]",
               "type": "Microsoft.Resources/deployments",
               "apiVersion": "2022-09-01",
@@ -1077,10 +1132,10 @@
                 }
               },
               "dependsOn": [
-                "[resourceId('Microsoft.Sql/managedInstances/databases', parameters('managedInstanceName'), parameters('name'))]"
+                "database"
               ]
             },
-            {
+            "database_backupLongTermRetentionPolicy": {
               "condition": "[not(empty(parameters('backupLongTermRetentionPoliciesObj')))]",
               "type": "Microsoft.Resources/deployments",
               "apiVersion": "2022-09-01",
@@ -1229,10 +1284,10 @@
                 }
               },
               "dependsOn": [
-                "[resourceId('Microsoft.Sql/managedInstances/databases', parameters('managedInstanceName'), parameters('name'))]"
+                "database"
               ]
             }
-          ],
+          },
           "outputs": {
             "name": {
               "type": "string",
@@ -1260,16 +1315,16 @@
               "metadata": {
                 "description": "The location the resource was deployed into."
               },
-              "value": "[reference(resourceId('Microsoft.Sql/managedInstances/databases', parameters('managedInstanceName'), parameters('name')), '2022-05-01-preview', 'full').location]"
+              "value": "[reference('database', '2022-05-01-preview', 'full').location]"
             }
           }
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Sql/managedInstances', parameters('name'))]"
+        "managedInstance"
       ]
     },
-    {
+    "managedInstance_securityAlertPolicy": {
       "condition": "[not(empty(parameters('securityAlertPoliciesObj')))]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
@@ -1395,10 +1450,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Sql/managedInstances', parameters('name'))]"
+        "managedInstance"
       ]
     },
-    {
+    "managedInstance_vulnerabilityAssessment": {
       "condition": "[and(not(empty(parameters('vulnerabilityAssessmentsObj'))), parameters('systemAssignedIdentity'))]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
@@ -1614,11 +1669,11 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Sql/managedInstances', parameters('name'))]",
-        "[resourceId('Microsoft.Resources/deployments', format('{0}-SqlMi-SecAlertPol', uniqueString(deployment().name, parameters('location'))))]"
+        "managedInstance",
+        "managedInstance_securityAlertPolicy"
       ]
     },
-    {
+    "managedInstance_keys": {
       "copy": {
         "name": "managedInstance_keys",
         "count": "[length(parameters('keys'))]"
@@ -1751,10 +1806,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Sql/managedInstances', parameters('name'))]"
+        "managedInstance"
       ]
     },
-    {
+    "managedInstance_encryptionProtector": {
       "condition": "[not(empty(parameters('encryptionProtectorObj')))]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
@@ -1881,11 +1936,11 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Sql/managedInstances', parameters('name'))]",
+        "managedInstance",
         "managedInstance_keys"
       ]
     },
-    {
+    "managedInstance_administrator": {
       "condition": "[not(empty(parameters('administratorsObj')))]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
@@ -2010,10 +2065,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Sql/managedInstances', parameters('name'))]"
+        "managedInstance"
       ]
     }
-  ],
+  },
   "outputs": {
     "name": {
       "type": "string",
@@ -2041,14 +2096,14 @@
       "metadata": {
         "description": "The principal ID of the system assigned identity."
       },
-      "value": "[if(and(parameters('systemAssignedIdentity'), contains(reference(resourceId('Microsoft.Sql/managedInstances', parameters('name')), '2022-05-01-preview', 'full').identity, 'principalId')), reference(resourceId('Microsoft.Sql/managedInstances', parameters('name')), '2022-05-01-preview', 'full').identity.principalId, '')]"
+      "value": "[if(and(parameters('systemAssignedIdentity'), contains(reference('managedInstance', '2022-05-01-preview', 'full').identity, 'principalId')), reference('managedInstance', '2022-05-01-preview', 'full').identity.principalId, '')]"
     },
     "location": {
       "type": "string",
       "metadata": {
         "description": "The location the resource was deployed into."
       },
-      "value": "[reference(resourceId('Microsoft.Sql/managedInstances', parameters('name')), '2022-05-01-preview', 'full').location]"
+      "value": "[reference('managedInstance', '2022-05-01-preview', 'full').location]"
     }
   }
 }

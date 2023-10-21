@@ -1,15 +1,43 @@
 {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "languageVersion": "2.0",
   "contentVersion": "1.0.0.0",
   "metadata": {
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "9774189040753970370"
+      "templateHash": "14872051751998229436"
     },
     "name": "Public DNS Zones",
     "description": "This module deploys a Public DNS zone.",
     "owner": "Azure/module-maintainers"
+  },
+  "definitions": {
+    "lockType": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Specify the name of lock."
+          }
+        },
+        "kind": {
+          "type": "string",
+          "allowedValues": [
+            "CanNotDelete",
+            "None",
+            "ReadOnly"
+          ],
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Specify the type of lock."
+          }
+        }
+      },
+      "nullable": true
+    }
   },
   "parameters": {
     "name": {
@@ -112,15 +140,9 @@
       }
     },
     "lock": {
-      "type": "string",
-      "defaultValue": "",
-      "allowedValues": [
-        "",
-        "CanNotDelete",
-        "ReadOnly"
-      ],
+      "$ref": "#/definitions/lockType",
       "metadata": {
-        "description": "Optional. Specify the type of lock."
+        "description": "Optional. The lock settings of the service."
       }
     },
     "enableDefaultTelemetry": {
@@ -134,8 +156,8 @@
   "variables": {
     "enableReferencedModulesTelemetry": false
   },
-  "resources": [
-    {
+  "resources": {
+    "defaultTelemetry": {
       "condition": "[parameters('enableDefaultTelemetry')]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2021-04-01",
@@ -149,7 +171,7 @@
         }
       }
     },
-    {
+    "dnsZone": {
       "type": "Microsoft.Network/dnsZones",
       "apiVersion": "2018-05-01",
       "name": "[parameters('name')]",
@@ -159,21 +181,21 @@
         "zoneType": "Public"
       }
     },
-    {
-      "condition": "[not(empty(parameters('lock')))]",
+    "dnsZone_lock": {
+      "condition": "[and(not(empty(coalesce(parameters('lock'), createObject()))), not(equals(tryGet(parameters('lock'), 'kind'), 'None')))]",
       "type": "Microsoft.Authorization/locks",
       "apiVersion": "2020-05-01",
       "scope": "[format('Microsoft.Network/dnsZones/{0}', parameters('name'))]",
-      "name": "[format('{0}-{1}-lock', parameters('name'), parameters('lock'))]",
+      "name": "[coalesce(tryGet(parameters('lock'), 'name'), format('lock-{0}', parameters('name')))]",
       "properties": {
-        "level": "[parameters('lock')]",
-        "notes": "[if(equals(parameters('lock'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot modify the resource or child resources.')]"
+        "level": "[coalesce(tryGet(parameters('lock'), 'kind'), '')]",
+        "notes": "[if(equals(tryGet(parameters('lock'), 'kind'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot delete or modify the resource or child resources.')]"
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Network/dnsZones', parameters('name'))]"
+        "dnsZone"
       ]
     },
-    {
+    "dnsZone_A": {
       "copy": {
         "name": "dnsZone_A",
         "count": "[length(parameters('a'))]"
@@ -501,10 +523,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Network/dnsZones', parameters('name'))]"
+        "dnsZone"
       ]
     },
-    {
+    "dnsZone_AAAA": {
       "copy": {
         "name": "dnsZone_AAAA",
         "count": "[length(parameters('aaaa'))]"
@@ -832,10 +854,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Network/dnsZones', parameters('name'))]"
+        "dnsZone"
       ]
     },
-    {
+    "dnsZone_CNAME": {
       "copy": {
         "name": "dnsZone_CNAME",
         "count": "[length(parameters('cname'))]"
@@ -1163,10 +1185,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Network/dnsZones', parameters('name'))]"
+        "dnsZone"
       ]
     },
-    {
+    "dnsZone_CAA": {
       "copy": {
         "name": "dnsZone_CAA",
         "count": "[length(parameters('caa'))]"
@@ -1485,10 +1507,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Network/dnsZones', parameters('name'))]"
+        "dnsZone"
       ]
     },
-    {
+    "dnsZone_MX": {
       "copy": {
         "name": "dnsZone_MX",
         "count": "[length(parameters('mx'))]"
@@ -1807,10 +1829,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Network/dnsZones', parameters('name'))]"
+        "dnsZone"
       ]
     },
-    {
+    "dnsZone_NS": {
       "copy": {
         "name": "dnsZone_NS",
         "count": "[length(parameters('ns'))]"
@@ -2129,10 +2151,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Network/dnsZones', parameters('name'))]"
+        "dnsZone"
       ]
     },
-    {
+    "dnsZone_PTR": {
       "copy": {
         "name": "dnsZone_PTR",
         "count": "[length(parameters('ptr'))]"
@@ -2451,10 +2473,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Network/dnsZones', parameters('name'))]"
+        "dnsZone"
       ]
     },
-    {
+    "dnsZone_SOA": {
       "copy": {
         "name": "dnsZone_SOA",
         "count": "[length(parameters('soa'))]"
@@ -2773,10 +2795,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Network/dnsZones', parameters('name'))]"
+        "dnsZone"
       ]
     },
-    {
+    "dnsZone_SRV": {
       "copy": {
         "name": "dnsZone_SRV",
         "count": "[length(parameters('srv'))]"
@@ -3095,10 +3117,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Network/dnsZones', parameters('name'))]"
+        "dnsZone"
       ]
     },
-    {
+    "dnsZone_TXT": {
       "copy": {
         "name": "dnsZone_TXT",
         "count": "[length(parameters('txt'))]"
@@ -3417,10 +3439,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Network/dnsZones', parameters('name'))]"
+        "dnsZone"
       ]
     },
-    {
+    "dnsZone_roleAssignments": {
       "copy": {
         "name": "dnsZone_roleAssignments",
         "count": "[length(parameters('roleAssignments'))]"
@@ -3594,10 +3616,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Network/dnsZones', parameters('name'))]"
+        "dnsZone"
       ]
     }
-  ],
+  },
   "outputs": {
     "resourceGroupName": {
       "type": "string",
@@ -3625,7 +3647,7 @@
       "metadata": {
         "description": "The location the resource was deployed into."
       },
-      "value": "[reference(resourceId('Microsoft.Network/dnsZones', parameters('name')), '2018-05-01', 'full').location]"
+      "value": "[reference('dnsZone', '2018-05-01', 'full').location]"
     }
   }
 }

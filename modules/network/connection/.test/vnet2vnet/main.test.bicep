@@ -62,7 +62,10 @@ module testDeployment '../../main.bicep' = {
       id: nestedDependencies.outputs.primaryVNETGatewayResourceID
     }
     enableBgp: false
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     virtualNetworkGateway2: {
       id: nestedDependencies.outputs.secondaryVNETGatewayResourceID
     }

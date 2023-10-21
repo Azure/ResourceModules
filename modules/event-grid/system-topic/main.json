@@ -1,15 +1,43 @@
 {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "languageVersion": "2.0",
   "contentVersion": "1.0.0.0",
   "metadata": {
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "13215489869065606829"
+      "templateHash": "5976620650016374171"
     },
     "name": "Event Grid System Topics",
     "description": "This module deploys an Event Grid System Topic.",
     "owner": "Azure/module-maintainers"
+  },
+  "definitions": {
+    "lockType": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Specify the name of lock."
+          }
+        },
+        "kind": {
+          "type": "string",
+          "allowedValues": [
+            "CanNotDelete",
+            "None",
+            "ReadOnly"
+          ],
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Specify the type of lock."
+          }
+        }
+      },
+      "nullable": true
+    }
   },
   "parameters": {
     "name": {
@@ -80,15 +108,9 @@
       }
     },
     "lock": {
-      "type": "string",
-      "defaultValue": "",
-      "allowedValues": [
-        "",
-        "CanNotDelete",
-        "ReadOnly"
-      ],
+      "$ref": "#/definitions/lockType",
       "metadata": {
-        "description": "Optional. Specify the type of lock."
+        "description": "Optional. The lock settings of the service."
       }
     },
     "systemAssignedIdentity": {
@@ -177,8 +199,8 @@
     "identity": "[if(not(equals(variables('identityType'), 'None')), createObject('type', variables('identityType'), 'userAssignedIdentities', if(not(empty(parameters('userAssignedIdentities'))), parameters('userAssignedIdentities'), null())), null())]",
     "diagnosticsLogs": "[if(contains(parameters('diagnosticLogCategoriesToEnable'), 'allLogs'), createArray(createObject('categoryGroup', 'allLogs', 'enabled', true())), if(contains(parameters('diagnosticLogCategoriesToEnable'), ''), createArray(), variables('diagnosticsLogsSpecified')))]"
   },
-  "resources": [
-    {
+  "resources": {
+    "defaultTelemetry": {
       "condition": "[parameters('enableDefaultTelemetry')]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2021-04-01",
@@ -192,7 +214,7 @@
         }
       }
     },
-    {
+    "systemTopic": {
       "type": "Microsoft.EventGrid/systemTopics",
       "apiVersion": "2021-12-01",
       "name": "[parameters('name')]",
@@ -204,21 +226,21 @@
         "topicType": "[parameters('topicType')]"
       }
     },
-    {
-      "condition": "[not(empty(parameters('lock')))]",
+    "systemTopic_lock": {
+      "condition": "[and(not(empty(coalesce(parameters('lock'), createObject()))), not(equals(tryGet(parameters('lock'), 'kind'), 'None')))]",
       "type": "Microsoft.Authorization/locks",
       "apiVersion": "2020-05-01",
       "scope": "[format('Microsoft.EventGrid/systemTopics/{0}', parameters('name'))]",
-      "name": "[format('{0}-{1}-lock', parameters('name'), parameters('lock'))]",
+      "name": "[coalesce(tryGet(parameters('lock'), 'name'), format('lock-{0}', parameters('name')))]",
       "properties": {
-        "level": "[parameters('lock')]",
-        "notes": "[if(equals(parameters('lock'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot modify the resource or child resources.')]"
+        "level": "[coalesce(tryGet(parameters('lock'), 'kind'), '')]",
+        "notes": "[if(equals(tryGet(parameters('lock'), 'kind'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot delete or modify the resource or child resources.')]"
       },
       "dependsOn": [
-        "[resourceId('Microsoft.EventGrid/systemTopics', parameters('name'))]"
+        "systemTopic"
       ]
     },
-    {
+    "systemTopic_diagnosticSettings": {
       "condition": "[or(or(or(not(empty(parameters('diagnosticStorageAccountId'))), not(empty(parameters('diagnosticWorkspaceId')))), not(empty(parameters('diagnosticEventHubAuthorizationRuleId')))), not(empty(parameters('diagnosticEventHubName'))))]",
       "type": "Microsoft.Insights/diagnosticSettings",
       "apiVersion": "2021-05-01-preview",
@@ -233,10 +255,10 @@
         "logs": "[variables('diagnosticsLogs')]"
       },
       "dependsOn": [
-        "[resourceId('Microsoft.EventGrid/systemTopics', parameters('name'))]"
+        "systemTopic"
       ]
     },
-    {
+    "systemTopics_eventSubscriptions": {
       "copy": {
         "name": "systemTopics_eventSubscriptions",
         "count": "[length(parameters('eventSubscriptions'))]"
@@ -267,7 +289,7 @@
           "expirationTimeUtc": "[if(contains(parameters('eventSubscriptions')[copyIndex()], 'expirationTimeUtc'), createObject('value', parameters('eventSubscriptions')[copyIndex()].expirationTimeUtc), createObject('value', ''))]",
           "filter": "[if(contains(parameters('eventSubscriptions')[copyIndex()], 'filter'), createObject('value', parameters('eventSubscriptions')[copyIndex()].filter), createObject('value', createObject()))]",
           "labels": "[if(contains(parameters('eventSubscriptions')[copyIndex()], 'labels'), createObject('value', parameters('eventSubscriptions')[copyIndex()].labels), createObject('value', createArray()))]",
-          "location": "[if(contains(parameters('eventSubscriptions')[copyIndex()], 'location'), createObject('value', parameters('eventSubscriptions')[copyIndex()].location), createObject('value', reference(resourceId('Microsoft.EventGrid/systemTopics', parameters('name')), '2021-12-01', 'full').location))]",
+          "location": "[if(contains(parameters('eventSubscriptions')[copyIndex()], 'location'), createObject('value', parameters('eventSubscriptions')[copyIndex()].location), createObject('value', reference('systemTopic', '2021-12-01', 'full').location))]",
           "retryPolicy": "[if(contains(parameters('eventSubscriptions')[copyIndex()], 'retryPolicy'), createObject('value', parameters('eventSubscriptions')[copyIndex()].retryPolicy), createObject('value', createObject()))]"
         },
         "template": {
@@ -444,10 +466,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.EventGrid/systemTopics', parameters('name'))]"
+        "systemTopic"
       ]
     },
-    {
+    "systemTopic_roleAssignments": {
       "copy": {
         "name": "systemTopic_roleAssignments",
         "count": "[length(parameters('roleAssignments'))]"
@@ -598,10 +620,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.EventGrid/systemTopics', parameters('name'))]"
+        "systemTopic"
       ]
     }
-  ],
+  },
   "outputs": {
     "name": {
       "type": "string",
@@ -629,14 +651,14 @@
       "metadata": {
         "description": "The principal ID of the system assigned identity."
       },
-      "value": "[if(and(parameters('systemAssignedIdentity'), contains(reference(resourceId('Microsoft.EventGrid/systemTopics', parameters('name')), '2021-12-01', 'full').identity, 'principalId')), reference(resourceId('Microsoft.EventGrid/systemTopics', parameters('name')), '2021-12-01', 'full').identity.principalId, '')]"
+      "value": "[if(and(parameters('systemAssignedIdentity'), contains(reference('systemTopic', '2021-12-01', 'full').identity, 'principalId')), reference('systemTopic', '2021-12-01', 'full').identity.principalId, '')]"
     },
     "location": {
       "type": "string",
       "metadata": {
         "description": "The location the resource was deployed into."
       },
-      "value": "[reference(resourceId('Microsoft.EventGrid/systemTopics', parameters('name')), '2021-12-01', 'full').location]"
+      "value": "[reference('systemTopic', '2021-12-01', 'full').location]"
     }
   }
 }

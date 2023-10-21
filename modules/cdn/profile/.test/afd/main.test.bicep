@@ -50,7 +50,10 @@ module testDeployment '../../main.bicep' = {
   params: {
     name: 'dep-${namePrefix}-test-${serviceShort}'
     location: 'global'
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     originResponseTimeoutSeconds: 60
     sku: 'Standard_AzureFrontDoor'
     enableDefaultTelemetry: enableDefaultTelemetry

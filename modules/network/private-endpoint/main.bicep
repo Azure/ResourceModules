@@ -150,7 +150,7 @@ output name string = privateEndpoint.name
 output location string = privateEndpoint.location
 
 // ================ //
-// Definitions      //
+//   Definitions   //
 // ================ //
 
 type roleAssignmentType = {

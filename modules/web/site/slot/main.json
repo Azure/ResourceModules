@@ -1,15 +1,43 @@
 {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "languageVersion": "2.0",
   "contentVersion": "1.0.0.0",
   "metadata": {
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "10608087316287962337"
+      "templateHash": "9880661409366046894"
     },
     "name": "Web/Function App Deployment Slots",
     "description": "This module deploys a Web or Function App Deployment Slot.",
     "owner": "Azure/module-maintainers"
+  },
+  "definitions": {
+    "lockType": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Specify the name of lock."
+          }
+        },
+        "kind": {
+          "type": "string",
+          "allowedValues": [
+            "CanNotDelete",
+            "None",
+            "ReadOnly"
+          ],
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Specify the type of lock."
+          }
+        }
+      },
+      "nullable": true
+    }
   },
   "parameters": {
     "name": {
@@ -150,15 +178,9 @@
       }
     },
     "lock": {
-      "type": "string",
-      "defaultValue": "",
-      "allowedValues": [
-        "",
-        "CanNotDelete",
-        "ReadOnly"
-      ],
+      "$ref": "#/definitions/lockType",
       "metadata": {
-        "description": "Optional. Specify the type of lock."
+        "description": "Optional. The lock settings of the service."
       }
     },
     "privateEndpoints": {
@@ -406,8 +428,14 @@
     "identity": "[if(not(equals(variables('identityType'), 'None')), createObject('type', variables('identityType'), 'userAssignedIdentities', if(not(empty(parameters('userAssignedIdentities'))), parameters('userAssignedIdentities'), null())), null())]",
     "enableReferencedModulesTelemetry": false
   },
-  "resources": [
-    {
+  "resources": {
+    "app": {
+      "existing": true,
+      "type": "Microsoft.Web/sites",
+      "apiVersion": "2021-03-01",
+      "name": "[parameters('appName')]"
+    },
+    "defaultTelemetry": {
       "condition": "[parameters('enableDefaultTelemetry')]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2021-04-01",
@@ -421,7 +449,7 @@
         }
       }
     },
-    {
+    "slot": {
       "type": "Microsoft.Web/sites/slots",
       "apiVersion": "2022-09-01",
       "name": "[format('{0}/{1}', parameters('appName'), parameters('name'))]",
@@ -453,9 +481,12 @@
         "vnetContentShareEnabled": "[parameters('vnetContentShareEnabled')]",
         "vnetImagePullEnabled": "[parameters('vnetImagePullEnabled')]",
         "vnetRouteAllEnabled": "[parameters('vnetRouteAllEnabled')]"
-      }
+      },
+      "dependsOn": [
+        "app"
+      ]
     },
-    {
+    "slot_lock": {
       "condition": "[not(empty(parameters('lock')))]",
       "type": "Microsoft.Authorization/locks",
       "apiVersion": "2017-04-01",
@@ -466,10 +497,10 @@
         "notes": "[if(equals(parameters('lock'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot modify the resource or child resources.')]"
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Web/sites/slots', parameters('appName'), parameters('name'))]"
+        "slot"
       ]
     },
-    {
+    "slot_diagnosticSettings": {
       "condition": "[or(or(or(not(empty(parameters('diagnosticStorageAccountId'))), not(empty(parameters('diagnosticWorkspaceId')))), not(empty(parameters('diagnosticEventHubAuthorizationRuleId')))), not(empty(parameters('diagnosticEventHubName'))))]",
       "type": "Microsoft.Insights/diagnosticSettings",
       "apiVersion": "2021-05-01-preview",
@@ -484,10 +515,10 @@
         "logs": "[variables('diagnosticsLogs')]"
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Web/sites/slots', parameters('appName'), parameters('name'))]"
+        "slot"
       ]
     },
-    {
+    "slot_appsettings": {
       "condition": "[not(empty(parameters('appSettingsKeyValuePairs')))]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
@@ -647,10 +678,11 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Web/sites/slots', parameters('appName'), parameters('name'))]"
+        "app",
+        "slot"
       ]
     },
-    {
+    "slot_authsettingsv2": {
       "condition": "[not(empty(parameters('authSettingV2Configuration')))]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
@@ -779,10 +811,11 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Web/sites/slots', parameters('appName'), parameters('name'))]"
+        "app",
+        "slot"
       ]
     },
-    {
+    "slot_hybridConnectionRelays": {
       "copy": {
         "name": "slot_hybridConnectionRelays",
         "count": "[length(parameters('hybridConnectionRelays'))]"
@@ -921,10 +954,11 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Web/sites/slots', parameters('appName'), parameters('name'))]"
+        "app",
+        "slot"
       ]
     },
-    {
+    "slot_rbac": {
       "copy": {
         "name": "slot_rbac",
         "count": "[length(parameters('roleAssignments'))]"
@@ -1048,10 +1082,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Web/sites/slots', parameters('appName'), parameters('name'))]"
+        "slot"
       ]
     },
-    {
+    "slot_privateEndpoints": {
       "copy": {
         "name": "slot_privateEndpoints",
         "count": "[length(parameters('privateEndpoints'))]"
@@ -1081,7 +1115,9 @@
             "value": "[variables('enableReferencedModulesTelemetry')]"
           },
           "location": "[if(contains(parameters('privateEndpoints')[copyIndex()], 'location'), createObject('value', parameters('privateEndpoints')[copyIndex()].location), createObject('value', reference(split(parameters('privateEndpoints')[copyIndex()].subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location))]",
-          "lock": "[if(contains(parameters('privateEndpoints')[copyIndex()], 'lock'), createObject('value', parameters('privateEndpoints')[copyIndex()].lock), createObject('value', null()))]",
+          "lock": {
+            "value": "[coalesce(tryGet(parameters('privateEndpoints')[copyIndex()], 'lock'), parameters('lock'))]"
+          },
           "privateDnsZoneGroupName": "[if(contains(parameters('privateEndpoints')[copyIndex()], 'privateDnsZoneGroupName'), createObject('value', parameters('privateEndpoints')[copyIndex()].privateDnsZoneGroupName), createObject('value', 'default'))]",
           "privateDnsZoneResourceIds": "[if(contains(parameters('privateEndpoints')[copyIndex()], 'privateDnsZoneResourceIds'), createObject('value', parameters('privateEndpoints')[copyIndex()].privateDnsZoneResourceIds), createObject('value', createArray()))]",
           "roleAssignments": "[if(contains(parameters('privateEndpoints')[copyIndex()], 'roleAssignments'), createObject('value', parameters('privateEndpoints')[copyIndex()].roleAssignments), createObject('value', createArray()))]",
@@ -1572,10 +1608,11 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Web/sites/slots', parameters('appName'), parameters('name'))]"
+        "app",
+        "slot"
       ]
     }
-  ],
+  },
   "outputs": {
     "name": {
       "type": "string",
@@ -1603,14 +1640,14 @@
       "metadata": {
         "description": "The principal ID of the system assigned identity."
       },
-      "value": "[if(and(parameters('systemAssignedIdentity'), if(contains(reference(resourceId('Microsoft.Web/sites/slots', parameters('appName'), parameters('name')), '2022-09-01', 'full'), 'identity'), contains(reference(resourceId('Microsoft.Web/sites/slots', parameters('appName'), parameters('name')), '2022-09-01', 'full').identity, 'principalId'), false())), reference(resourceId('Microsoft.Web/sites/slots', parameters('appName'), parameters('name')), '2022-09-01', 'full').identity.principalId, '')]"
+      "value": "[if(and(parameters('systemAssignedIdentity'), if(contains(reference('slot', '2022-09-01', 'full'), 'identity'), contains(reference('slot', '2022-09-01', 'full').identity, 'principalId'), false())), reference('slot', '2022-09-01', 'full').identity.principalId, '')]"
     },
     "location": {
       "type": "string",
       "metadata": {
         "description": "The location the resource was deployed into."
       },
-      "value": "[reference(resourceId('Microsoft.Web/sites/slots', parameters('appName'), parameters('name')), '2022-09-01', 'full').location]"
+      "value": "[reference('slot', '2022-09-01', 'full').location]"
     }
   }
 }

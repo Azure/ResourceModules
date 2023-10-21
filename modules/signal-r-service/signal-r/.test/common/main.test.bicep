@@ -58,7 +58,10 @@ module testDeployment '../../main.bicep' = {
     disableAadAuth: false
     disableLocalAuth: true
     location: location
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     kind: 'SignalR'
     networkAcls: {
       defaultAction: 'Allow'

@@ -67,13 +67,8 @@ param certificateValue string = ''
 @description('Optional. DNS suffix for the environment domain.')
 param dnsSuffix string = ''
 
-@allowed([
-  ''
-  'CanNotDelete'
-  'ReadOnly'
-])
-@description('Optional. Specify the type of lock.')
-param lock string = ''
+@description('Optional. The lock settings of the service.')
+param lock lockType
 
 @description('Optional. Workload profiles configured for the Managed Environment.')
 param workloadProfiles array = []
@@ -142,11 +137,11 @@ module managedEnvironment_roleAssignments '.bicep/nested_roleAssignments.bicep' 
   }
 }]
 
-resource managedEnvironment_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
-  name: '${managedEnvironment.name}-${lock}-lock'
+resource managedEnvironment_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock ?? {}) && lock.?kind != 'None') {
+  name: lock.?name ?? 'lock-${name}'
   properties: {
-    level: any(lock)
-    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+    level: lock.?kind ?? ''
+    notes: lock.?kind == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot delete or modify the resource or child resources.'
   }
   scope: managedEnvironment
 }
@@ -162,3 +157,15 @@ output name string = managedEnvironment.name
 
 @description('The resource ID of the Managed Environment.')
 output resourceId string = managedEnvironment.id
+
+// =============== //
+//   Definitions   //
+// =============== //
+
+type lockType = {
+  @description('Optional. Specify the name of lock.')
+  name: string?
+
+  @description('Optional. Specify the type of lock.')
+  kind: ('CanNotDelete' | 'ReadOnly' | 'None')?
+}?

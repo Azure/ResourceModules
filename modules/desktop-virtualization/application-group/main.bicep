@@ -40,13 +40,8 @@ param diagnosticEventHubAuthorizationRuleId string = ''
 @sys.description('Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
 param diagnosticEventHubName string = ''
 
-@allowed([
-  ''
-  'CanNotDelete'
-  'ReadOnly'
-])
-@sys.description('Optional. Specify the type of lock.')
-param lock string = ''
+@sys.description('Optional. The lock settings of the service.')
+param lock lockType
 
 @sys.description('Optional. Tags of the resource.')
 param tags object = {}
@@ -114,11 +109,11 @@ resource appGroup 'Microsoft.DesktopVirtualization/applicationGroups@2022-09-09'
   }
 }
 
-resource appGroup_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
-  name: '${appGroup.name}-${lock}-lock'
+resource appGroup_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock ?? {}) && lock.?kind != 'None') {
+  name: lock.?name ?? 'lock-${name}'
   properties: {
-    level: any(lock)
-    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+    level: lock.?kind ?? ''
+    notes: lock.?kind == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot delete or modify the resource or child resources.'
   }
   scope: appGroup
 }
@@ -176,3 +171,15 @@ output name string = appGroup.name
 
 @sys.description('The location the resource was deployed into.')
 output location string = appGroup.location
+
+// =============== //
+//   Definitions   //
+// =============== //
+
+type lockType = {
+  @sys.description('Optional. Specify the name of lock.')
+  name: string?
+
+  @sys.description('Optional. Specify the type of lock.')
+  kind: ('CanNotDelete' | 'ReadOnly' | 'None')?
+}?

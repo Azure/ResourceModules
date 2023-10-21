@@ -1,15 +1,43 @@
 {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "languageVersion": "2.0",
   "contentVersion": "1.0.0.0",
   "metadata": {
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "317150262818676597"
+      "templateHash": "11864164290736408459"
     },
     "name": "DNS Resolvers",
     "description": "This module deploys a DNS Resolver.",
     "owner": "Azure/module-maintainers"
+  },
+  "definitions": {
+    "lockType": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Specify the name of lock."
+          }
+        },
+        "kind": {
+          "type": "string",
+          "allowedValues": [
+            "CanNotDelete",
+            "None",
+            "ReadOnly"
+          ],
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Specify the type of lock."
+          }
+        }
+      },
+      "nullable": true
+    }
   },
   "parameters": {
     "name": {
@@ -27,15 +55,9 @@
       }
     },
     "lock": {
-      "type": "string",
-      "defaultValue": "",
-      "allowedValues": [
-        "",
-        "CanNotDelete",
-        "ReadOnly"
-      ],
+      "$ref": "#/definitions/lockType",
       "metadata": {
-        "description": "Optional. Specify the type of lock."
+        "description": "Optional. The lock settings of the service."
       }
     },
     "roleAssignments": {
@@ -80,8 +102,8 @@
       }
     }
   },
-  "resources": [
-    {
+  "resources": {
+    "defaultTelemetry": {
       "condition": "[parameters('enableDefaultTelemetry')]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2021-04-01",
@@ -95,7 +117,7 @@
         }
       }
     },
-    {
+    "dnsResolver": {
       "type": "Microsoft.Network/dnsResolvers",
       "apiVersion": "2022-07-01",
       "name": "[parameters('name')]",
@@ -107,7 +129,7 @@
         }
       }
     },
-    {
+    "dnsResolver_inboundEndpoint": {
       "copy": {
         "name": "dnsResolver_inboundEndpoint",
         "count": "[length(parameters('inboundEndpoints'))]"
@@ -127,10 +149,10 @@
         ]
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Network/dnsResolvers', parameters('name'))]"
+        "dnsResolver"
       ]
     },
-    {
+    "dnsResolver_outboundEndpoint": {
       "copy": {
         "name": "dnsResolver_outboundEndpoint",
         "count": "[length(parameters('outboundEndpoints'))]"
@@ -146,24 +168,24 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Network/dnsResolvers', parameters('name'))]"
+        "dnsResolver"
       ]
     },
-    {
-      "condition": "[not(empty(parameters('lock')))]",
+    "dnsResolver_lock": {
+      "condition": "[and(not(empty(coalesce(parameters('lock'), createObject()))), not(equals(tryGet(parameters('lock'), 'kind'), 'None')))]",
       "type": "Microsoft.Authorization/locks",
       "apiVersion": "2020-05-01",
       "scope": "[format('Microsoft.Network/dnsResolvers/{0}', parameters('name'))]",
-      "name": "[format('{0}-{1}-lock', parameters('name'), parameters('lock'))]",
+      "name": "[coalesce(tryGet(parameters('lock'), 'name'), format('lock-{0}', parameters('name')))]",
       "properties": {
-        "level": "[parameters('lock')]",
-        "notes": "[if(equals(parameters('lock'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot modify the resource or child resources.')]"
+        "level": "[coalesce(tryGet(parameters('lock'), 'kind'), '')]",
+        "notes": "[if(equals(tryGet(parameters('lock'), 'kind'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot delete or modify the resource or child resources.')]"
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Network/dnsResolvers', parameters('name'))]"
+        "dnsResolver"
       ]
     },
-    {
+    "dnsResolver_roleAssignments": {
       "copy": {
         "name": "dnsResolver_roleAssignments",
         "count": "[length(parameters('roleAssignments'))]"
@@ -337,10 +359,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Network/dnsResolvers', parameters('name'))]"
+        "dnsResolver"
       ]
     }
-  ],
+  },
   "outputs": {
     "resourceGroupName": {
       "type": "string",
@@ -368,7 +390,7 @@
       "metadata": {
         "description": "The location the resource was deployed into."
       },
-      "value": "[reference(resourceId('Microsoft.Network/dnsResolvers', parameters('name')), '2022-07-01', 'full').location]"
+      "value": "[reference('dnsResolver', '2022-07-01', 'full').location]"
     }
   }
 }

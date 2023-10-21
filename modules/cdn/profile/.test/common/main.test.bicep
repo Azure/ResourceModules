@@ -53,7 +53,10 @@ module testDeployment '../../main.bicep' = {
   params: {
     name: 'dep-${namePrefix}-test-${serviceShort}'
     location: location
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     originResponseTimeoutSeconds: 60
     sku: 'Standard_Verizon'
     enableDefaultTelemetry: enableDefaultTelemetry

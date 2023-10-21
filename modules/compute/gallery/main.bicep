@@ -18,13 +18,8 @@ param applications array = []
 @sys.description('Optional. Images to create.')
 param images array = []
 
-@allowed([
-  ''
-  'CanNotDelete'
-  'ReadOnly'
-])
-@sys.description('Optional. Specify the type of lock.')
-param lock string = ''
+@sys.description('Optional. The lock settings of the service.')
+param lock lockType
 
 @sys.description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
@@ -59,11 +54,11 @@ resource gallery 'Microsoft.Compute/galleries@2022-03-03' = {
   }
 }
 
-resource gallery_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
-  name: '${gallery.name}-${lock}-lock'
+resource gallery_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock ?? {}) && lock.?kind != 'None') {
+  name: lock.?name ?? 'lock-${name}'
   properties: {
-    level: any(lock)
-    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+    level: lock.?kind ?? ''
+    notes: lock.?kind == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot delete or modify the resource or child resources.'
   }
   scope: gallery
 }
@@ -143,3 +138,15 @@ output name string = gallery.name
 
 @sys.description('The location the resource was deployed into.')
 output location string = gallery.location
+
+// =============== //
+//   Definitions   //
+// =============== //
+
+type lockType = {
+  @sys.description('Optional. Specify the name of lock.')
+  name: string?
+
+  @sys.description('Optional. Specify the type of lock.')
+  kind: ('CanNotDelete' | 'ReadOnly' | 'None')?
+}?

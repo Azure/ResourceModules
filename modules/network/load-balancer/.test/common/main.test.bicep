@@ -128,7 +128,10 @@ module testDeployment '../../main.bicep' = {
         probeName: 'probe2'
       }
     ]
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     outboundRules: [
       {
         allocatedOutboundPorts: 63984

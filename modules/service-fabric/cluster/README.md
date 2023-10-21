@@ -274,7 +274,10 @@ module cluster 'br:bicep/modules/service-fabric.cluster:1.0.0' = {
         ]
       }
     ]
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     maxUnusedVersionsToKeep: 2
     notifications: [
       {
@@ -485,7 +488,10 @@ module cluster 'br:bicep/modules/service-fabric.cluster:1.0.0' = {
       ]
     },
     "lock": {
-      "value": "CanNotDelete"
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
     },
     "maxUnusedVersionsToKeep": {
       "value": 2
@@ -677,7 +683,7 @@ module cluster 'br:bicep/modules/service-fabric.cluster:1.0.0' = {
 | [`fabricSettings`](#parameter-fabricsettings) | array | The list of custom fabric settings to configure the cluster. |
 | [`infrastructureServiceManager`](#parameter-infrastructureservicemanager) | bool | Indicates if infrastructure service manager is enabled. |
 | [`location`](#parameter-location) | string | Location for all resources. |
-| [`lock`](#parameter-lock) | string | Specify the type of lock. |
+| [`lock`](#parameter-lock) | object | The lock settings of the service. |
 | [`maxUnusedVersionsToKeep`](#parameter-maxunusedversionstokeep) | int | Number of unused versions per application type to keep. |
 | [`notifications`](#parameter-notifications) | array | Indicates a list of notification channels for cluster events. |
 | [`reverseProxyCertificate`](#parameter-reverseproxycertificate) | object | Describes the certificate details. |
@@ -795,11 +801,30 @@ Location for all resources.
 
 ### Parameter: `lock`
 
-Specify the type of lock.
+The lock settings of the service.
+- Required: No
+- Type: object
+
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`kind`](#parameter-lockkind) | No | string | Optional. Specify the type of lock. |
+| [`name`](#parameter-lockname) | No | string | Optional. Specify the name of lock. |
+
+### Parameter: `lock.kind`
+
+Optional. Specify the type of lock.
+
 - Required: No
 - Type: string
-- Default: `''`
-- Allowed: `['', CanNotDelete, ReadOnly]`
+- Allowed: `[CanNotDelete, None, ReadOnly]`
+
+### Parameter: `lock.name`
+
+Optional. Specify the name of lock.
+
+- Required: No
+- Type: string
 
 ### Parameter: `managementEndpoint`
 

@@ -1,15 +1,43 @@
 {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "languageVersion": "2.0",
   "contentVersion": "1.0.0.0",
   "metadata": {
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "1180320046795963031"
+      "templateHash": "6686356746172129467"
     },
     "name": "Virtual Machine Scale Sets",
     "description": "This module deploys a Virtual Machine Scale Set.",
     "owner": "Azure/module-maintainers"
+  },
+  "definitions": {
+    "lockType": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Specify the name of lock."
+          }
+        },
+        "kind": {
+          "type": "string",
+          "allowedValues": [
+            "CanNotDelete",
+            "None",
+            "ReadOnly"
+          ],
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Specify the type of lock."
+          }
+        }
+      },
+      "nullable": true
+    }
   },
   "parameters": {
     "name": {
@@ -302,15 +330,9 @@
       }
     },
     "lock": {
-      "type": "string",
-      "defaultValue": "",
-      "allowedValues": [
-        "",
-        "CanNotDelete",
-        "ReadOnly"
-      ],
+      "$ref": "#/definitions/lockType",
       "metadata": {
-        "description": "Optional. Specify the type of lock."
+        "description": "Optional. The lock settings of the service."
       }
     },
     "upgradePolicyMode": {
@@ -629,8 +651,8 @@
     "identity": "[if(not(equals(variables('identityType'), 'None')), createObject('type', variables('identityType'), 'userAssignedIdentities', if(not(empty(parameters('userAssignedIdentities'))), parameters('userAssignedIdentities'), null())), null())]",
     "enableReferencedModulesTelemetry": false
   },
-  "resources": [
-    {
+  "resources": {
+    "defaultTelemetry": {
       "condition": "[parameters('enableDefaultTelemetry')]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2021-04-01",
@@ -644,7 +666,7 @@
         }
       }
     },
-    {
+    "vmss": {
       "type": "Microsoft.Compute/virtualMachineScaleSets",
       "apiVersion": "2022-11-01",
       "name": "[parameters('name')]",
@@ -767,21 +789,30 @@
       },
       "plan": "[if(not(empty(parameters('plan'))), parameters('plan'), null())]"
     },
-    {
-      "condition": "[not(empty(parameters('lock')))]",
+    "vmss_logAnalyticsWorkspace": {
+      "condition": "[not(empty(parameters('monitoringWorkspaceId')))]",
+      "existing": true,
+      "type": "Microsoft.OperationalInsights/workspaces",
+      "apiVersion": "2021-06-01",
+      "subscriptionId": "[split(if(not(empty(parameters('monitoringWorkspaceId'))), parameters('monitoringWorkspaceId'), '//'), '/')[2]]",
+      "resourceGroup": "[split(if(not(empty(parameters('monitoringWorkspaceId'))), parameters('monitoringWorkspaceId'), '////'), '/')[4]]",
+      "name": "[last(split(if(not(empty(parameters('monitoringWorkspaceId'))), parameters('monitoringWorkspaceId'), 'law'), '/'))]"
+    },
+    "vmss_lock": {
+      "condition": "[and(not(empty(coalesce(parameters('lock'), createObject()))), not(equals(tryGet(parameters('lock'), 'kind'), 'None')))]",
       "type": "Microsoft.Authorization/locks",
       "apiVersion": "2020-05-01",
       "scope": "[format('Microsoft.Compute/virtualMachineScaleSets/{0}', parameters('name'))]",
-      "name": "[format('{0}-{1}-lock', parameters('name'), parameters('lock'))]",
+      "name": "[coalesce(tryGet(parameters('lock'), 'name'), format('lock-{0}', parameters('name')))]",
       "properties": {
-        "level": "[parameters('lock')]",
-        "notes": "[if(equals(parameters('lock'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot modify the resource or child resources.')]"
+        "level": "[coalesce(tryGet(parameters('lock'), 'kind'), '')]",
+        "notes": "[if(equals(tryGet(parameters('lock'), 'kind'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot delete or modify the resource or child resources.')]"
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Compute/virtualMachineScaleSets', parameters('name'))]"
+        "vmss"
       ]
     },
-    {
+    "vmss_diagnosticSettings": {
       "condition": "[or(or(or(not(empty(parameters('diagnosticStorageAccountId'))), not(empty(parameters('diagnosticWorkspaceId')))), not(empty(parameters('diagnosticEventHubAuthorizationRuleId')))), not(empty(parameters('diagnosticEventHubName'))))]",
       "type": "Microsoft.Insights/diagnosticSettings",
       "apiVersion": "2021-05-01-preview",
@@ -795,10 +826,10 @@
         "metrics": "[variables('diagnosticsMetrics')]"
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Compute/virtualMachineScaleSets', parameters('name'))]"
+        "vmss"
       ]
     },
-    {
+    "vmss_domainJoinExtension": {
       "condition": "[parameters('extensionDomainJoinConfig').enabled]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
@@ -986,10 +1017,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Compute/virtualMachineScaleSets', parameters('name'))]"
+        "vmss"
       ]
     },
-    {
+    "vmss_microsoftAntiMalwareExtension": {
       "condition": "[parameters('extensionAntiMalwareConfig').enabled]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
@@ -1172,10 +1203,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Compute/virtualMachineScaleSets', parameters('name'))]"
+        "vmss"
       ]
     },
-    {
+    "vmss_microsoftMonitoringAgentExtension": {
       "condition": "[parameters('extensionMonitoringAgentConfig').enabled]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
@@ -1201,12 +1232,12 @@
           "enableAutomaticUpgrade": "[if(contains(parameters('extensionMonitoringAgentConfig'), 'enableAutomaticUpgrade'), createObject('value', parameters('extensionMonitoringAgentConfig').enableAutomaticUpgrade), createObject('value', false()))]",
           "settings": {
             "value": {
-              "workspaceId": "[if(not(empty(parameters('monitoringWorkspaceId'))), reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', split(parameters('monitoringWorkspaceId'), '/')[2], split(parameters('monitoringWorkspaceId'), '/')[4]), 'Microsoft.OperationalInsights/workspaces', last(split(parameters('monitoringWorkspaceId'), '/'))), '2021-06-01').customerId, '')]"
+              "workspaceId": "[if(not(empty(parameters('monitoringWorkspaceId'))), reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', split(if(not(empty(parameters('monitoringWorkspaceId'))), parameters('monitoringWorkspaceId'), '//'), '/')[2], split(if(not(empty(parameters('monitoringWorkspaceId'))), parameters('monitoringWorkspaceId'), '////'), '/')[4]), 'Microsoft.OperationalInsights/workspaces', last(split(if(not(empty(parameters('monitoringWorkspaceId'))), parameters('monitoringWorkspaceId'), 'law'), '/'))), '2021-06-01').customerId, '')]"
             }
           },
           "protectedSettings": {
             "value": {
-              "workspaceKey": "[if(not(empty(parameters('monitoringWorkspaceId'))), listKeys(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', split(parameters('monitoringWorkspaceId'), '/')[2], split(parameters('monitoringWorkspaceId'), '/')[4]), 'Microsoft.OperationalInsights/workspaces', last(split(parameters('monitoringWorkspaceId'), '/'))), '2021-06-01').primarySharedKey, '')]"
+              "workspaceKey": "[if(not(empty(parameters('monitoringWorkspaceId'))), listKeys(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', split(if(not(empty(parameters('monitoringWorkspaceId'))), parameters('monitoringWorkspaceId'), '//'), '/')[2], split(if(not(empty(parameters('monitoringWorkspaceId'))), parameters('monitoringWorkspaceId'), '////'), '/')[4]), 'Microsoft.OperationalInsights/workspaces', last(split(if(not(empty(parameters('monitoringWorkspaceId'))), parameters('monitoringWorkspaceId'), 'law'), '/'))), '2021-06-01').primarySharedKey, '')]"
             }
           },
           "enableDefaultTelemetry": {
@@ -1363,10 +1394,11 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Compute/virtualMachineScaleSets', parameters('name'))]"
+        "vmss",
+        "vmss_logAnalyticsWorkspace"
       ]
     },
-    {
+    "vmss_dependencyAgentExtension": {
       "condition": "[parameters('extensionDependencyAgentConfig').enabled]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
@@ -1544,10 +1576,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Compute/virtualMachineScaleSets', parameters('name'))]"
+        "vmss"
       ]
     },
-    {
+    "vmss_networkWatcherAgentExtension": {
       "condition": "[parameters('extensionNetworkWatcherAgentConfig').enabled]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
@@ -1725,10 +1757,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Compute/virtualMachineScaleSets', parameters('name'))]"
+        "vmss"
       ]
     },
-    {
+    "vmss_desiredStateConfigurationExtension": {
       "condition": "[parameters('extensionDSCConfig').enabled]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
@@ -1910,10 +1942,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Compute/virtualMachineScaleSets', parameters('name'))]"
+        "vmss"
       ]
     },
-    {
+    "vmss_customScriptExtension": {
       "condition": "[parameters('extensionCustomScriptConfig').enabled]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
@@ -2101,11 +2133,11 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Compute/virtualMachineScaleSets', parameters('name'))]",
-        "[resourceId('Microsoft.Resources/deployments', format('{0}-VMSS-DesiredStateConfiguration', uniqueString(deployment().name, parameters('location'))))]"
+        "vmss",
+        "vmss_desiredStateConfigurationExtension"
       ]
     },
-    {
+    "vmss_azureDiskEncryptionExtension": {
       "condition": "[parameters('extensionAzureDiskEncryptionConfig').enabled]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
@@ -2287,12 +2319,12 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Compute/virtualMachineScaleSets', parameters('name'))]",
-        "[resourceId('Microsoft.Resources/deployments', format('{0}-VMSS-CustomScriptExtension', uniqueString(deployment().name, parameters('location'))))]",
-        "[resourceId('Microsoft.Resources/deployments', format('{0}-VMSS-MicrosoftMonitoringAgent', uniqueString(deployment().name, parameters('location'))))]"
+        "vmss",
+        "vmss_customScriptExtension",
+        "vmss_microsoftMonitoringAgentExtension"
       ]
     },
-    {
+    "vmss_roleAssignments": {
       "copy": {
         "name": "vmss_roleAssignments",
         "count": "[length(parameters('roleAssignments'))]"
@@ -2459,10 +2491,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Compute/virtualMachineScaleSets', parameters('name'))]"
+        "vmss"
       ]
     }
-  ],
+  },
   "outputs": {
     "resourceId": {
       "type": "string",
@@ -2490,14 +2522,14 @@
       "metadata": {
         "description": "The principal ID of the system assigned identity."
       },
-      "value": "[if(and(parameters('systemAssignedIdentity'), contains(reference(resourceId('Microsoft.Compute/virtualMachineScaleSets', parameters('name')), '2022-11-01', 'full').identity, 'principalId')), reference(resourceId('Microsoft.Compute/virtualMachineScaleSets', parameters('name')), '2022-11-01', 'full').identity.principalId, '')]"
+      "value": "[if(and(parameters('systemAssignedIdentity'), contains(reference('vmss', '2022-11-01', 'full').identity, 'principalId')), reference('vmss', '2022-11-01', 'full').identity.principalId, '')]"
     },
     "location": {
       "type": "string",
       "metadata": {
         "description": "The location the resource was deployed into."
       },
-      "value": "[reference(resourceId('Microsoft.Compute/virtualMachineScaleSets', parameters('name')), '2022-11-01', 'full').location]"
+      "value": "[reference('vmss', '2022-11-01', 'full').location]"
     }
   }
 }

@@ -53,7 +53,10 @@ module trafficmanagerprofile 'br:bicep/modules/network.trafficmanagerprofile:1.0
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     roleAssignments: [
       {
         principalIds: [
@@ -108,7 +111,10 @@ module trafficmanagerprofile 'br:bicep/modules/network.trafficmanagerprofile:1.0
       "value": "<enableDefaultTelemetry>"
     },
     "lock": {
-      "value": "CanNotDelete"
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
     },
     "roleAssignments": {
       "value": [
@@ -210,7 +216,7 @@ module trafficmanagerprofile 'br:bicep/modules/network.trafficmanagerprofile:1.0
 | [`diagnosticWorkspaceId`](#parameter-diagnosticworkspaceid) | string | Resource ID of the diagnostic log analytics workspace. |
 | [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
 | [`endpoints`](#parameter-endpoints) | array | The list of endpoints in the Traffic Manager profile. |
-| [`lock`](#parameter-lock) | string | Specify the type of lock. |
+| [`lock`](#parameter-lock) | object | The lock settings of the service. |
 | [`maxReturn`](#parameter-maxreturn) | int | Maximum number of endpoints to be returned for MultiValue routing type. |
 | [`monitorConfig`](#parameter-monitorconfig) | object | The endpoint monitoring settings of the Traffic Manager profile. |
 | [`profileStatus`](#parameter-profilestatus) | string | The status of the Traffic Manager profile. |
@@ -287,11 +293,30 @@ The list of endpoints in the Traffic Manager profile.
 
 ### Parameter: `lock`
 
-Specify the type of lock.
+The lock settings of the service.
+- Required: No
+- Type: object
+
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`kind`](#parameter-lockkind) | No | string | Optional. Specify the type of lock. |
+| [`name`](#parameter-lockname) | No | string | Optional. Specify the name of lock. |
+
+### Parameter: `lock.kind`
+
+Optional. Specify the type of lock.
+
 - Required: No
 - Type: string
-- Default: `''`
-- Allowed: `['', CanNotDelete, ReadOnly]`
+- Allowed: `[CanNotDelete, None, ReadOnly]`
+
+### Parameter: `lock.name`
+
+Optional. Specify the name of lock.
+
+- Required: No
+- Type: string
 
 ### Parameter: `maxReturn`
 

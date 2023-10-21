@@ -1,15 +1,43 @@
 {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "languageVersion": "2.0",
   "contentVersion": "1.0.0.0",
   "metadata": {
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "212662749954902934"
+      "templateHash": "3676240704825809090"
     },
     "name": "Service Fabric Clusters",
     "description": "This module deploys a Service Fabric Cluster.",
     "owner": "Azure/module-maintainers"
+  },
+  "definitions": {
+    "lockType": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Specify the name of lock."
+          }
+        },
+        "kind": {
+          "type": "string",
+          "allowedValues": [
+            "CanNotDelete",
+            "None",
+            "ReadOnly"
+          ],
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Specify the type of lock."
+          }
+        }
+      },
+      "nullable": true
+    }
   },
   "parameters": {
     "name": {
@@ -33,15 +61,9 @@
       }
     },
     "lock": {
-      "type": "string",
-      "defaultValue": "",
-      "allowedValues": [
-        "",
-        "CanNotDelete",
-        "ReadOnly"
-      ],
+      "$ref": "#/definitions/lockType",
       "metadata": {
-        "description": "Optional. Specify the type of lock."
+        "description": "Optional. The lock settings of the service."
       }
     },
     "enableDefaultTelemetry": {
@@ -342,8 +364,8 @@
     "enableReferencedModulesTelemetry": false,
     "upgradeDescriptionVar": "[union(createObject('deltaHealthPolicy', createObject('applicationDeltaHealthPolicies', if(contains(parameters('upgradeDescription'), 'applicationDeltaHealthPolicies'), parameters('upgradeDescription').applicationDeltaHealthPolicies, createObject()), 'maxPercentDeltaUnhealthyApplications', if(contains(parameters('upgradeDescription'), 'maxPercentDeltaUnhealthyApplications'), parameters('upgradeDescription').maxPercentDeltaUnhealthyApplications, 0), 'maxPercentDeltaUnhealthyNodes', if(contains(parameters('upgradeDescription'), 'maxPercentDeltaUnhealthyNodes'), parameters('upgradeDescription').maxPercentDeltaUnhealthyNodes, 0), 'maxPercentUpgradeDomainDeltaUnhealthyNodes', if(contains(parameters('upgradeDescription'), 'maxPercentUpgradeDomainDeltaUnhealthyNodes'), parameters('upgradeDescription').maxPercentUpgradeDomainDeltaUnhealthyNodes, 0)), 'forceRestart', if(contains(parameters('upgradeDescription'), 'forceRestart'), parameters('upgradeDescription').forceRestart, false()), 'healthCheckRetryTimeout', if(contains(parameters('upgradeDescription'), 'healthCheckRetryTimeout'), parameters('upgradeDescription').healthCheckRetryTimeout, '00:45:00'), 'healthCheckStableDuration', if(contains(parameters('upgradeDescription'), 'healthCheckStableDuration'), parameters('upgradeDescription').healthCheckStableDuration, '00:01:00'), 'healthCheckWaitDuration', if(contains(parameters('upgradeDescription'), 'healthCheckWaitDuration'), parameters('upgradeDescription').healthCheckWaitDuration, '00:00:30'), 'upgradeDomainTimeout', if(contains(parameters('upgradeDescription'), 'upgradeDomainTimeout'), parameters('upgradeDescription').upgradeDomainTimeout, '02:00:00'), 'upgradeReplicaSetCheckTimeout', if(contains(parameters('upgradeDescription'), 'upgradeReplicaSetCheckTimeout'), parameters('upgradeDescription').upgradeReplicaSetCheckTimeout, '1.00:00:00'), 'upgradeTimeout', if(contains(parameters('upgradeDescription'), 'upgradeTimeout'), parameters('upgradeDescription').upgradeTimeout, '02:00:00')), if(contains(parameters('upgradeDescription'), 'healthPolicy'), createObject('healthPolicy', createObject('applicationHealthPolicies', if(contains(parameters('upgradeDescription').healthPolicy, 'applicationHealthPolicies'), parameters('upgradeDescription').healthPolicy.applicationHealthPolicies, createObject()), 'maxPercentUnhealthyApplications', if(contains(parameters('upgradeDescription').healthPolicy, 'maxPercentUnhealthyApplications'), parameters('upgradeDescription').healthPolicy.maxPercentUnhealthyApplications, 0), 'maxPercentUnhealthyNodes', if(contains(parameters('upgradeDescription').healthPolicy, 'maxPercentUnhealthyNodes'), parameters('upgradeDescription').healthPolicy.maxPercentUnhealthyNodes, 0))), createObject()))]"
   },
-  "resources": [
-    {
+  "resources": {
+    "defaultTelemetry": {
       "condition": "[parameters('enableDefaultTelemetry')]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2021-04-01",
@@ -357,7 +379,7 @@
         }
       }
     },
-    {
+    "serviceFabricCluster": {
       "type": "Microsoft.ServiceFabric/clusters",
       "apiVersion": "2021-06-01",
       "name": "[parameters('name')]",
@@ -395,21 +417,21 @@
         "waveUpgradePaused": "[parameters('waveUpgradePaused')]"
       }
     },
-    {
-      "condition": "[not(empty(parameters('lock')))]",
+    "serviceFabricCluster_lock": {
+      "condition": "[and(not(empty(coalesce(parameters('lock'), createObject()))), not(equals(tryGet(parameters('lock'), 'kind'), 'None')))]",
       "type": "Microsoft.Authorization/locks",
       "apiVersion": "2020-05-01",
       "scope": "[format('Microsoft.ServiceFabric/clusters/{0}', parameters('name'))]",
-      "name": "[format('{0}-{1}-lock', parameters('name'), parameters('lock'))]",
+      "name": "[coalesce(tryGet(parameters('lock'), 'name'), format('lock-{0}', parameters('name')))]",
       "properties": {
-        "level": "[parameters('lock')]",
-        "notes": "[if(equals(parameters('lock'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot modify the resource or child resources.')]"
+        "level": "[coalesce(tryGet(parameters('lock'), 'kind'), '')]",
+        "notes": "[if(equals(tryGet(parameters('lock'), 'kind'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot delete or modify the resource or child resources.')]"
       },
       "dependsOn": [
-        "[resourceId('Microsoft.ServiceFabric/clusters', parameters('name'))]"
+        "serviceFabricCluster"
       ]
     },
-    {
+    "serviceFabricCluster_roleAssignments": {
       "copy": {
         "name": "serviceFabricCluster_roleAssignments",
         "count": "[length(parameters('roleAssignments'))]"
@@ -554,10 +576,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.ServiceFabric/clusters', parameters('name'))]"
+        "serviceFabricCluster"
       ]
     },
-    {
+    "serviceFabricCluster_applicationTypes": {
       "copy": {
         "name": "serviceFabricCluster_applicationTypes",
         "count": "[length(parameters('applicationTypes'))]"
@@ -672,10 +694,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.ServiceFabric/clusters', parameters('name'))]"
+        "serviceFabricCluster"
       ]
     }
-  ],
+  },
   "outputs": {
     "name": {
       "type": "string",
@@ -703,14 +725,14 @@
       "metadata": {
         "description": "The Service Fabric Cluster endpoint."
       },
-      "value": "[reference(resourceId('Microsoft.ServiceFabric/clusters', parameters('name')), '2021-06-01').clusterEndpoint]"
+      "value": "[reference('serviceFabricCluster').clusterEndpoint]"
     },
     "location": {
       "type": "string",
       "metadata": {
         "description": "The location the resource was deployed into."
       },
-      "value": "[reference(resourceId('Microsoft.ServiceFabric/clusters', parameters('name')), '2021-06-01', 'full').location]"
+      "value": "[reference('serviceFabricCluster', '2021-06-01', 'full').location]"
     }
   }
 }

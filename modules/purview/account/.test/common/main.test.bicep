@@ -92,11 +92,9 @@ module testDeployment '../../main.bicep' = {
     ]
     accountPrivateEndpoints: [
       {
-        privateDnsZoneGroup: {
-          privateDNSResourceIds: [
-            nestedDependencies.outputs.purviewAccountPrivateDNSResourceId
-          ]
-        }
+        privateDnsZoneResourceIds: [
+          nestedDependencies.outputs.purviewAccountPrivateDNSResourceId
+        ]
         service: 'account'
         subnetResourceId: nestedDependencies.outputs.subnetResourceId
         tags: {
@@ -108,11 +106,9 @@ module testDeployment '../../main.bicep' = {
     ]
     portalPrivateEndpoints: [
       {
-        privateDnsZoneGroup: {
-          privateDNSResourceIds: [
-            nestedDependencies.outputs.purviewPortalPrivateDNSResourceId
-          ]
-        }
+        privateDnsZoneResourceIds: [
+          nestedDependencies.outputs.purviewPortalPrivateDNSResourceId
+        ]
         service: 'portal'
         subnetResourceId: nestedDependencies.outputs.subnetResourceId
         tags: {
@@ -124,11 +120,9 @@ module testDeployment '../../main.bicep' = {
     ]
     storageBlobPrivateEndpoints: [
       {
-        privateDnsZoneGroup: {
-          privateDNSResourceIds: [
-            nestedDependencies.outputs.storageBlobPrivateDNSResourceId
-          ]
-        }
+        privateDnsZoneResourceIds: [
+          nestedDependencies.outputs.storageBlobPrivateDNSResourceId
+        ]
         service: 'blob'
         subnetResourceId: nestedDependencies.outputs.subnetResourceId
         tags: {
@@ -140,11 +134,9 @@ module testDeployment '../../main.bicep' = {
     ]
     storageQueuePrivateEndpoints: [
       {
-        privateDnsZoneGroup: {
-          privateDNSResourceIds: [
-            nestedDependencies.outputs.storageQueuePrivateDNSResourceId
-          ]
-        }
+        privateDnsZoneResourceIds: [
+          nestedDependencies.outputs.storageQueuePrivateDNSResourceId
+        ]
         service: 'queue'
         subnetResourceId: nestedDependencies.outputs.subnetResourceId
         tags: {
@@ -156,11 +148,9 @@ module testDeployment '../../main.bicep' = {
     ]
     eventHubPrivateEndpoints: [
       {
-        privateDnsZoneGroup: {
-          privateDNSResourceIds: [
-            nestedDependencies.outputs.eventHubPrivateDNSResourceId
-          ]
-        }
+        privateDnsZoneResourceIds: [
+          nestedDependencies.outputs.eventHubPrivateDNSResourceId
+        ]
         service: 'namespace'
         subnetResourceId: nestedDependencies.outputs.subnetResourceId
         tags: {
@@ -173,6 +163,9 @@ module testDeployment '../../main.bicep' = {
     enableDefaultTelemetry: enableDefaultTelemetry
     diagnosticLogCategoriesToEnable: [ 'allLogs' ]
     diagnosticMetricsToEnable: [ 'AllMetrics' ]
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
   }
 }

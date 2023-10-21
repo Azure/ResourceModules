@@ -143,19 +143,14 @@ The locks extension can be added as a `resource` to the resource template direct
 <summary>Details</summary>
 
 ```bicep
-@allowed([
-  ''
-  'CanNotDelete'
-  'ReadOnly'
-])
-@description('Optional. Specify the type of lock.')
-param lock string = ''
+@description('Optional. The lock settings of the service.')
+param lock lockType
 
-resource <mainResource>_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
-  name: '${<mainResource>.name}-${lock}-lock'
+resource <mainResource>_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock ?? {}) && lock.?kind != 'None') {
+  name: lock.?name ?? 'lock-${name}'
   properties: {
-    level: any(lock)
-    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+    level: lock.?kind ?? ''
+    notes: lock.?kind == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot delete or modify the resource or child resources.'
   }
   scope: <mainResource>
 }
@@ -165,12 +160,12 @@ resource <mainResource>_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!e
 >
 > - Child and extension resources
 >   - Locks are not automatically passed down, as they are inherited by default in Azure
->   - The reference of the child/extension template should look similar to: `lock: contains(<childExtensionObject>, 'lock') ? <childExtensionObject>.lock : ''`
+>   - The reference of the child/extension template should look similar to: `lock: <childExtensionObject>.?lock ?? lock`
 >   - Using this implementation, a lock is only deployed to the child/extension resource if explicitly specified in the module's test file
 >   - For example, the lock of a Storage Account module is not automatically passed to a Storage Container child-deployment. Instead, the Storage Container resource is automatically locked by Azure together with a locked Storage Account
 > - Cross-referenced resources
 >   - All cross-referenced resources share the lock with the main resource to prevent depending resources to be changed or deleted
->   - The reference of the cross-referenced resource template should look similar to: `lock: contains(<referenceObject>, 'lock') ? <referenceObject>.lock : lock`
+>   - The reference of the cross-referenced resource template should look similar to: `lock: <referenceObject>.?lock ?? lock`
 >   - Using this implementation, a lock of the main resource is implicitly passed to the referenced module template
 >   - For example, the lock of a Key Vault module is automatically passed to an also deployed Private Endpoint module deployment
 

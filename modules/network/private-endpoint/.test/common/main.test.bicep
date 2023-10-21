@@ -62,6 +62,7 @@ module testDeployment '../../main.bicep' = {
     subnetResourceId: nestedDependencies.outputs.subnetResourceId
     lock: {
       kind: 'CanNotDelete'
+      name: 'myCustomLockName'
     }
     privateDnsZoneResourceIds: [
       nestedDependencies.outputs.privateDNSZoneResourceId

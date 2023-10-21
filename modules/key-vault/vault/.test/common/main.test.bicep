@@ -114,7 +114,10 @@ module testDeployment '../../main.bicep' = {
         }
       }
     ]
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     networkAcls: {
       bypass: 'AzureServices'
       defaultAction: 'Deny'
@@ -133,9 +136,7 @@ module testDeployment '../../main.bicep' = {
     privateEndpoints: [
       {
         privateDnsZoneResourceIds: [
-
           nestedDependencies.outputs.privateDNSZoneResourceId
-
         ]
         service: 'vault'
         subnetResourceId: nestedDependencies.outputs.subnetResourceId

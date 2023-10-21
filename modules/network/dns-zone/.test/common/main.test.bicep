@@ -106,7 +106,10 @@ module testDeployment '../../main.bicep' = {
         targetResourceId: nestedDependencies.outputs.trafficManagerProfileResourceId
       }
     ]
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     mx: [
       {
         mxRecords: [

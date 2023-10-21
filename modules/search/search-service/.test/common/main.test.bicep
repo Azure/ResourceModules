@@ -78,7 +78,10 @@ module testDeployment '../../main.bicep' = {
     partitionCount: 2
     replicaCount: 3
     systemAssignedIdentity: true
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     roleAssignments: [
       {
         roleDefinitionIdOrName: 'Reader'

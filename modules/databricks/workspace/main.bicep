@@ -34,13 +34,8 @@ param diagnosticEventHubAuthorizationRuleId string = ''
 @description('Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
 param diagnosticEventHubName string = ''
 
-@allowed([
-  ''
-  'CanNotDelete'
-  'ReadOnly'
-])
-@description('Optional. Specify the type of lock.')
-param lock string = ''
+@description('Optional. The lock settings of the service.')
+param lock lockType
 
 @description('Optional. Tags of the resource.')
 param tags object = {}
@@ -176,24 +171,22 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource cMKManagedDisksKeyVault 'Microsoft.KeyVault/vaults@2023-02-01' existing = if (!empty(cMKManagedDisksKeyVaultResourceId)) {
-  name: last(split(cMKManagedDisksKeyVaultResourceId, '/'))!
-  scope: resourceGroup(split(cMKManagedDisksKeyVaultResourceId, '/')[2], split(cMKManagedDisksKeyVaultResourceId, '/')[4])
+resource cMKManagedDisksKeyVault 'Microsoft.KeyVault/vaults@2021-10-01' existing = if (!empty(cMKManagedDisksKeyVaultResourceId)) {
+  name: last(split((!empty(cMKManagedDisksKeyVaultResourceId) ? cMKManagedDisksKeyVaultResourceId : 'dummyVault'), '/'))!
+  scope: resourceGroup(split((!empty(cMKManagedDisksKeyVaultResourceId) ? cMKManagedDisksKeyVaultResourceId : '//'), '/')[2], split((!empty(cMKManagedDisksKeyVaultResourceId) ? cMKManagedDisksKeyVaultResourceId : '////'), '/')[4])
+
+  resource cMKKeyDisk 'keys@2023-02-01' existing = if (!empty(cMKManagedDisksKeyName)) {
+    name: !empty(cMKManagedDisksKeyName) ? cMKManagedDisksKeyName : 'dummyKey'
+  }
 }
 
-resource cMKManagedDisksKeyVaultKey 'Microsoft.KeyVault/vaults/keys@2023-02-01' existing = if (!empty(cMKManagedDisksKeyVaultResourceId) && !empty(cMKManagedDisksKeyName)) {
-  name: '${last(split(cMKManagedDisksKeyVaultResourceId, '/'))}/${cMKManagedDisksKeyName}'!
-  scope: resourceGroup(split(cMKManagedDisksKeyVaultResourceId, '/')[2], split(cMKManagedDisksKeyVaultResourceId, '/')[4])
-}
+resource cMKManagedServicesKeyVault 'Microsoft.KeyVault/vaults@2021-10-01' existing = if (!empty(cMKManagedServicesKeyVaultResourceId)) {
+  name: last(split((!empty(cMKManagedServicesKeyVaultResourceId) ? cMKManagedServicesKeyVaultResourceId : 'dummyVault'), '/'))!
+  scope: resourceGroup(split((!empty(cMKManagedServicesKeyVaultResourceId) ? cMKManagedServicesKeyVaultResourceId : '//'), '/')[2], split((!empty(cMKManagedServicesKeyVaultResourceId) ? cMKManagedServicesKeyVaultResourceId : '////'), '/')[4])
 
-resource cMKManagedServicesKeyVault 'Microsoft.KeyVault/vaults@2023-02-01' existing = if (!empty(cMKManagedServicesKeyVaultResourceId)) {
-  name: last(split(cMKManagedServicesKeyVaultResourceId, '/'))!
-  scope: resourceGroup(split(cMKManagedServicesKeyVaultResourceId, '/')[2], split(cMKManagedServicesKeyVaultResourceId, '/')[4])
-}
-
-resource cMKManagedServicesKeyVaultKey 'Microsoft.KeyVault/vaults/keys@2023-02-01' existing = if (!empty(cMKManagedServicesKeyVaultResourceId) && !empty(cMKManagedServicesKeyName)) {
-  name: '${last(split(cMKManagedServicesKeyVaultResourceId, '/'))}/${cMKManagedServicesKeyName}'!
-  scope: resourceGroup(split(cMKManagedServicesKeyVaultResourceId, '/')[2], split(cMKManagedServicesKeyVaultResourceId, '/')[4])
+  resource cMKKey 'keys@2023-02-01' existing = if (!empty(cMKManagedServicesKeyName)) {
+    name: !empty(cMKManagedServicesKeyName) ? cMKManagedServicesKeyName : 'dummyKey'
+  }
 }
 
 resource workspace 'Microsoft.Databricks/workspaces@2023-02-01' = {
@@ -281,7 +274,7 @@ resource workspace 'Microsoft.Databricks/workspaces@2023-02-01' = {
           keyVaultProperties: {
             keyVaultUri: cMKManagedServicesKeyVault.properties.vaultUri
             keyName: cMKManagedServicesKeyName
-            keyVersion: !empty(cMKManagedServicesKeyVersion) ? cMKManagedServicesKeyVersion : last(split(cMKManagedServicesKeyVaultKey.properties.keyUriWithVersion, '/'))
+            keyVersion: !empty(cMKManagedServicesKeyVersion) ? cMKManagedServicesKeyVersion : last(split(cMKManagedServicesKeyVault::cMKKey.properties.keyUriWithVersion, '/'))
           }
         } : null
         managedDisk: !empty(cMKManagedDisksKeyName) ? {
@@ -289,7 +282,7 @@ resource workspace 'Microsoft.Databricks/workspaces@2023-02-01' = {
           keyVaultProperties: {
             keyVaultUri: cMKManagedDisksKeyVault.properties.vaultUri
             keyName: cMKManagedDisksKeyName
-            keyVersion: !empty(cMKManagedDisksKeyVersion) ? cMKManagedDisksKeyVersion : last(split(cMKManagedDisksKeyVaultKey.properties.keyUriWithVersion, '/'))
+            keyVersion: !empty(cMKManagedDisksKeyVersion) ? cMKManagedDisksKeyVersion : last(split(cMKManagedDisksKeyVault::cMKKeyDisk.properties.keyUriWithVersion, '/'))
           }
           rotationToLatestKeyVersionEnabled: cMKManagedDisksKeyRotationToLatestKeyVersionEnabled
         } : null
@@ -298,11 +291,11 @@ resource workspace 'Microsoft.Databricks/workspaces@2023-02-01' = {
   }
 }
 
-resource workspace_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
-  name: '${workspace.name}-${lock}-lock'
+resource workspace_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock ?? {}) && lock.?kind != 'None') {
+  name: lock.?name ?? 'lock-${name}'
   properties: {
-    level: any(lock)
-    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+    level: lock.?kind ?? ''
+    notes: lock.?kind == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot delete or modify the resource or child resources.'
   }
   scope: workspace
 }
@@ -344,7 +337,7 @@ module workspace_privateEndpoints '../../network/private-endpoint/main.bicep' = 
     subnetResourceId: privateEndpoint.subnetResourceId
     enableDefaultTelemetry: enableReferencedModulesTelemetry
     location: contains(privateEndpoint, 'location') ? privateEndpoint.location : reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
-    lock: contains(privateEndpoint, 'lock') ? privateEndpoint.lock : null
+    lock: privateEndpoint.?lock ?? lock
     privateDnsZoneGroupName: contains(privateEndpoint, 'privateDnsZoneGroupName') ? privateEndpoint.privateDnsZoneGroupName : 'default'
     privateDnsZoneResourceIds: contains(privateEndpoint, 'privateDnsZoneResourceIds') ? privateEndpoint.privateDnsZoneResourceIds : []
     roleAssignments: contains(privateEndpoint, 'roleAssignments') ? privateEndpoint.roleAssignments : []
@@ -368,3 +361,15 @@ output resourceGroupName string = resourceGroup().name
 
 @description('The location the resource was deployed into.')
 output location string = workspace.location
+
+// =============== //
+//   Definitions   //
+// =============== //
+
+type lockType = {
+  @description('Optional. Specify the name of lock.')
+  name: string?
+
+  @description('Optional. Specify the type of lock.')
+  kind: ('CanNotDelete' | 'ReadOnly' | 'None')?
+}?

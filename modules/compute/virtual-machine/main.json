@@ -1,15 +1,43 @@
 {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "languageVersion": "2.0",
   "contentVersion": "1.0.0.0",
   "metadata": {
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "16514436583417262148"
+      "templateHash": "6984217347675709865"
     },
     "name": "Virtual Machines",
     "description": "This module deploys a Virtual Machine with one or multiple NICs and optionally one or multiple public IPs.",
     "owner": "Azure/module-maintainers"
+  },
+  "definitions": {
+    "lockType": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Specify the name of lock."
+          }
+        },
+        "kind": {
+          "type": "string",
+          "allowedValues": [
+            "CanNotDelete",
+            "None",
+            "ReadOnly"
+          ],
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Specify the type of lock."
+          }
+        }
+      },
+      "nullable": true
+    }
   },
   "parameters": {
     "name": {
@@ -461,15 +489,9 @@
       }
     },
     "lock": {
-      "type": "string",
-      "defaultValue": "",
-      "allowedValues": [
-        "",
-        "CanNotDelete",
-        "ReadOnly"
-      ],
+      "$ref": "#/definitions/lockType",
       "metadata": {
-        "description": "Optional. Specify the type of lock."
+        "description": "Optional. The lock settings of the service."
       }
     },
     "roleAssignments": {
@@ -635,8 +657,8 @@
     "identity": "[if(not(equals(variables('identityType'), 'None')), createObject('type', variables('identityType'), 'userAssignedIdentities', if(not(empty(parameters('userAssignedIdentities'))), parameters('userAssignedIdentities'), null())), null())]",
     "enableReferencedModulesTelemetry": false
   },
-  "resources": [
-    {
+  "resources": {
+    "defaultTelemetry": {
       "condition": "[parameters('enableDefaultTelemetry')]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2021-04-01",
@@ -650,7 +672,7 @@
         }
       }
     },
-    {
+    "vm": {
       "type": "Microsoft.Compute/virtualMachines",
       "apiVersion": "2022-11-01",
       "name": "[parameters('name')]",
@@ -746,7 +768,7 @@
         "vm_nic"
       ]
     },
-    {
+    "vm_configurationProfileAssignment": {
       "condition": "[not(empty(parameters('configurationProfile')))]",
       "type": "Microsoft.Automanage/configurationProfileAssignments",
       "apiVersion": "2021-04-30-preview",
@@ -756,24 +778,33 @@
         "configurationProfile": "[parameters('configurationProfile')]"
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Compute/virtualMachines', parameters('name'))]"
+        "vm"
       ]
     },
-    {
-      "condition": "[not(empty(parameters('lock')))]",
+    "vm_logAnalyticsWorkspace": {
+      "condition": "[not(empty(parameters('monitoringWorkspaceId')))]",
+      "existing": true,
+      "type": "Microsoft.OperationalInsights/workspaces",
+      "apiVersion": "2021-06-01",
+      "subscriptionId": "[split(if(not(empty(parameters('monitoringWorkspaceId'))), parameters('monitoringWorkspaceId'), '//'), '/')[2]]",
+      "resourceGroup": "[split(if(not(empty(parameters('monitoringWorkspaceId'))), parameters('monitoringWorkspaceId'), '////'), '/')[4]]",
+      "name": "[last(split(if(not(empty(parameters('monitoringWorkspaceId'))), parameters('monitoringWorkspaceId'), 'law'), '/'))]"
+    },
+    "vm_lock": {
+      "condition": "[and(not(empty(coalesce(parameters('lock'), createObject()))), not(equals(tryGet(parameters('lock'), 'kind'), 'None')))]",
       "type": "Microsoft.Authorization/locks",
       "apiVersion": "2020-05-01",
       "scope": "[format('Microsoft.Compute/virtualMachines/{0}', parameters('name'))]",
-      "name": "[format('{0}-{1}-lock', parameters('name'), parameters('lock'))]",
+      "name": "[coalesce(tryGet(parameters('lock'), 'name'), format('lock-{0}', parameters('name')))]",
       "properties": {
-        "level": "[parameters('lock')]",
-        "notes": "[if(equals(parameters('lock'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot modify the resource or child resources.')]"
+        "level": "[coalesce(tryGet(parameters('lock'), 'kind'), '')]",
+        "notes": "[if(equals(tryGet(parameters('lock'), 'kind'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot delete or modify the resource or child resources.')]"
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Compute/virtualMachines', parameters('name'))]"
+        "vm"
       ]
     },
-    {
+    "vm_nic": {
       "copy": {
         "name": "vm_nic",
         "count": "[length(parameters('nicConfigurations'))]"
@@ -840,12 +871,40 @@
         },
         "template": {
           "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "languageVersion": "2.0",
           "contentVersion": "1.0.0.0",
           "metadata": {
             "_generator": {
               "name": "bicep",
               "version": "0.22.6.54827",
-              "templateHash": "8548313386789098939"
+              "templateHash": "12516880950554869158"
+            }
+          },
+          "definitions": {
+            "lockType": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "nullable": true,
+                  "metadata": {
+                    "description": "Optional. Specify the name of lock."
+                  }
+                },
+                "kind": {
+                  "type": "string",
+                  "allowedValues": [
+                    "CanNotDelete",
+                    "None",
+                    "ReadOnly"
+                  ],
+                  "nullable": true,
+                  "metadata": {
+                    "description": "Optional. Specify the type of lock."
+                  }
+                }
+              },
+              "nullable": true
             }
           },
           "parameters": {
@@ -884,8 +943,7 @@
               "type": "array"
             },
             "lock": {
-              "type": "string",
-              "defaultValue": ""
+              "$ref": "#/definitions/lockType"
             },
             "diagnosticStorageAccountId": {
               "type": "string"
@@ -933,8 +991,8 @@
           "variables": {
             "enableReferencedModulesTelemetry": false
           },
-          "resources": [
-            {
+          "resources": {
+            "networkInterface_publicIPAddresses": {
               "copy": {
                 "name": "networkInterface_publicIPAddresses",
                 "count": "[length(parameters('ipConfigurations'))]"
@@ -995,16 +1053,44 @@
                 },
                 "template": {
                   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                  "languageVersion": "2.0",
                   "contentVersion": "1.0.0.0",
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
                       "version": "0.22.6.54827",
-                      "templateHash": "4317747709004918530"
+                      "templateHash": "7177220893233117141"
                     },
                     "name": "Public IP Addresses",
                     "description": "This module deploys a Public IP Address.",
                     "owner": "Azure/module-maintainers"
+                  },
+                  "definitions": {
+                    "lockType": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "nullable": true,
+                          "metadata": {
+                            "description": "Optional. Specify the name of lock."
+                          }
+                        },
+                        "kind": {
+                          "type": "string",
+                          "allowedValues": [
+                            "CanNotDelete",
+                            "None",
+                            "ReadOnly"
+                          ],
+                          "nullable": true,
+                          "metadata": {
+                            "description": "Optional. Specify the type of lock."
+                          }
+                        }
+                      },
+                      "nullable": true
+                    }
                   },
                   "parameters": {
                     "name": {
@@ -1135,15 +1221,9 @@
                       }
                     },
                     "lock": {
-                      "type": "string",
-                      "defaultValue": "",
-                      "allowedValues": [
-                        "",
-                        "CanNotDelete",
-                        "ReadOnly"
-                      ],
+                      "$ref": "#/definitions/lockType",
                       "metadata": {
-                        "description": "Optional. Specify the type of lock."
+                        "description": "Optional. The lock settings of the service."
                       }
                     },
                     "location": {
@@ -1232,8 +1312,8 @@
                     ],
                     "diagnosticsLogs": "[if(contains(parameters('diagnosticLogCategoriesToEnable'), 'allLogs'), createArray(createObject('categoryGroup', 'allLogs', 'enabled', true())), if(contains(parameters('diagnosticLogCategoriesToEnable'), ''), createArray(), variables('diagnosticsLogsSpecified')))]"
                   },
-                  "resources": [
-                    {
+                  "resources": {
+                    "defaultTelemetry": {
                       "condition": "[parameters('enableDefaultTelemetry')]",
                       "type": "Microsoft.Resources/deployments",
                       "apiVersion": "2021-04-01",
@@ -1247,7 +1327,7 @@
                         }
                       }
                     },
-                    {
+                    "publicIpAddress": {
                       "type": "Microsoft.Network/publicIPAddresses",
                       "apiVersion": "2023-04-01",
                       "name": "[parameters('name')]",
@@ -1267,21 +1347,21 @@
                         "ipTags": []
                       }
                     },
-                    {
-                      "condition": "[not(empty(parameters('lock')))]",
+                    "publicIpAddress_lock": {
+                      "condition": "[and(not(empty(coalesce(parameters('lock'), createObject()))), not(equals(tryGet(parameters('lock'), 'kind'), 'None')))]",
                       "type": "Microsoft.Authorization/locks",
                       "apiVersion": "2020-05-01",
                       "scope": "[format('Microsoft.Network/publicIPAddresses/{0}', parameters('name'))]",
-                      "name": "[format('{0}-{1}-lock', parameters('name'), parameters('lock'))]",
+                      "name": "[coalesce(tryGet(parameters('lock'), 'name'), format('lock-{0}', parameters('name')))]",
                       "properties": {
-                        "level": "[parameters('lock')]",
-                        "notes": "[if(equals(parameters('lock'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot modify the resource or child resources.')]"
+                        "level": "[coalesce(tryGet(parameters('lock'), 'kind'), '')]",
+                        "notes": "[if(equals(tryGet(parameters('lock'), 'kind'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot delete or modify the resource or child resources.')]"
                       },
                       "dependsOn": [
-                        "[resourceId('Microsoft.Network/publicIPAddresses', parameters('name'))]"
+                        "publicIpAddress"
                       ]
                     },
-                    {
+                    "publicIpAddress_diagnosticSettings": {
                       "condition": "[or(or(or(not(empty(parameters('diagnosticStorageAccountId'))), not(empty(parameters('diagnosticWorkspaceId')))), not(empty(parameters('diagnosticEventHubAuthorizationRuleId')))), not(empty(parameters('diagnosticEventHubName'))))]",
                       "type": "Microsoft.Insights/diagnosticSettings",
                       "apiVersion": "2021-05-01-preview",
@@ -1296,10 +1376,10 @@
                         "logs": "[variables('diagnosticsLogs')]"
                       },
                       "dependsOn": [
-                        "[resourceId('Microsoft.Network/publicIPAddresses', parameters('name'))]"
+                        "publicIpAddress"
                       ]
                     },
-                    {
+                    "publicIpAddress_roleAssignments": {
                       "copy": {
                         "name": "publicIpAddress_roleAssignments",
                         "count": "[length(parameters('roleAssignments'))]"
@@ -1473,10 +1553,10 @@
                         }
                       },
                       "dependsOn": [
-                        "[resourceId('Microsoft.Network/publicIPAddresses', parameters('name'))]"
+                        "publicIpAddress"
                       ]
                     }
-                  ],
+                  },
                   "outputs": {
                     "resourceGroupName": {
                       "type": "string",
@@ -1504,20 +1584,20 @@
                       "metadata": {
                         "description": "The public IP address of the public IP address resource."
                       },
-                      "value": "[if(contains(reference(resourceId('Microsoft.Network/publicIPAddresses', parameters('name')), '2023-04-01'), 'ipAddress'), reference(resourceId('Microsoft.Network/publicIPAddresses', parameters('name')), '2023-04-01').ipAddress, '')]"
+                      "value": "[if(contains(reference('publicIpAddress'), 'ipAddress'), reference('publicIpAddress').ipAddress, '')]"
                     },
                     "location": {
                       "type": "string",
                       "metadata": {
                         "description": "The location the resource was deployed into."
                       },
-                      "value": "[reference(resourceId('Microsoft.Network/publicIPAddresses', parameters('name')), '2023-04-01', 'full').location]"
+                      "value": "[reference('publicIpAddress', '2023-04-01', 'full').location]"
                     }
                   }
                 }
               }
             },
-            {
+            "networkInterface": {
               "type": "Microsoft.Resources/deployments",
               "apiVersion": "2022-09-01",
               "name": "[format('{0}-NetworkInterface', deployment().name)]",
@@ -1581,16 +1661,44 @@
                 },
                 "template": {
                   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                  "languageVersion": "2.0",
                   "contentVersion": "1.0.0.0",
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
                       "version": "0.22.6.54827",
-                      "templateHash": "14479255820598719580"
+                      "templateHash": "3998904758858607142"
                     },
                     "name": "Network Interface",
                     "description": "This module deploys a Network Interface.",
                     "owner": "Azure/module-maintainers"
+                  },
+                  "definitions": {
+                    "lockType": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "nullable": true,
+                          "metadata": {
+                            "description": "Optional. Specify the name of lock."
+                          }
+                        },
+                        "kind": {
+                          "type": "string",
+                          "allowedValues": [
+                            "CanNotDelete",
+                            "None",
+                            "ReadOnly"
+                          ],
+                          "nullable": true,
+                          "metadata": {
+                            "description": "Optional. Specify the type of lock."
+                          }
+                        }
+                      },
+                      "nullable": true
+                    }
                   },
                   "parameters": {
                     "name": {
@@ -1688,15 +1796,9 @@
                       }
                     },
                     "lock": {
-                      "type": "string",
-                      "defaultValue": "",
-                      "allowedValues": [
-                        "",
-                        "CanNotDelete",
-                        "ReadOnly"
-                      ],
+                      "$ref": "#/definitions/lockType",
                       "metadata": {
-                        "description": "Optional. Specify the type of lock."
+                        "description": "Optional. The lock settings of the service."
                       }
                     },
                     "roleAssignments": {
@@ -1767,8 +1869,8 @@
                       }
                     ]
                   },
-                  "resources": [
-                    {
+                  "resources": {
+                    "defaultTelemetry": {
                       "condition": "[parameters('enableDefaultTelemetry')]",
                       "type": "Microsoft.Resources/deployments",
                       "apiVersion": "2021-04-01",
@@ -1782,7 +1884,7 @@
                         }
                       }
                     },
-                    {
+                    "networkInterface": {
                       "type": "Microsoft.Network/networkInterfaces",
                       "apiVersion": "2023-04-01",
                       "name": "[parameters('name')]",
@@ -1823,7 +1925,7 @@
                         "networkSecurityGroup": "[if(not(empty(parameters('networkSecurityGroupResourceId'))), createObject('id', parameters('networkSecurityGroupResourceId')), null())]"
                       }
                     },
-                    {
+                    "networkInterface_diagnosticSettings": {
                       "condition": "[or(or(or(not(empty(parameters('diagnosticStorageAccountId'))), not(empty(parameters('diagnosticWorkspaceId')))), not(empty(parameters('diagnosticEventHubAuthorizationRuleId')))), not(empty(parameters('diagnosticEventHubName'))))]",
                       "type": "Microsoft.Insights/diagnosticSettings",
                       "apiVersion": "2021-05-01-preview",
@@ -1837,24 +1939,24 @@
                         "metrics": "[variables('diagnosticsMetrics')]"
                       },
                       "dependsOn": [
-                        "[resourceId('Microsoft.Network/networkInterfaces', parameters('name'))]"
+                        "networkInterface"
                       ]
                     },
-                    {
-                      "condition": "[not(empty(parameters('lock')))]",
+                    "networkInterface_lock": {
+                      "condition": "[and(not(empty(coalesce(parameters('lock'), createObject()))), not(equals(tryGet(parameters('lock'), 'kind'), 'None')))]",
                       "type": "Microsoft.Authorization/locks",
                       "apiVersion": "2020-05-01",
                       "scope": "[format('Microsoft.Network/networkInterfaces/{0}', parameters('name'))]",
-                      "name": "[format('{0}-{1}-lock', parameters('name'), parameters('lock'))]",
+                      "name": "[coalesce(tryGet(parameters('lock'), 'name'), format('lock-{0}', parameters('name')))]",
                       "properties": {
-                        "level": "[parameters('lock')]",
-                        "notes": "[if(equals(parameters('lock'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot modify the resource or child resources.')]"
+                        "level": "[coalesce(tryGet(parameters('lock'), 'kind'), '')]",
+                        "notes": "[if(equals(tryGet(parameters('lock'), 'kind'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot delete or modify the resource or child resources.')]"
                       },
                       "dependsOn": [
-                        "[resourceId('Microsoft.Network/networkInterfaces', parameters('name'))]"
+                        "networkInterface"
                       ]
                     },
-                    {
+                    "networkInterface_roleAssignments": {
                       "copy": {
                         "name": "networkInterface_roleAssignments",
                         "count": "[length(parameters('roleAssignments'))]"
@@ -2028,10 +2130,10 @@
                         }
                       },
                       "dependsOn": [
-                        "[resourceId('Microsoft.Network/networkInterfaces', parameters('name'))]"
+                        "networkInterface"
                       ]
                     }
-                  ],
+                  },
                   "outputs": {
                     "name": {
                       "type": "string",
@@ -2059,7 +2161,7 @@
                       "metadata": {
                         "description": "The location the resource was deployed into."
                       },
-                      "value": "[reference(resourceId('Microsoft.Network/networkInterfaces', parameters('name')), '2023-04-01', 'full').location]"
+                      "value": "[reference('networkInterface', '2023-04-01', 'full').location]"
                     }
                   }
                 }
@@ -2068,11 +2170,11 @@
                 "networkInterface_publicIPAddresses"
               ]
             }
-          ]
+          }
         }
       }
     },
-    {
+    "vm_aadJoinExtension": {
       "condition": "[parameters('extensionAadJoinConfig').enabled]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
@@ -2272,10 +2374,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Compute/virtualMachines', parameters('name'))]"
+        "vm"
       ]
     },
-    {
+    "vm_domainJoinExtension": {
       "condition": "[parameters('extensionDomainJoinConfig').enabled]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
@@ -2487,10 +2589,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Compute/virtualMachines', parameters('name'))]"
+        "vm"
       ]
     },
-    {
+    "vm_microsoftAntiMalwareExtension": {
       "condition": "[parameters('extensionAntiMalwareConfig').enabled]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
@@ -2697,10 +2799,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Compute/virtualMachines', parameters('name'))]"
+        "vm"
       ]
     },
-    {
+    "vm_microsoftMonitoringAgentExtension": {
       "condition": "[parameters('extensionMonitoringAgentConfig').enabled]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
@@ -2726,13 +2828,13 @@
           "enableAutomaticUpgrade": "[if(contains(parameters('extensionMonitoringAgentConfig'), 'enableAutomaticUpgrade'), createObject('value', parameters('extensionMonitoringAgentConfig').enableAutomaticUpgrade), createObject('value', false()))]",
           "settings": {
             "value": {
-              "workspaceId": "[if(not(empty(parameters('monitoringWorkspaceId'))), reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', split(parameters('monitoringWorkspaceId'), '/')[2], split(parameters('monitoringWorkspaceId'), '/')[4]), 'Microsoft.OperationalInsights/workspaces', last(split(parameters('monitoringWorkspaceId'), '/'))), '2021-06-01').customerId, '')]"
+              "workspaceId": "[if(not(empty(parameters('monitoringWorkspaceId'))), reference('vm_logAnalyticsWorkspace').customerId, '')]"
             }
           },
           "tags": "[if(contains(parameters('extensionMonitoringAgentConfig'), 'tags'), createObject('value', parameters('extensionMonitoringAgentConfig').tags), createObject('value', createObject()))]",
           "protectedSettings": {
             "value": {
-              "workspaceKey": "[if(not(empty(parameters('monitoringWorkspaceId'))), listKeys(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', split(parameters('monitoringWorkspaceId'), '/')[2], split(parameters('monitoringWorkspaceId'), '/')[4]), 'Microsoft.OperationalInsights/workspaces', last(split(parameters('monitoringWorkspaceId'), '/'))), '2021-06-01').primarySharedKey, '')]"
+              "workspaceKey": "[if(not(empty(parameters('monitoringWorkspaceId'))), listKeys(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', split(if(not(empty(parameters('monitoringWorkspaceId'))), parameters('monitoringWorkspaceId'), '//'), '/')[2], split(if(not(empty(parameters('monitoringWorkspaceId'))), parameters('monitoringWorkspaceId'), '////'), '/')[4]), 'Microsoft.OperationalInsights/workspaces', last(split(if(not(empty(parameters('monitoringWorkspaceId'))), parameters('monitoringWorkspaceId'), 'law'), '/'))), '2021-06-01').primarySharedKey, '')]"
             }
           },
           "enableDefaultTelemetry": {
@@ -2912,10 +3014,11 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Compute/virtualMachines', parameters('name'))]"
+        "vm",
+        "vm_logAnalyticsWorkspace"
       ]
     },
-    {
+    "vm_dependencyAgentExtension": {
       "condition": "[parameters('extensionDependencyAgentConfig').enabled]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
@@ -3117,10 +3220,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Compute/virtualMachines', parameters('name'))]"
+        "vm"
       ]
     },
-    {
+    "vm_networkWatcherAgentExtension": {
       "condition": "[parameters('extensionNetworkWatcherAgentConfig').enabled]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
@@ -3322,10 +3425,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Compute/virtualMachines', parameters('name'))]"
+        "vm"
       ]
     },
-    {
+    "vm_desiredStateConfigurationExtension": {
       "condition": "[parameters('extensionDSCConfig').enabled]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
@@ -3531,10 +3634,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Compute/virtualMachines', parameters('name'))]"
+        "vm"
       ]
     },
-    {
+    "vm_customScriptExtension": {
       "condition": "[parameters('extensionCustomScriptConfig').enabled]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
@@ -3748,11 +3851,11 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Compute/virtualMachines', parameters('name'))]",
-        "[resourceId('Microsoft.Resources/deployments', format('{0}-VM-DesiredStateConfiguration', uniqueString(deployment().name, parameters('location'))))]"
+        "vm",
+        "vm_desiredStateConfigurationExtension"
       ]
     },
-    {
+    "vm_azureDiskEncryptionExtension": {
       "condition": "[parameters('extensionAzureDiskEncryptionConfig').enabled]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
@@ -3958,12 +4061,12 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Compute/virtualMachines', parameters('name'))]",
-        "[resourceId('Microsoft.Resources/deployments', format('{0}-VM-CustomScriptExtension', uniqueString(deployment().name, parameters('location'))))]",
-        "[resourceId('Microsoft.Resources/deployments', format('{0}-VM-MicrosoftMonitoringAgent', uniqueString(deployment().name, parameters('location'))))]"
+        "vm",
+        "vm_customScriptExtension",
+        "vm_microsoftMonitoringAgentExtension"
       ]
     },
-    {
+    "vm_backup": {
       "condition": "[not(empty(parameters('backupVaultName')))]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
@@ -4127,18 +4230,18 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Compute/virtualMachines', parameters('name'))]",
-        "[resourceId('Microsoft.Resources/deployments', format('{0}-VM-AADLogin', uniqueString(deployment().name, parameters('location'))))]",
-        "[resourceId('Microsoft.Resources/deployments', format('{0}-VM-CustomScriptExtension', uniqueString(deployment().name, parameters('location'))))]",
-        "[resourceId('Microsoft.Resources/deployments', format('{0}-VM-DependencyAgent', uniqueString(deployment().name, parameters('location'))))]",
-        "[resourceId('Microsoft.Resources/deployments', format('{0}-VM-DesiredStateConfiguration', uniqueString(deployment().name, parameters('location'))))]",
-        "[resourceId('Microsoft.Resources/deployments', format('{0}-VM-DomainJoin', uniqueString(deployment().name, parameters('location'))))]",
-        "[resourceId('Microsoft.Resources/deployments', format('{0}-VM-MicrosoftAntiMalware', uniqueString(deployment().name, parameters('location'))))]",
-        "[resourceId('Microsoft.Resources/deployments', format('{0}-VM-MicrosoftMonitoringAgent', uniqueString(deployment().name, parameters('location'))))]",
-        "[resourceId('Microsoft.Resources/deployments', format('{0}-VM-NetworkWatcherAgent', uniqueString(deployment().name, parameters('location'))))]"
+        "vm",
+        "vm_aadJoinExtension",
+        "vm_customScriptExtension",
+        "vm_dependencyAgentExtension",
+        "vm_desiredStateConfigurationExtension",
+        "vm_domainJoinExtension",
+        "vm_microsoftAntiMalwareExtension",
+        "vm_microsoftMonitoringAgentExtension",
+        "vm_networkWatcherAgentExtension"
       ]
     },
-    {
+    "vm_roleAssignments": {
       "copy": {
         "name": "vm_roleAssignments",
         "count": "[length(parameters('roleAssignments'))]"
@@ -4305,10 +4408,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Compute/virtualMachines', parameters('name'))]"
+        "vm"
       ]
     }
-  ],
+  },
   "outputs": {
     "name": {
       "type": "string",
@@ -4336,14 +4439,14 @@
       "metadata": {
         "description": "The principal ID of the system assigned identity."
       },
-      "value": "[if(and(parameters('systemAssignedIdentity'), contains(reference(resourceId('Microsoft.Compute/virtualMachines', parameters('name')), '2022-11-01', 'full').identity, 'principalId')), reference(resourceId('Microsoft.Compute/virtualMachines', parameters('name')), '2022-11-01', 'full').identity.principalId, '')]"
+      "value": "[if(and(parameters('systemAssignedIdentity'), contains(reference('vm', '2022-11-01', 'full').identity, 'principalId')), reference('vm', '2022-11-01', 'full').identity.principalId, '')]"
     },
     "location": {
       "type": "string",
       "metadata": {
         "description": "The location the resource was deployed into."
       },
-      "value": "[reference(resourceId('Microsoft.Compute/virtualMachines', parameters('name')), '2022-11-01', 'full').location]"
+      "value": "[reference('vm', '2022-11-01', 'full').location]"
     }
   }
 }

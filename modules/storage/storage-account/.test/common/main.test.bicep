@@ -71,7 +71,10 @@ module testDeployment '../../main.bicep' = {
     allowBlobPublicAccess: false
     requireInfrastructureEncryption: true
     largeFileSharesState: 'Enabled'
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     enableHierarchicalNamespace: true
     enableSftp: true
     enableNfsV3: true
