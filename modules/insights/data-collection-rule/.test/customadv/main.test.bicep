@@ -131,9 +131,7 @@ module testDeployment '../../main.bicep' = {
     roleAssignments: [
       {
         roleDefinitionIdOrName: 'Reader'
-        principalIds: [
-          resourceGroupResources.outputs.managedIdentityPrincipalId
-        ]
+        principalId: resourceGroupResources.outputs.managedIdentityPrincipalId
         principalType: 'ServicePrincipal'
       }
     ]
@@ -144,3 +142,4 @@ module testDeployment '../../main.bicep' = {
     }
   }
 }
+
