@@ -307,7 +307,7 @@ module containerApp 'br:bicep/modules/app.container-app:1.0.0' = {
 | [`ipSecurityRestrictions`](#parameter-ipsecurityrestrictions) | array | Rules to restrict incoming IP address. |
 | [`location`](#parameter-location) | string | Location for all Resources. |
 | [`lock`](#parameter-lock) | object | The lock settings of the service. |
-| [`managedIdentities`](#parameter-managedidentities) | object | The managed identity definition for this resource |
+| [`managedIdentities`](#parameter-managedidentities) | object | The managed identity definition for this resource. |
 | [`maxInactiveRevisions`](#parameter-maxinactiverevisions) | int | Max inactive revisions a Container App can have. |
 | [`registries`](#parameter-registries) | array | Collection of private container registry credentials for containers used by the Container app. |
 | [`revisionSuffix`](#parameter-revisionsuffix) | string | User friendly suffix that is appended to the revision name. |
@@ -451,7 +451,7 @@ Optional. Specify the name of lock.
 
 ### Parameter: `managedIdentities`
 
-The managed identity definition for this resource
+The managed identity definition for this resource.
 - Required: No
 - Type: object
 

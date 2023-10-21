@@ -54,7 +54,7 @@ param tags object = {}
 @description('Optional. Collection of private container registry credentials for containers used by the Container app.')
 param registries array = []
 
-@description('Optional. The managed identity definition for this resource')
+@description('Optional. The managed identity definition for this resource.')
 param managedIdentities managedIdentitiesType
 
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute.')

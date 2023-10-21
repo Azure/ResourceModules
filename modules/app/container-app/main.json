@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "191398677794330103"
+      "templateHash": "11397777914706057947"
     },
     "name": "Container Apps",
     "description": "This module deploys a Container App.",
@@ -171,7 +171,7 @@
     "managedIdentities": {
       "$ref": "#/definitions/managedIdentitiesType",
       "metadata": {
-        "description": "Optional. The managed identity definition for this resource"
+        "description": "Optional. The managed identity definition for this resource."
       }
     },
     "roleAssignments": {
