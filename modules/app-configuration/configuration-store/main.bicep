@@ -8,7 +8,7 @@ param name string
 @description('Optional. Location for all Resources.')
 param location string = resourceGroup().location
 
-@description('Optional. The managed identity definition for this resource')
+@description('Optional. The managed identity definition for this resource.')
 param managedIdentities managedIdentitiesType
 
 @allowed([
