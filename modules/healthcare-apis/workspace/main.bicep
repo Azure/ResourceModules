@@ -100,6 +100,7 @@ resource workspace_roleAssignments 'Microsoft.Authorization/roleAssignments@2022
     conditionVersion: !empty(roleAssignment.?condition) ? (roleAssignment.?conditionVersion ?? '2.0') : null // Must only be set if condtion is set
     delegatedManagedIdentityResourceId: roleAssignment.?delegatedManagedIdentityResourceId
   }
+  scope: workspace
 }]
 
 module workspace_fhirservices 'fhirservice/main.bicep' = [for (fhir, index) in fhirservices: {
