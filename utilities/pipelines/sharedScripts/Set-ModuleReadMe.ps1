@@ -910,8 +910,8 @@ Convert the given JSONParameters object with one required parameter to a formatt
     name: 'carml'
     // Non-required parameters
     lock: {
-      kind: 'CanNotDelete'
-      name: 'myCustomLockName'
+        kind: 'CanNotDelete'
+        name: 'myCustomLockName'
     }
 '
 #>
