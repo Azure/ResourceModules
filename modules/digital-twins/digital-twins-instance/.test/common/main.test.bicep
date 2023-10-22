@@ -113,7 +113,6 @@ module testDeployment '../../main.bicep' = {
       {
         roleDefinitionIdOrName: 'Reader'
         principalId: nestedDependencies.outputs.managedIdentityPrincipalResourceId
-
         principalType: 'ServicePrincipal'
       }
     ]
