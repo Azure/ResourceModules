@@ -161,6 +161,7 @@ module virtualMachineScaleSet 'br:bicep/modules/compute.virtual-machine-scale-se
     roleAssignments: [
       {
         principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -357,6 +358,7 @@ module virtualMachineScaleSet 'br:bicep/modules/compute.virtual-machine-scale-se
       "value": [
         {
           "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]
@@ -834,6 +836,7 @@ module virtualMachineScaleSet 'br:bicep/modules/compute.virtual-machine-scale-se
     roleAssignments: [
       {
         principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -1021,6 +1024,7 @@ module virtualMachineScaleSet 'br:bicep/modules/compute.virtual-machine-scale-se
       "value": [
         {
           "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]
