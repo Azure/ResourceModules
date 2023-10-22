@@ -90,11 +90,16 @@ resource powerbi_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lo
   scope: powerbi
 }
 
-module powerbi_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: '${deployment().name}-rbac-${index}'
+module server_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
+  name: '${uniqueString(deployment().name, location)}-PowerBI-Rbac-${index}'
   params: {
-    roleAssignmentObj: roleAssignment
-    resourceName: powerbi.name
+    description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
+    principalIds: roleAssignment.principalIds
+    principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
+    roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    condition: contains(roleAssignment, 'condition') ? roleAssignment.condition : ''
+    delegatedManagedIdentityResourceId: contains(roleAssignment, 'delegatedManagedIdentityResourceId') ? roleAssignment.delegatedManagedIdentityResourceId : ''
+    resourceId: powerbi.id
   }
 }]
 
