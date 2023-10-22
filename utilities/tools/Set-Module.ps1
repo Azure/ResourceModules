@@ -132,11 +132,11 @@ function Set-Module {
                 ################
                 if (-not $using:SkipReadMe) {
                     Write-Output "Generating readme for [$resourceTypeIdentifier]"
-                    . $using:ReadMeScriptFilePath
 
                     # If the template was just build, we can pass the JSON into the readme script to be more efficient
                     $readmeTemplateFilePath = (-not $using:SkipBuild) ? (Join-Path (Split-Path $_ -Parent) 'main.json') : $_
 
+                    . $using:ReadMeScriptFilePath
                     Set-ModuleReadMe -TemplateFilePath $readmeTemplateFilePath -CrossReferencedModuleList $using:crossReferencedModuleList
                 }
             }
