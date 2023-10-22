@@ -1426,9 +1426,25 @@ function Initialize-ReadMe {
         $inTemplateResourceType = $formattedResourceType
     }
 
+    # Orphaned readme existing?
+    $orphanedReadMeFilePath = Join-Path (Split-Path $ReadMeFilePath -Parent) 'ORPHANED.md'
+    if (Test-Path $orphanedReadMeFilePath) {
+        $orphanedReadMeContent = Get-Content -Path $orphanedReadMeFilePath | ForEach-Object { "> $_" }
+    }
+
+    # Moved readme existing?
+    $movedReadMeFilePath = Join-Path (Split-Path $ReadMeFilePath -Parent) 'MOVED-TO-AVM.md'
+    if (Test-Path $movedReadMeFilePath) {
+        $movedReadMeContent = Get-Content -Path $movedReadMeFilePath | ForEach-Object { "> $_" }
+    }
+
     $initialContent = @(
         "# $moduleName ``[$inTemplateResourceType]``",
         '',
+        ((Test-Path $orphanedReadMeFilePath) ? $orphanedReadMeContent : $null),
+        ((Test-Path $orphanedReadMeFilePath) ? '' : $null),
+        ((Test-Path $movedReadMeFilePath) ? $movedReadMeContent : $null),
+        ((Test-Path $movedReadMeFilePath) ? '' : $null),
         $moduleDescription,
         ''
         '## Resource Types',
