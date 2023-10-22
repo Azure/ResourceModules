@@ -217,6 +217,9 @@ output resourceGroupName string = resourceGroup().name
 @description('The name of the Container App.')
 output name string = containerApp.name
 
+@description('The principal ID of the system assigned identity.')
+output systemAssignedMIPrincipalId string = (managedIdentities.?systemAssigned ?? false) && contains(containerApp.identity, 'principalId') ? containerApp.identity.principalId : ''
+
 @description('The location the resource was deployed into.')
 output location string = containerApp.location
 

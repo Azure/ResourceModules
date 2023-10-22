@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "3937242849596491969"
+      "templateHash": "6234420476385357895"
     },
     "name": "Container Apps",
     "description": "This module deploys a Container App.",
@@ -491,6 +491,13 @@
         "description": "The name of the Container App."
       },
       "value": "[parameters('name')]"
+    },
+    "systemAssignedMIPrincipalId": {
+      "type": "string",
+      "metadata": {
+        "description": "The principal ID of the system assigned identity."
+      },
+      "value": "[if(and(coalesce(tryGet(parameters('managedIdentities'), 'systemAssigned'), false()), contains(reference('containerApp', '2022-10-01', 'full').identity, 'principalId')), reference('containerApp', '2022-10-01', 'full').identity.principalId, '')]"
     },
     "location": {
       "type": "string",

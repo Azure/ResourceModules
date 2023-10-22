@@ -656,6 +656,7 @@ Workload profile type to pin for container app execution.
 | `name` | string | The name of the Container App. |
 | `resourceGroupName` | string | The name of the resource group the Container App was deployed into. |
 | `resourceId` | string | The resource ID of the Container App. |
+| `systemAssignedMIPrincipalId` | string | The principal ID of the system assigned identity. |
 
 ## Cross-referenced modules
 

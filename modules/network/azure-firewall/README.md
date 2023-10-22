@@ -60,7 +60,9 @@ module azureFirewall 'br:bicep/modules/network.azure-firewall:1.0.0' = {
       publicIPAllocationMethod: 'Static'
       roleAssignments: [
         {
-          principalIds: '<principalIds>'
+          principalIds: [
+            '<managedIdentityPrincipalId>'
+          ]
           principalType: 'ServicePrincipal'
           roleDefinitionIdOrName: 'Reader'
         }
@@ -112,7 +114,9 @@ module azureFirewall 'br:bicep/modules/network.azure-firewall:1.0.0' = {
         "publicIPAllocationMethod": "Static",
         "roleAssignments": [
           {
-            "principalIds": "<principalIds>",
+            "principalIds": [
+              "<managedIdentityPrincipalId>"
+            ],
             "principalType": "ServicePrincipal",
             "roleDefinitionIdOrName": "Reader"
           }
@@ -456,7 +460,9 @@ module azureFirewall 'br:bicep/modules/network.azure-firewall:1.0.0' = {
       publicIPPrefixResourceId: ''
       roleAssignments: [
         {
-          principalId: '<principalId>'
+          principalIds: [
+            '<managedIdentityPrincipalId>'
+          ]
           principalType: 'ServicePrincipal'
           roleDefinitionIdOrName: 'Reader'
         }
@@ -509,7 +515,9 @@ module azureFirewall 'br:bicep/modules/network.azure-firewall:1.0.0' = {
         "publicIPPrefixResourceId": "",
         "roleAssignments": [
           {
-            "principalId": "<principalId>",
+            "principalIds": [
+              "<managedIdentityPrincipalId>"
+            ],
             "principalType": "ServicePrincipal",
             "roleDefinitionIdOrName": "Reader"
           }
