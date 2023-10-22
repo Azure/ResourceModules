@@ -157,9 +157,11 @@ module testDeployment '../../main.bicep' = {
         uri: nestedDependencies.outputs.keyVaultEncryptionKeyUrl
       }
     ]
-    systemAssignedIdentity: true
-    userAssignedIdentities: {
-      '${nestedDependencies.outputs.managedIdentityResourceId}': {}
+    managedIdentities: {
+      systemAssigned: true
+      userAssignedResourcesIds: [
+        nestedDependencies.outputs.managedIdentityResourceId
+      ]
     }
     privateEndpoints: [
       {
