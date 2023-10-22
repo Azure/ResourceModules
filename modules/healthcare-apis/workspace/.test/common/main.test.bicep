@@ -8,7 +8,7 @@ metadata description = 'This instance deploys the module with most of its featur
 // ========== //
 @description('Optional. The name of the resource group to deploy for testing purposes.')
 @maxLength(90)
-param resourceGroupName string = 'ms.healthcareapis.workspaces-${serviceShort}-rg'
+param resourceGroupName string = 'dep-${namePrefix}-healthcareapis.workspaces-${serviceShort}-rg'
 
 @description('Optional. The location to deploy resources to.')
 param location string = deployment().location
@@ -102,9 +102,7 @@ module testDeployment '../../main.bicep' = {
         roleAssignments: [
           {
             roleDefinitionIdOrName: resourceId('Microsoft.Authorization/roleDefinitions', '5a1fc7df-4bf1-4951-a576-89034ee01acd')
-            principalIds: [
-              resourceGroupResources.outputs.managedIdentityPrincipalId
-            ]
+            principalId: resourceGroupResources.outputs.managedIdentityPrincipalId
             principalType: 'ServicePrincipal'
           }
         ]

@@ -9,7 +9,7 @@ metadata description = 'This instance deploys the module with most of its featur
 
 @description('Optional. The name of the resource group to deploy for testing purposes.')
 @maxLength(90)
-param resourceGroupName string = 'ms.authorization.locks-${serviceShort}-rg'
+param resourceGroupName string = 'dep-${namePrefix}-authorization.locks-${serviceShort}-rg'
 
 @description('Optional. The location to deploy resources to.')
 param location string = deployment().location
@@ -19,6 +19,9 @@ param serviceShort string = 'alcom'
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
+
+@description('Optional. A token to inject into the name of each resource.')
+param namePrefix string = '[[namePrefix]]'
 
 // ============ //
 // Dependencies //
