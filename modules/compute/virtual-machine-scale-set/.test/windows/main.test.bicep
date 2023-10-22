@@ -178,11 +178,13 @@ module testDeployment '../../main.bicep' = {
       }
     ]
     skuCapacity: 1
-    systemAssignedIdentity: true
-    upgradePolicyMode: 'Manual'
-    userAssignedIdentities: {
-      '${nestedDependencies.outputs.managedIdentityResourceId}': {}
+    managedIdentities: {
+      systemAssigned: true
+      userAssignedResourcesIds: [
+        nestedDependencies.outputs.managedIdentityResourceId
+      ]
     }
+    upgradePolicyMode: 'Manual'
     vmNamePrefix: 'vmsswinvm'
     vmPriority: 'Regular'
     tags: {

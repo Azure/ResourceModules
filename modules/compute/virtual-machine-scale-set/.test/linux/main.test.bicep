@@ -182,11 +182,13 @@ module testDeployment '../../main.bicep' = {
     ]
     scaleSetFaultDomain: 1
     skuCapacity: 1
-    systemAssignedIdentity: true
-    upgradePolicyMode: 'Manual'
-    userAssignedIdentities: {
-      '${nestedDependencies.outputs.managedIdentityResourceId}': {}
+    managedIdentities: {
+      systemAssigned: true
+      userAssignedResourcesIds: [
+        nestedDependencies.outputs.managedIdentityResourceId
+      ]
     }
+    upgradePolicyMode: 'Manual'
     vmNamePrefix: 'vmsslinvm'
     vmPriority: 'Regular'
     tags: {
