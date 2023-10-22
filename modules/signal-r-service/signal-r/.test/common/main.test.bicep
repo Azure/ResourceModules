@@ -105,8 +105,9 @@ module testDeployment '../../main.bicep' = {
     ]
     roleAssignments: [
       {
-        principalId: nestedDependencies.outputs.managedIdentityPrincipalId
+        principalId: nestedDependencies.outputs.managedIdentityPrincipalId
         roleDefinitionIdOrName: 'Reader'
+        principalType: 'ServicePrincipal'
       }
     ]
     sku: 'Standard_S1'
@@ -117,4 +118,3 @@ module testDeployment '../../main.bicep' = {
     }
   }
 }
-

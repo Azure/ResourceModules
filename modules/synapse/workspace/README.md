@@ -97,6 +97,7 @@ module workspace 'br:bicep/modules/synapse.workspace:1.0.0' = {
     roleAssignments: [
       {
         principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -194,6 +195,7 @@ module workspace 'br:bicep/modules/synapse.workspace:1.0.0' = {
       "value": [
         {
           "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]
