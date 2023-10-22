@@ -77,6 +77,14 @@ module testDeployment '../../main.bicep' = {
       {
         contentType: 'contentType'
         name: 'keyName'
+        roleAssignments: [
+          {
+            roleDefinitionIdOrName: 'Reader'
+            principalId: nestedDependencies.outputs.managedIdentityPrincipalId
+
+            principalType: 'ServicePrincipal'
+          }
+        ]
         value: 'valueName'
       }
     ]
@@ -88,12 +96,16 @@ module testDeployment '../../main.bicep' = {
       {
         roleDefinitionIdOrName: 'Reader'
         principalId: nestedDependencies.outputs.managedIdentityPrincipalId
+
         principalType: 'ServicePrincipal'
       }
     ]
     softDeleteRetentionInDays: 1
     managedIdentities: {
-      systemAssigned: true
+      systemAssigned: false
+      userAssignedResourcesIds: [
+        nestedDependencies.outputs.managedIdentityResourceId
+      ]
     }
     tags: {
       'hidden-title': 'This is visible in the resource name'

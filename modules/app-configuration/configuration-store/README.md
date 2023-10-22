@@ -63,6 +63,13 @@ module configurationStore 'br:bicep/modules/app-configuration.configuration-stor
       {
         contentType: 'contentType'
         name: 'keyName'
+        roleAssignments: [
+          {
+            principalId: '<principalId>'
+            principalType: 'ServicePrincipal'
+            roleDefinitionIdOrName: 'Reader'
+          }
+        ]
         value: 'valueName'
       }
     ]
@@ -71,7 +78,10 @@ module configurationStore 'br:bicep/modules/app-configuration.configuration-stor
       name: 'myCustomLockName'
     }
     managedIdentities: {
-      systemAssigned: true
+      systemAssigned: false
+      userAssignedResourcesIds: [
+        '<managedIdentityResourceId>'
+      ]
     }
     roleAssignments: [
       {
@@ -136,6 +146,13 @@ module configurationStore 'br:bicep/modules/app-configuration.configuration-stor
         {
           "contentType": "contentType",
           "name": "keyName",
+          "roleAssignments": [
+            {
+              "principalId": "<principalId>",
+              "principalType": "ServicePrincipal",
+              "roleDefinitionIdOrName": "Reader"
+            }
+          ],
           "value": "valueName"
         }
       ]
@@ -148,7 +165,10 @@ module configurationStore 'br:bicep/modules/app-configuration.configuration-stor
     },
     "managedIdentities": {
       "value": {
-        "systemAssigned": true
+        "systemAssigned": false,
+        "userAssignedResourcesIds": [
+          "<managedIdentityResourceId>"
+        ]
       }
     },
     "roleAssignments": {
@@ -201,6 +221,13 @@ module configurationStore 'br:bicep/modules/app-configuration.configuration-stor
       {
         contentType: 'contentType'
         name: 'keyName'
+        roleAssignments: [
+          {
+            principalId: '<principalId>'
+            principalType: 'ServicePrincipal'
+            roleDefinitionIdOrName: 'Reader'
+          }
+        ]
         value: 'valueName'
       }
     ]
@@ -269,6 +296,13 @@ module configurationStore 'br:bicep/modules/app-configuration.configuration-stor
         {
           "contentType": "contentType",
           "name": "keyName",
+          "roleAssignments": [
+            {
+              "principalId": "<principalId>",
+              "principalType": "ServicePrincipal",
+              "roleDefinitionIdOrName": "Reader"
+            }
+          ],
           "value": "valueName"
         }
       ]

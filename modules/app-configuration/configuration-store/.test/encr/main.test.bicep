@@ -61,6 +61,14 @@ module testDeployment '../../main.bicep' = {
       {
         contentType: 'contentType'
         name: 'keyName'
+        roleAssignments: [
+          {
+            roleDefinitionIdOrName: 'Reader'
+            principalId: nestedDependencies.outputs.managedIdentityPrincipalId
+
+            principalType: 'ServicePrincipal'
+          }
+        ]
         value: 'valueName'
       }
     ]
@@ -68,6 +76,7 @@ module testDeployment '../../main.bicep' = {
       {
         roleDefinitionIdOrName: 'Reader'
         principalId: nestedDependencies.outputs.managedIdentityPrincipalId
+
         principalType: 'ServicePrincipal'
       }
     ]
