@@ -120,11 +120,13 @@ module testDeployment '../../main.bicep' = {
         principalType: 'ServicePrincipal'
       }
     ]
-    systemAssignedIdentity: true
-    trustPolicyStatus: 'enabled'
-    userAssignedIdentities: {
-      '${nestedDependencies.outputs.managedIdentityResourceId}': {}
+    managedIdentities: {
+      systemAssigned: true
+      userAssignedResourcesIds: [
+        nestedDependencies.outputs.managedIdentityResourceId
+      ]
     }
+    trustPolicyStatus: 'enabled'
     cacheRules: [
       {
         name: 'customRule'
