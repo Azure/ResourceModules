@@ -88,8 +88,9 @@ module testDeployment '../../main.bicep' = {
     ]
     roleAssignments: [
       {
-        principalId: nestedDependencies.outputs.managedIdentityPrincipalId
+        principalId: nestedDependencies.outputs.managedIdentityPrincipalId
         roleDefinitionIdOrName: 'Reader'
+        principalType: 'ServicePrincipal'
       }
     ]
     vpnType: 'RouteBased'
@@ -139,4 +140,3 @@ module testDeployment '../../main.bicep' = {
     enableBgpRouteTranslationForNat: true
   }
 }
-

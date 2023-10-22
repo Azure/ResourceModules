@@ -81,6 +81,7 @@ module privateLinkService 'br:bicep/modules/network.private-link-service:1.0.0' 
     roleAssignments: [
       {
         principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -165,6 +166,7 @@ module privateLinkService 'br:bicep/modules/network.private-link-service:1.0.0' 
       "value": [
         {
           "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]

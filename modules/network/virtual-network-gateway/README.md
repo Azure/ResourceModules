@@ -229,6 +229,7 @@ module virtualNetworkGateway 'br:bicep/modules/network.virtual-network-gateway:1
     roleAssignments: [
       {
         principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -305,6 +306,7 @@ module virtualNetworkGateway 'br:bicep/modules/network.virtual-network-gateway:1
       "value": [
         {
           "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]
@@ -403,6 +405,7 @@ module virtualNetworkGateway 'br:bicep/modules/network.virtual-network-gateway:1
     roleAssignments: [
       {
         principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -534,6 +537,7 @@ module virtualNetworkGateway 'br:bicep/modules/network.virtual-network-gateway:1
       "value": [
         {
           "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]

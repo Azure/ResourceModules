@@ -77,8 +77,9 @@ module testDeployment '../../main.bicep' = {
     gatewayPipName: '${namePrefix}-pip-${serviceShort}'
     roleAssignments: [
       {
-        principalId: nestedDependencies.outputs.managedIdentityPrincipalId
+        principalId: nestedDependencies.outputs.managedIdentityPrincipalId
         roleDefinitionIdOrName: 'Reader'
+        principalType: 'ServicePrincipal'
       }
     ]
     tags: {
@@ -97,4 +98,3 @@ module testDeployment '../../main.bicep' = {
     ]
   }
 }
-
