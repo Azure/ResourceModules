@@ -63,6 +63,9 @@ module redis 'br:bicep/modules/cache.redis:1.0.0' = {
     }
     managedIdentities: {
       systemAssigned: true
+      userAssignedResourcesIds: [
+        '<managedIdentityResourceId>'
+      ]
     }
     minimumTlsVersion: '1.2'
     privateEndpoints: [
@@ -145,7 +148,10 @@ module redis 'br:bicep/modules/cache.redis:1.0.0' = {
     },
     "managedIdentities": {
       "value": {
-        "systemAssigned": true
+        "systemAssigned": true,
+        "userAssignedResourcesIds": [
+          "<managedIdentityResourceId>"
+        ]
       }
     },
     "minimumTlsVersion": {

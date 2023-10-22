@@ -38,6 +38,7 @@ module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
+    managedIdentityName: 'dep-${namePrefix}-msi-${serviceShort}'
     virtualNetworkName: 'dep-${namePrefix}-vnet-${serviceShort}'
   }
 }
@@ -102,6 +103,9 @@ module testDeployment '../../main.bicep' = {
     skuName: 'Premium'
     managedIdentities: {
       systemAssigned: true
+      userAssignedResourcesIds: [
+        nestedDependencies.outputs.managedIdentityResourceId
+      ]
     }
     tags: {
       'hidden-title': 'This is visible in the resource name'
