@@ -1,5 +1,50 @@
 ﻿#requires -version 7.3
 
+#region helper functions
+<#
+.SYNOPSIS
+Test if an URL points to a valid online endpoint
+
+.DESCRIPTION
+Test if an URL points to a valid online endpoint
+
+.PARAMETER URL
+Mandatory. The URL to check
+
+.PARAMETER Retries
+Optional. The amount of times to retry
+
+.EXAMPLE
+Test-URl -URL 'www.github.com'
+
+Returns $true if the 'www.github.com' is valid, $false otherwise
+#>
+function Test-Url {
+
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory = $true)]
+        [string] $URL,
+
+        [Parameter(Mandatory = $false)]
+        [int] $Retries = 3
+    )
+
+    $currentAttempt = 1
+
+    while ($currentAttempt -le $Retries) {
+        try {
+            $null = Invoke-WebRequest -Uri $URL
+            return $true
+        } catch {
+            $currentAttempt++
+            Start-Sleep -Seconds 1
+        }
+    }
+
+    return $false
+}
+
 <#
 .SYNOPSIS
 Update the 'Resource Types' section of the given readme file
@@ -59,24 +104,22 @@ function Set-ResourceTypesSection {
         $ProviderNamespace, $ResourceType = $resourceTypeObject.Type -split '/', 2
         # Validate if Reference URL is working
         $TemplatesBaseUrl = 'https://learn.microsoft.com/en-us/azure/templates'
-        try {
-            $ResourceReferenceUrl = '{0}/{1}/{2}/{3}' -f $TemplatesBaseUrl, $ProviderNamespace, $resourceTypeObject.ApiVersion, $ResourceType
-            $null = Invoke-WebRequest -Uri $ResourceReferenceUrl
-        } catch {
+
+        $ResourceReferenceUrl = '{0}/{1}/{2}/{3}' -f $TemplatesBaseUrl, $ProviderNamespace, $resourceTypeObject.ApiVersion, $ResourceType
+        if (-not (Test-Url $ResourceReferenceUrl)) {
             # Validate if Reference URL is working using the latest documented API version (with no API version in the URL)
-            try {
-                $ResourceReferenceUrl = '{0}/{1}/{2}' -f $TemplatesBaseUrl, $ProviderNamespace, $ResourceType
-                $null = Invoke-WebRequest -Uri $ResourceReferenceUrl
-            } catch {
-                # Check if the resource is a child resource
-                if ($ResourceType.Split('/').length -gt 1) {
-                    $ResourceReferenceUrl = '{0}/{1}/{2}' -f $TemplatesBaseUrl, $ProviderNamespace, $ResourceType.Split('/')[0]
-                } else {
-                    # Use the default Templates URL (Last resort)
-                    $ResourceReferenceUrl = '{0}' -f $TemplatesBaseUrl
-                }
+            $ResourceReferenceUrl = '{0}/{1}/{2}' -f $TemplatesBaseUrl, $ProviderNamespace, $ResourceType
+        }
+        if (-not (Test-Url $ResourceReferenceUrl)) {
+            # Check if the resource is a child resource
+            if ($ResourceType.Split('/').length -gt 1) {
+                $ResourceReferenceUrl = '{0}/{1}/{2}' -f $TemplatesBaseUrl, $ProviderNamespace, $ResourceType.Split('/')[0]
+            } else {
+                # Use the default Templates URL (Last resort)
+                $ResourceReferenceUrl = '{0}' -f $TemplatesBaseUrl
             }
         }
+
         $SectionContent += ('| `{0}` | [{1}]({2}) |' -f $resourceTypeObject.type, $resourceTypeObject.apiVersion, $ResourceReferenceUrl)
     }
     $ProgressPreference = 'Continue'
