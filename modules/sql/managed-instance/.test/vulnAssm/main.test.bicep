@@ -60,7 +60,9 @@ module testDeployment '../../main.bicep' = {
     administratorLogin: 'adminUserName'
     administratorLoginPassword: password
     subnetId: nestedDependencies.outputs.subnetResourceId
-    systemAssignedIdentity: true
+    managedIdentities: {
+      systemAssigned: true
+    }
     securityAlertPoliciesObj: {
       emailAccountAdmins: true
       name: 'default'

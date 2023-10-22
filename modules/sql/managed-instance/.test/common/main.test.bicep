@@ -136,11 +136,13 @@ module testDeployment '../../main.bicep' = {
     skuName: 'GP_Gen5'
     skuTier: 'GeneralPurpose'
     storageSizeInGB: 32
-    systemAssignedIdentity: true
-    timezoneId: 'UTC'
-    userAssignedIdentities: {
-      '${nestedDependencies.outputs.managedIdentityResourceId}': {}
+    managedIdentities: {
+      systemAssigned: true
+      userAssignedResourcesIds: [
+        nestedDependencies.outputs.managedIdentityResourceId
+      ]
     }
+    timezoneId: 'UTC'
     vCores: 4
     vulnerabilityAssessmentsObj: {
       emailSubscriptionAdmins: true
