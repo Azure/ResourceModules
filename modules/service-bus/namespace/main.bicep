@@ -78,11 +78,8 @@ param diagnosticEventHubName string = ''
 @description('Optional. The lock settings of the service.')
 param lock lockType
 
-@description('Optional. Enables system assigned managed identity on the resource.')
-param systemAssignedIdentity bool = false
-
-@description('Optional. The ID(s) to assign to the resource.')
-param userAssignedIdentities object = {}
+@description('Optional. The managed identity definition for this resource.')
+param managedIdentities managedIdentitiesType
 
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
@@ -171,11 +168,11 @@ var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   enabled: true
 }]
 
-var identityType = systemAssignedIdentity ? (!empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
+var formattedUserAssignedIdentities = reduce(map((managedIdentities.?userAssignedResourcesIds ?? []), (id) => { '${id}': {} }), {}, (cur, next) => union(cur, next)) // Converts the flat array to an object like { '${id1}': {}, '${id2}': {} }
 
-var identity = identityType != 'None' ? {
-  type: identityType
-  userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
+var identity = !empty(managedIdentities) ? {
+  type: (managedIdentities.?systemAssigned ?? false) ? (!empty(managedIdentities.?userAssignedResourcesIds ?? {}) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(managedIdentities.?userAssignedResourcesIds ?? {}) ? 'UserAssigned' : null)
+  userAssignedIdentities: !empty(formattedUserAssignedIdentities) ? formattedUserAssignedIdentities : null
 } : null
 
 var enableReferencedModulesTelemetry = false
@@ -416,7 +413,7 @@ output resourceGroupName string = resourceGroup().name
 output name string = serviceBusNamespace.name
 
 @description('The principal ID of the system assigned identity.')
-output systemAssignedPrincipalId string = systemAssignedIdentity && contains(serviceBusNamespace.identity, 'principalId') ? serviceBusNamespace.identity.principalId : ''
+output systemAssignedMIPrincipalId string = (managedIdentities.?systemAssigned ?? false) && contains(serviceBusNamespace.identity, 'principalId') ? serviceBusNamespace.identity.principalId : ''
 
 @description('The location the resource was deployed into.')
 output location string = serviceBusNamespace.location
@@ -424,6 +421,14 @@ output location string = serviceBusNamespace.location
 // =============== //
 //   Definitions   //
 // =============== //
+
+type managedIdentitiesType = {
+  @description('Optional. Enables system assigned managed identity on the resource.')
+  systemAssigned: bool?
+
+  @description('Optional. The resource ID(s) to assign to the resource. Required if a user assigned identity is used for encryption.')
+  userAssignedResourcesIds: string[]?
+}?
 
 type lockType = {
   @description('Optional. Specify the name of lock.')

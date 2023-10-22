@@ -85,6 +85,12 @@ module namespace 'br:bicep/modules/service-bus.namespace:1.0.0' = {
       kind: 'CanNotDelete'
       name: 'myCustomLockName'
     }
+    managedIdentities: {
+      systemAssigned: true
+      userAssignedResourcesIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
     minimumTlsVersion: '1.2'
     networkRuleSets: {
       defaultAction: 'Deny'
@@ -166,7 +172,6 @@ module namespace 'br:bicep/modules/service-bus.namespace:1.0.0' = {
     ]
     skuCapacity: 2
     skuName: 'Premium'
-    systemAssignedIdentity: true
     tags: {
       Environment: 'Non-Prod'
       'hidden-title': 'This is visible in the resource name'
@@ -203,9 +208,6 @@ module namespace 'br:bicep/modules/service-bus.namespace:1.0.0' = {
         ]
       }
     ]
-    userAssignedIdentities: {
-      '<managedIdentityResourceId>': {}
-    }
     zoneRedundant: true
   }
 }
@@ -269,6 +271,14 @@ module namespace 'br:bicep/modules/service-bus.namespace:1.0.0' = {
       "value": {
         "kind": "CanNotDelete",
         "name": "myCustomLockName"
+      }
+    },
+    "managedIdentities": {
+      "value": {
+        "systemAssigned": true,
+        "userAssignedResourcesIds": [
+          "<managedIdentityResourceId>"
+        ]
       }
     },
     "minimumTlsVersion": {
@@ -370,9 +380,6 @@ module namespace 'br:bicep/modules/service-bus.namespace:1.0.0' = {
     "skuName": {
       "value": "Premium"
     },
-    "systemAssignedIdentity": {
-      "value": true
-    },
     "tags": {
       "value": {
         "Environment": "Non-Prod",
@@ -412,11 +419,6 @@ module namespace 'br:bicep/modules/service-bus.namespace:1.0.0' = {
           ]
         }
       ]
-    },
-    "userAssignedIdentities": {
-      "value": {
-        "<managedIdentityResourceId>": {}
-      }
     },
     "zoneRedundant": {
       "value": true
@@ -462,6 +464,12 @@ module namespace 'br:bicep/modules/service-bus.namespace:1.0.0' = {
     cMKKeyVaultResourceId: '<cMKKeyVaultResourceId>'
     cMKUserAssignedIdentityResourceId: '<cMKUserAssignedIdentityResourceId>'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    managedIdentities: {
+      systemAssigned: false
+      userAssignedResourcesIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
     networkRuleSets: {
       defaultAction: 'Deny'
       ipRules: [
@@ -492,14 +500,10 @@ module namespace 'br:bicep/modules/service-bus.namespace:1.0.0' = {
       }
     ]
     skuName: 'Premium'
-    systemAssignedIdentity: false
     tags: {
       Environment: 'Non-Prod'
       'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
-    }
-    userAssignedIdentities: {
-      '<managedIdentityResourceId>': {}
     }
   }
 }
@@ -553,6 +557,14 @@ module namespace 'br:bicep/modules/service-bus.namespace:1.0.0' = {
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     },
+    "managedIdentities": {
+      "value": {
+        "systemAssigned": false,
+        "userAssignedResourcesIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
+    },
     "networkRuleSets": {
       "value": {
         "defaultAction": "Deny",
@@ -589,19 +601,11 @@ module namespace 'br:bicep/modules/service-bus.namespace:1.0.0' = {
     "skuName": {
       "value": "Premium"
     },
-    "systemAssignedIdentity": {
-      "value": false
-    },
     "tags": {
       "value": {
         "Environment": "Non-Prod",
         "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
-      }
-    },
-    "userAssignedIdentities": {
-      "value": {
-        "<managedIdentityResourceId>": {}
       }
     }
   }
@@ -790,6 +794,7 @@ module namespace 'br:bicep/modules/service-bus.namespace:1.0.0' = {
 | [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
 | [`location`](#parameter-location) | string | Location for all resources. |
 | [`lock`](#parameter-lock) | object | The lock settings of the service. |
+| [`managedIdentities`](#parameter-managedidentities) | object | The managed identity definition for this resource. |
 | [`migrationConfigurations`](#parameter-migrationconfigurations) | object | The migration configuration. |
 | [`minimumTlsVersion`](#parameter-minimumtlsversion) | string | The minimum TLS version for the cluster to support. |
 | [`networkRuleSets`](#parameter-networkrulesets) | object | Configure networking options for Premium SKU Service Bus. This object contains IPs/Subnets to allow or restrict access to private endpoints only. For security reasons, it is recommended to configure this object on the Namespace. |
@@ -801,10 +806,8 @@ module namespace 'br:bicep/modules/service-bus.namespace:1.0.0' = {
 | [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | [`skuCapacity`](#parameter-skucapacity) | int | The specified messaging units for the tier. Only used for Premium Sku tier. |
 | [`skuName`](#parameter-skuname) | string | Name of this SKU. - Basic, Standard, Premium. |
-| [`systemAssignedIdentity`](#parameter-systemassignedidentity) | bool | Enables system assigned managed identity on the resource. |
 | [`tags`](#parameter-tags) | object | Tags of the resource. |
 | [`topics`](#parameter-topics) | array | The topics to create in the service bus namespace. |
-| [`userAssignedIdentities`](#parameter-userassignedidentities) | object | The ID(s) to assign to the resource. |
 | [`zoneRedundant`](#parameter-zoneredundant) | bool | Enabling this property creates a Premium Service Bus Namespace in regions supported availability zones. |
 
 ### Parameter: `alternateName`
@@ -955,6 +958,32 @@ Optional. Specify the name of lock.
 - Required: No
 - Type: string
 
+### Parameter: `managedIdentities`
+
+The managed identity definition for this resource.
+- Required: No
+- Type: object
+
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`systemAssigned`](#parameter-managedidentitiessystemassigned) | No | bool | Optional. Enables system assigned managed identity on the resource. |
+| [`userAssignedResourcesIds`](#parameter-managedidentitiesuserassignedresourcesids) | No | array | Optional. The resource ID(s) to assign to the resource. Required if a user assigned identity is used for encryption. |
+
+### Parameter: `managedIdentities.systemAssigned`
+
+Optional. Enables system assigned managed identity on the resource.
+
+- Required: No
+- Type: bool
+
+### Parameter: `managedIdentities.userAssignedResourcesIds`
+
+Optional. The resource ID(s) to assign to the resource. Required if a user assigned identity is used for encryption.
+
+- Required: No
+- Type: array
+
 ### Parameter: `migrationConfigurations`
 
 The migration configuration.
@@ -1042,13 +1071,6 @@ Name of this SKU. - Basic, Standard, Premium.
 - Default: `'Basic'`
 - Allowed: `[Basic, Premium, Standard]`
 
-### Parameter: `systemAssignedIdentity`
-
-Enables system assigned managed identity on the resource.
-- Required: No
-- Type: bool
-- Default: `False`
-
 ### Parameter: `tags`
 
 Tags of the resource.
@@ -1062,13 +1084,6 @@ The topics to create in the service bus namespace.
 - Required: No
 - Type: array
 - Default: `[]`
-
-### Parameter: `userAssignedIdentities`
-
-The ID(s) to assign to the resource.
-- Required: No
-- Type: object
-- Default: `{object}`
 
 ### Parameter: `zoneRedundant`
 
@@ -1086,7 +1101,7 @@ Enabling this property creates a Premium Service Bus Namespace in regions suppor
 | `name` | string | The name of the deployed service bus namespace. |
 | `resourceGroupName` | string | The resource group of the deployed service bus namespace. |
 | `resourceId` | string | The resource ID of the deployed service bus namespace. |
-| `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
+| `systemAssignedMIPrincipalId` | string | The principal ID of the system assigned identity. |
 
 ## Cross-referenced modules
 

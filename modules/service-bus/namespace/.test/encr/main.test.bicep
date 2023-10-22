@@ -102,9 +102,11 @@ module testDeployment '../../main.bicep' = {
         ]
       }
     ]
-    systemAssignedIdentity: false
-    userAssignedIdentities: {
-      '${nestedDependencies.outputs.managedIdentityResourceId}': {}
+    managedIdentities: {
+      systemAssigned: false
+      userAssignedResourcesIds: [
+        nestedDependencies.outputs.managedIdentityResourceId
+      ]
     }
     cMKKeyVaultResourceId: nestedDependencies.outputs.keyVaultResourceId
     cMKKeyName: nestedDependencies.outputs.keyName
