@@ -86,9 +86,11 @@ module testDeployment '../../main.bicep' = {
     ]
     sku: 'Standard'
     stagingEnvironmentPolicy: 'Enabled'
-    systemAssignedIdentity: true
-    userAssignedIdentities: {
-      '${nestedDependencies.outputs.managedIdentityResourceId}': {}
+    managedIdentities: {
+      systemAssigned: true
+      userAssignedResourcesIds: [
+        nestedDependencies.outputs.managedIdentityResourceId
+      ]
     }
     appSettings: {
       foo: 'bar'
