@@ -63,13 +63,6 @@ module configurationStore 'br:bicep/modules/app-configuration.configuration-stor
       {
         contentType: 'contentType'
         name: 'keyName'
-        roleAssignments: [
-          {
-            principalId: '<principalId>'
-            principalType: 'ServicePrincipal'
-            roleDefinitionIdOrName: 'Reader'
-          }
-        ]
         value: 'valueName'
       }
     ]
@@ -143,13 +136,6 @@ module configurationStore 'br:bicep/modules/app-configuration.configuration-stor
         {
           "contentType": "contentType",
           "name": "keyName",
-          "roleAssignments": [
-            {
-              "principalId": "<principalId>",
-              "principalType": "ServicePrincipal",
-              "roleDefinitionIdOrName": "Reader"
-            }
-          ],
           "value": "valueName"
         }
       ]
@@ -215,13 +201,6 @@ module configurationStore 'br:bicep/modules/app-configuration.configuration-stor
       {
         contentType: 'contentType'
         name: 'keyName'
-        roleAssignments: [
-          {
-            principalId: '<principalId>'
-            principalType: 'ServicePrincipal'
-            roleDefinitionIdOrName: 'Reader'
-          }
-        ]
         value: 'valueName'
       }
     ]
@@ -290,13 +269,6 @@ module configurationStore 'br:bicep/modules/app-configuration.configuration-stor
         {
           "contentType": "contentType",
           "name": "keyName",
-          "roleAssignments": [
-            {
-              "principalId": "<principalId>",
-              "principalType": "ServicePrincipal",
-              "roleDefinitionIdOrName": "Reader"
-            }
-          ],
           "value": "valueName"
         }
       ]
