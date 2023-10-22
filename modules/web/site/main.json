@@ -6,13 +6,36 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "6021180257136349048"
+      "templateHash": "7137053742613046156"
     },
     "name": "Web/Function Apps",
     "description": "This module deploys a Web or Function App.",
     "owner": "Azure/module-maintainers"
   },
   "definitions": {
+    "managedIdentitiesType": {
+      "type": "object",
+      "properties": {
+        "systemAssigned": {
+          "type": "bool",
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Enables system assigned managed identity on the resource."
+          }
+        },
+        "userAssignedResourcesIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. The resource ID(s) to assign to the resource. Required if a user assigned identity is used for encryption."
+          }
+        }
+      },
+      "nullable": true
+    },
     "lockType": {
       "type": "object",
       "properties": {
@@ -93,18 +116,10 @@
         "description": "Optional. The resource ID of the app service environment to use for this resource."
       }
     },
-    "systemAssignedIdentity": {
-      "type": "bool",
-      "defaultValue": false,
+    "managedIdentities": {
+      "$ref": "#/definitions/managedIdentitiesType",
       "metadata": {
-        "description": "Optional. Enables system assigned managed identity on the resource."
-      }
-    },
-    "userAssignedIdentities": {
-      "type": "object",
-      "defaultValue": {},
-      "metadata": {
-        "description": "Optional. The ID(s) to assign to the resource."
+        "description": "Optional. The managed identity definition for this resource."
       }
     },
     "keyVaultAccessIdentityResourceId": {
@@ -441,8 +456,8 @@
       }
     ],
     "diagnosticsLogs": "[if(contains(parameters('diagnosticLogCategoriesToEnable'), 'allLogs'), createArray(createObject('categoryGroup', 'allLogs', 'enabled', true())), if(contains(parameters('diagnosticLogCategoriesToEnable'), ''), createArray(), variables('diagnosticsLogsSpecified')))]",
-    "identityType": "[if(parameters('systemAssignedIdentity'), if(not(empty(parameters('userAssignedIdentities'))), 'SystemAssigned,UserAssigned', 'SystemAssigned'), if(not(empty(parameters('userAssignedIdentities'))), 'UserAssigned', 'None'))]",
-    "identity": "[if(not(equals(variables('identityType'), 'None')), createObject('type', variables('identityType'), 'userAssignedIdentities', if(not(empty(parameters('userAssignedIdentities'))), parameters('userAssignedIdentities'), null())), null())]",
+    "formattedUserAssignedIdentities": "[reduce(map(coalesce(tryGet(parameters('managedIdentities'), 'userAssignedResourcesIds'), createArray()), lambda('id', createObject(format('{0}', lambdaVariables('id')), createObject()))), createObject(), lambda('cur', 'next', union(lambdaVariables('cur'), lambdaVariables('next'))))]",
+    "identity": "[if(not(empty(parameters('managedIdentities'))), createObject('type', if(coalesce(tryGet(parameters('managedIdentities'), 'systemAssigned'), false()), if(not(empty(coalesce(tryGet(parameters('managedIdentities'), 'userAssignedResourcesIds'), createObject()))), 'SystemAssigned,UserAssigned', 'SystemAssigned'), if(not(empty(coalesce(tryGet(parameters('managedIdentities'), 'userAssignedResourcesIds'), createObject()))), 'UserAssigned', null())), 'userAssignedIdentities', if(not(empty(variables('formattedUserAssignedIdentities'))), variables('formattedUserAssignedIdentities'), null())), null())]",
     "enableReferencedModulesTelemetry": false
   },
   "resources": {
@@ -838,8 +853,7 @@
           "httpsOnly": "[if(contains(parameters('slots')[copyIndex()], 'httpsOnly'), createObject('value', parameters('slots')[copyIndex()].httpsOnly), createObject('value', parameters('httpsOnly')))]",
           "appServiceEnvironmentResourceId": "[if(not(empty(parameters('appServiceEnvironmentResourceId'))), createObject('value', parameters('appServiceEnvironmentResourceId')), createObject('value', ''))]",
           "clientAffinityEnabled": "[if(contains(parameters('slots')[copyIndex()], 'clientAffinityEnabled'), createObject('value', parameters('slots')[copyIndex()].clientAffinityEnabled), createObject('value', parameters('clientAffinityEnabled')))]",
-          "systemAssignedIdentity": "[if(contains(parameters('slots')[copyIndex()], 'systemAssignedIdentity'), createObject('value', parameters('slots')[copyIndex()].systemAssignedIdentity), createObject('value', parameters('systemAssignedIdentity')))]",
-          "userAssignedIdentities": "[if(contains(parameters('slots')[copyIndex()], 'userAssignedIdentities'), createObject('value', parameters('slots')[copyIndex()].userAssignedIdentities), createObject('value', parameters('userAssignedIdentities')))]",
+          "managedIdentities": "[if(contains(parameters('slots')[copyIndex()], 'managedIdentities'), createObject('value', parameters('slots')[copyIndex()].managedIdentities), createObject('value', parameters('managedIdentities')))]",
           "keyVaultAccessIdentityResourceId": "[if(contains(parameters('slots')[copyIndex()], 'keyVaultAccessIdentityResourceId'), createObject('value', parameters('slots')[copyIndex()].keyVaultAccessIdentityResourceId), createObject('value', parameters('keyVaultAccessIdentityResourceId')))]",
           "storageAccountRequired": "[if(contains(parameters('slots')[copyIndex()], 'storageAccountRequired'), createObject('value', parameters('slots')[copyIndex()].storageAccountRequired), createObject('value', parameters('storageAccountRequired')))]",
           "virtualNetworkSubnetId": "[if(contains(parameters('slots')[copyIndex()], 'virtualNetworkSubnetId'), createObject('value', parameters('slots')[copyIndex()].virtualNetworkSubnetId), createObject('value', parameters('virtualNetworkSubnetId')))]",
@@ -889,13 +903,36 @@
             "_generator": {
               "name": "bicep",
               "version": "0.22.6.54827",
-              "templateHash": "9880661409366046894"
+              "templateHash": "17731486698823948148"
             },
             "name": "Web/Function App Deployment Slots",
             "description": "This module deploys a Web or Function App Deployment Slot.",
             "owner": "Azure/module-maintainers"
           },
           "definitions": {
+            "managedIdentitiesType": {
+              "type": "object",
+              "properties": {
+                "systemAssigned": {
+                  "type": "bool",
+                  "nullable": true,
+                  "metadata": {
+                    "description": "Optional. Enables system assigned managed identity on the resource."
+                  }
+                },
+                "userAssignedResourcesIds": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "nullable": true,
+                  "metadata": {
+                    "description": "Optional. The resource ID(s) to assign to the resource. Required if a user assigned identity is used for encryption."
+                  }
+                }
+              },
+              "nullable": true
+            },
             "lockType": {
               "type": "object",
               "properties": {
@@ -983,18 +1020,10 @@
                 "description": "Optional. The resource ID of the app service environment to use for this resource."
               }
             },
-            "systemAssignedIdentity": {
-              "type": "bool",
-              "defaultValue": false,
+            "managedIdentities": {
+              "$ref": "#/definitions/managedIdentitiesType",
               "metadata": {
-                "description": "Optional. Enables system assigned managed identity on the resource."
-              }
-            },
-            "userAssignedIdentities": {
-              "type": "object",
-              "defaultValue": {},
-              "metadata": {
-                "description": "Optional. The ID(s) to assign to the resource."
+                "description": "Optional. The managed identity definition for this resource."
               }
             },
             "keyVaultAccessIdentityResourceId": {
@@ -1307,8 +1336,8 @@
                 }
               }
             ],
-            "identityType": "[if(parameters('systemAssignedIdentity'), if(not(empty(parameters('userAssignedIdentities'))), 'SystemAssigned,UserAssigned', 'SystemAssigned'), if(not(empty(parameters('userAssignedIdentities'))), 'UserAssigned', 'None'))]",
-            "identity": "[if(not(equals(variables('identityType'), 'None')), createObject('type', variables('identityType'), 'userAssignedIdentities', if(not(empty(parameters('userAssignedIdentities'))), parameters('userAssignedIdentities'), null())), null())]",
+            "formattedUserAssignedIdentities": "[reduce(map(coalesce(tryGet(parameters('managedIdentities'), 'userAssignedResourcesIds'), createArray()), lambda('id', createObject(format('{0}', lambdaVariables('id')), createObject()))), createObject(), lambda('cur', 'next', union(lambdaVariables('cur'), lambdaVariables('next'))))]",
+            "identity": "[if(not(empty(parameters('managedIdentities'))), createObject('type', if(coalesce(tryGet(parameters('managedIdentities'), 'systemAssigned'), false()), if(not(empty(coalesce(tryGet(parameters('managedIdentities'), 'userAssignedResourcesIds'), createObject()))), 'SystemAssigned,UserAssigned', 'SystemAssigned'), if(not(empty(coalesce(tryGet(parameters('managedIdentities'), 'userAssignedResourcesIds'), createObject()))), 'UserAssigned', null())), 'userAssignedIdentities', if(not(empty(variables('formattedUserAssignedIdentities'))), variables('formattedUserAssignedIdentities'), null())), null())]",
             "enableReferencedModulesTelemetry": false
           },
           "resources": {
@@ -2518,12 +2547,12 @@
               },
               "value": "[resourceGroup().name]"
             },
-            "systemAssignedPrincipalId": {
+            "systemAssignedMIPrincipalId": {
               "type": "string",
               "metadata": {
                 "description": "The principal ID of the system assigned identity."
               },
-              "value": "[if(and(parameters('systemAssignedIdentity'), if(contains(reference('slot', '2022-09-01', 'full'), 'identity'), contains(reference('slot', '2022-09-01', 'full').identity, 'principalId'), false())), reference('slot', '2022-09-01', 'full').identity.principalId, '')]"
+              "value": "[if(and(coalesce(tryGet(parameters('managedIdentities'), 'systemAssigned'), false()), contains(reference('slot', '2022-09-01', 'full').identity, 'principalId')), reference('slot', '2022-09-01', 'full').identity.principalId, '')]"
             },
             "location": {
               "type": "string",
@@ -3529,12 +3558,12 @@
       },
       "value": "[resourceGroup().name]"
     },
-    "systemAssignedPrincipalId": {
+    "systemAssignedMIPrincipalId": {
       "type": "string",
       "metadata": {
         "description": "The principal ID of the system assigned identity."
       },
-      "value": "[if(and(parameters('systemAssignedIdentity'), contains(reference('app', '2022-09-01', 'full').identity, 'principalId')), reference('app', '2022-09-01', 'full').identity.principalId, '')]"
+      "value": "[if(and(coalesce(tryGet(parameters('managedIdentities'), 'systemAssigned'), false()), contains(reference('app', '2022-09-01', 'full').identity, 'principalId')), reference('app', '2022-09-01', 'full').identity.principalId, '')]"
     },
     "slotSystemAssignedPrincipalIds": {
       "type": "array",
@@ -3543,7 +3572,7 @@
       },
       "copy": {
         "count": "[length(parameters('slots'))]",
-        "input": "[reference(format('app_slots[{0}]', copyIndex())).outputs.systemAssignedPrincipalId.value]"
+        "input": "[reference(format('app_slots[{0}]', copyIndex())).outputs.systemAssignedMIPrincipalId.value]"
       }
     },
     "location": {
