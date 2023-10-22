@@ -9,7 +9,7 @@ metadata description = 'This instance deploys the module with the minimum set of
 
 @description('Optional. The name of the resource group to deploy for testing purposes.')
 @maxLength(90)
-param resourceGroupName string = 'ms.managedidentity.userassignedidentities-${serviceShort}-rg'
+param resourceGroupName string = 'dep-${namePrefix}-managedidentity.userassignedidentities-${serviceShort}-rg'
 
 @description('Optional. The location to deploy resources to.')
 param location string = deployment().location
@@ -19,6 +19,9 @@ param serviceShort string = 'miuaimin'
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
+
+@description('Optional. A token to inject into the name of each resource.')
+param namePrefix string = '[[namePrefix]]'
 
 // ============ //
 // Dependencies //

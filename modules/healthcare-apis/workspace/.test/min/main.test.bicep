@@ -8,7 +8,7 @@ metadata description = 'This instance deploys the module with the minimum set of
 // ========== //
 @description('Optional. The name of the resource group to deploy for testing purposes.')
 @maxLength(90)
-param resourceGroupName string = 'ms.healthcareapis.workspaces-${serviceShort}-rg'
+param resourceGroupName string = 'dep-${namePrefix}-healthcareapis.workspaces-${serviceShort}-rg'
 
 @description('Optional. The location to deploy resources to.')
 param location string = deployment().location
