@@ -98,6 +98,7 @@ module webPubSub 'br:bicep/modules/signal-r-service.web-pub-sub:1.0.0' = {
     roleAssignments: [
       {
         principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -200,6 +201,7 @@ module webPubSub 'br:bicep/modules/signal-r-service.web-pub-sub:1.0.0' = {
       "value": [
         {
           "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]

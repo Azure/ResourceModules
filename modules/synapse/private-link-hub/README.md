@@ -74,6 +74,7 @@ module privateLinkHub 'br:bicep/modules/synapse.private-link-hub:1.0.0' = {
       }
       {
         principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: '/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c'
       }
     ]
@@ -137,6 +138,7 @@ module privateLinkHub 'br:bicep/modules/synapse.private-link-hub:1.0.0' = {
         },
         {
           "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c"
         }
       ]

@@ -98,6 +98,7 @@ module signalR 'br:bicep/modules/signal-r-service.signal-r:1.0.0' = {
     roleAssignments: [
       {
         principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -202,6 +203,7 @@ module signalR 'br:bicep/modules/signal-r-service.signal-r:1.0.0' = {
       "value": [
         {
           "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]
