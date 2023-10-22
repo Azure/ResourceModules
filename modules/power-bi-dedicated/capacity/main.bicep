@@ -64,7 +64,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource powerbi 'Microsoft.PowerBIDedicated/capacities@2021-01-01' = {
+resource capacity 'Microsoft.PowerBIDedicated/capacities@2021-01-01' = {
   name: name
   location: location
   tags: tags
@@ -81,16 +81,16 @@ resource powerbi 'Microsoft.PowerBIDedicated/capacities@2021-01-01' = {
   }
 }
 
-resource powerbi_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock ?? {}) && lock.?kind != 'None') {
+resource capacity_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock ?? {}) && lock.?kind != 'None') {
   name: lock.?name ?? 'lock-${name}'
   properties: {
     level: lock.?kind ?? ''
     notes: lock.?kind == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot delete or modify the resource or child resources.'
   }
-  scope: powerbi
+  scope: capacity
 }
 
-module server_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module capacity_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-PowerBI-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
@@ -99,21 +99,21 @@ module server_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (role
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
     condition: contains(roleAssignment, 'condition') ? roleAssignment.condition : ''
     delegatedManagedIdentityResourceId: contains(roleAssignment, 'delegatedManagedIdentityResourceId') ? roleAssignment.delegatedManagedIdentityResourceId : ''
-    resourceId: powerbi.id
+    resourceId: capacity.id
   }
 }]
 
-@description('The resource ID of the PowerBi Embedded.')
-output resourceId string = powerbi.id
+@description('The resource ID of the PowerBi Embedded instance.')
+output resourceId string = capacity.id
 
 @description('The name of the resource group the PowerBi Embedded was created in.')
 output resourceGroupName string = resourceGroup().name
 
-@description('The Name of the PowerBi Embedded.')
-output name string = powerbi.name
+@description('The Name of the PowerBi Embedded instance.')
+output name string = capacity.name
 
 @description('The location the resource was deployed into.')
-output location string = powerbi.location
+output location string = capacity.location
 
 // =============== //
 //   Definitions   //
