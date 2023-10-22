@@ -64,9 +64,7 @@ module testDeployment '../../main.bicep' = {
       roleAssignments: [
         {
           roleDefinitionIdOrName: 'Reader'
-          principalIds: [
-            nestedDependencies.outputs.managedIdentityPrincipalId
-          ]
+          principalIds: nestedDependencies.outputs.managedIdentityPrincipalId
           principalType: 'ServicePrincipal'
         }
       ]
