@@ -102,7 +102,7 @@ module testDeployment '../../main.bicep' = {
         roleAssignments: [
           {
             roleDefinitionIdOrName: resourceId('Microsoft.Authorization/roleDefinitions', '5a1fc7df-4bf1-4951-a576-89034ee01acd')
-            principalId: resourceGroupResources.outputs.managedIdentityPrincipalId
+            principalId: resourceGroupResources.outputs.managedIdentityPrincipalId
             principalType: 'ServicePrincipal'
           }
         ]
@@ -137,4 +137,3 @@ module testDeployment '../../main.bicep' = {
     }
   }
 }
-
