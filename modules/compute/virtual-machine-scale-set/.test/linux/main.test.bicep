@@ -174,8 +174,9 @@ module testDeployment '../../main.bicep' = {
     ]
     roleAssignments: [
       {
-        principalId: nestedDependencies.outputs.managedIdentityPrincipalId
+        principalId: nestedDependencies.outputs.managedIdentityPrincipalId
         roleDefinitionIdOrName: 'Reader'
+        principalType: 'ServicePrincipal'
       }
     ]
     scaleSetFaultDomain: 1
@@ -194,4 +195,3 @@ module testDeployment '../../main.bicep' = {
     }
   }
 }
-

@@ -171,8 +171,9 @@ module testDeployment '../../main.bicep' = {
     proximityPlacementGroupResourceId: nestedDependencies.outputs.proximityPlacementGroupResourceId
     roleAssignments: [
       {
-        principalId: nestedDependencies.outputs.managedIdentityPrincipalId
+        principalId: nestedDependencies.outputs.managedIdentityPrincipalId
         roleDefinitionIdOrName: 'Reader'
+        principalType: 'ServicePrincipal'
       }
     ]
     skuCapacity: 1
@@ -190,4 +191,3 @@ module testDeployment '../../main.bicep' = {
     }
   }
 }
-
