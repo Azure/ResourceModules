@@ -78,7 +78,7 @@ module configurationStore 'br:bicep/modules/app-configuration.configuration-stor
       name: 'myCustomLockName'
     }
     managedIdentities: {
-      systemAssigned: false
+      systemAssigned: true
       userAssignedResourcesIds: [
         '<managedIdentityResourceId>'
       ]
@@ -165,7 +165,7 @@ module configurationStore 'br:bicep/modules/app-configuration.configuration-stor
     },
     "managedIdentities": {
       "value": {
-        "systemAssigned": false,
+        "systemAssigned": true,
         "userAssignedResourcesIds": [
           "<managedIdentityResourceId>"
         ]
