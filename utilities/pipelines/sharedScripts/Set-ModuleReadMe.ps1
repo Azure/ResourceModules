@@ -1538,10 +1538,6 @@ function Set-ModuleReadMe {
     # Read original readme, if any. Then delete it to build from scratch
     if ((Test-Path $ReadMeFilePath) -and -not ([String]::IsNullOrEmpty((Get-Content $ReadMeFilePath -Raw)))) {
         $readMeFileContent = Get-Content -Path $ReadMeFilePath -Encoding 'utf8'
-        # Delete original readme
-        if ($PSCmdlet.ShouldProcess("File in path [$ReadMeFilePath]", 'Delete')) {
-            $null = Remove-Item $ReadMeFilePath -Force
-        }
     }
     # Make sure we preserve any manual notes a user might have added in the corresponding section
     if ($match = $readMeFileContent | Select-String -Pattern '## Notes') {
@@ -1649,8 +1645,15 @@ function Set-ModuleReadMe {
     Write-Verbose '============'
     Write-Verbose ($readMeFileContent | Out-String)
 
-    if ($PSCmdlet.ShouldProcess("File in path [$ReadMeFilePath]", 'Overwrite')) {
-        Set-Content -Path $ReadMeFilePath -Value $readMeFileContent -Force -Encoding 'utf8'
+    if (Test-Path $ReadMeFilePath) {
+        if ($PSCmdlet.ShouldProcess("File in path [$ReadMeFilePath]", 'Overwrite')) {
+            Set-Content -Path $ReadMeFilePath -Value $readMeFileContent -Force -Encoding 'utf8'
+        }
         Write-Verbose "File [$ReadMeFilePath] updated" -Verbose
+    } else {
+        if ($PSCmdlet.ShouldProcess("File in path [$ReadMeFilePath]", 'Create')) {
+            $null = New-Item -Path $ReadMeFilePath -Value $readMeFileContent -Force
+        }
+        Write-Verbose "File [$ReadMeFilePath] created" -Verbose
     }
 }
