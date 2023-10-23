@@ -62,6 +62,5 @@ module testDeployment '../../main.bicep' = {
       Role: 'DeploymentValidation'
     }
     enableDefaultTelemetry: enableDefaultTelemetry
-
   }
 }

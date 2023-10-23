@@ -73,6 +73,10 @@ module testDeployment '../../main.bicep' = {
     diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
     diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
     httpsOnly: true
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     slots: [
       {
         name: 'slot1'
@@ -99,9 +103,7 @@ module testDeployment '../../main.bicep' = {
         roleAssignments: [
           {
             roleDefinitionIdOrName: 'Reader'
-            principalIds: [
-              nestedDependencies.outputs.managedIdentityPrincipalId
-            ]
+            principalId: nestedDependencies.outputs.managedIdentityPrincipalId
             principalType: 'ServicePrincipal'
           }
         ]
@@ -142,9 +144,7 @@ module testDeployment '../../main.bicep' = {
     roleAssignments: [
       {
         roleDefinitionIdOrName: 'Reader'
-        principalIds: [
-          nestedDependencies.outputs.managedIdentityPrincipalId
-        ]
+        principalId: nestedDependencies.outputs.managedIdentityPrincipalId
         principalType: 'ServicePrincipal'
       }
     ]
