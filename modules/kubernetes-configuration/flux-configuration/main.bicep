@@ -63,7 +63,7 @@ resource managedCluster 'Microsoft.ContainerService/managedClusters@2022-07-01' 
   name: clusterName
 }
 
-resource fluxConfiguration 'Microsoft.KubernetesConfiguration/fluxConfigurations@2022-03-01' = {
+resource fluxConfiguration 'Microsoft.KubernetesConfiguration/fluxConfigurations@2023-05-01' = {
   name: name
   scope: managedCluster
   properties: {

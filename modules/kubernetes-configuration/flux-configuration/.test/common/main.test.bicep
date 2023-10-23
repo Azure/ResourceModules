@@ -75,6 +75,12 @@ module testDeployment '../../main.bicep' = {
         prune: true
         syncIntervalInSeconds: 300
         timeoutInSeconds: 300
+        postBuild: {
+          substitute: {
+            TEST_VAR1: 'foo'
+            TEST_VAR2: 'bar'
+          }
+        }
       }
     }
   }
