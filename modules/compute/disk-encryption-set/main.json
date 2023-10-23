@@ -6,13 +6,35 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "580365923172310918"
+      "templateHash": "17225332920859893013"
     },
     "name": "Disk Encryption Sets",
     "description": "This module deploys a Disk Encryption Set.",
     "owner": "Azure/module-maintainers"
   },
   "definitions": {
+    "managedIdentitiesType": {
+      "type": "object",
+      "properties": {
+        "systemAssigned": {
+          "type": "bool",
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Enables system assigned managed identity on the resource."
+          }
+        },
+        "userAssignedResourcesIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. The resource ID(s) to assign to the resource. Required if a user assigned identity is used for encryption."
+          }
+        }
+      }
+    },
     "lockType": {
       "type": "object",
       "properties": {
@@ -169,18 +191,13 @@
         "description": "Optional. Set this flag to true to enable auto-updating of this disk encryption set to the latest key version."
       }
     },
-    "systemAssignedIdentity": {
-      "type": "bool",
-      "defaultValue": true,
+    "managedIdentities": {
+      "$ref": "#/definitions/managedIdentitiesType",
+      "defaultValue": {
+        "systemAssigned": true
+      },
       "metadata": {
-        "description": "Conditional. Enables system assigned managed identity on the resource. Required if userAssignedIdentities is empty."
-      }
-    },
-    "userAssignedIdentities": {
-      "type": "object",
-      "defaultValue": {},
-      "metadata": {
-        "description": "Conditional. The ID(s) to assign to the resource. Required if systemAssignedIdentity is set to \"false\"."
+        "description": "Optional. The managed identity definition for this resource. At least one identity type is required."
       }
     },
     "roleAssignments": {
@@ -205,11 +222,8 @@
     }
   },
   "variables": {
-    "identityType": "[if(parameters('systemAssignedIdentity'), if(not(empty(parameters('userAssignedIdentities'))), 'SystemAssigned,UserAssigned', 'SystemAssigned'), 'UserAssigned')]",
-    "identity": {
-      "type": "[variables('identityType')]",
-      "userAssignedIdentities": "[if(not(empty(parameters('userAssignedIdentities'))), parameters('userAssignedIdentities'), null())]"
-    },
+    "formattedUserAssignedIdentities": "[reduce(map(coalesce(tryGet(parameters('managedIdentities'), 'userAssignedResourcesIds'), createArray()), lambda('id', createObject(format('{0}', lambdaVariables('id')), createObject()))), createObject(), lambda('cur', 'next', union(lambdaVariables('cur'), lambdaVariables('next'))))]",
+    "identity": "[if(not(empty(parameters('managedIdentities'))), createObject('type', if(coalesce(tryGet(parameters('managedIdentities'), 'systemAssigned'), false()), if(not(empty(coalesce(tryGet(parameters('managedIdentities'), 'userAssignedResourcesIds'), createObject()))), 'SystemAssigned,UserAssigned', 'SystemAssigned'), if(not(empty(coalesce(tryGet(parameters('managedIdentities'), 'userAssignedResourcesIds'), createObject()))), 'UserAssigned', null())), 'userAssignedIdentities', if(not(empty(variables('formattedUserAssignedIdentities'))), variables('formattedUserAssignedIdentities'), null())), null())]",
     "builtInRoleNames": {
       "Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]",
       "Data Operator for Managed Disks": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '959f8984-c045-4866-89c7-12bf9737be2e')]",
@@ -319,7 +333,7 @@
     "keyVaultPermissions": {
       "copy": {
         "name": "keyVaultPermissions",
-        "count": "[length(items(parameters('userAssignedIdentities')))]"
+        "count": "[length(items(variables('formattedUserAssignedIdentities')))]"
       },
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
@@ -339,7 +353,7 @@
             "value": "[parameters('keyVaultResourceId')]"
           },
           "userAssignedIdentityResourceId": {
-            "value": "[items(parameters('userAssignedIdentities'))[copyIndex()].key]"
+            "value": "[items(variables('formattedUserAssignedIdentities'))[copyIndex()].key]"
           },
           "rbacAuthorizationEnabled": {
             "value": "[reference('keyVault').enableRbacAuthorization]"
@@ -625,12 +639,12 @@
       },
       "value": "[resourceGroup().name]"
     },
-    "principalId": {
+    "systemAssignedMIPrincipalId": {
       "type": "string",
       "metadata": {
-        "description": "The principal ID of the disk encryption set."
+        "description": "The principal ID of the system assigned identity."
       },
-      "value": "[if(equals(parameters('systemAssignedIdentity'), true()), reference('diskEncryptionSet', '2022-07-02', 'full').identity.principalId, '')]"
+      "value": "[if(and(coalesce(tryGet(parameters('managedIdentities'), 'systemAssigned'), false()), contains(reference('diskEncryptionSet', '2022-07-02', 'full').identity, 'principalId')), reference('diskEncryptionSet', '2022-07-02', 'full').identity.principalId, '')]"
     },
     "identities": {
       "type": "object",
