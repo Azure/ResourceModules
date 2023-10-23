@@ -62,6 +62,12 @@ module workspace 'br:bicep/modules/machine-learning-services.workspace:1.0.0' = 
         description: 'Default CPU Cluster'
         disableLocalAuth: false
         location: 'westeurope'
+        managedIdentities: {
+          systemAssigned: false
+          userAssignedResourcesIds: [
+            '<managedIdentityResourceId>'
+          ]
+        }
         name: 'DefaultCPU'
         properties: {
           enableNodePublicIp: true
@@ -77,10 +83,6 @@ module workspace 'br:bicep/modules/machine-learning-services.workspace:1.0.0' = 
           vmSize: 'STANDARD_DS11_V2'
         }
         sku: 'Basic'
-        systemAssignedIdentity: false
-        userAssignedIdentities: {
-          '<managedIdentityResourceId>': {}
-        }
       }
     ]
     description: 'The cake is a lie.'
@@ -169,6 +171,12 @@ module workspace 'br:bicep/modules/machine-learning-services.workspace:1.0.0' = 
           "description": "Default CPU Cluster",
           "disableLocalAuth": false,
           "location": "westeurope",
+          "managedIdentities": {
+            "systemAssigned": false,
+            "userAssignedResourcesIds": [
+              "<managedIdentityResourceId>"
+            ]
+          },
           "name": "DefaultCPU",
           "properties": {
             "enableNodePublicIp": true,
@@ -183,11 +191,7 @@ module workspace 'br:bicep/modules/machine-learning-services.workspace:1.0.0' = 
             "vmPriority": "Dedicated",
             "vmSize": "STANDARD_DS11_V2"
           },
-          "sku": "Basic",
-          "systemAssignedIdentity": false,
-          "userAssignedIdentities": {
-            "<managedIdentityResourceId>": {}
-          }
+          "sku": "Basic"
         }
       ]
     },

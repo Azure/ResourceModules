@@ -247,8 +247,7 @@ module workspace_computes 'compute/main.bicep' = [for compute in computes: {
     name: compute.name
     location: compute.location
     sku: contains(compute, 'sku') ? compute.sku : ''
-    systemAssignedIdentity: contains(compute, 'systemAssignedIdentity') ? compute.systemAssignedIdentity : false
-    userAssignedIdentities: contains(compute, 'userAssignedIdentities') ? compute.userAssignedIdentities : {}
+    managedIdentities: contains(compute, 'managedIdentities') ? compute.managedIdentities : null
     tags: contains(compute, 'tags') ? compute.tags : {}
     deployCompute: contains(compute, 'deployCompute') ? compute.deployCompute : true
     computeLocation: contains(compute, 'computeLocation') ? compute.computeLocation : ''
