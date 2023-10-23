@@ -17,6 +17,7 @@ This module deploys a Synapse Workspace.
 | `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
+| `Microsoft.KeyVault/vaults/accessPolicies` | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.KeyVault/2022-07-01/vaults/accessPolicies) |
 | `Microsoft.Network/privateEndpoints` | [2023-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-04-01/privateEndpoints) |
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2023-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-04-01/privateEndpoints/privateDnsZoneGroups) |
 | `Microsoft.Synapse/workspaces` | [2021-06-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Synapse/2021-06-01/workspaces) |
@@ -229,7 +230,10 @@ module workspace 'br:bicep/modules/synapse.workspace:1.0.0' = {
     // Non-required parameters
     cMKKeyName: '<cMKKeyName>'
     cMKKeyVaultResourceId: '<cMKKeyVaultResourceId>'
+    cMKUseSystemAssignedIdentity: true
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    encryption: true
+    encryptionActivateWorkspace: true
   }
 }
 ```
@@ -266,8 +270,17 @@ module workspace 'br:bicep/modules/synapse.workspace:1.0.0' = {
     "cMKKeyVaultResourceId": {
       "value": "<cMKKeyVaultResourceId>"
     },
+    "cMKUseSystemAssignedIdentity": {
+      "value": true
+    },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
+    },
+    "encryption": {
+      "value": true
+    },
+    "encryptionActivateWorkspace": {
+      "value": true
     }
   }
 }
@@ -296,6 +309,7 @@ module workspace 'br:bicep/modules/synapse.workspace:1.0.0' = {
     cMKKeyVaultResourceId: '<cMKKeyVaultResourceId>'
     cMKUserAssignedIdentityResourceId: '<cMKUserAssignedIdentityResourceId>'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    encryption: true
     tags: {
       Environment: 'Non-Prod'
       'hidden-title': 'This is visible in the resource name'
@@ -342,6 +356,9 @@ module workspace 'br:bicep/modules/synapse.workspace:1.0.0' = {
     },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
+    },
+    "encryption": {
+      "value": true
     },
     "tags": {
       "value": {
@@ -528,6 +545,7 @@ module workspace 'br:bicep/modules/synapse.workspace:1.0.0' = {
 | [`azureADOnlyAuthentication`](#parameter-azureadonlyauthentication) | bool | Enable or Disable AzureADOnlyAuthentication on All Workspace sub-resource. |
 | [`cMKKeyName`](#parameter-cmkkeyname) | string | The name of the customer managed key to use for encryption. |
 | [`cMKUserAssignedIdentityResourceId`](#parameter-cmkuserassignedidentityresourceid) | string | The ID of User Assigned Managed identity that will be used to access your customer-managed key stored in key vault. |
+| [`cMKUseSystemAssignedIdentity`](#parameter-cmkusesystemassignedidentity) | bool | Use System Assigned Managed identity that will be used to access your customer-managed key stored in key vault. |
 | [`defaultDataLakeStorageCreateManagedPrivateEndpoint`](#parameter-defaultdatalakestoragecreatemanagedprivateendpoint) | bool | Create managed private endpoint to the default storage account or not. If Yes is selected, a managed private endpoint connection request is sent to the workspace's primary Data Lake Storage Gen2 account for Spark pools to access data. This must be approved by an owner of the storage account. |
 | [`diagnosticEventHubAuthorizationRuleId`](#parameter-diagnosticeventhubauthorizationruleid) | string | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | [`diagnosticEventHubName`](#parameter-diagnosticeventhubname) | string | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
@@ -536,6 +554,8 @@ module workspace 'br:bicep/modules/synapse.workspace:1.0.0' = {
 | [`diagnosticStorageAccountId`](#parameter-diagnosticstorageaccountid) | string | Resource ID of the diagnostic storage account. |
 | [`diagnosticWorkspaceId`](#parameter-diagnosticworkspaceid) | string | Resource ID of the diagnostic log analytics workspace. |
 | [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`encryption`](#parameter-encryption) | bool | Double encryption using a customer-managed key. |
+| [`encryptionActivateWorkspace`](#parameter-encryptionactivateworkspace) | bool | Activate workspace by adding the system managed identity in the KeyVault containing the customer managed key and activating the workspace. |
 | [`initialWorkspaceAdminObjectID`](#parameter-initialworkspaceadminobjectid) | string | AAD object ID of initial workspace admin. |
 | [`integrationRuntimes`](#parameter-integrationruntimes) | array | The Integration Runtimes to create. |
 | [`linkedAccessCheckOnTargetResource`](#parameter-linkedaccesscheckontargetresource) | bool | Linked Access Check On Target Resource. |
@@ -548,7 +568,7 @@ module workspace 'br:bicep/modules/synapse.workspace:1.0.0' = {
 | [`publicNetworkAccess`](#parameter-publicnetworkaccess) | string | Enable or Disable public network access to workspace. |
 | [`purviewResourceID`](#parameter-purviewresourceid) | string | Purview Resource ID. |
 | [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| [`sqlAdministratorLoginPassword`](#parameter-sqladministratorloginpassword) | securestring | Password for administrator access to the workspace's SQL pools. If you don't provide a password, one will be automatically generated. You can change the password later. |
+| [`sqlAdministratorLoginPassword`](#parameter-sqladministratorloginpassword) | string | Password for administrator access to the workspace's SQL pools. If you don't provide a password, one will be automatically generated. You can change the password later. |
 | [`tags`](#parameter-tags) | object | Tags of the resource. |
 | [`userAssignedIdentities`](#parameter-userassignedidentities) | object | The ID(s) to assign to the resource. |
 | [`workspaceRepositoryConfiguration`](#parameter-workspacerepositoryconfiguration) | object | Git integration settings. |
@@ -587,6 +607,13 @@ The ID of User Assigned Managed identity that will be used to access your custom
 - Required: No
 - Type: string
 - Default: `''`
+
+### Parameter: `cMKUseSystemAssignedIdentity`
+
+Use System Assigned Managed identity that will be used to access your customer-managed key stored in key vault.
+- Required: No
+- Type: bool
+- Default: `False`
 
 ### Parameter: `defaultDataLakeStorageAccountResourceId`
 
@@ -656,6 +683,20 @@ Enable telemetry via a Globally Unique Identifier (GUID).
 - Required: No
 - Type: bool
 - Default: `True`
+
+### Parameter: `encryption`
+
+Double encryption using a customer-managed key.
+- Required: No
+- Type: bool
+- Default: `False`
+
+### Parameter: `encryptionActivateWorkspace`
+
+Activate workspace by adding the system managed identity in the KeyVault containing the customer managed key and activating the workspace.
+- Required: No
+- Type: bool
+- Default: `False`
 
 ### Parameter: `initialWorkspaceAdminObjectID`
 
@@ -839,7 +880,7 @@ Login for administrator access to the workspace's SQL pools.
 
 Password for administrator access to the workspace's SQL pools. If you don't provide a password, one will be automatically generated. You can change the password later.
 - Required: No
-- Type: securestring
+- Type: string
 - Default: `''`
 
 ### Parameter: `tags`
