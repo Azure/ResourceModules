@@ -110,7 +110,9 @@ module testDeployment '../../main.bicep' = {
       }
     ]
     sku: 'Standard_S1'
-    systemAssignedIdentity: true
+    managedIdentities: {
+      systemAssigned: true
+    }
     tags: {
       'hidden-title': 'This is visible in the resource name'
       Environment: 'Non-Prod'
