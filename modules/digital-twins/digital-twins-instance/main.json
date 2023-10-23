@@ -6,13 +6,36 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "3171798738610144721"
+      "templateHash": "12060346961626354352"
     },
     "name": "Digital Twins Instances",
     "description": "This module deploys an Azure Digital Twins Instance.",
     "owner": "Azure/module-maintainers"
   },
   "definitions": {
+    "managedIdentitiesType": {
+      "type": "object",
+      "properties": {
+        "systemAssigned": {
+          "type": "bool",
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Enables system assigned managed identity on the resource."
+          }
+        },
+        "userAssignedResourcesIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. The resource ID(s) to assign to the resource."
+          }
+        }
+      },
+      "nullable": true
+    },
     "lockType": {
       "type": "object",
       "properties": {
@@ -134,18 +157,10 @@
         "description": "Optional. The lock settings of the service."
       }
     },
-    "systemAssignedIdentity": {
-      "type": "bool",
-      "defaultValue": false,
+    "managedIdentities": {
+      "$ref": "#/definitions/managedIdentitiesType",
       "metadata": {
-        "description": "Optional. Enables system assigned managed identity on the resource."
-      }
-    },
-    "userAssignedIdentities": {
-      "type": "object",
-      "defaultValue": {},
-      "metadata": {
-        "description": "Optional. The ID(s) to assign to the resource."
+        "description": "Optional. The managed identity definition for this resource."
       }
     },
     "eventHubEndpoint": {
@@ -289,8 +304,8 @@
       }
     ],
     "enableReferencedModulesTelemetry": false,
-    "identityType": "[if(parameters('systemAssignedIdentity'), if(not(empty(parameters('userAssignedIdentities'))), 'SystemAssigned, UserAssigned', 'SystemAssigned'), if(not(empty(parameters('userAssignedIdentities'))), 'UserAssigned', 'None'))]",
-    "identity": "[if(not(equals(variables('identityType'), 'None')), createObject('type', variables('identityType'), 'userAssignedIdentities', if(not(empty(parameters('userAssignedIdentities'))), parameters('userAssignedIdentities'), null())), null())]",
+    "formattedUserAssignedIdentities": "[reduce(map(coalesce(tryGet(parameters('managedIdentities'), 'userAssignedResourcesIds'), createArray()), lambda('id', createObject(format('{0}', lambdaVariables('id')), createObject()))), createObject(), lambda('cur', 'next', union(lambdaVariables('cur'), lambdaVariables('next'))))]",
+    "identity": "[if(not(empty(parameters('managedIdentities'))), createObject('type', if(coalesce(tryGet(parameters('managedIdentities'), 'systemAssigned'), false()), if(not(empty(coalesce(tryGet(parameters('managedIdentities'), 'userAssignedResourcesIds'), createObject()))), 'SystemAssigned,UserAssigned', 'SystemAssigned'), if(not(empty(coalesce(tryGet(parameters('managedIdentities'), 'userAssignedResourcesIds'), createObject()))), 'UserAssigned', null())), 'userAssignedIdentities', if(not(empty(variables('formattedUserAssignedIdentities'))), variables('formattedUserAssignedIdentities'), null())), null())]",
     "diagnosticsLogs": "[if(contains(parameters('diagnosticLogCategoriesToEnable'), 'allLogs'), createArray(createObject('categoryGroup', 'allLogs', 'enabled', true())), if(contains(parameters('diagnosticLogCategoriesToEnable'), ''), createArray(), variables('diagnosticsLogsSpecified')))]",
     "builtInRoleNames": {
       "Azure Digital Twins Data Owner": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'bcd981a7-7f74-457b-83e1-cceb9e632ffe')]",
@@ -407,21 +422,46 @@
           "enableDefaultTelemetry": {
             "value": "[variables('enableReferencedModulesTelemetry')]"
           },
-          "systemAssignedIdentity": "[if(contains(parameters('eventHubEndpoint'), 'systemAssignedIdentity'), createObject('value', parameters('eventHubEndpoint').systemAssignedIdentity), createObject('value', false()))]",
-          "userAssignedIdentity": "[if(contains(parameters('eventHubEndpoint'), 'userAssignedIdentity'), createObject('value', parameters('eventHubEndpoint').userAssignedIdentity), createObject('value', createObject()))]"
+          "managedIdentities": "[if(contains(parameters('eventHubEndpoint'), 'managedIdentities'), createObject('value', parameters('eventHubEndpoint').managedIdentities), createObject('value', null()))]"
         },
         "template": {
           "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "languageVersion": "2.0",
           "contentVersion": "1.0.0.0",
           "metadata": {
             "_generator": {
               "name": "bicep",
               "version": "0.22.6.54827",
-              "templateHash": "1200386987193874100"
+              "templateHash": "679637502355077244"
             },
             "name": "Digital Twins Instance EventHub Endpoint",
             "description": "This module deploys a Digital Twins Instance EventHub Endpoint.",
             "owner": "Azure/module-maintainers"
+          },
+          "definitions": {
+            "managedIdentitiesType": {
+              "type": "object",
+              "properties": {
+                "systemAssigned": {
+                  "type": "bool",
+                  "nullable": true,
+                  "metadata": {
+                    "description": "Optional. Enables system assigned managed identity on the resource."
+                  }
+                },
+                "userAssignedResourcesIds": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "nullable": true,
+                  "metadata": {
+                    "description": "Optional. The resource ID(s) to assign to the resource."
+                  }
+                }
+              },
+              "nullable": true
+            }
           },
           "parameters": {
             "name": {
@@ -497,27 +537,19 @@
                 "description": "Optional. Enable telemetry via the Customer Usage Attribution ID (GUID)."
               }
             },
-            "systemAssignedIdentity": {
-              "type": "bool",
-              "defaultValue": false,
+            "managedIdentities": {
+              "$ref": "#/definitions/managedIdentitiesType",
               "metadata": {
-                "description": "Optional. Enables system assigned managed identity on the resource."
-              }
-            },
-            "userAssignedIdentity": {
-              "type": "string",
-              "defaultValue": "",
-              "metadata": {
-                "description": "Optional. The ID to assign to the resource."
+                "description": "Optional. The managed identity definition for this resource."
               }
             }
           },
           "variables": {
-            "identityType": "[if(parameters('systemAssignedIdentity'), if(not(empty(parameters('userAssignedIdentity'))), 'SystemAssigned, UserAssigned', 'SystemAssigned'), if(not(empty(parameters('userAssignedIdentity'))), 'UserAssigned', 'None'))]",
-            "identity": "[if(not(equals(variables('identityType'), 'None')), createObject('type', variables('identityType'), 'userAssignedIdentity', if(not(empty(parameters('userAssignedIdentity'))), parameters('userAssignedIdentity'), null())), null())]"
+            "formattedUserAssignedIdentities": "[reduce(map(coalesce(tryGet(parameters('managedIdentities'), 'userAssignedResourcesIds'), createArray()), lambda('id', createObject(format('{0}', lambdaVariables('id')), createObject()))), createObject(), lambda('cur', 'next', union(lambdaVariables('cur'), lambdaVariables('next'))))]",
+            "identity": "[if(not(empty(parameters('managedIdentities'))), createObject('type', if(coalesce(tryGet(parameters('managedIdentities'), 'systemAssigned'), false()), if(not(empty(coalesce(tryGet(parameters('managedIdentities'), 'userAssignedResourcesIds'), createObject()))), 'SystemAssigned,UserAssigned', 'SystemAssigned'), if(not(empty(coalesce(tryGet(parameters('managedIdentities'), 'userAssignedResourcesIds'), createObject()))), 'UserAssigned', null())), 'userAssignedIdentities', if(not(empty(variables('formattedUserAssignedIdentities'))), variables('formattedUserAssignedIdentities'), null())), null())]"
           },
-          "resources": [
-            {
+          "resources": {
+            "defaultTelemetry": {
               "condition": "[parameters('enableDefaultTelemetry')]",
               "type": "Microsoft.Resources/deployments",
               "apiVersion": "2021-04-01",
@@ -531,7 +563,13 @@
                 }
               }
             },
-            {
+            "digitalTwinsInstance": {
+              "existing": true,
+              "type": "Microsoft.DigitalTwins/digitalTwinsInstances",
+              "apiVersion": "2023-01-31",
+              "name": "[parameters('digitalTwinInstanceName')]"
+            },
+            "endpoint": {
               "type": "Microsoft.DigitalTwins/digitalTwinsInstances/endpoints",
               "apiVersion": "2023-01-31",
               "name": "[format('{0}/{1}', parameters('digitalTwinInstanceName'), parameters('name'))]",
@@ -545,9 +583,12 @@
                 "endpointUri": "[parameters('endpointUri')]",
                 "entityPath": "[parameters('entityPath')]",
                 "identity": "[variables('identity')]"
-              }
+              },
+              "dependsOn": [
+                "digitalTwinsInstance"
+              ]
             }
-          ],
+          },
           "outputs": {
             "resourceId": {
               "type": "string",
@@ -569,6 +610,13 @@
                 "description": "The name of the Endpoint."
               },
               "value": "[parameters('name')]"
+            },
+            "systemAssignedMIPrincipalId": {
+              "type": "string",
+              "metadata": {
+                "description": "The principal ID of the system assigned identity."
+              },
+              "value": "[if(and(coalesce(tryGet(parameters('managedIdentities'), 'systemAssigned'), false()), contains(reference('endpoint', '2023-01-31', 'full').identity, 'principalId')), reference('endpoint', '2023-01-31', 'full').identity.principalId, '')]"
             }
           }
         }
@@ -745,21 +793,46 @@
           "enableDefaultTelemetry": {
             "value": "[variables('enableReferencedModulesTelemetry')]"
           },
-          "systemAssignedIdentity": "[if(contains(parameters('eventHubEndpoint'), 'systemAssignedIdentity'), createObject('value', parameters('eventHubEndpoint').systemAssignedIdentity), createObject('value', false()))]",
-          "userAssignedIdentity": "[if(contains(parameters('eventHubEndpoint'), 'userAssignedIdentity'), createObject('value', parameters('eventHubEndpoint').userAssignedIdentity), createObject('value', createObject()))]"
+          "managedIdentities": "[if(contains(parameters('serviceBusEndpoint'), 'managedIdentities'), createObject('value', parameters('serviceBusEndpoint').managedIdentities), createObject('value', null()))]"
         },
         "template": {
           "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "languageVersion": "2.0",
           "contentVersion": "1.0.0.0",
           "metadata": {
             "_generator": {
               "name": "bicep",
               "version": "0.22.6.54827",
-              "templateHash": "2168121049050485718"
+              "templateHash": "17265758618252067929"
             },
             "name": "Digital Twins Instance ServiceBus Endpoint",
             "description": "This module deploys a Digital Twins Instance ServiceBus Endpoint.",
             "owner": "Azure/module-maintainers"
+          },
+          "definitions": {
+            "managedIdentitiesType": {
+              "type": "object",
+              "properties": {
+                "systemAssigned": {
+                  "type": "bool",
+                  "nullable": true,
+                  "metadata": {
+                    "description": "Optional. Enables system assigned managed identity on the resource."
+                  }
+                },
+                "userAssignedResourcesIds": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "nullable": true,
+                  "metadata": {
+                    "description": "Optional. The resource ID(s) to assign to the resource."
+                  }
+                }
+              },
+              "nullable": true
+            }
           },
           "parameters": {
             "name": {
@@ -835,27 +908,19 @@
                 "description": "Optional. Enable telemetry via the Customer Usage Attribution ID (GUID)."
               }
             },
-            "systemAssignedIdentity": {
-              "type": "bool",
-              "defaultValue": false,
+            "managedIdentities": {
+              "$ref": "#/definitions/managedIdentitiesType",
               "metadata": {
-                "description": "Optional. Enables system assigned managed identity on the resource."
-              }
-            },
-            "userAssignedIdentity": {
-              "type": "string",
-              "defaultValue": "",
-              "metadata": {
-                "description": "Optional. The ID to assign to the resource."
+                "description": "Optional. The managed identity definition for this resource."
               }
             }
           },
           "variables": {
-            "identityType": "[if(parameters('systemAssignedIdentity'), if(not(empty(parameters('userAssignedIdentity'))), 'SystemAssigned, UserAssigned', 'SystemAssigned'), if(not(empty(parameters('userAssignedIdentity'))), 'UserAssigned', 'None'))]",
-            "identity": "[if(not(equals(variables('identityType'), 'None')), createObject('type', variables('identityType'), 'userAssignedIdentity', if(not(empty(parameters('userAssignedIdentity'))), parameters('userAssignedIdentity'), null())), null())]"
+            "formattedUserAssignedIdentities": "[reduce(map(coalesce(tryGet(parameters('managedIdentities'), 'userAssignedResourcesIds'), createArray()), lambda('id', createObject(format('{0}', lambdaVariables('id')), createObject()))), createObject(), lambda('cur', 'next', union(lambdaVariables('cur'), lambdaVariables('next'))))]",
+            "identity": "[if(not(empty(parameters('managedIdentities'))), createObject('type', if(coalesce(tryGet(parameters('managedIdentities'), 'systemAssigned'), false()), if(not(empty(coalesce(tryGet(parameters('managedIdentities'), 'userAssignedResourcesIds'), createObject()))), 'SystemAssigned,UserAssigned', 'SystemAssigned'), if(not(empty(coalesce(tryGet(parameters('managedIdentities'), 'userAssignedResourcesIds'), createObject()))), 'UserAssigned', null())), 'userAssignedIdentities', if(not(empty(variables('formattedUserAssignedIdentities'))), variables('formattedUserAssignedIdentities'), null())), null())]"
           },
-          "resources": [
-            {
+          "resources": {
+            "defaultTelemetry": {
               "condition": "[parameters('enableDefaultTelemetry')]",
               "type": "Microsoft.Resources/deployments",
               "apiVersion": "2021-04-01",
@@ -869,7 +934,13 @@
                 }
               }
             },
-            {
+            "digitalTwinsInstance": {
+              "existing": true,
+              "type": "Microsoft.DigitalTwins/digitalTwinsInstances",
+              "apiVersion": "2023-01-31",
+              "name": "[parameters('digitalTwinInstanceName')]"
+            },
+            "endpoint": {
               "type": "Microsoft.DigitalTwins/digitalTwinsInstances/endpoints",
               "apiVersion": "2023-01-31",
               "name": "[format('{0}/{1}', parameters('digitalTwinInstanceName'), parameters('name'))]",
@@ -883,9 +954,12 @@
                 "primaryConnectionString": "[parameters('primaryConnectionString')]",
                 "secondaryConnectionString": "[parameters('secondaryConnectionString')]",
                 "identity": "[variables('identity')]"
-              }
+              },
+              "dependsOn": [
+                "digitalTwinsInstance"
+              ]
             }
-          ],
+          },
           "outputs": {
             "resourceId": {
               "type": "string",
@@ -907,6 +981,13 @@
                 "description": "The name of the Endpoint."
               },
               "value": "[parameters('name')]"
+            },
+            "systemAssignedMIPrincipalId": {
+              "type": "string",
+              "metadata": {
+                "description": "The principal ID of the system assigned identity."
+              },
+              "value": "[if(and(coalesce(tryGet(parameters('managedIdentities'), 'systemAssigned'), false()), contains(reference('endpoint', '2023-01-31', 'full').identity, 'principalId')), reference('endpoint', '2023-01-31', 'full').identity.principalId, '')]"
             }
           }
         }
@@ -1470,6 +1551,13 @@
         "description": "The hostname of the Digital Twins Instance."
       },
       "value": "[reference('digitalTwinsInstance').hostName]"
+    },
+    "systemAssignedMIPrincipalId": {
+      "type": "string",
+      "metadata": {
+        "description": "The principal ID of the system assigned identity."
+      },
+      "value": "[if(and(coalesce(tryGet(parameters('managedIdentities'), 'systemAssigned'), false()), contains(reference('digitalTwinsInstance', '2023-01-31', 'full').identity, 'principalId')), reference('digitalTwinsInstance', '2023-01-31', 'full').identity.principalId, '')]"
     },
     "location": {
       "type": "string",
