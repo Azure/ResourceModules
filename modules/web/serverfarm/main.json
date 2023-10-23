@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "10390609619515936643"
+      "templateHash": "15409545856914828703"
     },
     "name": "App Service Plans",
     "description": "This module deploys an App Service Plan.",
@@ -127,15 +127,25 @@
         "description": "Optional. Location for all resources."
       }
     },
-    "serverOS": {
+    "kind": {
       "type": "string",
       "defaultValue": "Windows",
       "allowedValues": [
+        "App",
+        "Elastic",
+        "FunctionApp",
         "Windows",
         "Linux"
       ],
       "metadata": {
         "description": "Optional. Kind of server OS."
+      }
+    },
+    "reserved": {
+      "type": "bool",
+      "defaultValue": false,
+      "metadata": {
+        "description": "Optional. When creating a Linux App Service Plan, the reserved field must be set to true, and when creating a Windows/app App Service Plan the reserved field must be set to false."
       }
     },
     "appServiceEnvironmentId": {
@@ -305,9 +315,9 @@
     },
     "appServicePlan": {
       "type": "Microsoft.Web/serverfarms",
-      "apiVersion": "2021-02-01",
+      "apiVersion": "2022-09-01",
       "name": "[parameters('name')]",
-      "kind": "[if(equals(parameters('serverOS'), 'Windows'), '', 'linux')]",
+      "kind": "[parameters('kind')]",
       "location": "[parameters('location')]",
       "tags": "[parameters('tags')]",
       "sku": "[parameters('sku')]",
@@ -316,7 +326,7 @@
         "hostingEnvironmentProfile": "[if(not(empty(parameters('appServiceEnvironmentId'))), createObject('id', parameters('appServiceEnvironmentId')), null())]",
         "perSiteScaling": "[parameters('perSiteScaling')]",
         "maximumElasticWorkerCount": "[parameters('maximumElasticWorkerCount')]",
-        "reserved": "[equals(parameters('serverOS'), 'Linux')]",
+        "reserved": "[parameters('reserved')]",
         "targetWorkerCount": "[parameters('targetWorkerCount')]",
         "targetWorkerSizeId": "[parameters('targetWorkerSize')]",
         "zoneRedundant": "[parameters('zoneRedundant')]"
@@ -404,7 +414,7 @@
       "metadata": {
         "description": "The location the resource was deployed into."
       },
-      "value": "[reference('appServicePlan', '2021-02-01', 'full').location]"
+      "value": "[reference('appServicePlan', '2022-09-01', 'full').location]"
     }
   }
 }

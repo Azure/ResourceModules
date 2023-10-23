@@ -17,7 +17,7 @@ This module deploys an App Service Plan.
 | `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
-| `Microsoft.Web/serverfarms` | [2021-02-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/2021-02-01/serverfarms) |
+| `Microsoft.Web/serverfarms` | [2022-09-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/2022-09-01/serverfarms) |
 
 ## Usage examples
 
@@ -169,12 +169,13 @@ module serverfarm 'br:bicep/modules/web.serverfarm:1.0.0' = {
 | [`diagnosticStorageAccountId`](#parameter-diagnosticstorageaccountid) | string | Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
 | [`diagnosticWorkspaceId`](#parameter-diagnosticworkspaceid) | string | Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
 | [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`kind`](#parameter-kind) | string | Kind of server OS. |
 | [`location`](#parameter-location) | string | Location for all resources. |
 | [`lock`](#parameter-lock) | object | The lock settings of the service. |
 | [`maximumElasticWorkerCount`](#parameter-maximumelasticworkercount) | int | Maximum number of total workers allowed for this ElasticScaleEnabled App Service Plan. |
 | [`perSiteScaling`](#parameter-persitescaling) | bool | If true, apps assigned to this App Service plan can be scaled independently. If false, apps assigned to this App Service plan will scale to all instances of the plan. |
+| [`reserved`](#parameter-reserved) | bool | When creating a Linux App Service Plan, the reserved field must be set to true, and when creating a Windows/app App Service Plan the reserved field must be set to false. |
 | [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| [`serverOS`](#parameter-serveros) | string | Kind of server OS. |
 | [`tags`](#parameter-tags) | object | Tags of the resource. |
 | [`targetWorkerCount`](#parameter-targetworkercount) | int | Scaling worker count. |
 | [`targetWorkerSize`](#parameter-targetworkersize) | int | The instance size of the hosting plan (small, medium, or large). |
@@ -238,6 +239,14 @@ Enable telemetry via a Globally Unique Identifier (GUID).
 - Type: bool
 - Default: `True`
 
+### Parameter: `kind`
+
+Kind of server OS.
+- Required: No
+- Type: string
+- Default: `'Windows'`
+- Allowed: `[App, Elastic, FunctionApp, Linux, Windows]`
+
 ### Parameter: `location`
 
 Location for all resources.
@@ -288,6 +297,13 @@ The name of the app service plan to deploy.
 ### Parameter: `perSiteScaling`
 
 If true, apps assigned to this App Service plan can be scaled independently. If false, apps assigned to this App Service plan will scale to all instances of the plan.
+- Required: No
+- Type: bool
+- Default: `False`
+
+### Parameter: `reserved`
+
+When creating a Linux App Service Plan, the reserved field must be set to true, and when creating a Windows/app App Service Plan the reserved field must be set to false.
 - Required: No
 - Type: bool
 - Default: `False`
@@ -359,14 +375,6 @@ Required. The name of the role to assign. If it cannot be found you can specify 
 
 - Required: Yes
 - Type: string
-
-### Parameter: `serverOS`
-
-Kind of server OS.
-- Required: No
-- Type: string
-- Default: `'Windows'`
-- Allowed: `[Linux, Windows]`
 
 ### Parameter: `sku`
 
