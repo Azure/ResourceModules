@@ -454,6 +454,10 @@ module site 'br:bicep/modules/web.site:1.0.0' = {
         sendKeyName: 'defaultSender'
       }
     ]
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     privateEndpoints: [
       {
         privateDnsZoneResourceIds: [
@@ -603,6 +607,12 @@ module site 'br:bicep/modules/web.site:1.0.0' = {
           "sendKeyName": "defaultSender"
         }
       ]
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
     },
     "privateEndpoints": {
       "value": [
