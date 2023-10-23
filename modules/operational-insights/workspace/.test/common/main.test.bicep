@@ -213,7 +213,9 @@ module testDeployment '../../main.bicep' = {
       Environment: 'Non-Prod'
       Role: 'DeploymentValidation'
     }
-    systemAssignedIdentity: true
+    managedIdentities: {
+      systemAssigned: true
+    }
     roleAssignments: [
       {
         roleDefinitionIdOrName: 'Reader'
