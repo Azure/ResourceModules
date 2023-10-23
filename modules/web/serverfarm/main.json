@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "4349826726843363999"
+      "templateHash": "6904415022968677051"
     },
     "name": "App Service Plans",
     "description": "This module deploys an App Service Plan.",
@@ -145,7 +145,7 @@
       "type": "bool",
       "defaultValue": false,
       "metadata": {
-        "description": "Conditional. When creating a Linux App Service Plan, the reserved field must be set to true, and when creating a Windows/app App Service Plan the reserved field must be set to false."
+        "description": "Conditional. Defaults to false when creating Windows/app App Service Plan. Required to be set to true when creating a Linux App Service Plan."
       }
     },
     "appServiceEnvironmentId": {

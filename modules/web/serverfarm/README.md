@@ -161,7 +161,7 @@ module serverfarm 'br:bicep/modules/web.serverfarm:1.0.0' = {
 
 | Parameter | Type | Description |
 | :-- | :-- | :-- |
-| [`reserved`](#parameter-reserved) | bool | When creating a Linux App Service Plan, the reserved field must be set to true, and when creating a Windows/app App Service Plan the reserved field must be set to false. |
+| [`reserved`](#parameter-reserved) | bool | Defaults to false when creating Windows/app App Service Plan. Required to be set to true when creating a Linux App Service Plan. |
 
 **Optional parameters**
 
@@ -308,7 +308,7 @@ If true, apps assigned to this App Service plan can be scaled independently. If 
 
 ### Parameter: `reserved`
 
-When creating a Linux App Service Plan, the reserved field must be set to true, and when creating a Windows/app App Service Plan the reserved field must be set to false.
+Defaults to false when creating Windows/app App Service Plan. Required to be set to true when creating a Linux App Service Plan.
 - Required: No
 - Type: bool
 - Default: `False`
