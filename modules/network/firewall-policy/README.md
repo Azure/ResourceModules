@@ -248,6 +248,7 @@ module firewallPolicy 'br:bicep/modules/network.firewall-policy:1.0.0' = {
 | [`ipAddresses`](#parameter-ipaddresses) | array | List of IP addresses for the ThreatIntel Allowlist. |
 | [`keyVaultSecretId`](#parameter-keyvaultsecretid) | string | Secret ID of (base-64 encoded unencrypted PFX) Secret or Certificate object stored in KeyVault. |
 | [`location`](#parameter-location) | string | Location for all resources. |
+| [`managedIdentities`](#parameter-managedidentities) | object | The managed identity definition for this resource. |
 | [`mode`](#parameter-mode) | string | The configuring of intrusion detection. |
 | [`privateRanges`](#parameter-privateranges) | array | List of private IP addresses/IP address ranges to not be SNAT. |
 | [`retentionDays`](#parameter-retentiondays) | int | Number of days the insights should be enabled on the policy. |
@@ -257,7 +258,6 @@ module firewallPolicy 'br:bicep/modules/network.firewall-policy:1.0.0' = {
 | [`tags`](#parameter-tags) | object | Tags of the Firewall policy resource. |
 | [`threatIntelMode`](#parameter-threatintelmode) | string | The operation mode for Threat Intel. |
 | [`tier`](#parameter-tier) | string | Tier of Firewall Policy. |
-| [`userAssignedIdentities`](#parameter-userassignedidentities) | object | The ID(s) to assign to the resource. |
 | [`workspaces`](#parameter-workspaces) | array | List of workspaces for Firewall Policy Insights. |
 
 ### Parameter: `allowSqlRedirect`
@@ -352,6 +352,24 @@ Location for all resources.
 - Type: string
 - Default: `[resourceGroup().location]`
 
+### Parameter: `managedIdentities`
+
+The managed identity definition for this resource.
+- Required: No
+- Type: object
+
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`userAssignedResourcesIds`](#parameter-managedidentitiesuserassignedresourcesids) | Yes | array | Optional. The resource ID(s) to assign to the resource. Required if a user assigned identity is used for encryption. |
+
+### Parameter: `managedIdentities.userAssignedResourcesIds`
+
+Optional. The resource ID(s) to assign to the resource. Required if a user assigned identity is used for encryption.
+
+- Required: Yes
+- Type: array
+
 ### Parameter: `mode`
 
 The configuring of intrusion detection.
@@ -423,13 +441,6 @@ Tier of Firewall Policy.
 - Type: string
 - Default: `'Standard'`
 - Allowed: `[Premium, Standard]`
-
-### Parameter: `userAssignedIdentities`
-
-The ID(s) to assign to the resource.
-- Required: No
-- Type: object
-- Default: `{object}`
 
 ### Parameter: `workspaces`
 
