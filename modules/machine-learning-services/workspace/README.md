@@ -95,6 +95,12 @@ module workspace 'br:bicep/modules/machine-learning-services.workspace:1.0.0' = 
       kind: 'CanNotDelete'
       name: 'myCustomLockName'
     }
+    managedIdentities: {
+      systemAssigned: false
+      userAssignedResourcesIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
     primaryUserAssignedIdentity: '<primaryUserAssignedIdentity>'
     privateEndpoints: [
       {
@@ -117,14 +123,10 @@ module workspace 'br:bicep/modules/machine-learning-services.workspace:1.0.0' = 
         roleDefinitionIdOrName: 'Reader'
       }
     ]
-    systemAssignedIdentity: false
     tags: {
       Environment: 'Non-Prod'
       'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
-    }
-    userAssignedIdentities: {
-      '<managedIdentityResourceId>': {}
     }
   }
 }
@@ -219,6 +221,14 @@ module workspace 'br:bicep/modules/machine-learning-services.workspace:1.0.0' = 
         "name": "myCustomLockName"
       }
     },
+    "managedIdentities": {
+      "value": {
+        "systemAssigned": false,
+        "userAssignedResourcesIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
+    },
     "primaryUserAssignedIdentity": {
       "value": "<primaryUserAssignedIdentity>"
     },
@@ -247,19 +257,11 @@ module workspace 'br:bicep/modules/machine-learning-services.workspace:1.0.0' = 
         }
       ]
     },
-    "systemAssignedIdentity": {
-      "value": false
-    },
     "tags": {
       "value": {
         "Environment": "Non-Prod",
         "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
-      }
-    },
-    "userAssignedIdentities": {
-      "value": {
-        "<managedIdentityResourceId>": {}
       }
     }
   }
@@ -290,6 +292,12 @@ module workspace 'br:bicep/modules/machine-learning-services.workspace:1.0.0' = 
     cMKKeyVaultResourceId: '<cMKKeyVaultResourceId>'
     cMKUserAssignedIdentityResourceId: '<cMKUserAssignedIdentityResourceId>'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    managedIdentities: {
+      systemAssigned: false
+      userAssignedResourcesIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
     primaryUserAssignedIdentity: '<primaryUserAssignedIdentity>'
     privateEndpoints: [
       {
@@ -305,14 +313,10 @@ module workspace 'br:bicep/modules/machine-learning-services.workspace:1.0.0' = 
         }
       }
     ]
-    systemAssignedIdentity: false
     tags: {
       Environment: 'Non-Prod'
       'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
-    }
-    userAssignedIdentities: {
-      '<managedIdentityResourceId>': {}
     }
   }
 }
@@ -359,6 +363,14 @@ module workspace 'br:bicep/modules/machine-learning-services.workspace:1.0.0' = 
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     },
+    "managedIdentities": {
+      "value": {
+        "systemAssigned": false,
+        "userAssignedResourcesIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
+    },
     "primaryUserAssignedIdentity": {
       "value": "<primaryUserAssignedIdentity>"
     },
@@ -378,19 +390,11 @@ module workspace 'br:bicep/modules/machine-learning-services.workspace:1.0.0' = 
         }
       ]
     },
-    "systemAssignedIdentity": {
-      "value": false
-    },
     "tags": {
       "value": {
         "Environment": "Non-Prod",
         "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
-      }
-    },
-    "userAssignedIdentities": {
-      "value": {
-        "<managedIdentityResourceId>": {}
       }
     }
   }
@@ -421,7 +425,9 @@ module workspace 'br:bicep/modules/machine-learning-services.workspace:1.0.0' = 
     sku: 'Basic'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    systemAssignedIdentity: true
+    managedIdentities: {
+      systemAssigned: true
+    }
   }
 }
 ```
@@ -458,8 +464,10 @@ module workspace 'br:bicep/modules/machine-learning-services.workspace:1.0.0' = 
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     },
-    "systemAssignedIdentity": {
-      "value": true
+    "managedIdentities": {
+      "value": {
+        "systemAssigned": true
+      }
     }
   }
 }
@@ -487,8 +495,6 @@ module workspace 'br:bicep/modules/machine-learning-services.workspace:1.0.0' = 
 | :-- | :-- | :-- |
 | [`cMKKeyVaultResourceId`](#parameter-cmkkeyvaultresourceid) | string | The resource ID of a key vault to reference a customer managed key for encryption from. Required if 'cMKKeyName' is not empty. |
 | [`primaryUserAssignedIdentity`](#parameter-primaryuserassignedidentity) | string | The user assigned identity resource ID that represents the workspace identity. Required if 'userAssignedIdentities' is not empty and may not be used if 'systemAssignedIdentity' is enabled. |
-| [`systemAssignedIdentity`](#parameter-systemassignedidentity) | bool | Enables system assigned managed identity on the resource. Required if `userAssignedIdentities` is not provided. |
-| [`userAssignedIdentities`](#parameter-userassignedidentities) | object | The ID(s) to assign to the resource. Required if `systemAssignedIdentity` is set to false. |
 
 **Optional parameters**
 
@@ -514,6 +520,7 @@ module workspace 'br:bicep/modules/machine-learning-services.workspace:1.0.0' = 
 | [`imageBuildCompute`](#parameter-imagebuildcompute) | string | The compute name for image build. |
 | [`location`](#parameter-location) | string | Location for all resources. |
 | [`lock`](#parameter-lock) | object | The lock settings of the service. |
+| [`managedIdentities`](#parameter-managedidentities) | object | The managed identity definition for this resource. At least one identity type is required. |
 | [`privateEndpoints`](#parameter-privateendpoints) | array | Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
 | [`publicNetworkAccess`](#parameter-publicnetworkaccess) | string | Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set. |
 | [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
@@ -708,6 +715,32 @@ Optional. Specify the name of lock.
 - Required: No
 - Type: string
 
+### Parameter: `managedIdentities`
+
+The managed identity definition for this resource. At least one identity type is required.
+- Required: Yes
+- Type: object
+
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`systemAssigned`](#parameter-managedidentitiessystemassigned) | No | bool | Optional. Enables system assigned managed identity on the resource. |
+| [`userAssignedResourcesIds`](#parameter-managedidentitiesuserassignedresourcesids) | No | array | Optional. The resource ID(s) to assign to the resource. |
+
+### Parameter: `managedIdentities.systemAssigned`
+
+Optional. Enables system assigned managed identity on the resource.
+
+- Required: No
+- Type: bool
+
+### Parameter: `managedIdentities.userAssignedResourcesIds`
+
+Optional. The resource ID(s) to assign to the resource.
+
+- Required: No
+- Type: array
+
 ### Parameter: `name`
 
 The name of the machine learning workspace.
@@ -825,23 +858,9 @@ Specifies the SKU, also referred as 'edition' of the Azure Machine Learning work
 - Type: string
 - Allowed: `[Basic, Free, Premium, Standard]`
 
-### Parameter: `systemAssignedIdentity`
-
-Enables system assigned managed identity on the resource. Required if `userAssignedIdentities` is not provided.
-- Required: No
-- Type: bool
-- Default: `False`
-
 ### Parameter: `tags`
 
 Resource tags.
-- Required: No
-- Type: object
-- Default: `{object}`
-
-### Parameter: `userAssignedIdentities`
-
-The ID(s) to assign to the resource. Required if `systemAssignedIdentity` is set to false.
 - Required: No
 - Type: object
 - Default: `{object}`
@@ -853,9 +872,9 @@ The ID(s) to assign to the resource. Required if `systemAssignedIdentity` is set
 | :-- | :-- | :-- |
 | `location` | string | The location the resource was deployed into. |
 | `name` | string | The name of the machine learning service. |
-| `principalId` | string | The principal ID of the system assigned identity. |
 | `resourceGroupName` | string | The resource group the machine learning service was deployed into. |
 | `resourceId` | string | The resource ID of the machine learning service. |
+| `systemAssignedMIPrincipalId` | string | The principal ID of the system assigned identity. |
 
 ## Cross-referenced modules
 
