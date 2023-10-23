@@ -57,6 +57,11 @@ module deploymentScript 'br:bicep/modules/resources.deployment-script:1.0.0' = {
       ]
     }
     kind: 'AzureCLI'
+    managedIdentities: {
+      userAssignedResourcesIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
     retentionInterval: 'P1D'
     runOnce: false
     scriptContent: 'echo \'echo echo echo\''
@@ -67,9 +72,6 @@ module deploymentScript 'br:bicep/modules/resources.deployment-script:1.0.0' = {
       Role: 'DeploymentValidation'
     }
     timeout: 'PT30M'
-    userAssignedIdentities: {
-      '<managedIdentityResourceId>': {}
-    }
   }
 }
 ```
@@ -117,6 +119,13 @@ module deploymentScript 'br:bicep/modules/resources.deployment-script:1.0.0' = {
     "kind": {
       "value": "AzureCLI"
     },
+    "managedIdentities": {
+      "value": {
+        "userAssignedResourcesIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
+    },
     "retentionInterval": {
       "value": "P1D"
     },
@@ -138,11 +147,6 @@ module deploymentScript 'br:bicep/modules/resources.deployment-script:1.0.0' = {
     },
     "timeout": {
       "value": "PT30M"
-    },
-    "userAssignedIdentities": {
-      "value": {
-        "<managedIdentityResourceId>": {}
-      }
     }
   }
 }
@@ -172,6 +176,11 @@ module deploymentScript 'br:bicep/modules/resources.deployment-script:1.0.0' = {
       kind: 'CanNotDelete'
       name: 'myCustomLockName'
     }
+    managedIdentities: {
+      userAssignedResourcesIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
     retentionInterval: 'P1D'
     runOnce: false
     scriptContent: 'Write-Host \'The cake is a lie!\''
@@ -182,9 +191,6 @@ module deploymentScript 'br:bicep/modules/resources.deployment-script:1.0.0' = {
       Role: 'DeploymentValidation'
     }
     timeout: 'PT30M'
-    userAssignedIdentities: {
-      '<managedIdentityResourceId>': {}
-    }
   }
 }
 ```
@@ -224,6 +230,13 @@ module deploymentScript 'br:bicep/modules/resources.deployment-script:1.0.0' = {
         "name": "myCustomLockName"
       }
     },
+    "managedIdentities": {
+      "value": {
+        "userAssignedResourcesIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
+    },
     "retentionInterval": {
       "value": "P1D"
     },
@@ -245,11 +258,6 @@ module deploymentScript 'br:bicep/modules/resources.deployment-script:1.0.0' = {
     },
     "timeout": {
       "value": "PT30M"
-    },
-    "userAssignedIdentities": {
-      "value": {
-        "<managedIdentityResourceId>": {}
-      }
     }
   }
 }
@@ -281,6 +289,7 @@ module deploymentScript 'br:bicep/modules/resources.deployment-script:1.0.0' = {
 | [`kind`](#parameter-kind) | string | Type of the script. AzurePowerShell, AzureCLI. |
 | [`location`](#parameter-location) | string | Location for all resources. |
 | [`lock`](#parameter-lock) | object | The lock settings of the service. |
+| [`managedIdentities`](#parameter-managedidentities) | object | The managed identity definition for this resource. |
 | [`primaryScriptUri`](#parameter-primaryscripturi) | string | Uri for the external script. This is the entry point for the external script. To run an internal script, use the scriptContent instead. |
 | [`retentionInterval`](#parameter-retentioninterval) | string | Interval for which the service retains the script resource after it reaches a terminal state. Resource will be deleted when this duration expires. Duration is based on ISO 8601 pattern (for example P7D means one week). |
 | [`runOnce`](#parameter-runonce) | bool | When set to false, script will run every time the template is deployed. When set to true, the script will only run once. |
@@ -289,7 +298,6 @@ module deploymentScript 'br:bicep/modules/resources.deployment-script:1.0.0' = {
 | [`supportingScriptUris`](#parameter-supportingscripturis) | array | List of supporting files for the external script (defined in primaryScriptUri). Does not work with internal scripts (code defined in scriptContent). |
 | [`tags`](#parameter-tags) | object | Tags of the resource. |
 | [`timeout`](#parameter-timeout) | string | Maximum allowed script execution time specified in ISO 8601 format. Default value is PT1H - 1 hour; 'PT30M' - 30 minutes; 'P5D' - 5 days; 'P1Y' 1 year. |
-| [`userAssignedIdentities`](#parameter-userassignedidentities) | object | The ID(s) to assign to the resource. |
 
 **Generated parameters**
 
@@ -396,6 +404,24 @@ Optional. Specify the name of lock.
 - Required: No
 - Type: string
 
+### Parameter: `managedIdentities`
+
+The managed identity definition for this resource.
+- Required: No
+- Type: object
+
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`userAssignedResourcesIds`](#parameter-managedidentitiesuserassignedresourcesids) | Yes | array | Optional. The resource ID(s) to assign to the resource. Required if a user assigned identity is used for encryption. |
+
+### Parameter: `managedIdentities.userAssignedResourcesIds`
+
+Optional. The resource ID(s) to assign to the resource. Required if a user assigned identity is used for encryption.
+
+- Required: Yes
+- Type: array
+
 ### Parameter: `name`
 
 Display name of the script to be run.
@@ -457,13 +483,6 @@ Maximum allowed script execution time specified in ISO 8601 format. Default valu
 - Required: No
 - Type: string
 - Default: `'PT1H'`
-
-### Parameter: `userAssignedIdentities`
-
-The ID(s) to assign to the resource.
-- Required: No
-- Type: object
-- Default: `{object}`
 
 
 ## Outputs
