@@ -18,10 +18,11 @@ param location string = resourceGroup().location
 
 @description('Optional. Kind of server OS.')
 @allowed([
-  'Windows'
-  'Linux'
   'App'
   'Elastic'
+  'FunctionApp'
+  'Windows'
+  'Linux'
 ])
 param kind string = 'Windows'
 
