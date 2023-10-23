@@ -157,6 +157,12 @@ module serverfarm 'br:bicep/modules/web.serverfarm:1.0.0' = {
 | [`name`](#parameter-name) | string | The name of the app service plan to deploy. |
 | [`sku`](#parameter-sku) | object | Defines the name, tier, size, family and capacity of the App Service Plan. |
 
+**Conditional parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`reserved`](#parameter-reserved) | bool | When creating a Linux App Service Plan, the reserved field must be set to true, and when creating a Windows/app App Service Plan the reserved field must be set to false. |
+
 **Optional parameters**
 
 | Parameter | Type | Description |
@@ -174,7 +180,6 @@ module serverfarm 'br:bicep/modules/web.serverfarm:1.0.0' = {
 | [`lock`](#parameter-lock) | object | The lock settings of the service. |
 | [`maximumElasticWorkerCount`](#parameter-maximumelasticworkercount) | int | Maximum number of total workers allowed for this ElasticScaleEnabled App Service Plan. |
 | [`perSiteScaling`](#parameter-persitescaling) | bool | If true, apps assigned to this App Service plan can be scaled independently. If false, apps assigned to this App Service plan will scale to all instances of the plan. |
-| [`reserved`](#parameter-reserved) | bool | When creating a Linux App Service Plan, the reserved field must be set to true, and when creating a Windows/app App Service Plan the reserved field must be set to false. |
 | [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | [`tags`](#parameter-tags) | object | Tags of the resource. |
 | [`targetWorkerCount`](#parameter-targetworkercount) | int | Scaling worker count. |
