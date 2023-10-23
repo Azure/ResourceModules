@@ -204,6 +204,11 @@ module managedCluster 'br:bicep/modules/container-service.managed-cluster:1.0.0'
       kind: 'CanNotDelete'
       name: 'myCustomLockName'
     }
+    managedIdentities: {
+      userAssignedResourcesIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
     monitoringWorkspaceId: '<monitoringWorkspaceId>'
     networkDataplane: 'azure'
     networkPlugin: 'azure'
@@ -221,9 +226,6 @@ module managedCluster 'br:bicep/modules/container-service.managed-cluster:1.0.0'
       Environment: 'Non-Prod'
       'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
-    }
-    userAssignedIdentities: {
-      '<managedIdentityResourceId>': {}
     }
   }
 }
@@ -443,6 +445,13 @@ module managedCluster 'br:bicep/modules/container-service.managed-cluster:1.0.0'
         "name": "myCustomLockName"
       }
     },
+    "managedIdentities": {
+      "value": {
+        "userAssignedResourcesIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
+    },
     "monitoringWorkspaceId": {
       "value": "<monitoringWorkspaceId>"
     },
@@ -475,11 +484,6 @@ module managedCluster 'br:bicep/modules/container-service.managed-cluster:1.0.0'
         "Environment": "Non-Prod",
         "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
-      }
-    },
-    "userAssignedIdentities": {
-      "value": {
-        "<managedIdentityResourceId>": {}
       }
     }
   }
@@ -577,6 +581,11 @@ module managedCluster 'br:bicep/modules/container-service.managed-cluster:1.0.0'
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    managedIdentities: {
+      userAssignedResourcesIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
     networkPlugin: 'kubenet'
     roleAssignments: [
       {
@@ -589,9 +598,6 @@ module managedCluster 'br:bicep/modules/container-service.managed-cluster:1.0.0'
       Environment: 'Non-Prod'
       'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
-    }
-    userAssignedIdentities: {
-      '<managedIdentityResourceId>': {}
     }
   }
 }
@@ -703,6 +709,13 @@ module managedCluster 'br:bicep/modules/container-service.managed-cluster:1.0.0'
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     },
+    "managedIdentities": {
+      "value": {
+        "userAssignedResourcesIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
+    },
     "networkPlugin": {
       "value": "kubenet"
     },
@@ -720,11 +733,6 @@ module managedCluster 'br:bicep/modules/container-service.managed-cluster:1.0.0'
         "Environment": "Non-Prod",
         "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
-      }
-    },
-    "userAssignedIdentities": {
-      "value": {
-        "<managedIdentityResourceId>": {}
       }
     }
   }
@@ -759,7 +767,9 @@ module managedCluster 'br:bicep/modules/container-service.managed-cluster:1.0.0'
     ]
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    systemAssignedIdentity: true
+    managedIdentities: {
+      systemAssigned: true
+    }
   }
 }
 ```
@@ -794,8 +804,10 @@ module managedCluster 'br:bicep/modules/container-service.managed-cluster:1.0.0'
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     },
-    "systemAssignedIdentity": {
-      "value": true
+    "managedIdentities": {
+      "value": {
+        "systemAssigned": true
+      }
     }
   }
 }
@@ -896,6 +908,11 @@ module managedCluster 'br:bicep/modules/container-service.managed-cluster:1.0.0'
     dnsServiceIP: '10.10.200.10'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     enablePrivateCluster: true
+    managedIdentities: {
+      userAssignedResourcesIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
     networkPlugin: 'azure'
     privateDNSZone: '<privateDNSZone>'
     serviceCidr: '10.10.200.0/24'
@@ -904,9 +921,6 @@ module managedCluster 'br:bicep/modules/container-service.managed-cluster:1.0.0'
       Environment: 'Non-Prod'
       'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
-    }
-    userAssignedIdentities: {
-      '<managedIdentityResourceId>': {}
     }
   }
 }
@@ -1026,6 +1040,13 @@ module managedCluster 'br:bicep/modules/container-service.managed-cluster:1.0.0'
     "enablePrivateCluster": {
       "value": true
     },
+    "managedIdentities": {
+      "value": {
+        "userAssignedResourcesIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
+    },
     "networkPlugin": {
       "value": "azure"
     },
@@ -1043,11 +1064,6 @@ module managedCluster 'br:bicep/modules/container-service.managed-cluster:1.0.0'
         "Environment": "Non-Prod",
         "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
-      }
-    },
-    "userAssignedIdentities": {
-      "value": {
-        "<managedIdentityResourceId>": {}
       }
     }
   }
@@ -1148,6 +1164,7 @@ module managedCluster 'br:bicep/modules/container-service.managed-cluster:1.0.0'
 | [`loadBalancerSku`](#parameter-loadbalancersku) | string | Specifies the sku of the load balancer used by the virtual machine scale sets used by nodepools. |
 | [`location`](#parameter-location) | string | Specifies the location of AKS cluster. It picks up Resource Group's location by default. |
 | [`lock`](#parameter-lock) | object | The lock settings of the service. |
+| [`managedIdentities`](#parameter-managedidentities) | object | The managed identity definition for this resource. |
 | [`managedOutboundIPCount`](#parameter-managedoutboundipcount) | int | Outbound IP Count for the Load balancer. |
 | [`monitoringWorkspaceId`](#parameter-monitoringworkspaceid) | string | Resource ID of the monitoring log analytics workspace. |
 | [`networkDataplane`](#parameter-networkdataplane) | string | Network dataplane used in the Kubernetes cluster. Not compatible with kubenet network plugin. |
@@ -1169,9 +1186,7 @@ module managedCluster 'br:bicep/modules/container-service.managed-cluster:1.0.0'
 | [`skuTier`](#parameter-skutier) | string | Tier of a managed cluster SKU. - Free or Standard. |
 | [`sshPublicKey`](#parameter-sshpublickey) | string | Specifies the SSH RSA public key string for the Linux nodes. |
 | [`supportPlan`](#parameter-supportplan) | string | The support plan for the Managed Cluster. |
-| [`systemAssignedIdentity`](#parameter-systemassignedidentity) | bool | Enables system assigned managed identity on the resource. |
 | [`tags`](#parameter-tags) | object | Tags of the resource. |
-| [`userAssignedIdentities`](#parameter-userassignedidentities) | object | The ID(s) to assign to the resource. |
 | [`webApplicationRoutingEnabled`](#parameter-webapplicationroutingenabled) | bool | Specifies whether the webApplicationRoutingEnabled add-on is enabled or not. |
 
 ### Parameter: `aadProfileAdminGroupObjectIDs`
@@ -1707,6 +1722,32 @@ Optional. Specify the name of lock.
 - Required: No
 - Type: string
 
+### Parameter: `managedIdentities`
+
+The managed identity definition for this resource.
+- Required: No
+- Type: object
+
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`systemAssigned`](#parameter-managedidentitiessystemassigned) | No | bool | Optional. Enables system assigned managed identity on the resource. |
+| [`userAssignedResourcesIds`](#parameter-managedidentitiesuserassignedresourcesids) | No | array | Optional. The resource ID(s) to assign to the resource. Required if a user assigned identity is used for encryption. |
+
+### Parameter: `managedIdentities.systemAssigned`
+
+Optional. Enables system assigned managed identity on the resource.
+
+- Required: No
+- Type: bool
+
+### Parameter: `managedIdentities.userAssignedResourcesIds`
+
+Optional. The resource ID(s) to assign to the resource. Required if a user assigned identity is used for encryption.
+
+- Required: No
+- Type: array
+
 ### Parameter: `managedOutboundIPCount`
 
 Outbound IP Count for the Load balancer.
@@ -1934,23 +1975,9 @@ The support plan for the Managed Cluster.
 - Default: `'KubernetesOfficial'`
 - Allowed: `[AKSLongTermSupport, KubernetesOfficial]`
 
-### Parameter: `systemAssignedIdentity`
-
-Enables system assigned managed identity on the resource.
-- Required: No
-- Type: bool
-- Default: `False`
-
 ### Parameter: `tags`
 
 Tags of the resource.
-- Required: No
-- Type: object
-- Default: `{object}`
-
-### Parameter: `userAssignedIdentities`
-
-The ID(s) to assign to the resource.
 - Required: No
 - Type: object
 - Default: `{object}`
@@ -1978,7 +2005,7 @@ Specifies whether the webApplicationRoutingEnabled add-on is enabled or not.
 | `omsagentIdentityObjectId` | string | The Object ID of the OMS agent identity. |
 | `resourceGroupName` | string | The resource group the managed cluster was deployed into. |
 | `resourceId` | string | The resource ID of the managed cluster. |
-| `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
+| `systemAssignedMIPrincipalId` | string | The principal ID of the system assigned identity. |
 
 ## Cross-referenced modules
 

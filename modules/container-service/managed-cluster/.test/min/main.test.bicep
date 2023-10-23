@@ -40,7 +40,9 @@ module testDeployment '../../main.bicep' = {
   params: {
     name: '${namePrefix}${serviceShort}001'
     enableDefaultTelemetry: enableDefaultTelemetry
-    systemAssignedIdentity: true
+    managedIdentities: {
+      systemAssigned: true
+    }
     primaryAgentPoolProfile: [
       {
         name: 'systempool'
