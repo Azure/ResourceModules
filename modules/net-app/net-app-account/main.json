@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "794431774651820598"
+      "templateHash": "17236803464512744934"
     },
     "name": "Azure NetApp Files",
     "description": "This module deploys an Azure NetApp File.",
@@ -22,7 +22,7 @@
             "type": "string"
           },
           "metadata": {
-            "description": "Optional. The resource ID(s) to assign to the resource. Required if a user assigned identity is used for encryption."
+            "description": "Optional. The resource ID(s) to assign to the resource."
           }
         }
       },

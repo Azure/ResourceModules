@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "1033909225605733556"
+      "templateHash": "4067613722171214762"
     },
     "name": "Data Factories",
     "description": "This module deploys a Data Factory.",
@@ -30,7 +30,7 @@
           },
           "nullable": true,
           "metadata": {
-            "description": "Optional. The resource ID(s) to assign to the resource. Required if a user assigned identity is used for encryption."
+            "description": "Optional. The resource ID(s) to assign to the resource."
           }
         }
       },

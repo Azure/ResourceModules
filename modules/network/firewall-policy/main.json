@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "7505748980055197418"
+      "templateHash": "411576668957997252"
     },
     "name": "Firewall Policies",
     "description": "This module deploys a Firewall Policy.",
@@ -22,7 +22,7 @@
             "type": "string"
           },
           "metadata": {
-            "description": "Optional. The resource ID(s) to assign to the resource. Required if a user assigned identity is used for encryption."
+            "description": "Optional. The resource ID(s) to assign to the resource."
           }
         }
       },

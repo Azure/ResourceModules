@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "16516176421055925931"
+      "templateHash": "4683596081626678696"
     },
     "name": "SQL Managed Instances",
     "description": "This module deploys a SQL Managed Instance.",
@@ -30,7 +30,7 @@
           },
           "nullable": true,
           "metadata": {
-            "description": "Optional. The resource ID(s) to assign to the resource. Required if a user assigned identity is used for encryption."
+            "description": "Optional. The resource ID(s) to assign to the resource."
           }
         }
       },

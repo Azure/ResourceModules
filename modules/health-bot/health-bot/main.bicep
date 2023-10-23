@@ -109,7 +109,7 @@ output location string = healthBot.location
 // =============== //
 
 type managedIdentitiesType = {
-  @description('Optional. The resource ID(s) to assign to the resource. Required if a user assigned identity is used for encryption.')
+  @description('Optional. The resource ID(s) to assign to the resource.')
   userAssignedResourcesIds: string[]
 }?
 

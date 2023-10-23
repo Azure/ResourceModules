@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "7137053742613046156"
+      "templateHash": "13015641501790895874"
     },
     "name": "Web/Function Apps",
     "description": "This module deploys a Web or Function App.",
@@ -30,7 +30,7 @@
           },
           "nullable": true,
           "metadata": {
-            "description": "Optional. The resource ID(s) to assign to the resource. Required if a user assigned identity is used for encryption."
+            "description": "Optional. The resource ID(s) to assign to the resource."
           }
         }
       },
@@ -903,7 +903,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.22.6.54827",
-              "templateHash": "17731486698823948148"
+              "templateHash": "10216276365921947690"
             },
             "name": "Web/Function App Deployment Slots",
             "description": "This module deploys a Web or Function App Deployment Slot.",
@@ -927,7 +927,7 @@
                   },
                   "nullable": true,
                   "metadata": {
-                    "description": "Optional. The resource ID(s) to assign to the resource. Required if a user assigned identity is used for encryption."
+                    "description": "Optional. The resource ID(s) to assign to the resource."
                   }
                 }
               },

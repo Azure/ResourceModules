@@ -361,11 +361,11 @@ The managed identity definition for this resource.
 
 | Name | Required | Type | Description |
 | :-- | :-- | :--| :-- |
-| [`userAssignedResourcesIds`](#parameter-managedidentitiesuserassignedresourcesids) | Yes | array | Optional. The resource ID(s) to assign to the resource. Required if a user assigned identity is used for encryption. |
+| [`userAssignedResourcesIds`](#parameter-managedidentitiesuserassignedresourcesids) | Yes | array | Optional. The resource ID(s) to assign to the resource. |
 
 ### Parameter: `managedIdentities.userAssignedResourcesIds`
 
-Optional. The resource ID(s) to assign to the resource. Required if a user assigned identity is used for encryption.
+Optional. The resource ID(s) to assign to the resource.
 
 - Required: Yes
 - Type: array

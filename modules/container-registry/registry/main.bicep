@@ -432,7 +432,7 @@ type managedIdentitiesType = {
   @description('Optional. Enables system assigned managed identity on the resource.')
   systemAssigned: bool?
 
-  @description('Optional. The resource ID(s) to assign to the resource. Required if a user assigned identity is used for encryption.')
+  @description('Optional. The resource ID(s) to assign to the resource.')
   userAssignedResourcesIds: string[]?
 }?
 
