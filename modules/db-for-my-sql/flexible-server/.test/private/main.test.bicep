@@ -22,7 +22,7 @@ param password string = newGuid()
 param enableDefaultTelemetry bool = true
 
 @description('Optional. A token to inject into the name of each resource.')
-param namePrefix string = '[[namePrefix]]'
+param namePrefix string = 'krxxx'
 
 // ============ //
 // Dependencies //
@@ -103,8 +103,10 @@ module testDeployment '../../main.bicep' = {
     ]
     highAvailability: 'SameZone'
     storageAutoGrow: 'Enabled'
-    userAssignedIdentities: {
-      '${nestedDependencies.outputs.managedIdentityResourceId}': {}
+    managedIdentities: {
+      userAssignedResourcesIds: [
+        nestedDependencies.outputs.managedIdentityResourceId
+      ]
     }
     diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
     diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId

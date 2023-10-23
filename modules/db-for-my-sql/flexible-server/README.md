@@ -140,6 +140,11 @@ module flexibleServer 'br:bicep/modules/db-for-my-sql.flexible-server:1.0.0' = {
       kind: 'CanNotDelete'
       name: 'myCustomLockName'
     }
+    managedIdentities: {
+      userAssignedResourcesIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
     privateDnsZoneResourceId: '<privateDnsZoneResourceId>'
     roleAssignments: [
       {
@@ -156,9 +161,6 @@ module flexibleServer 'br:bicep/modules/db-for-my-sql.flexible-server:1.0.0' = {
       'hidden-title': 'This is visible in the resource name'
       resourceType: 'MySQL Flexible Server'
       serverName: 'dfmsfspvt001'
-    }
-    userAssignedIdentities: {
-      '<managedIdentityResourceId>': {}
     }
   }
 }
@@ -242,6 +244,13 @@ module flexibleServer 'br:bicep/modules/db-for-my-sql.flexible-server:1.0.0' = {
         "name": "myCustomLockName"
       }
     },
+    "managedIdentities": {
+      "value": {
+        "userAssignedResourcesIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
+    },
     "privateDnsZoneResourceId": {
       "value": "<privateDnsZoneResourceId>"
     },
@@ -271,11 +280,6 @@ module flexibleServer 'br:bicep/modules/db-for-my-sql.flexible-server:1.0.0' = {
         "hidden-title": "This is visible in the resource name",
         "resourceType": "MySQL Flexible Server",
         "serverName": "dfmsfspvt001"
-      }
-    },
-    "userAssignedIdentities": {
-      "value": {
-        "<managedIdentityResourceId>": {}
       }
     }
   }
@@ -349,6 +353,12 @@ module flexibleServer 'br:bicep/modules/db-for-my-sql.flexible-server:1.0.0' = {
       kind: 'CanNotDelete'
       name: 'myCustomLockName'
     }
+    managedIdentities: {
+      userAssignedResourcesIds: [
+        '<geoBackupManagedIdentityResourceId>'
+        '<managedIdentityResourceId>'
+      ]
+    }
     roleAssignments: [
       {
         principalId: '<principalId>'
@@ -364,10 +374,6 @@ module flexibleServer 'br:bicep/modules/db-for-my-sql.flexible-server:1.0.0' = {
       'hidden-title': 'This is visible in the resource name'
       resourceType: 'MySQL Flexible Server'
       serverName: 'dfmsfsp001'
-    }
-    userAssignedIdentities: {
-      '<geoBackupManagedIdentityResourceId>': {}
-      '<managedIdentityResourceId>': {}
     }
     version: '8.0.21'
   }
@@ -488,6 +494,14 @@ module flexibleServer 'br:bicep/modules/db-for-my-sql.flexible-server:1.0.0' = {
         "name": "myCustomLockName"
       }
     },
+    "managedIdentities": {
+      "value": {
+        "userAssignedResourcesIds": [
+          "<geoBackupManagedIdentityResourceId>",
+          "<managedIdentityResourceId>"
+        ]
+      }
+    },
     "roleAssignments": {
       "value": [
         {
@@ -514,12 +528,6 @@ module flexibleServer 'br:bicep/modules/db-for-my-sql.flexible-server:1.0.0' = {
         "hidden-title": "This is visible in the resource name",
         "resourceType": "MySQL Flexible Server",
         "serverName": "dfmsfsp001"
-      }
-    },
-    "userAssignedIdentities": {
-      "value": {
-        "<geoBackupManagedIdentityResourceId>": {},
-        "<managedIdentityResourceId>": {}
       }
     },
     "version": {
@@ -555,7 +563,6 @@ module flexibleServer 'br:bicep/modules/db-for-my-sql.flexible-server:1.0.0' = {
 | [`restorePointInTime`](#parameter-restorepointintime) | string | Restore point creation time (ISO8601 format), specifying the time to restore from. Required if "createMode" is set to "PointInTimeRestore". |
 | [`sourceServerResourceId`](#parameter-sourceserverresourceid) | string | The source MySQL server ID. Required if "createMode" is set to "PointInTimeRestore". |
 | [`storageAutoGrow`](#parameter-storageautogrow) | string | Enable Storage Auto Grow or not. Storage auto-growth prevents a server from running out of storage and becoming read-only. Required if "highAvailability" is not "Disabled". |
-| [`userAssignedIdentities`](#parameter-userassignedidentities) | object | The ID(s) to assign to the resource. Required if "cMKKeyName" is not empty. |
 
 **Optional parameters**
 
@@ -587,6 +594,7 @@ module flexibleServer 'br:bicep/modules/db-for-my-sql.flexible-server:1.0.0' = {
 | [`location`](#parameter-location) | string | Location for all resources. |
 | [`lock`](#parameter-lock) | object | The lock settings of the service. |
 | [`maintenanceWindow`](#parameter-maintenancewindow) | object | Properties for the maintenence window. If provided, "customWindow" property must exist and set to "Enabled". |
+| [`managedIdentities`](#parameter-managedidentities) | object | The managed identity definition for this resource. |
 | [`replicationRole`](#parameter-replicationrole) | string | The replication role. |
 | [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the "roleDefinitionIdOrName" and "principalId" to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: "/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11". |
 | [`storageAutoIoScaling`](#parameter-storageautoioscaling) | string | Enable IO Auto Scaling or not. The server scales IOPs up or down automatically depending on your workload needs. |
@@ -831,6 +839,24 @@ Properties for the maintenence window. If provided, "customWindow" property must
 - Type: object
 - Default: `{object}`
 
+### Parameter: `managedIdentities`
+
+The managed identity definition for this resource.
+- Required: No
+- Type: object
+
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`userAssignedResourcesIds`](#parameter-managedidentitiesuserassignedresourcesids) | Yes | array | Optional. The resource ID(s) to assign to the resource. Required if a user assigned identity is used for encryption. |
+
+### Parameter: `managedIdentities.userAssignedResourcesIds`
+
+Optional. The resource ID(s) to assign to the resource. Required if a user assigned identity is used for encryption.
+
+- Required: Yes
+- Type: array
+
 ### Parameter: `name`
 
 The name of the MySQL flexible server.
@@ -984,13 +1010,6 @@ The tier of the particular SKU. Tier must align with the "skuName" property. Exa
 - Required: Yes
 - Type: string
 - Allowed: `[Burstable, GeneralPurpose, MemoryOptimized]`
-
-### Parameter: `userAssignedIdentities`
-
-The ID(s) to assign to the resource. Required if "cMKKeyName" is not empty.
-- Required: No
-- Type: object
-- Default: `{object}`
 
 ### Parameter: `version`
 
