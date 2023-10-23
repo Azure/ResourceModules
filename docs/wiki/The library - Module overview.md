@@ -146,10 +146,10 @@ This section provides an overview of the library's feature set.
 | 131 | virtual-machine-images<p>image-template | [![VirtualMachineImages - ImageTemplates](https://github.com/Azure/ResourceModules/workflows/VirtualMachineImages%20-%20ImageTemplates/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.virtualmachineimages.imagetemplates.yml) |  |  | :white_check_mark: |  |  |  |  | 216 |
 | 132 | web<p>connection | [![Web - Connections](https://github.com/Azure/ResourceModules/workflows/Web%20-%20Connections/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.web.connections.yml) |  |  | :white_check_mark: |  |  |  |  | 118 |
 | 133 | web<p>hosting-environment | [![Web - HostingEnvironments](https://github.com/Azure/ResourceModules/workflows/Web%20-%20HostingEnvironments/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.web.hostingenvironments.yml) |  |  | :white_check_mark: | :white_check_mark: |  |  | [L1:2] | 255 |
-| 134 | web<p>serverfarm | [![Web - Serverfarms](https://github.com/Azure/ResourceModules/workflows/Web%20-%20Serverfarms/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.web.serverfarms.yml) |  |  | :white_check_mark: | :white_check_mark: |  |  |  | 184 |
+| 134 | web<p>serverfarm | [![Web - Serverfarms](https://github.com/Azure/ResourceModules/workflows/Web%20-%20Serverfarms/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.web.serverfarms.yml) |  |  | :white_check_mark: | :white_check_mark: |  |  |  | 189 |
 | 135 | web<p>site | [![Web - Sites](https://github.com/Azure/ResourceModules/workflows/Web%20-%20Sites/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.web.sites.yml) |  |  | :white_check_mark: | :white_check_mark: | :white_check_mark: |  | [L1:5, L2:4, L3:1] | 417 |
 | 136 | web<p>static-site | [![Web - StaticSites](https://github.com/Azure/ResourceModules/workflows/Web%20-%20StaticSites/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.web.staticsites.yml) |  |  | :white_check_mark: |  | :white_check_mark: |  | [L1:3] | 231 |
-| Sum | | | 0 | 0 | 118 | 57 | 30 | 2 | 238 | 28029 |
+| Sum | | | 0 | 0 | 118 | 57 | 30 | 2 | 238 | 28034 |
 
 ## Legend
 
