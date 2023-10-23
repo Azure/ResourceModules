@@ -18,10 +18,16 @@ param location string = resourceGroup().location
 
 @description('Optional. Kind of server OS.')
 @allowed([
+  'App'
+  'Elastic'
+  'FunctionApp'
   'Windows'
   'Linux'
 ])
-param serverOS string = 'Windows'
+param kind string = 'Windows'
+
+@description('Conditional. When creating a Linux App Service Plan, the reserved field must be set to true, and when creating a Windows/app App Service Plan the reserved field must be set to false.')
+param reserved bool = false
 
 @description('Optional. The Resource ID of the App Service Environment to use for the App Service Plan.')
 param appServiceEnvironmentId string = ''
@@ -118,9 +124,9 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource appServicePlan 'Microsoft.Web/serverfarms@2021-02-01' = {
+resource appServicePlan 'Microsoft.Web/serverfarms@2022-09-01' = {
   name: name
-  kind: serverOS == 'Windows' ? '' : 'linux'
+  kind: kind
   location: location
   tags: tags
   sku: sku
@@ -131,7 +137,7 @@ resource appServicePlan 'Microsoft.Web/serverfarms@2021-02-01' = {
     } : null
     perSiteScaling: perSiteScaling
     maximumElasticWorkerCount: maximumElasticWorkerCount
-    reserved: serverOS == 'Linux'
+    reserved: reserved
     targetWorkerCount: targetWorkerCount
     targetWorkerSizeId: targetWorkerSize
     zoneRedundant: zoneRedundant
