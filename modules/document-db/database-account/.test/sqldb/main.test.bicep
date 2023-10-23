@@ -181,8 +181,10 @@ module testDeployment '../../main.bicep' = {
         autoscaleSettingsMaxThroughput: 1000
       }
     ]
-    userAssignedIdentities: {
-      '${nestedDependencies.outputs.managedIdentityResourceId}': {}
+    managedIdentities: {
+      userAssignedResourcesIds: [
+        nestedDependencies.outputs.managedIdentityResourceId
+      ]
     }
     tags: {
       'hidden-title': 'This is visible in the resource name'
