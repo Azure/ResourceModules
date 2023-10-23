@@ -41,6 +41,7 @@ module nestedDependencies 'dependencies.bicep' = {
     // Adding base time to make the name unique as purge protection must be enabled (but may not be longer than 24 characters total)
     keyVaultName: 'dep-${namePrefix}-kv-${serviceShort}-${substring(uniqueString(baseTime), 0, 3)}'
     storageAccountName: 'dep${namePrefix}sa${serviceShort}01'
+    synapseWorkspaceName: 'dep-${namePrefix}-sw-${serviceShort}'
   }
 }
 
@@ -56,11 +57,8 @@ module testDeployment '../../main.bicep' = {
     defaultDataLakeStorageAccountResourceId: nestedDependencies.outputs.storageAccountResourceId
     defaultDataLakeStorageFilesystem: nestedDependencies.outputs.storageContainerName
     sqlAdministratorLogin: 'synwsadmin'
-    encryption: true
     cMKKeyVaultResourceId: nestedDependencies.outputs.keyVaultResourceId
     cMKKeyName: nestedDependencies.outputs.keyVaultEncryptionKeyName
-    cMKUseSystemAssignedIdentity: true
-    encryptionActivateWorkspace: true
     enableDefaultTelemetry: enableDefaultTelemetry
   }
 }

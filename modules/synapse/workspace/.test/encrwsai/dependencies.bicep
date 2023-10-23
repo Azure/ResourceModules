@@ -7,6 +7,17 @@ param keyVaultName string
 @description('Required. The name of the Storage Account to create.')
 param storageAccountName string
 
+@description('Required. The name of the Synapse Workspace to create.')
+param synapseWorkspaceName string
+
+resource workspace 'Microsoft.Synapse/workspaces@2021-06-01' = {
+    name: synapseWorkspaceName
+    location: location
+    identity: {
+        type: 'SystemAssigned'
+    }
+}
+
 resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
     name: keyVaultName
     location: location
@@ -30,6 +41,16 @@ resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
         properties: {
             kty: 'RSA'
         }
+    }
+}
+
+resource keyPermissions 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+    name: guid('msi-${keyVault::key.id}-${location}-${workspace.id}-Key-Reader-RoleAssignment')
+    scope: keyVault::key
+    properties: {
+        principalId: workspace.identity.principalId
+        roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '12338af0-0e69-4776-bea7-57ae8d297424') // Key Vault Crypto User
+        principalType: 'ServicePrincipal'
     }
 }
 

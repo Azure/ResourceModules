@@ -28,23 +28,14 @@ param defaultDataLakeStorageFilesystem string
 @description('Optional. Create managed private endpoint to the default storage account or not. If Yes is selected, a managed private endpoint connection request is sent to the workspace\'s primary Data Lake Storage Gen2 account for Spark pools to access data. This must be approved by an owner of the storage account.')
 param defaultDataLakeStorageCreateManagedPrivateEndpoint bool = false
 
-@description('Optional. Double encryption using a customer-managed key.')
-param encryption bool = false
-
 @description('Conditional. The resource ID of a key vault to reference a customer managed key for encryption from. Required if \'cMKKeyName\' is not empty.')
 param cMKKeyVaultResourceId string = ''
 
 @description('Optional. The name of the customer managed key to use for encryption.')
 param cMKKeyName string = ''
 
-@description('Optional. Use System Assigned Managed identity that will be used to access your customer-managed key stored in key vault.')
-param cMKUseSystemAssignedIdentity bool = false
-
 @description('Optional. The ID of User Assigned Managed identity that will be used to access your customer-managed key stored in key vault.')
 param cMKUserAssignedIdentityResourceId string = ''
-
-@description('Optional. Activate workspace by adding the system managed identity in the KeyVault containing the customer managed key and activating the workspace.')
-param encryptionActivateWorkspace bool = false
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
@@ -82,7 +73,7 @@ param purviewResourceID string = ''
 param sqlAdministratorLogin string
 
 @description('Optional. Password for administrator access to the workspace\'s SQL pools. If you don\'t provide a password, one will be automatically generated. You can change the password later.')
-#disable-next-line secure-secrets-in-params // Not a secret
+@secure()
 param sqlAdministratorLoginPassword string = ''
 
 @description('Optional. Git integration settings.')
@@ -204,11 +195,11 @@ resource workspace 'Microsoft.Synapse/workspaces@2021-06-01' = {
       filesystem: defaultDataLakeStorageFilesystem
       createManagedPrivateEndpoint: managedVirtualNetwork ? defaultDataLakeStorageCreateManagedPrivateEndpoint : null
     }
-    encryption: encryption ? {
+    encryption: !empty(cMKKeyName) ? {
       cmk: {
         kekIdentity: {
           userAssignedIdentity: !empty(cMKUserAssignedIdentityResourceId) ? cMKUserAssignedIdentityResourceId : null
-          useSystemAssignedIdentity: cMKUseSystemAssignedIdentity
+          useSystemAssignedIdentity: empty(cMKUserAssignedIdentityResourceId)
         }
         key: {
           keyVaultUrl: cMKKeyVault::cMKKey.properties.keyUri
@@ -245,20 +236,8 @@ module synapse_integrationRuntimes 'integration-runtime/main.bicep' = [for (inte
   }
 }]
 
-// Workspace encryption with customer managed keys
-// - Assign Synapse Workspace MSI access to encryption key
-module workspace_cmk_rbac 'modules/nested_cmkRbac.bicep' = if (encryptionActivateWorkspace) {
-  name: '${workspace.name}-cmk-rbac'
-  params: {
-    workspaceIndentityPrincipalId: workspace.identity.principalId
-    keyvaultName: !empty(cMKKeyVaultResourceId) ? cMKKeyVault.name : ''
-    usesRbacAuthorization: !empty(cMKKeyVaultResourceId) ? cMKKeyVault.properties.enableRbacAuthorization : true
-  }
-  scope: encryptionActivateWorkspace ? resourceGroup(split(cMKKeyVaultResourceId, '/')[2], split(cMKKeyVaultResourceId, '/')[4]) : resourceGroup()
-}
-
 // - Workspace encryption - Activate Workspace
-module workspace_key 'key/main.bicep' = if (encryptionActivateWorkspace) {
+module workspace_key 'key/main.bicep' = if (!empty(cMKKeyName)) {
   name: '${workspace.name}-cmk-activation'
   params: {
     name: cMKKeyName
@@ -266,9 +245,6 @@ module workspace_key 'key/main.bicep' = if (encryptionActivateWorkspace) {
     keyVaultResourceId: cMKKeyVaultResourceId
     workspaceName: workspace.name
   }
-  dependsOn: [
-    workspace_cmk_rbac
-  ]
 }
 
 // Resource Lock

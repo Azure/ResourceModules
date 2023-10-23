@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "10923669375290685211"
+      "templateHash": "6244384397624726126"
     },
     "name": "Synapse Workspaces",
     "description": "This module deploys a Synapse Workspace.",
@@ -160,13 +160,6 @@
         "description": "Optional. Create managed private endpoint to the default storage account or not. If Yes is selected, a managed private endpoint connection request is sent to the workspace's primary Data Lake Storage Gen2 account for Spark pools to access data. This must be approved by an owner of the storage account."
       }
     },
-    "encryption": {
-      "type": "bool",
-      "defaultValue": false,
-      "metadata": {
-        "description": "Optional. Double encryption using a customer-managed key."
-      }
-    },
     "cMKKeyVaultResourceId": {
       "type": "string",
       "defaultValue": "",
@@ -181,25 +174,11 @@
         "description": "Optional. The name of the customer managed key to use for encryption."
       }
     },
-    "cMKUseSystemAssignedIdentity": {
-      "type": "bool",
-      "defaultValue": false,
-      "metadata": {
-        "description": "Optional. Use System Assigned Managed identity that will be used to access your customer-managed key stored in key vault."
-      }
-    },
     "cMKUserAssignedIdentityResourceId": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
         "description": "Optional. The ID of User Assigned Managed identity that will be used to access your customer-managed key stored in key vault."
-      }
-    },
-    "encryptionActivateWorkspace": {
-      "type": "bool",
-      "defaultValue": false,
-      "metadata": {
-        "description": "Optional. Activate workspace by adding the system managed identity in the KeyVault containing the customer managed key and activating the workspace."
       }
     },
     "enableDefaultTelemetry": {
@@ -277,7 +256,7 @@
       }
     },
     "sqlAdministratorLoginPassword": {
-      "type": "string",
+      "type": "securestring",
       "defaultValue": "",
       "metadata": {
         "description": "Optional. Password for administrator access to the workspace's SQL pools. If you don't provide a password, one will be automatically generated. You can change the password later."
@@ -453,7 +432,7 @@
           "filesystem": "[parameters('defaultDataLakeStorageFilesystem')]",
           "createManagedPrivateEndpoint": "[if(parameters('managedVirtualNetwork'), parameters('defaultDataLakeStorageCreateManagedPrivateEndpoint'), null())]"
         },
-        "encryption": "[if(parameters('encryption'), createObject('cmk', createObject('kekIdentity', createObject('userAssignedIdentity', if(not(empty(parameters('cMKUserAssignedIdentityResourceId'))), parameters('cMKUserAssignedIdentityResourceId'), null()), 'useSystemAssignedIdentity', parameters('cMKUseSystemAssignedIdentity')), 'key', createObject('keyVaultUrl', reference('cMKKeyVault::cMKKey').keyUri, 'name', parameters('cMKKeyName')))), null())]",
+        "encryption": "[if(not(empty(parameters('cMKKeyName'))), createObject('cmk', createObject('kekIdentity', createObject('userAssignedIdentity', if(not(empty(parameters('cMKUserAssignedIdentityResourceId'))), parameters('cMKUserAssignedIdentityResourceId'), null()), 'useSystemAssignedIdentity', empty(parameters('cMKUserAssignedIdentityResourceId'))), 'key', createObject('keyVaultUrl', reference('cMKKeyVault::cMKKey').keyUri, 'name', parameters('cMKKeyName')))), null())]",
         "managedResourceGroupName": "[if(not(empty(parameters('managedResourceGroupName'))), parameters('managedResourceGroupName'), null())]",
         "managedVirtualNetwork": "[if(parameters('managedVirtualNetwork'), 'default', null())]",
         "managedVirtualNetworkSettings": "[if(parameters('managedVirtualNetwork'), createObject('allowedAadTenantIdsForLinking', parameters('allowedAadTenantIdsForLinking'), 'linkedAccessCheckOnTargetResource', parameters('linkedAccessCheckOnTargetResource'), 'preventDataExfiltration', parameters('preventDataExfiltration')), null())]",
@@ -650,89 +629,8 @@
         "workspace"
       ]
     },
-    "workspace_cmk_rbac": {
-      "condition": "[parameters('encryptionActivateWorkspace')]",
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2022-09-01",
-      "name": "[format('{0}-cmk-rbac', parameters('name'))]",
-      "properties": {
-        "expressionEvaluationOptions": {
-          "scope": "inner"
-        },
-        "mode": "Incremental",
-        "parameters": {
-          "workspaceIndentityPrincipalId": {
-            "value": "[reference('workspace', '2021-06-01', 'full').identity.principalId]"
-          },
-          "keyvaultName": "[if(not(empty(parameters('cMKKeyVaultResourceId'))), createObject('value', last(split(if(not(empty(parameters('cMKKeyVaultResourceId'))), parameters('cMKKeyVaultResourceId'), 'dummyVault'), '/'))), createObject('value', ''))]",
-          "usesRbacAuthorization": "[if(not(empty(parameters('cMKKeyVaultResourceId'))), createObject('value', reference('cMKKeyVault').enableRbacAuthorization), createObject('value', true()))]"
-        },
-        "template": {
-          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
-          "contentVersion": "1.0.0.0",
-          "metadata": {
-            "_generator": {
-              "name": "bicep",
-              "version": "0.22.6.54827",
-              "templateHash": "7188161900918132964"
-            }
-          },
-          "parameters": {
-            "keyvaultName": {
-              "type": "string"
-            },
-            "workspaceIndentityPrincipalId": {
-              "type": "string"
-            },
-            "usesRbacAuthorization": {
-              "type": "bool",
-              "defaultValue": false
-            }
-          },
-          "resources": [
-            {
-              "condition": "[parameters('usesRbacAuthorization')]",
-              "type": "Microsoft.Authorization/roleAssignments",
-              "apiVersion": "2022-04-01",
-              "scope": "[format('Microsoft.KeyVault/vaults/{0}', parameters('keyvaultName'))]",
-              "name": "[guid(format('{0}-{1}-Key-Vault-Crypto-User', resourceId('Microsoft.KeyVault/vaults', parameters('keyvaultName')), parameters('workspaceIndentityPrincipalId')))]",
-              "properties": {
-                "roleDefinitionId": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '12338af0-0e69-4776-bea7-57ae8d297424')]",
-                "principalId": "[parameters('workspaceIndentityPrincipalId')]",
-                "principalType": "ServicePrincipal"
-              }
-            },
-            {
-              "condition": "[not(parameters('usesRbacAuthorization'))]",
-              "type": "Microsoft.KeyVault/vaults/accessPolicies",
-              "apiVersion": "2022-07-01",
-              "name": "[format('{0}/{1}', parameters('keyvaultName'), 'add')]",
-              "properties": {
-                "accessPolicies": [
-                  {
-                    "permissions": {
-                      "keys": [
-                        "wrapKey",
-                        "unwrapKey",
-                        "get"
-                      ]
-                    },
-                    "objectId": "[parameters('workspaceIndentityPrincipalId')]",
-                    "tenantId": "[tenant().tenantId]"
-                  }
-                ]
-              }
-            }
-          ]
-        }
-      },
-      "dependsOn": [
-        "cMKKeyVault",
-        "workspace"
-      ]
-    },
     "workspace_key": {
-      "condition": "[parameters('encryptionActivateWorkspace')]",
+      "condition": "[not(empty(parameters('cMKKeyName')))]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
       "name": "[format('{0}-cmk-activation', parameters('name'))]",
@@ -860,8 +758,7 @@
         }
       },
       "dependsOn": [
-        "workspace",
-        "workspace_cmk_rbac"
+        "workspace"
       ]
     },
     "workspace_privateEndpoints": {
