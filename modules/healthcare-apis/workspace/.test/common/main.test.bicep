@@ -93,12 +93,14 @@ module testDeployment '../../main.bicep' = {
         resourceVersionPolicy: 'versioned'
         smartProxyEnabled: false
         enableDefaultTelemetry: enableDefaultTelemetry
-        systemAssignedIdentity: false
+        managedIdentities: {
+          systemAssigned: false
+          userAssignedResourcesIds: [
+            resourceGroupResources.outputs.managedIdentityResourceId
+          ]
+        }
         importEnabled: false
         initialImportMode: false
-        userAssignedIdentities: {
-          '${resourceGroupResources.outputs.managedIdentityResourceId}': {}
-        }
         roleAssignments: [
           {
             roleDefinitionIdOrName: resourceId('Microsoft.Authorization/roleDefinitions', '5a1fc7df-4bf1-4951-a576-89034ee01acd')
@@ -124,9 +126,11 @@ module testDeployment '../../main.bicep' = {
         diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
         publicNetworkAccess: 'Enabled'
         enableDefaultTelemetry: enableDefaultTelemetry
-        systemAssignedIdentity: false
-        userAssignedIdentities: {
-          '${resourceGroupResources.outputs.managedIdentityResourceId}': {}
+        managedIdentities: {
+          systemAssigned: false
+          userAssignedResourcesIds: [
+            resourceGroupResources.outputs.managedIdentityResourceId
+          ]
         }
       }
     ]

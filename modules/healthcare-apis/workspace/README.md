@@ -70,12 +70,14 @@ module workspace 'br:bicep/modules/healthcare-apis.workspace:1.0.0' = {
         diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
         enableDefaultTelemetry: '<enableDefaultTelemetry>'
         location: '<location>'
+        managedIdentities: {
+          systemAssigned: false
+          userAssignedResourcesIds: [
+            '<managedIdentityResourceId>'
+          ]
+        }
         name: 'az-dicom-x-001'
         publicNetworkAccess: 'Enabled'
-        systemAssignedIdentity: false
-        userAssignedIdentities: {
-          '<managedIdentityResourceId>': {}
-        }
         workspaceName: 'hawcom001'
       }
     ]
@@ -102,6 +104,12 @@ module workspace 'br:bicep/modules/healthcare-apis.workspace:1.0.0' = {
         initialImportMode: false
         kind: 'fhir-R4'
         location: '<location>'
+        managedIdentities: {
+          systemAssigned: false
+          userAssignedResourcesIds: [
+            '<managedIdentityResourceId>'
+          ]
+        }
         name: 'az-fhir-x-001'
         publicNetworkAccess: 'Enabled'
         resourceVersionPolicy: 'versioned'
@@ -113,10 +121,6 @@ module workspace 'br:bicep/modules/healthcare-apis.workspace:1.0.0' = {
           }
         ]
         smartProxyEnabled: false
-        systemAssignedIdentity: false
-        userAssignedIdentities: {
-          '<managedIdentityResourceId>': {}
-        }
         workspaceName: 'hawcom001'
       }
     ]
@@ -172,12 +176,14 @@ module workspace 'br:bicep/modules/healthcare-apis.workspace:1.0.0' = {
           "diagnosticWorkspaceId": "<diagnosticWorkspaceId>",
           "enableDefaultTelemetry": "<enableDefaultTelemetry>",
           "location": "<location>",
+          "managedIdentities": {
+            "systemAssigned": false,
+            "userAssignedResourcesIds": [
+              "<managedIdentityResourceId>"
+            ]
+          },
           "name": "az-dicom-x-001",
           "publicNetworkAccess": "Enabled",
-          "systemAssignedIdentity": false,
-          "userAssignedIdentities": {
-            "<managedIdentityResourceId>": {}
-          },
           "workspaceName": "hawcom001"
         }
       ]
@@ -208,6 +214,12 @@ module workspace 'br:bicep/modules/healthcare-apis.workspace:1.0.0' = {
           "initialImportMode": false,
           "kind": "fhir-R4",
           "location": "<location>",
+          "managedIdentities": {
+            "systemAssigned": false,
+            "userAssignedResourcesIds": [
+              "<managedIdentityResourceId>"
+            ]
+          },
           "name": "az-fhir-x-001",
           "publicNetworkAccess": "Enabled",
           "resourceVersionPolicy": "versioned",
@@ -219,10 +231,6 @@ module workspace 'br:bicep/modules/healthcare-apis.workspace:1.0.0' = {
             }
           ],
           "smartProxyEnabled": false,
-          "systemAssignedIdentity": false,
-          "userAssignedIdentities": {
-            "<managedIdentityResourceId>": {}
-          },
           "workspaceName": "hawcom001"
         }
       ]

@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "15321867905041634894"
+      "templateHash": "10597910709681923355"
     },
     "name": "Healthcare API Workspaces",
     "description": "This module deploys a Healthcare API Workspace.",
@@ -287,7 +287,7 @@
           },
           "tags": "[if(contains(parameters('fhirservices')[copyIndex()], 'tags'), createObject('value', parameters('fhirservices')[copyIndex()].tags), createObject('value', createObject()))]",
           "publicNetworkAccess": "[if(contains(parameters('fhirservices')[copyIndex()], 'publicNetworkAccess'), createObject('value', parameters('fhirservices')[copyIndex()].publicNetworkAccess), createObject('value', 'Disabled'))]",
-          "systemAssignedIdentity": "[if(contains(parameters('fhirservices')[copyIndex()], 'systemAssignedIdentity'), createObject('value', parameters('fhirservices')[copyIndex()].systemAssignedIdentity), createObject('value', false()))]",
+          "managedIdentities": "[if(contains(parameters('fhirservices')[copyIndex()], 'managedIdentities'), createObject('value', parameters('fhirservices')[copyIndex()].managedIdentities), createObject('value', null()))]",
           "roleAssignments": "[if(contains(parameters('fhirservices')[copyIndex()], 'roleAssignments'), createObject('value', parameters('fhirservices')[copyIndex()].roleAssignments), createObject('value', createArray()))]",
           "accessPolicyObjectIds": "[if(contains(parameters('fhirservices')[copyIndex()], 'accessPolicyObjectIds'), createObject('value', parameters('fhirservices')[copyIndex()].accessPolicyObjectIds), createObject('value', createArray()))]",
           "acrLoginServers": "[if(contains(parameters('fhirservices')[copyIndex()], 'acrLoginServers'), createObject('value', parameters('fhirservices')[copyIndex()].acrLoginServers), createObject('value', createArray()))]",
@@ -313,7 +313,6 @@
           "resourceVersionPolicy": "[if(contains(parameters('fhirservices')[copyIndex()], 'resourceVersionPolicy'), createObject('value', parameters('fhirservices')[copyIndex()].resourceVersionPolicy), createObject('value', 'versioned'))]",
           "resourceVersionOverrides": "[if(contains(parameters('fhirservices')[copyIndex()], 'resourceVersionOverrides'), createObject('value', parameters('fhirservices')[copyIndex()].resourceVersionOverrides), createObject('value', createObject()))]",
           "smartProxyEnabled": "[if(contains(parameters('fhirservices')[copyIndex()], 'smartProxyEnabled'), createObject('value', parameters('fhirservices')[copyIndex()].smartProxyEnabled), createObject('value', false()))]",
-          "userAssignedIdentities": "[if(contains(parameters('fhirservices')[copyIndex()], 'userAssignedIdentities'), createObject('value', parameters('fhirservices')[copyIndex()].userAssignedIdentities), createObject('value', createObject()))]",
           "diagnosticLogCategoriesToEnable": "[if(contains(parameters('fhirservices')[copyIndex()], 'diagnosticLogCategoriesToEnable'), createObject('value', parameters('fhirservices')[copyIndex()].diagnosticLogCategoriesToEnable), createObject('value', createArray('AuditLogs')))]",
           "diagnosticMetricsToEnable": "[if(contains(parameters('fhirservices')[copyIndex()], 'diagnosticMetricsToEnable'), createObject('value', parameters('fhirservices')[copyIndex()].diagnosticMetricsToEnable), createObject('value', createArray('AllMetrics')))]",
           "enableDefaultTelemetry": {
@@ -328,13 +327,36 @@
             "_generator": {
               "name": "bicep",
               "version": "0.22.6.54827",
-              "templateHash": "9263507770658770799"
+              "templateHash": "15356979852206424627"
             },
             "name": "Healthcare API Workspace FHIR Services",
             "description": "This module deploys a Healthcare API Workspace FHIR Service.",
             "owner": "Azure/module-maintainers"
           },
           "definitions": {
+            "managedIdentitiesType": {
+              "type": "object",
+              "properties": {
+                "systemAssigned": {
+                  "type": "bool",
+                  "nullable": true,
+                  "metadata": {
+                    "description": "Optional. Enables system assigned managed identity on the resource."
+                  }
+                },
+                "userAssignedResourcesIds": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "nullable": true,
+                  "metadata": {
+                    "description": "Optional. The resource ID(s) to assign to the resource."
+                  }
+                }
+              },
+              "nullable": true
+            },
             "lockType": {
               "type": "object",
               "properties": {
@@ -642,18 +664,10 @@
                 "description": "Optional. If the SMART on FHIR proxy is enabled."
               }
             },
-            "systemAssignedIdentity": {
-              "type": "bool",
-              "defaultValue": false,
+            "managedIdentities": {
+              "$ref": "#/definitions/managedIdentitiesType",
               "metadata": {
-                "description": "Optional. Enables system assigned managed identity on the resource."
-              }
-            },
-            "userAssignedIdentities": {
-              "type": "object",
-              "defaultValue": {},
-              "metadata": {
-                "description": "Optional. The ID(s) to assign to the resource."
+                "description": "Optional. The managed identity definition for this resource."
               }
             },
             "tags": {
@@ -729,8 +743,8 @@
                 }
               }
             ],
-            "identityType": "[if(parameters('systemAssignedIdentity'), if(not(empty(parameters('userAssignedIdentities'))), 'SystemAssigned,UserAssigned', 'SystemAssigned'), if(not(empty(parameters('userAssignedIdentities'))), 'UserAssigned', 'None'))]",
-            "identity": "[if(not(equals(variables('identityType'), 'None')), createObject('type', variables('identityType'), 'userAssignedIdentities', if(not(empty(parameters('userAssignedIdentities'))), parameters('userAssignedIdentities'), null())), null())]",
+            "formattedUserAssignedIdentities": "[reduce(map(coalesce(tryGet(parameters('managedIdentities'), 'userAssignedResourcesIds'), createArray()), lambda('id', createObject(format('{0}', lambdaVariables('id')), createObject()))), createObject(), lambda('cur', 'next', union(lambdaVariables('cur'), lambdaVariables('next'))))]",
+            "identity": "[if(not(empty(parameters('managedIdentities'))), createObject('type', if(coalesce(tryGet(parameters('managedIdentities'), 'systemAssigned'), false()), if(not(empty(coalesce(tryGet(parameters('managedIdentities'), 'userAssignedResourcesIds'), createObject()))), 'SystemAssigned,UserAssigned', 'SystemAssigned'), if(not(empty(coalesce(tryGet(parameters('managedIdentities'), 'userAssignedResourcesIds'), createObject()))), 'UserAssigned', null())), 'userAssignedIdentities', if(not(empty(variables('formattedUserAssignedIdentities'))), variables('formattedUserAssignedIdentities'), null())), null())]",
             "exportConfiguration": {
               "storageAccountName": "[parameters('exportStorageAccountName')]"
             },
@@ -891,12 +905,12 @@
               },
               "value": "[resourceGroup().name]"
             },
-            "systemAssignedPrincipalId": {
+            "systemAssignedMIPrincipalId": {
               "type": "string",
               "metadata": {
                 "description": "The principal ID of the system assigned identity."
               },
-              "value": "[if(and(parameters('systemAssignedIdentity'), contains(reference('fhir', '2022-06-01', 'full').identity, 'principalId')), reference('fhir', '2022-06-01', 'full').identity.principalId, '')]"
+              "value": "[if(and(coalesce(tryGet(parameters('managedIdentities'), 'systemAssigned'), false()), contains(reference('fhir', '2022-06-01', 'full').identity, 'principalId')), reference('fhir', '2022-06-01', 'full').identity.principalId, '')]"
             },
             "location": {
               "type": "string",
@@ -944,7 +958,7 @@
           },
           "tags": "[if(contains(parameters('dicomservices')[copyIndex()], 'tags'), createObject('value', parameters('dicomservices')[copyIndex()].tags), createObject('value', createObject()))]",
           "publicNetworkAccess": "[if(contains(parameters('dicomservices')[copyIndex()], 'publicNetworkAccess'), createObject('value', parameters('dicomservices')[copyIndex()].publicNetworkAccess), createObject('value', 'Disabled'))]",
-          "systemAssignedIdentity": "[if(contains(parameters('dicomservices')[copyIndex()], 'systemAssignedIdentity'), createObject('value', parameters('dicomservices')[copyIndex()].systemAssignedIdentity), createObject('value', false()))]",
+          "managedIdentities": "[if(contains(parameters('dicomservices')[copyIndex()], 'managedIdentities'), createObject('value', parameters('dicomservices')[copyIndex()].managedIdentities), createObject('value', null()))]",
           "corsOrigins": "[if(contains(parameters('dicomservices')[copyIndex()], 'corsOrigins'), createObject('value', parameters('dicomservices')[copyIndex()].corsOrigins), createObject('value', createArray()))]",
           "corsHeaders": "[if(contains(parameters('dicomservices')[copyIndex()], 'corsHeaders'), createObject('value', parameters('dicomservices')[copyIndex()].corsHeaders), createObject('value', createArray()))]",
           "corsMethods": "[if(contains(parameters('dicomservices')[copyIndex()], 'corsMethods'), createObject('value', parameters('dicomservices')[copyIndex()].corsMethods), createObject('value', createArray()))]",
@@ -957,7 +971,6 @@
           "lock": {
             "value": "[coalesce(tryGet(parameters('dicomservices')[copyIndex()], 'lock'), parameters('lock'))]"
           },
-          "userAssignedIdentities": "[if(contains(parameters('dicomservices')[copyIndex()], 'userAssignedIdentities'), createObject('value', parameters('dicomservices')[copyIndex()].userAssignedIdentities), createObject('value', createObject()))]",
           "diagnosticLogCategoriesToEnable": "[if(contains(parameters('dicomservices')[copyIndex()], 'diagnosticLogCategoriesToEnable'), createObject('value', parameters('dicomservices')[copyIndex()].diagnosticLogCategoriesToEnable), createObject('value', createArray('AuditLogs')))]",
           "enableDefaultTelemetry": {
             "value": "[variables('enableReferencedModulesTelemetry')]"
@@ -971,13 +984,36 @@
             "_generator": {
               "name": "bicep",
               "version": "0.22.6.54827",
-              "templateHash": "16609630624404769037"
+              "templateHash": "16541090903496320025"
             },
             "name": "Healthcare API Workspace DICOM Services",
             "description": "This module deploys a Healthcare API Workspace DICOM Service.",
             "owner": "Azure/module-maintainers"
           },
           "definitions": {
+            "managedIdentitiesType": {
+              "type": "object",
+              "properties": {
+                "systemAssigned": {
+                  "type": "bool",
+                  "nullable": true,
+                  "metadata": {
+                    "description": "Optional. Enables system assigned managed identity on the resource."
+                  }
+                },
+                "userAssignedResourcesIds": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "nullable": true,
+                  "metadata": {
+                    "description": "Optional. The resource ID(s) to assign to the resource."
+                  }
+                }
+              },
+              "nullable": true
+            },
             "lockType": {
               "type": "object",
               "properties": {
@@ -1113,18 +1149,10 @@
                 "description": "Optional. Control permission for data plane traffic coming from public networks while private endpoint is enabled."
               }
             },
-            "systemAssignedIdentity": {
-              "type": "bool",
-              "defaultValue": false,
+            "managedIdentities": {
+              "$ref": "#/definitions/managedIdentitiesType",
               "metadata": {
-                "description": "Optional. Enables system assigned managed identity on the resource."
-              }
-            },
-            "userAssignedIdentities": {
-              "type": "object",
-              "defaultValue": {},
-              "metadata": {
-                "description": "Optional. The ID(s) to assign to the resource."
+                "description": "Optional. The managed identity definition for this resource."
               }
             },
             "tags": {
@@ -1172,8 +1200,8 @@
                 }
               }
             ],
-            "identityType": "[if(parameters('systemAssignedIdentity'), if(not(empty(parameters('userAssignedIdentities'))), 'SystemAssigned,UserAssigned', 'SystemAssigned'), if(not(empty(parameters('userAssignedIdentities'))), 'UserAssigned', 'None'))]",
-            "identity": "[if(not(equals(variables('identityType'), 'None')), createObject('type', variables('identityType'), 'userAssignedIdentities', if(not(empty(parameters('userAssignedIdentities'))), parameters('userAssignedIdentities'), null())), null())]"
+            "formattedUserAssignedIdentities": "[reduce(map(coalesce(tryGet(parameters('managedIdentities'), 'userAssignedResourcesIds'), createArray()), lambda('id', createObject(format('{0}', lambdaVariables('id')), createObject()))), createObject(), lambda('cur', 'next', union(lambdaVariables('cur'), lambdaVariables('next'))))]",
+            "identity": "[if(not(empty(parameters('managedIdentities'))), createObject('type', if(coalesce(tryGet(parameters('managedIdentities'), 'systemAssigned'), false()), if(not(empty(coalesce(tryGet(parameters('managedIdentities'), 'userAssignedResourcesIds'), createObject()))), 'SystemAssigned,UserAssigned', 'SystemAssigned'), if(not(empty(coalesce(tryGet(parameters('managedIdentities'), 'userAssignedResourcesIds'), createObject()))), 'UserAssigned', null())), 'userAssignedIdentities', if(not(empty(variables('formattedUserAssignedIdentities'))), variables('formattedUserAssignedIdentities'), null())), null())]"
           },
           "resources": {
             "defaultTelemetry": {
@@ -1272,12 +1300,12 @@
               },
               "value": "[resourceGroup().name]"
             },
-            "systemAssignedPrincipalId": {
+            "systemAssignedMIPrincipalId": {
               "type": "string",
               "metadata": {
                 "description": "The principal ID of the system assigned identity."
               },
-              "value": "[if(and(parameters('systemAssignedIdentity'), contains(reference('dicom', '2022-06-01', 'full').identity, 'principalId')), reference('dicom', '2022-06-01', 'full').identity.principalId, '')]"
+              "value": "[if(and(coalesce(tryGet(parameters('managedIdentities'), 'systemAssigned'), false()), contains(reference('dicom', '2022-06-01', 'full').identity, 'principalId')), reference('dicom', '2022-06-01', 'full').identity.principalId, '')]"
             },
             "location": {
               "type": "string",
@@ -1326,7 +1354,7 @@
           "deviceMapping": "[if(contains(parameters('iotconnectors')[copyIndex()], 'deviceMapping'), createObject('value', parameters('iotconnectors')[copyIndex()].deviceMapping), createObject('value', createObject('templateType', 'CollectionContent', 'template', createArray())))]",
           "fhirdestination": "[if(contains(parameters('iotconnectors')[copyIndex()], 'fhirdestination'), createObject('value', parameters('iotconnectors')[copyIndex()].fhirdestination), createObject('value', createObject()))]",
           "consumerGroup": "[if(contains(parameters('iotconnectors')[copyIndex()], 'consumerGroup'), createObject('value', parameters('iotconnectors')[copyIndex()].consumerGroup), createObject('value', parameters('iotconnectors')[copyIndex()].name))]",
-          "systemAssignedIdentity": "[if(contains(parameters('iotconnectors')[copyIndex()], 'systemAssignedIdentity'), createObject('value', parameters('iotconnectors')[copyIndex()].systemAssignedIdentity), createObject('value', false()))]",
+          "managedIdentities": "[if(contains(parameters('iotconnectors')[copyIndex()], 'managedIdentities'), createObject('value', parameters('iotconnectors')[copyIndex()].managedIdentities), createObject('value', null()))]",
           "diagnosticStorageAccountId": "[if(contains(parameters('iotconnectors')[copyIndex()], 'diagnosticStorageAccountId'), createObject('value', parameters('iotconnectors')[copyIndex()].diagnosticStorageAccountId), createObject('value', ''))]",
           "diagnosticWorkspaceId": "[if(contains(parameters('iotconnectors')[copyIndex()], 'diagnosticWorkspaceId'), createObject('value', parameters('iotconnectors')[copyIndex()].diagnosticWorkspaceId), createObject('value', ''))]",
           "diagnosticEventHubAuthorizationRuleId": "[if(contains(parameters('iotconnectors')[copyIndex()], 'diagnosticEventHubAuthorizationRuleId'), createObject('value', parameters('iotconnectors')[copyIndex()].diagnosticEventHubAuthorizationRuleId), createObject('value', ''))]",
@@ -1334,7 +1362,6 @@
           "lock": {
             "value": "[coalesce(tryGet(parameters('iotconnectors')[copyIndex()], 'lock'), parameters('lock'))]"
           },
-          "userAssignedIdentities": "[if(contains(parameters('iotconnectors')[copyIndex()], 'userAssignedIdentities'), createObject('value', parameters('iotconnectors')[copyIndex()].userAssignedIdentities), createObject('value', createObject()))]",
           "diagnosticLogCategoriesToEnable": "[if(contains(parameters('iotconnectors')[copyIndex()], 'diagnosticLogCategoriesToEnable'), createObject('value', parameters('iotconnectors')[copyIndex()].diagnosticLogCategoriesToEnable), createObject('value', createArray('DiagnosticLogs')))]",
           "diagnosticMetricsToEnable": "[if(contains(parameters('iotconnectors')[copyIndex()], 'diagnosticMetricsToEnable'), createObject('value', parameters('iotconnectors')[copyIndex()].diagnosticMetricsToEnable), createObject('value', createArray('AllMetrics')))]",
           "enableDefaultTelemetry": {
@@ -1349,13 +1376,36 @@
             "_generator": {
               "name": "bicep",
               "version": "0.22.6.54827",
-              "templateHash": "8966290140169117967"
+              "templateHash": "13263818758803298676"
             },
             "name": "Healthcare API Workspace IoT Connectors",
             "description": "This module deploys a Healthcare API Workspace IoT Connector.",
             "owner": "Azure/module-maintainers"
           },
           "definitions": {
+            "managedIdentitiesType": {
+              "type": "object",
+              "properties": {
+                "systemAssigned": {
+                  "type": "bool",
+                  "nullable": true,
+                  "metadata": {
+                    "description": "Optional. Enables system assigned managed identity on the resource."
+                  }
+                },
+                "userAssignedResourcesIds": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "nullable": true,
+                  "metadata": {
+                    "description": "Optional. The resource ID(s) to assign to the resource."
+                  }
+                }
+              },
+              "nullable": true
+            },
             "lockType": {
               "type": "object",
               "properties": {
@@ -1473,18 +1523,10 @@
                 "description": "Optional. The lock settings of the service."
               }
             },
-            "systemAssignedIdentity": {
-              "type": "bool",
-              "defaultValue": false,
+            "managedIdentities": {
+              "$ref": "#/definitions/managedIdentitiesType",
               "metadata": {
-                "description": "Optional. Enables system assigned managed identity on the resource."
-              }
-            },
-            "userAssignedIdentities": {
-              "type": "object",
-              "defaultValue": {},
-              "metadata": {
-                "description": "Optional. The ID(s) to assign to the resource."
+                "description": "Optional. The managed identity definition for this resource."
               }
             },
             "tags": {
@@ -1553,8 +1595,8 @@
                 }
               }
             ],
-            "identityType": "[if(parameters('systemAssignedIdentity'), if(not(empty(parameters('userAssignedIdentities'))), 'SystemAssigned,UserAssigned', 'SystemAssigned'), if(not(empty(parameters('userAssignedIdentities'))), 'UserAssigned', 'None'))]",
-            "identity": "[if(not(equals(variables('identityType'), 'None')), createObject('type', variables('identityType'), 'userAssignedIdentities', if(not(empty(parameters('userAssignedIdentities'))), parameters('userAssignedIdentities'), null())), null())]",
+            "formattedUserAssignedIdentities": "[reduce(map(coalesce(tryGet(parameters('managedIdentities'), 'userAssignedResourcesIds'), createArray()), lambda('id', createObject(format('{0}', lambdaVariables('id')), createObject()))), createObject(), lambda('cur', 'next', union(lambdaVariables('cur'), lambdaVariables('next'))))]",
+            "identity": "[if(not(empty(parameters('managedIdentities'))), createObject('type', if(coalesce(tryGet(parameters('managedIdentities'), 'systemAssigned'), false()), if(not(empty(coalesce(tryGet(parameters('managedIdentities'), 'userAssignedResourcesIds'), createObject()))), 'SystemAssigned,UserAssigned', 'SystemAssigned'), if(not(empty(coalesce(tryGet(parameters('managedIdentities'), 'userAssignedResourcesIds'), createObject()))), 'UserAssigned', null())), 'userAssignedIdentities', if(not(empty(variables('formattedUserAssignedIdentities'))), variables('formattedUserAssignedIdentities'), null())), null())]",
             "enableReferencedModulesTelemetry": false
           },
           "resources": {
@@ -1833,12 +1875,12 @@
               },
               "value": "[resourceGroup().name]"
             },
-            "systemAssignedPrincipalId": {
+            "systemAssignedMIPrincipalId": {
               "type": "string",
               "metadata": {
                 "description": "The principal ID of the system assigned identity."
               },
-              "value": "[if(and(parameters('systemAssignedIdentity'), contains(reference('iotConnector', '2022-06-01', 'full').identity, 'principalId')), reference('iotConnector', '2022-06-01', 'full').identity.principalId, '')]"
+              "value": "[if(and(coalesce(tryGet(parameters('managedIdentities'), 'systemAssigned'), false()), contains(reference('iotConnector', '2022-06-01', 'full').identity, 'principalId')), reference('iotConnector', '2022-06-01', 'full').identity.principalId, '')]"
             },
             "location": {
               "type": "string",
