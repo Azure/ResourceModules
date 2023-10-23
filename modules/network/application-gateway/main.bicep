@@ -9,8 +9,8 @@ param name string
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
 
-@description('Optional. The ID(s) to assign to the resource.')
-param userAssignedIdentities object = {}
+@description('Optional. The managed identity definition for this resource.')
+param managedIdentities managedIdentitiesType
 
 @description('Optional. Authentication certificates of the application gateway resource.')
 param authenticationCertificates array = []
@@ -212,11 +212,11 @@ param diagnosticMetricsToEnable array = [
   'AllMetrics'
 ]
 
-var identityType = !empty(userAssignedIdentities) ? 'UserAssigned' : 'None'
+var formattedUserAssignedIdentities = reduce(map((managedIdentities.?userAssignedResourcesIds ?? []), (id) => { '${id}': {} }), {}, (cur, next) => union(cur, next)) // Converts the flat array to an object like { '${id1}': {}, '${id2}': {} }
 
-var identity = identityType != 'None' ? {
-  type: identityType
-  userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
+var identity = !empty(managedIdentities) ? {
+  type: !empty(managedIdentities.?userAssignedResourcesIds ?? {}) ? 'UserAssigned' : null
+  userAssignedIdentities: !empty(formattedUserAssignedIdentities) ? formattedUserAssignedIdentities : null
 } : null
 
 @description('Optional. The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings".')
@@ -421,6 +421,11 @@ output location string = applicationGateway.location
 // =============== //
 //   Definitions   //
 // =============== //
+
+type managedIdentitiesType = {
+  @description('Optional. The resource ID(s) to assign to the resource. Required if a user assigned identity is used for encryption.')
+  userAssignedResourcesIds: string[]
+}?
 
 type lockType = {
   @description('Optional. Specify the name of lock.')

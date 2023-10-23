@@ -228,6 +228,11 @@ module applicationGateway 'br:bicep/modules/network.application-gateway:1.0.0' =
       kind: 'CanNotDelete'
       name: 'myCustomLockName'
     }
+    managedIdentities: {
+      userAssignedResourcesIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
     privateEndpoints: [
       {
         privateDnsZoneResourceIds: [
@@ -427,9 +432,6 @@ module applicationGateway 'br:bicep/modules/network.application-gateway:1.0.0' =
       Environment: 'Non-Prod'
       'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
-    }
-    userAssignedIdentities: {
-      '<managedIdentityResourceId>': {}
     }
     webApplicationFirewallConfiguration: {
       disabledRuleGroups: [
@@ -686,6 +688,13 @@ module applicationGateway 'br:bicep/modules/network.application-gateway:1.0.0' =
         "name": "myCustomLockName"
       }
     },
+    "managedIdentities": {
+      "value": {
+        "userAssignedResourcesIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
+    },
     "privateEndpoints": {
       "value": [
         {
@@ -906,11 +915,6 @@ module applicationGateway 'br:bicep/modules/network.application-gateway:1.0.0' =
         "Role": "DeploymentValidation"
       }
     },
-    "userAssignedIdentities": {
-      "value": {
-        "<managedIdentityResourceId>": {}
-      }
-    },
     "webApplicationFirewallConfiguration": {
       "value": {
         "disabledRuleGroups": [
@@ -989,6 +993,7 @@ module applicationGateway 'br:bicep/modules/network.application-gateway:1.0.0' =
 | [`loadDistributionPolicies`](#parameter-loaddistributionpolicies) | array | Load distribution policies of the application gateway resource. |
 | [`location`](#parameter-location) | string | Location for all resources. |
 | [`lock`](#parameter-lock) | object | The lock settings of the service. |
+| [`managedIdentities`](#parameter-managedidentities) | object | The managed identity definition for this resource. |
 | [`privateEndpoints`](#parameter-privateendpoints) | array | Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
 | [`privateLinkConfigurations`](#parameter-privatelinkconfigurations) | array | PrivateLink configurations on application gateway. |
 | [`probes`](#parameter-probes) | array | Probes of the application gateway resource. |
@@ -1008,7 +1013,6 @@ module applicationGateway 'br:bicep/modules/network.application-gateway:1.0.0' =
 | [`trustedClientCertificates`](#parameter-trustedclientcertificates) | array | Trusted client certificates of the application gateway resource. |
 | [`trustedRootCertificates`](#parameter-trustedrootcertificates) | array | Trusted Root certificates of the application gateway resource. |
 | [`urlPathMaps`](#parameter-urlpathmaps) | array | URL path map of the application gateway resource. |
-| [`userAssignedIdentities`](#parameter-userassignedidentities) | object | The ID(s) to assign to the resource. |
 | [`webApplicationFirewallConfiguration`](#parameter-webapplicationfirewallconfiguration) | object | Application gateway web application firewall configuration. Should be configured for security reasons. |
 | [`zones`](#parameter-zones) | array | A list of availability zones denoting where the resource needs to come from. |
 
@@ -1237,6 +1241,24 @@ Optional. Specify the name of lock.
 - Required: No
 - Type: string
 
+### Parameter: `managedIdentities`
+
+The managed identity definition for this resource.
+- Required: No
+- Type: object
+
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`userAssignedResourcesIds`](#parameter-managedidentitiesuserassignedresourcesids) | Yes | array | Optional. The resource ID(s) to assign to the resource. Required if a user assigned identity is used for encryption. |
+
+### Parameter: `managedIdentities.userAssignedResourcesIds`
+
+Optional. The resource ID(s) to assign to the resource. Required if a user assigned identity is used for encryption.
+
+- Required: Yes
+- Type: array
+
 ### Parameter: `name`
 
 Name of the Application Gateway.
@@ -1441,13 +1463,6 @@ URL path map of the application gateway resource.
 - Required: No
 - Type: array
 - Default: `[]`
-
-### Parameter: `userAssignedIdentities`
-
-The ID(s) to assign to the resource.
-- Required: No
-- Type: object
-- Default: `{object}`
 
 ### Parameter: `webApplicationFirewallConfiguration`
 
