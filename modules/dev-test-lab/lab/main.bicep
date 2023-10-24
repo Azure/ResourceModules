@@ -123,7 +123,7 @@ var identity = !empty(managedIdentities) ? {
   userAssignedIdentities: !empty(formattedUserAssignedIdentities) ? formattedUserAssignedIdentities : null
 } : any(null)
 
-var formattedManagementIdentities = !empty(managementIdentitiesResourceIds) ? reduce(map((managementIdentitiesResourceIds ?? []), (id) => { '${id}': {} }), {}, (cur, next) => union(cur, next)) : null // Converts the flat array to an object like { '${id1}': {}, '${id2}': {} }
+var formattedManagementIdentities = !empty(managementIdentitiesResourceIds) ? reduce(map((managementIdentitiesResourceIds ?? []), (id) => { '${id}': {} }), {}, (cur, next) => union(cur, next)) : {} // Converts the flat array to an object like { '${id1}': {}, '${id2}': {} }
 
 var builtInRoleNames = {
   Contributor: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')
