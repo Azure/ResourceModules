@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "7571236887873003427"
+      "templateHash": "7653568276267549552"
     },
     "name": "SQL Managed Instances",
     "description": "This module deploys a SQL Managed Instance.",
@@ -1433,7 +1433,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.22.6.54827",
-              "templateHash": "16419324698366777740"
+              "templateHash": "5582620280313265167"
             },
             "name": "SQL Managed Instance Vulnerability Assessments",
             "description": "This module deploys a SQL Managed Instance Vulnerability Assessment.",
@@ -1501,9 +1501,6 @@
               }
             }
           },
-          "variables": {
-            "splitStorageAccountResourceId": "[split(parameters('storageAccountResourceId'), '/')]"
-          },
           "resources": [
             {
               "condition": "[parameters('enableDefaultTelemetry')]",
@@ -1538,7 +1535,7 @@
               "type": "Microsoft.Resources/deployments",
               "apiVersion": "2022-09-01",
               "name": "[format('{0}-sbdc-rbac', parameters('managedInstanceName'))]",
-              "resourceGroup": "[variables('splitStorageAccountResourceId')[4]]",
+              "resourceGroup": "[split(parameters('storageAccountResourceId'), '/')[4]]",
               "properties": {
                 "expressionEvaluationOptions": {
                   "scope": "inner"
@@ -1546,7 +1543,7 @@
                 "mode": "Incremental",
                 "parameters": {
                   "storageAccountName": {
-                    "value": "[last(variables('splitStorageAccountResourceId'))]"
+                    "value": "[last(split(parameters('storageAccountResourceId'), '/'))]"
                   },
                   "managedInstanceIdentityPrincipalId": {
                     "value": "[reference(resourceId('Microsoft.Sql/managedInstances', parameters('managedInstanceName')), '2022-05-01-preview', 'full').identity.principalId]"

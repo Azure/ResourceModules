@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "7339009855010154380"
+      "templateHash": "3706987978525659012"
     },
     "name": "Azure SQL Servers",
     "description": "This module deploys an Azure SQL Server.",
@@ -2391,7 +2391,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.22.6.54827",
-              "templateHash": "15718774987027357704"
+              "templateHash": "1780388510504326565"
             },
             "name": "Azure SQL Server Vulnerability Assessments",
             "description": "This module deploys an Azure SQL Server Vulnerability Assessment.",
@@ -2459,9 +2459,6 @@
               }
             }
           },
-          "variables": {
-            "splitStorageAccountResourceId": "[split(parameters('storageAccountResourceId'), '/')]"
-          },
           "resources": [
             {
               "condition": "[parameters('enableDefaultTelemetry')]",
@@ -2496,7 +2493,7 @@
               "type": "Microsoft.Resources/deployments",
               "apiVersion": "2022-09-01",
               "name": "[format('{0}-sbdc-rbac', parameters('serverName'))]",
-              "resourceGroup": "[variables('splitStorageAccountResourceId')[4]]",
+              "resourceGroup": "[split(parameters('storageAccountResourceId'), '/')[4]]",
               "properties": {
                 "expressionEvaluationOptions": {
                   "scope": "inner"
@@ -2504,7 +2501,7 @@
                 "mode": "Incremental",
                 "parameters": {
                   "storageAccountName": {
-                    "value": "[last(variables('splitStorageAccountResourceId'))]"
+                    "value": "[last(split(parameters('storageAccountResourceId'), '/'))]"
                   },
                   "managedInstanceIdentityPrincipalId": {
                     "value": "[reference(resourceId('Microsoft.Sql/servers', parameters('serverName')), '2022-05-01-preview', 'full').identity.principalId]"
