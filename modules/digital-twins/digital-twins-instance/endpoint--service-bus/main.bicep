@@ -90,9 +90,6 @@ output resourceGroupName string = resourceGroup().name
 @description('The name of the Endpoint.')
 output name string = endpoint.name
 
-@description('The principal ID of the system assigned identity.')
-output systemAssignedMIPrincipalId string = (managedIdentities.?systemAssigned ?? false) && contains(endpoint.identity, 'principalId') ? endpoint.identity.principalId : ''
-
 // =============== //
 //   Definitions   //
 // =============== //
