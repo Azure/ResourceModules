@@ -44,6 +44,7 @@ The following section provides usage examples for the module, which were used to
 - [Using large parameter set](#example-2-using-large-parameter-set)
 - [Pe](#example-3-pe)
 - [Secondary](#example-4-secondary)
+- [Vulnassm](#example-5-vulnassm)
 
 ### Example 1: _Admin_
 
@@ -585,6 +586,133 @@ module server 'br:bicep/modules/sql.server:1.0.0' = {
         "Environment": "Non-Prod",
         "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 5: _Vulnassm_
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module server 'br:bicep/modules/sql.server:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-sqlsvln'
+  params: {
+    // Required parameters
+    name: 'sqlsvln'
+    // Non-required parameters
+    administratorLogin: 'adminUserName'
+    administratorLoginPassword: '<administratorLoginPassword>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    location: '<location>'
+    primaryUserAssignedIdentityId: '<primaryUserAssignedIdentityId>'
+    securityAlertPolicies: [
+      {
+        emailAccountAdmins: true
+        name: 'Default'
+        state: 'Enabled'
+      }
+    ]
+    systemAssignedIdentity: true
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+    userAssignedIdentities: {
+      '<managedIdentityResourceId>': {}
+    }
+    vulnerabilityAssessmentsObj: {
+      createStorageRoleAssignment: true
+      emailSubscriptionAdmins: true
+      name: 'default'
+      recurringScansEmails: [
+        'test1@contoso.com'
+        'test2@contoso.com'
+      ]
+      recurringScansIsEnabled: true
+      storageAccountResourceId: '<storageAccountResourceId>'
+      useStorageAccountAccessKey: false
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "sqlsvln"
+    },
+    // Non-required parameters
+    "administratorLogin": {
+      "value": "adminUserName"
+    },
+    "administratorLoginPassword": {
+      "value": "<administratorLoginPassword>"
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "location": {
+      "value": "<location>"
+    },
+    "primaryUserAssignedIdentityId": {
+      "value": "<primaryUserAssignedIdentityId>"
+    },
+    "securityAlertPolicies": {
+      "value": [
+        {
+          "emailAccountAdmins": true,
+          "name": "Default",
+          "state": "Enabled"
+        }
+      ]
+    },
+    "systemAssignedIdentity": {
+      "value": true
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    },
+    "userAssignedIdentities": {
+      "value": {
+        "<managedIdentityResourceId>": {}
+      }
+    },
+    "vulnerabilityAssessmentsObj": {
+      "value": {
+        "createStorageRoleAssignment": true,
+        "emailSubscriptionAdmins": true,
+        "name": "default",
+        "recurringScansEmails": [
+          "test1@contoso.com",
+          "test2@contoso.com"
+        ],
+        "recurringScansIsEnabled": true,
+        "storageAccountResourceId": "<storageAccountResourceId>",
+        "useStorageAccountAccessKey": false
       }
     }
   }
