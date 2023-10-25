@@ -61,9 +61,7 @@ module testDeployment '../../main.bicep' = {
     privateEndpoints: [
       {
         privateDnsZoneResourceIds: [
-
           nestedDependencies.outputs.privateDNSZoneResourceId
-
         ]
         service: 'Web'
         subnetResourceId: nestedDependencies.outputs.subnetResourceId

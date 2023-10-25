@@ -52,7 +52,6 @@ module testDeployment '../../main.bicep' = {
     skuName: 'Standard'
     privateEndpoints: [
       {
-        service: 'namespace'
         subnetResourceId: nestedDependencies.outputs.subnetResourceId
         privateDnsZoneResourceIds: [
           nestedDependencies.outputs.privateDNSZoneResourceId
