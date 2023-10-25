@@ -117,7 +117,6 @@ module testDeployment '../../main.bicep' = {
     primaryUserAssignedIdentity: nestedDependencies.outputs.managedIdentityResourceId
     privateEndpoints: [
       {
-        service: 'amlworkspace'
         subnetResourceId: nestedDependencies.outputs.subnetResourceId
         privateDnsZoneResourceIds: [
           nestedDependencies.outputs.privateDNSZoneResourceId
