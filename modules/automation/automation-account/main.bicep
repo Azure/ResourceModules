@@ -382,7 +382,7 @@ module automationAccount_privateEndpoints '../../network/private-endpoint/main.b
     groupIds: [
       privateEndpoint.service
     ]
-    name: privateEndpoint.?name ?? 'pep-${last(split(automationAccount.id, '/'))}-${privateEndpoint.?service ?? 'account'}-${index}'
+    name: privateEndpoint.?name ?? 'pep-${last(split(automationAccount.id, '/'))}-${privateEndpoint.?service ?? privateEndpoint.service}-${index}'
     serviceResourceId: automationAccount.id
     subnetResourceId: privateEndpoint.subnetResourceId
     enableDefaultTelemetry: privateEndpoint.?enableDefaultTelemetry ?? enableReferencedModulesTelemetry

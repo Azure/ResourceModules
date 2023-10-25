@@ -256,7 +256,7 @@ module redis_privateEndpoints '../../network/private-endpoint/main.bicep' = [for
     groupIds: [
       privateEndpoint.?service ?? 'redisCache'
     ]
-    name: privateEndpoint.?name ?? 'pep-${last(split(redis.id, '/'))}-${privateEndpoint.?service ?? 'account'}-${index}'
+    name: privateEndpoint.?name ?? 'pep-${last(split(redis.id, '/'))}-${privateEndpoint.?service ?? 'redisCache'}-${index}'
     serviceResourceId: redis.id
     subnetResourceId: privateEndpoint.subnetResourceId
     enableDefaultTelemetry: privateEndpoint.?enableDefaultTelemetry ?? enableReferencedModulesTelemetry

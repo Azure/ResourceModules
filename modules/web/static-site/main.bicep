@@ -210,7 +210,7 @@ module staticSite_privateEndpoints '../../network/private-endpoint/main.bicep' =
     groupIds: [
       privateEndpoint.?service ?? 'staticSites'
     ]
-    name: privateEndpoint.?name ?? 'pep-${last(split(staticSite.id, '/'))}-${privateEndpoint.?service ?? 'account'}-${index}'
+    name: privateEndpoint.?name ?? 'pep-${last(split(staticSite.id, '/'))}-${privateEndpoint.?service ?? 'staticSites'}-${index}'
     serviceResourceId: staticSite.id
     subnetResourceId: privateEndpoint.subnetResourceId
     enableDefaultTelemetry: privateEndpoint.?enableDefaultTelemetry ?? enableReferencedModulesTelemetry

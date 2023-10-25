@@ -299,7 +299,7 @@ module rsv_privateEndpoints '../../network/private-endpoint/main.bicep' = [for (
     groupIds: [
       privateEndpoint.?service ?? 'AzureSiteRecovery'
     ]
-    name: privateEndpoint.?name ?? 'pep-${last(split(rsv.id, '/'))}-${privateEndpoint.?service ?? 'account'}-${index}'
+    name: privateEndpoint.?name ?? 'pep-${last(split(rsv.id, '/'))}-${privateEndpoint.?service ?? 'AzureSiteRecovery'}-${index}'
     serviceResourceId: rsv.id
     subnetResourceId: privateEndpoint.subnetResourceId
     enableDefaultTelemetry: privateEndpoint.?enableDefaultTelemetry ?? enableReferencedModulesTelemetry

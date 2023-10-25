@@ -366,7 +366,7 @@ module databaseAccount_privateEndpoints '../../network/private-endpoint/main.bic
     groupIds: [
       privateEndpoint.service
     ]
-    name: privateEndpoint.?name ?? 'pep-${last(split(databaseAccount.id, '/'))}-${privateEndpoint.?service ?? 'account'}-${index}'
+    name: privateEndpoint.?name ?? 'pep-${last(split(databaseAccount.id, '/'))}-${privateEndpoint.?service ?? privateEndpoint.service}-${index}'
     serviceResourceId: databaseAccount.id
     subnetResourceId: privateEndpoint.subnetResourceId
     enableDefaultTelemetry: privateEndpoint.?enableDefaultTelemetry ?? enableReferencedModulesTelemetry

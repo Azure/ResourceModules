@@ -391,7 +391,7 @@ module registry_privateEndpoints '../../network/private-endpoint/main.bicep' = [
     groupIds: [
       privateEndpoint.?service ?? 'registry'
     ]
-    name: privateEndpoint.?name ?? 'pep-${last(split(registry.id, '/'))}-${privateEndpoint.?service ?? 'account'}-${index}'
+    name: privateEndpoint.?name ?? 'pep-${last(split(registry.id, '/'))}-${privateEndpoint.?service ?? 'registry'}-${index}'
     serviceResourceId: registry.id
     subnetResourceId: privateEndpoint.subnetResourceId
     enableDefaultTelemetry: privateEndpoint.?enableDefaultTelemetry ?? enableReferencedModulesTelemetry

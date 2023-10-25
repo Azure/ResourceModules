@@ -279,7 +279,7 @@ module dataFactory_privateEndpoints '../../network/private-endpoint/main.bicep' 
     groupIds: [
       privateEndpoint.?service ?? 'dataFactory'
     ]
-    name: privateEndpoint.?name ?? 'pep-${last(split(dataFactory.id, '/'))}-${privateEndpoint.?service ?? 'account'}-${index}'
+    name: privateEndpoint.?name ?? 'pep-${last(split(dataFactory.id, '/'))}-${privateEndpoint.?service ?? 'dataFactory'}-${index}'
     serviceResourceId: dataFactory.id
     subnetResourceId: privateEndpoint.subnetResourceId
     enableDefaultTelemetry: privateEndpoint.?enableDefaultTelemetry ?? enableReferencedModulesTelemetry

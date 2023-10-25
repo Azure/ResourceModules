@@ -341,7 +341,7 @@ module workspace_privateEndpoints '../../network/private-endpoint/main.bicep' = 
     groupIds: [
       privateEndpoint.?service ?? 'databricks_ui_api'
     ]
-    name: privateEndpoint.?name ?? 'pep-${last(split(workspace.id, '/'))}-${privateEndpoint.?service ?? 'account'}-${index}'
+    name: privateEndpoint.?name ?? 'pep-${last(split(workspace.id, '/'))}-${privateEndpoint.?service ?? 'databricks_ui_api'}-${index}'
     serviceResourceId: workspace.id
     subnetResourceId: privateEndpoint.subnetResourceId
     enableDefaultTelemetry: privateEndpoint.?enableDefaultTelemetry ?? enableReferencedModulesTelemetry

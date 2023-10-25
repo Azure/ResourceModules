@@ -141,7 +141,7 @@ module webPubSub_privateEndpoints '../../network/private-endpoint/main.bicep' = 
     groupIds: [
       privateEndpoint.?service ?? 'webpubsub'
     ]
-    name: privateEndpoint.?name ?? 'pep-${last(split(webPubSub.id, '/'))}-${privateEndpoint.?service ?? 'account'}-${index}'
+    name: privateEndpoint.?name ?? 'pep-${last(split(webPubSub.id, '/'))}-${privateEndpoint.?service ?? 'webpubsub'}-${index}'
     serviceResourceId: webPubSub.id
     subnetResourceId: privateEndpoint.subnetResourceId
     enableDefaultTelemetry: privateEndpoint.?enableDefaultTelemetry ?? enableReferencedModulesTelemetry

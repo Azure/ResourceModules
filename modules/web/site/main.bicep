@@ -421,7 +421,7 @@ module app_privateEndpoints '../../network/private-endpoint/main.bicep' = [for (
     groupIds: [
       privateEndpoint.?service ?? 'sites'
     ]
-    name: privateEndpoint.?name ?? 'pep-${last(split(app.id, '/'))}-${privateEndpoint.?service ?? 'account'}-${index}'
+    name: privateEndpoint.?name ?? 'pep-${last(split(app.id, '/'))}-${privateEndpoint.?service ?? 'sites'}-${index}'
     serviceResourceId: app.id
     subnetResourceId: privateEndpoint.subnetResourceId
     enableDefaultTelemetry: privateEndpoint.?enableDefaultTelemetry ?? enableReferencedModulesTelemetry

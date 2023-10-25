@@ -253,7 +253,7 @@ module configurationStore_privateEndpoints '../../network/private-endpoint/main.
     groupIds: [
       privateEndpoint.?service ?? 'configurationStores'
     ]
-    name: privateEndpoint.?name ?? 'pep-${last(split(configurationStore.id, '/'))}-${privateEndpoint.?service ?? 'account'}-${index}'
+    name: privateEndpoint.?name ?? 'pep-${last(split(configurationStore.id, '/'))}-${privateEndpoint.?service ?? 'configurationStores'}-${index}'
     serviceResourceId: configurationStore.id
     subnetResourceId: privateEndpoint.subnetResourceId
     enableDefaultTelemetry: privateEndpoint.?enableDefaultTelemetry ?? enableReferencedModulesTelemetry

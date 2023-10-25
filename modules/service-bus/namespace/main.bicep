@@ -386,7 +386,7 @@ module serviceBusNamespace_privateEndpoints '../../network/private-endpoint/main
     groupIds: [
       privateEndpoint.?service ?? 'namespace'
     ]
-    name: privateEndpoint.?name ?? 'pep-${last(split(serviceBusNamespace.id, '/'))}-${privateEndpoint.?service ?? 'account'}-${index}'
+    name: privateEndpoint.?name ?? 'pep-${last(split(serviceBusNamespace.id, '/'))}-${privateEndpoint.?service ?? 'namespace'}-${index}'
     serviceResourceId: serviceBusNamespace.id
     subnetResourceId: privateEndpoint.subnetResourceId
     enableDefaultTelemetry: privateEndpoint.?enableDefaultTelemetry ?? enableReferencedModulesTelemetry

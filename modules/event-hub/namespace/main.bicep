@@ -326,7 +326,7 @@ module eventHubNamespace_privateEndpoints '../../network/private-endpoint/main.b
     groupIds: [
       privateEndpoint.?service ?? 'namespace'
     ]
-    name: privateEndpoint.?name ?? 'pep-${last(split(eventHubNamespace.id, '/'))}-${privateEndpoint.?service ?? 'account'}-${index}'
+    name: privateEndpoint.?name ?? 'pep-${last(split(eventHubNamespace.id, '/'))}-${privateEndpoint.?service ?? 'namespace'}-${index}'
     serviceResourceId: eventHubNamespace.id
     subnetResourceId: privateEndpoint.subnetResourceId
     enableDefaultTelemetry: privateEndpoint.?enableDefaultTelemetry ?? enableReferencedModulesTelemetry

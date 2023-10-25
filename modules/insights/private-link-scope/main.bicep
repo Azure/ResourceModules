@@ -81,7 +81,7 @@ module privateLinkScope_privateEndpoints '../../network/private-endpoint/main.bi
     groupIds: [
       privateEndpoint.?service ?? 'azuremonitor'
     ]
-    name: privateEndpoint.?name ?? 'pep-${last(split(privateLinkScope.id, '/'))}-${privateEndpoint.?service ?? 'account'}-${index}'
+    name: privateEndpoint.?name ?? 'pep-${last(split(privateLinkScope.id, '/'))}-${privateEndpoint.?service ?? 'azuremonitor'}-${index}'
     serviceResourceId: privateLinkScope.id
     subnetResourceId: privateEndpoint.subnetResourceId
     enableDefaultTelemetry: privateEndpoint.?enableDefaultTelemetry ?? enableReferencedModulesTelemetry

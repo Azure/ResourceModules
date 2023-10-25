@@ -171,7 +171,7 @@ module domain_privateEndpoints '../../network/private-endpoint/main.bicep' = [fo
     groupIds: [
       privateEndpoint.?service ?? 'domain'
     ]
-    name: privateEndpoint.?name ?? 'pep-${last(split(domain.id, '/'))}-${privateEndpoint.?service ?? 'account'}-${index}'
+    name: privateEndpoint.?name ?? 'pep-${last(split(domain.id, '/'))}-${privateEndpoint.?service ?? 'domain'}-${index}'
     serviceResourceId: domain.id
     subnetResourceId: privateEndpoint.subnetResourceId
     enableDefaultTelemetry: privateEndpoint.?enableDefaultTelemetry ?? enableReferencedModulesTelemetry

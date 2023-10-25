@@ -262,7 +262,7 @@ module batchAccount_privateEndpoints '../../network/private-endpoint/main.bicep'
     groupIds: [
       privateEndpoint.?service ?? 'batchAccount'
     ]
-    name: privateEndpoint.?name ?? 'pep-${last(split(batchAccount.id, '/'))}-${privateEndpoint.?service ?? 'account'}-${index}'
+    name: privateEndpoint.?name ?? 'pep-${last(split(batchAccount.id, '/'))}-${privateEndpoint.?service ?? 'batchAccount'}-${index}'
     serviceResourceId: batchAccount.id
     subnetResourceId: privateEndpoint.subnetResourceId
     enableDefaultTelemetry: privateEndpoint.?enableDefaultTelemetry ?? enableReferencedModulesTelemetry

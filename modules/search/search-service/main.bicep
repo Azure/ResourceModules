@@ -231,7 +231,7 @@ module searchService_privateEndpoints '../../network/private-endpoint/main.bicep
     groupIds: [
       privateEndpoint.?service ?? 'searchService'
     ]
-    name: privateEndpoint.?name ?? 'pep-${last(split(searchService.id, '/'))}-${privateEndpoint.?service ?? 'account'}-${index}'
+    name: privateEndpoint.?name ?? 'pep-${last(split(searchService.id, '/'))}-${privateEndpoint.?service ?? 'searchService'}-${index}'
     serviceResourceId: searchService.id
     subnetResourceId: privateEndpoint.subnetResourceId
     enableDefaultTelemetry: privateEndpoint.?enableDefaultTelemetry ?? enableReferencedModulesTelemetry

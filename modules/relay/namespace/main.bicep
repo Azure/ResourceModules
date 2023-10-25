@@ -257,7 +257,7 @@ module namespace_privateEndpoints '../../network/private-endpoint/main.bicep' = 
     groupIds: [
       privateEndpoint.?service ?? 'namespace'
     ]
-    name: privateEndpoint.?name ?? 'pep-${last(split(namespace.id, '/'))}-${privateEndpoint.?service ?? 'account'}-${index}'
+    name: privateEndpoint.?name ?? 'pep-${last(split(namespace.id, '/'))}-${privateEndpoint.?service ?? 'namespace'}-${index}'
     serviceResourceId: namespace.id
     subnetResourceId: privateEndpoint.subnetResourceId
     enableDefaultTelemetry: privateEndpoint.?enableDefaultTelemetry ?? enableReferencedModulesTelemetry

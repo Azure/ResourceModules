@@ -181,7 +181,7 @@ module signalR_privateEndpoints '../../network/private-endpoint/main.bicep' = [f
     groupIds: [
       privateEndpoint.?service ?? 'signalr'
     ]
-    name: privateEndpoint.?name ?? 'pep-${last(split(signalR.id, '/'))}-${privateEndpoint.?service ?? 'account'}-${index}'
+    name: privateEndpoint.?name ?? 'pep-${last(split(signalR.id, '/'))}-${privateEndpoint.?service ?? 'signalr'}-${index}'
     serviceResourceId: signalR.id
     subnetResourceId: privateEndpoint.subnetResourceId
     enableDefaultTelemetry: privateEndpoint.?enableDefaultTelemetry ?? enableReferencedModulesTelemetry

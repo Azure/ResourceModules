@@ -200,7 +200,7 @@ module digitalTwinsInstance_privateEndpoints '../../network/private-endpoint/mai
     groupIds: [
       privateEndpoint.?service ?? 'API'
     ]
-    name: privateEndpoint.?name ?? 'pep-${last(split(digitalTwinsInstance.id, '/'))}-${privateEndpoint.?service ?? 'account'}-${index}'
+    name: privateEndpoint.?name ?? 'pep-${last(split(digitalTwinsInstance.id, '/'))}-${privateEndpoint.?service ?? 'API'}-${index}'
     serviceResourceId: digitalTwinsInstance.id
     subnetResourceId: privateEndpoint.subnetResourceId
     enableDefaultTelemetry: privateEndpoint.?enableDefaultTelemetry ?? enableReferencedModulesTelemetry

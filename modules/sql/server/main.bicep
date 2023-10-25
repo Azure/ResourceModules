@@ -247,7 +247,7 @@ module server_privateEndpoints '../../network/private-endpoint/main.bicep' = [fo
     groupIds: [
       privateEndpoint.?service ?? 'sqlServer'
     ]
-    name: privateEndpoint.?name ?? 'pep-${last(split(server.id, '/'))}-${privateEndpoint.?service ?? 'account'}-${index}'
+    name: privateEndpoint.?name ?? 'pep-${last(split(server.id, '/'))}-${privateEndpoint.?service ?? 'sqlServer'}-${index}'
     serviceResourceId: server.id
     subnetResourceId: privateEndpoint.subnetResourceId
     enableDefaultTelemetry: privateEndpoint.?enableDefaultTelemetry ?? enableReferencedModulesTelemetry
