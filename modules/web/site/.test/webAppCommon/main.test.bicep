@@ -86,7 +86,6 @@ module testDeployment '../../main.bicep' = {
         diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
         privateEndpoints: [
           {
-            service: 'sites'
             subnetResourceId: nestedDependencies.outputs.subnetResourceId
             privateDnsZoneResourceIds: [
 
@@ -129,7 +128,6 @@ module testDeployment '../../main.bicep' = {
     ]
     privateEndpoints: [
       {
-        service: 'sites'
         subnetResourceId: nestedDependencies.outputs.subnetResourceId
         privateDnsZoneResourceIds: [
           nestedDependencies.outputs.privateDNSZoneResourceId

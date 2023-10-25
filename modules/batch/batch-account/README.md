@@ -72,13 +72,19 @@ module batchAccount 'br:bicep/modules/batch.batch-account:1.0.0' = {
             roleDefinitionIdOrName: 'Reader'
           }
         ]
-        service: 'batchAccount'
         subnetResourceId: '<subnetResourceId>'
         tags: {
           Environment: 'Non-Prod'
           'hidden-title': 'This is visible in the resource name'
           Role: 'DeploymentValidation'
         }
+      }
+    ]
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
       }
     ]
     storageAccessIdentity: '<storageAccessIdentity>'
@@ -150,13 +156,21 @@ module batchAccount 'br:bicep/modules/batch.batch-account:1.0.0' = {
               "roleDefinitionIdOrName": "Reader"
             }
           ],
-          "service": "batchAccount",
           "subnetResourceId": "<subnetResourceId>",
           "tags": {
             "Environment": "Non-Prod",
             "hidden-title": "This is visible in the resource name",
             "Role": "DeploymentValidation"
           }
+        }
+      ]
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
         }
       ]
     },
@@ -393,6 +407,7 @@ module batchAccount 'br:bicep/modules/batch.batch-account:1.0.0' = {
 | [`poolAllocationMode`](#parameter-poolallocationmode) | string | The allocation mode for creating pools in the Batch account. Determines which quota will be used. |
 | [`privateEndpoints`](#parameter-privateendpoints) | array | Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
 | [`publicNetworkAccess`](#parameter-publicnetworkaccess) | string | Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set and networkProfileAllowedIpRanges are not set. |
+| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | [`storageAccessIdentity`](#parameter-storageaccessidentity) | string | The resource ID of a user assigned identity assigned to pools which have compute nodes that need access to auto-storage. |
 | [`storageAuthenticationMode`](#parameter-storageauthenticationmode) | string | The authentication mode which the Batch service will use to manage the auto-storage account. |
 | [`systemAssignedIdentity`](#parameter-systemassignedidentity) | bool | Enables system assigned managed identity on the resource. |
@@ -561,7 +576,168 @@ The allocation mode for creating pools in the Batch account. Determines which qu
 Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.
 - Required: No
 - Type: array
-- Default: `[]`
+
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`applicationSecurityGroupResourceIds`](#parameter-privateendpointsapplicationsecuritygroupresourceids) | No | array | Optional. Application security groups in which the private endpoint IP configuration is included. |
+| [`customDnsConfigs`](#parameter-privateendpointscustomdnsconfigs) | No | array | Optional. Custom DNS configurations. |
+| [`customNetworkInterfaceName`](#parameter-privateendpointscustomnetworkinterfacename) | No | string | Optional. The custom name of the network interface attached to the private endpoint. |
+| [`enableTelemetry`](#parameter-privateendpointsenabletelemetry) | No | bool | Optional. Enable/Disable usage telemetry for module. |
+| [`ipConfigurations`](#parameter-privateendpointsipconfigurations) | No | array | Optional. A list of IP configurations of the private endpoint. This will be used to map to the First Party Service endpoints. |
+| [`location`](#parameter-privateendpointslocation) | No | string | Optional. The location to deploy the private endpoint to. |
+| [`lock`](#parameter-privateendpointslock) | No | object | Optional. Specify the type of lock. |
+| [`manualPrivateLinkServiceConnections`](#parameter-privateendpointsmanualprivatelinkserviceconnections) | No | array | Optional. Manual PrivateLink Service Connections. |
+| [`name`](#parameter-privateendpointsname) | No | string | Optional. The name of the private endpoint. |
+| [`privateDnsZoneGroupName`](#parameter-privateendpointsprivatednszonegroupname) | No | string | Optional. The name of the private DNS zone group to create if privateDnsZoneResourceIds were provided. |
+| [`privateDnsZoneResourceIds`](#parameter-privateendpointsprivatednszoneresourceids) | No | array | Optional. The private DNS zone groups to associate the private endpoint with. A DNS zone group can support up to 5 DNS zones. |
+| [`roleAssignments`](#parameter-privateendpointsroleassignments) | No | array | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| [`service`](#parameter-privateendpointsservice) | No | string | Optional. The service (sub-) type to deploy the private endpoint for. For example "vault" or "blob". |
+| [`subnetResourceId`](#parameter-privateendpointssubnetresourceid) | Yes | string | Required. Resource ID of the subnet where the endpoint needs to be created. |
+| [`tags`](#parameter-privateendpointstags) | No | object | Optional. Tags to be applied on all resources/resource groups in this deployment. |
+
+### Parameter: `privateEndpoints.applicationSecurityGroupResourceIds`
+
+Optional. Application security groups in which the private endpoint IP configuration is included.
+
+- Required: No
+- Type: array
+
+### Parameter: `privateEndpoints.customDnsConfigs`
+
+Optional. Custom DNS configurations.
+
+- Required: No
+- Type: array
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`fqdn`](#parameter-privateendpointscustomdnsconfigsfqdn) | No | string |  |
+| [`ipAddresses`](#parameter-privateendpointscustomdnsconfigsipaddresses) | Yes | array |  |
+
+### Parameter: `privateEndpoints.customDnsConfigs.fqdn`
+- Required: No
+- Type: string
+
+### Parameter: `privateEndpoints.customDnsConfigs.ipAddresses`
+- Required: Yes
+- Type: array
+
+
+### Parameter: `privateEndpoints.customNetworkInterfaceName`
+
+Optional. The custom name of the network interface attached to the private endpoint.
+
+- Required: No
+- Type: string
+
+### Parameter: `privateEndpoints.enableTelemetry`
+
+Optional. Enable/Disable usage telemetry for module.
+
+- Required: No
+- Type: bool
+
+### Parameter: `privateEndpoints.ipConfigurations`
+
+Optional. A list of IP configurations of the private endpoint. This will be used to map to the First Party Service endpoints.
+
+- Required: No
+- Type: array
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`groupId`](#parameter-privateendpointsipconfigurationsgroupid) | Yes | string |  |
+| [`memberName`](#parameter-privateendpointsipconfigurationsmembername) | Yes | string |  |
+| [`name`](#parameter-privateendpointsipconfigurationsname) | Yes | string |  |
+| [`privateIpAddress`](#parameter-privateendpointsipconfigurationsprivateipaddress) | Yes | string |  |
+
+### Parameter: `privateEndpoints.ipConfigurations.groupId`
+- Required: Yes
+- Type: string
+
+### Parameter: `privateEndpoints.ipConfigurations.memberName`
+- Required: Yes
+- Type: string
+
+### Parameter: `privateEndpoints.ipConfigurations.name`
+- Required: Yes
+- Type: string
+
+### Parameter: `privateEndpoints.ipConfigurations.privateIpAddress`
+- Required: Yes
+- Type: string
+
+
+### Parameter: `privateEndpoints.location`
+
+Optional. The location to deploy the private endpoint to.
+
+- Required: No
+- Type: string
+
+### Parameter: `privateEndpoints.lock`
+
+Optional. Specify the type of lock.
+
+- Required: No
+- Type: object
+
+### Parameter: `privateEndpoints.manualPrivateLinkServiceConnections`
+
+Optional. Manual PrivateLink Service Connections.
+
+- Required: No
+- Type: array
+
+### Parameter: `privateEndpoints.name`
+
+Optional. The name of the private endpoint.
+
+- Required: No
+- Type: string
+
+### Parameter: `privateEndpoints.privateDnsZoneGroupName`
+
+Optional. The name of the private DNS zone group to create if privateDnsZoneResourceIds were provided.
+
+- Required: No
+- Type: string
+
+### Parameter: `privateEndpoints.privateDnsZoneResourceIds`
+
+Optional. The private DNS zone groups to associate the private endpoint with. A DNS zone group can support up to 5 DNS zones.
+
+- Required: No
+- Type: array
+
+### Parameter: `privateEndpoints.roleAssignments`
+
+Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
+
+- Required: No
+- Type: array
+
+### Parameter: `privateEndpoints.service`
+
+Optional. The service (sub-) type to deploy the private endpoint for. For example "vault" or "blob".
+
+- Required: No
+- Type: string
+
+### Parameter: `privateEndpoints.subnetResourceId`
+
+Required. Resource ID of the subnet where the endpoint needs to be created.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `privateEndpoints.tags`
+
+Optional. Tags to be applied on all resources/resource groups in this deployment.
+
+- Required: No
+- Type: object
 
 ### Parameter: `publicNetworkAccess`
 
@@ -570,6 +746,74 @@ Whether or not public network access is allowed for this resource. For security 
 - Type: string
 - Default: `''`
 - Allowed: `['', Disabled, Enabled]`
+
+### Parameter: `roleAssignments`
+
+Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
+- Required: No
+- Type: array
+
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`condition`](#parameter-roleassignmentscondition) | No | string | Optional. The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container" |
+| [`conditionVersion`](#parameter-roleassignmentsconditionversion) | No | string | Optional. Version of the condition. |
+| [`delegatedManagedIdentityResourceId`](#parameter-roleassignmentsdelegatedmanagedidentityresourceid) | No | string | Optional. The Resource Id of the delegated managed identity resource. |
+| [`description`](#parameter-roleassignmentsdescription) | No | string | Optional. The description of the role assignment. |
+| [`principalId`](#parameter-roleassignmentsprincipalid) | Yes | string | Required. The principal ID of the principal (user/group/identity) to assign the role to. |
+| [`principalType`](#parameter-roleassignmentsprincipaltype) | No | string | Optional. The principal type of the assigned principal ID. |
+| [`roleDefinitionIdOrName`](#parameter-roleassignmentsroledefinitionidorname) | Yes | string | Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead. |
+
+### Parameter: `roleAssignments.condition`
+
+Optional. The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container"
+
+- Required: No
+- Type: string
+
+### Parameter: `roleAssignments.conditionVersion`
+
+Optional. Version of the condition.
+
+- Required: No
+- Type: string
+- Allowed: `[2.0]`
+
+### Parameter: `roleAssignments.delegatedManagedIdentityResourceId`
+
+Optional. The Resource Id of the delegated managed identity resource.
+
+- Required: No
+- Type: string
+
+### Parameter: `roleAssignments.description`
+
+Optional. The description of the role assignment.
+
+- Required: No
+- Type: string
+
+### Parameter: `roleAssignments.principalId`
+
+Required. The principal ID of the principal (user/group/identity) to assign the role to.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `roleAssignments.principalType`
+
+Optional. The principal type of the assigned principal ID.
+
+- Required: No
+- Type: string
+- Allowed: `[Device, ForeignGroup, Group, ServicePrincipal, User]`
+
+### Parameter: `roleAssignments.roleDefinitionIdOrName`
+
+Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead.
+
+- Required: Yes
+- Type: string
 
 ### Parameter: `storageAccessIdentity`
 

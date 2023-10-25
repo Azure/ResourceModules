@@ -78,9 +78,15 @@ module testDeployment '../../main.bicep' = {
       name: 'myCustomLockName'
     }
     poolAllocationMode: 'BatchService'
+    roleAssignments: [
+      {
+        roleDefinitionIdOrName: 'Reader'
+        principalId: nestedDependencies.outputs.managedIdentityPrincipalId
+        principalType: 'ServicePrincipal'
+      }
+    ]
     privateEndpoints: [
       {
-        service: 'batchAccount'
         subnetResourceId: nestedDependencies.outputs.subnetResourceId
         privateDnsZoneResourceIds: [
           nestedDependencies.outputs.privateDNSZoneResourceId
