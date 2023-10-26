@@ -27,6 +27,7 @@ on:
     branches:
       - main
       - feature/new-module-container-app-jobs
+      - dummy
     paths:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
