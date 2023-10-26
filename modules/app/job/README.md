@@ -319,46 +319,23 @@ module job 'br:bicep/modules/app.job:1.0.0' = {
 | Parameter | Type | Description |
 | :-- | :-- | :-- |
 | [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`eventTriggerConfig`](#parameter-eventtriggerconfig) | object | Required if TriggerType is Event. Configuration of an event driven job. |
 | [`initContainersTemplate`](#parameter-initcontainerstemplate) | array | List of specialized containers that run before app containers. |
 | [`location`](#parameter-location) | string | Location for all Resources. |
 | [`lock`](#parameter-lock) | object | The lock settings of the service. |
+| [`manualTriggerConfig`](#parameter-manualtriggerconfig) | object | Required if TriggerType is Manual. Configuration of a manual job. |
 | [`registries`](#parameter-registries) | array | Collection of private container registry credentials for containers used by the Container app. |
 | [`replicaRetryLimit`](#parameter-replicaretrylimit) | int | The maximum number of times a replica can be retried. |
+| [`replicaTimeout`](#parameter-replicatimeout) | int | Maximum number of seconds a replica is allowed to run. |
 | [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute. |
+| [`scheduleTriggerConfig`](#parameter-scheduletriggerconfig) | object | Required if TriggerType is Schedule. Configuration of a schedule based job. |
 | [`secrets`](#parameter-secrets) | secureObject | The secrets of the Container App. |
 | [`systemAssignedIdentity`](#parameter-systemassignedidentity) | bool | Enables system assigned managed identity on the resource. |
 | [`tags`](#parameter-tags) | object | Tags of the resource. |
+| [`triggerType`](#parameter-triggertype) | string | Trigger type of the job. |
 | [`userAssignedIdentities`](#parameter-userassignedidentities) | object | The set of user assigned identities associated with the resource, the userAssignedIdentities dictionary keys will be ARM resource IDs and The dictionary values can be empty objects ({}) in requests. |
 | [`volumes`](#parameter-volumes) | array | List of volume definitions for the Container App. |
 | [`workloadProfileName`](#parameter-workloadprofilename) | string | The name of the workload profile to use. |
-
-**Required if TriggerType is Event parameters**
-
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`eventTriggerConfig`](#parameter-eventtriggerconfig) | object | Configuration of an event driven job. |
-
-**Required if TriggerType is Schedule parameters**
-
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`scheduleTriggerConfig`](#parameter-scheduletriggerconfig) | object | Configuration of a schedule based job. |
-
-**Required if TriggerType is Manual parameters**
-
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`manualTriggerConfig`](#parameter-manualtriggerconfig) | object | Configuration of a manual job. |
-
-**Maximum number of seconds a replica is allowed to run parameters**
-
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-
-**Trigger type of the job parameters**
-
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
 
 ### Parameter: `containers`
 
@@ -381,7 +358,7 @@ Resource ID of environment.
 
 ### Parameter: `eventTriggerConfig`
 
-Configuration of an event driven job.
+Required if TriggerType is Event. Configuration of an event driven job.
 - Required: No
 - Type: object
 - Default: `{object}`
@@ -429,7 +406,7 @@ Optional. Specify the name of lock.
 
 ### Parameter: `manualTriggerConfig`
 
-Configuration of a manual job.
+Required if TriggerType is Manual. Configuration of a manual job.
 - Required: No
 - Type: object
 - Default: `{object}`
@@ -453,6 +430,13 @@ The maximum number of times a replica can be retried.
 - Required: No
 - Type: int
 - Default: `0`
+
+### Parameter: `replicaTimeout`
+
+Maximum number of seconds a replica is allowed to run.
+- Required: No
+- Type: int
+- Default: `1800`
 
 ### Parameter: `roleAssignments`
 
@@ -524,7 +508,7 @@ Required. The name of the role to assign. If it cannot be found you can specify 
 
 ### Parameter: `scheduleTriggerConfig`
 
-Configuration of a schedule based job.
+Required if TriggerType is Schedule. Configuration of a schedule based job.
 - Required: No
 - Type: object
 - Default: `{object}`
@@ -549,6 +533,13 @@ Tags of the resource.
 - Required: No
 - Type: object
 - Default: `{object}`
+
+### Parameter: `triggerType`
+
+Trigger type of the job.
+- Required: Yes
+- Type: string
+- Allowed: `[Event, Manual, Schedule]`
 
 ### Parameter: `userAssignedIdentities`
 
