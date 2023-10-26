@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "17871914311057597575"
+      "templateHash": "546025291925907408"
     },
     "name": "Container App Jobs",
     "description": "This module deploys a Container App Job.",
@@ -215,7 +215,7 @@
     },
     "workloadProfileName": {
       "type": "string",
-      "defaultValue": "Default",
+      "defaultValue": "Consumption",
       "metadata": {
         "description": "Optional. The name of the workload profile to use."
       }

@@ -51,7 +51,7 @@ param manualTriggerConfig object = {}
 param replicaRetryLimit int = 0
 
 @description('Optional. The name of the workload profile to use.')
-param workloadProfileName string = 'Default'
+param workloadProfileName string = 'Consumption'
 
 @description('Optional. The secrets of the Container App.')
 @secure()

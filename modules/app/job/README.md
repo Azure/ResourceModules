@@ -560,7 +560,7 @@ List of volume definitions for the Container App.
 The name of the workload profile to use.
 - Required: No
 - Type: string
-- Default: `'Default'`
+- Default: `'Consumption'`
 
 
 ## Outputs
