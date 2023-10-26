@@ -38,13 +38,13 @@ param containers array
 @description('Optional. List of specialized containers that run before app containers.')
 param initContainersTemplate array = []
 
-@description('Required if TriggerType is Event. Configuration of an event driven job.')
+@description('Optional. Required if TriggerType is Event. Configuration of an event driven job.')
 param eventTriggerConfig object = {}
 
-@description('Required if TriggerType is Schedule. Configuration of a schedule based job.')
+@description('Optional. Required if TriggerType is Schedule. Configuration of a schedule based job.')
 param scheduleTriggerConfig object = {}
 
-@description('Required if TriggerType is Manual. Configuration of a manual job.')
+@description('Optional. Required if TriggerType is Manual. Configuration of a manual job.')
 param manualTriggerConfig object = {}
 
 @description('Optional. The maximum number of times a replica can be retried.')
@@ -60,7 +60,7 @@ param secrets object = {}
 @description('Optional. List of volume definitions for the Container App.')
 param volumes array = []
 
-@description('Maximum number of seconds a replica is allowed to run.')
+@description('Optional. Maximum number of seconds a replica is allowed to run.')
 param replicaTimeout int = 1800
 
 @allowed([
@@ -68,7 +68,7 @@ param replicaTimeout int = 1800
   'Manual'
   'Schedule'
 ])
-@description('Trigger type of the job.')
+@description('Optional. Trigger type of the job.')
 param triggerType string
 
 var secretList = !empty(secrets) ? secrets.secureList : []
