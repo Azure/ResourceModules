@@ -40,7 +40,7 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module job 'br:bicep/modules/app.job:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-mcappjobcom'
+  name: '${uniqueString(deployment().name, location)}-test-mcajcom'
   params: {
     // Required parameters
     containers: [
@@ -71,7 +71,7 @@ module job 'br:bicep/modules/app.job:1.0.0' = {
       }
     ]
     environmentId: '<environmentId>'
-    name: 'mcappjobcom001'
+    name: 'mcajcom001'
     triggerType: 'Manual'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
@@ -99,7 +99,7 @@ module job 'br:bicep/modules/app.job:1.0.0' = {
     userAssignedIdentities: {
       '<managedIdentityResourceId>': {}
     }
-    workloadProfileName: 'dep-wlp-mcappjobcom'
+    workloadProfileName: 'dep-wlp-mcajcom'
   }
 }
 ```
@@ -150,7 +150,7 @@ module job 'br:bicep/modules/app.job:1.0.0' = {
       "value": "<environmentId>"
     },
     "name": {
-      "value": "mcappjobcom001"
+      "value": "mcajcom001"
     },
     "triggerType": {
       "value": "Manual"
@@ -196,7 +196,7 @@ module job 'br:bicep/modules/app.job:1.0.0' = {
       }
     },
     "workloadProfileName": {
-      "value": "dep-wlp-mcappjobcom"
+      "value": "dep-wlp-mcajcom"
     }
   }
 }
@@ -216,7 +216,7 @@ This instance deploys the module with the minimum set of required parameters.
 
 ```bicep
 module job 'br:bicep/modules/app.job:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-mcappjobmin'
+  name: '${uniqueString(deployment().name, location)}-test-mcajmin'
   params: {
     // Required parameters
     containers: [
@@ -230,7 +230,7 @@ module job 'br:bicep/modules/app.job:1.0.0' = {
       }
     ]
     environmentId: '<environmentId>'
-    name: 'mcappjobmin001'
+    name: 'mcajmin001'
     triggerType: 'Manual'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
@@ -276,7 +276,7 @@ module job 'br:bicep/modules/app.job:1.0.0' = {
       "value": "<environmentId>"
     },
     "name": {
-      "value": "mcappjobmin001"
+      "value": "mcajmin001"
     },
     "triggerType": {
       "value": "Manual"
