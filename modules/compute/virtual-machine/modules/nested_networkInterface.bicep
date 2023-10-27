@@ -13,7 +13,7 @@ param ipConfigurations array
 param lock lockType
 
 @description('Optional. The diagnostic settings of the Public IP.')
-param pidDiagnosticSettings diagnosticSettingType
+param publicIpDiagnosticSettings diagnosticSettingType
 
 @description('Optional. The diagnostic settings of the Network Interface.')
 param nicDiagnosticSettings diagnosticSettingType
@@ -27,7 +27,7 @@ module networkInterface_publicIPAddresses '../../../network/public-ip-address/ma
   name: '${deployment().name}-publicIP-${index}'
   params: {
     name: '${virtualMachineName}${ipConfiguration.pipconfiguration.publicIpNameSuffix}'
-    diagnosticSettings: pidDiagnosticSettings
+    diagnosticSettings: publicIpDiagnosticSettings
     location: location
     lock: lock
     publicIPAddressVersion: contains(ipConfiguration, 'publicIPAddressVersion') ? ipConfiguration.publicIPAddressVersion : 'IPv4'

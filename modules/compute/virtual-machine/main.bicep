@@ -190,7 +190,7 @@ param extensionCustomScriptProtectedSetting object = {}
 param location string = resourceGroup().location
 
 @description('Optional. The diagnostic settings of the Public IP.')
-param pidDiagnosticSettings diagnosticSettingType
+param publicIpDiagnosticSettings diagnosticSettingType
 
 @description('Optional. The diagnostic settings of the Network Interface.')
 param nicDiagnosticSettings diagnosticSettingType
@@ -370,7 +370,7 @@ module vm_nic 'modules/nested_networkInterface.bicep' = [for (nicConfiguration, 
     ipConfigurations: nicConfiguration.ipConfigurations
     lock: lock
     nicDiagnosticSettings: nicDiagnosticSettings
-    pidDiagnosticSettings: pidDiagnosticSettings
+    publicIpDiagnosticSettings: publicIpDiagnosticSettings
     roleAssignments: contains(nicConfiguration, 'roleAssignments') ? (!empty(nicConfiguration.roleAssignments) ? nicConfiguration.roleAssignments : []) : []
   }
 }]
