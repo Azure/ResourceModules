@@ -41,7 +41,7 @@ module nestedDependencies 'dependencies.bicep' = {
     location: location
     managedEnvironmentName: 'dep-${namePrefix}-menv-${serviceShort}'
     managedIdentityName: 'dep-${namePrefix}-msi-${serviceShort}'
-    workloadProfileName: 'dep-${namePrefix}-wlp-${serviceShort}'
+    workloadProfileName: serviceShort
   }
 }
 
