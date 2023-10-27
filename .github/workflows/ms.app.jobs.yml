@@ -26,7 +26,6 @@ on:
   push:
     branches:
       - main
-      - feature/new-module-container-app-jobs
     paths:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
