@@ -97,7 +97,7 @@
             "type": "string",
             "nullable": true,
             "metadata": {
-              "description": "Optional. The Resource Id of the delegated managed identity resource."
+              "description": "Optional. The Resource ID of the delegated managed identity resource."
             }
           }
         }

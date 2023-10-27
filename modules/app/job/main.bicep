@@ -193,6 +193,6 @@ type roleAssignmentType = {
   @description('Optional. Version of the condition.')
   conditionVersion: '2.0'?
 
-  @description('Optional. The Resource Id of the delegated managed identity resource.')
+  @description('Optional. The Resource ID of the delegated managed identity resource.')
   delegatedManagedIdentityResourceId: string?
 }[]?
