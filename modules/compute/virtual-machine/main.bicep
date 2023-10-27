@@ -189,12 +189,6 @@ param extensionCustomScriptProtectedSetting object = {}
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
 
-@description('Optional. The diagnostic settings of the Public IP.')
-param publicIpDiagnosticSettings diagnosticSettingType
-
-@description('Optional. The diagnostic settings of the Network Interface.')
-param nicDiagnosticSettings diagnosticSettingType
-
 @description('Optional. The lock settings of the service.')
 param lock lockType
 
@@ -369,8 +363,7 @@ module vm_nic 'modules/nested_networkInterface.bicep' = [for (nicConfiguration, 
     networkSecurityGroupResourceId: contains(nicConfiguration, 'networkSecurityGroupResourceId') ? nicConfiguration.networkSecurityGroupResourceId : ''
     ipConfigurations: nicConfiguration.ipConfigurations
     lock: lock
-    nicDiagnosticSettings: nicDiagnosticSettings
-    publicIpDiagnosticSettings: publicIpDiagnosticSettings
+    diagnosticSettings: nicConfiguration.?diagnosticSettings
     roleAssignments: contains(nicConfiguration, 'roleAssignments') ? (!empty(nicConfiguration.roleAssignments) ? nicConfiguration.roleAssignments : []) : []
   }
 }]
@@ -753,13 +746,13 @@ type diagnosticSettingType = {
     @description('Optional. Name of a Diagnostic Log category for a resource type this setting is applied to. Set the specific logs to collect here.')
     category: string?
 
-    @description('Optional. Name of a Diagnostic Log category group for a resource type this setting is applied to. Set to llLogs to collect all logs.')
+    @description('Optional. Name of a Diagnostic Log category group for a resource type this setting is applied to. Set to \'AllLogs\' to collect all logs.')
     categoryGroup: string?
   }[]?
 
   @description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to \'\' to disable log collection.')
   metricCategories: {
-    @description('Required. Name of a Diagnostic Metric category for a resource type this setting is applied to. Set to AllMetrics to collect all metrics.')
+    @description('Required. Name of a Diagnostic Metric category for a resource type this setting is applied to. Set to \'AllMetrics\' to collect all metrics.')
     category: string
   }[]?
 

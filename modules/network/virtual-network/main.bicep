@@ -213,7 +213,7 @@ resource virtualNetwork_diagnosticSettings 'Microsoft.Insights/diagnosticSetting
     ]
     logs: diagnosticSetting.?logCategoriesAndGroups ?? [
       {
-        categoryGroup: 'allLogs'
+        categoryGroup: 'AllLogs'
         enabled: true
       }
     ]
@@ -254,9 +254,6 @@ output subnetResourceIds array = [for subnet in subnets: az.resourceId('Microsof
 
 @description('The location the resource was deployed into.')
 output location string = virtualNetwork.location
-
-@description('The Diagnostic Settings of the virtual network.')
-output diagnosticsLogs array = diagnosticsLogs
 
 // =============== //
 //   Definitions   //
@@ -302,13 +299,13 @@ type diagnosticSettingType = {
     @description('Optional. Name of a Diagnostic Log category for a resource type this setting is applied to. Set the specific logs to collect here.')
     category: string?
 
-    @description('Optional. Name of a Diagnostic Log category group for a resource type this setting is applied to. Set to llLogs to collect all logs.')
+    @description('Optional. Name of a Diagnostic Log category group for a resource type this setting is applied to. Set to \'AllLogs\' to collect all logs.')
     categoryGroup: string?
   }[]?
 
   @description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to \'\' to disable log collection.')
   metricCategories: {
-    @description('Required. Name of a Diagnostic Metric category for a resource type this setting is applied to. Set to AllMetrics to collect all metrics.')
+    @description('Required. Name of a Diagnostic Metric category for a resource type this setting is applied to. Set to \'AllMetrics\' to collect all metrics.')
     category: string
   }[]?
 

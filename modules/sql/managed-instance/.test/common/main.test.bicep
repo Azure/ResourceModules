@@ -92,6 +92,20 @@ module testDeployment '../../main.bicep' = {
           name: 'default'
         }
         name: '${namePrefix}-${serviceShort}-db-001'
+        diagnosticSettings: [
+          {
+            name: 'customSetting'
+            metricCategories: [
+              {
+                category: 'AllMetrics'
+              }
+            ]
+            eventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
+            eventHubAuthorizationRuleResourceId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
+            storageAccountResourceId: diagnosticDependencies.outputs.storageAccountResourceId
+            workspaceResourceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
+          }
+        ]
       }
     ]
     diagnosticSettings: [

@@ -12,11 +12,8 @@ param networkSecurityGroupResourceId string = ''
 param ipConfigurations array
 param lock lockType
 
-@description('Optional. The diagnostic settings of the Public IP.')
-param publicIpDiagnosticSettings diagnosticSettingType
-
 @description('Optional. The diagnostic settings of the Network Interface.')
-param nicDiagnosticSettings diagnosticSettingType
+param diagnosticSettings diagnosticSettingType
 
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
@@ -27,7 +24,7 @@ module networkInterface_publicIPAddresses '../../../network/public-ip-address/ma
   name: '${deployment().name}-publicIP-${index}'
   params: {
     name: '${virtualMachineName}${ipConfiguration.pipconfiguration.publicIpNameSuffix}'
-    diagnosticSettings: publicIpDiagnosticSettings
+    diagnosticSettings: ipConfiguration.?diagnosticSettings
     location: location
     lock: lock
     publicIPAddressVersion: contains(ipConfiguration, 'publicIPAddressVersion') ? ipConfiguration.publicIPAddressVersion : 'IPv4'
@@ -62,7 +59,7 @@ module networkInterface '../../../network/network-interface/main.bicep' = {
     }]
     location: location
     tags: tags
-    diagnosticSettings: nicDiagnosticSettings
+    diagnosticSettings: diagnosticSettings
     dnsServers: !empty(dnsServers) ? dnsServers : []
     enableAcceleratedNetworking: enableAcceleratedNetworking
     enableDefaultTelemetry: enableReferencedModulesTelemetry

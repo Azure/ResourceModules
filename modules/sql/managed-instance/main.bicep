@@ -243,7 +243,7 @@ resource managedInstance_diagnosticSettings 'Microsoft.Insights/diagnosticSettin
     ]
     logs: diagnosticSetting.?logCategoriesAndGroups ?? [
       {
-        categoryGroup: 'allLogs'
+        categoryGroup: 'AllLogs'
         enabled: true
       }
     ]
@@ -275,9 +275,7 @@ module managedInstance_databases 'database/main.bicep' = [for (database, index) 
     catalogCollation: contains(database, 'catalogCollation') ? database.catalogCollation : 'SQL_Latin1_General_CP1_CI_AS'
     collation: contains(database, 'collation') ? database.collation : 'SQL_Latin1_General_CP1_CI_AS'
     createMode: contains(database, 'createMode') ? database.createMode : 'Default'
-    diagnosticStorageAccountId: contains(database, 'diagnosticStorageAccountId') ? database.diagnosticStorageAccountId : ''
-    diagnosticEventHubAuthorizationRuleId: contains(database, 'diagnosticEventHubAuthorizationRuleId') ? database.diagnosticEventHubAuthorizationRuleId : ''
-    diagnosticEventHubName: contains(database, 'diagnosticEventHubName') ? database.diagnosticEventHubName : ''
+    diagnosticSettings: database.?diagnosticSettings
     location: contains(database, 'location') ? database.location : managedInstance.location
     lock: database.?lock ?? lock
     longTermRetentionBackupResourceId: contains(database, 'longTermRetentionBackupResourceId') ? database.longTermRetentionBackupResourceId : ''
@@ -288,7 +286,6 @@ module managedInstance_databases 'database/main.bicep' = [for (database, index) 
     storageContainerSasToken: contains(database, 'storageContainerSasToken') ? database.storageContainerSasToken : ''
     storageContainerUri: contains(database, 'storageContainerUri') ? database.storageContainerUri : ''
     tags: contains(database, 'tags') ? database.tags : {}
-    diagnosticWorkspaceId: contains(database, 'diagnosticWorkspaceId') ? database.diagnosticWorkspaceId : ''
     backupShortTermRetentionPoliciesObj: contains(database, 'backupShortTermRetentionPolicies') ? database.backupShortTermRetentionPolicies : {}
     backupLongTermRetentionPoliciesObj: contains(database, 'backupLongTermRetentionPolicies') ? database.backupLongTermRetentionPolicies : {}
     enableDefaultTelemetry: enableReferencedModulesTelemetry
@@ -419,13 +416,13 @@ type diagnosticSettingType = {
     @description('Optional. Name of a Diagnostic Log category for a resource type this setting is applied to. Set the specific logs to collect here.')
     category: string?
 
-    @description('Optional. Name of a Diagnostic Log category group for a resource type this setting is applied to. Set to llLogs to collect all logs.')
+    @description('Optional. Name of a Diagnostic Log category group for a resource type this setting is applied to. Set to \'AllLogs\' to collect all logs.')
     categoryGroup: string?
   }[]?
 
   @description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to \'\' to disable log collection.')
   metricCategories: {
-    @description('Required. Name of a Diagnostic Metric category for a resource type this setting is applied to. Set to AllMetrics to collect all metrics.')
+    @description('Required. Name of a Diagnostic Metric category for a resource type this setting is applied to. Set to \'AllMetrics\' to collect all metrics.')
     category: string
   }[]?
 

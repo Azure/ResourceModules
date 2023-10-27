@@ -158,19 +158,10 @@ module publicIPAddress '../public-ip-address/main.bicep' = if (empty(bastionSubn
   name: '${uniqueString(deployment().name, location)}-Bastion-PIP'
   params: {
     name: contains(publicIPAddressObject, 'name') ? publicIPAddressObject.name : '${name}-pip'
-    diagnosticLogCategoriesToEnable: contains(publicIPAddressObject, 'diagnosticLogCategoriesToEnable') ? publicIPAddressObject.diagnosticLogCategoriesToEnable : [
-      'allLogs'
-    ]
-    diagnosticMetricsToEnable: contains(publicIPAddressObject, 'diagnosticMetricsToEnable') ? publicIPAddressObject.diagnosticMetricsToEnable : [
-      'AllMetrics'
-    ]
-    diagnosticStorageAccountId: diagnosticStorageAccountId
-    diagnosticWorkspaceId: diagnosticWorkspaceId
-    diagnosticEventHubAuthorizationRuleId: diagnosticEventHubAuthorizationRuleId
-    diagnosticEventHubName: diagnosticEventHubName
     enableDefaultTelemetry: enableReferencedModulesTelemetry
     location: location
     lock: lock
+    diagnosticSettings: publicIPAddressObject.?diagnosticSettings
     publicIPAddressVersion: contains(publicIPAddressObject, 'publicIPAddressVersion') ? publicIPAddressObject.publicIPAddressVersion : 'IPv4'
     publicIPAllocationMethod: contains(publicIPAddressObject, 'publicIPAllocationMethod') ? publicIPAddressObject.publicIPAllocationMethod : 'Static'
     publicIPPrefixResourceId: contains(publicIPAddressObject, 'publicIPPrefixResourceId') ? publicIPAddressObject.publicIPPrefixResourceId : ''
@@ -225,7 +216,7 @@ resource azureBastion_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@
     eventHubName: diagnosticSetting.?eventHubName
     logs: diagnosticSetting.?logCategoriesAndGroups ?? [
       {
-        categoryGroup: 'allLogs'
+        categoryGroup: 'AllLogs'
         enabled: true
       }
     ]
@@ -308,7 +299,7 @@ type diagnosticSettingType = {
     @description('Optional. Name of a Diagnostic Log category for a resource type this setting is applied to. Set the specific logs to collect here.')
     category: string?
 
-    @description('Optional. Name of a Diagnostic Log category group for a resource type this setting is applied to. Set to llLogs to collect all logs.')
+    @description('Optional. Name of a Diagnostic Log category group for a resource type this setting is applied to. Set to \'AllLogs\' to collect all logs.')
     categoryGroup: string?
   }[]?
 

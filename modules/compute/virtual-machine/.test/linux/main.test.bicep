@@ -114,6 +114,20 @@ module testDeployment '../../main.bicep' = {
               '3'
             ]
             subnetResourceId: nestedDependencies.outputs.subnetResourceId
+            diagnosticSettings: [
+              {
+                name: 'customSetting'
+                metricCategories: [
+                  {
+                    category: 'AllMetrics'
+                  }
+                ]
+                eventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
+                eventHubAuthorizationRuleResourceId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
+                storageAccountResourceId: diagnosticDependencies.outputs.storageAccountResourceId
+                workspaceResourceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
+              }
+            ]
           }
         ]
         nicSuffix: '-nic-01'
@@ -122,6 +136,20 @@ module testDeployment '../../main.bicep' = {
             roleDefinitionIdOrName: 'Reader'
             principalId: nestedDependencies.outputs.managedIdentityPrincipalId
             principalType: 'ServicePrincipal'
+          }
+        ]
+        diagnosticSettings: [
+          {
+            name: 'customSetting'
+            metricCategories: [
+              {
+                category: 'AllMetrics'
+              }
+            ]
+            eventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
+            eventHubAuthorizationRuleResourceId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
+            storageAccountResourceId: diagnosticDependencies.outputs.storageAccountResourceId
+            workspaceResourceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
           }
         ]
       }
@@ -163,34 +191,6 @@ module testDeployment '../../main.bicep' = {
     ]
     enableAutomaticUpdates: true
     patchMode: 'AutomaticByPlatform'
-    nicDiagnosticSettings: [
-      {
-        name: 'customSetting'
-        metricCategories: [
-          {
-            category: 'AllMetrics'
-          }
-        ]
-        eventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
-        eventHubAuthorizationRuleResourceId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
-        storageAccountResourceId: diagnosticDependencies.outputs.storageAccountResourceId
-        workspaceResourceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
-      }
-    ]
-    publicIpDiagnosticSettings: [
-      {
-        name: 'customSetting'
-        metricCategories: [
-          {
-            category: 'AllMetrics'
-          }
-        ]
-        eventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
-        eventHubAuthorizationRuleResourceId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
-        storageAccountResourceId: diagnosticDependencies.outputs.storageAccountResourceId
-        workspaceResourceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
-      }
-    ]
     disablePasswordAuthentication: true
     encryptionAtHost: false
     extensionCustomScriptConfig: {

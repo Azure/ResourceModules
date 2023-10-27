@@ -85,6 +85,15 @@ module testDeployment '../../main.bicep' = {
         eventHubAuthorizationRuleResourceId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
         storageAccountResourceId: diagnosticDependencies.outputs.storageAccountResourceId
         workspaceResourceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
+        logCategoriesAndGroups: [
+          {
+            category: 'jobs'
+          }
+          {
+            category: 'notebook'
+
+          }
+        ]
       }
     ]
     lock: {
@@ -136,11 +145,6 @@ module testDeployment '../../main.bicep' = {
       }
     ]
     managedResourceGroupResourceId: '${subscription().id}/resourceGroups/rg-${resourceGroupName}-managed'
-    diagnosticLogCategoriesToEnable: [
-      'jobs'
-      'notebook'
-    ]
-    diagnosticSettingsName: 'diag${namePrefix}${serviceShort}001'
     requireInfrastructureEncryption: true
     vnetAddressPrefix: '10.100'
     location: resourceGroup.location

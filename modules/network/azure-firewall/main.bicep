@@ -70,12 +70,6 @@ param zones array = [
 @description('Optional. The diagnostic settings of the service.')
 param diagnosticSettings diagnosticSettingType
 
-@description('Optional. The diagnostic settings of the Public IP.')
-param publicIpDiagnosticSettings diagnosticSettingType
-
-@description('Optional. The diagnostic settings of the Management IP.')
-param managementIpDiagnosticSettings diagnosticSettingType
-
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
 
@@ -192,7 +186,7 @@ module publicIPAddress '../../network/public-ip-address/main.bicep' = if (empty(
     skuName: contains(publicIPAddressObject, 'skuName') ? (!(empty(publicIPAddressObject.skuName)) ? publicIPAddressObject.skuName : 'Standard') : 'Standard'
     skuTier: contains(publicIPAddressObject, 'skuTier') ? (!(empty(publicIPAddressObject.skuTier)) ? publicIPAddressObject.skuTier : 'Regional') : 'Regional'
     roleAssignments: contains(publicIPAddressObject, 'roleAssignments') ? (!empty(publicIPAddressObject.roleAssignments) ? publicIPAddressObject.roleAssignments : []) : []
-    diagnosticSettings: publicIpDiagnosticSettings
+    diagnosticSettings: publicIPAddressObject.?diagnosticSettings
     location: location
     lock: lock
     tags: tags
@@ -211,7 +205,7 @@ module managementIPAddress '../../network/public-ip-address/main.bicep' = if (em
     skuName: contains(managementIPAddressObject, 'skuName') ? (!(empty(managementIPAddressObject.skuName)) ? managementIPAddressObject.skuName : 'Standard') : 'Standard'
     skuTier: contains(managementIPAddressObject, 'skuTier') ? (!(empty(managementIPAddressObject.skuTier)) ? managementIPAddressObject.skuTier : 'Regional') : 'Regional'
     roleAssignments: contains(managementIPAddressObject, 'roleAssignments') ? (!empty(managementIPAddressObject.roleAssignments) ? managementIPAddressObject.roleAssignments : []) : []
-    diagnosticSettings: managementIpDiagnosticSettings
+    diagnosticSettings: managementIPAddressObject.?diagnosticSettings
     location: location
     tags: tags
     zones: zones
@@ -282,7 +276,7 @@ resource azureFirewall_diagnosticSettings 'Microsoft.Insights/diagnosticSettings
     ]
     logs: diagnosticSetting.?logCategoriesAndGroups ?? [
       {
-        categoryGroup: 'allLogs'
+        categoryGroup: 'AllLogs'
         enabled: true
       }
     ]
@@ -377,13 +371,13 @@ type diagnosticSettingType = {
     @description('Optional. Name of a Diagnostic Log category for a resource type this setting is applied to. Set the specific logs to collect here.')
     category: string?
 
-    @description('Optional. Name of a Diagnostic Log category group for a resource type this setting is applied to. Set to llLogs to collect all logs.')
+    @description('Optional. Name of a Diagnostic Log category group for a resource type this setting is applied to. Set to \'AllLogs\' to collect all logs.')
     categoryGroup: string?
   }[]?
 
   @description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to \'\' to disable log collection.')
   metricCategories: {
-    @description('Required. Name of a Diagnostic Metric category for a resource type this setting is applied to. Set to AllMetrics to collect all metrics.')
+    @description('Required. Name of a Diagnostic Metric category for a resource type this setting is applied to. Set to \'AllMetrics\' to collect all metrics.')
     category: string
   }[]?
 
