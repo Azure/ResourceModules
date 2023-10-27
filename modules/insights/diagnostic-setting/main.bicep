@@ -28,7 +28,12 @@ param logCategoriesAndGroups logCategoriesAndGroupsType
 param metricCategories metricCategoriesType?
 
 @description('Optional. A string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destination type.')
-param logAnalyticsDestinationType ('Dedicated' | 'AzureDiagnostics')?
+@allowed([
+  ''
+  'Dedicated'
+  'AzureDiagnostics'
+])
+param logAnalyticsDestinationType string = ''
 
 @description('Optional. The full ARM resource ID of the Marketplace resource to which you would like to send Diagnostic Logs.')
 param marketplacePartnerResourceId string?
@@ -36,7 +41,7 @@ param marketplacePartnerResourceId string?
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-@sys.description('Optional. Location deployment metadata.')
+@description('Optional. Location deployment metadata.')
 param location string = deployment().location
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
@@ -59,7 +64,7 @@ resource diagnosticSetting 'Microsoft.Insights/diagnosticSettings@2021-05-01-pre
     workspaceId: workspaceResourceId
     eventHubAuthorizationRuleId: eventHubAuthorizationRuleResourceId
     eventHubName: eventHubName
-    logAnalyticsDestinationType: logAnalyticsDestinationType
+    logAnalyticsDestinationType: !empty(logAnalyticsDestinationType) ? logAnalyticsDestinationType : null
     marketplacePartnerId: marketplacePartnerResourceId
     logs: logCategoriesAndGroups ?? [
       {

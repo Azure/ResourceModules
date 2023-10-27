@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "17656378970927023137"
+      "templateHash": "18398206698301331030"
     },
     "name": "Diagnostic Settings (Activity Logs) for Azure Subscriptions",
     "description": "This module deploys a Subscription wide export of the Activity Log.",
@@ -111,11 +111,12 @@
     },
     "logAnalyticsDestinationType": {
       "type": "string",
+      "defaultValue": "",
       "allowedValues": [
-        "AzureDiagnostics",
-        "Dedicated"
+        "",
+        "Dedicated",
+        "AzureDiagnostics"
       ],
-      "nullable": true,
       "metadata": {
         "description": "Optional. A string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destination type."
       }
@@ -167,7 +168,7 @@
         "workspaceId": "[parameters('workspaceResourceId')]",
         "eventHubAuthorizationRuleId": "[parameters('eventHubAuthorizationRuleResourceId')]",
         "eventHubName": "[parameters('eventHubName')]",
-        "logAnalyticsDestinationType": "[parameters('logAnalyticsDestinationType')]",
+        "logAnalyticsDestinationType": "[if(not(empty(parameters('logAnalyticsDestinationType'))), parameters('logAnalyticsDestinationType'), null())]",
         "marketplacePartnerId": "[parameters('marketplacePartnerResourceId')]",
         "logs": "[coalesce(parameters('logCategoriesAndGroups'), createArray(createObject('categoryGroup', 'AllLogs', 'enabled', true())))]",
         "metrics": "[coalesce(parameters('metricCategories'), createArray(createObject('category', 'AllMetrics', 'timeGrain', null(), 'enabled', true())))]"

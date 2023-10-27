@@ -148,7 +148,8 @@ Location deployment metadata.
 A string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destination type.
 - Required: No
 - Type: string
-- Allowed: `[AzureDiagnostics, Dedicated]`
+- Default: `''`
+- Allowed: `['', AzureDiagnostics, Dedicated]`
 
 ### Parameter: `logCategoriesAndGroups`
 
