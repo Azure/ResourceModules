@@ -7,13 +7,22 @@ param managedEnvironmentName string
 @description('Required. The name of the managed identity to create.')
 param managedIdentityName string
 
-resource managedEnvironment 'Microsoft.App/managedEnvironments@2022-10-01' = {
+@description('Required. The name of the workload profile to create.')
+param workloadProfileName string
+
+resource managedEnvironment 'Microsoft.App/managedEnvironments@2023-05-01' = {
   name: managedEnvironmentName
   location: location
-  sku: {
-    name: 'Consumption'
+  properties: {
+    workloadProfiles: [
+      {
+        name: workloadProfileName
+        workloadProfileType: 'D4'
+        maximumCount: 1
+        minimumCount: 1
+      }
+    ]
   }
-  properties: {}
 }
 
 resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2022-01-31-preview' = {

@@ -15,7 +15,7 @@ param resourceGroupName string = 'dep-${namePrefix}-app.containerApps-${serviceS
 param location string = deployment().location
 
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints.')
-param serviceShort string = 'mcappcom'
+param serviceShort string = 'mcappjobcom'
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
@@ -41,6 +41,7 @@ module nestedDependencies 'dependencies.bicep' = {
     location: location
     managedEnvironmentName: 'dep-${namePrefix}-menv-${serviceShort}'
     managedIdentityName: 'dep-${namePrefix}-msi-${serviceShort}'
+    workloadProfileName: 'dep-${namePrefix}-wlp-${serviceShort}'
   }
 }
 
@@ -59,6 +60,7 @@ module testDeployment '../../main.bicep' = {
     }
     enableDefaultTelemetry: enableDefaultTelemetry
     environmentId: nestedDependencies.outputs.managedEnvironmentResourceId
+    workloadProfileName: 'dep-${namePrefix}-wlp-${serviceShort}'
     location: location
     lock: {
       kind: 'CanNotDelete'
