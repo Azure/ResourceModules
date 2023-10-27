@@ -134,10 +134,15 @@ module server 'br:bicep/modules/sql.server:1.0.0' = {
         }
         capacity: 0
         collation: 'SQL_Latin1_General_CP1_CI_AS'
-        diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-        diagnosticEventHubName: '<diagnosticEventHubName>'
-        diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-        diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+        diagnosticSettings: [
+          {
+            eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+            eventHubName: '<eventHubName>'
+            name: 'customSetting'
+            storageAccountResourceId: '<storageAccountResourceId>'
+            workspaceResourceId: '<workspaceResourceId>'
+          }
+        ]
         elasticPoolId: '<elasticPoolId>'
         encryptionProtectorObj: {
           serverKeyName: '<serverKeyName>'
@@ -271,10 +276,15 @@ module server 'br:bicep/modules/sql.server:1.0.0' = {
           },
           "capacity": 0,
           "collation": "SQL_Latin1_General_CP1_CI_AS",
-          "diagnosticEventHubAuthorizationRuleId": "<diagnosticEventHubAuthorizationRuleId>",
-          "diagnosticEventHubName": "<diagnosticEventHubName>",
-          "diagnosticStorageAccountId": "<diagnosticStorageAccountId>",
-          "diagnosticWorkspaceId": "<diagnosticWorkspaceId>",
+          "diagnosticSettings": [
+            {
+              "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+              "eventHubName": "<eventHubName>",
+              "name": "customSetting",
+              "storageAccountResourceId": "<storageAccountResourceId>",
+              "workspaceResourceId": "<workspaceResourceId>"
+            }
+          ],
           "elasticPoolId": "<elasticPoolId>",
           "encryptionProtectorObj": {
             "serverKeyName": "<serverKeyName>",
