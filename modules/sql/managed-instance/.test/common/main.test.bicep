@@ -95,11 +95,6 @@ module testDeployment '../../main.bicep' = {
         diagnosticSettings: [
           {
             name: 'customSetting'
-            metricCategories: [
-              {
-                category: 'AllMetrics'
-              }
-            ]
             eventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
             eventHubAuthorizationRuleResourceId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
             storageAccountResourceId: diagnosticDependencies.outputs.storageAccountResourceId

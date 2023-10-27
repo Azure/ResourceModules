@@ -119,13 +119,6 @@ resource database_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021
     workspaceId: diagnosticSetting.?workspaceResourceId
     eventHubAuthorizationRuleId: diagnosticSetting.?eventHubAuthorizationRuleResourceId
     eventHubName: diagnosticSetting.?eventHubName
-    metrics: diagnosticSetting.?metricCategories ?? [
-      {
-        category: 'AllMetrics'
-        timeGrain: null
-        enabled: true
-      }
-    ]
     logs: diagnosticSetting.?logCategoriesAndGroups ?? [
       {
         categoryGroup: 'AllLogs'
@@ -198,12 +191,6 @@ type diagnosticSettingType = {
 
     @description('Optional. Name of a Diagnostic Log category group for a resource type this setting is applied to. Set to \'AllLogs\' to collect all logs.')
     categoryGroup: string?
-  }[]?
-
-  @description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to \'\' to disable log collection.')
-  metricCategories: {
-    @description('Required. Name of a Diagnostic Metric category for a resource type this setting is applied to. Set to \'AllMetrics\' to collect all metrics.')
-    category: string
   }[]?
 
   @description('Optional. A string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destination type.')

@@ -28,7 +28,7 @@ param logCategoriesAndGroups logCategoriesAndGroupsType
 param metricCategories metricCategoriesType?
 
 @description('Optional. A string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destination type.')
-param logAnalyticsDestinationType ('Dedicated' | 'AzureDiagnostics' | null)?
+param logAnalyticsDestinationType ('Dedicated' | 'AzureDiagnostics')?
 
 @description('Optional. The full ARM resource ID of the Marketplace resource to which you would like to send Diagnostic Logs.')
 param marketplacePartnerResourceId string?

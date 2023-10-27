@@ -72,11 +72,6 @@ module managedInstance 'br:bicep/modules/sql.managed-instance:1.0.0' = {
           {
             eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
             eventHubName: '<eventHubName>'
-            metricCategories: [
-              {
-                category: 'AllMetrics'
-              }
-            ]
             name: 'customSetting'
             storageAccountResourceId: '<storageAccountResourceId>'
             workspaceResourceId: '<workspaceResourceId>'
@@ -202,11 +197,6 @@ module managedInstance 'br:bicep/modules/sql.managed-instance:1.0.0' = {
             {
               "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
               "eventHubName": "<eventHubName>",
-              "metricCategories": [
-                {
-                  "category": "AllMetrics"
-                }
-              ],
               "name": "customSetting",
               "storageAccountResourceId": "<storageAccountResourceId>",
               "workspaceResourceId": "<workspaceResourceId>"
