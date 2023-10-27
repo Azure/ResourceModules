@@ -60,7 +60,7 @@ module testDeployment '../../main.bicep' = {
     }
     enableDefaultTelemetry: enableDefaultTelemetry
     environmentId: nestedDependencies.outputs.managedEnvironmentResourceId
-    workloadProfileName: 'dep-${namePrefix}-wlp-${serviceShort}'
+    workloadProfileName: serviceShort
     location: location
     lock: {
       kind: 'CanNotDelete'

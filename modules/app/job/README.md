@@ -99,7 +99,7 @@ module job 'br:bicep/modules/app.job:1.0.0' = {
     userAssignedIdentities: {
       '<managedIdentityResourceId>': {}
     }
-    workloadProfileName: 'dep-wlp-mcajcom'
+    workloadProfileName: '<workloadProfileName>'
   }
 }
 ```
@@ -196,7 +196,7 @@ module job 'br:bicep/modules/app.job:1.0.0' = {
       }
     },
     "workloadProfileName": {
-      "value": "dep-wlp-mcajcom"
+      "value": "<workloadProfileName>"
     }
   }
 }
