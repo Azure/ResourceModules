@@ -430,7 +430,6 @@ Enables system assigned managed identity on the resource. Required if userAssign
 Tags of the disk encryption resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `userAssignedIdentities`
 

@@ -88,7 +88,6 @@ Enables system assigned managed identity on the resource.
 Tags of the Gremlin database resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `throughput`
 

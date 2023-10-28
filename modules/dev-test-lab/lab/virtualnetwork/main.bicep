@@ -14,7 +14,7 @@ param name string
 param externalProviderResourceId string
 
 @sys.description('Optional. Tags of the resource.')
-param tags object = {}
+param tags object?
 
 @sys.description('Optional. The description of the virtual network.')
 param description string = ''

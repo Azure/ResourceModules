@@ -392,7 +392,6 @@ Resource ID of database if createMode set to Copy, Secondary, PointInTimeRestore
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `zoneRedundant`
 

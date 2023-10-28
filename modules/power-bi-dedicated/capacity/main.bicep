@@ -12,7 +12,7 @@ param location string = resourceGroup().location
 param enableDefaultTelemetry bool = true
 
 @description('Optional. Tags of the resource.')
-param tags object = {}
+param tags object?
 
 @description('Required. SkuCapacity of the resource.')
 param skuCapacity int

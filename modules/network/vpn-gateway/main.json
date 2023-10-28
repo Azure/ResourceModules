@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "18343688551152828699"
+      "templateHash": "1887977315027479771"
     },
     "name": "VPN Gateways",
     "description": "This module deploys a VPN Gateway.",
@@ -103,7 +103,7 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Tags of the resource."
       }

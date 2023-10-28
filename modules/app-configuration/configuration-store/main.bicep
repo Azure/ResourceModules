@@ -72,7 +72,7 @@ param lock lockType
 param roleAssignments roleAssignmentType
 
 @description('Optional. Tags of the resource.')
-param tags object = {}
+param tags object?
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
@@ -157,7 +157,7 @@ module configurationStore_keyValues 'key-value/main.bicep' = [for (keyValue, ind
     name: keyValue.name
     value: keyValue.value
     contentType: contains(keyValue, 'contentType') ? keyValue.contentType : ''
-    tags: contains(keyValue, 'tags') ? keyValue.tags : {}
+    tags: keyValue.?tags ?? tags
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]

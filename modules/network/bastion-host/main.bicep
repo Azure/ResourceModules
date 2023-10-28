@@ -14,9 +14,6 @@ param vNetId string
 @description('Optional. The Public IP resource ID to associate to the azureBastionSubnet. If empty, then the Public IP that is created as part of this module will be applied to the azureBastionSubnet.')
 param bastionSubnetPublicIpResourceId string = ''
 
-@description('Optional. Specifies if a Public IP should be created by default if one is not provided.')
-param isCreateDefaultPublicIP bool = true
-
 @description('Optional. Specifies the properties of the Public IP to create and be used by Azure Bastion. If it\'s not provided and publicIPAddressResourceId is empty, a \'-pip\' suffix will be appended to the Bastion\'s name.')
 param publicIPAddressObject object = {}
 
@@ -55,7 +52,7 @@ param scaleUnits int = 2
 param roleAssignments roleAssignmentType
 
 @description('Optional. Tags of the resource.')
-param tags object = {}
+param tags object?
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
@@ -80,7 +77,7 @@ var existingPip = {
   }
 }
 var newPip = {
-  publicIPAddress: (empty(bastionSubnetPublicIpResourceId) && isCreateDefaultPublicIP) ? {
+  publicIPAddress: (empty(bastionSubnetPublicIpResourceId) && !empty(publicIPAddressObject)) ? {
     id: publicIPAddress.outputs.resourceId
   } : null
 }
@@ -89,7 +86,7 @@ var ipConfigurations = [
   {
     name: 'IpConfAzureBastionSubnet'
     //Use existing Public IP, new Public IP created in this module, or none if isCreateDefaultPublicIP is false
-    properties: union(subnetVar, !empty(bastionSubnetPublicIpResourceId) ? existingPip : {}, (isCreateDefaultPublicIP ? newPip : {}))
+    properties: union(subnetVar, !empty(bastionSubnetPublicIpResourceId) ? existingPip : {}, (!empty(publicIPAddressObject) ? newPip : {}))
   }
 ]
 
@@ -154,7 +151,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2022-09-01' = if (ena
   }
 }
 
-module publicIPAddress '../public-ip-address/main.bicep' = if (empty(bastionSubnetPublicIpResourceId) && isCreateDefaultPublicIP) {
+module publicIPAddress '../public-ip-address/main.bicep' = if (empty(bastionSubnetPublicIpResourceId) && !empty(publicIPAddressObject)) {
   name: '${uniqueString(deployment().name, location)}-Bastion-PIP'
   params: {
     name: contains(publicIPAddressObject, 'name') ? publicIPAddressObject.name : '${name}-pip'
@@ -168,7 +165,7 @@ module publicIPAddress '../public-ip-address/main.bicep' = if (empty(bastionSubn
     roleAssignments: contains(publicIPAddressObject, 'roleAssignments') ? publicIPAddressObject.roleAssignments : []
     skuName: contains(publicIPAddressObject, 'skuName') ? publicIPAddressObject.skuName : 'Standard'
     skuTier: contains(publicIPAddressObject, 'skuTier') ? publicIPAddressObject.skuTier : 'Regional'
-    tags: tags
+    tags: publicIPAddressObject.?tags ?? tags
     zones: contains(publicIPAddressObject, 'zones') ? publicIPAddressObject.zones : []
   }
 }

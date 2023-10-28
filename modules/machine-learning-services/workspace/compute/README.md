@@ -144,7 +144,6 @@ Enables system assigned managed identity on the resource. Ignored when attaching
 Contains resource tags defined as key-value pairs. Ignored when attaching a compute resource, i.e. when you provide a resource ID.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `userAssignedIdentities`
 

@@ -12,7 +12,7 @@ param name string
 param location string = resourceGroup().location
 
 @description('Optional. Tags for all resources.')
-param tags object = {}
+param tags object?
 
 @description('Optional. The pool service level.')
 @allowed([

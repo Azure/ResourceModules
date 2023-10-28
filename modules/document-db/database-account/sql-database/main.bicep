@@ -18,7 +18,7 @@ param throughput int = 400
 param autoscaleSettingsMaxThroughput int = -1
 
 @description('Optional. Tags of the SQL database resource.')
-param tags object = {}
+param tags object?
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true

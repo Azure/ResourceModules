@@ -303,7 +303,6 @@ Possible values are any decimal value greater than zero or -1 which indicates th
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `type`
 

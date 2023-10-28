@@ -1068,7 +1068,6 @@ Enables system assigned managed identity on the resource. Required if `userAssig
 Resource tags.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `userAssignedIdentities`
 

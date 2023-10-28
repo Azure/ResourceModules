@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "11474223450734881423"
+      "templateHash": "17417954452545596253"
     },
     "name": "App Service Environments",
     "description": "This module deploys an App Service Environment.",
@@ -222,7 +222,7 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Resource tags."
       }

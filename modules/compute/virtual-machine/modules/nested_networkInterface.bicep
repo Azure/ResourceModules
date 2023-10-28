@@ -33,7 +33,7 @@ module networkInterface_publicIPAddresses '../../../network/public-ip-address/ma
     roleAssignments: contains(ipConfiguration, 'roleAssignments') ? ipConfiguration.roleAssignments : []
     skuName: contains(ipConfiguration, 'skuName') ? ipConfiguration.skuName : 'Standard'
     skuTier: contains(ipConfiguration, 'skuTier') ? ipConfiguration.skuTier : 'Regional'
-    tags: tags
+    tags: ipConfiguration.?tags ?? tags
     zones: contains(ipConfiguration, 'zones') ? ipConfiguration.zones : []
   }
 }]

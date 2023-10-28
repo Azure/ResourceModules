@@ -30,7 +30,7 @@ param isRoutingPreferenceInternet bool = false
 param vpnGatewayScaleUnit int = 2
 
 @description('Optional. Tags of the resource.')
-param tags object = {}
+param tags object?
 
 @description('Optional. The lock settings of the service.')
 param lock lockType

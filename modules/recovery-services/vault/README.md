@@ -1448,7 +1448,6 @@ Enables system assigned managed identity on the resource.
 Tags of the Recovery Service Vault resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `userAssignedIdentities`
 

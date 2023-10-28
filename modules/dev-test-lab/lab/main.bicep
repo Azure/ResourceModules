@@ -15,7 +15,7 @@ param lock lockType
 param roleAssignments roleAssignmentType
 
 @description('Optional. Tags of the resource.')
-param tags object = {}
+param tags object?
 
 @description('Optional. The properties of any lab announcement associated with this lab.')
 param announcement object = {}
@@ -182,7 +182,7 @@ module lab_virtualNetworks 'virtualnetwork/main.bicep' = [for (virtualNetwork, i
   params: {
     labName: lab.name
     name: virtualNetwork.name
-    tags: tags
+    tags: virtualNetwork.?tags ?? tags
     externalProviderResourceId: virtualNetwork.externalProviderResourceId
     description: contains(virtualNetwork, 'description') ? virtualNetwork.description : ''
     allowedSubnets: contains(virtualNetwork, 'allowedSubnets') ? virtualNetwork.allowedSubnets : []
@@ -196,7 +196,7 @@ module lab_policies 'policyset/policy/main.bicep' = [for (policy, index) in poli
   params: {
     labName: lab.name
     name: policy.name
-    tags: tags
+    tags: policy.?tags ?? tags
     description: contains(policy, 'description') ? policy.description : ''
     evaluatorType: policy.evaluatorType
     factData: contains(policy, 'factData') ? policy.factData : ''
@@ -212,7 +212,7 @@ module lab_schedules 'schedule/main.bicep' = [for (schedule, index) in schedules
   params: {
     labName: lab.name
     name: schedule.name
-    tags: tags
+    tags: schedule.?tags ?? tags
     taskType: schedule.taskType
     dailyRecurrence: contains(schedule, 'dailyRecurrence') ? schedule.dailyRecurrence : {}
     hourlyRecurrence: contains(schedule, 'hourlyRecurrence') ? schedule.hourlyRecurrence : {}
@@ -231,7 +231,7 @@ module lab_notificationChannels 'notificationchannel/main.bicep' = [for (notific
   params: {
     labName: lab.name
     name: notificationChannel.name
-    tags: tags
+    tags: notificationChannel.?tags ?? tags
     description: contains(notificationChannel, 'description') ? notificationChannel.description : ''
     events: notificationChannel.events
     emailRecipient: contains(notificationChannel, 'emailRecipient') ? notificationChannel.emailRecipient : ''
@@ -246,7 +246,7 @@ module lab_artifactSources 'artifactsource/main.bicep' = [for (artifactSource, i
   params: {
     labName: lab.name
     name: artifactSource.name
-    tags: tags
+    tags: artifactSource.?tags ?? tags
     displayName: contains(artifactSource, 'displayName') ? artifactSource.displayName : artifactSource.name
     branchRef: contains(artifactSource, 'branchRef') ? artifactSource.branchRef : ''
     folderPath: contains(artifactSource, 'folderPath') ? artifactSource.folderPath : ''
@@ -262,7 +262,7 @@ module lab_costs 'cost/main.bicep' = if (!empty(costs)) {
   name: '${uniqueString(deployment().name, location)}-Lab-Costs'
   params: {
     labName: lab.name
-    tags: tags
+    tags: costs.?tags ?? tags
     currencyCode: contains(costs, 'currencyCode') ? costs.currencyCode : 'USD'
     cycleType: costs.cycleType
     cycleStartDateTime: contains(costs, 'cycleStartDateTime') ? costs.cycleStartDateTime : ''

@@ -469,7 +469,6 @@ The pricing tier of the WAF profile.
 Resource tags.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 
 ## Outputs

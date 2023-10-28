@@ -196,7 +196,7 @@ param lock lockType
 param roleAssignments roleAssignmentType
 
 @description('Optional. Tags of the resource.')
-param tags object = {}
+param tags object?
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
@@ -356,7 +356,7 @@ module vm_nic 'modules/nested_networkInterface.bicep' = [for (nicConfiguration, 
     networkInterfaceName: '${name}${nicConfiguration.nicSuffix}'
     virtualMachineName: name
     location: location
-    tags: tags
+    tags: nicConfiguration.?tags ?? tags
     enableIPForwarding: contains(nicConfiguration, 'enableIPForwarding') ? (!empty(nicConfiguration.enableIPForwarding) ? nicConfiguration.enableIPForwarding : false) : false
     enableAcceleratedNetworking: contains(nicConfiguration, 'enableAcceleratedNetworking') ? nicConfiguration.enableAcceleratedNetworking : true
     dnsServers: contains(nicConfiguration, 'dnsServers') ? (!empty(nicConfiguration.dnsServers) ? nicConfiguration.dnsServers : []) : []
@@ -485,7 +485,7 @@ module vm_aadJoinExtension 'extension/main.bicep' = if (extensionAadJoinConfig.e
     autoUpgradeMinorVersion: contains(extensionAadJoinConfig, 'autoUpgradeMinorVersion') ? extensionAadJoinConfig.autoUpgradeMinorVersion : true
     enableAutomaticUpgrade: contains(extensionAadJoinConfig, 'enableAutomaticUpgrade') ? extensionAadJoinConfig.enableAutomaticUpgrade : false
     settings: contains(extensionAadJoinConfig, 'settings') ? extensionAadJoinConfig.settings : {}
-    tags: contains(extensionAadJoinConfig, 'tags') ? extensionAadJoinConfig.tags : {}
+    tags: extensionAadJoinConfig.?tags ?? tags
   }
 }
 
@@ -500,7 +500,7 @@ module vm_domainJoinExtension 'extension/main.bicep' = if (extensionDomainJoinCo
     autoUpgradeMinorVersion: contains(extensionDomainJoinConfig, 'autoUpgradeMinorVersion') ? extensionDomainJoinConfig.autoUpgradeMinorVersion : true
     enableAutomaticUpgrade: contains(extensionDomainJoinConfig, 'enableAutomaticUpgrade') ? extensionDomainJoinConfig.enableAutomaticUpgrade : false
     settings: extensionDomainJoinConfig.settings
-    tags: contains(extensionDomainJoinConfig, 'tags') ? extensionDomainJoinConfig.tags : {}
+    tags: extensionDomainJoinConfig.?tags ?? tags
     protectedSettings: {
       Password: extensionDomainJoinPassword
     }
@@ -519,7 +519,7 @@ module vm_microsoftAntiMalwareExtension 'extension/main.bicep' = if (extensionAn
     autoUpgradeMinorVersion: contains(extensionAntiMalwareConfig, 'autoUpgradeMinorVersion') ? extensionAntiMalwareConfig.autoUpgradeMinorVersion : true
     enableAutomaticUpgrade: contains(extensionAntiMalwareConfig, 'enableAutomaticUpgrade') ? extensionAntiMalwareConfig.enableAutomaticUpgrade : false
     settings: extensionAntiMalwareConfig.settings
-    tags: contains(extensionAntiMalwareConfig, 'tags') ? extensionAntiMalwareConfig.tags : {}
+    tags: extensionAntiMalwareConfig.?tags ?? tags
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }
@@ -542,7 +542,7 @@ module vm_microsoftMonitoringAgentExtension 'extension/main.bicep' = if (extensi
     settings: {
       workspaceId: !empty(monitoringWorkspaceId) ? vm_logAnalyticsWorkspace.properties.customerId : ''
     }
-    tags: contains(extensionMonitoringAgentConfig, 'tags') ? extensionMonitoringAgentConfig.tags : {}
+    tags: extensionMonitoringAgentConfig.?tags ?? tags
     protectedSettings: {
       workspaceKey: !empty(monitoringWorkspaceId) ? vm_logAnalyticsWorkspace.listKeys().primarySharedKey : ''
     }
@@ -561,7 +561,7 @@ module vm_dependencyAgentExtension 'extension/main.bicep' = if (extensionDepende
     autoUpgradeMinorVersion: contains(extensionDependencyAgentConfig, 'autoUpgradeMinorVersion') ? extensionDependencyAgentConfig.autoUpgradeMinorVersion : true
     enableAutomaticUpgrade: contains(extensionDependencyAgentConfig, 'enableAutomaticUpgrade') ? extensionDependencyAgentConfig.enableAutomaticUpgrade : true
     enableDefaultTelemetry: enableReferencedModulesTelemetry
-    tags: contains(extensionDependencyAgentConfig, 'tags') ? extensionDependencyAgentConfig.tags : {}
+    tags: extensionDependencyAgentConfig.?tags ?? tags
   }
 }
 
@@ -576,7 +576,7 @@ module vm_networkWatcherAgentExtension 'extension/main.bicep' = if (extensionNet
     autoUpgradeMinorVersion: contains(extensionNetworkWatcherAgentConfig, 'autoUpgradeMinorVersion') ? extensionNetworkWatcherAgentConfig.autoUpgradeMinorVersion : true
     enableAutomaticUpgrade: contains(extensionNetworkWatcherAgentConfig, 'enableAutomaticUpgrade') ? extensionNetworkWatcherAgentConfig.enableAutomaticUpgrade : false
     enableDefaultTelemetry: enableReferencedModulesTelemetry
-    tags: contains(extensionNetworkWatcherAgentConfig, 'tags') ? extensionNetworkWatcherAgentConfig.tags : {}
+    tags: extensionNetworkWatcherAgentConfig.?tags ?? tags
   }
 }
 
@@ -591,7 +591,7 @@ module vm_desiredStateConfigurationExtension 'extension/main.bicep' = if (extens
     autoUpgradeMinorVersion: contains(extensionDSCConfig, 'autoUpgradeMinorVersion') ? extensionDSCConfig.autoUpgradeMinorVersion : true
     enableAutomaticUpgrade: contains(extensionDSCConfig, 'enableAutomaticUpgrade') ? extensionDSCConfig.enableAutomaticUpgrade : false
     settings: contains(extensionDSCConfig, 'settings') ? extensionDSCConfig.settings : {}
-    tags: contains(extensionDSCConfig, 'tags') ? extensionDSCConfig.tags : {}
+    tags: extensionDSCConfig.?tags ?? tags
     protectedSettings: contains(extensionDSCConfig, 'protectedSettings') ? extensionDSCConfig.protectedSettings : {}
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
@@ -610,7 +610,7 @@ module vm_customScriptExtension 'extension/main.bicep' = if (extensionCustomScri
     settings: {
       fileUris: [for fileData in extensionCustomScriptConfig.fileData: contains(fileData, 'storageAccountId') ? '${fileData.uri}?${listAccountSas(fileData.storageAccountId, '2019-04-01', accountSasProperties).accountSasToken}' : fileData.uri]
     }
-    tags: contains(extensionCustomScriptConfig, 'tags') ? extensionCustomScriptConfig.tags : {}
+    tags: extensionCustomScriptConfig.?tags ?? tags
     protectedSettings: extensionCustomScriptProtectedSetting
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
@@ -631,7 +631,7 @@ module vm_azureDiskEncryptionExtension 'extension/main.bicep' = if (extensionAzu
     enableAutomaticUpgrade: contains(extensionAzureDiskEncryptionConfig, 'enableAutomaticUpgrade') ? extensionAzureDiskEncryptionConfig.enableAutomaticUpgrade : false
     forceUpdateTag: contains(extensionAzureDiskEncryptionConfig, 'forceUpdateTag') ? extensionAzureDiskEncryptionConfig.forceUpdateTag : '1.0'
     settings: extensionAzureDiskEncryptionConfig.settings
-    tags: contains(extensionAzureDiskEncryptionConfig, 'tags') ? extensionAzureDiskEncryptionConfig.tags : {}
+    tags: extensionAzureDiskEncryptionConfig.?tags ?? tags
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
   dependsOn: [

@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "5480824753048175780"
+      "templateHash": "11509133074003638198"
     },
     "name": "API Management Services",
     "description": "This module deploys an API Management Service.",
@@ -368,7 +368,7 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Tags of the resource."
       }
@@ -2043,7 +2043,9 @@
           "name": {
             "value": "[parameters('namedValues')[copyIndex()].name]"
           },
-          "tags": "[if(contains(parameters('namedValues')[copyIndex()], 'tags'), createObject('value', parameters('namedValues')[copyIndex()].tags), createObject('value', createArray()))]",
+          "tags": {
+            "value": "[coalesce(tryGet(parameters('namedValues')[copyIndex()], 'tags'), parameters('tags'))]"
+          },
           "secret": "[if(contains(parameters('namedValues')[copyIndex()], 'secret'), createObject('value', parameters('namedValues')[copyIndex()].secret), createObject('value', false()))]",
           "value": "[if(contains(parameters('namedValues')[copyIndex()], 'value'), createObject('value', parameters('namedValues')[copyIndex()].value), createObject('value', parameters('newGuidValue')))]",
           "enableDefaultTelemetry": {

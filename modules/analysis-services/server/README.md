@@ -625,7 +625,6 @@ The SKU name of the Azure Analysis Services server to create.
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 
 ## Outputs

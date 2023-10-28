@@ -40,7 +40,7 @@ param sasTokenValidityLength string = 'PT8H'
 param location string = resourceGroup().location
 
 @sys.description('Optional. Tags of the Automation Account resource.')
-param tags object = {}
+param tags object?
 
 @sys.description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true

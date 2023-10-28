@@ -493,7 +493,6 @@ Required. The name of the role to assign. If it cannot be found you can specify 
 Resource tags.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `trafficRoutingMethod`
 

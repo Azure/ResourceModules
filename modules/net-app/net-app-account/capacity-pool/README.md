@@ -182,7 +182,6 @@ Provisioned size of the pool (in bytes). Allowed values are in 4TiB chunks (valu
 Tags for all resources.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `volumes`
 

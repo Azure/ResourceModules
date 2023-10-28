@@ -31,7 +31,7 @@ param sku string = 'Standard_S1'
 param capacity int = 1
 
 @description('Optional. The tags of the resource.')
-param tags object = {}
+param tags object?
 
 @description('Optional. The allowed origin settings of the resource.')
 param allowedOrigins array = [

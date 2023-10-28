@@ -112,7 +112,6 @@ The status of the policy.
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `threshold`
 

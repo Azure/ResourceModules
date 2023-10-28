@@ -395,7 +395,6 @@ The list of SMS receivers that are part of this action group.
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `voiceReceivers`
 
