@@ -8,23 +8,17 @@ param name string
 @description('Optional. The idle timeout of the NAT gateway.')
 param idleTimeoutInMinutes int = 5
 
-@description('Optional. Use to have a new Public IP Address created for the NAT Gateway.')
-param natGatewayPublicIpAddress bool = false
+@description('Optional. Existing Public IP Address resource IDs to use for the NAT Gateway.')
+param publicIpResourceIds array = []
 
-@description('Optional. Specifies the name of the Public IP used by the NAT Gateway. If it\'s not provided, a \'-pip\' suffix will be appended to the Bastion\'s name.')
-param natGatewayPipName string = ''
+@description('Optional. Existing Public IP Prefixes resource IDs to use for the NAT Gateway.')
+param publicIPPrefixResourceIds array = []
 
-@description('Optional. Resource ID of the Public IP Prefix object. This is only needed if you want your Public IPs created in a PIP Prefix.')
-param publicIPPrefixResourceId string = ''
+@description('Optional. Specifies the properties of the Public IPs to create and be used by the NAT Gateway.')
+param publicIPAddressObjects array?
 
-@description('Optional. DNS name of the Public IP resource. A region specific suffix will be appended to it, e.g.: your-DNS-name.westeurope.cloudapp.azure.com.')
-param domainNameLabel string = ''
-
-@description('Optional. Existing Public IP Address resource names to use for the NAT Gateway.')
-param publicIpAddresses array = []
-
-@description('Optional. Existing Public IP Prefixes resource names to use for the NAT Gateway.')
-param publicIpPrefixes array = []
+@description('Optional. Specifies the properties of the Public IP Prefixes to create and be used by the NAT Gateway.')
+param publicIPPrefixObjects array?
 
 @description('Optional. A list of availability zones denoting the zone in which Nat Gateway should be deployed.')
 param zones array = []
@@ -39,21 +33,10 @@ param lock lockType
 param roleAssignments roleAssignmentType
 
 @description('Optional. Tags for the resource.')
-param tags object = {}
-
-@description('Optional. The diagnostic settings of the Public IP.')
-param publicIpDiagnosticSettings diagnosticSettingType
+param tags object?
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
-
-var publicIPPrefixResourceIds = [for publicIpPrefix in publicIpPrefixes: {
-  id: az.resourceId('Microsoft.Network/publicIPPrefixes', publicIpPrefix)
-}]
-
-var publicIPAddressResourceIds = [for publicIpAddress in publicIpAddresses: {
-  id: az.resourceId('Microsoft.Network/publicIPAddresses', publicIpAddress)
-}]
 
 var enableReferencedModulesTelemetry = false
 
@@ -78,26 +61,51 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-// PUBLIC IP
-// =========
-module publicIPAddress '../public-ip-address/main.bicep' = if (natGatewayPublicIpAddress) {
-  name: '${uniqueString(deployment().name, location)}-NatGateway-PIP'
+module publicIPAddresses '../public-ip-address/main.bicep' = [for (publicIPAddressObject, index) in (publicIPAddressObjects ?? []): {
+  name: '${uniqueString(deployment().name, location)}-NatGw-PIP-${index}'
   params: {
-    name: !empty(natGatewayPipName) ? natGatewayPipName : '${name}-pip'
-    diagnosticSettings: publicIpDiagnosticSettings
-    domainNameLabel: domainNameLabel
+    name: contains(publicIPAddressObject, 'name') ? publicIPAddressObject.name : '${name}-pip'
     enableDefaultTelemetry: enableReferencedModulesTelemetry
     location: location
-    lock: lock
+    lock: publicIPAddressObject.?lock ?? lock
+    diagnosticSettings: publicIPAddressObject.?diagnosticSettings
+    publicIPAddressVersion: contains(publicIPAddressObject, 'publicIPAddressVersion') ? publicIPAddressObject.publicIPAddressVersion : 'IPv4'
     publicIPAllocationMethod: 'Static'
-    publicIPPrefixResourceId: publicIPPrefixResourceId
-    tags: tags
+    publicIPPrefixResourceId: contains(publicIPAddressObject, 'publicIPPrefixResourceId') ? publicIPAddressObject.publicIPPrefixResourceId : ''
+    roleAssignments: contains(publicIPAddressObject, 'roleAssignments') ? publicIPAddressObject.roleAssignments : []
     skuName: 'Standard'
-    zones: [
-      '1'
-      '2'
-      '3'
-    ]
+    skuTier: contains(publicIPAddressObject, 'skuTier') ? publicIPAddressObject.skuTier : 'Regional'
+    tags: publicIPAddressObject.?tags ?? tags
+    zones: contains(publicIPAddressObject, 'zones') ? publicIPAddressObject.zones : []
+  }
+}]
+module formattedPublicIpResourceIds 'modules/formatResourceId.bicep' = {
+  name: 'formattedPublicIpResourceIds'
+  params: {
+    generatedResourceIds: [for (obj, index) in (publicIPAddressObjects ?? []): publicIPAddresses[index].outputs.resourceId]
+    providedResourceIds: publicIpResourceIds
+  }
+}
+
+module publicIPPrefixes '../public-ip-prefix/main.bicep' = [for (publicIPPrefixObject, index) in (publicIPPrefixObjects ?? []): {
+  name: '${uniqueString(deployment().name, location)}-NatGw-Prefix-PIP-${index}'
+  params: {
+    name: contains(publicIPPrefixObject, 'name') ? publicIPPrefixObject.name : '${name}-pip'
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+    location: location
+    lock: publicIPPrefixObject.?lock ?? lock
+    prefixLength: publicIPPrefixObject.prefixLength
+    customIPPrefix: publicIPPrefixObject.?customIPPrefix
+    roleAssignments: publicIPPrefixObject.?roleAssignments
+    tags: publicIPPrefixObject.?tags ?? tags
+  }
+}]
+module formattedPublicIpPrefixResourceIds 'modules/formatResourceId.bicep' = {
+  name: 'formattedPublicIpPrefixResourceIds'
+  params: {
+    generatedResourceIds: [for (obj, index) in (publicIPPrefixObjects ?? []): publicIPPrefixes[index].outputs.resourceId]
+    providedResourceIds: publicIPPrefixResourceIds
+
   }
 }
 
@@ -112,11 +120,10 @@ resource natGateway 'Microsoft.Network/natGateways@2023-04-01' = {
   }
   properties: {
     idleTimeoutInMinutes: idleTimeoutInMinutes
-    publicIpPrefixes: publicIPPrefixResourceIds
-    publicIpAddresses: publicIPAddressResourceIds
+    publicIpPrefixes: formattedPublicIpPrefixResourceIds.outputs.formattedResourceIds
+    publicIpAddresses: formattedPublicIpResourceIds.outputs.formattedResourceIds
   }
   zones: zones
-  dependsOn: [ publicIPAddress ]
 }
 
 resource natGateway_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock ?? {}) && lock.?kind != 'None') {

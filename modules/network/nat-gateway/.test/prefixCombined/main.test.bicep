@@ -1,7 +1,7 @@
 targetScope = 'subscription'
 
-metadata name = 'Using large parameter set'
-metadata description = 'This instance deploys the module with most of its features enabled.'
+metadata name = 'Combine a generated and provided Public IP Prefix'
+metadata description = 'This example shows how you can provide a Public IP Prefix to the module, while also generating one in the module.'
 
 // ========== //
 // Parameters //
@@ -15,7 +15,7 @@ param resourceGroupName string = 'dep-${namePrefix}-network.natgateways-${servic
 param location string = deployment().location
 
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints.')
-param serviceShort string = 'nngcom'
+param serviceShort string = 'nngcprx'
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
@@ -39,6 +39,8 @@ module nestedDependencies 'dependencies.bicep' = {
   name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
     managedIdentityName: 'dep-${namePrefix}-msi-${serviceShort}'
+    publicIPPrefixName: 'dep-${namePrefix}-pippre-${serviceShort}'
+    location: location
   }
 }
 
@@ -70,9 +72,13 @@ module testDeployment '../../main.bicep' = {
       kind: 'CanNotDelete'
       name: 'myCustomLockName'
     }
-    publicIPAddressObjects: [
+    publicIPPrefixResourceIds: [
+      nestedDependencies.outputs.publicIpPrefixResourceId
+    ]
+    publicIPPrefixObjects: [
       {
-        name: '${namePrefix}${serviceShort}001-pip'
+        name: '${namePrefix}${serviceShort}001-pippre'
+        prefixLength: 28
         roleAssignments: [
           {
             roleDefinitionIdOrName: 'Reader'
@@ -80,26 +86,9 @@ module testDeployment '../../main.bicep' = {
             principalType: 'ServicePrincipal'
           }
         ]
-        skuTier: 'Regional'
-        zones: [
-          '1'
-          '2'
-          '3'
-        ]
-        diagnosticSettings: [
-          {
-            name: 'customSetting'
-            metricCategories: [
-              {
-                category: 'AllMetrics'
-              }
-            ]
-            eventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
-            eventHubAuthorizationRuleResourceId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
-            storageAccountResourceId: diagnosticDependencies.outputs.storageAccountResourceId
-            workspaceResourceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
-          }
-        ]
+        tags: {
+          'hidden-title': 'CustomTag'
+        }
       }
     ]
     roleAssignments: [
