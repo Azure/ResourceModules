@@ -339,7 +339,7 @@ module managedInstance_securityAlertPolicy 'security-alert-policy/main.bicep' = 
   }
 }
 
-module managedInstance_vulnerabilityAssessment 'vulnerability-assessment/main.bicep' = if (!empty(vulnerabilityAssessmentsObj) && managedIdentities.?systemAssigned == true) {
+module managedInstance_vulnerabilityAssessment 'vulnerability-assessment/main.bicep' = if (!empty(vulnerabilityAssessmentsObj) && (managedIdentities.?systemAssigned ?? false)) {
   name: '${uniqueString(deployment().name, location)}-SqlMi-VulnAssessm'
   params: {
     managedInstanceName: managedInstance.name
