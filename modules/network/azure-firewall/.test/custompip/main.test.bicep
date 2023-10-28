@@ -68,7 +68,6 @@ module testDeployment '../../main.bicep' = {
     publicIPAddressObject: {
       name: 'new-${namePrefix}-pip-${serviceShort}'
       publicIPAllocationMethod: 'Static'
-      publicIPPrefixResourceId: ''
       roleAssignments: [
         {
           roleDefinitionIdOrName: 'Reader'

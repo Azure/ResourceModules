@@ -469,7 +469,6 @@ module azureFirewall 'br:bicep/modules/network.azure-firewall:1.0.0' = {
       ]
       name: 'new-pip-nafcstpip'
       publicIPAllocationMethod: 'Static'
-      publicIPPrefixResourceId: ''
       roleAssignments: [
         {
           principalId: '<principalId>'
@@ -528,7 +527,6 @@ module azureFirewall 'br:bicep/modules/network.azure-firewall:1.0.0' = {
         ],
         "name": "new-pip-nafcstpip",
         "publicIPAllocationMethod": "Static",
-        "publicIPPrefixResourceId": "",
         "roleAssignments": [
           {
             "principalId": "<principalId>",

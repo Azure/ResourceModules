@@ -100,26 +100,19 @@ var additionalPublicIpConfigurationsVar = [for ipConfiguration in additionalPubl
     } : null
   }
 }]
-var subnetVar = {
-  subnet: {
-    id: '${vNetId}/subnets/AzureFirewallSubnet' // The subnet name must be AzureFirewallSubnet
-  }
-}
-var existingPip = {
-  publicIPAddress: {
-    id: publicIPResourceID
-  }
-}
-var newPip = {
-  publicIPAddress: (empty(publicIPResourceID) && !empty(publicIPAddressObject)) ? {
-    id: publicIPAddress.outputs.resourceId
-  } : null
-}
 var ipConfigurations = concat([
     {
       name: !empty(publicIPResourceID) ? last(split(publicIPResourceID, '/')) : publicIPAddress.outputs.name
-      //Use existing Public IP, new Public IP created in this module, or none if publicIPAddressObject is empty
-      properties: union(subnetVar, !empty(publicIPResourceID) ? existingPip : {}, (!empty(publicIPAddressObject) ? newPip : {}))
+      properties: union({
+          subnet: {
+            id: '${vNetId}/subnets/AzureFirewallSubnet' // The subnet name must be AzureFirewallSubnet
+          }
+        }, (!empty(publicIPResourceID) || !empty(publicIPAddressObject)) ? {
+          //Use existing Public IP, new Public IP created in this module, or none if neither
+          publicIPAddress: {
+            id: !empty(publicIPResourceID) ? publicIPResourceID : publicIPAddress.outputs.resourceId
+          }
+        } : {})
     }
   ], additionalPublicIpConfigurationsVar)
 
@@ -128,25 +121,18 @@ var ipConfigurations = concat([
 // 1. Use existing Management Public IP
 // 2. Use new Management Public IP created in this module
 
-var managementSubnetVar = {
-  subnet: {
-    id: '${vNetId}/subnets/AzureFirewallManagementSubnet' // The subnet name must be AzureFirewallManagementSubnet for a 'Basic' SKU tier firewall
-  }
-}
-var existingMip = {
-  publicIPAddress: {
-    id: managementIPResourceID
-  }
-}
-var newMip = {
-  publicIPAddress: empty(managementIPResourceID) && isCreateDefaultManagementIP ? {
-    id: managementIPAddress.outputs.resourceId
-  } : null
-}
 var managementIPConfiguration = {
   name: !empty(managementIPResourceID) ? last(split(managementIPResourceID, '/')) : managementIPAddress.outputs.name
-  //Use existing Management Public IP, new Management Public IP created in this module, or none if isCreateDefaultManagementIP is false
-  properties: union(managementSubnetVar, !empty(managementIPResourceID) ? existingMip : {}, (isCreateDefaultManagementIP ? newMip : {}))
+  properties: union({
+      subnet: {
+        id: '${vNetId}/subnets/AzureFirewallManagementSubnet' // The subnet name must be AzureFirewallManagementSubnet for a 'Basic' SKU tier firewall
+      }
+    }, (!empty(publicIPResourceID) || !empty(managementIPAddressObject)) ? {
+      // Use existing Management Public IP, new Management Public IP created in this module, or none if neither
+      publicIPAddress: {
+        id: !empty(managementIPResourceID) ? managementIPResourceID : managementIPAddress.outputs.resourceId
+      }
+    } : {})
 }
 
 // ----------------------------------------------------------------------------
@@ -174,7 +160,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
 }
 
 // create a Public IP address if one is not provided and the flag is true
-module publicIPAddress '../../network/public-ip-address/main.bicep' = if (empty(publicIPResourceID) && !empty(publicIPAddressObject) && azureSkuName == 'AZFW_VNet') {
+module publicIPAddress '../../network/public-ip-address/main.bicep' = if (!empty(publicIPAddressObject) && azureSkuName == 'AZFW_VNet') {
   name: '${uniqueString(deployment().name, location)}-Firewall-PIP'
   params: {
     name: contains(publicIPAddressObject, 'name') ? (!(empty(publicIPAddressObject.name)) ? publicIPAddressObject.name : '${name}-pip') : '${name}-pip'
@@ -193,7 +179,7 @@ module publicIPAddress '../../network/public-ip-address/main.bicep' = if (empty(
 }
 
 // create a Management Public IP address if one is not provided and the flag is true
-module managementIPAddress '../../network/public-ip-address/main.bicep' = if (empty(managementIPResourceID) && isCreateDefaultManagementIP && azureSkuName == 'AZFW_VNet') {
+module managementIPAddress '../../network/public-ip-address/main.bicep' = if (isCreateDefaultManagementIP && azureSkuName == 'AZFW_VNet') {
   name: '${uniqueString(deployment().name, location)}-Firewall-MIP'
   params: {
     name: contains(managementIPAddressObject, 'name') ? (!(empty(managementIPAddressObject.name)) ? managementIPAddressObject.name : '${name}-mip') : '${name}-mip'
