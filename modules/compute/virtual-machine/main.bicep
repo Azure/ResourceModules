@@ -356,13 +356,13 @@ module vm_nic 'modules/nested_networkInterface.bicep' = [for (nicConfiguration, 
     networkInterfaceName: '${name}${nicConfiguration.nicSuffix}'
     virtualMachineName: name
     location: location
-    tags: nicConfiguration.?tags ?? tags
     enableIPForwarding: contains(nicConfiguration, 'enableIPForwarding') ? (!empty(nicConfiguration.enableIPForwarding) ? nicConfiguration.enableIPForwarding : false) : false
     enableAcceleratedNetworking: contains(nicConfiguration, 'enableAcceleratedNetworking') ? nicConfiguration.enableAcceleratedNetworking : true
     dnsServers: contains(nicConfiguration, 'dnsServers') ? (!empty(nicConfiguration.dnsServers) ? nicConfiguration.dnsServers : []) : []
     networkSecurityGroupResourceId: contains(nicConfiguration, 'networkSecurityGroupResourceId') ? nicConfiguration.networkSecurityGroupResourceId : ''
     ipConfigurations: nicConfiguration.ipConfigurations
     lock: nicConfiguration.?lock ?? lock
+    tags: nicConfiguration.?tags ?? tags
     diagnosticSettings: nicConfiguration.?diagnosticSettings
     roleAssignments: nicConfiguration.?roleAssignments
   }
