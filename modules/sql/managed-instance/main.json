@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "15138405171291757120"
+      "templateHash": "4380790711492758501"
     },
     "name": "SQL Managed Instances",
     "description": "This module deploys a SQL Managed Instance.",
@@ -1413,7 +1413,7 @@
       ]
     },
     "managedInstance_vulnerabilityAssessment": {
-      "condition": "[and(not(empty(parameters('vulnerabilityAssessmentsObj'))), equals(tryGet(parameters('managedIdentities'), 'systemAssigned'), true()))]",
+      "condition": "[and(not(empty(parameters('vulnerabilityAssessmentsObj'))), coalesce(tryGet(parameters('managedIdentities'), 'systemAssigned'), false()))]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
       "name": "[format('{0}-SqlMi-VulnAssessm', uniqueString(deployment().name, parameters('location')))]",
