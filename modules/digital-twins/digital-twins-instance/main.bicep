@@ -258,9 +258,6 @@ output name string = digitalTwinsInstance.name
 @description('The hostname of the Digital Twins Instance.')
 output hostname string = digitalTwinsInstance.properties.hostName
 
-@description('The principal ID of the system assigned identity.')
-output systemAssignedMIPrincipalId string = (managedIdentities.?systemAssigned ?? false) && contains(digitalTwinsInstance.identity, 'principalId') ? digitalTwinsInstance.identity.principalId : ''
-
 @description('The location the resource was deployed into.')
 output location string = digitalTwinsInstance.location
 

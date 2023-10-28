@@ -530,7 +530,6 @@ Resource tags.
 | `name` | string | The name of the Digital Twins Instance. |
 | `resourceGroupName` | string | The name of the resource group the resource was created in. |
 | `resourceId` | string | The resource ID of the Digital Twins Instance. |
-| `systemAssignedMIPrincipalId` | string | The principal ID of the system assigned identity. |
 
 ## Cross-referenced modules
 
