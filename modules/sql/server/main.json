@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "9008744149978786783"
+      "templateHash": "16584476486236762366"
     },
     "name": "Azure SQL Servers",
     "description": "This module deploys an Azure SQL Server.",
@@ -317,7 +317,7 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Tags of the resource."
       }
@@ -565,7 +565,9 @@
           "readScale": "[if(contains(parameters('databases')[copyIndex()], 'readScale'), createObject('value', parameters('databases')[copyIndex()].readScale), createObject('value', 'Disabled'))]",
           "requestedBackupStorageRedundancy": "[if(contains(parameters('databases')[copyIndex()], 'requestedBackupStorageRedundancy'), createObject('value', parameters('databases')[copyIndex()].requestedBackupStorageRedundancy), createObject('value', ''))]",
           "sampleName": "[if(contains(parameters('databases')[copyIndex()], 'sampleName'), createObject('value', parameters('databases')[copyIndex()].sampleName), createObject('value', ''))]",
-          "tags": "[if(contains(parameters('databases')[copyIndex()], 'tags'), createObject('value', parameters('databases')[copyIndex()].tags), createObject('value', createObject()))]",
+          "tags": {
+            "value": "[coalesce(tryGet(parameters('databases')[copyIndex()], 'tags'), parameters('tags'))]"
+          },
           "zoneRedundant": "[if(contains(parameters('databases')[copyIndex()], 'zoneRedundant'), createObject('value', parameters('databases')[copyIndex()].zoneRedundant), createObject('value', false()))]",
           "elasticPoolId": "[if(contains(parameters('databases')[copyIndex()], 'elasticPoolId'), createObject('value', parameters('databases')[copyIndex()].elasticPoolId), createObject('value', ''))]",
           "enableDefaultTelemetry": {
@@ -587,7 +589,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.22.6.54827",
-              "templateHash": "7566326750370718720"
+              "templateHash": "17297721819291768897"
             },
             "name": "SQL Server Database",
             "description": "This module deploys an Azure SQL Server Database.",
@@ -830,7 +832,7 @@
             },
             "tags": {
               "type": "object",
-              "defaultValue": {},
+              "nullable": true,
               "metadata": {
                 "description": "Optional. Tags of the resource."
               }
@@ -1363,16 +1365,19 @@
           "location": {
             "value": "[parameters('location')]"
           },
-          "tags": "[if(contains(parameters('elasticPools')[copyIndex()], 'tags'), createObject('value', parameters('elasticPools')[copyIndex()].tags), createObject('value', createObject()))]"
+          "tags": {
+            "value": "[coalesce(tryGet(parameters('elasticPools')[copyIndex()], 'tags'), parameters('tags'))]"
+          }
         },
         "template": {
           "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "languageVersion": "2.0",
           "contentVersion": "1.0.0.0",
           "metadata": {
             "_generator": {
               "name": "bicep",
               "version": "0.22.6.54827",
-              "templateHash": "2069769222124842536"
+              "templateHash": "9388916155534343976"
             },
             "name": "SQL Server Elastic Pool",
             "description": "This module deploys an Azure SQL Server Elastic Pool.",
@@ -1393,7 +1398,7 @@
             },
             "tags": {
               "type": "object",
-              "defaultValue": {},
+              "nullable": true,
               "metadata": {
                 "description": "Optional. Tags of the resource."
               }
@@ -1494,8 +1499,8 @@
               }
             }
           },
-          "resources": [
-            {
+          "resources": {
+            "defaultTelemetry": {
               "condition": "[parameters('enableDefaultTelemetry')]",
               "type": "Microsoft.Resources/deployments",
               "apiVersion": "2021-04-01",
@@ -1509,7 +1514,13 @@
                 }
               }
             },
-            {
+            "server": {
+              "existing": true,
+              "type": "Microsoft.Sql/servers",
+              "apiVersion": "2022-05-01-preview",
+              "name": "[parameters('serverName')]"
+            },
+            "elasticPool": {
               "type": "Microsoft.Sql/servers/elasticPools",
               "apiVersion": "2022-05-01-preview",
               "name": "[format('{0}/{1}', parameters('serverName'), parameters('name'))]",
@@ -1531,9 +1542,12 @@
                   "maxCapacity": "[parameters('databaseMaxCapacity')]"
                 },
                 "zoneRedundant": "[parameters('zoneRedundant')]"
-              }
+              },
+              "dependsOn": [
+                "server"
+              ]
             }
-          ],
+          },
           "outputs": {
             "name": {
               "type": "string",
@@ -1561,7 +1575,7 @@
               "metadata": {
                 "description": "The location the resource was deployed into."
               },
-              "value": "[reference(resourceId('Microsoft.Sql/servers/elasticPools', parameters('serverName'), parameters('name')), '2022-05-01-preview', 'full').location]"
+              "value": "[reference('elasticPool', '2022-05-01-preview', 'full').location]"
             }
           }
         }

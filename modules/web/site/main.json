@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "16589112738321066584"
+      "templateHash": "15308657107215690557"
     },
     "name": "Web/Function Apps",
     "description": "This module deploys a Web or Function App.",
@@ -540,7 +540,7 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Tags of the resource."
       }
@@ -1133,10 +1133,12 @@
           },
           "roleAssignments": "[if(contains(parameters('slots')[copyIndex()], 'roleAssignments'), createObject('value', parameters('slots')[copyIndex()].roleAssignments), createObject('value', parameters('roleAssignments')))]",
           "appSettingsKeyValuePairs": "[if(contains(parameters('slots')[copyIndex()], 'appSettingsKeyValuePairs'), createObject('value', parameters('slots')[copyIndex()].appSettingsKeyValuePairs), createObject('value', parameters('appSettingsKeyValuePairs')))]",
-          "lock": "[if(contains(parameters('slots')[copyIndex()], 'lock'), createObject('value', parameters('slots')[copyIndex()].lock), createObject('value', parameters('lock')))]",
+          "lock": {
+            "value": "[coalesce(tryGet(parameters('slots')[copyIndex()], 'lock'), parameters('lock'))]"
+          },
           "privateEndpoints": "[if(contains(parameters('slots')[copyIndex()], 'privateEndpoints'), createObject('value', parameters('slots')[copyIndex()].privateEndpoints), createObject('value', parameters('privateEndpoints')))]",
           "tags": {
-            "value": "[parameters('tags')]"
+            "value": "[coalesce(tryGet(parameters('slots')[copyIndex()], 'tags'), parameters('tags'))]"
           },
           "clientCertEnabled": "[if(contains(parameters('slots')[copyIndex()], 'clientCertEnabled'), createObject('value', parameters('slots')[copyIndex()].clientCertEnabled), createObject('value', false()))]",
           "clientCertExclusionPaths": "[if(contains(parameters('slots')[copyIndex()], 'clientCertExclusionPaths'), createObject('value', parameters('slots')[copyIndex()].clientCertExclusionPaths), createObject('value', ''))]",
@@ -1163,7 +1165,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.22.6.54827",
-              "templateHash": "8235549434045732740"
+              "templateHash": "8284194684324653105"
             },
             "name": "Web/Function App Deployment Slots",
             "description": "This module deploys a Web or Function App Deployment Slot.",
@@ -1669,7 +1671,7 @@
             },
             "tags": {
               "type": "object",
-              "defaultValue": {},
+              "nullable": true,
               "metadata": {
                 "description": "Optional. Tags of the resource."
               }

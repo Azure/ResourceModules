@@ -907,7 +907,6 @@ Enables system assigned managed identity on the resource.
 Tags to help categorize the resource in the Azure portal.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 
 ## Outputs

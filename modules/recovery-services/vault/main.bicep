@@ -51,7 +51,7 @@ param systemAssignedIdentity bool = false
 param userAssignedIdentities object = {}
 
 @description('Optional. Tags of the Recovery Service Vault resource.')
-param tags object = {}
+param tags object?
 
 @description('Optional. Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.')
 param privateEndpoints privateEndpointType

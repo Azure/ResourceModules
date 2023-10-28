@@ -9,7 +9,7 @@ param name string
 param location string = resourceGroup().location
 
 @description('Optional. Tags of the resource.')
-param tags object = {}
+param tags object?
 
 @description('Optional. The lock settings of the service.')
 param lock lockType
@@ -317,7 +317,7 @@ module serviceFabricCluster_applicationTypes 'application-type/main.bicep' = [fo
   params: {
     name: applicationType.name
     serviceFabricClusterName: serviceFabricCluster.name
-    tags: contains(applicationType, 'tags') ? applicationType.tags : {}
+    tags: applicationType.?tags ?? tags
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]

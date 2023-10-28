@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "13668353398980769357"
+      "templateHash": "9912702699869473212"
     },
     "name": "Purview Accounts",
     "description": "This module deploys a Purview Account.",
@@ -229,7 +229,7 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Tags of the resource."
       }
@@ -458,7 +458,9 @@
           "privateDnsZoneGroupName": "[if(contains(parameters('accountPrivateEndpoints')[copyIndex()], 'privateDnsZoneGroupName'), createObject('value', parameters('accountPrivateEndpoints')[copyIndex()].privateDnsZoneGroupName), createObject('value', 'default'))]",
           "privateDnsZoneResourceIds": "[if(contains(parameters('accountPrivateEndpoints')[copyIndex()], 'privateDnsZoneResourceIds'), createObject('value', parameters('accountPrivateEndpoints')[copyIndex()].privateDnsZoneResourceIds), createObject('value', createArray()))]",
           "roleAssignments": "[if(contains(parameters('accountPrivateEndpoints')[copyIndex()], 'roleAssignments'), createObject('value', parameters('accountPrivateEndpoints')[copyIndex()].roleAssignments), createObject('value', createArray()))]",
-          "tags": "[if(contains(parameters('accountPrivateEndpoints')[copyIndex()], 'tags'), createObject('value', parameters('accountPrivateEndpoints')[copyIndex()].tags), createObject('value', createObject()))]",
+          "tags": {
+            "value": "[coalesce(tryGet(parameters('accountPrivateEndpoints')[copyIndex()], 'tags'), parameters('tags'))]"
+          },
           "manualPrivateLinkServiceConnections": "[if(contains(parameters('accountPrivateEndpoints')[copyIndex()], 'manualPrivateLinkServiceConnections'), createObject('value', parameters('accountPrivateEndpoints')[copyIndex()].manualPrivateLinkServiceConnections), createObject('value', createArray()))]",
           "customDnsConfigs": "[if(contains(parameters('accountPrivateEndpoints')[copyIndex()], 'customDnsConfigs'), createObject('value', parameters('accountPrivateEndpoints')[copyIndex()].customDnsConfigs), createObject('value', createArray()))]",
           "ipConfigurations": "[if(contains(parameters('accountPrivateEndpoints')[copyIndex()], 'ipConfigurations'), createObject('value', parameters('accountPrivateEndpoints')[copyIndex()].ipConfigurations), createObject('value', createArray()))]",
@@ -989,7 +991,9 @@
           "privateDnsZoneGroupName": "[if(contains(parameters('portalPrivateEndpoints')[copyIndex()], 'privateDnsZoneGroupName'), createObject('value', parameters('portalPrivateEndpoints')[copyIndex()].privateDnsZoneGroupName), createObject('value', 'default'))]",
           "privateDnsZoneResourceIds": "[if(contains(parameters('portalPrivateEndpoints')[copyIndex()], 'privateDnsZoneResourceIds'), createObject('value', parameters('portalPrivateEndpoints')[copyIndex()].privateDnsZoneResourceIds), createObject('value', createArray()))]",
           "roleAssignments": "[if(contains(parameters('portalPrivateEndpoints')[copyIndex()], 'roleAssignments'), createObject('value', parameters('portalPrivateEndpoints')[copyIndex()].roleAssignments), createObject('value', createArray()))]",
-          "tags": "[if(contains(parameters('portalPrivateEndpoints')[copyIndex()], 'tags'), createObject('value', parameters('portalPrivateEndpoints')[copyIndex()].tags), createObject('value', createObject()))]",
+          "tags": {
+            "value": "[coalesce(tryGet(parameters('portalPrivateEndpoints')[copyIndex()], 'tags'), parameters('tags'))]"
+          },
           "manualPrivateLinkServiceConnections": "[if(contains(parameters('portalPrivateEndpoints')[copyIndex()], 'manualPrivateLinkServiceConnections'), createObject('value', parameters('portalPrivateEndpoints')[copyIndex()].manualPrivateLinkServiceConnections), createObject('value', createArray()))]",
           "customDnsConfigs": "[if(contains(parameters('portalPrivateEndpoints')[copyIndex()], 'customDnsConfigs'), createObject('value', parameters('portalPrivateEndpoints')[copyIndex()].customDnsConfigs), createObject('value', createArray()))]",
           "ipConfigurations": "[if(contains(parameters('portalPrivateEndpoints')[copyIndex()], 'ipConfigurations'), createObject('value', parameters('portalPrivateEndpoints')[copyIndex()].ipConfigurations), createObject('value', createArray()))]",
@@ -1520,7 +1524,9 @@
           "privateDnsZoneGroupName": "[if(contains(parameters('storageBlobPrivateEndpoints')[copyIndex()], 'privateDnsZoneGroupName'), createObject('value', parameters('storageBlobPrivateEndpoints')[copyIndex()].privateDnsZoneGroupName), createObject('value', 'default'))]",
           "privateDnsZoneResourceIds": "[if(contains(parameters('storageBlobPrivateEndpoints')[copyIndex()], 'privateDnsZoneResourceIds'), createObject('value', parameters('storageBlobPrivateEndpoints')[copyIndex()].privateDnsZoneResourceIds), createObject('value', createArray()))]",
           "roleAssignments": "[if(contains(parameters('storageBlobPrivateEndpoints')[copyIndex()], 'roleAssignments'), createObject('value', parameters('storageBlobPrivateEndpoints')[copyIndex()].roleAssignments), createObject('value', createArray()))]",
-          "tags": "[if(contains(parameters('storageBlobPrivateEndpoints')[copyIndex()], 'tags'), createObject('value', parameters('storageBlobPrivateEndpoints')[copyIndex()].tags), createObject('value', createObject()))]",
+          "tags": {
+            "value": "[coalesce(tryGet(parameters('storageBlobPrivateEndpoints')[copyIndex()], 'tags'), parameters('tags'))]"
+          },
           "manualPrivateLinkServiceConnections": "[if(contains(parameters('storageBlobPrivateEndpoints')[copyIndex()], 'manualPrivateLinkServiceConnections'), createObject('value', parameters('storageBlobPrivateEndpoints')[copyIndex()].manualPrivateLinkServiceConnections), createObject('value', createArray()))]",
           "customDnsConfigs": "[if(contains(parameters('storageBlobPrivateEndpoints')[copyIndex()], 'customDnsConfigs'), createObject('value', parameters('storageBlobPrivateEndpoints')[copyIndex()].customDnsConfigs), createObject('value', createArray()))]",
           "ipConfigurations": "[if(contains(parameters('storageBlobPrivateEndpoints')[copyIndex()], 'ipConfigurations'), createObject('value', parameters('storageBlobPrivateEndpoints')[copyIndex()].ipConfigurations), createObject('value', createArray()))]",
@@ -2051,7 +2057,9 @@
           "privateDnsZoneGroupName": "[if(contains(parameters('storageQueuePrivateEndpoints')[copyIndex()], 'privateDnsZoneGroupName'), createObject('value', parameters('storageQueuePrivateEndpoints')[copyIndex()].privateDnsZoneGroupName), createObject('value', 'default'))]",
           "privateDnsZoneResourceIds": "[if(contains(parameters('storageQueuePrivateEndpoints')[copyIndex()], 'privateDnsZoneResourceIds'), createObject('value', parameters('storageQueuePrivateEndpoints')[copyIndex()].privateDnsZoneResourceIds), createObject('value', createArray()))]",
           "roleAssignments": "[if(contains(parameters('storageQueuePrivateEndpoints')[copyIndex()], 'roleAssignments'), createObject('value', parameters('storageQueuePrivateEndpoints')[copyIndex()].roleAssignments), createObject('value', createArray()))]",
-          "tags": "[if(contains(parameters('storageQueuePrivateEndpoints')[copyIndex()], 'tags'), createObject('value', parameters('storageQueuePrivateEndpoints')[copyIndex()].tags), createObject('value', createObject()))]",
+          "tags": {
+            "value": "[coalesce(tryGet(parameters('storageQueuePrivateEndpoints')[copyIndex()], 'tags'), parameters('tags'))]"
+          },
           "manualPrivateLinkServiceConnections": "[if(contains(parameters('storageQueuePrivateEndpoints')[copyIndex()], 'manualPrivateLinkServiceConnections'), createObject('value', parameters('storageQueuePrivateEndpoints')[copyIndex()].manualPrivateLinkServiceConnections), createObject('value', createArray()))]",
           "customDnsConfigs": "[if(contains(parameters('storageQueuePrivateEndpoints')[copyIndex()], 'customDnsConfigs'), createObject('value', parameters('storageQueuePrivateEndpoints')[copyIndex()].customDnsConfigs), createObject('value', createArray()))]",
           "ipConfigurations": "[if(contains(parameters('storageQueuePrivateEndpoints')[copyIndex()], 'ipConfigurations'), createObject('value', parameters('storageQueuePrivateEndpoints')[copyIndex()].ipConfigurations), createObject('value', createArray()))]",
@@ -2582,7 +2590,9 @@
           "privateDnsZoneGroupName": "[if(contains(parameters('eventHubPrivateEndpoints')[copyIndex()], 'privateDnsZoneGroupName'), createObject('value', parameters('eventHubPrivateEndpoints')[copyIndex()].privateDnsZoneGroupName), createObject('value', 'default'))]",
           "privateDnsZoneResourceIds": "[if(contains(parameters('eventHubPrivateEndpoints')[copyIndex()], 'privateDnsZoneResourceIds'), createObject('value', parameters('eventHubPrivateEndpoints')[copyIndex()].privateDnsZoneResourceIds), createObject('value', createArray()))]",
           "roleAssignments": "[if(contains(parameters('eventHubPrivateEndpoints')[copyIndex()], 'roleAssignments'), createObject('value', parameters('eventHubPrivateEndpoints')[copyIndex()].roleAssignments), createObject('value', createArray()))]",
-          "tags": "[if(contains(parameters('eventHubPrivateEndpoints')[copyIndex()], 'tags'), createObject('value', parameters('eventHubPrivateEndpoints')[copyIndex()].tags), createObject('value', createObject()))]",
+          "tags": {
+            "value": "[coalesce(tryGet(parameters('eventHubPrivateEndpoints')[copyIndex()], 'tags'), parameters('tags'))]"
+          },
           "manualPrivateLinkServiceConnections": "[if(contains(parameters('eventHubPrivateEndpoints')[copyIndex()], 'manualPrivateLinkServiceConnections'), createObject('value', parameters('eventHubPrivateEndpoints')[copyIndex()].manualPrivateLinkServiceConnections), createObject('value', createArray()))]",
           "customDnsConfigs": "[if(contains(parameters('eventHubPrivateEndpoints')[copyIndex()], 'customDnsConfigs'), createObject('value', parameters('eventHubPrivateEndpoints')[copyIndex()].customDnsConfigs), createObject('value', createArray()))]",
           "ipConfigurations": "[if(contains(parameters('eventHubPrivateEndpoints')[copyIndex()], 'ipConfigurations'), createObject('value', parameters('eventHubPrivateEndpoints')[copyIndex()].ipConfigurations), createObject('value', createArray()))]",
