@@ -22,7 +22,7 @@ param name string
 param taskType string
 
 @sys.description('Optional. Tags of the resource.')
-param tags object = {}
+param tags object?
 
 @sys.description('Optional. If the schedule will occur once each day of the week, specify the daily recurrence.')
 param dailyRecurrence object = {}

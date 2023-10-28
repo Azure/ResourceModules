@@ -30,7 +30,7 @@ param throughput int = 400
 param autoscaleSettingsMaxThroughput int = -1
 
 @description('Optional. Tags of the SQL Database resource.')
-param tags object = {}
+param tags object?
 
 @description('Optional. List of paths using which data within the container can be partitioned.')
 param paths array = []

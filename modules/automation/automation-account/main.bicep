@@ -81,7 +81,7 @@ param lock lockType
 param roleAssignments roleAssignmentType
 
 @description('Optional. Tags of the Automation Account resource.')
-param tags object = {}
+param tags object?
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
@@ -161,7 +161,7 @@ module automationAccount_modules 'module/main.bicep' = [for (module, index) in m
     version: module.version
     uri: module.uri
     location: location
-    tags: tags
+    tags: module.?tags ?? tags
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
@@ -192,7 +192,7 @@ module automationAccount_runbooks 'runbook/main.bicep' = [for (runbook, index) i
     uri: contains(runbook, 'uri') ? runbook.uri : ''
     version: contains(runbook, 'version') ? runbook.version : ''
     location: location
-    tags: tags
+    tags: runbook.?tags ?? tags
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]

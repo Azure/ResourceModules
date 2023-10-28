@@ -108,7 +108,6 @@ ID of the runbook storage account.
 Tags of the Automation Account resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `type`
 

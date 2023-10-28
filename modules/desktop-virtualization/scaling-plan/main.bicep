@@ -73,7 +73,7 @@ param schedules array = [
 param hostPoolReferences array = []
 
 @sys.description('Optional. Tags of the resource.')
-param tags object = {}
+param tags object?
 
 @sys.description('Optional. The diagnostic settings of the service.')
 param diagnosticSettings diagnosticSettingType

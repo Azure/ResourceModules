@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "1654739294339670098"
+      "templateHash": "17677049567783290624"
     },
     "name": "App Configuration Stores",
     "description": "This module deploys an App Configuration Store.",
@@ -500,7 +500,7 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Tags of the resource."
       }
@@ -689,19 +689,22 @@
             "value": "[parameters('keyValues')[copyIndex()].value]"
           },
           "contentType": "[if(contains(parameters('keyValues')[copyIndex()], 'contentType'), createObject('value', parameters('keyValues')[copyIndex()].contentType), createObject('value', ''))]",
-          "tags": "[if(contains(parameters('keyValues')[copyIndex()], 'tags'), createObject('value', parameters('keyValues')[copyIndex()].tags), createObject('value', createObject()))]",
+          "tags": {
+            "value": "[coalesce(tryGet(parameters('keyValues')[copyIndex()], 'tags'), parameters('tags'))]"
+          },
           "enableDefaultTelemetry": {
             "value": "[variables('enableReferencedModulesTelemetry')]"
           }
         },
         "template": {
           "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "languageVersion": "2.0",
           "contentVersion": "1.0.0.0",
           "metadata": {
             "_generator": {
               "name": "bicep",
               "version": "0.22.6.54827",
-              "templateHash": "16264229277476024063"
+              "templateHash": "5336531799585402354"
             },
             "name": "App Configuration Stores Key Values",
             "description": "This module deploys an App Configuration Store Key Value.",
@@ -735,7 +738,7 @@
             },
             "tags": {
               "type": "object",
-              "defaultValue": {},
+              "nullable": true,
               "metadata": {
                 "description": "Optional. Tags of the resource."
               }
@@ -748,8 +751,8 @@
               }
             }
           },
-          "resources": [
-            {
+          "resources": {
+            "defaultTelemetry": {
               "condition": "[parameters('enableDefaultTelemetry')]",
               "type": "Microsoft.Resources/deployments",
               "apiVersion": "2021-04-01",
@@ -763,7 +766,13 @@
                 }
               }
             },
-            {
+            "appConfiguration": {
+              "existing": true,
+              "type": "Microsoft.AppConfiguration/configurationStores",
+              "apiVersion": "2023-03-01",
+              "name": "[parameters('appConfigurationName')]"
+            },
+            "keyValues": {
               "type": "Microsoft.AppConfiguration/configurationStores/keyValues",
               "apiVersion": "2023-03-01",
               "name": "[format('{0}/{1}', parameters('appConfigurationName'), parameters('name'))]",
@@ -771,9 +780,12 @@
                 "contentType": "[parameters('contentType')]",
                 "tags": "[parameters('tags')]",
                 "value": "[parameters('value')]"
-              }
+              },
+              "dependsOn": [
+                "appConfiguration"
+              ]
             }
-          ],
+          },
           "outputs": {
             "name": {
               "type": "string",

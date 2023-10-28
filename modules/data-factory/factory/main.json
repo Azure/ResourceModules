@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "12744321553281451212"
+      "templateHash": "18279203190419572710"
     },
     "name": "Data Factories",
     "description": "This module deploys a Data Factory.",
@@ -545,7 +545,7 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Tags of the resource."
       }

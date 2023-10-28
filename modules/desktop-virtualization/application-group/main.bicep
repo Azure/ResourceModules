@@ -35,7 +35,7 @@ param diagnosticSettings diagnosticSettingType
 param lock lockType
 
 @sys.description('Optional. Tags of the resource.')
-param tags object = {}
+param tags object?
 
 @sys.description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true

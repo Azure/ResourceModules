@@ -2483,7 +2483,6 @@ Enables system assigned managed identity on the resource. The system-assigned ma
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `timeZone`
 

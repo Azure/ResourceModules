@@ -121,7 +121,6 @@ Indicates if the artifact source is enabled (values: Enabled, Disabled). Default
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `uri`
 

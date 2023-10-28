@@ -280,7 +280,6 @@ Required. The name of the role to assign. If it cannot be found you can specify 
 Tags of the availability set resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 
 ## Outputs

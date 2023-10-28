@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "7425318537655406397"
+      "templateHash": "8414133522716615305"
     },
     "name": "DocumentDB Database Accounts",
     "description": "This module deploys a DocumentDB Database Account.",
@@ -375,7 +375,7 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Tags of the Database Account resource."
       }
@@ -759,12 +759,13 @@
         },
         "template": {
           "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "languageVersion": "2.0",
           "contentVersion": "1.0.0.0",
           "metadata": {
             "_generator": {
               "name": "bicep",
               "version": "0.22.6.54827",
-              "templateHash": "11353697729412779140"
+              "templateHash": "10948740009827102632"
             },
             "name": "DocumentDB Database Account SQL Databases",
             "description": "This module deploys a SQL Database in a CosmosDB Account.",
@@ -806,7 +807,7 @@
             },
             "tags": {
               "type": "object",
-              "defaultValue": {},
+              "nullable": true,
               "metadata": {
                 "description": "Optional. Tags of the SQL database resource."
               }
@@ -822,8 +823,8 @@
           "variables": {
             "enableReferencedModulesTelemetry": false
           },
-          "resources": [
-            {
+          "resources": {
+            "defaultTelemetry": {
               "condition": "[parameters('enableDefaultTelemetry')]",
               "type": "Microsoft.Resources/deployments",
               "apiVersion": "2022-09-01",
@@ -837,7 +838,13 @@
                 }
               }
             },
-            {
+            "databaseAccount": {
+              "existing": true,
+              "type": "Microsoft.DocumentDB/databaseAccounts",
+              "apiVersion": "2023-04-15",
+              "name": "[parameters('databaseAccountName')]"
+            },
+            "sqlDatabase": {
               "type": "Microsoft.DocumentDB/databaseAccounts/sqlDatabases",
               "apiVersion": "2023-04-15",
               "name": "[format('{0}/{1}', parameters('databaseAccountName'), parameters('name'))]",
@@ -846,10 +853,13 @@
                 "resource": {
                   "id": "[parameters('name')]"
                 },
-                "options": "[if(contains(reference(resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('databaseAccountName')), '2023-04-15').capabilities, createObject('name', 'EnableServerless')), null(), createObject('throughput', if(equals(parameters('autoscaleSettingsMaxThroughput'), -1), parameters('throughput'), null()), 'autoscaleSettings', if(not(equals(parameters('autoscaleSettingsMaxThroughput'), -1)), createObject('maxThroughput', parameters('autoscaleSettingsMaxThroughput')), null())))]"
-              }
+                "options": "[if(contains(reference('databaseAccount').capabilities, createObject('name', 'EnableServerless')), null(), createObject('throughput', if(equals(parameters('autoscaleSettingsMaxThroughput'), -1), parameters('throughput'), null()), 'autoscaleSettings', if(not(equals(parameters('autoscaleSettingsMaxThroughput'), -1)), createObject('maxThroughput', parameters('autoscaleSettingsMaxThroughput')), null())))]"
+              },
+              "dependsOn": [
+                "databaseAccount"
+              ]
             },
-            {
+            "container": {
               "copy": {
                 "name": "container",
                 "count": "[length(parameters('containers'))]"
@@ -887,12 +897,13 @@
                 },
                 "template": {
                   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                  "languageVersion": "2.0",
                   "contentVersion": "1.0.0.0",
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
                       "version": "0.22.6.54827",
-                      "templateHash": "8116399669974678281"
+                      "templateHash": "5628064493958565248"
                     },
                     "name": "DocumentDB Database Account SQL Database Containers",
                     "description": "This module deploys a SQL Database Container in a CosmosDB Account.",
@@ -957,7 +968,7 @@
                     },
                     "tags": {
                       "type": "object",
-                      "defaultValue": {},
+                      "nullable": true,
                       "metadata": {
                         "description": "Optional. Tags of the SQL Database resource."
                       }
@@ -1003,8 +1014,17 @@
                       }
                     }
                   },
-                  "resources": [
-                    {
+                  "resources": {
+                    "databaseAccount::sqlDatabase": {
+                      "existing": true,
+                      "type": "Microsoft.DocumentDB/databaseAccounts/sqlDatabases",
+                      "apiVersion": "2023-04-15",
+                      "name": "[format('{0}/{1}', parameters('databaseAccountName'), parameters('sqlDatabaseName'))]",
+                      "dependsOn": [
+                        "databaseAccount"
+                      ]
+                    },
+                    "defaultTelemetry": {
                       "condition": "[parameters('enableDefaultTelemetry')]",
                       "type": "Microsoft.Resources/deployments",
                       "apiVersion": "2022-09-01",
@@ -1018,7 +1038,13 @@
                         }
                       }
                     },
-                    {
+                    "databaseAccount": {
+                      "existing": true,
+                      "type": "Microsoft.DocumentDB/databaseAccounts",
+                      "apiVersion": "2023-04-15",
+                      "name": "[parameters('databaseAccountName')]"
+                    },
+                    "container": {
                       "type": "Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers",
                       "apiVersion": "2023-04-15",
                       "name": "[format('{0}/{1}/{2}', parameters('databaseAccountName'), parameters('sqlDatabaseName'), parameters('name'))]",
@@ -1036,10 +1062,13 @@
                           },
                           "uniqueKeyPolicy": "[if(not(empty(parameters('uniqueKeyPolicyKeys'))), createObject('uniqueKeys', parameters('uniqueKeyPolicyKeys')), null())]"
                         },
-                        "options": "[if(contains(reference(resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('databaseAccountName')), '2023-04-15').capabilities, createObject('name', 'EnableServerless')), null(), createObject('throughput', if(equals(parameters('autoscaleSettingsMaxThroughput'), -1), parameters('throughput'), null()), 'autoscaleSettings', if(not(equals(parameters('autoscaleSettingsMaxThroughput'), -1)), createObject('maxThroughput', parameters('autoscaleSettingsMaxThroughput')), null())))]"
-                      }
+                        "options": "[if(contains(reference('databaseAccount').capabilities, createObject('name', 'EnableServerless')), null(), createObject('throughput', if(equals(parameters('autoscaleSettingsMaxThroughput'), -1), parameters('throughput'), null()), 'autoscaleSettings', if(not(equals(parameters('autoscaleSettingsMaxThroughput'), -1)), createObject('maxThroughput', parameters('autoscaleSettingsMaxThroughput')), null())))]"
+                      },
+                      "dependsOn": [
+                        "databaseAccount::sqlDatabase"
+                      ]
                     }
-                  ],
+                  },
                   "outputs": {
                     "name": {
                       "type": "string",
@@ -1066,10 +1095,10 @@
                 }
               },
               "dependsOn": [
-                "[resourceId('Microsoft.DocumentDB/databaseAccounts/sqlDatabases', parameters('databaseAccountName'), parameters('name'))]"
+                "sqlDatabase"
               ]
             }
-          ],
+          },
           "outputs": {
             "name": {
               "type": "string",
@@ -1126,12 +1155,13 @@
         },
         "template": {
           "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "languageVersion": "2.0",
           "contentVersion": "1.0.0.0",
           "metadata": {
             "_generator": {
               "name": "bicep",
               "version": "0.22.6.54827",
-              "templateHash": "1822071123668929932"
+              "templateHash": "18265317713061610546"
             },
             "name": "DocumentDB Database Account MongoDB Databases",
             "description": "This module deploys a MongoDB Database within a CosmosDB Account.",
@@ -1166,7 +1196,7 @@
             },
             "tags": {
               "type": "object",
-              "defaultValue": {},
+              "nullable": true,
               "metadata": {
                 "description": "Optional. Tags of the resource."
               }
@@ -1182,8 +1212,8 @@
           "variables": {
             "enableReferencedModulesTelemetry": false
           },
-          "resources": [
-            {
+          "resources": {
+            "defaultTelemetry": {
               "condition": "[parameters('enableDefaultTelemetry')]",
               "type": "Microsoft.Resources/deployments",
               "apiVersion": "2022-09-01",
@@ -1197,7 +1227,13 @@
                 }
               }
             },
-            {
+            "databaseAccount": {
+              "existing": true,
+              "type": "Microsoft.DocumentDB/databaseAccounts",
+              "apiVersion": "2023-04-15",
+              "name": "[parameters('databaseAccountName')]"
+            },
+            "mongodbDatabase": {
               "type": "Microsoft.DocumentDB/databaseAccounts/mongodbDatabases",
               "apiVersion": "2023-04-15",
               "name": "[format('{0}/{1}', parameters('databaseAccountName'), parameters('name'))]",
@@ -1206,10 +1242,13 @@
                 "resource": {
                   "id": "[parameters('name')]"
                 },
-                "options": "[if(contains(reference(resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('databaseAccountName')), '2023-04-15').capabilities, createObject('name', 'EnableServerless')), null(), createObject('throughput', parameters('throughput')))]"
-              }
+                "options": "[if(contains(reference('databaseAccount').capabilities, createObject('name', 'EnableServerless')), null(), createObject('throughput', parameters('throughput')))]"
+              },
+              "dependsOn": [
+                "databaseAccount"
+              ]
             },
-            {
+            "mongodbDatabase_collections": {
               "copy": {
                 "name": "mongodbDatabase_collections",
                 "count": "[length(parameters('collections'))]"
@@ -1356,10 +1395,10 @@
                 }
               },
               "dependsOn": [
-                "[resourceId('Microsoft.DocumentDB/databaseAccounts/mongodbDatabases', parameters('databaseAccountName'), parameters('name'))]"
+                "mongodbDatabase"
               ]
             }
-          ],
+          },
           "outputs": {
             "name": {
               "type": "string",
@@ -1416,12 +1455,13 @@
         },
         "template": {
           "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "languageVersion": "2.0",
           "contentVersion": "1.0.0.0",
           "metadata": {
             "_generator": {
               "name": "bicep",
               "version": "0.22.6.54827",
-              "templateHash": "15423165717770718605"
+              "templateHash": "5110293607124976291"
             },
             "name": "DocumentDB Database Account Gremlin Databases",
             "description": "This module deploys a Gremlin Database within a CosmosDB Account.",
@@ -1436,7 +1476,7 @@
             },
             "tags": {
               "type": "object",
-              "defaultValue": {},
+              "nullable": true,
               "metadata": {
                 "description": "Optional. Tags of the Gremlin database resource."
               }
@@ -1494,8 +1534,8 @@
             "enableReferencedModulesTelemetry": false,
             "identityType": "[if(parameters('systemAssignedIdentity'), if(not(empty(parameters('userAssignedIdentities'))), 'SystemAssigned, UserAssigned', 'SystemAssigned'), if(not(empty(parameters('userAssignedIdentities'))), 'UserAssigned', 'None'))]"
           },
-          "resources": [
-            {
+          "resources": {
+            "defaultTelemetry": {
               "condition": "[parameters('enableDefaultTelemetry')]",
               "type": "Microsoft.Resources/deployments",
               "apiVersion": "2022-09-01",
@@ -1509,20 +1549,29 @@
                 }
               }
             },
-            {
+            "databaseAccount": {
+              "existing": true,
+              "type": "Microsoft.DocumentDB/databaseAccounts",
+              "apiVersion": "2023-04-15",
+              "name": "[parameters('databaseAccountName')]"
+            },
+            "gremlinDatabase": {
               "type": "Microsoft.DocumentDB/databaseAccounts/gremlinDatabases",
               "apiVersion": "2023-04-15",
               "name": "[format('{0}/{1}', parameters('databaseAccountName'), parameters('name'))]",
               "tags": "[parameters('tags')]",
               "identity": "[if(not(equals(variables('identityType'), 'None')), createObject('type', variables('identityType'), 'userAssignedIdentities', if(not(empty(parameters('userAssignedIdentities'))), parameters('userAssignedIdentities'), null())), null())]",
               "properties": {
-                "options": "[if(contains(reference(resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('databaseAccountName')), '2023-04-15').capabilities, createObject('name', 'EnableServerless')), createObject(), createObject('autoscaleSettings', if(equals(parameters('throughput'), -1), createObject('maxThroughput', parameters('maxThroughput')), null()), 'throughput', if(not(equals(parameters('throughput'), -1)), parameters('throughput'), null())))]",
+                "options": "[if(contains(reference('databaseAccount').capabilities, createObject('name', 'EnableServerless')), createObject(), createObject('autoscaleSettings', if(equals(parameters('throughput'), -1), createObject('maxThroughput', parameters('maxThroughput')), null()), 'throughput', if(not(equals(parameters('throughput'), -1)), parameters('throughput'), null())))]",
                 "resource": {
                   "id": "[parameters('name')]"
                 }
-              }
+              },
+              "dependsOn": [
+                "databaseAccount"
+              ]
             },
-            {
+            "gremlinDatabase_gremlinGraphs": {
               "copy": {
                 "name": "gremlinDatabase_gremlinGraphs",
                 "count": "[length(parameters('graphs'))]"
@@ -1553,12 +1602,13 @@
                 },
                 "template": {
                   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                  "languageVersion": "2.0",
                   "contentVersion": "1.0.0.0",
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
                       "version": "0.22.6.54827",
-                      "templateHash": "18333404401527081455"
+                      "templateHash": "16432474498986701571"
                     },
                     "name": "DocumentDB Database Accounts Gremlin Databases Graphs",
                     "description": "This module deploys a DocumentDB Database Accounts Gremlin Database Graph.",
@@ -1573,7 +1623,7 @@
                     },
                     "tags": {
                       "type": "object",
-                      "defaultValue": {},
+                      "nullable": true,
                       "metadata": {
                         "description": "Optional. Tags of the Gremlin graph resource."
                       }
@@ -1612,8 +1662,17 @@
                       }
                     }
                   },
-                  "resources": [
-                    {
+                  "resources": {
+                    "databaseAccount::gremlinDatabase": {
+                      "existing": true,
+                      "type": "Microsoft.DocumentDB/databaseAccounts/gremlinDatabases",
+                      "apiVersion": "2023-04-15",
+                      "name": "[format('{0}/{1}', parameters('databaseAccountName'), parameters('gremlinDatabaseName'))]",
+                      "dependsOn": [
+                        "databaseAccount"
+                      ]
+                    },
+                    "defaultTelemetry": {
                       "condition": "[parameters('enableDefaultTelemetry')]",
                       "type": "Microsoft.Resources/deployments",
                       "apiVersion": "2022-09-01",
@@ -1627,7 +1686,13 @@
                         }
                       }
                     },
-                    {
+                    "databaseAccount": {
+                      "existing": true,
+                      "type": "Microsoft.DocumentDB/databaseAccounts",
+                      "apiVersion": "2023-04-15",
+                      "name": "[parameters('databaseAccountName')]"
+                    },
+                    "gremlinGraph": {
                       "type": "Microsoft.DocumentDB/databaseAccounts/gremlinDatabases/graphs",
                       "apiVersion": "2023-04-15",
                       "name": "[format('{0}/{1}/{2}', parameters('databaseAccountName'), parameters('gremlinDatabaseName'), parameters('name'))]",
@@ -1640,9 +1705,12 @@
                             "paths": "[if(not(empty(parameters('partitionKeyPaths'))), parameters('partitionKeyPaths'), null())]"
                           }
                         }
-                      }
+                      },
+                      "dependsOn": [
+                        "databaseAccount::gremlinDatabase"
+                      ]
                     }
-                  ],
+                  },
                   "outputs": {
                     "name": {
                       "type": "string",
@@ -1669,10 +1737,10 @@
                 }
               },
               "dependsOn": [
-                "[resourceId('Microsoft.DocumentDB/databaseAccounts/gremlinDatabases', parameters('databaseAccountName'), parameters('name'))]"
+                "gremlinDatabase"
               ]
             }
-          ],
+          },
           "outputs": {
             "name": {
               "type": "string",

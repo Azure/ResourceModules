@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "11496388120257494229"
+      "templateHash": "5845595608604439632"
     },
     "name": "Azure Databricks Access Connectors",
     "description": "This module deploys an Azure Databricks Access Connector.",
@@ -114,7 +114,7 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Tags of the resource."
       }

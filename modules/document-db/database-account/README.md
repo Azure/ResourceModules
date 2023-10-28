@@ -1829,7 +1829,6 @@ Enables system assigned managed identity on the resource.
 Tags of the Database Account resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `userAssignedIdentities`
 

@@ -352,7 +352,6 @@ The source virtual machine from which Image is created.
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `zoneResilient`
 

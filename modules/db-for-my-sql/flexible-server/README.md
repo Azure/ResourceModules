@@ -1062,7 +1062,6 @@ Max storage allowed for a server. In all compute tiers, the minimum storage supp
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `tier`
 

@@ -1161,7 +1161,6 @@ Enables system assigned managed identity on the resource.
 Tags of the Automation Account resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `userAssignedIdentities`
 
