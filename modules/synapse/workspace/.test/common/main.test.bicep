@@ -102,19 +102,22 @@ module testDeployment '../../main.bicep' = {
         name: 'shir01'
       }
     ]
-    diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
-    diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
-    diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
-    diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
-    diagnosticLogCategoriesToEnable: [
-      'SynapseRbacOperations'
-      'GatewayApiRequests'
-      'BuiltinSqlReqsEnded'
-      'IntegrationPipelineRuns'
-      'IntegrationActivityRuns'
-      'IntegrationTriggerRuns'
-      'SQLSecurityAuditEvents'
-      'SynapseLinkEvent'
+    diagnosticSettings: [
+      {
+        name: 'customSetting'
+        logCategoriesAndGroups: [
+          {
+            category: 'SynapseRbacOperations'
+          }
+          {
+            category: 'SynapseLinkEvent'
+          }
+        ]
+        eventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
+        eventHubAuthorizationRuleResourceId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
+        storageAccountResourceId: diagnosticDependencies.outputs.storageAccountResourceId
+        workspaceResourceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
+      }
     ]
     enableDefaultTelemetry: enableDefaultTelemetry
   }

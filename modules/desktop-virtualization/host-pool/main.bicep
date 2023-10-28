@@ -56,17 +56,8 @@ param tokenValidityLength string = 'PT8H'
 @sys.description('Generated. Do not provide a value! This date value is used to generate a registration token.')
 param baseTime string = utcNow('u')
 
-@sys.description('Optional. Resource ID of the diagnostic storage account.')
-param diagnosticStorageAccountId string = ''
-
-@sys.description('Optional. Resource ID of the diagnostic log analytics workspace.')
-param diagnosticWorkspaceId string = ''
-
-@sys.description('Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
-param diagnosticEventHubAuthorizationRuleId string = ''
-
-@sys.description('Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
-param diagnosticEventHubName string = ''
+@sys.description('Optional. The diagnostic settings of the service.')
+param diagnosticSettings diagnosticSettingType
 
 @sys.description('Optional. The lock settings of the service.')
 param lock lockType
@@ -161,36 +152,6 @@ param ssoClientSecretKeyVaultPath string = ''
 #disable-next-line secure-secrets-in-params
 param ssoSecretType string = ''
 
-@sys.description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to \'\' to disable log collection.')
-@allowed([
-  ''
-  'allLogs'
-  'Checkpoint'
-  'Error'
-  'Management'
-  'Connection'
-  'HostRegistration'
-  'AgentHealthStatus'
-])
-param diagnosticLogCategoriesToEnable array = [
-  'allLogs'
-]
-
-@sys.description('Optional. The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings".')
-param diagnosticSettingsName string = ''
-
-var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs' && item != ''): {
-  category: category
-  enabled: true
-}]
-
-var diagnosticsLogs = contains(diagnosticLogCategoriesToEnable, 'allLogs') ? [
-  {
-    categoryGroup: 'allLogs'
-    enabled: true
-  }
-] : contains(diagnosticLogCategoriesToEnable, '') ? [] : diagnosticsLogsSpecified
-
 var tokenExpirationTime = dateTimeAdd(baseTime, tokenValidityLength)
 
 var builtInRoleNames = {
@@ -266,17 +227,24 @@ resource hostPool_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(l
   scope: hostPool
 }
 
-resource hostPool_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {
-  name: !empty(diagnosticSettingsName) ? diagnosticSettingsName : '${name}-diagnosticSettings'
+resource hostPool_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = [for (diagnosticSetting, index) in (diagnosticSettings ?? []): {
+  name: diagnosticSetting.?name ?? '${name}-diagnosticSettings'
   properties: {
-    storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
-    workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null
-    eventHubAuthorizationRuleId: !empty(diagnosticEventHubAuthorizationRuleId) ? diagnosticEventHubAuthorizationRuleId : null
-    eventHubName: !empty(diagnosticEventHubName) ? diagnosticEventHubName : null
-    logs: diagnosticsLogs
+    storageAccountId: diagnosticSetting.?storageAccountResourceId
+    workspaceId: diagnosticSetting.?workspaceResourceId
+    eventHubAuthorizationRuleId: diagnosticSetting.?eventHubAuthorizationRuleResourceId
+    eventHubName: diagnosticSetting.?eventHubName
+    logs: diagnosticSetting.?logCategoriesAndGroups ?? [
+      {
+        categoryGroup: 'AllLogs'
+        enabled: true
+      }
+    ]
+    marketplacePartnerId: diagnosticSetting.?marketplacePartnerResourceId
+    logAnalyticsDestinationType: diagnosticSetting.?logAnalyticsDestinationType
   }
   scope: hostPool
-}
+}]
 
 resource hostPool_roleAssignments 'Microsoft.Authorization/roleAssignments@2022-04-01' = [for (roleAssignment, index) in (roleAssignments ?? []): {
   name: guid(hostPool.id, roleAssignment.principalId, roleAssignment.roleDefinitionIdOrName)
@@ -340,4 +308,36 @@ type roleAssignmentType = {
 
   @sys.description('Optional. The Resource Id of the delegated managed identity resource.')
   delegatedManagedIdentityResourceId: string?
+}[]?
+
+type diagnosticSettingType = {
+  @sys.description('Optional. The name of diagnostic setting.')
+  name: string?
+
+  @sys.description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to \'\' to disable log collection.')
+  logCategoriesAndGroups: {
+    @sys.description('Optional. Name of a Diagnostic Log category for a resource type this setting is applied to. Set the specific logs to collect here.')
+    category: string?
+
+    @sys.description('Optional. Name of a Diagnostic Log category group for a resource type this setting is applied to. Set to \'AllLogs\' to collect all logs.')
+    categoryGroup: string?
+  }[]?
+
+  @sys.description('Optional. A string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destination type.')
+  logAnalyticsDestinationType: ('Dedicated' | 'AzureDiagnostics' | null)?
+
+  @sys.description('Optional. Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.')
+  workspaceResourceId: string?
+
+  @sys.description('Optional. Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.')
+  storageAccountResourceId: string?
+
+  @sys.description('Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
+  eventHubAuthorizationRuleResourceId: string?
+
+  @sys.description('Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.')
+  eventHubName: string?
+
+  @sys.description('Optional. The full ARM resource ID of the Marketplace resource to which you would like to send Diagnostic Logs.')
+  marketplacePartnerResourceId: string?
 }[]?

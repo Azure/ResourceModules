@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "14708866930444205418"
+      "templateHash": "9008744149978786783"
     },
     "name": "Azure SQL Servers",
     "description": "This module deploys an Azure SQL Server.",
@@ -551,26 +551,22 @@
           "collation": "[if(contains(parameters('databases')[copyIndex()], 'collation'), createObject('value', parameters('databases')[copyIndex()].collation), createObject('value', 'SQL_Latin1_General_CP1_CI_AS'))]",
           "maxSizeBytes": "[if(contains(parameters('databases')[copyIndex()], 'maxSizeBytes'), createObject('value', parameters('databases')[copyIndex()].maxSizeBytes), createObject('value', json('34359738368')))]",
           "autoPauseDelay": "[if(contains(parameters('databases')[copyIndex()], 'autoPauseDelay'), createObject('value', parameters('databases')[copyIndex()].autoPauseDelay), createObject('value', 0))]",
-          "diagnosticStorageAccountId": "[if(contains(parameters('databases')[copyIndex()], 'diagnosticStorageAccountId'), createObject('value', parameters('databases')[copyIndex()].diagnosticStorageAccountId), createObject('value', ''))]",
-          "diagnosticEventHubAuthorizationRuleId": "[if(contains(parameters('databases')[copyIndex()], 'diagnosticEventHubAuthorizationRuleId'), createObject('value', parameters('databases')[copyIndex()].diagnosticEventHubAuthorizationRuleId), createObject('value', ''))]",
-          "diagnosticEventHubName": "[if(contains(parameters('databases')[copyIndex()], 'diagnosticEventHubName'), createObject('value', parameters('databases')[copyIndex()].diagnosticEventHubName), createObject('value', ''))]",
+          "diagnosticSettings": {
+            "value": "[tryGet(parameters('databases')[copyIndex()], 'diagnosticSettings')]"
+          },
           "isLedgerOn": "[if(contains(parameters('databases')[copyIndex()], 'isLedgerOn'), createObject('value', parameters('databases')[copyIndex()].isLedgerOn), createObject('value', false()))]",
           "location": {
             "value": "[parameters('location')]"
           },
-          "diagnosticLogCategoriesToEnable": "[if(contains(parameters('databases')[copyIndex()], 'diagnosticLogCategoriesToEnable'), createObject('value', parameters('databases')[copyIndex()].diagnosticLogCategoriesToEnable), createObject('value', createArray()))]",
           "licenseType": "[if(contains(parameters('databases')[copyIndex()], 'licenseType'), createObject('value', parameters('databases')[copyIndex()].licenseType), createObject('value', ''))]",
           "maintenanceConfigurationId": "[if(contains(parameters('databases')[copyIndex()], 'maintenanceConfigurationId'), createObject('value', parameters('databases')[copyIndex()].maintenanceConfigurationId), createObject('value', ''))]",
           "minCapacity": "[if(contains(parameters('databases')[copyIndex()], 'minCapacity'), createObject('value', parameters('databases')[copyIndex()].minCapacity), createObject('value', ''))]",
-          "diagnosticMetricsToEnable": "[if(contains(parameters('databases')[copyIndex()], 'diagnosticMetricsToEnable'), createObject('value', parameters('databases')[copyIndex()].diagnosticMetricsToEnable), createObject('value', createArray()))]",
           "highAvailabilityReplicaCount": "[if(contains(parameters('databases')[copyIndex()], 'highAvailabilityReplicaCount'), createObject('value', parameters('databases')[copyIndex()].highAvailabilityReplicaCount), createObject('value', 0))]",
           "readScale": "[if(contains(parameters('databases')[copyIndex()], 'readScale'), createObject('value', parameters('databases')[copyIndex()].readScale), createObject('value', 'Disabled'))]",
           "requestedBackupStorageRedundancy": "[if(contains(parameters('databases')[copyIndex()], 'requestedBackupStorageRedundancy'), createObject('value', parameters('databases')[copyIndex()].requestedBackupStorageRedundancy), createObject('value', ''))]",
           "sampleName": "[if(contains(parameters('databases')[copyIndex()], 'sampleName'), createObject('value', parameters('databases')[copyIndex()].sampleName), createObject('value', ''))]",
           "tags": "[if(contains(parameters('databases')[copyIndex()], 'tags'), createObject('value', parameters('databases')[copyIndex()].tags), createObject('value', createObject()))]",
-          "diagnosticWorkspaceId": "[if(contains(parameters('databases')[copyIndex()], 'diagnosticWorkspaceId'), createObject('value', parameters('databases')[copyIndex()].diagnosticWorkspaceId), createObject('value', ''))]",
           "zoneRedundant": "[if(contains(parameters('databases')[copyIndex()], 'zoneRedundant'), createObject('value', parameters('databases')[copyIndex()].zoneRedundant), createObject('value', false()))]",
-          "diagnosticSettingsName": "[if(contains(parameters('databases')[copyIndex()], 'diagnosticSettingsName'), createObject('value', parameters('databases')[copyIndex()].diagnosticSettingsName), createObject('value', format('{0}-diagnosticSettings', parameters('databases')[copyIndex()].name)))]",
           "elasticPoolId": "[if(contains(parameters('databases')[copyIndex()], 'elasticPoolId'), createObject('value', parameters('databases')[copyIndex()].elasticPoolId), createObject('value', ''))]",
           "enableDefaultTelemetry": {
             "value": "[variables('enableReferencedModulesTelemetry')]"
@@ -585,16 +581,125 @@
         },
         "template": {
           "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "languageVersion": "2.0",
           "contentVersion": "1.0.0.0",
           "metadata": {
             "_generator": {
               "name": "bicep",
               "version": "0.22.6.54827",
-              "templateHash": "14921090017328805601"
+              "templateHash": "7566326750370718720"
             },
             "name": "SQL Server Database",
             "description": "This module deploys an Azure SQL Server Database.",
             "owner": "Azure/module-maintainers"
+          },
+          "definitions": {
+            "diagnosticSettingType": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. The name of diagnostic setting."
+                    }
+                  },
+                  "logCategoriesAndGroups": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "category": {
+                          "type": "string",
+                          "nullable": true,
+                          "metadata": {
+                            "description": "Optional. Name of a Diagnostic Log category for a resource type this setting is applied to. Set the specific logs to collect here."
+                          }
+                        },
+                        "categoryGroup": {
+                          "type": "string",
+                          "nullable": true,
+                          "metadata": {
+                            "description": "Optional. Name of a Diagnostic Log category group for a resource type this setting is applied to. Set to 'AllLogs' to collect all logs."
+                          }
+                        }
+                      }
+                    },
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. The name of logs that will be streamed. \"allLogs\" includes all possible logs for the resource. Set to '' to disable log collection."
+                    }
+                  },
+                  "metricCategories": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "category": {
+                          "type": "string",
+                          "metadata": {
+                            "description": "Required. Name of a Diagnostic Metric category for a resource type this setting is applied to. Set to 'AllMetrics' to collect all metrics."
+                          }
+                        }
+                      }
+                    },
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. The name of logs that will be streamed. \"allLogs\" includes all possible logs for the resource. Set to '' to disable log collection."
+                    }
+                  },
+                  "logAnalyticsDestinationType": {
+                    "type": "string",
+                    "allowedValues": [
+                      "AzureDiagnostics",
+                      "Dedicated"
+                    ],
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. A string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destination type."
+                    }
+                  },
+                  "workspaceResourceId": {
+                    "type": "string",
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub."
+                    }
+                  },
+                  "storageAccountResourceId": {
+                    "type": "string",
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub."
+                    }
+                  },
+                  "eventHubAuthorizationRuleResourceId": {
+                    "type": "string",
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to."
+                    }
+                  },
+                  "eventHubName": {
+                    "type": "string",
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub."
+                    }
+                  },
+                  "marketplacePartnerResourceId": {
+                    "type": "string",
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. The full ARM resource ID of the Marketplace resource to which you would like to send Diagnostic Logs."
+                    }
+                  }
+                }
+              },
+              "nullable": true
+            }
           },
           "parameters": {
             "name": {
@@ -751,72 +856,10 @@
                 "description": "Optional. Enable telemetry via a Globally Unique Identifier (GUID)."
               }
             },
-            "diagnosticStorageAccountId": {
-              "type": "string",
-              "defaultValue": "",
+            "diagnosticSettings": {
+              "$ref": "#/definitions/diagnosticSettingType",
               "metadata": {
-                "description": "Optional. Resource ID of the diagnostic storage account."
-              }
-            },
-            "diagnosticWorkspaceId": {
-              "type": "string",
-              "defaultValue": "",
-              "metadata": {
-                "description": "Optional. Resource ID of the diagnostic log analytics workspace."
-              }
-            },
-            "diagnosticEventHubAuthorizationRuleId": {
-              "type": "string",
-              "defaultValue": "",
-              "metadata": {
-                "description": "Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to."
-              }
-            },
-            "diagnosticEventHubName": {
-              "type": "string",
-              "defaultValue": "",
-              "metadata": {
-                "description": "Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category."
-              }
-            },
-            "diagnosticLogCategoriesToEnable": {
-              "type": "array",
-              "defaultValue": [
-                "allLogs"
-              ],
-              "allowedValues": [
-                "",
-                "allLogs",
-                "SQLInsights",
-                "AutomaticTuning",
-                "QueryStoreRuntimeStatistics",
-                "QueryStoreWaitStatistics",
-                "Errors",
-                "DatabaseWaitStatistics",
-                "Timeouts",
-                "Blocks",
-                "Deadlocks",
-                "DevOpsOperationsAudit",
-                "SQLSecurityAuditEvents"
-              ],
-              "metadata": {
-                "description": "Optional. The name of logs that will be streamed. \"allLogs\" includes all possible logs for the resource. Set to '' to disable log collection."
-              }
-            },
-            "diagnosticMetricsToEnable": {
-              "type": "array",
-              "defaultValue": [
-                "Basic",
-                "InstanceAndAppAdvanced",
-                "WorkloadManagement"
-              ],
-              "allowedValues": [
-                "Basic",
-                "InstanceAndAppAdvanced",
-                "WorkloadManagement"
-              ],
-              "metadata": {
-                "description": "Optional. The name of metrics that will be streamed."
+                "description": "Optional. The diagnostic settings of the service."
               }
             },
             "createMode": {
@@ -864,13 +907,6 @@
                 "description": "Optional. Point in time (ISO8601 format) of the source database to restore when createMode set to Restore or PointInTimeRestore."
               }
             },
-            "diagnosticSettingsName": {
-              "type": "string",
-              "defaultValue": "",
-              "metadata": {
-                "description": "Optional. The name of the diagnostic setting, if deployed. If left empty, it defaults to \"<resourceName>-diagnosticSettings\"."
-              }
-            },
             "requestedBackupStorageRedundancy": {
               "type": "string",
               "defaultValue": "",
@@ -914,30 +950,10 @@
             }
           },
           "variables": {
-            "copy": [
-              {
-                "name": "diagnosticsLogsSpecified",
-                "count": "[length(filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', and(not(equals(lambdaVariables('item'), 'allLogs')), not(equals(lambdaVariables('item'), ''))))))]",
-                "input": {
-                  "category": "[filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', and(not(equals(lambdaVariables('item'), 'allLogs')), not(equals(lambdaVariables('item'), '')))))[copyIndex('diagnosticsLogsSpecified')]]",
-                  "enabled": true
-                }
-              },
-              {
-                "name": "diagnosticsMetrics",
-                "count": "[length(parameters('diagnosticMetricsToEnable'))]",
-                "input": {
-                  "category": "[parameters('diagnosticMetricsToEnable')[copyIndex('diagnosticsMetrics')]]",
-                  "timeGrain": null,
-                  "enabled": true
-                }
-              }
-            ],
-            "diagnosticsLogs": "[if(contains(parameters('diagnosticLogCategoriesToEnable'), 'allLogs'), createArray(createObject('categoryGroup', 'allLogs', 'enabled', true())), if(contains(parameters('diagnosticLogCategoriesToEnable'), ''), createArray(), variables('diagnosticsLogsSpecified')))]",
             "skuVar": "[union(createObject('name', parameters('skuName'), 'tier', parameters('skuTier')), if(not(equals(parameters('skuCapacity'), -1)), createObject('capacity', parameters('skuCapacity')), if(not(empty(parameters('skuFamily'))), createObject('family', parameters('skuFamily')), if(not(empty(parameters('skuSize'))), createObject('size', parameters('skuSize')), createObject()))))]"
           },
-          "resources": [
-            {
+          "resources": {
+            "defaultTelemetry": {
               "condition": "[parameters('enableDefaultTelemetry')]",
               "type": "Microsoft.Resources/deployments",
               "apiVersion": "2021-04-01",
@@ -951,7 +967,13 @@
                 }
               }
             },
-            {
+            "server": {
+              "existing": true,
+              "type": "Microsoft.Sql/servers",
+              "apiVersion": "2022-05-01-preview",
+              "name": "[parameters('serverName')]"
+            },
+            "database": {
               "type": "Microsoft.Sql/servers/databases",
               "apiVersion": "2022-05-01-preview",
               "name": "[format('{0}/{1}', parameters('serverName'), parameters('name'))]",
@@ -978,27 +1000,35 @@
                 "recoveryServicesRecoveryPointId": "[if(not(empty(parameters('recoveryServicesRecoveryPointResourceId'))), parameters('recoveryServicesRecoveryPointResourceId'), null())]",
                 "restorePointInTime": "[if(not(empty(parameters('restorePointInTime'))), parameters('restorePointInTime'), null())]"
               },
-              "sku": "[variables('skuVar')]"
+              "sku": "[variables('skuVar')]",
+              "dependsOn": [
+                "server"
+              ]
             },
-            {
-              "condition": "[or(or(or(not(empty(parameters('diagnosticStorageAccountId'))), not(empty(parameters('diagnosticWorkspaceId')))), not(empty(parameters('diagnosticEventHubAuthorizationRuleId')))), not(empty(parameters('diagnosticEventHubName'))))]",
+            "database_diagnosticSettings": {
+              "copy": {
+                "name": "database_diagnosticSettings",
+                "count": "[length(coalesce(parameters('diagnosticSettings'), createArray()))]"
+              },
               "type": "Microsoft.Insights/diagnosticSettings",
               "apiVersion": "2021-05-01-preview",
               "scope": "[format('Microsoft.Sql/servers/{0}/databases/{1}', parameters('serverName'), parameters('name'))]",
-              "name": "[if(not(empty(parameters('diagnosticSettingsName'))), parameters('diagnosticSettingsName'), format('{0}-diagnosticSettings', parameters('name')))]",
+              "name": "[coalesce(tryGet(coalesce(parameters('diagnosticSettings'), createArray())[copyIndex()], 'name'), format('{0}-diagnosticSettings', parameters('name')))]",
               "properties": {
-                "storageAccountId": "[if(not(empty(parameters('diagnosticStorageAccountId'))), parameters('diagnosticStorageAccountId'), null())]",
-                "workspaceId": "[if(not(empty(parameters('diagnosticWorkspaceId'))), parameters('diagnosticWorkspaceId'), null())]",
-                "eventHubAuthorizationRuleId": "[if(not(empty(parameters('diagnosticEventHubAuthorizationRuleId'))), parameters('diagnosticEventHubAuthorizationRuleId'), null())]",
-                "eventHubName": "[if(not(empty(parameters('diagnosticEventHubName'))), parameters('diagnosticEventHubName'), null())]",
-                "metrics": "[variables('diagnosticsMetrics')]",
-                "logs": "[variables('diagnosticsLogs')]"
+                "storageAccountId": "[tryGet(coalesce(parameters('diagnosticSettings'), createArray())[copyIndex()], 'storageAccountResourceId')]",
+                "workspaceId": "[tryGet(coalesce(parameters('diagnosticSettings'), createArray())[copyIndex()], 'workspaceResourceId')]",
+                "eventHubAuthorizationRuleId": "[tryGet(coalesce(parameters('diagnosticSettings'), createArray())[copyIndex()], 'eventHubAuthorizationRuleResourceId')]",
+                "eventHubName": "[tryGet(coalesce(parameters('diagnosticSettings'), createArray())[copyIndex()], 'eventHubName')]",
+                "metrics": "[coalesce(tryGet(coalesce(parameters('diagnosticSettings'), createArray())[copyIndex()], 'metricCategories'), createArray(createObject('category', 'AllMetrics', 'timeGrain', null(), 'enabled', true())))]",
+                "logs": "[coalesce(tryGet(coalesce(parameters('diagnosticSettings'), createArray())[copyIndex()], 'logCategoriesAndGroups'), createArray(createObject('categoryGroup', 'AllLogs', 'enabled', true())))]",
+                "marketplacePartnerId": "[tryGet(coalesce(parameters('diagnosticSettings'), createArray())[copyIndex()], 'marketplacePartnerResourceId')]",
+                "logAnalyticsDestinationType": "[tryGet(coalesce(parameters('diagnosticSettings'), createArray())[copyIndex()], 'logAnalyticsDestinationType')]"
               },
               "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers/databases', parameters('serverName'), parameters('name'))]"
+                "database"
               ]
             },
-            {
+            "database_backupShortTermRetentionPolicy": {
               "type": "Microsoft.Resources/deployments",
               "apiVersion": "2022-09-01",
               "name": "[format('{0}-{1}-shBakRetPol', uniqueString(deployment().name, parameters('location')), parameters('name'))]",
@@ -1116,10 +1146,10 @@
                 }
               },
               "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers/databases', parameters('serverName'), parameters('name'))]"
+                "database"
               ]
             },
-            {
+            "database_backupLongTermRetentionPolicy": {
               "type": "Microsoft.Resources/deployments",
               "apiVersion": "2022-09-01",
               "name": "[format('{0}-{1}-lgBakRetPol', uniqueString(deployment().name, parameters('location')), parameters('name'))]",
@@ -1255,10 +1285,10 @@
                 }
               },
               "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers/databases', parameters('serverName'), parameters('name'))]"
+                "database"
               ]
             }
-          ],
+          },
           "outputs": {
             "name": {
               "type": "string",
@@ -1286,7 +1316,7 @@
               "metadata": {
                 "description": "The location the resource was deployed into."
               },
-              "value": "[reference(resourceId('Microsoft.Sql/servers/databases', parameters('serverName'), parameters('name')), '2022-05-01-preview', 'full').location]"
+              "value": "[reference('database', '2022-05-01-preview', 'full').location]"
             }
           }
         }

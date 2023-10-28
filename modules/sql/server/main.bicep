@@ -186,24 +186,18 @@ module server_databases 'database/main.bicep' = [for (database, index) in databa
     collation: contains(database, 'collation') ? database.collation : 'SQL_Latin1_General_CP1_CI_AS'
     maxSizeBytes: contains(database, 'maxSizeBytes') ? database.maxSizeBytes : 34359738368
     autoPauseDelay: contains(database, 'autoPauseDelay') ? database.autoPauseDelay : 0
-    diagnosticStorageAccountId: contains(database, 'diagnosticStorageAccountId') ? database.diagnosticStorageAccountId : ''
-    diagnosticEventHubAuthorizationRuleId: contains(database, 'diagnosticEventHubAuthorizationRuleId') ? database.diagnosticEventHubAuthorizationRuleId : ''
-    diagnosticEventHubName: contains(database, 'diagnosticEventHubName') ? database.diagnosticEventHubName : ''
+    diagnosticSettings: database.?diagnosticSettings
     isLedgerOn: contains(database, 'isLedgerOn') ? database.isLedgerOn : false
     location: location
-    diagnosticLogCategoriesToEnable: contains(database, 'diagnosticLogCategoriesToEnable') ? database.diagnosticLogCategoriesToEnable : []
     licenseType: contains(database, 'licenseType') ? database.licenseType : ''
     maintenanceConfigurationId: contains(database, 'maintenanceConfigurationId') ? database.maintenanceConfigurationId : ''
     minCapacity: contains(database, 'minCapacity') ? database.minCapacity : ''
-    diagnosticMetricsToEnable: contains(database, 'diagnosticMetricsToEnable') ? database.diagnosticMetricsToEnable : []
     highAvailabilityReplicaCount: contains(database, 'highAvailabilityReplicaCount') ? database.highAvailabilityReplicaCount : 0
     readScale: contains(database, 'readScale') ? database.readScale : 'Disabled'
     requestedBackupStorageRedundancy: contains(database, 'requestedBackupStorageRedundancy') ? database.requestedBackupStorageRedundancy : ''
     sampleName: contains(database, 'sampleName') ? database.sampleName : ''
     tags: contains(database, 'tags') ? database.tags : {}
-    diagnosticWorkspaceId: contains(database, 'diagnosticWorkspaceId') ? database.diagnosticWorkspaceId : ''
     zoneRedundant: contains(database, 'zoneRedundant') ? database.zoneRedundant : false
-    diagnosticSettingsName: contains(database, 'diagnosticSettingsName') ? database.diagnosticSettingsName : '${database.name}-diagnosticSettings'
     elasticPoolId: contains(database, 'elasticPoolId') ? database.elasticPoolId : ''
     enableDefaultTelemetry: enableReferencedModulesTelemetry
     backupShortTermRetentionPolicy: contains(database, 'backupShortTermRetentionPolicy') ? database.backupShortTermRetentionPolicy : {}

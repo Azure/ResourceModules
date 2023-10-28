@@ -78,10 +78,24 @@ module testDeployment '../../main.bicep' = {
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '${namePrefix}${serviceShort}001'
-    diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
-    diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
-    diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
-    diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
+    diagnosticSettings: [
+      {
+        name: 'customSetting'
+        eventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
+        eventHubAuthorizationRuleResourceId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
+        storageAccountResourceId: diagnosticDependencies.outputs.storageAccountResourceId
+        workspaceResourceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
+        logCategoriesAndGroups: [
+          {
+            category: 'jobs'
+          }
+          {
+            category: 'notebook'
+
+          }
+        ]
+      }
+    ]
     lock: {
       kind: 'CanNotDelete'
       name: 'myCustomLockName'
@@ -131,11 +145,6 @@ module testDeployment '../../main.bicep' = {
       }
     ]
     managedResourceGroupResourceId: '${subscription().id}/resourceGroups/rg-${resourceGroupName}-managed'
-    diagnosticLogCategoriesToEnable: [
-      'jobs'
-      'notebook'
-    ]
-    diagnosticSettingsName: 'diag${namePrefix}${serviceShort}001'
     requireInfrastructureEncryption: true
     vnetAddressPrefix: '10.100'
     location: resourceGroup.location
