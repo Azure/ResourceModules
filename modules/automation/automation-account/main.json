@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "3090002173087799286"
+      "templateHash": "1809872775470569356"
     },
     "name": "Automation Accounts",
     "description": "This module deploys an Azure Automation Account.",
@@ -1586,13 +1586,12 @@
         },
         "template": {
           "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
-          "languageVersion": "2.0",
           "contentVersion": "1.0.0.0",
           "metadata": {
             "_generator": {
               "name": "bicep",
               "version": "0.22.6.54827",
-              "templateHash": "9970744617970664745"
+              "templateHash": "15022791045507209174"
             },
             "name": "Log Analytics Workspace Linked Services",
             "description": "This module deploys a Log Analytics Workspace Linked Service.",
@@ -1627,7 +1626,7 @@
             },
             "tags": {
               "type": "object",
-              "nullable": true,
+              "defaultValue": {},
               "metadata": {
                 "description": "Optional. Tags to configure in the resource."
               }
@@ -1640,8 +1639,8 @@
               }
             }
           },
-          "resources": {
-            "defaultTelemetry": {
+          "resources": [
+            {
               "condition": "[parameters('enableDefaultTelemetry')]",
               "type": "Microsoft.Resources/deployments",
               "apiVersion": "2021-04-01",
@@ -1655,13 +1654,7 @@
                 }
               }
             },
-            "workspace": {
-              "existing": true,
-              "type": "Microsoft.OperationalInsights/workspaces",
-              "apiVersion": "2022-10-01",
-              "name": "[parameters('logAnalyticsWorkspaceName')]"
-            },
-            "linkedService": {
+            {
               "type": "Microsoft.OperationalInsights/workspaces/linkedServices",
               "apiVersion": "2020-08-01",
               "name": "[format('{0}/{1}', parameters('logAnalyticsWorkspaceName'), parameters('name'))]",
@@ -1669,12 +1662,9 @@
               "properties": {
                 "resourceId": "[parameters('resourceId')]",
                 "writeAccessResourceId": "[if(empty(parameters('writeAccessResourceId')), null(), parameters('writeAccessResourceId'))]"
-              },
-              "dependsOn": [
-                "workspace"
-              ]
+              }
             }
-          },
+          ],
           "outputs": {
             "name": {
               "type": "string",
