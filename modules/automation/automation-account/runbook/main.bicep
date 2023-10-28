@@ -70,8 +70,8 @@ resource automationAccount 'Microsoft.Automation/automationAccounts@2022-08-08' 
 }
 
 resource storageAccount 'Microsoft.Storage/storageAccounts@2022-09-01' existing = if (!empty(scriptStorageAccountId)) {
-  name: last(split(scriptStorageAccountId, '/'))!
-  scope: resourceGroup(split(scriptStorageAccountId, '/')[2], split(scriptStorageAccountId, '/')[4])
+  name: last(split((!empty(scriptStorageAccountId) ? scriptStorageAccountId : '//'), '/'))!
+  scope: resourceGroup(split((!empty(scriptStorageAccountId) ? scriptStorageAccountId : '//'), '/')[2], split((!empty(scriptStorageAccountId) ? scriptStorageAccountId : '////'), '/')[4])
 }
 
 var publishContentLink = empty(uri) ? null : {
