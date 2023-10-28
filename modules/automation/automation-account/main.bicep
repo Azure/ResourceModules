@@ -236,7 +236,7 @@ module automationAccount_linkedService '../../operational-insights/workspace/lin
   }
   // This is to support linked services to law in different subscription and resource group than the automation account.
   // The current scope is used by default if no linked service is intended to be created.
-  scope: resourceGroup(!empty(linkedWorkspaceResourceId) ? split(linkedWorkspaceResourceId, '/')[2] : subscription().subscriptionId, !empty(linkedWorkspaceResourceId) ? split(linkedWorkspaceResourceId, '/')[4] : resourceGroup().name)
+  scope: resourceGroup((!empty(linkedWorkspaceResourceId) ? (split((!empty(linkedWorkspaceResourceId) ? linkedWorkspaceResourceId : '//'), '/')[2]) : subscription().subscriptionId), !empty(linkedWorkspaceResourceId) ? (split((!empty(linkedWorkspaceResourceId) ? linkedWorkspaceResourceId : '////'), '/')[4]) : resourceGroup().name)
 }
 
 module automationAccount_solutions '../../operations-management/solution/main.bicep' = [for (gallerySolution, index) in gallerySolutions: if (!empty(linkedWorkspaceResourceId)) {
@@ -251,7 +251,7 @@ module automationAccount_solutions '../../operations-management/solution/main.bi
   }
   // This is to support solution to law in different subscription and resource group than the automation account.
   // The current scope is used by default if no linked service is intended to be created.
-  scope: resourceGroup(!empty(linkedWorkspaceResourceId) ? split(linkedWorkspaceResourceId, '/')[2] : subscription().subscriptionId, !empty(linkedWorkspaceResourceId) ? split(linkedWorkspaceResourceId, '/')[4] : resourceGroup().name)
+  scope: resourceGroup((!empty(linkedWorkspaceResourceId) ? (split((!empty(linkedWorkspaceResourceId) ? linkedWorkspaceResourceId : '//'), '/')[2]) : subscription().subscriptionId), !empty(linkedWorkspaceResourceId) ? (split((!empty(linkedWorkspaceResourceId) ? linkedWorkspaceResourceId : '////'), '/')[4]) : resourceGroup().name)
   dependsOn: [
     automationAccount_linkedService
   ]

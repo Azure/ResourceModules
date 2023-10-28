@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "1809872775470569356"
+      "templateHash": "13574660773398860401"
     },
     "name": "Automation Accounts",
     "description": "This module deploys an Azure Automation Account.",
@@ -1560,8 +1560,8 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
       "name": "[format('{0}-AutoAccount-LinkedService', uniqueString(deployment().name, parameters('location')))]",
-      "subscriptionId": "[if(not(empty(parameters('linkedWorkspaceResourceId'))), split(parameters('linkedWorkspaceResourceId'), '/')[2], subscription().subscriptionId)]",
-      "resourceGroup": "[if(not(empty(parameters('linkedWorkspaceResourceId'))), split(parameters('linkedWorkspaceResourceId'), '/')[4], resourceGroup().name)]",
+      "subscriptionId": "[if(not(empty(parameters('linkedWorkspaceResourceId'))), split(if(not(empty(parameters('linkedWorkspaceResourceId'))), parameters('linkedWorkspaceResourceId'), '//'), '/')[2], subscription().subscriptionId)]",
+      "resourceGroup": "[if(not(empty(parameters('linkedWorkspaceResourceId'))), split(if(not(empty(parameters('linkedWorkspaceResourceId'))), parameters('linkedWorkspaceResourceId'), '////'), '/')[4], resourceGroup().name)]",
       "properties": {
         "expressionEvaluationOptions": {
           "scope": "inner"
@@ -1703,8 +1703,8 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
       "name": "[format('{0}-AutoAccount-Solution-{1}', uniqueString(deployment().name, parameters('location')), copyIndex())]",
-      "subscriptionId": "[if(not(empty(parameters('linkedWorkspaceResourceId'))), split(parameters('linkedWorkspaceResourceId'), '/')[2], subscription().subscriptionId)]",
-      "resourceGroup": "[if(not(empty(parameters('linkedWorkspaceResourceId'))), split(parameters('linkedWorkspaceResourceId'), '/')[4], resourceGroup().name)]",
+      "subscriptionId": "[if(not(empty(parameters('linkedWorkspaceResourceId'))), split(if(not(empty(parameters('linkedWorkspaceResourceId'))), parameters('linkedWorkspaceResourceId'), '//'), '/')[2], subscription().subscriptionId)]",
+      "resourceGroup": "[if(not(empty(parameters('linkedWorkspaceResourceId'))), split(if(not(empty(parameters('linkedWorkspaceResourceId'))), parameters('linkedWorkspaceResourceId'), '////'), '/')[4], resourceGroup().name)]",
       "properties": {
         "expressionEvaluationOptions": {
           "scope": "inner"
