@@ -141,7 +141,7 @@ resource account 'Microsoft.Purview/accounts@2021-07-01' = {
   name: name
   location: location
   tags: tags
-  identity: identity
+  identity: any(identity)
   properties: {
     cloudConnectors: {}
     managedResourceGroupName: managedResourceGroupName
