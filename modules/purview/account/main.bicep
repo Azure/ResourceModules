@@ -110,10 +110,10 @@ var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
 
 var formattedUserAssignedIdentities = reduce(map((managedIdentities.?userAssignedResourcesIds ?? []), (id) => { '${id}': {} }), {}, (cur, next) => union(cur, next)) // Converts the flat array to an object like { '${id1}': {}, '${id2}': {} }
 
-var identity = !empty(managedIdentities) ? {
+var identity = {
   type: !empty(managedIdentities.?userAssignedResourcesIds ?? {}) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned'
   userAssignedIdentities: !empty(formattedUserAssignedIdentities) ? formattedUserAssignedIdentities : null
-} : any(null)
+}
 
 var enableReferencedModulesTelemetry = false
 
@@ -141,7 +141,7 @@ resource account 'Microsoft.Purview/accounts@2021-07-01' = {
   name: name
   location: location
   tags: tags
-  identity: any(identity)
+  identity: identity
   properties: {
     cloudConnectors: {}
     managedResourceGroupName: managedResourceGroupName
