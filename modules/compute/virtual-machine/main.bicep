@@ -362,9 +362,9 @@ module vm_nic 'modules/nested_networkInterface.bicep' = [for (nicConfiguration, 
     dnsServers: contains(nicConfiguration, 'dnsServers') ? (!empty(nicConfiguration.dnsServers) ? nicConfiguration.dnsServers : []) : []
     networkSecurityGroupResourceId: contains(nicConfiguration, 'networkSecurityGroupResourceId') ? nicConfiguration.networkSecurityGroupResourceId : ''
     ipConfigurations: nicConfiguration.ipConfigurations
-    lock: lock
+    lock: nicConfiguration.?lock ?? lock
     diagnosticSettings: nicConfiguration.?diagnosticSettings
-    roleAssignments: contains(nicConfiguration, 'roleAssignments') ? (!empty(nicConfiguration.roleAssignments) ? nicConfiguration.roleAssignments : []) : []
+    roleAssignments: nicConfiguration.?roleAssignments
   }
 }]
 
