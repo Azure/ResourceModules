@@ -469,6 +469,7 @@ module azureFirewall 'br:bicep/modules/network.azure-firewall:1.0.0' = {
       ]
       name: 'new-pip-nafcstpip'
       publicIPAllocationMethod: 'Static'
+      publicIPPrefixResourceId: ''
       roleAssignments: [
         {
           principalId: '<principalId>'
@@ -527,6 +528,7 @@ module azureFirewall 'br:bicep/modules/network.azure-firewall:1.0.0' = {
         ],
         "name": "new-pip-nafcstpip",
         "publicIPAllocationMethod": "Static",
+        "publicIPPrefixResourceId": "",
         "roleAssignments": [
           {
             "principalId": "<principalId>",
@@ -778,7 +780,7 @@ module azureFirewall 'br:bicep/modules/network.azure-firewall:1.0.0' = {
 | [`managementIPResourceID`](#parameter-managementipresourceid) | string | The Management Public IP resource ID to associate to the AzureFirewallManagementSubnet. If empty, then the Management Public IP that is created as part of this module will be applied to the AzureFirewallManagementSubnet. |
 | [`natRuleCollections`](#parameter-natrulecollections) | array | Collection of NAT rule collections used by Azure Firewall. |
 | [`networkRuleCollections`](#parameter-networkrulecollections) | array | Collection of network rule collections used by Azure Firewall. |
-| [`publicIPAddressObject`](#parameter-publicipaddressobject) | object | Specifies the properties of the Public IP to create and be used by Azure Firewall. If it's not provided and publicIPResourceID is empty, a '-pip' suffix will be appended to the Firewall's name. |
+| [`publicIPAddressObject`](#parameter-publicipaddressobject) | object | Specifies the properties of the Public IP to create and be used by the Firewall, if no existing public IP was provided. |
 | [`publicIPResourceID`](#parameter-publicipresourceid) | string | The Public IP resource ID to associate to the AzureFirewallSubnet. If empty, then the Public IP that is created as part of this module will be applied to the AzureFirewallSubnet. |
 | [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | [`tags`](#parameter-tags) | object | Tags of the Azure Firewall resource. |
@@ -1013,7 +1015,7 @@ Collection of network rule collections used by Azure Firewall.
 
 ### Parameter: `publicIPAddressObject`
 
-Specifies the properties of the Public IP to create and be used by Azure Firewall. If it's not provided and publicIPResourceID is empty, a '-pip' suffix will be appended to the Firewall's name.
+Specifies the properties of the Public IP to create and be used by the Firewall, if no existing public IP was provided.
 - Required: No
 - Type: object
 - Default: `{object}`
