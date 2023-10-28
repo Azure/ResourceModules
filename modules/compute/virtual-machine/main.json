@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "5848544518405986866"
+      "templateHash": "11312064152395709206"
     },
     "name": "Virtual Machines",
     "description": "This module deploys a Virtual Machine with one or multiple NICs and optionally one or multiple public IPs.",
@@ -958,9 +958,6 @@
           "location": {
             "value": "[parameters('location')]"
           },
-          "tags": {
-            "value": "[coalesce(tryGet(parameters('nicConfigurations')[copyIndex()], 'tags'), parameters('tags'))]"
-          },
           "enableIPForwarding": "[if(contains(parameters('nicConfigurations')[copyIndex()], 'enableIPForwarding'), if(not(empty(parameters('nicConfigurations')[copyIndex()].enableIPForwarding)), createObject('value', parameters('nicConfigurations')[copyIndex()].enableIPForwarding), createObject('value', false())), createObject('value', false()))]",
           "enableAcceleratedNetworking": "[if(contains(parameters('nicConfigurations')[copyIndex()], 'enableAcceleratedNetworking'), createObject('value', parameters('nicConfigurations')[copyIndex()].enableAcceleratedNetworking), createObject('value', true()))]",
           "dnsServers": "[if(contains(parameters('nicConfigurations')[copyIndex()], 'dnsServers'), if(not(empty(parameters('nicConfigurations')[copyIndex()].dnsServers)), createObject('value', parameters('nicConfigurations')[copyIndex()].dnsServers), createObject('value', createArray())), createObject('value', createArray()))]",
@@ -970,6 +967,9 @@
           },
           "lock": {
             "value": "[coalesce(tryGet(parameters('nicConfigurations')[copyIndex()], 'lock'), parameters('lock'))]"
+          },
+          "tags": {
+            "value": "[coalesce(tryGet(parameters('nicConfigurations')[copyIndex()], 'tags'), parameters('tags'))]"
           },
           "diagnosticSettings": {
             "value": "[tryGet(parameters('nicConfigurations')[copyIndex()], 'diagnosticSettings')]"

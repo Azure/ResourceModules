@@ -333,7 +333,7 @@ module service_namedValues 'named-value/main.bicep' = [for (namedValue, index) i
     displayName: namedValue.displayName
     keyVault: contains(namedValue, 'keyVault') ? namedValue.keyVault : {}
     name: namedValue.name
-    tags: namedValue.?tags ?? tags
+    tags: namedValue.?tags // Note: these are not resource tags
     secret: contains(namedValue, 'secret') ? namedValue.secret : false
     value: contains(namedValue, 'value') ? namedValue.value : newGuidValue
     enableDefaultTelemetry: enableReferencedModulesTelemetry
