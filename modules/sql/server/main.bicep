@@ -305,7 +305,9 @@ module server_vulnerabilityAssessment 'vulnerability-assessment/main.bicep' = if
     recurringScansEmails: contains(vulnerabilityAssessmentsObj, 'recurringScansEmails') ? vulnerabilityAssessmentsObj.recurringScansEmails : []
     recurringScansEmailSubscriptionAdmins: contains(vulnerabilityAssessmentsObj, 'recurringScansEmailSubscriptionAdmins') ? vulnerabilityAssessmentsObj.recurringScansEmailSubscriptionAdmins : false
     recurringScansIsEnabled: contains(vulnerabilityAssessmentsObj, 'recurringScansIsEnabled') ? vulnerabilityAssessmentsObj.recurringScansIsEnabled : false
-    storageAccountResourceId: contains(vulnerabilityAssessmentsObj, 'storageAccountResourceId') ? vulnerabilityAssessmentsObj.storageAccountResourceId : ''
+    storageAccountResourceId: vulnerabilityAssessmentsObj.storageAccountResourceId
+    useStorageAccountAccessKey: contains(vulnerabilityAssessmentsObj, 'useStorageAccountAccessKey') ? vulnerabilityAssessmentsObj.useStorageAccountAccessKey : false
+    createStorageRoleAssignment: contains(vulnerabilityAssessmentsObj, 'createStorageRoleAssignment') ? vulnerabilityAssessmentsObj.createStorageRoleAssignment : true
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
   dependsOn: [
