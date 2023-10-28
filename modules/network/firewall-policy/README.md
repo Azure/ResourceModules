@@ -406,7 +406,6 @@ List of specific signatures states.
 Tags of the Firewall policy resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `threatIntelMode`
 

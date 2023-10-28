@@ -51,7 +51,7 @@ param privateEndpoints privateEndpointType
 param computes array = []
 
 @sys.description('Optional. Resource tags.')
-param tags object = {}
+param tags object?
 
 @sys.description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
@@ -200,7 +200,7 @@ module workspace_computes 'compute/main.bicep' = [for compute in computes: {
     sku: contains(compute, 'sku') ? compute.sku : ''
     systemAssignedIdentity: contains(compute, 'systemAssignedIdentity') ? compute.systemAssignedIdentity : false
     userAssignedIdentities: contains(compute, 'userAssignedIdentities') ? compute.userAssignedIdentities : {}
-    tags: contains(compute, 'tags') ? compute.tags : {}
+    tags: compute.?tags ?? tags
     deployCompute: contains(compute, 'deployCompute') ? compute.deployCompute : true
     computeLocation: contains(compute, 'computeLocation') ? compute.computeLocation : ''
     description: contains(compute, 'description') ? compute.description : ''

@@ -606,7 +606,6 @@ Chosen SKU Tier of ExpressRoute circuit. Choose from Local, Premium or Standard 
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `vlanId`
 

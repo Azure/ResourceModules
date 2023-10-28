@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "9862874616442885683"
+      "templateHash": "17957134689982328942"
     },
     "name": "Machine Learning Services Workspaces",
     "description": "This module deploys a Machine Learning Services Workspace.",
@@ -452,7 +452,7 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Resource tags."
       }
@@ -736,7 +736,9 @@
           "sku": "[if(contains(parameters('computes')[copyIndex()], 'sku'), createObject('value', parameters('computes')[copyIndex()].sku), createObject('value', ''))]",
           "systemAssignedIdentity": "[if(contains(parameters('computes')[copyIndex()], 'systemAssignedIdentity'), createObject('value', parameters('computes')[copyIndex()].systemAssignedIdentity), createObject('value', false()))]",
           "userAssignedIdentities": "[if(contains(parameters('computes')[copyIndex()], 'userAssignedIdentities'), createObject('value', parameters('computes')[copyIndex()].userAssignedIdentities), createObject('value', createObject()))]",
-          "tags": "[if(contains(parameters('computes')[copyIndex()], 'tags'), createObject('value', parameters('computes')[copyIndex()].tags), createObject('value', createObject()))]",
+          "tags": {
+            "value": "[coalesce(tryGet(parameters('computes')[copyIndex()], 'tags'), parameters('tags'))]"
+          },
           "deployCompute": "[if(contains(parameters('computes')[copyIndex()], 'deployCompute'), createObject('value', parameters('computes')[copyIndex()].deployCompute), createObject('value', true()))]",
           "computeLocation": "[if(contains(parameters('computes')[copyIndex()], 'computeLocation'), createObject('value', parameters('computes')[copyIndex()].computeLocation), createObject('value', ''))]",
           "description": "[if(contains(parameters('computes')[copyIndex()], 'description'), createObject('value', parameters('computes')[copyIndex()].description), createObject('value', ''))]",
@@ -751,12 +753,13 @@
         },
         "template": {
           "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "languageVersion": "2.0",
           "contentVersion": "1.0.0.0",
           "metadata": {
             "_generator": {
               "name": "bicep",
               "version": "0.22.6.54827",
-              "templateHash": "12652944532720556326"
+              "templateHash": "7352180446883822710"
             },
             "name": "Machine Learning Services Workspaces Computes",
             "description": "This module deploys a Machine Learning Services Workspaces Compute.\r\n\r\nAttaching a compute is not idempotent and will fail in case you try to redeploy over an existing compute in AML (see parameter `deployCompute`).",
@@ -800,7 +803,7 @@
             },
             "tags": {
               "type": "object",
-              "defaultValue": {},
+              "nullable": true,
               "metadata": {
                 "description": "Optional. Contains resource tags defined as key-value pairs. Ignored when attaching a compute resource, i.e. when you provide a resource ID."
               }
@@ -891,8 +894,14 @@
             "identityType": "[if(parameters('systemAssignedIdentity'), if(not(empty(parameters('userAssignedIdentities'))), 'SystemAssigned,UserAssigned', 'SystemAssigned'), if(not(empty(parameters('userAssignedIdentities'))), 'UserAssigned', 'None'))]",
             "identity": "[if(not(equals(variables('identityType'), 'None')), createObject('type', variables('identityType'), 'userAssignedIdentities', if(not(empty(parameters('userAssignedIdentities'))), parameters('userAssignedIdentities'), null())), null())]"
           },
-          "resources": [
-            {
+          "resources": {
+            "machineLearningWorkspace": {
+              "existing": true,
+              "type": "Microsoft.MachineLearningServices/workspaces",
+              "apiVersion": "2022-10-01",
+              "name": "[parameters('machineLearningWorkspaceName')]"
+            },
+            "defaultTelemetry": {
               "condition": "[parameters('enableDefaultTelemetry')]",
               "type": "Microsoft.Resources/deployments",
               "apiVersion": "2021-04-01",
@@ -906,7 +915,7 @@
                 }
               }
             },
-            {
+            "machineLearningWorkspaceCompute": {
               "condition": "[equals(parameters('deployCompute'), true())]",
               "type": "Microsoft.MachineLearningServices/workspaces/computes",
               "apiVersion": "2022-10-01",
@@ -915,9 +924,12 @@
               "tags": "[if(empty(parameters('resourceId')), parameters('tags'), null())]",
               "sku": "[if(empty(parameters('resourceId')), createObject('name', parameters('sku'), 'tier', parameters('sku')), null())]",
               "identity": "[if(empty(parameters('resourceId')), variables('identity'), null())]",
-              "properties": "[union(createObject('description', parameters('description'), 'disableLocalAuth', parameters('disableLocalAuth'), 'computeType', parameters('computeType')), if(not(empty(parameters('resourceId'))), createObject('resourceId', parameters('resourceId')), createObject('computeLocation', parameters('computeLocation'), 'properties', parameters('properties'))))]"
+              "properties": "[union(createObject('description', parameters('description'), 'disableLocalAuth', parameters('disableLocalAuth'), 'computeType', parameters('computeType')), if(not(empty(parameters('resourceId'))), createObject('resourceId', parameters('resourceId')), createObject('computeLocation', parameters('computeLocation'), 'properties', parameters('properties'))))]",
+              "dependsOn": [
+                "machineLearningWorkspace"
+              ]
             }
-          ],
+          },
           "outputs": {
             "name": {
               "type": "string",
@@ -945,14 +957,14 @@
               "metadata": {
                 "description": "The principal ID of the system assigned identity. Is null in case of attaching a compute resource, i.e. when you provide a resource ID."
               },
-              "value": "[if(empty(parameters('resourceId')), if(and(parameters('systemAssignedIdentity'), contains(reference(resourceId('Microsoft.MachineLearningServices/workspaces/computes', parameters('machineLearningWorkspaceName'), parameters('name')), '2022-10-01', 'full').identity, 'principalId')), reference(resourceId('Microsoft.MachineLearningServices/workspaces/computes', parameters('machineLearningWorkspaceName'), parameters('name')), '2022-10-01', 'full').identity.principalId, ''), '')]"
+              "value": "[if(empty(parameters('resourceId')), if(and(parameters('systemAssignedIdentity'), contains(reference('machineLearningWorkspaceCompute', '2022-10-01', 'full').identity, 'principalId')), reference('machineLearningWorkspaceCompute', '2022-10-01', 'full').identity.principalId, ''), '')]"
             },
             "location": {
               "type": "string",
               "metadata": {
                 "description": "The location the resource was deployed into."
               },
-              "value": "[reference(resourceId('Microsoft.MachineLearningServices/workspaces/computes', parameters('machineLearningWorkspaceName'), parameters('name')), '2022-10-01', 'full').location]"
+              "value": "[reference('machineLearningWorkspaceCompute', '2022-10-01', 'full').location]"
             }
           }
         }

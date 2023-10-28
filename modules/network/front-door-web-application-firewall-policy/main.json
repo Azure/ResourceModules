@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "16196358261363679288"
+      "templateHash": "17032186144877035425"
     },
     "name": "Front Door Web Application Firewall (WAF) Policies",
     "description": "This module deploys a Front Door Web Application Firewall (WAF) Policy.",
@@ -134,7 +134,7 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Resource tags."
       }

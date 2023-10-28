@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "11050704115840799182"
+      "templateHash": "13347839852828986726"
     },
     "name": "Key Vaults",
     "description": "This module deploys a Key Vault.",
@@ -508,7 +508,7 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Resource tags."
       }
@@ -802,7 +802,9 @@
           "attributesExp": "[if(contains(variables('secretList')[copyIndex()], 'attributesExp'), createObject('value', variables('secretList')[copyIndex()].attributesExp), createObject('value', -1))]",
           "attributesNbf": "[if(contains(variables('secretList')[copyIndex()], 'attributesNbf'), createObject('value', variables('secretList')[copyIndex()].attributesNbf), createObject('value', -1))]",
           "contentType": "[if(contains(variables('secretList')[copyIndex()], 'contentType'), createObject('value', variables('secretList')[copyIndex()].contentType), createObject('value', ''))]",
-          "tags": "[if(contains(variables('secretList')[copyIndex()], 'tags'), createObject('value', variables('secretList')[copyIndex()].tags), createObject('value', createObject()))]",
+          "tags": {
+            "value": "[coalesce(tryGet(variables('secretList')[copyIndex()], 'tags'), parameters('tags'))]"
+          },
           "roleAssignments": "[if(contains(variables('secretList')[copyIndex()], 'roleAssignments'), createObject('value', variables('secretList')[copyIndex()].roleAssignments), createObject('value', createArray()))]",
           "enableDefaultTelemetry": {
             "value": "[variables('enableReferencedModulesTelemetry')]"
@@ -816,7 +818,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.22.6.54827",
-              "templateHash": "829178043317702363"
+              "templateHash": "3223693327720603920"
             },
             "name": "Key Vault Secrets",
             "description": "This module deploys a Key Vault Secret.",
@@ -905,7 +907,7 @@
             },
             "tags": {
               "type": "object",
-              "defaultValue": {},
+              "nullable": true,
               "metadata": {
                 "description": "Optional. Resource tags."
               }
@@ -1094,7 +1096,9 @@
           "keyOps": "[if(contains(parameters('keys')[copyIndex()], 'keyOps'), createObject('value', parameters('keys')[copyIndex()].keyOps), createObject('value', createArray()))]",
           "keySize": "[if(contains(parameters('keys')[copyIndex()], 'keySize'), createObject('value', parameters('keys')[copyIndex()].keySize), createObject('value', -1))]",
           "kty": "[if(contains(parameters('keys')[copyIndex()], 'kty'), createObject('value', parameters('keys')[copyIndex()].kty), createObject('value', 'EC'))]",
-          "tags": "[if(contains(parameters('keys')[copyIndex()], 'tags'), createObject('value', parameters('keys')[copyIndex()].tags), createObject('value', createObject()))]",
+          "tags": {
+            "value": "[coalesce(tryGet(parameters('keys')[copyIndex()], 'tags'), parameters('tags'))]"
+          },
           "roleAssignments": "[if(contains(parameters('keys')[copyIndex()], 'roleAssignments'), createObject('value', parameters('keys')[copyIndex()].roleAssignments), createObject('value', createArray()))]",
           "enableDefaultTelemetry": {
             "value": "[variables('enableReferencedModulesTelemetry')]"
@@ -1109,7 +1113,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.22.6.54827",
-              "templateHash": "15473816229466025012"
+              "templateHash": "2953672245031093442"
             },
             "name": "Key Vault Keys",
             "description": "This module deploys a Key Vault Key.",
@@ -1198,7 +1202,7 @@
             },
             "tags": {
               "type": "object",
-              "defaultValue": {},
+              "nullable": true,
               "metadata": {
                 "description": "Optional. Resource tags."
               }

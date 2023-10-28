@@ -1,11 +1,12 @@
 {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "languageVersion": "2.0",
   "contentVersion": "1.0.0.0",
   "metadata": {
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "18116522930721554549"
+      "templateHash": "13749029465513598437"
     },
     "name": "Firewall Policies",
     "description": "This module deploys a Firewall Policy.",
@@ -27,7 +28,7 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Tags of the Firewall policy resource."
       }
@@ -210,8 +211,8 @@
     "identity": "[if(not(equals(variables('identityType'), 'None')), createObject('type', variables('identityType'), 'userAssignedIdentities', if(not(empty(parameters('userAssignedIdentities'))), parameters('userAssignedIdentities'), null())), null())]",
     "enableReferencedModulesTelemetry": false
   },
-  "resources": [
-    {
+  "resources": {
+    "defaultTelemetry": {
       "condition": "[parameters('enableDefaultTelemetry')]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2021-04-01",
@@ -225,7 +226,7 @@
         }
       }
     },
-    {
+    "firewallPolicy": {
       "type": "Microsoft.Network/firewallPolicies",
       "apiVersion": "2023-04-01",
       "name": "[parameters('name')]",
@@ -252,7 +253,7 @@
         "transportSecurity": "[if(or(not(empty(parameters('keyVaultSecretId'))), not(empty(parameters('certificateName')))), createObject('certificateAuthority', createObject('keyVaultSecretId', if(not(empty(parameters('keyVaultSecretId'))), parameters('keyVaultSecretId'), null()), 'name', if(not(empty(parameters('certificateName'))), parameters('certificateName'), null()))), null())]"
       }
     },
-    {
+    "firewallPolicy_ruleCollectionGroups": {
       "copy": {
         "name": "firewallPolicy_ruleCollectionGroups",
         "count": "[length(parameters('ruleCollectionGroups'))]",
@@ -382,10 +383,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Network/firewallPolicies', parameters('name'))]"
+        "firewallPolicy"
       ]
     }
-  ],
+  },
   "outputs": {
     "name": {
       "type": "string",
@@ -413,7 +414,7 @@
       "metadata": {
         "description": "The location the resource was deployed into."
       },
-      "value": "[reference(resourceId('Microsoft.Network/firewallPolicies', parameters('name')), '2023-04-01', 'full').location]"
+      "value": "[reference('firewallPolicy', '2023-04-01', 'full').location]"
     }
   }
 }

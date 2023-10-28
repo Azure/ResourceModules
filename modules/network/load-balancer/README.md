@@ -892,7 +892,6 @@ Name of a load balancer SKU.
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 
 ## Outputs

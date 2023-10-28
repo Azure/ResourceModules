@@ -774,7 +774,6 @@ module azureFirewall 'br:bicep/modules/network.azure-firewall:1.0.0' = {
 | [`diagnosticSettings`](#parameter-diagnosticsettings) | array | The diagnostic settings of the service. |
 | [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
 | [`firewallPolicyId`](#parameter-firewallpolicyid) | string | Resource ID of the Firewall Policy that should be attached. |
-| [`isCreateDefaultPublicIP`](#parameter-iscreatedefaultpublicip) | bool | Specifies if a Public IP should be created by default if one is not provided. |
 | [`location`](#parameter-location) | string | Location for all resources. |
 | [`lock`](#parameter-lock) | object | The lock settings of the service. |
 | [`managementIPAddressObject`](#parameter-managementipaddressobject) | object | Specifies the properties of the Management Public IP to create and be used by Azure Firewall. If it's not provided and managementIPResourceID is empty, a '-mip' suffix will be appended to the Firewall's name. |
@@ -946,13 +945,6 @@ IP addresses associated with AzureFirewall. Required if `virtualHubId` is suppli
 - Type: object
 - Default: `{object}`
 
-### Parameter: `isCreateDefaultPublicIP`
-
-Specifies if a Public IP should be created by default if one is not provided.
-- Required: No
-- Type: bool
-- Default: `True`
-
 ### Parameter: `location`
 
 Location for all resources.
@@ -1108,7 +1100,6 @@ Required. The name of the role to assign. If it cannot be found you can specify 
 Tags of the Azure Firewall resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `threatIntelMode`
 

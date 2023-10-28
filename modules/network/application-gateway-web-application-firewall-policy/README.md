@@ -194,7 +194,6 @@ The PolicySettings for policy.
 Resource tags.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 
 ## Outputs

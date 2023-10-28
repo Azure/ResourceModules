@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "2562804839446709562"
+      "templateHash": "10183539121866982078"
     },
     "name": "Traffic Manager Profiles",
     "description": "This module deploys a Traffic Manager Profile.",
@@ -314,7 +314,7 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Resource tags."
       }

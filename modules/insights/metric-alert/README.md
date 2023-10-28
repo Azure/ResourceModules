@@ -344,7 +344,6 @@ The severity of the alert.
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `targetResourceRegion`
 

@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "10859343620661687019"
+      "templateHash": "17153963874349456743"
     },
     "name": "Bastion Hosts",
     "description": "This module deploys a Bastion Host.",
@@ -220,13 +220,6 @@
         "description": "Optional. The Public IP resource ID to associate to the azureBastionSubnet. If empty, then the Public IP that is created as part of this module will be applied to the azureBastionSubnet."
       }
     },
-    "isCreateDefaultPublicIP": {
-      "type": "bool",
-      "defaultValue": true,
-      "metadata": {
-        "description": "Optional. Specifies if a Public IP should be created by default if one is not provided."
-      }
-    },
     "publicIPAddressObject": {
       "type": "object",
       "defaultValue": {},
@@ -307,7 +300,7 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Tags of the resource."
       }
@@ -403,7 +396,7 @@
       "sku": {
         "name": "[parameters('skuName')]"
       },
-      "properties": "[if(equals(parameters('skuName'), 'Standard'), createObject('scaleUnits', variables('scaleUnitsVar'), 'ipConfigurations', createArray(createObject('name', 'IpConfAzureBastionSubnet', 'properties', union(variables('subnetVar'), if(not(empty(parameters('bastionSubnetPublicIpResourceId'))), variables('existingPip'), createObject()), if(parameters('isCreateDefaultPublicIP'), createObject('publicIPAddress', if(and(empty(parameters('bastionSubnetPublicIpResourceId')), parameters('isCreateDefaultPublicIP')), createObject('id', reference('publicIPAddress').outputs.resourceId.value), null())), createObject())))), 'enableTunneling', variables('enableTunneling'), 'disableCopyPaste', parameters('disableCopyPaste'), 'enableFileCopy', parameters('enableFileCopy'), 'enableIpConnect', parameters('enableIpConnect'), 'enableKerberos', parameters('enableKerberos'), 'enableShareableLink', parameters('enableShareableLink')), createObject('scaleUnits', variables('scaleUnitsVar'), 'ipConfigurations', createArray(createObject('name', 'IpConfAzureBastionSubnet', 'properties', union(variables('subnetVar'), if(not(empty(parameters('bastionSubnetPublicIpResourceId'))), variables('existingPip'), createObject()), if(parameters('isCreateDefaultPublicIP'), createObject('publicIPAddress', if(and(empty(parameters('bastionSubnetPublicIpResourceId')), parameters('isCreateDefaultPublicIP')), createObject('id', reference('publicIPAddress').outputs.resourceId.value), null())), createObject())))), 'enableKerberos', parameters('enableKerberos')))]",
+      "properties": "[if(equals(parameters('skuName'), 'Standard'), createObject('scaleUnits', variables('scaleUnitsVar'), 'ipConfigurations', createArray(createObject('name', 'IpConfAzureBastionSubnet', 'properties', union(variables('subnetVar'), if(not(empty(parameters('bastionSubnetPublicIpResourceId'))), variables('existingPip'), createObject()), if(not(empty(parameters('publicIPAddressObject'))), createObject('publicIPAddress', if(and(empty(parameters('bastionSubnetPublicIpResourceId')), not(empty(parameters('publicIPAddressObject')))), createObject('id', reference('publicIPAddress').outputs.resourceId.value), null())), createObject())))), 'enableTunneling', variables('enableTunneling'), 'disableCopyPaste', parameters('disableCopyPaste'), 'enableFileCopy', parameters('enableFileCopy'), 'enableIpConnect', parameters('enableIpConnect'), 'enableKerberos', parameters('enableKerberos'), 'enableShareableLink', parameters('enableShareableLink')), createObject('scaleUnits', variables('scaleUnitsVar'), 'ipConfigurations', createArray(createObject('name', 'IpConfAzureBastionSubnet', 'properties', union(variables('subnetVar'), if(not(empty(parameters('bastionSubnetPublicIpResourceId'))), variables('existingPip'), createObject()), if(not(empty(parameters('publicIPAddressObject'))), createObject('publicIPAddress', if(and(empty(parameters('bastionSubnetPublicIpResourceId')), not(empty(parameters('publicIPAddressObject')))), createObject('id', reference('publicIPAddress').outputs.resourceId.value), null())), createObject())))), 'enableKerberos', parameters('enableKerberos')))]",
       "dependsOn": [
         "publicIPAddress"
       ]
@@ -467,7 +460,7 @@
       ]
     },
     "publicIPAddress": {
-      "condition": "[and(empty(parameters('bastionSubnetPublicIpResourceId')), parameters('isCreateDefaultPublicIP'))]",
+      "condition": "[and(empty(parameters('bastionSubnetPublicIpResourceId')), not(empty(parameters('publicIPAddressObject'))))]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
       "name": "[format('{0}-Bastion-PIP', uniqueString(deployment().name, parameters('location')))]",
@@ -497,7 +490,7 @@
           "skuName": "[if(contains(parameters('publicIPAddressObject'), 'skuName'), createObject('value', parameters('publicIPAddressObject').skuName), createObject('value', 'Standard'))]",
           "skuTier": "[if(contains(parameters('publicIPAddressObject'), 'skuTier'), createObject('value', parameters('publicIPAddressObject').skuTier), createObject('value', 'Regional'))]",
           "tags": {
-            "value": "[parameters('tags')]"
+            "value": "[coalesce(tryGet(parameters('publicIPAddressObject'), 'tags'), parameters('tags'))]"
           },
           "zones": "[if(contains(parameters('publicIPAddressObject'), 'zones'), createObject('value', parameters('publicIPAddressObject').zones), createObject('value', createArray()))]"
         },
@@ -509,7 +502,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.22.6.54827",
-              "templateHash": "968771326214380550"
+              "templateHash": "18404193892947466906"
             },
             "name": "Public IP Addresses",
             "description": "This module deploys a Public IP Address.",
@@ -848,7 +841,7 @@
             },
             "tags": {
               "type": "object",
-              "defaultValue": {},
+              "nullable": true,
               "metadata": {
                 "description": "Optional. Tags of the resource."
               }

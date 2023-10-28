@@ -39,7 +39,7 @@ param lock lockType
 param roleAssignments roleAssignmentType
 
 @description('Optional. Tags for the resource.')
-param tags object = {}
+param tags object?
 
 @description('Optional. The diagnostic settings of the Public IP.')
 param publicIpDiagnosticSettings diagnosticSettingType

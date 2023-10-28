@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "10009504626840542150"
+      "templateHash": "16118078360254929709"
     },
     "name": "Virtual WANs",
     "description": "This module deploys a Virtual WAN.",
@@ -159,7 +159,7 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Tags of the resource."
       }

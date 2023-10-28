@@ -1671,7 +1671,6 @@ Declaration of custom streams used in this rule.
 Resource tags.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 
 ## Outputs

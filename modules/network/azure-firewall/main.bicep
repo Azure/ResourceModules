@@ -22,9 +22,6 @@ param publicIPResourceID string = ''
 @description('Optional. This is to add any additional Public IP configurations on top of the Public IP with subnet IP configuration.')
 param additionalPublicIpConfigurations array = []
 
-@description('Optional. Specifies if a Public IP should be created by default if one is not provided.')
-param isCreateDefaultPublicIP bool = true
-
 @description('Optional. Specifies the properties of the Public IP to create and be used by Azure Firewall. If it\'s not provided and publicIPResourceID is empty, a \'-pip\' suffix will be appended to the Firewall\'s name.')
 param publicIPAddressObject object = {}
 
@@ -80,7 +77,7 @@ param lock lockType
 param roleAssignments roleAssignmentType
 
 @description('Optional. Tags of the Azure Firewall resource.')
-param tags object = {}
+param tags object?
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
@@ -93,7 +90,7 @@ var isCreateDefaultManagementIP = empty(managementIPResourceID) && requiresManag
 // Prep ipConfigurations object AzureFirewallSubnet for different uses cases:
 // 1. Use existing Public IP
 // 2. Use new Public IP created in this module
-// 3. Do not use a Public IP if isCreateDefaultPublicIP is false
+// 3. Do not use a Public IP if publicIPAddressObject is empty
 
 var additionalPublicIpConfigurationsVar = [for ipConfiguration in additionalPublicIpConfigurations: {
   name: ipConfiguration.name
@@ -114,15 +111,15 @@ var existingPip = {
   }
 }
 var newPip = {
-  publicIPAddress: (empty(publicIPResourceID) && isCreateDefaultPublicIP) ? {
+  publicIPAddress: (empty(publicIPResourceID) && !empty(publicIPAddressObject)) ? {
     id: publicIPAddress.outputs.resourceId
   } : null
 }
 var ipConfigurations = concat([
     {
       name: !empty(publicIPResourceID) ? last(split(publicIPResourceID, '/')) : publicIPAddress.outputs.name
-      //Use existing Public IP, new Public IP created in this module, or none if isCreateDefaultPublicIP is false
-      properties: union(subnetVar, !empty(publicIPResourceID) ? existingPip : {}, (isCreateDefaultPublicIP ? newPip : {}))
+      //Use existing Public IP, new Public IP created in this module, or none if publicIPAddressObject is empty
+      properties: union(subnetVar, !empty(publicIPResourceID) ? existingPip : {}, (!empty(publicIPAddressObject) ? newPip : {}))
     }
   ], additionalPublicIpConfigurationsVar)
 
@@ -177,7 +174,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
 }
 
 // create a Public IP address if one is not provided and the flag is true
-module publicIPAddress '../../network/public-ip-address/main.bicep' = if (empty(publicIPResourceID) && isCreateDefaultPublicIP && azureSkuName == 'AZFW_VNet') {
+module publicIPAddress '../../network/public-ip-address/main.bicep' = if (empty(publicIPResourceID) && !empty(publicIPAddressObject) && azureSkuName == 'AZFW_VNet') {
   name: '${uniqueString(deployment().name, location)}-Firewall-PIP'
   params: {
     name: contains(publicIPAddressObject, 'name') ? (!(empty(publicIPAddressObject.name)) ? publicIPAddressObject.name : '${name}-pip') : '${name}-pip'
@@ -189,7 +186,7 @@ module publicIPAddress '../../network/public-ip-address/main.bicep' = if (empty(
     diagnosticSettings: publicIPAddressObject.?diagnosticSettings
     location: location
     lock: lock
-    tags: tags
+    tags: publicIPAddressObject.?tags ?? tags
     zones: zones
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
@@ -207,7 +204,7 @@ module managementIPAddress '../../network/public-ip-address/main.bicep' = if (em
     roleAssignments: contains(managementIPAddressObject, 'roleAssignments') ? (!empty(managementIPAddressObject.roleAssignments) ? managementIPAddressObject.roleAssignments : []) : []
     diagnosticSettings: managementIPAddressObject.?diagnosticSettings
     location: location
-    tags: tags
+    tags: managementIPAddressObject.?tags ?? tags
     zones: zones
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }

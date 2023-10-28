@@ -9,7 +9,7 @@ param name string
 param location string = resourceGroup().location
 
 @description('Optional. Tags of the Firewall policy resource.')
-param tags object = {}
+param tags object?
 
 @description('Optional. The ID(s) to assign to the resource.')
 param userAssignedIdentities object = {}
