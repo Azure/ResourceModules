@@ -52,7 +52,6 @@ module testDeployment '../../main.bicep' = {
     acrSku: 'Premium'
     privateEndpoints: [
       {
-        service: 'registry'
         subnetResourceId: nestedDependencies.outputs.subnetResourceId
         privateDnsZoneResourceIds: [
           nestedDependencies.outputs.privateDNSZoneResourceId

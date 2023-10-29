@@ -124,10 +124,7 @@ module workspace_fhirservices 'fhirservice/main.bicep' = [for (fhir, index) in f
     corsMethods: contains(fhir, 'corsMethods') ? fhir.corsMethods : []
     corsMaxAge: contains(fhir, 'corsMaxAge') ? fhir.corsMaxAge : -1
     corsAllowCredentials: contains(fhir, 'corsAllowCredentials') ? fhir.corsAllowCredentials : false
-    diagnosticStorageAccountId: contains(fhir, 'diagnosticStorageAccountId') ? fhir.diagnosticStorageAccountId : ''
-    diagnosticWorkspaceId: contains(fhir, 'diagnosticWorkspaceId') ? fhir.diagnosticWorkspaceId : ''
-    diagnosticEventHubAuthorizationRuleId: contains(fhir, 'diagnosticEventHubAuthorizationRuleId') ? fhir.diagnosticEventHubAuthorizationRuleId : ''
-    diagnosticEventHubName: contains(fhir, 'diagnosticEventHubName') ? fhir.diagnosticEventHubName : ''
+    diagnosticSettings: fhir.?diagnosticSettings
     exportStorageAccountName: contains(fhir, 'exportStorageAccountName') ? fhir.exportStorageAccountName : ''
     importStorageAccountName: contains(fhir, 'importStorageAccountName') ? fhir.importStorageAccountName : ''
     importEnabled: contains(fhir, 'importEnabled') ? fhir.importEnabled : false
@@ -136,8 +133,6 @@ module workspace_fhirservices 'fhirservice/main.bicep' = [for (fhir, index) in f
     resourceVersionPolicy: contains(fhir, 'resourceVersionPolicy') ? fhir.resourceVersionPolicy : 'versioned'
     resourceVersionOverrides: contains(fhir, 'resourceVersionOverrides') ? fhir.resourceVersionOverrides : {}
     smartProxyEnabled: contains(fhir, 'smartProxyEnabled') ? fhir.smartProxyEnabled : false
-    diagnosticLogCategoriesToEnable: contains(fhir, 'diagnosticLogCategoriesToEnable') ? fhir.diagnosticLogCategoriesToEnable : [ 'AuditLogs' ]
-    diagnosticMetricsToEnable: contains(fhir, 'diagnosticMetricsToEnable') ? fhir.diagnosticMetricsToEnable : [ 'AllMetrics' ]
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
@@ -156,12 +151,8 @@ module workspace_dicomservices 'dicomservice/main.bicep' = [for (dicom, index) i
     corsMethods: contains(dicom, 'corsMethods') ? dicom.corsMethods : []
     corsMaxAge: contains(dicom, 'corsMaxAge') ? dicom.corsMaxAge : -1
     corsAllowCredentials: contains(dicom, 'corsAllowCredentials') ? dicom.corsAllowCredentials : false
-    diagnosticStorageAccountId: contains(dicom, 'diagnosticStorageAccountId') ? dicom.diagnosticStorageAccountId : ''
-    diagnosticWorkspaceId: contains(dicom, 'diagnosticWorkspaceId') ? dicom.diagnosticWorkspaceId : ''
-    diagnosticEventHubAuthorizationRuleId: contains(dicom, 'diagnosticEventHubAuthorizationRuleId') ? dicom.diagnosticEventHubAuthorizationRuleId : ''
-    diagnosticEventHubName: contains(dicom, 'diagnosticEventHubName') ? dicom.diagnosticEventHubName : ''
+    diagnosticSettings: dicom.?diagnosticSettings
     lock: dicom.?lock ?? lock
-    diagnosticLogCategoriesToEnable: contains(dicom, 'diagnosticLogCategoriesToEnable') ? dicom.diagnosticLogCategoriesToEnable : [ 'AuditLogs' ]
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
@@ -182,13 +173,8 @@ module workspace_iotconnector 'iotconnector/main.bicep' = [for (iotConnector, in
     fhirdestination: contains(iotConnector, 'fhirdestination') ? iotConnector.fhirdestination : {}
     consumerGroup: contains(iotConnector, 'consumerGroup') ? iotConnector.consumerGroup : iotConnector.name
     managedIdentities: contains(iotConnector, 'managedIdentities') ? iotConnector.managedIdentities : null
-    diagnosticStorageAccountId: contains(iotConnector, 'diagnosticStorageAccountId') ? iotConnector.diagnosticStorageAccountId : ''
-    diagnosticWorkspaceId: contains(iotConnector, 'diagnosticWorkspaceId') ? iotConnector.diagnosticWorkspaceId : ''
-    diagnosticEventHubAuthorizationRuleId: contains(iotConnector, 'diagnosticEventHubAuthorizationRuleId') ? iotConnector.diagnosticEventHubAuthorizationRuleId : ''
-    diagnosticEventHubName: contains(iotConnector, 'diagnosticEventHubName') ? iotConnector.diagnosticEventHubName : ''
+    diagnosticSettings: iotConnector.?diagnosticSettings
     lock: iotConnector.?lock ?? lock
-    diagnosticLogCategoriesToEnable: contains(iotConnector, 'diagnosticLogCategoriesToEnable') ? iotConnector.diagnosticLogCategoriesToEnable : [ 'DiagnosticLogs' ]
-    diagnosticMetricsToEnable: contains(iotConnector, 'diagnosticMetricsToEnable') ? iotConnector.diagnosticMetricsToEnable : [ 'AllMetrics' ]
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]

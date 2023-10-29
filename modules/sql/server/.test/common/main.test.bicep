@@ -117,10 +117,15 @@ module testDeployment '../../main.bicep' = {
         capacity: 0
         maxSizeBytes: 34359738368
         licenseType: 'LicenseIncluded'
-        diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
-        diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
-        diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
-        diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
+        diagnosticSettings: [
+          {
+            name: 'customSetting'
+            eventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
+            eventHubAuthorizationRuleResourceId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
+            storageAccountResourceId: diagnosticDependencies.outputs.storageAccountResourceId
+            workspaceResourceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
+          }
+        ]
         elasticPoolId: '${resourceGroup.id}/providers/Microsoft.Sql/servers/${namePrefix}-${serviceShort}/elasticPools/${namePrefix}-${serviceShort}-ep-001'
         encryptionProtectorObj: {
           serverKeyType: 'AzureKeyVault'
@@ -166,9 +171,7 @@ module testDeployment '../../main.bicep' = {
         subnetResourceId: nestedDependencies.outputs.privateEndpointSubnetResourceId
         service: 'sqlServer'
         privateDnsZoneResourceIds: [
-
           nestedDependencies.outputs.privateDNSZoneResourceId
-
         ]
         tags: {
           'hidden-title': 'This is visible in the resource name'

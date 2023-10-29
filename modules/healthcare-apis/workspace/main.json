@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "10597910709681923355"
+      "templateHash": "6558922436832597627"
     },
     "name": "Healthcare API Workspaces",
     "description": "This module deploys a Healthcare API Workspace.",
@@ -299,10 +299,9 @@
           "corsMethods": "[if(contains(parameters('fhirservices')[copyIndex()], 'corsMethods'), createObject('value', parameters('fhirservices')[copyIndex()].corsMethods), createObject('value', createArray()))]",
           "corsMaxAge": "[if(contains(parameters('fhirservices')[copyIndex()], 'corsMaxAge'), createObject('value', parameters('fhirservices')[copyIndex()].corsMaxAge), createObject('value', -1))]",
           "corsAllowCredentials": "[if(contains(parameters('fhirservices')[copyIndex()], 'corsAllowCredentials'), createObject('value', parameters('fhirservices')[copyIndex()].corsAllowCredentials), createObject('value', false()))]",
-          "diagnosticStorageAccountId": "[if(contains(parameters('fhirservices')[copyIndex()], 'diagnosticStorageAccountId'), createObject('value', parameters('fhirservices')[copyIndex()].diagnosticStorageAccountId), createObject('value', ''))]",
-          "diagnosticWorkspaceId": "[if(contains(parameters('fhirservices')[copyIndex()], 'diagnosticWorkspaceId'), createObject('value', parameters('fhirservices')[copyIndex()].diagnosticWorkspaceId), createObject('value', ''))]",
-          "diagnosticEventHubAuthorizationRuleId": "[if(contains(parameters('fhirservices')[copyIndex()], 'diagnosticEventHubAuthorizationRuleId'), createObject('value', parameters('fhirservices')[copyIndex()].diagnosticEventHubAuthorizationRuleId), createObject('value', ''))]",
-          "diagnosticEventHubName": "[if(contains(parameters('fhirservices')[copyIndex()], 'diagnosticEventHubName'), createObject('value', parameters('fhirservices')[copyIndex()].diagnosticEventHubName), createObject('value', ''))]",
+          "diagnosticSettings": {
+            "value": "[tryGet(parameters('fhirservices')[copyIndex()], 'diagnosticSettings')]"
+          },
           "exportStorageAccountName": "[if(contains(parameters('fhirservices')[copyIndex()], 'exportStorageAccountName'), createObject('value', parameters('fhirservices')[copyIndex()].exportStorageAccountName), createObject('value', ''))]",
           "importStorageAccountName": "[if(contains(parameters('fhirservices')[copyIndex()], 'importStorageAccountName'), createObject('value', parameters('fhirservices')[copyIndex()].importStorageAccountName), createObject('value', ''))]",
           "importEnabled": "[if(contains(parameters('fhirservices')[copyIndex()], 'importEnabled'), createObject('value', parameters('fhirservices')[copyIndex()].importEnabled), createObject('value', false()))]",
@@ -313,8 +312,6 @@
           "resourceVersionPolicy": "[if(contains(parameters('fhirservices')[copyIndex()], 'resourceVersionPolicy'), createObject('value', parameters('fhirservices')[copyIndex()].resourceVersionPolicy), createObject('value', 'versioned'))]",
           "resourceVersionOverrides": "[if(contains(parameters('fhirservices')[copyIndex()], 'resourceVersionOverrides'), createObject('value', parameters('fhirservices')[copyIndex()].resourceVersionOverrides), createObject('value', createObject()))]",
           "smartProxyEnabled": "[if(contains(parameters('fhirservices')[copyIndex()], 'smartProxyEnabled'), createObject('value', parameters('fhirservices')[copyIndex()].smartProxyEnabled), createObject('value', false()))]",
-          "diagnosticLogCategoriesToEnable": "[if(contains(parameters('fhirservices')[copyIndex()], 'diagnosticLogCategoriesToEnable'), createObject('value', parameters('fhirservices')[copyIndex()].diagnosticLogCategoriesToEnable), createObject('value', createArray('AuditLogs')))]",
-          "diagnosticMetricsToEnable": "[if(contains(parameters('fhirservices')[copyIndex()], 'diagnosticMetricsToEnable'), createObject('value', parameters('fhirservices')[copyIndex()].diagnosticMetricsToEnable), createObject('value', createArray('AllMetrics')))]",
           "enableDefaultTelemetry": {
             "value": "[variables('enableReferencedModulesTelemetry')]"
           }
@@ -327,7 +324,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.22.6.54827",
-              "templateHash": "15356979852206424627"
+              "templateHash": "14914386228020873144"
             },
             "name": "Healthcare API Workspace FHIR Services",
             "description": "This module deploys a Healthcare API Workspace FHIR Service.",
@@ -447,6 +444,112 @@
                 }
               },
               "nullable": true
+            },
+            "diagnosticSettingType": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. The name of diagnostic setting."
+                    }
+                  },
+                  "logCategoriesAndGroups": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "category": {
+                          "type": "string",
+                          "nullable": true,
+                          "metadata": {
+                            "description": "Optional. Name of a Diagnostic Log category for a resource type this setting is applied to. Set the specific logs to collect here."
+                          }
+                        },
+                        "categoryGroup": {
+                          "type": "string",
+                          "nullable": true,
+                          "metadata": {
+                            "description": "Optional. Name of a Diagnostic Log category group for a resource type this setting is applied to. Set to 'AllLogs' to collect all logs."
+                          }
+                        }
+                      }
+                    },
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. The name of logs that will be streamed. \"allLogs\" includes all possible logs for the resource. Set to '' to disable log collection."
+                    }
+                  },
+                  "metricCategories": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "category": {
+                          "type": "string",
+                          "metadata": {
+                            "description": "Required. Name of a Diagnostic Metric category for a resource type this setting is applied to. Set to 'AllMetrics' to collect all metrics."
+                          }
+                        }
+                      }
+                    },
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. The name of logs that will be streamed. \"allLogs\" includes all possible logs for the resource. Set to '' to disable log collection."
+                    }
+                  },
+                  "logAnalyticsDestinationType": {
+                    "type": "string",
+                    "allowedValues": [
+                      "AzureDiagnostics",
+                      "Dedicated"
+                    ],
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. A string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destination type."
+                    }
+                  },
+                  "workspaceResourceId": {
+                    "type": "string",
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub."
+                    }
+                  },
+                  "storageAccountResourceId": {
+                    "type": "string",
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub."
+                    }
+                  },
+                  "eventHubAuthorizationRuleResourceId": {
+                    "type": "string",
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to."
+                    }
+                  },
+                  "eventHubName": {
+                    "type": "string",
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub."
+                    }
+                  },
+                  "marketplacePartnerResourceId": {
+                    "type": "string",
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. The full ARM resource ID of the Marketplace resource to which you would like to send Diagnostic Logs."
+                    }
+                  }
+                }
+              },
+              "nullable": true
             }
           },
           "parameters": {
@@ -559,32 +662,10 @@
                 "description": "Optional. Location for all resources."
               }
             },
-            "diagnosticStorageAccountId": {
-              "type": "string",
-              "defaultValue": "",
+            "diagnosticSettings": {
+              "$ref": "#/definitions/diagnosticSettingType",
               "metadata": {
-                "description": "Optional. Resource ID of the diagnostic storage account."
-              }
-            },
-            "diagnosticWorkspaceId": {
-              "type": "string",
-              "defaultValue": "",
-              "metadata": {
-                "description": "Optional. Resource ID of the diagnostic log analytics workspace."
-              }
-            },
-            "diagnosticEventHubAuthorizationRuleId": {
-              "type": "string",
-              "defaultValue": "",
-              "metadata": {
-                "description": "Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to."
-              }
-            },
-            "diagnosticEventHubName": {
-              "type": "string",
-              "defaultValue": "",
-              "metadata": {
-                "description": "Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category."
+                "description": "Optional. The diagnostic settings of the service."
               }
             },
             "exportStorageAccountName": {
@@ -683,58 +764,10 @@
               "metadata": {
                 "description": "Optional. Enable telemetry via the Customer Usage Attribution ID (GUID)."
               }
-            },
-            "diagnosticLogCategoriesToEnable": {
-              "type": "array",
-              "defaultValue": [
-                "AuditLogs"
-              ],
-              "allowedValues": [
-                "AuditLogs"
-              ],
-              "metadata": {
-                "description": "Optional. The name of logs that will be streamed."
-              }
-            },
-            "diagnosticMetricsToEnable": {
-              "type": "array",
-              "defaultValue": [
-                "AllMetrics"
-              ],
-              "allowedValues": [
-                "AllMetrics"
-              ],
-              "metadata": {
-                "description": "Optional. The name of metrics that will be streamed."
-              }
-            },
-            "diagnosticSettingsName": {
-              "type": "string",
-              "defaultValue": "",
-              "metadata": {
-                "description": "Optional. The name of the diagnostic setting, if deployed. If left empty, it defaults to \"<resourceName>-diagnosticSettings\"."
-              }
             }
           },
           "variables": {
             "copy": [
-              {
-                "name": "diagnosticsLogs",
-                "count": "[length(parameters('diagnosticLogCategoriesToEnable'))]",
-                "input": {
-                  "category": "[parameters('diagnosticLogCategoriesToEnable')[copyIndex('diagnosticsLogs')]]",
-                  "enabled": true
-                }
-              },
-              {
-                "name": "diagnosticsMetrics",
-                "count": "[length(parameters('diagnosticMetricsToEnable'))]",
-                "input": {
-                  "category": "[parameters('diagnosticMetricsToEnable')[copyIndex('diagnosticsMetrics')]]",
-                  "timeGrain": null,
-                  "enabled": true
-                }
-              },
               {
                 "name": "accessPolicies",
                 "count": "[length(parameters('accessPolicyObjectIds'))]",
@@ -843,18 +876,23 @@
               ]
             },
             "fhir_diagnosticSettings": {
-              "condition": "[or(or(or(not(empty(parameters('diagnosticStorageAccountId'))), not(empty(parameters('diagnosticWorkspaceId')))), not(empty(parameters('diagnosticEventHubAuthorizationRuleId')))), not(empty(parameters('diagnosticEventHubName'))))]",
+              "copy": {
+                "name": "fhir_diagnosticSettings",
+                "count": "[length(coalesce(parameters('diagnosticSettings'), createArray()))]"
+              },
               "type": "Microsoft.Insights/diagnosticSettings",
               "apiVersion": "2021-05-01-preview",
               "scope": "[format('Microsoft.HealthcareApis/workspaces/{0}/fhirservices/{1}', parameters('workspaceName'), parameters('name'))]",
-              "name": "[if(not(empty(parameters('diagnosticSettingsName'))), parameters('diagnosticSettingsName'), format('{0}-diagnosticSettings', parameters('name')))]",
+              "name": "[coalesce(tryGet(coalesce(parameters('diagnosticSettings'), createArray())[copyIndex()], 'name'), format('{0}-diagnosticSettings', parameters('name')))]",
               "properties": {
-                "storageAccountId": "[if(not(empty(parameters('diagnosticStorageAccountId'))), parameters('diagnosticStorageAccountId'), null())]",
-                "workspaceId": "[if(not(empty(parameters('diagnosticWorkspaceId'))), parameters('diagnosticWorkspaceId'), null())]",
-                "eventHubAuthorizationRuleId": "[if(not(empty(parameters('diagnosticEventHubAuthorizationRuleId'))), parameters('diagnosticEventHubAuthorizationRuleId'), null())]",
-                "eventHubName": "[if(not(empty(parameters('diagnosticEventHubName'))), parameters('diagnosticEventHubName'), null())]",
-                "metrics": "[variables('diagnosticsMetrics')]",
-                "logs": "[variables('diagnosticsLogs')]"
+                "storageAccountId": "[tryGet(coalesce(parameters('diagnosticSettings'), createArray())[copyIndex()], 'storageAccountResourceId')]",
+                "workspaceId": "[tryGet(coalesce(parameters('diagnosticSettings'), createArray())[copyIndex()], 'workspaceResourceId')]",
+                "eventHubAuthorizationRuleId": "[tryGet(coalesce(parameters('diagnosticSettings'), createArray())[copyIndex()], 'eventHubAuthorizationRuleResourceId')]",
+                "eventHubName": "[tryGet(coalesce(parameters('diagnosticSettings'), createArray())[copyIndex()], 'eventHubName')]",
+                "metrics": "[coalesce(tryGet(coalesce(parameters('diagnosticSettings'), createArray())[copyIndex()], 'metricCategories'), createArray(createObject('category', 'AllMetrics', 'timeGrain', null(), 'enabled', true())))]",
+                "logs": "[coalesce(tryGet(coalesce(parameters('diagnosticSettings'), createArray())[copyIndex()], 'logCategoriesAndGroups'), createArray(createObject('categoryGroup', 'AllLogs', 'enabled', true())))]",
+                "marketplacePartnerId": "[tryGet(coalesce(parameters('diagnosticSettings'), createArray())[copyIndex()], 'marketplacePartnerResourceId')]",
+                "logAnalyticsDestinationType": "[tryGet(coalesce(parameters('diagnosticSettings'), createArray())[copyIndex()], 'logAnalyticsDestinationType')]"
               },
               "dependsOn": [
                 "fhir"
@@ -964,14 +1002,12 @@
           "corsMethods": "[if(contains(parameters('dicomservices')[copyIndex()], 'corsMethods'), createObject('value', parameters('dicomservices')[copyIndex()].corsMethods), createObject('value', createArray()))]",
           "corsMaxAge": "[if(contains(parameters('dicomservices')[copyIndex()], 'corsMaxAge'), createObject('value', parameters('dicomservices')[copyIndex()].corsMaxAge), createObject('value', -1))]",
           "corsAllowCredentials": "[if(contains(parameters('dicomservices')[copyIndex()], 'corsAllowCredentials'), createObject('value', parameters('dicomservices')[copyIndex()].corsAllowCredentials), createObject('value', false()))]",
-          "diagnosticStorageAccountId": "[if(contains(parameters('dicomservices')[copyIndex()], 'diagnosticStorageAccountId'), createObject('value', parameters('dicomservices')[copyIndex()].diagnosticStorageAccountId), createObject('value', ''))]",
-          "diagnosticWorkspaceId": "[if(contains(parameters('dicomservices')[copyIndex()], 'diagnosticWorkspaceId'), createObject('value', parameters('dicomservices')[copyIndex()].diagnosticWorkspaceId), createObject('value', ''))]",
-          "diagnosticEventHubAuthorizationRuleId": "[if(contains(parameters('dicomservices')[copyIndex()], 'diagnosticEventHubAuthorizationRuleId'), createObject('value', parameters('dicomservices')[copyIndex()].diagnosticEventHubAuthorizationRuleId), createObject('value', ''))]",
-          "diagnosticEventHubName": "[if(contains(parameters('dicomservices')[copyIndex()], 'diagnosticEventHubName'), createObject('value', parameters('dicomservices')[copyIndex()].diagnosticEventHubName), createObject('value', ''))]",
+          "diagnosticSettings": {
+            "value": "[tryGet(parameters('dicomservices')[copyIndex()], 'diagnosticSettings')]"
+          },
           "lock": {
             "value": "[coalesce(tryGet(parameters('dicomservices')[copyIndex()], 'lock'), parameters('lock'))]"
           },
-          "diagnosticLogCategoriesToEnable": "[if(contains(parameters('dicomservices')[copyIndex()], 'diagnosticLogCategoriesToEnable'), createObject('value', parameters('dicomservices')[copyIndex()].diagnosticLogCategoriesToEnable), createObject('value', createArray('AuditLogs')))]",
           "enableDefaultTelemetry": {
             "value": "[variables('enableReferencedModulesTelemetry')]"
           }
@@ -984,7 +1020,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.22.6.54827",
-              "templateHash": "16541090903496320025"
+              "templateHash": "4165874741118763430"
             },
             "name": "Healthcare API Workspace DICOM Services",
             "description": "This module deploys a Healthcare API Workspace DICOM Service.",
@@ -1034,6 +1070,112 @@
                   "nullable": true,
                   "metadata": {
                     "description": "Optional. Specify the type of lock."
+                  }
+                }
+              },
+              "nullable": true
+            },
+            "diagnosticSettingType": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. The name of diagnostic setting."
+                    }
+                  },
+                  "logCategoriesAndGroups": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "category": {
+                          "type": "string",
+                          "nullable": true,
+                          "metadata": {
+                            "description": "Optional. Name of a Diagnostic Log category for a resource type this setting is applied to. Set the specific logs to collect here."
+                          }
+                        },
+                        "categoryGroup": {
+                          "type": "string",
+                          "nullable": true,
+                          "metadata": {
+                            "description": "Optional. Name of a Diagnostic Log category group for a resource type this setting is applied to. Set to 'AllLogs' to collect all logs."
+                          }
+                        }
+                      }
+                    },
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. The name of logs that will be streamed. \"allLogs\" includes all possible logs for the resource. Set to '' to disable log collection."
+                    }
+                  },
+                  "metricCategories": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "category": {
+                          "type": "string",
+                          "metadata": {
+                            "description": "Required. Name of a Diagnostic Metric category for a resource type this setting is applied to. Set to 'AllMetrics' to collect all metrics."
+                          }
+                        }
+                      }
+                    },
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. The name of logs that will be streamed. \"allLogs\" includes all possible logs for the resource. Set to '' to disable log collection."
+                    }
+                  },
+                  "logAnalyticsDestinationType": {
+                    "type": "string",
+                    "allowedValues": [
+                      "AzureDiagnostics",
+                      "Dedicated"
+                    ],
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. A string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destination type."
+                    }
+                  },
+                  "workspaceResourceId": {
+                    "type": "string",
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub."
+                    }
+                  },
+                  "storageAccountResourceId": {
+                    "type": "string",
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub."
+                    }
+                  },
+                  "eventHubAuthorizationRuleResourceId": {
+                    "type": "string",
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to."
+                    }
+                  },
+                  "eventHubName": {
+                    "type": "string",
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub."
+                    }
+                  },
+                  "marketplacePartnerResourceId": {
+                    "type": "string",
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. The full ARM resource ID of the Marketplace resource to which you would like to send Diagnostic Logs."
+                    }
                   }
                 }
               },
@@ -1104,32 +1246,10 @@
                 "description": "Optional. Location for all resources."
               }
             },
-            "diagnosticStorageAccountId": {
-              "type": "string",
-              "defaultValue": "",
+            "diagnosticSettings": {
+              "$ref": "#/definitions/diagnosticSettingType",
               "metadata": {
-                "description": "Optional. Resource ID of the diagnostic storage account."
-              }
-            },
-            "diagnosticWorkspaceId": {
-              "type": "string",
-              "defaultValue": "",
-              "metadata": {
-                "description": "Optional. Resource ID of the diagnostic log analytics workspace."
-              }
-            },
-            "diagnosticEventHubAuthorizationRuleId": {
-              "type": "string",
-              "defaultValue": "",
-              "metadata": {
-                "description": "Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to."
-              }
-            },
-            "diagnosticEventHubName": {
-              "type": "string",
-              "defaultValue": "",
-              "metadata": {
-                "description": "Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category."
+                "description": "Optional. The diagnostic settings of the service."
               }
             },
             "lock": {
@@ -1168,38 +1288,9 @@
               "metadata": {
                 "description": "Optional. Enable telemetry via the Customer Usage Attribution ID (GUID)."
               }
-            },
-            "diagnosticLogCategoriesToEnable": {
-              "type": "array",
-              "defaultValue": [
-                "AuditLogs"
-              ],
-              "allowedValues": [
-                "AuditLogs"
-              ],
-              "metadata": {
-                "description": "Optional. The name of logs that will be streamed."
-              }
-            },
-            "diagnosticSettingsName": {
-              "type": "string",
-              "defaultValue": "",
-              "metadata": {
-                "description": "Optional. The name of the diagnostic setting, if deployed. If left empty, it defaults to \"<resourceName>-diagnosticSettings\"."
-              }
             }
           },
           "variables": {
-            "copy": [
-              {
-                "name": "diagnosticsLogs",
-                "count": "[length(parameters('diagnosticLogCategoriesToEnable'))]",
-                "input": {
-                  "category": "[parameters('diagnosticLogCategoriesToEnable')[copyIndex('diagnosticsLogs')]]",
-                  "enabled": true
-                }
-              }
-            ],
             "formattedUserAssignedIdentities": "[reduce(map(coalesce(tryGet(parameters('managedIdentities'), 'userAssignedResourcesIds'), createArray()), lambda('id', createObject(format('{0}', lambdaVariables('id')), createObject()))), createObject(), lambda('cur', 'next', union(lambdaVariables('cur'), lambdaVariables('next'))))]",
             "identity": "[if(not(empty(parameters('managedIdentities'))), createObject('type', if(coalesce(tryGet(parameters('managedIdentities'), 'systemAssigned'), false()), if(not(empty(coalesce(tryGet(parameters('managedIdentities'), 'userAssignedResourcesIds'), createObject()))), 'SystemAssigned,UserAssigned', 'SystemAssigned'), if(not(empty(coalesce(tryGet(parameters('managedIdentities'), 'userAssignedResourcesIds'), createObject()))), 'UserAssigned', null())), 'userAssignedIdentities', if(not(empty(variables('formattedUserAssignedIdentities'))), variables('formattedUserAssignedIdentities'), null())), null())]"
           },
@@ -1260,18 +1351,23 @@
               ]
             },
             "dicom_diagnosticSettings": {
-              "condition": "[or(or(or(not(empty(parameters('diagnosticStorageAccountId'))), not(empty(parameters('diagnosticWorkspaceId')))), not(empty(parameters('diagnosticEventHubAuthorizationRuleId')))), not(empty(parameters('diagnosticEventHubName'))))]",
+              "copy": {
+                "name": "dicom_diagnosticSettings",
+                "count": "[length(coalesce(parameters('diagnosticSettings'), createArray()))]"
+              },
               "type": "Microsoft.Insights/diagnosticSettings",
               "apiVersion": "2021-05-01-preview",
               "scope": "[format('Microsoft.HealthcareApis/workspaces/{0}/dicomservices/{1}', parameters('workspaceName'), parameters('name'))]",
-              "name": "[if(not(empty(parameters('diagnosticSettingsName'))), parameters('diagnosticSettingsName'), format('{0}-diagnosticSettings', parameters('name')))]",
+              "name": "[coalesce(tryGet(coalesce(parameters('diagnosticSettings'), createArray())[copyIndex()], 'name'), format('{0}-diagnosticSettings', parameters('name')))]",
               "properties": {
-                "storageAccountId": "[if(not(empty(parameters('diagnosticStorageAccountId'))), parameters('diagnosticStorageAccountId'), null())]",
-                "workspaceId": "[if(not(empty(parameters('diagnosticWorkspaceId'))), parameters('diagnosticWorkspaceId'), null())]",
-                "eventHubAuthorizationRuleId": "[if(not(empty(parameters('diagnosticEventHubAuthorizationRuleId'))), parameters('diagnosticEventHubAuthorizationRuleId'), null())]",
-                "eventHubName": "[if(not(empty(parameters('diagnosticEventHubName'))), parameters('diagnosticEventHubName'), null())]",
-                "metrics": null,
-                "logs": "[variables('diagnosticsLogs')]"
+                "storageAccountId": "[tryGet(coalesce(parameters('diagnosticSettings'), createArray())[copyIndex()], 'storageAccountResourceId')]",
+                "workspaceId": "[tryGet(coalesce(parameters('diagnosticSettings'), createArray())[copyIndex()], 'workspaceResourceId')]",
+                "eventHubAuthorizationRuleId": "[tryGet(coalesce(parameters('diagnosticSettings'), createArray())[copyIndex()], 'eventHubAuthorizationRuleResourceId')]",
+                "eventHubName": "[tryGet(coalesce(parameters('diagnosticSettings'), createArray())[copyIndex()], 'eventHubName')]",
+                "metrics": "[coalesce(tryGet(coalesce(parameters('diagnosticSettings'), createArray())[copyIndex()], 'metricCategories'), createArray(createObject('category', 'AllMetrics', 'timeGrain', null(), 'enabled', true())))]",
+                "logs": "[coalesce(tryGet(coalesce(parameters('diagnosticSettings'), createArray())[copyIndex()], 'logCategoriesAndGroups'), createArray(createObject('categoryGroup', 'AllLogs', 'enabled', true())))]",
+                "marketplacePartnerId": "[tryGet(coalesce(parameters('diagnosticSettings'), createArray())[copyIndex()], 'marketplacePartnerResourceId')]",
+                "logAnalyticsDestinationType": "[tryGet(coalesce(parameters('diagnosticSettings'), createArray())[copyIndex()], 'logAnalyticsDestinationType')]"
               },
               "dependsOn": [
                 "dicom"
@@ -1355,15 +1451,12 @@
           "fhirdestination": "[if(contains(parameters('iotconnectors')[copyIndex()], 'fhirdestination'), createObject('value', parameters('iotconnectors')[copyIndex()].fhirdestination), createObject('value', createObject()))]",
           "consumerGroup": "[if(contains(parameters('iotconnectors')[copyIndex()], 'consumerGroup'), createObject('value', parameters('iotconnectors')[copyIndex()].consumerGroup), createObject('value', parameters('iotconnectors')[copyIndex()].name))]",
           "managedIdentities": "[if(contains(parameters('iotconnectors')[copyIndex()], 'managedIdentities'), createObject('value', parameters('iotconnectors')[copyIndex()].managedIdentities), createObject('value', null()))]",
-          "diagnosticStorageAccountId": "[if(contains(parameters('iotconnectors')[copyIndex()], 'diagnosticStorageAccountId'), createObject('value', parameters('iotconnectors')[copyIndex()].diagnosticStorageAccountId), createObject('value', ''))]",
-          "diagnosticWorkspaceId": "[if(contains(parameters('iotconnectors')[copyIndex()], 'diagnosticWorkspaceId'), createObject('value', parameters('iotconnectors')[copyIndex()].diagnosticWorkspaceId), createObject('value', ''))]",
-          "diagnosticEventHubAuthorizationRuleId": "[if(contains(parameters('iotconnectors')[copyIndex()], 'diagnosticEventHubAuthorizationRuleId'), createObject('value', parameters('iotconnectors')[copyIndex()].diagnosticEventHubAuthorizationRuleId), createObject('value', ''))]",
-          "diagnosticEventHubName": "[if(contains(parameters('iotconnectors')[copyIndex()], 'diagnosticEventHubName'), createObject('value', parameters('iotconnectors')[copyIndex()].diagnosticEventHubName), createObject('value', ''))]",
+          "diagnosticSettings": {
+            "value": "[tryGet(parameters('iotconnectors')[copyIndex()], 'diagnosticSettings')]"
+          },
           "lock": {
             "value": "[coalesce(tryGet(parameters('iotconnectors')[copyIndex()], 'lock'), parameters('lock'))]"
           },
-          "diagnosticLogCategoriesToEnable": "[if(contains(parameters('iotconnectors')[copyIndex()], 'diagnosticLogCategoriesToEnable'), createObject('value', parameters('iotconnectors')[copyIndex()].diagnosticLogCategoriesToEnable), createObject('value', createArray('DiagnosticLogs')))]",
-          "diagnosticMetricsToEnable": "[if(contains(parameters('iotconnectors')[copyIndex()], 'diagnosticMetricsToEnable'), createObject('value', parameters('iotconnectors')[copyIndex()].diagnosticMetricsToEnable), createObject('value', createArray('AllMetrics')))]",
           "enableDefaultTelemetry": {
             "value": "[variables('enableReferencedModulesTelemetry')]"
           }
@@ -1376,7 +1469,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.22.6.54827",
-              "templateHash": "13263818758803298676"
+              "templateHash": "9502385350114367681"
             },
             "name": "Healthcare API Workspace IoT Connectors",
             "description": "This module deploys a Healthcare API Workspace IoT Connector.",
@@ -1426,6 +1519,112 @@
                   "nullable": true,
                   "metadata": {
                     "description": "Optional. Specify the type of lock."
+                  }
+                }
+              },
+              "nullable": true
+            },
+            "diagnosticSettingType": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. The name of diagnostic setting."
+                    }
+                  },
+                  "logCategoriesAndGroups": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "category": {
+                          "type": "string",
+                          "nullable": true,
+                          "metadata": {
+                            "description": "Optional. Name of a Diagnostic Log category for a resource type this setting is applied to. Set the specific logs to collect here."
+                          }
+                        },
+                        "categoryGroup": {
+                          "type": "string",
+                          "nullable": true,
+                          "metadata": {
+                            "description": "Optional. Name of a Diagnostic Log category group for a resource type this setting is applied to. Set to 'AllLogs' to collect all logs."
+                          }
+                        }
+                      }
+                    },
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. The name of logs that will be streamed. \"allLogs\" includes all possible logs for the resource. Set to '' to disable log collection."
+                    }
+                  },
+                  "metricCategories": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "category": {
+                          "type": "string",
+                          "metadata": {
+                            "description": "Required. Name of a Diagnostic Metric category for a resource type this setting is applied to. Set to 'AllMetrics' to collect all metrics."
+                          }
+                        }
+                      }
+                    },
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. The name of logs that will be streamed. \"allLogs\" includes all possible logs for the resource. Set to '' to disable log collection."
+                    }
+                  },
+                  "logAnalyticsDestinationType": {
+                    "type": "string",
+                    "allowedValues": [
+                      "AzureDiagnostics",
+                      "Dedicated"
+                    ],
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. A string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destination type."
+                    }
+                  },
+                  "workspaceResourceId": {
+                    "type": "string",
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub."
+                    }
+                  },
+                  "storageAccountResourceId": {
+                    "type": "string",
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub."
+                    }
+                  },
+                  "eventHubAuthorizationRuleResourceId": {
+                    "type": "string",
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to."
+                    }
+                  },
+                  "eventHubName": {
+                    "type": "string",
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub."
+                    }
+                  },
+                  "marketplacePartnerResourceId": {
+                    "type": "string",
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. The full ARM resource ID of the Marketplace resource to which you would like to send Diagnostic Logs."
+                    }
                   }
                 }
               },
@@ -1489,32 +1688,10 @@
                 "description": "Optional. Location for all resources."
               }
             },
-            "diagnosticStorageAccountId": {
-              "type": "string",
-              "defaultValue": "",
+            "diagnosticSettings": {
+              "$ref": "#/definitions/diagnosticSettingType",
               "metadata": {
-                "description": "Optional. Resource ID of the diagnostic storage account."
-              }
-            },
-            "diagnosticWorkspaceId": {
-              "type": "string",
-              "defaultValue": "",
-              "metadata": {
-                "description": "Optional. Resource ID of the diagnostic log analytics workspace."
-              }
-            },
-            "diagnosticEventHubAuthorizationRuleId": {
-              "type": "string",
-              "defaultValue": "",
-              "metadata": {
-                "description": "Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to."
-              }
-            },
-            "diagnosticEventHubName": {
-              "type": "string",
-              "defaultValue": "",
-              "metadata": {
-                "description": "Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category."
+                "description": "Optional. The diagnostic settings of the service."
               }
             },
             "lock": {
@@ -1542,59 +1719,9 @@
               "metadata": {
                 "description": "Optional. Enable telemetry via the Customer Usage Attribution ID (GUID)."
               }
-            },
-            "diagnosticLogCategoriesToEnable": {
-              "type": "array",
-              "defaultValue": [
-                "DiagnosticLogs"
-              ],
-              "allowedValues": [
-                "DiagnosticLogs"
-              ],
-              "metadata": {
-                "description": "Optional. The name of logs that will be streamed."
-              }
-            },
-            "diagnosticMetricsToEnable": {
-              "type": "array",
-              "defaultValue": [
-                "AllMetrics"
-              ],
-              "allowedValues": [
-                "AllMetrics"
-              ],
-              "metadata": {
-                "description": "Optional. The name of metrics that will be streamed."
-              }
-            },
-            "diagnosticSettingsName": {
-              "type": "string",
-              "defaultValue": "",
-              "metadata": {
-                "description": "Optional. The name of the diagnostic setting, if deployed. If left empty, it defaults to \"<resourceName>-diagnosticSettings\"."
-              }
             }
           },
           "variables": {
-            "copy": [
-              {
-                "name": "diagnosticsLogs",
-                "count": "[length(parameters('diagnosticLogCategoriesToEnable'))]",
-                "input": {
-                  "category": "[parameters('diagnosticLogCategoriesToEnable')[copyIndex('diagnosticsLogs')]]",
-                  "enabled": true
-                }
-              },
-              {
-                "name": "diagnosticsMetrics",
-                "count": "[length(parameters('diagnosticMetricsToEnable'))]",
-                "input": {
-                  "category": "[parameters('diagnosticMetricsToEnable')[copyIndex('diagnosticsMetrics')]]",
-                  "timeGrain": null,
-                  "enabled": true
-                }
-              }
-            ],
             "formattedUserAssignedIdentities": "[reduce(map(coalesce(tryGet(parameters('managedIdentities'), 'userAssignedResourcesIds'), createArray()), lambda('id', createObject(format('{0}', lambdaVariables('id')), createObject()))), createObject(), lambda('cur', 'next', union(lambdaVariables('cur'), lambdaVariables('next'))))]",
             "identity": "[if(not(empty(parameters('managedIdentities'))), createObject('type', if(coalesce(tryGet(parameters('managedIdentities'), 'systemAssigned'), false()), if(not(empty(coalesce(tryGet(parameters('managedIdentities'), 'userAssignedResourcesIds'), createObject()))), 'SystemAssigned,UserAssigned', 'SystemAssigned'), if(not(empty(coalesce(tryGet(parameters('managedIdentities'), 'userAssignedResourcesIds'), createObject()))), 'UserAssigned', null())), 'userAssignedIdentities', if(not(empty(variables('formattedUserAssignedIdentities'))), variables('formattedUserAssignedIdentities'), null())), null())]",
             "enableReferencedModulesTelemetry": false
@@ -1656,18 +1783,23 @@
               ]
             },
             "iotConnector_diagnosticSettings": {
-              "condition": "[or(or(or(not(empty(parameters('diagnosticStorageAccountId'))), not(empty(parameters('diagnosticWorkspaceId')))), not(empty(parameters('diagnosticEventHubAuthorizationRuleId')))), not(empty(parameters('diagnosticEventHubName'))))]",
+              "copy": {
+                "name": "iotConnector_diagnosticSettings",
+                "count": "[length(coalesce(parameters('diagnosticSettings'), createArray()))]"
+              },
               "type": "Microsoft.Insights/diagnosticSettings",
               "apiVersion": "2021-05-01-preview",
               "scope": "[format('Microsoft.HealthcareApis/workspaces/{0}/iotconnectors/{1}', parameters('workspaceName'), parameters('name'))]",
-              "name": "[if(not(empty(parameters('diagnosticSettingsName'))), parameters('diagnosticSettingsName'), format('{0}-diagnosticSettings', parameters('name')))]",
+              "name": "[coalesce(tryGet(coalesce(parameters('diagnosticSettings'), createArray())[copyIndex()], 'name'), format('{0}-diagnosticSettings', parameters('name')))]",
               "properties": {
-                "storageAccountId": "[if(not(empty(parameters('diagnosticStorageAccountId'))), parameters('diagnosticStorageAccountId'), null())]",
-                "workspaceId": "[if(not(empty(parameters('diagnosticWorkspaceId'))), parameters('diagnosticWorkspaceId'), null())]",
-                "eventHubAuthorizationRuleId": "[if(not(empty(parameters('diagnosticEventHubAuthorizationRuleId'))), parameters('diagnosticEventHubAuthorizationRuleId'), null())]",
-                "eventHubName": "[if(not(empty(parameters('diagnosticEventHubName'))), parameters('diagnosticEventHubName'), null())]",
-                "metrics": "[variables('diagnosticsMetrics')]",
-                "logs": "[variables('diagnosticsLogs')]"
+                "storageAccountId": "[tryGet(coalesce(parameters('diagnosticSettings'), createArray())[copyIndex()], 'storageAccountResourceId')]",
+                "workspaceId": "[tryGet(coalesce(parameters('diagnosticSettings'), createArray())[copyIndex()], 'workspaceResourceId')]",
+                "eventHubAuthorizationRuleId": "[tryGet(coalesce(parameters('diagnosticSettings'), createArray())[copyIndex()], 'eventHubAuthorizationRuleResourceId')]",
+                "eventHubName": "[tryGet(coalesce(parameters('diagnosticSettings'), createArray())[copyIndex()], 'eventHubName')]",
+                "metrics": "[coalesce(tryGet(coalesce(parameters('diagnosticSettings'), createArray())[copyIndex()], 'metricCategories'), createArray(createObject('category', 'AllMetrics', 'timeGrain', null(), 'enabled', true())))]",
+                "logs": "[coalesce(tryGet(coalesce(parameters('diagnosticSettings'), createArray())[copyIndex()], 'logCategoriesAndGroups'), createArray(createObject('categoryGroup', 'AllLogs', 'enabled', true())))]",
+                "marketplacePartnerId": "[tryGet(coalesce(parameters('diagnosticSettings'), createArray())[copyIndex()], 'marketplacePartnerResourceId')]",
+                "logAnalyticsDestinationType": "[tryGet(coalesce(parameters('diagnosticSettings'), createArray())[copyIndex()], 'logAnalyticsDestinationType')]"
               },
               "dependsOn": [
                 "iotConnector"

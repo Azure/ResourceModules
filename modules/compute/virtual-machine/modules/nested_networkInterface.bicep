@@ -11,22 +11,12 @@ param networkSecurityGroupResourceId string = ''
 
 param ipConfigurations array
 param lock lockType
-param diagnosticStorageAccountId string
-param diagnosticWorkspaceId string
-param diagnosticEventHubAuthorizationRuleId string
-param diagnosticEventHubName string
-param pipdiagnosticMetricsToEnable array
-param pipdiagnosticLogCategoriesToEnable array
-param nicDiagnosticMetricsToEnable array
+
+@description('Optional. The diagnostic settings of the Network Interface.')
+param diagnosticSettings diagnosticSettingType
 
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
-
-@description('Optional. The name of the PIP diagnostic setting, if deployed.')
-param pipDiagnosticSettingsName string = '${virtualMachineName}-diagnosticSettings'
-
-@description('Optional. The name of the NIC diagnostic setting, if deployed.')
-param nicDiagnosticSettingsName string = '${virtualMachineName}-diagnosticSettings'
 
 var enableReferencedModulesTelemetry = false
 
@@ -34,14 +24,7 @@ module networkInterface_publicIPAddresses '../../../network/public-ip-address/ma
   name: '${deployment().name}-publicIP-${index}'
   params: {
     name: '${virtualMachineName}${ipConfiguration.pipconfiguration.publicIpNameSuffix}'
-    diagnosticEventHubAuthorizationRuleId: diagnosticEventHubAuthorizationRuleId
-    diagnosticEventHubName: diagnosticEventHubName
-    diagnosticLogCategoriesToEnable: pipdiagnosticLogCategoriesToEnable
-    diagnosticMetricsToEnable: pipdiagnosticMetricsToEnable
-    diagnosticSettingsName: pipDiagnosticSettingsName
-    diagnosticStorageAccountId: diagnosticStorageAccountId
-    diagnosticWorkspaceId: diagnosticWorkspaceId
-    enableDefaultTelemetry: enableReferencedModulesTelemetry
+    diagnosticSettings: ipConfiguration.?diagnosticSettings
     location: location
     lock: lock
     publicIPAddressVersion: contains(ipConfiguration, 'publicIPAddressVersion') ? ipConfiguration.publicIPAddressVersion : 'IPv4'
@@ -76,12 +59,7 @@ module networkInterface '../../../network/network-interface/main.bicep' = {
     }]
     location: location
     tags: tags
-    diagnosticEventHubAuthorizationRuleId: diagnosticEventHubAuthorizationRuleId
-    diagnosticEventHubName: diagnosticEventHubName
-    diagnosticStorageAccountId: diagnosticStorageAccountId
-    diagnosticMetricsToEnable: nicDiagnosticMetricsToEnable
-    diagnosticSettingsName: nicDiagnosticSettingsName
-    diagnosticWorkspaceId: diagnosticWorkspaceId
+    diagnosticSettings: diagnosticSettings
     dnsServers: !empty(dnsServers) ? dnsServers : []
     enableAcceleratedNetworking: enableAcceleratedNetworking
     enableDefaultTelemetry: enableReferencedModulesTelemetry
@@ -106,3 +84,41 @@ type lockType = {
   @description('Optional. Specify the type of lock.')
   kind: ('CanNotDelete' | 'ReadOnly' | 'None')?
 }?
+
+type diagnosticSettingType = {
+  @description('Optional. The name of diagnostic setting.')
+  name: string?
+
+  @description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to \'\' to disable log collection.')
+  logCategoriesAndGroups: {
+    @description('Optional. Name of a Diagnostic Log category for a resource type this setting is applied to. Set the specific logs to collect here.')
+    category: string?
+
+    @description('Optional. Name of a Diagnostic Log category group for a resource type this setting is applied to. Set to llLogs to collect all logs.')
+    categoryGroup: string?
+  }[]?
+
+  @description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to \'\' to disable log collection.')
+  metricCategories: {
+    @description('Required. Name of a Diagnostic Metric category for a resource type this setting is applied to. Set to AllMetrics to collect all metrics.')
+    category: string
+  }[]?
+
+  @description('Optional. A string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destination type.')
+  logAnalyticsDestinationType: ('Dedicated' | 'AzureDiagnostics' | null)?
+
+  @description('Optional. Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.')
+  workspaceResourceId: string?
+
+  @description('Optional. Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.')
+  storageAccountResourceId: string?
+
+  @description('Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
+  eventHubAuthorizationRuleResourceId: string?
+
+  @description('Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.')
+  eventHubName: string?
+
+  @description('Optional. The full ARM resource ID of the Marketplace resource to which you would like to send Diagnostic Logs.')
+  marketplacePartnerResourceId: string?
+}[]?
