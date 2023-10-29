@@ -62,7 +62,7 @@ resource gremlinDatabase 'Microsoft.DocumentDB/databaseAccounts/gremlinDatabases
   name: name
   tags: tags
   parent: databaseAccount
-  identity: identity
+  identity: identity!
   properties: {
     options: databaseOptions
     resource: {
