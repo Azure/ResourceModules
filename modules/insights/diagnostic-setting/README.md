@@ -39,12 +39,17 @@ This instance deploys the module with most of its features enabled.
 module diagnosticSetting 'br:bicep/modules/insights.diagnostic-setting:1.0.0' = {
   name: '${uniqueString(deployment().name, location)}-test-idscom'
   params: {
-    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-    diagnosticEventHubName: '<diagnosticEventHubName>'
-    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+    eventHubName: '<eventHubName>'
+    metricCategories: [
+      {
+        category: 'AllMetrics'
+      }
+    ]
     name: 'idscom001'
+    storageAccountResourceId: '<storageAccountResourceId>'
+    workspaceResourceId: '<workspaceResourceId>'
   }
 }
 ```
@@ -61,23 +66,30 @@ module diagnosticSetting 'br:bicep/modules/insights.diagnostic-setting:1.0.0' = 
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "diagnosticEventHubAuthorizationRuleId": {
-      "value": "<diagnosticEventHubAuthorizationRuleId>"
-    },
-    "diagnosticEventHubName": {
-      "value": "<diagnosticEventHubName>"
-    },
-    "diagnosticStorageAccountId": {
-      "value": "<diagnosticStorageAccountId>"
-    },
-    "diagnosticWorkspaceId": {
-      "value": "<diagnosticWorkspaceId>"
-    },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     },
+    "eventHubAuthorizationRuleResourceId": {
+      "value": "<eventHubAuthorizationRuleResourceId>"
+    },
+    "eventHubName": {
+      "value": "<eventHubName>"
+    },
+    "metricCategories": {
+      "value": [
+        {
+          "category": "AllMetrics"
+        }
+      ]
+    },
     "name": {
       "value": "idscom001"
+    },
+    "storageAccountResourceId": {
+      "value": "<storageAccountResourceId>"
+    },
+    "workspaceResourceId": {
+      "value": "<workspaceResourceId>"
     }
   }
 }
@@ -93,50 +105,17 @@ module diagnosticSetting 'br:bicep/modules/insights.diagnostic-setting:1.0.0' = 
 
 | Parameter | Type | Description |
 | :-- | :-- | :-- |
-| [`diagnosticEventHubAuthorizationRuleId`](#parameter-diagnosticeventhubauthorizationruleid) | string | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
-| [`diagnosticEventHubName`](#parameter-diagnosticeventhubname) | string | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
-| [`diagnosticLogCategoriesToEnable`](#parameter-diagnosticlogcategoriestoenable) | array | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
-| [`diagnosticStorageAccountId`](#parameter-diagnosticstorageaccountid) | string | Resource ID of the diagnostic storage account. |
-| [`diagnosticWorkspaceId`](#parameter-diagnosticworkspaceid) | string | Resource ID of the diagnostic log analytics workspace. |
 | [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`eventHubAuthorizationRuleResourceId`](#parameter-eventhubauthorizationruleresourceid) | string | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
+| [`eventHubName`](#parameter-eventhubname) | string | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
 | [`location`](#parameter-location) | string | Location deployment metadata. |
-| [`name`](#parameter-name) | string | Name of the ActivityLog diagnostic settings. |
-
-### Parameter: `diagnosticEventHubAuthorizationRuleId`
-
-Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.
-- Required: No
-- Type: string
-- Default: `''`
-
-### Parameter: `diagnosticEventHubName`
-
-Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.
-- Required: No
-- Type: string
-- Default: `''`
-
-### Parameter: `diagnosticLogCategoriesToEnable`
-
-The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection.
-- Required: No
-- Type: array
-- Default: `[allLogs]`
-- Allowed: `['', Administrative, Alert, allLogs, Autoscale, Policy, Recommendation, ResourceHealth, Security, ServiceHealth]`
-
-### Parameter: `diagnosticStorageAccountId`
-
-Resource ID of the diagnostic storage account.
-- Required: No
-- Type: string
-- Default: `''`
-
-### Parameter: `diagnosticWorkspaceId`
-
-Resource ID of the diagnostic log analytics workspace.
-- Required: No
-- Type: string
-- Default: `''`
+| [`logAnalyticsDestinationType`](#parameter-loganalyticsdestinationtype) | string | A string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destination type. |
+| [`logCategoriesAndGroups`](#parameter-logcategoriesandgroups) | array | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
+| [`marketplacePartnerResourceId`](#parameter-marketplacepartnerresourceid) | string | The full ARM resource ID of the Marketplace resource to which you would like to send Diagnostic Logs. |
+| [`metricCategories`](#parameter-metriccategories) | array | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
+| [`name`](#parameter-name) | string | Name of the Diagnostic settings. |
+| [`storageAccountResourceId`](#parameter-storageaccountresourceid) | string | Resource ID of the diagnostic storage account. |
+| [`workspaceResourceId`](#parameter-workspaceresourceid) | string | Resource ID of the diagnostic log analytics workspace. |
 
 ### Parameter: `enableDefaultTelemetry`
 
@@ -145,6 +124,18 @@ Enable telemetry via a Globally Unique Identifier (GUID).
 - Type: bool
 - Default: `True`
 
+### Parameter: `eventHubAuthorizationRuleResourceId`
+
+Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.
+- Required: No
+- Type: string
+
+### Parameter: `eventHubName`
+
+Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.
+- Required: No
+- Type: string
+
 ### Parameter: `location`
 
 Location deployment metadata.
@@ -152,12 +143,82 @@ Location deployment metadata.
 - Type: string
 - Default: `[deployment().location]`
 
-### Parameter: `name`
+### Parameter: `logAnalyticsDestinationType`
 
-Name of the ActivityLog diagnostic settings.
+A string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destination type.
 - Required: No
 - Type: string
-- Default: `[format('{0}-ActivityLog', uniqueString(subscription().id))]`
+- Default: `''`
+- Allowed: `['', AzureDiagnostics, Dedicated]`
+
+### Parameter: `logCategoriesAndGroups`
+
+The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection.
+- Required: No
+- Type: array
+
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`category`](#parameter-logcategoriesandgroupscategory) | No | string | Optional. Name of a Diagnostic Log category for a resource type this setting is applied to. Set the specific logs to collect here. |
+| [`categoryGroup`](#parameter-logcategoriesandgroupscategorygroup) | No | string | Optional. Name of a Diagnostic Log category group for a resource type this setting is applied to. Set to 'AllLogs' to collect all logs. |
+
+### Parameter: `logCategoriesAndGroups.category`
+
+Optional. Name of a Diagnostic Log category for a resource type this setting is applied to. Set the specific logs to collect here.
+
+- Required: No
+- Type: string
+
+### Parameter: `logCategoriesAndGroups.categoryGroup`
+
+Optional. Name of a Diagnostic Log category group for a resource type this setting is applied to. Set to 'AllLogs' to collect all logs.
+
+- Required: No
+- Type: string
+
+### Parameter: `marketplacePartnerResourceId`
+
+The full ARM resource ID of the Marketplace resource to which you would like to send Diagnostic Logs.
+- Required: No
+- Type: string
+
+### Parameter: `metricCategories`
+
+The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection.
+- Required: No
+- Type: array
+
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`category`](#parameter-metriccategoriescategory) | Yes | string | Required. Name of a Diagnostic Metric category for a resource type this setting is applied to. Set to 'AllMetrics' to collect all metrics. |
+
+### Parameter: `metricCategories.category`
+
+Required. Name of a Diagnostic Metric category for a resource type this setting is applied to. Set to 'AllMetrics' to collect all metrics.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `name`
+
+Name of the Diagnostic settings.
+- Required: No
+- Type: string
+- Default: `[format('{0}-diagnosticSettings', uniqueString(subscription().id))]`
+
+### Parameter: `storageAccountResourceId`
+
+Resource ID of the diagnostic storage account.
+- Required: No
+- Type: string
+
+### Parameter: `workspaceResourceId`
+
+Resource ID of the diagnostic log analytics workspace.
+- Required: No
+- Type: string
 
 
 ## Outputs

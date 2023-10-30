@@ -62,7 +62,6 @@ module testDeployment '../../main.bicep' = {
         privateDnsZoneResourceIds: [
           nestedDependencies.outputs.privateDNSZoneResourceId
         ]
-        service: 'searchService'
         subnetResourceId: nestedDependencies.outputs.subnetResourceId
         tags: {
           Environment: 'Non-Prod'
