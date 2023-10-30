@@ -73,21 +73,13 @@ module testDeployment '../../main.bicep' = {
       authenticationType: 'IdentityBased'
       endpointUri: 'sb://${nestedDependencies.outputs.eventhubNamespaceName}.servicebus.windows.net/'
       entityPath: nestedDependencies.outputs.eventhubName
-      managedIdentities: {
-        userAssignedResourcesIds: [
-          nestedDependencies.outputs.managedIdentityResourceId
-        ]
-      }
+      userAssignedIdentity: nestedDependencies.outputs.managedIdentityResourceId
     }
     serviceBusEndpoint: {
       authenticationType: 'IdentityBased'
       endpointUri: 'sb://${nestedDependencies.outputs.serviceBusName}.servicebus.windows.net/'
       entityPath: nestedDependencies.outputs.serviceBusTopicName
-      managedIdentities: {
-        userAssignedResourcesIds: [
-          nestedDependencies.outputs.managedIdentityResourceId
-        ]
-      }
+      userAssignedIdentity: nestedDependencies.outputs.managedIdentityResourceId
     }
     eventGridEndpoint: {
       eventGridDomainId: nestedDependencies.outputs.eventGridDomainResourceId
@@ -95,10 +87,8 @@ module testDeployment '../../main.bicep' = {
     }
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '${namePrefix}${serviceShort}001'
-    managedIdentities: {
-      userAssignedResourcesIds: [
-        nestedDependencies.outputs.managedIdentityResourceId
-      ]
+    userAssignedIdentities: {
+      '${nestedDependencies.outputs.managedIdentityResourceId}': {}
     }
     diagnosticSettings: [
       {
