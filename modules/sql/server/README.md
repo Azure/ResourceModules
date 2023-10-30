@@ -622,6 +622,12 @@ module server 'br:bicep/modules/sql.server:1.0.0' = {
     administratorLoginPassword: '<administratorLoginPassword>'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     location: '<location>'
+    managedIdentities: {
+      systemAssigned: true
+      userAssignedResourcesIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
     primaryUserAssignedIdentityId: '<primaryUserAssignedIdentityId>'
     securityAlertPolicies: [
       {
@@ -630,14 +636,10 @@ module server 'br:bicep/modules/sql.server:1.0.0' = {
         state: 'Enabled'
       }
     ]
-    systemAssignedIdentity: true
     tags: {
       Environment: 'Non-Prod'
       'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
-    }
-    userAssignedIdentities: {
-      '<managedIdentityResourceId>': {}
     }
     vulnerabilityAssessmentsObj: {
       createStorageRoleAssignment: true
@@ -684,6 +686,14 @@ module server 'br:bicep/modules/sql.server:1.0.0' = {
     "location": {
       "value": "<location>"
     },
+    "managedIdentities": {
+      "value": {
+        "systemAssigned": true,
+        "userAssignedResourcesIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
+    },
     "primaryUserAssignedIdentityId": {
       "value": "<primaryUserAssignedIdentityId>"
     },
@@ -696,19 +706,11 @@ module server 'br:bicep/modules/sql.server:1.0.0' = {
         }
       ]
     },
-    "systemAssignedIdentity": {
-      "value": true
-    },
     "tags": {
       "value": {
         "Environment": "Non-Prod",
         "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
-      }
-    },
-    "userAssignedIdentities": {
-      "value": {
-        "<managedIdentityResourceId>": {}
       }
     },
     "vulnerabilityAssessmentsObj": {
