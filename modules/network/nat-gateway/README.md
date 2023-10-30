@@ -208,7 +208,7 @@ module natGateway 'br:bicep/modules/network.nat-gateway:1.0.0' = {
     publicIPPrefixObjects: [
       {
         name: 'nngcprx001-pippre'
-        prefixLength: 28
+        prefixLength: 30
         roleAssignments: [
           {
             principalId: '<principalId>'
@@ -270,7 +270,7 @@ module natGateway 'br:bicep/modules/network.nat-gateway:1.0.0' = {
       "value": [
         {
           "name": "nngcprx001-pippre",
-          "prefixLength": 28,
+          "prefixLength": 30,
           "roleAssignments": [
             {
               "principalId": "<principalId>",
