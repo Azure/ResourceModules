@@ -19,75 +19,106 @@ This module deploys a Log Analytics Workspace Saved Search.
 
 **Required parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `category` | string | Query category. |
-| `displayName` | string | Display name for the search. |
-| `name` | string | Name of the saved search. |
-| `query` | string | Kusto Query to be stored. |
+| [`category`](#parameter-category) | string | Query category. |
+| [`displayName`](#parameter-displayname) | string | Display name for the search. |
+| [`name`](#parameter-name) | string | Name of the saved search. |
+| [`query`](#parameter-query) | string | Kusto Query to be stored. |
 
 **Conditional parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `logAnalyticsWorkspaceName` | string | The name of the parent Log Analytics workspace. Required if the template is used in a standalone deployment. |
+| [`logAnalyticsWorkspaceName`](#parameter-loganalyticsworkspacename) | string | The name of the parent Log Analytics workspace. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `etag` | string | `'*'` | The ETag of the saved search. To override an existing saved search, use "*" or specify the current Etag. |
-| `functionAlias` | string | `''` | The function alias if query serves as a function. |
-| `functionParameters` | string | `''` | The optional function parameters if query serves as a function. Value should be in the following format: "param-name1:type1 = default_value1, param-name2:type2 = default_value2". For more examples and proper syntax please refer to /azure/kusto/query/functions/user-defined-functions. |
-| `tags` | array | `[]` | Tags to configure in the resource. |
-| `version` | int | `2` | The version number of the query language. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`etag`](#parameter-etag) | string | The ETag of the saved search. To override an existing saved search, use "*" or specify the current Etag. |
+| [`functionAlias`](#parameter-functionalias) | string | The function alias if query serves as a function. |
+| [`functionParameters`](#parameter-functionparameters) | string | The optional function parameters if query serves as a function. Value should be in the following format: "param-name1:type1 = default_value1, param-name2:type2 = default_value2". For more examples and proper syntax please refer to /azure/kusto/query/functions/user-defined-functions. |
+| [`tags`](#parameter-tags) | array | Tags to configure in the resource. |
+| [`version`](#parameter-version) | int | The version number of the query language. |
 
+### Parameter: `category`
 
-### Parameter Usage: `tags`
+Query category.
+- Required: Yes
+- Type: string
 
-Tag names and tag values can be provided as needed. A tag can be left without a value.
+### Parameter: `displayName`
 
-<details>
+Display name for the search.
+- Required: Yes
+- Type: string
 
-<summary>Parameter JSON format</summary>
+### Parameter: `enableDefaultTelemetry`
 
-```json
-"tags": {
-    "value": {
-        "Environment": "Non-Prod",
-        "Contact": "test.user@testcompany.com",
-        "PurchaseOrder": "1234",
-        "CostCenter": "7890",
-        "ServiceName": "DeploymentValidation",
-        "Role": "DeploymentValidation"
-    }
-}
-```
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
 
-</details>
+### Parameter: `etag`
 
-<details>
+The ETag of the saved search. To override an existing saved search, use "*" or specify the current Etag.
+- Required: No
+- Type: string
+- Default: `'*'`
 
-<summary>Bicep format</summary>
+### Parameter: `functionAlias`
 
-```bicep
-tags: {
-    Environment: 'Non-Prod'
-    Contact: 'test.user@testcompany.com'
-    PurchaseOrder: '1234'
-    CostCenter: '7890'
-    ServiceName: 'DeploymentValidation'
-    Role: 'DeploymentValidation'
-}
-```
+The function alias if query serves as a function.
+- Required: No
+- Type: string
+- Default: `''`
 
-</details>
-<p>
+### Parameter: `functionParameters`
+
+The optional function parameters if query serves as a function. Value should be in the following format: "param-name1:type1 = default_value1, param-name2:type2 = default_value2". For more examples and proper syntax please refer to /azure/kusto/query/functions/user-defined-functions.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `logAnalyticsWorkspaceName`
+
+The name of the parent Log Analytics workspace. Required if the template is used in a standalone deployment.
+- Required: Yes
+- Type: string
+
+### Parameter: `name`
+
+Name of the saved search.
+- Required: Yes
+- Type: string
+
+### Parameter: `query`
+
+Kusto Query to be stored.
+- Required: Yes
+- Type: string
+
+### Parameter: `tags`
+
+Tags to configure in the resource.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `version`
+
+The version number of the query language.
+- Required: No
+- Type: int
+- Default: `2`
+
 
 ## Outputs
 
-| Output Name | Type | Description |
+| Output | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the deployed saved search. |
 | `resourceGroupName` | string | The resource group where the saved search is deployed. |

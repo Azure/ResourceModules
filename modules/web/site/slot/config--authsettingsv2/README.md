@@ -19,59 +19,60 @@ This module deploys a Site Auth Settings V2 Configuration.
 
 **Required parameters**
 
-| Parameter Name | Type | Allowed Values | Description |
-| :-- | :-- | :-- | :-- |
-| `authSettingV2Configuration` | object |  | The auth settings V2 configuration. |
-| `kind` | string | `[app, functionapp, functionapp,linux, functionapp,workflowapp, functionapp,workflowapp,linux]` | Type of slot to deploy. |
-| `slotName` | string |  | Slot name to be configured. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`authSettingV2Configuration`](#parameter-authsettingv2configuration) | object | The auth settings V2 configuration. |
+| [`kind`](#parameter-kind) | string | Type of slot to deploy. |
+| [`slotName`](#parameter-slotname) | string | Slot name to be configured. |
 
 **Conditional parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `appName` | string | The name of the parent site resource. Required if the template is used in a standalone deployment. |
+| [`appName`](#parameter-appname) | string | The name of the parent site resource. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 
+### Parameter: `appName`
 
-### Parameter Usage: `authSettingV2Configuration`
+The name of the parent site resource. Required if the template is used in a standalone deployment.
+- Required: Yes
+- Type: string
+
+### Parameter: `authSettingV2Configuration`
 
 The auth settings V2 configuration.
+- Required: Yes
+- Type: object
 
-<details>
+### Parameter: `enableDefaultTelemetry`
 
-<summary>Parameter JSON format</summary>
+Enable telemetry via the Customer Usage Attribution ID (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
 
-```json
-"siteConfig": {
-    "value": [
-        // Check out https://learn.microsoft.com/en-us/azure/templates/microsoft.web/sites/config-authsettingsv2?tabs=bicep#siteauthsettingsv2properties for possible properties
-    ]
-}
-```
+### Parameter: `kind`
 
-</details>
+Type of slot to deploy.
+- Required: Yes
+- Type: string
+- Allowed: `[app, functionapp, functionapp,linux, functionapp,workflowapp, functionapp,workflowapp,linux]`
 
-<details>
+### Parameter: `slotName`
 
-<summary>Bicep format</summary>
+Slot name to be configured.
+- Required: Yes
+- Type: string
 
-```bicep
-siteConfig: [
-    // Check out https://learn.microsoft.com/en-us/azure/templates/microsoft.web/sites/config-authsettingsv2?tabs=bicep#siteauthsettingsv2properties for possible properties
-]
-```
-
-</details>
-<p>
 
 ## Outputs
 
-| Output Name | Type | Description |
+| Output | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the slot config. |
 | `resourceGroupName` | string | The resource group the slot config was deployed into. |

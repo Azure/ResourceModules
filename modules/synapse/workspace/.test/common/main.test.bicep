@@ -1,12 +1,15 @@
 targetScope = 'subscription'
 
+metadata name = 'Using large parameter set'
+metadata description = 'This instance deploys the module with most of its features enabled.'
+
 // ========== //
 // Parameters //
 // ========== //
 
 @description('Optional. The name of the resource group to deploy for testing purposes.')
 @maxLength(90)
-param resourceGroupName string = 'ms.synapse.workspaces-${serviceShort}-rg'
+param resourceGroupName string = 'dep-${namePrefix}-synapse.workspaces-${serviceShort}-rg'
 
 @description('Optional. The location to deploy resources to.')
 param location string = deployment().location
@@ -74,21 +77,17 @@ module testDeployment '../../main.bicep' = {
     roleAssignments: [
       {
         roleDefinitionIdOrName: 'Reader'
-        principalIds: [
-          nestedDependencies.outputs.managedIdentityPrincipalId
-        ]
-
+        principalId: nestedDependencies.outputs.managedIdentityPrincipalId
+        principalType: 'ServicePrincipal'
       }
     ]
     privateEndpoints: [
       {
         subnetResourceId: nestedDependencies.outputs.subnetResourceId
         service: 'SQL'
-        privateDnsZoneGroup: {
-          privateDNSResourceIds: [
-            nestedDependencies.outputs.privateDNSResourceId
-          ]
-        }
+        privateDnsZoneResourceIds: [
+          nestedDependencies.outputs.privateDNSZoneResourceId
+        ]
         tags: {
           'hidden-title': 'This is visible in the resource name'
           Environment: 'Non-Prod'
@@ -103,19 +102,22 @@ module testDeployment '../../main.bicep' = {
         name: 'shir01'
       }
     ]
-    diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
-    diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
-    diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
-    diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
-    diagnosticLogCategoriesToEnable: [
-      'SynapseRbacOperations'
-      'GatewayApiRequests'
-      'BuiltinSqlReqsEnded'
-      'IntegrationPipelineRuns'
-      'IntegrationActivityRuns'
-      'IntegrationTriggerRuns'
-      'SQLSecurityAuditEvents'
-      'SynapseLinkEvent'
+    diagnosticSettings: [
+      {
+        name: 'customSetting'
+        logCategoriesAndGroups: [
+          {
+            category: 'SynapseRbacOperations'
+          }
+          {
+            category: 'SynapseLinkEvent'
+          }
+        ]
+        eventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
+        eventHubAuthorizationRuleResourceId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
+        storageAccountResourceId: diagnosticDependencies.outputs.storageAccountResourceId
+        workspaceResourceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
+      }
     ]
     enableDefaultTelemetry: enableDefaultTelemetry
   }

@@ -19,32 +19,90 @@ This module deploys a Storage Account Local User, which is used for SFTP authent
 
 **Required parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `hasSshKey` | bool | Indicates whether SSH key exists. Set it to false to remove existing SSH key. |
-| `hasSshPassword` | bool | Indicates whether SSH password exists. Set it to false to remove existing SSH password. |
-| `name` | string | The name of the local user used for SFTP Authentication. |
-| `permissionScopes` | array | The permission scopes of the local user. |
+| [`hasSshKey`](#parameter-hassshkey) | bool | Indicates whether SSH key exists. Set it to false to remove existing SSH key. |
+| [`hasSshPassword`](#parameter-hassshpassword) | bool | Indicates whether SSH password exists. Set it to false to remove existing SSH password. |
+| [`name`](#parameter-name) | string | The name of the local user used for SFTP Authentication. |
+| [`permissionScopes`](#parameter-permissionscopes) | array | The permission scopes of the local user. |
 
 **Conditional parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `storageAccountName` | string | The name of the parent Storage Account. Required if the template is used in a standalone deployment. |
+| [`storageAccountName`](#parameter-storageaccountname) | string | The name of the parent Storage Account. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `hasSharedKey` | bool | `False` | Indicates whether shared key exists. Set it to false to remove existing shared key. |
-| `homeDirectory` | string | `''` | The local user home directory. |
-| `sshAuthorizedKeys` | array | `[]` | The local user SSH authorized keys for SFTP. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`hasSharedKey`](#parameter-hassharedkey) | bool | Indicates whether shared key exists. Set it to false to remove existing shared key. |
+| [`homeDirectory`](#parameter-homedirectory) | string | The local user home directory. |
+| [`sshAuthorizedKeys`](#parameter-sshauthorizedkeys) | array | The local user SSH authorized keys for SFTP. |
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `hasSharedKey`
+
+Indicates whether shared key exists. Set it to false to remove existing shared key.
+- Required: No
+- Type: bool
+- Default: `False`
+
+### Parameter: `hasSshKey`
+
+Indicates whether SSH key exists. Set it to false to remove existing SSH key.
+- Required: Yes
+- Type: bool
+
+### Parameter: `hasSshPassword`
+
+Indicates whether SSH password exists. Set it to false to remove existing SSH password.
+- Required: Yes
+- Type: bool
+
+### Parameter: `homeDirectory`
+
+The local user home directory.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `name`
+
+The name of the local user used for SFTP Authentication.
+- Required: Yes
+- Type: string
+
+### Parameter: `permissionScopes`
+
+The permission scopes of the local user.
+- Required: Yes
+- Type: array
+
+### Parameter: `sshAuthorizedKeys`
+
+The local user SSH authorized keys for SFTP.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `storageAccountName`
+
+The name of the parent Storage Account. Required if the template is used in a standalone deployment.
+- Required: Yes
+- Type: string
 
 
 ## Outputs
 
-| Output Name | Type | Description |
+| Output | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the deployed local user. |
 | `resourceGroupName` | string | The resource group of the deployed local user. |

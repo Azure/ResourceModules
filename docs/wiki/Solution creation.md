@@ -455,7 +455,7 @@ jobs:
     name: 'Deploy multi-repo solution'
     steps:
       - name: 'Checkout ResourceModules repo at the root location'
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: 'Azure/ResourceModules'
           fetch-depth: 0
@@ -466,7 +466,7 @@ jobs:
           variablesPath: ${{ env.variablesPath }}
 
       - name: 'Checkout MultiRepoTest repo in a nested MultiRepoTestParentFolder'
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: 'contoso/MultiRepoTest'
           fetch-depth: 0

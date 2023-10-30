@@ -19,70 +19,69 @@ This module deploys a Log Analytics Workspace Linked Service.
 
 **Required parameters**
 
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `name` | string |  | Name of the link. |
-| `resourceId` | string | `''` | The resource ID of the resource that will be linked to the workspace. This should be used for linking resources which require read access. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`name`](#parameter-name) | string | Name of the link. |
+| [`resourceId`](#parameter-resourceid) | string | The resource ID of the resource that will be linked to the workspace. This should be used for linking resources which require read access. |
 
 **Conditional parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `logAnalyticsWorkspaceName` | string | The name of the parent Log Analytics workspace. Required if the template is used in a standalone deployment. |
+| [`logAnalyticsWorkspaceName`](#parameter-loganalyticsworkspacename) | string | The name of the parent Log Analytics workspace. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `tags` | object | `{object}` | Tags to configure in the resource. |
-| `writeAccessResourceId` | string | `''` | The resource ID of the resource that will be linked to the workspace. This should be used for linking resources which require write access. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`tags`](#parameter-tags) | object | Tags to configure in the resource. |
+| [`writeAccessResourceId`](#parameter-writeaccessresourceid) | string | The resource ID of the resource that will be linked to the workspace. This should be used for linking resources which require write access. |
 
+### Parameter: `enableDefaultTelemetry`
 
-### Parameter Usage: `tags`
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
 
-Tag names and tag values can be provided as needed. A tag can be left without a value.
+### Parameter: `logAnalyticsWorkspaceName`
 
-<details>
+The name of the parent Log Analytics workspace. Required if the template is used in a standalone deployment.
+- Required: Yes
+- Type: string
 
-<summary>Parameter JSON format</summary>
+### Parameter: `name`
 
-```json
-"tags": {
-    "value": {
-        "Environment": "Non-Prod",
-        "Contact": "test.user@testcompany.com",
-        "PurchaseOrder": "1234",
-        "CostCenter": "7890",
-        "ServiceName": "DeploymentValidation",
-        "Role": "DeploymentValidation"
-    }
-}
-```
+Name of the link.
+- Required: Yes
+- Type: string
 
-</details>
+### Parameter: `resourceId`
 
-<details>
+The resource ID of the resource that will be linked to the workspace. This should be used for linking resources which require read access.
+- Required: No
+- Type: string
+- Default: `''`
 
-<summary>Bicep format</summary>
+### Parameter: `tags`
 
-```bicep
-tags: {
-    Environment: 'Non-Prod'
-    Contact: 'test.user@testcompany.com'
-    PurchaseOrder: '1234'
-    CostCenter: '7890'
-    ServiceName: 'DeploymentValidation'
-    Role: 'DeploymentValidation'
-}
-```
+Tags to configure in the resource.
+- Required: No
+- Type: object
+- Default: `{object}`
 
-</details>
-<p>
+### Parameter: `writeAccessResourceId`
+
+The resource ID of the resource that will be linked to the workspace. This should be used for linking resources which require write access.
+- Required: No
+- Type: string
+- Default: `''`
+
 
 ## Outputs
 
-| Output Name | Type | Description |
+| Output | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the deployed linked service. |
 | `resourceGroupName` | string | The resource group where the linked service is deployed. |

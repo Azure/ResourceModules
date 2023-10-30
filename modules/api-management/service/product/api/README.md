@@ -19,27 +19,52 @@ This module deploys an API Management Service Product API.
 
 **Required parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | Name of the product API. |
+| [`name`](#parameter-name) | string | Name of the product API. |
 
 **Conditional parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `apiManagementServiceName` | string | The name of the parent API Management service. Required if the template is used in a standalone deployment. |
-| `productName` | string | The name of the parent Product. Required if the template is used in a standalone deployment. |
+| [`apiManagementServiceName`](#parameter-apimanagementservicename) | string | The name of the parent API Management service. Required if the template is used in a standalone deployment. |
+| [`productName`](#parameter-productname) | string | The name of the parent Product. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+
+### Parameter: `apiManagementServiceName`
+
+The name of the parent API Management service. Required if the template is used in a standalone deployment.
+- Required: Yes
+- Type: string
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `name`
+
+Name of the product API.
+- Required: Yes
+- Type: string
+
+### Parameter: `productName`
+
+The name of the parent Product. Required if the template is used in a standalone deployment.
+- Required: Yes
+- Type: string
 
 
 ## Outputs
 
-| Output Name | Type | Description |
+| Output | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the product API. |
 | `resourceGroupName` | string | The resource group the product API was deployed into. |

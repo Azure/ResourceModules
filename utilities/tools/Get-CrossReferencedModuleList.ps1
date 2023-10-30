@@ -1,4 +1,5 @@
-﻿<#
+﻿#region helper functions
+<#
 .SYNOPSIS
 Find any nested dependency recursively
 
@@ -51,8 +52,11 @@ This includes local references, online/remote references & resource deployments
 .PARAMETER ModuleTemplateFilePath
 Mandatory. The path to the template to search the references for
 
+.PARAMETER TemplateMap
+Mandatory. The hashtable of templatePath-templateContent to search in
+
 .EXAMPLE
-Get-ReferenceObject -ModuleTemplateFilePath 'C:\dev\key-vault\vault\main.bicep'
+Get-ReferenceObject -ModuleTemplateFilePath 'C:\dev\key-vault\vault\main.bicep' -TemplateMap @{ 'C:\modules\key-vault\vault\main.bicep' = @{ '$schema' = '...'; parameters = @( ... ); resources = @{ ... } } }
 
 Search all references for module 'key-vault\vault'
 #>
@@ -61,12 +65,14 @@ function Get-ReferenceObject {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
-        [string] $ModuleTemplateFilePath
+        [string] $ModuleTemplateFilePath,
+
+        [Parameter(Mandatory = $true)]
+        [hashtable] $TemplateMap
     )
 
     . (Join-Path (Get-Item $PSScriptRoot).Parent 'pipelines' 'sharedScripts' 'Get-LocallyReferencedFileList.ps1')
-
-    $involvedFilePaths = Get-LocallyReferencedFileList -FilePath $ModuleTemplateFilePath
+    $involvedFilePaths = Get-LocallyReferencedFileList -FilePath $ModuleTemplateFilePath -TemplateMap $TemplateMap
 
     $resultSet = @{
         resourceReferences  = @()
@@ -82,8 +88,8 @@ function Get-ReferenceObject {
         }
     }
 
-    foreach ($involvedFilePath in $involvedFilePaths) {
-        $moduleContent = Get-Content -Path $involvedFilePath
+    foreach ($involvedFilePath in (@($ModuleTemplateFilePath) + @($involvedFilePaths))) {
+        $moduleContent = $TemplateMap[$involvedFilePath]
 
         $resultSet.resourceReferences += @() + $moduleContent | Where-Object { $_ -match "^resource .+ '(.+)' .+$" } | ForEach-Object { $matches[1] }
         $resultSet.remoteReferences += @() + $moduleContent | Where-Object { $_ -match "^module .+ '(.+:.+)' .+$" } | ForEach-Object { $matches[1] }
@@ -95,6 +101,8 @@ function Get-ReferenceObject {
         localPathReferences = $resultSet.localPathReferences | Sort-Object -Unique
     }
 }
+#endregion
+
 <#
 .SYNOPSIS
 Get a list of all resource/module references in a given module path
@@ -102,12 +110,10 @@ Get a list of all resource/module references in a given module path
 .DESCRIPTION
 As an output you will receive a hashtable that (for each provider namespace) lists the
 - Directly deployed resources (e.g. via "resource myDeployment 'Microsoft.(..)/(..)@(..)'")
-- Linked local module templates (e.g. via "module myDeployment '../../main.bicep'")
 - Linked remote module tempaltes (e.g. via "module rg 'br/modules:(..):(..)'")
 
 .PARAMETER Path
-Optional. The path to search in. Defaults to the 'modules' folder.
-Note, any local references will only be searched within this path too.
+Optional. The path to search in. Defaults to the 'res' folder.
 
 .EXAMPLE
 Get-CrossReferencedModuleList
@@ -118,9 +124,10 @@ Invoke the function with the default path. Returns an object such as:
         "localPathReferences": [
             recovery-service/vault/protection-container/protected-item
             network/public-ip-address
-            network/network-interface
         ],
-        "remoteReferences": null,
+        "remoteReferences": [
+            "avm-res-network-networkinterface"
+        ],
         "resourceReferences": [
             "Microsoft.Resources/deployments@2021-04-01",
             "Microsoft.Compute/availabilitySets@2021-07-01",
@@ -142,16 +149,23 @@ function Get-CrossReferencedModuleList {
     [CmdletBinding()]
     param (
         [Parameter()]
-        [string] $Path = (Join-Path (Split-Path (Split-Path $PSScriptRoot -Parent) -Parent) 'modules')
+        [string] $Path = (Join-Path (Get-Item $PSScriptRoot).Parent.Parent 'modules')
     )
 
-    $repoRoot = ($Path -split '[\/|\\]{1}modules[\/|\\]{1}')[0]
+    $repoRoot = ($Path -split '[\/|\\]{1}modules[\/|\\]?')[0]
     $resultSet = [ordered]@{}
 
-    $moduleTemplatePaths = (Get-ChildItem -Path $Path -Recurse -File -Filter 'main.bicep').FullName
+    # Collect data
+    $moduleTemplatePaths = (Get-ChildItem -Path $path -Recurse -File -Filter 'main.bicep').FullName
+    $templateMap = @{}
+    foreach ($moduleTemplatePath in $moduleTemplatePaths) {
+        $templateMap[$moduleTemplatePath] = Get-Content -Path $moduleTemplatePath
+    }
+
+    # Process data
     foreach ($moduleTemplatePath in $moduleTemplatePaths) {
 
-        $referenceObject = Get-ReferenceObject -ModuleTemplateFilePath $moduleTemplatePath
+        $referenceObject = Get-ReferenceObject -ModuleTemplateFilePath $moduleTemplatePath -TemplateMap $templateMap
 
         # Convert local absolute references to relative references
         $referenceObject.localPathReferences = $referenceObject.localPathReferences | ForEach-Object {

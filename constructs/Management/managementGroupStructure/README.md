@@ -68,42 +68,6 @@ Describes the Management groups to be created. Each management group is represen
 | `parentNotManagedInThisTemplate` | bool | `false` | | Optional. `true` if the parent management group is existing and defined elsewhere, `false` if the parent MG is also managed in this template. This parameter is used to define the deployment sequence |
 | `roleAssignments` | array | | | Optional. Array of role assignment objects |
 
-### Parameter Usage: `roleAssignments`
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"roleAssignments": [
-    {
-        "roleDefinitionIdOrName": "Desktop Virtualization User",
-        "principalIds": [
-            "12345678-1234-1234-1234-123456789012", // object 1
-            "78945612-1234-1234-1234-123456789012" // object 2
-        ]
-    },
-    {
-        "roleDefinitionIdOrName": "Reader",
-        "principalIds": [
-            "12345678-1234-1234-1234-123456789012", // object 1
-            "78945612-1234-1234-1234-123456789012" // object 2
-        ]
-    },
-    {
-        "roleDefinitionIdOrName": "/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11",
-        "principalIds": [
-            "12345678-1234-1234-1234-123456789012" // object 1
-        ]
-    }
-]
-```
-
-| Parameter Name | Type | Default Value | Possible values | Description |
-| :-             | :-   | :-            | :-              | :-          |
-| `roleDefinitionIdOrName` | string | | | Mandatory. The name or the ID of the role to assign to the management group |
-| `principalIds` | array | | | Mandatory. An array of principal IDs |
-
 ## Outputs
 
 | Output Name | Type | Description |

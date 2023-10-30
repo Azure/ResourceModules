@@ -1,73 +1,131 @@
 {
   "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+  "languageVersion": "2.0",
   "contentVersion": "1.0.0.0",
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.21.1.54444",
-      "templateHash": "9469136899800527049"
+      "version": "0.22.6.54827",
+      "templateHash": "18398206698301331030"
     },
     "name": "Diagnostic Settings (Activity Logs) for Azure Subscriptions",
     "description": "This module deploys a Subscription wide export of the Activity Log.",
     "owner": "Azure/module-maintainers"
   },
+  "definitions": {
+    "logCategoriesAndGroupsType": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "category": {
+            "type": "string",
+            "nullable": true,
+            "metadata": {
+              "description": "Optional. Name of a Diagnostic Log category for a resource type this setting is applied to. Set the specific logs to collect here."
+            }
+          },
+          "categoryGroup": {
+            "type": "string",
+            "nullable": true,
+            "metadata": {
+              "description": "Optional. Name of a Diagnostic Log category group for a resource type this setting is applied to. Set to 'AllLogs' to collect all logs."
+            }
+          }
+        }
+      },
+      "nullable": true,
+      "metadata": {
+        "description": "Optional. The name of logs that will be streamed. \"allLogs\" includes all possible logs for the resource. Set to '' to disable log collection."
+      }
+    },
+    "metricCategoriesType": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "category": {
+            "type": "string",
+            "metadata": {
+              "description": "Required. Name of a Diagnostic Metric category for a resource type this setting is applied to. Set to 'AllMetrics' to collect all metrics."
+            }
+          }
+        }
+      },
+      "nullable": true,
+      "metadata": {
+        "description": "Optional. The name of logs that will be streamed. \"allLogs\" includes all possible logs for the resource. Set to '' to disable log collection."
+      }
+    }
+  },
   "parameters": {
     "name": {
       "type": "string",
-      "defaultValue": "[format('{0}-ActivityLog', uniqueString(subscription().id))]",
+      "defaultValue": "[format('{0}-diagnosticSettings', uniqueString(subscription().id))]",
       "minLength": 1,
       "maxLength": 260,
       "metadata": {
-        "description": "Optional. Name of the ActivityLog diagnostic settings."
+        "description": "Optional. Name of the Diagnostic settings."
       }
     },
-    "diagnosticStorageAccountId": {
+    "storageAccountResourceId": {
       "type": "string",
-      "defaultValue": "",
+      "nullable": true,
       "metadata": {
         "description": "Optional. Resource ID of the diagnostic storage account."
       }
     },
-    "diagnosticWorkspaceId": {
+    "workspaceResourceId": {
       "type": "string",
-      "defaultValue": "",
+      "nullable": true,
       "metadata": {
         "description": "Optional. Resource ID of the diagnostic log analytics workspace."
       }
     },
-    "diagnosticEventHubAuthorizationRuleId": {
+    "eventHubAuthorizationRuleResourceId": {
       "type": "string",
-      "defaultValue": "",
+      "nullable": true,
       "metadata": {
         "description": "Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to."
       }
     },
-    "diagnosticEventHubName": {
+    "eventHubName": {
       "type": "string",
-      "defaultValue": "",
+      "nullable": true,
       "metadata": {
         "description": "Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category."
       }
     },
-    "diagnosticLogCategoriesToEnable": {
-      "type": "array",
-      "defaultValue": [
-        "allLogs"
-      ],
-      "allowedValues": [
-        "",
-        "allLogs",
-        "Administrative",
-        "Security",
-        "ServiceHealth",
-        "Alert",
-        "Recommendation",
-        "Policy",
-        "Autoscale",
-        "ResourceHealth"
-      ],
+    "logCategoriesAndGroups": {
+      "$ref": "#/definitions/logCategoriesAndGroupsType",
       "metadata": {
         "description": "Optional. The name of logs that will be streamed. \"allLogs\" includes all possible logs for the resource. Set to '' to disable log collection."
+      }
+    },
+    "metricCategories": {
+      "$ref": "#/definitions/metricCategoriesType",
+      "nullable": true,
+      "metadata": {
+        "description": "Optional. The name of logs that will be streamed. \"allLogs\" includes all possible logs for the resource. Set to '' to disable log collection."
+      }
+    },
+    "logAnalyticsDestinationType": {
+      "type": "string",
+      "defaultValue": "",
+      "allowedValues": [
+        "",
+        "Dedicated",
+        "AzureDiagnostics"
+      ],
+      "metadata": {
+        "description": "Optional. A string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destination type."
+      }
+    },
+    "marketplacePartnerResourceId": {
+      "type": "string",
+      "nullable": true,
+      "metadata": {
+        "description": "Optional. The full ARM resource ID of the Marketplace resource to which you would like to send Diagnostic Logs."
       }
     },
     "enableDefaultTelemetry": {
@@ -85,21 +143,8 @@
       }
     }
   },
-  "variables": {
-    "copy": [
-      {
-        "name": "diagnosticsLogsSpecified",
-        "count": "[length(filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', and(not(equals(lambdaVariables('item'), 'allLogs')), not(equals(lambdaVariables('item'), ''))))))]",
-        "input": {
-          "category": "[filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', and(not(equals(lambdaVariables('item'), 'allLogs')), not(equals(lambdaVariables('item'), '')))))[copyIndex('diagnosticsLogsSpecified')]]",
-          "enabled": true
-        }
-      }
-    ],
-    "diagnosticsLogs": "[if(contains(parameters('diagnosticLogCategoriesToEnable'), 'allLogs'), createArray(createObject('categoryGroup', 'allLogs', 'enabled', true())), if(contains(parameters('diagnosticLogCategoriesToEnable'), ''), createArray(), variables('diagnosticsLogsSpecified')))]"
-  },
-  "resources": [
-    {
+  "resources": {
+    "defaultTelemetry": {
       "condition": "[parameters('enableDefaultTelemetry')]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2021-04-01",
@@ -114,19 +159,22 @@
         }
       }
     },
-    {
+    "diagnosticSetting": {
       "type": "Microsoft.Insights/diagnosticSettings",
       "apiVersion": "2021-05-01-preview",
       "name": "[parameters('name')]",
       "properties": {
-        "storageAccountId": "[if(empty(parameters('diagnosticStorageAccountId')), null(), parameters('diagnosticStorageAccountId'))]",
-        "workspaceId": "[if(empty(parameters('diagnosticWorkspaceId')), null(), parameters('diagnosticWorkspaceId'))]",
-        "eventHubAuthorizationRuleId": "[if(empty(parameters('diagnosticEventHubAuthorizationRuleId')), null(), parameters('diagnosticEventHubAuthorizationRuleId'))]",
-        "eventHubName": "[if(empty(parameters('diagnosticEventHubName')), null(), parameters('diagnosticEventHubName'))]",
-        "logs": "[if(and(and(and(empty(parameters('diagnosticStorageAccountId')), empty(parameters('diagnosticWorkspaceId'))), empty(parameters('diagnosticEventHubAuthorizationRuleId'))), empty(parameters('diagnosticEventHubName'))), null(), variables('diagnosticsLogs'))]"
+        "storageAccountId": "[parameters('storageAccountResourceId')]",
+        "workspaceId": "[parameters('workspaceResourceId')]",
+        "eventHubAuthorizationRuleId": "[parameters('eventHubAuthorizationRuleResourceId')]",
+        "eventHubName": "[parameters('eventHubName')]",
+        "logAnalyticsDestinationType": "[if(not(empty(parameters('logAnalyticsDestinationType'))), parameters('logAnalyticsDestinationType'), null())]",
+        "marketplacePartnerId": "[parameters('marketplacePartnerResourceId')]",
+        "logs": "[coalesce(parameters('logCategoriesAndGroups'), createArray(createObject('categoryGroup', 'AllLogs', 'enabled', true())))]",
+        "metrics": "[coalesce(parameters('metricCategories'), createArray(createObject('category', 'AllMetrics', 'timeGrain', null(), 'enabled', true())))]"
       }
     }
-  ],
+  },
   "outputs": {
     "name": {
       "type": "string",

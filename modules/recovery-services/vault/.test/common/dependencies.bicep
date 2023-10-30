@@ -60,4 +60,4 @@ output managedIdentityPrincipalId string = managedIdentity.properties.principalI
 output managedIdentityResourceId string = managedIdentity.id
 
 @description('The resource ID of the created Private DNS Zone.')
-output privateDNSResourceId string = privateDNSZone.id
+output privateDNSZoneResourceId string = privateDNSZone.id

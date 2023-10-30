@@ -29,11 +29,11 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource managedInstance 'Microsoft.Sql/managedInstances@2022-02-01-preview' existing = {
+resource managedInstance 'Microsoft.Sql/managedInstances@2022-05-01-preview' existing = {
   name: managedInstanceName
 }
 
-resource administrator 'Microsoft.Sql/managedInstances/administrators@2022-02-01-preview' = {
+resource administrator 'Microsoft.Sql/managedInstances/administrators@2022-05-01-preview' = {
   name: 'ActiveDirectory'
   parent: managedInstance
   properties: {

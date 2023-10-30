@@ -1,11 +1,14 @@
 targetScope = 'subscription'
 
+metadata name = 'Using large parameter set'
+metadata description = 'This instance deploys the module with most of its features enabled.'
+
 // ========== //
 // Parameters //
 // ========== //
 @description('Optional. The name of the resource group to deploy for testing purposes.')
 @maxLength(90)
-param resourceGroupName string = 'ms.purview-${serviceShort}-rg'
+param resourceGroupName string = 'dep-${namePrefix}-purview-${serviceShort}-rg'
 
 @description('Optional. The location to deploy resources to.')
 param location string = 'eastus' // Only available in selected locations: eastus, eastus2, southcentralus, westcentralus, westus, westus2, westus3
@@ -74,26 +77,32 @@ module testDeployment '../../main.bicep' = {
     }
     managedResourceGroupName: '${namePrefix}${serviceShort}001-managed-rg'
     publicNetworkAccess: 'Disabled'
-    diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
-    diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
-    diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
-    diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
+    diagnosticSettings: [
+      {
+        name: 'customSetting'
+        metricCategories: [
+          {
+            category: 'AllMetrics'
+          }
+        ]
+        eventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
+        eventHubAuthorizationRuleResourceId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
+        storageAccountResourceId: diagnosticDependencies.outputs.storageAccountResourceId
+        workspaceResourceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
+      }
+    ]
     roleAssignments: [
       {
         roleDefinitionIdOrName: 'Reader'
-        principalIds: [
-          nestedDependencies.outputs.managedIdentityPrincipalId
-        ]
+        principalId: nestedDependencies.outputs.managedIdentityPrincipalId
         principalType: 'ServicePrincipal'
       }
     ]
     accountPrivateEndpoints: [
       {
-        privateDnsZoneGroup: {
-          privateDNSResourceIds: [
-            nestedDependencies.outputs.purviewAccountPrivateDNSResourceId
-          ]
-        }
+        privateDnsZoneResourceIds: [
+          nestedDependencies.outputs.purviewAccountPrivateDNSResourceId
+        ]
         service: 'account'
         subnetResourceId: nestedDependencies.outputs.subnetResourceId
         tags: {
@@ -105,11 +114,9 @@ module testDeployment '../../main.bicep' = {
     ]
     portalPrivateEndpoints: [
       {
-        privateDnsZoneGroup: {
-          privateDNSResourceIds: [
-            nestedDependencies.outputs.purviewPortalPrivateDNSResourceId
-          ]
-        }
+        privateDnsZoneResourceIds: [
+          nestedDependencies.outputs.purviewPortalPrivateDNSResourceId
+        ]
         service: 'portal'
         subnetResourceId: nestedDependencies.outputs.subnetResourceId
         tags: {
@@ -121,11 +128,9 @@ module testDeployment '../../main.bicep' = {
     ]
     storageBlobPrivateEndpoints: [
       {
-        privateDnsZoneGroup: {
-          privateDNSResourceIds: [
-            nestedDependencies.outputs.storageBlobPrivateDNSResourceId
-          ]
-        }
+        privateDnsZoneResourceIds: [
+          nestedDependencies.outputs.storageBlobPrivateDNSResourceId
+        ]
         service: 'blob'
         subnetResourceId: nestedDependencies.outputs.subnetResourceId
         tags: {
@@ -137,11 +142,9 @@ module testDeployment '../../main.bicep' = {
     ]
     storageQueuePrivateEndpoints: [
       {
-        privateDnsZoneGroup: {
-          privateDNSResourceIds: [
-            nestedDependencies.outputs.storageQueuePrivateDNSResourceId
-          ]
-        }
+        privateDnsZoneResourceIds: [
+          nestedDependencies.outputs.storageQueuePrivateDNSResourceId
+        ]
         service: 'queue'
         subnetResourceId: nestedDependencies.outputs.subnetResourceId
         tags: {
@@ -153,11 +156,9 @@ module testDeployment '../../main.bicep' = {
     ]
     eventHubPrivateEndpoints: [
       {
-        privateDnsZoneGroup: {
-          privateDNSResourceIds: [
-            nestedDependencies.outputs.eventHubPrivateDNSResourceId
-          ]
-        }
+        privateDnsZoneResourceIds: [
+          nestedDependencies.outputs.eventHubPrivateDNSResourceId
+        ]
         service: 'namespace'
         subnetResourceId: nestedDependencies.outputs.subnetResourceId
         tags: {
@@ -168,8 +169,9 @@ module testDeployment '../../main.bicep' = {
       }
     ]
     enableDefaultTelemetry: enableDefaultTelemetry
-    diagnosticLogCategoriesToEnable: [ 'allLogs' ]
-    diagnosticMetricsToEnable: [ 'AllMetrics' ]
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
   }
 }

@@ -62,7 +62,7 @@ resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-
 output subnetResourceId string = virtualNetwork.properties.subnets[0].id
 
 @description('The resource ID of the created Private DNS Zone.')
-output privateDNSResourceId string = privateDNSZone.id
+output privateDNSZoneResourceId string = privateDNSZone.id
 
 @description('The name of the created Managed Identity.')
 output managedIdentityName string = managedIdentity.name

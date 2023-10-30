@@ -8,6 +8,7 @@ This module deploys a DocumentDB Database Accounts Gremlin Database Graph.
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
+- [Notes](#Notes)
 
 ## Resource Types
 
@@ -19,67 +20,86 @@ This module deploys a DocumentDB Database Accounts Gremlin Database Graph.
 
 **Required parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | Name of the graph. |
+| [`name`](#parameter-name) | string | Name of the graph. |
 
 **Conditional parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `databaseAccountName` | string | The name of the parent Database Account. Required if the template is used in a standalone deployment. |
-| `gremlinDatabaseName` | string | The name of the parent Gremlin Database. Required if the template is used in a standalone deployment. |
+| [`databaseAccountName`](#parameter-databaseaccountname) | string | The name of the parent Database Account. Required if the template is used in a standalone deployment. |
+| [`gremlinDatabaseName`](#parameter-gremlindatabasename) | string | The name of the parent Gremlin Database. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `indexingPolicy` | object | `{object}` | Indexing policy of the graph. |
-| `partitionKeyPaths` | array | `[]` | List of paths using which data within the container can be partitioned. |
-| `tags` | object | `{object}` | Tags of the Gremlin graph resource. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`indexingPolicy`](#parameter-indexingpolicy) | object | Indexing policy of the graph. |
+| [`partitionKeyPaths`](#parameter-partitionkeypaths) | array | List of paths using which data within the container can be partitioned. |
+| [`tags`](#parameter-tags) | object | Tags of the Gremlin graph resource. |
+
+### Parameter: `databaseAccountName`
+
+The name of the parent Database Account. Required if the template is used in a standalone deployment.
+- Required: Yes
+- Type: string
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `gremlinDatabaseName`
+
+The name of the parent Gremlin Database. Required if the template is used in a standalone deployment.
+- Required: Yes
+- Type: string
+
+### Parameter: `indexingPolicy`
+
+Indexing policy of the graph.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `name`
+
+Name of the graph.
+- Required: Yes
+- Type: string
+
+### Parameter: `partitionKeyPaths`
+
+List of paths using which data within the container can be partitioned.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `tags`
+
+Tags of the Gremlin graph resource.
+- Required: No
+- Type: object
+- Default: `{object}`
 
 
-### Parameter Usage: `tags`
+## Outputs
 
-Tag names and tag values can be provided as needed. A tag can be left without a value.
+| Output | Type | Description |
+| :-- | :-- | :-- |
+| `name` | string | The name of the graph. |
+| `resourceGroupName` | string | The name of the resource group the graph was created in. |
+| `resourceId` | string | The resource ID of the graph. |
 
-<details>
+## Cross-referenced modules
 
-<summary>Parameter JSON format</summary>
+_None_
 
-```json
-"tags": {
-    "value": {
-        "Environment": "Non-Prod",
-        "Contact": "test.user@testcompany.com",
-        "PurchaseOrder": "1234",
-        "CostCenter": "7890",
-        "ServiceName": "DeploymentValidation",
-        "Role": "DeploymentValidation"
-    }
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-tags: {
-    Environment: 'Non-Prod'
-    Contact: 'test.user@testcompany.com'
-    PurchaseOrder: '1234'
-    CostCenter: '7890'
-    ServiceName: 'DeploymentValidation'
-    Role: 'DeploymentValidation'
-}
-```
-
-</details>
-<p>
+## Notes
 
 ### Parameter Usage: `partitionKeyPaths`, `uniqueKeyPaths`
 
@@ -111,15 +131,3 @@ graphs: [
 
 </details>
 <p>
-
-## Outputs
-
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `name` | string | The name of the graph. |
-| `resourceGroupName` | string | The name of the resource group the graph was created in. |
-| `resourceId` | string | The resource ID of the graph. |
-
-## Cross-referenced modules
-
-_None_

@@ -1,12 +1,15 @@
 targetScope = 'subscription'
 
+metadata name = 'Using large parameter set'
+metadata description = 'This instance deploys the module with most of its features enabled.'
+
 // ========== //
 // Parameters //
 // ========== //
 
 @description('Optional. The name of the resource group to deploy for testing purposes.')
 @maxLength(90)
-param resourceGroupName string = 'ms.insights.activityLogAlerts-${serviceShort}-rg'
+param resourceGroupName string = 'dep-${namePrefix}-insights.activityLogAlerts-${serviceShort}-rg'
 
 @description('Optional. The location to deploy resources to.')
 param location string = deployment().location
@@ -50,19 +53,36 @@ module testDeployment '../../main.bicep' = {
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '${namePrefix}${serviceShort}001'
-
     conditions: [
       {
-        equals: 'Administrative'
         field: 'category'
+        equals: 'ServiceHealth'
       }
       {
-        equals: 'microsoft.compute/virtualmachines'
-        field: 'resourceType'
+        anyOf: [
+          {
+            field: 'properties.incidentType'
+            equals: 'Incident'
+          }
+          {
+            field: 'properties.incidentType'
+            equals: 'Maintenance'
+          }
+        ]
       }
       {
-        equals: 'Microsoft.Compute/virtualMachines/performMaintenance/action'
-        field: 'operationName'
+        field: 'properties.impactedServices[*].ServiceName'
+        containsAny: [
+          'Action Groups'
+          'Activity Logs & Alerts'
+        ]
+      }
+      {
+        field: 'properties.impactedServices[*].ImpactedRegions[*].RegionName'
+        containsAny: [
+          'West Europe'
+          'Global'
+        ]
       }
     ]
     actions: [
@@ -73,9 +93,7 @@ module testDeployment '../../main.bicep' = {
     roleAssignments: [
       {
         roleDefinitionIdOrName: 'Reader'
-        principalIds: [
-          nestedDependencies.outputs.managedIdentityPrincipalId
-        ]
+        principalId: nestedDependencies.outputs.managedIdentityPrincipalId
         principalType: 'ServicePrincipal'
       }
     ]

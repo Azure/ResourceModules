@@ -4,14 +4,13 @@ This module deploys an Azure Firewall.
 
 ## Navigation
 
-- [Resource types](#Resource-types)
+- [Resource Types](#Resource-Types)
+- [Usage examples](#Usage-examples)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Considerations](#Considerations)
 - [Cross-referenced modules](#Cross-referenced-modules)
-- [Deployment examples](#Deployment-examples)
 
-## Resource types
+## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
@@ -21,315 +20,29 @@ This module deploys an Azure Firewall.
 | `Microsoft.Network/azureFirewalls` | [2023-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-04-01/azureFirewalls) |
 | `Microsoft.Network/publicIPAddresses` | [2023-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-04-01/publicIPAddresses) |
 
-## Parameters
+## Usage examples
 
-**Required parameters**
+The following section provides usage examples for the module, which were used to validate and deploy the module successfully. For a full reference, please review the module's test folder in its repository.
 
-| Parameter Name | Type | Description |
-| :-- | :-- | :-- |
-| `name` | string | Name of the Azure Firewall. |
+>**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-**Conditional parameters**
+>**Note**: To reference the module, please use the following syntax `br:bicep/modules/network.azure-firewall:1.0.0`.
 
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `hubIPAddresses` | object | `{object}` | IP addresses associated with AzureFirewall. Required if `virtualHubId` is supplied. |
-| `virtualHubId` | string | `''` | The virtualHub resource ID to which the firewall belongs. Required if `vNetId` is empty. |
-| `vNetId` | string | `''` | Shared services Virtual Network resource ID. The virtual network ID containing AzureFirewallSubnet. If a Public IP is not provided, then the Public IP that is created as part of this module will be applied with the subnet provided in this variable. Required if `virtualHubId` is empty. |
+- [Addpip](#example-1-addpip)
+- [Using large parameter set](#example-2-using-large-parameter-set)
+- [Custompip](#example-3-custompip)
+- [Hubcommon](#example-4-hubcommon)
+- [Hubmin](#example-5-hubmin)
+- [Using only defaults](#example-6-using-only-defaults)
 
-**Optional parameters**
-
-| Parameter Name | Type | Default Value | Allowed Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `additionalPublicIpConfigurations` | array | `[]` |  | This is to add any additional Public IP configurations on top of the Public IP with subnet IP configuration. |
-| `applicationRuleCollections` | array | `[]` |  | Collection of application rule collections used by Azure Firewall. |
-| `azureSkuTier` | string | `'Standard'` | `[Basic, Premium, Standard]` | Tier of an Azure Firewall. |
-| `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
-| `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
-| `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `['', allLogs, AzureFirewallApplicationRule, AzureFirewallDnsProxy, AzureFirewallNetworkRule]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
-| `diagnosticMetricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | The name of metrics that will be streamed. |
-| `diagnosticSettingsName` | string | `''` |  | The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings". |
-| `diagnosticStorageAccountId` | string | `''` |  | Diagnostic Storage Account resource identifier. |
-| `diagnosticWorkspaceId` | string | `''` |  | Log Analytics workspace resource identifier. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `firewallPolicyId` | string | `''` |  | Resource ID of the Firewall Policy that should be attached. |
-| `isCreateDefaultPublicIP` | bool | `True` |  | Specifies if a Public IP should be created by default if one is not provided. |
-| `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
-| `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
-| `managementIPAddressObject` | object | `{object}` |  | Specifies the properties of the Management Public IP to create and be used by Azure Firewall. If it's not provided and managementIPResourceID is empty, a '-mip' suffix will be appended to the Firewall's name. |
-| `managementIPResourceID` | string | `''` |  | The Management Public IP resource ID to associate to the AzureFirewallManagementSubnet. If empty, then the Management Public IP that is created as part of this module will be applied to the AzureFirewallManagementSubnet. |
-| `natRuleCollections` | array | `[]` |  | Collection of NAT rule collections used by Azure Firewall. |
-| `networkRuleCollections` | array | `[]` |  | Collection of network rule collections used by Azure Firewall. |
-| `publicIPAddressObject` | object | `{object}` |  | Specifies the properties of the Public IP to create and be used by Azure Firewall. If it's not provided and publicIPResourceID is empty, a '-pip' suffix will be appended to the Firewall's name. |
-| `publicIPResourceID` | string | `''` |  | The Public IP resource ID to associate to the AzureFirewallSubnet. If empty, then the Public IP that is created as part of this module will be applied to the AzureFirewallSubnet. |
-| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| `tags` | object | `{object}` |  | Tags of the Azure Firewall resource. |
-| `threatIntelMode` | string | `'Deny'` | `[Alert, Deny, Off]` | The operation mode for Threat Intel. |
-| `zones` | array | `[1, 2, 3]` |  | Zone numbers e.g. 1,2,3. |
-
-
-### Parameter Usage: `additionalPublicIpConfigurations`
-
-Create additional public ip configurations from existing public ips
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"additionalPublicIpConfigurations": {
-    "value": [
-        {
-            "name": "ipConfig01",
-            "publicIPAddressResourceId": "/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-[[namePrefix]]-az-pip-x-fw-01"
-        },
-        {
-            "name": "ipConfig02",
-            "publicIPAddressResourceId": "/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-[[namePrefix]]-az-pip-x-fw-02"
-        }
-    ]
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-additionalPublicIpConfigurations: [
-    {
-        name: 'ipConfig01'
-        publicIPAddressResourceId: '/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-[[namePrefix]]-az-pip-x-fw-01'
-    }
-    {
-        name: 'ipConfig02'
-        publicIPAddressResourceId: '/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-[[namePrefix]]-az-pip-x-fw-02'
-    }
-]
-```
-
-</details>
-
-
-### Parameter Usage: `publicIPAddressObject`
-
-The Public IP Address object to create as part of the module. This will be created if `isCreateDefaultPublicIP` is true (which it is by default). If not provided, the name and other configurations will be set by default.
-
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"publicIPAddressObject": {
-    "value": {
-        "name": "adp-[[namePrefix]]-az-pip-custom-x-fw",
-        "publicIPPrefixResourceId": "",
-        "publicIPAllocationMethod": "Static",
-        "skuName": "Standard",
-        "skuTier": "Regional",
-        "roleAssignments": [
-            {
-                "roleDefinitionIdOrName": "Reader",
-                "principalIds": [
-                    "<principalId>"
-                ]
-            }
-        ],
-        "diagnosticMetricsToEnable": [
-            "AllMetrics"
-        ],
-        "diagnosticLogCategoriesToEnable": [
-            "DDoSProtectionNotifications",
-            "DDoSMitigationFlowLogs",
-            "DDoSMitigationReports"
-        ]
-    }
-}
-```
-
-</details>
-
-
-
-<details>
-
-<summary>Bicep format</summary>
-
-
-```bicep
-publicIPAddressObject: {
-    name: 'mypip'
-    publicIPPrefixResourceId: '/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPPrefixes/myprefix'
-    publicIPAllocationMethod: 'Dynamic'
-    skuName: 'Basic'
-    skuTier: 'Regional'
-    roleAssignments: [
-        {
-            roleDefinitionIdOrName: 'Reader'
-            principalIds: [
-                '<principalId>'
-            ]
-        }
-    ]
-    diagnosticMetricsToEnable: [
-        'AllMetrics'
-    ]
-    diagnosticLogCategoriesToEnable: [
-        'DDoSProtectionNotifications'
-        'DDoSMitigationFlowLogs'
-        'DDoSMitigationReports'
-    ]
-}
-```
-
-</details>
-
-
-### Parameter Usage: `roleAssignments`
-
-Create a role assignment for the given resource. If you want to assign a service principal / managed identity that is created in the same deployment, make sure to also specify the `'principalType'` parameter and set it to `'ServicePrincipal'`. This will ensure the role assignment waits for the principal's propagation in Azure.
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"roleAssignments": {
-    "value": [
-        {
-            "roleDefinitionIdOrName": "Reader",
-            "description": "Reader Role Assignment",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012", // object 1
-                "78945612-1234-1234-1234-123456789012" // object 2
-            ]
-        },
-        {
-            "roleDefinitionIdOrName": "/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012" // object 1
-            ],
-            "principalType": "ServicePrincipal"
-        }
-    ]
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-roleAssignments: [
-    {
-        roleDefinitionIdOrName: 'Reader'
-        description: 'Reader Role Assignment'
-        principalIds: [
-            '12345678-1234-1234-1234-123456789012' // object 1
-            '78945612-1234-1234-1234-123456789012' // object 2
-        ]
-    }
-    {
-        roleDefinitionIdOrName: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'
-        principalIds: [
-            '12345678-1234-1234-1234-123456789012' // object 1
-        ]
-        principalType: 'ServicePrincipal'
-    }
-]
-```
-
-</details>
-<p>
-
-### Parameter Usage: `tags`
-
-Tag names and tag values can be provided as needed. A tag can be left without a value.
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"tags": {
-    "value": {
-        "Environment": "Non-Prod",
-        "Contact": "test.user@testcompany.com",
-        "PurchaseOrder": "1234",
-        "CostCenter": "7890",
-        "ServiceName": "DeploymentValidation",
-        "Role": "DeploymentValidation"
-    }
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-tags: {
-    Environment: 'Non-Prod'
-    Contact: 'test.user@testcompany.com'
-    PurchaseOrder: '1234'
-    CostCenter: '7890'
-    ServiceName: 'DeploymentValidation'
-    Role: 'DeploymentValidation'
-}
-```
-
-</details>
-<p>
-
-## Outputs
-
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `applicationRuleCollections` | array | List of Application Rule Collections. |
-| `ipConfAzureFirewallSubnet` | object | The Public IP configuration object for the Azure Firewall Subnet. |
-| `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of the Azure Firewall. |
-| `natRuleCollections` | array | Collection of NAT rule collections used by Azure Firewall. |
-| `networkRuleCollections` | array | List of Network Rule Collections. |
-| `privateIp` | string | The private IP of the Azure firewall. |
-| `resourceGroupName` | string | The resource group the Azure firewall was deployed into. |
-| `resourceId` | string | The resource ID of the Azure Firewall. |
-
-## Considerations
-
-The `applicationRuleCollections` parameter accepts a JSON Array of AzureFirewallApplicationRule objects.
-The `networkRuleCollections` parameter accepts a JSON Array of AzureFirewallNetworkRuleCollection objects.
-
-## Cross-referenced modules
-
-This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
-
-| Reference | Type |
-| :-- | :-- |
-| `network/public-ip-address` | Local reference |
-
-## Deployment examples
-
-The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
-   >**Note**: The name of each example is based on the name of the file from which it is taken.
-
-   >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
-
-<h3>Example 1: Addpip</h3>
+### Example 1: _Addpip_
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module azureFirewall './network/azure-firewall/main.bicep' = {
+module azureFirewall 'br:bicep/modules/network.azure-firewall:1.0.0' = {
   name: '${uniqueString(deployment().name, location)}-test-nafaddpip'
   params: {
     // Required parameters
@@ -347,9 +60,7 @@ module azureFirewall './network/azure-firewall/main.bicep' = {
       publicIPAllocationMethod: 'Static'
       roleAssignments: [
         {
-          principalIds: [
-            '<managedIdentityPrincipalId>'
-          ]
+          principalId: '<principalId>'
           principalType: 'ServicePrincipal'
           roleDefinitionIdOrName: 'Reader'
         }
@@ -401,9 +112,7 @@ module azureFirewall './network/azure-firewall/main.bicep' = {
         "publicIPAllocationMethod": "Static",
         "roleAssignments": [
           {
-            "principalIds": [
-              "<managedIdentityPrincipalId>"
-            ],
+            "principalId": "<principalId>",
             "principalType": "ServicePrincipal",
             "roleDefinitionIdOrName": "Reader"
           }
@@ -427,14 +136,17 @@ module azureFirewall './network/azure-firewall/main.bicep' = {
 </details>
 <p>
 
-<h3>Example 2: Common</h3>
+### Example 2: _Using large parameter set_
+
+This instance deploys the module with most of its features enabled.
+
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module azureFirewall './network/azure-firewall/main.bicep' = {
+module azureFirewall 'br:bicep/modules/network.azure-firewall:1.0.0' = {
   name: '${uniqueString(deployment().name, location)}-test-nafcom'
   params: {
     // Required parameters
@@ -492,12 +204,25 @@ module azureFirewall './network/azure-firewall/main.bicep' = {
         }
       }
     ]
-    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-    diagnosticEventHubName: '<diagnosticEventHubName>'
-    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    diagnosticSettings: [
+      {
+        eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+        eventHubName: '<eventHubName>'
+        metricCategories: [
+          {
+            category: 'AllMetrics'
+          }
+        ]
+        name: 'customSetting'
+        storageAccountResourceId: '<storageAccountResourceId>'
+        workspaceResourceId: '<workspaceResourceId>'
+      }
+    ]
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    lock: 'CanNotDelete'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     networkRuleCollections: [
       {
         name: 'allow-network-rules'
@@ -530,9 +255,7 @@ module azureFirewall './network/azure-firewall/main.bicep' = {
     publicIPResourceID: '<publicIPResourceID>'
     roleAssignments: [
       {
-        principalIds: [
-          '<managedIdentityPrincipalId>'
-        ]
+        principalId: '<principalId>'
         principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
@@ -623,23 +346,30 @@ module azureFirewall './network/azure-firewall/main.bicep' = {
         }
       ]
     },
-    "diagnosticEventHubAuthorizationRuleId": {
-      "value": "<diagnosticEventHubAuthorizationRuleId>"
-    },
-    "diagnosticEventHubName": {
-      "value": "<diagnosticEventHubName>"
-    },
-    "diagnosticStorageAccountId": {
-      "value": "<diagnosticStorageAccountId>"
-    },
-    "diagnosticWorkspaceId": {
-      "value": "<diagnosticWorkspaceId>"
+    "diagnosticSettings": {
+      "value": [
+        {
+          "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+          "eventHubName": "<eventHubName>",
+          "metricCategories": [
+            {
+              "category": "AllMetrics"
+            }
+          ],
+          "name": "customSetting",
+          "storageAccountResourceId": "<storageAccountResourceId>",
+          "workspaceResourceId": "<workspaceResourceId>"
+        }
+      ]
     },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     },
     "lock": {
-      "value": "CanNotDelete"
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
     },
     "networkRuleCollections": {
       "value": [
@@ -678,9 +408,7 @@ module azureFirewall './network/azure-firewall/main.bicep' = {
     "roleAssignments": {
       "value": [
         {
-          "principalIds": [
-            "<managedIdentityPrincipalId>"
-          ],
+          "principalId": "<principalId>",
           "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
@@ -710,14 +438,14 @@ module azureFirewall './network/azure-firewall/main.bicep' = {
 </details>
 <p>
 
-<h3>Example 3: Custompip</h3>
+### Example 3: _Custompip_
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module azureFirewall './network/azure-firewall/main.bicep' = {
+module azureFirewall 'br:bicep/modules/network.azure-firewall:1.0.0' = {
   name: '${uniqueString(deployment().name, location)}-test-nafcstpip'
   params: {
     // Required parameters
@@ -725,22 +453,26 @@ module azureFirewall './network/azure-firewall/main.bicep' = {
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     publicIPAddressObject: {
-      diagnosticLogCategoriesToEnable: [
-        'DDoSMitigationFlowLogs'
-        'DDoSMitigationReports'
-        'DDoSProtectionNotifications'
-      ]
-      diagnosticMetricsToEnable: [
-        'AllMetrics'
+      diagnosticSettings: [
+        {
+          eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+          eventHubName: '<eventHubName>'
+          metricCategories: [
+            {
+              category: 'AllMetrics'
+            }
+          ]
+          name: 'customSetting'
+          storageAccountResourceId: '<storageAccountResourceId>'
+          workspaceResourceId: '<workspaceResourceId>'
+        }
       ]
       name: 'new-pip-nafcstpip'
       publicIPAllocationMethod: 'Static'
       publicIPPrefixResourceId: ''
       roleAssignments: [
         {
-          principalIds: [
-            '<managedIdentityPrincipalId>'
-          ]
+          principalId: '<principalId>'
           principalType: 'ServicePrincipal'
           roleDefinitionIdOrName: 'Reader'
         }
@@ -780,22 +512,26 @@ module azureFirewall './network/azure-firewall/main.bicep' = {
     },
     "publicIPAddressObject": {
       "value": {
-        "diagnosticLogCategoriesToEnable": [
-          "DDoSMitigationFlowLogs",
-          "DDoSMitigationReports",
-          "DDoSProtectionNotifications"
-        ],
-        "diagnosticMetricsToEnable": [
-          "AllMetrics"
+        "diagnosticSettings": [
+          {
+            "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+            "eventHubName": "<eventHubName>",
+            "metricCategories": [
+              {
+                "category": "AllMetrics"
+              }
+            ],
+            "name": "customSetting",
+            "storageAccountResourceId": "<storageAccountResourceId>",
+            "workspaceResourceId": "<workspaceResourceId>"
+          }
         ],
         "name": "new-pip-nafcstpip",
         "publicIPAllocationMethod": "Static",
         "publicIPPrefixResourceId": "",
         "roleAssignments": [
           {
-            "principalIds": [
-              "<managedIdentityPrincipalId>"
-            ],
+            "principalId": "<principalId>",
             "principalType": "ServicePrincipal",
             "roleDefinitionIdOrName": "Reader"
           }
@@ -821,14 +557,14 @@ module azureFirewall './network/azure-firewall/main.bicep' = {
 </details>
 <p>
 
-<h3>Example 4: Hubcommon</h3>
+### Example 4: _Hubcommon_
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module azureFirewall './network/azure-firewall/main.bicep' = {
+module azureFirewall 'br:bicep/modules/network.azure-firewall:1.0.0' = {
   name: '${uniqueString(deployment().name, location)}-test-nafhubcom'
   params: {
     // Required parameters
@@ -898,14 +634,14 @@ module azureFirewall './network/azure-firewall/main.bicep' = {
 </details>
 <p>
 
-<h3>Example 5: Hubmin</h3>
+### Example 5: _Hubmin_
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module azureFirewall './network/azure-firewall/main.bicep' = {
+module azureFirewall 'br:bicep/modules/network.azure-firewall:1.0.0' = {
   name: '${uniqueString(deployment().name, location)}-test-nafhubmin'
   params: {
     // Required parameters
@@ -959,14 +695,17 @@ module azureFirewall './network/azure-firewall/main.bicep' = {
 </details>
 <p>
 
-<h3>Example 6: Min</h3>
+### Example 6: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module azureFirewall './network/azure-firewall/main.bicep' = {
+module azureFirewall 'br:bicep/modules/network.azure-firewall:1.0.0' = {
   name: '${uniqueString(deployment().name, location)}-test-nafmin'
   params: {
     // Required parameters
@@ -1007,3 +746,418 @@ module azureFirewall './network/azure-firewall/main.bicep' = {
 
 </details>
 <p>
+
+
+## Parameters
+
+**Required parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`name`](#parameter-name) | string | Name of the Azure Firewall. |
+
+**Conditional parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`hubIPAddresses`](#parameter-hubipaddresses) | object | IP addresses associated with AzureFirewall. Required if `virtualHubId` is supplied. |
+| [`virtualHubId`](#parameter-virtualhubid) | string | The virtualHub resource ID to which the firewall belongs. Required if `vNetId` is empty. |
+| [`vNetId`](#parameter-vnetid) | string | Shared services Virtual Network resource ID. The virtual network ID containing AzureFirewallSubnet. If a Public IP is not provided, then the Public IP that is created as part of this module will be applied with the subnet provided in this variable. Required if `virtualHubId` is empty. |
+
+**Optional parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`additionalPublicIpConfigurations`](#parameter-additionalpublicipconfigurations) | array | This is to add any additional Public IP configurations on top of the Public IP with subnet IP configuration. |
+| [`applicationRuleCollections`](#parameter-applicationrulecollections) | array | Collection of application rule collections used by Azure Firewall. |
+| [`azureSkuTier`](#parameter-azureskutier) | string | Tier of an Azure Firewall. |
+| [`diagnosticSettings`](#parameter-diagnosticsettings) | array | The diagnostic settings of the service. |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`firewallPolicyId`](#parameter-firewallpolicyid) | string | Resource ID of the Firewall Policy that should be attached. |
+| [`isCreateDefaultPublicIP`](#parameter-iscreatedefaultpublicip) | bool | Specifies if a Public IP should be created by default if one is not provided. |
+| [`location`](#parameter-location) | string | Location for all resources. |
+| [`lock`](#parameter-lock) | object | The lock settings of the service. |
+| [`managementIPAddressObject`](#parameter-managementipaddressobject) | object | Specifies the properties of the Management Public IP to create and be used by Azure Firewall. If it's not provided and managementIPResourceID is empty, a '-mip' suffix will be appended to the Firewall's name. |
+| [`managementIPResourceID`](#parameter-managementipresourceid) | string | The Management Public IP resource ID to associate to the AzureFirewallManagementSubnet. If empty, then the Management Public IP that is created as part of this module will be applied to the AzureFirewallManagementSubnet. |
+| [`natRuleCollections`](#parameter-natrulecollections) | array | Collection of NAT rule collections used by Azure Firewall. |
+| [`networkRuleCollections`](#parameter-networkrulecollections) | array | Collection of network rule collections used by Azure Firewall. |
+| [`publicIPAddressObject`](#parameter-publicipaddressobject) | object | Specifies the properties of the Public IP to create and be used by Azure Firewall. If it's not provided and publicIPResourceID is empty, a '-pip' suffix will be appended to the Firewall's name. |
+| [`publicIPResourceID`](#parameter-publicipresourceid) | string | The Public IP resource ID to associate to the AzureFirewallSubnet. If empty, then the Public IP that is created as part of this module will be applied to the AzureFirewallSubnet. |
+| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| [`tags`](#parameter-tags) | object | Tags of the Azure Firewall resource. |
+| [`threatIntelMode`](#parameter-threatintelmode) | string | The operation mode for Threat Intel. |
+| [`zones`](#parameter-zones) | array | Zone numbers e.g. 1,2,3. |
+
+### Parameter: `additionalPublicIpConfigurations`
+
+This is to add any additional Public IP configurations on top of the Public IP with subnet IP configuration.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `applicationRuleCollections`
+
+Collection of application rule collections used by Azure Firewall.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `azureSkuTier`
+
+Tier of an Azure Firewall.
+- Required: No
+- Type: string
+- Default: `'Standard'`
+- Allowed: `[Basic, Premium, Standard]`
+
+### Parameter: `diagnosticSettings`
+
+The diagnostic settings of the service.
+- Required: No
+- Type: array
+
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`eventHubAuthorizationRuleResourceId`](#parameter-diagnosticsettingseventhubauthorizationruleresourceid) | No | string | Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
+| [`eventHubName`](#parameter-diagnosticsettingseventhubname) | No | string | Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
+| [`logAnalyticsDestinationType`](#parameter-diagnosticsettingsloganalyticsdestinationtype) | No | string | Optional. A string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destination type. |
+| [`logCategoriesAndGroups`](#parameter-diagnosticsettingslogcategoriesandgroups) | No | array | Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
+| [`marketplacePartnerResourceId`](#parameter-diagnosticsettingsmarketplacepartnerresourceid) | No | string | Optional. The full ARM resource ID of the Marketplace resource to which you would like to send Diagnostic Logs. |
+| [`metricCategories`](#parameter-diagnosticsettingsmetriccategories) | No | array | Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
+| [`name`](#parameter-diagnosticsettingsname) | No | string | Optional. The name of diagnostic setting. |
+| [`storageAccountResourceId`](#parameter-diagnosticsettingsstorageaccountresourceid) | No | string | Optional. Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
+| [`workspaceResourceId`](#parameter-diagnosticsettingsworkspaceresourceid) | No | string | Optional. Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
+
+### Parameter: `diagnosticSettings.eventHubAuthorizationRuleResourceId`
+
+Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.
+
+- Required: No
+- Type: string
+
+### Parameter: `diagnosticSettings.eventHubName`
+
+Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.
+
+- Required: No
+- Type: string
+
+### Parameter: `diagnosticSettings.logAnalyticsDestinationType`
+
+Optional. A string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destination type.
+
+- Required: No
+- Type: string
+- Allowed: `[AzureDiagnostics, Dedicated]`
+
+### Parameter: `diagnosticSettings.logCategoriesAndGroups`
+
+Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection.
+
+- Required: No
+- Type: array
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`category`](#parameter-diagnosticsettingslogcategoriesandgroupscategory) | No | string | Optional. Name of a Diagnostic Log category for a resource type this setting is applied to. Set the specific logs to collect here. |
+| [`categoryGroup`](#parameter-diagnosticsettingslogcategoriesandgroupscategorygroup) | No | string | Optional. Name of a Diagnostic Log category group for a resource type this setting is applied to. Set to 'AllLogs' to collect all logs. |
+
+### Parameter: `diagnosticSettings.logCategoriesAndGroups.category`
+
+Optional. Name of a Diagnostic Log category for a resource type this setting is applied to. Set the specific logs to collect here.
+
+- Required: No
+- Type: string
+
+### Parameter: `diagnosticSettings.logCategoriesAndGroups.categoryGroup`
+
+Optional. Name of a Diagnostic Log category group for a resource type this setting is applied to. Set to 'AllLogs' to collect all logs.
+
+- Required: No
+- Type: string
+
+
+### Parameter: `diagnosticSettings.marketplacePartnerResourceId`
+
+Optional. The full ARM resource ID of the Marketplace resource to which you would like to send Diagnostic Logs.
+
+- Required: No
+- Type: string
+
+### Parameter: `diagnosticSettings.metricCategories`
+
+Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection.
+
+- Required: No
+- Type: array
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`category`](#parameter-diagnosticsettingsmetriccategoriescategory) | Yes | string | Required. Name of a Diagnostic Metric category for a resource type this setting is applied to. Set to 'AllMetrics' to collect all metrics. |
+
+### Parameter: `diagnosticSettings.metricCategories.category`
+
+Required. Name of a Diagnostic Metric category for a resource type this setting is applied to. Set to 'AllMetrics' to collect all metrics.
+
+- Required: Yes
+- Type: string
+
+
+### Parameter: `diagnosticSettings.name`
+
+Optional. The name of diagnostic setting.
+
+- Required: No
+- Type: string
+
+### Parameter: `diagnosticSettings.storageAccountResourceId`
+
+Optional. Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.
+
+- Required: No
+- Type: string
+
+### Parameter: `diagnosticSettings.workspaceResourceId`
+
+Optional. Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.
+
+- Required: No
+- Type: string
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `firewallPolicyId`
+
+Resource ID of the Firewall Policy that should be attached.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `hubIPAddresses`
+
+IP addresses associated with AzureFirewall. Required if `virtualHubId` is supplied.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `isCreateDefaultPublicIP`
+
+Specifies if a Public IP should be created by default if one is not provided.
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `location`
+
+Location for all resources.
+- Required: No
+- Type: string
+- Default: `[resourceGroup().location]`
+
+### Parameter: `lock`
+
+The lock settings of the service.
+- Required: No
+- Type: object
+
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`kind`](#parameter-lockkind) | No | string | Optional. Specify the type of lock. |
+| [`name`](#parameter-lockname) | No | string | Optional. Specify the name of lock. |
+
+### Parameter: `lock.kind`
+
+Optional. Specify the type of lock.
+
+- Required: No
+- Type: string
+- Allowed: `[CanNotDelete, None, ReadOnly]`
+
+### Parameter: `lock.name`
+
+Optional. Specify the name of lock.
+
+- Required: No
+- Type: string
+
+### Parameter: `managementIPAddressObject`
+
+Specifies the properties of the Management Public IP to create and be used by Azure Firewall. If it's not provided and managementIPResourceID is empty, a '-mip' suffix will be appended to the Firewall's name.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `managementIPResourceID`
+
+The Management Public IP resource ID to associate to the AzureFirewallManagementSubnet. If empty, then the Management Public IP that is created as part of this module will be applied to the AzureFirewallManagementSubnet.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `name`
+
+Name of the Azure Firewall.
+- Required: Yes
+- Type: string
+
+### Parameter: `natRuleCollections`
+
+Collection of NAT rule collections used by Azure Firewall.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `networkRuleCollections`
+
+Collection of network rule collections used by Azure Firewall.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `publicIPAddressObject`
+
+Specifies the properties of the Public IP to create and be used by Azure Firewall. If it's not provided and publicIPResourceID is empty, a '-pip' suffix will be appended to the Firewall's name.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `publicIPResourceID`
+
+The Public IP resource ID to associate to the AzureFirewallSubnet. If empty, then the Public IP that is created as part of this module will be applied to the AzureFirewallSubnet.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `roleAssignments`
+
+Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
+- Required: No
+- Type: array
+
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`condition`](#parameter-roleassignmentscondition) | No | string | Optional. The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container" |
+| [`conditionVersion`](#parameter-roleassignmentsconditionversion) | No | string | Optional. Version of the condition. |
+| [`delegatedManagedIdentityResourceId`](#parameter-roleassignmentsdelegatedmanagedidentityresourceid) | No | string | Optional. The Resource Id of the delegated managed identity resource. |
+| [`description`](#parameter-roleassignmentsdescription) | No | string | Optional. The description of the role assignment. |
+| [`principalId`](#parameter-roleassignmentsprincipalid) | Yes | string | Required. The principal ID of the principal (user/group/identity) to assign the role to. |
+| [`principalType`](#parameter-roleassignmentsprincipaltype) | No | string | Optional. The principal type of the assigned principal ID. |
+| [`roleDefinitionIdOrName`](#parameter-roleassignmentsroledefinitionidorname) | Yes | string | Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead. |
+
+### Parameter: `roleAssignments.condition`
+
+Optional. The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container"
+
+- Required: No
+- Type: string
+
+### Parameter: `roleAssignments.conditionVersion`
+
+Optional. Version of the condition.
+
+- Required: No
+- Type: string
+- Allowed: `[2.0]`
+
+### Parameter: `roleAssignments.delegatedManagedIdentityResourceId`
+
+Optional. The Resource Id of the delegated managed identity resource.
+
+- Required: No
+- Type: string
+
+### Parameter: `roleAssignments.description`
+
+Optional. The description of the role assignment.
+
+- Required: No
+- Type: string
+
+### Parameter: `roleAssignments.principalId`
+
+Required. The principal ID of the principal (user/group/identity) to assign the role to.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `roleAssignments.principalType`
+
+Optional. The principal type of the assigned principal ID.
+
+- Required: No
+- Type: string
+- Allowed: `[Device, ForeignGroup, Group, ServicePrincipal, User]`
+
+### Parameter: `roleAssignments.roleDefinitionIdOrName`
+
+Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `tags`
+
+Tags of the Azure Firewall resource.
+- Required: No
+- Type: object
+- Default: `{object}`
+
+### Parameter: `threatIntelMode`
+
+The operation mode for Threat Intel.
+- Required: No
+- Type: string
+- Default: `'Deny'`
+- Allowed: `[Alert, Deny, Off]`
+
+### Parameter: `virtualHubId`
+
+The virtualHub resource ID to which the firewall belongs. Required if `vNetId` is empty.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `vNetId`
+
+Shared services Virtual Network resource ID. The virtual network ID containing AzureFirewallSubnet. If a Public IP is not provided, then the Public IP that is created as part of this module will be applied with the subnet provided in this variable. Required if `virtualHubId` is empty.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `zones`
+
+Zone numbers e.g. 1,2,3.
+- Required: No
+- Type: array
+- Default: `[1, 2, 3]`
+
+
+## Outputs
+
+| Output | Type | Description |
+| :-- | :-- | :-- |
+| `applicationRuleCollections` | array | List of Application Rule Collections. |
+| `ipConfAzureFirewallSubnet` | object | The Public IP configuration object for the Azure Firewall Subnet. |
+| `location` | string | The location the resource was deployed into. |
+| `name` | string | The name of the Azure Firewall. |
+| `natRuleCollections` | array | Collection of NAT rule collections used by Azure Firewall. |
+| `networkRuleCollections` | array | List of Network Rule Collections. |
+| `privateIp` | string | The private IP of the Azure firewall. |
+| `resourceGroupName` | string | The resource group the Azure firewall was deployed into. |
+| `resourceId` | string | The resource ID of the Azure Firewall. |
+
+## Cross-referenced modules
+
+This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
+
+| Reference | Type |
+| :-- | :-- |
+| `modules/network/public-ip-address` | Local reference |

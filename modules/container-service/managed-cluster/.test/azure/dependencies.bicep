@@ -22,6 +22,9 @@ param proximityPlacementGroupName string
 @description('Required. The name of the DNS Zone to create.')
 param dnsZoneName string
 
+@description('Required. The name of the log analytics workspace to create.')
+param logAnalyticsWorkspaceName string
+
 var addressPrefix = '10.1.0.0/22'
 
 resource virtualNetwork 'Microsoft.Network/virtualNetworks@2023-04-01' = {
@@ -44,6 +47,11 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2023-04-01' = {
 
 resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' = {
   name: managedIdentityName
+  location: location
+}
+
+resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2022-10-01' = {
+  name: logAnalyticsWorkspaceName
   location: location
 }
 
@@ -149,3 +157,6 @@ output proximityPlacementGroupResourceId string = proximityPlacementGroup.id
 
 @description('The resource ID of the created DNS Zone.')
 output dnsZoneResourceId string = dnsZone.id
+
+@description('The resource ID of the created Log Analytics Workspace.')
+output logAnalyticsWorkspaceResourceId string = logAnalyticsWorkspace.id

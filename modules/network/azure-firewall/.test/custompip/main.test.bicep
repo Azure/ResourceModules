@@ -6,7 +6,7 @@ targetScope = 'subscription'
 
 @description('Optional. The name of the resource group to deploy for testing purposes.')
 @maxLength(90)
-param resourceGroupName string = 'ms.network.azurefirewalls-${serviceShort}-rg'
+param resourceGroupName string = 'dep-${namePrefix}-network.azurefirewalls-${serviceShort}-rg'
 
 @description('Optional. The location to deploy resources to.')
 param location string = deployment().location
@@ -40,6 +40,20 @@ module nestedDependencies 'dependencies.bicep' = {
   }
 }
 
+// Diagnostics
+// ===========
+module diagnosticDependencies '../../../../.shared/.templates/diagnostic.dependencies.bicep' = {
+  scope: resourceGroup
+  name: '${uniqueString(deployment().name, location)}-diagnosticDependencies'
+  params: {
+    storageAccountName: 'dep${namePrefix}diasa${serviceShort}03'
+    logAnalyticsWorkspaceName: 'dep-${namePrefix}-law-${serviceShort}'
+    eventHubNamespaceEventHubName: 'dep-${namePrefix}-evh-${serviceShort}01'
+    eventHubNamespaceName: 'dep-${namePrefix}-evhns-${serviceShort}01'
+    location: location
+  }
+}
+
 // ============== //
 // Test Execution //
 // ============== //
@@ -52,28 +66,32 @@ module testDeployment '../../main.bicep' = {
     name: '${namePrefix}${serviceShort}001'
     vNetId: nestedDependencies.outputs.virtualNetworkResourceId
     publicIPAddressObject: {
-      diagnosticLogCategoriesToEnable: [
-        'DDoSMitigationFlowLogs'
-        'DDoSMitigationReports'
-        'DDoSProtectionNotifications'
-      ]
-      diagnosticMetricsToEnable: [
-        'AllMetrics'
-      ]
       name: 'new-${namePrefix}-pip-${serviceShort}'
       publicIPAllocationMethod: 'Static'
       publicIPPrefixResourceId: ''
       roleAssignments: [
         {
           roleDefinitionIdOrName: 'Reader'
-          principalIds: [
-            nestedDependencies.outputs.managedIdentityPrincipalId
-          ]
+          principalId: nestedDependencies.outputs.managedIdentityPrincipalId
           principalType: 'ServicePrincipal'
         }
       ]
       skuName: 'Standard'
       skuTier: 'Regional'
+      diagnosticSettings: [
+        {
+          name: 'customSetting'
+          metricCategories: [
+            {
+              category: 'AllMetrics'
+            }
+          ]
+          eventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
+          eventHubAuthorizationRuleResourceId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
+          storageAccountResourceId: diagnosticDependencies.outputs.storageAccountResourceId
+          workspaceResourceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
+        }
+      ]
     }
     tags: {
       'hidden-title': 'This is visible in the resource name'
