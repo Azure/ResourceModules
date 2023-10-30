@@ -14,6 +14,7 @@ resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-
 
 resource publicIpPrefix 'Microsoft.Network/publicIPPrefixes@2023-05-01' = {
     name: publicIPPrefixName
+    location: location
     properties: {
         prefixLength: 24
     }
