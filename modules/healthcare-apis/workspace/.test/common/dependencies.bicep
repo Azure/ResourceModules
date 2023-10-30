@@ -58,7 +58,6 @@ output managedIdentityPrincipalId string = managedIdentity.properties.principalI
 
 @description('The resource ID of the created Managed Identity.')
 output managedIdentityResourceId string = managedIdentity.id
-
 @description('The resource ID of the created Storage Account.')
 output storageAccountResourceId string = storageAccount.id
 

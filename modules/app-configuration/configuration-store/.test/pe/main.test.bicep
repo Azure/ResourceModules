@@ -59,7 +59,6 @@ module testDeployment '../../main.bicep' = {
           nestedDependencies.outputs.privateDNSZoneResourceId
 
         ]
-        service: 'configurationStores'
         subnetResourceId: nestedDependencies.outputs.subnetResourceId
         tags: {
           'hidden-title': 'This is visible in the resource name'

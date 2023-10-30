@@ -33,7 +33,7 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
-module resourceGroupResources 'dependencies.bicep' = {
+module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-paramNested'
   params: {
@@ -85,10 +85,20 @@ module testDeployment '../../main.bicep' = {
         corsMaxAge: 600
         corsAllowCredentials: false
         location: location
-        diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
-        diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
-        diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
-        diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
+        diagnosticSettings: [
+          {
+            name: 'customSetting'
+            metricCategories: [
+              {
+                category: 'AllMetrics'
+              }
+            ]
+            eventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
+            eventHubAuthorizationRuleResourceId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
+            storageAccountResourceId: diagnosticDependencies.outputs.storageAccountResourceId
+            workspaceResourceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
+          }
+        ]
         publicNetworkAccess: 'Enabled'
         resourceVersionPolicy: 'versioned'
         smartProxyEnabled: false
@@ -97,12 +107,12 @@ module testDeployment '../../main.bicep' = {
         importEnabled: false
         initialImportMode: false
         userAssignedIdentities: {
-          '${resourceGroupResources.outputs.managedIdentityResourceId}': {}
+          '${nestedDependencies.outputs.managedIdentityResourceId}': {}
         }
         roleAssignments: [
           {
             roleDefinitionIdOrName: resourceId('Microsoft.Authorization/roleDefinitions', '5a1fc7df-4bf1-4951-a576-89034ee01acd')
-            principalId: resourceGroupResources.outputs.managedIdentityPrincipalId
+            principalId: nestedDependencies.outputs.managedIdentityPrincipalId
             principalType: 'ServicePrincipal'
           }
         ]
@@ -118,16 +128,33 @@ module testDeployment '../../main.bicep' = {
         corsMaxAge: 600
         corsAllowCredentials: false
         location: location
-        diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
-        diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
-        diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
-        diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
+        diagnosticSettings: [
+          {
+            name: 'customSetting'
+            metricCategories: [
+              {
+                category: 'AllMetrics'
+              }
+            ]
+            eventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
+            eventHubAuthorizationRuleResourceId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
+            storageAccountResourceId: diagnosticDependencies.outputs.storageAccountResourceId
+            workspaceResourceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
+          }
+        ]
         publicNetworkAccess: 'Enabled'
         enableDefaultTelemetry: enableDefaultTelemetry
         systemAssignedIdentity: false
         userAssignedIdentities: {
-          '${resourceGroupResources.outputs.managedIdentityResourceId}': {}
+          '${nestedDependencies.outputs.managedIdentityResourceId}': {}
         }
+      }
+    ]
+    roleAssignments: [
+      {
+        roleDefinitionIdOrName: 'Reader'
+        principalId: nestedDependencies.outputs.managedIdentityPrincipalId
+        principalType: 'ServicePrincipal'
       }
     ]
     tags: {
