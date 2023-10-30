@@ -516,6 +516,7 @@ module flexibleServer 'br:bicep/modules/db-for-postgre-sql.flexible-server:1.0.0
 | :-- | :-- | :-- |
 | [`cMKKeyVaultResourceId`](#parameter-cmkkeyvaultresourceid) | string | The resource ID of a key vault to reference a customer managed key for encryption from. Required if 'cMKKeyName' is not empty. |
 | [`cMKUserAssignedIdentityResourceId`](#parameter-cmkuserassignedidentityresourceid) | string | User assigned identity to use when fetching the customer managed key. The identity should have key usage permissions on the Key Vault Key. Required if 'cMKKeyName' is not empty. |
+| [`managedIdentities`](#parameter-managedidentities) | object | The managed identity definition for this resource. User-assigned identity is required if 'cMKKeyName' is not empty. |
 | [`pointInTimeUTC`](#parameter-pointintimeutc) | string | Required if "createMode" is set to "PointInTimeRestore". |
 | [`sourceServerResourceId`](#parameter-sourceserverresourceid) | string | Required if "createMode" is set to "PointInTimeRestore". |
 
@@ -543,7 +544,6 @@ module flexibleServer 'br:bicep/modules/db-for-postgre-sql.flexible-server:1.0.0
 | [`location`](#parameter-location) | string | Location for all resources. |
 | [`lock`](#parameter-lock) | object | The lock settings of the service. |
 | [`maintenanceWindow`](#parameter-maintenancewindow) | object | Properties for the maintenence window. If provided, "customWindow" property must exist and set to "Enabled". |
-| [`managedIdentities`](#parameter-managedidentities) | object | The managed identity definition for this resource. |
 | [`passwordAuth`](#parameter-passwordauth) | string | If Enabled, password authentication is enabled. |
 | [`privateDnsZoneArmResourceId`](#parameter-privatednszonearmresourceid) | string | Private dns zone arm resource ID. Used when the desired connectivity mode is "Private Access" and required when "delegatedSubnetResourceId" is used. The Private DNS Zone must be lined to the Virtual Network referenced in "delegatedSubnetResourceId". |
 | [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
@@ -841,7 +841,7 @@ Properties for the maintenence window. If provided, "customWindow" property must
 
 ### Parameter: `managedIdentities`
 
-The managed identity definition for this resource.
+The managed identity definition for this resource. User-assigned identity is required if 'cMKKeyName' is not empty.
 - Required: No
 - Type: object
 

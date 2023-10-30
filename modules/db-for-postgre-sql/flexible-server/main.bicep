@@ -110,7 +110,7 @@ param highAvailability string = 'Disabled'
 @description('Optional. The mode to create a new PostgreSQL server.')
 param createMode string = 'Default'
 
-@description('Optional. The managed identity definition for this resource.')
+@description('Conditional. The managed identity definition for this resource. User-assigned identity is required if \'cMKKeyName\' is not empty.')
 param managedIdentities managedIdentitiesType
 
 @description('Conditional. The resource ID of a key vault to reference a customer managed key for encryption from. Required if \'cMKKeyName\' is not empty.')
