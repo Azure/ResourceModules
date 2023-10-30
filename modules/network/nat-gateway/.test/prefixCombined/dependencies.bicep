@@ -19,7 +19,7 @@ resource publicIpPrefix 'Microsoft.Network/publicIPPrefixes@2023-05-01' = {
         name: 'Standard'
     }
     properties: {
-        prefixLength: 30 // NAT GW supports a maximum of 16 addresses
+        prefixLength: 31 // NAT GW supports a maximum of 16 addresses
     }
 }
 
