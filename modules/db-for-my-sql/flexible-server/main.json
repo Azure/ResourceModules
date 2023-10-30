@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "17231556209785008735"
+      "templateHash": "14133623317305932968"
     },
     "name": "DBforMySQL Flexible Servers",
     "description": "This module deploys a DBforMySQL Flexible Server.",
@@ -340,7 +340,7 @@
     "managedIdentities": {
       "$ref": "#/definitions/managedIdentitiesType",
       "metadata": {
-        "description": "Optional. The managed identity definition for this resource."
+        "description": "Conditional. The managed identity definition for this resource. User-assigned identity is required if 'cMKKeyName' is not empty."
       }
     },
     "cMKKeyVaultResourceId": {
