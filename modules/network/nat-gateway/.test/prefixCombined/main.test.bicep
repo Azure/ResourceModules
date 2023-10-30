@@ -78,7 +78,7 @@ module testDeployment '../../main.bicep' = {
     publicIPPrefixObjects: [
       {
         name: '${namePrefix}${serviceShort}001-pippre'
-        prefixLength: 28
+        prefixLength: 30
         roleAssignments: [
           {
             roleDefinitionIdOrName: 'Reader'
