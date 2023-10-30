@@ -65,7 +65,7 @@ param geoRedundantBackup string = 'Disabled'
 @description('Optional. The mode to create a new MySQL server.')
 param createMode string = 'Default'
 
-@description('Conditional. The managed identity definition for this resource. User-assigned identity is required if \'cMKKeyName\' is not empty.')
+@description('Conditional. The managed identity definition for this resource. Required if \'cMKKeyName\' is not empty.')
 param managedIdentities managedIdentitiesType
 
 @description('Conditional. The resource ID of a key vault to reference a customer managed key for encryption from. Required if "cMKKeyName" is not empty.')
