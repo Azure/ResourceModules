@@ -46,7 +46,7 @@ resource tag 'Microsoft.Resources/tags@2021-04-01' = {
 output name string = tag.name
 
 @description('The applied tags.')
-output tags object = tag.properties.tags
+output tags object = newTags ?? {}
 
 @description('The resource ID of the applied tags.')
 output resourceId string = tag.id

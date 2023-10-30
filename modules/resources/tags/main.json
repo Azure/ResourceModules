@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "9318951826714751598"
+      "templateHash": "17437787787716832327"
     },
     "name": "Resources Tags",
     "description": "This module deploys a Resource Tag at a Subscription or Resource Group scope.",
@@ -108,7 +108,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.22.6.54827",
-              "templateHash": "2316568900469372949"
+              "templateHash": "6739306478169191405"
             },
             "name": "Resources Tags Subscription Scope",
             "description": "This module deploys a Resource Tag on a Subscription scope.",
@@ -228,7 +228,7 @@
               "metadata": {
                 "description": "The applied tags."
               },
-              "value": "[reference('tag').tags]"
+              "value": "[coalesce(if(parameters('onlyUpdate'), union(reference('readTags').outputs.existingTags.value, coalesce(parameters('tags'), createObject())), parameters('tags')), createObject())]"
             },
             "resourceId": {
               "type": "string",
