@@ -35,3 +35,6 @@ output managedIdentityResourceId string = managedIdentity.id
 
 @description('The resource ID of the created Managed Environment.')
 output managedEnvironmentResourceId string = managedEnvironment.id
+
+@description('The principal ID of the created Managed Identity.')
+output managedIdentityPrincipalId string = managedIdentity.properties.principalId
