@@ -19,7 +19,7 @@ resource publicIpPrefix 'Microsoft.Network/publicIPPrefixes@2023-05-01' = {
         name: 'Standard'
     }
     properties: {
-        prefixLength: 24
+        prefixLength: 28
     }
 }
 
