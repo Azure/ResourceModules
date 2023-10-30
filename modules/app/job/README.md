@@ -40,7 +40,7 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module job 'br:bicep/modules/app.job:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-mcajcom'
+  name: '${uniqueString(deployment().name, location)}-test-ajcom'
   params: {
     // Required parameters
     containers: [
@@ -71,7 +71,7 @@ module job 'br:bicep/modules/app.job:1.0.0' = {
       }
     ]
     environmentId: '<environmentId>'
-    name: 'mcajcom001'
+    name: 'ajcom001'
     triggerType: 'Manual'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
@@ -80,10 +80,23 @@ module job 'br:bicep/modules/app.job:1.0.0' = {
       kind: 'CanNotDelete'
       name: 'myCustomLockName'
     }
+    managedIdentities: {
+      systemAssigned: true
+      userAssignedResourcesIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
     manualTriggerConfig: {
       parallelism: 1
       replicaCompletionCount: 1
     }
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'ContainerApp Reader'
+      }
+    ]
     secrets: {
       secureList: [
         {
@@ -95,9 +108,6 @@ module job 'br:bicep/modules/app.job:1.0.0' = {
     tags: {
       Env: 'test'
       'hidden-title': 'This is visible in the resource name'
-    }
-    userAssignedIdentities: {
-      '<managedIdentityResourceId>': {}
     }
     workloadProfileName: '<workloadProfileName>'
   }
@@ -150,7 +160,7 @@ module job 'br:bicep/modules/app.job:1.0.0' = {
       "value": "<environmentId>"
     },
     "name": {
-      "value": "mcajcom001"
+      "value": "ajcom001"
     },
     "triggerType": {
       "value": "Manual"
@@ -168,11 +178,28 @@ module job 'br:bicep/modules/app.job:1.0.0' = {
         "name": "myCustomLockName"
       }
     },
+    "managedIdentities": {
+      "value": {
+        "systemAssigned": true,
+        "userAssignedResourcesIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
+    },
     "manualTriggerConfig": {
       "value": {
         "parallelism": 1,
         "replicaCompletionCount": 1
       }
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "ContainerApp Reader"
+        }
+      ]
     },
     "secrets": {
       "value": {
@@ -188,11 +215,6 @@ module job 'br:bicep/modules/app.job:1.0.0' = {
       "value": {
         "Env": "test",
         "hidden-title": "This is visible in the resource name"
-      }
-    },
-    "userAssignedIdentities": {
-      "value": {
-        "<managedIdentityResourceId>": {}
       }
     },
     "workloadProfileName": {
@@ -216,7 +238,7 @@ This instance deploys the module with the minimum set of required parameters.
 
 ```bicep
 module job 'br:bicep/modules/app.job:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-mcajmin'
+  name: '${uniqueString(deployment().name, location)}-test-ajmin'
   params: {
     // Required parameters
     containers: [
@@ -230,7 +252,7 @@ module job 'br:bicep/modules/app.job:1.0.0' = {
       }
     ]
     environmentId: '<environmentId>'
-    name: 'mcajmin001'
+    name: 'ajmin001'
     triggerType: 'Manual'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
@@ -276,7 +298,7 @@ module job 'br:bicep/modules/app.job:1.0.0' = {
       "value": "<environmentId>"
     },
     "name": {
-      "value": "mcajmin001"
+      "value": "ajmin001"
     },
     "triggerType": {
       "value": "Manual"
@@ -327,6 +349,7 @@ module job 'br:bicep/modules/app.job:1.0.0' = {
 | [`initContainersTemplate`](#parameter-initcontainerstemplate) | array | List of specialized containers that run before app containers. |
 | [`location`](#parameter-location) | string | Location for all Resources. |
 | [`lock`](#parameter-lock) | object | The lock settings of the service. |
+| [`managedIdentities`](#parameter-managedidentities) | object | The managed identity definition for this resource. |
 | [`manualTriggerConfig`](#parameter-manualtriggerconfig) | object | Required if TriggerType is Manual. Configuration of a manual job. |
 | [`registries`](#parameter-registries) | array | Collection of private container registry credentials for containers used by the Container app. |
 | [`replicaRetryLimit`](#parameter-replicaretrylimit) | int | The maximum number of times a replica can be retried. |
@@ -334,10 +357,8 @@ module job 'br:bicep/modules/app.job:1.0.0' = {
 | [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute. |
 | [`scheduleTriggerConfig`](#parameter-scheduletriggerconfig) | object | Required if TriggerType is Schedule. Configuration of a schedule based job. |
 | [`secrets`](#parameter-secrets) | secureObject | The secrets of the Container App. |
-| [`systemAssignedIdentity`](#parameter-systemassignedidentity) | bool | Enables system assigned managed identity on the resource. |
 | [`tags`](#parameter-tags) | object | Tags of the resource. |
 | [`triggerType`](#parameter-triggertype) | string | Trigger type of the job. |
-| [`userAssignedIdentities`](#parameter-userassignedidentities) | object | The set of user assigned identities associated with the resource, the userAssignedIdentities dictionary keys will be ARM resource IDs and The dictionary values can be empty objects ({}) in requests. |
 | [`volumes`](#parameter-volumes) | array | List of volume definitions for the Container App. |
 | [`workloadProfileName`](#parameter-workloadprofilename) | string | The name of the workload profile to use. |
 
@@ -407,6 +428,32 @@ Optional. Specify the name of lock.
 
 - Required: No
 - Type: string
+
+### Parameter: `managedIdentities`
+
+The managed identity definition for this resource.
+- Required: No
+- Type: object
+
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`systemAssigned`](#parameter-managedidentitiessystemassigned) | No | bool | Optional. Enables system assigned managed identity on the resource. |
+| [`userAssignedResourcesIds`](#parameter-managedidentitiesuserassignedresourcesids) | No | array | Optional. The resource ID(s) to assign to the resource. Required if a user assigned identity is used for encryption. |
+
+### Parameter: `managedIdentities.systemAssigned`
+
+Optional. Enables system assigned managed identity on the resource.
+
+- Required: No
+- Type: bool
+
+### Parameter: `managedIdentities.userAssignedResourcesIds`
+
+Optional. The resource ID(s) to assign to the resource. Required if a user assigned identity is used for encryption.
+
+- Required: No
+- Type: array
 
 ### Parameter: `manualTriggerConfig`
 
@@ -524,13 +571,6 @@ The secrets of the Container App.
 - Type: secureObject
 - Default: `{object}`
 
-### Parameter: `systemAssignedIdentity`
-
-Enables system assigned managed identity on the resource.
-- Required: No
-- Type: bool
-- Default: `False`
-
 ### Parameter: `tags`
 
 Tags of the resource.
@@ -544,13 +584,6 @@ Trigger type of the job.
 - Required: Yes
 - Type: string
 - Allowed: `[Event, Manual, Schedule]`
-
-### Parameter: `userAssignedIdentities`
-
-The set of user assigned identities associated with the resource, the userAssignedIdentities dictionary keys will be ARM resource IDs and The dictionary values can be empty objects ({}) in requests.
-- Required: No
-- Type: object
-- Default: `{object}`
 
 ### Parameter: `volumes`
 
@@ -575,6 +608,7 @@ The name of the workload profile to use.
 | `name` | string | The name of the Container App Job. |
 | `resourceGroupName` | string | The name of the resource group the Container App Job was deployed into. |
 | `resourceId` | string | The resource ID of the Container App Job. |
+| `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
 
 ## Cross-referenced modules
 
