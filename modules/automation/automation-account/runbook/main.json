@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "14499292691527442589"
+      "templateHash": "1833872657708381069"
     },
     "name": "Automation Account Runbooks",
     "description": "This module deploys an Azure Automation Account Runbook.",
@@ -59,11 +59,11 @@
         "description": "Optional. The version of the runbook content."
       }
     },
-    "scriptStorageAccountId": {
+    "scriptStorageAccountResourceId": {
       "type": "string",
-      "defaultValue": "",
+      "nullable": true,
       "metadata": {
-        "description": "Optional. ID of the runbook storage account."
+        "description": "Optional. Resource Id of the runbook storage account."
       }
     },
     "baseTime": {
@@ -133,13 +133,13 @@
       "name": "[parameters('automationAccountName')]"
     },
     "storageAccount": {
-      "condition": "[not(empty(parameters('scriptStorageAccountId')))]",
+      "condition": "[not(empty(parameters('scriptStorageAccountResourceId')))]",
       "existing": true,
       "type": "Microsoft.Storage/storageAccounts",
       "apiVersion": "2022-09-01",
-      "subscriptionId": "[split(if(not(empty(parameters('scriptStorageAccountId'))), parameters('scriptStorageAccountId'), '//'), '/')[2]]",
-      "resourceGroup": "[split(if(not(empty(parameters('scriptStorageAccountId'))), parameters('scriptStorageAccountId'), '////'), '/')[4]]",
-      "name": "[last(split(coalesce(parameters('scriptStorageAccountId'), 'dummyVault'), '/'))]"
+      "subscriptionId": "[split(coalesce(parameters('scriptStorageAccountResourceId'), '//'), '/')[2]]",
+      "resourceGroup": "[split(coalesce(parameters('scriptStorageAccountResourceId'), '////'), '/')[4]]",
+      "name": "[last(split(coalesce(parameters('scriptStorageAccountResourceId'), 'dummyVault'), '/'))]"
     },
     "runbook": {
       "type": "Microsoft.Automation/automationAccounts/runbooks",
@@ -150,7 +150,7 @@
       "properties": {
         "runbookType": "[parameters('type')]",
         "description": "[parameters('description')]",
-        "publishContentLink": "[if(not(empty(parameters('uri'))), if(empty(parameters('uri')), null(), createObject('uri', if(not(empty(parameters('uri'))), if(empty(parameters('scriptStorageAccountId')), parameters('uri'), format('{0}?{1}', parameters('uri'), listAccountSas(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', split(if(not(empty(parameters('scriptStorageAccountId'))), parameters('scriptStorageAccountId'), '//'), '/')[2], split(if(not(empty(parameters('scriptStorageAccountId'))), parameters('scriptStorageAccountId'), '////'), '/')[4]), 'Microsoft.Storage/storageAccounts', last(split(coalesce(parameters('scriptStorageAccountId'), 'dummyVault'), '/'))), '2021-04-01', variables('accountSasProperties')).accountSasToken)), null()), 'version', if(not(empty(parameters('version'))), parameters('version'), null()))), null())]"
+        "publishContentLink": "[if(not(empty(parameters('uri'))), if(empty(parameters('uri')), null(), createObject('uri', if(not(empty(parameters('uri'))), if(empty(parameters('scriptStorageAccountResourceId')), parameters('uri'), format('{0}?{1}', parameters('uri'), listAccountSas(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', split(coalesce(parameters('scriptStorageAccountResourceId'), '//'), '/')[2], split(coalesce(parameters('scriptStorageAccountResourceId'), '////'), '/')[4]), 'Microsoft.Storage/storageAccounts', last(split(coalesce(parameters('scriptStorageAccountResourceId'), 'dummyVault'), '/'))), '2021-04-01', variables('accountSasProperties')).accountSasToken)), null()), 'version', if(not(empty(parameters('version'))), parameters('version'), null()))), null())]"
       },
       "dependsOn": [
         "automationAccount",

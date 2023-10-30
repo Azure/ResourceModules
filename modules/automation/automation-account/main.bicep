@@ -191,6 +191,8 @@ module automationAccount_runbooks 'runbook/main.bicep' = [for (runbook, index) i
     description: contains(runbook, 'description') ? runbook.description : ''
     uri: contains(runbook, 'uri') ? runbook.uri : ''
     version: contains(runbook, 'version') ? runbook.version : ''
+    sasTokenValidityLength: runbook.?sasTokenValidityLength
+    scriptStorageAccountResourceId: runbook.?scriptStorageAccountResourceId
     location: location
     tags: runbook.?tags ?? tags
     enableDefaultTelemetry: enableReferencedModulesTelemetry
