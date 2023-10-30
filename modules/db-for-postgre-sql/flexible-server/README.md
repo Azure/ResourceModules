@@ -516,7 +516,7 @@ module flexibleServer 'br:bicep/modules/db-for-postgre-sql.flexible-server:1.0.0
 | :-- | :-- | :-- |
 | [`cMKKeyVaultResourceId`](#parameter-cmkkeyvaultresourceid) | string | The resource ID of a key vault to reference a customer managed key for encryption from. Required if 'cMKKeyName' is not empty. |
 | [`cMKUserAssignedIdentityResourceId`](#parameter-cmkuserassignedidentityresourceid) | string | User assigned identity to use when fetching the customer managed key. The identity should have key usage permissions on the Key Vault Key. Required if 'cMKKeyName' is not empty. |
-| [`managedIdentities`](#parameter-managedidentities) | object | The managed identity definition for this resource. User-assigned identity is required if 'cMKKeyName' is not empty. |
+| [`managedIdentities`](#parameter-managedidentities) | object | The managed identity definition for this resource. Required if 'cMKKeyName' is not empty. |
 | [`pointInTimeUTC`](#parameter-pointintimeutc) | string | Required if "createMode" is set to "PointInTimeRestore". |
 | [`sourceServerResourceId`](#parameter-sourceserverresourceid) | string | Required if "createMode" is set to "PointInTimeRestore". |
 
@@ -841,7 +841,7 @@ Properties for the maintenence window. If provided, "customWindow" property must
 
 ### Parameter: `managedIdentities`
 
-The managed identity definition for this resource. User-assigned identity is required if 'cMKKeyName' is not empty.
+The managed identity definition for this resource. Required if 'cMKKeyName' is not empty.
 - Required: No
 - Type: object
 
