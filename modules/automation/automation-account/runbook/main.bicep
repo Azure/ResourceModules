@@ -70,7 +70,7 @@ resource automationAccount 'Microsoft.Automation/automationAccounts@2022-08-08' 
 }
 
 resource storageAccount 'Microsoft.Storage/storageAccounts@2022-09-01' existing = if (!empty(scriptStorageAccountId)) {
-  name: last(split((!empty(scriptStorageAccountId) ? scriptStorageAccountId : '//'), '/'))!
+  name: last(split((scriptStorageAccountId ?? 'dummyVault'), '/'))
   scope: resourceGroup(split((!empty(scriptStorageAccountId) ? scriptStorageAccountId : '//'), '/')[2], split((!empty(scriptStorageAccountId) ? scriptStorageAccountId : '////'), '/')[4])
 }
 
