@@ -9,7 +9,7 @@ metadata description = 'This instance deploys the module with most of its featur
 
 @description('Optional. The name of the resource group to deploy for testing purposes.')
 @maxLength(90)
-param resourceGroupName string = 'ms.appconfiguration.configurationstores-${serviceShort}-rg'
+param resourceGroupName string = 'dep-${namePrefix}-appconfiguration.configurationstores-${serviceShort}-rg'
 
 @description('Optional. The location to deploy resources to.')
 param location string = deployment().location
@@ -67,10 +67,20 @@ module testDeployment '../../main.bicep' = {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '${namePrefix}${serviceShort}001'
     createMode: 'Default'
-    diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
-    diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
-    diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
-    diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
+    diagnosticSettings: [
+      {
+        name: 'customSetting'
+        metricCategories: [
+          {
+            category: 'AllMetrics'
+          }
+        ]
+        eventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
+        eventHubAuthorizationRuleResourceId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
+        storageAccountResourceId: diagnosticDependencies.outputs.storageAccountResourceId
+        workspaceResourceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
+      }
+    ]
     disableLocalAuth: false
     enablePurgeProtection: false
     keyValues: [
@@ -80,9 +90,7 @@ module testDeployment '../../main.bicep' = {
         roleAssignments: [
           {
             roleDefinitionIdOrName: 'Reader'
-            principalIds: [
-              nestedDependencies.outputs.managedIdentityPrincipalId
-            ]
+            principalId: nestedDependencies.outputs.managedIdentityPrincipalId
             principalType: 'ServicePrincipal'
           }
         ]
@@ -96,16 +104,16 @@ module testDeployment '../../main.bicep' = {
     roleAssignments: [
       {
         roleDefinitionIdOrName: 'Reader'
-        principalIds: [
-          nestedDependencies.outputs.managedIdentityPrincipalId
-        ]
+        principalId: nestedDependencies.outputs.managedIdentityPrincipalId
         principalType: 'ServicePrincipal'
       }
     ]
     softDeleteRetentionInDays: 1
-    systemAssignedIdentity: false
-    userAssignedIdentities: {
-      '${nestedDependencies.outputs.managedIdentityResourceId}': {}
+    managedIdentities: {
+      systemAssigned: true
+      userAssignedResourcesIds: [
+        nestedDependencies.outputs.managedIdentityResourceId
+      ]
     }
     tags: {
       'hidden-title': 'This is visible in the resource name'

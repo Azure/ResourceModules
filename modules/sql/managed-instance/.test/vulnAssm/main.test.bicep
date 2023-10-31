@@ -6,7 +6,7 @@ targetScope = 'subscription'
 
 @description('Optional. The name of the resource group to deploy for testing purposes.')
 @maxLength(90)
-param resourceGroupName string = 'ms.sql.managedinstances-${serviceShort}-rg'
+param resourceGroupName string = 'dep-${namePrefix}-sql.managedinstances-${serviceShort}-rg'
 
 @description('Optional. The location to deploy resources to.')
 param location string = deployment().location
@@ -60,7 +60,9 @@ module testDeployment '../../main.bicep' = {
     administratorLogin: 'adminUserName'
     administratorLoginPassword: password
     subnetId: nestedDependencies.outputs.subnetResourceId
-    systemAssignedIdentity: true
+    managedIdentities: {
+      systemAssigned: true
+    }
     securityAlertPoliciesObj: {
       emailAccountAdmins: true
       name: 'default'

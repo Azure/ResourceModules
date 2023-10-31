@@ -6,7 +6,7 @@ targetScope = 'subscription'
 
 @description('Optional. The name of the resource group to deploy for testing purposes.')
 @maxLength(90)
-param resourceGroupName string = 'ms.storage.storageaccounts-${serviceShort}-rg'
+param resourceGroupName string = 'dep-${namePrefix}-storage.storageaccounts-${serviceShort}-rg'
 
 @description('Optional. The location to deploy resources to.')
 param location string = deployment().location
@@ -93,9 +93,11 @@ module testDeployment '../../main.bicep' = {
       restorePolicyEnabled: true
       restorePolicyDays: 8
     }
-    systemAssignedIdentity: false
-    userAssignedIdentities: {
-      '${nestedDependencies.outputs.managedIdentityResourceId}': {}
+    managedIdentities: {
+      systemAssigned: false
+      userAssignedResourcesIds: [
+        nestedDependencies.outputs.managedIdentityResourceId
+      ]
     }
     cMKKeyVaultResourceId: nestedDependencies.outputs.keyVaultResourceId
     cMKKeyName: nestedDependencies.outputs.keyName

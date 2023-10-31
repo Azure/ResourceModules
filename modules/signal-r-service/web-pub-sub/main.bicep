@@ -9,13 +9,13 @@ param location string = resourceGroup().location
 param name string
 
 @description('Optional. Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.')
-param privateEndpoints array = []
+param privateEndpoints privateEndpointType
 
 @description('Optional. The lock settings of the service.')
 param lock lockType
 
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
-param roleAssignments array = []
+param roleAssignments roleAssignmentType
 
 @description('Optional. Tags of the resource.')
 param tags object = {}
@@ -30,11 +30,8 @@ param capacity int = 1
 @description('Optional. Pricing tier of the resource.')
 param sku string = 'Standard_S1'
 
-@description('Optional. Enables system assigned managed identity on the resource.')
-param systemAssignedIdentity bool = false
-
-@description('Optional. The ID(s) to assign to the resource.')
-param userAssignedIdentities object = {}
+@description('Optional. The managed identity definition for this resource. Only one type of identity is supported: system-assigned or user-assigned, but not both.')
+param managedIdentities managedIdentitiesType
 
 @description('Optional. When set as true, connection with AuthType=aad won\'t work.')
 param disableAadAuth bool = false
@@ -69,16 +66,34 @@ param networkAcls object = {}
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
+var enableReferencedModulesTelemetry = false
+
 var resourceLogConfiguration = [for configuration in resourceLogConfigurationsToEnable: {
   name: configuration
   enabled: 'true'
 }]
 
-var identityType = systemAssignedIdentity ? 'SystemAssigned' : !empty(userAssignedIdentities) ? 'UserAssigned' : 'None'
+var formattedUserAssignedIdentities = reduce(map((managedIdentities.?userAssignedResourcesIds ?? []), (id) => { '${id}': {} }), {}, (cur, next) => union(cur, next)) // Converts the flat array to an object like { '${id1}': {}, '${id2}': {} }
 
-var identity = {
-  type: identityType
-  userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
+var identity = !empty(managedIdentities) ? {
+  type: (managedIdentities.?systemAssigned ?? false) ? 'SystemAssigned' : (!empty(managedIdentities.?userAssignedResourcesIds ?? {}) ? 'UserAssigned' : null)
+  userAssignedIdentities: !empty(formattedUserAssignedIdentities) ? formattedUserAssignedIdentities : null
+} : null
+
+var builtInRoleNames = {
+  Contributor: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')
+  Owner: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '8e3af657-a8ff-443c-a75c-2fe8c4bcb635')
+  Reader: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'acdd72a7-3385-48ef-bd42-f606fba81ae7')
+  'Role Based Access Control Administrator (Preview)': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'f58310d9-a9f6-439a-9e8d-f62e7b41a168')
+  'SignalR AccessKey Reader': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '04165923-9d83-45d5-8227-78b77b0a687e')
+  'SignalR App Server': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '420fcaa2-552c-430f-98ca-3264be4806c7')
+  'SignalR REST API Owner': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'fd53cd77-2268-407a-8f46-7e7863d0f521')
+  'SignalR REST API Reader': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'ddde6b66-c0df-4114-a159-3618637b3035')
+  'SignalR Service Owner': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '7e4f1700-ea5a-4f59-8f37-079cfe29dce3')
+  'SignalR/Web PubSub Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '8cf5e20a-e4b2-4e9d-b3a1-5ceb692c2761')
+  'User Access Administrator': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '18d7d88d-d35e-4fb5-a5c3-7773c20a72d9')
+  'Web PubSub Service Owner (Preview)': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '12cf5a90-567b-43ae-8102-96cf46c7d9b4')
+  'Web PubSub Service Reader (Preview)': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'bfb1c7d2-fb1a-466b-b2ba-aee63b92deaf')
 }
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
@@ -117,26 +132,27 @@ resource webPubSub 'Microsoft.SignalRService/webPubSub@2021-10-01' = {
   }
 }
 
-module webPubSub_privateEndpoints '../../network/private-endpoint/main.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
-  name: '${uniqueString(deployment().name, location)}-WebPubSub-PrivateEndpoint-${index}'
+module webPubSub_privateEndpoints '../../network/private-endpoint/main.bicep' = [for (privateEndpoint, index) in (privateEndpoints ?? []): {
+  name: '${uniqueString(deployment().name, location)}-webPubSub-PrivateEndpoint-${index}'
   params: {
     groupIds: [
-      privateEndpoint.service
+      privateEndpoint.?service ?? 'webpubsub'
     ]
-    name: contains(privateEndpoint, 'name') ? privateEndpoint.name : 'pe-${last(split(webPubSub.id, '/'))}-${privateEndpoint.service}-${index}'
+    name: privateEndpoint.?name ?? 'pep-${last(split(webPubSub.id, '/'))}-${privateEndpoint.?service ?? 'webpubsub'}-${index}'
     serviceResourceId: webPubSub.id
     subnetResourceId: privateEndpoint.subnetResourceId
-    location: contains(privateEndpoint, 'location') ? privateEndpoint.location : reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
+    enableDefaultTelemetry: privateEndpoint.?enableDefaultTelemetry ?? enableReferencedModulesTelemetry
+    location: privateEndpoint.?location ?? reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
     lock: privateEndpoint.?lock ?? lock
-    privateDnsZoneGroupName: contains(privateEndpoint, 'privateDnsZoneGroupName') ? privateEndpoint.privateDnsZoneGroupName : 'default'
-    privateDnsZoneResourceIds: contains(privateEndpoint, 'privateDnsZoneResourceIds') ? privateEndpoint.privateDnsZoneResourceIds : []
-    roleAssignments: contains(privateEndpoint, 'roleAssignments') ? privateEndpoint.roleAssignments : []
-    tags: contains(privateEndpoint, 'tags') ? privateEndpoint.tags : {}
-    manualPrivateLinkServiceConnections: contains(privateEndpoint, 'manualPrivateLinkServiceConnections') ? privateEndpoint.manualPrivateLinkServiceConnections : []
-    customDnsConfigs: contains(privateEndpoint, 'customDnsConfigs') ? privateEndpoint.customDnsConfigs : []
-    ipConfigurations: contains(privateEndpoint, 'ipConfigurations') ? privateEndpoint.ipConfigurations : []
-    applicationSecurityGroupResourceIds: contains(privateEndpoint, 'applicationSecurityGroupResourceIds') ? privateEndpoint.applicationSecurityGroupResourceIds : []
-    customNetworkInterfaceName: contains(privateEndpoint, 'customNetworkInterfaceName') ? privateEndpoint.customNetworkInterfaceName : ''
+    privateDnsZoneGroupName: privateEndpoint.?privateDnsZoneGroupName
+    privateDnsZoneResourceIds: privateEndpoint.?privateDnsZoneResourceIds
+    roleAssignments: privateEndpoint.?roleAssignments
+    tags: privateEndpoint.?tags ?? tags
+    manualPrivateLinkServiceConnections: privateEndpoint.?manualPrivateLinkServiceConnections
+    customDnsConfigs: privateEndpoint.?customDnsConfigs
+    ipConfigurations: privateEndpoint.?ipConfigurations
+    applicationSecurityGroupResourceIds: privateEndpoint.?applicationSecurityGroupResourceIds
+    customNetworkInterfaceName: privateEndpoint.?customNetworkInterfaceName
   }
 }]
 
@@ -149,17 +165,18 @@ resource webPubSub_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(
   scope: webPubSub
 }
 
-module webPubSub_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: '${uniqueString(deployment().name, location)}-WebPubSub-Rbac-${index}'
-  params: {
-    description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
-    principalIds: roleAssignment.principalIds
-    principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
-    roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    condition: contains(roleAssignment, 'condition') ? roleAssignment.condition : ''
-    delegatedManagedIdentityResourceId: contains(roleAssignment, 'delegatedManagedIdentityResourceId') ? roleAssignment.delegatedManagedIdentityResourceId : ''
-    resourceId: webPubSub.id
+resource webPubSub_roleAssignments 'Microsoft.Authorization/roleAssignments@2022-04-01' = [for (roleAssignment, index) in (roleAssignments ?? []): {
+  name: guid(webPubSub.id, roleAssignment.principalId, roleAssignment.roleDefinitionIdOrName)
+  properties: {
+    roleDefinitionId: contains(builtInRoleNames, roleAssignment.roleDefinitionIdOrName) ? builtInRoleNames[roleAssignment.roleDefinitionIdOrName] : roleAssignment.roleDefinitionIdOrName
+    principalId: roleAssignment.principalId
+    description: roleAssignment.?description
+    principalType: roleAssignment.?principalType
+    condition: roleAssignment.?condition
+    conditionVersion: !empty(roleAssignment.?condition) ? (roleAssignment.?conditionVersion ?? '2.0') : null // Must only be set if condtion is set
+    delegatedManagedIdentityResourceId: roleAssignment.?delegatedManagedIdentityResourceId
   }
+  scope: webPubSub
 }]
 
 @description('The Web PubSub name.')
@@ -183,12 +200,23 @@ output publicPort int = webPubSub.properties.publicPort
 @description('The Web PubSub serverPort.')
 output serverPort int = webPubSub.properties.serverPort
 
+@description('The principal ID of the system assigned identity.')
+output systemAssignedMIPrincipalId string = (managedIdentities.?systemAssigned ?? false) && contains(webPubSub.identity, 'principalId') ? webPubSub.identity.principalId : ''
+
 @description('The location the resource was deployed into.')
 output location string = webPubSub.location
 
 // =============== //
 //   Definitions   //
 // =============== //
+
+type managedIdentitiesType = {
+  @description('Optional. Enables system assigned managed identity on the resource.')
+  systemAssigned: bool?
+
+  @description('Optional. The resource ID(s) to assign to the resource.')
+  userAssignedResourcesIds: string[]?
+}?
 
 type lockType = {
   @description('Optional. Specify the name of lock.')
@@ -197,3 +225,81 @@ type lockType = {
   @description('Optional. Specify the type of lock.')
   kind: ('CanNotDelete' | 'ReadOnly' | 'None')?
 }?
+
+type roleAssignmentType = {
+  @description('Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead.')
+  roleDefinitionIdOrName: string
+
+  @description('Required. The principal ID of the principal (user/group/identity) to assign the role to.')
+  principalId: string
+
+  @description('Optional. The principal type of the assigned principal ID.')
+  principalType: ('ServicePrincipal' | 'Group' | 'User' | 'ForeignGroup' | 'Device' | null)?
+
+  @description('Optional. The description of the role assignment.')
+  description: string?
+
+  @description('Optional. The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container"')
+  condition: string?
+
+  @description('Optional. Version of the condition.')
+  conditionVersion: '2.0'?
+
+  @description('Optional. The Resource Id of the delegated managed identity resource.')
+  delegatedManagedIdentityResourceId: string?
+}[]?
+
+type privateEndpointType = {
+  @description('Optional. The name of the private endpoint.')
+  name: string?
+
+  @description('Optional. The location to deploy the private endpoint to.')
+  location: string?
+
+  @description('Optional. The service (sub-) type to deploy the private endpoint for. For example "vault" or "blob".')
+  service: string?
+
+  @description('Required. Resource ID of the subnet where the endpoint needs to be created.')
+  subnetResourceId: string
+
+  @description('Optional. The name of the private DNS zone group to create if privateDnsZoneResourceIds were provided.')
+  privateDnsZoneGroupName: string?
+
+  @description('Optional. The private DNS zone groups to associate the private endpoint with. A DNS zone group can support up to 5 DNS zones.')
+  privateDnsZoneResourceIds: string[]?
+
+  @description('Optional. Custom DNS configurations.')
+  customDnsConfigs: {
+    fqdn: string?
+    ipAddresses: string[]
+  }[]?
+
+  @description('Optional. A list of IP configurations of the private endpoint. This will be used to map to the First Party Service endpoints.')
+  ipConfigurations: {
+    name: string
+    groupId: string
+    memberName: string
+    privateIpAddress: string
+  }[]?
+
+  @description('Optional. Application security groups in which the private endpoint IP configuration is included.')
+  applicationSecurityGroupResourceIds: string[]?
+
+  @description('Optional. The custom name of the network interface attached to the private endpoint.')
+  customNetworkInterfaceName: string?
+
+  @description('Optional. Specify the type of lock.')
+  lock: lockType
+
+  @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
+  roleAssignments: roleAssignmentType
+
+  @description('Optional. Tags to be applied on all resources/resource groups in this deployment.')
+  tags: object?
+
+  @description('Optional. Manual PrivateLink Service Connections.')
+  manualPrivateLinkServiceConnections: array?
+
+  @description('Optional. Enable/Disable usage telemetry for module.')
+  enableTelemetry: bool?
+}[]?

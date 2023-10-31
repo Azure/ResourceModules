@@ -9,7 +9,7 @@ metadata description = 'This instance deploys the module with most of its featur
 
 @description('Optional. The name of the resource group to deploy for testing purposes.')
 @maxLength(90)
-param resourceGroupName string = 'ms.web.staticsites-${serviceShort}-rg'
+param resourceGroupName string = 'dep-${namePrefix}-web.staticsites-${serviceShort}-rg'
 
 @description('Optional. The location to deploy resources to.')
 param location string = deployment().location
@@ -63,7 +63,6 @@ module testDeployment '../../main.bicep' = {
     }
     privateEndpoints: [
       {
-        service: 'staticSites'
         subnetResourceId: nestedDependencies.outputs.subnetResourceId
         privateDnsZoneResourceIds: [
           nestedDependencies.outputs.privateDNSZoneResourceId
@@ -78,17 +77,17 @@ module testDeployment '../../main.bicep' = {
     roleAssignments: [
       {
         roleDefinitionIdOrName: 'Reader'
-        principalIds: [
-          nestedDependencies.outputs.managedIdentityPrincipalId
-        ]
+        principalId: nestedDependencies.outputs.managedIdentityPrincipalId
         principalType: 'ServicePrincipal'
       }
     ]
     sku: 'Standard'
     stagingEnvironmentPolicy: 'Enabled'
-    systemAssignedIdentity: true
-    userAssignedIdentities: {
-      '${nestedDependencies.outputs.managedIdentityResourceId}': {}
+    managedIdentities: {
+      systemAssigned: true
+      userAssignedResourcesIds: [
+        nestedDependencies.outputs.managedIdentityResourceId
+      ]
     }
     appSettings: {
       foo: 'bar'

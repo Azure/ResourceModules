@@ -9,7 +9,7 @@ metadata description = 'This instance deploys the module with most of its featur
 
 @description('Optional. The name of the resource group to deploy for testing purposes.')
 @maxLength(90)
-param resourceGroupName string = 'ms.devtestlab.labs-${serviceShort}-rg'
+param resourceGroupName string = 'dep-${namePrefix}-devtestlab.labs-${serviceShort}-rg'
 
 @description('Optional. The location to deploy resources to.')
 param location string = deployment().location
@@ -68,9 +68,7 @@ module testDeployment '../../main.bicep' = {
     roleAssignments: [
       {
         roleDefinitionIdOrName: 'Reader'
-        principalIds: [
-          nestedDependencies.outputs.managedIdentityPrincipalId
-        ]
+        principalId: nestedDependencies.outputs.managedIdentityPrincipalId
         principalType: 'ServicePrincipal'
       }
     ]
@@ -96,12 +94,14 @@ module testDeployment '../../main.bicep' = {
       enabled: 'Enabled'
       markdown: 'DevTest Lab support text. <br> New line. It also supports Markdown'
     }
-    userAssignedIdentities: {
-      '${nestedDependencies.outputs.managedIdentityResourceId}': {}
+    managedIdentities: {
+      userAssignedResourcesIds: [
+        nestedDependencies.outputs.managedIdentityResourceId
+      ]
     }
-    managementIdentities: {
-      '${nestedDependencies.outputs.managedIdentityResourceId}': {}
-    }
+    managementIdentitiesResourceIds: [
+      nestedDependencies.outputs.managedIdentityResourceId
+    ]
     vmCreationResourceGroupId: resourceGroup.id
     browserConnect: 'Enabled'
     disableAutoUpgradeCseMinorVersion: true

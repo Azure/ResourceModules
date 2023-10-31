@@ -6,7 +6,7 @@ targetScope = 'subscription'
 
 @description('Optional. The name of the resource group to deploy for testing purposes.')
 @maxLength(90)
-param resourceGroupName string = 'ms.containerregistry.registries-${serviceShort}-rg'
+param resourceGroupName string = 'dep-${namePrefix}-containerregistry.registries-${serviceShort}-rg'
 
 @description('Optional. The location to deploy resources to.')
 param location string = deployment().location
@@ -52,7 +52,6 @@ module testDeployment '../../main.bicep' = {
     acrSku: 'Premium'
     privateEndpoints: [
       {
-        service: 'registry'
         subnetResourceId: nestedDependencies.outputs.subnetResourceId
         privateDnsZoneResourceIds: [
           nestedDependencies.outputs.privateDNSZoneResourceId

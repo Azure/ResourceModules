@@ -6,7 +6,7 @@ targetScope = 'subscription'
 
 @description('Optional. The name of the resource group to deploy for testing purposes.')
 @maxLength(90)
-param resourceGroupName string = 'ms.network.virtualnetworkgateways-${serviceShort}-rg'
+param resourceGroupName string = 'dep-${namePrefix}-network.virtualnetworkgateways-${serviceShort}-rg'
 
 @description('Optional. The location to deploy resources to.')
 param location string = deployment().location
@@ -70,10 +70,20 @@ module testDeployment '../../main.bicep' = {
     gatewayType: 'Vpn'
     vNetResourceId: nestedDependencies.outputs.vnetResourceId
     activeActive: true
-    diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
-    diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
-    diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
-    diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
+    diagnosticSettings: [
+      {
+        name: 'customSetting'
+        metricCategories: [
+          {
+            category: 'AllMetrics'
+          }
+        ]
+        eventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
+        eventHubAuthorizationRuleResourceId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
+        storageAccountResourceId: diagnosticDependencies.outputs.storageAccountResourceId
+        workspaceResourceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
+      }
+    ]
     domainNameLabel: [
       '${namePrefix}-dm-${serviceShort}'
     ]
@@ -88,10 +98,9 @@ module testDeployment '../../main.bicep' = {
     ]
     roleAssignments: [
       {
-        principalIds: [
-          nestedDependencies.outputs.managedIdentityPrincipalId
-        ]
+        principalId: nestedDependencies.outputs.managedIdentityPrincipalId
         roleDefinitionIdOrName: 'Reader'
+        principalType: 'ServicePrincipal'
       }
     ]
     vpnType: 'RouteBased'

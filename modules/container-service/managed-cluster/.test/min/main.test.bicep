@@ -9,7 +9,7 @@ metadata description = 'This instance deploys the module with the minimum set of
 
 @description('Optional. The name of the resource group to deploy for testing purposes.')
 @maxLength(90)
-param resourceGroupName string = 'ms.containerservice.managedclusters-${serviceShort}-rg'
+param resourceGroupName string = 'dep-${namePrefix}-containerservice.managedclusters-${serviceShort}-rg'
 
 @description('Optional. The location to deploy resources to.')
 param location string = deployment().location
@@ -40,7 +40,9 @@ module testDeployment '../../main.bicep' = {
   params: {
     name: '${namePrefix}${serviceShort}001'
     enableDefaultTelemetry: enableDefaultTelemetry
-    systemAssignedIdentity: true
+    managedIdentities: {
+      systemAssigned: true
+    }
     primaryAgentPoolProfile: [
       {
         name: 'systempool'

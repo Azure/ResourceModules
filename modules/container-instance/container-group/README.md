@@ -108,14 +108,16 @@ module containerGroup 'br:bicep/modules/container-instance.container-group:1.0.0
       kind: 'CanNotDelete'
       name: 'myCustomLockName'
     }
-    systemAssignedIdentity: true
+    managedIdentities: {
+      systemAssigned: true
+      userAssignedResourcesIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
     tags: {
       Environment: 'Non-Prod'
       'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
-    }
-    userAssignedIdentities: {
-      '<managedIdentityResourceId>': {}
     }
   }
 }
@@ -207,19 +209,19 @@ module containerGroup 'br:bicep/modules/container-instance.container-group:1.0.0
         "name": "myCustomLockName"
       }
     },
-    "systemAssignedIdentity": {
-      "value": true
+    "managedIdentities": {
+      "value": {
+        "systemAssigned": true,
+        "userAssignedResourcesIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
     },
     "tags": {
       "value": {
         "Environment": "Non-Prod",
         "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
-      }
-    },
-    "userAssignedIdentities": {
-      "value": {
-        "<managedIdentityResourceId>": {}
       }
     }
   }
@@ -306,14 +308,16 @@ module containerGroup 'br:bicep/modules/container-instance.container-group:1.0.0
       kind: 'CanNotDelete'
       name: 'myCustomLockName'
     }
-    systemAssignedIdentity: true
+    managedIdentities: {
+      systemAssigned: true
+      userAssignedResourcesIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
     tags: {
       Environment: 'Non-Prod'
       'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
-    }
-    userAssignedIdentities: {
-      '<managedIdentityResourceId>': {}
     }
   }
 }
@@ -414,19 +418,19 @@ module containerGroup 'br:bicep/modules/container-instance.container-group:1.0.0
         "name": "myCustomLockName"
       }
     },
-    "systemAssignedIdentity": {
-      "value": true
+    "managedIdentities": {
+      "value": {
+        "systemAssigned": true,
+        "userAssignedResourcesIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
     },
     "tags": {
       "value": {
         "Environment": "Non-Prod",
         "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
-      }
-    },
-    "userAssignedIdentities": {
-      "value": {
-        "<managedIdentityResourceId>": {}
       }
     }
   }
@@ -625,15 +629,17 @@ module containerGroup 'br:bicep/modules/container-instance.container-group:1.0.0
       kind: 'CanNotDelete'
       name: 'myCustomLockName'
     }
+    managedIdentities: {
+      systemAssigned: true
+      userAssignedResourcesIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
     subnetId: '<subnetId>'
-    systemAssignedIdentity: true
     tags: {
       Environment: 'Non-Prod'
       'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
-    }
-    userAssignedIdentities: {
-      '<managedIdentityResourceId>': {}
     }
     volumes: [
       {
@@ -744,22 +750,22 @@ module containerGroup 'br:bicep/modules/container-instance.container-group:1.0.0
         "name": "myCustomLockName"
       }
     },
+    "managedIdentities": {
+      "value": {
+        "systemAssigned": true,
+        "userAssignedResourcesIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
+    },
     "subnetId": {
       "value": "<subnetId>"
-    },
-    "systemAssignedIdentity": {
-      "value": true
     },
     "tags": {
       "value": {
         "Environment": "Non-Prod",
         "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
-      }
-    },
-    "userAssignedIdentities": {
-      "value": {
-        "<managedIdentityResourceId>": {}
       }
     },
     "volumes": {
@@ -811,13 +817,12 @@ module containerGroup 'br:bicep/modules/container-instance.container-group:1.0.0
 | [`ipAddressType`](#parameter-ipaddresstype) | string | Specifies if the IP is exposed to the public internet or private VNET. - Public or Private. |
 | [`location`](#parameter-location) | string | Location for all Resources. |
 | [`lock`](#parameter-lock) | object | The lock settings of the service. |
+| [`managedIdentities`](#parameter-managedidentities) | object | The managed identity definition for this resource. |
 | [`osType`](#parameter-ostype) | string | The operating system type required by the containers in the container group. - Windows or Linux. |
 | [`restartPolicy`](#parameter-restartpolicy) | string | Restart policy for all containers within the container group. - Always: Always restart. OnFailure: Restart on failure. Never: Never restart. - Always, OnFailure, Never. |
 | [`sku`](#parameter-sku) | string | The container group SKU. |
 | [`subnetId`](#parameter-subnetid) | string | Resource ID of the subnet. Only specify when ipAddressType is Private. |
-| [`systemAssignedIdentity`](#parameter-systemassignedidentity) | bool | Enables system assigned managed identity on the resource. |
 | [`tags`](#parameter-tags) | object | Tags of the resource. |
-| [`userAssignedIdentities`](#parameter-userassignedidentities) | object | The ID(s) to assign to the resource. |
 | [`volumes`](#parameter-volumes) | array | Specify if volumes (emptyDir, AzureFileShare or GitRepo) shall be attached to your containergroup. |
 
 ### Parameter: `autoGeneratedDomainNameLabelScope`
@@ -953,6 +958,32 @@ Optional. Specify the name of lock.
 - Required: No
 - Type: string
 
+### Parameter: `managedIdentities`
+
+The managed identity definition for this resource.
+- Required: No
+- Type: object
+
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`systemAssigned`](#parameter-managedidentitiessystemassigned) | No | bool | Optional. Enables system assigned managed identity on the resource. |
+| [`userAssignedResourcesIds`](#parameter-managedidentitiesuserassignedresourcesids) | No | array | Optional. The resource ID(s) to assign to the resource. |
+
+### Parameter: `managedIdentities.systemAssigned`
+
+Optional. Enables system assigned managed identity on the resource.
+
+- Required: No
+- Type: bool
+
+### Parameter: `managedIdentities.userAssignedResourcesIds`
+
+Optional. The resource ID(s) to assign to the resource.
+
+- Required: No
+- Type: array
+
 ### Parameter: `name`
 
 Name for the container group.
@@ -989,23 +1020,9 @@ Resource ID of the subnet. Only specify when ipAddressType is Private.
 - Type: string
 - Default: `''`
 
-### Parameter: `systemAssignedIdentity`
-
-Enables system assigned managed identity on the resource.
-- Required: No
-- Type: bool
-- Default: `False`
-
 ### Parameter: `tags`
 
 Tags of the resource.
-- Required: No
-- Type: object
-- Default: `{object}`
-
-### Parameter: `userAssignedIdentities`
-
-The ID(s) to assign to the resource.
 - Required: No
 - Type: object
 - Default: `{object}`
@@ -1027,7 +1044,7 @@ Specify if volumes (emptyDir, AzureFileShare or GitRepo) shall be attached to yo
 | `name` | string | The name of the container group. |
 | `resourceGroupName` | string | The resource group the container group was deployed into. |
 | `resourceId` | string | The resource ID of the container group. |
-| `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
+| `systemAssignedMIPrincipalId` | string | The principal ID of the system assigned identity. |
 
 ## Cross-referenced modules
 

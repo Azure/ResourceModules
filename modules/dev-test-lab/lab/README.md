@@ -101,9 +101,14 @@ module lab 'br:bicep/modules/dev-test-lab.lab:1.0.0' = {
       kind: 'CanNotDelete'
       name: 'myCustomLockName'
     }
-    managementIdentities: {
-      '<managedIdentityResourceId>': {}
+    managedIdentities: {
+      userAssignedResourcesIds: [
+        '<managedIdentityResourceId>'
+      ]
     }
+    managementIdentitiesResourceIds: [
+      '<managedIdentityResourceId>'
+    ]
     notificationchannels: [
       {
         description: 'Integration configured for auto-shutdown'
@@ -191,9 +196,7 @@ module lab 'br:bicep/modules/dev-test-lab.lab:1.0.0' = {
     premiumDataDisks: 'Enabled'
     roleAssignments: [
       {
-        principalIds: [
-          '<managedIdentityPrincipalId>'
-        ]
+        principalId: '<principalId>'
         principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
@@ -235,9 +238,6 @@ module lab 'br:bicep/modules/dev-test-lab.lab:1.0.0' = {
       'hidden-title': 'This is visible in the resource name'
       labName: 'dtllcom001'
       resourceType: 'DevTest Lab'
-    }
-    userAssignedIdentities: {
-      '<managedIdentityResourceId>': {}
     }
     virtualnetworks: [
       {
@@ -375,10 +375,17 @@ module lab 'br:bicep/modules/dev-test-lab.lab:1.0.0' = {
         "name": "myCustomLockName"
       }
     },
-    "managementIdentities": {
+    "managedIdentities": {
       "value": {
-        "<managedIdentityResourceId>": {}
+        "userAssignedResourcesIds": [
+          "<managedIdentityResourceId>"
+        ]
       }
+    },
+    "managementIdentitiesResourceIds": {
+      "value": [
+        "<managedIdentityResourceId>"
+      ]
     },
     "notificationchannels": {
       "value": [
@@ -474,9 +481,7 @@ module lab 'br:bicep/modules/dev-test-lab.lab:1.0.0' = {
     "roleAssignments": {
       "value": [
         {
-          "principalIds": [
-            "<managedIdentityPrincipalId>"
-          ],
+          "principalId": "<principalId>",
           "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
@@ -524,11 +529,6 @@ module lab 'br:bicep/modules/dev-test-lab.lab:1.0.0' = {
         "hidden-title": "This is visible in the resource name",
         "labName": "dtllcom001",
         "resourceType": "DevTest Lab"
-      }
-    },
-    "userAssignedIdentities": {
-      "value": {
-        "<managedIdentityResourceId>": {}
       }
     },
     "virtualnetworks": {
@@ -659,7 +659,8 @@ module lab 'br:bicep/modules/dev-test-lab.lab:1.0.0' = {
 | [`labStorageType`](#parameter-labstoragetype) | string | Type of storage used by the lab. It can be either Premium or Standard. |
 | [`location`](#parameter-location) | string | Location for all Resources. |
 | [`lock`](#parameter-lock) | object | The lock settings of the service. |
-| [`managementIdentities`](#parameter-managementidentities) | object | The ID(s) to assign to the virtual machines associated with this lab. |
+| [`managedIdentities`](#parameter-managedidentities) | object | The managed identity definition for this resource. |
+| [`managementIdentitiesResourceIds`](#parameter-managementidentitiesresourceids) | array | The resource ID(s) to assign to the virtual machines associated with this lab. |
 | [`mandatoryArtifactsResourceIdsLinux`](#parameter-mandatoryartifactsresourceidslinux) | array | The ordered list of artifact resource IDs that should be applied on all Linux VM creations by default, prior to the artifacts specified by the user. |
 | [`mandatoryArtifactsResourceIdsWindows`](#parameter-mandatoryartifactsresourceidswindows) | array | The ordered list of artifact resource IDs that should be applied on all Windows VM creations by default, prior to the artifacts specified by the user. |
 | [`policies`](#parameter-policies) | array | Policies to create for the lab. |
@@ -668,7 +669,6 @@ module lab 'br:bicep/modules/dev-test-lab.lab:1.0.0' = {
 | [`schedules`](#parameter-schedules) | array | Schedules to create for the lab. |
 | [`support`](#parameter-support) | object | The properties of any lab support message associated with this lab. |
 | [`tags`](#parameter-tags) | object | Tags of the resource. |
-| [`userAssignedIdentities`](#parameter-userassignedidentities) | object | The ID(s) to assign to the resource. |
 | [`virtualnetworks`](#parameter-virtualnetworks) | array | Virtual networks to create for the lab. |
 | [`vmCreationResourceGroupId`](#parameter-vmcreationresourcegroupid) | string | Resource Group allocation for virtual machines. If left empty, virtual machines will be deployed in their own Resource Groups. Default is the same Resource Group for DevTest Lab. |
 
@@ -802,12 +802,30 @@ Optional. Specify the name of lock.
 - Required: No
 - Type: string
 
-### Parameter: `managementIdentities`
+### Parameter: `managedIdentities`
 
-The ID(s) to assign to the virtual machines associated with this lab.
+The managed identity definition for this resource.
 - Required: No
 - Type: object
-- Default: `{object}`
+
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`userAssignedResourcesIds`](#parameter-managedidentitiesuserassignedresourcesids) | Yes | array | Optional. The resource ID(s) to assign to the resource. |
+
+### Parameter: `managedIdentities.userAssignedResourcesIds`
+
+Optional. The resource ID(s) to assign to the resource.
+
+- Required: Yes
+- Type: array
+
+### Parameter: `managementIdentitiesResourceIds`
+
+The resource ID(s) to assign to the virtual machines associated with this lab.
+- Required: No
+- Type: array
+- Default: `[]`
 
 ### Parameter: `mandatoryArtifactsResourceIdsLinux`
 
@@ -856,7 +874,68 @@ The setting to enable usage of premium data disks. When its value is "Enabled", 
 Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalIds' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
 - Required: No
 - Type: array
-- Default: `[]`
+
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`condition`](#parameter-roleassignmentscondition) | No | string | Optional. The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container" |
+| [`conditionVersion`](#parameter-roleassignmentsconditionversion) | No | string | Optional. Version of the condition. |
+| [`delegatedManagedIdentityResourceId`](#parameter-roleassignmentsdelegatedmanagedidentityresourceid) | No | string | Optional. The Resource Id of the delegated managed identity resource. |
+| [`description`](#parameter-roleassignmentsdescription) | No | string | Optional. The description of the role assignment. |
+| [`principalId`](#parameter-roleassignmentsprincipalid) | Yes | string | Required. The principal ID of the principal (user/group/identity) to assign the role to. |
+| [`principalType`](#parameter-roleassignmentsprincipaltype) | No | string | Optional. The principal type of the assigned principal ID. |
+| [`roleDefinitionIdOrName`](#parameter-roleassignmentsroledefinitionidorname) | Yes | string | Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead. |
+
+### Parameter: `roleAssignments.condition`
+
+Optional. The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container"
+
+- Required: No
+- Type: string
+
+### Parameter: `roleAssignments.conditionVersion`
+
+Optional. Version of the condition.
+
+- Required: No
+- Type: string
+- Allowed: `[2.0]`
+
+### Parameter: `roleAssignments.delegatedManagedIdentityResourceId`
+
+Optional. The Resource Id of the delegated managed identity resource.
+
+- Required: No
+- Type: string
+
+### Parameter: `roleAssignments.description`
+
+Optional. The description of the role assignment.
+
+- Required: No
+- Type: string
+
+### Parameter: `roleAssignments.principalId`
+
+Required. The principal ID of the principal (user/group/identity) to assign the role to.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `roleAssignments.principalType`
+
+Optional. The principal type of the assigned principal ID.
+
+- Required: No
+- Type: string
+- Allowed: `[Device, ForeignGroup, Group, ServicePrincipal, User]`
+
+### Parameter: `roleAssignments.roleDefinitionIdOrName`
+
+Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead.
+
+- Required: Yes
+- Type: string
 
 ### Parameter: `schedules`
 
@@ -875,13 +954,6 @@ The properties of any lab support message associated with this lab.
 ### Parameter: `tags`
 
 Tags of the resource.
-- Required: No
-- Type: object
-- Default: `{object}`
-
-### Parameter: `userAssignedIdentities`
-
-The ID(s) to assign to the resource.
 - Required: No
 - Type: object
 - Default: `{object}`
@@ -909,6 +981,7 @@ Resource Group allocation for virtual machines. If left empty, virtual machines 
 | `name` | string | The name of the lab. |
 | `resourceGroupName` | string | The resource group the lab was deployed into. |
 | `resourceId` | string | The resource ID of the lab. |
+| `systemAssignedMIPrincipalId` | string | The principal ID of the system assigned identity. |
 | `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
 | `uniqueIdentifier` | string | The unique identifier for the lab. Used to track tags that the lab applies to each resource that it creates. |
 

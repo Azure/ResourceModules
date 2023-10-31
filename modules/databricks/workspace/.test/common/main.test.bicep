@@ -9,7 +9,7 @@ metadata description = 'This instance deploys the module with most of its featur
 
 @description('Optional. The name of the resource group to deploy for testing purposes.')
 @maxLength(90)
-param resourceGroupName string = 'ms.databricks.workspaces-${serviceShort}-rg'
+param resourceGroupName string = 'dep-${namePrefix}-databricks.workspaces-${serviceShort}-rg'
 
 @description('Optional. The location to deploy resources to.')
 param location string = deployment().location
@@ -78,10 +78,24 @@ module testDeployment '../../main.bicep' = {
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '${namePrefix}${serviceShort}001'
-    diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
-    diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
-    diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
-    diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
+    diagnosticSettings: [
+      {
+        name: 'customSetting'
+        eventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
+        eventHubAuthorizationRuleResourceId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
+        storageAccountResourceId: diagnosticDependencies.outputs.storageAccountResourceId
+        workspaceResourceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
+        logCategoriesAndGroups: [
+          {
+            category: 'jobs'
+          }
+          {
+            category: 'notebook'
+
+          }
+        ]
+      }
+    ]
     lock: {
       kind: 'CanNotDelete'
       name: 'myCustomLockName'
@@ -89,9 +103,7 @@ module testDeployment '../../main.bicep' = {
     roleAssignments: [
       {
         roleDefinitionIdOrName: 'Reader'
-        principalIds: [
-          nestedDependencies.outputs.managedIdentityPrincipalId
-        ]
+        principalId: nestedDependencies.outputs.managedIdentityPrincipalId
         principalType: 'ServicePrincipal'
       }
     ]
@@ -123,11 +135,8 @@ module testDeployment '../../main.bicep' = {
     privateEndpoints: [
       {
         privateDnsZoneResourceIds: [
-
           nestedDependencies.outputs.privateDNSZoneResourceId
-
         ]
-        service: 'databricks_ui_api'
         subnetResourceId: nestedDependencies.outputs.defaultSubnetResourceId
         tags: {
           Environment: 'Non-Prod'
@@ -136,11 +145,6 @@ module testDeployment '../../main.bicep' = {
       }
     ]
     managedResourceGroupResourceId: '${subscription().id}/resourceGroups/rg-${resourceGroupName}-managed'
-    diagnosticLogCategoriesToEnable: [
-      'jobs'
-      'notebook'
-    ]
-    diagnosticSettingsName: 'diag${namePrefix}${serviceShort}001'
     requireInfrastructureEncryption: true
     vnetAddressPrefix: '10.100'
     location: resourceGroup.location

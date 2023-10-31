@@ -6,7 +6,7 @@ targetScope = 'subscription'
 
 @description('Optional. The name of the resource group to deploy for testing purposes.')
 @maxLength(90)
-param resourceGroupName string = 'ms.search.searchservices-${serviceShort}-rg'
+param resourceGroupName string = 'dep-${namePrefix}-search.searchservices-${serviceShort}-rg'
 
 @description('Optional. The location to deploy resources to.')
 param location string = deployment().location
@@ -62,7 +62,6 @@ module testDeployment '../../main.bicep' = {
         privateDnsZoneResourceIds: [
           nestedDependencies.outputs.privateDNSZoneResourceId
         ]
-        service: 'searchService'
         subnetResourceId: nestedDependencies.outputs.subnetResourceId
         tags: {
           Environment: 'Non-Prod'

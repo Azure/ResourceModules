@@ -9,7 +9,7 @@ metadata description = 'This instance deploys the module with most of its featur
 
 @description('Optional. The name of the resource group to deploy for testing purposes.')
 @maxLength(90)
-param resourceGroupName string = 'ms.storage.storageaccounts-${serviceShort}-rg'
+param resourceGroupName string = 'dep-${namePrefix}-storage.storageaccounts-${serviceShort}-rg'
 
 @description('Optional. The location to deploy resources to.')
 param location string = deployment().location
@@ -127,10 +127,20 @@ module testDeployment '../../main.bicep' = {
     ]
     blobServices: {
       lastAccessTimeTrackingPolicyEnabled: true
-      diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
-      diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
-      diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
-      diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
+      diagnosticSettings: [
+        {
+          name: 'customSetting'
+          metricCategories: [
+            {
+              category: 'AllMetrics'
+            }
+          ]
+          eventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
+          eventHubAuthorizationRuleResourceId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
+          storageAccountResourceId: diagnosticDependencies.outputs.storageAccountResourceId
+          workspaceResourceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
+        }
+      ]
       containers: [
         {
           name: 'avdscripts'
@@ -140,9 +150,7 @@ module testDeployment '../../main.bicep' = {
           roleAssignments: [
             {
               roleDefinitionIdOrName: 'Reader'
-              principalIds: [
-                nestedDependencies.outputs.managedIdentityPrincipalId
-              ]
+              principalId: nestedDependencies.outputs.managedIdentityPrincipalId
               principalType: 'ServicePrincipal'
             }
           ]
@@ -165,10 +173,20 @@ module testDeployment '../../main.bicep' = {
       deleteRetentionPolicyDays: 9
     }
     fileServices: {
-      diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
-      diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
-      diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
-      diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
+      diagnosticSettings: [
+        {
+          name: 'customSetting'
+          metricCategories: [
+            {
+              category: 'AllMetrics'
+            }
+          ]
+          eventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
+          eventHubAuthorizationRuleResourceId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
+          storageAccountResourceId: diagnosticDependencies.outputs.storageAccountResourceId
+          workspaceResourceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
+        }
+      ]
       shares: [
         {
           name: 'avdprofiles'
@@ -177,9 +195,7 @@ module testDeployment '../../main.bicep' = {
           roleAssignments: [
             {
               roleDefinitionIdOrName: 'Reader'
-              principalIds: [
-                nestedDependencies.outputs.managedIdentityPrincipalId
-              ]
+              principalId: nestedDependencies.outputs.managedIdentityPrincipalId
               principalType: 'ServicePrincipal'
             }
           ]
@@ -191,20 +207,40 @@ module testDeployment '../../main.bicep' = {
       ]
     }
     tableServices: {
-      diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
-      diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
-      diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
-      diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
+      diagnosticSettings: [
+        {
+          name: 'customSetting'
+          metricCategories: [
+            {
+              category: 'AllMetrics'
+            }
+          ]
+          eventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
+          eventHubAuthorizationRuleResourceId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
+          storageAccountResourceId: diagnosticDependencies.outputs.storageAccountResourceId
+          workspaceResourceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
+        }
+      ]
       tables: [
         'table1'
         'table2'
       ]
     }
     queueServices: {
-      diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
-      diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
-      diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
-      diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
+      diagnosticSettings: [
+        {
+          name: 'customSetting'
+          metricCategories: [
+            {
+              category: 'AllMetrics'
+            }
+          ]
+          eventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
+          eventHubAuthorizationRuleResourceId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
+          storageAccountResourceId: diagnosticDependencies.outputs.storageAccountResourceId
+          workspaceResourceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
+        }
+      ]
       queues: [
         {
           name: 'queue1'
@@ -215,9 +251,7 @@ module testDeployment '../../main.bicep' = {
           roleAssignments: [
             {
               roleDefinitionIdOrName: 'Reader'
-              principalIds: [
-                nestedDependencies.outputs.managedIdentityPrincipalId
-              ]
+              principalId: nestedDependencies.outputs.managedIdentityPrincipalId
               principalType: 'ServicePrincipal'
             }
           ]
@@ -229,23 +263,33 @@ module testDeployment '../../main.bicep' = {
       ]
     }
     sasExpirationPeriod: '180.00:00:00'
-    systemAssignedIdentity: true
-    userAssignedIdentities: {
-      '${nestedDependencies.outputs.managedIdentityResourceId}': {}
+    managedIdentities: {
+      systemAssigned: true
+      userAssignedResourcesIds: [
+        nestedDependencies.outputs.managedIdentityResourceId
+      ]
     }
     roleAssignments: [
       {
         roleDefinitionIdOrName: 'Reader'
-        principalIds: [
-          nestedDependencies.outputs.managedIdentityPrincipalId
-        ]
+        principalId: nestedDependencies.outputs.managedIdentityPrincipalId
         principalType: 'ServicePrincipal'
       }
     ]
-    diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
-    diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
-    diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
-    diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
+    diagnosticSettings: [
+      {
+        name: 'customSetting'
+        metricCategories: [
+          {
+            category: 'AllMetrics'
+          }
+        ]
+        eventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
+        eventHubAuthorizationRuleResourceId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
+        storageAccountResourceId: diagnosticDependencies.outputs.storageAccountResourceId
+        workspaceResourceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
+      }
+    ]
     managementPolicyRules: [
       {
         enabled: true

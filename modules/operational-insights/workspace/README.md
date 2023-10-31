@@ -173,23 +173,12 @@ module workspace 'br:bicep/modules/operational-insights.workspace:1.0.0' = {
       {
         eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
         eventHubName: '<eventHubName>'
-        logCategoriesAndGroups: [
-          {
-            category: 'Audit'
-          }
-        ]
         metricCategories: [
           {
             category: 'AllMetrics'
           }
         ]
         name: 'customSetting'
-        storageAccountResourceId: '<storageAccountResourceId>'
-        workspaceResourceId: '<workspaceResourceId>'
-      }
-      {
-        eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
-        eventHubName: '<eventHubName>'
         storageAccountResourceId: '<storageAccountResourceId>'
         workspaceResourceId: '<workspaceResourceId>'
       }
@@ -451,23 +440,12 @@ module workspace 'br:bicep/modules/operational-insights.workspace:1.0.0' = {
         {
           "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
           "eventHubName": "<eventHubName>",
-          "logCategoriesAndGroups": [
-            {
-              "category": "Audit"
-            }
-          ],
           "metricCategories": [
             {
               "category": "AllMetrics"
             }
           ],
           "name": "customSetting",
-          "storageAccountResourceId": "<storageAccountResourceId>",
-          "workspaceResourceId": "<workspaceResourceId>"
-        },
-        {
-          "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
-          "eventHubName": "<eventHubName>",
           "storageAccountResourceId": "<storageAccountResourceId>",
           "workspaceResourceId": "<workspaceResourceId>"
         }
@@ -725,23 +703,12 @@ module workspace 'br:bicep/modules/operational-insights.workspace:1.0.0' = {
       {
         eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
         eventHubName: '<eventHubName>'
-        logCategoriesAndGroups: [
-          {
-            category: 'Audit'
-          }
-        ]
         metricCategories: [
           {
             category: 'AllMetrics'
           }
         ]
         name: 'customSetting'
-        storageAccountResourceId: '<storageAccountResourceId>'
-        workspaceResourceId: '<workspaceResourceId>'
-      }
-      {
-        eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
-        eventHubName: '<eventHubName>'
         storageAccountResourceId: '<storageAccountResourceId>'
         workspaceResourceId: '<workspaceResourceId>'
       }
@@ -928,23 +895,12 @@ module workspace 'br:bicep/modules/operational-insights.workspace:1.0.0' = {
         {
           "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
           "eventHubName": "<eventHubName>",
-          "logCategoriesAndGroups": [
-            {
-              "category": "Audit"
-            }
-          ],
           "metricCategories": [
             {
               "category": "AllMetrics"
             }
           ],
           "name": "customSetting",
-          "storageAccountResourceId": "<storageAccountResourceId>",
-          "workspaceResourceId": "<workspaceResourceId>"
-        },
-        {
-          "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
-          "eventHubName": "<eventHubName>",
           "storageAccountResourceId": "<storageAccountResourceId>",
           "workspaceResourceId": "<workspaceResourceId>"
         }
@@ -1122,7 +1078,7 @@ module workspace 'br:bicep/modules/operational-insights.workspace:1.0.0' = {
 | [`linkedServices`](#parameter-linkedservices) | array | List of services to be linked. |
 | [`location`](#parameter-location) | string | Location for all resources. |
 | [`lock`](#parameter-lock) | object | The lock settings of the service. |
-| [`managedIdentities`](#parameter-managedidentities) | object | The managed identity definition for this resource |
+| [`managedIdentities`](#parameter-managedidentities) | object | The managed identity definition for this resource. Only one type of identity is supported: system-assigned or user-assigned, but not both. |
 | [`publicNetworkAccessForIngestion`](#parameter-publicnetworkaccessforingestion) | string | The network access type for accessing Log Analytics ingestion. |
 | [`publicNetworkAccessForQuery`](#parameter-publicnetworkaccessforquery) | string | The network access type for accessing Log Analytics query. |
 | [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
@@ -1213,7 +1169,7 @@ Optional. The name of logs that will be streamed. "allLogs" includes all possibl
 | Name | Required | Type | Description |
 | :-- | :-- | :--| :-- |
 | [`category`](#parameter-diagnosticsettingslogcategoriesandgroupscategory) | No | string | Optional. Name of a Diagnostic Log category for a resource type this setting is applied to. Set the specific logs to collect here. |
-| [`categoryGroup`](#parameter-diagnosticsettingslogcategoriesandgroupscategorygroup) | No | string | Optional. Name of a Diagnostic Log category group for a resource type this setting is applied to. Set to `allLogs` to collect all logs. |
+| [`categoryGroup`](#parameter-diagnosticsettingslogcategoriesandgroupscategorygroup) | No | string | Optional. Name of a Diagnostic Log category group for a resource type this setting is applied to. Set to 'AllLogs' to collect all logs. |
 
 ### Parameter: `diagnosticSettings.logCategoriesAndGroups.category`
 
@@ -1224,7 +1180,7 @@ Optional. Name of a Diagnostic Log category for a resource type this setting is 
 
 ### Parameter: `diagnosticSettings.logCategoriesAndGroups.categoryGroup`
 
-Optional. Name of a Diagnostic Log category group for a resource type this setting is applied to. Set to `allLogs` to collect all logs.
+Optional. Name of a Diagnostic Log category group for a resource type this setting is applied to. Set to 'AllLogs' to collect all logs.
 
 - Required: No
 - Type: string
@@ -1246,11 +1202,11 @@ Optional. The name of logs that will be streamed. "allLogs" includes all possibl
 
 | Name | Required | Type | Description |
 | :-- | :-- | :--| :-- |
-| [`category`](#parameter-diagnosticsettingsmetriccategoriescategory) | Yes | string | Required. Name of a Diagnostic Metric category for a resource type this setting is applied to. Set to `AllMetrics` to collect all metrics. |
+| [`category`](#parameter-diagnosticsettingsmetriccategoriescategory) | Yes | string | Required. Name of a Diagnostic Metric category for a resource type this setting is applied to. Set to 'AllMetrics' to collect all metrics. |
 
 ### Parameter: `diagnosticSettings.metricCategories.category`
 
-Required. Name of a Diagnostic Metric category for a resource type this setting is applied to. Set to `AllMetrics` to collect all metrics.
+Required. Name of a Diagnostic Metric category for a resource type this setting is applied to. Set to 'AllMetrics' to collect all metrics.
 
 - Required: Yes
 - Type: string
@@ -1348,7 +1304,7 @@ Optional. Specify the name of lock.
 
 ### Parameter: `managedIdentities`
 
-The managed identity definition for this resource
+The managed identity definition for this resource. Only one type of identity is supported: system-assigned or user-assigned, but not both.
 - Required: No
 - Type: object
 
@@ -1356,7 +1312,7 @@ The managed identity definition for this resource
 | Name | Required | Type | Description |
 | :-- | :-- | :--| :-- |
 | [`systemAssigned`](#parameter-managedidentitiessystemassigned) | No | bool | Optional. Enables system assigned managed identity on the resource. |
-| [`userAssignedResourcesIds`](#parameter-managedidentitiesuserassignedresourcesids) | No | array | Optional. The resource ID(s) to assign to the resource. Required if a user assigned identity is used for encryption. |
+| [`userAssignedResourcesIds`](#parameter-managedidentitiesuserassignedresourcesids) | No | array | Optional. The resource ID(s) to assign to the resource. |
 
 ### Parameter: `managedIdentities.systemAssigned`
 
@@ -1367,7 +1323,7 @@ Optional. Enables system assigned managed identity on the resource.
 
 ### Parameter: `managedIdentities.userAssignedResourcesIds`
 
-Optional. The resource ID(s) to assign to the resource. Required if a user assigned identity is used for encryption.
+Optional. The resource ID(s) to assign to the resource.
 
 - Required: No
 - Type: array

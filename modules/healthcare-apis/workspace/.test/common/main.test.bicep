@@ -8,7 +8,7 @@ metadata description = 'This instance deploys the module with most of its featur
 // ========== //
 @description('Optional. The name of the resource group to deploy for testing purposes.')
 @maxLength(90)
-param resourceGroupName string = 'ms.healthcareapis.workspaces-${serviceShort}-rg'
+param resourceGroupName string = 'dep-${namePrefix}-healthcareapis.workspaces-${serviceShort}-rg'
 
 @description('Optional. The location to deploy resources to.')
 param location string = deployment().location
@@ -33,7 +33,7 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
-module resourceGroupResources 'dependencies.bicep' = {
+module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-paramNested'
   params: {
@@ -85,26 +85,36 @@ module testDeployment '../../main.bicep' = {
         corsMaxAge: 600
         corsAllowCredentials: false
         location: location
-        diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
-        diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
-        diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
-        diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
+        diagnosticSettings: [
+          {
+            name: 'customSetting'
+            metricCategories: [
+              {
+                category: 'AllMetrics'
+              }
+            ]
+            eventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
+            eventHubAuthorizationRuleResourceId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
+            storageAccountResourceId: diagnosticDependencies.outputs.storageAccountResourceId
+            workspaceResourceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
+          }
+        ]
         publicNetworkAccess: 'Enabled'
         resourceVersionPolicy: 'versioned'
         smartProxyEnabled: false
         enableDefaultTelemetry: enableDefaultTelemetry
-        systemAssignedIdentity: false
+        managedIdentities: {
+          systemAssigned: false
+          userAssignedResourcesIds: [
+            nestedDependencies.outputs.managedIdentityResourceId
+          ]
+        }
         importEnabled: false
         initialImportMode: false
-        userAssignedIdentities: {
-          '${resourceGroupResources.outputs.managedIdentityResourceId}': {}
-        }
         roleAssignments: [
           {
             roleDefinitionIdOrName: resourceId('Microsoft.Authorization/roleDefinitions', '5a1fc7df-4bf1-4951-a576-89034ee01acd')
-            principalIds: [
-              resourceGroupResources.outputs.managedIdentityPrincipalId
-            ]
+            principalId: nestedDependencies.outputs.managedIdentityPrincipalId
             principalType: 'ServicePrincipal'
           }
         ]
@@ -120,16 +130,34 @@ module testDeployment '../../main.bicep' = {
         corsMaxAge: 600
         corsAllowCredentials: false
         location: location
-        diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
-        diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
-        diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
-        diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
+        diagnosticSettings: [
+          {
+            name: 'customSetting'
+            metricCategories: [
+              {
+                category: 'AllMetrics'
+              }
+            ]
+            eventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
+            eventHubAuthorizationRuleResourceId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
+            storageAccountResourceId: diagnosticDependencies.outputs.storageAccountResourceId
+            workspaceResourceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
+          }
+        ]
         publicNetworkAccess: 'Enabled'
         enableDefaultTelemetry: enableDefaultTelemetry
-        systemAssignedIdentity: false
-        userAssignedIdentities: {
-          '${resourceGroupResources.outputs.managedIdentityResourceId}': {}
-        }
+        managedIdentities: {
+          systemAssigned: false
+          userAssignedResourcesIds: [
+            nestedDependencies.outputs.managedIdentityResourceId
+          ]
+        } }
+    ]
+    roleAssignments: [
+      {
+        roleDefinitionIdOrName: 'Reader'
+        principalId: nestedDependencies.outputs.managedIdentityPrincipalId
+        principalType: 'ServicePrincipal'
       }
     ]
     tags: {

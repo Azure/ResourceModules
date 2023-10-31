@@ -6,7 +6,7 @@ targetScope = 'subscription'
 
 @description('Optional. The name of the resource group to deploy for testing purposes.')
 @maxLength(90)
-param resourceGroupName string = 'ms.batch.batchaccounts-${serviceShort}-rg'
+param resourceGroupName string = 'dep-${namePrefix}-batch.batchaccounts-${serviceShort}-rg'
 
 @description('Optional. The location to deploy resources to.')
 param location string = deployment().location
@@ -76,8 +76,10 @@ module testDeployment '../../main.bicep' = {
     ]
     storageAccessIdentity: nestedDependencies.outputs.managedIdentityResourceId
     storageAuthenticationMode: 'BatchAccountManagedIdentity'
-    userAssignedIdentities: {
-      '${nestedDependencies.outputs.managedIdentityResourceId}': {}
+    managedIdentities: {
+      userAssignedResourcesIds: [
+        nestedDependencies.outputs.managedIdentityResourceId
+      ]
     }
     tags: {
       'hidden-title': 'This is visible in the resource name'

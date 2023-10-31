@@ -76,9 +76,7 @@ module storageAccount 'br:bicep/modules/storage.storage-account:1.0.0' = {
           publicAccess: 'None'
           roleAssignments: [
             {
-              principalIds: [
-                '<managedIdentityPrincipalId>'
-              ]
+              principalId: '<principalId>'
               principalType: 'ServicePrincipal'
               roleDefinitionIdOrName: 'Reader'
             }
@@ -97,34 +95,62 @@ module storageAccount 'br:bicep/modules/storage.storage-account:1.0.0' = {
       ]
       deleteRetentionPolicyDays: 9
       deleteRetentionPolicyEnabled: true
-      diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-      diagnosticEventHubName: '<diagnosticEventHubName>'
-      diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-      diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+      diagnosticSettings: [
+        {
+          eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+          eventHubName: '<eventHubName>'
+          metricCategories: [
+            {
+              category: 'AllMetrics'
+            }
+          ]
+          name: 'customSetting'
+          storageAccountResourceId: '<storageAccountResourceId>'
+          workspaceResourceId: '<workspaceResourceId>'
+        }
+      ]
       lastAccessTimeTrackingPolicyEnabled: true
     }
-    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-    diagnosticEventHubName: '<diagnosticEventHubName>'
-    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    diagnosticSettings: [
+      {
+        eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+        eventHubName: '<eventHubName>'
+        metricCategories: [
+          {
+            category: 'AllMetrics'
+          }
+        ]
+        name: 'customSetting'
+        storageAccountResourceId: '<storageAccountResourceId>'
+        workspaceResourceId: '<workspaceResourceId>'
+      }
+    ]
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     enableHierarchicalNamespace: true
     enableNfsV3: true
     enableSftp: true
     fileServices: {
-      diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-      diagnosticEventHubName: '<diagnosticEventHubName>'
-      diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-      diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+      diagnosticSettings: [
+        {
+          eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+          eventHubName: '<eventHubName>'
+          metricCategories: [
+            {
+              category: 'AllMetrics'
+            }
+          ]
+          name: 'customSetting'
+          storageAccountResourceId: '<storageAccountResourceId>'
+          workspaceResourceId: '<workspaceResourceId>'
+        }
+      ]
       shares: [
         {
           accessTier: 'Hot'
           name: 'avdprofiles'
           roleAssignments: [
             {
-              principalIds: [
-                '<managedIdentityPrincipalId>'
-              ]
+              principalId: '<principalId>'
               principalType: 'ServicePrincipal'
               roleDefinitionIdOrName: 'Reader'
             }
@@ -158,6 +184,12 @@ module storageAccount 'br:bicep/modules/storage.storage-account:1.0.0' = {
     lock: {
       kind: 'CanNotDelete'
       name: 'myCustomLockName'
+    }
+    managedIdentities: {
+      systemAssigned: true
+      userAssignedResourcesIds: [
+        '<managedIdentityResourceId>'
+      ]
     }
     managementPolicyRules: [
       {
@@ -224,10 +256,20 @@ module storageAccount 'br:bicep/modules/storage.storage-account:1.0.0' = {
       }
     ]
     queueServices: {
-      diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-      diagnosticEventHubName: '<diagnosticEventHubName>'
-      diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-      diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+      diagnosticSettings: [
+        {
+          eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+          eventHubName: '<eventHubName>'
+          metricCategories: [
+            {
+              category: 'AllMetrics'
+            }
+          ]
+          name: 'customSetting'
+          storageAccountResourceId: '<storageAccountResourceId>'
+          workspaceResourceId: '<workspaceResourceId>'
+        }
+      ]
       queues: [
         {
           metadata: {
@@ -237,9 +279,7 @@ module storageAccount 'br:bicep/modules/storage.storage-account:1.0.0' = {
           name: 'queue1'
           roleAssignments: [
             {
-              principalIds: [
-                '<managedIdentityPrincipalId>'
-              ]
+              principalId: '<principalId>'
               principalType: 'ServicePrincipal'
               roleDefinitionIdOrName: 'Reader'
             }
@@ -254,21 +294,28 @@ module storageAccount 'br:bicep/modules/storage.storage-account:1.0.0' = {
     requireInfrastructureEncryption: true
     roleAssignments: [
       {
-        principalIds: [
-          '<managedIdentityPrincipalId>'
-        ]
+        principalId: '<principalId>'
         principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
     sasExpirationPeriod: '180.00:00:00'
     skuName: 'Standard_LRS'
-    systemAssignedIdentity: true
     tableServices: {
-      diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-      diagnosticEventHubName: '<diagnosticEventHubName>'
-      diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-      diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+      diagnosticSettings: [
+        {
+          eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+          eventHubName: '<eventHubName>'
+          metricCategories: [
+            {
+              category: 'AllMetrics'
+            }
+          ]
+          name: 'customSetting'
+          storageAccountResourceId: '<storageAccountResourceId>'
+          workspaceResourceId: '<workspaceResourceId>'
+        }
+      ]
       tables: [
         'table1'
         'table2'
@@ -278,9 +325,6 @@ module storageAccount 'br:bicep/modules/storage.storage-account:1.0.0' = {
       Environment: 'Non-Prod'
       'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
-    }
-    userAssignedIdentities: {
-      '<managedIdentityResourceId>': {}
     }
   }
 }
@@ -319,9 +363,7 @@ module storageAccount 'br:bicep/modules/storage.storage-account:1.0.0' = {
             "publicAccess": "None",
             "roleAssignments": [
               {
-                "principalIds": [
-                  "<managedIdentityPrincipalId>"
-                ],
+                "principalId": "<principalId>",
                 "principalType": "ServicePrincipal",
                 "roleDefinitionIdOrName": "Reader"
               }
@@ -340,24 +382,38 @@ module storageAccount 'br:bicep/modules/storage.storage-account:1.0.0' = {
         ],
         "deleteRetentionPolicyDays": 9,
         "deleteRetentionPolicyEnabled": true,
-        "diagnosticEventHubAuthorizationRuleId": "<diagnosticEventHubAuthorizationRuleId>",
-        "diagnosticEventHubName": "<diagnosticEventHubName>",
-        "diagnosticStorageAccountId": "<diagnosticStorageAccountId>",
-        "diagnosticWorkspaceId": "<diagnosticWorkspaceId>",
+        "diagnosticSettings": [
+          {
+            "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+            "eventHubName": "<eventHubName>",
+            "metricCategories": [
+              {
+                "category": "AllMetrics"
+              }
+            ],
+            "name": "customSetting",
+            "storageAccountResourceId": "<storageAccountResourceId>",
+            "workspaceResourceId": "<workspaceResourceId>"
+          }
+        ],
         "lastAccessTimeTrackingPolicyEnabled": true
       }
     },
-    "diagnosticEventHubAuthorizationRuleId": {
-      "value": "<diagnosticEventHubAuthorizationRuleId>"
-    },
-    "diagnosticEventHubName": {
-      "value": "<diagnosticEventHubName>"
-    },
-    "diagnosticStorageAccountId": {
-      "value": "<diagnosticStorageAccountId>"
-    },
-    "diagnosticWorkspaceId": {
-      "value": "<diagnosticWorkspaceId>"
+    "diagnosticSettings": {
+      "value": [
+        {
+          "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+          "eventHubName": "<eventHubName>",
+          "metricCategories": [
+            {
+              "category": "AllMetrics"
+            }
+          ],
+          "name": "customSetting",
+          "storageAccountResourceId": "<storageAccountResourceId>",
+          "workspaceResourceId": "<workspaceResourceId>"
+        }
+      ]
     },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
@@ -373,19 +429,27 @@ module storageAccount 'br:bicep/modules/storage.storage-account:1.0.0' = {
     },
     "fileServices": {
       "value": {
-        "diagnosticEventHubAuthorizationRuleId": "<diagnosticEventHubAuthorizationRuleId>",
-        "diagnosticEventHubName": "<diagnosticEventHubName>",
-        "diagnosticStorageAccountId": "<diagnosticStorageAccountId>",
-        "diagnosticWorkspaceId": "<diagnosticWorkspaceId>",
+        "diagnosticSettings": [
+          {
+            "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+            "eventHubName": "<eventHubName>",
+            "metricCategories": [
+              {
+                "category": "AllMetrics"
+              }
+            ],
+            "name": "customSetting",
+            "storageAccountResourceId": "<storageAccountResourceId>",
+            "workspaceResourceId": "<workspaceResourceId>"
+          }
+        ],
         "shares": [
           {
             "accessTier": "Hot",
             "name": "avdprofiles",
             "roleAssignments": [
               {
-                "principalIds": [
-                  "<managedIdentityPrincipalId>"
-                ],
+                "principalId": "<principalId>",
                 "principalType": "ServicePrincipal",
                 "roleDefinitionIdOrName": "Reader"
               }
@@ -425,6 +489,14 @@ module storageAccount 'br:bicep/modules/storage.storage-account:1.0.0' = {
       "value": {
         "kind": "CanNotDelete",
         "name": "myCustomLockName"
+      }
+    },
+    "managedIdentities": {
+      "value": {
+        "systemAssigned": true,
+        "userAssignedResourcesIds": [
+          "<managedIdentityResourceId>"
+        ]
       }
     },
     "managementPolicyRules": {
@@ -499,10 +571,20 @@ module storageAccount 'br:bicep/modules/storage.storage-account:1.0.0' = {
     },
     "queueServices": {
       "value": {
-        "diagnosticEventHubAuthorizationRuleId": "<diagnosticEventHubAuthorizationRuleId>",
-        "diagnosticEventHubName": "<diagnosticEventHubName>",
-        "diagnosticStorageAccountId": "<diagnosticStorageAccountId>",
-        "diagnosticWorkspaceId": "<diagnosticWorkspaceId>",
+        "diagnosticSettings": [
+          {
+            "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+            "eventHubName": "<eventHubName>",
+            "metricCategories": [
+              {
+                "category": "AllMetrics"
+              }
+            ],
+            "name": "customSetting",
+            "storageAccountResourceId": "<storageAccountResourceId>",
+            "workspaceResourceId": "<workspaceResourceId>"
+          }
+        ],
         "queues": [
           {
             "metadata": {
@@ -512,9 +594,7 @@ module storageAccount 'br:bicep/modules/storage.storage-account:1.0.0' = {
             "name": "queue1",
             "roleAssignments": [
               {
-                "principalIds": [
-                  "<managedIdentityPrincipalId>"
-                ],
+                "principalId": "<principalId>",
                 "principalType": "ServicePrincipal",
                 "roleDefinitionIdOrName": "Reader"
               }
@@ -533,9 +613,7 @@ module storageAccount 'br:bicep/modules/storage.storage-account:1.0.0' = {
     "roleAssignments": {
       "value": [
         {
-          "principalIds": [
-            "<managedIdentityPrincipalId>"
-          ],
+          "principalId": "<principalId>",
           "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
@@ -547,15 +625,22 @@ module storageAccount 'br:bicep/modules/storage.storage-account:1.0.0' = {
     "skuName": {
       "value": "Standard_LRS"
     },
-    "systemAssignedIdentity": {
-      "value": true
-    },
     "tableServices": {
       "value": {
-        "diagnosticEventHubAuthorizationRuleId": "<diagnosticEventHubAuthorizationRuleId>",
-        "diagnosticEventHubName": "<diagnosticEventHubName>",
-        "diagnosticStorageAccountId": "<diagnosticStorageAccountId>",
-        "diagnosticWorkspaceId": "<diagnosticWorkspaceId>",
+        "diagnosticSettings": [
+          {
+            "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+            "eventHubName": "<eventHubName>",
+            "metricCategories": [
+              {
+                "category": "AllMetrics"
+              }
+            ],
+            "name": "customSetting",
+            "storageAccountResourceId": "<storageAccountResourceId>",
+            "workspaceResourceId": "<workspaceResourceId>"
+          }
+        ],
         "tables": [
           "table1",
           "table2"
@@ -567,11 +652,6 @@ module storageAccount 'br:bicep/modules/storage.storage-account:1.0.0' = {
         "Environment": "Non-Prod",
         "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
-      }
-    },
-    "userAssignedIdentities": {
-      "value": {
-        "<managedIdentityResourceId>": {}
       }
     }
   }
@@ -620,6 +700,12 @@ module storageAccount 'br:bicep/modules/storage.storage-account:1.0.0' = {
     cMKKeyVaultResourceId: '<cMKKeyVaultResourceId>'
     cMKUserAssignedIdentityResourceId: '<cMKUserAssignedIdentityResourceId>'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    managedIdentities: {
+      systemAssigned: false
+      userAssignedResourcesIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
     privateEndpoints: [
       {
         privateDnsZoneResourceIds: [
@@ -636,14 +722,10 @@ module storageAccount 'br:bicep/modules/storage.storage-account:1.0.0' = {
     ]
     requireInfrastructureEncryption: true
     skuName: 'Standard_LRS'
-    systemAssignedIdentity: false
     tags: {
       Environment: 'Non-Prod'
       'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
-    }
-    userAssignedIdentities: {
-      '<managedIdentityResourceId>': {}
     }
   }
 }
@@ -704,6 +786,14 @@ module storageAccount 'br:bicep/modules/storage.storage-account:1.0.0' = {
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     },
+    "managedIdentities": {
+      "value": {
+        "systemAssigned": false,
+        "userAssignedResourcesIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
+    },
     "privateEndpoints": {
       "value": [
         {
@@ -726,19 +816,11 @@ module storageAccount 'br:bicep/modules/storage.storage-account:1.0.0' = {
     "skuName": {
       "value": "Standard_LRS"
     },
-    "systemAssignedIdentity": {
-      "value": false
-    },
     "tags": {
       "value": {
         "Environment": "Non-Prod",
         "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
-      }
-    },
-    "userAssignedIdentities": {
-      "value": {
-        "<managedIdentityResourceId>": {}
       }
     }
   }
@@ -814,10 +896,20 @@ module storageAccount 'br:bicep/modules/storage.storage-account:1.0.0' = {
     name: 'ssanfs001'
     // Non-required parameters
     allowBlobPublicAccess: false
-    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-    diagnosticEventHubName: '<diagnosticEventHubName>'
-    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    diagnosticSettings: [
+      {
+        eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+        eventHubName: '<eventHubName>'
+        metricCategories: [
+          {
+            category: 'AllMetrics'
+          }
+        ]
+        name: 'customSetting'
+        storageAccountResourceId: '<storageAccountResourceId>'
+        workspaceResourceId: '<workspaceResourceId>'
+      }
+    ]
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     fileServices: {
       shares: [
@@ -832,25 +924,25 @@ module storageAccount 'br:bicep/modules/storage.storage-account:1.0.0' = {
       kind: 'CanNotDelete'
       name: 'myCustomLockName'
     }
+    managedIdentities: {
+      systemAssigned: true
+      userAssignedResourcesIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
     roleAssignments: [
       {
-        principalIds: [
-          '<managedIdentityPrincipalId>'
-        ]
+        principalId: '<principalId>'
         principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
     skuName: 'Premium_LRS'
     supportsHttpsTrafficOnly: false
-    systemAssignedIdentity: true
     tags: {
       Environment: 'Non-Prod'
       'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
-    }
-    userAssignedIdentities: {
-      '<managedIdentityResourceId>': {}
     }
   }
 }
@@ -876,17 +968,21 @@ module storageAccount 'br:bicep/modules/storage.storage-account:1.0.0' = {
     "allowBlobPublicAccess": {
       "value": false
     },
-    "diagnosticEventHubAuthorizationRuleId": {
-      "value": "<diagnosticEventHubAuthorizationRuleId>"
-    },
-    "diagnosticEventHubName": {
-      "value": "<diagnosticEventHubName>"
-    },
-    "diagnosticStorageAccountId": {
-      "value": "<diagnosticStorageAccountId>"
-    },
-    "diagnosticWorkspaceId": {
-      "value": "<diagnosticWorkspaceId>"
+    "diagnosticSettings": {
+      "value": [
+        {
+          "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+          "eventHubName": "<eventHubName>",
+          "metricCategories": [
+            {
+              "category": "AllMetrics"
+            }
+          ],
+          "name": "customSetting",
+          "storageAccountResourceId": "<storageAccountResourceId>",
+          "workspaceResourceId": "<workspaceResourceId>"
+        }
+      ]
     },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
@@ -910,12 +1006,18 @@ module storageAccount 'br:bicep/modules/storage.storage-account:1.0.0' = {
         "name": "myCustomLockName"
       }
     },
+    "managedIdentities": {
+      "value": {
+        "systemAssigned": true,
+        "userAssignedResourcesIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
+    },
     "roleAssignments": {
       "value": [
         {
-          "principalIds": [
-            "<managedIdentityPrincipalId>"
-          ],
+          "principalId": "<principalId>",
           "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
@@ -927,19 +1029,11 @@ module storageAccount 'br:bicep/modules/storage.storage-account:1.0.0' = {
     "supportsHttpsTrafficOnly": {
       "value": false
     },
-    "systemAssignedIdentity": {
-      "value": true
-    },
     "tags": {
       "value": {
         "Environment": "Non-Prod",
         "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
-      }
-    },
-    "userAssignedIdentities": {
-      "value": {
-        "<managedIdentityResourceId>": {}
       }
     }
   }
@@ -1047,12 +1141,7 @@ module storageAccount 'br:bicep/modules/storage.storage-account:1.0.0' = {
 | [`customDomainName`](#parameter-customdomainname) | string | Sets the custom domain name assigned to the storage account. Name is the CNAME source. |
 | [`customDomainUseSubDomainName`](#parameter-customdomainusesubdomainname) | bool | Indicates whether indirect CName validation is enabled. This should only be set on updates. |
 | [`defaultToOAuthAuthentication`](#parameter-defaulttooauthauthentication) | bool | A boolean flag which indicates whether the default authentication is OAuth or not. |
-| [`diagnosticEventHubAuthorizationRuleId`](#parameter-diagnosticeventhubauthorizationruleid) | string | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
-| [`diagnosticEventHubName`](#parameter-diagnosticeventhubname) | string | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
-| [`diagnosticMetricsToEnable`](#parameter-diagnosticmetricstoenable) | array | The name of metrics that will be streamed. |
-| [`diagnosticSettingsName`](#parameter-diagnosticsettingsname) | string | The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings". |
-| [`diagnosticStorageAccountId`](#parameter-diagnosticstorageaccountid) | string | Resource ID of the diagnostic storage account. |
-| [`diagnosticWorkspaceId`](#parameter-diagnosticworkspaceid) | string | Resource ID of the diagnostic log analytics workspace. |
+| [`diagnosticSettings`](#parameter-diagnosticsettings) | array | The diagnostic settings of the service. |
 | [`dnsEndpointType`](#parameter-dnsendpointtype) | string | Allows you to specify the type of endpoint. Set this to AzureDNSZone to create a large number of accounts in a single subscription, which creates accounts in an Azure DNS Zone and the endpoint URL will have an alphanumeric DNS Zone identifier. |
 | [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
 | [`enableNfsV3`](#parameter-enablenfsv3) | bool | If true, enables NFS 3.0 support for the storage account. Requires enableHierarchicalNamespace to be true. |
@@ -1064,6 +1153,7 @@ module storageAccount 'br:bicep/modules/storage.storage-account:1.0.0' = {
 | [`localUsers`](#parameter-localusers) | array | Local users to deploy for SFTP authentication. |
 | [`location`](#parameter-location) | string | Location for all resources. |
 | [`lock`](#parameter-lock) | object | The lock settings of the service. |
+| [`managedIdentities`](#parameter-managedidentities) | object | The managed identity definition for this resource. |
 | [`managementPolicyRules`](#parameter-managementpolicyrules) | array | The Storage Account ManagementPolicies Rules. |
 | [`minimumTlsVersion`](#parameter-minimumtlsversion) | string | Set the minimum TLS version on request to storage. |
 | [`networkAcls`](#parameter-networkacls) | object | Networks ACLs, this value contains IPs to whitelist and/or Subnet information. For security reasons, it is recommended to set the DefaultAction Deny. |
@@ -1075,10 +1165,8 @@ module storageAccount 'br:bicep/modules/storage.storage-account:1.0.0' = {
 | [`sasExpirationPeriod`](#parameter-sasexpirationperiod) | string | The SAS expiration period. DD.HH:MM:SS. |
 | [`skuName`](#parameter-skuname) | string | Storage Account Sku Name. |
 | [`supportsHttpsTrafficOnly`](#parameter-supportshttpstrafficonly) | bool | Allows HTTPS traffic only to storage service if sets to true. |
-| [`systemAssignedIdentity`](#parameter-systemassignedidentity) | bool | Enables system assigned managed identity on the resource. |
 | [`tableServices`](#parameter-tableservices) | object | Table service and tables to create. |
 | [`tags`](#parameter-tags) | object | Tags of the resource. |
-| [`userAssignedIdentities`](#parameter-userassignedidentities) | object | The ID(s) to assign to the resource. |
 
 ### Parameter: `accessTier`
 
@@ -1180,48 +1268,92 @@ A boolean flag which indicates whether the default authentication is OAuth or no
 - Type: bool
 - Default: `False`
 
-### Parameter: `diagnosticEventHubAuthorizationRuleId`
+### Parameter: `diagnosticSettings`
 
-Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.
-- Required: No
-- Type: string
-- Default: `''`
-
-### Parameter: `diagnosticEventHubName`
-
-Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.
-- Required: No
-- Type: string
-- Default: `''`
-
-### Parameter: `diagnosticMetricsToEnable`
-
-The name of metrics that will be streamed.
+The diagnostic settings of the service.
 - Required: No
 - Type: array
-- Default: `[Transaction]`
-- Allowed: `[Transaction]`
 
-### Parameter: `diagnosticSettingsName`
 
-The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings".
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`eventHubAuthorizationRuleResourceId`](#parameter-diagnosticsettingseventhubauthorizationruleresourceid) | No | string | Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
+| [`eventHubName`](#parameter-diagnosticsettingseventhubname) | No | string | Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
+| [`logAnalyticsDestinationType`](#parameter-diagnosticsettingsloganalyticsdestinationtype) | No | string | Optional. A string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destination type. |
+| [`marketplacePartnerResourceId`](#parameter-diagnosticsettingsmarketplacepartnerresourceid) | No | string | Optional. The full ARM resource ID of the Marketplace resource to which you would like to send Diagnostic Logs. |
+| [`metricCategories`](#parameter-diagnosticsettingsmetriccategories) | No | array | Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
+| [`name`](#parameter-diagnosticsettingsname) | No | string | Optional. The name of diagnostic setting. |
+| [`storageAccountResourceId`](#parameter-diagnosticsettingsstorageaccountresourceid) | No | string | Optional. Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
+| [`workspaceResourceId`](#parameter-diagnosticsettingsworkspaceresourceid) | No | string | Optional. Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
+
+### Parameter: `diagnosticSettings.eventHubAuthorizationRuleResourceId`
+
+Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.
+
 - Required: No
 - Type: string
-- Default: `''`
 
-### Parameter: `diagnosticStorageAccountId`
+### Parameter: `diagnosticSettings.eventHubName`
 
-Resource ID of the diagnostic storage account.
+Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.
+
 - Required: No
 - Type: string
-- Default: `''`
 
-### Parameter: `diagnosticWorkspaceId`
+### Parameter: `diagnosticSettings.logAnalyticsDestinationType`
 
-Resource ID of the diagnostic log analytics workspace.
+Optional. A string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destination type.
+
 - Required: No
 - Type: string
-- Default: `''`
+- Allowed: `[AzureDiagnostics, Dedicated]`
+
+### Parameter: `diagnosticSettings.marketplacePartnerResourceId`
+
+Optional. The full ARM resource ID of the Marketplace resource to which you would like to send Diagnostic Logs.
+
+- Required: No
+- Type: string
+
+### Parameter: `diagnosticSettings.metricCategories`
+
+Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection.
+
+- Required: No
+- Type: array
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`category`](#parameter-diagnosticsettingsmetriccategoriescategory) | Yes | string | Required. Name of a Diagnostic Metric category for a resource type this setting is applied to. Set to 'AllMetrics' to collect all metrics. |
+
+### Parameter: `diagnosticSettings.metricCategories.category`
+
+Required. Name of a Diagnostic Metric category for a resource type this setting is applied to. Set to 'AllMetrics' to collect all metrics.
+
+- Required: Yes
+- Type: string
+
+
+### Parameter: `diagnosticSettings.name`
+
+Optional. The name of diagnostic setting.
+
+- Required: No
+- Type: string
+
+### Parameter: `diagnosticSettings.storageAccountResourceId`
+
+Optional. Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.
+
+- Required: No
+- Type: string
+
+### Parameter: `diagnosticSettings.workspaceResourceId`
+
+Optional. Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.
+
+- Required: No
+- Type: string
 
 ### Parameter: `dnsEndpointType`
 
@@ -1330,6 +1462,32 @@ Optional. Specify the name of lock.
 - Required: No
 - Type: string
 
+### Parameter: `managedIdentities`
+
+The managed identity definition for this resource.
+- Required: No
+- Type: object
+
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`systemAssigned`](#parameter-managedidentitiessystemassigned) | No | bool | Optional. Enables system assigned managed identity on the resource. |
+| [`userAssignedResourcesIds`](#parameter-managedidentitiesuserassignedresourcesids) | No | array | Optional. The resource ID(s) to assign to the resource. |
+
+### Parameter: `managedIdentities.systemAssigned`
+
+Optional. Enables system assigned managed identity on the resource.
+
+- Required: No
+- Type: bool
+
+### Parameter: `managedIdentities.userAssignedResourcesIds`
+
+Optional. The resource ID(s) to assign to the resource.
+
+- Required: No
+- Type: array
+
 ### Parameter: `managementPolicyRules`
 
 The Storage Account ManagementPolicies Rules.
@@ -1363,7 +1521,168 @@ Networks ACLs, this value contains IPs to whitelist and/or Subnet information. F
 Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.
 - Required: No
 - Type: array
-- Default: `[]`
+
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`applicationSecurityGroupResourceIds`](#parameter-privateendpointsapplicationsecuritygroupresourceids) | No | array | Optional. Application security groups in which the private endpoint IP configuration is included. |
+| [`customDnsConfigs`](#parameter-privateendpointscustomdnsconfigs) | No | array | Optional. Custom DNS configurations. |
+| [`customNetworkInterfaceName`](#parameter-privateendpointscustomnetworkinterfacename) | No | string | Optional. The custom name of the network interface attached to the private endpoint. |
+| [`enableTelemetry`](#parameter-privateendpointsenabletelemetry) | No | bool | Optional. Enable/Disable usage telemetry for module. |
+| [`ipConfigurations`](#parameter-privateendpointsipconfigurations) | No | array | Optional. A list of IP configurations of the private endpoint. This will be used to map to the First Party Service endpoints. |
+| [`location`](#parameter-privateendpointslocation) | No | string | Optional. The location to deploy the private endpoint to. |
+| [`lock`](#parameter-privateendpointslock) | No | object | Optional. Specify the type of lock. |
+| [`manualPrivateLinkServiceConnections`](#parameter-privateendpointsmanualprivatelinkserviceconnections) | No | array | Optional. Manual PrivateLink Service Connections. |
+| [`name`](#parameter-privateendpointsname) | No | string | Optional. The name of the private endpoint. |
+| [`privateDnsZoneGroupName`](#parameter-privateendpointsprivatednszonegroupname) | No | string | Optional. The name of the private DNS zone group to create if privateDnsZoneResourceIds were provided. |
+| [`privateDnsZoneResourceIds`](#parameter-privateendpointsprivatednszoneresourceids) | No | array | Optional. The private DNS zone groups to associate the private endpoint with. A DNS zone group can support up to 5 DNS zones. |
+| [`roleAssignments`](#parameter-privateendpointsroleassignments) | No | array | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| [`service`](#parameter-privateendpointsservice) | Yes | string | Required. The service (sub-) type to deploy the private endpoint for. For example "vault" or "blob". |
+| [`subnetResourceId`](#parameter-privateendpointssubnetresourceid) | Yes | string | Required. Resource ID of the subnet where the endpoint needs to be created. |
+| [`tags`](#parameter-privateendpointstags) | No | object | Optional. Tags to be applied on all resources/resource groups in this deployment. |
+
+### Parameter: `privateEndpoints.applicationSecurityGroupResourceIds`
+
+Optional. Application security groups in which the private endpoint IP configuration is included.
+
+- Required: No
+- Type: array
+
+### Parameter: `privateEndpoints.customDnsConfigs`
+
+Optional. Custom DNS configurations.
+
+- Required: No
+- Type: array
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`fqdn`](#parameter-privateendpointscustomdnsconfigsfqdn) | No | string |  |
+| [`ipAddresses`](#parameter-privateendpointscustomdnsconfigsipaddresses) | Yes | array |  |
+
+### Parameter: `privateEndpoints.customDnsConfigs.fqdn`
+- Required: No
+- Type: string
+
+### Parameter: `privateEndpoints.customDnsConfigs.ipAddresses`
+- Required: Yes
+- Type: array
+
+
+### Parameter: `privateEndpoints.customNetworkInterfaceName`
+
+Optional. The custom name of the network interface attached to the private endpoint.
+
+- Required: No
+- Type: string
+
+### Parameter: `privateEndpoints.enableTelemetry`
+
+Optional. Enable/Disable usage telemetry for module.
+
+- Required: No
+- Type: bool
+
+### Parameter: `privateEndpoints.ipConfigurations`
+
+Optional. A list of IP configurations of the private endpoint. This will be used to map to the First Party Service endpoints.
+
+- Required: No
+- Type: array
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`groupId`](#parameter-privateendpointsipconfigurationsgroupid) | Yes | string |  |
+| [`memberName`](#parameter-privateendpointsipconfigurationsmembername) | Yes | string |  |
+| [`name`](#parameter-privateendpointsipconfigurationsname) | Yes | string |  |
+| [`privateIpAddress`](#parameter-privateendpointsipconfigurationsprivateipaddress) | Yes | string |  |
+
+### Parameter: `privateEndpoints.ipConfigurations.groupId`
+- Required: Yes
+- Type: string
+
+### Parameter: `privateEndpoints.ipConfigurations.memberName`
+- Required: Yes
+- Type: string
+
+### Parameter: `privateEndpoints.ipConfigurations.name`
+- Required: Yes
+- Type: string
+
+### Parameter: `privateEndpoints.ipConfigurations.privateIpAddress`
+- Required: Yes
+- Type: string
+
+
+### Parameter: `privateEndpoints.location`
+
+Optional. The location to deploy the private endpoint to.
+
+- Required: No
+- Type: string
+
+### Parameter: `privateEndpoints.lock`
+
+Optional. Specify the type of lock.
+
+- Required: No
+- Type: object
+
+### Parameter: `privateEndpoints.manualPrivateLinkServiceConnections`
+
+Optional. Manual PrivateLink Service Connections.
+
+- Required: No
+- Type: array
+
+### Parameter: `privateEndpoints.name`
+
+Optional. The name of the private endpoint.
+
+- Required: No
+- Type: string
+
+### Parameter: `privateEndpoints.privateDnsZoneGroupName`
+
+Optional. The name of the private DNS zone group to create if privateDnsZoneResourceIds were provided.
+
+- Required: No
+- Type: string
+
+### Parameter: `privateEndpoints.privateDnsZoneResourceIds`
+
+Optional. The private DNS zone groups to associate the private endpoint with. A DNS zone group can support up to 5 DNS zones.
+
+- Required: No
+- Type: array
+
+### Parameter: `privateEndpoints.roleAssignments`
+
+Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
+
+- Required: No
+- Type: array
+
+### Parameter: `privateEndpoints.service`
+
+Required. The service (sub-) type to deploy the private endpoint for. For example "vault" or "blob".
+
+- Required: Yes
+- Type: string
+
+### Parameter: `privateEndpoints.subnetResourceId`
+
+Required. Resource ID of the subnet where the endpoint needs to be created.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `privateEndpoints.tags`
+
+Optional. Tags to be applied on all resources/resource groups in this deployment.
+
+- Required: No
+- Type: object
 
 ### Parameter: `publicNetworkAccess`
 
@@ -1392,7 +1711,68 @@ A Boolean indicating whether or not the service applies a secondary layer of enc
 Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
 - Required: No
 - Type: array
-- Default: `[]`
+
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`condition`](#parameter-roleassignmentscondition) | No | string | Optional. The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container" |
+| [`conditionVersion`](#parameter-roleassignmentsconditionversion) | No | string | Optional. Version of the condition. |
+| [`delegatedManagedIdentityResourceId`](#parameter-roleassignmentsdelegatedmanagedidentityresourceid) | No | string | Optional. The Resource Id of the delegated managed identity resource. |
+| [`description`](#parameter-roleassignmentsdescription) | No | string | Optional. The description of the role assignment. |
+| [`principalId`](#parameter-roleassignmentsprincipalid) | Yes | string | Required. The principal ID of the principal (user/group/identity) to assign the role to. |
+| [`principalType`](#parameter-roleassignmentsprincipaltype) | No | string | Optional. The principal type of the assigned principal ID. |
+| [`roleDefinitionIdOrName`](#parameter-roleassignmentsroledefinitionidorname) | Yes | string | Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead. |
+
+### Parameter: `roleAssignments.condition`
+
+Optional. The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container"
+
+- Required: No
+- Type: string
+
+### Parameter: `roleAssignments.conditionVersion`
+
+Optional. Version of the condition.
+
+- Required: No
+- Type: string
+- Allowed: `[2.0]`
+
+### Parameter: `roleAssignments.delegatedManagedIdentityResourceId`
+
+Optional. The Resource Id of the delegated managed identity resource.
+
+- Required: No
+- Type: string
+
+### Parameter: `roleAssignments.description`
+
+Optional. The description of the role assignment.
+
+- Required: No
+- Type: string
+
+### Parameter: `roleAssignments.principalId`
+
+Required. The principal ID of the principal (user/group/identity) to assign the role to.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `roleAssignments.principalType`
+
+Optional. The principal type of the assigned principal ID.
+
+- Required: No
+- Type: string
+- Allowed: `[Device, ForeignGroup, Group, ServicePrincipal, User]`
+
+### Parameter: `roleAssignments.roleDefinitionIdOrName`
+
+Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead.
+
+- Required: Yes
+- Type: string
 
 ### Parameter: `sasExpirationPeriod`
 
@@ -1416,13 +1796,6 @@ Allows HTTPS traffic only to storage service if sets to true.
 - Type: bool
 - Default: `True`
 
-### Parameter: `systemAssignedIdentity`
-
-Enables system assigned managed identity on the resource.
-- Required: No
-- Type: bool
-- Default: `False`
-
 ### Parameter: `tableServices`
 
 Table service and tables to create.
@@ -1437,13 +1810,6 @@ Tags of the resource.
 - Type: object
 - Default: `{object}`
 
-### Parameter: `userAssignedIdentities`
-
-The ID(s) to assign to the resource.
-- Required: No
-- Type: object
-- Default: `{object}`
-
 
 ## Outputs
 
@@ -1454,7 +1820,7 @@ The ID(s) to assign to the resource.
 | `primaryBlobEndpoint` | string | The primary blob endpoint reference if blob services are deployed. |
 | `resourceGroupName` | string | The resource group of the deployed storage account. |
 | `resourceId` | string | The resource ID of the deployed storage account. |
-| `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
+| `systemAssignedMIPrincipalId` | string | The principal ID of the system assigned identity. |
 
 ## Cross-referenced modules
 

@@ -8,7 +8,7 @@ metadata description = 'This instance deploys the module with most of its featur
 // ========== //
 @description('Optional. The name of the resource group to deploy for testing purposes.')
 @maxLength(90)
-param resourceGroupName string = 'ms.purview-${serviceShort}-rg'
+param resourceGroupName string = 'dep-${namePrefix}-purview-${serviceShort}-rg'
 
 @description('Optional. The location to deploy resources to.')
 param location string = 'eastus' // Only available in selected locations: eastus, eastus2, southcentralus, westcentralus, westus, westus2, westus3
@@ -72,21 +72,31 @@ module testDeployment '../../main.bicep' = {
       Environment: 'Non-Prod'
       Role: 'DeploymentValidation'
     }
-    userAssignedIdentities: {
-      '${nestedDependencies.outputs.managedIdentityResourceId}': {}
+    managedIdentities: {
+      userAssignedResourcesIds: [
+        nestedDependencies.outputs.managedIdentityResourceId
+      ]
     }
     managedResourceGroupName: '${namePrefix}${serviceShort}001-managed-rg'
     publicNetworkAccess: 'Disabled'
-    diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
-    diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
-    diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
-    diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
+    diagnosticSettings: [
+      {
+        name: 'customSetting'
+        metricCategories: [
+          {
+            category: 'AllMetrics'
+          }
+        ]
+        eventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
+        eventHubAuthorizationRuleResourceId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
+        storageAccountResourceId: diagnosticDependencies.outputs.storageAccountResourceId
+        workspaceResourceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
+      }
+    ]
     roleAssignments: [
       {
         roleDefinitionIdOrName: 'Reader'
-        principalIds: [
-          nestedDependencies.outputs.managedIdentityPrincipalId
-        ]
+        principalId: nestedDependencies.outputs.managedIdentityPrincipalId
         principalType: 'ServicePrincipal'
       }
     ]
@@ -161,8 +171,6 @@ module testDeployment '../../main.bicep' = {
       }
     ]
     enableDefaultTelemetry: enableDefaultTelemetry
-    diagnosticLogCategoriesToEnable: [ 'allLogs' ]
-    diagnosticMetricsToEnable: [ 'AllMetrics' ]
     lock: {
       kind: 'CanNotDelete'
       name: 'myCustomLockName'
