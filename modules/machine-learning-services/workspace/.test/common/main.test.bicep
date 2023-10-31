@@ -97,9 +97,11 @@ module testDeployment '../../main.bicep' = {
         }
         sku: 'Basic'
         // Must be false if `primaryUserAssignedIdentity` is provided
-        systemAssignedIdentity: false
-        userAssignedIdentities: {
-          '${nestedDependencies.outputs.managedIdentityResourceId}': {}
+        managedIdentities: {
+          systemAssigned: false
+          userAssignedResourcesIds: [
+            nestedDependencies.outputs.managedIdentityResourceId
+          ]
         }
       }
     ]
@@ -145,9 +147,11 @@ module testDeployment '../../main.bicep' = {
         principalType: 'ServicePrincipal'
       }
     ]
-    systemAssignedIdentity: false
-    userAssignedIdentities: {
-      '${nestedDependencies.outputs.managedIdentityResourceId}': {}
+    managedIdentities: {
+      systemAssigned: false
+      userAssignedResourcesIds: [
+        nestedDependencies.outputs.managedIdentityResourceId
+      ]
     }
     tags: {
       'hidden-title': 'This is visible in the resource name'

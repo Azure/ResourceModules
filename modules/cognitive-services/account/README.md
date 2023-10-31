@@ -1,5 +1,7 @@
 # Cognitive Services `[Microsoft.CognitiveServices/accounts]`
 
+> This module has already been migrated to [AVM](https://github.com/Azure/bicep-registry-modules/tree/main/avm/res). Only the AVM version is expected to receive updates / new features. Please do not work on improving this module in [CARML](https://aka.ms/carml).
+
 This module deploys a Cognitive Service.
 
 ## Navigation
@@ -72,6 +74,12 @@ module account 'br:bicep/modules/cognitive-services.account:1.0.0' = {
       kind: 'CanNotDelete'
       name: 'myCustomLockName'
     }
+    managedIdentities: {
+      systemAssigned: true
+      userAssignedResourcesIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
     networkAcls: {
       defaultAction: 'Deny'
       ipRules: [
@@ -107,14 +115,10 @@ module account 'br:bicep/modules/cognitive-services.account:1.0.0' = {
       }
     ]
     sku: 'S0'
-    systemAssignedIdentity: true
     tags: {
       Environment: 'Non-Prod'
       'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
-    }
-    userAssignedIdentities: {
-      '<managedIdentityResourceId>': {}
     }
   }
 }
@@ -168,6 +172,14 @@ module account 'br:bicep/modules/cognitive-services.account:1.0.0' = {
         "name": "myCustomLockName"
       }
     },
+    "managedIdentities": {
+      "value": {
+        "systemAssigned": true,
+        "userAssignedResourcesIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
+    },
     "networkAcls": {
       "value": {
         "defaultAction": "Deny",
@@ -211,19 +223,11 @@ module account 'br:bicep/modules/cognitive-services.account:1.0.0' = {
     "sku": {
       "value": "S0"
     },
-    "systemAssignedIdentity": {
-      "value": true
-    },
     "tags": {
       "value": {
         "Environment": "Non-Prod",
         "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
-      }
-    },
-    "userAssignedIdentities": {
-      "value": {
-        "<managedIdentityResourceId>": {}
       }
     }
   }
@@ -251,12 +255,14 @@ module account 'br:bicep/modules/cognitive-services.account:1.0.0' = {
     cMKKeyVaultResourceId: '<cMKKeyVaultResourceId>'
     cMKUserAssignedIdentityResourceId: '<cMKUserAssignedIdentityResourceId>'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    managedIdentities: {
+      userAssignedResourcesIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
     publicNetworkAccess: 'Enabled'
     restrictOutboundNetworkAccess: false
     sku: 'S0'
-    userAssignedIdentities: {
-      '<managedIdentityResourceId>': {}
-    }
   }
 }
 ```
@@ -293,6 +299,13 @@ module account 'br:bicep/modules/cognitive-services.account:1.0.0' = {
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     },
+    "managedIdentities": {
+      "value": {
+        "userAssignedResourcesIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
+    },
     "publicNetworkAccess": {
       "value": "Enabled"
     },
@@ -301,11 +314,6 @@ module account 'br:bicep/modules/cognitive-services.account:1.0.0' = {
     },
     "sku": {
       "value": "S0"
-    },
-    "userAssignedIdentities": {
-      "value": {
-        "<managedIdentityResourceId>": {}
-      }
     }
   }
 }
@@ -382,6 +390,12 @@ module account 'br:bicep/modules/cognitive-services.account:1.0.0' = {
     // Non-required parameters
     customSubDomainName: 'speechdomain'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    managedIdentities: {
+      systemAssigned: true
+      userAssignedResourcesIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
     privateEndpoints: [
       {
         privateDnsZoneResourceIds: [
@@ -397,14 +411,10 @@ module account 'br:bicep/modules/cognitive-services.account:1.0.0' = {
       }
     ]
     sku: 'S0'
-    systemAssignedIdentity: true
     tags: {
       Environment: 'Non-Prod'
       'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
-    }
-    userAssignedIdentities: {
-      '<managedIdentityResourceId>': {}
     }
   }
 }
@@ -436,6 +446,14 @@ module account 'br:bicep/modules/cognitive-services.account:1.0.0' = {
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     },
+    "managedIdentities": {
+      "value": {
+        "systemAssigned": true,
+        "userAssignedResourcesIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
+    },
     "privateEndpoints": {
       "value": [
         {
@@ -455,19 +473,11 @@ module account 'br:bicep/modules/cognitive-services.account:1.0.0' = {
     "sku": {
       "value": "S0"
     },
-    "systemAssignedIdentity": {
-      "value": true
-    },
     "tags": {
       "value": {
         "Environment": "Non-Prod",
         "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
-      }
-    },
-    "userAssignedIdentities": {
-      "value": {
-        "<managedIdentityResourceId>": {}
       }
     }
   }
@@ -494,7 +504,6 @@ module account 'br:bicep/modules/cognitive-services.account:1.0.0' = {
 | [`cMKKeyVaultResourceId`](#parameter-cmkkeyvaultresourceid) | string | The resource ID of a key vault to reference a customer managed key for encryption from. Required if 'cMKKeyName' is not empty. |
 | [`cMKUserAssignedIdentityResourceId`](#parameter-cmkuserassignedidentityresourceid) | string | User assigned identity to use when fetching the customer managed key. Required if 'cMKKeyName' is not empty. |
 | [`customSubDomainName`](#parameter-customsubdomainname) | string | Subdomain name used for token-based authentication. Required if 'networkAcls' or 'privateEndpoints' are set. |
-| [`userAssignedIdentities`](#parameter-userassignedidentities) | object | The ID(s) to assign to the resource. Required if a user assigned identity is used for encryption. |
 
 **Optional parameters**
 
@@ -510,6 +519,7 @@ module account 'br:bicep/modules/cognitive-services.account:1.0.0' = {
 | [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
 | [`location`](#parameter-location) | string | Location for all Resources. |
 | [`lock`](#parameter-lock) | object | The lock settings of the service. |
+| [`managedIdentities`](#parameter-managedidentities) | object | The managed identity definition for this resource. |
 | [`migrationToken`](#parameter-migrationtoken) | string | Resource migration token. |
 | [`networkAcls`](#parameter-networkacls) | object | A collection of rules governing the accessibility from specific network locations. |
 | [`privateEndpoints`](#parameter-privateendpoints) | array | Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
@@ -518,7 +528,6 @@ module account 'br:bicep/modules/cognitive-services.account:1.0.0' = {
 | [`restrictOutboundNetworkAccess`](#parameter-restrictoutboundnetworkaccess) | bool | Restrict outbound network access. |
 | [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | [`sku`](#parameter-sku) | string | SKU of the Cognitive Services resource. Use 'Get-AzCognitiveServicesAccountSku' to determine a valid combinations of 'kind' and 'SKU' for your Azure region. |
-| [`systemAssignedIdentity`](#parameter-systemassignedidentity) | bool | Enables system assigned managed identity on the resource. |
 | [`tags`](#parameter-tags) | object | Tags of the resource. |
 | [`userOwnedStorage`](#parameter-userownedstorage) | array | The storage accounts for this resource. |
 
@@ -747,6 +756,32 @@ Optional. Specify the name of lock.
 
 - Required: No
 - Type: string
+
+### Parameter: `managedIdentities`
+
+The managed identity definition for this resource.
+- Required: No
+- Type: object
+
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`systemAssigned`](#parameter-managedidentitiessystemassigned) | No | bool | Optional. Enables system assigned managed identity on the resource. |
+| [`userAssignedResourcesIds`](#parameter-managedidentitiesuserassignedresourcesids) | No | array | Optional. The resource ID(s) to assign to the resource. Required if a user assigned identity is used for encryption. |
+
+### Parameter: `managedIdentities.systemAssigned`
+
+Optional. Enables system assigned managed identity on the resource.
+
+- Required: No
+- Type: bool
+
+### Parameter: `managedIdentities.userAssignedResourcesIds`
+
+Optional. The resource ID(s) to assign to the resource. Required if a user assigned identity is used for encryption.
+
+- Required: No
+- Type: array
 
 ### Parameter: `migrationToken`
 
@@ -1034,25 +1069,11 @@ SKU of the Cognitive Services resource. Use 'Get-AzCognitiveServicesAccountSku' 
 - Default: `'S0'`
 - Allowed: `[C2, C3, C4, F0, F1, S, S0, S1, S10, S2, S3, S4, S5, S6, S7, S8, S9]`
 
-### Parameter: `systemAssignedIdentity`
-
-Enables system assigned managed identity on the resource.
-- Required: No
-- Type: bool
-- Default: `False`
-
 ### Parameter: `tags`
 
 Tags of the resource.
 - Required: No
 - Type: object
-
-### Parameter: `userAssignedIdentities`
-
-The ID(s) to assign to the resource. Required if a user assigned identity is used for encryption.
-- Required: No
-- Type: object
-- Default: `{object}`
 
 ### Parameter: `userOwnedStorage`
 
@@ -1071,7 +1092,7 @@ The storage accounts for this resource.
 | `name` | string | The name of the cognitive services account. |
 | `resourceGroupName` | string | The resource group the cognitive services account was deployed into. |
 | `resourceId` | string | The resource ID of the cognitive services account. |
-| `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
+| `systemAssignedMIPrincipalId` | string | The principal ID of the system assigned identity. |
 
 ## Cross-referenced modules
 

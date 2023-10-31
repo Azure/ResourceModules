@@ -159,6 +159,12 @@ module namespace 'br:bicep/modules/event-hub.namespace:1.0.0' = {
       kind: 'CanNotDelete'
       name: 'myCustomLockName'
     }
+    managedIdentities: {
+      systemAssigned: true
+      userAssignedResourcesIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
     maximumThroughputUnits: 4
     minimumTlsVersion: '1.2'
     networkRuleSets: {
@@ -201,14 +207,10 @@ module namespace 'br:bicep/modules/event-hub.namespace:1.0.0' = {
     ]
     skuCapacity: 2
     skuName: 'Standard'
-    systemAssignedIdentity: true
     tags: {
       Environment: 'Non-Prod'
       'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
-    }
-    userAssignedIdentities: {
-      '<managedIdentityResourceId>': {}
     }
     zoneRedundant: true
   }
@@ -351,6 +353,14 @@ module namespace 'br:bicep/modules/event-hub.namespace:1.0.0' = {
         "name": "myCustomLockName"
       }
     },
+    "managedIdentities": {
+      "value": {
+        "systemAssigned": true,
+        "userAssignedResourcesIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
+    },
     "maximumThroughputUnits": {
       "value": 4
     },
@@ -409,19 +419,11 @@ module namespace 'br:bicep/modules/event-hub.namespace:1.0.0' = {
     "skuName": {
       "value": "Standard"
     },
-    "systemAssignedIdentity": {
-      "value": true
-    },
     "tags": {
       "value": {
         "Environment": "Non-Prod",
         "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
-      }
-    },
-    "userAssignedIdentities": {
-      "value": {
-        "<managedIdentityResourceId>": {}
       }
     },
     "zoneRedundant": {
@@ -451,17 +453,19 @@ module namespace 'br:bicep/modules/event-hub.namespace:1.0.0' = {
     cMKKeyVaultResourceId: '<cMKKeyVaultResourceId>'
     cMKUserAssignedIdentityResourceId: '<cMKUserAssignedIdentityResourceId>'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    managedIdentities: {
+      systemAssigned: false
+      userAssignedResourcesIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
     publicNetworkAccess: 'SecuredByPerimeter'
     requireInfrastructureEncryption: true
     skuName: 'Premium'
-    systemAssignedIdentity: false
     tags: {
       Environment: 'Non-Prod'
       'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
-    }
-    userAssignedIdentities: {
-      '<managedIdentityResourceId>': {}
     }
   }
 }
@@ -496,6 +500,14 @@ module namespace 'br:bicep/modules/event-hub.namespace:1.0.0' = {
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     },
+    "managedIdentities": {
+      "value": {
+        "systemAssigned": false,
+        "userAssignedResourcesIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
+    },
     "publicNetworkAccess": {
       "value": "SecuredByPerimeter"
     },
@@ -505,19 +517,11 @@ module namespace 'br:bicep/modules/event-hub.namespace:1.0.0' = {
     "skuName": {
       "value": "Premium"
     },
-    "systemAssignedIdentity": {
-      "value": false
-    },
     "tags": {
       "value": {
         "Environment": "Non-Prod",
         "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
-      }
-    },
-    "userAssignedIdentities": {
-      "value": {
-        "<managedIdentityResourceId>": {}
       }
     }
   }
@@ -704,6 +708,7 @@ module namespace 'br:bicep/modules/event-hub.namespace:1.0.0' = {
 | [`kafkaEnabled`](#parameter-kafkaenabled) | bool | Value that indicates whether Kafka is enabled for Event Hubs Namespace. |
 | [`location`](#parameter-location) | string | Location for all resources. |
 | [`lock`](#parameter-lock) | object | The lock settings of the service. |
+| [`managedIdentities`](#parameter-managedidentities) | object | The managed identity definition for this resource. |
 | [`maximumThroughputUnits`](#parameter-maximumthroughputunits) | int | Upper limit of throughput units when AutoInflate is enabled, value should be within 0 to 20 throughput units. |
 | [`minimumTlsVersion`](#parameter-minimumtlsversion) | string | The minimum TLS version for the cluster to support. |
 | [`networkRuleSets`](#parameter-networkrulesets) | object | Configure networking options. This object contains IPs/Subnets to allow or restrict access to private endpoints only. For security reasons, it is recommended to configure this object on the Namespace. |
@@ -713,9 +718,7 @@ module namespace 'br:bicep/modules/event-hub.namespace:1.0.0' = {
 | [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | [`skuCapacity`](#parameter-skucapacity) | int | The Event Hub's throughput units for Basic or Standard tiers, where value should be 0 to 20 throughput units. The Event Hubs premium units for Premium tier, where value should be 0 to 10 premium units. |
 | [`skuName`](#parameter-skuname) | string | event hub plan SKU name. |
-| [`systemAssignedIdentity`](#parameter-systemassignedidentity) | bool | Enables system assigned managed identity on the resource. |
 | [`tags`](#parameter-tags) | object | Tags of the resource. |
-| [`userAssignedIdentities`](#parameter-userassignedidentities) | object | The ID(s) to assign to the resource. |
 | [`zoneRedundant`](#parameter-zoneredundant) | bool | Switch to make the Event Hub Namespace zone redundant. |
 
 ### Parameter: `authorizationRules`
@@ -943,6 +946,32 @@ Optional. Specify the name of lock.
 
 - Required: No
 - Type: string
+
+### Parameter: `managedIdentities`
+
+The managed identity definition for this resource.
+- Required: No
+- Type: object
+
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`systemAssigned`](#parameter-managedidentitiessystemassigned) | No | bool | Optional. Enables system assigned managed identity on the resource. |
+| [`userAssignedResourcesIds`](#parameter-managedidentitiesuserassignedresourcesids) | No | array | Optional. The resource ID(s) to assign to the resource. |
+
+### Parameter: `managedIdentities.systemAssigned`
+
+Optional. Enables system assigned managed identity on the resource.
+
+- Required: No
+- Type: bool
+
+### Parameter: `managedIdentities.userAssignedResourcesIds`
+
+Optional. The resource ID(s) to assign to the resource.
+
+- Required: No
+- Type: array
 
 ### Parameter: `maximumThroughputUnits`
 
@@ -1238,25 +1267,11 @@ event hub plan SKU name.
 - Default: `'Standard'`
 - Allowed: `[Basic, Premium, Standard]`
 
-### Parameter: `systemAssignedIdentity`
-
-Enables system assigned managed identity on the resource.
-- Required: No
-- Type: bool
-- Default: `False`
-
 ### Parameter: `tags`
 
 Tags of the resource.
 - Required: No
 - Type: object
-
-### Parameter: `userAssignedIdentities`
-
-The ID(s) to assign to the resource.
-- Required: No
-- Type: object
-- Default: `{object}`
 
 ### Parameter: `zoneRedundant`
 
@@ -1274,7 +1289,7 @@ Switch to make the Event Hub Namespace zone redundant.
 | `name` | string | The name of the eventspace. |
 | `resourceGroupName` | string | The resource group where the namespace is deployed. |
 | `resourceId` | string | The resource ID of the eventspace. |
-| `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
+| `systemAssignedMIPrincipalId` | string | The principal ID of the system assigned identity. |
 
 ## Cross-referenced modules
 

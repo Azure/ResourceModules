@@ -141,6 +141,12 @@ module virtualMachineScaleSet 'br:bicep/modules/compute.virtual-machine-scale-se
       kind: 'CanNotDelete'
       name: 'myCustomLockName'
     }
+    managedIdentities: {
+      systemAssigned: true
+      userAssignedResourcesIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
     nicConfigurations: [
       {
         ipConfigurations: [
@@ -171,16 +177,12 @@ module virtualMachineScaleSet 'br:bicep/modules/compute.virtual-machine-scale-se
     ]
     scaleSetFaultDomain: 1
     skuCapacity: 1
-    systemAssignedIdentity: true
     tags: {
       Environment: 'Non-Prod'
       'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
     }
     upgradePolicyMode: 'Manual'
-    userAssignedIdentities: {
-      '<managedIdentityResourceId>': {}
-    }
     vmNamePrefix: 'vmsslinvm'
     vmPriority: 'Regular'
   }
@@ -333,6 +335,14 @@ module virtualMachineScaleSet 'br:bicep/modules/compute.virtual-machine-scale-se
         "name": "myCustomLockName"
       }
     },
+    "managedIdentities": {
+      "value": {
+        "systemAssigned": true,
+        "userAssignedResourcesIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
+    },
     "nicConfigurations": {
       "value": [
         {
@@ -373,9 +383,6 @@ module virtualMachineScaleSet 'br:bicep/modules/compute.virtual-machine-scale-se
     "skuCapacity": {
       "value": 1
     },
-    "systemAssignedIdentity": {
-      "value": true
-    },
     "tags": {
       "value": {
         "Environment": "Non-Prod",
@@ -385,11 +392,6 @@ module virtualMachineScaleSet 'br:bicep/modules/compute.virtual-machine-scale-se
     },
     "upgradePolicyMode": {
       "value": "Manual"
-    },
-    "userAssignedIdentities": {
-      "value": {
-        "<managedIdentityResourceId>": {}
-      }
     },
     "vmNamePrefix": {
       "value": "vmsslinvm"
@@ -833,6 +835,12 @@ module virtualMachineScaleSet 'br:bicep/modules/compute.virtual-machine-scale-se
       kind: 'CanNotDelete'
       name: 'myCustomLockName'
     }
+    managedIdentities: {
+      systemAssigned: true
+      userAssignedResourcesIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
     nicConfigurations: [
       {
         ipConfigurations: [
@@ -857,16 +865,12 @@ module virtualMachineScaleSet 'br:bicep/modules/compute.virtual-machine-scale-se
       }
     ]
     skuCapacity: 1
-    systemAssignedIdentity: true
     tags: {
       Environment: 'Non-Prod'
       'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
     }
     upgradePolicyMode: 'Manual'
-    userAssignedIdentities: {
-      '<managedIdentityResourceId>': {}
-    }
     vmNamePrefix: 'vmsswinvm'
     vmPriority: 'Regular'
   }
@@ -1016,6 +1020,14 @@ module virtualMachineScaleSet 'br:bicep/modules/compute.virtual-machine-scale-se
         "name": "myCustomLockName"
       }
     },
+    "managedIdentities": {
+      "value": {
+        "systemAssigned": true,
+        "userAssignedResourcesIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
+    },
     "nicConfigurations": {
       "value": [
         {
@@ -1048,9 +1060,6 @@ module virtualMachineScaleSet 'br:bicep/modules/compute.virtual-machine-scale-se
     "skuCapacity": {
       "value": 1
     },
-    "systemAssignedIdentity": {
-      "value": true
-    },
     "tags": {
       "value": {
         "Environment": "Non-Prod",
@@ -1060,11 +1069,6 @@ module virtualMachineScaleSet 'br:bicep/modules/compute.virtual-machine-scale-se
     },
     "upgradePolicyMode": {
       "value": "Manual"
-    },
-    "userAssignedIdentities": {
-      "value": {
-        "<managedIdentityResourceId>": {}
-      }
     },
     "vmNamePrefix": {
       "value": "vmsswinvm"
@@ -1251,6 +1255,7 @@ module virtualMachineScaleSet 'br:bicep/modules/compute.virtual-machine-scale-se
 | [`licenseType`](#parameter-licensetype) | string | Specifies that the image or disk that is being used was licensed on-premises. This element is only used for images that contain the Windows Server operating system. |
 | [`location`](#parameter-location) | string | Location for all resources. |
 | [`lock`](#parameter-lock) | object | The lock settings of the service. |
+| [`managedIdentities`](#parameter-managedidentities) | object | The managed identity definition for this resource. |
 | [`maxBatchInstancePercent`](#parameter-maxbatchinstancepercent) | int | The maximum percent of total virtual machine instances that will be upgraded simultaneously by the rolling upgrade in one batch. As this is a maximum, unhealthy instances in previous or future batches can cause the percentage of instances in a batch to decrease to ensure higher reliability. |
 | [`maxPriceForLowPriorityVm`](#parameter-maxpriceforlowpriorityvm) | string | Specifies the maximum price you are willing to pay for a low priority VM/VMSS. This price is in US Dollars. |
 | [`maxUnhealthyInstancePercent`](#parameter-maxunhealthyinstancepercent) | int | The maximum percentage of the total virtual machine instances in the scale set that can be simultaneously unhealthy, either as a result of being upgraded, or by being found in an unhealthy state by the virtual machine health checks before the rolling upgrade aborts. This constraint will be checked prior to starting any batch. |
@@ -1272,12 +1277,10 @@ module virtualMachineScaleSet 'br:bicep/modules/compute.virtual-machine-scale-se
 | [`securityType`](#parameter-securitytype) | string | Specifies the SecurityType of the virtual machine scale set. It is set as TrustedLaunch to enable UefiSettings. |
 | [`singlePlacementGroup`](#parameter-singleplacementgroup) | bool | When true this limits the scale set to a single placement group, of max size 100 virtual machines. NOTE: If singlePlacementGroup is true, it may be modified to false. However, if singlePlacementGroup is false, it may not be modified to true. |
 | [`skuCapacity`](#parameter-skucapacity) | int | The initial instance count of scale set VMs. |
-| [`systemAssignedIdentity`](#parameter-systemassignedidentity) | bool | Enables system assigned managed identity on the resource. |
 | [`tags`](#parameter-tags) | object | Tags of the resource. |
 | [`timeZone`](#parameter-timezone) | string | Specifies the time zone of the virtual machine. e.g. 'Pacific Standard Time'. Possible values can be `TimeZoneInfo.id` value from time zones returned by `TimeZoneInfo.GetSystemTimeZones`. |
 | [`ultraSSDEnabled`](#parameter-ultrassdenabled) | bool | The flag that enables or disables a capability to have one or more managed data disks with UltraSSD_LRS storage account type on the VM or VMSS. Managed disks with storage account type UltraSSD_LRS can be added to a virtual machine or virtual machine scale set only if this property is enabled. |
 | [`upgradePolicyMode`](#parameter-upgradepolicymode) | string | Specifies the mode of an upgrade to virtual machines in the scale set.' Manual - You control the application of updates to virtual machines in the scale set. You do this by using the manualUpgrade action. ; Automatic - All virtual machines in the scale set are automatically updated at the same time. - Automatic, Manual, Rolling. |
-| [`userAssignedIdentities`](#parameter-userassignedidentities) | object | The ID(s) to assign to the resource. |
 | [`vmNamePrefix`](#parameter-vmnameprefix) | string | Specifies the computer name prefix for all of the virtual machines in the scale set. |
 | [`vmPriority`](#parameter-vmpriority) | string | Specifies the priority for the virtual machine. |
 | [`vTpmEnabled`](#parameter-vtpmenabled) | bool | Specifies whether vTPM should be enabled on the virtual machine scale set. This parameter is part of the UefiSettings.  SecurityType should be set to TrustedLaunch to enable UefiSettings. |
@@ -1620,6 +1623,32 @@ Optional. Specify the name of lock.
 - Required: No
 - Type: string
 
+### Parameter: `managedIdentities`
+
+The managed identity definition for this resource.
+- Required: No
+- Type: object
+
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`systemAssigned`](#parameter-managedidentitiessystemassigned) | No | bool | Optional. Enables system assigned managed identity on the resource. |
+| [`userAssignedResourcesIds`](#parameter-managedidentitiesuserassignedresourcesids) | No | array | Optional. The resource ID(s) to assign to the resource. |
+
+### Parameter: `managedIdentities.systemAssigned`
+
+Optional. Enables system assigned managed identity on the resource.
+
+- Required: No
+- Type: bool
+
+### Parameter: `managedIdentities.userAssignedResourcesIds`
+
+Optional. The resource ID(s) to assign to the resource.
+
+- Required: No
+- Type: array
+
 ### Parameter: `maxBatchInstancePercent`
 
 The maximum percent of total virtual machine instances that will be upgraded simultaneously by the rolling upgrade in one batch. As this is a maximum, unhealthy instances in previous or future batches can cause the percentage of instances in a batch to decrease to ensure higher reliability.
@@ -1860,13 +1889,6 @@ The SKU size of the VMs.
 - Required: Yes
 - Type: string
 
-### Parameter: `systemAssignedIdentity`
-
-Enables system assigned managed identity on the resource.
-- Required: No
-- Type: bool
-- Default: `False`
-
 ### Parameter: `tags`
 
 Tags of the resource.
@@ -1894,13 +1916,6 @@ Specifies the mode of an upgrade to virtual machines in the scale set.' Manual -
 - Type: string
 - Default: `'Manual'`
 - Allowed: `[Automatic, Manual, Rolling]`
-
-### Parameter: `userAssignedIdentities`
-
-The ID(s) to assign to the resource.
-- Required: No
-- Type: object
-- Default: `{object}`
 
 ### Parameter: `vmNamePrefix`
 
@@ -1947,7 +1962,7 @@ Whether to force strictly even Virtual Machine distribution cross x-zones in cas
 | `name` | string | The name of the virtual machine scale set. |
 | `resourceGroupName` | string | The resource group of the virtual machine scale set. |
 | `resourceId` | string | The resource ID of the virtual machine scale set. |
-| `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
+| `systemAssignedMIPrincipalId` | string | The principal ID of the system assigned identity. |
 
 ## Cross-referenced modules
 

@@ -17,8 +17,8 @@ param roleAssignments roleAssignmentType
 @description('Optional. The lock settings of the service.')
 param lock lockType
 
-@description('Optional. Enables system assigned managed identity on the resource.')
-param systemAssignedIdentity bool = false
+@description('Optional. The managed identity definition for this resource.')
+param managedIdentities managedIdentitiesType
 
 @description('Optional. Tags of the Recovery Service Vault resource.')
 param tags object?
@@ -55,10 +55,8 @@ param securitySettings object = {}
 @description('Optional. Feature settings for the backup vault.')
 param featureSettings object = {}
 
-var identityType = systemAssignedIdentity ? 'SystemAssigned' : 'None'
-
-var identity = identityType != 'None' ? {
-  type: identityType
+var identity = !empty(managedIdentities) ? {
+  type: (managedIdentities.?systemAssigned ?? false) ? 'SystemAssigned' : null
 } : null
 
 var enableReferencedModulesTelemetry = false
@@ -151,7 +149,7 @@ output resourceGroupName string = resourceGroup().name
 output name string = backupVault.name
 
 @description('The principal ID of the system assigned identity.')
-output systemAssignedPrincipalId string = systemAssignedIdentity && contains(backupVault.identity, 'principalId') ? backupVault.identity.principalId : ''
+output systemAssignedMIPrincipalId string = (managedIdentities.?systemAssigned ?? false) && contains(backupVault.identity, 'principalId') ? backupVault.identity.principalId : ''
 
 @description('The location the resource was deployed into.')
 output location string = backupVault.location
@@ -159,6 +157,11 @@ output location string = backupVault.location
 // =============== //
 //   Definitions   //
 // =============== //
+
+type managedIdentitiesType = {
+  @description('Optional. Enables system assigned managed identity on the resource.')
+  systemAssigned: bool?
+}?
 
 type lockType = {
   @description('Optional. Specify the name of lock.')

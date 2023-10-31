@@ -6,11 +6,36 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "5110293607124976291"
+      "templateHash": "1439508098279696940"
     },
     "name": "DocumentDB Database Account Gremlin Databases",
     "description": "This module deploys a Gremlin Database within a CosmosDB Account.",
     "owner": "Azure/module-maintainers"
+  },
+  "definitions": {
+    "managedIdentitiesType": {
+      "type": "object",
+      "properties": {
+        "systemAssigned": {
+          "type": "bool",
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Enables system assigned managed identity on the resource."
+          }
+        },
+        "userAssignedResourcesIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. The resource ID(s) to assign to the resource."
+          }
+        }
+      },
+      "nullable": true
+    }
   },
   "parameters": {
     "name": {
@@ -24,20 +49,6 @@
       "nullable": true,
       "metadata": {
         "description": "Optional. Tags of the Gremlin database resource."
-      }
-    },
-    "systemAssignedIdentity": {
-      "type": "bool",
-      "defaultValue": false,
-      "metadata": {
-        "description": "Optional. Enables system assigned managed identity on the resource."
-      }
-    },
-    "userAssignedIdentities": {
-      "type": "object",
-      "defaultValue": {},
-      "metadata": {
-        "description": "Optional. The ID(s) to assign to the resource."
       }
     },
     "databaseAccountName": {
@@ -76,8 +87,7 @@
     }
   },
   "variables": {
-    "enableReferencedModulesTelemetry": false,
-    "identityType": "[if(parameters('systemAssignedIdentity'), if(not(empty(parameters('userAssignedIdentities'))), 'SystemAssigned, UserAssigned', 'SystemAssigned'), if(not(empty(parameters('userAssignedIdentities'))), 'UserAssigned', 'None'))]"
+    "enableReferencedModulesTelemetry": false
   },
   "resources": {
     "defaultTelemetry": {
@@ -105,7 +115,6 @@
       "apiVersion": "2023-04-15",
       "name": "[format('{0}/{1}', parameters('databaseAccountName'), parameters('name'))]",
       "tags": "[parameters('tags')]",
-      "identity": "[if(not(equals(variables('identityType'), 'None')), createObject('type', variables('identityType'), 'userAssignedIdentities', if(not(empty(parameters('userAssignedIdentities'))), parameters('userAssignedIdentities'), null())), null())]",
       "properties": {
         "options": "[if(contains(reference('databaseAccount').capabilities, createObject('name', 'EnableServerless')), createObject(), createObject('autoscaleSettings', if(equals(parameters('throughput'), -1), createObject('maxThroughput', parameters('maxThroughput')), null()), 'throughput', if(not(equals(parameters('throughput'), -1)), parameters('throughput'), null())))]",
         "resource": {

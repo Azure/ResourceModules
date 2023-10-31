@@ -60,8 +60,10 @@ module testDeployment '../../main.bicep' = {
     cMKKeyVaultResourceId: nestedDependencies.outputs.keyVaultResourceId
     cMKUserAssignedIdentityResourceId: nestedDependencies.outputs.managedIdentityResourceId
     publicNetworkAccess: 'Disabled'
-    userAssignedIdentities: {
-      '${nestedDependencies.outputs.managedIdentityResourceId}': {}
+    managedIdentities: {
+      userAssignedResourcesIds: [
+        nestedDependencies.outputs.managedIdentityResourceId
+      ]
     }
     tags: {
       'hidden-title': 'This is visible in the resource name'

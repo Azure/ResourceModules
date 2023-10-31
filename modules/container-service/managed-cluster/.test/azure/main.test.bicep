@@ -174,8 +174,10 @@ module testDeployment '../../main.bicep' = {
     enableStorageProfileDiskCSIDriver: true
     enableStorageProfileFileCSIDriver: true
     enableStorageProfileSnapshotController: true
-    userAssignedIdentities: {
-      '${nestedDependencies.outputs.managedIdentityResourceId}': {}
+    managedIdentities: {
+      userAssignedResourcesIds: [
+        nestedDependencies.outputs.managedIdentityResourceId
+      ]
     }
     identityProfile: {
       kubeletidentity: {

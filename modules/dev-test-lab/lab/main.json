@@ -6,13 +6,28 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "12753891588036159918"
+      "templateHash": "14947280208542929227"
     },
     "name": "DevTest Labs",
     "description": "This module deploys a DevTest Lab.",
     "owner": "Azure/module-maintainers"
   },
   "definitions": {
+    "managedIdentitiesType": {
+      "type": "object",
+      "properties": {
+        "userAssignedResourcesIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "metadata": {
+            "description": "Optional. The resource ID(s) to assign to the resource."
+          }
+        }
+      },
+      "nullable": true
+    },
     "lockType": {
       "type": "object",
       "properties": {
@@ -214,18 +229,20 @@
         "description": "Optional. The properties of any lab support message associated with this lab."
       }
     },
-    "userAssignedIdentities": {
-      "type": "object",
-      "defaultValue": {},
+    "managedIdentities": {
+      "$ref": "#/definitions/managedIdentitiesType",
       "metadata": {
-        "description": "Optional. The ID(s) to assign to the resource."
+        "description": "Optional. The managed identity definition for this resource."
       }
     },
-    "managementIdentities": {
-      "type": "object",
-      "defaultValue": {},
+    "managementIdentitiesResourceIds": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "defaultValue": [],
       "metadata": {
-        "description": "Optional. The ID(s) to assign to the virtual machines associated with this lab."
+        "description": "Optional. The resource ID(s) to assign to the virtual machines associated with this lab."
       }
     },
     "vmCreationResourceGroupId": {
@@ -334,6 +351,9 @@
   },
   "variables": {
     "enableReferencedModulesTelemetry": false,
+    "formattedUserAssignedIdentities": "[reduce(map(coalesce(tryGet(parameters('managedIdentities'), 'userAssignedResourcesIds'), createArray()), lambda('id', createObject(format('{0}', lambdaVariables('id')), createObject()))), createObject(), lambda('cur', 'next', union(lambdaVariables('cur'), lambdaVariables('next'))))]",
+    "identity": "[if(not(empty(parameters('managedIdentities'))), createObject('type', if(not(empty(coalesce(tryGet(parameters('managedIdentities'), 'userAssignedResourcesIds'), createObject()))), 'SystemAssigned,UserAssigned', 'SystemAssigned'), 'userAssignedIdentities', if(not(empty(variables('formattedUserAssignedIdentities'))), variables('formattedUserAssignedIdentities'), null())), null())]",
+    "formattedManagementIdentities": "[if(not(empty(parameters('managementIdentitiesResourceIds'))), reduce(map(coalesce(parameters('managementIdentitiesResourceIds'), createArray()), lambda('id', createObject(format('{0}', lambdaVariables('id')), createObject()))), createObject(), lambda('cur', 'next', union(lambdaVariables('cur'), lambdaVariables('next')))), createObject())]",
     "builtInRoleNames": {
       "Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]",
       "DevTest Labs User": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '76283e04-6283-4c54-8f91-bcf1374a3c64')]",
@@ -365,10 +385,7 @@
       "name": "[parameters('name')]",
       "location": "[parameters('location')]",
       "tags": "[parameters('tags')]",
-      "identity": {
-        "type": "[if(not(empty(parameters('userAssignedIdentities'))), 'SystemAssigned,UserAssigned', 'SystemAssigned')]",
-        "userAssignedIdentities": "[if(not(empty(parameters('userAssignedIdentities'))), parameters('userAssignedIdentities'), null())]"
-      },
+      "identity": "[variables('identity')]",
       "properties": {
         "artifactsStorageAccount": "[parameters('artifactsStorageAccount')]",
         "announcement": "[parameters('announcement')]",
@@ -379,7 +396,7 @@
         "mandatoryArtifactsResourceIdsWindows": "[parameters('mandatoryArtifactsResourceIdsWindows')]",
         "premiumDataDisks": "[parameters('premiumDataDisks')]",
         "support": "[parameters('support')]",
-        "managementIdentities": "[parameters('managementIdentities')]",
+        "managementIdentities": "[variables('formattedManagementIdentities')]",
         "vmCreationResourceGroupId": "[parameters('vmCreationResourceGroupId')]",
         "browserConnect": "[parameters('browserConnect')]",
         "disableAutoUpgradeCseMinorVersion": "[parameters('disableAutoUpgradeCseMinorVersion')]",
@@ -1806,6 +1823,13 @@
         "description": "The name of the lab."
       },
       "value": "[parameters('name')]"
+    },
+    "systemAssignedMIPrincipalId": {
+      "type": "string",
+      "metadata": {
+        "description": "The principal ID of the system assigned identity."
+      },
+      "value": "[if(contains(reference('lab', '2018-10-15-preview', 'full').identity, 'principalId'), reference('lab', '2018-10-15-preview', 'full').identity.principalId, '')]"
     },
     "location": {
       "type": "string",

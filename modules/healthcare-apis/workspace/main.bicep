@@ -112,7 +112,7 @@ module workspace_fhirservices 'fhirservice/main.bicep' = [for (fhir, index) in f
     kind: fhir.kind
     tags: fhir.?tags ?? tags
     publicNetworkAccess: contains(fhir, 'publicNetworkAccess') ? fhir.publicNetworkAccess : 'Disabled'
-    systemAssignedIdentity: contains(fhir, 'systemAssignedIdentity') ? fhir.systemAssignedIdentity : false
+    managedIdentities: contains(fhir, 'managedIdentities') ? fhir.managedIdentities : null
     roleAssignments: contains(fhir, 'roleAssignments') ? fhir.roleAssignments : []
     accessPolicyObjectIds: contains(fhir, 'accessPolicyObjectIds') ? fhir.accessPolicyObjectIds : []
     acrLoginServers: contains(fhir, 'acrLoginServers') ? fhir.acrLoginServers : []
@@ -133,7 +133,6 @@ module workspace_fhirservices 'fhirservice/main.bicep' = [for (fhir, index) in f
     resourceVersionPolicy: contains(fhir, 'resourceVersionPolicy') ? fhir.resourceVersionPolicy : 'versioned'
     resourceVersionOverrides: contains(fhir, 'resourceVersionOverrides') ? fhir.resourceVersionOverrides : {}
     smartProxyEnabled: contains(fhir, 'smartProxyEnabled') ? fhir.smartProxyEnabled : false
-    userAssignedIdentities: contains(fhir, 'userAssignedIdentities') ? fhir.userAssignedIdentities : {}
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
@@ -146,7 +145,7 @@ module workspace_dicomservices 'dicomservice/main.bicep' = [for (dicom, index) i
     workspaceName: workspace.name
     tags: dicom.?tags ?? tags
     publicNetworkAccess: contains(dicom, 'publicNetworkAccess') ? dicom.publicNetworkAccess : 'Disabled'
-    systemAssignedIdentity: contains(dicom, 'systemAssignedIdentity') ? dicom.systemAssignedIdentity : false
+    managedIdentities: contains(dicom, 'managedIdentities') ? dicom.managedIdentities : null
     corsOrigins: contains(dicom, 'corsOrigins') ? dicom.corsOrigins : []
     corsHeaders: contains(dicom, 'corsHeaders') ? dicom.corsHeaders : []
     corsMethods: contains(dicom, 'corsMethods') ? dicom.corsMethods : []
@@ -154,7 +153,6 @@ module workspace_dicomservices 'dicomservice/main.bicep' = [for (dicom, index) i
     corsAllowCredentials: contains(dicom, 'corsAllowCredentials') ? dicom.corsAllowCredentials : false
     diagnosticSettings: dicom.?diagnosticSettings
     lock: dicom.?lock ?? lock
-    userAssignedIdentities: contains(dicom, 'userAssignedIdentities') ? dicom.userAssignedIdentities : {}
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
@@ -174,10 +172,9 @@ module workspace_iotconnector 'iotconnector/main.bicep' = [for (iotConnector, in
     }
     fhirdestination: contains(iotConnector, 'fhirdestination') ? iotConnector.fhirdestination : {}
     consumerGroup: contains(iotConnector, 'consumerGroup') ? iotConnector.consumerGroup : iotConnector.name
-    systemAssignedIdentity: contains(iotConnector, 'systemAssignedIdentity') ? iotConnector.systemAssignedIdentity : false
+    managedIdentities: contains(iotConnector, 'managedIdentities') ? iotConnector.managedIdentities : null
     diagnosticSettings: iotConnector.?diagnosticSettings
     lock: iotConnector.?lock ?? lock
-    userAssignedIdentities: contains(iotConnector, 'userAssignedIdentities') ? iotConnector.userAssignedIdentities : {}
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
