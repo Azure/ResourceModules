@@ -226,29 +226,30 @@ function Set-ParametersSection {
 
         # 3. Add individual parameters
         foreach ($parameter in $categoryParameters) {
+
+            $isRequired = Get-IsParameterRequired -TemplateFileContent $TemplateFileContent -Parameter $parameter
+
+            if ($parameter.defaultValue -is [array]) {
+                # $defaultValue = '[{0}]' -f (($parameter.defaultValue | Sort-Object) -join ', ')
+                $bicepDefaultValue = ConvertTo-FormattedBicep -JSONParameters $parameter.defaultValue
+                $defaultValue = "[`n$bicepDefaultValue`n]"
+            } elseif ($parameter.defaultValue -is [hashtable]) {
+                $bicepDefaultValue = ConvertTo-FormattedBicep -JSONParameters $parameter.defaultValue
+                $defaultValue = "{`n$bicepDefaultValue`n}"
+            } elseif ($parameter.defaultValue -is [string] -and ($parameter.defaultValue -notmatch '\[\w+\(.*\).*\]')) {
+                $defaultValue = '''' + $parameter.defaultValue + ''''
+            } else {
+                $defaultValue = $parameter.defaultValue
+            }
+
             # User defined type
             if ($null -eq $parameter.type -and $parameter.ContainsKey('$ref')) {
                 $identifier = Split-Path $parameter.'$ref' -Leaf
                 $definition = $TemplateFileContent.definitions[$identifier]
-
                 $type = $definition['type']
-                $isRequired = (-not $definition['nullable'])
-                $defaultValue = $null
                 $rawAllowedValues = $definition['allowedValues']
             } else {
                 $type = $parameter.type
-
-                if ($parameter.defaultValue -is [array]) {
-                    $defaultValue = '[{0}]' -f (($parameter.defaultValue | Sort-Object) -join ', ')
-                } elseif ($parameter.defaultValue -is [hashtable]) {
-                    $defaultValue = '{object}'
-                } elseif ($parameter.defaultValue -is [string] -and ($parameter.defaultValue -notmatch '\[\w+\(.*\).*\]')) {
-                    $defaultValue = '''' + $parameter.defaultValue + ''''
-                } else {
-                    $defaultValue = $parameter.defaultValue
-                }
-
-                $isRequired = Get-IsParameterRequired -TemplateFileContent $TemplateFileContent -Parameter $parameter
                 $rawAllowedValues = $parameter.allowedValues
             }
 
