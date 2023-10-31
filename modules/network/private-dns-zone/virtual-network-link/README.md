@@ -78,7 +78,6 @@ Is auto-registration of virtual machine records in the virtual network in the Pr
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{}`
 
 ### Parameter: `virtualNetworkResourceId`
 

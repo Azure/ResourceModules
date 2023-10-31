@@ -185,7 +185,6 @@ Specifies the sku, also referred as "edition". Required for creating a compute r
 Contains resource tags defined as key-value pairs. Ignored when attaching a compute resource, i.e. when you provide a resource ID.
 - Required: No
 - Type: object
-- Default: `{}`
 
 
 ## Outputs

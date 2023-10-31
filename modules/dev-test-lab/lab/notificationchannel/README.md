@@ -102,7 +102,6 @@ The locale to use when sending a notification (fallback for unsupported language
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{}`
 
 ### Parameter: `webHookUrl`
 

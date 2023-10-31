@@ -359,7 +359,6 @@ The name of the gallery Image Definition SKU.
 Tags for all resources.
 - Required: No
 - Type: object
-- Default: `{}`
 
 
 ## Outputs

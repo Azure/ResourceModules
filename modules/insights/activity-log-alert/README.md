@@ -344,7 +344,6 @@ The list of resource IDs that this Activity Log Alert is scoped to.
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{}`
 
 
 ## Outputs

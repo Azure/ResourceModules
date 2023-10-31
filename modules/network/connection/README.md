@@ -330,7 +330,6 @@ The weight added to routes learned from this BGP speaker.
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{}`
 
 ### Parameter: `useLocalAzureIpAddress`
 

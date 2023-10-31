@@ -47,7 +47,7 @@ param roleAssignments roleAssignmentType
 param streamDeclarations object = {}
 
 @sys.description('Optional. Resource tags.')
-param tags object = {}
+param tags object?
 
 // =============== //
 //   Deployments   //

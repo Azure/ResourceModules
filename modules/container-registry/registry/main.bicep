@@ -123,7 +123,7 @@ param lock lockType
 param managedIdentities managedIdentitiesType
 
 @description('Optional. Tags of the resource.')
-param tags object = {}
+param tags object?
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
@@ -258,7 +258,7 @@ module registry_replications 'replication/main.bicep' = [for (replication, index
     location: replication.location
     regionEndpointEnabled: contains(replication, 'regionEndpointEnabled') ? replication.regionEndpointEnabled : true
     zoneRedundancy: contains(replication, 'zoneRedundancy') ? replication.zoneRedundancy : 'Disabled'
-    tags: contains(replication, 'tags') ? replication.tags : {}
+    tags: replication.?tags ?? tags
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
@@ -292,7 +292,7 @@ module registry_webhooks 'webhook/main.bicep' = [for (webhook, index) in webhook
     scope: contains(webhook, 'scope') ? webhook.scope : ''
     status: contains(webhook, 'status') ? webhook.status : 'enabled'
     serviceUri: webhook.serviceUri
-    tags: contains(webhook, 'tags') ? webhook.tags : {}
+    tags: webhook.?tags ?? tags
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]

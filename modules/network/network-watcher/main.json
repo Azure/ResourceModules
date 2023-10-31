@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "13987242665374495916"
+      "templateHash": "768801903323165380"
     },
     "name": "Network Watchers",
     "description": "This module deploys a Network Watcher.",
@@ -149,7 +149,7 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Tags of the resource."
       }
@@ -262,12 +262,13 @@
         },
         "template": {
           "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "languageVersion": "2.0",
           "contentVersion": "1.0.0.0",
           "metadata": {
             "_generator": {
               "name": "bicep",
               "version": "0.22.6.54827",
-              "templateHash": "11763235795280157018"
+              "templateHash": "3258279638384899203"
             },
             "name": "Network Watchers Connection Monitors",
             "description": "This module deploys a Network Watcher Connection Monitor.",
@@ -289,7 +290,7 @@
             },
             "tags": {
               "type": "object",
-              "defaultValue": {},
+              "nullable": true,
               "metadata": {
                 "description": "Optional. Tags of the resource."
               }
@@ -340,8 +341,8 @@
           "variables": {
             "outputs": "[if(not(empty(parameters('workspaceResourceId'))), createArray(createObject('type', 'Workspace', 'workspaceSettings', createObject('workspaceResourceId', parameters('workspaceResourceId')))), null())]"
           },
-          "resources": [
-            {
+          "resources": {
+            "defaultTelemetry": {
               "condition": "[parameters('enableDefaultTelemetry')]",
               "type": "Microsoft.Resources/deployments",
               "apiVersion": "2021-04-01",
@@ -355,7 +356,13 @@
                 }
               }
             },
-            {
+            "networkWatcher": {
+              "existing": true,
+              "type": "Microsoft.Network/networkWatchers",
+              "apiVersion": "2023-04-01",
+              "name": "[parameters('networkWatcherName')]"
+            },
+            "connectionMonitor": {
               "type": "Microsoft.Network/networkWatchers/connectionMonitors",
               "apiVersion": "2023-04-01",
               "name": "[format('{0}/{1}', parameters('networkWatcherName'), parameters('name'))]",
@@ -366,9 +373,12 @@
                 "testConfigurations": "[parameters('testConfigurations')]",
                 "testGroups": "[parameters('testGroups')]",
                 "outputs": "[variables('outputs')]"
-              }
+              },
+              "dependsOn": [
+                "networkWatcher"
+              ]
             }
-          ],
+          },
           "outputs": {
             "name": {
               "type": "string",
@@ -396,7 +406,7 @@
               "metadata": {
                 "description": "The location the resource was deployed into."
               },
-              "value": "[reference(resourceId('Microsoft.Network/networkWatchers/connectionMonitors', parameters('networkWatcherName'), parameters('name')), '2023-04-01', 'full').location]"
+              "value": "[reference('connectionMonitor', '2023-04-01', 'full').location]"
             }
           }
         }
@@ -441,12 +451,13 @@
         },
         "template": {
           "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "languageVersion": "2.0",
           "contentVersion": "1.0.0.0",
           "metadata": {
             "_generator": {
               "name": "bicep",
               "version": "0.22.6.54827",
-              "templateHash": "17949647288095694070"
+              "templateHash": "7397123180177309349"
             },
             "name": "NSG Flow Logs",
             "description": "This module controls the Network Security Group Flow Logs and analytics settings.\r\n**Note: this module must be run on the Resource Group where Network Watcher is deployed**",
@@ -469,7 +480,7 @@
             },
             "tags": {
               "type": "object",
-              "defaultValue": {},
+              "nullable": true,
               "metadata": {
                 "description": "Optional. Tags of the resource."
               }
@@ -549,8 +560,8 @@
           "variables": {
             "flowAnalyticsConfiguration": "[if(and(not(empty(parameters('workspaceResourceId'))), equals(parameters('enabled'), true())), createObject('networkWatcherFlowAnalyticsConfiguration', createObject('enabled', true(), 'workspaceResourceId', parameters('workspaceResourceId'), 'trafficAnalyticsInterval', parameters('trafficAnalyticsInterval'))), createObject('networkWatcherFlowAnalyticsConfiguration', createObject('enabled', false())))]"
           },
-          "resources": [
-            {
+          "resources": {
+            "defaultTelemetry": {
               "condition": "[parameters('enableDefaultTelemetry')]",
               "type": "Microsoft.Resources/deployments",
               "apiVersion": "2021-04-01",
@@ -564,7 +575,13 @@
                 }
               }
             },
-            {
+            "networkWatcher": {
+              "existing": true,
+              "type": "Microsoft.Network/networkWatchers",
+              "apiVersion": "2023-04-01",
+              "name": "[parameters('networkWatcherName')]"
+            },
+            "flowLog": {
               "type": "Microsoft.Network/networkWatchers/flowLogs",
               "apiVersion": "2023-04-01",
               "name": "[format('{0}/{1}', parameters('networkWatcherName'), parameters('name'))]",
@@ -583,9 +600,12 @@
                   "version": "[parameters('formatVersion')]"
                 },
                 "flowAnalyticsConfiguration": "[variables('flowAnalyticsConfiguration')]"
-              }
+              },
+              "dependsOn": [
+                "networkWatcher"
+              ]
             }
-          ],
+          },
           "outputs": {
             "name": {
               "type": "string",
@@ -613,7 +633,7 @@
               "metadata": {
                 "description": "The location the resource was deployed into."
               },
-              "value": "[reference(resourceId('Microsoft.Network/networkWatchers/flowLogs', parameters('networkWatcherName'), parameters('name')), '2023-04-01', 'full').location]"
+              "value": "[reference('flowLog', '2023-04-01', 'full').location]"
             }
           }
         }

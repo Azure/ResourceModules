@@ -12,7 +12,7 @@ param lock lockType
 param location string = resourceGroup().location
 
 @description('Optional. Tags of the resource.')
-param tags object = {}
+param tags object?
 
 @description('Optional. The administrator login name of a server. Can only be specified when the MySQL server is being created.')
 param administratorLogin string = ''

@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "16480420514715732092"
+      "templateHash": "14033195005173426271"
     },
     "name": "Logic Apps (Workflows)",
     "description": "This module deploys a Logic App (Workflow).",
@@ -338,7 +338,7 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Tags of the resource."
       }

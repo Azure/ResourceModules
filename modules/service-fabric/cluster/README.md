@@ -979,7 +979,6 @@ This property controls the logical grouping of VMs in upgrade domains (UDs). Thi
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{}`
 
 ### Parameter: `upgradeDescription`
 

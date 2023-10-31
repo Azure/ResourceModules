@@ -15,7 +15,7 @@ param resourceId string = ''
 param writeAccessResourceId string = ''
 
 @description('Optional. Tags to configure in the resource.')
-param tags object = {}
+param tags object?
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true

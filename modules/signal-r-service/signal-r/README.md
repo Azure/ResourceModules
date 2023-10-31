@@ -742,7 +742,6 @@ The SKU of the service.
 The tags of the resource.
 - Required: No
 - Type: object
-- Default: `{}`
 
 ### Parameter: `upstreamTemplatesToEnable`
 

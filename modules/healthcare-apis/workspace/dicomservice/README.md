@@ -301,7 +301,6 @@ Control permission for data plane traffic coming from public networks while priv
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{}`
 
 ### Parameter: `workspaceName`
 

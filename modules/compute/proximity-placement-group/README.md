@@ -360,7 +360,6 @@ Required. The name of the role to assign. If it cannot be found you can specify 
 Tags of the proximity placement group resource.
 - Required: No
 - Type: object
-- Default: `{}`
 
 ### Parameter: `type`
 

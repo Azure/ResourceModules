@@ -169,7 +169,6 @@ Severities to configure when kind is LinuxSyslog.
 Tags to configure in the resource.
 - Required: No
 - Type: object
-- Default: `{}`
 
 
 ## Outputs

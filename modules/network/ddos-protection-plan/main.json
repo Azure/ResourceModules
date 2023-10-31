@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "4054513314022675341"
+      "templateHash": "10546222584302877653"
     },
     "name": "DDoS Protection Plans",
     "description": "This module deploys a DDoS Protection Plan.",
@@ -134,7 +134,7 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Tags of the resource."
       }

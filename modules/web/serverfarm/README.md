@@ -454,7 +454,6 @@ Defines the name, tier, size, family and capacity of the App Service Plan.
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{}`
 
 ### Parameter: `targetWorkerCount`
 

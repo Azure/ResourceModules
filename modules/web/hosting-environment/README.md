@@ -794,7 +794,6 @@ ResourceId for the subnet.
 Resource tags.
 - Required: No
 - Type: object
-- Default: `{}`
 
 ### Parameter: `upgradePreference`
 

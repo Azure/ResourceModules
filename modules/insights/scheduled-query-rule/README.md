@@ -415,7 +415,6 @@ Mute actions for the chosen period of time (in ISO 8601 duration format) after t
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{}`
 
 ### Parameter: `targetResourceTypes`
 

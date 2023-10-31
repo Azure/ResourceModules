@@ -56,7 +56,6 @@ The name of the parent Service Fabric cluster. Required if the template is used 
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{}`
 
 
 ## Outputs

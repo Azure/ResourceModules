@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "1935169026150435990"
+      "templateHash": "11837763267512511834"
     },
     "name": "API Connections",
     "description": "This module deploys an Azure API Connection.",
@@ -181,7 +181,7 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Tags of the resource."
       }

@@ -22,7 +22,7 @@ param scopedResources array = []
 param privateEndpoints privateEndpointType
 
 @description('Optional. Resource tags.')
-param tags object = {}
+param tags object?
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true

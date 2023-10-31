@@ -281,7 +281,6 @@ The name of the MedTech service.
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{}`
 
 ### Parameter: `workspaceName`
 

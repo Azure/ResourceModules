@@ -84,7 +84,6 @@ List of paths using which data within the container can be partitioned.
 Tags of the Gremlin graph resource.
 - Required: No
 - Type: object
-- Default: `{}`
 
 
 ## Outputs

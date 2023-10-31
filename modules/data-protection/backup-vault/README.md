@@ -517,7 +517,6 @@ Security settings for the backup vault.
 Tags of the Recovery Service Vault resource.
 - Required: No
 - Type: object
-- Default: `{}`
 
 ### Parameter: `type`
 

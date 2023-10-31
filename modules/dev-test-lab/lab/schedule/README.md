@@ -127,7 +127,6 @@ The status of the schedule (i.e. Enabled, Disabled).
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{}`
 
 ### Parameter: `targetResourceId`
 

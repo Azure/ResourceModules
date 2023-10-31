@@ -856,7 +856,6 @@ The full resource ID of a subnet in a virtual network to deploy the Redis cache 
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{}`
 
 ### Parameter: `tenantSettings`
 

@@ -1276,7 +1276,6 @@ softDelete data retention days. It accepts >=7 and <=90.
 Resource tags.
 - Required: No
 - Type: object
-- Default: `{}`
 
 ### Parameter: `vaultSku`
 

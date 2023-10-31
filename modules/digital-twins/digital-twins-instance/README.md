@@ -734,7 +734,6 @@ Enables system assigned managed identity on the resource.
 Resource tags.
 - Required: No
 - Type: object
-- Default: `{}`
 
 ### Parameter: `userAssignedIdentities`
 

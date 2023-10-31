@@ -1069,7 +1069,6 @@ The amount of time in days that the configuration store will be retained when it
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{}`
 
 
 ## Outputs

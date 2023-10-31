@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "8241237134482664102"
+      "templateHash": "14384863342174130916"
     },
     "name": "Maintenance Configurations",
     "description": "This module deploys a Maintenance Configuration.",
@@ -176,7 +176,7 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Gets or sets tags of the resource."
       }

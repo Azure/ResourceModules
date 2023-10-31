@@ -1130,7 +1130,6 @@ Subscriptions.
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{}`
 
 ### Parameter: `virtualNetworkType`
 

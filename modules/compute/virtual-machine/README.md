@@ -2601,7 +2601,6 @@ Specifies the SecurityType of the virtual machine. It is set as TrustedLaunch to
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{}`
 
 ### Parameter: `timeZone`
 

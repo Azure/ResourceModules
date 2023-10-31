@@ -225,7 +225,6 @@ Key rotation policy properties object.
 Resource tags.
 - Required: No
 - Type: object
-- Default: `{}`
 
 
 ## Outputs

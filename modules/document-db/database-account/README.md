@@ -1910,7 +1910,6 @@ SQL Databases configurations.
 Tags of the Database Account resource.
 - Required: No
 - Type: object
-- Default: `{}`
 
 
 ## Outputs

@@ -2174,7 +2174,6 @@ The support plan for the Managed Cluster.
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{}`
 
 ### Parameter: `webApplicationRoutingEnabled`
 

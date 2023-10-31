@@ -531,7 +531,6 @@ Required. The name of the role to assign. If it cannot be found you can specify 
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{}`
 
 
 ## Outputs

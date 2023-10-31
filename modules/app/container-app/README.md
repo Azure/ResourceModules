@@ -617,7 +617,6 @@ The secrets of the Container App.
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{}`
 
 ### Parameter: `trafficLabel`
 

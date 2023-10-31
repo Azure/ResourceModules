@@ -1396,7 +1396,6 @@ Name of this SKU. - Basic, Standard, Premium.
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{}`
 
 ### Parameter: `topics`
 

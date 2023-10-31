@@ -512,7 +512,6 @@ Configuration details for Azure Monitor Resources.
 Resource tags.
 - Required: No
 - Type: object
-- Default: `{}`
 
 
 ## Outputs

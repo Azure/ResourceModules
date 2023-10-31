@@ -462,7 +462,6 @@ Required. The name of the role to assign. If it cannot be found you can specify 
 Tags to be applied on all resources/resource groups in this deployment.
 - Required: No
 - Type: object
-- Default: `{}`
 
 ### Parameter: `visibility`
 

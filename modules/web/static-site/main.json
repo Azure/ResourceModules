@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "332857934206486865"
+      "templateHash": "17501728288699973579"
     },
     "name": "Static Web Apps",
     "description": "This module deploys a Static Web App.",
@@ -397,7 +397,7 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Tags of the resource."
       }

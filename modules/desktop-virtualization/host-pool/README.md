@@ -765,7 +765,6 @@ Enable Start VM on connect to allow users to start the virtual machine from a de
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{}`
 
 ### Parameter: `tokenValidityLength`
 

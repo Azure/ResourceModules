@@ -1100,7 +1100,6 @@ Password for administrator access to the workspace's SQL pools. If you don't pro
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{}`
 
 ### Parameter: `userAssignedIdentities`
 

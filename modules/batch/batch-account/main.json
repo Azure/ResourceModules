@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "8921010374521375351"
+      "templateHash": "8281874211111057324"
     },
     "name": "Batch Accounts",
     "description": "This module deploys a Batch Account.",
@@ -495,7 +495,7 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Tags of the resource."
       }

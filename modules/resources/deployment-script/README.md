@@ -488,7 +488,6 @@ List of supporting files for the external script (defined in primaryScriptUri). 
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{}`
 
 ### Parameter: `timeout`
 

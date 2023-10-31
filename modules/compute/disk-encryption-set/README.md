@@ -457,7 +457,6 @@ Set this flag to true to enable auto-updating of this disk encryption set to the
 Tags of the disk encryption resource.
 - Required: No
 - Type: object
-- Default: `{}`
 
 
 ## Outputs

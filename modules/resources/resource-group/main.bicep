@@ -17,7 +17,7 @@ param lock lockType
 param roleAssignments roleAssignmentType
 
 @description('Optional. Tags of the storage account resource.')
-param tags object = {}
+param tags object?
 
 @description('Optional. The ID of the resource that manages this resource group.')
 param managedBy string = ''

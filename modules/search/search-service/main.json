@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "6839264843077014016"
+      "templateHash": "16977539745468752400"
     },
     "name": "Search Services",
     "description": "This module deploys a Search Service.",
@@ -522,7 +522,7 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Tags to help categorize the resource in the Azure portal."
       }

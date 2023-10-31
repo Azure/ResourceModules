@@ -550,7 +550,6 @@ Resource ID of an already existing subnet, e.g.: /subscriptions/<subscriptionId>
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{}`
 
 ### Parameter: `unManagedImageName`
 

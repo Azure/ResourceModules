@@ -390,7 +390,6 @@ SkuCapacity of the resource.
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{}`
 
 
 ## Outputs

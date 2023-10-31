@@ -42,7 +42,7 @@ param managedIdentities managedIdentitiesType = {
 param roleAssignments roleAssignmentType
 
 @description('Optional. Tags of the disk encryption resource.')
-param tags object = {}
+param tags object?
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true

@@ -1034,7 +1034,6 @@ Max storage allowed for a server.
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{}`
 
 ### Parameter: `tenantId`
 

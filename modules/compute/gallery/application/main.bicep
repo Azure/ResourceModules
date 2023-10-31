@@ -41,7 +41,7 @@ param endOfLifeDate string = ''
 param roleAssignments roleAssignmentType
 
 @sys.description('Optional. Tags for all resources.')
-param tags object = {}
+param tags object?
 
 @sys.description('Optional. A list of custom actions that can be performed with all of the Gallery Application Versions within this Gallery Application.')
 param customActions array = []

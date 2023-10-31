@@ -582,7 +582,6 @@ Tier of a public IP address SKU.
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{}`
 
 ### Parameter: `zones`
 

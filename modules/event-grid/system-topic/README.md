@@ -567,7 +567,6 @@ Source for the system topic.
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{}`
 
 ### Parameter: `topicType`
 

@@ -124,7 +124,6 @@ The status of the webhook at the time the operation was called.
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{}`
 
 
 ## Outputs

@@ -49,7 +49,7 @@ param environmentId string
 param lock lockType
 
 @description('Optional. Tags of the resource.')
-param tags object = {}
+param tags object?
 
 @description('Optional. Collection of private container registry credentials for containers used by the Container app.')
 param registries array = []

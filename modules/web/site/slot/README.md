@@ -732,7 +732,6 @@ Required if app of kind functionapp. Resource ID of the storage account to manag
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{}`
 
 ### Parameter: `virtualNetworkSubnetId`
 
