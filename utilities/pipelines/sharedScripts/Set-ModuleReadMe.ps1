@@ -284,7 +284,6 @@ function Set-ParametersSection {
 
             # Add external single quotes to all default values of type string except for those using functions
             $description = $parameter.metadata.description.Replace("`r`n", '<p>').Replace("`n", '<p>')
-            # $allowedValues = ($rawAllowedValues -is [array]) ? ('[{0}]' -f (($rawAllowedValues | Sort-Object) -join ', ')) : (($rawAllowedValues -is [hashtable]) ? '{object}' : $rawAllowedValues)
             # Further, replace all "empty string" default values with actual visible quotes
             if ([regex]::Match($allowedValues, '^(\[\s*,.+)|(\[.+,\s*,)|(.+,\s*\])$').Captures.Count -gt 0) {
                 $allowedValues = $allowedValues -replace '\[\s*,', "[''," -replace ',\s*,', ", ''," -replace ',\s*\]', ", '']"
@@ -638,8 +637,8 @@ Add type comments to given bicep params string, using one required parameter 'na
     name: 'carml'
     // Non-required parameters
     lock: {
-      kind: 'CanNotDelete'
-      name: 'myCustomLockName'
+        kind: 'CanNotDelete'
+        name: 'myCustomLockName'
     }
 '
 #>
@@ -716,8 +715,8 @@ Order the given JSON object alphabetically. Would result into:
 @{
     name: 'carml'
     lock: {
-      kind: 'CanNotDelete'
-      name: 'myCustomLockName'
+        kind: 'CanNotDelete'
+        name: 'myCustomLockName'
     }
 }
 #>
@@ -1617,7 +1616,6 @@ function Set-ModuleReadMe {
     . (Join-Path $PSScriptRoot 'helper' 'Get-SpecsAlignedResourceName.ps1')
     . (Join-Path $PSScriptRoot 'helper' 'ConvertTo-OrderedHashtable.ps1')
     . (Join-Path (Split-Path $PSScriptRoot -Parent) 'resourcePublish' 'Get-PrivateRegistryRepositoryName.ps1')
-
 
     # Check template & make full path
     $TemplateFilePath = Resolve-Path -Path $TemplateFilePath -ErrorAction Stop
