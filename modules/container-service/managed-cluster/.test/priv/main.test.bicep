@@ -157,8 +157,10 @@ module testDeployment '../../main.bicep' = {
       }
     ]
     privateDNSZone: nestedDependencies.outputs.privateDnsZoneResourceId
-    userAssignedIdentities: {
-      '${nestedDependencies.outputs.managedIdentityResourceId}': {}
+    managedIdentities: {
+      userAssignedResourcesIds: [
+        nestedDependencies.outputs.managedIdentityResourceId
+      ]
     }
     tags: {
       'hidden-title': 'This is visible in the resource name'

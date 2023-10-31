@@ -252,6 +252,12 @@ module virtualMachine 'br:bicep/modules/compute.virtual-machine:1.0.0' = {
       kind: 'CanNotDelete'
       name: 'myCustomLockName'
     }
+    managedIdentities: {
+      systemAssigned: true
+      userAssignedResourcesIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
     monitoringWorkspaceId: '<monitoringWorkspaceId>'
     name: 'cvmlincom'
     patchMode: 'AutomaticByPlatform'
@@ -268,14 +274,10 @@ module virtualMachine 'br:bicep/modules/compute.virtual-machine:1.0.0' = {
         roleDefinitionIdOrName: 'Reader'
       }
     ]
-    systemAssignedIdentity: true
     tags: {
       Environment: 'Non-Prod'
       'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
-    }
-    userAssignedIdentities: {
-      '<managedIdentityResourceId>': {}
     }
   }
 }
@@ -546,6 +548,14 @@ module virtualMachine 'br:bicep/modules/compute.virtual-machine:1.0.0' = {
         "name": "myCustomLockName"
       }
     },
+    "managedIdentities": {
+      "value": {
+        "systemAssigned": true,
+        "userAssignedResourcesIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
+    },
     "monitoringWorkspaceId": {
       "value": "<monitoringWorkspaceId>"
     },
@@ -572,19 +582,11 @@ module virtualMachine 'br:bicep/modules/compute.virtual-machine:1.0.0' = {
         }
       ]
     },
-    "systemAssignedIdentity": {
-      "value": true
-    },
     "tags": {
       "value": {
         "Environment": "Non-Prod",
         "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
-      }
-    },
-    "userAssignedIdentities": {
-      "value": {
-        "<managedIdentityResourceId>": {}
       }
     }
   }
@@ -1148,6 +1150,12 @@ module virtualMachine 'br:bicep/modules/compute.virtual-machine:1.0.0' = {
       kind: 'CanNotDelete'
       name: 'myCustomLockName'
     }
+    managedIdentities: {
+      systemAssigned: true
+      userAssignedResourcesIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
     monitoringWorkspaceId: '<monitoringWorkspaceId>'
     name: 'cvmwincom'
     patchMode: 'AutomaticByPlatform'
@@ -1159,14 +1167,10 @@ module virtualMachine 'br:bicep/modules/compute.virtual-machine:1.0.0' = {
         roleDefinitionIdOrName: 'Reader'
       }
     ]
-    systemAssignedIdentity: true
     tags: {
       Environment: 'Non-Prod'
       'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
-    }
-    userAssignedIdentities: {
-      '<managedIdentityResourceId>': {}
     }
   }
 }
@@ -1462,6 +1466,14 @@ module virtualMachine 'br:bicep/modules/compute.virtual-machine:1.0.0' = {
         "name": "myCustomLockName"
       }
     },
+    "managedIdentities": {
+      "value": {
+        "systemAssigned": true,
+        "userAssignedResourcesIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
+    },
     "monitoringWorkspaceId": {
       "value": "<monitoringWorkspaceId>"
     },
@@ -1483,19 +1495,11 @@ module virtualMachine 'br:bicep/modules/compute.virtual-machine:1.0.0' = {
         }
       ]
     },
-    "systemAssignedIdentity": {
-      "value": true
-    },
     "tags": {
       "value": {
         "Environment": "Non-Prod",
         "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
-      }
-    },
-    "userAssignedIdentities": {
-      "value": {
-        "<managedIdentityResourceId>": {}
       }
     }
   }
@@ -1968,6 +1972,7 @@ module virtualMachine 'br:bicep/modules/compute.virtual-machine:1.0.0' = {
 | [`licenseType`](#parameter-licensetype) | string | Specifies that the image or disk that is being used was licensed on-premises. This element is only used for images that contain the Windows Server operating system. |
 | [`location`](#parameter-location) | string | Location for all resources. |
 | [`lock`](#parameter-lock) | object | The lock settings of the service. |
+| [`managedIdentities`](#parameter-managedidentities) | object | The managed identity definition for this resource. The system-assigned managed identity will automatically be enabled if extensionAadJoinConfig.enabled = "True". |
 | [`maxPriceForLowPriorityVm`](#parameter-maxpriceforlowpriorityvm) | string | Specifies the maximum price you are willing to pay for a low priority VM/VMSS. This price is in US Dollars. |
 | [`monitoringWorkspaceId`](#parameter-monitoringworkspaceid) | string | Resource ID of the monitoring log analytics workspace. Must be set when extensionMonitoringAgentConfig is set to true. |
 | [`name`](#parameter-name) | string | The name of the virtual machine to be created. You should use a unique prefix to reduce name collisions in Active Directory. If no value is provided, a 10 character long unique string will be generated based on the Resource Group's name. |
@@ -1982,11 +1987,9 @@ module virtualMachine 'br:bicep/modules/compute.virtual-machine:1.0.0' = {
 | [`sasTokenValidityLength`](#parameter-sastokenvaliditylength) | string | SAS token validity length to use to download files from storage accounts. Usage: 'PT8H' - valid for 8 hours; 'P5D' - valid for 5 days; 'P1Y' - valid for 1 year. When not provided, the SAS token will be valid for 8 hours. |
 | [`secureBootEnabled`](#parameter-securebootenabled) | bool | Specifies whether secure boot should be enabled on the virtual machine. This parameter is part of the UefiSettings. SecurityType should be set to TrustedLaunch to enable UefiSettings. |
 | [`securityType`](#parameter-securitytype) | string | Specifies the SecurityType of the virtual machine. It is set as TrustedLaunch to enable UefiSettings. |
-| [`systemAssignedIdentity`](#parameter-systemassignedidentity) | bool | Enables system assigned managed identity on the resource. The system-assigned managed identity will automatically be enabled if extensionAadJoinConfig.enabled = "True". |
 | [`tags`](#parameter-tags) | object | Tags of the resource. |
 | [`timeZone`](#parameter-timezone) | string | Specifies the time zone of the virtual machine. e.g. 'Pacific Standard Time'. Possible values can be `TimeZoneInfo.id` value from time zones returned by `TimeZoneInfo.GetSystemTimeZones`. |
 | [`ultraSSDEnabled`](#parameter-ultrassdenabled) | bool | The flag that enables or disables a capability to have one or more managed data disks with UltraSSD_LRS storage account type on the VM or VMSS. Managed disks with storage account type UltraSSD_LRS can be added to a virtual machine or virtual machine scale set only if this property is enabled. |
-| [`userAssignedIdentities`](#parameter-userassignedidentities) | object | The ID(s) to assign to the resource. |
 | [`vTpmEnabled`](#parameter-vtpmenabled) | bool | Specifies whether vTPM should be enabled on the virtual machine. This parameter is part of the UefiSettings.  SecurityType should be set to TrustedLaunch to enable UefiSettings. |
 | [`winRM`](#parameter-winrm) | object | Specifies the Windows Remote Management listeners. This enables remote Windows PowerShell. - WinRMConfiguration object. |
 
@@ -2290,6 +2293,32 @@ Optional. Specify the name of lock.
 - Required: No
 - Type: string
 
+### Parameter: `managedIdentities`
+
+The managed identity definition for this resource. The system-assigned managed identity will automatically be enabled if extensionAadJoinConfig.enabled = "True".
+- Required: No
+- Type: object
+
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`systemAssigned`](#parameter-managedidentitiessystemassigned) | No | bool | Optional. Enables system assigned managed identity on the resource. |
+| [`userAssignedResourcesIds`](#parameter-managedidentitiesuserassignedresourcesids) | No | array | Optional. The resource ID(s) to assign to the resource. |
+
+### Parameter: `managedIdentities.systemAssigned`
+
+Optional. Enables system assigned managed identity on the resource.
+
+- Required: No
+- Type: bool
+
+### Parameter: `managedIdentities.userAssignedResourcesIds`
+
+Optional. The resource ID(s) to assign to the resource.
+
+- Required: No
+- Type: array
+
 ### Parameter: `maxPriceForLowPriorityVm`
 
 Specifies the maximum price you are willing to pay for a low priority VM/VMSS. This price is in US Dollars.
@@ -2471,13 +2500,6 @@ Specifies the SecurityType of the virtual machine. It is set as TrustedLaunch to
 - Type: string
 - Default: `''`
 
-### Parameter: `systemAssignedIdentity`
-
-Enables system assigned managed identity on the resource. The system-assigned managed identity will automatically be enabled if extensionAadJoinConfig.enabled = "True".
-- Required: No
-- Type: bool
-- Default: `False`
-
 ### Parameter: `tags`
 
 Tags of the resource.
@@ -2498,13 +2520,6 @@ The flag that enables or disables a capability to have one or more managed data 
 - Required: No
 - Type: bool
 - Default: `False`
-
-### Parameter: `userAssignedIdentities`
-
-The ID(s) to assign to the resource.
-- Required: No
-- Type: object
-- Default: `{object}`
 
 ### Parameter: `vmSize`
 
@@ -2535,7 +2550,7 @@ Specifies the Windows Remote Management listeners. This enables remote Windows P
 | `name` | string | The name of the VM. |
 | `resourceGroupName` | string | The name of the resource group the VM was created in. |
 | `resourceId` | string | The resource ID of the VM. |
-| `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
+| `systemAssignedMIPrincipalId` | string | The principal ID of the system assigned identity. |
 
 ## Cross-referenced modules
 

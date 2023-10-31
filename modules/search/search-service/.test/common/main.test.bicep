@@ -77,7 +77,9 @@ module testDeployment '../../main.bicep' = {
     hostingMode: 'highDensity'
     partitionCount: 2
     replicaCount: 3
-    systemAssignedIdentity: true
+    managedIdentities: {
+      systemAssigned: true
+    }
     lock: {
       kind: 'CanNotDelete'
       name: 'myCustomLockName'

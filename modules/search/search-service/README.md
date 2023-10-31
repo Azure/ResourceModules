@@ -77,6 +77,9 @@ module searchService 'br:bicep/modules/search.search-service:1.0.0' = {
       kind: 'CanNotDelete'
       name: 'myCustomLockName'
     }
+    managedIdentities: {
+      systemAssigned: true
+    }
     networkRuleSet: {
       ipRules: [
         {
@@ -102,7 +105,6 @@ module searchService 'br:bicep/modules/search.search-service:1.0.0' = {
       }
     ]
     sku: 'standard3'
-    systemAssignedIdentity: true
     tags: {
       Environment: 'Non-Prod'
       'hidden-title': 'This is visible in the resource name'
@@ -170,6 +172,11 @@ module searchService 'br:bicep/modules/search.search-service:1.0.0' = {
         "name": "myCustomLockName"
       }
     },
+    "managedIdentities": {
+      "value": {
+        "systemAssigned": true
+      }
+    },
     "networkRuleSet": {
       "value": {
         "ipRules": [
@@ -204,9 +211,6 @@ module searchService 'br:bicep/modules/search.search-service:1.0.0' = {
     },
     "sku": {
       "value": "standard3"
-    },
-    "systemAssignedIdentity": {
-      "value": true
     },
     "tags": {
       "value": {
@@ -412,6 +416,7 @@ module searchService 'br:bicep/modules/search.search-service:1.0.0' = {
 | [`hostingMode`](#parameter-hostingmode) | string | Applicable only for the standard3 SKU. You can set this property to enable up to 3 high density partitions that allow up to 1000 indexes, which is much higher than the maximum indexes allowed for any other SKU. For the standard3 SKU, the value is either 'default' or 'highDensity'. For all other SKUs, this value must be 'default'. |
 | [`location`](#parameter-location) | string | Location for all Resources. |
 | [`lock`](#parameter-lock) | object | The lock settings of the service. |
+| [`managedIdentities`](#parameter-managedidentities) | object | The managed identity definition for this resource. |
 | [`networkRuleSet`](#parameter-networkruleset) | object | Network specific rules that determine how the Azure Cognitive Search service may be reached. |
 | [`partitionCount`](#parameter-partitioncount) | int | The number of partitions in the search service; if specified, it can be 1, 2, 3, 4, 6, or 12. Values greater than 1 are only valid for standard SKUs. For 'standard3' services with hostingMode set to 'highDensity', the allowed values are between 1 and 3. |
 | [`privateEndpoints`](#parameter-privateendpoints) | array | Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
@@ -420,7 +425,6 @@ module searchService 'br:bicep/modules/search.search-service:1.0.0' = {
 | [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | [`sharedPrivateLinkResources`](#parameter-sharedprivatelinkresources) | array | The sharedPrivateLinkResources to create as part of the search Service. |
 | [`sku`](#parameter-sku) | string | Defines the SKU of an Azure Cognitive Search Service, which determines price tier and capacity limits. |
-| [`systemAssignedIdentity`](#parameter-systemassignedidentity) | bool | Enables system assigned managed identity on the resource. |
 | [`tags`](#parameter-tags) | object | Tags to help categorize the resource in the Azure portal. |
 
 ### Parameter: `authOptions`
@@ -608,6 +612,24 @@ Optional. Specify the name of lock.
 
 - Required: No
 - Type: string
+
+### Parameter: `managedIdentities`
+
+The managed identity definition for this resource.
+- Required: No
+- Type: object
+
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`systemAssigned`](#parameter-managedidentitiessystemassigned) | No | bool | Optional. Enables system assigned managed identity on the resource. |
+
+### Parameter: `managedIdentities.systemAssigned`
+
+Optional. Enables system assigned managed identity on the resource.
+
+- Required: No
+- Type: bool
 
 ### Parameter: `name`
 
@@ -895,13 +917,6 @@ Defines the SKU of an Azure Cognitive Search Service, which determines price tie
 - Default: `'standard'`
 - Allowed: `[basic, free, standard, standard2, standard3, storage_optimized_l1, storage_optimized_l2]`
 
-### Parameter: `systemAssignedIdentity`
-
-Enables system assigned managed identity on the resource.
-- Required: No
-- Type: bool
-- Default: `False`
-
 ### Parameter: `tags`
 
 Tags to help categorize the resource in the Azure portal.
@@ -918,6 +933,7 @@ Tags to help categorize the resource in the Azure portal.
 | `name` | string | The name of the search service. |
 | `resourceGroupName` | string | The name of the resource group the search service was created in. |
 | `resourceId` | string | The resource ID of the search service. |
+| `systemAssignedMIPrincipalId` | string | The principal ID of the system assigned identity. |
 
 ## Cross-referenced modules
 

@@ -64,8 +64,10 @@ module testDeployment '../../main.bicep' = {
       kind: 'CanNotDelete'
       name: 'myCustomLockName'
     }
-    userAssignedIdentities: {
-      '${nestedDependencies.outputs.managedIdentityResourceId}': {}
+    managedIdentities: {
+      userAssignedResourcesIds: [
+        nestedDependencies.outputs.managedIdentityResourceId
+      ]
     }
     secrets: {
       secureList: [

@@ -6,13 +6,28 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "13098960413879808793"
+      "templateHash": "1179455125587700731"
     },
     "name": "DBforMySQL Flexible Servers",
     "description": "This module deploys a DBforMySQL Flexible Server.",
     "owner": "Azure/module-maintainers"
   },
   "definitions": {
+    "managedIdentitiesType": {
+      "type": "object",
+      "properties": {
+        "userAssignedResourcesIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "metadata": {
+            "description": "Optional. The resource ID(s) to assign to the resource."
+          }
+        }
+      },
+      "nullable": true
+    },
     "lockType": {
       "type": "object",
       "properties": {
@@ -322,11 +337,10 @@
         "description": "Optional. The mode to create a new MySQL server."
       }
     },
-    "userAssignedIdentities": {
-      "type": "object",
-      "defaultValue": {},
+    "managedIdentities": {
+      "$ref": "#/definitions/managedIdentitiesType",
       "metadata": {
-        "description": "Conditional. The ID(s) to assign to the resource. Required if \"cMKKeyName\" is not empty."
+        "description": "Conditional. The managed identity definition for this resource. Required if 'cMKKeyName' is not empty."
       }
     },
     "cMKKeyVaultResourceId": {
@@ -541,8 +555,8 @@
     }
   },
   "variables": {
-    "identityType": "[if(not(empty(parameters('userAssignedIdentities'))), 'UserAssigned', 'None')]",
-    "identity": "[if(not(equals(variables('identityType'), 'None')), createObject('type', variables('identityType'), 'userAssignedIdentities', if(not(empty(parameters('userAssignedIdentities'))), parameters('userAssignedIdentities'), null())), null())]",
+    "formattedUserAssignedIdentities": "[reduce(map(coalesce(tryGet(parameters('managedIdentities'), 'userAssignedResourcesIds'), createArray()), lambda('id', createObject(format('{0}', lambdaVariables('id')), createObject()))), createObject(), lambda('cur', 'next', union(lambdaVariables('cur'), lambdaVariables('next'))))]",
+    "identity": "[if(not(empty(parameters('managedIdentities'))), createObject('type', if(not(empty(coalesce(tryGet(parameters('managedIdentities'), 'userAssignedResourcesIds'), createObject()))), 'UserAssigned', null()), 'userAssignedIdentities', if(not(empty(variables('formattedUserAssignedIdentities'))), variables('formattedUserAssignedIdentities'), null())), null())]",
     "enableReferencedModulesTelemetry": false,
     "builtInRoleNames": {
       "Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]",

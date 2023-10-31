@@ -57,8 +57,10 @@ module testDeployment '../../main.bicep' = {
     cMKKeyName: nestedDependencies.outputs.keyVaultEncryptionKeyName
     cMKKeyVaultResourceId: nestedDependencies.outputs.keyVaultResourceId
     cMKUserAssignedIdentityResourceId: nestedDependencies.outputs.managedIdentityResourceId
-    userAssignedIdentities: {
-      '${nestedDependencies.outputs.managedIdentityResourceId}': {}
+    managedIdentities: {
+      userAssignedResourcesIds: [
+        nestedDependencies.outputs.managedIdentityResourceId
+      ]
     }
   }
 }

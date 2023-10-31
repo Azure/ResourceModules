@@ -8,11 +8,8 @@ param name string
 @description('Optional. Location for all Resources.')
 param location string = resourceGroup().location
 
-@description('Optional. Enables system assigned managed identity on the resource.')
-param systemAssignedIdentity bool = false
-
-@description('Optional. The ID(s) to assign to the resource.')
-param userAssignedIdentities object = {}
+@description('Optional. The managed identity definition for this resource.')
+param managedIdentities managedIdentitiesType
 
 @allowed([
   'Free'
@@ -82,12 +79,12 @@ param privateEndpoints privateEndpointType
 
 var enableReferencedModulesTelemetry = false
 
-var identityType = systemAssignedIdentity ? 'SystemAssigned' : !empty(userAssignedIdentities) ? 'UserAssigned' : 'None'
+var formattedUserAssignedIdentities = reduce(map((managedIdentities.?userAssignedResourcesIds ?? []), (id) => { '${id}': {} }), {}, (cur, next) => union(cur, next)) // Converts the flat array to an object like { '${id1}': {}, '${id2}': {} }
 
-var identity = {
-  type: identityType
-  userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
-}
+var identity = !empty(managedIdentities) ? {
+  type: (managedIdentities.?systemAssigned ?? false) ? (!empty(managedIdentities.?userAssignedResourcesIds ?? {}) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(managedIdentities.?userAssignedResourcesIds ?? {}) ? 'UserAssigned' : null)
+  userAssignedIdentities: !empty(formattedUserAssignedIdentities) ? formattedUserAssignedIdentities : null
+} : null
 
 var builtInRoleNames = {
   'App Compliance Automation Administrator': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '0f37683f-2463-46b6-9ce7-9b788b988ba2')
@@ -245,7 +242,7 @@ output resourceId string = configurationStore.id
 output resourceGroupName string = resourceGroup().name
 
 @description('The principal ID of the system assigned identity.')
-output systemAssignedPrincipalId string = systemAssignedIdentity && contains(configurationStore.identity, 'principalId') ? configurationStore.identity.principalId : ''
+output systemAssignedMIPrincipalId string = (managedIdentities.?systemAssigned ?? false) && contains(configurationStore.identity, 'principalId') ? configurationStore.identity.principalId : ''
 
 @description('The location the resource was deployed into.')
 output location string = configurationStore.location
@@ -253,6 +250,14 @@ output location string = configurationStore.location
 // =============== //
 //   Definitions   //
 // =============== //
+
+type managedIdentitiesType = {
+  @description('Optional. Enables system assigned managed identity on the resource.')
+  systemAssigned: bool?
+
+  @description('Optional. The resource ID(s) to assign to the resource.')
+  userAssignedResourcesIds: string[]?
+}?
 
 type lockType = {
   @description('Optional. Specify the name of lock.')

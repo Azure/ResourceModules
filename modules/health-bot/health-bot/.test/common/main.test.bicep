@@ -69,8 +69,10 @@ module testDeployment '../../main.bicep' = {
       Role: 'DeploymentValidation'
     }
     sku: 'F0'
-    userAssignedIdentities: {
-      '${nestedDependencies.outputs.managedIdentityResourceId}': {}
+    managedIdentities: {
+      userAssignedResourcesIds: [
+        nestedDependencies.outputs.managedIdentityResourceId
+      ]
     }
   }
 }

@@ -13,8 +13,8 @@ param location string = resourceGroup().location
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. The ID(s) to assign to the resource.')
-param userAssignedIdentities object = {}
+@description('Optional. The managed identity definition for this resource.')
+param managedIdentities managedIdentitiesType
 
 @description('Optional. The Managed Resource Group Name. A managed Storage Account, and an Event Hubs will be created in the selected subscription for catalog ingestion scenarios. Default is \'managed-rg-<purview-account-name>\'.')
 param managedResourceGroupName string = 'managed-rg-${name}'
@@ -58,12 +58,12 @@ param lock lockType
 // Variables   //
 // =========== //
 
-var identityType = !empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned'
+var formattedUserAssignedIdentities = reduce(map((managedIdentities.?userAssignedResourcesIds ?? []), (id) => { '${id}': {} }), {}, (cur, next) => union(cur, next)) // Converts the flat array to an object like { '${id1}': {}, '${id2}': {} }
 
-var identity = identityType != 'None' ? {
-  type: identityType
-  userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
-} : null
+var identity = {
+  type: !empty(managedIdentities.?userAssignedResourcesIds ?? {}) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned'
+  userAssignedIdentities: !empty(formattedUserAssignedIdentities) ? formattedUserAssignedIdentities : null
+}
 
 var enableReferencedModulesTelemetry = false
 
@@ -91,7 +91,7 @@ resource account 'Microsoft.Purview/accounts@2021-07-01' = {
   name: name
   location: location
   tags: tags
-  identity: any(identity)
+  identity: identity
   properties: {
     cloudConnectors: {}
     managedResourceGroupName: managedResourceGroupName
@@ -293,11 +293,16 @@ output managedStorageAccountId string = account.properties.managedResources.stor
 output managedEventHubId string = account.properties.managedResources.eventHubNamespace
 
 @description('The principal ID of the system assigned identity.')
-output systemAssignedPrincipalId string = account.identity.principalId
+output systemAssignedMIPrincipalId string = contains(account.identity, 'principalId') ? account.identity.principalId : ''
 
 // =============== //
 //   Definitions   //
 // =============== //
+
+type managedIdentitiesType = {
+  @description('Optional. The resource ID(s) to assign to the resource.')
+  userAssignedResourcesIds: string[]
+}?
 
 type lockType = {
   @description('Optional. Specify the name of lock.')

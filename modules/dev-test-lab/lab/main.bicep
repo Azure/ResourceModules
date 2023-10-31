@@ -57,11 +57,11 @@ param premiumDataDisks string = 'Disabled'
 @description('Optional. The properties of any lab support message associated with this lab.')
 param support object = {}
 
-@description('Optional. The ID(s) to assign to the resource.')
-param userAssignedIdentities object = {}
+@description('Optional. The managed identity definition for this resource.')
+param managedIdentities managedIdentitiesType
 
-@description('Optional. The ID(s) to assign to the virtual machines associated with this lab.')
-param managementIdentities object = {}
+@description('Optional. The resource ID(s) to assign to the virtual machines associated with this lab.')
+param managementIdentitiesResourceIds string[] = []
 
 @description('Optional. Resource Group allocation for virtual machines. If left empty, virtual machines will be deployed in their own Resource Groups. Default is the same Resource Group for DevTest Lab.')
 param vmCreationResourceGroupId string = resourceGroup().id
@@ -116,6 +116,15 @@ param enableDefaultTelemetry bool = true
 
 var enableReferencedModulesTelemetry = false
 
+var formattedUserAssignedIdentities = reduce(map((managedIdentities.?userAssignedResourcesIds ?? []), (id) => { '${id}': {} }), {}, (cur, next) => union(cur, next)) // Converts the flat array to an object like { '${id1}': {}, '${id2}': {} }
+
+var identity = !empty(managedIdentities) ? {
+  type: !empty(managedIdentities.?userAssignedResourcesIds ?? {}) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned'
+  userAssignedIdentities: !empty(formattedUserAssignedIdentities) ? formattedUserAssignedIdentities : null
+} : any(null)
+
+var formattedManagementIdentities = !empty(managementIdentitiesResourceIds) ? reduce(map((managementIdentitiesResourceIds ?? []), (id) => { '${id}': {} }), {}, (cur, next) => union(cur, next)) : {} // Converts the flat array to an object like { '${id1}': {}, '${id2}': {} }
+
 var builtInRoleNames = {
   Contributor: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')
   'DevTest Labs User': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '76283e04-6283-4c54-8f91-bcf1374a3c64')
@@ -142,10 +151,7 @@ resource lab 'Microsoft.DevTestLab/labs@2018-10-15-preview' = {
   name: name
   location: location
   tags: tags
-  identity: {
-    type: !empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned'
-    userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : any(null)
-  }
+  identity: identity
   properties: {
     artifactsStorageAccount: artifactsStorageAccount
     announcement: announcement
@@ -156,7 +162,7 @@ resource lab 'Microsoft.DevTestLab/labs@2018-10-15-preview' = {
     mandatoryArtifactsResourceIdsWindows: mandatoryArtifactsResourceIdsWindows
     premiumDataDisks: premiumDataDisks
     support: support
-    managementIdentities: managementIdentities
+    managementIdentities: formattedManagementIdentities
     vmCreationResourceGroupId: vmCreationResourceGroupId
     browserConnect: browserConnect
     disableAutoUpgradeCseMinorVersion: disableAutoUpgradeCseMinorVersion
@@ -312,12 +318,20 @@ output resourceId string = lab.id
 @description('The name of the lab.')
 output name string = lab.name
 
+@description('The principal ID of the system assigned identity.')
+output systemAssignedMIPrincipalId string = contains(lab.identity, 'principalId') ? lab.identity.principalId : ''
+
 @description('The location the resource was deployed into.')
 output location string = lab.location
 
 // =============== //
 //   Definitions   //
 // =============== //
+
+type managedIdentitiesType = {
+  @description('Optional. The resource ID(s) to assign to the resource.')
+  userAssignedResourcesIds: string[]
+}?
 
 type lockType = {
   @description('Optional. Specify the name of lock.')

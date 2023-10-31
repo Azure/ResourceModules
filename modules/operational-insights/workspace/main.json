@@ -6,13 +6,36 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "535028874764214077"
+      "templateHash": "12796424281221754385"
     },
     "name": "Log Analytics Workspaces",
     "description": "This module deploys a Log Analytics Workspace.",
     "owner": "Azure/module-maintainers"
   },
   "definitions": {
+    "managedIdentitiesType": {
+      "type": "object",
+      "properties": {
+        "systemAssigned": {
+          "type": "bool",
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Enables system assigned managed identity on the resource."
+          }
+        },
+        "userAssignedResourcesIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. The resource ID(s) to assign to the resource."
+          }
+        }
+      },
+      "nullable": true
+    },
     "lockType": {
       "type": "object",
       "properties": {
@@ -346,18 +369,10 @@
         "description": "Optional. The network access type for accessing Log Analytics query."
       }
     },
-    "systemAssignedIdentity": {
-      "type": "bool",
-      "defaultValue": false,
+    "managedIdentities": {
+      "$ref": "#/definitions/managedIdentitiesType",
       "metadata": {
-        "description": "Optional. Enables system assigned managed identity on the resource."
-      }
-    },
-    "userAssignedIdentities": {
-      "type": "object",
-      "defaultValue": {},
-      "metadata": {
-        "description": "Optional. The ID(s) to assign to the resource."
+        "description": "Optional. The managed identity definition for this resource. Only one type of identity is supported: system-assigned or user-assigned, but not both."
       }
     },
     "useResourcePermissions": {
@@ -409,8 +424,8 @@
   },
   "variables": {
     "enableReferencedModulesTelemetry": false,
-    "identityType": "[if(parameters('systemAssignedIdentity'), 'SystemAssigned', if(not(empty(parameters('userAssignedIdentities'))), 'UserAssigned', 'None'))]",
-    "identity": "[if(not(equals(variables('identityType'), 'None')), createObject('type', variables('identityType'), 'userAssignedIdentities', if(not(empty(parameters('userAssignedIdentities'))), parameters('userAssignedIdentities'), null())), null())]",
+    "formattedUserAssignedIdentities": "[reduce(map(coalesce(tryGet(parameters('managedIdentities'), 'userAssignedResourcesIds'), createArray()), lambda('id', createObject(format('{0}', lambdaVariables('id')), createObject()))), createObject(), lambda('cur', 'next', union(lambdaVariables('cur'), lambdaVariables('next'))))]",
+    "identity": "[if(not(empty(parameters('managedIdentities'))), createObject('type', if(coalesce(tryGet(parameters('managedIdentities'), 'systemAssigned'), false()), 'SystemAssigned', if(not(empty(coalesce(tryGet(parameters('managedIdentities'), 'userAssignedResourcesIds'), createObject()))), 'UserAssigned', null())), 'userAssignedIdentities', if(not(empty(variables('formattedUserAssignedIdentities'))), variables('formattedUserAssignedIdentities'), null())), null())]",
     "builtInRoleNames": {
       "Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]",
       "Log Analytics Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '92aaf0da-9dab-42b6-94a3-d43ce8d16293')]",
@@ -1862,12 +1877,12 @@
       },
       "value": "[reference('logAnalyticsWorkspace', '2022-10-01', 'full').location]"
     },
-    "systemAssignedIdentityPrincipalId": {
+    "systemAssignedMIPrincipalId": {
       "type": "string",
       "metadata": {
         "description": "The principal ID of the system assigned identity."
       },
-      "value": "[if(and(parameters('systemAssignedIdentity'), contains(reference('logAnalyticsWorkspace', '2022-10-01', 'full').identity, 'principalId')), reference('logAnalyticsWorkspace', '2022-10-01', 'full').identity.principalId, '')]"
+      "value": "[if(and(coalesce(tryGet(parameters('managedIdentities'), 'systemAssigned'), false()), contains(reference('logAnalyticsWorkspace', '2022-10-01', 'full').identity, 'principalId')), reference('logAnalyticsWorkspace', '2022-10-01', 'full').identity.principalId, '')]"
     }
   }
 }
