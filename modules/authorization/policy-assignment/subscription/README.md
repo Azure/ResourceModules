@@ -72,7 +72,13 @@ The policy assignment enforcement mode. Possible values are Default and DoNotEnf
 - Required: No
 - Type: string
 - Default: `'Default'`
-- Allowed: `[Default, DoNotEnforce]`
+- Allowed:
+  ```Bicep
+  [
+    'Default'
+    'DoNotEnforce'
+  ]
+  ```
 
 ### Parameter: `identity`
 
@@ -80,7 +86,14 @@ The managed identity associated with the policy assignment. Policy assignments m
 - Required: No
 - Type: string
 - Default: `'SystemAssigned'`
-- Allowed: `[None, SystemAssigned, UserAssigned]`
+- Allowed:
+  ```Bicep
+  [
+    'None'
+    'SystemAssigned'
+    'UserAssigned'
+  ]
+  ```
 
 ### Parameter: `location`
 
@@ -94,7 +107,7 @@ Location for all resources.
 The policy assignment metadata. Metadata is an open ended object and is typically a collection of key-value pairs.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `name`
 
@@ -128,7 +141,7 @@ The policy property value override. Allows changing the effect of a policy defin
 Parameters for the policy assignment if needed.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `policyDefinitionId`
 

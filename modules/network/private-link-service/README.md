@@ -305,7 +305,7 @@ module privateLinkService 'br:bicep/modules/network.private-link-service:1.0.0' 
 The auto-approval list of the private link service.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `enableDefaultTelemetry`
 
@@ -326,7 +326,7 @@ Lets the service provider use tcp proxy v2 to retrieve connection information ab
 The extended location of the load balancer.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `fqdns`
 
@@ -468,7 +468,7 @@ Tags to be applied on all resources/resource groups in this deployment.
 Controls the exposure settings for your Private Link service. Service providers can choose to limit the exposure to their service to subscriptions with Azure role-based access control (Azure RBAC) permissions, a restricted set of subscriptions, or all Azure subscriptions.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 
 ## Outputs

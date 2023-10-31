@@ -50,7 +50,13 @@ Enable this setting to protect hybrid backups against accidental deletes and add
 - Required: No
 - Type: string
 - Default: `'Enabled'`
-- Allowed: `[Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 ### Parameter: `isSoftDeleteFeatureStateEditable`
 
@@ -85,7 +91,13 @@ Enable this setting to protect backup data for Azure VM, SQL Server in Azure VM 
 - Required: No
 - Type: string
 - Default: `'Enabled'`
-- Allowed: `[Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 ### Parameter: `storageModelType`
 
@@ -93,7 +105,15 @@ Storage type.
 - Required: No
 - Type: string
 - Default: `'GeoRedundant'`
-- Allowed: `[GeoRedundant, LocallyRedundant, ReadAccessGeoZoneRedundant, ZoneRedundant]`
+- Allowed:
+  ```Bicep
+  [
+    'GeoRedundant'
+    'LocallyRedundant'
+    'ReadAccessGeoZoneRedundant'
+    'ZoneRedundant'
+  ]
+  ```
 
 ### Parameter: `storageType`
 
@@ -101,7 +121,15 @@ Storage type.
 - Required: No
 - Type: string
 - Default: `'GeoRedundant'`
-- Allowed: `[GeoRedundant, LocallyRedundant, ReadAccessGeoZoneRedundant, ZoneRedundant]`
+- Allowed:
+  ```Bicep
+  [
+    'GeoRedundant'
+    'LocallyRedundant'
+    'ReadAccessGeoZoneRedundant'
+    'ZoneRedundant'
+  ]
+  ```
 
 ### Parameter: `storageTypeState`
 
@@ -109,7 +137,13 @@ Once a machine is registered against a resource, the storageTypeState is always 
 - Required: No
 - Type: string
 - Default: `'Locked'`
-- Allowed: `[Locked, Unlocked]`
+- Allowed:
+  ```Bicep
+  [
+    'Locked'
+    'Unlocked'
+  ]
+  ```
 
 
 ## Outputs

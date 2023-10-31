@@ -56,7 +56,7 @@ The name of the parent API Management service. Required if the template is used 
 Backend Credentials Contract Properties.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `description`
 
@@ -90,7 +90,7 @@ Backend communication protocol. - http or soap.
 Backend Proxy Contract Properties.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `resourceId`
 
@@ -104,7 +104,7 @@ Management Uri of the Resource in External System. This URL can be the Arm Resou
 Backend Service Fabric Cluster Properties.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `title`
 
@@ -118,7 +118,13 @@ Backend Title.
 Backend TLS Properties.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default:
+  ```Bicep
+  {
+      validateCertificateChain: false
+      validateCertificateName: false
+  }
+  ```
 
 ### Parameter: `url`
 

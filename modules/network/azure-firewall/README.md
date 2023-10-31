@@ -807,7 +807,14 @@ Tier of an Azure Firewall.
 - Required: No
 - Type: string
 - Default: `'Standard'`
-- Allowed: `[Basic, Premium, Standard]`
+- Allowed:
+  ```Bicep
+  [
+    'Basic'
+    'Premium'
+    'Standard'
+  ]
+  ```
 
 ### Parameter: `diagnosticSettings`
 
@@ -943,7 +950,7 @@ Resource ID of the Firewall Policy that should be attached.
 IP addresses associated with AzureFirewall. Required if `virtualHubId` is supplied.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `location`
 
@@ -984,7 +991,7 @@ Optional. Specify the name of lock.
 Specifies the properties of the Management Public IP to create and be used by Azure Firewall. If it's not provided and managementIPResourceID is empty, a '-mip' suffix will be appended to the Firewall's name.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `managementIPResourceID`
 
@@ -1018,7 +1025,12 @@ Collection of network rule collections used by Azure Firewall.
 Specifies the properties of the Public IP to create and be used by the Firewall, if no existing public IP was provided.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default:
+  ```Bicep
+  {
+      name: '[format(\'{0}-pip\' parameters(\'name\'))]'
+  }
+  ```
 
 ### Parameter: `publicIPResourceID`
 
@@ -1107,7 +1119,14 @@ The operation mode for Threat Intel.
 - Required: No
 - Type: string
 - Default: `'Deny'`
-- Allowed: `[Alert, Deny, Off]`
+- Allowed:
+  ```Bicep
+  [
+    'Alert'
+    'Deny'
+    'Off'
+  ]
+  ```
 
 ### Parameter: `virtualHubId`
 
@@ -1128,7 +1147,14 @@ Shared services Virtual Network resource ID. The virtual network ID containing A
 Zone numbers e.g. 1,2,3.
 - Required: No
 - Type: array
-- Default: `[1, 2, 3]`
+- Default:
+  ```Bicep
+  [
+    '1'
+    '2'
+    '3'
+  ]
+  ```
 
 
 ## Outputs

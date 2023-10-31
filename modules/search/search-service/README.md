@@ -432,7 +432,7 @@ module searchService 'br:bicep/modules/search.search-service:1.0.0' = {
 Defines the options for how the data plane API of a Search service authenticates requests. Must remain an empty object {} if 'disableLocalAuth' is set to true.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `cmkEnforcement`
 
@@ -440,7 +440,14 @@ Describes a policy that determines how resources within the search service are t
 - Required: No
 - Type: string
 - Default: `'Unspecified'`
-- Allowed: `[Disabled, Enabled, Unspecified]`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+    'Unspecified'
+  ]
+  ```
 
 ### Parameter: `diagnosticSettings`
 
@@ -577,7 +584,13 @@ Applicable only for the standard3 SKU. You can set this property to enable up to
 - Required: No
 - Type: string
 - Default: `'default'`
-- Allowed: `[default, highDensity]`
+- Allowed:
+  ```Bicep
+  [
+    'default'
+    'highDensity'
+  ]
+  ```
 
 ### Parameter: `location`
 
@@ -642,7 +655,7 @@ The name of the Azure Cognitive Search service to create or update. Search servi
 Network specific rules that determine how the Azure Cognitive Search service may be reached.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `partitionCount`
 
@@ -825,7 +838,13 @@ This value can be set to 'enabled' to avoid breaking changes on existing custome
 - Required: No
 - Type: string
 - Default: `'enabled'`
-- Allowed: `[disabled, enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'disabled'
+    'enabled'
+  ]
+  ```
 
 ### Parameter: `replicaCount`
 
@@ -915,7 +934,18 @@ Defines the SKU of an Azure Cognitive Search Service, which determines price tie
 - Required: No
 - Type: string
 - Default: `'standard'`
-- Allowed: `[basic, free, standard, standard2, standard3, storage_optimized_l1, storage_optimized_l2]`
+- Allowed:
+  ```Bicep
+  [
+    'basic'
+    'free'
+    'standard'
+    'standard2'
+    'standard3'
+    'storage_optimized_l1'
+    'storage_optimized_l2'
+  ]
+  ```
 
 ### Parameter: `tags`
 

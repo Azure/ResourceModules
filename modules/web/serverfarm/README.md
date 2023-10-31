@@ -303,7 +303,16 @@ Kind of server OS.
 - Required: No
 - Type: string
 - Default: `'Windows'`
-- Allowed: `[App, Elastic, FunctionApp, Linux, Windows]`
+- Allowed:
+  ```Bicep
+  [
+    'App'
+    'Elastic'
+    'FunctionApp'
+    'Linux'
+    'Windows'
+  ]
+  ```
 
 ### Parameter: `location`
 
@@ -459,7 +468,14 @@ The instance size of the hosting plan (small, medium, or large).
 - Required: No
 - Type: int
 - Default: `0`
-- Allowed: `[0, 1, 2]`
+- Allowed:
+  ```Bicep
+  [
+    0
+    1
+    2
+  ]
+  ```
 
 ### Parameter: `workerTierName`
 

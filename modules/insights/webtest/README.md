@@ -235,7 +235,7 @@ module webtest 'br:bicep/modules/insights.webtest:1.0.0' = {
 An XML configuration specification for a WebTest.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `description`
 
@@ -271,7 +271,14 @@ The kind of WebTest that this web test watches.
 - Required: No
 - Type: string
 - Default: `'standard'`
-- Allowed: `[multistep, ping, standard]`
+- Allowed:
+  ```Bicep
+  [
+    'multistep'
+    'ping'
+    'standard'
+  ]
+  ```
 
 ### Parameter: `location`
 
@@ -285,7 +292,26 @@ Location for all Resources.
 List of where to physically run the tests from to give global coverage for accessibility of your application.
 - Required: No
 - Type: array
-- Default: `[System.Management.Automation.OrderedHashtable, System.Management.Automation.OrderedHashtable, System.Management.Automation.OrderedHashtable, System.Management.Automation.OrderedHashtable, System.Management.Automation.OrderedHashtable]`
+- Default:
+  ```Bicep
+  [
+    {
+      Id: 'us-il-ch1-azr'
+    }
+    {
+      Id: 'us-fl-mia-edge'
+    }
+    {
+      Id: 'latam-br-gru-edge'
+    }
+    {
+      Id: 'apac-sg-sin-azr'
+    }
+    {
+      Id: 'emea-nl-ams-azr'
+    }
+  ]
+  ```
 
 ### Parameter: `lock`
 
@@ -426,7 +452,7 @@ Seconds until this WebTest will timeout and fail.
 The collection of validation rule properties.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `webTestName`
 

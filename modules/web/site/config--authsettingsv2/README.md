@@ -60,7 +60,16 @@ Enable telemetry via a Globally Unique Identifier (GUID).
 Type of site to deploy.
 - Required: Yes
 - Type: string
-- Allowed: `[app, functionapp, functionapp,linux, functionapp,workflowapp, functionapp,workflowapp,linux]`
+- Allowed:
+  ```Bicep
+  [
+    'app'
+    'functionapp'
+    'functionapplinux'
+    'functionappworkflowapp'
+    'functionappworkflowapplinux'
+  ]
+  ```
 
 
 ## Outputs

@@ -437,7 +437,14 @@ List of allowed authentication modes for the Batch account that can be used to a
 - Required: No
 - Type: array
 - Default: `[]`
-- Allowed: `[AAD, SharedKey, TaskAuthenticationToken]`
+- Allowed:
+  ```Bicep
+  [
+    'AAD'
+    'SharedKey'
+    'TaskAuthenticationToken'
+  ]
+  ```
 
 ### Parameter: `cMKKeyName`
 
@@ -668,7 +675,13 @@ The network profile default action for endpoint access. It is only applicable wh
 - Required: No
 - Type: string
 - Default: `'Deny'`
-- Allowed: `[Allow, Deny]`
+- Allowed:
+  ```Bicep
+  [
+    'Allow'
+    'Deny'
+  ]
+  ```
 
 ### Parameter: `poolAllocationMode`
 
@@ -676,7 +689,13 @@ The allocation mode for creating pools in the Batch account. Determines which qu
 - Required: No
 - Type: string
 - Default: `'BatchService'`
-- Allowed: `[BatchService, UserSubscription]`
+- Allowed:
+  ```Bicep
+  [
+    'BatchService'
+    'UserSubscription'
+  ]
+  ```
 
 ### Parameter: `privateEndpoints`
 
@@ -852,7 +871,14 @@ Whether or not public network access is allowed for this resource. For security 
 - Required: No
 - Type: string
 - Default: `''`
-- Allowed: `['', Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    ''
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 ### Parameter: `roleAssignments`
 
@@ -941,7 +967,13 @@ The authentication mode which the Batch service will use to manage the auto-stor
 - Required: No
 - Type: string
 - Default: `'StorageKeys'`
-- Allowed: `[BatchAccountManagedIdentity, StorageKeys]`
+- Allowed:
+  ```Bicep
+  [
+    'BatchAccountManagedIdentity'
+    'StorageKeys'
+  ]
+  ```
 
 ### Parameter: `tags`
 

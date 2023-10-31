@@ -677,7 +677,7 @@ module lab 'br:bicep/modules/dev-test-lab.lab:1.0.0' = {
 The properties of any lab announcement associated with this lab.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `artifactsources`
 
@@ -699,14 +699,20 @@ Enable browser connect on virtual machines if the lab's VNETs have configured Az
 - Required: No
 - Type: string
 - Default: `'Disabled'`
-- Allowed: `[Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 ### Parameter: `costs`
 
 Costs to create for the lab.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `disableAutoUpgradeCseMinorVersion`
 
@@ -735,7 +741,13 @@ Specify how OS and data disks created as part of the lab are encrypted.
 - Required: No
 - Type: string
 - Default: `'EncryptionAtRestWithPlatformKey'`
-- Allowed: `[EncryptionAtRestWithCustomerKey, EncryptionAtRestWithPlatformKey]`
+- Allowed:
+  ```Bicep
+  [
+    'EncryptionAtRestWithCustomerKey'
+    'EncryptionAtRestWithPlatformKey'
+  ]
+  ```
 
 ### Parameter: `environmentPermission`
 
@@ -743,14 +755,20 @@ The access rights to be granted to the user when provisioning an environment.
 - Required: No
 - Type: string
 - Default: `'Reader'`
-- Allowed: `[Contributor, Reader]`
+- Allowed:
+  ```Bicep
+  [
+    'Contributor'
+    'Reader'
+  ]
+  ```
 
 ### Parameter: `extendedProperties`
 
 Extended properties of the lab used for experimental features.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `isolateLabResources`
 
@@ -758,7 +776,13 @@ Enable lab resources isolation from the public internet.
 - Required: No
 - Type: string
 - Default: `'Enabled'`
-- Allowed: `[Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 ### Parameter: `labStorageType`
 
@@ -766,7 +790,14 @@ Type of storage used by the lab. It can be either Premium or Standard.
 - Required: No
 - Type: string
 - Default: `'Premium'`
-- Allowed: `[Premium, Standard, StandardSSD]`
+- Allowed:
+  ```Bicep
+  [
+    'Premium'
+    'Standard'
+    'StandardSSD'
+  ]
+  ```
 
 ### Parameter: `location`
 
@@ -867,7 +898,13 @@ The setting to enable usage of premium data disks. When its value is "Enabled", 
 - Required: No
 - Type: string
 - Default: `'Disabled'`
-- Allowed: `[Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 ### Parameter: `roleAssignments`
 
@@ -949,7 +986,7 @@ Schedules to create for the lab.
 The properties of any lab support message associated with this lab.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `tags`
 

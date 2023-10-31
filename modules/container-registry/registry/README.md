@@ -583,7 +583,14 @@ Tier of your Azure container registry.
 - Required: No
 - Type: string
 - Default: `'Basic'`
-- Allowed: `[Basic, Premium, Standard]`
+- Allowed:
+  ```Bicep
+  [
+    'Basic'
+    'Premium'
+    'Standard'
+  ]
+  ```
 
 ### Parameter: `anonymousPullEnabled`
 
@@ -598,7 +605,13 @@ The value that indicates whether the policy for using ARM audience token for a c
 - Required: No
 - Type: string
 - Default: `'enabled'`
-- Allowed: `[disabled, enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'disabled'
+    'enabled'
+  ]
+  ```
 
 ### Parameter: `cacheRules`
 
@@ -770,7 +783,13 @@ The value that indicates whether the export policy is enabled or not.
 - Required: No
 - Type: string
 - Default: `'disabled'`
-- Allowed: `[disabled, enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'disabled'
+    'enabled'
+  ]
+  ```
 
 ### Parameter: `location`
 
@@ -844,7 +863,13 @@ Whether to allow trusted Azure services to access a network restricted registry.
 - Required: No
 - Type: string
 - Default: `'AzureServices'`
-- Allowed: `[AzureServices, None]`
+- Allowed:
+  ```Bicep
+  [
+    'AzureServices'
+    'None'
+  ]
+  ```
 
 ### Parameter: `networkRuleSetDefaultAction`
 
@@ -852,7 +877,13 @@ The default action of allow or deny when no other rules match.
 - Required: No
 - Type: string
 - Default: `'Deny'`
-- Allowed: `[Allow, Deny]`
+- Allowed:
+  ```Bicep
+  [
+    'Allow'
+    'Deny'
+  ]
+  ```
 
 ### Parameter: `networkRuleSetIpRules`
 
@@ -1035,7 +1066,14 @@ Whether or not public network access is allowed for this resource. For security 
 - Required: No
 - Type: string
 - Default: `''`
-- Allowed: `['', Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    ''
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 ### Parameter: `quarantinePolicyStatus`
 
@@ -1043,7 +1081,13 @@ The value that indicates whether the quarantine policy is enabled or not.
 - Required: No
 - Type: string
 - Default: `'disabled'`
-- Allowed: `[disabled, enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'disabled'
+    'enabled'
+  ]
+  ```
 
 ### Parameter: `replications`
 
@@ -1065,7 +1109,13 @@ The value that indicates whether the retention policy is enabled or not.
 - Required: No
 - Type: string
 - Default: `'enabled'`
-- Allowed: `[disabled, enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'disabled'
+    'enabled'
+  ]
+  ```
 
 ### Parameter: `roleAssignments`
 
@@ -1148,7 +1198,13 @@ Soft Delete policy status. Default is disabled.
 - Required: No
 - Type: string
 - Default: `'disabled'`
-- Allowed: `[disabled, enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'disabled'
+    'enabled'
+  ]
+  ```
 
 ### Parameter: `tags`
 
@@ -1162,7 +1218,13 @@ The value that indicates whether the trust policy is enabled or not.
 - Required: No
 - Type: string
 - Default: `'disabled'`
-- Allowed: `[disabled, enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'disabled'
+    'enabled'
+  ]
+  ```
 
 ### Parameter: `webhooks`
 
@@ -1177,7 +1239,13 @@ Whether or not zone redundancy is enabled for this container registry.
 - Required: No
 - Type: string
 - Default: `'Disabled'`
-- Allowed: `[Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 
 ## Outputs

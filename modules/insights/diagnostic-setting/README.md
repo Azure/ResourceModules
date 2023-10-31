@@ -149,7 +149,14 @@ A string indicating whether the export to Log Analytics should use the default d
 - Required: No
 - Type: string
 - Default: `''`
-- Allowed: `['', AzureDiagnostics, Dedicated]`
+- Allowed:
+  ```Bicep
+  [
+    ''
+    'AzureDiagnostics'
+    'Dedicated'
+  ]
+  ```
 
 ### Parameter: `logCategoriesAndGroups`
 

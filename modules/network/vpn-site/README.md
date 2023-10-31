@@ -314,14 +314,14 @@ An array of IP address ranges that can be used by subnets of the virtual network
 BGP settings details. Note: This is a deprecated property, please use the corresponding VpnSiteLinks property instead. Required if no addressPrefixes or VPNSiteLinks are configured.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `deviceProperties`
 
 List of properties of the device.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `enableDefaultTelemetry`
 
@@ -389,7 +389,7 @@ Name of the VPN Site.
 The Office365 breakout policy.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `roleAssignments`
 

@@ -271,7 +271,13 @@ The type of key used to encrypt the data of the disk. For security reasons, it i
 - Required: No
 - Type: string
 - Default: `'EncryptionAtRestWithPlatformAndCustomerKeys'`
-- Allowed: `[EncryptionAtRestWithCustomerKey, EncryptionAtRestWithPlatformAndCustomerKeys]`
+- Allowed:
+  ```Bicep
+  [
+    'EncryptionAtRestWithCustomerKey'
+    'EncryptionAtRestWithPlatformAndCustomerKeys'
+  ]
+  ```
 
 ### Parameter: `federatedClientId`
 
@@ -336,8 +342,14 @@ Optional. Specify the name of lock.
 ### Parameter: `managedIdentities`
 
 The managed identity definition for this resource. At least one identity type is required.
-- Required: Yes
+- Required: No
 - Type: object
+- Default:
+  ```Bicep
+  {
+      systemAssigned: true
+  }
+  ```
 
 
 | Name | Required | Type | Description |

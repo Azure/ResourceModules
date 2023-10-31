@@ -496,7 +496,19 @@ Enable telemetry via a Globally Unique Identifier (GUID).
 The inbound firewall rules to define on the server. If not specified, firewall is disabled.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default:
+  ```Bicep
+  {
+      enablePowerBIService: true
+      firewallRules: [
+        {
+          firewallRuleName: 'AllowFromAll'
+          rangeEnd: '255.255.255.255'
+          rangeStart: '0.0.0.0'
+        }
+      ]
+  }
+  ```
 
 ### Parameter: `location`
 

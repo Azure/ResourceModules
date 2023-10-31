@@ -64,7 +64,7 @@ The name of the parent Gremlin Database. Required if the template is used in a s
 Indexing policy of the graph.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `name`
 

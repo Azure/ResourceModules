@@ -60,14 +60,14 @@ This module deploys a SQL Managed Instance Database.
 The configuration for the backup long term retention policy definition.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `backupShortTermRetentionPoliciesObj`
 
 The configuration for the backup short term retention policy definition.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `catalogCollation`
 
@@ -89,7 +89,16 @@ Managed database create mode. PointInTimeRestore: Create a database by restoring
 - Required: No
 - Type: string
 - Default: `'Default'`
-- Allowed: `[Default, PointInTimeRestore, Recovery, RestoreExternalBackup, RestoreLongTermRetentionBackup]`
+- Allowed:
+  ```Bicep
+  [
+    'Default'
+    'PointInTimeRestore'
+    'Recovery'
+    'RestoreExternalBackup'
+    'RestoreLongTermRetentionBackup'
+  ]
+  ```
 
 ### Parameter: `diagnosticSettings`
 

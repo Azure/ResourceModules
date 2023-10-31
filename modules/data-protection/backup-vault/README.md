@@ -335,7 +335,13 @@ Settings for Azure Monitor based alerts for job failures.
 - Required: No
 - Type: string
 - Default: `'Enabled'`
-- Allowed: `[Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 ### Parameter: `backupPolicies`
 
@@ -350,7 +356,14 @@ The datastore type to use. ArchiveStore does not support ZoneRedundancy.
 - Required: No
 - Type: string
 - Default: `'VaultStore'`
-- Allowed: `[ArchiveStore, OperationalStore, VaultStore]`
+- Allowed:
+  ```Bicep
+  [
+    'ArchiveStore'
+    'OperationalStore'
+    'VaultStore'
+  ]
+  ```
 
 ### Parameter: `enableDefaultTelemetry`
 
@@ -364,7 +377,7 @@ Enable telemetry via a Globally Unique Identifier (GUID).
 Feature settings for the backup vault.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `location`
 
@@ -497,7 +510,7 @@ Required. The name of the role to assign. If it cannot be found you can specify 
 Security settings for the backup vault.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `tags`
 
@@ -511,7 +524,14 @@ The vault redundancy level to use.
 - Required: No
 - Type: string
 - Default: `'GeoRedundant'`
-- Allowed: `[GeoRedundant, LocallyRedundant, ZoneRedundant]`
+- Allowed:
+  ```Bicep
+  [
+    'GeoRedundant'
+    'LocallyRedundant'
+    'ZoneRedundant'
+  ]
+  ```
 
 
 ## Outputs

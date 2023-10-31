@@ -745,7 +745,13 @@ If the encrypted VNet allows VM that does not support encryption. Can only be us
 - Required: No
 - Type: string
 - Default: `'AllowUnencrypted'`
-- Allowed: `[AllowUnencrypted, DropUnencrypted]`
+- Allowed:
+  ```Bicep
+  [
+    'AllowUnencrypted'
+    'DropUnencrypted'
+  ]
+  ```
 
 
 ## Outputs

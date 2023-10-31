@@ -90,7 +90,15 @@ Type of API to create. * http creates a REST API * soap creates a SOAP pass-thro
 - Required: No
 - Type: string
 - Default: `'http'`
-- Allowed: `[graphql, http, soap, websocket]`
+- Allowed:
+  ```Bicep
+  [
+    'graphql'
+    'http'
+    'soap'
+    'websocket'
+  ]
+  ```
 
 ### Parameter: `apiVersion`
 
@@ -118,7 +126,7 @@ Indicates the Version identifier of the API version set.
 Collection of authentication settings included into this API.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `displayName`
 
@@ -139,7 +147,21 @@ Format of the Content in which the API is getting imported.
 - Required: No
 - Type: string
 - Default: `'openapi'`
-- Allowed: `[openapi, openapi-link, openapi+json, openapi+json-link, swagger-json, swagger-link-json, wadl-link-json, wadl-xml, wsdl, wsdl-link]`
+- Allowed:
+  ```Bicep
+  [
+    'openapi'
+    'openapi-link'
+    'openapi+json'
+    'openapi+json-link'
+    'swagger-json'
+    'swagger-link-json'
+    'wadl-link-json'
+    'wadl-xml'
+    'wsdl'
+    'wsdl-link'
+  ]
+  ```
 
 ### Parameter: `isCurrent`
 
@@ -172,7 +194,12 @@ Array of Policies to apply to the Service API.
 Describes on which protocols the operations in this API can be invoked. - HTTP or HTTPS.
 - Required: No
 - Type: array
-- Default: `[https]`
+- Default:
+  ```Bicep
+  [
+    'https'
+  ]
+  ```
 
 ### Parameter: `serviceUrl`
 
@@ -193,7 +220,7 @@ API identifier of the source API.
 Protocols over which API is made available.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `subscriptionRequired`
 
@@ -208,7 +235,15 @@ Type of API.
 - Required: No
 - Type: string
 - Default: `'http'`
-- Allowed: `[graphql, http, soap, websocket]`
+- Allowed:
+  ```Bicep
+  [
+    'graphql'
+    'http'
+    'soap'
+    'websocket'
+  ]
+  ```
 
 ### Parameter: `value`
 
@@ -222,7 +257,7 @@ Content value when Importing an API.
 Criteria to limit import of WSDL to a subset of the document.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 
 ## Outputs

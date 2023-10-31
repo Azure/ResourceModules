@@ -2039,7 +2039,15 @@ If set to 1, 2 or 3, the availability zone for all VMs is hardcoded to that valu
 - Required: No
 - Type: int
 - Default: `0`
-- Allowed: `[0, 1, 2, 3]`
+- Allowed:
+  ```Bicep
+  [
+    0
+    1
+    2
+    3
+  ]
+  ```
 
 ### Parameter: `backupPolicyName`
 
@@ -2110,7 +2118,14 @@ The configuration profile of automanage.
 - Required: No
 - Type: string
 - Default: `''`
-- Allowed: `['', /providers/Microsoft.Automanage/bestPractices/AzureBestPracticesDevTest, /providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction]`
+- Allowed:
+  ```Bicep
+  [
+    ''
+    '/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesDevTest'
+    '/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction'
+  ]
+  ```
 
 ### Parameter: `customData`
 
@@ -2173,49 +2188,80 @@ This property can be used by user in the request to enable or disable the Host E
 The configuration for the [AAD Join] extension. Must at least contain the ["enabled": true] property to be executed.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default:
+  ```Bicep
+  {
+      enabled: false
+  }
+  ```
 
 ### Parameter: `extensionAntiMalwareConfig`
 
 The configuration for the [Anti Malware] extension. Must at least contain the ["enabled": true] property to be executed.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default:
+  ```Bicep
+  {
+      enabled: false
+  }
+  ```
 
 ### Parameter: `extensionAzureDiskEncryptionConfig`
 
 The configuration for the [Azure Disk Encryption] extension. Must at least contain the ["enabled": true] property to be executed. Restrictions: Cannot be enabled on disks that have encryption at host enabled. Managed disks encrypted using Azure Disk Encryption cannot be encrypted using customer-managed keys.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default:
+  ```Bicep
+  {
+      enabled: false
+  }
+  ```
 
 ### Parameter: `extensionCustomScriptConfig`
 
 The configuration for the [Custom Script] extension. Must at least contain the ["enabled": true] property to be executed.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default:
+  ```Bicep
+  {
+      enabled: false
+      fileData: []
+  }
+  ```
 
 ### Parameter: `extensionCustomScriptProtectedSetting`
 
 Any object that contains the extension specific protected settings.
 - Required: No
 - Type: secureObject
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `extensionDependencyAgentConfig`
 
 The configuration for the [Dependency Agent] extension. Must at least contain the ["enabled": true] property to be executed.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default:
+  ```Bicep
+  {
+      enabled: false
+  }
+  ```
 
 ### Parameter: `extensionDomainJoinConfig`
 
 The configuration for the [Domain Join] extension. Must at least contain the ["enabled": true] property to be executed.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default:
+  ```Bicep
+  {
+      enabled: false
+  }
+  ```
 
 ### Parameter: `extensionDomainJoinPassword`
 
@@ -2229,21 +2275,36 @@ Required if name is specified. Password of the user specified in user parameter.
 The configuration for the [Desired State Configuration] extension. Must at least contain the ["enabled": true] property to be executed.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default:
+  ```Bicep
+  {
+      enabled: false
+  }
+  ```
 
 ### Parameter: `extensionMonitoringAgentConfig`
 
 The configuration for the [Monitoring Agent] extension. Must at least contain the ["enabled": true] property to be executed.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default:
+  ```Bicep
+  {
+      enabled: false
+  }
+  ```
 
 ### Parameter: `extensionNetworkWatcherAgentConfig`
 
 The configuration for the [Network Watcher Agent] extension. Must at least contain the ["enabled": true] property to be executed.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default:
+  ```Bicep
+  {
+      enabled: false
+  }
+  ```
 
 ### Parameter: `imageReference`
 
@@ -2257,7 +2318,14 @@ Specifies that the image or disk that is being used was licensed on-premises. Th
 - Required: No
 - Type: string
 - Default: `''`
-- Allowed: `['', Windows_Client, Windows_Server]`
+- Allowed:
+  ```Bicep
+  [
+    ''
+    'Windows_Client'
+    'Windows_Server'
+  ]
+  ```
 
 ### Parameter: `location`
 
@@ -2357,7 +2425,13 @@ Specifies the OS disk. For security reasons, it is recommended to specify DiskEn
 The chosen OS type.
 - Required: Yes
 - Type: string
-- Allowed: `[Linux, Windows]`
+- Allowed:
+  ```Bicep
+  [
+    'Linux'
+    'Windows'
+  ]
+  ```
 
 ### Parameter: `patchAssessmentMode`
 
@@ -2365,7 +2439,13 @@ VM guest patching assessment mode. Set it to 'AutomaticByPlatform' to enable aut
 - Required: No
 - Type: string
 - Default: `'ImageDefault'`
-- Allowed: `[AutomaticByPlatform, ImageDefault]`
+- Allowed:
+  ```Bicep
+  [
+    'AutomaticByPlatform'
+    'ImageDefault'
+  ]
+  ```
 
 ### Parameter: `patchMode`
 
@@ -2373,14 +2453,23 @@ VM guest patching orchestration mode. 'AutomaticByOS' & 'Manual' are for Windows
 - Required: No
 - Type: string
 - Default: `''`
-- Allowed: `['', AutomaticByOS, AutomaticByPlatform, ImageDefault, Manual]`
+- Allowed:
+  ```Bicep
+  [
+    ''
+    'AutomaticByOS'
+    'AutomaticByPlatform'
+    'ImageDefault'
+    'Manual'
+  ]
+  ```
 
 ### Parameter: `plan`
 
 Specifies information about the marketplace image used to create the virtual machine. This element is only used for marketplace images. Before you can use a marketplace image from an API, you must enable the image for programmatic use.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `priority`
 
@@ -2388,7 +2477,14 @@ Specifies the priority for the virtual machine.
 - Required: No
 - Type: string
 - Default: `'Regular'`
-- Allowed: `[Low, Regular, Spot]`
+- Allowed:
+  ```Bicep
+  [
+    'Low'
+    'Regular'
+    'Spot'
+  ]
+  ```
 
 ### Parameter: `provisionVMAgent`
 
@@ -2538,7 +2634,7 @@ Specifies whether vTPM should be enabled on the virtual machine. This parameter 
 Specifies the Windows Remote Management listeners. This enables remote Windows PowerShell. - WinRMConfiguration object.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 
 ## Outputs

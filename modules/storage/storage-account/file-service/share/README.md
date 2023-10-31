@@ -48,7 +48,15 @@ Access tier for specific share. Required if the Storage Account kind is set to F
 - Required: No
 - Type: string
 - Default: `'TransactionOptimized'`
-- Allowed: `[Cool, Hot, Premium, TransactionOptimized]`
+- Allowed:
+  ```Bicep
+  [
+    'Cool'
+    'Hot'
+    'Premium'
+    'TransactionOptimized'
+  ]
+  ```
 
 ### Parameter: `enableDefaultTelemetry`
 
@@ -63,7 +71,13 @@ The authentication protocol that is used for the file share. Can only be specifi
 - Required: No
 - Type: string
 - Default: `'SMB'`
-- Allowed: `[NFS, SMB]`
+- Allowed:
+  ```Bicep
+  [
+    'NFS'
+    'SMB'
+  ]
+  ```
 
 ### Parameter: `fileServicesName`
 
@@ -152,7 +166,14 @@ Permissions for NFS file shares are enforced by the client OS rather than the Az
 - Required: No
 - Type: string
 - Default: `'NoRootSquash'`
-- Allowed: `[AllSquash, NoRootSquash, RootSquash]`
+- Allowed:
+  ```Bicep
+  [
+    'AllSquash'
+    'NoRootSquash'
+    'RootSquash'
+  ]
+  ```
 
 ### Parameter: `shareQuota`
 
