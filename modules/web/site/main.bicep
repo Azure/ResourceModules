@@ -82,7 +82,7 @@ param privateEndpoints privateEndpointType
 param slots array = []
 
 @description('Optional. Tags of the resource.')
-param tags object = {}
+param tags object?
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
@@ -268,9 +268,9 @@ module app_slots 'slot/main.bicep' = [for (slot, index) in slots: {
     diagnosticSettings: slot.?diagnosticSettings
     roleAssignments: contains(slot, 'roleAssignments') ? slot.roleAssignments : roleAssignments
     appSettingsKeyValuePairs: contains(slot, 'appSettingsKeyValuePairs') ? slot.appSettingsKeyValuePairs : appSettingsKeyValuePairs
-    lock: contains(slot, 'lock') ? slot.lock : lock
+    lock: slot.?lock ?? lock
     privateEndpoints: contains(slot, 'privateEndpoints') ? slot.privateEndpoints : privateEndpoints
-    tags: tags
+    tags: slot.?tags ?? tags
     clientCertEnabled: contains(slot, 'clientCertEnabled') ? slot.clientCertEnabled : false
     clientCertExclusionPaths: contains(slot, 'clientCertExclusionPaths') ? slot.clientCertExclusionPaths : ''
     clientCertMode: contains(slot, 'clientCertMode') ? slot.clientCertMode : 'Optional'

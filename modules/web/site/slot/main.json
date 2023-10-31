@@ -527,7 +527,7 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Tags of the resource."
       }

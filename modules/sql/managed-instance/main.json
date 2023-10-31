@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "486965125676503752"
+      "templateHash": "12495888352047670800"
     },
     "name": "SQL Managed Instances",
     "description": "This module deploys a SQL Managed Instance.",
@@ -422,7 +422,7 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Tags of the resource."
       }
@@ -683,7 +683,9 @@
           "sourceDatabaseId": "[if(contains(parameters('databases')[copyIndex()], 'sourceDatabaseId'), createObject('value', parameters('databases')[copyIndex()].sourceDatabaseId), createObject('value', ''))]",
           "storageContainerSasToken": "[if(contains(parameters('databases')[copyIndex()], 'storageContainerSasToken'), createObject('value', parameters('databases')[copyIndex()].storageContainerSasToken), createObject('value', ''))]",
           "storageContainerUri": "[if(contains(parameters('databases')[copyIndex()], 'storageContainerUri'), createObject('value', parameters('databases')[copyIndex()].storageContainerUri), createObject('value', ''))]",
-          "tags": "[if(contains(parameters('databases')[copyIndex()], 'tags'), createObject('value', parameters('databases')[copyIndex()].tags), createObject('value', createObject()))]",
+          "tags": {
+            "value": "[coalesce(tryGet(parameters('databases')[copyIndex()], 'tags'), parameters('tags'))]"
+          },
           "backupShortTermRetentionPoliciesObj": "[if(contains(parameters('databases')[copyIndex()], 'backupShortTermRetentionPolicies'), createObject('value', parameters('databases')[copyIndex()].backupShortTermRetentionPolicies), createObject('value', createObject()))]",
           "backupLongTermRetentionPoliciesObj": "[if(contains(parameters('databases')[copyIndex()], 'backupLongTermRetentionPolicies'), createObject('value', parameters('databases')[copyIndex()].backupLongTermRetentionPolicies), createObject('value', createObject()))]",
           "enableDefaultTelemetry": {
@@ -698,7 +700,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.22.6.54827",
-              "templateHash": "11809118815295815977"
+              "templateHash": "8385261968552186747"
             },
             "name": "SQL Managed Instance Databases",
             "description": "This module deploys a SQL Managed Instance Database.",
@@ -944,7 +946,7 @@
             },
             "tags": {
               "type": "object",
-              "defaultValue": {},
+              "nullable": true,
               "metadata": {
                 "description": "Optional. Tags of the resource."
               }

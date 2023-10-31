@@ -922,7 +922,6 @@ Defines the SKU of an Azure Cognitive Search Service, which determines price tie
 Tags to help categorize the resource in the Azure portal.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 
 ## Outputs

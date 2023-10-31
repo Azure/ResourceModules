@@ -1480,7 +1480,6 @@ Security Settings of the vault.
 Tags of the Recovery Service Vault resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 
 ## Outputs

@@ -150,7 +150,6 @@ The tier or edition of the particular SKU, e.g. Basic, Premium.
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `zoneRedundant`
 

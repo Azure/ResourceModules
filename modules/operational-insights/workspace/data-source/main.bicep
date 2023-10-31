@@ -22,7 +22,7 @@ param name string
 param kind string = 'AzureActivityLog'
 
 @description('Optional. Tags to configure in the resource.')
-param tags object = {}
+param tags object?
 
 @description('Optional. Resource ID of the resource to be linked.')
 param linkedResourceId string = ''

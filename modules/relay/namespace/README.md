@@ -922,7 +922,6 @@ Name of this SKU.
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `wcfRelays`
 

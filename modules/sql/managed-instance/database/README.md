@@ -293,7 +293,6 @@ Specifies the uri of the storage container where backups for this restore are st
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 
 ## Outputs

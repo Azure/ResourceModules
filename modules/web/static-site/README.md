@@ -697,7 +697,6 @@ State indicating whether staging environments are allowed or not allowed for a s
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `templateProperties`
 
