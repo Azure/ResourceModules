@@ -108,14 +108,6 @@ module testDeployment '../../main.bicep' = {
           Environment: 'Non-Prod'
           Role: 'DeploymentValidation'
         }
-        ipConfigurations: [
-          {
-            name: 'myIPconfig'
-            groupId: 'vault'
-            memberName: 'default'
-            privateIPAddress: '10.0.0.10'
-          }
-        ]
       }
     ]
     tags: {
