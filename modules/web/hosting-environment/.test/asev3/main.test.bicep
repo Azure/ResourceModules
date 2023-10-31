@@ -106,9 +106,11 @@ module testDeployment '../../main.bicep' = {
         workspaceResourceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
       }
     ]
-    systemAssignedIdentity: true
-    userAssignedIdentities: {
-      '${nestedDependencies.outputs.managedIdentityResourceId}': {}
+    managedIdentities: {
+      systemAssigned: true
+      userAssignedResourcesIds: [
+        nestedDependencies.outputs.managedIdentityResourceId
+      ]
     }
     customDnsSuffix: 'internal.contoso.com'
     customDnsSuffixCertificateUrl: nestedDependencies.outputs.certificateSecretUrl

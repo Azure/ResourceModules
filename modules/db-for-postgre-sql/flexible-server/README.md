@@ -341,14 +341,16 @@ module flexibleServer 'br:bicep/modules/db-for-postgre-sql.flexible-server:1.0.0
     geoRedundantBackup: 'Disabled'
     highAvailability: 'SameZone'
     location: '<location>'
+    managedIdentities: {
+      userAssignedResourcesIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
     storageSizeGB: 1024
     tags: {
       Environment: 'Non-Prod'
       'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
-    }
-    userAssignedIdentities: {
-      '<managedIdentityResourceId>': {}
     }
     version: '14'
   }
@@ -470,6 +472,13 @@ module flexibleServer 'br:bicep/modules/db-for-postgre-sql.flexible-server:1.0.0
     "location": {
       "value": "<location>"
     },
+    "managedIdentities": {
+      "value": {
+        "userAssignedResourcesIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
+    },
     "storageSizeGB": {
       "value": 1024
     },
@@ -478,11 +487,6 @@ module flexibleServer 'br:bicep/modules/db-for-postgre-sql.flexible-server:1.0.0
         "Environment": "Non-Prod",
         "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
-      }
-    },
-    "userAssignedIdentities": {
-      "value": {
-        "<managedIdentityResourceId>": {}
       }
     },
     "version": {
@@ -512,9 +516,9 @@ module flexibleServer 'br:bicep/modules/db-for-postgre-sql.flexible-server:1.0.0
 | :-- | :-- | :-- |
 | [`cMKKeyVaultResourceId`](#parameter-cmkkeyvaultresourceid) | string | The resource ID of a key vault to reference a customer managed key for encryption from. Required if 'cMKKeyName' is not empty. |
 | [`cMKUserAssignedIdentityResourceId`](#parameter-cmkuserassignedidentityresourceid) | string | User assigned identity to use when fetching the customer managed key. The identity should have key usage permissions on the Key Vault Key. Required if 'cMKKeyName' is not empty. |
+| [`managedIdentities`](#parameter-managedidentities) | object | The managed identity definition for this resource. Required if 'cMKKeyName' is not empty. |
 | [`pointInTimeUTC`](#parameter-pointintimeutc) | string | Required if "createMode" is set to "PointInTimeRestore". |
 | [`sourceServerResourceId`](#parameter-sourceserverresourceid) | string | Required if "createMode" is set to "PointInTimeRestore". |
-| [`userAssignedIdentities`](#parameter-userassignedidentities) | object | The ID(s) to assign to the resource. Required if 'cMKKeyName' is not empty. |
 
 **Optional parameters**
 
@@ -835,6 +839,24 @@ Properties for the maintenence window. If provided, "customWindow" property must
 - Type: object
 - Default: `{object}`
 
+### Parameter: `managedIdentities`
+
+The managed identity definition for this resource. Required if 'cMKKeyName' is not empty.
+- Required: No
+- Type: object
+
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`userAssignedResourcesIds`](#parameter-managedidentitiesuserassignedresourcesids) | Yes | array | Optional. The resource ID(s) to assign to the resource. |
+
+### Parameter: `managedIdentities.userAssignedResourcesIds`
+
+Optional. The resource ID(s) to assign to the resource.
+
+- Required: Yes
+- Type: array
+
 ### Parameter: `name`
 
 The name of the PostgreSQL flexible server.
@@ -972,13 +994,6 @@ The tier of the particular SKU. Tier must align with the "skuName" property. Exa
 - Required: Yes
 - Type: string
 - Allowed: `[Burstable, GeneralPurpose, MemoryOptimized]`
-
-### Parameter: `userAssignedIdentities`
-
-The ID(s) to assign to the resource. Required if 'cMKKeyName' is not empty.
-- Required: No
-- Type: object
-- Default: `{object}`
 
 ### Parameter: `version`
 

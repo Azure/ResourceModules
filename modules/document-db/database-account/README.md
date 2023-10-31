@@ -132,6 +132,9 @@ module databaseAccount 'br:bicep/modules/document-db.database-account:1.0.0' = {
       }
     ]
     location: '<location>'
+    managedIdentities: {
+      systemAssigned: true
+    }
     roleAssignments: [
       {
         principalId: '<principalId>'
@@ -139,7 +142,6 @@ module databaseAccount 'br:bicep/modules/document-db.database-account:1.0.0' = {
         roleDefinitionIdOrName: 'Reader'
       }
     ]
-    systemAssignedIdentity: true
     tags: {
       Environment: 'Non-Prod'
       'hidden-title': 'This is visible in the resource name'
@@ -257,6 +259,11 @@ module databaseAccount 'br:bicep/modules/document-db.database-account:1.0.0' = {
     "location": {
       "value": "<location>"
     },
+    "managedIdentities": {
+      "value": {
+        "systemAssigned": true
+      }
+    },
     "roleAssignments": {
       "value": [
         {
@@ -265,9 +272,6 @@ module databaseAccount 'br:bicep/modules/document-db.database-account:1.0.0' = {
           "roleDefinitionIdOrName": "Reader"
         }
       ]
-    },
-    "systemAssignedIdentity": {
-      "value": true
     },
     "tags": {
       "value": {
@@ -324,6 +328,9 @@ module databaseAccount 'br:bicep/modules/document-db.database-account:1.0.0' = {
     ]
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     location: '<location>'
+    managedIdentities: {
+      systemAssigned: true
+    }
     mongodbDatabases: [
       {
         collections: [
@@ -515,7 +522,6 @@ module databaseAccount 'br:bicep/modules/document-db.database-account:1.0.0' = {
         roleDefinitionIdOrName: 'Reader'
       }
     ]
-    systemAssignedIdentity: true
     tags: {
       Environment: 'Non-Prod'
       'hidden-title': 'This is visible in the resource name'
@@ -577,6 +583,11 @@ module databaseAccount 'br:bicep/modules/document-db.database-account:1.0.0' = {
     },
     "location": {
       "value": "<location>"
+    },
+    "managedIdentities": {
+      "value": {
+        "systemAssigned": true
+      }
     },
     "mongodbDatabases": {
       "value": [
@@ -773,9 +784,6 @@ module databaseAccount 'br:bicep/modules/document-db.database-account:1.0.0' = {
         }
       ]
     },
-    "systemAssignedIdentity": {
-      "value": true
-    },
     "tags": {
       "value": {
         "Environment": "Non-Prod",
@@ -970,6 +978,11 @@ module databaseAccount 'br:bicep/modules/document-db.database-account:1.0.0' = {
     ]
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     location: '<location>'
+    managedIdentities: {
+      userAssignedResourcesIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
     privateEndpoints: [
       {
         privateDnsZoneResourceIds: [
@@ -1072,9 +1085,6 @@ module databaseAccount 'br:bicep/modules/document-db.database-account:1.0.0' = {
       'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
     }
-    userAssignedIdentities: {
-      '<managedIdentityResourceId>': {}
-    }
   }
 }
 ```
@@ -1131,6 +1141,13 @@ module databaseAccount 'br:bicep/modules/document-db.database-account:1.0.0' = {
     },
     "location": {
       "value": "<location>"
+    },
+    "managedIdentities": {
+      "value": {
+        "userAssignedResourcesIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
     },
     "privateEndpoints": {
       "value": [
@@ -1241,11 +1258,6 @@ module databaseAccount 'br:bicep/modules/document-db.database-account:1.0.0' = {
         "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
-    },
-    "userAssignedIdentities": {
-      "value": {
-        "<managedIdentityResourceId>": {}
-      }
     }
   }
 }
@@ -1283,6 +1295,7 @@ module databaseAccount 'br:bicep/modules/document-db.database-account:1.0.0' = {
 | [`gremlinDatabases`](#parameter-gremlindatabases) | array | Gremlin Databases configurations. |
 | [`location`](#parameter-location) | string | Location for all resources. |
 | [`lock`](#parameter-lock) | object | The lock settings of the service. |
+| [`managedIdentities`](#parameter-managedidentities) | object | The managed identity definition for this resource. |
 | [`maxIntervalInSeconds`](#parameter-maxintervalinseconds) | int | Max lag time (minutes). Required for BoundedStaleness. Valid ranges, Single Region: 5 to 84600. Multi Region: 300 to 86400. |
 | [`maxStalenessPrefix`](#parameter-maxstalenessprefix) | int | Max stale requests. Required for BoundedStaleness. Valid ranges, Single Region: 10 to 1000000. Multi Region: 100000 to 1000000. |
 | [`mongodbDatabases`](#parameter-mongodbdatabases) | array | MongoDB Databases configurations. |
@@ -1290,9 +1303,7 @@ module databaseAccount 'br:bicep/modules/document-db.database-account:1.0.0' = {
 | [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalIds' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | [`serverVersion`](#parameter-serverversion) | string | Specifies the MongoDB server version to use. |
 | [`sqlDatabases`](#parameter-sqldatabases) | array | SQL Databases configurations. |
-| [`systemAssignedIdentity`](#parameter-systemassignedidentity) | bool | Enables system assigned managed identity on the resource. |
 | [`tags`](#parameter-tags) | object | Tags of the Database Account resource. |
-| [`userAssignedIdentities`](#parameter-userassignedidentities) | object | The ID(s) to assign to the resource. |
 
 ### Parameter: `automaticFailover`
 
@@ -1538,6 +1549,32 @@ Optional. Specify the name of lock.
 
 - Required: No
 - Type: string
+
+### Parameter: `managedIdentities`
+
+The managed identity definition for this resource.
+- Required: No
+- Type: object
+
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`systemAssigned`](#parameter-managedidentitiessystemassigned) | No | bool | Optional. Enables system assigned managed identity on the resource. |
+| [`userAssignedResourcesIds`](#parameter-managedidentitiesuserassignedresourcesids) | No | array | Optional. The resource ID(s) to assign to the resource. |
+
+### Parameter: `managedIdentities.systemAssigned`
+
+Optional. Enables system assigned managed identity on the resource.
+
+- Required: No
+- Type: bool
+
+### Parameter: `managedIdentities.userAssignedResourcesIds`
+
+Optional. The resource ID(s) to assign to the resource.
+
+- Required: No
+- Type: array
 
 ### Parameter: `maxIntervalInSeconds`
 
@@ -1817,23 +1854,9 @@ SQL Databases configurations.
 - Type: array
 - Default: `[]`
 
-### Parameter: `systemAssignedIdentity`
-
-Enables system assigned managed identity on the resource.
-- Required: No
-- Type: bool
-- Default: `False`
-
 ### Parameter: `tags`
 
 Tags of the Database Account resource.
-- Required: No
-- Type: object
-- Default: `{object}`
-
-### Parameter: `userAssignedIdentities`
-
-The ID(s) to assign to the resource.
 - Required: No
 - Type: object
 - Default: `{object}`
@@ -1847,7 +1870,7 @@ The ID(s) to assign to the resource.
 | `name` | string | The name of the database account. |
 | `resourceGroupName` | string | The name of the resource group the database account was created in. |
 | `resourceId` | string | The resource ID of the database account. |
-| `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
+| `systemAssignedMIPrincipalId` | string | The principal ID of the system assigned identity. |
 
 ## Cross-referenced modules
 

@@ -185,9 +185,11 @@ module testDeployment '../../main.bicep' = {
       use32BitWorkerProcess: false
     }
     storageAccountResourceId: nestedDependencies.outputs.storageAccountResourceId
-    systemAssignedIdentity: true
-    userAssignedIdentities: {
-      '${nestedDependencies.outputs.managedIdentityResourceId}': {}
+    managedIdentities: {
+      systemAssigned: true
+      userAssignedResourcesIds: [
+        nestedDependencies.outputs.managedIdentityResourceId
+      ]
     }
     hybridConnectionRelays: [
       {

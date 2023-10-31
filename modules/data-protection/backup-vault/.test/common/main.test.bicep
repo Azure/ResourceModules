@@ -60,7 +60,9 @@ module testDeployment '../../main.bicep' = {
       }
     ]
     azureMonitorAlertSettingsAlertsForAllJobFailures: 'Disabled'
-    systemAssignedIdentity: true
+    managedIdentities: {
+      systemAssigned: true
+    }
     backupPolicies: [
       {
         name: 'DefaultPolicy'

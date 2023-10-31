@@ -150,6 +150,11 @@ module flexibleServer 'br:bicep/modules/db-for-my-sql.flexible-server:1.0.0' = {
       kind: 'CanNotDelete'
       name: 'myCustomLockName'
     }
+    managedIdentities: {
+      userAssignedResourcesIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
     privateDnsZoneResourceId: '<privateDnsZoneResourceId>'
     roleAssignments: [
       {
@@ -166,9 +171,6 @@ module flexibleServer 'br:bicep/modules/db-for-my-sql.flexible-server:1.0.0' = {
       'hidden-title': 'This is visible in the resource name'
       resourceType: 'MySQL Flexible Server'
       serverName: 'dfmsfspvt001'
-    }
-    userAssignedIdentities: {
-      '<managedIdentityResourceId>': {}
     }
   }
 }
@@ -256,6 +258,13 @@ module flexibleServer 'br:bicep/modules/db-for-my-sql.flexible-server:1.0.0' = {
         "name": "myCustomLockName"
       }
     },
+    "managedIdentities": {
+      "value": {
+        "userAssignedResourcesIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
+    },
     "privateDnsZoneResourceId": {
       "value": "<privateDnsZoneResourceId>"
     },
@@ -285,11 +294,6 @@ module flexibleServer 'br:bicep/modules/db-for-my-sql.flexible-server:1.0.0' = {
         "hidden-title": "This is visible in the resource name",
         "resourceType": "MySQL Flexible Server",
         "serverName": "dfmsfspvt001"
-      }
-    },
-    "userAssignedIdentities": {
-      "value": {
-        "<managedIdentityResourceId>": {}
       }
     }
   }
@@ -373,6 +377,12 @@ module flexibleServer 'br:bicep/modules/db-for-my-sql.flexible-server:1.0.0' = {
       kind: 'CanNotDelete'
       name: 'myCustomLockName'
     }
+    managedIdentities: {
+      userAssignedResourcesIds: [
+        '<geoBackupManagedIdentityResourceId>'
+        '<managedIdentityResourceId>'
+      ]
+    }
     roleAssignments: [
       {
         principalId: '<principalId>'
@@ -388,10 +398,6 @@ module flexibleServer 'br:bicep/modules/db-for-my-sql.flexible-server:1.0.0' = {
       'hidden-title': 'This is visible in the resource name'
       resourceType: 'MySQL Flexible Server'
       serverName: 'dfmsfsp001'
-    }
-    userAssignedIdentities: {
-      '<geoBackupManagedIdentityResourceId>': {}
-      '<managedIdentityResourceId>': {}
     }
     version: '8.0.21'
   }
@@ -516,6 +522,14 @@ module flexibleServer 'br:bicep/modules/db-for-my-sql.flexible-server:1.0.0' = {
         "name": "myCustomLockName"
       }
     },
+    "managedIdentities": {
+      "value": {
+        "userAssignedResourcesIds": [
+          "<geoBackupManagedIdentityResourceId>",
+          "<managedIdentityResourceId>"
+        ]
+      }
+    },
     "roleAssignments": {
       "value": [
         {
@@ -542,12 +556,6 @@ module flexibleServer 'br:bicep/modules/db-for-my-sql.flexible-server:1.0.0' = {
         "hidden-title": "This is visible in the resource name",
         "resourceType": "MySQL Flexible Server",
         "serverName": "dfmsfsp001"
-      }
-    },
-    "userAssignedIdentities": {
-      "value": {
-        "<geoBackupManagedIdentityResourceId>": {},
-        "<managedIdentityResourceId>": {}
       }
     },
     "version": {
@@ -579,11 +587,11 @@ module flexibleServer 'br:bicep/modules/db-for-my-sql.flexible-server:1.0.0' = {
 | [`cMKUserAssignedIdentityResourceId`](#parameter-cmkuserassignedidentityresourceid) | string | User assigned identity to use when fetching the customer managed key. The identity should have key usage permissions on the Key Vault Key. Required if "cMKKeyName" is not empty. |
 | [`geoBackupCMKKeyVaultResourceId`](#parameter-geobackupcmkkeyvaultresourceid) | string | The resource ID of a key vault to reference a customer managed key for encryption from. Required if "cMKKeyName" is not empty and geoRedundantBackup is "Enabled". |
 | [`geoBackupCMKUserAssignedIdentityResourceId`](#parameter-geobackupcmkuserassignedidentityresourceid) | string | Geo backup user identity resource ID as identity cant cross region, need identity in same region as geo backup. The identity should have key usage permissions on the Key Vault Key. Required if "cMKKeyName" is not empty and geoRedundantBackup is "Enabled". |
+| [`managedIdentities`](#parameter-managedidentities) | object | The managed identity definition for this resource. Required if 'cMKKeyName' is not empty. |
 | [`privateDnsZoneResourceId`](#parameter-privatednszoneresourceid) | string | Private dns zone arm resource ID. Used when the desired connectivity mode is "Private Access". Required if "delegatedSubnetResourceId" is used and the Private DNS Zone name must end with mysql.database.azure.com in order to be linked to the MySQL Flexible Server. |
 | [`restorePointInTime`](#parameter-restorepointintime) | string | Restore point creation time (ISO8601 format), specifying the time to restore from. Required if "createMode" is set to "PointInTimeRestore". |
 | [`sourceServerResourceId`](#parameter-sourceserverresourceid) | string | The source MySQL server ID. Required if "createMode" is set to "PointInTimeRestore". |
 | [`storageAutoGrow`](#parameter-storageautogrow) | string | Enable Storage Auto Grow or not. Storage auto-growth prevents a server from running out of storage and becoming read-only. Required if "highAvailability" is not "Disabled". |
-| [`userAssignedIdentities`](#parameter-userassignedidentities) | object | The ID(s) to assign to the resource. Required if "cMKKeyName" is not empty. |
 
 **Optional parameters**
 
@@ -917,6 +925,24 @@ Properties for the maintenence window. If provided, "customWindow" property must
 - Type: object
 - Default: `{object}`
 
+### Parameter: `managedIdentities`
+
+The managed identity definition for this resource. Required if 'cMKKeyName' is not empty.
+- Required: No
+- Type: object
+
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`userAssignedResourcesIds`](#parameter-managedidentitiesuserassignedresourcesids) | Yes | array | Optional. The resource ID(s) to assign to the resource. |
+
+### Parameter: `managedIdentities.userAssignedResourcesIds`
+
+Optional. The resource ID(s) to assign to the resource.
+
+- Required: Yes
+- Type: array
+
 ### Parameter: `name`
 
 The name of the MySQL flexible server.
@@ -1070,13 +1096,6 @@ The tier of the particular SKU. Tier must align with the "skuName" property. Exa
 - Required: Yes
 - Type: string
 - Allowed: `[Burstable, GeneralPurpose, MemoryOptimized]`
-
-### Parameter: `userAssignedIdentities`
-
-The ID(s) to assign to the resource. Required if "cMKKeyName" is not empty.
-- Required: No
-- Type: object
-- Default: `{object}`
 
 ### Parameter: `version`
 
