@@ -42,7 +42,7 @@ param roleAssignments roleAssignmentType
 param tags object?
 
 @description('Optional. Custom DNS configurations.')
-param customDnsConfigs CustomDnsConfigType?
+param customDnsConfigs customDnsConfigType?
 
 @description('Optional. Manual PrivateLink Service Connections.')
 param manualPrivateLinkServiceConnections array?
