@@ -627,6 +627,24 @@ module vault 'br:bicep/modules/key-vault.vault:1.0.0' = {
     }
     privateEndpoints: [
       {
+        customDnsConfigs: [
+          {
+            fqdn: 'abc.keyvault.com'
+            ipAddresses: [
+              '10.0.0.10'
+            ]
+          }
+        ]
+        ipConfigurations: [
+          {
+            name: 'myIPconfig'
+            properties: {
+              groupId: 'vault'
+              memberName: 'default'
+              privateIPAddress: '10.0.0.10'
+            }
+          }
+        ]
         name: 'dep-pe-kvvpe'
         privateDnsZoneResourceIds: [
           '<privateDNSZoneResourceId>'
@@ -711,6 +729,24 @@ module vault 'br:bicep/modules/key-vault.vault:1.0.0' = {
     "privateEndpoints": {
       "value": [
         {
+          "customDnsConfigs": [
+            {
+              "fqdn": "abc.keyvault.com",
+              "ipAddresses": [
+                "10.0.0.10"
+              ]
+            }
+          ],
+          "ipConfigurations": [
+            {
+              "name": "myIPconfig",
+              "properties": {
+                "groupId": "vault",
+                "memberName": "default",
+                "privateIPAddress": "10.0.0.10"
+              }
+            }
+          ],
           "name": "dep-pe-kvvpe",
           "privateDnsZoneResourceIds": [
             "<privateDNSZoneResourceId>"
@@ -1082,26 +1118,16 @@ Optional. A list of IP configurations of the private endpoint. This will be used
 
 | Name | Required | Type | Description |
 | :-- | :-- | :--| :-- |
-| [`groupId`](#parameter-privateendpointsipconfigurationsgroupid) | Yes | string |  |
-| [`memberName`](#parameter-privateendpointsipconfigurationsmembername) | Yes | string |  |
 | [`name`](#parameter-privateendpointsipconfigurationsname) | Yes | string |  |
-| [`privateIpAddress`](#parameter-privateendpointsipconfigurationsprivateipaddress) | Yes | string |  |
-
-### Parameter: `privateEndpoints.ipConfigurations.groupId`
-- Required: Yes
-- Type: string
-
-### Parameter: `privateEndpoints.ipConfigurations.memberName`
-- Required: Yes
-- Type: string
+| [`properties`](#parameter-privateendpointsipconfigurationsproperties) | Yes | object |  |
 
 ### Parameter: `privateEndpoints.ipConfigurations.name`
 - Required: Yes
 - Type: string
 
-### Parameter: `privateEndpoints.ipConfigurations.privateIpAddress`
+### Parameter: `privateEndpoints.ipConfigurations.properties`
 - Required: Yes
-- Type: string
+- Type: object
 
 
 ### Parameter: `privateEndpoints.location`

@@ -52,15 +52,6 @@ param enableDefaultTelemetry bool = true
 
 var enableReferencedModulesTelemetry = false
 
-var ipConfigurationsS = [for ipConfig in ipConfigurations: {// throws a warning for the ipConfigurations as expected type array
-  name: ipConfig.name
-  properties: {
-    groupId: ipConfig.groupId
-    memberName: ipConfig.memberName
-    privateIPAddress: ipConfig.privateIPAddress
-  }
-}]
-
 var builtInRoleNames = {
   Contributor: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')
   'DNS Resolver Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '0f2ebee7-ffd4-4fc0-b3b7-664099fdad5d')
@@ -96,7 +87,7 @@ resource privateEndpoint 'Microsoft.Network/privateEndpoints@2023-04-01' = {
     }]
     customDnsConfigs: customDnsConfigs
     customNetworkInterfaceName: customNetworkInterfaceName ?? ''
-    ipConfigurations: ipConfigurationsS ?? []
+    ipConfigurations: ipConfigurations ?? []
     manualPrivateLinkServiceConnections: manualPrivateLinkServiceConnections ?? []
     privateLinkServiceConnections: [
       {
@@ -197,14 +188,16 @@ type ipConfigurationsType = {
   @description('Required. The name of the resource that is unique within a resource group.')
   name: string
 
-  @description('Required. The ID of a group obtained from the remote resource that this private endpoint should connect to.')
-  groupId: string
+  properties: {
+    @description('Required. The ID of a group obtained from the remote resource that this private endpoint should connect to.')
+    groupId: string
 
-  @description('Required. The member name of a group obtained from the remote resource that this private endpoint should connect to.')
-  memberName: string
+    @description('Required. The member name of a group obtained from the remote resource that this private endpoint should connect to.')
+    memberName: string
 
-  @description('Required. A private ip address obtained from the private endpoint\'s subnet.')
-  privateIPAddress: string
+    @description('Required. A private ip address obtained from the private endpoint\'s subnet.')
+    privateIPAddress: string
+  }
 }[]?
 
 type CustomDnsConfigType = {
