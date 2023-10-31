@@ -956,7 +956,6 @@ The properties of any lab support message associated with this lab.
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `virtualnetworks`
 

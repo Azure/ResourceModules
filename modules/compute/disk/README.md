@@ -694,7 +694,6 @@ The resource ID of the storage account containing the blob to import as a disk. 
 Tags of the availability set resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `uploadSizeBytes`
 

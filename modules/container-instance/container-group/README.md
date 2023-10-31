@@ -1025,7 +1025,6 @@ Resource ID of the subnet. Only specify when ipAddressType is Private.
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `volumes`
 

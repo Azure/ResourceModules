@@ -462,7 +462,6 @@ If the SMART on FHIR proxy is enabled.
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `workspaceName`
 

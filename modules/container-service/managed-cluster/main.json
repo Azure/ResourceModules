@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "10186677383934049186"
+      "templateHash": "15042684995150005891"
     },
     "name": "Azure Kubernetes Service (AKS) Managed Clusters",
     "description": "This module deploys an Azure Kubernetes Service (AKS) Managed Cluster.",
@@ -899,7 +899,7 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Tags of the resource."
       }
@@ -1266,7 +1266,9 @@
           "scaleSetEvictionPolicy": "[if(contains(parameters('agentPools')[copyIndex()], 'scaleSetEvictionPolicy'), createObject('value', parameters('agentPools')[copyIndex()].scaleSetEvictionPolicy), createObject('value', 'Delete'))]",
           "scaleSetPriority": "[if(contains(parameters('agentPools')[copyIndex()], 'scaleSetPriority'), createObject('value', parameters('agentPools')[copyIndex()].scaleSetPriority), createObject('value', ''))]",
           "spotMaxPrice": "[if(contains(parameters('agentPools')[copyIndex()], 'spotMaxPrice'), createObject('value', parameters('agentPools')[copyIndex()].spotMaxPrice), createObject('value', -1))]",
-          "tags": "[if(contains(parameters('agentPools')[copyIndex()], 'tags'), createObject('value', parameters('agentPools')[copyIndex()].tags), createObject('value', createObject()))]",
+          "tags": {
+            "value": "[coalesce(tryGet(parameters('agentPools')[copyIndex()], 'tags'), parameters('tags'))]"
+          },
           "type": "[if(contains(parameters('agentPools')[copyIndex()], 'type'), createObject('value', parameters('agentPools')[copyIndex()].type), createObject('value', ''))]",
           "maxSurge": "[if(contains(parameters('agentPools')[copyIndex()], 'maxSurge'), createObject('value', parameters('agentPools')[copyIndex()].maxSurge), createObject('value', ''))]",
           "vmSize": "[if(contains(parameters('agentPools')[copyIndex()], 'vmSize'), createObject('value', parameters('agentPools')[copyIndex()].vmSize), createObject('value', 'Standard_D2s_v3'))]",
@@ -1278,12 +1280,13 @@
         },
         "template": {
           "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "languageVersion": "2.0",
           "contentVersion": "1.0.0.0",
           "metadata": {
             "_generator": {
               "name": "bicep",
               "version": "0.22.6.54827",
-              "templateHash": "14295298572292657386"
+              "templateHash": "15823498371287518640"
             },
             "name": "Azure Kubernetes Service (AKS) Managed Cluster Agent Pools",
             "description": "This module deploys an Azure Kubernetes Service (AKS) Managed Cluster Agent Pool.",
@@ -1540,7 +1543,7 @@
             },
             "tags": {
               "type": "object",
-              "defaultValue": {},
+              "nullable": true,
               "metadata": {
                 "description": "Optional. Tags of the resource."
               }
@@ -1596,8 +1599,8 @@
               "maxSurge": "[parameters('maxSurge')]"
             }
           },
-          "resources": [
-            {
+          "resources": {
+            "defaultTelemetry": {
               "condition": "[parameters('enableDefaultTelemetry')]",
               "type": "Microsoft.Resources/deployments",
               "apiVersion": "2021-04-01",
@@ -1611,7 +1614,13 @@
                 }
               }
             },
-            {
+            "managedCluster": {
+              "existing": true,
+              "type": "Microsoft.ContainerService/managedClusters",
+              "apiVersion": "2023-07-02-preview",
+              "name": "[parameters('managedClusterName')]"
+            },
+            "agentPool": {
               "type": "Microsoft.ContainerService/managedClusters/agentPools",
               "apiVersion": "2023-07-02-preview",
               "name": "[format('{0}/{1}', parameters('managedClusterName'), parameters('name'))]",
@@ -1650,9 +1659,12 @@
                 "vmSize": "[parameters('vmSize')]",
                 "vnetSubnetID": "[parameters('vnetSubnetId')]",
                 "workloadRuntime": "[parameters('workloadRuntime')]"
-              }
+              },
+              "dependsOn": [
+                "managedCluster"
+              ]
             }
-          ],
+          },
           "outputs": {
             "name": {
               "type": "string",

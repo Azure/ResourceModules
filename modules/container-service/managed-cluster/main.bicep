@@ -330,7 +330,7 @@ param roleAssignments roleAssignmentType
 param lock lockType
 
 @description('Optional. Tags of the resource.')
-param tags object = {}
+param tags object?
 
 @description('Optional. The resource ID of the disc encryption set to apply to the cluster. For security reasons, this value should be provided.')
 param diskEncryptionSetID string = ''
@@ -600,7 +600,7 @@ module managedCluster_agentPools 'agent-pool/main.bicep' = [for (agentPool, inde
     scaleSetEvictionPolicy: contains(agentPool, 'scaleSetEvictionPolicy') ? agentPool.scaleSetEvictionPolicy : 'Delete'
     scaleSetPriority: contains(agentPool, 'scaleSetPriority') ? agentPool.scaleSetPriority : ''
     spotMaxPrice: contains(agentPool, 'spotMaxPrice') ? agentPool.spotMaxPrice : -1
-    tags: contains(agentPool, 'tags') ? agentPool.tags : {}
+    tags: agentPool.?tags ?? tags
     type: contains(agentPool, 'type') ? agentPool.type : ''
     maxSurge: contains(agentPool, 'maxSurge') ? agentPool.maxSurge : ''
     vmSize: contains(agentPool, 'vmSize') ? agentPool.vmSize : 'Standard_D2s_v3'

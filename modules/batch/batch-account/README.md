@@ -948,7 +948,6 @@ The authentication mode which the Batch service will use to manage the auto-stor
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 
 ## Outputs

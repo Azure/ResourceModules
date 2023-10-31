@@ -79,7 +79,6 @@ Name of the Gremlin database.
 Tags of the Gremlin database resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `throughput`
 

@@ -428,7 +428,6 @@ Managed environment SKU.
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `workloadProfiles`
 

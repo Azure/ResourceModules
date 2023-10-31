@@ -85,7 +85,6 @@ Determines whether the value is a secret and should be encrypted or not. Default
 Tags that when provided can be used to filter the NamedValue list. - string.
 - Required: No
 - Type: array
-- Default: `[]`
 
 ### Parameter: `value`
 

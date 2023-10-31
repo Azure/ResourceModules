@@ -127,7 +127,6 @@ The name of the parent SQL Database. Required if the template is used in a stand
 Tags of the SQL Database resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `throughput`
 

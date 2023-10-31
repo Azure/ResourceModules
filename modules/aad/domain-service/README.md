@@ -546,7 +546,6 @@ The value is to enable on-premises users to authenticate against managed domain.
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `tlsV1`
 

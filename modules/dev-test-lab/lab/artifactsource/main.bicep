@@ -11,7 +11,7 @@ param labName string
 param name string
 
 @sys.description('Optional. Tags of the resource.')
-param tags object = {}
+param tags object?
 
 @sys.description('Optional. The artifact source\'s display name. Default is the name of the artifact source.')
 param displayName string = name
