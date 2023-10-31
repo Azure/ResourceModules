@@ -358,7 +358,7 @@ type privateEndpointType = {
     name: string
     groupId: string
     memberName: string
-    privateIpAddress: string
+    privateIPAddress: string
   }[]?
 
   @description('Optional. Application security groups in which the private endpoint IP configuration is included.')
