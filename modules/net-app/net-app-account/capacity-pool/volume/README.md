@@ -172,7 +172,15 @@ The pool service level. Must match the one of the parent capacity pool.
 - Required: No
 - Type: string
 - Default: `'Standard'`
-- Allowed: `[Premium, Standard, StandardZRS, Ultra]`
+- Allowed:
+  ```Bicep
+  [
+    'Premium'
+    'Standard'
+    'StandardZRS'
+    'Ultra'
+  ]
+  ```
 
 ### Parameter: `subnetResourceId`
 

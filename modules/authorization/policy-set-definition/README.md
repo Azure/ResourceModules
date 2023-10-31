@@ -522,7 +522,7 @@ The group ID of the Management Group (Scope). If not provided, will use the curr
 The Set Definition (Initiative) metadata. Metadata is an open ended object and is typically a collection of key-value pairs.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `name`
 
@@ -535,7 +535,7 @@ Specifies the name of the policy Set Definition (Initiative).
 The Set Definition (Initiative) parameters that can be used in policy definition references.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `policyDefinitionGroups`
 

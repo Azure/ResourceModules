@@ -1549,7 +1549,13 @@ The kind of the resource.
 - Required: No
 - Type: string
 - Default: `'Linux'`
-- Allowed: `[Linux, Windows]`
+- Allowed:
+  ```Bicep
+  [
+    'Linux'
+    'Windows'
+  ]
+  ```
 
 ### Parameter: `location`
 
@@ -1664,7 +1670,7 @@ Required. The name of the role to assign. If it cannot be found you can specify 
 Declaration of custom streams used in this rule.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `tags`
 

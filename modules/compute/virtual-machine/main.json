@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "13033892292472228031"
+      "templateHash": "6920007226521594959"
     },
     "name": "Virtual Machines",
     "description": "This module deploys a Virtual Machine with one or multiple NICs and optionally one or multiple public IPs.",
@@ -1001,7 +1001,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.22.6.54827",
-              "templateHash": "2272323782582357015"
+              "templateHash": "10482660512843717253"
             }
           },
           "definitions": {
@@ -1305,7 +1305,7 @@
                     "_generator": {
                       "name": "bicep",
                       "version": "0.22.6.54827",
-                      "templateHash": "968771326214380550"
+                      "templateHash": "18404193892947466906"
                     },
                     "name": "Public IP Addresses",
                     "description": "This module deploys a Public IP Address.",
@@ -1644,7 +1644,7 @@
                     },
                     "tags": {
                       "type": "object",
-                      "defaultValue": {},
+                      "nullable": true,
                       "metadata": {
                         "description": "Optional. Tags of the resource."
                       }
@@ -1850,7 +1850,7 @@
                     "_generator": {
                       "name": "bicep",
                       "version": "0.22.6.54827",
-                      "templateHash": "8812824728238881787"
+                      "templateHash": "6506615823435977032"
                     },
                     "name": "Network Interface",
                     "description": "This module deploys a Network Interface.",
@@ -2045,7 +2045,7 @@
                     },
                     "tags": {
                       "type": "object",
-                      "defaultValue": {},
+                      "nullable": true,
                       "metadata": {
                         "description": "Optional. Tags of the resource."
                       }

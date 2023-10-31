@@ -349,7 +349,15 @@ The preferred routing gateway types.
 - Required: No
 - Type: string
 - Default: `''`
-- Allowed: `['', ExpressRoute, None, VpnGateway]`
+- Allowed:
+  ```Bicep
+  [
+    ''
+    'ExpressRoute'
+    'None'
+    'VpnGateway'
+  ]
+  ```
 
 ### Parameter: `routeTableRoutes`
 
@@ -378,7 +386,13 @@ The sku of this VirtualHub.
 - Required: No
 - Type: string
 - Default: `'Standard'`
-- Allowed: `[Basic, Standard]`
+- Allowed:
+  ```Bicep
+  [
+    'Basic'
+    'Standard'
+  ]
+  ```
 
 ### Parameter: `tags`
 

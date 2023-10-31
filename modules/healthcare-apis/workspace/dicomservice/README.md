@@ -75,7 +75,17 @@ Specify the allowed HTTP methods.
 - Required: No
 - Type: array
 - Default: `[]`
-- Allowed: `[DELETE, GET, OPTIONS, PATCH, POST, PUT]`
+- Allowed:
+  ```Bicep
+  [
+    'DELETE'
+    'GET'
+    'OPTIONS'
+    'PATCH'
+    'POST'
+    'PUT'
+  ]
+  ```
 
 ### Parameter: `corsOrigins`
 
@@ -278,7 +288,13 @@ Control permission for data plane traffic coming from public networks while priv
 - Required: No
 - Type: string
 - Default: `'Disabled'`
-- Allowed: `[Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 ### Parameter: `tags`
 

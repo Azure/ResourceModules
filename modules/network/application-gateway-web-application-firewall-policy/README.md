@@ -174,7 +174,7 @@ Location for all resources.
 Describes the managedRules structure.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `name`
 
@@ -187,7 +187,7 @@ Name of the Application Gateway WAF policy.
 The PolicySettings for policy.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `tags`
 

@@ -69,7 +69,7 @@ Resource ID of the virtual network to link to.
 Routing Configuration indicating the associated and propagated route tables for this connection.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `virtualHubName`
 

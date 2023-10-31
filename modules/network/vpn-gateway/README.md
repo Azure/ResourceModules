@@ -263,7 +263,7 @@ module vpnGateway 'br:bicep/modules/network.vpn-gateway:1.0.0' = {
 BGP settings details.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `enableBgpRouteTranslationForNat`
 

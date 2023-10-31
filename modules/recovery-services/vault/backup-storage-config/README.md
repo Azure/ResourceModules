@@ -65,7 +65,15 @@ Change Vault Storage Type (Works if vault has not registered any backup instance
 - Required: No
 - Type: string
 - Default: `'GeoRedundant'`
-- Allowed: `[GeoRedundant, LocallyRedundant, ReadAccessGeoZoneRedundant, ZoneRedundant]`
+- Allowed:
+  ```Bicep
+  [
+    'GeoRedundant'
+    'LocallyRedundant'
+    'ReadAccessGeoZoneRedundant'
+    'ZoneRedundant'
+  ]
+  ```
 
 
 ## Outputs

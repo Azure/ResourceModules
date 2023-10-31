@@ -96,7 +96,19 @@ The kind of the DataSource.
 - Required: No
 - Type: string
 - Default: `'AzureActivityLog'`
-- Allowed: `[AzureActivityLog, IISLogs, LinuxPerformanceCollection, LinuxPerformanceObject, LinuxSyslog, LinuxSyslogCollection, WindowsEvent, WindowsPerformanceCounter]`
+- Allowed:
+  ```Bicep
+  [
+    'AzureActivityLog'
+    'IISLogs'
+    'LinuxPerformanceCollection'
+    'LinuxPerformanceObject'
+    'LinuxSyslog'
+    'LinuxSyslogCollection'
+    'WindowsEvent'
+    'WindowsPerformanceCounter'
+  ]
+  ```
 
 ### Parameter: `linkedResourceId`
 

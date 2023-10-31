@@ -831,7 +831,16 @@ Specify level of protection of the domain name label.
 - Required: No
 - Type: string
 - Default: `'TenantReuse'`
-- Allowed: `[Noreuse, ResourceGroupReuse, SubscriptionReuse, TenantReuse, Unsecure]`
+- Allowed:
+  ```Bicep
+  [
+    'Noreuse'
+    'ResourceGroupReuse'
+    'SubscriptionReuse'
+    'TenantReuse'
+    'Unsecure'
+  ]
+  ```
 
 ### Parameter: `cMKKeyName`
 
@@ -922,7 +931,13 @@ Specifies if the IP is exposed to the public internet or private VNET. - Public 
 - Required: No
 - Type: string
 - Default: `'Public'`
-- Allowed: `[Private, Public]`
+- Allowed:
+  ```Bicep
+  [
+    'Private'
+    'Public'
+  ]
+  ```
 
 ### Parameter: `location`
 
@@ -1003,7 +1018,14 @@ Restart policy for all containers within the container group. - Always: Always r
 - Required: No
 - Type: string
 - Default: `'Always'`
-- Allowed: `[Always, Never, OnFailure]`
+- Allowed:
+  ```Bicep
+  [
+    'Always'
+    'Never'
+    'OnFailure'
+  ]
+  ```
 
 ### Parameter: `sku`
 
@@ -1011,7 +1033,13 @@ The container group SKU.
 - Required: No
 - Type: string
 - Default: `'Standard'`
-- Allowed: `[Dedicated, Standard]`
+- Allowed:
+  ```Bicep
+  [
+    'Dedicated'
+    'Standard'
+  ]
+  ```
 
 ### Parameter: `subnetId`
 

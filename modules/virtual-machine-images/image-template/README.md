@@ -530,7 +530,13 @@ Storage account type to be used to store the image in the Azure Compute Gallery.
 - Required: No
 - Type: string
 - Default: `'Standard_LRS'`
-- Allowed: `[Standard_LRS, Standard_ZRS]`
+- Allowed:
+  ```Bicep
+  [
+    'Standard_LRS'
+    'Standard_ZRS'
+  ]
+  ```
 
 ### Parameter: `subnetId`
 

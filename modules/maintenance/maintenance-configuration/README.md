@@ -266,14 +266,14 @@ Enable telemetry via a Globally Unique Identifier (GUID).
 Gets or sets extensionProperties of the maintenanceConfiguration.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `installPatches`
 
 Configuration settings for VM guest patching with Azure Update Manager.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `location`
 
@@ -315,14 +315,24 @@ Gets or sets maintenanceScope of the configuration.
 - Required: No
 - Type: string
 - Default: `'Host'`
-- Allowed: `[Extension, Host, InGuestPatch, OSImage, SQLDB, SQLManagedInstance]`
+- Allowed:
+  ```Bicep
+  [
+    'Extension'
+    'Host'
+    'InGuestPatch'
+    'OSImage'
+    'SQLDB'
+    'SQLManagedInstance'
+  ]
+  ```
 
 ### Parameter: `maintenanceWindow`
 
 Definition of a MaintenanceWindow.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `name`
 
@@ -417,7 +427,14 @@ Gets or sets the visibility of the configuration. The default value is 'Custom'.
 - Required: No
 - Type: string
 - Default: `''`
-- Allowed: `['', Custom, Public]`
+- Allowed:
+  ```Bicep
+  [
+    ''
+    'Custom'
+    'Public'
+  ]
+  ```
 
 
 ## Outputs

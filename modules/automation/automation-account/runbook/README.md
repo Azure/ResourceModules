@@ -113,7 +113,16 @@ Tags of the Automation Account resource.
 The type of the runbook.
 - Required: Yes
 - Type: string
-- Allowed: `[Graph, GraphPowerShell, GraphPowerShellWorkflow, PowerShell, PowerShellWorkflow]`
+- Allowed:
+  ```Bicep
+  [
+    'Graph'
+    'GraphPowerShell'
+    'GraphPowerShellWorkflow'
+    'PowerShell'
+    'PowerShellWorkflow'
+  ]
+  ```
 
 ### Parameter: `uri`
 

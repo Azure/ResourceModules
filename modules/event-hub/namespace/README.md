@@ -726,7 +726,19 @@ module namespace 'br:bicep/modules/event-hub.namespace:1.0.0' = {
 Authorization Rules for the Event Hub namespace.
 - Required: No
 - Type: array
-- Default: `[System.Management.Automation.OrderedHashtable]`
+- Default:
+  ```Bicep
+  [
+    {
+      name: 'RootManageSharedAccessKey'
+      rights: [
+        'Listen'
+        'Manage'
+        'Send'
+      ]
+    }
+  ]
+  ```
 
 ### Parameter: `cMKKeyName`
 
@@ -883,7 +895,7 @@ This property disables SAS authentication for the Event Hubs namespace.
 The disaster recovery config for this namespace.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `enableDefaultTelemetry`
 
@@ -986,7 +998,14 @@ The minimum TLS version for the cluster to support.
 - Required: No
 - Type: string
 - Default: `'1.2'`
-- Allowed: `[1.0, 1.1, 1.2]`
+- Allowed:
+  ```Bicep
+  [
+    '1.0'
+    '1.1'
+    '1.2'
+  ]
+  ```
 
 ### Parameter: `name`
 
@@ -999,7 +1018,7 @@ The name of the event hub namespace.
 Configure networking options. This object contains IPs/Subnets to allow or restrict access to private endpoints only. For security reasons, it is recommended to configure this object on the Namespace.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `privateEndpoints`
 
@@ -1175,7 +1194,15 @@ Whether or not public network access is allowed for this resource. For security 
 - Required: No
 - Type: string
 - Default: `''`
-- Allowed: `['', Disabled, Enabled, SecuredByPerimeter]`
+- Allowed:
+  ```Bicep
+  [
+    ''
+    'Disabled'
+    'Enabled'
+    'SecuredByPerimeter'
+  ]
+  ```
 
 ### Parameter: `requireInfrastructureEncryption`
 
@@ -1265,7 +1292,14 @@ event hub plan SKU name.
 - Required: No
 - Type: string
 - Default: `'Standard'`
-- Allowed: `[Basic, Premium, Standard]`
+- Allowed:
+  ```Bicep
+  [
+    'Basic'
+    'Premium'
+    'Standard'
+  ]
+  ```
 
 ### Parameter: `tags`
 

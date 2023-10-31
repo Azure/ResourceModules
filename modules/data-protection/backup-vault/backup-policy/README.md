@@ -57,7 +57,7 @@ The name of the backup policy.
 The properties of the backup policy.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 
 ## Outputs

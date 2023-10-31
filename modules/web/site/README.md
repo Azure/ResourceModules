@@ -893,14 +893,14 @@ The resource ID of the app service environment to use for this resource.
 The app settings-value pairs except for AzureWebJobsStorage, AzureWebJobsDashboard, APPINSIGHTS_INSTRUMENTATIONKEY and APPLICATIONINSIGHTS_CONNECTION_STRING.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `authSettingV2Configuration`
 
 The auth settings V2 configuration.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `basicPublishingCredentialsPolicies`
 
@@ -936,14 +936,21 @@ This composes with ClientCertEnabled setting.</p>- ClientCertEnabled: false mean
 - Required: No
 - Type: string
 - Default: `'Optional'`
-- Allowed: `[Optional, OptionalInteractiveUser, Required]`
+- Allowed:
+  ```Bicep
+  [
+    'Optional'
+    'OptionalInteractiveUser'
+    'Required'
+  ]
+  ```
 
 ### Parameter: `cloningInfo`
 
 If specified during app creation, the app is cloned from a source app.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `containerSize`
 
@@ -1135,7 +1142,16 @@ The resource ID of the assigned identity to be used to access a key vault with.
 Type of site to deploy.
 - Required: Yes
 - Type: string
-- Allowed: `[app, functionapp, functionapp,linux, functionapp,workflowapp, functionapp,workflowapp,linux]`
+- Allowed:
+  ```Bicep
+  [
+    'app'
+    'functionapp'
+    'functionapplinux'
+    'functionappworkflowapp'
+    'functionappworkflowapplinux'
+  ]
+  ```
 
 ### Parameter: `location`
 
@@ -1377,7 +1393,14 @@ Whether or not public network access is allowed for this resource. For security 
 - Required: No
 - Type: string
 - Default: `''`
-- Allowed: `['', Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    ''
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 ### Parameter: `redundancyMode`
 
@@ -1385,7 +1408,16 @@ Site redundancy mode.
 - Required: No
 - Type: string
 - Default: `'None'`
-- Allowed: `[ActiveActive, Failover, GeoRedundant, Manual, None]`
+- Allowed:
+  ```Bicep
+  [
+    'ActiveActive'
+    'Failover'
+    'GeoRedundant'
+    'Manual'
+    'None'
+  ]
+  ```
 
 ### Parameter: `roleAssignments`
 
@@ -1480,7 +1512,7 @@ For function apps. If true the app settings "AzureWebJobsDashboard" will be set.
 The site config object.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `slots`
 

@@ -502,7 +502,7 @@ The name of the Web PubSub Service resource.
 Networks ACLs, this value contains IPs to allow and/or Subnet information. Can only be set if the 'SKU' is not 'Free_F1'. For security reasons, it is recommended to set the DefaultAction Deny.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `privateEndpoints`
 
@@ -678,15 +678,34 @@ Whether or not public network access is allowed for this resource. For security 
 - Required: No
 - Type: string
 - Default: `''`
-- Allowed: `['', Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    ''
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 ### Parameter: `resourceLogConfigurationsToEnable`
 
 Control permission for data plane traffic coming from public networks while private endpoint is enabled.
 - Required: No
 - Type: array
-- Default: `[ConnectivityLogs, MessagingLogs]`
-- Allowed: `[ConnectivityLogs, MessagingLogs]`
+- Default:
+  ```Bicep
+  [
+    'ConnectivityLogs'
+    'MessagingLogs'
+  ]
+  ```
+- Allowed:
+  ```Bicep
+  [
+    'ConnectivityLogs'
+    'MessagingLogs'
+  ]
+  ```
 
 ### Parameter: `roleAssignments`
 
@@ -762,7 +781,13 @@ Pricing tier of the resource.
 - Required: No
 - Type: string
 - Default: `'Standard_S1'`
-- Allowed: `[Free_F1, Standard_S1]`
+- Allowed:
+  ```Bicep
+  [
+    'Free_F1'
+    'Standard_S1'
+  ]
+  ```
 
 ### Parameter: `tags`
 

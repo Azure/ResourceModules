@@ -53,7 +53,7 @@ The name of the AFD endpoint.
 The caching configuration for this route. To disable caching, do not provide a cacheConfiguration object.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `customDomainName`
 
@@ -74,7 +74,13 @@ Whether this route is enabled.
 - Required: No
 - Type: string
 - Default: `'Enabled'`
-- Allowed: `[Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 ### Parameter: `forwardingProtocol`
 
@@ -82,7 +88,14 @@ The protocol this rule will use when forwarding traffic to backends.
 - Required: No
 - Type: string
 - Default: `'MatchRequest'`
-- Allowed: `[HttpOnly, HttpsOnly, MatchRequest]`
+- Allowed:
+  ```Bicep
+  [
+    'HttpOnly'
+    'HttpsOnly'
+    'MatchRequest'
+  ]
+  ```
 
 ### Parameter: `httpsRedirect`
 
@@ -90,7 +103,13 @@ Whether to automatically redirect HTTP traffic to HTTPS traffic.
 - Required: No
 - Type: string
 - Default: `'Enabled'`
-- Allowed: `[Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 ### Parameter: `linkToDefaultDomain`
 
@@ -98,7 +117,13 @@ Whether this route will be linked to the default endpoint domain.
 - Required: No
 - Type: string
 - Default: `'Enabled'`
-- Allowed: `[Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 ### Parameter: `name`
 
@@ -146,7 +171,13 @@ The supported protocols of the rule.
 - Required: No
 - Type: array
 - Default: `[]`
-- Allowed: `[Http, Https]`
+- Allowed:
+  ```Bicep
+  [
+    'Http'
+    'Https'
+  ]
+  ```
 
 
 ## Outputs

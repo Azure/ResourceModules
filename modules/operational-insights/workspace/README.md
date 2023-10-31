@@ -1340,7 +1340,13 @@ The network access type for accessing Log Analytics ingestion.
 - Required: No
 - Type: string
 - Default: `'Enabled'`
-- Allowed: `[Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 ### Parameter: `publicNetworkAccessForQuery`
 
@@ -1348,7 +1354,13 @@ The network access type for accessing Log Analytics query.
 - Required: No
 - Type: string
 - Default: `'Enabled'`
-- Allowed: `[Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 ### Parameter: `roleAssignments`
 
@@ -1438,7 +1450,19 @@ The name of the SKU.
 - Required: No
 - Type: string
 - Default: `'PerGB2018'`
-- Allowed: `[CapacityReservation, Free, LACluster, PerGB2018, PerNode, Premium, Standalone, Standard]`
+- Allowed:
+  ```Bicep
+  [
+    'CapacityReservation'
+    'Free'
+    'LACluster'
+    'PerGB2018'
+    'PerNode'
+    'Premium'
+    'Standalone'
+    'Standard'
+  ]
+  ```
 
 ### Parameter: `storageInsightsConfigs`
 

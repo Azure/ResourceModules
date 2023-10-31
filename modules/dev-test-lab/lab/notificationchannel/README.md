@@ -82,7 +82,13 @@ The name of the parent lab. Required if the template is used in a standalone dep
 The name of the notification channel.
 - Required: Yes
 - Type: string
-- Allowed: `[autoShutdown, costThreshold]`
+- Allowed:
+  ```Bicep
+  [
+    'autoShutdown'
+    'costThreshold'
+  ]
+  ```
 
 ### Parameter: `notificationLocale`
 

@@ -570,7 +570,12 @@ Name of the Azure Bastion resource.
 Specifies the properties of the Public IP to create and be used by Azure Bastion, if no existing public IP was provided.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default:
+  ```Bicep
+  {
+      name: '[format(\'{0}-pip\' parameters(\'name\'))]'
+  }
+  ```
 
 ### Parameter: `roleAssignments`
 
@@ -653,7 +658,13 @@ The SKU of this Bastion Host.
 - Required: No
 - Type: string
 - Default: `'Basic'`
-- Allowed: `[Basic, Standard]`
+- Allowed:
+  ```Bicep
+  [
+    'Basic'
+    'Standard'
+  ]
+  ```
 
 ### Parameter: `tags`
 

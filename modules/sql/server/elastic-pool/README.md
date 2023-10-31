@@ -82,7 +82,13 @@ The license type to apply for this elastic pool.
 - Required: No
 - Type: string
 - Default: `'LicenseIncluded'`
-- Allowed: `[BasePrice, LicenseIncluded]`
+- Allowed:
+  ```Bicep
+  [
+    'BasePrice'
+    'LicenseIncluded'
+  ]
+  ```
 
 ### Parameter: `location`
 

@@ -332,7 +332,12 @@ Required. The name of the role to assign. If it cannot be found you can specify 
 The list of resource IDs that this Activity Log Alert is scoped to.
 - Required: No
 - Type: array
-- Default: `[[subscription().id]]`
+- Default:
+  ```Bicep
+  [
+    '[subscription().id]'
+  ]
+  ```
 
 ### Parameter: `tags`
 

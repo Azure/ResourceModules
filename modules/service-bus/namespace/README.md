@@ -812,7 +812,19 @@ Alternate name for namespace.
 Authorization Rules for the Service Bus namespace.
 - Required: No
 - Type: array
-- Default: `[System.Management.Automation.OrderedHashtable]`
+- Default:
+  ```Bicep
+  [
+    {
+      name: 'RootManageSharedAccessKey'
+      rights: [
+        'Listen'
+        'Manage'
+        'Send'
+      ]
+    }
+  ]
+  ```
 
 ### Parameter: `cMKKeyName`
 
@@ -969,7 +981,7 @@ This property disables SAS authentication for the Service Bus namespace.
 The disaster recovery configuration.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `enableDefaultTelemetry`
 
@@ -1043,7 +1055,7 @@ Optional. The resource ID(s) to assign to the resource.
 The migration configuration.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `minimumTlsVersion`
 
@@ -1051,7 +1063,14 @@ The minimum TLS version for the cluster to support.
 - Required: No
 - Type: string
 - Default: `'1.2'`
-- Allowed: `[1.0, 1.1, 1.2]`
+- Allowed:
+  ```Bicep
+  [
+    '1.0'
+    '1.1'
+    '1.2'
+  ]
+  ```
 
 ### Parameter: `name`
 
@@ -1064,7 +1083,7 @@ Name of the Service Bus Namespace.
 Configure networking options for Premium SKU Service Bus. This object contains IPs/Subnets to allow or restrict access to private endpoints only. For security reasons, it is recommended to configure this object on the Namespace.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `premiumMessagingPartitions`
 
@@ -1247,7 +1266,15 @@ Whether or not public network access is allowed for this resource. For security 
 - Required: No
 - Type: string
 - Default: `''`
-- Allowed: `['', Disabled, Enabled, SecuredByPerimeter]`
+- Allowed:
+  ```Bicep
+  [
+    ''
+    'Disabled'
+    'Enabled'
+    'SecuredByPerimeter'
+  ]
+  ```
 
 ### Parameter: `queues`
 
@@ -1337,7 +1364,17 @@ The specified messaging units for the tier. Only used for Premium Sku tier.
 - Required: No
 - Type: int
 - Default: `1`
-- Allowed: `[1, 2, 4, 8, 16, 32]`
+- Allowed:
+  ```Bicep
+  [
+    1
+    2
+    4
+    8
+    16
+    32
+  ]
+  ```
 
 ### Parameter: `skuName`
 
@@ -1345,7 +1382,14 @@ Name of this SKU. - Basic, Standard, Premium.
 - Required: No
 - Type: string
 - Default: `'Basic'`
-- Allowed: `[Basic, Premium, Standard]`
+- Allowed:
+  ```Bicep
+  [
+    'Basic'
+    'Premium'
+    'Standard'
+  ]
+  ```
 
 ### Parameter: `tags`
 
