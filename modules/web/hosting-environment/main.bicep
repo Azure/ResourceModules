@@ -123,7 +123,7 @@ var formattedUserAssignedIdentities = reduce(map((managedIdentities.?userAssigne
 var identity = !empty(managedIdentities) ? {
   type: (managedIdentities.?systemAssigned ?? false) ? (!empty(managedIdentities.?userAssignedResourcesIds ?? {}) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(managedIdentities.?userAssignedResourcesIds ?? {}) ? 'UserAssigned' : null)
   userAssignedIdentities: !empty(formattedUserAssignedIdentities) ? formattedUserAssignedIdentities : null
-} : null
+} : any(null)
 
 var enableReferencedModulesTelemetry = false
 

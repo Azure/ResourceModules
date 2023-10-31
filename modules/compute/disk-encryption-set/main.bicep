@@ -90,12 +90,12 @@ resource keyVault 'Microsoft.KeyVault/vaults@2021-10-01' existing = {
 }
 
 // Note: This is only enabled for user-assigned identities as the service's system-assigned identity isn't available during its initial deployment
-module keyVaultPermissions 'modules/nested_keyVaultPermissions.bicep' = [for (userAssignedIdentityId, index) in items(formattedUserAssignedIdentities): {
+module keyVaultPermissions 'modules/nested_keyVaultPermissions.bicep' = [for (userAssignedIdentityResourceId, index) in (managedIdentities.?userAssignedResourcesIds ?? []): {
   name: '${uniqueString(deployment().name, location)}-DiskEncrSet-KVPermissions-${index}'
   params: {
     keyName: keyName
     keyVaultResourceId: keyVaultResourceId
-    userAssignedIdentityResourceId: userAssignedIdentityId.key
+    userAssignedIdentityResourceId: userAssignedIdentityResourceId
     rbacAuthorizationEnabled: keyVault.properties.enableRbacAuthorization
   }
   scope: resourceGroup(split(keyVaultResourceId, '/')[2], split(keyVaultResourceId, '/')[4])
