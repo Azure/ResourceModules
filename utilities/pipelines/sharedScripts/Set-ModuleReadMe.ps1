@@ -229,13 +229,24 @@ function Set-ParametersSection {
 
             $isRequired = Get-IsParameterRequired -TemplateFileContent $TemplateFileContent -Parameter $parameter
 
+            # Default values
             if ($parameter.defaultValue -is [array]) {
-                # $defaultValue = '[{0}]' -f (($parameter.defaultValue | Sort-Object) -join ', ')
-                $bicepDefaultValue = ConvertTo-FormattedBicep -JSONParameters $parameter.defaultValue
-                $defaultValue = "[`n$bicepDefaultValue`n]"
+                if ($parameter.defaultValue.count -eq 0) {
+                    $defaultValue = '[]'
+                } else {
+                    $bicepJSONDefaultParameterObject = @{ $parameter.name = ($parameter.defaultValue ?? @()) } # Wrapping on object to work with formatted Bicep script
+                    $bicepRawformattedDefault = ConvertTo-FormattedBicep -JSONParameters $bicepJSONDefaultParameterObject
+                    $leadingSpacesToTrim = ($bicepRawformattedDefault -match '^(\s+).+') ? $matches[1].Length : 0
+                    $bicepCleanedFormattedDefault = $bicepRawformattedDefault -replace ('{0}: ' -f $parameter.name) # Unwrapping the object
+                    $defaultValue = $bicepCleanedFormattedDefault -split '\n' | ForEach-Object { $_ -replace "^\s{$leadingSpacesToTrim}" }  # Removing excess leading spaces
+                }
             } elseif ($parameter.defaultValue -is [hashtable]) {
-                $bicepDefaultValue = ConvertTo-FormattedBicep -JSONParameters $parameter.defaultValue
-                $defaultValue = "{`n$bicepDefaultValue`n}"
+                if ($parameter.defaultValue.count -eq 0) {
+                    $defaultValue = '{}'
+                } else {
+                    $bicepDefaultValue = ConvertTo-FormattedBicep -JSONParameters $parameter.defaultValue
+                    $defaultValue = "{`n$bicepDefaultValue`n}"
+                }
             } elseif ($parameter.defaultValue -is [string] -and ($parameter.defaultValue -notmatch '\[\w+\(.*\).*\]')) {
                 $defaultValue = '''' + $parameter.defaultValue + ''''
             } else {
@@ -253,13 +264,27 @@ function Set-ParametersSection {
                 $rawAllowedValues = $parameter.allowedValues
             }
 
+            # Allowed values
+            if ($rawAllowedValues -is [array]) {
+                $bicepJSONAllowedParameterObject = @{ $parameter.name = ($rawAllowedValues ?? @()) } # Wrapping on object to work with formatted Bicep script
+                $bicepRawformattedAllowed = ConvertTo-FormattedBicep -JSONParameters $bicepJSONAllowedParameterObject
+                $leadingSpacesToTrim = ($bicepRawformattedAllowed -match '^(\s+).+') ? $matches[1].Length : 0
+                $bicepCleanedFormattedAllowed = $bicepRawformattedAllowed -replace ('{0}: ' -f $parameter.name) # Unwrapping the object
+                $allowedValues = $bicepCleanedFormattedAllowed -split '\n' | ForEach-Object { $_ -replace "^\s{$leadingSpacesToTrim}" }  # Removing excess leading spaces
+            } elseif ($rawAllowedValues -is [hashtable]) {
+                $bicepAllowedValues = ConvertTo-FormattedBicep -JSONParameters $rawAllowedValues
+                $allowedValues = "{`n$bicepAllowedValues`n}"
+            } else {
+                $allowedValues = $rawAllowedValues
+            }
+
             # Prepare the links to local headers
             $paramHeader = '### Parameter: `{0}`' -f $parameter.name
             $paramIdentifier = ('#{0}' -f $paramHeader.TrimStart('#').Trim().ToLower()) -replace '[:|`]' -replace ' ', '-'
 
             # Add external single quotes to all default values of type string except for those using functions
             $description = $parameter.metadata.description.Replace("`r`n", '<p>').Replace("`n", '<p>')
-            $allowedValues = ($rawAllowedValues -is [array]) ? ('[{0}]' -f (($rawAllowedValues | Sort-Object) -join ', ')) : (($rawAllowedValues -is [hashtable]) ? '{object}' : $rawAllowedValues)
+            # $allowedValues = ($rawAllowedValues -is [array]) ? ('[{0}]' -f (($rawAllowedValues | Sort-Object) -join ', ')) : (($rawAllowedValues -is [hashtable]) ? '{object}' : $rawAllowedValues)
             # Further, replace all "empty string" default values with actual visible quotes
             if ([regex]::Match($allowedValues, '^(\[\s*,.+)|(\[.+,\s*,)|(.+,\s*\])$').Captures.Count -gt 0) {
                 $allowedValues = $allowedValues -replace '\[\s*,', "[''," -replace ',\s*,', ", ''," -replace ',\s*\]', ", '']"
@@ -270,6 +295,36 @@ function Set-ParametersSection {
             $description = $description.substring("$category. ".Length)
             $newSectionContent += ('| [`{0}`]({1}) | {2} | {3} |' -f $parameter.name, $paramIdentifier, $type, $description)
 
+            if (-not [String]::IsNullOrEmpty($defaultValue)) {
+                if (($defaultValue -split '\n').count -eq 1) {
+                    $formattedDefaultValue = '- Default: `{0}`' -f $defaultValue
+                } else {
+                    $formattedDefaultValue = @(
+                        '- Default:',
+                        '  ```Bicep',
+                    ($defaultValue -split '\n' | ForEach-Object { "  $_" } | Out-String).TrimEnd(),
+                        '  ```'
+                    )
+                }
+            } else {
+                $formattedDefaultValue = $null
+            }
+
+            if (-not [String]::IsNullOrEmpty($allowedValues)) {
+                if (($allowedValues -split '\n').count -eq 1) {
+                    $formattedAllowedValues = '- Default: `{0}`' -f $allowedValues
+                } else {
+                    $formattedAllowedValues = @(
+                        '- Allowed:',
+                        '  ```Bicep',
+                    ($allowedValues -split '\n' | Where-Object { -not [String]::IsNullOrEmpty($_) } | ForEach-Object { "  $_" } | Out-String).TrimEnd(),
+                        '  ```'
+                    )
+                }
+            } else {
+                $formattedAllowedValues = $null
+            }
+
             $parameterList += @{
                 $paramIdentifier = @(
                     $paramHeader,
@@ -277,8 +332,8 @@ function Set-ParametersSection {
                     $description,
                 ('- Required: {0}' -f ($isRequired ? 'Yes' : 'No')),
                 ('- Type: {0}' -f $type),
-                ((-not [String]::IsNullOrEmpty($defaultValue)) ? ('- Default: `{0}`' -f $defaultValue) : $null),
-                ((-not [String]::IsNullOrEmpty($allowedValues)) ? ('- Allowed: `{0}`' -f $allowedValues) : $null),
+                ((-not [String]::IsNullOrEmpty($formattedDefaultValue)) ? $formattedDefaultValue : $null),
+                ((-not [String]::IsNullOrEmpty($formattedAllowedValues)) ? $formattedAllowedValues : $null),
                     '',
                 (($parameterUsageContentMap.Keys -contains $parameter.name) ? $parameterUsageContentMap[$parameter.name] : $null)
                 ) | Where-Object { $null -ne $_ }
@@ -1712,7 +1767,7 @@ function Set-ModuleReadMe {
         Write-Verbose "File [$ReadMeFilePath] updated" -Verbose
     } else {
         if ($PSCmdlet.ShouldProcess("File in path [$ReadMeFilePath]", 'Create')) {
-            $null = New-Item -Path $ReadMeFilePath -Value $readMeFileContent -Force
+            $null = New-Item -Path $ReadMeFilePath -Value ($readMeFileContent | Out-String) -Force
         }
         Write-Verbose "File [$ReadMeFilePath] created" -Verbose
     }
