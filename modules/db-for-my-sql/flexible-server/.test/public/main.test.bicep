@@ -150,9 +150,11 @@ module testDeployment '../../main.bicep' = {
     geoBackupCMKKeyVaultResourceId: nestedDependencies2.outputs.geoBackupKeyVaultResourceId
     geoBackupCMKKeyName: nestedDependencies2.outputs.geoBackupKeyName
     geoBackupCMKUserAssignedIdentityResourceId: nestedDependencies2.outputs.geoBackupManagedIdentityResourceId
-    userAssignedIdentities: {
-      '${nestedDependencies2.outputs.managedIdentityResourceId}': {}
-      '${nestedDependencies2.outputs.geoBackupManagedIdentityResourceId}': {}
+    managedIdentities: {
+      userAssignedResourcesIds: [
+        nestedDependencies2.outputs.managedIdentityResourceId
+        nestedDependencies2.outputs.geoBackupManagedIdentityResourceId
+      ]
     }
     diagnosticSettings: [
       {

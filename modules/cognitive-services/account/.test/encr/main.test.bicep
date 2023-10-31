@@ -61,8 +61,10 @@ module testDeployment '../../main.bicep' = {
     cMKUserAssignedIdentityResourceId: nestedDependencies.outputs.managedIdentityResourceId
     publicNetworkAccess: 'Enabled'
     sku: 'S0'
-    userAssignedIdentities: {
-      '${nestedDependencies.outputs.managedIdentityResourceId}': {}
+    managedIdentities: {
+      userAssignedResourcesIds: [
+        nestedDependencies.outputs.managedIdentityResourceId
+      ]
     }
     restrictOutboundNetworkAccess: false
   }

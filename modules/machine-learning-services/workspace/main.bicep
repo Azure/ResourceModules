@@ -56,12 +56,10 @@ param tags object = {}
 @sys.description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-// Identity
-@sys.description('Conditional. Enables system assigned managed identity on the resource. Required if `userAssignedIdentities` is not provided.')
-param systemAssignedIdentity bool = false
-
-@sys.description('Conditional. The ID(s) to assign to the resource. Required if `systemAssignedIdentity` is set to false.')
-param userAssignedIdentities object = {}
+@sys.description('Optional. The managed identity definition for this resource. At least one identity type is required.')
+param managedIdentities managedIdentitiesType = {
+  systemAssigned: true
+}
 
 // Diagnostic Settings
 
@@ -111,12 +109,12 @@ param publicNetworkAccess string = ''
 // ================//
 var enableReferencedModulesTelemetry = false
 
-var identityType = systemAssignedIdentity ? (!empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
+var formattedUserAssignedIdentities = reduce(map((managedIdentities.?userAssignedResourcesIds ?? []), (id) => { '${id}': {} }), {}, (cur, next) => union(cur, next)) // Converts the flat array to an object like { '${id1}': {}, '${id2}': {} }
 
-var identity = identityType != 'None' ? {
-  type: identityType
-  userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : any(null)
-} : any(null)
+var identity = !empty(managedIdentities) ? {
+  type: (managedIdentities.?systemAssigned ?? false) ? (!empty(managedIdentities.?userAssignedResourcesIds ?? {}) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(managedIdentities.?userAssignedResourcesIds ?? {}) ? 'UserAssigned' : null)
+  userAssignedIdentities: !empty(formattedUserAssignedIdentities) ? formattedUserAssignedIdentities : null
+} : null
 
 // ================//
 // Deployments     //
@@ -198,8 +196,7 @@ module workspace_computes 'compute/main.bicep' = [for compute in computes: {
     name: compute.name
     location: compute.location
     sku: contains(compute, 'sku') ? compute.sku : ''
-    systemAssignedIdentity: contains(compute, 'systemAssignedIdentity') ? compute.systemAssignedIdentity : false
-    userAssignedIdentities: contains(compute, 'userAssignedIdentities') ? compute.userAssignedIdentities : {}
+    managedIdentities: contains(compute, 'managedIdentities') ? compute.managedIdentities : null
     tags: contains(compute, 'tags') ? compute.tags : {}
     deployCompute: contains(compute, 'deployCompute') ? compute.deployCompute : true
     computeLocation: contains(compute, 'computeLocation') ? compute.computeLocation : ''
@@ -301,7 +298,7 @@ output resourceGroupName string = resourceGroup().name
 output name string = workspace.name
 
 @sys.description('The principal ID of the system assigned identity.')
-output principalId string = (!empty(identity) && contains(identity.type, 'SystemAssigned')) ? workspace.identity.principalId : ''
+output systemAssignedMIPrincipalId string = (managedIdentities.?systemAssigned ?? false) && contains(workspace.identity, 'principalId') ? workspace.identity.principalId : ''
 
 @sys.description('The location the resource was deployed into.')
 output location string = workspace.location
@@ -309,6 +306,14 @@ output location string = workspace.location
 // =============== //
 //   Definitions   //
 // =============== //
+
+type managedIdentitiesType = {
+  @sys.description('Optional. Enables system assigned managed identity on the resource.')
+  systemAssigned: bool?
+
+  @sys.description('Optional. The resource ID(s) to assign to the resource.')
+  userAssignedResourcesIds: string[]?
+}
 
 type lockType = {
   @sys.description('Optional. Specify the name of lock.')

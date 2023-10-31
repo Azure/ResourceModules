@@ -330,6 +330,12 @@ module testDeployment '../../main.bicep' = {
       kind: 'CanNotDelete'
       name: 'myCustomLockName'
     }
+    managedIdentities: {
+      systemAssigned: true
+      userAssignedResourcesIds: [
+        nestedDependencies.outputs.managedIdentityResourceId
+      ]
+    }
     privateEndpoints: [
       {
         privateDnsZoneResourceIds: [

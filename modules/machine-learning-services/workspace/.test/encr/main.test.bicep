@@ -79,10 +79,12 @@ module testDeployment '../../main.bicep' = {
         }
       }
     ]
-    // Must be false if `primaryUserAssignedIdentity` is provided
-    systemAssignedIdentity: false
-    userAssignedIdentities: {
-      '${nestedDependencies.outputs.managedIdentityResourceId}': {}
+    // systemAssigned must be false if `primaryUserAssignedIdentity` is provided
+    managedIdentities: {
+      systemAssigned: false
+      userAssignedResourcesIds: [
+        nestedDependencies.outputs.managedIdentityResourceId
+      ]
     }
     tags: {
       'hidden-title': 'This is visible in the resource name'

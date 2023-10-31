@@ -430,8 +430,10 @@ module testDeployment '../../main.bicep' = {
         }
       }
     ]
-    userAssignedIdentities: {
-      '${nestedDependencies.outputs.managedIdentityResourceId}': {}
+    managedIdentities: {
+      userAssignedResourcesIds: [
+        nestedDependencies.outputs.managedIdentityResourceId
+      ]
     }
     rewriteRuleSets: [
       {
