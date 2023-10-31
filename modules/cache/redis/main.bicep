@@ -15,7 +15,7 @@ param lock lockType
 param roleAssignments roleAssignmentType
 
 @description('Optional. Tags of the resource.')
-param tags object = {}
+param tags object?
 
 @description('Optional. The managed identity definition for this resource.')
 param managedIdentities managedIdentitiesType

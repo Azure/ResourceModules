@@ -1894,7 +1894,6 @@ The SKU size of the VMs.
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `timeZone`
 

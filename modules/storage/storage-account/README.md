@@ -1808,7 +1808,6 @@ Table service and tables to create.
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 
 ## Outputs

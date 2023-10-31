@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "13132790244989513026"
+      "templateHash": "12640831453229356933"
     },
     "name": "Compute Galleries Image Definitions",
     "description": "This module deploys an Azure Compute Gallery Image Definition.",
@@ -305,7 +305,7 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Tags for all resources."
       }

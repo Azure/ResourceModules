@@ -117,7 +117,6 @@ Indicates whether failures stemming from the extension will be suppressed (Opera
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `type`
 

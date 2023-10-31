@@ -1185,7 +1185,6 @@ List of softwareUpdateConfigurations to be created in the automation account.
 Tags of the Automation Account resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `variables`
 

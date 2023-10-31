@@ -856,7 +856,6 @@ The type of Redis Enterprise Cluster to deploy.
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `zoneRedundant`
 

@@ -999,7 +999,6 @@ The fully qualified resource ID of the subnet on which the SQL managed instance 
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `timezoneId`
 

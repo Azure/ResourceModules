@@ -38,7 +38,7 @@ This module deploys an Azure Automation Account Runbook.
 | [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
 | [`location`](#parameter-location) | string | Location for all resources. |
 | [`sasTokenValidityLength`](#parameter-sastokenvaliditylength) | string | SAS token validity length. Usage: 'PT8H' - valid for 8 hours; 'P5D' - valid for 5 days; 'P1Y' - valid for 1 year. When not provided, the SAS token will be valid for 8 hours. |
-| [`scriptStorageAccountId`](#parameter-scriptstorageaccountid) | string | ID of the runbook storage account. |
+| [`scriptStorageAccountResourceId`](#parameter-scriptstorageaccountresourceid) | string | Resource Id of the runbook storage account. |
 | [`tags`](#parameter-tags) | object | Tags of the Automation Account resource. |
 | [`uri`](#parameter-uri) | string | The uri of the runbook content. |
 | [`version`](#parameter-version) | string | The version of the runbook content. |
@@ -96,19 +96,17 @@ SAS token validity length. Usage: 'PT8H' - valid for 8 hours; 'P5D' - valid for 
 - Type: string
 - Default: `'PT8H'`
 
-### Parameter: `scriptStorageAccountId`
+### Parameter: `scriptStorageAccountResourceId`
 
-ID of the runbook storage account.
+Resource Id of the runbook storage account.
 - Required: No
 - Type: string
-- Default: `''`
 
 ### Parameter: `tags`
 
 Tags of the Automation Account resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `type`
 

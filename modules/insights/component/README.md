@@ -471,7 +471,6 @@ Percentage of the data produced by the application being monitored that is being
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `workspaceResourceId`
 

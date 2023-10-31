@@ -524,7 +524,6 @@ The schedules related to this scaling plan. If no value is provided a default sc
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `timeZone`
 

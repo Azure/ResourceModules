@@ -338,7 +338,6 @@ SKU of the availability set.</p>- Use 'Aligned' for virtual machines with manage
 Tags of the availability set resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 
 ## Outputs

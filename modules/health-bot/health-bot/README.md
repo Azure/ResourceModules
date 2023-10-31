@@ -349,7 +349,6 @@ The name of the Azure Health Bot SKU.
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 
 ## Outputs

@@ -107,7 +107,6 @@ Target cost status.
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `target`
 

@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "13186916483114520290"
+      "templateHash": "4468420728204112478"
     },
     "name": "Compute Galleries Applications",
     "description": "This module deploys an Azure Compute Gallery Application.",
@@ -162,7 +162,7 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Tags for all resources."
       }

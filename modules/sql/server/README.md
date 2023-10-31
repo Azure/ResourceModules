@@ -1183,7 +1183,6 @@ The security alert policies to create in the server.
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `virtualNetworkRules`
 

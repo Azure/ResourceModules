@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "1602793414373969673"
+      "templateHash": "3800476164049795980"
     },
     "name": "Azure Firewalls",
     "description": "This module deploys an Azure Firewall.",
@@ -251,18 +251,13 @@
         "description": "Optional. This is to add any additional Public IP configurations on top of the Public IP with subnet IP configuration."
       }
     },
-    "isCreateDefaultPublicIP": {
-      "type": "bool",
-      "defaultValue": true,
-      "metadata": {
-        "description": "Optional. Specifies if a Public IP should be created by default if one is not provided."
-      }
-    },
     "publicIPAddressObject": {
       "type": "object",
-      "defaultValue": {},
+      "defaultValue": {
+        "name": "[format('{0}-pip', parameters('name'))]"
+      },
       "metadata": {
-        "description": "Optional. Specifies the properties of the Public IP to create and be used by Azure Firewall. If it's not provided and publicIPResourceID is empty, a '-pip' suffix will be appended to the Firewall's name."
+        "description": "Optional. Specifies the properties of the Public IP to create and be used by the Firewall, if no existing public IP was provided."
       }
     },
     "managementIPResourceID": {
@@ -371,7 +366,7 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Tags of the Azure Firewall resource."
       }
@@ -400,26 +395,6 @@
     "azureSkuName": "[if(empty(parameters('vNetId')), 'AZFW_Hub', 'AZFW_VNet')]",
     "requiresManagementIp": "[if(equals(parameters('azureSkuTier'), 'Basic'), true(), false())]",
     "isCreateDefaultManagementIP": "[and(empty(parameters('managementIPResourceID')), variables('requiresManagementIp'))]",
-    "subnetVar": {
-      "subnet": {
-        "id": "[format('{0}/subnets/AzureFirewallSubnet', parameters('vNetId'))]"
-      }
-    },
-    "existingPip": {
-      "publicIPAddress": {
-        "id": "[parameters('publicIPResourceID')]"
-      }
-    },
-    "managementSubnetVar": {
-      "subnet": {
-        "id": "[format('{0}/subnets/AzureFirewallManagementSubnet', parameters('vNetId'))]"
-      }
-    },
-    "existingMip": {
-      "publicIPAddress": {
-        "id": "[parameters('managementIPResourceID')]"
-      }
-    },
     "enableReferencedModulesTelemetry": false,
     "builtInRoleNames": {
       "Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]",
@@ -451,7 +426,7 @@
       "location": "[parameters('location')]",
       "zones": "[if(equals(length(parameters('zones')), 0), null(), parameters('zones'))]",
       "tags": "[parameters('tags')]",
-      "properties": "[if(equals(variables('azureSkuName'), 'AZFW_VNet'), createObject('threatIntelMode', parameters('threatIntelMode'), 'firewallPolicy', if(not(empty(parameters('firewallPolicyId'))), createObject('id', parameters('firewallPolicyId')), null()), 'ipConfigurations', concat(createArray(createObject('name', if(not(empty(parameters('publicIPResourceID'))), last(split(parameters('publicIPResourceID'), '/')), reference('publicIPAddress').outputs.name.value), 'properties', union(variables('subnetVar'), if(not(empty(parameters('publicIPResourceID'))), variables('existingPip'), createObject()), if(parameters('isCreateDefaultPublicIP'), createObject('publicIPAddress', if(and(empty(parameters('publicIPResourceID')), parameters('isCreateDefaultPublicIP')), createObject('id', reference('publicIPAddress').outputs.resourceId.value), null())), createObject())))), variables('additionalPublicIpConfigurationsVar')), 'managementIpConfiguration', if(variables('requiresManagementIp'), createObject('name', if(not(empty(parameters('managementIPResourceID'))), last(split(parameters('managementIPResourceID'), '/')), reference('managementIPAddress').outputs.name.value), 'properties', union(variables('managementSubnetVar'), if(not(empty(parameters('managementIPResourceID'))), variables('existingMip'), createObject()), if(variables('isCreateDefaultManagementIP'), createObject('publicIPAddress', if(and(empty(parameters('managementIPResourceID')), variables('isCreateDefaultManagementIP')), createObject('id', reference('managementIPAddress').outputs.resourceId.value), null())), createObject()))), null()), 'sku', createObject('name', variables('azureSkuName'), 'tier', parameters('azureSkuTier')), 'applicationRuleCollections', parameters('applicationRuleCollections'), 'natRuleCollections', parameters('natRuleCollections'), 'networkRuleCollections', parameters('networkRuleCollections')), createObject('firewallPolicy', if(not(empty(parameters('firewallPolicyId'))), createObject('id', parameters('firewallPolicyId')), null()), 'sku', createObject('name', variables('azureSkuName'), 'tier', parameters('azureSkuTier')), 'hubIPAddresses', if(not(empty(parameters('hubIPAddresses'))), parameters('hubIPAddresses'), null()), 'virtualHub', if(not(empty(parameters('virtualHubId'))), createObject('id', parameters('virtualHubId')), null())))]",
+      "properties": "[if(equals(variables('azureSkuName'), 'AZFW_VNet'), createObject('threatIntelMode', parameters('threatIntelMode'), 'firewallPolicy', if(not(empty(parameters('firewallPolicyId'))), createObject('id', parameters('firewallPolicyId')), null()), 'ipConfigurations', concat(createArray(createObject('name', if(not(empty(parameters('publicIPResourceID'))), last(split(parameters('publicIPResourceID'), '/')), reference('publicIPAddress').outputs.name.value), 'properties', union(createObject('subnet', createObject('id', format('{0}/subnets/AzureFirewallSubnet', parameters('vNetId')))), if(or(not(empty(parameters('publicIPResourceID'))), not(empty(parameters('publicIPAddressObject')))), createObject('publicIPAddress', createObject('id', if(not(empty(parameters('publicIPResourceID'))), parameters('publicIPResourceID'), reference('publicIPAddress').outputs.resourceId.value))), createObject())))), variables('additionalPublicIpConfigurationsVar')), 'managementIpConfiguration', if(variables('requiresManagementIp'), createObject('name', if(not(empty(parameters('managementIPResourceID'))), last(split(parameters('managementIPResourceID'), '/')), reference('managementIPAddress').outputs.name.value), 'properties', union(createObject('subnet', createObject('id', format('{0}/subnets/AzureFirewallManagementSubnet', parameters('vNetId')))), if(or(not(empty(parameters('publicIPResourceID'))), not(empty(parameters('managementIPAddressObject')))), createObject('publicIPAddress', createObject('id', if(not(empty(parameters('managementIPResourceID'))), parameters('managementIPResourceID'), reference('managementIPAddress').outputs.resourceId.value))), createObject()))), null()), 'sku', createObject('name', variables('azureSkuName'), 'tier', parameters('azureSkuTier')), 'applicationRuleCollections', parameters('applicationRuleCollections'), 'natRuleCollections', parameters('natRuleCollections'), 'networkRuleCollections', parameters('networkRuleCollections')), createObject('firewallPolicy', if(not(empty(parameters('firewallPolicyId'))), createObject('id', parameters('firewallPolicyId')), null()), 'sku', createObject('name', variables('azureSkuName'), 'tier', parameters('azureSkuTier')), 'hubIPAddresses', if(not(empty(parameters('hubIPAddresses'))), parameters('hubIPAddresses'), null()), 'virtualHub', if(not(empty(parameters('virtualHubId'))), createObject('id', parameters('virtualHubId')), null())))]",
       "dependsOn": [
         "managementIPAddress",
         "publicIPAddress"
@@ -517,7 +492,7 @@
       ]
     },
     "publicIPAddress": {
-      "condition": "[and(and(empty(parameters('publicIPResourceID')), parameters('isCreateDefaultPublicIP')), equals(variables('azureSkuName'), 'AZFW_VNet'))]",
+      "condition": "[and(empty(parameters('publicIPResourceID')), equals(variables('azureSkuName'), 'AZFW_VNet'))]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
       "name": "[format('{0}-Firewall-PIP', uniqueString(deployment().name, parameters('location')))]",
@@ -527,7 +502,9 @@
         },
         "mode": "Incremental",
         "parameters": {
-          "name": "[if(contains(parameters('publicIPAddressObject'), 'name'), if(not(empty(parameters('publicIPAddressObject').name)), createObject('value', parameters('publicIPAddressObject').name), createObject('value', format('{0}-pip', parameters('name')))), createObject('value', format('{0}-pip', parameters('name'))))]",
+          "name": {
+            "value": "[parameters('publicIPAddressObject').name]"
+          },
           "publicIPPrefixResourceId": "[if(contains(parameters('publicIPAddressObject'), 'publicIPPrefixResourceId'), if(not(empty(parameters('publicIPAddressObject').publicIPPrefixResourceId)), createObject('value', parameters('publicIPAddressObject').publicIPPrefixResourceId), createObject('value', '')), createObject('value', ''))]",
           "publicIPAllocationMethod": "[if(contains(parameters('publicIPAddressObject'), 'publicIPAllocationMethod'), if(not(empty(parameters('publicIPAddressObject').publicIPAllocationMethod)), createObject('value', parameters('publicIPAddressObject').publicIPAllocationMethod), createObject('value', 'Static')), createObject('value', 'Static'))]",
           "skuName": "[if(contains(parameters('publicIPAddressObject'), 'skuName'), if(not(empty(parameters('publicIPAddressObject').skuName)), createObject('value', parameters('publicIPAddressObject').skuName), createObject('value', 'Standard')), createObject('value', 'Standard'))]",
@@ -543,7 +520,7 @@
             "value": "[parameters('lock')]"
           },
           "tags": {
-            "value": "[parameters('tags')]"
+            "value": "[coalesce(tryGet(parameters('publicIPAddressObject'), 'tags'), parameters('tags'))]"
           },
           "zones": {
             "value": "[parameters('zones')]"
@@ -560,7 +537,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.22.6.54827",
-              "templateHash": "968771326214380550"
+              "templateHash": "18404193892947466906"
             },
             "name": "Public IP Addresses",
             "description": "This module deploys a Public IP Address.",
@@ -899,7 +876,7 @@
             },
             "tags": {
               "type": "object",
-              "defaultValue": {},
+              "nullable": true,
               "metadata": {
                 "description": "Optional. Tags of the resource."
               }
@@ -1051,7 +1028,7 @@
       }
     },
     "managementIPAddress": {
-      "condition": "[and(and(empty(parameters('managementIPResourceID')), variables('isCreateDefaultManagementIP')), equals(variables('azureSkuName'), 'AZFW_VNet'))]",
+      "condition": "[and(variables('isCreateDefaultManagementIP'), equals(variables('azureSkuName'), 'AZFW_VNet'))]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
       "name": "[format('{0}-Firewall-MIP', uniqueString(deployment().name, parameters('location')))]",
@@ -1074,7 +1051,7 @@
             "value": "[parameters('location')]"
           },
           "tags": {
-            "value": "[parameters('tags')]"
+            "value": "[coalesce(tryGet(parameters('managementIPAddressObject'), 'tags'), parameters('tags'))]"
           },
           "zones": {
             "value": "[parameters('zones')]"
@@ -1091,7 +1068,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.22.6.54827",
-              "templateHash": "968771326214380550"
+              "templateHash": "18404193892947466906"
             },
             "name": "Public IP Addresses",
             "description": "This module deploys a Public IP Address.",
@@ -1430,7 +1407,7 @@
             },
             "tags": {
               "type": "object",
-              "defaultValue": {},
+              "nullable": true,
               "metadata": {
                 "description": "Optional. Tags of the resource."
               }

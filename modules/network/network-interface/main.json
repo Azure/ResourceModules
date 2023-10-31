@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "8812824728238881787"
+      "templateHash": "6506615823435977032"
     },
     "name": "Network Interface",
     "description": "This module deploys a Network Interface.",
@@ -201,7 +201,7 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Tags of the resource."
       }

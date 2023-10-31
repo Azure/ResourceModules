@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "11610180604623373886"
+      "templateHash": "4197028586802526466"
     },
     "name": "Compute Disks",
     "description": "This module deploys a Compute Disk",
@@ -330,7 +330,7 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Tags of the availability set resource."
       }

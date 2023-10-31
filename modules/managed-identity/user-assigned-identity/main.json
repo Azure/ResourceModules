@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "10195612761440584932"
+      "templateHash": "1438876956443234621"
     },
     "name": "User Assigned Identities",
     "description": "This module deploys a User Assigned Identity.",
@@ -141,7 +141,7 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Tags of the resource."
       }

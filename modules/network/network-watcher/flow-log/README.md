@@ -101,7 +101,6 @@ Resource ID of the diagnostic storage account.
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `targetResourceId`
 

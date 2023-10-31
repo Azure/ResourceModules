@@ -1140,7 +1140,6 @@ The SKU of the Gateway.
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `vNetResourceId`
 

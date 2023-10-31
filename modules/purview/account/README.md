@@ -705,7 +705,6 @@ Configuration details for Purview Managed Storage Account queue private endpoint
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 
 ## Outputs

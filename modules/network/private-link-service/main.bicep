@@ -12,7 +12,7 @@ param location string = resourceGroup().location
 param lock lockType
 
 @description('Optional. Tags to be applied on all resources/resource groups in this deployment.')
-param tags object = {}
+param tags object?
 
 @description('Optional. The extended location of the load balancer.')
 param extendedLocation object = {}

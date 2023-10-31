@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "3274387832095626640"
+      "templateHash": "10340171795894114862"
     },
     "name": "API Management Services",
     "description": "This module deploys an API Management Service.",
@@ -383,7 +383,7 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Tags of the resource."
       }
@@ -2058,7 +2058,9 @@
           "name": {
             "value": "[parameters('namedValues')[copyIndex()].name]"
           },
-          "tags": "[if(contains(parameters('namedValues')[copyIndex()], 'tags'), createObject('value', parameters('namedValues')[copyIndex()].tags), createObject('value', createArray()))]",
+          "tags": {
+            "value": "[tryGet(parameters('namedValues')[copyIndex()], 'tags')]"
+          },
           "secret": "[if(contains(parameters('namedValues')[copyIndex()], 'secret'), createObject('value', parameters('namedValues')[copyIndex()].secret), createObject('value', false()))]",
           "value": "[if(contains(parameters('namedValues')[copyIndex()], 'value'), createObject('value', parameters('namedValues')[copyIndex()].value), createObject('value', parameters('newGuidValue')))]",
           "enableDefaultTelemetry": {
@@ -2067,12 +2069,13 @@
         },
         "template": {
           "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "languageVersion": "2.0",
           "contentVersion": "1.0.0.0",
           "metadata": {
             "_generator": {
               "name": "bicep",
               "version": "0.22.6.54827",
-              "templateHash": "3581707708141744852"
+              "templateHash": "16893893897869493831"
             },
             "name": "API Management Service Named Values",
             "description": "This module deploys an API Management Service Named Value.",
@@ -2113,7 +2116,7 @@
             },
             "tags": {
               "type": "array",
-              "defaultValue": [],
+              "nullable": true,
               "metadata": {
                 "description": "Optional. Tags that when provided can be used to filter the NamedValue list. - string."
               }
@@ -2136,8 +2139,8 @@
           "variables": {
             "keyVaultEmpty": "[empty(parameters('keyVault'))]"
           },
-          "resources": [
-            {
+          "resources": {
+            "defaultTelemetry": {
               "condition": "[parameters('enableDefaultTelemetry')]",
               "type": "Microsoft.Resources/deployments",
               "apiVersion": "2021-04-01",
@@ -2151,19 +2154,28 @@
                 }
               }
             },
-            {
+            "service": {
+              "existing": true,
+              "type": "Microsoft.ApiManagement/service",
+              "apiVersion": "2021-08-01",
+              "name": "[parameters('apiManagementServiceName')]"
+            },
+            "namedValue": {
               "type": "Microsoft.ApiManagement/service/namedValues",
               "apiVersion": "2021-08-01",
               "name": "[format('{0}/{1}', parameters('apiManagementServiceName'), parameters('name'))]",
               "properties": {
-                "tags": "[if(not(empty(parameters('tags'))), parameters('tags'), null())]",
+                "tags": "[parameters('tags')]",
                 "secret": "[parameters('secret')]",
                 "displayName": "[parameters('displayName')]",
                 "value": "[if(variables('keyVaultEmpty'), parameters('value'), null())]",
                 "keyVault": "[if(not(variables('keyVaultEmpty')), parameters('keyVault'), null())]"
-              }
+              },
+              "dependsOn": [
+                "service"
+              ]
             }
-          ],
+          },
           "outputs": {
             "resourceId": {
               "type": "string",

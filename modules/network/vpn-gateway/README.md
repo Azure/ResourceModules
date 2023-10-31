@@ -338,7 +338,6 @@ List of all the NAT Rules to associate with the gateway.
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `virtualHubResourceId`
 

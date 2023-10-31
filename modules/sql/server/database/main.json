@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "7566326750370718720"
+      "templateHash": "17297721819291768897"
     },
     "name": "SQL Server Database",
     "description": "This module deploys an Azure SQL Server Database.",
@@ -249,7 +249,7 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Tags of the resource."
       }

@@ -1272,7 +1272,6 @@ event hub plan SKU name.
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `zoneRedundant`
 

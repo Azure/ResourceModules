@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "1514656226322598076"
+      "templateHash": "5654528138086993351"
     },
     "name": "Application Security Groups (ASG)",
     "description": "This module deploys an Application Security Group (ASG).",
@@ -133,7 +133,7 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Tags of the resource."
       }

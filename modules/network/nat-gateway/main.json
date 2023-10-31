@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "4973396094546435424"
+      "templateHash": "11905897400304782014"
     },
     "name": "NAT Gateways",
     "description": "This module deploys a NAT Gateway.",
@@ -426,7 +426,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.22.6.54827",
-              "templateHash": "968771326214380550"
+              "templateHash": "18404193892947466906"
             },
             "name": "Public IP Addresses",
             "description": "This module deploys a Public IP Address.",
@@ -765,7 +765,7 @@
             },
             "tags": {
               "type": "object",
-              "defaultValue": {},
+              "nullable": true,
               "metadata": {
                 "description": "Optional. Tags of the resource."
               }
@@ -1022,7 +1022,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.22.6.54827",
-              "templateHash": "17531002451033298883"
+              "templateHash": "12289116883631984029"
             },
             "name": "Public IP Prefixes",
             "description": "This module deploys a Public IP Prefix.",
@@ -1158,7 +1158,7 @@
             },
             "tags": {
               "type": "object",
-              "defaultValue": {},
+              "nullable": true,
               "metadata": {
                 "description": "Optional. Tags of the resource."
               }

@@ -385,7 +385,6 @@ The sku of this VirtualHub.
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `virtualHubRouteTableV2s`
 

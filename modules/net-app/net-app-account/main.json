@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "17236803464512744934"
+      "templateHash": "11827894918755245507"
     },
     "name": "Azure NetApp Files",
     "description": "This module deploys an Azure NetApp File.",
@@ -203,7 +203,7 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Tags for all resources."
       }
@@ -332,7 +332,9 @@
           "coolAccess": "[if(contains(parameters('capacityPools')[copyIndex()], 'coolAccess'), createObject('value', parameters('capacityPools')[copyIndex()].coolAccess), createObject('value', false()))]",
           "roleAssignments": "[if(contains(parameters('capacityPools')[copyIndex()], 'roleAssignments'), createObject('value', parameters('capacityPools')[copyIndex()].roleAssignments), createObject('value', createArray()))]",
           "encryptionType": "[if(contains(parameters('capacityPools')[copyIndex()], 'encryptionType'), createObject('value', parameters('capacityPools')[copyIndex()].encryptionType), createObject('value', 'Single'))]",
-          "tags": "[if(contains(parameters('capacityPools')[copyIndex()], 'tags'), createObject('value', parameters('capacityPools')[copyIndex()].tags), createObject('value', createObject()))]",
+          "tags": {
+            "value": "[coalesce(tryGet(parameters('capacityPools')[copyIndex()], 'tags'), parameters('tags'))]"
+          },
           "enableDefaultTelemetry": {
             "value": "[variables('enableReferencedModulesTelemetry')]"
           }
@@ -345,7 +347,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.22.6.54827",
-              "templateHash": "14242430981421830183"
+              "templateHash": "5973731463189380166"
             },
             "name": "Azure NetApp Files Capacity Pools",
             "description": "This module deploys an Azure NetApp Files Capacity Pool.",
@@ -441,7 +443,7 @@
             },
             "tags": {
               "type": "object",
-              "defaultValue": {},
+              "nullable": true,
               "metadata": {
                 "description": "Optional. Tags for all resources."
               }

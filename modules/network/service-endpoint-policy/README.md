@@ -354,7 +354,6 @@ An Array of service endpoint policy definitions.
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 
 ## Outputs

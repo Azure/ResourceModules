@@ -1459,7 +1459,6 @@ LAW custom tables to be deployed.
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `useResourcePermissions`
 

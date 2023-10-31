@@ -53,7 +53,7 @@ param roleAssignments roleAssignmentType
 param state string = 'Enabled'
 
 @description('Optional. Tags of the resource.')
-param tags object = {}
+param tags object?
 
 @description('Optional. The access control configuration for invoking workflow triggers.')
 param triggersAccessControlConfiguration object = {}

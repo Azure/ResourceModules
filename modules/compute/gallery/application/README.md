@@ -196,7 +196,6 @@ This property allows you to specify the supported type of the OS that applicatio
 Tags for all resources.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 
 ## Outputs

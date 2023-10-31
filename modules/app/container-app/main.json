@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "18263232031845288996"
+      "templateHash": "5881378126445701958"
     },
     "name": "Container Apps",
     "description": "This module deploys a Container App.",
@@ -222,7 +222,7 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Tags of the resource."
       }

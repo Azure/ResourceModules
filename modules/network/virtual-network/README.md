@@ -731,7 +731,6 @@ An Array of subnets to deploy to the Virtual Network.
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `vnetEncryption`
 

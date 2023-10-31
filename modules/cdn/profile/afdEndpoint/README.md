@@ -95,7 +95,6 @@ The list of routes for this AFD Endpoint.
 The tags of the AFD Endpoint.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 
 ## Outputs

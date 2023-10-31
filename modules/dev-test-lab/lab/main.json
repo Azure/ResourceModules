@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "15532963443565749928"
+      "templateHash": "14947280208542929227"
     },
     "name": "DevTest Labs",
     "description": "This module deploys a DevTest Lab.",
@@ -148,7 +148,7 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Tags of the resource."
       }
@@ -464,7 +464,7 @@
             "value": "[parameters('virtualnetworks')[copyIndex()].name]"
           },
           "tags": {
-            "value": "[parameters('tags')]"
+            "value": "[coalesce(tryGet(parameters('virtualnetworks')[copyIndex()], 'tags'), parameters('tags'))]"
           },
           "externalProviderResourceId": {
             "value": "[parameters('virtualnetworks')[copyIndex()].externalProviderResourceId]"
@@ -478,12 +478,13 @@
         },
         "template": {
           "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "languageVersion": "2.0",
           "contentVersion": "1.0.0.0",
           "metadata": {
             "_generator": {
               "name": "bicep",
               "version": "0.22.6.54827",
-              "templateHash": "5213684482874022181"
+              "templateHash": "8382075673072622254"
             },
             "name": "DevTest Lab Virtual Networks",
             "description": "This module deploys a DevTest Lab Virtual Network.\r\n\r\nLab virtual machines must be deployed into a virtual network. This resource type allows configuring the virtual network and subnet settings used for the lab virtual machines.",
@@ -510,7 +511,7 @@
             },
             "tags": {
               "type": "object",
-              "defaultValue": {},
+              "nullable": true,
               "metadata": {
                 "description": "Optional. Tags of the resource."
               }
@@ -544,8 +545,8 @@
               }
             }
           },
-          "resources": [
-            {
+          "resources": {
+            "defaultTelemetry": {
               "condition": "[parameters('enableDefaultTelemetry')]",
               "type": "Microsoft.Resources/deployments",
               "apiVersion": "2021-04-01",
@@ -559,7 +560,13 @@
                 }
               }
             },
-            {
+            "lab": {
+              "existing": true,
+              "type": "Microsoft.DevTestLab/labs",
+              "apiVersion": "2018-09-15",
+              "name": "[parameters('labName')]"
+            },
+            "virtualNetwork": {
               "type": "Microsoft.DevTestLab/labs/virtualnetworks",
               "apiVersion": "2018-09-15",
               "name": "[format('{0}/{1}', parameters('labName'), parameters('name'))]",
@@ -569,9 +576,12 @@
                 "externalProviderResourceId": "[parameters('externalProviderResourceId')]",
                 "allowedSubnets": "[parameters('allowedSubnets')]",
                 "subnetOverrides": "[parameters('subnetOverrides')]"
-              }
+              },
+              "dependsOn": [
+                "lab"
+              ]
             }
-          ],
+          },
           "outputs": {
             "name": {
               "type": "string",
@@ -622,7 +632,7 @@
             "value": "[parameters('policies')[copyIndex()].name]"
           },
           "tags": {
-            "value": "[parameters('tags')]"
+            "value": "[coalesce(tryGet(parameters('policies')[copyIndex()], 'tags'), parameters('tags'))]"
           },
           "description": "[if(contains(parameters('policies')[copyIndex()], 'description'), createObject('value', parameters('policies')[copyIndex()].description), createObject('value', ''))]",
           "evaluatorType": {
@@ -827,7 +837,7 @@
             "value": "[parameters('schedules')[copyIndex()].name]"
           },
           "tags": {
-            "value": "[parameters('tags')]"
+            "value": "[coalesce(tryGet(parameters('schedules')[copyIndex()], 'tags'), parameters('tags'))]"
           },
           "taskType": {
             "value": "[parameters('schedules')[copyIndex()].taskType]"
@@ -846,12 +856,13 @@
         },
         "template": {
           "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "languageVersion": "2.0",
           "contentVersion": "1.0.0.0",
           "metadata": {
             "_generator": {
               "name": "bicep",
               "version": "0.22.6.54827",
-              "templateHash": "853057685884144049"
+              "templateHash": "10592511541548002212"
             },
             "name": "DevTest Lab Schedules",
             "description": "This module deploys a DevTest Lab Schedule.\r\n\r\nLab schedules are used to modify the settings for auto-shutdown, auto-start for lab virtual machines.",
@@ -886,7 +897,7 @@
             },
             "tags": {
               "type": "object",
-              "defaultValue": {},
+              "nullable": true,
               "metadata": {
                 "description": "Optional. Tags of the resource."
               }
@@ -963,8 +974,8 @@
               }
             }
           },
-          "resources": [
-            {
+          "resources": {
+            "defaultTelemetry": {
               "condition": "[parameters('enableDefaultTelemetry')]",
               "type": "Microsoft.Resources/deployments",
               "apiVersion": "2021-04-01",
@@ -978,7 +989,13 @@
                 }
               }
             },
-            {
+            "lab": {
+              "existing": true,
+              "type": "Microsoft.DevTestLab/labs",
+              "apiVersion": "2018-09-15",
+              "name": "[parameters('labName')]"
+            },
+            "schedule": {
               "type": "Microsoft.DevTestLab/labs/schedules",
               "apiVersion": "2018-09-15",
               "name": "[format('{0}/{1}', parameters('labName'), parameters('name'))]",
@@ -992,9 +1009,12 @@
                 "targetResourceId": "[if(not(empty(parameters('targetResourceId'))), parameters('targetResourceId'), null())]",
                 "timeZoneId": "[parameters('timeZoneId')]",
                 "notificationSettings": "[if(equals(parameters('notificationSettingsStatus'), 'Enabled'), createObject('status', parameters('notificationSettingsStatus'), 'timeInMinutes', parameters('notificationSettingsTimeInMinutes')), createObject())]"
-              }
+              },
+              "dependsOn": [
+                "lab"
+              ]
             }
-          ],
+          },
           "outputs": {
             "name": {
               "type": "string",
@@ -1045,7 +1065,7 @@
             "value": "[parameters('notificationchannels')[copyIndex()].name]"
           },
           "tags": {
-            "value": "[parameters('tags')]"
+            "value": "[coalesce(tryGet(parameters('notificationchannels')[copyIndex()], 'tags'), parameters('tags'))]"
           },
           "description": "[if(contains(parameters('notificationchannels')[copyIndex()], 'description'), createObject('value', parameters('notificationchannels')[copyIndex()].description), createObject('value', ''))]",
           "events": {
@@ -1060,12 +1080,13 @@
         },
         "template": {
           "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "languageVersion": "2.0",
           "contentVersion": "1.0.0.0",
           "metadata": {
             "_generator": {
               "name": "bicep",
               "version": "0.22.6.54827",
-              "templateHash": "7575060424945865003"
+              "templateHash": "5225332129791836269"
             },
             "name": "DevTest Lab Notification Channels",
             "description": "This module deploys a DevTest Lab Notification Channel.\r\n\r\nNotification channels are used by the schedule resource type in order to send notifications or events to email addresses and/or webhooks.",
@@ -1090,7 +1111,7 @@
             },
             "tags": {
               "type": "object",
-              "defaultValue": {},
+              "nullable": true,
               "metadata": {
                 "description": "Optional. Tags of the resource."
               }
@@ -1138,8 +1159,8 @@
               }
             }
           },
-          "resources": [
-            {
+          "resources": {
+            "defaultTelemetry": {
               "condition": "[parameters('enableDefaultTelemetry')]",
               "type": "Microsoft.Resources/deployments",
               "apiVersion": "2021-04-01",
@@ -1153,7 +1174,13 @@
                 }
               }
             },
-            {
+            "lab": {
+              "existing": true,
+              "type": "Microsoft.DevTestLab/labs",
+              "apiVersion": "2018-09-15",
+              "name": "[parameters('labName')]"
+            },
+            "notificationChannel": {
               "type": "Microsoft.DevTestLab/labs/notificationchannels",
               "apiVersion": "2018-09-15",
               "name": "[format('{0}/{1}', parameters('labName'), parameters('name'))]",
@@ -1164,9 +1191,12 @@
                 "emailRecipient": "[parameters('emailRecipient')]",
                 "webHookUrl": "[parameters('webHookUrl')]",
                 "notificationLocale": "[parameters('notificationLocale')]"
-              }
+              },
+              "dependsOn": [
+                "lab"
+              ]
             }
-          ],
+          },
           "outputs": {
             "name": {
               "type": "string",
@@ -1217,7 +1247,7 @@
             "value": "[parameters('artifactsources')[copyIndex()].name]"
           },
           "tags": {
-            "value": "[parameters('tags')]"
+            "value": "[coalesce(tryGet(parameters('artifactsources')[copyIndex()], 'tags'), parameters('tags'))]"
           },
           "displayName": "[if(contains(parameters('artifactsources')[copyIndex()], 'displayName'), createObject('value', parameters('artifactsources')[copyIndex()].displayName), createObject('value', parameters('artifactsources')[copyIndex()].name))]",
           "branchRef": "[if(contains(parameters('artifactsources')[copyIndex()], 'branchRef'), createObject('value', parameters('artifactsources')[copyIndex()].branchRef), createObject('value', ''))]",
@@ -1234,12 +1264,13 @@
         },
         "template": {
           "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "languageVersion": "2.0",
           "contentVersion": "1.0.0.0",
           "metadata": {
             "_generator": {
               "name": "bicep",
               "version": "0.22.6.54827",
-              "templateHash": "4180084937723506143"
+              "templateHash": "12165020180713564819"
             },
             "name": "DevTest Lab Artifact Sources",
             "description": "This module deploys a DevTest Lab Artifact Source.\r\n\r\nAn artifact source allows you to create custom artifacts for the VMs in the lab, or use Azure Resource Manager templates to create a custom test environment. You must add a private Git repository for the artifacts or Resource Manager templates that your team creates. The repository can be hosted on GitHub or on Azure DevOps Services.",
@@ -1260,7 +1291,7 @@
             },
             "tags": {
               "type": "object",
-              "defaultValue": {},
+              "nullable": true,
               "metadata": {
                 "description": "Optional. Tags of the resource."
               }
@@ -1338,8 +1369,8 @@
               }
             }
           },
-          "resources": [
-            {
+          "resources": {
+            "defaultTelemetry": {
               "condition": "[parameters('enableDefaultTelemetry')]",
               "type": "Microsoft.Resources/deployments",
               "apiVersion": "2021-04-01",
@@ -1353,7 +1384,13 @@
                 }
               }
             },
-            {
+            "lab": {
+              "existing": true,
+              "type": "Microsoft.DevTestLab/labs",
+              "apiVersion": "2018-09-15",
+              "name": "[parameters('labName')]"
+            },
+            "artifactsource": {
               "type": "Microsoft.DevTestLab/labs/artifactsources",
               "apiVersion": "2018-09-15",
               "name": "[format('{0}/{1}', parameters('labName'), parameters('name'))]",
@@ -1367,9 +1404,12 @@
                 "sourceType": "[if(not(empty(parameters('sourceType'))), parameters('sourceType'), null())]",
                 "status": "[parameters('status')]",
                 "uri": "[parameters('uri')]"
-              }
+              },
+              "dependsOn": [
+                "lab"
+              ]
             }
-          ],
+          },
           "outputs": {
             "name": {
               "type": "string",
@@ -1414,7 +1454,7 @@
             "value": "[parameters('name')]"
           },
           "tags": {
-            "value": "[parameters('tags')]"
+            "value": "[coalesce(tryGet(parameters('costs'), 'tags'), parameters('tags'))]"
           },
           "currencyCode": "[if(contains(parameters('costs'), 'currencyCode'), createObject('value', parameters('costs').currencyCode), createObject('value', 'USD'))]",
           "cycleType": {
@@ -1440,12 +1480,13 @@
         },
         "template": {
           "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "languageVersion": "2.0",
           "contentVersion": "1.0.0.0",
           "metadata": {
             "_generator": {
               "name": "bicep",
               "version": "0.22.6.54827",
-              "templateHash": "17587308196408831883"
+              "templateHash": "12104430168487418019"
             },
             "name": "DevTest Lab Costs",
             "description": "This module deploys a DevTest Lab Cost.\r\n\r\nManage lab costs by setting a spending target that can be viewed in the Monthly Estimated Cost Trend chart. DevTest Labs can send a notification when spending reaches the specified target threshold.",
@@ -1470,7 +1511,7 @@
             },
             "tags": {
               "type": "object",
-              "defaultValue": {},
+              "nullable": true,
               "metadata": {
                 "description": "Optional. Tags of the resource."
               }
@@ -1632,8 +1673,8 @@
               }
             }
           },
-          "resources": [
-            {
+          "resources": {
+            "defaultTelemetry": {
               "condition": "[parameters('enableDefaultTelemetry')]",
               "type": "Microsoft.Resources/deployments",
               "apiVersion": "2021-04-01",
@@ -1647,7 +1688,13 @@
                 }
               }
             },
-            {
+            "lab": {
+              "existing": true,
+              "type": "Microsoft.DevTestLab/labs",
+              "apiVersion": "2018-09-15",
+              "name": "[parameters('labName')]"
+            },
+            "cost": {
               "type": "Microsoft.DevTestLab/labs/costs",
               "apiVersion": "2018-09-15",
               "name": "[format('{0}/{1}', parameters('labName'), 'targetCost')]",
@@ -1705,9 +1752,12 @@
                     }
                   ]
                 }
-              }
+              },
+              "dependsOn": [
+                "lab"
+              ]
             }
-          ],
+          },
           "outputs": {
             "name": {
               "type": "string",

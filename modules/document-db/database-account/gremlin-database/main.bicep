@@ -6,7 +6,7 @@ metadata owner = 'Azure/module-maintainers'
 param name string
 
 @description('Optional. Tags of the Gremlin database resource.')
-param tags object = {}
+param tags object?
 
 @description('Conditional. The name of the parent Gremlin database. Required if the template is used in a standalone deployment.')
 param databaseAccountName string

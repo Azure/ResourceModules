@@ -1155,7 +1155,6 @@ Soft Delete policy status. Default is disabled.
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `trustPolicyStatus`
 

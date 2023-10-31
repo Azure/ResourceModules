@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "411576668957997252"
+      "templateHash": "14139283479148965374"
     },
     "name": "Firewall Policies",
     "description": "This module deploys a Firewall Policy.",
@@ -45,7 +45,7 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Tags of the Firewall policy resource."
       }

@@ -19,7 +19,7 @@ param lock lockType
 param roleAssignments roleAssignmentType
 
 @description('Optional. Resource tags.')
-param tags object = {}
+param tags object?
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true

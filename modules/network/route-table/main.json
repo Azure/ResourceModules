@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "15729767550329872027"
+      "templateHash": "16231060934698023931"
     },
     "name": "Route Tables",
     "description": "This module deploys a User Defined Route Table (UDR).",
@@ -147,7 +147,7 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Tags of the resource."
       }
