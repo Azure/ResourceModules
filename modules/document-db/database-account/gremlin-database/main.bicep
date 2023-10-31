@@ -8,9 +8,6 @@ param name string
 @description('Optional. Tags of the Gremlin database resource.')
 param tags object = {}
 
-@description('Optional. The managed identity definition for this resource.')
-param managedIdentities managedIdentitiesType
-
 @description('Conditional. The name of the parent Gremlin database. Required if the template is used in a standalone deployment.')
 param databaseAccountName string
 
@@ -27,13 +24,6 @@ param throughput int = -1
 param enableDefaultTelemetry bool = true
 
 var enableReferencedModulesTelemetry = false
-
-var formattedUserAssignedIdentities = reduce(map((managedIdentities.?userAssignedResourcesIds ?? []), (id) => { '${id}': {} }), {}, (cur, next) => union(cur, next)) // Converts the flat array to an object like { '${id1}': {}, '${id2}': {} }
-
-var identity = !empty(managedIdentities) ? {
-  type: (managedIdentities.?systemAssigned ?? false) ? (!empty(managedIdentities.?userAssignedResourcesIds ?? {}) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(managedIdentities.?userAssignedResourcesIds ?? {}) ? 'UserAssigned' : null)
-  userAssignedIdentities: !empty(formattedUserAssignedIdentities) ? formattedUserAssignedIdentities : null
-} : null
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2022-09-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name)}'
@@ -62,7 +52,6 @@ resource gremlinDatabase 'Microsoft.DocumentDB/databaseAccounts/gremlinDatabases
   name: name
   tags: tags
   parent: databaseAccount
-  identity: identity!
   properties: {
     options: databaseOptions
     resource: {

@@ -37,7 +37,6 @@ This module deploys a Gremlin Database within a CosmosDB Account.
 | :-- | :-- | :-- |
 | [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
 | [`graphs`](#parameter-graphs) | array | Array of graphs to deploy in the Gremlin database. |
-| [`managedIdentities`](#parameter-managedidentities) | object | The managed identity definition for this resource. |
 | [`maxThroughput`](#parameter-maxthroughput) | int | Represents maximum throughput, the resource can scale up to. Cannot be set together with `throughput`. If `throughput` is set to something else than -1, this autoscale setting is ignored. |
 | [`tags`](#parameter-tags) | object | Tags of the Gremlin database resource. |
 | [`throughput`](#parameter-throughput) | int | Request Units per second (for example 10000). Cannot be set together with `maxThroughput`. |
@@ -61,32 +60,6 @@ Array of graphs to deploy in the Gremlin database.
 - Required: No
 - Type: array
 - Default: `[]`
-
-### Parameter: `managedIdentities`
-
-The managed identity definition for this resource.
-- Required: No
-- Type: object
-
-
-| Name | Required | Type | Description |
-| :-- | :-- | :--| :-- |
-| [`systemAssigned`](#parameter-managedidentitiessystemassigned) | No | bool | Optional. Enables system assigned managed identity on the resource. |
-| [`userAssignedResourcesIds`](#parameter-managedidentitiesuserassignedresourcesids) | No | array | Optional. The resource ID(s) to assign to the resource. |
-
-### Parameter: `managedIdentities.systemAssigned`
-
-Optional. Enables system assigned managed identity on the resource.
-
-- Required: No
-- Type: bool
-
-### Parameter: `managedIdentities.userAssignedResourcesIds`
-
-Optional. The resource ID(s) to assign to the resource.
-
-- Required: No
-- Type: array
 
 ### Parameter: `maxThroughput`
 
