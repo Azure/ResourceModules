@@ -200,7 +200,7 @@ type ipConfigurationsType = {
   }
 }[]?
 
-type CustomDnsConfigType = {
+type customDnsConfigType = {
   @description('Required. Fqdn that resolves to private endpoint ip address.')
   fqdn: string
 
