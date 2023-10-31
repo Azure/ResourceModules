@@ -123,7 +123,7 @@ var formattedUserAssignedIdentities = reduce(map((managedIdentities.?userAssigne
 var identity = !empty(managedIdentities) ? {
   type: (managedIdentities.?systemAssigned ?? false) ? (!empty(managedIdentities.?userAssignedResourcesIds ?? {}) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(managedIdentities.?userAssignedResourcesIds ?? {}) ? 'UserAssigned' : null)
   userAssignedIdentities: !empty(formattedUserAssignedIdentities) ? formattedUserAssignedIdentities : null
-} : null
+} : any(null)
 
 var enableReferencedModulesTelemetry = false
 
@@ -152,7 +152,7 @@ resource appServiceEnvironment 'Microsoft.Web/hostingEnvironments@2022-03-01' = 
   kind: kind
   location: location
   tags: tags
-  identity: identity!
+  identity: identity
   properties: {
     clusterSettings: clusterSettings
     dedicatedHostCount: dedicatedHostCount != 0 ? dedicatedHostCount : null
