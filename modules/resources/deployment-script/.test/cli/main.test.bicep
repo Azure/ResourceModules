@@ -58,8 +58,10 @@ module testDeployment '../../main.bicep' = {
     scriptContent: 'echo \'echo echo echo\''
     storageAccountResourceId: nestedDependencies.outputs.storageAccountResourceId
     timeout: 'PT30M'
-    userAssignedIdentities: {
-      '${nestedDependencies.outputs.managedIdentityResourceId}': {}
+    managedIdentities: {
+      userAssignedResourcesIds: [
+        nestedDependencies.outputs.managedIdentityResourceId
+      ]
     }
     tags: {
       'hidden-title': 'This is visible in the resource name'

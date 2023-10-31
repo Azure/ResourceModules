@@ -65,8 +65,8 @@ param geoRedundantBackup string = 'Disabled'
 @description('Optional. The mode to create a new MySQL server.')
 param createMode string = 'Default'
 
-@description('Conditional. The ID(s) to assign to the resource. Required if "cMKKeyName" is not empty.')
-param userAssignedIdentities object = {}
+@description('Conditional. The managed identity definition for this resource. Required if \'cMKKeyName\' is not empty.')
+param managedIdentities managedIdentitiesType
 
 @description('Conditional. The resource ID of a key vault to reference a customer managed key for encryption from. Required if "cMKKeyName" is not empty.')
 param cMKKeyVaultResourceId string = ''
@@ -180,11 +180,11 @@ param diagnosticSettings diagnosticSettingType
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-var identityType = !empty(userAssignedIdentities) ? 'UserAssigned' : 'None'
+var formattedUserAssignedIdentities = reduce(map((managedIdentities.?userAssignedResourcesIds ?? []), (id) => { '${id}': {} }), {}, (cur, next) => union(cur, next)) // Converts the flat array to an object like { '${id1}': {}, '${id2}': {} }
 
-var identity = identityType != 'None' ? {
-  type: identityType
-  userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
+var identity = !empty(managedIdentities) ? {
+  type: !empty(managedIdentities.?userAssignedResourcesIds ?? {}) ? 'UserAssigned' : null
+  userAssignedIdentities: !empty(formattedUserAssignedIdentities) ? formattedUserAssignedIdentities : null
 } : null
 
 var enableReferencedModulesTelemetry = false
@@ -377,6 +377,11 @@ output location string = flexibleServer.location
 // =============== //
 //   Definitions   //
 // =============== //
+
+type managedIdentitiesType = {
+  @description('Optional. The resource ID(s) to assign to the resource.')
+  userAssignedResourcesIds: string[]
+}?
 
 type lockType = {
   @description('Optional. Specify the name of lock.')

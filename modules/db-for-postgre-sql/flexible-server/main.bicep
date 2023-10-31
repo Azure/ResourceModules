@@ -110,8 +110,8 @@ param highAvailability string = 'Disabled'
 @description('Optional. The mode to create a new PostgreSQL server.')
 param createMode string = 'Default'
 
-@description('Conditional. The ID(s) to assign to the resource. Required if \'cMKKeyName\' is not empty.')
-param userAssignedIdentities object = {}
+@description('Conditional. The managed identity definition for this resource. Required if \'cMKKeyName\' is not empty.')
+param managedIdentities managedIdentitiesType
 
 @description('Conditional. The resource ID of a key vault to reference a customer managed key for encryption from. Required if \'cMKKeyName\' is not empty.')
 param cMKKeyVaultResourceId string = ''
@@ -164,6 +164,13 @@ param enableDefaultTelemetry bool = true
 @description('Optional. The diagnostic settings of the service.')
 param diagnosticSettings diagnosticSettingType
 
+var formattedUserAssignedIdentities = reduce(map((managedIdentities.?userAssignedResourcesIds ?? []), (id) => { '${id}': {} }), {}, (cur, next) => union(cur, next)) // Converts the flat array to an object like { '${id1}': {}, '${id2}': {} }
+
+var identity = !empty(managedIdentities) ? {
+  type: !empty(managedIdentities.?userAssignedResourcesIds ?? {}) ? 'UserAssigned' : null
+  userAssignedIdentities: !empty(formattedUserAssignedIdentities) ? formattedUserAssignedIdentities : null
+} : null
+
 var enableReferencedModulesTelemetry = false
 
 var builtInRoleNames = {
@@ -203,10 +210,7 @@ resource flexibleServer 'Microsoft.DBforPostgreSQL/flexibleServers@2022-12-01' =
     name: skuName
     tier: tier
   }
-  identity: {
-    type: !empty(userAssignedIdentities) ? 'UserAssigned' : 'None'
-    userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : {}
-  }
+  identity: identity
   properties: {
     administratorLogin: !empty(administratorLogin) ? administratorLogin : null
     administratorLoginPassword: !empty(administratorLoginPassword) ? administratorLoginPassword : null
@@ -364,6 +368,11 @@ output location string = flexibleServer.location
 // =============== //
 //   Definitions   //
 // =============== //
+
+type managedIdentitiesType = {
+  @description('Optional. The resource ID(s) to assign to the resource.')
+  userAssignedResourcesIds: string[]
+}?
 
 type lockType = {
   @description('Optional. Specify the name of lock.')

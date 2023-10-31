@@ -383,6 +383,11 @@ module netAppAccount 'br:bicep/modules/net-app.net-app-account:1.0.0' = {
       }
     ]
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    managedIdentities: {
+      userAssignedResourcesIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
     roleAssignments: [
       {
         principalId: '<principalId>'
@@ -398,9 +403,6 @@ module netAppAccount 'br:bicep/modules/net-app.net-app-account:1.0.0' = {
       PurchaseOrder: '1234'
       Role: 'DeploymentValidation'
       ServiceName: 'DeploymentValidation'
-    }
-    userAssignedIdentities: {
-      '<managedIdentityResourceId>': {}
     }
   }
 }
@@ -500,6 +502,13 @@ module netAppAccount 'br:bicep/modules/net-app.net-app-account:1.0.0' = {
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     },
+    "managedIdentities": {
+      "value": {
+        "userAssignedResourcesIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
+    },
     "roleAssignments": {
       "value": [
         {
@@ -518,11 +527,6 @@ module netAppAccount 'br:bicep/modules/net-app.net-app-account:1.0.0' = {
         "PurchaseOrder": "1234",
         "Role": "DeploymentValidation",
         "ServiceName": "DeploymentValidation"
-      }
-    },
-    "userAssignedIdentities": {
-      "value": {
-        "<managedIdentityResourceId>": {}
       }
     }
   }
@@ -554,10 +558,10 @@ module netAppAccount 'br:bicep/modules/net-app.net-app-account:1.0.0' = {
 | [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
 | [`location`](#parameter-location) | string | Location for all resources. |
 | [`lock`](#parameter-lock) | object | The lock settings of the service. |
+| [`managedIdentities`](#parameter-managedidentities) | object | The managed identity definition for this resource. |
 | [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | [`smbServerNamePrefix`](#parameter-smbservernameprefix) | string | Required if domainName is specified. NetBIOS name of the SMB server. A computer account with this prefix will be registered in the AD and used to mount volumes. |
 | [`tags`](#parameter-tags) | object | Tags for all resources. |
-| [`userAssignedIdentities`](#parameter-userassignedidentities) | object | The ID(s) to assign to the resource. |
 
 ### Parameter: `capacityPools`
 
@@ -641,6 +645,24 @@ Optional. Specify the name of lock.
 
 - Required: No
 - Type: string
+
+### Parameter: `managedIdentities`
+
+The managed identity definition for this resource.
+- Required: No
+- Type: object
+
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`userAssignedResourcesIds`](#parameter-managedidentitiesuserassignedresourcesids) | Yes | array | Optional. The resource ID(s) to assign to the resource. |
+
+### Parameter: `managedIdentities.userAssignedResourcesIds`
+
+Optional. The resource ID(s) to assign to the resource.
+
+- Required: Yes
+- Type: array
 
 ### Parameter: `name`
 
@@ -728,13 +750,6 @@ Required if domainName is specified. NetBIOS name of the SMB server. A computer 
 Tags for all resources.
 - Required: No
 - Type: object
-
-### Parameter: `userAssignedIdentities`
-
-The ID(s) to assign to the resource.
-- Required: No
-- Type: object
-- Default: `{object}`
 
 
 ## Outputs

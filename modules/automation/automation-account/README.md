@@ -91,6 +91,12 @@ module automationAccount 'br:bicep/modules/automation.automation-account:1.0.0' 
       kind: 'CanNotDelete'
       name: 'myCustomLockName'
     }
+    managedIdentities: {
+      systemAssigned: true
+      userAssignedResourcesIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
     modules: [
       {
         name: 'PSWindowsUpdate'
@@ -208,14 +214,10 @@ module automationAccount 'br:bicep/modules/automation.automation-account:1.0.0' 
         ]
       }
     ]
-    systemAssignedIdentity: true
     tags: {
       Environment: 'Non-Prod'
       'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
-    }
-    userAssignedIdentities: {
-      '<managedIdentityResourceId>': {}
     }
     variables: [
       {
@@ -312,6 +314,14 @@ module automationAccount 'br:bicep/modules/automation.automation-account:1.0.0' 
       "value": {
         "kind": "CanNotDelete",
         "name": "myCustomLockName"
+      }
+    },
+    "managedIdentities": {
+      "value": {
+        "systemAssigned": true,
+        "userAssignedResourcesIds": [
+          "<managedIdentityResourceId>"
+        ]
       }
     },
     "modules": {
@@ -443,19 +453,11 @@ module automationAccount 'br:bicep/modules/automation.automation-account:1.0.0' 
         }
       ]
     },
-    "systemAssignedIdentity": {
-      "value": true
-    },
     "tags": {
       "value": {
         "Environment": "Non-Prod",
         "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
-      }
-    },
-    "userAssignedIdentities": {
-      "value": {
-        "<managedIdentityResourceId>": {}
       }
     },
     "variables": {
@@ -512,8 +514,10 @@ module automationAccount 'br:bicep/modules/automation.automation-account:1.0.0' 
     cMKKeyVaultResourceId: '<cMKKeyVaultResourceId>'
     cMKUserAssignedIdentityResourceId: '<cMKUserAssignedIdentityResourceId>'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    userAssignedIdentities: {
-      '<managedIdentityResourceId>': {}
+    managedIdentities: {
+      userAssignedResourcesIds: [
+        '<managedIdentityResourceId>'
+      ]
     }
   }
 }
@@ -548,9 +552,11 @@ module automationAccount 'br:bicep/modules/automation.automation-account:1.0.0' 
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     },
-    "userAssignedIdentities": {
+    "managedIdentities": {
       "value": {
-        "<managedIdentityResourceId>": {}
+        "userAssignedResourcesIds": [
+          "<managedIdentityResourceId>"
+        ]
       }
     }
   }
@@ -638,6 +644,7 @@ module automationAccount 'br:bicep/modules/automation.automation-account:1.0.0' 
 | [`linkedWorkspaceResourceId`](#parameter-linkedworkspaceresourceid) | string | ID of the log analytics workspace to be linked to the deployed automation account. |
 | [`location`](#parameter-location) | string | Location for all resources. |
 | [`lock`](#parameter-lock) | object | The lock settings of the service. |
+| [`managedIdentities`](#parameter-managedidentities) | object | The managed identity definition for this resource. |
 | [`modules`](#parameter-modules) | array | List of modules to be created in the automation account. |
 | [`privateEndpoints`](#parameter-privateendpoints) | array | Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
 | [`publicNetworkAccess`](#parameter-publicnetworkaccess) | string | Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set. |
@@ -646,9 +653,7 @@ module automationAccount 'br:bicep/modules/automation.automation-account:1.0.0' 
 | [`schedules`](#parameter-schedules) | array | List of schedules to be created in the automation account. |
 | [`skuName`](#parameter-skuname) | string | SKU name of the account. |
 | [`softwareUpdateConfigurations`](#parameter-softwareupdateconfigurations) | array | List of softwareUpdateConfigurations to be created in the automation account. |
-| [`systemAssignedIdentity`](#parameter-systemassignedidentity) | bool | Enables system assigned managed identity on the resource. |
 | [`tags`](#parameter-tags) | object | Tags of the Automation Account resource. |
-| [`userAssignedIdentities`](#parameter-userassignedidentities) | object | The ID(s) to assign to the resource. |
 | [`variables`](#parameter-variables) | array | List of variables to be created in the automation account. |
 
 ### Parameter: `cMKKeyName`
@@ -862,6 +867,32 @@ Optional. Specify the name of lock.
 
 - Required: No
 - Type: string
+
+### Parameter: `managedIdentities`
+
+The managed identity definition for this resource.
+- Required: No
+- Type: object
+
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`systemAssigned`](#parameter-managedidentitiessystemassigned) | No | bool | Optional. Enables system assigned managed identity on the resource. |
+| [`userAssignedResourcesIds`](#parameter-managedidentitiesuserassignedresourcesids) | No | array | Optional. The resource ID(s) to assign to the resource. |
+
+### Parameter: `managedIdentities.systemAssigned`
+
+Optional. Enables system assigned managed identity on the resource.
+
+- Required: No
+- Type: bool
+
+### Parameter: `managedIdentities.userAssignedResourcesIds`
+
+Optional. The resource ID(s) to assign to the resource.
+
+- Required: No
+- Type: array
 
 ### Parameter: `modules`
 
@@ -1149,23 +1180,9 @@ List of softwareUpdateConfigurations to be created in the automation account.
 - Type: array
 - Default: `[]`
 
-### Parameter: `systemAssignedIdentity`
-
-Enables system assigned managed identity on the resource.
-- Required: No
-- Type: bool
-- Default: `False`
-
 ### Parameter: `tags`
 
 Tags of the Automation Account resource.
-- Required: No
-- Type: object
-- Default: `{object}`
-
-### Parameter: `userAssignedIdentities`
-
-The ID(s) to assign to the resource.
 - Required: No
 - Type: object
 - Default: `{object}`
@@ -1186,7 +1203,7 @@ List of variables to be created in the automation account.
 | `name` | string | The name of the deployed automation account. |
 | `resourceGroupName` | string | The resource group of the deployed automation account. |
 | `resourceId` | string | The resource ID of the deployed automation account. |
-| `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
+| `systemAssignedMIPrincipalId` | string | The principal ID of the system assigned identity. |
 
 ## Cross-referenced modules
 

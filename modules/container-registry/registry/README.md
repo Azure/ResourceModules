@@ -86,6 +86,12 @@ module registry 'br:bicep/modules/container-registry.registry:1.0.0' = {
       kind: 'CanNotDelete'
       name: 'myCustomLockName'
     }
+    managedIdentities: {
+      systemAssigned: true
+      userAssignedResourcesIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
     networkRuleSetIpRules: [
       {
         action: 'Allow'
@@ -122,16 +128,12 @@ module registry 'br:bicep/modules/container-registry.registry:1.0.0' = {
     ]
     softDeletePolicyDays: 7
     softDeletePolicyStatus: 'disabled'
-    systemAssignedIdentity: true
     tags: {
       Environment: 'Non-Prod'
       'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
     }
     trustPolicyStatus: 'enabled'
-    userAssignedIdentities: {
-      '<managedIdentityResourceId>': {}
-    }
     webhooks: [
       {
         name: 'acrx001webhook'
@@ -208,6 +210,14 @@ module registry 'br:bicep/modules/container-registry.registry:1.0.0' = {
         "name": "myCustomLockName"
       }
     },
+    "managedIdentities": {
+      "value": {
+        "systemAssigned": true,
+        "userAssignedResourcesIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
+    },
     "networkRuleSetIpRules": {
       "value": [
         {
@@ -258,9 +268,6 @@ module registry 'br:bicep/modules/container-registry.registry:1.0.0' = {
     "softDeletePolicyStatus": {
       "value": "disabled"
     },
-    "systemAssignedIdentity": {
-      "value": true
-    },
     "tags": {
       "value": {
         "Environment": "Non-Prod",
@@ -270,11 +277,6 @@ module registry 'br:bicep/modules/container-registry.registry:1.0.0' = {
     },
     "trustPolicyStatus": {
       "value": "enabled"
-    },
-    "userAssignedIdentities": {
-      "value": {
-        "<managedIdentityResourceId>": {}
-      }
     },
     "webhooks": {
       "value": [
@@ -309,14 +311,16 @@ module registry 'br:bicep/modules/container-registry.registry:1.0.0' = {
     cMKKeyVaultResourceId: '<cMKKeyVaultResourceId>'
     cMKUserAssignedIdentityResourceId: '<cMKUserAssignedIdentityResourceId>'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    managedIdentities: {
+      userAssignedResourcesIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
     publicNetworkAccess: 'Disabled'
     tags: {
       Environment: 'Non-Prod'
       'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
-    }
-    userAssignedIdentities: {
-      '<managedIdentityResourceId>': {}
     }
   }
 }
@@ -354,6 +358,13 @@ module registry 'br:bicep/modules/container-registry.registry:1.0.0' = {
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     },
+    "managedIdentities": {
+      "value": {
+        "userAssignedResourcesIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
+    },
     "publicNetworkAccess": {
       "value": "Disabled"
     },
@@ -362,11 +373,6 @@ module registry 'br:bicep/modules/container-registry.registry:1.0.0' = {
         "Environment": "Non-Prod",
         "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
-      }
-    },
-    "userAssignedIdentities": {
-      "value": {
-        "<managedIdentityResourceId>": {}
       }
     }
   }
@@ -546,6 +552,7 @@ module registry 'br:bicep/modules/container-registry.registry:1.0.0' = {
 | [`exportPolicyStatus`](#parameter-exportpolicystatus) | string | The value that indicates whether the export policy is enabled or not. |
 | [`location`](#parameter-location) | string | Location for all resources. |
 | [`lock`](#parameter-lock) | object | The lock settings of the service. |
+| [`managedIdentities`](#parameter-managedidentities) | object | The managed identity definition for this resource. |
 | [`networkRuleBypassOptions`](#parameter-networkrulebypassoptions) | string | Whether to allow trusted Azure services to access a network restricted registry. |
 | [`networkRuleSetDefaultAction`](#parameter-networkrulesetdefaultaction) | string | The default action of allow or deny when no other rules match. |
 | [`networkRuleSetIpRules`](#parameter-networkrulesetiprules) | array | The IP ACL rules. Note, requires the 'acrSku' to be 'Premium'. |
@@ -558,10 +565,8 @@ module registry 'br:bicep/modules/container-registry.registry:1.0.0' = {
 | [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | [`softDeletePolicyDays`](#parameter-softdeletepolicydays) | int | The number of days after which a soft-deleted item is permanently deleted. |
 | [`softDeletePolicyStatus`](#parameter-softdeletepolicystatus) | string | Soft Delete policy status. Default is disabled. |
-| [`systemAssignedIdentity`](#parameter-systemassignedidentity) | bool | Enables system assigned managed identity on the resource. |
 | [`tags`](#parameter-tags) | object | Tags of the resource. |
 | [`trustPolicyStatus`](#parameter-trustpolicystatus) | string | The value that indicates whether the trust policy is enabled or not. |
-| [`userAssignedIdentities`](#parameter-userassignedidentities) | object | The ID(s) to assign to the resource. |
 | [`webhooks`](#parameter-webhooks) | array | All webhooks to create. |
 | [`zoneRedundancy`](#parameter-zoneredundancy) | string | Whether or not zone redundancy is enabled for this container registry. |
 
@@ -800,6 +805,32 @@ Optional. Specify the name of lock.
 
 - Required: No
 - Type: string
+
+### Parameter: `managedIdentities`
+
+The managed identity definition for this resource.
+- Required: No
+- Type: object
+
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`systemAssigned`](#parameter-managedidentitiessystemassigned) | No | bool | Optional. Enables system assigned managed identity on the resource. |
+| [`userAssignedResourcesIds`](#parameter-managedidentitiesuserassignedresourcesids) | No | array | Optional. The resource ID(s) to assign to the resource. |
+
+### Parameter: `managedIdentities.systemAssigned`
+
+Optional. Enables system assigned managed identity on the resource.
+
+- Required: No
+- Type: bool
+
+### Parameter: `managedIdentities.userAssignedResourcesIds`
+
+Optional. The resource ID(s) to assign to the resource.
+
+- Required: No
+- Type: array
 
 ### Parameter: `name`
 
@@ -1119,13 +1150,6 @@ Soft Delete policy status. Default is disabled.
 - Default: `'disabled'`
 - Allowed: `[disabled, enabled]`
 
-### Parameter: `systemAssignedIdentity`
-
-Enables system assigned managed identity on the resource.
-- Required: No
-- Type: bool
-- Default: `False`
-
 ### Parameter: `tags`
 
 Tags of the resource.
@@ -1140,13 +1164,6 @@ The value that indicates whether the trust policy is enabled or not.
 - Type: string
 - Default: `'disabled'`
 - Allowed: `[disabled, enabled]`
-
-### Parameter: `userAssignedIdentities`
-
-The ID(s) to assign to the resource.
-- Required: No
-- Type: object
-- Default: `{object}`
 
 ### Parameter: `webhooks`
 
@@ -1173,7 +1190,7 @@ Whether or not zone redundancy is enabled for this container registry.
 | `name` | string | The Name of the Azure container registry. |
 | `resourceGroupName` | string | The name of the Azure container registry. |
 | `resourceId` | string | The resource ID of the Azure container registry. |
-| `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
+| `systemAssignedMIPrincipalId` | string | The principal ID of the system assigned identity. |
 
 ## Cross-referenced modules
 

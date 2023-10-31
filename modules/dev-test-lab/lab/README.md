@@ -101,9 +101,14 @@ module lab 'br:bicep/modules/dev-test-lab.lab:1.0.0' = {
       kind: 'CanNotDelete'
       name: 'myCustomLockName'
     }
-    managementIdentities: {
-      '<managedIdentityResourceId>': {}
+    managedIdentities: {
+      userAssignedResourcesIds: [
+        '<managedIdentityResourceId>'
+      ]
     }
+    managementIdentitiesResourceIds: [
+      '<managedIdentityResourceId>'
+    ]
     notificationchannels: [
       {
         description: 'Integration configured for auto-shutdown'
@@ -233,9 +238,6 @@ module lab 'br:bicep/modules/dev-test-lab.lab:1.0.0' = {
       'hidden-title': 'This is visible in the resource name'
       labName: 'dtllcom001'
       resourceType: 'DevTest Lab'
-    }
-    userAssignedIdentities: {
-      '<managedIdentityResourceId>': {}
     }
     virtualnetworks: [
       {
@@ -373,10 +375,17 @@ module lab 'br:bicep/modules/dev-test-lab.lab:1.0.0' = {
         "name": "myCustomLockName"
       }
     },
-    "managementIdentities": {
+    "managedIdentities": {
       "value": {
-        "<managedIdentityResourceId>": {}
+        "userAssignedResourcesIds": [
+          "<managedIdentityResourceId>"
+        ]
       }
+    },
+    "managementIdentitiesResourceIds": {
+      "value": [
+        "<managedIdentityResourceId>"
+      ]
     },
     "notificationchannels": {
       "value": [
@@ -522,11 +531,6 @@ module lab 'br:bicep/modules/dev-test-lab.lab:1.0.0' = {
         "resourceType": "DevTest Lab"
       }
     },
-    "userAssignedIdentities": {
-      "value": {
-        "<managedIdentityResourceId>": {}
-      }
-    },
     "virtualnetworks": {
       "value": [
         {
@@ -655,7 +659,8 @@ module lab 'br:bicep/modules/dev-test-lab.lab:1.0.0' = {
 | [`labStorageType`](#parameter-labstoragetype) | string | Type of storage used by the lab. It can be either Premium or Standard. |
 | [`location`](#parameter-location) | string | Location for all Resources. |
 | [`lock`](#parameter-lock) | object | The lock settings of the service. |
-| [`managementIdentities`](#parameter-managementidentities) | object | The ID(s) to assign to the virtual machines associated with this lab. |
+| [`managedIdentities`](#parameter-managedidentities) | object | The managed identity definition for this resource. |
+| [`managementIdentitiesResourceIds`](#parameter-managementidentitiesresourceids) | array | The resource ID(s) to assign to the virtual machines associated with this lab. |
 | [`mandatoryArtifactsResourceIdsLinux`](#parameter-mandatoryartifactsresourceidslinux) | array | The ordered list of artifact resource IDs that should be applied on all Linux VM creations by default, prior to the artifacts specified by the user. |
 | [`mandatoryArtifactsResourceIdsWindows`](#parameter-mandatoryartifactsresourceidswindows) | array | The ordered list of artifact resource IDs that should be applied on all Windows VM creations by default, prior to the artifacts specified by the user. |
 | [`policies`](#parameter-policies) | array | Policies to create for the lab. |
@@ -664,7 +669,6 @@ module lab 'br:bicep/modules/dev-test-lab.lab:1.0.0' = {
 | [`schedules`](#parameter-schedules) | array | Schedules to create for the lab. |
 | [`support`](#parameter-support) | object | The properties of any lab support message associated with this lab. |
 | [`tags`](#parameter-tags) | object | Tags of the resource. |
-| [`userAssignedIdentities`](#parameter-userassignedidentities) | object | The ID(s) to assign to the resource. |
 | [`virtualnetworks`](#parameter-virtualnetworks) | array | Virtual networks to create for the lab. |
 | [`vmCreationResourceGroupId`](#parameter-vmcreationresourcegroupid) | string | Resource Group allocation for virtual machines. If left empty, virtual machines will be deployed in their own Resource Groups. Default is the same Resource Group for DevTest Lab. |
 
@@ -798,12 +802,30 @@ Optional. Specify the name of lock.
 - Required: No
 - Type: string
 
-### Parameter: `managementIdentities`
+### Parameter: `managedIdentities`
 
-The ID(s) to assign to the virtual machines associated with this lab.
+The managed identity definition for this resource.
 - Required: No
 - Type: object
-- Default: `{object}`
+
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`userAssignedResourcesIds`](#parameter-managedidentitiesuserassignedresourcesids) | Yes | array | Optional. The resource ID(s) to assign to the resource. |
+
+### Parameter: `managedIdentities.userAssignedResourcesIds`
+
+Optional. The resource ID(s) to assign to the resource.
+
+- Required: Yes
+- Type: array
+
+### Parameter: `managementIdentitiesResourceIds`
+
+The resource ID(s) to assign to the virtual machines associated with this lab.
+- Required: No
+- Type: array
+- Default: `[]`
 
 ### Parameter: `mandatoryArtifactsResourceIdsLinux`
 
@@ -936,13 +958,6 @@ Tags of the resource.
 - Type: object
 - Default: `{object}`
 
-### Parameter: `userAssignedIdentities`
-
-The ID(s) to assign to the resource.
-- Required: No
-- Type: object
-- Default: `{object}`
-
 ### Parameter: `virtualnetworks`
 
 Virtual networks to create for the lab.
@@ -966,6 +981,7 @@ Resource Group allocation for virtual machines. If left empty, virtual machines 
 | `name` | string | The name of the lab. |
 | `resourceGroupName` | string | The resource group the lab was deployed into. |
 | `resourceId` | string | The resource ID of the lab. |
+| `systemAssignedMIPrincipalId` | string | The principal ID of the system assigned identity. |
 | `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
 | `uniqueIdentifier` | string | The unique identifier for the lab. Used to track tags that the lab applies to each resource that it creates. |
 
