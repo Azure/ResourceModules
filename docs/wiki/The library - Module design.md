@@ -563,7 +563,7 @@ While exceptions might be needed, the following guidance should be followed as m
   - `name`
   - `resourceId`
   - `resourceGroupName` for modules that are deployed at resource group scope
-  - `systemAssignedPrincipalId` for all modules that support managed identities
+  - `systemAssignedMIPrincipalId` for all modules that support system-assigned managed identities
   - `location` for all modules where the primary resource has a location property
 - Add a `@description('...')` annotation with meaningful description to each output.
 
