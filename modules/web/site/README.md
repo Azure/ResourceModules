@@ -1550,7 +1550,7 @@ Virtual Network Route All enabled. This causes all outbound traffic to have Virt
 | `resourceId` | string | The resource ID of the site. |
 | `slotResourceIds` | array | The list of the slot resource ids. |
 | `slots` | array | The list of the slots. |
-| `slotSystemAssignedPrincipalIds` | array | The principal ID of the system assigned identity of slots. |
+| `slotSystemAssignedMIPrincipalIds` | array | The principal ID of the system assigned identity of slots. |
 | `systemAssignedMIPrincipalId` | string | The principal ID of the system assigned identity. |
 
 ## Cross-referenced modules

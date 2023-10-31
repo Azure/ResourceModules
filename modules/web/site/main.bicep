@@ -401,7 +401,7 @@ output resourceGroupName string = resourceGroup().name
 output systemAssignedMIPrincipalId string = (managedIdentities.?systemAssigned ?? false) && contains(app.identity, 'principalId') ? app.identity.principalId : ''
 
 @description('The principal ID of the system assigned identity of slots.')
-output slotSystemAssignedPrincipalIds array = [for (slot, index) in slots: app_slots[index].outputs.systemAssignedMIPrincipalId]
+output slotSystemAssignedMIPrincipalIds array = [for (slot, index) in slots: app_slots[index].outputs.systemAssignedMIPrincipalId]
 
 @description('The location the resource was deployed into.')
 output location string = app.location
