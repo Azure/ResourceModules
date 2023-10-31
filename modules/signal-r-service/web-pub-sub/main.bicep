@@ -30,7 +30,7 @@ param capacity int = 1
 @description('Optional. Pricing tier of the resource.')
 param sku string = 'Standard_S1'
 
-@description('Optional. The managed identity definition for this resource.')
+@description('Optional. The managed identity definition for this resource. Only one type of identity is supported: system-assigned or user-assigned, but not both.')
 param managedIdentities managedIdentitiesType
 
 @description('Optional. When set as true, connection with AuthType=aad won\'t work.')

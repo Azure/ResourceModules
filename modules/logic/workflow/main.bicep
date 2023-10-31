@@ -20,7 +20,7 @@ param enableDefaultTelemetry bool = true
 @description('Optional. Parameters for the definition template.')
 param definitionParameters object = {}
 
-@description('Optional. The managed identity definition for this resource.')
+@description('Optional. The managed identity definition for this resource. Only one type of identity is supported: system-assigned or user-assigned, but not both.')
 param managedIdentities managedIdentitiesType
 
 @description('Optional. The integration account.')
