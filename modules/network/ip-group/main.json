@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "17427239082953045444"
+      "templateHash": "9765196609767428090"
     },
     "name": "IP Groups",
     "description": "This module deploys an IP Group.",
@@ -141,7 +141,7 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Resource tags."
       }

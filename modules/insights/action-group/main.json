@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "38103589755829738"
+      "templateHash": "2140251667223898817"
     },
     "name": "Action Groups",
     "description": "This module deploys an Action Group.",
@@ -178,7 +178,7 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Tags of the resource."
       }

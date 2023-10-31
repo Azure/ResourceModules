@@ -1098,7 +1098,6 @@ Specifies the SKU, also referred as 'edition' of the Azure Machine Learning work
 Resource tags.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 
 ## Outputs

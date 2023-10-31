@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "14019322744522497377"
+      "templateHash": "3379360327986898312"
     },
     "name": "Private Link Services",
     "description": "This module deploys a Private Link Service.",
@@ -127,7 +127,7 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Tags to be applied on all resources/resource groups in this deployment."
       }

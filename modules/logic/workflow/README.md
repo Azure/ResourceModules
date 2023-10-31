@@ -571,7 +571,6 @@ The state. - NotSpecified, Completed, Enabled, Disabled, Deleted, Suspended.
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `triggersAccessControlConfiguration`
 

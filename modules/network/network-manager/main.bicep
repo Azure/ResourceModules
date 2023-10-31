@@ -17,7 +17,7 @@ param lock lockType
 param roleAssignments roleAssignmentType
 
 @sys.description('Optional. Tags of the resource.')
-param tags object = {}
+param tags object?
 
 @maxLength(500)
 @sys.description('Optional. A description of the network manager.')

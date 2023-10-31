@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "15473816229466025012"
+      "templateHash": "2953672245031093442"
     },
     "name": "Key Vault Keys",
     "description": "This module deploys a Key Vault Key.",
@@ -95,7 +95,7 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Resource tags."
       }

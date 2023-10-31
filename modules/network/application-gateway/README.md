@@ -1674,7 +1674,6 @@ SSL profiles of the application gateway resource.
 Resource tags.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `trustedClientCertificates`
 

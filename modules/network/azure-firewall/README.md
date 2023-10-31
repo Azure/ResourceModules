@@ -774,14 +774,13 @@ module azureFirewall 'br:bicep/modules/network.azure-firewall:1.0.0' = {
 | [`diagnosticSettings`](#parameter-diagnosticsettings) | array | The diagnostic settings of the service. |
 | [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
 | [`firewallPolicyId`](#parameter-firewallpolicyid) | string | Resource ID of the Firewall Policy that should be attached. |
-| [`isCreateDefaultPublicIP`](#parameter-iscreatedefaultpublicip) | bool | Specifies if a Public IP should be created by default if one is not provided. |
 | [`location`](#parameter-location) | string | Location for all resources. |
 | [`lock`](#parameter-lock) | object | The lock settings of the service. |
 | [`managementIPAddressObject`](#parameter-managementipaddressobject) | object | Specifies the properties of the Management Public IP to create and be used by Azure Firewall. If it's not provided and managementIPResourceID is empty, a '-mip' suffix will be appended to the Firewall's name. |
 | [`managementIPResourceID`](#parameter-managementipresourceid) | string | The Management Public IP resource ID to associate to the AzureFirewallManagementSubnet. If empty, then the Management Public IP that is created as part of this module will be applied to the AzureFirewallManagementSubnet. |
 | [`natRuleCollections`](#parameter-natrulecollections) | array | Collection of NAT rule collections used by Azure Firewall. |
 | [`networkRuleCollections`](#parameter-networkrulecollections) | array | Collection of network rule collections used by Azure Firewall. |
-| [`publicIPAddressObject`](#parameter-publicipaddressobject) | object | Specifies the properties of the Public IP to create and be used by Azure Firewall. If it's not provided and publicIPResourceID is empty, a '-pip' suffix will be appended to the Firewall's name. |
+| [`publicIPAddressObject`](#parameter-publicipaddressobject) | object | Specifies the properties of the Public IP to create and be used by the Firewall, if no existing public IP was provided. |
 | [`publicIPResourceID`](#parameter-publicipresourceid) | string | The Public IP resource ID to associate to the AzureFirewallSubnet. If empty, then the Public IP that is created as part of this module will be applied to the AzureFirewallSubnet. |
 | [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | [`tags`](#parameter-tags) | object | Tags of the Azure Firewall resource. |
@@ -946,13 +945,6 @@ IP addresses associated with AzureFirewall. Required if `virtualHubId` is suppli
 - Type: object
 - Default: `{object}`
 
-### Parameter: `isCreateDefaultPublicIP`
-
-Specifies if a Public IP should be created by default if one is not provided.
-- Required: No
-- Type: bool
-- Default: `True`
-
 ### Parameter: `location`
 
 Location for all resources.
@@ -1023,7 +1015,7 @@ Collection of network rule collections used by Azure Firewall.
 
 ### Parameter: `publicIPAddressObject`
 
-Specifies the properties of the Public IP to create and be used by Azure Firewall. If it's not provided and publicIPResourceID is empty, a '-pip' suffix will be appended to the Firewall's name.
+Specifies the properties of the Public IP to create and be used by the Firewall, if no existing public IP was provided.
 - Required: No
 - Type: object
 - Default: `{object}`
@@ -1108,7 +1100,6 @@ Required. The name of the role to assign. If it cannot be found you can specify 
 Tags of the Azure Firewall resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `threatIntelMode`
 
