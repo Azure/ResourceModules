@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "17146606041655139395"
+      "templateHash": "18120106263067507123"
     },
     "name": "Disk Encryption Sets",
     "description": "This module deploys a Disk Encryption Set.",
@@ -333,7 +333,7 @@
     "keyVaultPermissions": {
       "copy": {
         "name": "keyVaultPermissions",
-        "count": "[length(items(variables('formattedUserAssignedIdentities')))]"
+        "count": "[length(coalesce(tryGet(parameters('managedIdentities'), 'userAssignedResourcesIds'), createArray()))]"
       },
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
@@ -353,7 +353,7 @@
             "value": "[parameters('keyVaultResourceId')]"
           },
           "userAssignedIdentityResourceId": {
-            "value": "[items(variables('formattedUserAssignedIdentities'))[copyIndex()].key]"
+            "value": "[coalesce(tryGet(parameters('managedIdentities'), 'userAssignedResourcesIds'), createArray())[copyIndex()]]"
           },
           "rbacAuthorizationEnabled": {
             "value": "[reference('keyVault').enableRbacAuthorization]"
