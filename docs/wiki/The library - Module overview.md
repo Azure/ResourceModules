@@ -103,7 +103,7 @@ This section provides an overview of the library's feature set.
 | 88 | network<p>ip-group | [![Network - IpGroups](https://github.com/Azure/ResourceModules/workflows/Network%20-%20IpGroups/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.network.ipgroups.yml) |  |  |  |  |  |  |  | 100 |
 | 89 | network<p>load-balancer | [![Network - LoadBalancers](https://github.com/Azure/ResourceModules/workflows/Network%20-%20LoadBalancers/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.network.loadbalancers.yml) |  |  |  |  |  |  | [L1:2] | 272 |
 | 90 | network<p>local-network-gateway | [![Network - LocalNetworkGateways](https://github.com/Azure/ResourceModules/workflows/Network%20-%20LocalNetworkGateways/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.network.localnetworkgateways.yml) |  |  |  |  |  |  |  | 120 |
-| 91 | network<p>nat-gateway | [![Network - NatGateways](https://github.com/Azure/ResourceModules/workflows/Network%20-%20NatGateways/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.network.natgateways.yml) |  |  |  |  |  |  |  | 181 |
+| 91 | network<p>nat-gateway | [![Network - NatGateways](https://github.com/Azure/ResourceModules/workflows/Network%20-%20NatGateways/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.network.natgateways.yml) |  |  |  |  |  |  | [L1:1] | 191 |
 | 92 | network<p>network-interface | [![Network - NetworkInterfaces](https://github.com/Azure/ResourceModules/workflows/Network%20-%20NetworkInterfaces/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.network.networkinterfaces.yml) |  |  |  |  |  |  |  | 198 |
 | 93 | network<p>network-manager | [![Network - Network Managers](https://github.com/Azure/ResourceModules/workflows/Network%20-%20Network%20Managers/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.network.networkmanagers.yml) |  |  |  |  |  |  | [L1:4, L2:2, L3:1] | 165 |
 | 94 | network<p>network-security-group | [![Network - NetworkSecurityGroups](https://github.com/Azure/ResourceModules/workflows/Network%20-%20NetworkSecurityGroups/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.network.networksecuritygroups.yml) |  |  |  |  |  |  | [L1:1] | 188 |
@@ -150,7 +150,7 @@ This section provides an overview of the library's feature set.
 | 135 | web<p>serverfarm | [![Web - Serverfarms](https://github.com/Azure/ResourceModules/workflows/Web%20-%20Serverfarms/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.web.serverfarms.yml) |  |  |  |  |  |  |  | 194 |
 | 136 | web<p>site | [![Web - Sites](https://github.com/Azure/ResourceModules/workflows/Web%20-%20Sites/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.web.sites.yml) |  |  |  |  |  |  | [L1:5, L2:4, L3:1] | 444 |
 | 137 | web<p>static-site | [![Web - StaticSites](https://github.com/Azure/ResourceModules/workflows/Web%20-%20StaticSites/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.web.staticsites.yml) |  |  |  |  |  |  | [L1:3] | 275 |
-| Sum | | | 0 | 0 | 1 | 0 | 0 | 2 | 240 | 29467 |
+| Sum | | | 0 | 0 | 1 | 0 | 0 | 2 | 241 | 29477 |
 
 ## Legend
 
