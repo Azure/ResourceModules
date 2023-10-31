@@ -79,6 +79,7 @@ module publicIPAddresses '../public-ip-address/main.bicep' = [for (publicIPAddre
     zones: contains(publicIPAddressObject, 'zones') ? publicIPAddressObject.zones : []
   }
 }]
+
 module formattedPublicIpResourceIds 'modules/formatResourceId.bicep' = {
   name: 'formattedPublicIpResourceIds'
   params: {
