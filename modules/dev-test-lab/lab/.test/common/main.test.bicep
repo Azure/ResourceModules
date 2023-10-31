@@ -94,12 +94,14 @@ module testDeployment '../../main.bicep' = {
       enabled: 'Enabled'
       markdown: 'DevTest Lab support text. <br> New line. It also supports Markdown'
     }
-    userAssignedIdentities: {
-      '${nestedDependencies.outputs.managedIdentityResourceId}': {}
+    managedIdentities: {
+      userAssignedResourcesIds: [
+        nestedDependencies.outputs.managedIdentityResourceId
+      ]
     }
-    managementIdentities: {
-      '${nestedDependencies.outputs.managedIdentityResourceId}': {}
-    }
+    managementIdentitiesResourceIds: [
+      nestedDependencies.outputs.managedIdentityResourceId
+    ]
     vmCreationResourceGroupId: resourceGroup.id
     browserConnect: 'Enabled'
     disableAutoUpgradeCseMinorVersion: true

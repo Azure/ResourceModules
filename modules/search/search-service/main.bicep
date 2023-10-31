@@ -80,8 +80,8 @@ param roleAssignments roleAssignmentType
 ])
 param sku string = 'standard'
 
-@description('Optional. Enables system assigned managed identity on the resource.')
-param systemAssignedIdentity bool = false
+@description('Optional. The managed identity definition for this resource.')
+param managedIdentities managedIdentitiesType
 
 @description('Optional. The diagnostic settings of the service.')
 param diagnosticSettings diagnosticSettingType
@@ -95,10 +95,8 @@ param tags object = {}
 
 var enableReferencedModulesTelemetry = false
 
-var identityType = systemAssignedIdentity ? 'SystemAssigned' : 'None'
-
-var identity = identityType != 'None' ? {
-  type: identityType
+var identity = !empty(managedIdentities) ? {
+  type: (managedIdentities.?systemAssigned ?? false) ? 'SystemAssigned' : null
 } : null
 
 // =============== //
@@ -253,12 +251,20 @@ output resourceId string = searchService.id
 @description('The name of the resource group the search service was created in.')
 output resourceGroupName string = resourceGroup().name
 
+@description('The principal ID of the system assigned identity.')
+output systemAssignedMIPrincipalId string = (managedIdentities.?systemAssigned ?? false) && contains(searchService.identity, 'principalId') ? searchService.identity.principalId : ''
+
 @description('The location the resource was deployed into.')
 output location string = searchService.location
 
 // =============== //
 //   Definitions   //
 // =============== //
+
+type managedIdentitiesType = {
+  @description('Optional. Enables system assigned managed identity on the resource.')
+  systemAssigned: bool?
+}?
 
 type lockType = {
   @description('Optional. Specify the name of lock.')

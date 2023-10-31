@@ -138,8 +138,10 @@ module testDeployment '../../main.bicep' = {
       Role: 'DeploymentValidation'
       ServiceName: 'DeploymentValidation'
     }
-    userAssignedIdentities: {
-      '${nestedDependencies.outputs.managedIdentityResourceId}': {}
+    managedIdentities: {
+      userAssignedResourcesIds: [
+        nestedDependencies.outputs.managedIdentityResourceId
+      ]
     }
   }
 }

@@ -68,6 +68,12 @@ module hostingEnvironment 'br:bicep/modules/web.hosting-environment:1.0.0' = {
       kind: 'CanNotDelete'
       name: 'myCustomLockName'
     }
+    managedIdentities: {
+      systemAssigned: true
+      userAssignedResourcesIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
     multiSize: 'Standard_D1_V2'
     roleAssignments: [
       {
@@ -76,14 +82,10 @@ module hostingEnvironment 'br:bicep/modules/web.hosting-environment:1.0.0' = {
         roleDefinitionIdOrName: 'Reader'
       }
     ]
-    systemAssignedIdentity: true
     tags: {
       'hidden-title': 'This is visible in the resource name'
       hostingEnvironmentName: 'whasev2001'
       resourceType: 'App Service Environment'
-    }
-    userAssignedIdentities: {
-      '<managedIdentityResourceId>': {}
     }
   }
 }
@@ -146,6 +148,14 @@ module hostingEnvironment 'br:bicep/modules/web.hosting-environment:1.0.0' = {
         "name": "myCustomLockName"
       }
     },
+    "managedIdentities": {
+      "value": {
+        "systemAssigned": true,
+        "userAssignedResourcesIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
+    },
     "multiSize": {
       "value": "Standard_D1_V2"
     },
@@ -158,19 +168,11 @@ module hostingEnvironment 'br:bicep/modules/web.hosting-environment:1.0.0' = {
         }
       ]
     },
-    "systemAssignedIdentity": {
-      "value": true
-    },
     "tags": {
       "value": {
         "hidden-title": "This is visible in the resource name",
         "hostingEnvironmentName": "whasev2001",
         "resourceType": "App Service Environment"
-      }
-    },
-    "userAssignedIdentities": {
-      "value": {
-        "<managedIdentityResourceId>": {}
       }
     }
   }
@@ -222,6 +224,12 @@ module hostingEnvironment 'br:bicep/modules/web.hosting-environment:1.0.0' = {
       kind: 'CanNotDelete'
       name: 'myCustomLockName'
     }
+    managedIdentities: {
+      systemAssigned: true
+      userAssignedResourcesIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
     remoteDebugEnabled: true
     roleAssignments: [
       {
@@ -230,16 +238,12 @@ module hostingEnvironment 'br:bicep/modules/web.hosting-environment:1.0.0' = {
         roleDefinitionIdOrName: 'Reader'
       }
     ]
-    systemAssignedIdentity: true
     tags: {
       'hidden-title': 'This is visible in the resource name'
       hostingEnvironmentName: 'whasev3001'
       resourceType: 'App Service Environment'
     }
     upgradePreference: 'Late'
-    userAssignedIdentities: {
-      '<managedIdentityResourceId>': {}
-    }
   }
 }
 ```
@@ -316,6 +320,14 @@ module hostingEnvironment 'br:bicep/modules/web.hosting-environment:1.0.0' = {
         "name": "myCustomLockName"
       }
     },
+    "managedIdentities": {
+      "value": {
+        "systemAssigned": true,
+        "userAssignedResourcesIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
+    },
     "remoteDebugEnabled": {
       "value": true
     },
@@ -328,9 +340,6 @@ module hostingEnvironment 'br:bicep/modules/web.hosting-environment:1.0.0' = {
         }
       ]
     },
-    "systemAssignedIdentity": {
-      "value": true
-    },
     "tags": {
       "value": {
         "hidden-title": "This is visible in the resource name",
@@ -340,11 +349,6 @@ module hostingEnvironment 'br:bicep/modules/web.hosting-environment:1.0.0' = {
     },
     "upgradePreference": {
       "value": "Late"
-    },
-    "userAssignedIdentities": {
-      "value": {
-        "<managedIdentityResourceId>": {}
-      }
     }
   }
 }
@@ -389,13 +393,12 @@ module hostingEnvironment 'br:bicep/modules/web.hosting-environment:1.0.0' = {
 | [`kind`](#parameter-kind) | string | Kind of resource. |
 | [`location`](#parameter-location) | string | Location for all resources. |
 | [`lock`](#parameter-lock) | object | The lock settings of the service. |
+| [`managedIdentities`](#parameter-managedidentities) | object | The managed identity definition for this resource. |
 | [`multiSize`](#parameter-multisize) | string | Frontend VM size. Cannot be used when kind is set to ASEv3. |
 | [`remoteDebugEnabled`](#parameter-remotedebugenabled) | bool | Property to enable and disable Remote Debug on ASEv3. Ignored when kind is set to ASEv2. |
 | [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| [`systemAssignedIdentity`](#parameter-systemassignedidentity) | bool | Enables system assigned managed identity on the resource. |
 | [`tags`](#parameter-tags) | object | Resource tags. |
 | [`upgradePreference`](#parameter-upgradepreference) | string | Specify preference for when and how the planned maintenance is applied. |
-| [`userAssignedIdentities`](#parameter-userassignedidentities) | object | The ID(s) to assign to the resource. |
 | [`userWhitelistedIpRanges`](#parameter-userwhitelistedipranges) | array | User added IP ranges to whitelist on ASE DB. Cannot be used with 'kind' `ASEv3`. |
 | [`zoneRedundant`](#parameter-zoneredundant) | bool | Switch to make the App Service Environment zone redundant. If enabled, the minimum App Service plan instance count will be three, otherwise 1. If enabled, the `dedicatedHostCount` must be set to `-1`. |
 
@@ -628,6 +631,32 @@ Optional. Specify the name of lock.
 - Required: No
 - Type: string
 
+### Parameter: `managedIdentities`
+
+The managed identity definition for this resource.
+- Required: No
+- Type: object
+
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`systemAssigned`](#parameter-managedidentitiessystemassigned) | No | bool | Optional. Enables system assigned managed identity on the resource. |
+| [`userAssignedResourcesIds`](#parameter-managedidentitiesuserassignedresourcesids) | No | array | Optional. The resource ID(s) to assign to the resource. |
+
+### Parameter: `managedIdentities.systemAssigned`
+
+Optional. Enables system assigned managed identity on the resource.
+
+- Required: No
+- Type: bool
+
+### Parameter: `managedIdentities.userAssignedResourcesIds`
+
+Optional. The resource ID(s) to assign to the resource.
+
+- Required: No
+- Type: array
+
 ### Parameter: `multiSize`
 
 Frontend VM size. Cannot be used when kind is set to ASEv3.
@@ -723,13 +752,6 @@ ResourceId for the subnet.
 - Required: Yes
 - Type: string
 
-### Parameter: `systemAssignedIdentity`
-
-Enables system assigned managed identity on the resource.
-- Required: No
-- Type: bool
-- Default: `False`
-
 ### Parameter: `tags`
 
 Resource tags.
@@ -744,13 +766,6 @@ Specify preference for when and how the planned maintenance is applied.
 - Type: string
 - Default: `'None'`
 - Allowed: `[Early, Late, Manual, None]`
-
-### Parameter: `userAssignedIdentities`
-
-The ID(s) to assign to the resource.
-- Required: No
-- Type: object
-- Default: `{object}`
 
 ### Parameter: `userWhitelistedIpRanges`
 

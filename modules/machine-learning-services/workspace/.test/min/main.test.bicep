@@ -58,6 +58,8 @@ module testDeployment '../../main.bicep' = {
     associatedKeyVaultResourceId: nestedDependencies.outputs.keyVaultResourceId
     associatedStorageAccountResourceId: nestedDependencies.outputs.storageAccountResourceId
     sku: 'Basic'
-    systemAssignedIdentity: true
+    managedIdentities: {
+      systemAssigned: true
+    }
   }
 }
