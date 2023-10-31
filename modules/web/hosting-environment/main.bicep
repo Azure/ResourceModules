@@ -152,7 +152,7 @@ resource appServiceEnvironment 'Microsoft.Web/hostingEnvironments@2022-03-01' = 
   kind: kind
   location: location
   tags: tags
-  identity: identity!
+  identity: identity
   properties: {
     clusterSettings: clusterSettings
     dedicatedHostCount: dedicatedHostCount != 0 ? dedicatedHostCount : null
