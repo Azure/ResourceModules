@@ -108,14 +108,23 @@ ID of the runbook storage account.
 Tags of the Automation Account resource.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `type`
 
 The type of the runbook.
 - Required: Yes
 - Type: string
-- Allowed: `[Graph, GraphPowerShell, GraphPowerShellWorkflow, PowerShell, PowerShellWorkflow]`
+- Allowed:
+  ```Bicep
+  [
+    'Graph'
+    'GraphPowerShell'
+    'GraphPowerShellWorkflow'
+    'PowerShell'
+    'PowerShellWorkflow'
+  ]
+  ```
 
 ### Parameter: `uri`
 

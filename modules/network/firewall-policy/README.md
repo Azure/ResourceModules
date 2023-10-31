@@ -273,7 +273,13 @@ The operation mode for automatically learning private ranges to not be SNAT.
 - Required: No
 - Type: string
 - Default: `'Disabled'`
-- Allowed: `[Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 ### Parameter: `basePolicyResourceId`
 
@@ -376,7 +382,14 @@ The configuring of intrusion detection.
 - Required: No
 - Type: string
 - Default: `'Off'`
-- Allowed: `[Alert, Deny, Off]`
+- Allowed:
+  ```Bicep
+  [
+    'Alert'
+    'Deny'
+    'Off'
+  ]
+  ```
 
 ### Parameter: `name`
 
@@ -424,7 +437,7 @@ List of specific signatures states.
 Tags of the Firewall policy resource.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `threatIntelMode`
 
@@ -432,7 +445,14 @@ The operation mode for Threat Intel.
 - Required: No
 - Type: string
 - Default: `'Off'`
-- Allowed: `[Alert, Deny, Off]`
+- Allowed:
+  ```Bicep
+  [
+    'Alert'
+    'Deny'
+    'Off'
+  ]
+  ```
 
 ### Parameter: `tier`
 
@@ -440,7 +460,13 @@ Tier of Firewall Policy.
 - Required: No
 - Type: string
 - Default: `'Standard'`
-- Allowed: `[Premium, Standard]`
+- Allowed:
+  ```Bicep
+  [
+    'Premium'
+    'Standard'
+  ]
+  ```
 
 ### Parameter: `workspaces`
 

@@ -76,7 +76,7 @@ Endpoint properties (see https://learn.microsoft.com/en-us/azure/templates/micro
 Endpoint tags.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 
 ## Outputs

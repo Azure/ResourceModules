@@ -398,7 +398,14 @@ Maximum number of endpoints to be returned for MultiValue routing type.
 The endpoint monitoring settings of the Traffic Manager profile.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default:
+  ```Bicep
+  {
+      path: '/'
+      port: '80'
+      protocol: 'http'
+  }
+  ```
 
 ### Parameter: `name`
 
@@ -412,7 +419,13 @@ The status of the Traffic Manager profile.
 - Required: No
 - Type: string
 - Default: `'Enabled'`
-- Allowed: `[Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 ### Parameter: `relativeName`
 
@@ -493,7 +506,7 @@ Required. The name of the role to assign. If it cannot be found you can specify 
 Resource tags.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `trafficRoutingMethod`
 
@@ -501,7 +514,17 @@ The traffic routing method of the Traffic Manager profile.
 - Required: No
 - Type: string
 - Default: `'Performance'`
-- Allowed: `[Geographic, MultiValue, Performance, Priority, Subnet, Weighted]`
+- Allowed:
+  ```Bicep
+  [
+    'Geographic'
+    'MultiValue'
+    'Performance'
+    'Priority'
+    'Subnet'
+    'Weighted'
+  ]
+  ```
 
 ### Parameter: `trafficViewEnrollmentStatus`
 
@@ -509,7 +532,13 @@ Indicates whether Traffic View is 'Enabled' or 'Disabled' for the Traffic Manage
 - Required: No
 - Type: string
 - Default: `'Disabled'`
-- Allowed: `[Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 ### Parameter: `ttl`
 

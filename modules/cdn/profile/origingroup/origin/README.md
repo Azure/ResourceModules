@@ -53,7 +53,13 @@ Whether to enable health probes to be made against backends defined under backen
 - Required: No
 - Type: string
 - Default: `'Enabled'`
-- Allowed: `[Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 ### Parameter: `enforceCertificateNameCheck`
 
@@ -119,7 +125,7 @@ The name of the CDN profile.
 The properties of the private link resource for private origin.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `weight`
 

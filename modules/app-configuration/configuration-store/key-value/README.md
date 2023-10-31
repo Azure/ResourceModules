@@ -69,7 +69,7 @@ Name of the key.
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `value`
 

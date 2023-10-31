@@ -84,7 +84,7 @@ The names of the Azure tables that the workspace should read.
 Tags to configure in the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 
 ## Outputs

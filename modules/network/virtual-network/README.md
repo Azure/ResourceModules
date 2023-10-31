@@ -731,7 +731,7 @@ An Array of subnets to deploy to the Virtual Network.
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `vnetEncryption`
 
@@ -746,7 +746,13 @@ If the encrypted VNet allows VM that does not support encryption. Can only be us
 - Required: No
 - Type: string
 - Default: `'AllowUnencrypted'`
-- Allowed: `[AllowUnencrypted, DropUnencrypted]`
+- Allowed:
+  ```Bicep
+  [
+    'AllowUnencrypted'
+    'DropUnencrypted'
+  ]
+  ```
 
 
 ## Outputs

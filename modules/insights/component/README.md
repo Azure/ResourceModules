@@ -223,7 +223,13 @@ Application type.
 - Required: No
 - Type: string
 - Default: `'web'`
-- Allowed: `[other, web]`
+- Allowed:
+  ```Bicep
+  [
+    'other'
+    'web'
+  ]
+  ```
 
 ### Parameter: `diagnosticSettings`
 
@@ -373,7 +379,13 @@ The network access type for accessing Application Insights ingestion. - Enabled 
 - Required: No
 - Type: string
 - Default: `'Enabled'`
-- Allowed: `[Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 ### Parameter: `publicNetworkAccessForQuery`
 
@@ -381,7 +393,13 @@ The network access type for accessing Application Insights query. - Enabled or D
 - Required: No
 - Type: string
 - Default: `'Enabled'`
-- Allowed: `[Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 ### Parameter: `retentionInDays`
 
@@ -389,7 +407,20 @@ Retention period in days.
 - Required: No
 - Type: int
 - Default: `365`
-- Allowed: `[30, 60, 90, 120, 180, 270, 365, 550, 730]`
+- Allowed:
+  ```Bicep
+  [
+    30
+    60
+    90
+    120
+    180
+    270
+    365
+    550
+    730
+  ]
+  ```
 
 ### Parameter: `roleAssignments`
 
@@ -471,7 +502,7 @@ Percentage of the data produced by the application being monitored that is being
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `workspaceResourceId`
 

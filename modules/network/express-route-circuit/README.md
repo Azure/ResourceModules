@@ -488,7 +488,13 @@ BGP peering type for the Circuit. Choose from AzurePrivatePeering, AzurePublicPe
 - Required: No
 - Type: string
 - Default: `'AzurePrivatePeering'`
-- Allowed: `[AzurePrivatePeering, MicrosoftPeering]`
+- Allowed:
+  ```Bicep
+  [
+    'AzurePrivatePeering'
+    'MicrosoftPeering'
+  ]
+  ```
 
 ### Parameter: `primaryPeerAddressPrefix`
 
@@ -591,7 +597,13 @@ Chosen SKU family of ExpressRoute circuit. Choose from MeteredData or UnlimitedD
 - Required: No
 - Type: string
 - Default: `'MeteredData'`
-- Allowed: `[MeteredData, UnlimitedData]`
+- Allowed:
+  ```Bicep
+  [
+    'MeteredData'
+    'UnlimitedData'
+  ]
+  ```
 
 ### Parameter: `skuTier`
 
@@ -599,14 +611,21 @@ Chosen SKU Tier of ExpressRoute circuit. Choose from Local, Premium or Standard 
 - Required: No
 - Type: string
 - Default: `'Standard'`
-- Allowed: `[Local, Premium, Standard]`
+- Allowed:
+  ```Bicep
+  [
+    'Local'
+    'Premium'
+    'Standard'
+  ]
+  ```
 
 ### Parameter: `tags`
 
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `vlanId`
 

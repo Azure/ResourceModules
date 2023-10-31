@@ -82,7 +82,13 @@ The license type to apply for this elastic pool.
 - Required: No
 - Type: string
 - Default: `'LicenseIncluded'`
-- Allowed: `[BasePrice, LicenseIncluded]`
+- Allowed:
+  ```Bicep
+  [
+    'BasePrice'
+    'LicenseIncluded'
+  ]
+  ```
 
 ### Parameter: `location`
 
@@ -150,7 +156,7 @@ The tier or edition of the particular SKU, e.g. Basic, Premium.
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `zoneRedundant`
 

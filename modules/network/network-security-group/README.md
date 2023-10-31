@@ -566,7 +566,7 @@ Array of Security Rules to deploy to the Network Security Group. When not provid
 Tags of the NSG resource.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 
 ## Outputs

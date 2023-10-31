@@ -47,7 +47,15 @@ Indicates the endpoint name reuse scope. The default value is TenantReuse.
 - Required: No
 - Type: string
 - Default: `'TenantReuse'`
-- Allowed: `[NoReuse, ResourceGroupReuse, SubscriptionReuse, TenantReuse]`
+- Allowed:
+  ```Bicep
+  [
+    'NoReuse'
+    'ResourceGroupReuse'
+    'SubscriptionReuse'
+    'TenantReuse'
+  ]
+  ```
 
 ### Parameter: `enableDefaultTelemetry`
 
@@ -62,7 +70,13 @@ Indicates whether the AFD Endpoint is enabled. The default value is Enabled.
 - Required: No
 - Type: string
 - Default: `'Enabled'`
-- Allowed: `[Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 ### Parameter: `location`
 
@@ -95,7 +109,7 @@ The list of routes for this AFD Endpoint.
 The tags of the AFD Endpoint.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 
 ## Outputs

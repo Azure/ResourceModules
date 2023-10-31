@@ -171,14 +171,20 @@ The name of the file service.
 Protocol settings for file service.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `shareDeleteRetentionPolicy`
 
 The service properties for soft delete.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default:
+  ```Bicep
+  {
+      days: 7
+      enabled: true
+  }
+  ```
 
 ### Parameter: `shares`
 

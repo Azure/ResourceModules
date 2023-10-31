@@ -306,7 +306,18 @@ The size of the Redis cache to deploy. Valid values: for C (Basic/Standard) fami
 - Required: No
 - Type: int
 - Default: `1`
-- Allowed: `[0, 1, 2, 3, 4, 5, 6]`
+- Allowed:
+  ```Bicep
+  [
+    0
+    1
+    2
+    3
+    4
+    5
+    6
+  ]
+  ```
 
 ### Parameter: `diagnosticSettings`
 
@@ -503,7 +514,14 @@ Requires clients to use a specified TLS version (or higher) to connect.
 - Required: No
 - Type: string
 - Default: `'1.2'`
-- Allowed: `[1.0, 1.1, 1.2]`
+- Allowed:
+  ```Bicep
+  [
+    '1.0'
+    '1.1'
+    '1.2'
+  ]
+  ```
 
 ### Parameter: `name`
 
@@ -685,14 +703,21 @@ Whether or not public network access is allowed for this resource. For security 
 - Required: No
 - Type: string
 - Default: `''`
-- Allowed: `['', Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    ''
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 ### Parameter: `redisConfiguration`
 
 All Redis Settings. Few possible keys: rdb-backup-enabled,rdb-storage-connection-string,rdb-backup-frequency,maxmemory-delta,maxmemory-policy,notify-keyspace-events,maxmemory-samples,slowlog-log-slower-than,slowlog-max-len,list-max-ziplist-entries,list-max-ziplist-value,hash-max-ziplist-entries,hash-max-ziplist-value,set-max-intset-entries,zset-max-ziplist-entries,zset-max-ziplist-value etc.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `redisVersion`
 
@@ -700,7 +725,13 @@ Redis version. Only major version will be used in PUT/PATCH request with current
 - Required: No
 - Type: string
 - Default: `'6'`
-- Allowed: `[4, 6]`
+- Allowed:
+  ```Bicep
+  [
+    '4'
+    '6'
+  ]
+  ```
 
 ### Parameter: `replicasPerMaster`
 
@@ -797,7 +828,14 @@ The type of Redis cache to deploy.
 - Required: No
 - Type: string
 - Default: `'Basic'`
-- Allowed: `[Basic, Premium, Standard]`
+- Allowed:
+  ```Bicep
+  [
+    'Basic'
+    'Premium'
+    'Standard'
+  ]
+  ```
 
 ### Parameter: `staticIP`
 
@@ -818,14 +856,14 @@ The full resource ID of a subnet in a virtual network to deploy the Redis cache 
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `tenantSettings`
 
 A dictionary of tenant settings.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `zoneRedundant`
 

@@ -558,7 +558,13 @@ If Enabled, Azure Active Directory authentication is enabled.
 - Required: No
 - Type: string
 - Default: `'Enabled'`
-- Allowed: `[Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 ### Parameter: `administratorLogin`
 
@@ -587,7 +593,15 @@ Availability zone information of the server. Default will have no preference set
 - Required: No
 - Type: string
 - Default: `''`
-- Allowed: `['', 1, 2, 3]`
+- Allowed:
+  ```Bicep
+  [
+    ''
+    '1'
+    '2'
+    '3'
+  ]
+  ```
 
 ### Parameter: `backupRetentionDays`
 
@@ -637,7 +651,15 @@ The mode to create a new PostgreSQL server.
 - Required: No
 - Type: string
 - Default: `'Default'`
-- Allowed: `[Create, Default, PointInTimeRestore, Update]`
+- Allowed:
+  ```Bicep
+  [
+    'Create'
+    'Default'
+    'PointInTimeRestore'
+    'Update'
+  ]
+  ```
 
 ### Parameter: `databases`
 
@@ -788,7 +810,13 @@ A value indicating whether Geo-Redundant backup is enabled on the server. Should
 - Required: No
 - Type: string
 - Default: `'Disabled'`
-- Allowed: `[Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 ### Parameter: `highAvailability`
 
@@ -796,7 +824,14 @@ The mode for high availability.
 - Required: No
 - Type: string
 - Default: `'Disabled'`
-- Allowed: `[Disabled, SameZone, ZoneRedundant]`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'SameZone'
+    'ZoneRedundant'
+  ]
+  ```
 
 ### Parameter: `location`
 
@@ -837,7 +872,7 @@ Optional. Specify the name of lock.
 Properties for the maintenence window. If provided, "customWindow" property must exist and set to "Enabled".
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `managedIdentities`
 
@@ -869,7 +904,13 @@ If Enabled, password authentication is enabled.
 - Required: No
 - Type: string
 - Default: `'Disabled'`
-- Allowed: `[Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 ### Parameter: `pointInTimeUTC`
 
@@ -972,14 +1013,28 @@ Max storage allowed for a server.
 - Required: No
 - Type: int
 - Default: `32`
-- Allowed: `[32, 64, 128, 256, 512, 1024, 2048, 4096, 8192, 16384]`
+- Allowed:
+  ```Bicep
+  [
+    32
+    64
+    128
+    256
+    512
+    1024
+    2048
+    4096
+    8192
+    16384
+  ]
+  ```
 
 ### Parameter: `tags`
 
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `tenantId`
 
@@ -993,7 +1048,14 @@ Tenant id of the server.
 The tier of the particular SKU. Tier must align with the "skuName" property. Example, tier cannot be "Burstable" if skuName is "Standard_D4s_v3".
 - Required: Yes
 - Type: string
-- Allowed: `[Burstable, GeneralPurpose, MemoryOptimized]`
+- Allowed:
+  ```Bicep
+  [
+    'Burstable'
+    'GeneralPurpose'
+    'MemoryOptimized'
+  ]
+  ```
 
 ### Parameter: `version`
 
@@ -1001,7 +1063,16 @@ PostgreSQL Server version.
 - Required: No
 - Type: string
 - Default: `'15'`
-- Allowed: `[11, 12, 13, 14, 15]`
+- Allowed:
+  ```Bicep
+  [
+    '11'
+    '12'
+    '13'
+    '14'
+    '15'
+  ]
+  ```
 
 
 ## Outputs

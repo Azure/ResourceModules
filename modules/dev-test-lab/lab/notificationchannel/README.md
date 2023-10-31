@@ -82,7 +82,13 @@ The name of the parent lab. Required if the template is used in a standalone dep
 The name of the notification channel.
 - Required: Yes
 - Type: string
-- Allowed: `[autoShutdown, costThreshold]`
+- Allowed:
+  ```Bicep
+  [
+    'autoShutdown'
+    'costThreshold'
+  ]
+  ```
 
 ### Parameter: `notificationLocale`
 
@@ -96,7 +102,7 @@ The locale to use when sending a notification (fallback for unsupported language
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `webHookUrl`
 

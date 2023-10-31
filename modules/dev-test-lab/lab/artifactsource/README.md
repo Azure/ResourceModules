@@ -106,7 +106,15 @@ The artifact source's type.
 - Required: No
 - Type: string
 - Default: `''`
-- Allowed: `['', GitHub, StorageAccount, VsoGit]`
+- Allowed:
+  ```Bicep
+  [
+    ''
+    'GitHub'
+    'StorageAccount'
+    'VsoGit'
+  ]
+  ```
 
 ### Parameter: `status`
 
@@ -114,14 +122,20 @@ Indicates if the artifact source is enabled (values: Enabled, Disabled). Default
 - Required: No
 - Type: string
 - Default: `'Enabled'`
-- Allowed: `[Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 ### Parameter: `tags`
 
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `uri`
 

@@ -231,7 +231,7 @@ module proximityPlacementGroup 'br:bicep/modules/compute.proximity-placement-gro
 Describes colocation status of the Proximity Placement Group.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `enableDefaultTelemetry`
 
@@ -245,7 +245,7 @@ Enable telemetry via a Globally Unique Identifier (GUID).
 Specifies the user intent of the proximity placement group.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `location`
 
@@ -360,7 +360,7 @@ Required. The name of the role to assign. If it cannot be found you can specify 
 Tags of the proximity placement group resource.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `type`
 
@@ -368,7 +368,13 @@ Specifies the type of the proximity placement group.
 - Required: No
 - Type: string
 - Default: `'Standard'`
-- Allowed: `[Standard, Ultra]`
+- Allowed:
+  ```Bicep
+  [
+    'Standard'
+    'Ultra'
+  ]
+  ```
 
 ### Parameter: `zones`
 

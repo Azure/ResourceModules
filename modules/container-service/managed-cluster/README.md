@@ -1300,7 +1300,7 @@ Define one or more secondary/additional agent pools.
 Information about a service principal identity for the cluster to use for manipulating Azure APIs. Required if no managed identities are assigned to the cluster.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `appGatewayResourceId`
 
@@ -1322,7 +1322,13 @@ Specifies the balance of similar node groups for the auto-scaler of the AKS clus
 - Required: No
 - Type: string
 - Default: `'false'`
-- Allowed: `[false, true]`
+- Allowed:
+  ```Bicep
+  [
+    'false'
+    'true'
+  ]
+  ```
 
 ### Parameter: `autoScalerProfileExpander`
 
@@ -1330,7 +1336,15 @@ Specifies the expand strategy for the auto-scaler of the AKS cluster.
 - Required: No
 - Type: string
 - Default: `'random'`
-- Allowed: `[least-waste, most-pods, priority, random]`
+- Allowed:
+  ```Bicep
+  [
+    'least-waste'
+    'most-pods'
+    'priority'
+    'random'
+  ]
+  ```
 
 ### Parameter: `autoScalerProfileMaxEmptyBulkDelete`
 
@@ -1422,7 +1436,13 @@ Specifies if nodes with local storage should be skipped for the auto-scaler of t
 - Required: No
 - Type: string
 - Default: `'true'`
-- Allowed: `[false, true]`
+- Allowed:
+  ```Bicep
+  [
+    'false'
+    'true'
+  ]
+  ```
 
 ### Parameter: `autoScalerProfileSkipNodesWithSystemPods`
 
@@ -1430,7 +1450,13 @@ Specifies if nodes with system pods should be skipped for the auto-scaler of the
 - Required: No
 - Type: string
 - Default: `'true'`
-- Allowed: `[false, true]`
+- Allowed:
+  ```Bicep
+  [
+    'false'
+    'true'
+  ]
+  ```
 
 ### Parameter: `autoScalerProfileUtilizationThreshold`
 
@@ -1445,7 +1471,17 @@ Auto-upgrade channel on the AKS cluster.
 - Required: No
 - Type: string
 - Default: `''`
-- Allowed: `['', node-image, none, patch, rapid, stable]`
+- Allowed:
+  ```Bicep
+  [
+    ''
+    'node-image'
+    'none'
+    'patch'
+    'rapid'
+    'stable'
+  ]
+  ```
 
 ### Parameter: `azurePolicyEnabled`
 
@@ -1687,7 +1723,13 @@ Specifies whether the KeyvaultSecretsProvider add-on uses secret rotation.
 - Required: No
 - Type: string
 - Default: `'false'`
-- Allowed: `[false, true]`
+- Allowed:
+  ```Bicep
+  [
+    'false'
+    'true'
+  ]
+  ```
 
 ### Parameter: `enableStorageProfileBlobCSIDriver`
 
@@ -1729,14 +1771,14 @@ Whether to enable Workload Identity. Requires OIDC issuer profile to be enabled.
 Configuration settings that are sensitive, as name-value pairs for configuring this extension.
 - Required: No
 - Type: secureObject
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `fluxExtension`
 
 Settings and configurations for the flux extension.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `httpApplicationRoutingEnabled`
 
@@ -1750,14 +1792,14 @@ Specifies whether the httpApplicationRouting add-on is enabled or not.
 Configurations for provisioning the cluster with HTTP proxy servers.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `identityProfile`
 
 Identities associated with the cluster.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `ingressApplicationGatewayEnabled`
 
@@ -1786,7 +1828,13 @@ Specifies the sku of the load balancer used by the virtual machine scale sets us
 - Required: No
 - Type: string
 - Default: `'standard'`
-- Allowed: `[basic, standard]`
+- Allowed:
+  ```Bicep
+  [
+    'basic'
+    'standard'
+  ]
+  ```
 
 ### Parameter: `location`
 
@@ -1874,7 +1922,14 @@ Network dataplane used in the Kubernetes cluster. Not compatible with kubenet ne
 - Required: No
 - Type: string
 - Default: `''`
-- Allowed: `['', azure, cilium]`
+- Allowed:
+  ```Bicep
+  [
+    ''
+    'azure'
+    'cilium'
+  ]
+  ```
 
 ### Parameter: `networkPlugin`
 
@@ -1882,7 +1937,14 @@ Specifies the network plugin used for building Kubernetes network.
 - Required: No
 - Type: string
 - Default: `''`
-- Allowed: `['', azure, kubenet]`
+- Allowed:
+  ```Bicep
+  [
+    ''
+    'azure'
+    'kubenet'
+  ]
+  ```
 
 ### Parameter: `networkPluginMode`
 
@@ -1890,7 +1952,13 @@ Network plugin mode used for building the Kubernetes network. Not compatible wit
 - Required: No
 - Type: string
 - Default: `''`
-- Allowed: `['', overlay]`
+- Allowed:
+  ```Bicep
+  [
+    ''
+    'overlay'
+  ]
+  ```
 
 ### Parameter: `networkPolicy`
 
@@ -1898,7 +1966,14 @@ Specifies the network policy used for building Kubernetes network. - calico or a
 - Required: No
 - Type: string
 - Default: `''`
-- Allowed: `['', azure, calico]`
+- Allowed:
+  ```Bicep
+  [
+    ''
+    'azure'
+    'calico'
+  ]
+  ```
 
 ### Parameter: `nodeResourceGroup`
 
@@ -1927,7 +2002,13 @@ Specifies outbound (egress) routing method. - loadBalancer or userDefinedRouting
 - Required: No
 - Type: string
 - Default: `'loadBalancer'`
-- Allowed: `[loadBalancer, userDefinedRouting]`
+- Allowed:
+  ```Bicep
+  [
+    'loadBalancer'
+    'userDefinedRouting'
+  ]
+  ```
 
 ### Parameter: `podCidr`
 
@@ -2058,7 +2139,14 @@ Tier of a managed cluster SKU. - Free or Standard.
 - Required: No
 - Type: string
 - Default: `'Free'`
-- Allowed: `[Free, Premium, Standard]`
+- Allowed:
+  ```Bicep
+  [
+    'Free'
+    'Premium'
+    'Standard'
+  ]
+  ```
 
 ### Parameter: `sshPublicKey`
 
@@ -2073,14 +2161,20 @@ The support plan for the Managed Cluster.
 - Required: No
 - Type: string
 - Default: `'KubernetesOfficial'`
-- Allowed: `[AKSLongTermSupport, KubernetesOfficial]`
+- Allowed:
+  ```Bicep
+  [
+    'AKSLongTermSupport'
+    'KubernetesOfficial'
+  ]
+  ```
 
 ### Parameter: `tags`
 
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `webApplicationRoutingEnabled`
 

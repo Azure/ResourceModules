@@ -429,7 +429,12 @@ The type of hostpool where this scaling plan should be applied.
 - Required: No
 - Type: string
 - Default: `'Pooled'`
-- Allowed: `[Pooled]`
+- Allowed:
+  ```Bicep
+  [
+    'Pooled'
+  ]
+  ```
 
 ### Parameter: `location`
 
@@ -517,14 +522,56 @@ Required. The name of the role to assign. If it cannot be found you can specify 
 The schedules related to this scaling plan. If no value is provided a default schedule will be provided.
 - Required: No
 - Type: array
-- Default: `[System.Management.Automation.OrderedHashtable]`
+- Default:
+  ```Bicep
+  [
+    {
+      daysOfWeek: [
+        'Friday'
+        'Monday'
+        'Thursday'
+        'Tuesday'
+        'Wednesday'
+      ]
+      name: 'weekdays_schedule'
+      offPeakLoadBalancingAlgorithm: 'DepthFirst'
+      offPeakStartTime: {
+        hour: 20
+        minute: 0
+      }
+      peakLoadBalancingAlgorithm: 'DepthFirst'
+      peakStartTime: {
+        hour: 9
+        minute: 0
+      }
+      rampDownCapacityThresholdPct: 90
+      rampDownForceLogoffUsers: true
+      rampDownLoadBalancingAlgorithm: 'DepthFirst'
+      rampDownMinimumHostsPct: 10
+      rampDownNotificationMessage: 'You will be logged off in 30 min. Make sure to save your work.'
+      rampDownStartTime: {
+        hour: 18
+        minute: 0
+      }
+      rampDownStopHostsWhen: 'ZeroSessions'
+      rampDownWaitTimeMinutes: 30
+      rampUpCapacityThresholdPct: 60
+      rampUpLoadBalancingAlgorithm: 'DepthFirst'
+      rampUpMinimumHostsPct: 20
+      rampUpStartTime: {
+        hour: 7
+        minute: 0
+      }
+    }
+  ]
+  ```
 
 ### Parameter: `tags`
 
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `timeZone`
 

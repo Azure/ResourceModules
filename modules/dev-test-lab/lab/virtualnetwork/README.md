@@ -93,7 +93,7 @@ The subnet overrides of the virtual network.
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 
 ## Outputs

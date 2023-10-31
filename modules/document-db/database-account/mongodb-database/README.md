@@ -70,7 +70,7 @@ Name of the mongodb database.
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `throughput`
 

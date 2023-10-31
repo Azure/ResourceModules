@@ -434,7 +434,14 @@ CPU architecture supported by an OS disk.
 - Required: No
 - Type: string
 - Default: `''`
-- Allowed: `['', Arm64, x64]`
+- Allowed:
+  ```Bicep
+  [
+    ''
+    'Arm64'
+    'x64'
+  ]
+  ```
 
 ### Parameter: `burstingEnabled`
 
@@ -456,7 +463,21 @@ Sources of a disk creation.
 - Required: No
 - Type: string
 - Default: `'Empty'`
-- Allowed: `[Attach, Copy, CopyStart, Empty, FromImage, Import, ImportSecure, Restore, Upload, UploadPreparedSecure]`
+- Allowed:
+  ```Bicep
+  [
+    'Attach'
+    'Copy'
+    'CopyStart'
+    'Empty'
+    'FromImage'
+    'Import'
+    'ImportSecure'
+    'Restore'
+    'Upload'
+    'UploadPreparedSecure'
+  ]
+  ```
 
 ### Parameter: `diskIOPSReadWrite`
 
@@ -492,7 +513,13 @@ The hypervisor generation of the Virtual Machine. Applicable to OS disks only.
 - Required: No
 - Type: string
 - Default: `'V2'`
-- Allowed: `[V1, V2]`
+- Allowed:
+  ```Bicep
+  [
+    'V1'
+    'V2'
+  ]
+  ```
 
 ### Parameter: `imageReferenceId`
 
@@ -561,7 +588,14 @@ Policy for accessing the disk via network.
 - Required: No
 - Type: string
 - Default: `'DenyAll'`
-- Allowed: `[AllowAll, AllowPrivate, DenyAll]`
+- Allowed:
+  ```Bicep
+  [
+    'AllowAll'
+    'AllowPrivate'
+    'DenyAll'
+  ]
+  ```
 
 ### Parameter: `optimizedForFrequentAttach`
 
@@ -576,7 +610,14 @@ Sources of a disk creation.
 - Required: No
 - Type: string
 - Default: `''`
-- Allowed: `['', Linux, Windows]`
+- Allowed:
+  ```Bicep
+  [
+    ''
+    'Linux'
+    'Windows'
+  ]
+  ```
 
 ### Parameter: `publicNetworkAccess`
 
@@ -584,7 +625,13 @@ Policy for controlling export on the disk.
 - Required: No
 - Type: string
 - Default: `'Disabled'`
-- Allowed: `[Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 ### Parameter: `roleAssignments`
 
@@ -666,7 +713,18 @@ If create option is ImportSecure, this is the URI of a blob to be imported into 
 The disks sku name. Can be .
 - Required: Yes
 - Type: string
-- Allowed: `[Premium_LRS, Premium_ZRS, Premium_ZRS, PremiumV2_LRS, Standard_LRS, StandardSSD_LRS, UltraSSD_LRS]`
+- Allowed:
+  ```Bicep
+  [
+    'Premium_LRS'
+    'Premium_ZRS'
+    'Premium_ZRS'
+    'PremiumV2_LRS'
+    'Standard_LRS'
+    'StandardSSD_LRS'
+    'UltraSSD_LRS'
+  ]
+  ```
 
 ### Parameter: `sourceResourceId`
 
@@ -694,7 +752,7 @@ The resource ID of the storage account containing the blob to import as a disk. 
 Tags of the availability set resource.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `uploadSizeBytes`
 

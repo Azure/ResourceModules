@@ -212,7 +212,13 @@ The category of the budget, whether the budget tracks cost or usage.
 - Required: No
 - Type: string
 - Default: `'Cost'`
-- Allowed: `[Cost, Usage]`
+- Allowed:
+  ```Bicep
+  [
+    'Cost'
+    'Usage'
+  ]
+  ```
 
 ### Parameter: `contactEmails`
 
@@ -261,7 +267,17 @@ The time covered by a budget. Tracking of the amount will be reset based on the 
 - Required: No
 - Type: string
 - Default: `'Monthly'`
-- Allowed: `[Annually, BillingAnnual, BillingMonth, BillingQuarter, Monthly, Quarterly]`
+- Allowed:
+  ```Bicep
+  [
+    'Annually'
+    'BillingAnnual'
+    'BillingMonth'
+    'BillingQuarter'
+    'Monthly'
+    'Quarterly'
+  ]
+  ```
 
 ### Parameter: `startDate`
 
@@ -275,7 +291,16 @@ The start date for the budget. Start date should be the first day of the month a
 Percent thresholds of budget for when to get a notification. Can be up to 5 thresholds, where each must be between 1 and 1000.
 - Required: No
 - Type: array
-- Default: `[50, 75, 90, 100, 110]`
+- Default:
+  ```Bicep
+  [
+    50
+    75
+    90
+    100
+    110
+  ]
+  ```
 
 
 ## Outputs

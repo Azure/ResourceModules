@@ -339,7 +339,14 @@ The clean up preference when the script execution gets in a terminal state. Spec
 - Required: No
 - Type: string
 - Default: `'Always'`
-- Allowed: `[Always, OnExpiration, OnSuccess]`
+- Allowed:
+  ```Bicep
+  [
+    'Always'
+    'OnExpiration'
+    'OnSuccess'
+  ]
+  ```
 
 ### Parameter: `containerGroupName`
 
@@ -360,7 +367,7 @@ Enable telemetry via a Globally Unique Identifier (GUID).
 The environment variables to pass over to the script. The list is passed as an object with a key name "secureList" and the value is the list of environment variables (array). The list must have a 'name' and a 'value' or a 'secretValue' property for each object.
 - Required: No
 - Type: secureObject
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `kind`
 
@@ -368,7 +375,13 @@ Type of the script. AzurePowerShell, AzureCLI.
 - Required: No
 - Type: string
 - Default: `'AzurePowerShell'`
-- Allowed: `[AzureCLI, AzurePowerShell]`
+- Allowed:
+  ```Bicep
+  [
+    'AzureCLI'
+    'AzurePowerShell'
+  ]
+  ```
 
 ### Parameter: `location`
 
@@ -475,7 +488,7 @@ List of supporting files for the external script (defined in primaryScriptUri). 
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `timeout`
 

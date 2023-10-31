@@ -616,7 +616,14 @@ Whether or not public network access is allowed for this resource. For security 
 - Required: No
 - Type: string
 - Default: `'NotSpecified'`
-- Allowed: `[Disabled, Enabled, NotSpecified]`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+    'NotSpecified'
+  ]
+  ```
 
 ### Parameter: `roleAssignments`
 
@@ -705,7 +712,7 @@ Configuration details for Purview Managed Storage Account queue private endpoint
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 
 ## Outputs

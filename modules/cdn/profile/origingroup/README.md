@@ -48,7 +48,7 @@ Enable telemetry via a Globally Unique Identifier (GUID).
 Health probe settings to the origin that is used to determine the health of the origin.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `loadBalancingSettings`
 
@@ -81,7 +81,13 @@ Whether to allow session affinity on this host.
 - Required: No
 - Type: string
 - Default: `'Disabled'`
-- Allowed: `[Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 ### Parameter: `trafficRestorationTimeToHealedOrNewEndpointsInMinutes`
 

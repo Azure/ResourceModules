@@ -575,7 +575,13 @@ Indicates whether the configuration store need to be recovered.
 - Required: No
 - Type: string
 - Default: `'Default'`
-- Allowed: `[Default, Recover]`
+- Allowed:
+  ```Bicep
+  [
+    'Default'
+    'Recover'
+  ]
+  ```
 
 ### Parameter: `diagnosticSettings`
 
@@ -960,7 +966,14 @@ Whether or not public network access is allowed for this resource. For security 
 - Required: No
 - Type: string
 - Default: `''`
-- Allowed: `['', Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    ''
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 ### Parameter: `roleAssignments`
 
@@ -1036,7 +1049,13 @@ Pricing tier of App Configuration.
 - Required: No
 - Type: string
 - Default: `'Standard'`
-- Allowed: `[Free, Standard]`
+- Allowed:
+  ```Bicep
+  [
+    'Free'
+    'Standard'
+  ]
+  ```
 
 ### Parameter: `softDeleteRetentionInDays`
 
@@ -1050,7 +1069,7 @@ The amount of time in days that the configuration store will be retained when it
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 
 ## Outputs

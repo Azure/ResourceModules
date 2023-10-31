@@ -199,7 +199,14 @@ Maps to the 'odata.type' field. Specifies the type of the alert criteria.
 - Required: No
 - Type: string
 - Default: `'Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria'`
-- Allowed: `[Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria, Microsoft.Azure.Monitor.SingleResourceMultipleMetricCriteria, Microsoft.Azure.Monitor.WebtestLocationAvailabilityCriteria]`
+- Allowed:
+  ```Bicep
+  [
+    'Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria'
+    'Microsoft.Azure.Monitor.SingleResourceMultipleMetricCriteria'
+    'Microsoft.Azure.Monitor.WebtestLocationAvailabilityCriteria'
+  ]
+  ```
 
 ### Parameter: `alertDescription`
 
@@ -241,7 +248,16 @@ how often the metric alert is evaluated represented in ISO 8601 duration format.
 - Required: No
 - Type: string
 - Default: `'PT5M'`
-- Allowed: `[PT15M, PT1H, PT1M, PT30M, PT5M]`
+- Allowed:
+  ```Bicep
+  [
+    'PT15M'
+    'PT1H'
+    'PT1M'
+    'PT30M'
+    'PT5M'
+  ]
+  ```
 
 ### Parameter: `location`
 
@@ -329,7 +345,12 @@ Required. The name of the role to assign. If it cannot be found you can specify 
 the list of resource IDs that this metric alert is scoped to.
 - Required: No
 - Type: array
-- Default: `[[subscription().id]]`
+- Default:
+  ```Bicep
+  [
+    '[subscription().id]'
+  ]
+  ```
 
 ### Parameter: `severity`
 
@@ -337,14 +358,23 @@ The severity of the alert.
 - Required: No
 - Type: int
 - Default: `3`
-- Allowed: `[0, 1, 2, 3, 4]`
+- Allowed:
+  ```Bicep
+  [
+    0
+    1
+    2
+    3
+    4
+  ]
+  ```
 
 ### Parameter: `tags`
 
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `targetResourceRegion`
 
@@ -366,7 +396,19 @@ the period of time (in ISO 8601 duration format) that is used to monitor alert a
 - Required: No
 - Type: string
 - Default: `'PT15M'`
-- Allowed: `[P1D, PT12H, PT15M, PT1H, PT1M, PT30M, PT5M, PT6H]`
+- Allowed:
+  ```Bicep
+  [
+    'P1D'
+    'PT12H'
+    'PT15M'
+    'PT1H'
+    'PT1M'
+    'PT30M'
+    'PT5M'
+    'PT6H'
+  ]
+  ```
 
 
 ## Outputs

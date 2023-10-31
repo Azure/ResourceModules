@@ -340,7 +340,7 @@ An Array of Routes to be established within the hub route table.
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 
 ## Outputs

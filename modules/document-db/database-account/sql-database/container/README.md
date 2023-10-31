@@ -66,7 +66,7 @@ Specifies the Autoscale settings and represents maximum throughput, the resource
 The conflict resolution policy for the container. Conflicts and conflict resolution policies are applicable if the Azure Cosmos DB account is configured with multiple write regions.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `databaseAccountName`
 
@@ -93,7 +93,7 @@ Enable telemetry via a Globally Unique Identifier (GUID).
 Indexing policy of the container.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `kind`
 
@@ -101,7 +101,14 @@ Indicates the kind of algorithm used for partitioning.
 - Required: No
 - Type: string
 - Default: `'Hash'`
-- Allowed: `[Hash, MultiHash, Range]`
+- Allowed:
+  ```Bicep
+  [
+    'Hash'
+    'MultiHash'
+    'Range'
+  ]
+  ```
 
 ### Parameter: `name`
 
@@ -127,7 +134,7 @@ The name of the parent SQL Database. Required if the template is used in a stand
 Tags of the SQL Database resource.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `throughput`
 

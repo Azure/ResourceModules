@@ -330,7 +330,13 @@ ActiveRevisionsMode controls how active revisions are handled for the Container 
 - Required: No
 - Type: string
 - Default: `'Single'`
-- Allowed: `[Multiple, Single]`
+- Allowed:
+  ```Bicep
+  [
+    'Multiple'
+    'Single'
+  ]
+  ```
 
 ### Parameter: `containers`
 
@@ -350,7 +356,7 @@ Custom domain bindings for Container App hostnames.
 Dapr configuration for the Container App.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `enableDefaultTelemetry`
 
@@ -399,7 +405,15 @@ Ingress transport protocol.
 - Required: No
 - Type: string
 - Default: `'auto'`
-- Allowed: `[auto, http, http2, tcp]`
+- Allowed:
+  ```Bicep
+  [
+    'auto'
+    'http'
+    'http2'
+    'tcp'
+  ]
+  ```
 
 ### Parameter: `initContainersTemplate`
 
@@ -596,14 +610,14 @@ Scaling rules.
 The secrets of the Container App.
 - Required: No
 - Type: secureObject
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `tags`
 
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `trafficLabel`
 

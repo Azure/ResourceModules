@@ -277,7 +277,13 @@ Indicates the type of scheduled query rule.
 - Required: No
 - Type: string
 - Default: `'LogAlert'`
-- Allowed: `[LogAlert, LogToMetric]`
+- Allowed:
+  ```Bicep
+  [
+    'LogAlert'
+    'LogToMetric'
+  ]
+  ```
 
 ### Parameter: `location`
 
@@ -379,7 +385,16 @@ Severity of the alert. Should be an integer between [0-4]. Value of 0 is severes
 - Required: No
 - Type: int
 - Default: `3`
-- Allowed: `[0, 1, 2, 3, 4]`
+- Allowed:
+  ```Bicep
+  [
+    0
+    1
+    2
+    3
+    4
+  ]
+  ```
 
 ### Parameter: `skipQueryValidation`
 
@@ -400,7 +415,7 @@ Mute actions for the chosen period of time (in ISO 8601 duration format) after t
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `targetResourceTypes`
 

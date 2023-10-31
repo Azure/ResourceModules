@@ -60,7 +60,13 @@ The flow log format version.
 - Required: No
 - Type: int
 - Default: `2`
-- Allowed: `[1, 2]`
+- Allowed:
+  ```Bicep
+  [
+    1
+    2
+  ]
+  ```
 
 ### Parameter: `location`
 
@@ -101,7 +107,7 @@ Resource ID of the diagnostic storage account.
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `targetResourceId`
 
@@ -115,7 +121,13 @@ The interval in minutes which would decide how frequently TA service should do f
 - Required: No
 - Type: int
 - Default: `60`
-- Allowed: `[10, 60]`
+- Allowed:
+  ```Bicep
+  [
+    10
+    60
+  ]
+  ```
 
 ### Parameter: `workspaceResourceId`
 

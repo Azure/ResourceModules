@@ -342,14 +342,21 @@ Required. The name of the role to assign. If it cannot be found you can specify 
 The name of the Azure Health Bot SKU.
 - Required: Yes
 - Type: string
-- Allowed: `[C0, F0, S1]`
+- Allowed:
+  ```Bicep
+  [
+    'C0'
+    'F0'
+    'S1'
+  ]
+  ```
 
 ### Parameter: `tags`
 
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 
 ## Outputs

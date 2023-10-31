@@ -701,7 +701,7 @@ Array of SRV records.
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `txt`
 

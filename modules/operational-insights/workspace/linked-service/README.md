@@ -69,7 +69,7 @@ The resource ID of the resource that will be linked to the workspace. This shoul
 Tags to configure in the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `writeAccessResourceId`
 

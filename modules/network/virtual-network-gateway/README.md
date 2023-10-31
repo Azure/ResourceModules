@@ -882,7 +882,13 @@ Specifies the name of the Public IP used by the Virtual Network Gateway. If it's
 Specifies the gateway type. E.g. VPN, ExpressRoute.
 - Required: Yes
 - Type: string
-- Allowed: `[ExpressRoute, Vpn]`
+- Allowed:
+  ```Bicep
+  [
+    'ExpressRoute'
+    'Vpn'
+  ]
+  ```
 
 ### Parameter: `location`
 
@@ -1133,14 +1139,35 @@ Required. The name of the role to assign. If it cannot be found you can specify 
 The SKU of the Gateway.
 - Required: Yes
 - Type: string
-- Allowed: `[Basic, ErGw1AZ, ErGw2AZ, ErGw3AZ, HighPerformance, Standard, UltraPerformance, VpnGw1, VpnGw1AZ, VpnGw2, VpnGw2AZ, VpnGw3, VpnGw3AZ, VpnGw4, VpnGw4AZ, VpnGw5, VpnGw5AZ]`
+- Allowed:
+  ```Bicep
+  [
+    'Basic'
+    'ErGw1AZ'
+    'ErGw2AZ'
+    'ErGw3AZ'
+    'HighPerformance'
+    'Standard'
+    'UltraPerformance'
+    'VpnGw1'
+    'VpnGw1AZ'
+    'VpnGw2'
+    'VpnGw2AZ'
+    'VpnGw3'
+    'VpnGw3AZ'
+    'VpnGw4'
+    'VpnGw4AZ'
+    'VpnGw5'
+    'VpnGw5AZ'
+  ]
+  ```
 
 ### Parameter: `tags`
 
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `vNetResourceId`
 
@@ -1153,7 +1180,7 @@ Virtual Network resource ID.
 Configuration for AAD Authentication for P2S Tunnel Type, Cannot be configured if clientRootCertData is provided.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `vpnClientAddressPoolPrefix`
 
@@ -1168,7 +1195,14 @@ The generation for this VirtualNetworkGateway. Must be None if virtualNetworkGat
 - Required: No
 - Type: string
 - Default: `'None'`
-- Allowed: `[Generation1, Generation2, None]`
+- Allowed:
+  ```Bicep
+  [
+    'Generation1'
+    'Generation2'
+    'None'
+  ]
+  ```
 
 ### Parameter: `vpnType`
 
@@ -1176,7 +1210,13 @@ Specifies the VPN type.
 - Required: No
 - Type: string
 - Default: `'RouteBased'`
-- Allowed: `[PolicyBased, RouteBased]`
+- Allowed:
+  ```Bicep
+  [
+    'PolicyBased'
+    'RouteBased'
+  ]
+  ```
 
 
 ## Outputs

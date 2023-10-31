@@ -495,7 +495,19 @@ module namespace 'br:bicep/modules/relay.namespace:1.0.0' = {
 Authorization Rules for the Relay namespace.
 - Required: No
 - Type: array
-- Default: `[System.Management.Automation.OrderedHashtable]`
+- Default:
+  ```Bicep
+  [
+    {
+      name: 'RootManageSharedAccessKey'
+      rights: [
+        'Listen'
+        'Manage'
+        'Send'
+      ]
+    }
+  ]
+  ```
 
 ### Parameter: `diagnosticSettings`
 
@@ -671,7 +683,7 @@ Name of the Relay Namespace.
 Configure networking options for Relay. This object contains IPs/Subnets to allow or restrict access to private endpoints only. For security reasons, it is recommended to configure this object on the Namespace.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `privateEndpoints`
 
@@ -915,14 +927,19 @@ Name of this SKU.
 - Required: No
 - Type: string
 - Default: `'Standard'`
-- Allowed: `[Standard]`
+- Allowed:
+  ```Bicep
+  [
+    'Standard'
+  ]
+  ```
 
 ### Parameter: `tags`
 
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `wcfRelays`
 

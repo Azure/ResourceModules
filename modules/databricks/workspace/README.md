@@ -818,7 +818,13 @@ Name of the Public IP for No Public IP workspace with managed vNet.
 - Required: No
 - Type: string
 - Default: `'Enabled'`
-- Allowed: `[Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 ### Parameter: `requiredNsgRules`
 
@@ -826,7 +832,13 @@ Gets or sets a value indicating whether data plane (clusters) to control plane c
 - Required: No
 - Type: string
 - Default: `'AllRules'`
-- Allowed: `[AllRules, NoAzureDatabricksRules]`
+- Allowed:
+  ```Bicep
+  [
+    'AllRules'
+    'NoAzureDatabricksRules'
+  ]
+  ```
 
 ### Parameter: `requireInfrastructureEncryption`
 
@@ -909,7 +921,14 @@ The pricing tier of workspace.
 - Required: No
 - Type: string
 - Default: `'premium'`
-- Allowed: `[premium, standard, trial]`
+- Allowed:
+  ```Bicep
+  [
+    'premium'
+    'standard'
+    'trial'
+  ]
+  ```
 
 ### Parameter: `storageAccountName`
 
@@ -930,7 +949,7 @@ Storage account SKU name.
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `vnetAddressPrefix`
 

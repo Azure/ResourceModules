@@ -78,7 +78,7 @@ Name of the SQL database .
 Tags of the SQL database resource.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `throughput`
 

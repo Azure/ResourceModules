@@ -522,7 +522,13 @@ The way resources to remediate are discovered. Defaults to ExistingNonCompliant 
 - Required: No
 - Type: string
 - Default: `'ExistingNonCompliant'`
-- Allowed: `[ExistingNonCompliant, ReEvaluateCompliance]`
+- Allowed:
+  ```Bicep
+  [
+    'ExistingNonCompliant'
+    'ReEvaluateCompliance'
+  ]
+  ```
 
 ### Parameter: `resourceGroupName`
 

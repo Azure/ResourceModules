@@ -232,7 +232,7 @@ Subscription ID of the subscription to assign the tags to. If no Resource Group 
 Tags for the resource group. If not provided, removes existing tags.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 
 ## Outputs

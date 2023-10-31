@@ -66,7 +66,13 @@ Encryption type of the capacity pool, set encryption type for data at rest for t
 - Required: No
 - Type: string
 - Default: `'Single'`
-- Allowed: `[Double, Single]`
+- Allowed:
+  ```Bicep
+  [
+    'Double'
+    'Single'
+  ]
+  ```
 
 ### Parameter: `location`
 
@@ -93,7 +99,13 @@ The qos type of the pool.
 - Required: No
 - Type: string
 - Default: `'Auto'`
-- Allowed: `[Auto, Manual]`
+- Allowed:
+  ```Bicep
+  [
+    'Auto'
+    'Manual'
+  ]
+  ```
 
 ### Parameter: `roleAssignments`
 
@@ -169,7 +181,15 @@ The pool service level.
 - Required: No
 - Type: string
 - Default: `'Standard'`
-- Allowed: `[Premium, Standard, StandardZRS, Ultra]`
+- Allowed:
+  ```Bicep
+  [
+    'Premium'
+    'Standard'
+    'StandardZRS'
+    'Ultra'
+  ]
+  ```
 
 ### Parameter: `size`
 
@@ -182,7 +202,7 @@ Provisioned size of the pool (in bytes). Allowed values are in 4TiB chunks (valu
 Tags for all resources.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `volumes`
 

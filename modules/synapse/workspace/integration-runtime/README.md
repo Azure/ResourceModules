@@ -55,14 +55,20 @@ The name of the Integration Runtime.
 The type of Integration Runtime.
 - Required: Yes
 - Type: string
-- Allowed: `[Managed, SelfHosted]`
+- Allowed:
+  ```Bicep
+  [
+    'Managed'
+    'SelfHosted'
+  ]
+  ```
 
 ### Parameter: `typeProperties`
 
 Integration Runtime type properties. Required if type is "Managed".
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `workspaceName`
 

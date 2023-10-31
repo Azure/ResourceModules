@@ -65,7 +65,7 @@ Enable telemetry via a Globally Unique Identifier (GUID).
 KeyVault location details of the namedValue.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `name`
 

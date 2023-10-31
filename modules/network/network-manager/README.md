@@ -684,7 +684,7 @@ Security Admin Configurations, Rule Collections and Rules to create for the netw
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 
 ## Outputs

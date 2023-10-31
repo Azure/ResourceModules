@@ -846,7 +846,7 @@ Certificate name check time of the frontdoor resource.
 Resource tags.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 
 ## Outputs

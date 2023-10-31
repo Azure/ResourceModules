@@ -54,14 +54,21 @@ Enable telemetry via a Globally Unique Identifier (GUID).
 Portal setting name.
 - Required: Yes
 - Type: string
-- Allowed: `[delegation, signin, signup]`
+- Allowed:
+  ```Bicep
+  [
+    'delegation'
+    'signin'
+    'signup'
+  ]
+  ```
 
 ### Parameter: `properties`
 
 Portal setting properties.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 
 ## Outputs
