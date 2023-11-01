@@ -599,7 +599,14 @@ Requires clients to use a specified TLS version (or higher) to connect.
 - Required: No
 - Type: string
 - Default: `'1.2'`
-- Allowed: `[1.0, 1.1, 1.2]`
+- Allowed:
+  ```Bicep
+  [
+    '1.0'
+    '1.1'
+    '1.2'
+  ]
+  ```
 
 ### Parameter: `name`
 
@@ -839,14 +846,24 @@ The type of Redis Enterprise Cluster to deploy.
 - Required: No
 - Type: string
 - Default: `'Enterprise_E10'`
-- Allowed: `[Enterprise_E10, Enterprise_E100, Enterprise_E20, Enterprise_E50, EnterpriseFlash_F1500, EnterpriseFlash_F300, EnterpriseFlash_F700]`
+- Allowed:
+  ```Bicep
+  [
+    'Enterprise_E10'
+    'Enterprise_E100'
+    'Enterprise_E20'
+    'Enterprise_E50'
+    'EnterpriseFlash_F1500'
+    'EnterpriseFlash_F300'
+    'EnterpriseFlash_F700'
+  ]
+  ```
 
 ### Parameter: `tags`
 
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `zoneRedundant`
 

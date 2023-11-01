@@ -21,7 +21,7 @@ param lock lockType
 param managedIdentities managedIdentitiesType
 
 @description('Optional. Tags of the Recovery Service Vault resource.')
-param tags object = {}
+param tags object?
 
 @description('Optional. The datastore type to use. ArchiveStore does not support ZoneRedundancy.')
 @allowed([

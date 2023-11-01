@@ -204,7 +204,7 @@ Enable telemetry via a Globally Unique Identifier (GUID).
 The extended location of the Image.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `hyperVGeneration`
 
@@ -257,7 +257,13 @@ The OS State. For managed images, use Generalized.
 - Required: No
 - Type: string
 - Default: `'Generalized'`
-- Allowed: `[Generalized, Specialized]`
+- Allowed:
+  ```Bicep
+  [
+    'Generalized'
+    'Specialized'
+  ]
+  ```
 
 ### Parameter: `osType`
 
@@ -352,7 +358,6 @@ The source virtual machine from which Image is created.
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `zoneResilient`
 

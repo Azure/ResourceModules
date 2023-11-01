@@ -157,14 +157,14 @@ module connection 'br:bicep/modules/web.connection:1.0.0' = {
 Specific values for some API connections.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `customParameterValues`
 
 Customized parameter values for specific connections.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `displayName`
 
@@ -224,14 +224,14 @@ Connection name for connection. Example: 'azureblob' when using blobs.  It can c
 Dictionary of nonsecret parameter values.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `parameterValues`
 
 Connection strings or access keys for connection. Example: 'accountName' and 'accessKey' when using blobs.  It can change depending on the resource.
 - Required: No
 - Type: secureObject
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `roleAssignments`
 
@@ -313,7 +313,6 @@ Status of the connection.
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `testLinks`
 

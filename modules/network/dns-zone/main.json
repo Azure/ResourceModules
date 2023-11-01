@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "1680239342296037315"
+      "templateHash": "14383961739979857836"
     },
     "name": "Public DNS Zones",
     "description": "This module deploys a Public DNS zone.",
@@ -199,7 +199,7 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Tags of the resource."
       }

@@ -131,7 +131,17 @@ GPUInstanceProfile to be used to specify GPU MIG instance profile for supported 
 - Required: No
 - Type: string
 - Default: `''`
-- Allowed: `['', MIG1g, MIG2g, MIG3g, MIG4g, MIG7g]`
+- Allowed:
+  ```Bicep
+  [
+    ''
+    'MIG1g'
+    'MIG2g'
+    'MIG3g'
+    'MIG4g'
+    'MIG7g'
+  ]
+  ```
 
 ### Parameter: `kubeletDiskType`
 
@@ -192,7 +202,7 @@ Name of the agent pool.
 The node labels to be persisted across all nodes in agent pool.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `nodePublicIpPrefixId`
 
@@ -228,7 +238,14 @@ The default is "Ephemeral" if the VM supports it and has a cache disk larger tha
 - Required: No
 - Type: string
 - Default: `''`
-- Allowed: `['', Ephemeral, Managed]`
+- Allowed:
+  ```Bicep
+  [
+    ''
+    'Ephemeral'
+    'Managed'
+  ]
+  ```
 
 ### Parameter: `osSku`
 
@@ -236,7 +253,17 @@ Specifies the OS SKU used by the agent pool. The default is Ubuntu if OSType is 
 - Required: No
 - Type: string
 - Default: `''`
-- Allowed: `['', AzureLinux, CBLMariner, Ubuntu, Windows2019, Windows2022]`
+- Allowed:
+  ```Bicep
+  [
+    ''
+    'AzureLinux'
+    'CBLMariner'
+    'Ubuntu'
+    'Windows2019'
+    'Windows2022'
+  ]
+  ```
 
 ### Parameter: `osType`
 
@@ -244,7 +271,13 @@ The operating system type. The default is Linux.
 - Required: No
 - Type: string
 - Default: `'Linux'`
-- Allowed: `[Linux, Windows]`
+- Allowed:
+  ```Bicep
+  [
+    'Linux'
+    'Windows'
+  ]
+  ```
 
 ### Parameter: `podSubnetId`
 
@@ -266,7 +299,13 @@ Describes how VMs are added to or removed from Agent Pools. See billing states (
 - Required: No
 - Type: string
 - Default: `'Delete'`
-- Allowed: `[Deallocate, Delete]`
+- Allowed:
+  ```Bicep
+  [
+    'Deallocate'
+    'Delete'
+  ]
+  ```
 
 ### Parameter: `scaleSetEvictionPolicy`
 
@@ -274,7 +313,13 @@ The eviction policy specifies what to do with the VM when it is evicted. The def
 - Required: No
 - Type: string
 - Default: `'Delete'`
-- Allowed: `[Deallocate, Delete]`
+- Allowed:
+  ```Bicep
+  [
+    'Deallocate'
+    'Delete'
+  ]
+  ```
 
 ### Parameter: `scaleSetPriority`
 
@@ -282,7 +327,14 @@ The Virtual Machine Scale Set priority.
 - Required: No
 - Type: string
 - Default: `''`
-- Allowed: `['', Regular, Spot]`
+- Allowed:
+  ```Bicep
+  [
+    ''
+    'Regular'
+    'Spot'
+  ]
+  ```
 
 ### Parameter: `sourceResourceId`
 
@@ -303,7 +355,6 @@ Possible values are any decimal value greater than zero or -1 which indicates th
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `type`
 

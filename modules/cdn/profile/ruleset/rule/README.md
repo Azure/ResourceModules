@@ -61,7 +61,13 @@ Enable telemetry via a Globally Unique Identifier (GUID).
 If this rule is a match should the rules engine continue running the remaining rules or stop. If not present, defaults to Continue.
 - Required: Yes
 - Type: string
-- Allowed: `[Continue, Stop]`
+- Allowed:
+  ```Bicep
+  [
+    'Continue'
+    'Stop'
+  ]
+  ```
 
 ### Parameter: `name`
 

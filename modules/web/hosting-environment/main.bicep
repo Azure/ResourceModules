@@ -16,7 +16,7 @@ param lock lockType
 param roleAssignments roleAssignmentType
 
 @description('Optional. Resource tags.')
-param tags object = {}
+param tags object?
 
 @allowed([
   'ASEv2'

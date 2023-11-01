@@ -374,7 +374,16 @@ The domain name label scope. If a domain name label and a domain name label scop
 - Required: No
 - Type: string
 - Default: `''`
-- Allowed: `['', NoReuse, ResourceGroupReuse, SubscriptionReuse, TenantReuse]`
+- Allowed:
+  ```Bicep
+  [
+    ''
+    'NoReuse'
+    'ResourceGroupReuse'
+    'SubscriptionReuse'
+    'TenantReuse'
+  ]
+  ```
 
 ### Parameter: `enableDefaultTelemetry`
 
@@ -436,7 +445,13 @@ IP address version.
 - Required: No
 - Type: string
 - Default: `'IPv4'`
-- Allowed: `[IPv4, IPv6]`
+- Allowed:
+  ```Bicep
+  [
+    'IPv4'
+    'IPv6'
+  ]
+  ```
 
 ### Parameter: `publicIPAllocationMethod`
 
@@ -444,7 +459,13 @@ The public IP address allocation method.
 - Required: No
 - Type: string
 - Default: `'Static'`
-- Allowed: `[Dynamic, Static]`
+- Allowed:
+  ```Bicep
+  [
+    'Dynamic'
+    'Static'
+  ]
+  ```
 
 ### Parameter: `publicIPPrefixResourceId`
 
@@ -534,7 +555,13 @@ Name of a public IP address SKU.
 - Required: No
 - Type: string
 - Default: `'Standard'`
-- Allowed: `[Basic, Standard]`
+- Allowed:
+  ```Bicep
+  [
+    'Basic'
+    'Standard'
+  ]
+  ```
 
 ### Parameter: `skuTier`
 
@@ -542,14 +569,19 @@ Tier of a public IP address SKU.
 - Required: No
 - Type: string
 - Default: `'Regional'`
-- Allowed: `[Global, Regional]`
+- Allowed:
+  ```Bicep
+  [
+    'Global'
+    'Regional'
+  ]
+  ```
 
 ### Parameter: `tags`
 
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `zones`
 

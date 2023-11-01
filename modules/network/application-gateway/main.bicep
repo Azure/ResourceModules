@@ -199,7 +199,7 @@ param lock lockType
 param roleAssignments roleAssignmentType
 
 @description('Optional. Resource tags.')
-param tags object = {}
+param tags object?
 
 @description('Optional. Backend settings of the application gateway resource. For default limits, see [Application Gateway limits](https://learn.microsoft.com/en-us/azure/azure-subscription-service-limits#application-gateway-limits).')
 param backendSettingsCollection array = []

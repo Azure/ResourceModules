@@ -577,7 +577,7 @@ The password given to the admin user.
 The administrator configuration.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `collation`
 
@@ -727,7 +727,7 @@ Enable telemetry via a Globally Unique Identifier (GUID).
 The encryption protection configuration.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `hardwareFamily`
 
@@ -756,7 +756,13 @@ The license type. Possible values are 'LicenseIncluded' (regular price inclusive
 - Required: No
 - Type: string
 - Default: `'LicenseIncluded'`
-- Allowed: `[BasePrice, LicenseIncluded]`
+- Allowed:
+  ```Bicep
+  [
+    'BasePrice'
+    'LicenseIncluded'
+  ]
+  ```
 
 ### Parameter: `location`
 
@@ -824,7 +830,13 @@ Specifies the mode of database creation. Default: Regular instance creation. Res
 - Required: No
 - Type: string
 - Default: `'Default'`
-- Allowed: `[Default, PointInTimeRestore]`
+- Allowed:
+  ```Bicep
+  [
+    'Default'
+    'PointInTimeRestore'
+  ]
+  ```
 
 ### Parameter: `minimalTlsVersion`
 
@@ -832,7 +844,15 @@ Minimal TLS version allowed.
 - Required: No
 - Type: string
 - Default: `'1.2'`
-- Allowed: `[1.0, 1.1, 1.2, None]`
+- Allowed:
+  ```Bicep
+  [
+    '1.0'
+    '1.1'
+    '1.2'
+    'None'
+  ]
+  ```
 
 ### Parameter: `name`
 
@@ -853,7 +873,14 @@ Connection type used for connecting to the instance.
 - Required: No
 - Type: string
 - Default: `'Proxy'`
-- Allowed: `[Default, Proxy, Redirect]`
+- Allowed:
+  ```Bicep
+  [
+    'Default'
+    'Proxy'
+    'Redirect'
+  ]
+  ```
 
 ### Parameter: `publicDataEndpointEnabled`
 
@@ -868,7 +895,15 @@ The storage account type used to store backups for this database.
 - Required: No
 - Type: string
 - Default: `'Geo'`
-- Allowed: `[Geo, GeoZone, Local, Zone]`
+- Allowed:
+  ```Bicep
+  [
+    'Geo'
+    'GeoZone'
+    'Local'
+    'Zone'
+  ]
+  ```
 
 ### Parameter: `restorePointInTime`
 
@@ -950,7 +985,7 @@ Required. The name of the role to assign. If it cannot be found you can specify 
 The security alert policy configuration.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `servicePrincipal`
 
@@ -958,7 +993,13 @@ Service principal type. If using AD Authentication and applying Admin, must be s
 - Required: No
 - Type: string
 - Default: `'None'`
-- Allowed: `[None, SystemAssigned]`
+- Allowed:
+  ```Bicep
+  [
+    'None'
+    'SystemAssigned'
+  ]
+  ```
 
 ### Parameter: `skuName`
 
@@ -999,7 +1040,6 @@ The fully qualified resource ID of the subnet on which the SQL managed instance 
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `timezoneId`
 
@@ -1020,7 +1060,7 @@ The number of vCores. Allowed values: 8, 16, 24, 32, 40, 64, 80.
 The vulnerability assessment configuration.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `zoneRedundant`
 

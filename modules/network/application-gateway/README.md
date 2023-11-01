@@ -1611,7 +1611,18 @@ The name of the SKU for the Application Gateway.
 - Required: No
 - Type: string
 - Default: `'WAF_Medium'`
-- Allowed: `[Standard_Large, Standard_Medium, Standard_Small, Standard_v2, WAF_Large, WAF_Medium, WAF_v2]`
+- Allowed:
+  ```Bicep
+  [
+    'Standard_Large'
+    'Standard_Medium'
+    'Standard_Small'
+    'Standard_v2'
+    'WAF_Large'
+    'WAF_Medium'
+    'WAF_v2'
+  ]
+  ```
 
 ### Parameter: `sslCertificates`
 
@@ -1625,8 +1636,46 @@ SSL certificates of the application gateway resource.
 Ssl cipher suites to be enabled in the specified order to application gateway.
 - Required: No
 - Type: array
-- Default: `[TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256, TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384]`
-- Allowed: `[TLS_DHE_DSS_WITH_3DES_EDE_CBC_SHA, TLS_DHE_DSS_WITH_AES_128_CBC_SHA, TLS_DHE_DSS_WITH_AES_128_CBC_SHA256, TLS_DHE_DSS_WITH_AES_256_CBC_SHA, TLS_DHE_DSS_WITH_AES_256_CBC_SHA256, TLS_DHE_RSA_WITH_AES_128_CBC_SHA, TLS_DHE_RSA_WITH_AES_128_GCM_SHA256, TLS_DHE_RSA_WITH_AES_256_CBC_SHA, TLS_DHE_RSA_WITH_AES_256_GCM_SHA384, TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA, TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256, TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256, TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA, TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384, TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384, TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA, TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256, TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256, TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA, TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384, TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384, TLS_RSA_WITH_3DES_EDE_CBC_SHA, TLS_RSA_WITH_AES_128_CBC_SHA, TLS_RSA_WITH_AES_128_CBC_SHA256, TLS_RSA_WITH_AES_128_GCM_SHA256, TLS_RSA_WITH_AES_256_CBC_SHA, TLS_RSA_WITH_AES_256_CBC_SHA256, TLS_RSA_WITH_AES_256_GCM_SHA384]`
+- Default:
+  ```Bicep
+  [
+    'TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256'
+    'TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384'
+  ]
+  ```
+- Allowed:
+  ```Bicep
+  [
+    'TLS_DHE_DSS_WITH_3DES_EDE_CBC_SHA'
+    'TLS_DHE_DSS_WITH_AES_128_CBC_SHA'
+    'TLS_DHE_DSS_WITH_AES_128_CBC_SHA256'
+    'TLS_DHE_DSS_WITH_AES_256_CBC_SHA'
+    'TLS_DHE_DSS_WITH_AES_256_CBC_SHA256'
+    'TLS_DHE_RSA_WITH_AES_128_CBC_SHA'
+    'TLS_DHE_RSA_WITH_AES_128_GCM_SHA256'
+    'TLS_DHE_RSA_WITH_AES_256_CBC_SHA'
+    'TLS_DHE_RSA_WITH_AES_256_GCM_SHA384'
+    'TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA'
+    'TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256'
+    'TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256'
+    'TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA'
+    'TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384'
+    'TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384'
+    'TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA'
+    'TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256'
+    'TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256'
+    'TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA'
+    'TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384'
+    'TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384'
+    'TLS_RSA_WITH_3DES_EDE_CBC_SHA'
+    'TLS_RSA_WITH_AES_128_CBC_SHA'
+    'TLS_RSA_WITH_AES_128_CBC_SHA256'
+    'TLS_RSA_WITH_AES_128_GCM_SHA256'
+    'TLS_RSA_WITH_AES_256_CBC_SHA'
+    'TLS_RSA_WITH_AES_256_CBC_SHA256'
+    'TLS_RSA_WITH_AES_256_GCM_SHA384'
+  ]
+  ```
 
 ### Parameter: `sslPolicyMinProtocolVersion`
 
@@ -1634,7 +1683,15 @@ Ssl protocol enums.
 - Required: No
 - Type: string
 - Default: `'TLSv1_2'`
-- Allowed: `[TLSv1_0, TLSv1_1, TLSv1_2, TLSv1_3]`
+- Allowed:
+  ```Bicep
+  [
+    'TLSv1_0'
+    'TLSv1_1'
+    'TLSv1_2'
+    'TLSv1_3'
+  ]
+  ```
 
 ### Parameter: `sslPolicyName`
 
@@ -1642,7 +1699,17 @@ Ssl predefined policy name enums.
 - Required: No
 - Type: string
 - Default: `''`
-- Allowed: `['', AppGwSslPolicy20150501, AppGwSslPolicy20170401, AppGwSslPolicy20170401S, AppGwSslPolicy20220101, AppGwSslPolicy20220101S]`
+- Allowed:
+  ```Bicep
+  [
+    ''
+    'AppGwSslPolicy20150501'
+    'AppGwSslPolicy20170401'
+    'AppGwSslPolicy20170401S'
+    'AppGwSslPolicy20220101'
+    'AppGwSslPolicy20220101S'
+  ]
+  ```
 
 ### Parameter: `sslPolicyType`
 
@@ -1650,7 +1717,14 @@ Type of Ssl Policy.
 - Required: No
 - Type: string
 - Default: `'Custom'`
-- Allowed: `[Custom, CustomV2, Predefined]`
+- Allowed:
+  ```Bicep
+  [
+    'Custom'
+    'CustomV2'
+    'Predefined'
+  ]
+  ```
 
 ### Parameter: `sslProfiles`
 
@@ -1664,7 +1738,6 @@ SSL profiles of the application gateway resource.
 Resource tags.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `trustedClientCertificates`
 
@@ -1692,7 +1765,7 @@ URL path map of the application gateway resource.
 Application gateway web application firewall configuration. Should be configured for security reasons.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `zones`
 

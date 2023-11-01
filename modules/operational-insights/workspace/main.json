@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "12796424281221754385"
+      "templateHash": "1028542190363116097"
     },
     "name": "Log Analytics Workspaces",
     "description": "This module deploys a Log Analytics Workspace.",
@@ -409,7 +409,7 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Tags of the resource."
       }
@@ -567,12 +567,13 @@
         },
         "template": {
           "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "languageVersion": "2.0",
           "contentVersion": "1.0.0.0",
           "metadata": {
             "_generator": {
               "name": "bicep",
               "version": "0.22.6.54827",
-              "templateHash": "6643427484780531502"
+              "templateHash": "13014071648331654478"
             },
             "name": "Log Analytics Workspace Storage Insight Configs",
             "description": "This module deploys a Log Analytics Workspace Storage Insight Config.",
@@ -614,7 +615,7 @@
             },
             "tags": {
               "type": "object",
-              "defaultValue": {},
+              "nullable": true,
               "metadata": {
                 "description": "Optional. Tags to configure in the resource."
               }
@@ -627,8 +628,8 @@
               }
             }
           },
-          "resources": [
-            {
+          "resources": {
+            "defaultTelemetry": {
               "condition": "[parameters('enableDefaultTelemetry')]",
               "type": "Microsoft.Resources/deployments",
               "apiVersion": "2021-04-01",
@@ -642,7 +643,19 @@
                 }
               }
             },
-            {
+            "storageAccount": {
+              "existing": true,
+              "type": "Microsoft.Storage/storageAccounts",
+              "apiVersion": "2022-09-01",
+              "name": "[last(split(parameters('storageAccountResourceId'), '/'))]"
+            },
+            "workspace": {
+              "existing": true,
+              "type": "Microsoft.OperationalInsights/workspaces",
+              "apiVersion": "2022-10-01",
+              "name": "[parameters('logAnalyticsWorkspaceName')]"
+            },
+            "storageinsightconfig": {
               "type": "Microsoft.OperationalInsights/workspaces/storageInsightConfigs",
               "apiVersion": "2020-08-01",
               "name": "[format('{0}/{1}', parameters('logAnalyticsWorkspaceName'), parameters('name'))]",
@@ -654,9 +667,13 @@
                   "id": "[parameters('storageAccountResourceId')]",
                   "key": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', last(split(parameters('storageAccountResourceId'), '/'))), '2022-09-01').keys[0].value]"
                 }
-              }
+              },
+              "dependsOn": [
+                "storageAccount",
+                "workspace"
+              ]
             }
-          ],
+          },
           "outputs": {
             "resourceId": {
               "type": "string",
@@ -714,12 +731,13 @@
         },
         "template": {
           "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "languageVersion": "2.0",
           "contentVersion": "1.0.0.0",
           "metadata": {
             "_generator": {
               "name": "bicep",
               "version": "0.22.6.54827",
-              "templateHash": "15022791045507209174"
+              "templateHash": "9970744617970664745"
             },
             "name": "Log Analytics Workspace Linked Services",
             "description": "This module deploys a Log Analytics Workspace Linked Service.",
@@ -754,7 +772,7 @@
             },
             "tags": {
               "type": "object",
-              "defaultValue": {},
+              "nullable": true,
               "metadata": {
                 "description": "Optional. Tags to configure in the resource."
               }
@@ -767,8 +785,8 @@
               }
             }
           },
-          "resources": [
-            {
+          "resources": {
+            "defaultTelemetry": {
               "condition": "[parameters('enableDefaultTelemetry')]",
               "type": "Microsoft.Resources/deployments",
               "apiVersion": "2021-04-01",
@@ -782,7 +800,13 @@
                 }
               }
             },
-            {
+            "workspace": {
+              "existing": true,
+              "type": "Microsoft.OperationalInsights/workspaces",
+              "apiVersion": "2022-10-01",
+              "name": "[parameters('logAnalyticsWorkspaceName')]"
+            },
+            "linkedService": {
               "type": "Microsoft.OperationalInsights/workspaces/linkedServices",
               "apiVersion": "2020-08-01",
               "name": "[format('{0}/{1}', parameters('logAnalyticsWorkspaceName'), parameters('name'))]",
@@ -790,9 +814,12 @@
               "properties": {
                 "resourceId": "[parameters('resourceId')]",
                 "writeAccessResourceId": "[if(empty(parameters('writeAccessResourceId')), null(), parameters('writeAccessResourceId'))]"
-              }
+              },
+              "dependsOn": [
+                "workspace"
+              ]
             }
-          ],
+          },
           "outputs": {
             "name": {
               "type": "string",
@@ -1314,12 +1341,13 @@
         },
         "template": {
           "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "languageVersion": "2.0",
           "contentVersion": "1.0.0.0",
           "metadata": {
             "_generator": {
               "name": "bicep",
               "version": "0.22.6.54827",
-              "templateHash": "7994060758159745935"
+              "templateHash": "13903182753870680383"
             },
             "name": "Log Analytics Workspace Datasources",
             "description": "This module deploys a Log Analytics Workspace Data Source.",
@@ -1357,7 +1385,7 @@
             },
             "tags": {
               "type": "object",
-              "defaultValue": {},
+              "nullable": true,
               "metadata": {
                 "description": "Optional. Tags to configure in the resource."
               }
@@ -1447,8 +1475,8 @@
               }
             }
           },
-          "resources": [
-            {
+          "resources": {
+            "defaultTelemetry": {
               "condition": "[parameters('enableDefaultTelemetry')]",
               "type": "Microsoft.Resources/deployments",
               "apiVersion": "2021-04-01",
@@ -1462,7 +1490,13 @@
                 }
               }
             },
-            {
+            "workspace": {
+              "existing": true,
+              "type": "Microsoft.OperationalInsights/workspaces",
+              "apiVersion": "2022-10-01",
+              "name": "[parameters('logAnalyticsWorkspaceName')]"
+            },
+            "dataSource": {
               "type": "Microsoft.OperationalInsights/workspaces/dataSources",
               "apiVersion": "2020-08-01",
               "name": "[format('{0}/{1}', parameters('logAnalyticsWorkspaceName'), parameters('name'))]",
@@ -1480,9 +1514,12 @@
                 "syslogName": "[if(and(not(empty(parameters('kind'))), equals(parameters('kind'), 'LinuxSyslog')), parameters('syslogName'), null())]",
                 "syslogSeverities": "[if(and(not(empty(parameters('kind'))), or(equals(parameters('kind'), 'LinuxSyslog'), equals(parameters('kind'), 'LinuxPerformanceObject'))), parameters('syslogSeverities'), null())]",
                 "performanceCounters": "[if(and(not(empty(parameters('kind'))), equals(parameters('kind'), 'LinuxPerformanceObject')), parameters('performanceCounters'), null())]"
-              }
+              },
+              "dependsOn": [
+                "workspace"
+              ]
             }
-          ],
+          },
           "outputs": {
             "resourceId": {
               "type": "string",

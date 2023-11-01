@@ -55,7 +55,13 @@ Location for all Resources.
 The name of the resource.
 - Required: Yes
 - Type: string
-- Allowed: `[ftp, scm]`
+- Allowed:
+  ```Bicep
+  [
+    'ftp'
+    'scm'
+  ]
+  ```
 
 ### Parameter: `webAppName`
 

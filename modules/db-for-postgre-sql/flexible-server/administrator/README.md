@@ -76,7 +76,15 @@ Active Directory administrator principal name.
 The principal type used to represent the type of Active Directory Administrator.
 - Required: Yes
 - Type: string
-- Allowed: `[Group, ServicePrincipal, Unknown, User]`
+- Allowed:
+  ```Bicep
+  [
+    'Group'
+    'ServicePrincipal'
+    'Unknown'
+    'User'
+  ]
+  ```
 
 ### Parameter: `tenantId`
 

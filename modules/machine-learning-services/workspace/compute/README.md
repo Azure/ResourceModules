@@ -60,7 +60,21 @@ Location for the underlying compute. Ignored when attaching a compute resource, 
 Set the object type.
 - Required: Yes
 - Type: string
-- Allowed: `[AKS, AmlCompute, ComputeInstance, Databricks, DataFactory, DataLakeAnalytics, HDInsight, Kubernetes, SynapseSpark, VirtualMachine]`
+- Allowed:
+  ```Bicep
+  [
+    'AKS'
+    'AmlCompute'
+    'ComputeInstance'
+    'Databricks'
+    'DataFactory'
+    'DataLakeAnalytics'
+    'HDInsight'
+    'Kubernetes'
+    'SynapseSpark'
+    'VirtualMachine'
+  ]
+  ```
 
 ### Parameter: `deployCompute`
 
@@ -140,7 +154,7 @@ Name of the compute.
 The properties of the compute. Will be ignored in case "resourceId" is set.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `resourceId`
 
@@ -155,14 +169,22 @@ Specifies the sku, also referred as "edition". Required for creating a compute r
 - Required: No
 - Type: string
 - Default: `''`
-- Allowed: `['', Basic, Free, Premium, Standard]`
+- Allowed:
+  ```Bicep
+  [
+    ''
+    'Basic'
+    'Free'
+    'Premium'
+    'Standard'
+  ]
+  ```
 
 ### Parameter: `tags`
 
 Contains resource tags defined as key-value pairs. Ignored when attaching a compute resource, i.e. when you provide a resource ID.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 
 ## Outputs

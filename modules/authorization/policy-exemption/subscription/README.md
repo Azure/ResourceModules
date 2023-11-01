@@ -45,7 +45,14 @@ The option whether validate the exemption is at or under the assignment scope.
 - Required: No
 - Type: string
 - Default: `''`
-- Allowed: `['', Default, DoNotValidate]`
+- Allowed:
+  ```Bicep
+  [
+    ''
+    'Default'
+    'DoNotValidate'
+  ]
+  ```
 
 ### Parameter: `description`
 
@@ -74,7 +81,13 @@ The policy exemption category. Possible values are Waiver and Mitigated. Default
 - Required: No
 - Type: string
 - Default: `'Mitigated'`
-- Allowed: `[Mitigated, Waiver]`
+- Allowed:
+  ```Bicep
+  [
+    'Mitigated'
+    'Waiver'
+  ]
+  ```
 
 ### Parameter: `expiresOn`
 
@@ -95,7 +108,7 @@ Location deployment metadata.
 The policy exemption metadata. Metadata is an open ended object and is typically a collection of key-value pairs.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `name`
 

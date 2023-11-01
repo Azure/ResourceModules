@@ -40,7 +40,7 @@ param location string = resourceGroup().location
 param lock lockType
 
 @description('Optional. Tags for all resources.')
-param tags object = {}
+param tags object?
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
@@ -131,7 +131,7 @@ module netAppAccount_capacityPools 'capacity-pool/main.bicep' = [for (capacityPo
     coolAccess: contains(capacityPool, 'coolAccess') ? capacityPool.coolAccess : false
     roleAssignments: contains(capacityPool, 'roleAssignments') ? capacityPool.roleAssignments : []
     encryptionType: contains(capacityPool, 'encryptionType') ? capacityPool.encryptionType : 'Single'
-    tags: contains(capacityPool, 'tags') ? capacityPool.tags : {}
+    tags: capacityPool.?tags ?? tags
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]

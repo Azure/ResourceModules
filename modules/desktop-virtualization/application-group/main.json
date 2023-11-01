@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "3165107620977984204"
+      "templateHash": "14729705419389731754"
     },
     "name": "Azure Virtual Desktop (AVD) Application Groups",
     "description": "This module deploys an Azure Virtual Desktop (AVD) Application Group.",
@@ -258,7 +258,7 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Tags of the resource."
       }

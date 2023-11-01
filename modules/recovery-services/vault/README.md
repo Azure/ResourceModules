@@ -985,7 +985,7 @@ module vault 'br:bicep/modules/recovery-services.vault:1.0.0' = {
 The backup configuration.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `backupPolicies`
 
@@ -999,7 +999,7 @@ List of all backup policies.
 The storage configuration for the Azure Recovery Service Vault.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `diagnosticSettings`
 
@@ -1188,7 +1188,7 @@ Optional. The resource ID(s) to assign to the resource.
 Monitoring Settings of the vault.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `name`
 
@@ -1367,14 +1367,20 @@ Whether or not public network access is allowed for this resource. For security 
 - Required: No
 - Type: string
 - Default: `'Disabled'`
-- Allowed: `[Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 ### Parameter: `replicationAlertSettings`
 
 Replication alert settings.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `replicationFabrics`
 
@@ -1463,14 +1469,13 @@ Required. The name of the role to assign. If it cannot be found you can specify 
 Security Settings of the vault.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `tags`
 
 Tags of the Recovery Service Vault resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 
 ## Outputs

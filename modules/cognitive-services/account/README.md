@@ -543,7 +543,7 @@ List of allowed FQDN.
 The API properties for special APIs.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `cMKKeyName`
 
@@ -721,7 +721,33 @@ Enable telemetry via a Globally Unique Identifier (GUID).
 Kind of the Cognitive Services. Use 'Get-AzCognitiveServicesAccountSku' to determine a valid combinations of 'kind' and 'SKU' for your Azure region.
 - Required: Yes
 - Type: string
-- Allowed: `[AnomalyDetector, Bing.Autosuggest.v7, Bing.CustomSearch, Bing.EntitySearch, Bing.Search.v7, Bing.SpellCheck.v7, CognitiveServices, ComputerVision, ContentModerator, CustomVision.Prediction, CustomVision.Training, Face, FormRecognizer, ImmersiveReader, Internal.AllInOne, LUIS, LUIS.Authoring, Personalizer, QnAMaker, SpeechServices, TextAnalytics, TextTranslation]`
+- Allowed:
+  ```Bicep
+  [
+    'AnomalyDetector'
+    'Bing.Autosuggest.v7'
+    'Bing.CustomSearch'
+    'Bing.EntitySearch'
+    'Bing.Search.v7'
+    'Bing.SpellCheck.v7'
+    'CognitiveServices'
+    'ComputerVision'
+    'ContentModerator'
+    'CustomVision.Prediction'
+    'CustomVision.Training'
+    'Face'
+    'FormRecognizer'
+    'ImmersiveReader'
+    'Internal.AllInOne'
+    'LUIS'
+    'LUIS.Authoring'
+    'Personalizer'
+    'QnAMaker'
+    'SpeechServices'
+    'TextAnalytics'
+    'TextTranslation'
+  ]
+  ```
 
 ### Parameter: `location`
 
@@ -801,7 +827,7 @@ The name of Cognitive Services account.
 A collection of rules governing the accessibility from specific network locations.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `privateEndpoints`
 
@@ -967,7 +993,14 @@ Whether or not public network access is allowed for this resource. For security 
 - Required: No
 - Type: string
 - Default: `''`
-- Allowed: `['', Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    ''
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 ### Parameter: `restore`
 
@@ -1057,14 +1090,34 @@ SKU of the Cognitive Services resource. Use 'Get-AzCognitiveServicesAccountSku' 
 - Required: No
 - Type: string
 - Default: `'S0'`
-- Allowed: `[C2, C3, C4, F0, F1, S, S0, S1, S10, S2, S3, S4, S5, S6, S7, S8, S9]`
+- Allowed:
+  ```Bicep
+  [
+    'C2'
+    'C3'
+    'C4'
+    'F0'
+    'F1'
+    'S'
+    'S0'
+    'S1'
+    'S10'
+    'S2'
+    'S3'
+    'S4'
+    'S5'
+    'S6'
+    'S7'
+    'S8'
+    'S9'
+  ]
+  ```
 
 ### Parameter: `tags`
 
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `userOwnedStorage`
 

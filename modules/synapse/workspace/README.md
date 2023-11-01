@@ -989,7 +989,13 @@ Enable or Disable public network access to workspace.
 - Required: No
 - Type: string
 - Default: `'Enabled'`
-- Allowed: `[Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 ### Parameter: `purviewResourceID`
 
@@ -1084,21 +1090,20 @@ Password for administrator access to the workspace's SQL pools. If you don't pro
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `userAssignedIdentities`
 
 The ID(s) to assign to the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `workspaceRepositoryConfiguration`
 
 Git integration settings.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 
 ## Outputs

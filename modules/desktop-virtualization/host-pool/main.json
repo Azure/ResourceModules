@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "16828620493021839895"
+      "templateHash": "2287776590285678937"
     },
     "name": "Azure Virtual Desktop (AVD) Host Pools",
     "description": "This module deploys an Azure Virtual Desktop (AVD) Host Pool.",
@@ -313,7 +313,7 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Tags of the resource."
       }

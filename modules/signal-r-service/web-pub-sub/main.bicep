@@ -18,7 +18,7 @@ param lock lockType
 param roleAssignments roleAssignmentType
 
 @description('Optional. Tags of the resource.')
-param tags object = {}
+param tags object?
 
 @description('Optional. The unit count of the resource. 1 by default.')
 param capacity int = 1

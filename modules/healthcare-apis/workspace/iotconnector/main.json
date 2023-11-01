@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "9502385350114367681"
+      "templateHash": "16117637432944064764"
     },
     "name": "Healthcare API Workspace IoT Connectors",
     "description": "This module deploys a Healthcare API Workspace IoT Connector.",
@@ -245,7 +245,7 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Tags of the resource."
       }

@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "3543793483023585730"
+      "templateHash": "14824797980620937555"
     },
     "name": "App Service Plans",
     "description": "This module deploys an App Service Plan.",
@@ -289,7 +289,7 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Tags of the resource."
       }

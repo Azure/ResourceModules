@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "1653467840677720057"
+      "templateHash": "2411064933627030246"
     },
     "name": "Redis Cache Enterprise",
     "description": "This module deploys a Redis Cache Enterprise.",
@@ -393,7 +393,7 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Tags of the resource."
       }

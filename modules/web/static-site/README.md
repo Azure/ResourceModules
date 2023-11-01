@@ -301,7 +301,7 @@ False if config file is locked for this static web app; otherwise, true.
 Static site app settings.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `branch`
 
@@ -315,7 +315,7 @@ The branch name of the GitHub repository.
 Build properties for the static site.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `customDomains`
 
@@ -337,21 +337,29 @@ State indicating the status of the enterprise grade CDN serving traffic to the s
 - Required: No
 - Type: string
 - Default: `'Disabled'`
-- Allowed: `[Disabled, Disabling, Enabled, Enabling]`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Disabling'
+    'Enabled'
+    'Enabling'
+  ]
+  ```
 
 ### Parameter: `functionAppSettings`
 
 Function app settings.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `linkedBackend`
 
 Object with "resourceId" and "location" of the a user defined function app.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `location`
 
@@ -672,7 +680,13 @@ Type of static site to deploy.
 - Required: No
 - Type: string
 - Default: `'Free'`
-- Allowed: `[Free, Standard]`
+- Allowed:
+  ```Bicep
+  [
+    'Free'
+    'Standard'
+  ]
+  ```
 
 ### Parameter: `stagingEnvironmentPolicy`
 
@@ -680,21 +694,26 @@ State indicating whether staging environments are allowed or not allowed for a s
 - Required: No
 - Type: string
 - Default: `'Enabled'`
-- Allowed: `[Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 ### Parameter: `tags`
 
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `templateProperties`
 
 Template Options for the static site.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 
 ## Outputs

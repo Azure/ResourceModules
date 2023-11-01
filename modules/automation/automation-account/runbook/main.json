@@ -1,11 +1,12 @@
 {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "languageVersion": "2.0",
   "contentVersion": "1.0.0.0",
   "metadata": {
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "18248893160569507204"
+      "templateHash": "1833872657708381069"
     },
     "name": "Automation Account Runbooks",
     "description": "This module deploys an Azure Automation Account Runbook.",
@@ -58,11 +59,11 @@
         "description": "Optional. The version of the runbook content."
       }
     },
-    "scriptStorageAccountId": {
+    "scriptStorageAccountResourceId": {
       "type": "string",
-      "defaultValue": "",
+      "nullable": true,
       "metadata": {
-        "description": "Optional. ID of the runbook storage account."
+        "description": "Optional. Resource Id of the runbook storage account."
       }
     },
     "baseTime": {
@@ -88,7 +89,7 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Tags of the Automation Account resource."
       }
@@ -110,8 +111,8 @@
       "signedProtocol": "https"
     }
   },
-  "resources": [
-    {
+  "resources": {
+    "defaultTelemetry": {
       "condition": "[parameters('enableDefaultTelemetry')]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2021-04-01",
@@ -125,7 +126,22 @@
         }
       }
     },
-    {
+    "automationAccount": {
+      "existing": true,
+      "type": "Microsoft.Automation/automationAccounts",
+      "apiVersion": "2022-08-08",
+      "name": "[parameters('automationAccountName')]"
+    },
+    "storageAccount": {
+      "condition": "[not(empty(parameters('scriptStorageAccountResourceId')))]",
+      "existing": true,
+      "type": "Microsoft.Storage/storageAccounts",
+      "apiVersion": "2022-09-01",
+      "subscriptionId": "[split(coalesce(parameters('scriptStorageAccountResourceId'), '//'), '/')[2]]",
+      "resourceGroup": "[split(coalesce(parameters('scriptStorageAccountResourceId'), '////'), '/')[4]]",
+      "name": "[last(split(coalesce(parameters('scriptStorageAccountResourceId'), 'dummyVault'), '/'))]"
+    },
+    "runbook": {
       "type": "Microsoft.Automation/automationAccounts/runbooks",
       "apiVersion": "2022-08-08",
       "name": "[format('{0}/{1}', parameters('automationAccountName'), parameters('name'))]",
@@ -134,10 +150,14 @@
       "properties": {
         "runbookType": "[parameters('type')]",
         "description": "[parameters('description')]",
-        "publishContentLink": "[if(not(empty(parameters('uri'))), if(empty(parameters('uri')), null(), createObject('uri', if(not(empty(parameters('uri'))), if(empty(parameters('scriptStorageAccountId')), parameters('uri'), format('{0}?{1}', parameters('uri'), listAccountSas(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', split(parameters('scriptStorageAccountId'), '/')[2], split(parameters('scriptStorageAccountId'), '/')[4]), 'Microsoft.Storage/storageAccounts', last(split(parameters('scriptStorageAccountId'), '/'))), '2021-04-01', variables('accountSasProperties')).accountSasToken)), null()), 'version', if(not(empty(parameters('version'))), parameters('version'), null()))), null())]"
-      }
+        "publishContentLink": "[if(not(empty(parameters('uri'))), if(empty(parameters('uri')), null(), createObject('uri', if(not(empty(parameters('uri'))), if(empty(parameters('scriptStorageAccountResourceId')), parameters('uri'), format('{0}?{1}', parameters('uri'), listAccountSas(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', split(coalesce(parameters('scriptStorageAccountResourceId'), '//'), '/')[2], split(coalesce(parameters('scriptStorageAccountResourceId'), '////'), '/')[4]), 'Microsoft.Storage/storageAccounts', last(split(coalesce(parameters('scriptStorageAccountResourceId'), 'dummyVault'), '/'))), '2021-04-01', variables('accountSasProperties')).accountSasToken)), null()), 'version', if(not(empty(parameters('version'))), parameters('version'), null()))), null())]"
+      },
+      "dependsOn": [
+        "automationAccount",
+        "storageAccount"
+      ]
     }
-  ],
+  },
   "outputs": {
     "name": {
       "type": "string",
@@ -165,7 +185,7 @@
       "metadata": {
         "description": "The location the resource was deployed into."
       },
-      "value": "[reference(resourceId('Microsoft.Automation/automationAccounts/runbooks', parameters('automationAccountName'), parameters('name')), '2022-08-08', 'full').location]"
+      "value": "[reference('runbook', '2022-08-08', 'full').location]"
     }
   }
 }

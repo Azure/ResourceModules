@@ -1071,7 +1071,14 @@ Whether or not public network access is allowed for this resource. For security 
 - Required: No
 - Type: string
 - Default: `''`
-- Allowed: `['', Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    ''
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 ### Parameter: `roleAssignments`
 
@@ -1161,7 +1168,13 @@ SKU name of the account.
 - Required: No
 - Type: string
 - Default: `'Basic'`
-- Allowed: `[Basic, Free]`
+- Allowed:
+  ```Bicep
+  [
+    'Basic'
+    'Free'
+  ]
+  ```
 
 ### Parameter: `softwareUpdateConfigurations`
 
@@ -1175,7 +1188,6 @@ List of softwareUpdateConfigurations to be created in the automation account.
 Tags of the Automation Account resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `variables`
 

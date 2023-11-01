@@ -386,7 +386,7 @@ Resource ID of environment.
 Required if TriggerType is Event. Configuration of an event driven job.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `initContainersTemplate`
 
@@ -460,7 +460,7 @@ Optional. The resource ID(s) to assign to the resource. Required if a user assig
 Required if TriggerType is Manual. Configuration of a manual job.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `name`
 
@@ -562,28 +562,35 @@ Required. The name of the role to assign. If it cannot be found you can specify 
 Required if TriggerType is Schedule. Configuration of a schedule based job.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `secrets`
 
 The secrets of the Container App.
 - Required: No
 - Type: secureObject
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `tags`
 
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `triggerType`
 
 Trigger type of the job.
 - Required: Yes
 - Type: string
-- Allowed: `[Event, Manual, Schedule]`
+- Allowed:
+  ```Bicep
+  [
+    'Event'
+    'Manual'
+    'Schedule'
+  ]
+  ```
 
 ### Parameter: `volumes`
 

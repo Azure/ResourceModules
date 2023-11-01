@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "12829815846590991969"
+      "templateHash": "3215598878486027169"
     },
     "name": "Scheduled Query Rules",
     "description": "This module deploys a Scheduled Query Rule.",
@@ -209,7 +209,7 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Tags of the resource."
       }

@@ -38,7 +38,7 @@ param statuses array = []
 param lock lockType
 
 @description('Optional. Tags of the resource.')
-param tags object = {}
+param tags object?
 
 @description('Optional. Links to test the API connection.')
 param testLinks array = []

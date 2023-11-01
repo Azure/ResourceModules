@@ -50,7 +50,7 @@ Enable telemetry via a Globally Unique Identifier (GUID).
 A name-value pair that represents queue metadata.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `name`
 

@@ -11,7 +11,7 @@ param name string
 param location string = resourceGroup().location
 
 @description('Optional. Resource tags.')
-param tags object = {}
+param tags object?
 
 @description('Optional. The lock settings of the service.')
 param lock lockType

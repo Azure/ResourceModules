@@ -58,7 +58,7 @@ Enable telemetry via a Globally Unique Identifier (GUID).
 The metadata attached to the record set.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `name`
 
@@ -139,7 +139,7 @@ Required. The name of the role to assign. If it cannot be found you can specify 
 A SOA record.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `ttl`
 

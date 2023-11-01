@@ -87,7 +87,7 @@ param lock lockType
 param roleAssignments roleAssignmentType
 
 @description('Optional. Tags of the resource.')
-param tags object = {}
+param tags object?
 
 @description('Optional. List of allowed FQDN.')
 param allowedFqdnList array = []

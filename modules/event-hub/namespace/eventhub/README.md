@@ -63,7 +63,19 @@ This module deploys an Event Hub Namespace Event Hub.
 Authorization Rules for the event hub.
 - Required: No
 - Type: array
-- Default: `[System.Management.Automation.OrderedHashtable]`
+- Default:
+  ```Bicep
+  [
+    {
+      name: 'RootManageSharedAccessKey'
+      rights: [
+        'Listen'
+        'Manage'
+        'Send'
+      ]
+    }
+  ]
+  ```
 
 ### Parameter: `captureDescriptionDestinationArchiveNameFormat`
 
@@ -106,7 +118,13 @@ Enumerates the possible values for the encoding format of capture description. N
 - Required: No
 - Type: string
 - Default: `'Avro'`
-- Allowed: `[Avro, AvroDeflate]`
+- Allowed:
+  ```Bicep
+  [
+    'Avro'
+    'AvroDeflate'
+  ]
+  ```
 
 ### Parameter: `captureDescriptionIntervalInSeconds`
 
@@ -134,7 +152,14 @@ A value that indicates whether to Skip Empty Archives.
 The consumer groups to create in this event hub instance.
 - Required: No
 - Type: array
-- Default: `[System.Management.Automation.OrderedHashtable]`
+- Default:
+  ```Bicep
+  [
+    {
+      name: '$Default'
+    }
+  ]
+  ```
 
 ### Parameter: `enableDefaultTelemetry`
 
@@ -202,7 +227,13 @@ Retention cleanup policy. Enumerates the possible values for cleanup policy.
 - Required: No
 - Type: string
 - Default: `'Delete'`
-- Allowed: `[Compact, Delete]`
+- Allowed:
+  ```Bicep
+  [
+    'Compact'
+    'Delete'
+  ]
+  ```
 
 ### Parameter: `retentionDescriptionRetentionTimeInHours`
 
@@ -292,7 +323,20 @@ Enumerates the possible values for the status of the Event Hub.
 - Required: No
 - Type: string
 - Default: `'Active'`
-- Allowed: `[Active, Creating, Deleting, Disabled, ReceiveDisabled, Renaming, Restoring, SendDisabled, Unknown]`
+- Allowed:
+  ```Bicep
+  [
+    'Active'
+    'Creating'
+    'Deleting'
+    'Disabled'
+    'ReceiveDisabled'
+    'Renaming'
+    'Restoring'
+    'SendDisabled'
+    'Unknown'
+  ]
+  ```
 
 
 ## Outputs

@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "10287022408270224079"
+      "templateHash": "5648029581364828548"
     },
     "name": "Deployment Scripts",
     "description": "This module deploys a Deployment Script.",
@@ -196,7 +196,7 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Tags of the resource."
       }

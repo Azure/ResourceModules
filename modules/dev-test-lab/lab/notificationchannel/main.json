@@ -1,11 +1,12 @@
 {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "languageVersion": "2.0",
   "contentVersion": "1.0.0.0",
   "metadata": {
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "7575060424945865003"
+      "templateHash": "5225332129791836269"
     },
     "name": "DevTest Lab Notification Channels",
     "description": "This module deploys a DevTest Lab Notification Channel.\r\n\r\nNotification channels are used by the schedule resource type in order to send notifications or events to email addresses and/or webhooks.",
@@ -30,7 +31,7 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Tags of the resource."
       }
@@ -78,8 +79,8 @@
       }
     }
   },
-  "resources": [
-    {
+  "resources": {
+    "defaultTelemetry": {
       "condition": "[parameters('enableDefaultTelemetry')]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2021-04-01",
@@ -93,7 +94,13 @@
         }
       }
     },
-    {
+    "lab": {
+      "existing": true,
+      "type": "Microsoft.DevTestLab/labs",
+      "apiVersion": "2018-09-15",
+      "name": "[parameters('labName')]"
+    },
+    "notificationChannel": {
       "type": "Microsoft.DevTestLab/labs/notificationchannels",
       "apiVersion": "2018-09-15",
       "name": "[format('{0}/{1}', parameters('labName'), parameters('name'))]",
@@ -104,9 +111,12 @@
         "emailRecipient": "[parameters('emailRecipient')]",
         "webHookUrl": "[parameters('webHookUrl')]",
         "notificationLocale": "[parameters('notificationLocale')]"
-      }
+      },
+      "dependsOn": [
+        "lab"
+      ]
     }
-  ],
+  },
   "outputs": {
     "name": {
       "type": "string",

@@ -87,7 +87,7 @@ param managedIdentities managedIdentitiesType
 param diagnosticSettings diagnosticSettingType
 
 @description('Optional. Tags to help categorize the resource in the Azure portal.')
-param tags object = {}
+param tags object?
 
 // ============= //
 //   Variables   //

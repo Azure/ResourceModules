@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "617227926666346063"
+      "templateHash": "12680610655362641595"
     },
     "name": "SignalR Web PubSub Services",
     "description": "This module deploys a SignalR Web PubSub Service.",
@@ -316,7 +316,7 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Tags of the resource."
       }

@@ -792,8 +792,14 @@ Optional. Specify the name of lock.
 ### Parameter: `managedIdentities`
 
 The managed identity definition for this resource. At least one identity type is required.
-- Required: Yes
+- Required: No
 - Type: object
+- Default:
+  ```Bicep
+  {
+      systemAssigned: true
+  }
+  ```
 
 
 | Name | Required | Type | Description |
@@ -992,7 +998,14 @@ Whether or not public network access is allowed for this resource. For security 
 - Required: No
 - Type: string
 - Default: `''`
-- Allowed: `['', Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    ''
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 ### Parameter: `roleAssignments`
 
@@ -1067,7 +1080,7 @@ Required. The name of the role to assign. If it cannot be found you can specify 
 The service managed resource settings.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `sharedPrivateLinkResources`
 
@@ -1081,14 +1094,21 @@ The list of shared private link resources in this workspace.
 Specifies the SKU, also referred as 'edition' of the Azure Machine Learning workspace.
 - Required: Yes
 - Type: string
-- Allowed: `[Basic, Free, Premium, Standard]`
+- Allowed:
+  ```Bicep
+  [
+    'Basic'
+    'Free'
+    'Premium'
+    'Standard'
+  ]
+  ```
 
 ### Parameter: `tags`
 
 Resource tags.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 
 ## Outputs

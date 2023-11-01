@@ -414,7 +414,15 @@ Property to enable and disable new private endpoint connection creation on ASE. 
 Custom settings for changing the behavior of the App Service Environment.
 - Required: No
 - Type: array
-- Default: `[System.Management.Automation.OrderedHashtable]`
+- Default:
+  ```Bicep
+  [
+    {
+      name: 'DisableTls1.0'
+      value: '1'
+    }
+  ]
+  ```
 
 ### Parameter: `customDnsSuffix`
 
@@ -580,7 +588,15 @@ Specifies which endpoints to serve internally in the Virtual Network for the App
 - Required: No
 - Type: string
 - Default: `'None'`
-- Allowed: `[None, Publishing, Web, Web, Publishing]`
+- Allowed:
+  ```Bicep
+  [
+    'None'
+    'Publishing'
+    'Web'
+    'Web Publishing'
+  ]
+  ```
 
 ### Parameter: `ipsslAddressCount`
 
@@ -595,7 +611,13 @@ Kind of resource.
 - Required: No
 - Type: string
 - Default: `'ASEv3'`
-- Allowed: `[ASEv2, ASEv3]`
+- Allowed:
+  ```Bicep
+  [
+    'ASEv2'
+    'ASEv3'
+  ]
+  ```
 
 ### Parameter: `location`
 
@@ -663,7 +685,22 @@ Frontend VM size. Cannot be used when kind is set to ASEv3.
 - Required: No
 - Type: string
 - Default: `''`
-- Allowed: `['', ExtraLarge, Large, Medium, Standard_D1_V2, Standard_D2, Standard_D2_V2, Standard_D3, Standard_D3_V2, Standard_D4, Standard_D4_V2]`
+- Allowed:
+  ```Bicep
+  [
+    ''
+    'ExtraLarge'
+    'Large'
+    'Medium'
+    'Standard_D1_V2'
+    'Standard_D2'
+    'Standard_D2_V2'
+    'Standard_D3'
+    'Standard_D3_V2'
+    'Standard_D4'
+    'Standard_D4_V2'
+  ]
+  ```
 
 ### Parameter: `name`
 
@@ -757,7 +794,6 @@ ResourceId for the subnet.
 Resource tags.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `upgradePreference`
 
@@ -765,7 +801,15 @@ Specify preference for when and how the planned maintenance is applied.
 - Required: No
 - Type: string
 - Default: `'None'`
-- Allowed: `[Early, Late, Manual, None]`
+- Allowed:
+  ```Bicep
+  [
+    'Early'
+    'Late'
+    'Manual'
+    'None'
+  ]
+  ```
 
 ### Parameter: `userWhitelistedIpRanges`
 

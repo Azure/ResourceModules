@@ -27,8 +27,8 @@ param uri string = ''
 @sys.description('Optional. The version of the runbook content.')
 param version string = ''
 
-@sys.description('Optional. ID of the runbook storage account.')
-param scriptStorageAccountId string = ''
+@sys.description('Optional. Resource Id of the runbook storage account.')
+param scriptStorageAccountResourceId string?
 
 @sys.description('Generated. Time used as a basis for e.g. the schedule start date.')
 param baseTime string = utcNow('u')
@@ -40,7 +40,7 @@ param sasTokenValidityLength string = 'PT8H'
 param location string = resourceGroup().location
 
 @sys.description('Optional. Tags of the Automation Account resource.')
-param tags object = {}
+param tags object?
 
 @sys.description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
@@ -69,13 +69,13 @@ resource automationAccount 'Microsoft.Automation/automationAccounts@2022-08-08' 
   name: automationAccountName
 }
 
-resource storageAccount 'Microsoft.Storage/storageAccounts@2022-09-01' existing = if (!empty(scriptStorageAccountId)) {
-  name: last(split(scriptStorageAccountId, '/'))!
-  scope: resourceGroup(split(scriptStorageAccountId, '/')[2], split(scriptStorageAccountId, '/')[4])
+resource storageAccount 'Microsoft.Storage/storageAccounts@2022-09-01' existing = if (!empty(scriptStorageAccountResourceId)) {
+  name: last(split((scriptStorageAccountResourceId ?? 'dummyVault'), '/'))
+  scope: resourceGroup(split((scriptStorageAccountResourceId ?? '//'), '/')[2], split((scriptStorageAccountResourceId ?? '////'), '/')[4])
 }
 
 var publishContentLink = empty(uri) ? null : {
-  uri: !empty(uri) ? (empty(scriptStorageAccountId) ? uri : '${uri}?${storageAccount.listAccountSas('2021-04-01', accountSasProperties).accountSasToken}') : null
+  uri: !empty(uri) ? (empty(scriptStorageAccountResourceId) ? uri : '${uri}?${storageAccount.listAccountSas('2021-04-01', accountSasProperties).accountSasToken}') : null
   version: !empty(version) ? version : null
 }
 

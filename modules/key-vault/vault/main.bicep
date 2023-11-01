@@ -77,7 +77,7 @@ param roleAssignments roleAssignmentType
 param privateEndpoints privateEndpointType
 
 @description('Optional. Resource tags.')
-param tags object = {}
+param tags object?
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
@@ -212,7 +212,7 @@ module keyVault_secrets 'secret/main.bicep' = [for (secret, index) in secretList
     attributesExp: contains(secret, 'attributesExp') ? secret.attributesExp : -1
     attributesNbf: contains(secret, 'attributesNbf') ? secret.attributesNbf : -1
     contentType: contains(secret, 'contentType') ? secret.contentType : ''
-    tags: contains(secret, 'tags') ? secret.tags : {}
+    tags: secret.?tags ?? tags
     roleAssignments: contains(secret, 'roleAssignments') ? secret.roleAssignments : []
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
@@ -230,7 +230,7 @@ module keyVault_keys 'key/main.bicep' = [for (key, index) in keys: {
     keyOps: contains(key, 'keyOps') ? key.keyOps : []
     keySize: contains(key, 'keySize') ? key.keySize : -1
     kty: contains(key, 'kty') ? key.kty : 'EC'
-    tags: contains(key, 'tags') ? key.tags : {}
+    tags: key.?tags ?? tags
     roleAssignments: contains(key, 'roleAssignments') ? key.roleAssignments : []
     enableDefaultTelemetry: enableReferencedModulesTelemetry
     rotationPolicy: contains(key, 'rotationPolicy') ? key.rotationPolicy : {}

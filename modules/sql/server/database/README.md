@@ -79,14 +79,14 @@ Time in minutes after which database is automatically paused. A value of -1 mean
 The long term backup retention policy to create for the database.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `backupShortTermRetentionPolicy`
 
 The short term backup retention policy to create for the database.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `collation`
 
@@ -101,7 +101,19 @@ Specifies the mode of database creation.
 - Required: No
 - Type: string
 - Default: `'Default'`
-- Allowed: `[Copy, Default, OnlineSecondary, PointInTimeRestore, Recovery, Restore, RestoreLongTermRetentionBackup, Secondary]`
+- Allowed:
+  ```Bicep
+  [
+    'Copy'
+    'Default'
+    'OnlineSecondary'
+    'PointInTimeRestore'
+    'Recovery'
+    'Restore'
+    'RestoreLongTermRetentionBackup'
+    'Secondary'
+  ]
+  ```
 
 ### Parameter: `diagnosticSettings`
 
@@ -293,7 +305,14 @@ Type of enclave requested on the database i.e. Default or VBS enclaves.
 - Required: No
 - Type: string
 - Default: `''`
-- Allowed: `['', Default, VBS]`
+- Allowed:
+  ```Bicep
+  [
+    ''
+    'Default'
+    'VBS'
+  ]
+  ```
 
 ### Parameter: `readScale`
 
@@ -301,7 +320,13 @@ The state of read-only routing.
 - Required: No
 - Type: string
 - Default: `'Disabled'`
-- Allowed: `[Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 ### Parameter: `recoveryServicesRecoveryPointResourceId`
 
@@ -316,7 +341,15 @@ The storage account type to be used to store backups for this database.
 - Required: No
 - Type: string
 - Default: `''`
-- Allowed: `['', Geo, Local, Zone]`
+- Allowed:
+  ```Bicep
+  [
+    ''
+    'Geo'
+    'Local'
+    'Zone'
+  ]
+  ```
 
 ### Parameter: `restorePointInTime`
 
@@ -392,7 +425,6 @@ Resource ID of database if createMode set to Copy, Secondary, PointInTimeRestore
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `zoneRedundant`
 

@@ -54,7 +54,13 @@ Network Groups for the configuration.
 Connectivity topology type.
 - Required: Yes
 - Type: string
-- Allowed: `[HubAndSpoke, Mesh]`
+- Allowed:
+  ```Bicep
+  [
+    'HubAndSpoke'
+    'Mesh'
+  ]
+  ```
 
 ### Parameter: `deleteExistingPeering`
 
@@ -62,7 +68,13 @@ Flag if need to remove current existing peerings. If set to "True", all peerings
 - Required: No
 - Type: string
 - Default: `'False'`
-- Allowed: `[False, True]`
+- Allowed:
+  ```Bicep
+  [
+    'False'
+    'True'
+  ]
+  ```
 
 ### Parameter: `description`
 
@@ -91,7 +103,13 @@ Flag if global mesh is supported. By default, mesh connectivity is applied to vi
 - Required: No
 - Type: string
 - Default: `'False'`
-- Allowed: `[False, True]`
+- Allowed:
+  ```Bicep
+  [
+    'False'
+    'True'
+  ]
+  ```
 
 ### Parameter: `name`
 

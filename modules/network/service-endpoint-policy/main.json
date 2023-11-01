@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "379140032937405547"
+      "templateHash": "10435227051484673475"
     },
     "name": "Service Endpoint Policies",
     "description": "This module deploys a Service Endpoint Policy.",
@@ -154,7 +154,7 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Tags of the resource."
       }

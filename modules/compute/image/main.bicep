@@ -30,7 +30,7 @@ param hyperVGeneration string = 'V1'
 param roleAssignments roleAssignmentType
 
 @description('Optional. Tags of the resource.')
-param tags object = {}
+param tags object?
 
 @description('Optional. The extended location of the Image.')
 param extendedLocation object = {}

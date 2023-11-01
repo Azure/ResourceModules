@@ -28,7 +28,7 @@ param lock lockType
 param roleAssignments roleAssignmentType
 
 @description('Optional. Tags of the resource.')
-param tags object = {}
+param tags object?
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
@@ -193,7 +193,7 @@ module server_databases 'database/main.bicep' = [for (database, index) in databa
     readScale: contains(database, 'readScale') ? database.readScale : 'Disabled'
     requestedBackupStorageRedundancy: contains(database, 'requestedBackupStorageRedundancy') ? database.requestedBackupStorageRedundancy : ''
     sampleName: contains(database, 'sampleName') ? database.sampleName : ''
-    tags: contains(database, 'tags') ? database.tags : {}
+    tags: database.?tags ?? tags
     zoneRedundant: contains(database, 'zoneRedundant') ? database.zoneRedundant : false
     elasticPoolId: contains(database, 'elasticPoolId') ? database.elasticPoolId : ''
     enableDefaultTelemetry: enableReferencedModulesTelemetry
@@ -228,7 +228,7 @@ module server_elasticPools 'elastic-pool/main.bicep' = [for (elasticPool, index)
     zoneRedundant: contains(elasticPool, 'zoneRedundant') ? elasticPool.zoneRedundant : false
     enableDefaultTelemetry: enableReferencedModulesTelemetry
     location: location
-    tags: contains(elasticPool, 'tags') ? elasticPool.tags : {}
+    tags: elasticPool.?tags ?? tags
   }
 }]
 

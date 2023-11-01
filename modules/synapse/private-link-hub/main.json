@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "10252337308149889030"
+      "templateHash": "684659786245480339"
     },
     "name": "Azure Synapse Analytics",
     "description": "This module deploys an Azure Synapse Analytics (Private Link Hub).",
@@ -274,7 +274,7 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Tags of the resource."
       }

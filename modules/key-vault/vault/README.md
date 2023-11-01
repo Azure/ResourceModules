@@ -1040,7 +1040,7 @@ Name of the Key Vault. Must be globally unique.
 Service endpoint object information. For security reasons, it is recommended to set the DefaultAction Deny.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `privateEndpoints`
 
@@ -1206,7 +1206,14 @@ Whether or not public network access is allowed for this resource. For security 
 - Required: No
 - Type: string
 - Default: `''`
-- Allowed: `['', Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    ''
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 ### Parameter: `roleAssignments`
 
@@ -1281,7 +1288,7 @@ Required. The name of the role to assign. If it cannot be found you can specify 
 All secrets to create.
 - Required: No
 - Type: secureObject
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `softDeleteRetentionInDays`
 
@@ -1295,7 +1302,6 @@ softDelete data retention days. It accepts >=7 and <=90.
 Resource tags.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `vaultSku`
 
@@ -1303,7 +1309,13 @@ Specifies the SKU for the vault.
 - Required: No
 - Type: string
 - Default: `'premium'`
-- Allowed: `[premium, standard]`
+- Allowed:
+  ```Bicep
+  [
+    'premium'
+    'standard'
+  ]
+  ```
 
 
 ## Outputs

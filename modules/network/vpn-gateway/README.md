@@ -263,7 +263,7 @@ module vpnGateway 'br:bicep/modules/network.vpn-gateway:1.0.0' = {
 BGP settings details.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `enableBgpRouteTranslationForNat`
 
@@ -338,7 +338,6 @@ List of all the NAT Rules to associate with the gateway.
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `virtualHubResourceId`
 

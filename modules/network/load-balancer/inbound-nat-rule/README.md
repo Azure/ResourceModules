@@ -131,7 +131,14 @@ The transport protocol for the endpoint.
 - Required: No
 - Type: string
 - Default: `'Tcp'`
-- Allowed: `[All, Tcp, Udp]`
+- Allowed:
+  ```Bicep
+  [
+    'All'
+    'Tcp'
+    'Udp'
+  ]
+  ```
 
 
 ## Outputs

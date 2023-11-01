@@ -698,7 +698,7 @@ API Version Sets.
 Authorization servers.
 - Required: No
 - Type: secureObject
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `backends`
 
@@ -726,7 +726,7 @@ List of Certificates that need to be installed in the API Management service. Ma
 Custom properties of the API Management service.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `diagnosticSettings`
 
@@ -1086,7 +1086,16 @@ The pricing tier of this API Management service.
 - Required: No
 - Type: string
 - Default: `'Developer'`
-- Allowed: `[Basic, Consumption, Developer, Premium, Standard]`
+- Allowed:
+  ```Bicep
+  [
+    'Basic'
+    'Consumption'
+    'Developer'
+    'Premium'
+    'Standard'
+  ]
+  ```
 
 ### Parameter: `skuCount`
 
@@ -1094,7 +1103,13 @@ The instance size of this API Management service.
 - Required: No
 - Type: int
 - Default: `1`
-- Allowed: `[1, 2]`
+- Allowed:
+  ```Bicep
+  [
+    1
+    2
+  ]
+  ```
 
 ### Parameter: `subnetResourceId`
 
@@ -1115,7 +1130,6 @@ Subscriptions.
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `virtualNetworkType`
 
@@ -1123,7 +1137,14 @@ The type of VPN in which API Management service needs to be configured in. None 
 - Required: No
 - Type: string
 - Default: `'None'`
-- Allowed: `[External, Internal, None]`
+- Allowed:
+  ```Bicep
+  [
+    'External'
+    'Internal'
+    'None'
+  ]
+  ```
 
 ### Parameter: `zones`
 

@@ -94,7 +94,7 @@ Name of the immutable policy.
 Configure immutability policy.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `immutableStorageWithVersioningEnabled`
 
@@ -108,7 +108,7 @@ This is an immutable property, when set to true it enables object level immutabi
 A name-value pair to associate with the container as metadata.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `name`
 
@@ -122,7 +122,14 @@ Specifies whether data in the container may be accessed publicly and the level o
 - Required: No
 - Type: string
 - Default: `'None'`
-- Allowed: `[Blob, Container, None]`
+- Allowed:
+  ```Bicep
+  [
+    'Blob'
+    'Container'
+    'None'
+  ]
+  ```
 
 ### Parameter: `roleAssignments`
 

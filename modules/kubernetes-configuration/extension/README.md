@@ -244,14 +244,14 @@ The name of the AKS cluster that should be configured.
 Configuration settings that are sensitive, as name-value pairs for configuring this extension.
 - Required: No
 - Type: secureObject
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `configurationSettings`
 
 Configuration settings, as name-value pairs for configuring this extension.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `enableDefaultTelemetry`
 

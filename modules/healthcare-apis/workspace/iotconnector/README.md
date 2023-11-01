@@ -61,7 +61,13 @@ Consumer group of the event hub to connected to.
 The mapping JSON that determines how incoming device data is normalized.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default:
+  ```Bicep
+  {
+      template: []
+      templateType: 'CollectionContent'
+  }
+  ```
 
 ### Parameter: `diagnosticSettings`
 
@@ -202,7 +208,7 @@ Namespace of the Event Hub to connect to.
 FHIR Destination.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `location`
 
@@ -275,7 +281,6 @@ The name of the MedTech service.
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `workspaceName`
 

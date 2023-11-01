@@ -70,7 +70,38 @@ module testDeployment '../../main.bicep' = {
       kind: 'CanNotDelete'
       name: 'myCustomLockName'
     }
-    natGatewayPublicIpAddress: true
+    publicIPAddressObjects: [
+      {
+        name: '${namePrefix}${serviceShort}001-pip'
+        roleAssignments: [
+          {
+            roleDefinitionIdOrName: 'Reader'
+            principalId: nestedDependencies.outputs.managedIdentityPrincipalId
+            principalType: 'ServicePrincipal'
+          }
+        ]
+        skuTier: 'Regional'
+        zones: [
+          '1'
+          '2'
+          '3'
+        ]
+        diagnosticSettings: [
+          {
+            name: 'customSetting'
+            metricCategories: [
+              {
+                category: 'AllMetrics'
+              }
+            ]
+            eventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
+            eventHubAuthorizationRuleResourceId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
+            storageAccountResourceId: diagnosticDependencies.outputs.storageAccountResourceId
+            workspaceResourceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
+          }
+        ]
+      }
+    ]
     roleAssignments: [
       {
         roleDefinitionIdOrName: 'Reader'

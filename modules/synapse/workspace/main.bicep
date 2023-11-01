@@ -11,7 +11,7 @@ param name string
 param location string = resourceGroup().location
 
 @description('Optional. Tags of the resource.')
-param tags object = {}
+param tags object?
 
 @description('Optional. Enable or Disable AzureADOnlyAuthentication on All Workspace sub-resource.')
 param azureADOnlyAuthentication bool = false

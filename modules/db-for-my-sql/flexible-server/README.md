@@ -652,7 +652,15 @@ Availability zone information of the server. Default will have no preference set
 - Required: No
 - Type: string
 - Default: `''`
-- Allowed: `['', 1, 2, 3]`
+- Allowed:
+  ```Bicep
+  [
+    ''
+    '1'
+    '2'
+    '3'
+  ]
+  ```
 
 ### Parameter: `backupRetentionDays`
 
@@ -695,7 +703,15 @@ The mode to create a new MySQL server.
 - Required: No
 - Type: string
 - Default: `'Default'`
-- Allowed: `[Default, GeoRestore, PointInTimeRestore, Replica]`
+- Allowed:
+  ```Bicep
+  [
+    'Default'
+    'GeoRestore'
+    'PointInTimeRestore'
+    'Replica'
+  ]
+  ```
 
 ### Parameter: `databases`
 
@@ -874,7 +890,13 @@ A value indicating whether Geo-Redundant backup is enabled on the server. If "En
 - Required: No
 - Type: string
 - Default: `'Disabled'`
-- Allowed: `[Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 ### Parameter: `highAvailability`
 
@@ -882,7 +904,14 @@ The mode for High Availability (HA). It is not supported for the Burstable prici
 - Required: No
 - Type: string
 - Default: `'Disabled'`
-- Allowed: `[Disabled, SameZone, ZoneRedundant]`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'SameZone'
+    'ZoneRedundant'
+  ]
+  ```
 
 ### Parameter: `location`
 
@@ -923,7 +952,7 @@ Optional. Specify the name of lock.
 Properties for the maintenence window. If provided, "customWindow" property must exist and set to "Enabled".
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `managedIdentities`
 
@@ -962,7 +991,14 @@ The replication role.
 - Required: No
 - Type: string
 - Default: `'None'`
-- Allowed: `[None, Replica, Source]`
+- Allowed:
+  ```Bicep
+  [
+    'None'
+    'Replica'
+    'Source'
+  ]
+  ```
 
 ### Parameter: `restorePointInTime`
 
@@ -1058,7 +1094,13 @@ Enable Storage Auto Grow or not. Storage auto-growth prevents a server from runn
 - Required: No
 - Type: string
 - Default: `'Disabled'`
-- Allowed: `[Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 ### Parameter: `storageAutoIoScaling`
 
@@ -1066,7 +1108,13 @@ Enable IO Auto Scaling or not. The server scales IOPs up or down automatically d
 - Required: No
 - Type: string
 - Default: `'Disabled'`
-- Allowed: `[Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 ### Parameter: `storageIOPS`
 
@@ -1081,21 +1129,42 @@ Max storage allowed for a server. In all compute tiers, the minimum storage supp
 - Required: No
 - Type: int
 - Default: `64`
-- Allowed: `[20, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192, 16384]`
+- Allowed:
+  ```Bicep
+  [
+    20
+    32
+    64
+    128
+    256
+    512
+    1024
+    2048
+    4096
+    8192
+    16384
+  ]
+  ```
 
 ### Parameter: `tags`
 
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `tier`
 
 The tier of the particular SKU. Tier must align with the "skuName" property. Example, tier cannot be "Burstable" if skuName is "Standard_D4s_v3".
 - Required: Yes
 - Type: string
-- Allowed: `[Burstable, GeneralPurpose, MemoryOptimized]`
+- Allowed:
+  ```Bicep
+  [
+    'Burstable'
+    'GeneralPurpose'
+    'MemoryOptimized'
+  ]
+  ```
 
 ### Parameter: `version`
 
@@ -1103,7 +1172,13 @@ MySQL Server version.
 - Required: No
 - Type: string
 - Default: `'5.7'`
-- Allowed: `[5.7, 8.0.21]`
+- Allowed:
+  ```Bicep
+  [
+    '5.7'
+    '8.0.21'
+  ]
+  ```
 
 
 ## Outputs
