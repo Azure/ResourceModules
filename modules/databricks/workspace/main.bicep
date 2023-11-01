@@ -49,26 +49,11 @@ param customPublicSubnetName string = ''
 @description('Optional. Disable Public IP.')
 param disablePublicIp bool = false
 
-@description('Conditional. The resource ID of a key vault to reference a customer managed key for encryption from. Required if \'cMKKeyName\' is not empty.')
-param cMKManagedServicesKeyVaultResourceId string = ''
+@description('Optional. The customer managed key definition to use for the managed service.')
+param customerManagedKey customerManagedKeyType
 
-@description('Optional. The name of the customer managed key to use for encryption.')
-param cMKManagedServicesKeyName string = ''
-
-@description('Optional. The version of the customer managed key to reference for encryption. If not provided, the latest key version is used.')
-param cMKManagedServicesKeyVersion string = ''
-
-@description('Conditional. The resource ID of a key vault to reference a customer managed key for encryption from. Required if \'cMKKeyName\' is not empty.')
-param cMKManagedDisksKeyVaultResourceId string = ''
-
-@description('Optional. The name of the customer managed key to use for encryption.')
-param cMKManagedDisksKeyName string = ''
-
-@description('Optional. The version of the customer managed key to reference for encryption. If not provided, the latest key version is used.')
-param cMKManagedDisksKeyVersion string = ''
-
-@description('Optional. Enable Auto Rotation of Key.')
-param cMKManagedDisksKeyRotationToLatestKeyVersionEnabled bool = true
+@description('Optional. The customer managed key definition to use for the managed disk.')
+param customerManagedKeyManagedDisk customerManagedKeyManagedDiskType
 
 @description('Optional. Name of the outbound Load Balancer Backend Pool for Secure Cluster Connectivity (No Public IP).')
 param loadBalancerBackendPoolName string = ''
@@ -136,21 +121,21 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource cMKManagedDisksKeyVault 'Microsoft.KeyVault/vaults@2021-10-01' existing = if (!empty(cMKManagedDisksKeyVaultResourceId)) {
-  name: last(split((!empty(cMKManagedDisksKeyVaultResourceId) ? cMKManagedDisksKeyVaultResourceId : 'dummyVault'), '/'))!
-  scope: resourceGroup(split((!empty(cMKManagedDisksKeyVaultResourceId) ? cMKManagedDisksKeyVaultResourceId : '//'), '/')[2], split((!empty(cMKManagedDisksKeyVaultResourceId) ? cMKManagedDisksKeyVaultResourceId : '////'), '/')[4])
+resource cMKKeyVault 'Microsoft.KeyVault/vaults@2023-02-01' existing = if (!empty(customerManagedKey.?keyVaultResourceId)) {
+  name: last(split((customerManagedKey.?keyVaultResourceId ?? 'dummyVault'), '/'))
+  scope: resourceGroup(split((customerManagedKey.?keyVaultResourceId ?? '//'), '/')[2], split((customerManagedKey.?keyVaultResourceId ?? '////'), '/')[4])
 
-  resource cMKKeyDisk 'keys@2023-02-01' existing = if (!empty(cMKManagedDisksKeyName)) {
-    name: !empty(cMKManagedDisksKeyName) ? cMKManagedDisksKeyName : 'dummyKey'
+  resource cMKKey 'keys@2023-02-01' existing = if (!empty(customerManagedKey.?keyVaultResourceId) && !empty(customerManagedKey.?keyName)) {
+    name: customerManagedKey.?keyName ?? 'dummyKey'
   }
 }
 
-resource cMKManagedServicesKeyVault 'Microsoft.KeyVault/vaults@2021-10-01' existing = if (!empty(cMKManagedServicesKeyVaultResourceId)) {
-  name: last(split((!empty(cMKManagedServicesKeyVaultResourceId) ? cMKManagedServicesKeyVaultResourceId : 'dummyVault'), '/'))!
-  scope: resourceGroup(split((!empty(cMKManagedServicesKeyVaultResourceId) ? cMKManagedServicesKeyVaultResourceId : '//'), '/')[2], split((!empty(cMKManagedServicesKeyVaultResourceId) ? cMKManagedServicesKeyVaultResourceId : '////'), '/')[4])
+resource cMKManagedDiskKeyVault 'Microsoft.KeyVault/vaults@2023-02-01' existing = if (!empty(customerManagedKeyManagedDisk.?keyVaultResourceId)) {
+  name: last(split((customerManagedKeyManagedDisk.?keyVaultResourceId ?? 'dummyVault'), '/'))
+  scope: resourceGroup(split((customerManagedKeyManagedDisk.?keyVaultResourceId ?? '//'), '/')[2], split((customerManagedKeyManagedDisk.?keyVaultResourceId ?? '////'), '/')[4])
 
-  resource cMKKey 'keys@2023-02-01' existing = if (!empty(cMKManagedServicesKeyName)) {
-    name: !empty(cMKManagedServicesKeyName) ? cMKManagedServicesKeyName : 'dummyKey'
+  resource cMKKey 'keys@2023-02-01' existing = if (!empty(customerManagedKeyManagedDisk.?keyVaultResourceId) && !empty(customerManagedKeyManagedDisk.?keyName)) {
+    name: customerManagedKeyManagedDisk.?keyName ?? 'dummyKey'
   }
 }
 
@@ -232,24 +217,24 @@ resource workspace 'Microsoft.Databricks/workspaces@2023-02-01' = {
       } : {})
     publicNetworkAccess: publicNetworkAccess
     requiredNsgRules: requiredNsgRules
-    encryption: !empty(cMKManagedServicesKeyName) || !empty(cMKManagedServicesKeyName) ? {
+    encryption: !empty(customerManagedKey) || !empty(customerManagedKeyManagedDisk) ? {
       entities: {
-        managedServices: !empty(cMKManagedServicesKeyName) ? {
+        managedServices: !empty(customerManagedKey) ? {
           keySource: 'Microsoft.Keyvault'
           keyVaultProperties: {
-            keyVaultUri: cMKManagedServicesKeyVault.properties.vaultUri
-            keyName: cMKManagedServicesKeyName
-            keyVersion: !empty(cMKManagedServicesKeyVersion) ? cMKManagedServicesKeyVersion : last(split(cMKManagedServicesKeyVault::cMKKey.properties.keyUriWithVersion, '/'))
+            keyVaultUri: cMKKeyVault.properties.vaultUri
+            keyName: customerManagedKey!.keyName
+            keyVersion: !empty(customerManagedKey.?keyVersion ?? '') ? customerManagedKey!.keyVersion : last(split(cMKKeyVault::cMKKey.properties.keyUriWithVersion, '/'))
           }
         } : null
-        managedDisk: !empty(cMKManagedDisksKeyName) ? {
+        managedDisk: !empty(customerManagedKeyManagedDisk) ? {
           keySource: 'Microsoft.Keyvault'
           keyVaultProperties: {
-            keyVaultUri: cMKManagedDisksKeyVault.properties.vaultUri
-            keyName: cMKManagedDisksKeyName
-            keyVersion: !empty(cMKManagedDisksKeyVersion) ? cMKManagedDisksKeyVersion : last(split(cMKManagedDisksKeyVault::cMKKeyDisk.properties.keyUriWithVersion, '/'))
+            keyVaultUri: cMKManagedDiskKeyVault.properties.vaultUri
+            keyName: customerManagedKeyManagedDisk!.keyName
+            keyVersion: !empty(customerManagedKeyManagedDisk.?keyVersion ?? '') ? customerManagedKeyManagedDisk!.keyVersion : last(split(cMKManagedDiskKeyVault::cMKKey.properties.keyUriWithVersion, '/'))
           }
-          rotationToLatestKeyVersionEnabled: cMKManagedDisksKeyRotationToLatestKeyVersionEnabled
+          rotationToLatestKeyVersionEnabled: customerManagedKeyManagedDisk.?rotationToLatestKeyVersionEnabled ?? true
         } : null
       }
     } : null
@@ -469,3 +454,34 @@ type diagnosticSettingType = {
   @description('Optional. The full ARM resource ID of the Marketplace resource to which you would like to send Diagnostic Logs.')
   marketplacePartnerResourceId: string?
 }[]?
+
+type customerManagedKeyType = {
+  @description('Required. The resource ID of a key vault to reference a customer managed key for encryption from.')
+  keyVaultResourceId: string
+
+  @description('Required. The name of the customer managed key to use for encryption.')
+  keyName: string
+
+  @description('Optional. The version of the customer managed key to reference for encryption. If not provided, using \'latest\'.')
+  keyVersion: string?
+
+  @description('Optional. User assigned identity to use when fetching the customer managed key. Required if no system assigned identity is available for use.')
+  userAssignedIdentityResourceId: string?
+}?
+
+type customerManagedKeyManagedDiskType = {
+  @description('Required. The resource ID of a key vault to reference a customer managed key for encryption from.')
+  keyVaultResourceId: string
+
+  @description('Required. The name of the customer managed key to use for encryption.')
+  keyName: string
+
+  @description('Optional. The version of the customer managed key to reference for encryption. If not provided, using \'latest\'.')
+  keyVersion: string?
+
+  @description('Optional. User assigned identity to use when fetching the customer managed key. Required if no system assigned identity is available for use.')
+  userAssignedIdentityResourceId: string?
+
+  @description('Optional. Indicate whether the latest key version should be automatically used for Managed Disk Encryption. Enabled by default.')
+  rotationToLatestKeyVersionEnabled: bool?
+}?

@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "7186571646898746589"
+      "templateHash": "11493438009443560879"
     },
     "name": "Automation Accounts",
     "description": "This module deploys an Azure Automation Account.",
@@ -406,6 +406,38 @@
         }
       },
       "nullable": true
+    },
+    "customerManagedKeyType": {
+      "type": "object",
+      "properties": {
+        "keyVaultResourceId": {
+          "type": "string",
+          "metadata": {
+            "description": "Required. The resource ID of a key vault to reference a customer managed key for encryption from."
+          }
+        },
+        "keyName": {
+          "type": "string",
+          "metadata": {
+            "description": "Required. The name of the customer managed key to use for encryption."
+          }
+        },
+        "keyVersion": {
+          "type": "string",
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. The version of the customer managed key to reference for encryption. If not provided, using 'latest'."
+          }
+        },
+        "userAssignedIdentityResourceId": {
+          "type": "string",
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. User assigned identity to use when fetching the customer managed key. Required if no system assigned identity is available for use."
+          }
+        }
+      },
+      "nullable": true
     }
   },
   "parameters": {
@@ -433,32 +465,10 @@
         "description": "Optional. SKU name of the account."
       }
     },
-    "cMKKeyVaultResourceId": {
-      "type": "string",
-      "defaultValue": "",
+    "customerManagedKey": {
+      "$ref": "#/definitions/customerManagedKeyType",
       "metadata": {
-        "description": "Conditional. The resource ID of a key vault to reference a customer managed key for encryption from. Required if 'cMKKeyName' is not empty."
-      }
-    },
-    "cMKKeyName": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": "Optional. The name of the customer managed key to use for encryption."
-      }
-    },
-    "cMKUserAssignedIdentityResourceId": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": "Conditional. User assigned identity to use when fetching the customer managed key. Required if 'cMKKeyName' is not empty."
-      }
-    },
-    "cMKKeyVersion": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": "Optional. The version of the customer managed key to reference for encryption. If not provided, the latest key version is used."
+        "description": "Optional. The customer managed key definition."
       }
     },
     "modules": {
@@ -599,13 +609,13 @@
   },
   "resources": {
     "cMKKeyVault::cMKKey": {
-      "condition": "[and(not(empty(parameters('cMKKeyVaultResourceId'))), not(empty(parameters('cMKKeyName'))))]",
+      "condition": "[and(not(empty(tryGet(parameters('customerManagedKey'), 'keyVaultResourceId'))), and(not(empty(tryGet(parameters('customerManagedKey'), 'keyVaultResourceId'))), not(empty(tryGet(parameters('customerManagedKey'), 'keyName')))))]",
       "existing": true,
       "type": "Microsoft.KeyVault/vaults/keys",
       "apiVersion": "2023-02-01",
-      "subscriptionId": "[split(if(not(empty(parameters('cMKKeyVaultResourceId'))), parameters('cMKKeyVaultResourceId'), '//'), '/')[2]]",
-      "resourceGroup": "[split(if(not(empty(parameters('cMKKeyVaultResourceId'))), parameters('cMKKeyVaultResourceId'), '////'), '/')[4]]",
-      "name": "[format('{0}/{1}', last(split(if(not(empty(parameters('cMKKeyVaultResourceId'))), parameters('cMKKeyVaultResourceId'), 'dummyVault'), '/')), if(not(empty(parameters('cMKKeyName'))), parameters('cMKKeyName'), 'dummyKey'))]",
+      "subscriptionId": "[split(coalesce(tryGet(parameters('customerManagedKey'), 'keyVaultResourceId'), '//'), '/')[2]]",
+      "resourceGroup": "[split(coalesce(tryGet(parameters('customerManagedKey'), 'keyVaultResourceId'), '////'), '/')[4]]",
+      "name": "[format('{0}/{1}', last(split(coalesce(tryGet(parameters('customerManagedKey'), 'keyVaultResourceId'), 'dummyVault'), '/')), coalesce(tryGet(parameters('customerManagedKey'), 'keyName'), 'dummyKey'))]",
       "dependsOn": [
         "cMKKeyVault"
       ]
@@ -625,13 +635,22 @@
       }
     },
     "cMKKeyVault": {
-      "condition": "[not(empty(parameters('cMKKeyVaultResourceId')))]",
+      "condition": "[not(empty(tryGet(parameters('customerManagedKey'), 'keyVaultResourceId')))]",
       "existing": true,
       "type": "Microsoft.KeyVault/vaults",
-      "apiVersion": "2021-10-01",
-      "subscriptionId": "[split(if(not(empty(parameters('cMKKeyVaultResourceId'))), parameters('cMKKeyVaultResourceId'), '//'), '/')[2]]",
-      "resourceGroup": "[split(if(not(empty(parameters('cMKKeyVaultResourceId'))), parameters('cMKKeyVaultResourceId'), '////'), '/')[4]]",
-      "name": "[last(split(if(not(empty(parameters('cMKKeyVaultResourceId'))), parameters('cMKKeyVaultResourceId'), 'dummyVault'), '/'))]"
+      "apiVersion": "2023-02-01",
+      "subscriptionId": "[split(coalesce(tryGet(parameters('customerManagedKey'), 'keyVaultResourceId'), '//'), '/')[2]]",
+      "resourceGroup": "[split(coalesce(tryGet(parameters('customerManagedKey'), 'keyVaultResourceId'), '////'), '/')[4]]",
+      "name": "[last(split(coalesce(tryGet(parameters('customerManagedKey'), 'keyVaultResourceId'), 'dummyVault'), '/'))]"
+    },
+    "cMKUserAssignedIdentity": {
+      "condition": "[not(empty(tryGet(parameters('customerManagedKey'), 'userAssignedIdentityResourceId')))]",
+      "existing": true,
+      "type": "Microsoft.ManagedIdentity/userAssignedIdentities",
+      "apiVersion": "2023-01-31",
+      "subscriptionId": "[split(coalesce(tryGet(parameters('customerManagedKey'), 'userAssignedIdentityResourceId'), '//'), '/')[2]]",
+      "resourceGroup": "[split(coalesce(tryGet(parameters('customerManagedKey'), 'userAssignedIdentityResourceId'), '////'), '/')[4]]",
+      "name": "[last(split(coalesce(tryGet(parameters('customerManagedKey'), 'userAssignedIdentityResourceId'), 'dummyMsi'), '/'))]"
     },
     "automationAccount": {
       "type": "Microsoft.Automation/automationAccounts",
@@ -644,12 +663,13 @@
         "sku": {
           "name": "[parameters('skuName')]"
         },
-        "encryption": "[if(not(empty(parameters('cMKKeyName'))), createObject('keySource', 'Microsoft.KeyVault', 'identity', createObject('userAssignedIdentity', parameters('cMKUserAssignedIdentityResourceId')), 'keyVaultProperties', createObject('keyName', parameters('cMKKeyName'), 'keyVaultUri', reference('cMKKeyVault').vaultUri, 'keyVersion', if(not(empty(parameters('cMKKeyVersion'))), parameters('cMKKeyVersion'), last(split(reference('cMKKeyVault::cMKKey').keyUriWithVersion, '/'))))), null())]",
+        "encryption": "[if(not(empty(parameters('customerManagedKey'))), createObject('keySource', 'Microsoft.KeyVault', 'identity', if(not(empty(tryGet(parameters('customerManagedKey'), 'userAssignedIdentityResourceId'))), createObject('userAssignedIdentity', extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', split(coalesce(tryGet(parameters('customerManagedKey'), 'userAssignedIdentityResourceId'), '//'), '/')[2], split(coalesce(tryGet(parameters('customerManagedKey'), 'userAssignedIdentityResourceId'), '////'), '/')[4]), 'Microsoft.ManagedIdentity/userAssignedIdentities', last(split(coalesce(tryGet(parameters('customerManagedKey'), 'userAssignedIdentityResourceId'), 'dummyMsi'), '/')))), null()), 'keyVaultProperties', createObject('keyName', parameters('customerManagedKey').keyName, 'keyVaultUri', reference('cMKKeyVault').vaultUri, 'keyVersion', if(not(empty(coalesce(tryGet(parameters('customerManagedKey'), 'keyVersion'), ''))), parameters('customerManagedKey').keyVersion, last(split(reference('cMKKeyVault::cMKKey').keyUriWithVersion, '/'))))), null())]",
         "publicNetworkAccess": "[if(not(empty(parameters('publicNetworkAccess'))), if(equals(parameters('publicNetworkAccess'), 'Disabled'), false(), true()), if(not(empty(parameters('privateEndpoints'))), false(), null()))]",
         "disableLocalAuth": "[parameters('disableLocalAuth')]"
       },
       "dependsOn": [
-        "cMKKeyVault"
+        "cMKKeyVault",
+        "cMKUserAssignedIdentity"
       ]
     },
     "automationAccount_lock": {

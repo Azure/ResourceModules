@@ -56,9 +56,11 @@ module testDeployment '../../main.bicep' = {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '${namePrefix}${serviceShort}001'
     acrSku: 'Premium'
-    cMKKeyName: nestedDependencies.outputs.keyVaultEncryptionKeyName
-    cMKKeyVaultResourceId: nestedDependencies.outputs.keyVaultResourceId
-    cMKUserAssignedIdentityResourceId: nestedDependencies.outputs.managedIdentityResourceId
+    customerManagedKey: {
+      keyName: nestedDependencies.outputs.keyVaultEncryptionKeyName
+      keyVaultResourceId: nestedDependencies.outputs.keyVaultResourceId
+      userAssignedIdentityResourceId: nestedDependencies.outputs.managedIdentityResourceId
+    }
     publicNetworkAccess: 'Disabled'
     managedIdentities: {
       userAssignedResourcesIds: [

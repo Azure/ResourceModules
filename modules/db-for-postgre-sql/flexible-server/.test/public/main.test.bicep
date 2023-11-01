@@ -132,9 +132,11 @@ module testDeployment '../../main.bicep' = {
     location: location
     storageSizeGB: 1024
     version: '14'
-    cMKKeyVaultResourceId: nestedDependencies.outputs.keyVaultResourceId
-    cMKKeyName: nestedDependencies.outputs.keyName
-    cMKUserAssignedIdentityResourceId: nestedDependencies.outputs.managedIdentityResourceId
+    customerManagedKey: {
+      keyName: nestedDependencies.outputs.keyName
+      keyVaultResourceId: nestedDependencies.outputs.keyVaultResourceId
+      userAssignedIdentityResourceId: nestedDependencies.outputs.managedIdentityResourceId
+    }
     managedIdentities: {
       userAssignedResourcesIds: [
         nestedDependencies.outputs.managedIdentityResourceId

@@ -90,8 +90,10 @@ module testDeployment '../../main.bicep' = {
       Environment: 'Non-Prod'
       Role: 'DeploymentValidation'
     }
-    cMKKeyVaultResourceId: nestedDependencies.outputs.keyVaultResourceId
-    cMKKeyName: nestedDependencies.outputs.keyName
-    cMKUserAssignedIdentityResourceId: nestedDependencies.outputs.managedIdentityResourceId
+    customerManagedKey: {
+      keyName: nestedDependencies.outputs.keyName
+      keyVaultResourceId: nestedDependencies.outputs.keyVaultResourceId
+      userAssignedIdentityResourceId: nestedDependencies.outputs.managedIdentityResourceId
+    }
   }
 }

@@ -56,10 +56,10 @@ module testDeployment '../../main.bicep' = {
     defaultDataLakeStorageAccountResourceId: nestedDependencies.outputs.storageAccountResourceId
     defaultDataLakeStorageFilesystem: nestedDependencies.outputs.storageContainerName
     sqlAdministratorLogin: 'synwsadmin'
-    encryption: true
-    cMKKeyVaultResourceId: nestedDependencies.outputs.keyVaultResourceId
-    cMKKeyName: nestedDependencies.outputs.keyVaultEncryptionKeyName
-    cMKUseSystemAssignedIdentity: true
+    customerManagedKey: {
+      keyName: nestedDependencies.outputs.keyVaultEncryptionKeyName
+      keyVaultResourceId: nestedDependencies.outputs.keyVaultResourceId
+    }
     encryptionActivateWorkspace: true
     enableDefaultTelemetry: enableDefaultTelemetry
   }

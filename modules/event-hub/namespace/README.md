@@ -449,9 +449,11 @@ module namespace 'br:bicep/modules/event-hub.namespace:1.0.0' = {
     // Required parameters
     name: 'ehnenc001'
     // Non-required parameters
-    cMKKeyName: '<cMKKeyName>'
-    cMKKeyVaultResourceId: '<cMKKeyVaultResourceId>'
-    cMKUserAssignedIdentityResourceId: '<cMKUserAssignedIdentityResourceId>'
+    customerManagedKey: {
+      keyName: '<keyName>'
+      keyVaultResourceId: '<keyVaultResourceId>'
+      userAssignedIdentityResourceId: '<userAssignedIdentityResourceId>'
+    }
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     managedIdentities: {
       systemAssigned: false
@@ -488,14 +490,12 @@ module namespace 'br:bicep/modules/event-hub.namespace:1.0.0' = {
       "value": "ehnenc001"
     },
     // Non-required parameters
-    "cMKKeyName": {
-      "value": "<cMKKeyName>"
-    },
-    "cMKKeyVaultResourceId": {
-      "value": "<cMKKeyVaultResourceId>"
-    },
-    "cMKUserAssignedIdentityResourceId": {
-      "value": "<cMKUserAssignedIdentityResourceId>"
+    "customerManagedKey": {
+      "value": {
+        "keyName": "<keyName>",
+        "keyVaultResourceId": "<keyVaultResourceId>",
+        "userAssignedIdentityResourceId": "<userAssignedIdentityResourceId>"
+      }
     },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
@@ -685,20 +685,12 @@ module namespace 'br:bicep/modules/event-hub.namespace:1.0.0' = {
 | :-- | :-- | :-- |
 | [`name`](#parameter-name) | string | The name of the event hub namespace. |
 
-**Conditional parameters**
-
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`cMKKeyVaultResourceId`](#parameter-cmkkeyvaultresourceid) | string | The resource ID of a key vault to reference a customer managed key for encryption from. Required if "cMKKeyName" is not empty. |
-| [`cMKUserAssignedIdentityResourceId`](#parameter-cmkuserassignedidentityresourceid) | string | User assigned identity to use when fetching the customer managed key. The identity should have key usage permissions on the Key Vault Key. Required if "cMKKeyName" is not empty. |
-
 **Optional parameters**
 
 | Parameter | Type | Description |
 | :-- | :-- | :-- |
 | [`authorizationRules`](#parameter-authorizationrules) | array | Authorization Rules for the Event Hub namespace. |
-| [`cMKKeyName`](#parameter-cmkkeyname) | string | The name of the customer managed key to use for encryption. Customer-managed key encryption at rest is only available for namespaces of premium SKU or namespaces created in a Dedicated Cluster. |
-| [`cMKKeyVersion`](#parameter-cmkkeyversion) | string | The version of the customer managed key to reference for encryption. If not provided, the latest key version is used. |
+| [`customerManagedKey`](#parameter-customermanagedkey) | object | The customer managed key definition. |
 | [`diagnosticSettings`](#parameter-diagnosticsettings) | array | The diagnostic settings of the service. |
 | [`disableLocalAuth`](#parameter-disablelocalauth) | bool | This property disables SAS authentication for the Event Hubs namespace. |
 | [`disasterRecoveryConfig`](#parameter-disasterrecoveryconfig) | object | The disaster recovery config for this namespace. |
@@ -740,33 +732,47 @@ Authorization Rules for the Event Hub namespace.
   ]
   ```
 
-### Parameter: `cMKKeyName`
+### Parameter: `customerManagedKey`
 
-The name of the customer managed key to use for encryption. Customer-managed key encryption at rest is only available for namespaces of premium SKU or namespaces created in a Dedicated Cluster.
+The customer managed key definition.
+- Required: No
+- Type: object
+
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`keyName`](#parameter-customermanagedkeykeyname) | Yes | string | Required. The name of the customer managed key to use for encryption. |
+| [`keyVaultResourceId`](#parameter-customermanagedkeykeyvaultresourceid) | Yes | string | Required. The resource ID of a key vault to reference a customer managed key for encryption from. |
+| [`keyVersion`](#parameter-customermanagedkeykeyversion) | No | string | Optional. The version of the customer managed key to reference for encryption. If not provided, using 'latest'. |
+| [`userAssignedIdentityResourceId`](#parameter-customermanagedkeyuserassignedidentityresourceid) | No | string | Optional. User assigned identity to use when fetching the customer managed key. Required if no system assigned identity is available for use. |
+
+### Parameter: `customerManagedKey.keyName`
+
+Required. The name of the customer managed key to use for encryption.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `customerManagedKey.keyVaultResourceId`
+
+Required. The resource ID of a key vault to reference a customer managed key for encryption from.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `customerManagedKey.keyVersion`
+
+Optional. The version of the customer managed key to reference for encryption. If not provided, using 'latest'.
+
 - Required: No
 - Type: string
-- Default: `''`
 
-### Parameter: `cMKKeyVaultResourceId`
+### Parameter: `customerManagedKey.userAssignedIdentityResourceId`
 
-The resource ID of a key vault to reference a customer managed key for encryption from. Required if "cMKKeyName" is not empty.
+Optional. User assigned identity to use when fetching the customer managed key. Required if no system assigned identity is available for use.
+
 - Required: No
 - Type: string
-- Default: `''`
-
-### Parameter: `cMKKeyVersion`
-
-The version of the customer managed key to reference for encryption. If not provided, the latest key version is used.
-- Required: No
-- Type: string
-- Default: `''`
-
-### Parameter: `cMKUserAssignedIdentityResourceId`
-
-User assigned identity to use when fetching the customer managed key. The identity should have key usage permissions on the Key Vault Key. Required if "cMKKeyName" is not empty.
-- Required: No
-- Type: string
-- Default: `''`
 
 ### Parameter: `diagnosticSettings`
 

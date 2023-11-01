@@ -322,9 +322,16 @@ module flexibleServer 'br:bicep/modules/db-for-my-sql.flexible-server:1.0.0' = {
     administratorLoginPassword: '<administratorLoginPassword>'
     availabilityZone: '1'
     backupRetentionDays: 20
-    cMKKeyName: '<cMKKeyName>'
-    cMKKeyVaultResourceId: '<cMKKeyVaultResourceId>'
-    cMKUserAssignedIdentityResourceId: '<cMKUserAssignedIdentityResourceId>'
+    customerManagedKey: {
+      keyName: '<keyName>'
+      keyVaultResourceId: '<keyVaultResourceId>'
+      userAssignedIdentityResourceId: '<userAssignedIdentityResourceId>'
+    }
+    customerManagedKeyGeo: {
+      keyName: '<keyName>'
+      keyVaultResourceId: '<keyVaultResourceId>'
+      userAssignedIdentityResourceId: '<userAssignedIdentityResourceId>'
+    }
     databases: [
       {
         name: 'testdb1'
@@ -367,9 +374,6 @@ module flexibleServer 'br:bicep/modules/db-for-my-sql.flexible-server:1.0.0' = {
         startIpAddress: '100.100.100.1'
       }
     ]
-    geoBackupCMKKeyName: '<geoBackupCMKKeyName>'
-    geoBackupCMKKeyVaultResourceId: '<geoBackupCMKKeyVaultResourceId>'
-    geoBackupCMKUserAssignedIdentityResourceId: '<geoBackupCMKUserAssignedIdentityResourceId>'
     geoRedundantBackup: 'Enabled'
     highAvailability: 'SameZone'
     location: '<location>'
@@ -439,14 +443,19 @@ module flexibleServer 'br:bicep/modules/db-for-my-sql.flexible-server:1.0.0' = {
     "backupRetentionDays": {
       "value": 20
     },
-    "cMKKeyName": {
-      "value": "<cMKKeyName>"
+    "customerManagedKey": {
+      "value": {
+        "keyName": "<keyName>",
+        "keyVaultResourceId": "<keyVaultResourceId>",
+        "userAssignedIdentityResourceId": "<userAssignedIdentityResourceId>"
+      }
     },
-    "cMKKeyVaultResourceId": {
-      "value": "<cMKKeyVaultResourceId>"
-    },
-    "cMKUserAssignedIdentityResourceId": {
-      "value": "<cMKUserAssignedIdentityResourceId>"
+    "customerManagedKeyGeo": {
+      "value": {
+        "keyName": "<keyName>",
+        "keyVaultResourceId": "<keyVaultResourceId>",
+        "userAssignedIdentityResourceId": "<userAssignedIdentityResourceId>"
+      }
     },
     "databases": {
       "value": [
@@ -497,15 +506,6 @@ module flexibleServer 'br:bicep/modules/db-for-my-sql.flexible-server:1.0.0' = {
           "startIpAddress": "100.100.100.1"
         }
       ]
-    },
-    "geoBackupCMKKeyName": {
-      "value": "<geoBackupCMKKeyName>"
-    },
-    "geoBackupCMKKeyVaultResourceId": {
-      "value": "<geoBackupCMKKeyVaultResourceId>"
-    },
-    "geoBackupCMKUserAssignedIdentityResourceId": {
-      "value": "<geoBackupCMKUserAssignedIdentityResourceId>"
     },
     "geoRedundantBackup": {
       "value": "Enabled"
@@ -583,11 +583,7 @@ module flexibleServer 'br:bicep/modules/db-for-my-sql.flexible-server:1.0.0' = {
 
 | Parameter | Type | Description |
 | :-- | :-- | :-- |
-| [`cMKKeyVaultResourceId`](#parameter-cmkkeyvaultresourceid) | string | The resource ID of a key vault to reference a customer managed key for encryption from. Required if "cMKKeyName" is not empty. |
-| [`cMKUserAssignedIdentityResourceId`](#parameter-cmkuserassignedidentityresourceid) | string | User assigned identity to use when fetching the customer managed key. The identity should have key usage permissions on the Key Vault Key. Required if "cMKKeyName" is not empty. |
-| [`geoBackupCMKKeyVaultResourceId`](#parameter-geobackupcmkkeyvaultresourceid) | string | The resource ID of a key vault to reference a customer managed key for encryption from. Required if "cMKKeyName" is not empty and geoRedundantBackup is "Enabled". |
-| [`geoBackupCMKUserAssignedIdentityResourceId`](#parameter-geobackupcmkuserassignedidentityresourceid) | string | Geo backup user identity resource ID as identity cant cross region, need identity in same region as geo backup. The identity should have key usage permissions on the Key Vault Key. Required if "cMKKeyName" is not empty and geoRedundantBackup is "Enabled". |
-| [`managedIdentities`](#parameter-managedidentities) | object | The managed identity definition for this resource. Required if 'cMKKeyName' is not empty. |
+| [`managedIdentities`](#parameter-managedidentities) | object | The managed identity definition for this resource. Required if 'customerManagedKey' is not empty. |
 | [`privateDnsZoneResourceId`](#parameter-privatednszoneresourceid) | string | Private dns zone arm resource ID. Used when the desired connectivity mode is "Private Access". Required if "delegatedSubnetResourceId" is used and the Private DNS Zone name must end with mysql.database.azure.com in order to be linked to the MySQL Flexible Server. |
 | [`restorePointInTime`](#parameter-restorepointintime) | string | Restore point creation time (ISO8601 format), specifying the time to restore from. Required if "createMode" is set to "PointInTimeRestore". |
 | [`sourceServerResourceId`](#parameter-sourceserverresourceid) | string | The source MySQL server ID. Required if "createMode" is set to "PointInTimeRestore". |
@@ -602,16 +598,14 @@ module flexibleServer 'br:bicep/modules/db-for-my-sql.flexible-server:1.0.0' = {
 | [`administrators`](#parameter-administrators) | array | The Azure AD administrators when AAD authentication enabled. |
 | [`availabilityZone`](#parameter-availabilityzone) | string | Availability zone information of the server. Default will have no preference set. |
 | [`backupRetentionDays`](#parameter-backupretentiondays) | int | Backup retention days for the server. |
-| [`cMKKeyName`](#parameter-cmkkeyname) | string | The name of the customer managed key to use for encryption. |
-| [`cMKKeyVersion`](#parameter-cmkkeyversion) | string | The version of the customer managed key to reference for encryption. If not provided, the latest key version is used. |
 | [`createMode`](#parameter-createmode) | string | The mode to create a new MySQL server. |
+| [`customerManagedKey`](#parameter-customermanagedkey) | object | The customer managed key definition to use for the managed service. |
+| [`customerManagedKeyGeo`](#parameter-customermanagedkeygeo) | object | The customer managed key definition to use when geoRedundantBackup is "Enabled". |
 | [`databases`](#parameter-databases) | array | The databases to create in the server. |
 | [`delegatedSubnetResourceId`](#parameter-delegatedsubnetresourceid) | string | Delegated subnet arm resource ID. Used when the desired connectivity mode is "Private Access" - virtual network integration. Delegation must be enabled on the subnet for MySQL Flexible Servers and subnet CIDR size is /29. |
 | [`diagnosticSettings`](#parameter-diagnosticsettings) | array | The diagnostic settings of the service. |
 | [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
 | [`firewallRules`](#parameter-firewallrules) | array | The firewall rules to create in the MySQL flexible server. |
-| [`geoBackupCMKKeyName`](#parameter-geobackupcmkkeyname) | string | The name of the customer managed key to use for encryption when geoRedundantBackup is "Enabled". |
-| [`geoBackupCMKKeyVersion`](#parameter-geobackupcmkkeyversion) | string | The version of the customer managed key to reference for encryption when geoRedundantBackup is "Enabled". If not provided, the latest key version is used. |
 | [`geoRedundantBackup`](#parameter-georedundantbackup) | string | A value indicating whether Geo-Redundant backup is enabled on the server. If "Enabled" and "cMKKeyName" is not empty, then "geoBackupCMKKeyVaultResourceId" and "cMKUserAssignedIdentityResourceId" are also required. |
 | [`highAvailability`](#parameter-highavailability) | string | The mode for High Availability (HA). It is not supported for the Burstable pricing tier and Zone redundant HA can only be set during server provisioning. |
 | [`location`](#parameter-location) | string | Location for all resources. |
@@ -669,34 +663,6 @@ Backup retention days for the server.
 - Type: int
 - Default: `7`
 
-### Parameter: `cMKKeyName`
-
-The name of the customer managed key to use for encryption.
-- Required: No
-- Type: string
-- Default: `''`
-
-### Parameter: `cMKKeyVaultResourceId`
-
-The resource ID of a key vault to reference a customer managed key for encryption from. Required if "cMKKeyName" is not empty.
-- Required: No
-- Type: string
-- Default: `''`
-
-### Parameter: `cMKKeyVersion`
-
-The version of the customer managed key to reference for encryption. If not provided, the latest key version is used.
-- Required: No
-- Type: string
-- Default: `''`
-
-### Parameter: `cMKUserAssignedIdentityResourceId`
-
-User assigned identity to use when fetching the customer managed key. The identity should have key usage permissions on the Key Vault Key. Required if "cMKKeyName" is not empty.
-- Required: No
-- Type: string
-- Default: `''`
-
 ### Parameter: `createMode`
 
 The mode to create a new MySQL server.
@@ -712,6 +678,90 @@ The mode to create a new MySQL server.
     'Replica'
   ]
   ```
+
+### Parameter: `customerManagedKey`
+
+The customer managed key definition to use for the managed service.
+- Required: No
+- Type: object
+
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`keyName`](#parameter-customermanagedkeykeyname) | Yes | string | Required. The name of the customer managed key to use for encryption. |
+| [`keyVaultResourceId`](#parameter-customermanagedkeykeyvaultresourceid) | Yes | string | Required. The resource ID of a key vault to reference a customer managed key for encryption from. |
+| [`keyVersion`](#parameter-customermanagedkeykeyversion) | No | string | Optional. The version of the customer managed key to reference for encryption. If not provided, using 'latest'. |
+| [`userAssignedIdentityResourceId`](#parameter-customermanagedkeyuserassignedidentityresourceid) | Yes | string | Required. User assigned identity to use when fetching the customer managed key. |
+
+### Parameter: `customerManagedKey.keyName`
+
+Required. The name of the customer managed key to use for encryption.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `customerManagedKey.keyVaultResourceId`
+
+Required. The resource ID of a key vault to reference a customer managed key for encryption from.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `customerManagedKey.keyVersion`
+
+Optional. The version of the customer managed key to reference for encryption. If not provided, using 'latest'.
+
+- Required: No
+- Type: string
+
+### Parameter: `customerManagedKey.userAssignedIdentityResourceId`
+
+Required. User assigned identity to use when fetching the customer managed key.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `customerManagedKeyGeo`
+
+The customer managed key definition to use when geoRedundantBackup is "Enabled".
+- Required: No
+- Type: object
+
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`keyName`](#parameter-customermanagedkeygeokeyname) | Yes | string | Required. The name of the customer managed key to use for encryption. |
+| [`keyVaultResourceId`](#parameter-customermanagedkeygeokeyvaultresourceid) | Yes | string | Required. The resource ID of a key vault to reference a customer managed key for encryption from. |
+| [`keyVersion`](#parameter-customermanagedkeygeokeyversion) | No | string | Optional. The version of the customer managed key to reference for encryption. If not provided, using 'latest'. |
+| [`userAssignedIdentityResourceId`](#parameter-customermanagedkeygeouserassignedidentityresourceid) | Yes | string | Required. User assigned identity to use when fetching the customer managed key. |
+
+### Parameter: `customerManagedKeyGeo.keyName`
+
+Required. The name of the customer managed key to use for encryption.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `customerManagedKeyGeo.keyVaultResourceId`
+
+Required. The resource ID of a key vault to reference a customer managed key for encryption from.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `customerManagedKeyGeo.keyVersion`
+
+Optional. The version of the customer managed key to reference for encryption. If not provided, using 'latest'.
+
+- Required: No
+- Type: string
+
+### Parameter: `customerManagedKeyGeo.userAssignedIdentityResourceId`
+
+Required. User assigned identity to use when fetching the customer managed key.
+
+- Required: Yes
+- Type: string
 
 ### Parameter: `databases`
 
@@ -856,34 +906,6 @@ The firewall rules to create in the MySQL flexible server.
 - Type: array
 - Default: `[]`
 
-### Parameter: `geoBackupCMKKeyName`
-
-The name of the customer managed key to use for encryption when geoRedundantBackup is "Enabled".
-- Required: No
-- Type: string
-- Default: `''`
-
-### Parameter: `geoBackupCMKKeyVaultResourceId`
-
-The resource ID of a key vault to reference a customer managed key for encryption from. Required if "cMKKeyName" is not empty and geoRedundantBackup is "Enabled".
-- Required: No
-- Type: string
-- Default: `''`
-
-### Parameter: `geoBackupCMKKeyVersion`
-
-The version of the customer managed key to reference for encryption when geoRedundantBackup is "Enabled". If not provided, the latest key version is used.
-- Required: No
-- Type: string
-- Default: `''`
-
-### Parameter: `geoBackupCMKUserAssignedIdentityResourceId`
-
-Geo backup user identity resource ID as identity cant cross region, need identity in same region as geo backup. The identity should have key usage permissions on the Key Vault Key. Required if "cMKKeyName" is not empty and geoRedundantBackup is "Enabled".
-- Required: No
-- Type: string
-- Default: `''`
-
 ### Parameter: `geoRedundantBackup`
 
 A value indicating whether Geo-Redundant backup is enabled on the server. If "Enabled" and "cMKKeyName" is not empty, then "geoBackupCMKKeyVaultResourceId" and "cMKUserAssignedIdentityResourceId" are also required.
@@ -956,7 +978,7 @@ Properties for the maintenence window. If provided, "customWindow" property must
 
 ### Parameter: `managedIdentities`
 
-The managed identity definition for this resource. Required if 'cMKKeyName' is not empty.
+The managed identity definition for this resource. Required if 'customerManagedKey' is not empty.
 - Required: No
 - Type: object
 

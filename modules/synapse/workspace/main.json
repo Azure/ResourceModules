@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "15444302507528482650"
+      "templateHash": "2450269560530411916"
     },
     "name": "Synapse Workspaces",
     "description": "This module deploys a Synapse Workspace.",
@@ -365,6 +365,38 @@
         }
       },
       "nullable": true
+    },
+    "customerManagedKeyType": {
+      "type": "object",
+      "properties": {
+        "keyVaultResourceId": {
+          "type": "string",
+          "metadata": {
+            "description": "Required. The resource ID of a key vault to reference a customer managed key for encryption from."
+          }
+        },
+        "keyName": {
+          "type": "string",
+          "metadata": {
+            "description": "Required. The name of the customer managed key to use for encryption."
+          }
+        },
+        "keyVersion": {
+          "type": "string",
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. The version of the customer managed key to reference for encryption. If not provided, using 'latest'."
+          }
+        },
+        "userAssignedIdentityResourceId": {
+          "type": "string",
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. User assigned identity to use when fetching the customer managed key. Required if no system assigned identity is available for use."
+          }
+        }
+      },
+      "nullable": true
     }
   },
   "parameters": {
@@ -422,39 +454,10 @@
         "description": "Optional. Create managed private endpoint to the default storage account or not. If Yes is selected, a managed private endpoint connection request is sent to the workspace's primary Data Lake Storage Gen2 account for Spark pools to access data. This must be approved by an owner of the storage account."
       }
     },
-    "encryption": {
-      "type": "bool",
-      "defaultValue": false,
+    "customerManagedKey": {
+      "$ref": "#/definitions/customerManagedKeyType",
       "metadata": {
-        "description": "Optional. Double encryption using a customer-managed key."
-      }
-    },
-    "cMKKeyVaultResourceId": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": "Conditional. The resource ID of a key vault to reference a customer managed key for encryption from. Required if 'cMKKeyName' is not empty."
-      }
-    },
-    "cMKKeyName": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": "Optional. The name of the customer managed key to use for encryption."
-      }
-    },
-    "cMKUseSystemAssignedIdentity": {
-      "type": "bool",
-      "defaultValue": false,
-      "metadata": {
-        "description": "Optional. Use System Assigned Managed identity that will be used to access your customer-managed key stored in key vault."
-      }
-    },
-    "cMKUserAssignedIdentityResourceId": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": "Optional. The ID of User Assigned Managed identity that will be used to access your customer-managed key stored in key vault."
+        "description": "Optional. The customer managed key definition."
       }
     },
     "encryptionActivateWorkspace": {
@@ -585,7 +588,7 @@
     }
   },
   "variables": {
-    "userAssignedIdentitiesUnion": "[union(parameters('userAssignedIdentities'), if(not(empty(parameters('cMKUserAssignedIdentityResourceId'))), createObject(format('{0}', parameters('cMKUserAssignedIdentityResourceId')), createObject()), createObject()))]",
+    "userAssignedIdentitiesUnion": "[union(parameters('userAssignedIdentities'), if(not(empty(coalesce(tryGet(parameters('customerManagedKey'), 'userAssignedIdentityResourceId'), createArray()))), createObject(format('{0}', parameters('customerManagedKey').userAssignedIdentityResourceId), createObject()), createObject()))]",
     "identityType": "[if(not(empty(variables('userAssignedIdentitiesUnion'))), 'SystemAssigned,UserAssigned', 'SystemAssigned')]",
     "identity": {
       "type": "[variables('identityType')]",
@@ -603,25 +606,34 @@
   },
   "resources": {
     "cMKKeyVault::cMKKey": {
-      "condition": "[and(not(empty(parameters('cMKKeyVaultResourceId'))), not(empty(parameters('cMKKeyName'))))]",
+      "condition": "[and(not(empty(tryGet(parameters('customerManagedKey'), 'keyVaultResourceId'))), and(not(empty(tryGet(parameters('customerManagedKey'), 'keyVaultResourceId'))), not(empty(tryGet(parameters('customerManagedKey'), 'keyName')))))]",
       "existing": true,
       "type": "Microsoft.KeyVault/vaults/keys",
       "apiVersion": "2023-02-01",
-      "subscriptionId": "[split(if(not(empty(parameters('cMKKeyVaultResourceId'))), parameters('cMKKeyVaultResourceId'), '//'), '/')[2]]",
-      "resourceGroup": "[split(if(not(empty(parameters('cMKKeyVaultResourceId'))), parameters('cMKKeyVaultResourceId'), '////'), '/')[4]]",
-      "name": "[format('{0}/{1}', last(split(if(not(empty(parameters('cMKKeyVaultResourceId'))), parameters('cMKKeyVaultResourceId'), 'dummyVault'), '/')), if(not(empty(parameters('cMKKeyName'))), parameters('cMKKeyName'), 'dummyKey'))]",
+      "subscriptionId": "[split(coalesce(tryGet(parameters('customerManagedKey'), 'keyVaultResourceId'), '//'), '/')[2]]",
+      "resourceGroup": "[split(coalesce(tryGet(parameters('customerManagedKey'), 'keyVaultResourceId'), '////'), '/')[4]]",
+      "name": "[format('{0}/{1}', last(split(coalesce(tryGet(parameters('customerManagedKey'), 'keyVaultResourceId'), 'dummyVault'), '/')), coalesce(tryGet(parameters('customerManagedKey'), 'keyName'), 'dummyKey'))]",
       "dependsOn": [
         "cMKKeyVault"
       ]
     },
     "cMKKeyVault": {
-      "condition": "[not(empty(parameters('cMKKeyVaultResourceId')))]",
+      "condition": "[not(empty(tryGet(parameters('customerManagedKey'), 'keyVaultResourceId')))]",
       "existing": true,
       "type": "Microsoft.KeyVault/vaults",
-      "apiVersion": "2021-10-01",
-      "subscriptionId": "[split(if(not(empty(parameters('cMKKeyVaultResourceId'))), parameters('cMKKeyVaultResourceId'), '//'), '/')[2]]",
-      "resourceGroup": "[split(if(not(empty(parameters('cMKKeyVaultResourceId'))), parameters('cMKKeyVaultResourceId'), '////'), '/')[4]]",
-      "name": "[last(split(if(not(empty(parameters('cMKKeyVaultResourceId'))), parameters('cMKKeyVaultResourceId'), 'dummyVault'), '/'))]"
+      "apiVersion": "2023-02-01",
+      "subscriptionId": "[split(coalesce(tryGet(parameters('customerManagedKey'), 'keyVaultResourceId'), '//'), '/')[2]]",
+      "resourceGroup": "[split(coalesce(tryGet(parameters('customerManagedKey'), 'keyVaultResourceId'), '////'), '/')[4]]",
+      "name": "[last(split(coalesce(tryGet(parameters('customerManagedKey'), 'keyVaultResourceId'), 'dummyVault'), '/'))]"
+    },
+    "cMKUserAssignedIdentity": {
+      "condition": "[not(empty(tryGet(parameters('customerManagedKey'), 'userAssignedIdentityResourceId')))]",
+      "existing": true,
+      "type": "Microsoft.ManagedIdentity/userAssignedIdentities",
+      "apiVersion": "2023-01-31",
+      "subscriptionId": "[split(coalesce(tryGet(parameters('customerManagedKey'), 'userAssignedIdentityResourceId'), '//'), '/')[2]]",
+      "resourceGroup": "[split(coalesce(tryGet(parameters('customerManagedKey'), 'userAssignedIdentityResourceId'), '////'), '/')[4]]",
+      "name": "[last(split(coalesce(tryGet(parameters('customerManagedKey'), 'userAssignedIdentityResourceId'), 'dummyMsi'), '/'))]"
     },
     "defaultTelemetry": {
       "condition": "[parameters('enableDefaultTelemetry')]",
@@ -653,7 +665,7 @@
           "filesystem": "[parameters('defaultDataLakeStorageFilesystem')]",
           "createManagedPrivateEndpoint": "[if(parameters('managedVirtualNetwork'), parameters('defaultDataLakeStorageCreateManagedPrivateEndpoint'), null())]"
         },
-        "encryption": "[if(parameters('encryption'), createObject('cmk', createObject('kekIdentity', createObject('userAssignedIdentity', if(not(empty(parameters('cMKUserAssignedIdentityResourceId'))), parameters('cMKUserAssignedIdentityResourceId'), null()), 'useSystemAssignedIdentity', parameters('cMKUseSystemAssignedIdentity')), 'key', createObject('keyVaultUrl', reference('cMKKeyVault::cMKKey').keyUri, 'name', parameters('cMKKeyName')))), null())]",
+        "encryption": "[if(not(empty(parameters('customerManagedKey'))), createObject('cmk', createObject('kekIdentity', if(not(empty(tryGet(parameters('customerManagedKey'), 'userAssignedIdentityResourceId'))), createObject('userAssignedIdentity', extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', split(coalesce(tryGet(parameters('customerManagedKey'), 'userAssignedIdentityResourceId'), '//'), '/')[2], split(coalesce(tryGet(parameters('customerManagedKey'), 'userAssignedIdentityResourceId'), '////'), '/')[4]), 'Microsoft.ManagedIdentity/userAssignedIdentities', last(split(coalesce(tryGet(parameters('customerManagedKey'), 'userAssignedIdentityResourceId'), 'dummyMsi'), '/')))), createObject('useSystemAssignedIdentity', empty(tryGet(parameters('customerManagedKey'), 'userAssignedIdentityResourceId')))), 'identity', if(not(empty(tryGet(parameters('customerManagedKey'), 'userAssignedIdentityResourceId'))), createObject('userAssignedIdentity', extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', split(coalesce(tryGet(parameters('customerManagedKey'), 'userAssignedIdentityResourceId'), '//'), '/')[2], split(coalesce(tryGet(parameters('customerManagedKey'), 'userAssignedIdentityResourceId'), '////'), '/')[4]), 'Microsoft.ManagedIdentity/userAssignedIdentities', last(split(coalesce(tryGet(parameters('customerManagedKey'), 'userAssignedIdentityResourceId'), 'dummyMsi'), '/')))), null()), 'key', createObject('keyVaultUrl', reference('cMKKeyVault::cMKKey').keyUri, 'name', parameters('customerManagedKey').keyName))), null())]",
         "managedResourceGroupName": "[if(not(empty(parameters('managedResourceGroupName'))), parameters('managedResourceGroupName'), null())]",
         "managedVirtualNetwork": "[if(parameters('managedVirtualNetwork'), 'default', null())]",
         "managedVirtualNetworkSettings": "[if(parameters('managedVirtualNetwork'), createObject('allowedAadTenantIdsForLinking', parameters('allowedAadTenantIdsForLinking'), 'linkedAccessCheckOnTargetResource', parameters('linkedAccessCheckOnTargetResource'), 'preventDataExfiltration', parameters('preventDataExfiltration')), null())]",
@@ -664,7 +676,8 @@
         "workspaceRepositoryConfiguration": "[parameters('workspaceRepositoryConfiguration')]"
       },
       "dependsOn": [
-        "cMKKeyVault"
+        "cMKKeyVault",
+        "cMKUserAssignedIdentity"
       ]
     },
     "workspace_lock": {
@@ -869,8 +882,8 @@
           "workspaceIndentityPrincipalId": {
             "value": "[reference('workspace', '2021-06-01', 'full').identity.principalId]"
           },
-          "keyvaultName": "[if(not(empty(parameters('cMKKeyVaultResourceId'))), createObject('value', last(split(if(not(empty(parameters('cMKKeyVaultResourceId'))), parameters('cMKKeyVaultResourceId'), 'dummyVault'), '/'))), createObject('value', ''))]",
-          "usesRbacAuthorization": "[if(not(empty(parameters('cMKKeyVaultResourceId'))), createObject('value', reference('cMKKeyVault').enableRbacAuthorization), createObject('value', true()))]"
+          "keyvaultName": "[if(not(empty(tryGet(parameters('customerManagedKey'), 'keyVaultResourceId'))), createObject('value', last(split(coalesce(tryGet(parameters('customerManagedKey'), 'keyVaultResourceId'), 'dummyVault'), '/'))), createObject('value', ''))]",
+          "usesRbacAuthorization": "[if(not(empty(tryGet(parameters('customerManagedKey'), 'keyVaultResourceId'))), createObject('value', reference('cMKKeyVault').enableRbacAuthorization), createObject('value', true()))]"
         },
         "template": {
           "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
@@ -948,13 +961,13 @@
         "mode": "Incremental",
         "parameters": {
           "name": {
-            "value": "[parameters('cMKKeyName')]"
+            "value": "[parameters('customerManagedKey').keyName]"
           },
           "isActiveCMK": {
             "value": true
           },
           "keyVaultResourceId": {
-            "value": "[parameters('cMKKeyVaultResourceId')]"
+            "value": "[extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', split(coalesce(tryGet(parameters('customerManagedKey'), 'keyVaultResourceId'), '//'), '/')[2], split(coalesce(tryGet(parameters('customerManagedKey'), 'keyVaultResourceId'), '////'), '/')[4]), 'Microsoft.KeyVault/vaults', last(split(coalesce(tryGet(parameters('customerManagedKey'), 'keyVaultResourceId'), 'dummyVault'), '/')))]"
           },
           "workspaceName": {
             "value": "[parameters('name')]"
@@ -967,7 +980,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.22.6.54827",
-              "templateHash": "14713531383006172248"
+              "templateHash": "5952844918734432483"
             },
             "name": "Synapse Workspaces Keys",
             "description": "This module deploys a Synapse Workspaces Key.",
@@ -1001,9 +1014,8 @@
             },
             "keyVaultResourceId": {
               "type": "string",
-              "defaultValue": "",
               "metadata": {
-                "description": "Optional. The resource ID of a key vault to reference a customer managed key for encryption from."
+                "description": "Required. The resource ID of a key vault to reference a customer managed key for encryption from."
               }
             },
             "enableDefaultTelemetry": {
@@ -1021,7 +1033,7 @@
               "name": "[format('{0}/{1}', parameters('workspaceName'), parameters('name'))]",
               "properties": {
                 "isActiveCMK": "[parameters('isActiveCMK')]",
-                "keyVaultUrl": "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', split(parameters('keyVaultResourceId'), '/')[2], split(parameters('keyVaultResourceId'), '/')[4]), 'Microsoft.KeyVault/vaults/keys', split(format('{0}/{1}', last(split(parameters('keyVaultResourceId'), '/')), parameters('name')), '/')[0], split(format('{0}/{1}', last(split(parameters('keyVaultResourceId'), '/')), parameters('name')), '/')[1]), '2022-07-01').keyUri]"
+                "keyVaultUrl": "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', split(parameters('keyVaultResourceId'), '/')[2], split(parameters('keyVaultResourceId'), '/')[4]), 'Microsoft.KeyVault/vaults/keys', last(split(parameters('keyVaultResourceId'), '/')), parameters('name')), '2023-02-01').keyUri]"
               }
             },
             {
@@ -1065,6 +1077,7 @@
         }
       },
       "dependsOn": [
+        "cMKKeyVault",
         "workspace",
         "workspace_cmk_rbac"
       ]

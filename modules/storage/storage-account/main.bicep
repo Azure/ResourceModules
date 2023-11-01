@@ -160,17 +160,8 @@ param publicNetworkAccess string = ''
 @description('Optional. Allows HTTPS traffic only to storage service if sets to true.')
 param supportsHttpsTrafficOnly bool = true
 
-@description('Conditional. The resource ID of a key vault to reference a customer managed key for encryption from. Required if \'cMKKeyName\' is not empty.')
-param cMKKeyVaultResourceId string = ''
-
-@description('Optional. The name of the customer managed key to use for encryption. Cannot be deployed together with the parameter \'systemAssignedIdentity\' enabled.')
-param cMKKeyName string = ''
-
-@description('Conditional. User assigned identity to use when fetching the customer managed key. Required if \'cMKKeyName\' is not empty.')
-param cMKUserAssignedIdentityResourceId string = ''
-
-@description('Optional. The version of the customer managed key to reference for encryption. If not provided, latest is used.')
-param cMKKeyVersion string = ''
+@description('Optional. The customer managed key definition.')
+param customerManagedKey customerManagedKeyType
 
 @description('Optional. The SAS expiration period. DD.HH:MM:SS.')
 param sasExpirationPeriod string = ''
@@ -224,9 +215,18 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource keyVault 'Microsoft.KeyVault/vaults@2021-10-01' existing = if (!empty(cMKKeyVaultResourceId)) {
-  name: last(split((!empty(cMKKeyVaultResourceId) ? cMKKeyVaultResourceId : 'dummyVault'), '/'))!
-  scope: resourceGroup(split((!empty(cMKKeyVaultResourceId) ? cMKKeyVaultResourceId : '//'), '/')[2], split((!empty(cMKKeyVaultResourceId) ? cMKKeyVaultResourceId : '////'), '/')[4])
+resource cMKKeyVault 'Microsoft.KeyVault/vaults@2023-02-01' existing = if (!empty(customerManagedKey.?keyVaultResourceId)) {
+  name: last(split((customerManagedKey.?keyVaultResourceId ?? 'dummyVault'), '/'))
+  scope: resourceGroup(split((customerManagedKey.?keyVaultResourceId ?? '//'), '/')[2], split((customerManagedKey.?keyVaultResourceId ?? '////'), '/')[4])
+
+  resource cMKKey 'keys@2023-02-01' existing = if (!empty(customerManagedKey.?keyVaultResourceId) && !empty(customerManagedKey.?keyName)) {
+    name: customerManagedKey.?keyName ?? 'dummyKey'
+  }
+}
+
+resource cMKUserAssignedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' existing = if (!empty(customerManagedKey.?userAssignedIdentityResourceId)) {
+  name: last(split(customerManagedKey.?userAssignedIdentityResourceId ?? 'dummyMsi', '/'))
+  scope: resourceGroup(split((customerManagedKey.?userAssignedIdentityResourceId ?? '//'), '/')[2], split((customerManagedKey.?userAssignedIdentityResourceId ?? '////'), '/')[4])
 }
 
 resource storageAccount 'Microsoft.Storage/storageAccounts@2022-09-01' = {
@@ -250,7 +250,7 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2022-09-01' = {
     dnsEndpointType: !empty(dnsEndpointType) ? dnsEndpointType : null
     isLocalUserEnabled: isLocalUserEnabled
     encryption: {
-      keySource: !empty(cMKKeyName) ? 'Microsoft.Keyvault' : 'Microsoft.Storage'
+      keySource: !empty(customerManagedKey) ? 'Microsoft.Keyvault' : 'Microsoft.Storage'
       services: {
         blob: supportsBlobService ? {
           enabled: true
@@ -266,13 +266,13 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2022-09-01' = {
         }
       }
       requireInfrastructureEncryption: kind != 'Storage' ? requireInfrastructureEncryption : null
-      keyvaultproperties: !empty(cMKKeyName) ? {
-        keyname: cMKKeyName
-        keyvaulturi: keyVault.properties.vaultUri
-        keyversion: !empty(cMKKeyVersion) ? cMKKeyVersion : null
+      keyvaultproperties: !empty(customerManagedKey) ? {
+        keyname: customerManagedKey!.keyName
+        keyvaulturi: cMKKeyVault.properties.vaultUri
+        keyversion: !empty(customerManagedKey.?keyVersion ?? '') ? customerManagedKey!.keyVersion : last(split(cMKKeyVault::cMKKey.properties.keyUriWithVersion, '/'))
       } : null
-      identity: !empty(cMKKeyName) ? {
-        userAssignedIdentity: cMKUserAssignedIdentityResourceId
+      identity: !empty(customerManagedKey.?userAssignedIdentityResourceId) ? {
+        userAssignedIdentity: cMKUserAssignedIdentity.id
       } : null
     }
     accessTier: kind != 'Storage' ? accessTier : null
@@ -615,3 +615,17 @@ type diagnosticSettingType = {
   @description('Optional. The full ARM resource ID of the Marketplace resource to which you would like to send Diagnostic Logs.')
   marketplacePartnerResourceId: string?
 }[]?
+
+type customerManagedKeyType = {
+  @description('Required. The resource ID of a key vault to reference a customer managed key for encryption from.')
+  keyVaultResourceId: string
+
+  @description('Required. The name of the customer managed key to use for encryption.')
+  keyName: string
+
+  @description('Optional. The version of the customer managed key to reference for encryption. If not provided, using \'latest\'.')
+  keyVersion: string?
+
+  @description('Optional. User assigned identity to use when fetching the customer managed key. Required if no system assigned identity is available for use.')
+  userAssignedIdentityResourceId: string?
+}?

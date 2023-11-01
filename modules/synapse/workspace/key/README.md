@@ -22,6 +22,7 @@ This module deploys a Synapse Workspaces Key.
 | Parameter | Type | Description |
 | :-- | :-- | :-- |
 | [`isActiveCMK`](#parameter-isactivecmk) | bool | Used to activate the workspace after a customer managed key is provided. |
+| [`keyVaultResourceId`](#parameter-keyvaultresourceid) | string | The resource ID of a key vault to reference a customer managed key for encryption from. |
 | [`name`](#parameter-name) | string | Encryption key name. |
 
 **Conditional parameters**
@@ -35,7 +36,6 @@ This module deploys a Synapse Workspaces Key.
 | Parameter | Type | Description |
 | :-- | :-- | :-- |
 | [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
-| [`keyVaultResourceId`](#parameter-keyvaultresourceid) | string | The resource ID of a key vault to reference a customer managed key for encryption from. |
 | [`location`](#parameter-location) | string | The geo-location where the resource lives. |
 
 ### Parameter: `enableDefaultTelemetry`
@@ -54,9 +54,8 @@ Used to activate the workspace after a customer managed key is provided.
 ### Parameter: `keyVaultResourceId`
 
 The resource ID of a key vault to reference a customer managed key for encryption from.
-- Required: No
+- Required: Yes
 - Type: string
-- Default: `''`
 
 ### Parameter: `location`
 
