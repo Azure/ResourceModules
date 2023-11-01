@@ -449,7 +449,6 @@ The diagnostic settings of the service.
 | [`eventHubAuthorizationRuleResourceId`](#parameter-diagnosticsettingseventhubauthorizationruleresourceid) | No | string | Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | [`eventHubName`](#parameter-diagnosticsettingseventhubname) | No | string | Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
 | [`logAnalyticsDestinationType`](#parameter-diagnosticsettingsloganalyticsdestinationtype) | No | string | Optional. A string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destination type. |
-| [`logCategoriesAndGroups`](#parameter-diagnosticsettingslogcategoriesandgroups) | No | array | Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
 | [`marketplacePartnerResourceId`](#parameter-diagnosticsettingsmarketplacepartnerresourceid) | No | string | Optional. The full ARM resource ID of the Marketplace resource to which you would like to send Diagnostic Logs. |
 | [`metricCategories`](#parameter-diagnosticsettingsmetriccategories) | No | array | Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
 | [`name`](#parameter-diagnosticsettingsname) | No | string | Optional. The name of diagnostic setting. |
@@ -477,33 +476,6 @@ Optional. A string indicating whether the export to Log Analytics should use the
 - Required: No
 - Type: string
 - Allowed: `[AzureDiagnostics, Dedicated]`
-
-### Parameter: `diagnosticSettings.logCategoriesAndGroups`
-
-Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection.
-
-- Required: No
-- Type: array
-
-| Name | Required | Type | Description |
-| :-- | :-- | :--| :-- |
-| [`category`](#parameter-diagnosticsettingslogcategoriesandgroupscategory) | No | string | Optional. Name of a Diagnostic Log category for a resource type this setting is applied to. Set the specific logs to collect here. |
-| [`categoryGroup`](#parameter-diagnosticsettingslogcategoriesandgroupscategorygroup) | No | string | Optional. Name of a Diagnostic Log category group for a resource type this setting is applied to. Set to 'AllLogs' to collect all logs. |
-
-### Parameter: `diagnosticSettings.logCategoriesAndGroups.category`
-
-Optional. Name of a Diagnostic Log category for a resource type this setting is applied to. Set the specific logs to collect here.
-
-- Required: No
-- Type: string
-
-### Parameter: `diagnosticSettings.logCategoriesAndGroups.categoryGroup`
-
-Optional. Name of a Diagnostic Log category group for a resource type this setting is applied to. Set to 'AllLogs' to collect all logs.
-
-- Required: No
-- Type: string
-
 
 ### Parameter: `diagnosticSettings.marketplacePartnerResourceId`
 
