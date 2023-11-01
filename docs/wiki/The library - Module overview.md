@@ -30,7 +30,7 @@ This section provides an overview of the library's feature set.
 | 15 | automation<p>automation-account | [![Automation - AutomationAccounts](https://github.com/Azure/ResourceModules/workflows/Automation%20-%20AutomationAccounts/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.automation.automationaccounts.yml) |  |  |  |  |  |  | [L1:6] | 460 |
 | 16 | batch<p>batch-account | [![Batch - BatchAccounts](https://github.com/Azure/ResourceModules/workflows/Batch%20-%20BatchAccounts/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.batch.batchaccounts.yml) |  |  |  |  |  |  |  | 326 |
 | 17 | cache<p>redis | [![Cache - Redis](https://github.com/Azure/ResourceModules/workflows/Cache%20-%20Redis/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.cache.redis.yml) |  |  |  |  |  |  |  | 327 |
-| 18 | cache<p>redis-enterprise | [![Cache - Redis Enterprise](https://github.com/Azure/ResourceModules/workflows/Cache%20-%20Redis%20Enterprise/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.cache.redisenterprise.yml) |  |  |  |  |  |  | [L1:1] | 277 |
+| 18 | cache<p>redis-enterprise | [![Cache - Redis Enterprise](https://github.com/Azure/ResourceModules/workflows/Cache%20-%20Redis%20Enterprise/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.cache.redisenterprise.yml) |  |  |  |  |  |  | [L1:1] | 264 |
 | 19 | cdn<p>profile | [![CDN - Profiles](https://github.com/Azure/ResourceModules/workflows/CDN%20-%20Profiles/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.cdn.profiles.yml) |  |  |  |  |  |  | [L1:6, L2:4] | 220 |
 | 20 | cognitive-services<p>account | [![CognitiveServices - Accounts](https://github.com/Azure/ResourceModules/workflows/CognitiveServices%20-%20Accounts/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.cognitiveservices.accounts.yml) |  |  |  |  |  |  |  | 388 |
 | 21 | compute<p>availability-set | [![Compute - AvailabilitySets](https://github.com/Azure/ResourceModules/workflows/Compute%20-%20AvailabilitySets/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.compute.availabilitysets.yml) |  |  |  |  |  |  |  | 111 |
@@ -150,7 +150,7 @@ This section provides an overview of the library's feature set.
 | 135 | web<p>serverfarm | [![Web - Serverfarms](https://github.com/Azure/ResourceModules/workflows/Web%20-%20Serverfarms/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.web.serverfarms.yml) |  |  |  |  |  |  |  | 194 |
 | 136 | web<p>site | [![Web - Sites](https://github.com/Azure/ResourceModules/workflows/Web%20-%20Sites/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.web.sites.yml) |  |  |  |  |  |  | [L1:5, L2:4, L3:1] | 453 |
 | 137 | web<p>static-site | [![Web - StaticSites](https://github.com/Azure/ResourceModules/workflows/Web%20-%20StaticSites/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.web.staticsites.yml) |  |  |  |  |  |  | [L1:3] | 284 |
-| Sum | | | 0 | 0 | 1 | 0 | 0 | 2 | 241 | 29865 |
+| Sum | | | 0 | 0 | 1 | 0 | 0 | 2 | 241 | 29852 |
 
 ## Legend
 
