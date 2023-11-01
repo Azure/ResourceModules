@@ -921,6 +921,25 @@ Optional. A list of IP configurations of the private endpoint. This will be used
 - Required: Yes
 - Type: object
 
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`groupId`](#parameter-privateendpointsipconfigurationspropertiesgroupid) | Yes | string |  |
+| [`memberName`](#parameter-privateendpointsipconfigurationspropertiesmembername) | Yes | string |  |
+| [`privateIPAddress`](#parameter-privateendpointsipconfigurationspropertiesprivateipaddress) | Yes | string |  |
+
+### Parameter: `privateEndpoints.ipConfigurations.properties.groupId`
+- Required: Yes
+- Type: string
+
+### Parameter: `privateEndpoints.ipConfigurations.properties.memberName`
+- Required: Yes
+- Type: string
+
+### Parameter: `privateEndpoints.ipConfigurations.properties.privateIPAddress`
+- Required: Yes
+- Type: string
+
+
 
 ### Parameter: `privateEndpoints.location`
 
