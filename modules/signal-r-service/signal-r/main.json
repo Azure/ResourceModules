@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "1214561796520796276"
+      "templateHash": "15057353577637323126"
     },
     "name": "SignalR Service SignalR",
     "description": "This module deploys a SignalR Service SignalR.",

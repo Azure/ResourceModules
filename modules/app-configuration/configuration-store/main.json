@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "6136989204056808614"
+      "templateHash": "14815976173766808848"
     },
     "name": "App Configuration Stores",
     "description": "This module deploys an App Configuration Store.",

@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "12569577248629110844"
+      "templateHash": "1251440238061213201"
     },
     "name": "Digital Twins Instances",
     "description": "This module deploys an Azure Digital Twins Instance.",

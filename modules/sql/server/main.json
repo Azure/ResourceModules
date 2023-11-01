@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "4565599506408192920"
+      "templateHash": "4217055760314682963"
     },
     "name": "Azure SQL Servers",
     "description": "This module deploys an Azure SQL Server.",

@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "18136363667820640336"
+      "templateHash": "17850477169967186277"
     },
     "name": "Service Bus Namespaces",
     "description": "This module deploys a Service Bus Namespace.",

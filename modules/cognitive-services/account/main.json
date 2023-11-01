@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "4580837563605630694"
+      "templateHash": "3463163643562207706"
     },
     "name": "Cognitive Services",
     "description": "This module deploys a Cognitive Service.",

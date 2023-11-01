@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "14935357028056674724"
+      "templateHash": "2195885071822870880"
     },
     "name": "Automation Accounts",
     "description": "This module deploys an Azure Automation Account.",

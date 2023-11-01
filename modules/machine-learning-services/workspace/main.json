@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "1113315079349561542"
+      "templateHash": "8299613323505664553"
     },
     "name": "Machine Learning Services Workspaces",
     "description": "This module deploys a Machine Learning Services Workspace.",
