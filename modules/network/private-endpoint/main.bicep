@@ -188,6 +188,7 @@ type ipConfigurationsType = {
   @description('Required. The name of the resource that is unique within a resource group.')
   name: string
 
+  @description('Required. Properties of private endpoint IP configurations.')
   properties: {
     @description('Required. The ID of a group obtained from the remote resource that this private endpoint should connect to.')
     groupId: string

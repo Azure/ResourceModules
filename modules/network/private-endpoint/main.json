@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "14089620768418747025"
+      "templateHash": "12078057657290521609"
     },
     "name": "Private Endpoints",
     "description": "This module deploys a Private Endpoint.",
@@ -136,13 +136,16 @@
                   "description": "Required. A private ip address obtained from the private endpoint's subnet."
                 }
               }
+            },
+            "metadata": {
+              "description": "Required. Properties of private endpoint IP configurations."
             }
           }
         }
       },
       "nullable": true
     },
-    "CustomDnsConfigType": {
+    "customDnsConfigType": {
       "type": "array",
       "items": {
         "type": "object",
@@ -254,7 +257,7 @@
       }
     },
     "customDnsConfigs": {
-      "$ref": "#/definitions/CustomDnsConfigType",
+      "$ref": "#/definitions/customDnsConfigType",
       "nullable": true,
       "metadata": {
         "description": "Optional. Custom DNS configurations."

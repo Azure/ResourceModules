@@ -374,9 +374,11 @@ type privateEndpointType = {
   @sys.description('Optional. A list of IP configurations of the private endpoint. This will be used to map to the First Party Service endpoints.')
   ipConfigurations: {
     name: string
-    groupId: string
-    memberName: string
-    privateIpAddress: string
+    properties: {
+      groupId: string
+      memberName: string
+      privateIPAddress: string
+    }
   }[]?
 
   @sys.description('Optional. Application security groups in which the private endpoint IP configuration is included.')
