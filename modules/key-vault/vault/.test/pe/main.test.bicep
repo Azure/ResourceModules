@@ -103,6 +103,24 @@ module testDeployment '../../main.bicep' = {
         name: 'dep-${namePrefix}-pe-${serviceShort}'
         service: 'vault'
         subnetResourceId: nestedDependencies.outputs.subnetResourceId
+        ipConfigurations: [
+          {
+            name: 'myIPconfig'
+            properties: {
+              groupId: 'vault'
+              memberName: 'default'
+              privateIPAddress: '10.0.0.10'
+            }
+          }
+        ]
+        customDnsConfigs: [
+          {
+            fqdn: 'abc.keyvault.com'
+            ipAddresses: [
+              '10.0.0.10'
+            ]
+          }
+        ]
         tags: {
           'hidden-title': 'This is visible in the resource name'
           Environment: 'Non-Prod'

@@ -84,6 +84,14 @@ module testDeployment '../../main.bicep' = {
         }
       }
     ]
+    customDnsConfigs: [
+      {
+        fqdn: 'abc.keyvault.com'
+        ipAddresses: [
+          '10.0.0.10'
+        ]
+      }
+    ]
     customNetworkInterfaceName: '${namePrefix}${serviceShort}001nic'
     applicationSecurityGroupResourceIds: [
       nestedDependencies.outputs.applicationSecurityGroupResourceId
