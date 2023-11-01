@@ -50,11 +50,15 @@ module workspace 'br:bicep/modules/databricks.workspace:1.0.0' = {
     name: 'dwcom001'
     // Non-required parameters
     amlWorkspaceResourceId: '<amlWorkspaceResourceId>'
-    cMKManagedDisksKeyName: '<cMKManagedDisksKeyName>'
-    cMKManagedDisksKeyRotationToLatestKeyVersionEnabled: true
-    cMKManagedDisksKeyVaultResourceId: '<cMKManagedDisksKeyVaultResourceId>'
-    cMKManagedServicesKeyName: '<cMKManagedServicesKeyName>'
-    cMKManagedServicesKeyVaultResourceId: '<cMKManagedServicesKeyVaultResourceId>'
+    customerManagedKey: {
+      keyName: '<keyName>'
+      keyVaultResourceId: '<keyVaultResourceId>'
+    }
+    customerManagedKeyManagedDisk: {
+      keyName: '<keyName>'
+      keyVaultResourceId: '<keyVaultResourceId>'
+      rotationToLatestKeyVersionEnabled: true
+    }
     customPrivateSubnetName: '<customPrivateSubnetName>'
     customPublicSubnetName: '<customPublicSubnetName>'
     customVirtualNetworkResourceId: '<customVirtualNetworkResourceId>'
@@ -143,20 +147,18 @@ module workspace 'br:bicep/modules/databricks.workspace:1.0.0' = {
     "amlWorkspaceResourceId": {
       "value": "<amlWorkspaceResourceId>"
     },
-    "cMKManagedDisksKeyName": {
-      "value": "<cMKManagedDisksKeyName>"
+    "customerManagedKey": {
+      "value": {
+        "keyName": "<keyName>",
+        "keyVaultResourceId": "<keyVaultResourceId>"
+      }
     },
-    "cMKManagedDisksKeyRotationToLatestKeyVersionEnabled": {
-      "value": true
-    },
-    "cMKManagedDisksKeyVaultResourceId": {
-      "value": "<cMKManagedDisksKeyVaultResourceId>"
-    },
-    "cMKManagedServicesKeyName": {
-      "value": "<cMKManagedServicesKeyName>"
-    },
-    "cMKManagedServicesKeyVaultResourceId": {
-      "value": "<cMKManagedServicesKeyVaultResourceId>"
+    "customerManagedKeyManagedDisk": {
+      "value": {
+        "keyName": "<keyName>",
+        "keyVaultResourceId": "<keyVaultResourceId>",
+        "rotationToLatestKeyVersionEnabled": true
+      }
     },
     "customPrivateSubnetName": {
       "value": "<customPrivateSubnetName>"
@@ -334,23 +336,13 @@ module workspace 'br:bicep/modules/databricks.workspace:1.0.0' = {
 | :-- | :-- | :-- |
 | [`name`](#parameter-name) | string | The name of the Azure Databricks workspace to create. |
 
-**Conditional parameters**
-
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`cMKManagedDisksKeyVaultResourceId`](#parameter-cmkmanageddiskskeyvaultresourceid) | string | The resource ID of a key vault to reference a customer managed key for encryption from. Required if 'cMKKeyName' is not empty. |
-| [`cMKManagedServicesKeyVaultResourceId`](#parameter-cmkmanagedserviceskeyvaultresourceid) | string | The resource ID of a key vault to reference a customer managed key for encryption from. Required if 'cMKKeyName' is not empty. |
-
 **Optional parameters**
 
 | Parameter | Type | Description |
 | :-- | :-- | :-- |
 | [`amlWorkspaceResourceId`](#parameter-amlworkspaceresourceid) | string | The resource ID of a Azure Machine Learning workspace to link with Databricks workspace. |
-| [`cMKManagedDisksKeyName`](#parameter-cmkmanageddiskskeyname) | string | The name of the customer managed key to use for encryption. |
-| [`cMKManagedDisksKeyRotationToLatestKeyVersionEnabled`](#parameter-cmkmanageddiskskeyrotationtolatestkeyversionenabled) | bool | Enable Auto Rotation of Key. |
-| [`cMKManagedDisksKeyVersion`](#parameter-cmkmanageddiskskeyversion) | string | The version of the customer managed key to reference for encryption. If not provided, the latest key version is used. |
-| [`cMKManagedServicesKeyName`](#parameter-cmkmanagedserviceskeyname) | string | The name of the customer managed key to use for encryption. |
-| [`cMKManagedServicesKeyVersion`](#parameter-cmkmanagedserviceskeyversion) | string | The version of the customer managed key to reference for encryption. If not provided, the latest key version is used. |
+| [`customerManagedKey`](#parameter-customermanagedkey) | object | The customer managed key definition to use for the managed service. |
+| [`customerManagedKeyManagedDisk`](#parameter-customermanagedkeymanageddisk) | object | The customer managed key definition to use for the managed disk. |
 | [`customPrivateSubnetName`](#parameter-customprivatesubnetname) | string | The name of the Private Subnet within the Virtual Network. |
 | [`customPublicSubnetName`](#parameter-custompublicsubnetname) | string | The name of a Public Subnet within the Virtual Network. |
 | [`customVirtualNetworkResourceId`](#parameter-customvirtualnetworkresourceid) | string | The resource ID of a Virtual Network where this Databricks Cluster should be created. |
@@ -383,54 +375,97 @@ The resource ID of a Azure Machine Learning workspace to link with Databricks wo
 - Type: string
 - Default: `''`
 
-### Parameter: `cMKManagedDisksKeyName`
+### Parameter: `customerManagedKey`
 
-The name of the customer managed key to use for encryption.
+The customer managed key definition to use for the managed service.
+- Required: No
+- Type: object
+
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`keyName`](#parameter-customermanagedkeykeyname) | Yes | string | Required. The name of the customer managed key to use for encryption. |
+| [`keyVaultResourceId`](#parameter-customermanagedkeykeyvaultresourceid) | Yes | string | Required. The resource ID of a key vault to reference a customer managed key for encryption from. |
+| [`keyVersion`](#parameter-customermanagedkeykeyversion) | No | string | Optional. The version of the customer managed key to reference for encryption. If not provided, using 'latest'. |
+| [`userAssignedIdentityResourceId`](#parameter-customermanagedkeyuserassignedidentityresourceid) | No | string | Optional. User assigned identity to use when fetching the customer managed key. Required if no system assigned identity is available for use. |
+
+### Parameter: `customerManagedKey.keyName`
+
+Required. The name of the customer managed key to use for encryption.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `customerManagedKey.keyVaultResourceId`
+
+Required. The resource ID of a key vault to reference a customer managed key for encryption from.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `customerManagedKey.keyVersion`
+
+Optional. The version of the customer managed key to reference for encryption. If not provided, using 'latest'.
+
 - Required: No
 - Type: string
-- Default: `''`
 
-### Parameter: `cMKManagedDisksKeyRotationToLatestKeyVersionEnabled`
+### Parameter: `customerManagedKey.userAssignedIdentityResourceId`
 
-Enable Auto Rotation of Key.
+Optional. User assigned identity to use when fetching the customer managed key. Required if no system assigned identity is available for use.
+
+- Required: No
+- Type: string
+
+### Parameter: `customerManagedKeyManagedDisk`
+
+The customer managed key definition to use for the managed disk.
+- Required: No
+- Type: object
+
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`keyName`](#parameter-customermanagedkeymanageddiskkeyname) | Yes | string | Required. The name of the customer managed key to use for encryption. |
+| [`keyVaultResourceId`](#parameter-customermanagedkeymanageddiskkeyvaultresourceid) | Yes | string | Required. The resource ID of a key vault to reference a customer managed key for encryption from. |
+| [`keyVersion`](#parameter-customermanagedkeymanageddiskkeyversion) | No | string | Optional. The version of the customer managed key to reference for encryption. If not provided, using 'latest'. |
+| [`rotationToLatestKeyVersionEnabled`](#parameter-customermanagedkeymanageddiskrotationtolatestkeyversionenabled) | No | bool | Optional. Indicate whether the latest key version should be automatically used for Managed Disk Encryption. Enabled by default. |
+| [`userAssignedIdentityResourceId`](#parameter-customermanagedkeymanageddiskuserassignedidentityresourceid) | No | string | Optional. User assigned identity to use when fetching the customer managed key. Required if no system assigned identity is available for use. |
+
+### Parameter: `customerManagedKeyManagedDisk.keyName`
+
+Required. The name of the customer managed key to use for encryption.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `customerManagedKeyManagedDisk.keyVaultResourceId`
+
+Required. The resource ID of a key vault to reference a customer managed key for encryption from.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `customerManagedKeyManagedDisk.keyVersion`
+
+Optional. The version of the customer managed key to reference for encryption. If not provided, using 'latest'.
+
+- Required: No
+- Type: string
+
+### Parameter: `customerManagedKeyManagedDisk.rotationToLatestKeyVersionEnabled`
+
+Optional. Indicate whether the latest key version should be automatically used for Managed Disk Encryption. Enabled by default.
+
 - Required: No
 - Type: bool
-- Default: `True`
 
-### Parameter: `cMKManagedDisksKeyVaultResourceId`
+### Parameter: `customerManagedKeyManagedDisk.userAssignedIdentityResourceId`
 
-The resource ID of a key vault to reference a customer managed key for encryption from. Required if 'cMKKeyName' is not empty.
+Optional. User assigned identity to use when fetching the customer managed key. Required if no system assigned identity is available for use.
+
 - Required: No
 - Type: string
-- Default: `''`
-
-### Parameter: `cMKManagedDisksKeyVersion`
-
-The version of the customer managed key to reference for encryption. If not provided, the latest key version is used.
-- Required: No
-- Type: string
-- Default: `''`
-
-### Parameter: `cMKManagedServicesKeyName`
-
-The name of the customer managed key to use for encryption.
-- Required: No
-- Type: string
-- Default: `''`
-
-### Parameter: `cMKManagedServicesKeyVaultResourceId`
-
-The resource ID of a key vault to reference a customer managed key for encryption from. Required if 'cMKKeyName' is not empty.
-- Required: No
-- Type: string
-- Default: `''`
-
-### Parameter: `cMKManagedServicesKeyVersion`
-
-The version of the customer managed key to reference for encryption. If not provided, the latest key version is used.
-- Required: No
-- Type: string
-- Default: `''`
 
 ### Parameter: `customPrivateSubnetName`
 
