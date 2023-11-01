@@ -580,26 +580,16 @@ Optional. A list of IP configurations of the private endpoint. This will be used
 
 | Name | Required | Type | Description |
 | :-- | :-- | :--| :-- |
-| [`groupId`](#parameter-privateendpointsipconfigurationsgroupid) | Yes | string |  |
-| [`memberName`](#parameter-privateendpointsipconfigurationsmembername) | Yes | string |  |
 | [`name`](#parameter-privateendpointsipconfigurationsname) | Yes | string |  |
-| [`privateIpAddress`](#parameter-privateendpointsipconfigurationsprivateipaddress) | Yes | string |  |
-
-### Parameter: `privateEndpoints.ipConfigurations.groupId`
-- Required: Yes
-- Type: string
-
-### Parameter: `privateEndpoints.ipConfigurations.memberName`
-- Required: Yes
-- Type: string
+| [`properties`](#parameter-privateendpointsipconfigurationsproperties) | Yes | object |  |
 
 ### Parameter: `privateEndpoints.ipConfigurations.name`
 - Required: Yes
 - Type: string
 
-### Parameter: `privateEndpoints.ipConfigurations.privateIpAddress`
+### Parameter: `privateEndpoints.ipConfigurations.properties`
 - Required: Yes
-- Type: string
+- Type: object
 
 
 ### Parameter: `privateEndpoints.location`

@@ -348,7 +348,7 @@ A list of IP configurations of the private endpoint. This will be used to map to
 | Name | Required | Type | Description |
 | :-- | :-- | :--| :-- |
 | [`name`](#parameter-ipconfigurationsname) | Yes | string | Required. The name of the resource that is unique within a resource group. |
-| [`properties`](#parameter-ipconfigurationsproperties) | Yes | object |  |
+| [`properties`](#parameter-ipconfigurationsproperties) | Yes | object | Required. Properties of private endpoint IP configurations. |
 
 ### Parameter: `ipConfigurations.name`
 
@@ -358,6 +358,9 @@ Required. The name of the resource that is unique within a resource group.
 - Type: string
 
 ### Parameter: `ipConfigurations.properties`
+
+Required. Properties of private endpoint IP configurations.
+
 - Required: Yes
 - Type: object
 
