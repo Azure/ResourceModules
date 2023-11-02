@@ -74,7 +74,14 @@ The type of NAT rule for VPN NAT. IngressSnat mode (also known as Ingress Source
 - Required: No
 - Type: string
 - Default: `''`
-- Allowed: `['', EgressSnat, IngressSnat]`
+- Allowed:
+  ```Bicep
+  [
+    ''
+    'EgressSnat'
+    'IngressSnat'
+  ]
+  ```
 
 ### Parameter: `name`
 
@@ -88,7 +95,14 @@ The type of NAT rule for VPN NAT. Static one-to-one NAT establishes a one-to-one
 - Required: No
 - Type: string
 - Default: `''`
-- Allowed: `['', Dynamic, Static]`
+- Allowed:
+  ```Bicep
+  [
+    ''
+    'Dynamic'
+    'Static'
+  ]
+  ```
 
 ### Parameter: `vpnGatewayName`
 

@@ -9,7 +9,7 @@ param name string
 param serverName string
 
 @description('Optional. Tags of the resource.')
-param tags object = {}
+param tags object?
 
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location

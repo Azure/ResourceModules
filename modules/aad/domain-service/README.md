@@ -309,7 +309,13 @@ The value is to provide domain configuration type.
 - Required: No
 - Type: string
 - Default: `'FullySynced'`
-- Allowed: `[FullySynced, ResourceTrusting]`
+- Allowed:
+  ```Bicep
+  [
+    'FullySynced'
+    'ResourceTrusting'
+  ]
+  ```
 
 ### Parameter: `domainName`
 
@@ -330,7 +336,13 @@ The value is to enable the Secure LDAP for external services of Azure ADDS Servi
 - Required: No
 - Type: string
 - Default: `'Enabled'`
-- Allowed: `[Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 ### Parameter: `filteredSync`
 
@@ -345,7 +357,13 @@ The value is to enable to provide a protected channel between the Kerberos clien
 - Required: No
 - Type: string
 - Default: `'Enabled'`
-- Allowed: `[Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 ### Parameter: `kerberosRc4Encryption`
 
@@ -353,7 +371,13 @@ The value is to enable Kerberos requests that use RC4 encryption.
 - Required: No
 - Type: string
 - Default: `'Enabled'`
-- Allowed: `[Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 ### Parameter: `ldaps`
 
@@ -361,7 +385,13 @@ A flag to determine whether or not Secure LDAP is enabled or disabled.
 - Required: No
 - Type: string
 - Default: `'Enabled'`
-- Allowed: `[Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 ### Parameter: `location`
 
@@ -410,7 +440,13 @@ The value is to notify the DC Admins.
 - Required: No
 - Type: string
 - Default: `'Enabled'`
-- Allowed: `[Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 ### Parameter: `notifyGlobalAdmins`
 
@@ -418,7 +454,13 @@ The value is to notify the Global Admins.
 - Required: No
 - Type: string
 - Default: `'Enabled'`
-- Allowed: `[Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 ### Parameter: `ntlmV1`
 
@@ -426,7 +468,13 @@ The value is to enable clients making request using NTLM v1.
 - Required: No
 - Type: string
 - Default: `'Enabled'`
-- Allowed: `[Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 ### Parameter: `pfxCertificate`
 
@@ -523,7 +571,14 @@ The name of the SKU specific to Azure ADDS Services.
 - Required: No
 - Type: string
 - Default: `'Standard'`
-- Allowed: `[Enterprise, Premium, Standard]`
+- Allowed:
+  ```Bicep
+  [
+    'Enterprise'
+    'Premium'
+    'Standard'
+  ]
+  ```
 
 ### Parameter: `syncNtlmPasswords`
 
@@ -531,7 +586,13 @@ The value is to enable synchronized users to use NTLM authentication.
 - Required: No
 - Type: string
 - Default: `'Enabled'`
-- Allowed: `[Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 ### Parameter: `syncOnPremPasswords`
 
@@ -539,14 +600,19 @@ The value is to enable on-premises users to authenticate against managed domain.
 - Required: No
 - Type: string
 - Default: `'Enabled'`
-- Allowed: `[Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 ### Parameter: `tags`
 
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `tlsV1`
 
@@ -554,7 +620,13 @@ The value is to enable clients making request using TLSv1.
 - Required: No
 - Type: string
 - Default: `'Enabled'`
-- Allowed: `[Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 
 ## Outputs

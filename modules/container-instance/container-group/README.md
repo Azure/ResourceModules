@@ -108,14 +108,16 @@ module containerGroup 'br:bicep/modules/container-instance.container-group:1.0.0
       kind: 'CanNotDelete'
       name: 'myCustomLockName'
     }
-    systemAssignedIdentity: true
+    managedIdentities: {
+      systemAssigned: true
+      userAssignedResourcesIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
     tags: {
       Environment: 'Non-Prod'
       'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
-    }
-    userAssignedIdentities: {
-      '<managedIdentityResourceId>': {}
     }
   }
 }
@@ -207,19 +209,19 @@ module containerGroup 'br:bicep/modules/container-instance.container-group:1.0.0
         "name": "myCustomLockName"
       }
     },
-    "systemAssignedIdentity": {
-      "value": true
+    "managedIdentities": {
+      "value": {
+        "systemAssigned": true,
+        "userAssignedResourcesIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
     },
     "tags": {
       "value": {
         "Environment": "Non-Prod",
         "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
-      }
-    },
-    "userAssignedIdentities": {
-      "value": {
-        "<managedIdentityResourceId>": {}
       }
     }
   }
@@ -288,9 +290,11 @@ module containerGroup 'br:bicep/modules/container-instance.container-group:1.0.0
     ]
     name: 'cicgenc001'
     // Non-required parameters
-    cMKKeyName: '<cMKKeyName>'
-    cMKKeyVaultResourceId: '<cMKKeyVaultResourceId>'
-    cMKUserAssignedIdentityResourceId: '<cMKUserAssignedIdentityResourceId>'
+    customerManagedKey: {
+      keyName: '<keyName>'
+      keyVaultResourceId: '<keyVaultResourceId>'
+      userAssignedIdentityResourceId: '<userAssignedIdentityResourceId>'
+    }
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     ipAddressPorts: [
       {
@@ -306,14 +310,16 @@ module containerGroup 'br:bicep/modules/container-instance.container-group:1.0.0
       kind: 'CanNotDelete'
       name: 'myCustomLockName'
     }
-    systemAssignedIdentity: true
+    managedIdentities: {
+      systemAssigned: true
+      userAssignedResourcesIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
     tags: {
       Environment: 'Non-Prod'
       'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
-    }
-    userAssignedIdentities: {
-      '<managedIdentityResourceId>': {}
     }
   }
 }
@@ -384,14 +390,12 @@ module containerGroup 'br:bicep/modules/container-instance.container-group:1.0.0
       "value": "cicgenc001"
     },
     // Non-required parameters
-    "cMKKeyName": {
-      "value": "<cMKKeyName>"
-    },
-    "cMKKeyVaultResourceId": {
-      "value": "<cMKKeyVaultResourceId>"
-    },
-    "cMKUserAssignedIdentityResourceId": {
-      "value": "<cMKUserAssignedIdentityResourceId>"
+    "customerManagedKey": {
+      "value": {
+        "keyName": "<keyName>",
+        "keyVaultResourceId": "<keyVaultResourceId>",
+        "userAssignedIdentityResourceId": "<userAssignedIdentityResourceId>"
+      }
     },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
@@ -414,19 +418,19 @@ module containerGroup 'br:bicep/modules/container-instance.container-group:1.0.0
         "name": "myCustomLockName"
       }
     },
-    "systemAssignedIdentity": {
-      "value": true
+    "managedIdentities": {
+      "value": {
+        "systemAssigned": true,
+        "userAssignedResourcesIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
     },
     "tags": {
       "value": {
         "Environment": "Non-Prod",
         "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
-      }
-    },
-    "userAssignedIdentities": {
-      "value": {
-        "<managedIdentityResourceId>": {}
       }
     }
   }
@@ -625,15 +629,17 @@ module containerGroup 'br:bicep/modules/container-instance.container-group:1.0.0
       kind: 'CanNotDelete'
       name: 'myCustomLockName'
     }
+    managedIdentities: {
+      systemAssigned: true
+      userAssignedResourcesIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
     subnetId: '<subnetId>'
-    systemAssignedIdentity: true
     tags: {
       Environment: 'Non-Prod'
       'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
-    }
-    userAssignedIdentities: {
-      '<managedIdentityResourceId>': {}
     }
     volumes: [
       {
@@ -744,22 +750,22 @@ module containerGroup 'br:bicep/modules/container-instance.container-group:1.0.0
         "name": "myCustomLockName"
       }
     },
+    "managedIdentities": {
+      "value": {
+        "systemAssigned": true,
+        "userAssignedResourcesIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
+    },
     "subnetId": {
       "value": "<subnetId>"
-    },
-    "systemAssignedIdentity": {
-      "value": true
     },
     "tags": {
       "value": {
         "Environment": "Non-Prod",
         "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
-      }
-    },
-    "userAssignedIdentities": {
-      "value": {
-        "<managedIdentityResourceId>": {}
       }
     },
     "volumes": {
@@ -791,7 +797,6 @@ module containerGroup 'br:bicep/modules/container-instance.container-group:1.0.0
 
 | Parameter | Type | Description |
 | :-- | :-- | :-- |
-| [`cMKUserAssignedIdentityResourceId`](#parameter-cmkuserassignedidentityresourceid) | string | User assigned identity to use when fetching the customer managed key. Required if 'cMKKeyName' is not empty. |
 | [`ipAddressPorts`](#parameter-ipaddressports) | array | Ports to open on the public IP address. Must include all ports assigned on container level. Required if `ipAddressType` is set to `public`. |
 
 **Optional parameters**
@@ -799,9 +804,7 @@ module containerGroup 'br:bicep/modules/container-instance.container-group:1.0.0
 | Parameter | Type | Description |
 | :-- | :-- | :-- |
 | [`autoGeneratedDomainNameLabelScope`](#parameter-autogenerateddomainnamelabelscope) | string | Specify level of protection of the domain name label. |
-| [`cMKKeyName`](#parameter-cmkkeyname) | string | The name of the customer managed key to use for encryption. |
-| [`cMKKeyVaultResourceId`](#parameter-cmkkeyvaultresourceid) | string | The resource ID of a key vault to reference a customer managed key for encryption from. |
-| [`cMKKeyVersion`](#parameter-cmkkeyversion) | string | The version of the customer managed key to reference for encryption. If not provided, the latest key version is used. |
+| [`customerManagedKey`](#parameter-customermanagedkey) | object | The customer managed key definition. |
 | [`dnsNameLabel`](#parameter-dnsnamelabel) | string | The Dns name label for the resource. |
 | [`dnsNameServers`](#parameter-dnsnameservers) | array | List of dns servers used by the containers for lookups. |
 | [`dnsSearchDomains`](#parameter-dnssearchdomains) | string | DNS search domain which will be appended to each DNS lookup. |
@@ -811,13 +814,12 @@ module containerGroup 'br:bicep/modules/container-instance.container-group:1.0.0
 | [`ipAddressType`](#parameter-ipaddresstype) | string | Specifies if the IP is exposed to the public internet or private VNET. - Public or Private. |
 | [`location`](#parameter-location) | string | Location for all Resources. |
 | [`lock`](#parameter-lock) | object | The lock settings of the service. |
+| [`managedIdentities`](#parameter-managedidentities) | object | The managed identity definition for this resource. |
 | [`osType`](#parameter-ostype) | string | The operating system type required by the containers in the container group. - Windows or Linux. |
 | [`restartPolicy`](#parameter-restartpolicy) | string | Restart policy for all containers within the container group. - Always: Always restart. OnFailure: Restart on failure. Never: Never restart. - Always, OnFailure, Never. |
 | [`sku`](#parameter-sku) | string | The container group SKU. |
 | [`subnetId`](#parameter-subnetid) | string | Resource ID of the subnet. Only specify when ipAddressType is Private. |
-| [`systemAssignedIdentity`](#parameter-systemassignedidentity) | bool | Enables system assigned managed identity on the resource. |
 | [`tags`](#parameter-tags) | object | Tags of the resource. |
-| [`userAssignedIdentities`](#parameter-userassignedidentities) | object | The ID(s) to assign to the resource. |
 | [`volumes`](#parameter-volumes) | array | Specify if volumes (emptyDir, AzureFileShare or GitRepo) shall be attached to your containergroup. |
 
 ### Parameter: `autoGeneratedDomainNameLabelScope`
@@ -826,41 +828,64 @@ Specify level of protection of the domain name label.
 - Required: No
 - Type: string
 - Default: `'TenantReuse'`
-- Allowed: `[Noreuse, ResourceGroupReuse, SubscriptionReuse, TenantReuse, Unsecure]`
-
-### Parameter: `cMKKeyName`
-
-The name of the customer managed key to use for encryption.
-- Required: No
-- Type: string
-- Default: `''`
-
-### Parameter: `cMKKeyVaultResourceId`
-
-The resource ID of a key vault to reference a customer managed key for encryption from.
-- Required: No
-- Type: string
-- Default: `''`
-
-### Parameter: `cMKKeyVersion`
-
-The version of the customer managed key to reference for encryption. If not provided, the latest key version is used.
-- Required: No
-- Type: string
-- Default: `''`
-
-### Parameter: `cMKUserAssignedIdentityResourceId`
-
-User assigned identity to use when fetching the customer managed key. Required if 'cMKKeyName' is not empty.
-- Required: No
-- Type: string
-- Default: `''`
+- Allowed:
+  ```Bicep
+  [
+    'Noreuse'
+    'ResourceGroupReuse'
+    'SubscriptionReuse'
+    'TenantReuse'
+    'Unsecure'
+  ]
+  ```
 
 ### Parameter: `containers`
 
 The containers and their respective config within the container group.
 - Required: Yes
 - Type: array
+
+### Parameter: `customerManagedKey`
+
+The customer managed key definition.
+- Required: No
+- Type: object
+
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`keyName`](#parameter-customermanagedkeykeyname) | Yes | string | Required. The name of the customer managed key to use for encryption. |
+| [`keyVaultResourceId`](#parameter-customermanagedkeykeyvaultresourceid) | Yes | string | Required. The resource ID of a key vault to reference a customer managed key for encryption from. |
+| [`keyVersion`](#parameter-customermanagedkeykeyversion) | No | string | Optional. The version of the customer managed key to reference for encryption. If not provided, using 'latest'. |
+| [`userAssignedIdentityResourceId`](#parameter-customermanagedkeyuserassignedidentityresourceid) | No | string | Optional. User assigned identity to use when fetching the customer managed key. Required if no system assigned identity is available for use. |
+
+### Parameter: `customerManagedKey.keyName`
+
+Required. The name of the customer managed key to use for encryption.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `customerManagedKey.keyVaultResourceId`
+
+Required. The resource ID of a key vault to reference a customer managed key for encryption from.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `customerManagedKey.keyVersion`
+
+Optional. The version of the customer managed key to reference for encryption. If not provided, using 'latest'.
+
+- Required: No
+- Type: string
+
+### Parameter: `customerManagedKey.userAssignedIdentityResourceId`
+
+Optional. User assigned identity to use when fetching the customer managed key. Required if no system assigned identity is available for use.
+
+- Required: No
+- Type: string
 
 ### Parameter: `dnsNameLabel`
 
@@ -917,7 +942,13 @@ Specifies if the IP is exposed to the public internet or private VNET. - Public 
 - Required: No
 - Type: string
 - Default: `'Public'`
-- Allowed: `[Private, Public]`
+- Allowed:
+  ```Bicep
+  [
+    'Private'
+    'Public'
+  ]
+  ```
 
 ### Parameter: `location`
 
@@ -953,6 +984,32 @@ Optional. Specify the name of lock.
 - Required: No
 - Type: string
 
+### Parameter: `managedIdentities`
+
+The managed identity definition for this resource.
+- Required: No
+- Type: object
+
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`systemAssigned`](#parameter-managedidentitiessystemassigned) | No | bool | Optional. Enables system assigned managed identity on the resource. |
+| [`userAssignedResourcesIds`](#parameter-managedidentitiesuserassignedresourcesids) | No | array | Optional. The resource ID(s) to assign to the resource. |
+
+### Parameter: `managedIdentities.systemAssigned`
+
+Optional. Enables system assigned managed identity on the resource.
+
+- Required: No
+- Type: bool
+
+### Parameter: `managedIdentities.userAssignedResourcesIds`
+
+Optional. The resource ID(s) to assign to the resource.
+
+- Required: No
+- Type: array
+
 ### Parameter: `name`
 
 Name for the container group.
@@ -972,7 +1029,14 @@ Restart policy for all containers within the container group. - Always: Always r
 - Required: No
 - Type: string
 - Default: `'Always'`
-- Allowed: `[Always, Never, OnFailure]`
+- Allowed:
+  ```Bicep
+  [
+    'Always'
+    'Never'
+    'OnFailure'
+  ]
+  ```
 
 ### Parameter: `sku`
 
@@ -980,7 +1044,13 @@ The container group SKU.
 - Required: No
 - Type: string
 - Default: `'Standard'`
-- Allowed: `[Dedicated, Standard]`
+- Allowed:
+  ```Bicep
+  [
+    'Dedicated'
+    'Standard'
+  ]
+  ```
 
 ### Parameter: `subnetId`
 
@@ -989,26 +1059,11 @@ Resource ID of the subnet. Only specify when ipAddressType is Private.
 - Type: string
 - Default: `''`
 
-### Parameter: `systemAssignedIdentity`
-
-Enables system assigned managed identity on the resource.
-- Required: No
-- Type: bool
-- Default: `False`
-
 ### Parameter: `tags`
 
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
-
-### Parameter: `userAssignedIdentities`
-
-The ID(s) to assign to the resource.
-- Required: No
-- Type: object
-- Default: `{object}`
 
 ### Parameter: `volumes`
 
@@ -1027,7 +1082,7 @@ Specify if volumes (emptyDir, AzureFileShare or GitRepo) shall be attached to yo
 | `name` | string | The name of the container group. |
 | `resourceGroupName` | string | The resource group the container group was deployed into. |
 | `resourceId` | string | The resource ID of the container group. |
-| `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
+| `systemAssignedMIPrincipalId` | string | The principal ID of the system assigned identity. |
 
 ## Cross-referenced modules
 

@@ -373,10 +373,9 @@ module bastionHost 'br:bicep/modules/network.bastion-host:1.0.0' = {
 | [`enableIpConnect`](#parameter-enableipconnect) | bool | Choose to disable or enable IP Connect. |
 | [`enableKerberos`](#parameter-enablekerberos) | bool | Choose to disable or enable Kerberos authentication. |
 | [`enableShareableLink`](#parameter-enableshareablelink) | bool | Choose to disable or enable Shareable Link. |
-| [`isCreateDefaultPublicIP`](#parameter-iscreatedefaultpublicip) | bool | Specifies if a Public IP should be created by default if one is not provided. |
 | [`location`](#parameter-location) | string | Location for all resources. |
 | [`lock`](#parameter-lock) | object | The lock settings of the service. |
-| [`publicIPAddressObject`](#parameter-publicipaddressobject) | object | Specifies the properties of the Public IP to create and be used by Azure Bastion. If it's not provided and publicIPAddressResourceId is empty, a '-pip' suffix will be appended to the Bastion's name. |
+| [`publicIPAddressObject`](#parameter-publicipaddressobject) | object | Specifies the properties of the Public IP to create and be used by Azure Bastion, if no existing public IP was provided. |
 | [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | [`scaleUnits`](#parameter-scaleunits) | int | The scale units for the Bastion Host resource. |
 | [`skuName`](#parameter-skuname) | string | The SKU of this Bastion Host. |
@@ -526,13 +525,6 @@ Choose to disable or enable Shareable Link.
 - Type: bool
 - Default: `False`
 
-### Parameter: `isCreateDefaultPublicIP`
-
-Specifies if a Public IP should be created by default if one is not provided.
-- Required: No
-- Type: bool
-- Default: `True`
-
 ### Parameter: `location`
 
 Location for all resources.
@@ -575,10 +567,15 @@ Name of the Azure Bastion resource.
 
 ### Parameter: `publicIPAddressObject`
 
-Specifies the properties of the Public IP to create and be used by Azure Bastion. If it's not provided and publicIPAddressResourceId is empty, a '-pip' suffix will be appended to the Bastion's name.
+Specifies the properties of the Public IP to create and be used by Azure Bastion, if no existing public IP was provided.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default:
+  ```Bicep
+  {
+      name: '[format(\'{0}-pip\' parameters(\'name\'))]'
+  }
+  ```
 
 ### Parameter: `roleAssignments`
 
@@ -661,14 +658,19 @@ The SKU of this Bastion Host.
 - Required: No
 - Type: string
 - Default: `'Basic'`
-- Allowed: `[Basic, Standard]`
+- Allowed:
+  ```Bicep
+  [
+    'Basic'
+    'Standard'
+  ]
+  ```
 
 ### Parameter: `tags`
 
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `vNetId`
 

@@ -110,7 +110,7 @@ Reference to a VPN site to link to.
 Routing configuration indicating the associated and propagated route tables for this connection.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `routingWeight`
 
@@ -153,7 +153,13 @@ Gateway connection protocol.
 - Required: No
 - Type: string
 - Default: `'IKEv2'`
-- Allowed: `[IKEv1, IKEv2]`
+- Allowed:
+  ```Bicep
+  [
+    'IKEv1'
+    'IKEv2'
+  ]
+  ```
 
 ### Parameter: `vpnGatewayName`
 

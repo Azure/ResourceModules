@@ -325,7 +325,30 @@ module frontDoorWebApplicationFirewallPolicy 'br:bicep/modules/network.front-doo
 The custom rules inside the policy.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default:
+  ```Bicep
+  {
+      rules: [
+        {
+          action: 'Block'
+          enabledState: 'Enabled'
+          matchConditions: [
+            {
+              matchValue: [
+                'ZZ'
+              ]
+              matchVariable: 'RemoteAddr'
+              negateCondition: true
+              operator: 'GeoMatch'
+            }
+          ]
+          name: 'ApplyGeoFilter'
+          priority: 100
+          ruleType: 'MatchRule'
+        }
+      ]
+  }
+  ```
 
 ### Parameter: `enableDefaultTelemetry`
 
@@ -373,7 +396,26 @@ Optional. Specify the name of lock.
 Describes the managedRules structure.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default:
+  ```Bicep
+  {
+      managedRuleSets: [
+        {
+          exclusions: []
+          ruleGroupOverrides: []
+          ruleSetAction: 'Block'
+          ruleSetType: 'Microsoft_DefaultRuleSet'
+          ruleSetVersion: '2.1'
+        }
+        {
+          exclusions: []
+          ruleGroupOverrides: []
+          ruleSetType: 'Microsoft_BotManagerRuleSet'
+          ruleSetVersion: '1.0'
+        }
+      ]
+  }
+  ```
 
 ### Parameter: `name`
 
@@ -386,7 +428,13 @@ Name of the Front Door WAF policy.
 The PolicySettings for policy.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default:
+  ```Bicep
+  {
+      enabledState: 'Enabled'
+      mode: 'Prevention'
+  }
+  ```
 
 ### Parameter: `roleAssignments`
 
@@ -462,14 +510,19 @@ The pricing tier of the WAF profile.
 - Required: No
 - Type: string
 - Default: `'Standard_AzureFrontDoor'`
-- Allowed: `[Premium_AzureFrontDoor, Standard_AzureFrontDoor]`
+- Allowed:
+  ```Bicep
+  [
+    'Premium_AzureFrontDoor'
+    'Standard_AzureFrontDoor'
+  ]
+  ```
 
 ### Parameter: `tags`
 
 Resource tags.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 
 ## Outputs

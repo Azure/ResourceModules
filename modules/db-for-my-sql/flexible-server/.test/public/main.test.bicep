@@ -143,16 +143,22 @@ module testDeployment '../../main.bicep' = {
     highAvailability: 'SameZone'
     storageAutoGrow: 'Enabled'
     version: '8.0.21'
-    cMKKeyVaultResourceId: nestedDependencies2.outputs.keyVaultResourceId
-    cMKKeyName: nestedDependencies2.outputs.keyName
-    cMKUserAssignedIdentityResourceId: nestedDependencies2.outputs.managedIdentityResourceId
+    customerManagedKey: {
+      keyName: nestedDependencies2.outputs.keyName
+      keyVaultResourceId: nestedDependencies2.outputs.keyVaultResourceId
+      userAssignedIdentityResourceId: nestedDependencies2.outputs.managedIdentityResourceId
+    }
     geoRedundantBackup: 'Enabled'
-    geoBackupCMKKeyVaultResourceId: nestedDependencies2.outputs.geoBackupKeyVaultResourceId
-    geoBackupCMKKeyName: nestedDependencies2.outputs.geoBackupKeyName
-    geoBackupCMKUserAssignedIdentityResourceId: nestedDependencies2.outputs.geoBackupManagedIdentityResourceId
-    userAssignedIdentities: {
-      '${nestedDependencies2.outputs.managedIdentityResourceId}': {}
-      '${nestedDependencies2.outputs.geoBackupManagedIdentityResourceId}': {}
+    customerManagedKeyGeo: {
+      keyName: nestedDependencies2.outputs.geoBackupKeyName
+      keyVaultResourceId: nestedDependencies2.outputs.geoBackupKeyVaultResourceId
+      userAssignedIdentityResourceId: nestedDependencies2.outputs.geoBackupManagedIdentityResourceId
+    }
+    managedIdentities: {
+      userAssignedResourcesIds: [
+        nestedDependencies2.outputs.managedIdentityResourceId
+        nestedDependencies2.outputs.geoBackupManagedIdentityResourceId
+      ]
     }
     diagnosticSettings: [
       {

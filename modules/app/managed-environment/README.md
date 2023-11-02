@@ -421,14 +421,19 @@ Managed environment SKU.
 - Required: No
 - Type: string
 - Default: `'Consumption'`
-- Allowed: `[Consumption, Premium]`
+- Allowed:
+  ```Bicep
+  [
+    'Consumption'
+    'Premium'
+  ]
+  ```
 
 ### Parameter: `tags`
 
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `workloadProfiles`
 

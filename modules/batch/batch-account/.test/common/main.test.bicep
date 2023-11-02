@@ -117,7 +117,9 @@ module testDeployment '../../main.bicep' = {
     ]
     storageAccessIdentity: nestedDependencies.outputs.managedIdentityResourceId
     storageAuthenticationMode: 'BatchAccountManagedIdentity'
-    systemAssignedIdentity: true
+    managedIdentities: {
+      systemAssigned: true
+    }
     tags: {
       'hidden-title': 'This is visible in the resource name'
       Environment: 'Non-Prod'

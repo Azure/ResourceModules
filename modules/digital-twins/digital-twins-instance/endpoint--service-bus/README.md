@@ -45,7 +45,13 @@ Specifies the authentication type being used for connecting to the endpoint. If 
 - Required: No
 - Type: string
 - Default: `'IdentityBased'`
-- Allowed: `[IdentityBased, KeyBased]`
+- Allowed:
+  ```Bicep
+  [
+    'IdentityBased'
+    'KeyBased'
+  ]
+  ```
 
 ### Parameter: `deadLetterSecret`
 

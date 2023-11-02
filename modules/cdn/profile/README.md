@@ -470,7 +470,7 @@ Name of the endpoint under the profile which is unique globally.
 Endpoint properties (see https://learn.microsoft.com/en-us/azure/templates/microsoft.cdn/profiles/endpoints?pivots=deployment-language-bicep#endpointproperties for details).
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `location`
 
@@ -613,14 +613,30 @@ Array of secret objects.
 The pricing tier (defines a CDN provider, feature list and rate) of the CDN profile.
 - Required: Yes
 - Type: string
-- Allowed: `[Custom_Verizon, Premium_AzureFrontDoor, Premium_Verizon, Standard_955BandWidth_ChinaCdn, Standard_Akamai, Standard_AvgBandWidth_ChinaCdn, Standard_AzureFrontDoor, Standard_ChinaCdn, Standard_Microsoft, Standard_Verizon, StandardPlus_955BandWidth_ChinaCdn, StandardPlus_AvgBandWidth_ChinaCdn, StandardPlus_ChinaCdn]`
+- Allowed:
+  ```Bicep
+  [
+    'Custom_Verizon'
+    'Premium_AzureFrontDoor'
+    'Premium_Verizon'
+    'Standard_955BandWidth_ChinaCdn'
+    'Standard_Akamai'
+    'Standard_AvgBandWidth_ChinaCdn'
+    'Standard_AzureFrontDoor'
+    'Standard_ChinaCdn'
+    'Standard_Microsoft'
+    'Standard_Verizon'
+    'StandardPlus_955BandWidth_ChinaCdn'
+    'StandardPlus_AvgBandWidth_ChinaCdn'
+    'StandardPlus_ChinaCdn'
+  ]
+  ```
 
 ### Parameter: `tags`
 
 Endpoint tags.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 
 ## Outputs

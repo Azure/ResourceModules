@@ -56,7 +56,13 @@ Whether network traffic is allowed or denied.
 - Required: No
 - Type: string
 - Default: `'Deny'`
-- Allowed: `[Allow, Deny]`
+- Allowed:
+  ```Bicep
+  [
+    'Allow'
+    'Deny'
+  ]
+  ```
 
 ### Parameter: `description`
 
@@ -105,7 +111,13 @@ The destination port ranges.
 The direction of the rule. The direction specifies if rule will be evaluated on incoming or outgoing traffic.
 - Required: Yes
 - Type: string
-- Allowed: `[Inbound, Outbound]`
+- Allowed:
+  ```Bicep
+  [
+    'Inbound'
+    'Outbound'
+  ]
+  ```
 
 ### Parameter: `enableDefaultTelemetry`
 
@@ -137,7 +149,17 @@ The priority of the rule. The value can be between 100 and 4096. The priority nu
 Network protocol this rule applies to.
 - Required: Yes
 - Type: string
-- Allowed: `[*, Ah, Esp, Icmp, Tcp, Udp]`
+- Allowed:
+  ```Bicep
+  [
+    '*'
+    'Ah'
+    'Esp'
+    'Icmp'
+    'Tcp'
+    'Udp'
+  ]
+  ```
 
 ### Parameter: `sourceAddressPrefix`
 

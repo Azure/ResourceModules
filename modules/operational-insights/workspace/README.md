@@ -207,6 +207,11 @@ module workspace 'br:bicep/modules/operational-insights.workspace:1.0.0' = {
       kind: 'CanNotDelete'
       name: 'myCustomLockName'
     }
+    managedIdentities: {
+      userAssignedResourcesIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
     publicNetworkAccessForIngestion: 'Disabled'
     publicNetworkAccessForQuery: 'Disabled'
     savedSearches: [
@@ -284,9 +289,6 @@ module workspace 'br:bicep/modules/operational-insights.workspace:1.0.0' = {
       Environment: 'Non-Prod'
       'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
-    }
-    userAssignedIdentities: {
-      '<managedIdentityResourceId>': {}
     }
     useResourcePermissions: true
   }
@@ -483,6 +485,13 @@ module workspace 'br:bicep/modules/operational-insights.workspace:1.0.0' = {
         "name": "myCustomLockName"
       }
     },
+    "managedIdentities": {
+      "value": {
+        "userAssignedResourcesIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
+    },
     "publicNetworkAccessForIngestion": {
       "value": "Disabled"
     },
@@ -571,11 +580,6 @@ module workspace 'br:bicep/modules/operational-insights.workspace:1.0.0' = {
         "Environment": "Non-Prod",
         "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
-      }
-    },
-    "userAssignedIdentities": {
-      "value": {
-        "<managedIdentityResourceId>": {}
       }
     },
     "useResourcePermissions": {
@@ -733,6 +737,9 @@ module workspace 'br:bicep/modules/operational-insights.workspace:1.0.0' = {
       kind: 'CanNotDelete'
       name: 'myCustomLockName'
     }
+    managedIdentities: {
+      systemAssigned: true
+    }
     publicNetworkAccessForIngestion: 'Disabled'
     publicNetworkAccessForQuery: 'Disabled'
     roleAssignments: [
@@ -761,7 +768,6 @@ module workspace 'br:bicep/modules/operational-insights.workspace:1.0.0' = {
         ]
       }
     ]
-    systemAssignedIdentity: true
     tags: {
       Environment: 'Non-Prod'
       'hidden-title': 'This is visible in the resource name'
@@ -934,6 +940,11 @@ module workspace 'br:bicep/modules/operational-insights.workspace:1.0.0' = {
         "name": "myCustomLockName"
       }
     },
+    "managedIdentities": {
+      "value": {
+        "systemAssigned": true
+      }
+    },
     "publicNetworkAccessForIngestion": {
       "value": "Disabled"
     },
@@ -971,9 +982,6 @@ module workspace 'br:bicep/modules/operational-insights.workspace:1.0.0' = {
           ]
         }
       ]
-    },
-    "systemAssignedIdentity": {
-      "value": true
     },
     "tags": {
       "value": {
@@ -1070,6 +1078,7 @@ module workspace 'br:bicep/modules/operational-insights.workspace:1.0.0' = {
 | [`linkedServices`](#parameter-linkedservices) | array | List of services to be linked. |
 | [`location`](#parameter-location) | string | Location for all resources. |
 | [`lock`](#parameter-lock) | object | The lock settings of the service. |
+| [`managedIdentities`](#parameter-managedidentities) | object | The managed identity definition for this resource. Only one type of identity is supported: system-assigned or user-assigned, but not both. |
 | [`publicNetworkAccessForIngestion`](#parameter-publicnetworkaccessforingestion) | string | The network access type for accessing Log Analytics ingestion. |
 | [`publicNetworkAccessForQuery`](#parameter-publicnetworkaccessforquery) | string | The network access type for accessing Log Analytics query. |
 | [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
@@ -1077,10 +1086,8 @@ module workspace 'br:bicep/modules/operational-insights.workspace:1.0.0' = {
 | [`skuCapacityReservationLevel`](#parameter-skucapacityreservationlevel) | int | The capacity reservation level in GB for this workspace, when CapacityReservation sku is selected. Must be in increments of 100 between 100 and 5000. |
 | [`skuName`](#parameter-skuname) | string | The name of the SKU. |
 | [`storageInsightsConfigs`](#parameter-storageinsightsconfigs) | array | List of storage accounts to be read by the workspace. |
-| [`systemAssignedIdentity`](#parameter-systemassignedidentity) | bool | Enables system assigned managed identity on the resource. |
 | [`tables`](#parameter-tables) | array | LAW custom tables to be deployed. |
 | [`tags`](#parameter-tags) | object | Tags of the resource. |
-| [`userAssignedIdentities`](#parameter-userassignedidentities) | object | The ID(s) to assign to the resource. |
 | [`useResourcePermissions`](#parameter-useresourcepermissions) | bool | Set to 'true' to use resource or workspace permissions and 'false' (or leave empty) to require workspace permissions. |
 
 ### Parameter: `dailyQuotaGb`
@@ -1295,6 +1302,32 @@ Optional. Specify the name of lock.
 - Required: No
 - Type: string
 
+### Parameter: `managedIdentities`
+
+The managed identity definition for this resource. Only one type of identity is supported: system-assigned or user-assigned, but not both.
+- Required: No
+- Type: object
+
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`systemAssigned`](#parameter-managedidentitiessystemassigned) | No | bool | Optional. Enables system assigned managed identity on the resource. |
+| [`userAssignedResourcesIds`](#parameter-managedidentitiesuserassignedresourcesids) | No | array | Optional. The resource ID(s) to assign to the resource. |
+
+### Parameter: `managedIdentities.systemAssigned`
+
+Optional. Enables system assigned managed identity on the resource.
+
+- Required: No
+- Type: bool
+
+### Parameter: `managedIdentities.userAssignedResourcesIds`
+
+Optional. The resource ID(s) to assign to the resource.
+
+- Required: No
+- Type: array
+
 ### Parameter: `name`
 
 Name of the Log Analytics workspace.
@@ -1307,7 +1340,13 @@ The network access type for accessing Log Analytics ingestion.
 - Required: No
 - Type: string
 - Default: `'Enabled'`
-- Allowed: `[Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 ### Parameter: `publicNetworkAccessForQuery`
 
@@ -1315,7 +1354,13 @@ The network access type for accessing Log Analytics query.
 - Required: No
 - Type: string
 - Default: `'Enabled'`
-- Allowed: `[Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 ### Parameter: `roleAssignments`
 
@@ -1405,7 +1450,19 @@ The name of the SKU.
 - Required: No
 - Type: string
 - Default: `'PerGB2018'`
-- Allowed: `[CapacityReservation, Free, LACluster, PerGB2018, PerNode, Premium, Standalone, Standard]`
+- Allowed:
+  ```Bicep
+  [
+    'CapacityReservation'
+    'Free'
+    'LACluster'
+    'PerGB2018'
+    'PerNode'
+    'Premium'
+    'Standalone'
+    'Standard'
+  ]
+  ```
 
 ### Parameter: `storageInsightsConfigs`
 
@@ -1413,13 +1470,6 @@ List of storage accounts to be read by the workspace.
 - Required: No
 - Type: array
 - Default: `[]`
-
-### Parameter: `systemAssignedIdentity`
-
-Enables system assigned managed identity on the resource.
-- Required: No
-- Type: bool
-- Default: `False`
 
 ### Parameter: `tables`
 
@@ -1433,14 +1483,6 @@ LAW custom tables to be deployed.
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
-
-### Parameter: `userAssignedIdentities`
-
-The ID(s) to assign to the resource.
-- Required: No
-- Type: object
-- Default: `{object}`
 
 ### Parameter: `useResourcePermissions`
 
@@ -1459,7 +1501,7 @@ Set to 'true' to use resource or workspace permissions and 'false' (or leave emp
 | `name` | string | The name of the deployed log analytics workspace. |
 | `resourceGroupName` | string | The resource group of the deployed log analytics workspace. |
 | `resourceId` | string | The resource ID of the deployed log analytics workspace. |
-| `systemAssignedIdentityPrincipalId` | string | The principal ID of the system assigned identity. |
+| `systemAssignedMIPrincipalId` | string | The principal ID of the system assigned identity. |
 
 ## Cross-referenced modules
 

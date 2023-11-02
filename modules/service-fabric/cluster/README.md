@@ -702,7 +702,15 @@ The list of add-on features to enable in the cluster.
 - Required: No
 - Type: array
 - Default: `[]`
-- Allowed: `[BackupRestoreService, DnsService, RepairManager, ResourceMonitorService]`
+- Allowed:
+  ```Bicep
+  [
+    'BackupRestoreService'
+    'DnsService'
+    'RepairManager'
+    'ResourceMonitorService'
+  ]
+  ```
 
 ### Parameter: `applicationTypes`
 
@@ -716,21 +724,21 @@ Array of Service Fabric cluster application types.
 The settings to enable AAD authentication on the cluster.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `certificate`
 
 Describes the certificate details like thumbprint of the primary certificate, thumbprint of the secondary certificate and the local certificate store location.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `certificateCommonNames`
 
 Describes a list of server certificates referenced by common name that are used to secure the cluster.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `clientCertificateCommonNames`
 
@@ -758,7 +766,7 @@ The Service Fabric runtime version of the cluster. This property can only by set
 The storage account information for storing Service Fabric diagnostic logs.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `enableDefaultTelemetry`
 
@@ -859,21 +867,30 @@ Indicates a list of notification channels for cluster events.
 The reliability level sets the replica set size of system services. Learn about ReliabilityLevel (https://learn.microsoft.com/en-us/azure/service-fabric/service-fabric-cluster-capacity). - None - Run the System services with a target replica set count of 1. This should only be used for test clusters. - Bronze - Run the System services with a target replica set count of 3. This should only be used for test clusters. - Silver - Run the System services with a target replica set count of 5. - Gold - Run the System services with a target replica set count of 7. - Platinum - Run the System services with a target replica set count of 9.
 - Required: Yes
 - Type: string
-- Allowed: `[Bronze, Gold, None, Platinum, Silver]`
+- Allowed:
+  ```Bicep
+  [
+    'Bronze'
+    'Gold'
+    'None'
+    'Platinum'
+    'Silver'
+  ]
+  ```
 
 ### Parameter: `reverseProxyCertificate`
 
 Describes the certificate details.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `reverseProxyCertificateCommonNames`
 
 Describes a list of server certificates referenced by common name that are used to secure the cluster.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `roleAssignments`
 
@@ -949,21 +966,26 @@ This property controls the logical grouping of VMs in upgrade domains (UDs). Thi
 - Required: No
 - Type: string
 - Default: `'Hierarchical'`
-- Allowed: `[Hierarchical, Parallel]`
+- Allowed:
+  ```Bicep
+  [
+    'Hierarchical'
+    'Parallel'
+  ]
+  ```
 
 ### Parameter: `tags`
 
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `upgradeDescription`
 
 Describes the policy used when upgrading the cluster.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `upgradeMode`
 
@@ -971,7 +993,13 @@ The upgrade mode of the cluster when new Service Fabric runtime version is avail
 - Required: No
 - Type: string
 - Default: `'Automatic'`
-- Allowed: `[Automatic, Manual]`
+- Allowed:
+  ```Bicep
+  [
+    'Automatic'
+    'Manual'
+  ]
+  ```
 
 ### Parameter: `upgradePauseEndTimestampUtc`
 
@@ -993,7 +1021,14 @@ Indicates when new cluster runtime version upgrades will be applied after they a
 - Required: No
 - Type: string
 - Default: `'Wave0'`
-- Allowed: `[Wave0, Wave1, Wave2]`
+- Allowed:
+  ```Bicep
+  [
+    'Wave0'
+    'Wave1'
+    'Wave2'
+  ]
+  ```
 
 ### Parameter: `vmImage`
 
@@ -1008,7 +1043,13 @@ This property defines the upgrade mode for the virtual machine scale set, it is 
 - Required: No
 - Type: string
 - Default: `'Hierarchical'`
-- Allowed: `[Hierarchical, Parallel]`
+- Allowed:
+  ```Bicep
+  [
+    'Hierarchical'
+    'Parallel'
+  ]
+  ```
 
 ### Parameter: `waveUpgradePaused`
 

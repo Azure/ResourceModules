@@ -61,9 +61,11 @@ module testDeployment '../../main.bicep' = {
     associatedKeyVaultResourceId: nestedDependencies.outputs.keyVaultResourceId
     associatedStorageAccountResourceId: nestedDependencies.outputs.storageAccountResourceId
     sku: 'Basic'
-    cMKKeyName: nestedDependencies.outputs.keyVaultEncryptionKeyName
-    cMKKeyVaultResourceId: nestedDependencies.outputs.keyVaultResourceId
-    cMKUserAssignedIdentityResourceId: nestedDependencies.outputs.managedIdentityResourceId
+    customerManagedKey: {
+      keyName: nestedDependencies.outputs.keyVaultEncryptionKeyName
+      keyVaultResourceId: nestedDependencies.outputs.keyVaultResourceId
+      userAssignedIdentityResourceId: nestedDependencies.outputs.managedIdentityResourceId
+    }
     primaryUserAssignedIdentity: nestedDependencies.outputs.managedIdentityResourceId
     privateEndpoints: [
       {
@@ -79,10 +81,12 @@ module testDeployment '../../main.bicep' = {
         }
       }
     ]
-    // Must be false if `primaryUserAssignedIdentity` is provided
-    systemAssignedIdentity: false
-    userAssignedIdentities: {
-      '${nestedDependencies.outputs.managedIdentityResourceId}': {}
+    // systemAssigned must be false if `primaryUserAssignedIdentity` is provided
+    managedIdentities: {
+      systemAssigned: false
+      userAssignedResourcesIds: [
+        nestedDependencies.outputs.managedIdentityResourceId
+      ]
     }
     tags: {
       'hidden-title': 'This is visible in the resource name'

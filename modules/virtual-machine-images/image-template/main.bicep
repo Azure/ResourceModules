@@ -69,7 +69,7 @@ param stagingResourceGroup string = ''
 param lock lockType
 
 @description('Optional. Tags of the resource.')
-param tags object = {}
+param tags object?
 
 @description('Generated. Do not provide a value! This date value is used to generate a unique image template name.')
 param baseTime string = utcNow('yyyy-MM-dd-HH-mm-ss')

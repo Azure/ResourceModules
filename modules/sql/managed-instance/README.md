@@ -113,6 +113,12 @@ module managedInstance 'br:bicep/modules/sql.managed-instance:1.0.0' = {
       kind: 'CanNotDelete'
       name: 'myCustomLockName'
     }
+    managedIdentities: {
+      systemAssigned: true
+      userAssignedResourcesIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
     primaryUserAssignedIdentityId: '<primaryUserAssignedIdentityId>'
     proxyOverride: 'Proxy'
     publicDataEndpointEnabled: false
@@ -132,11 +138,7 @@ module managedInstance 'br:bicep/modules/sql.managed-instance:1.0.0' = {
     skuName: 'GP_Gen5'
     skuTier: 'GeneralPurpose'
     storageSizeInGB: 32
-    systemAssignedIdentity: true
     timezoneId: 'UTC'
-    userAssignedIdentities: {
-      '<managedIdentityResourceId>': {}
-    }
     vCores: 4
     vulnerabilityAssessmentsObj: {
       emailSubscriptionAdmins: true
@@ -255,6 +257,14 @@ module managedInstance 'br:bicep/modules/sql.managed-instance:1.0.0' = {
         "name": "myCustomLockName"
       }
     },
+    "managedIdentities": {
+      "value": {
+        "systemAssigned": true,
+        "userAssignedResourcesIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
+    },
     "primaryUserAssignedIdentityId": {
       "value": "<primaryUserAssignedIdentityId>"
     },
@@ -292,16 +302,8 @@ module managedInstance 'br:bicep/modules/sql.managed-instance:1.0.0' = {
     "storageSizeInGB": {
       "value": 32
     },
-    "systemAssignedIdentity": {
-      "value": true
-    },
     "timezoneId": {
       "value": "UTC"
-    },
-    "userAssignedIdentities": {
-      "value": {
-        "<managedIdentityResourceId>": {}
-      }
     },
     "vCores": {
       "value": 4
@@ -407,12 +409,14 @@ module managedInstance 'br:bicep/modules/sql.managed-instance:1.0.0' = {
     subnetId: '<subnetId>'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    managedIdentities: {
+      systemAssigned: true
+    }
     securityAlertPoliciesObj: {
       emailAccountAdmins: true
       name: 'default'
       state: 'Enabled'
     }
-    systemAssignedIdentity: true
     vulnerabilityAssessmentsObj: {
       createStorageRoleAssignment: true
       emailSubscriptionAdmins: true
@@ -463,15 +467,17 @@ module managedInstance 'br:bicep/modules/sql.managed-instance:1.0.0' = {
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     },
+    "managedIdentities": {
+      "value": {
+        "systemAssigned": true
+      }
+    },
     "securityAlertPoliciesObj": {
       "value": {
         "emailAccountAdmins": true,
         "name": "default",
         "state": "Enabled"
       }
-    },
-    "systemAssignedIdentity": {
-      "value": true
     },
     "vulnerabilityAssessmentsObj": {
       "value": {
@@ -534,6 +540,7 @@ module managedInstance 'br:bicep/modules/sql.managed-instance:1.0.0' = {
 | [`licenseType`](#parameter-licensetype) | string | The license type. Possible values are 'LicenseIncluded' (regular price inclusive of a new SQL license) and 'BasePrice' (discounted AHB price for bringing your own SQL licenses). |
 | [`location`](#parameter-location) | string | Location for all resources. |
 | [`lock`](#parameter-lock) | object | The lock settings of the service. |
+| [`managedIdentities`](#parameter-managedidentities) | object | The managed identity definition for this resource. |
 | [`managedInstanceCreateMode`](#parameter-managedinstancecreatemode) | string | Specifies the mode of database creation. Default: Regular instance creation. Restore: Creates an instance by restoring a set of backups to specific point in time. RestorePointInTime and SourceManagedInstanceId must be specified. |
 | [`minimalTlsVersion`](#parameter-minimaltlsversion) | string | Minimal TLS version allowed. |
 | [`proxyOverride`](#parameter-proxyoverride) | string | Connection type used for connecting to the instance. |
@@ -547,10 +554,8 @@ module managedInstance 'br:bicep/modules/sql.managed-instance:1.0.0' = {
 | [`skuTier`](#parameter-skutier) | string | The tier or edition of the particular SKU, e.g. Basic, Premium. |
 | [`sourceManagedInstanceId`](#parameter-sourcemanagedinstanceid) | string | The resource identifier of the source managed instance associated with create operation of this instance. |
 | [`storageSizeInGB`](#parameter-storagesizeingb) | int | Storage size in GB. Minimum value: 32. Maximum value: 8192. Increments of 32 GB allowed only. |
-| [`systemAssignedIdentity`](#parameter-systemassignedidentity) | bool | Enables system assigned managed identity on the resource. |
 | [`tags`](#parameter-tags) | object | Tags of the resource. |
 | [`timezoneId`](#parameter-timezoneid) | string | ID of the timezone. Allowed values are timezones supported by Windows. |
-| [`userAssignedIdentities`](#parameter-userassignedidentities) | object | The ID(s) to assign to the resource. |
 | [`vCores`](#parameter-vcores) | int | The number of vCores. Allowed values: 8, 16, 24, 32, 40, 64, 80. |
 | [`vulnerabilityAssessmentsObj`](#parameter-vulnerabilityassessmentsobj) | object | The vulnerability assessment configuration. |
 | [`zoneRedundant`](#parameter-zoneredundant) | bool | Whether or not multi-az is enabled. |
@@ -572,7 +577,7 @@ The password given to the admin user.
 The administrator configuration.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `collation`
 
@@ -722,7 +727,7 @@ Enable telemetry via a Globally Unique Identifier (GUID).
 The encryption protection configuration.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `hardwareFamily`
 
@@ -751,7 +756,13 @@ The license type. Possible values are 'LicenseIncluded' (regular price inclusive
 - Required: No
 - Type: string
 - Default: `'LicenseIncluded'`
-- Allowed: `[BasePrice, LicenseIncluded]`
+- Allowed:
+  ```Bicep
+  [
+    'BasePrice'
+    'LicenseIncluded'
+  ]
+  ```
 
 ### Parameter: `location`
 
@@ -787,13 +798,45 @@ Optional. Specify the name of lock.
 - Required: No
 - Type: string
 
+### Parameter: `managedIdentities`
+
+The managed identity definition for this resource.
+- Required: No
+- Type: object
+
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`systemAssigned`](#parameter-managedidentitiessystemassigned) | No | bool | Optional. Enables system assigned managed identity on the resource. |
+| [`userAssignedResourcesIds`](#parameter-managedidentitiesuserassignedresourcesids) | No | array | Optional. The resource ID(s) to assign to the resource. |
+
+### Parameter: `managedIdentities.systemAssigned`
+
+Optional. Enables system assigned managed identity on the resource.
+
+- Required: No
+- Type: bool
+
+### Parameter: `managedIdentities.userAssignedResourcesIds`
+
+Optional. The resource ID(s) to assign to the resource.
+
+- Required: No
+- Type: array
+
 ### Parameter: `managedInstanceCreateMode`
 
 Specifies the mode of database creation. Default: Regular instance creation. Restore: Creates an instance by restoring a set of backups to specific point in time. RestorePointInTime and SourceManagedInstanceId must be specified.
 - Required: No
 - Type: string
 - Default: `'Default'`
-- Allowed: `[Default, PointInTimeRestore]`
+- Allowed:
+  ```Bicep
+  [
+    'Default'
+    'PointInTimeRestore'
+  ]
+  ```
 
 ### Parameter: `minimalTlsVersion`
 
@@ -801,7 +844,15 @@ Minimal TLS version allowed.
 - Required: No
 - Type: string
 - Default: `'1.2'`
-- Allowed: `[1.0, 1.1, 1.2, None]`
+- Allowed:
+  ```Bicep
+  [
+    '1.0'
+    '1.1'
+    '1.2'
+    'None'
+  ]
+  ```
 
 ### Parameter: `name`
 
@@ -822,7 +873,14 @@ Connection type used for connecting to the instance.
 - Required: No
 - Type: string
 - Default: `'Proxy'`
-- Allowed: `[Default, Proxy, Redirect]`
+- Allowed:
+  ```Bicep
+  [
+    'Default'
+    'Proxy'
+    'Redirect'
+  ]
+  ```
 
 ### Parameter: `publicDataEndpointEnabled`
 
@@ -837,7 +895,15 @@ The storage account type used to store backups for this database.
 - Required: No
 - Type: string
 - Default: `'Geo'`
-- Allowed: `[Geo, GeoZone, Local, Zone]`
+- Allowed:
+  ```Bicep
+  [
+    'Geo'
+    'GeoZone'
+    'Local'
+    'Zone'
+  ]
+  ```
 
 ### Parameter: `restorePointInTime`
 
@@ -919,7 +985,7 @@ Required. The name of the role to assign. If it cannot be found you can specify 
 The security alert policy configuration.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `servicePrincipal`
 
@@ -927,7 +993,13 @@ Service principal type. If using AD Authentication and applying Admin, must be s
 - Required: No
 - Type: string
 - Default: `'None'`
-- Allowed: `[None, SystemAssigned]`
+- Allowed:
+  ```Bicep
+  [
+    'None'
+    'SystemAssigned'
+  ]
+  ```
 
 ### Parameter: `skuName`
 
@@ -963,19 +1035,11 @@ The fully qualified resource ID of the subnet on which the SQL managed instance 
 - Required: Yes
 - Type: string
 
-### Parameter: `systemAssignedIdentity`
-
-Enables system assigned managed identity on the resource.
-- Required: No
-- Type: bool
-- Default: `False`
-
 ### Parameter: `tags`
 
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `timezoneId`
 
@@ -983,13 +1047,6 @@ ID of the timezone. Allowed values are timezones supported by Windows.
 - Required: No
 - Type: string
 - Default: `'UTC'`
-
-### Parameter: `userAssignedIdentities`
-
-The ID(s) to assign to the resource.
-- Required: No
-- Type: object
-- Default: `{object}`
 
 ### Parameter: `vCores`
 
@@ -1003,7 +1060,7 @@ The number of vCores. Allowed values: 8, 16, 24, 32, 40, 64, 80.
 The vulnerability assessment configuration.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `zoneRedundant`
 
@@ -1021,7 +1078,7 @@ Whether or not multi-az is enabled.
 | `name` | string | The name of the deployed managed instance. |
 | `resourceGroupName` | string | The resource group of the deployed managed instance. |
 | `resourceId` | string | The resource ID of the deployed managed instance. |
-| `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
+| `systemAssignedMIPrincipalId` | string | The principal ID of the system assigned identity. |
 
 ## Cross-referenced modules
 

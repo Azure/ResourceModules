@@ -42,12 +42,11 @@ Attaching a compute is not idempotent and will fail in case you try to redeploy 
 | [`disableLocalAuth`](#parameter-disablelocalauth) | bool | Opt-out of local authentication and ensure customers can use only MSI and AAD exclusively for authentication. |
 | [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
 | [`location`](#parameter-location) | string | Specifies the location of the resource. |
+| [`managedIdentities`](#parameter-managedidentities) | object | The managed identity definition for this resource. |
 | [`properties`](#parameter-properties) | object | The properties of the compute. Will be ignored in case "resourceId" is set. |
 | [`resourceId`](#parameter-resourceid) | string | ARM resource ID of the underlying compute. |
 | [`sku`](#parameter-sku) | string | Specifies the sku, also referred as "edition". Required for creating a compute resource. |
-| [`systemAssignedIdentity`](#parameter-systemassignedidentity) | bool | Enables system assigned managed identity on the resource. Ignored when attaching a compute resource, i.e. when you provide a resource ID. |
 | [`tags`](#parameter-tags) | object | Contains resource tags defined as key-value pairs. Ignored when attaching a compute resource, i.e. when you provide a resource ID. |
-| [`userAssignedIdentities`](#parameter-userassignedidentities) | object | The ID(s) to assign to the resource. Ignored when attaching a compute resource, i.e. when you provide a resource ID. |
 
 ### Parameter: `computeLocation`
 
@@ -61,7 +60,21 @@ Location for the underlying compute. Ignored when attaching a compute resource, 
 Set the object type.
 - Required: Yes
 - Type: string
-- Allowed: `[AKS, AmlCompute, ComputeInstance, Databricks, DataFactory, DataLakeAnalytics, HDInsight, Kubernetes, SynapseSpark, VirtualMachine]`
+- Allowed:
+  ```Bicep
+  [
+    'AKS'
+    'AmlCompute'
+    'ComputeInstance'
+    'Databricks'
+    'DataFactory'
+    'DataLakeAnalytics'
+    'HDInsight'
+    'Kubernetes'
+    'SynapseSpark'
+    'VirtualMachine'
+  ]
+  ```
 
 ### Parameter: `deployCompute`
 
@@ -104,6 +117,32 @@ The name of the parent Machine Learning Workspace. Required if the template is u
 - Required: Yes
 - Type: string
 
+### Parameter: `managedIdentities`
+
+The managed identity definition for this resource.
+- Required: No
+- Type: object
+
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`systemAssigned`](#parameter-managedidentitiessystemassigned) | No | bool | Optional. Enables system assigned managed identity on the resource. |
+| [`userAssignedResourcesIds`](#parameter-managedidentitiesuserassignedresourcesids) | No | array | Optional. The resource ID(s) to assign to the resource. |
+
+### Parameter: `managedIdentities.systemAssigned`
+
+Optional. Enables system assigned managed identity on the resource.
+
+- Required: No
+- Type: bool
+
+### Parameter: `managedIdentities.userAssignedResourcesIds`
+
+Optional. The resource ID(s) to assign to the resource.
+
+- Required: No
+- Type: array
+
 ### Parameter: `name`
 
 Name of the compute.
@@ -115,7 +154,7 @@ Name of the compute.
 The properties of the compute. Will be ignored in case "resourceId" is set.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `resourceId`
 
@@ -130,28 +169,22 @@ Specifies the sku, also referred as "edition". Required for creating a compute r
 - Required: No
 - Type: string
 - Default: `''`
-- Allowed: `['', Basic, Free, Premium, Standard]`
-
-### Parameter: `systemAssignedIdentity`
-
-Enables system assigned managed identity on the resource. Ignored when attaching a compute resource, i.e. when you provide a resource ID.
-- Required: No
-- Type: bool
-- Default: `False`
+- Allowed:
+  ```Bicep
+  [
+    ''
+    'Basic'
+    'Free'
+    'Premium'
+    'Standard'
+  ]
+  ```
 
 ### Parameter: `tags`
 
 Contains resource tags defined as key-value pairs. Ignored when attaching a compute resource, i.e. when you provide a resource ID.
 - Required: No
 - Type: object
-- Default: `{object}`
-
-### Parameter: `userAssignedIdentities`
-
-The ID(s) to assign to the resource. Ignored when attaching a compute resource, i.e. when you provide a resource ID.
-- Required: No
-- Type: object
-- Default: `{object}`
 
 
 ## Outputs
@@ -162,7 +195,7 @@ The ID(s) to assign to the resource. Ignored when attaching a compute resource, 
 | `name` | string | The name of the compute. |
 | `resourceGroupName` | string | The resource group the compute was deployed into. |
 | `resourceId` | string | The resource ID of the compute. |
-| `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. Is null in case of attaching a compute resource, i.e. when you provide a resource ID. |
+| `systemAssignedMIPrincipalId` | string | The principal ID of the system assigned identity. |
 
 ## Cross-referenced modules
 

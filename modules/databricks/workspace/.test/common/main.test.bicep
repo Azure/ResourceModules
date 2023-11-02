@@ -112,11 +112,15 @@ module testDeployment '../../main.bicep' = {
       Environment: 'Non-Prod'
       Role: 'DeploymentValidation'
     }
-    cMKManagedServicesKeyName: nestedDependencies.outputs.keyVaultKeyName
-    cMKManagedServicesKeyVaultResourceId: nestedDependencies.outputs.keyVaultResourceId
-    cMKManagedDisksKeyName: nestedDependencies.outputs.keyVaultDiskKeyName
-    cMKManagedDisksKeyVaultResourceId: nestedDependencies.outputs.keyVaultDiskResourceId
-    cMKManagedDisksKeyRotationToLatestKeyVersionEnabled: true
+    customerManagedKey: {
+      keyName: nestedDependencies.outputs.keyVaultKeyName
+      keyVaultResourceId: nestedDependencies.outputs.keyVaultResourceId
+    }
+    customerManagedKeyManagedDisk: {
+      keyName: nestedDependencies.outputs.keyVaultDiskKeyName
+      keyVaultResourceId: nestedDependencies.outputs.keyVaultDiskResourceId
+      rotationToLatestKeyVersionEnabled: true
+    }
     storageAccountName: 'sa${namePrefix}${serviceShort}001'
     storageAccountSkuName: 'Standard_ZRS'
     publicIpName: 'nat-gw-public-ip'

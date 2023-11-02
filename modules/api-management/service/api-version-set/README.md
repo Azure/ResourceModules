@@ -56,7 +56,7 @@ API Version set name.
 API Version set properties.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 
 ## Outputs

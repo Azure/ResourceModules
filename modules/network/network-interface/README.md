@@ -1,5 +1,7 @@
 # Network Interface `[Microsoft.Network/networkInterfaces]`
 
+> This module has already been migrated to [AVM](https://github.com/Azure/bicep-registry-modules/tree/main/avm/res). Only the AVM version is expected to receive updates / new features. Please do not work on improving this module in [CARML](https://aka.ms/carml).
+
 This module deploys a Network Interface.
 
 ## Navigation
@@ -292,7 +294,14 @@ Auxiliary mode of Network Interface resource. Not all regions are enabled for Au
 - Required: No
 - Type: string
 - Default: `'None'`
-- Allowed: `[Floating, MaxConnections, None]`
+- Allowed:
+  ```Bicep
+  [
+    'Floating'
+    'MaxConnections'
+    'None'
+  ]
+  ```
 
 ### Parameter: `auxiliarySku`
 
@@ -300,7 +309,16 @@ Auxiliary sku of Network Interface resource. Not all regions are enabled for Aux
 - Required: No
 - Type: string
 - Default: `'None'`
-- Allowed: `[A1, A2, A4, A8, None]`
+- Allowed:
+  ```Bicep
+  [
+    'A1'
+    'A2'
+    'A4'
+    'A8'
+    'None'
+  ]
+  ```
 
 ### Parameter: `diagnosticSettings`
 
@@ -550,7 +568,6 @@ Required. The name of the role to assign. If it cannot be found you can specify 
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 
 ## Outputs

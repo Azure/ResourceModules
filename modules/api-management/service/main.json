@@ -6,13 +6,36 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "5480824753048175780"
+      "templateHash": "10340171795894114862"
     },
     "name": "API Management Services",
     "description": "This module deploys an API Management Service.",
     "owner": "Azure/module-maintainers"
   },
   "definitions": {
+    "managedIdentitiesType": {
+      "type": "object",
+      "properties": {
+        "systemAssigned": {
+          "type": "bool",
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Enables system assigned managed identity on the resource."
+          }
+        },
+        "userAssignedResourcesIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. The resource ID(s) to assign to the resource."
+          }
+        }
+      },
+      "nullable": true
+    },
     "lockType": {
       "type": "object",
       "properties": {
@@ -268,18 +291,10 @@
         "description": "Optional. Custom hostname configuration of the API Management service."
       }
     },
-    "systemAssignedIdentity": {
-      "type": "bool",
-      "defaultValue": false,
+    "managedIdentities": {
+      "$ref": "#/definitions/managedIdentitiesType",
       "metadata": {
-        "description": "Optional. Enables system assigned managed identity on the resource."
-      }
-    },
-    "userAssignedIdentities": {
-      "type": "object",
-      "defaultValue": {},
-      "metadata": {
-        "description": "Optional. The ID(s) to assign to the resource."
+        "description": "Optional. The managed identity definition for this resource."
       }
     },
     "location": {
@@ -368,7 +383,7 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Tags of the resource."
       }
@@ -486,8 +501,8 @@
   "variables": {
     "enableReferencedModulesTelemetry": false,
     "authorizationServerList": "[if(not(empty(parameters('authorizationServers'))), parameters('authorizationServers').secureList, createArray())]",
-    "identityType": "[if(parameters('systemAssignedIdentity'), if(not(empty(parameters('userAssignedIdentities'))), 'SystemAssigned,UserAssigned', 'SystemAssigned'), if(not(empty(parameters('userAssignedIdentities'))), 'UserAssigned', 'None'))]",
-    "identity": "[if(not(equals(variables('identityType'), 'None')), createObject('type', variables('identityType'), 'userAssignedIdentities', if(not(empty(parameters('userAssignedIdentities'))), parameters('userAssignedIdentities'), null())), null())]",
+    "formattedUserAssignedIdentities": "[reduce(map(coalesce(tryGet(parameters('managedIdentities'), 'userAssignedResourcesIds'), createArray()), lambda('id', createObject(format('{0}', lambdaVariables('id')), createObject()))), createObject(), lambda('cur', 'next', union(lambdaVariables('cur'), lambdaVariables('next'))))]",
+    "identity": "[if(not(empty(parameters('managedIdentities'))), createObject('type', if(coalesce(tryGet(parameters('managedIdentities'), 'systemAssigned'), false()), if(not(empty(coalesce(tryGet(parameters('managedIdentities'), 'userAssignedResourcesIds'), createObject()))), 'SystemAssigned,UserAssigned', 'SystemAssigned'), if(not(empty(coalesce(tryGet(parameters('managedIdentities'), 'userAssignedResourcesIds'), createObject()))), 'UserAssigned', null())), 'userAssignedIdentities', if(not(empty(variables('formattedUserAssignedIdentities'))), variables('formattedUserAssignedIdentities'), null())), null())]",
     "builtInRoleNames": {
       "API Management Developer Portal Content Editor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'c031e6a8-4391-4de0-8d69-4706a7ed3729')]",
       "API Management Service Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '312a565d-c81f-4fd8-895a-4e21e48d571c')]",
@@ -2043,7 +2058,9 @@
           "name": {
             "value": "[parameters('namedValues')[copyIndex()].name]"
           },
-          "tags": "[if(contains(parameters('namedValues')[copyIndex()], 'tags'), createObject('value', parameters('namedValues')[copyIndex()].tags), createObject('value', createArray()))]",
+          "tags": {
+            "value": "[tryGet(parameters('namedValues')[copyIndex()], 'tags')]"
+          },
           "secret": "[if(contains(parameters('namedValues')[copyIndex()], 'secret'), createObject('value', parameters('namedValues')[copyIndex()].secret), createObject('value', false()))]",
           "value": "[if(contains(parameters('namedValues')[copyIndex()], 'value'), createObject('value', parameters('namedValues')[copyIndex()].value), createObject('value', parameters('newGuidValue')))]",
           "enableDefaultTelemetry": {
@@ -2052,12 +2069,13 @@
         },
         "template": {
           "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "languageVersion": "2.0",
           "contentVersion": "1.0.0.0",
           "metadata": {
             "_generator": {
               "name": "bicep",
               "version": "0.22.6.54827",
-              "templateHash": "3581707708141744852"
+              "templateHash": "16893893897869493831"
             },
             "name": "API Management Service Named Values",
             "description": "This module deploys an API Management Service Named Value.",
@@ -2098,7 +2116,7 @@
             },
             "tags": {
               "type": "array",
-              "defaultValue": [],
+              "nullable": true,
               "metadata": {
                 "description": "Optional. Tags that when provided can be used to filter the NamedValue list. - string."
               }
@@ -2121,8 +2139,8 @@
           "variables": {
             "keyVaultEmpty": "[empty(parameters('keyVault'))]"
           },
-          "resources": [
-            {
+          "resources": {
+            "defaultTelemetry": {
               "condition": "[parameters('enableDefaultTelemetry')]",
               "type": "Microsoft.Resources/deployments",
               "apiVersion": "2021-04-01",
@@ -2136,19 +2154,28 @@
                 }
               }
             },
-            {
+            "service": {
+              "existing": true,
+              "type": "Microsoft.ApiManagement/service",
+              "apiVersion": "2021-08-01",
+              "name": "[parameters('apiManagementServiceName')]"
+            },
+            "namedValue": {
               "type": "Microsoft.ApiManagement/service/namedValues",
               "apiVersion": "2021-08-01",
               "name": "[format('{0}/{1}', parameters('apiManagementServiceName'), parameters('name'))]",
               "properties": {
-                "tags": "[if(not(empty(parameters('tags'))), parameters('tags'), null())]",
+                "tags": "[parameters('tags')]",
                 "secret": "[parameters('secret')]",
                 "displayName": "[parameters('displayName')]",
                 "value": "[if(variables('keyVaultEmpty'), parameters('value'), null())]",
                 "keyVault": "[if(not(variables('keyVaultEmpty')), parameters('keyVault'), null())]"
-              }
+              },
+              "dependsOn": [
+                "service"
+              ]
             }
-          ],
+          },
           "outputs": {
             "resourceId": {
               "type": "string",
@@ -3053,12 +3080,12 @@
       },
       "value": "[resourceGroup().name]"
     },
-    "systemAssignedPrincipalId": {
+    "systemAssignedMIPrincipalId": {
       "type": "string",
       "metadata": {
         "description": "The principal ID of the system assigned identity."
       },
-      "value": "[if(and(parameters('systemAssignedIdentity'), contains(reference('service', '2021-08-01', 'full').identity, 'principalId')), reference('service', '2021-08-01', 'full').identity.principalId, '')]"
+      "value": "[if(and(coalesce(tryGet(parameters('managedIdentities'), 'systemAssigned'), false()), contains(reference('service', '2021-08-01', 'full').identity, 'principalId')), reference('service', '2021-08-01', 'full').identity.principalId, '')]"
     },
     "location": {
       "type": "string",

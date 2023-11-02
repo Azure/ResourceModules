@@ -281,7 +281,13 @@ module applicationGroup 'br:bicep/modules/desktop-virtualization.application-gro
 The type of the Application Group to be created. Allowed values: RemoteApp or Desktop.
 - Required: Yes
 - Type: string
-- Allowed: `[Desktop, RemoteApp]`
+- Allowed:
+  ```Bicep
+  [
+    'Desktop'
+    'RemoteApp'
+  ]
+  ```
 
 ### Parameter: `applications`
 
@@ -525,7 +531,6 @@ Required. The name of the role to assign. If it cannot be found you can specify 
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 
 ## Outputs

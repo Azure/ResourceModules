@@ -42,7 +42,7 @@ param namespace string = ''
 param roleAssignments roleAssignmentType
 
 @description('Optional. Gets or sets tags of the resource.')
-param tags object = {}
+param tags object?
 
 @description('Optional. Gets or sets the visibility of the configuration. The default value is \'Custom\'.')
 @allowed([

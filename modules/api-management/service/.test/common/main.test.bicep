@@ -82,6 +82,9 @@ module testDeployment '../../main.bicep' = {
         }
       }
     ]
+    managedIdentities: {
+      systemAssigned: true
+    }
     roleAssignments: [
       {
         roleDefinitionIdOrName: 'Reader'

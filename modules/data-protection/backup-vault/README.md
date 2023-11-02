@@ -115,6 +115,9 @@ module backupVault 'br:bicep/modules/data-protection.backup-vault:1.0.0' = {
       kind: 'CanNotDelete'
       name: 'myCustomLockName'
     }
+    managedIdentities: {
+      systemAssigned: true
+    }
     roleAssignments: [
       {
         principalId: '<principalId>'
@@ -122,7 +125,6 @@ module backupVault 'br:bicep/modules/data-protection.backup-vault:1.0.0' = {
         roleDefinitionIdOrName: 'Reader'
       }
     ]
-    systemAssignedIdentity: true
     tags: {
       Environment: 'Non-Prod'
       'hidden-title': 'This is visible in the resource name'
@@ -225,6 +227,11 @@ module backupVault 'br:bicep/modules/data-protection.backup-vault:1.0.0' = {
         "name": "myCustomLockName"
       }
     },
+    "managedIdentities": {
+      "value": {
+        "systemAssigned": true
+      }
+    },
     "roleAssignments": {
       "value": [
         {
@@ -233,9 +240,6 @@ module backupVault 'br:bicep/modules/data-protection.backup-vault:1.0.0' = {
           "roleDefinitionIdOrName": "Reader"
         }
       ]
-    },
-    "systemAssignedIdentity": {
-      "value": true
     },
     "tags": {
       "value": {
@@ -319,9 +323,9 @@ module backupVault 'br:bicep/modules/data-protection.backup-vault:1.0.0' = {
 | [`featureSettings`](#parameter-featuresettings) | object | Feature settings for the backup vault. |
 | [`location`](#parameter-location) | string | Location for all resources. |
 | [`lock`](#parameter-lock) | object | The lock settings of the service. |
+| [`managedIdentities`](#parameter-managedidentities) | object | The managed identity definition for this resource. |
 | [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | [`securitySettings`](#parameter-securitysettings) | object | Security settings for the backup vault. |
-| [`systemAssignedIdentity`](#parameter-systemassignedidentity) | bool | Enables system assigned managed identity on the resource. |
 | [`tags`](#parameter-tags) | object | Tags of the Recovery Service Vault resource. |
 | [`type`](#parameter-type) | string | The vault redundancy level to use. |
 
@@ -331,7 +335,13 @@ Settings for Azure Monitor based alerts for job failures.
 - Required: No
 - Type: string
 - Default: `'Enabled'`
-- Allowed: `[Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 ### Parameter: `backupPolicies`
 
@@ -346,7 +356,14 @@ The datastore type to use. ArchiveStore does not support ZoneRedundancy.
 - Required: No
 - Type: string
 - Default: `'VaultStore'`
-- Allowed: `[ArchiveStore, OperationalStore, VaultStore]`
+- Allowed:
+  ```Bicep
+  [
+    'ArchiveStore'
+    'OperationalStore'
+    'VaultStore'
+  ]
+  ```
 
 ### Parameter: `enableDefaultTelemetry`
 
@@ -360,7 +377,7 @@ Enable telemetry via a Globally Unique Identifier (GUID).
 Feature settings for the backup vault.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `location`
 
@@ -395,6 +412,24 @@ Optional. Specify the name of lock.
 
 - Required: No
 - Type: string
+
+### Parameter: `managedIdentities`
+
+The managed identity definition for this resource.
+- Required: No
+- Type: object
+
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`systemAssigned`](#parameter-managedidentitiessystemassigned) | No | bool | Optional. Enables system assigned managed identity on the resource. |
+
+### Parameter: `managedIdentities.systemAssigned`
+
+Optional. Enables system assigned managed identity on the resource.
+
+- Required: No
+- Type: bool
 
 ### Parameter: `name`
 
@@ -475,21 +510,13 @@ Required. The name of the role to assign. If it cannot be found you can specify 
 Security settings for the backup vault.
 - Required: No
 - Type: object
-- Default: `{object}`
-
-### Parameter: `systemAssignedIdentity`
-
-Enables system assigned managed identity on the resource.
-- Required: No
-- Type: bool
-- Default: `False`
+- Default: `{}`
 
 ### Parameter: `tags`
 
 Tags of the Recovery Service Vault resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `type`
 
@@ -497,7 +524,14 @@ The vault redundancy level to use.
 - Required: No
 - Type: string
 - Default: `'GeoRedundant'`
-- Allowed: `[GeoRedundant, LocallyRedundant, ZoneRedundant]`
+- Allowed:
+  ```Bicep
+  [
+    'GeoRedundant'
+    'LocallyRedundant'
+    'ZoneRedundant'
+  ]
+  ```
 
 
 ## Outputs
@@ -508,7 +542,7 @@ The vault redundancy level to use.
 | `name` | string | The Name of the backup vault. |
 | `resourceGroupName` | string | The name of the resource group the recovery services vault was created in. |
 | `resourceId` | string | The resource ID of the backup vault. |
-| `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
+| `systemAssignedMIPrincipalId` | string | The principal ID of the system assigned identity. |
 
 ## Cross-referenced modules
 

@@ -80,12 +80,14 @@ module workspace 'br:bicep/modules/healthcare-apis.workspace:1.0.0' = {
         ]
         enableDefaultTelemetry: '<enableDefaultTelemetry>'
         location: '<location>'
+        managedIdentities: {
+          systemAssigned: false
+          userAssignedResourcesIds: [
+            '<managedIdentityResourceId>'
+          ]
+        }
         name: 'az-dicom-x-001'
         publicNetworkAccess: 'Enabled'
-        systemAssignedIdentity: false
-        userAssignedIdentities: {
-          '<managedIdentityResourceId>': {}
-        }
         workspaceName: 'hawcom001'
       }
     ]
@@ -122,6 +124,12 @@ module workspace 'br:bicep/modules/healthcare-apis.workspace:1.0.0' = {
         initialImportMode: false
         kind: 'fhir-R4'
         location: '<location>'
+        managedIdentities: {
+          systemAssigned: false
+          userAssignedResourcesIds: [
+            '<managedIdentityResourceId>'
+          ]
+        }
         name: 'az-fhir-x-001'
         publicNetworkAccess: 'Enabled'
         resourceVersionPolicy: 'versioned'
@@ -133,10 +141,6 @@ module workspace 'br:bicep/modules/healthcare-apis.workspace:1.0.0' = {
           }
         ]
         smartProxyEnabled: false
-        systemAssignedIdentity: false
-        userAssignedIdentities: {
-          '<managedIdentityResourceId>': {}
-        }
         workspaceName: 'hawcom001'
       }
     ]
@@ -209,12 +213,14 @@ module workspace 'br:bicep/modules/healthcare-apis.workspace:1.0.0' = {
           ],
           "enableDefaultTelemetry": "<enableDefaultTelemetry>",
           "location": "<location>",
+          "managedIdentities": {
+            "systemAssigned": false,
+            "userAssignedResourcesIds": [
+              "<managedIdentityResourceId>"
+            ]
+          },
           "name": "az-dicom-x-001",
           "publicNetworkAccess": "Enabled",
-          "systemAssignedIdentity": false,
-          "userAssignedIdentities": {
-            "<managedIdentityResourceId>": {}
-          },
           "workspaceName": "hawcom001"
         }
       ]
@@ -255,6 +261,12 @@ module workspace 'br:bicep/modules/healthcare-apis.workspace:1.0.0' = {
           "initialImportMode": false,
           "kind": "fhir-R4",
           "location": "<location>",
+          "managedIdentities": {
+            "systemAssigned": false,
+            "userAssignedResourcesIds": [
+              "<managedIdentityResourceId>"
+            ]
+          },
           "name": "az-fhir-x-001",
           "publicNetworkAccess": "Enabled",
           "resourceVersionPolicy": "versioned",
@@ -266,10 +278,6 @@ module workspace 'br:bicep/modules/healthcare-apis.workspace:1.0.0' = {
             }
           ],
           "smartProxyEnabled": false,
-          "systemAssignedIdentity": false,
-          "userAssignedIdentities": {
-            "<managedIdentityResourceId>": {}
-          },
           "workspaceName": "hawcom001"
         }
       ]
@@ -462,7 +470,13 @@ Control permission for data plane traffic coming from public networks while priv
 - Required: No
 - Type: string
 - Default: `'Disabled'`
-- Allowed: `[Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 ### Parameter: `roleAssignments`
 
@@ -537,7 +551,6 @@ Required. The name of the role to assign. If it cannot be found you can specify 
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 
 ## Outputs

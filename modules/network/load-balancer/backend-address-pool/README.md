@@ -78,7 +78,14 @@ Backend address synchronous mode for the backend pool.
 - Required: No
 - Type: string
 - Default: `''`
-- Allowed: `['', Automatic, Manual]`
+- Allowed:
+  ```Bicep
+  [
+    ''
+    'Automatic'
+    'Manual'
+  ]
+  ```
 
 ### Parameter: `tunnelInterfaces`
 

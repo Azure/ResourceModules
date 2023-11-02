@@ -46,8 +46,20 @@ A security admin configuration contains a set of rule collections. Each rule col
 Enum list of network intent policy based services.
 - Required: No
 - Type: array
-- Default: `[None]`
-- Allowed: `[All, AllowRulesOnly, None]`
+- Default:
+  ```Bicep
+  [
+    'None'
+  ]
+  ```
+- Allowed:
+  ```Bicep
+  [
+    'All'
+    'AllowRulesOnly'
+    'None'
+  ]
+  ```
 
 ### Parameter: `description`
 

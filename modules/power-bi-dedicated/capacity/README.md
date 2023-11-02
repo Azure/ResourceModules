@@ -264,7 +264,13 @@ Mode of the resource.
 - Required: No
 - Type: string
 - Default: `'Gen2'`
-- Allowed: `[Gen1, Gen2]`
+- Allowed:
+  ```Bicep
+  [
+    'Gen1'
+    'Gen2'
+  ]
+  ```
 
 ### Parameter: `name`
 
@@ -352,7 +358,17 @@ SkuCapacity of the resource.
 - Required: No
 - Type: string
 - Default: `'A1'`
-- Allowed: `[A1, A2, A3, A4, A5, A6]`
+- Allowed:
+  ```Bicep
+  [
+    'A1'
+    'A2'
+    'A3'
+    'A4'
+    'A5'
+    'A6'
+  ]
+  ```
 
 ### Parameter: `skuTier`
 
@@ -360,14 +376,20 @@ SkuCapacity of the resource.
 - Required: No
 - Type: string
 - Default: `'PBIE_Azure'`
-- Allowed: `[AutoPremiumHost, PBIE_Azure, Premium]`
+- Allowed:
+  ```Bicep
+  [
+    'AutoPremiumHost'
+    'PBIE_Azure'
+    'Premium'
+  ]
+  ```
 
 ### Parameter: `tags`
 
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 
 ## Outputs

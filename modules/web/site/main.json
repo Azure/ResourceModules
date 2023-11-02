@@ -6,13 +6,36 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "16589112738321066584"
+      "templateHash": "3962832552855663187"
     },
     "name": "Web/Function Apps",
     "description": "This module deploys a Web or Function App.",
     "owner": "Azure/module-maintainers"
   },
   "definitions": {
+    "managedIdentitiesType": {
+      "type": "object",
+      "properties": {
+        "systemAssigned": {
+          "type": "bool",
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Enables system assigned managed identity on the resource."
+          }
+        },
+        "userAssignedResourcesIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. The resource ID(s) to assign to the resource."
+          }
+        }
+      },
+      "nullable": true
+    },
     "lockType": {
       "type": "object",
       "properties": {
@@ -160,12 +183,18 @@
               "properties": {
                 "fqdn": {
                   "type": "string",
-                  "nullable": true
+                  "nullable": true,
+                  "metadata": {
+                    "description": "Required. Fqdn that resolves to private endpoint ip address."
+                  }
                 },
                 "ipAddresses": {
                   "type": "array",
                   "items": {
                     "type": "string"
+                  },
+                  "metadata": {
+                    "description": "Required. A list of private ip addresses of the private endpoint."
                   }
                 }
               }
@@ -181,16 +210,36 @@
               "type": "object",
               "properties": {
                 "name": {
-                  "type": "string"
+                  "type": "string",
+                  "metadata": {
+                    "description": "Required. The name of the resource that is unique within a resource group."
+                  }
                 },
-                "groupId": {
-                  "type": "string"
-                },
-                "memberName": {
-                  "type": "string"
-                },
-                "privateIpAddress": {
-                  "type": "string"
+                "properties": {
+                  "type": "object",
+                  "properties": {
+                    "groupId": {
+                      "type": "string",
+                      "metadata": {
+                        "description": "Required. The ID of a group obtained from the remote resource that this private endpoint should connect to."
+                      }
+                    },
+                    "memberName": {
+                      "type": "string",
+                      "metadata": {
+                        "description": "Required. The member name of a group obtained from the remote resource that this private endpoint should connect to."
+                      }
+                    },
+                    "privateIPAddress": {
+                      "type": "string",
+                      "metadata": {
+                        "description": "Required. A private ip address obtained from the private endpoint's subnet."
+                      }
+                    }
+                  },
+                  "metadata": {
+                    "description": "Required. Properties of private endpoint IP configurations."
+                  }
                 }
               }
             },
@@ -414,18 +463,10 @@
         "description": "Optional. The resource ID of the app service environment to use for this resource."
       }
     },
-    "systemAssignedIdentity": {
-      "type": "bool",
-      "defaultValue": false,
+    "managedIdentities": {
+      "$ref": "#/definitions/managedIdentitiesType",
       "metadata": {
-        "description": "Optional. Enables system assigned managed identity on the resource."
-      }
-    },
-    "userAssignedIdentities": {
-      "type": "object",
-      "defaultValue": {},
-      "metadata": {
-        "description": "Optional. The ID(s) to assign to the resource."
+        "description": "Optional. The managed identity definition for this resource."
       }
     },
     "keyVaultAccessIdentityResourceId": {
@@ -540,7 +581,7 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Tags of the resource."
       }
@@ -681,8 +722,8 @@
     }
   },
   "variables": {
-    "identityType": "[if(parameters('systemAssignedIdentity'), if(not(empty(parameters('userAssignedIdentities'))), 'SystemAssigned,UserAssigned', 'SystemAssigned'), if(not(empty(parameters('userAssignedIdentities'))), 'UserAssigned', 'None'))]",
-    "identity": "[if(not(equals(variables('identityType'), 'None')), createObject('type', variables('identityType'), 'userAssignedIdentities', if(not(empty(parameters('userAssignedIdentities'))), parameters('userAssignedIdentities'), null())), null())]",
+    "formattedUserAssignedIdentities": "[reduce(map(coalesce(tryGet(parameters('managedIdentities'), 'userAssignedResourcesIds'), createArray()), lambda('id', createObject(format('{0}', lambdaVariables('id')), createObject()))), createObject(), lambda('cur', 'next', union(lambdaVariables('cur'), lambdaVariables('next'))))]",
+    "identity": "[if(not(empty(parameters('managedIdentities'))), createObject('type', if(coalesce(tryGet(parameters('managedIdentities'), 'systemAssigned'), false()), if(not(empty(coalesce(tryGet(parameters('managedIdentities'), 'userAssignedResourcesIds'), createObject()))), 'SystemAssigned,UserAssigned', 'SystemAssigned'), if(not(empty(coalesce(tryGet(parameters('managedIdentities'), 'userAssignedResourcesIds'), createObject()))), 'UserAssigned', null())), 'userAssignedIdentities', if(not(empty(variables('formattedUserAssignedIdentities'))), variables('formattedUserAssignedIdentities'), null())), null())]",
     "enableReferencedModulesTelemetry": false,
     "builtInRoleNames": {
       "App Compliance Automation Administrator": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '0f37683f-2463-46b6-9ce7-9b788b988ba2')]",
@@ -1115,8 +1156,7 @@
           "httpsOnly": "[if(contains(parameters('slots')[copyIndex()], 'httpsOnly'), createObject('value', parameters('slots')[copyIndex()].httpsOnly), createObject('value', parameters('httpsOnly')))]",
           "appServiceEnvironmentResourceId": "[if(not(empty(parameters('appServiceEnvironmentResourceId'))), createObject('value', parameters('appServiceEnvironmentResourceId')), createObject('value', ''))]",
           "clientAffinityEnabled": "[if(contains(parameters('slots')[copyIndex()], 'clientAffinityEnabled'), createObject('value', parameters('slots')[copyIndex()].clientAffinityEnabled), createObject('value', parameters('clientAffinityEnabled')))]",
-          "systemAssignedIdentity": "[if(contains(parameters('slots')[copyIndex()], 'systemAssignedIdentity'), createObject('value', parameters('slots')[copyIndex()].systemAssignedIdentity), createObject('value', parameters('systemAssignedIdentity')))]",
-          "userAssignedIdentities": "[if(contains(parameters('slots')[copyIndex()], 'userAssignedIdentities'), createObject('value', parameters('slots')[copyIndex()].userAssignedIdentities), createObject('value', parameters('userAssignedIdentities')))]",
+          "managedIdentities": "[if(contains(parameters('slots')[copyIndex()], 'managedIdentities'), createObject('value', parameters('slots')[copyIndex()].managedIdentities), createObject('value', parameters('managedIdentities')))]",
           "keyVaultAccessIdentityResourceId": "[if(contains(parameters('slots')[copyIndex()], 'keyVaultAccessIdentityResourceId'), createObject('value', parameters('slots')[copyIndex()].keyVaultAccessIdentityResourceId), createObject('value', parameters('keyVaultAccessIdentityResourceId')))]",
           "storageAccountRequired": "[if(contains(parameters('slots')[copyIndex()], 'storageAccountRequired'), createObject('value', parameters('slots')[copyIndex()].storageAccountRequired), createObject('value', parameters('storageAccountRequired')))]",
           "virtualNetworkSubnetId": "[if(contains(parameters('slots')[copyIndex()], 'virtualNetworkSubnetId'), createObject('value', parameters('slots')[copyIndex()].virtualNetworkSubnetId), createObject('value', parameters('virtualNetworkSubnetId')))]",
@@ -1133,10 +1173,12 @@
           },
           "roleAssignments": "[if(contains(parameters('slots')[copyIndex()], 'roleAssignments'), createObject('value', parameters('slots')[copyIndex()].roleAssignments), createObject('value', parameters('roleAssignments')))]",
           "appSettingsKeyValuePairs": "[if(contains(parameters('slots')[copyIndex()], 'appSettingsKeyValuePairs'), createObject('value', parameters('slots')[copyIndex()].appSettingsKeyValuePairs), createObject('value', parameters('appSettingsKeyValuePairs')))]",
-          "lock": "[if(contains(parameters('slots')[copyIndex()], 'lock'), createObject('value', parameters('slots')[copyIndex()].lock), createObject('value', parameters('lock')))]",
+          "lock": {
+            "value": "[coalesce(tryGet(parameters('slots')[copyIndex()], 'lock'), parameters('lock'))]"
+          },
           "privateEndpoints": "[if(contains(parameters('slots')[copyIndex()], 'privateEndpoints'), createObject('value', parameters('slots')[copyIndex()].privateEndpoints), createObject('value', parameters('privateEndpoints')))]",
           "tags": {
-            "value": "[parameters('tags')]"
+            "value": "[coalesce(tryGet(parameters('slots')[copyIndex()], 'tags'), parameters('tags'))]"
           },
           "clientCertEnabled": "[if(contains(parameters('slots')[copyIndex()], 'clientCertEnabled'), createObject('value', parameters('slots')[copyIndex()].clientCertEnabled), createObject('value', false()))]",
           "clientCertExclusionPaths": "[if(contains(parameters('slots')[copyIndex()], 'clientCertExclusionPaths'), createObject('value', parameters('slots')[copyIndex()].clientCertExclusionPaths), createObject('value', ''))]",
@@ -1163,13 +1205,36 @@
             "_generator": {
               "name": "bicep",
               "version": "0.22.6.54827",
-              "templateHash": "8235549434045732740"
+              "templateHash": "842322474793993092"
             },
             "name": "Web/Function App Deployment Slots",
             "description": "This module deploys a Web or Function App Deployment Slot.",
             "owner": "Azure/module-maintainers"
           },
           "definitions": {
+            "managedIdentitiesType": {
+              "type": "object",
+              "properties": {
+                "systemAssigned": {
+                  "type": "bool",
+                  "nullable": true,
+                  "metadata": {
+                    "description": "Optional. Enables system assigned managed identity on the resource."
+                  }
+                },
+                "userAssignedResourcesIds": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "nullable": true,
+                  "metadata": {
+                    "description": "Optional. The resource ID(s) to assign to the resource."
+                  }
+                }
+              },
+              "nullable": true
+            },
             "lockType": {
               "type": "object",
               "properties": {
@@ -1317,12 +1382,18 @@
                       "properties": {
                         "fqdn": {
                           "type": "string",
-                          "nullable": true
+                          "nullable": true,
+                          "metadata": {
+                            "description": "Required. Fqdn that resolves to private endpoint ip address."
+                          }
                         },
                         "ipAddresses": {
                           "type": "array",
                           "items": {
                             "type": "string"
+                          },
+                          "metadata": {
+                            "description": "Required. A list of private ip addresses of the private endpoint."
                           }
                         }
                       }
@@ -1338,16 +1409,36 @@
                       "type": "object",
                       "properties": {
                         "name": {
-                          "type": "string"
+                          "type": "string",
+                          "metadata": {
+                            "description": "Required. The name of the resource that is unique within a resource group."
+                          }
                         },
-                        "groupId": {
-                          "type": "string"
-                        },
-                        "memberName": {
-                          "type": "string"
-                        },
-                        "privateIpAddress": {
-                          "type": "string"
+                        "properties": {
+                          "type": "object",
+                          "properties": {
+                            "groupId": {
+                              "type": "string",
+                              "metadata": {
+                                "description": "Required. The ID of a group obtained from the remote resource that this private endpoint should connect to."
+                              }
+                            },
+                            "memberName": {
+                              "type": "string",
+                              "metadata": {
+                                "description": "Required. The member name of a group obtained from the remote resource that this private endpoint should connect to."
+                              }
+                            },
+                            "privateIPAddress": {
+                              "type": "string",
+                              "metadata": {
+                                "description": "Required. A private ip address obtained from the private endpoint's subnet."
+                              }
+                            }
+                          },
+                          "metadata": {
+                            "description": "Required. Properties of private endpoint IP configurations."
+                          }
                         }
                       }
                     },
@@ -1578,18 +1669,10 @@
                 "description": "Optional. The resource ID of the app service environment to use for this resource."
               }
             },
-            "systemAssignedIdentity": {
-              "type": "bool",
-              "defaultValue": false,
+            "managedIdentities": {
+              "$ref": "#/definitions/managedIdentitiesType",
               "metadata": {
-                "description": "Optional. Enables system assigned managed identity on the resource."
-              }
-            },
-            "userAssignedIdentities": {
-              "type": "object",
-              "defaultValue": {},
-              "metadata": {
-                "description": "Optional. The ID(s) to assign to the resource."
+                "description": "Optional. The managed identity definition for this resource."
               }
             },
             "keyVaultAccessIdentityResourceId": {
@@ -1669,7 +1752,7 @@
             },
             "tags": {
               "type": "object",
-              "defaultValue": {},
+              "nullable": true,
               "metadata": {
                 "description": "Optional. Tags of the resource."
               }
@@ -1824,8 +1907,8 @@
             }
           },
           "variables": {
-            "identityType": "[if(parameters('systemAssignedIdentity'), if(not(empty(parameters('userAssignedIdentities'))), 'SystemAssigned,UserAssigned', 'SystemAssigned'), if(not(empty(parameters('userAssignedIdentities'))), 'UserAssigned', 'None'))]",
-            "identity": "[if(not(equals(variables('identityType'), 'None')), createObject('type', variables('identityType'), 'userAssignedIdentities', if(not(empty(parameters('userAssignedIdentities'))), parameters('userAssignedIdentities'), null())), null())]",
+            "formattedUserAssignedIdentities": "[reduce(map(coalesce(tryGet(parameters('managedIdentities'), 'userAssignedResourcesIds'), createArray()), lambda('id', createObject(format('{0}', lambdaVariables('id')), createObject()))), createObject(), lambda('cur', 'next', union(lambdaVariables('cur'), lambdaVariables('next'))))]",
+            "identity": "[if(not(empty(parameters('managedIdentities'))), createObject('type', if(coalesce(tryGet(parameters('managedIdentities'), 'systemAssigned'), false()), if(not(empty(coalesce(tryGet(parameters('managedIdentities'), 'userAssignedResourcesIds'), createObject()))), 'SystemAssigned,UserAssigned', 'SystemAssigned'), if(not(empty(coalesce(tryGet(parameters('managedIdentities'), 'userAssignedResourcesIds'), createObject()))), 'UserAssigned', null())), 'userAssignedIdentities', if(not(empty(variables('formattedUserAssignedIdentities'))), variables('formattedUserAssignedIdentities'), null())), null())]",
             "enableReferencedModulesTelemetry": false,
             "builtInRoleNames": {
               "App Compliance Automation Administrator": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '0f37683f-2463-46b6-9ce7-9b788b988ba2')]",
@@ -2468,7 +2551,7 @@
                     "_generator": {
                       "name": "bicep",
                       "version": "0.22.6.54827",
-                      "templateHash": "16178508232344722616"
+                      "templateHash": "12078057657290521609"
                     },
                     "name": "Private Endpoints",
                     "description": "This module deploys a Private Endpoint.",
@@ -2565,6 +2648,71 @@
                         }
                       },
                       "nullable": true
+                    },
+                    "ipConfigurationsType": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string",
+                            "metadata": {
+                              "description": "Required. The name of the resource that is unique within a resource group."
+                            }
+                          },
+                          "properties": {
+                            "type": "object",
+                            "properties": {
+                              "groupId": {
+                                "type": "string",
+                                "metadata": {
+                                  "description": "Required. The ID of a group obtained from the remote resource that this private endpoint should connect to."
+                                }
+                              },
+                              "memberName": {
+                                "type": "string",
+                                "metadata": {
+                                  "description": "Required. The member name of a group obtained from the remote resource that this private endpoint should connect to."
+                                }
+                              },
+                              "privateIPAddress": {
+                                "type": "string",
+                                "metadata": {
+                                  "description": "Required. A private ip address obtained from the private endpoint's subnet."
+                                }
+                              }
+                            },
+                            "metadata": {
+                              "description": "Required. Properties of private endpoint IP configurations."
+                            }
+                          }
+                        }
+                      },
+                      "nullable": true
+                    },
+                    "customDnsConfigType": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "fqdn": {
+                            "type": "string",
+                            "metadata": {
+                              "description": "Required. Fqdn that resolves to private endpoint ip address."
+                            }
+                          },
+                          "ipAddresses": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "metadata": {
+                              "description": "Required. A list of private ip addresses of the private endpoint."
+                            }
+                          }
+                        }
+                      },
+                      "nullable": true
                     }
                   },
                   "parameters": {
@@ -2601,7 +2749,7 @@
                       }
                     },
                     "ipConfigurations": {
-                      "type": "array",
+                      "$ref": "#/definitions/ipConfigurationsType",
                       "nullable": true,
                       "metadata": {
                         "description": "Optional. A list of IP configurations of the private endpoint. This will be used to map to the First Party Service endpoints."
@@ -2654,7 +2802,7 @@
                       }
                     },
                     "customDnsConfigs": {
-                      "type": "array",
+                      "$ref": "#/definitions/customDnsConfigType",
                       "nullable": true,
                       "metadata": {
                         "description": "Optional. Custom DNS configurations."
@@ -2721,7 +2869,7 @@
                             }
                           }
                         ],
-                        "customDnsConfigs": "[coalesce(parameters('customDnsConfigs'), createArray())]",
+                        "customDnsConfigs": "[parameters('customDnsConfigs')]",
                         "customNetworkInterfaceName": "[coalesce(parameters('customNetworkInterfaceName'), '')]",
                         "ipConfigurations": "[coalesce(parameters('ipConfigurations'), createArray())]",
                         "manualPrivateLinkServiceConnections": "[coalesce(parameters('manualPrivateLinkServiceConnections'), createArray())]",
@@ -2969,12 +3117,12 @@
               },
               "value": "[resourceGroup().name]"
             },
-            "systemAssignedPrincipalId": {
+            "systemAssignedMIPrincipalId": {
               "type": "string",
               "metadata": {
                 "description": "The principal ID of the system assigned identity."
               },
-              "value": "[if(and(parameters('systemAssignedIdentity'), if(contains(reference('slot', '2022-09-01', 'full'), 'identity'), contains(reference('slot', '2022-09-01', 'full').identity, 'principalId'), false())), reference('slot', '2022-09-01', 'full').identity.principalId, '')]"
+              "value": "[if(and(coalesce(tryGet(parameters('managedIdentities'), 'systemAssigned'), false()), contains(reference('slot', '2022-09-01', 'full').identity, 'principalId')), reference('slot', '2022-09-01', 'full').identity.principalId, '')]"
             },
             "location": {
               "type": "string",
@@ -3326,7 +3474,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.22.6.54827",
-              "templateHash": "16178508232344722616"
+              "templateHash": "12078057657290521609"
             },
             "name": "Private Endpoints",
             "description": "This module deploys a Private Endpoint.",
@@ -3423,6 +3571,71 @@
                 }
               },
               "nullable": true
+            },
+            "ipConfigurationsType": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "metadata": {
+                      "description": "Required. The name of the resource that is unique within a resource group."
+                    }
+                  },
+                  "properties": {
+                    "type": "object",
+                    "properties": {
+                      "groupId": {
+                        "type": "string",
+                        "metadata": {
+                          "description": "Required. The ID of a group obtained from the remote resource that this private endpoint should connect to."
+                        }
+                      },
+                      "memberName": {
+                        "type": "string",
+                        "metadata": {
+                          "description": "Required. The member name of a group obtained from the remote resource that this private endpoint should connect to."
+                        }
+                      },
+                      "privateIPAddress": {
+                        "type": "string",
+                        "metadata": {
+                          "description": "Required. A private ip address obtained from the private endpoint's subnet."
+                        }
+                      }
+                    },
+                    "metadata": {
+                      "description": "Required. Properties of private endpoint IP configurations."
+                    }
+                  }
+                }
+              },
+              "nullable": true
+            },
+            "customDnsConfigType": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "fqdn": {
+                    "type": "string",
+                    "metadata": {
+                      "description": "Required. Fqdn that resolves to private endpoint ip address."
+                    }
+                  },
+                  "ipAddresses": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "metadata": {
+                      "description": "Required. A list of private ip addresses of the private endpoint."
+                    }
+                  }
+                }
+              },
+              "nullable": true
             }
           },
           "parameters": {
@@ -3459,7 +3672,7 @@
               }
             },
             "ipConfigurations": {
-              "type": "array",
+              "$ref": "#/definitions/ipConfigurationsType",
               "nullable": true,
               "metadata": {
                 "description": "Optional. A list of IP configurations of the private endpoint. This will be used to map to the First Party Service endpoints."
@@ -3512,7 +3725,7 @@
               }
             },
             "customDnsConfigs": {
-              "type": "array",
+              "$ref": "#/definitions/customDnsConfigType",
               "nullable": true,
               "metadata": {
                 "description": "Optional. Custom DNS configurations."
@@ -3579,7 +3792,7 @@
                     }
                   }
                 ],
-                "customDnsConfigs": "[coalesce(parameters('customDnsConfigs'), createArray())]",
+                "customDnsConfigs": "[parameters('customDnsConfigs')]",
                 "customNetworkInterfaceName": "[coalesce(parameters('customNetworkInterfaceName'), '')]",
                 "ipConfigurations": "[coalesce(parameters('ipConfigurations'), createArray())]",
                 "manualPrivateLinkServiceConnections": "[coalesce(parameters('manualPrivateLinkServiceConnections'), createArray())]",
@@ -3847,12 +4060,12 @@
       },
       "value": "[resourceGroup().name]"
     },
-    "systemAssignedPrincipalId": {
+    "systemAssignedMIPrincipalId": {
       "type": "string",
       "metadata": {
         "description": "The principal ID of the system assigned identity."
       },
-      "value": "[if(and(parameters('systemAssignedIdentity'), contains(reference('app', '2022-09-01', 'full').identity, 'principalId')), reference('app', '2022-09-01', 'full').identity.principalId, '')]"
+      "value": "[if(and(coalesce(tryGet(parameters('managedIdentities'), 'systemAssigned'), false()), contains(reference('app', '2022-09-01', 'full').identity, 'principalId')), reference('app', '2022-09-01', 'full').identity.principalId, '')]"
     },
     "slotSystemAssignedPrincipalIds": {
       "type": "array",
@@ -3861,7 +4074,7 @@
       },
       "copy": {
         "count": "[length(parameters('slots'))]",
-        "input": "[reference(format('app_slots[{0}]', copyIndex())).outputs.systemAssignedPrincipalId.value]"
+        "input": "[reference(format('app_slots[{0}]', copyIndex())).outputs.systemAssignedMIPrincipalId.value]"
       }
     },
     "location": {

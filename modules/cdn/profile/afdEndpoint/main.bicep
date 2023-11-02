@@ -12,7 +12,7 @@ param profileName string
 param location string = resourceGroup().location
 
 @description('Optional. The tags of the AFD Endpoint.')
-param tags object = {}
+param tags object?
 
 @description('Optional. Indicates the endpoint name reuse scope. The default value is TenantReuse.')
 @allowed([

@@ -73,7 +73,13 @@ The value indicating whether to send email to subscription administrator.
 - Required: No
 - Type: string
 - Default: `'Send'`
-- Allowed: `[DoNotSend, Send]`
+- Allowed:
+  ```Bicep
+  [
+    'DoNotSend'
+    'Send'
+  ]
+  ```
 
 
 ## Outputs

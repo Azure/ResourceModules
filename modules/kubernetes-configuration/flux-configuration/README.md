@@ -242,7 +242,7 @@ module fluxConfiguration 'br:bicep/modules/kubernetes-configuration.flux-configu
 Parameters to reconcile to the GitRepository source kind type.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `clusterName`
 
@@ -255,7 +255,7 @@ The name of the AKS cluster that should be configured.
 Key-value pairs of protected configuration settings for the configuration.
 - Required: No
 - Type: secureObject
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `enableDefaultTelemetry`
 
@@ -269,14 +269,14 @@ Enable telemetry via a Globally Unique Identifier (GUID).
 Parameters to reconcile to the GitRepository source kind type.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `kustomizations`
 
 Array of kustomizations used to reconcile the artifact pulled by the source type on the cluster.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `location`
 
@@ -302,14 +302,26 @@ The namespace to which this configuration is installed to. Maximum of 253 lower 
 Scope at which the configuration will be installed.
 - Required: Yes
 - Type: string
-- Allowed: `[cluster, namespace]`
+- Allowed:
+  ```Bicep
+  [
+    'cluster'
+    'namespace'
+  ]
+  ```
 
 ### Parameter: `sourceKind`
 
 Source Kind to pull the configuration data from.
 - Required: Yes
 - Type: string
-- Allowed: `[Bucket, GitRepository]`
+- Allowed:
+  ```Bicep
+  [
+    'Bucket'
+    'GitRepository'
+  ]
+  ```
 
 ### Parameter: `suspend`
 

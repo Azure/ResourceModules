@@ -189,14 +189,19 @@ This property allows you to specify the supported type of the OS that applicatio
 - Required: No
 - Type: string
 - Default: `'Windows'`
-- Allowed: `[Linux, Windows]`
+- Allowed:
+  ```Bicep
+  [
+    'Linux'
+    'Windows'
+  ]
+  ```
 
 ### Parameter: `tags`
 
 Tags for all resources.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 
 ## Outputs

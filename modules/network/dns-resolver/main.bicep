@@ -16,7 +16,7 @@ param lock lockType
 param roleAssignments roleAssignmentType
 
 @description('Optional. Tags of the resource.')
-param tags object = {}
+param tags object?
 
 @description('Required. ResourceId of the virtual network to attach the Private DNS Resolver to.')
 param virtualNetworkId string

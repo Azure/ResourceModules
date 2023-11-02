@@ -90,7 +90,7 @@ The name of the virtual machine extension.
 Any object that contains the extension specific protected settings.
 - Required: No
 - Type: secureObject
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `publisher`
 
@@ -103,7 +103,7 @@ The name of the extension handler publisher.
 Any object that contains the extension specific settings.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `supressFailures`
 
@@ -117,7 +117,6 @@ Indicates whether failures stemming from the extension will be suppressed (Opera
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `type`
 

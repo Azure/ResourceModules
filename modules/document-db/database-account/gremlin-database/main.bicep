@@ -6,13 +6,7 @@ metadata owner = 'Azure/module-maintainers'
 param name string
 
 @description('Optional. Tags of the Gremlin database resource.')
-param tags object = {}
-
-@description('Optional. Enables system assigned managed identity on the resource.')
-param systemAssignedIdentity bool = false
-
-@description('Optional. The ID(s) to assign to the resource.')
-param userAssignedIdentities object = {}
+param tags object?
 
 @description('Conditional. The name of the parent Gremlin database. Required if the template is used in a standalone deployment.')
 param databaseAccountName string
@@ -30,8 +24,6 @@ param throughput int = -1
 param enableDefaultTelemetry bool = true
 
 var enableReferencedModulesTelemetry = false
-
-var identityType = systemAssignedIdentity ? (!empty(userAssignedIdentities) ? 'SystemAssigned, UserAssigned' : 'SystemAssigned') : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2022-09-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name)}'
@@ -60,10 +52,6 @@ resource gremlinDatabase 'Microsoft.DocumentDB/databaseAccounts/gremlinDatabases
   name: name
   tags: tags
   parent: databaseAccount
-  identity: (identityType != 'None' ? {
-    type: identityType
-    userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
-  } : null)!
   properties: {
     options: databaseOptions
     resource: {
@@ -92,3 +80,15 @@ output resourceId string = gremlinDatabase.id
 
 @description('The name of the resource group the Gremlin database was created in.')
 output resourceGroupName string = resourceGroup().name
+
+// =============== //
+//   Definitions   //
+// =============== //
+
+type managedIdentitiesType = {
+  @description('Optional. Enables system assigned managed identity on the resource.')
+  systemAssigned: bool?
+
+  @description('Optional. The resource ID(s) to assign to the resource.')
+  userAssignedResourcesIds: string[]?
+}?

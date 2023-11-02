@@ -238,6 +238,11 @@ module applicationGateway 'br:bicep/modules/network.application-gateway:1.0.0' =
       kind: 'CanNotDelete'
       name: 'myCustomLockName'
     }
+    managedIdentities: {
+      userAssignedResourcesIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
     privateEndpoints: [
       {
         privateDnsZoneResourceIds: [
@@ -437,9 +442,6 @@ module applicationGateway 'br:bicep/modules/network.application-gateway:1.0.0' =
       Environment: 'Non-Prod'
       'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
-    }
-    userAssignedIdentities: {
-      '<managedIdentityResourceId>': {}
     }
     webApplicationFirewallConfiguration: {
       disabledRuleGroups: [
@@ -700,6 +702,13 @@ module applicationGateway 'br:bicep/modules/network.application-gateway:1.0.0' =
         "name": "myCustomLockName"
       }
     },
+    "managedIdentities": {
+      "value": {
+        "userAssignedResourcesIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
+    },
     "privateEndpoints": {
       "value": [
         {
@@ -920,11 +929,6 @@ module applicationGateway 'br:bicep/modules/network.application-gateway:1.0.0' =
         "Role": "DeploymentValidation"
       }
     },
-    "userAssignedIdentities": {
-      "value": {
-        "<managedIdentityResourceId>": {}
-      }
-    },
     "webApplicationFirewallConfiguration": {
       "value": {
         "disabledRuleGroups": [
@@ -997,6 +1001,7 @@ module applicationGateway 'br:bicep/modules/network.application-gateway:1.0.0' =
 | [`loadDistributionPolicies`](#parameter-loaddistributionpolicies) | array | Load distribution policies of the application gateway resource. |
 | [`location`](#parameter-location) | string | Location for all resources. |
 | [`lock`](#parameter-lock) | object | The lock settings of the service. |
+| [`managedIdentities`](#parameter-managedidentities) | object | The managed identity definition for this resource. |
 | [`privateEndpoints`](#parameter-privateendpoints) | array | Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
 | [`privateLinkConfigurations`](#parameter-privatelinkconfigurations) | array | PrivateLink configurations on application gateway. |
 | [`probes`](#parameter-probes) | array | Probes of the application gateway resource. |
@@ -1016,7 +1021,6 @@ module applicationGateway 'br:bicep/modules/network.application-gateway:1.0.0' =
 | [`trustedClientCertificates`](#parameter-trustedclientcertificates) | array | Trusted client certificates of the application gateway resource. |
 | [`trustedRootCertificates`](#parameter-trustedrootcertificates) | array | Trusted Root certificates of the application gateway resource. |
 | [`urlPathMaps`](#parameter-urlpathmaps) | array | URL path map of the application gateway resource. |
-| [`userAssignedIdentities`](#parameter-userassignedidentities) | object | The ID(s) to assign to the resource. |
 | [`webApplicationFirewallConfiguration`](#parameter-webapplicationfirewallconfiguration) | object | Application gateway web application firewall configuration. Should be configured for security reasons. |
 | [`zones`](#parameter-zones) | array | A list of availability zones denoting where the resource needs to come from. |
 
@@ -1309,6 +1313,24 @@ Optional. Specify the name of lock.
 - Required: No
 - Type: string
 
+### Parameter: `managedIdentities`
+
+The managed identity definition for this resource.
+- Required: No
+- Type: object
+
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`userAssignedResourcesIds`](#parameter-managedidentitiesuserassignedresourcesids) | Yes | array | Optional. The resource ID(s) to assign to the resource. |
+
+### Parameter: `managedIdentities.userAssignedResourcesIds`
+
+Optional. The resource ID(s) to assign to the resource.
+
+- Required: Yes
+- Type: array
+
 ### Parameter: `name`
 
 Name of the Application Gateway.
@@ -1356,14 +1378,20 @@ Optional. Custom DNS configurations.
 
 | Name | Required | Type | Description |
 | :-- | :-- | :--| :-- |
-| [`fqdn`](#parameter-privateendpointscustomdnsconfigsfqdn) | No | string |  |
-| [`ipAddresses`](#parameter-privateendpointscustomdnsconfigsipaddresses) | Yes | array |  |
+| [`fqdn`](#parameter-privateendpointscustomdnsconfigsfqdn) | No | string | Required. Fqdn that resolves to private endpoint ip address. |
+| [`ipAddresses`](#parameter-privateendpointscustomdnsconfigsipaddresses) | Yes | array | Required. A list of private ip addresses of the private endpoint. |
 
 ### Parameter: `privateEndpoints.customDnsConfigs.fqdn`
+
+Required. Fqdn that resolves to private endpoint ip address.
+
 - Required: No
 - Type: string
 
 ### Parameter: `privateEndpoints.customDnsConfigs.ipAddresses`
+
+Required. A list of private ip addresses of the private endpoint.
+
 - Required: Yes
 - Type: array
 
@@ -1391,26 +1419,50 @@ Optional. A list of IP configurations of the private endpoint. This will be used
 
 | Name | Required | Type | Description |
 | :-- | :-- | :--| :-- |
-| [`groupId`](#parameter-privateendpointsipconfigurationsgroupid) | Yes | string |  |
-| [`memberName`](#parameter-privateendpointsipconfigurationsmembername) | Yes | string |  |
-| [`name`](#parameter-privateendpointsipconfigurationsname) | Yes | string |  |
-| [`privateIpAddress`](#parameter-privateendpointsipconfigurationsprivateipaddress) | Yes | string |  |
-
-### Parameter: `privateEndpoints.ipConfigurations.groupId`
-- Required: Yes
-- Type: string
-
-### Parameter: `privateEndpoints.ipConfigurations.memberName`
-- Required: Yes
-- Type: string
+| [`name`](#parameter-privateendpointsipconfigurationsname) | Yes | string | Required. The name of the resource that is unique within a resource group. |
+| [`properties`](#parameter-privateendpointsipconfigurationsproperties) | Yes | object | Required. Properties of private endpoint IP configurations. |
 
 ### Parameter: `privateEndpoints.ipConfigurations.name`
+
+Required. The name of the resource that is unique within a resource group.
+
 - Required: Yes
 - Type: string
 
-### Parameter: `privateEndpoints.ipConfigurations.privateIpAddress`
+### Parameter: `privateEndpoints.ipConfigurations.properties`
+
+Required. Properties of private endpoint IP configurations.
+
+- Required: Yes
+- Type: object
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`groupId`](#parameter-privateendpointsipconfigurationspropertiesgroupid) | Yes | string | Required. The ID of a group obtained from the remote resource that this private endpoint should connect to. |
+| [`memberName`](#parameter-privateendpointsipconfigurationspropertiesmembername) | Yes | string | Required. The member name of a group obtained from the remote resource that this private endpoint should connect to. |
+| [`privateIPAddress`](#parameter-privateendpointsipconfigurationspropertiesprivateipaddress) | Yes | string | Required. A private ip address obtained from the private endpoint's subnet. |
+
+### Parameter: `privateEndpoints.ipConfigurations.properties.groupId`
+
+Required. The ID of a group obtained from the remote resource that this private endpoint should connect to.
+
 - Required: Yes
 - Type: string
+
+### Parameter: `privateEndpoints.ipConfigurations.properties.memberName`
+
+Required. The member name of a group obtained from the remote resource that this private endpoint should connect to.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `privateEndpoints.ipConfigurations.properties.privateIPAddress`
+
+Required. A private ip address obtained from the private endpoint's subnet.
+
+- Required: Yes
+- Type: string
+
 
 
 ### Parameter: `privateEndpoints.location`
@@ -1599,7 +1651,18 @@ The name of the SKU for the Application Gateway.
 - Required: No
 - Type: string
 - Default: `'WAF_Medium'`
-- Allowed: `[Standard_Large, Standard_Medium, Standard_Small, Standard_v2, WAF_Large, WAF_Medium, WAF_v2]`
+- Allowed:
+  ```Bicep
+  [
+    'Standard_Large'
+    'Standard_Medium'
+    'Standard_Small'
+    'Standard_v2'
+    'WAF_Large'
+    'WAF_Medium'
+    'WAF_v2'
+  ]
+  ```
 
 ### Parameter: `sslCertificates`
 
@@ -1613,8 +1676,46 @@ SSL certificates of the application gateway resource.
 Ssl cipher suites to be enabled in the specified order to application gateway.
 - Required: No
 - Type: array
-- Default: `[TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256, TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384]`
-- Allowed: `[TLS_DHE_DSS_WITH_3DES_EDE_CBC_SHA, TLS_DHE_DSS_WITH_AES_128_CBC_SHA, TLS_DHE_DSS_WITH_AES_128_CBC_SHA256, TLS_DHE_DSS_WITH_AES_256_CBC_SHA, TLS_DHE_DSS_WITH_AES_256_CBC_SHA256, TLS_DHE_RSA_WITH_AES_128_CBC_SHA, TLS_DHE_RSA_WITH_AES_128_GCM_SHA256, TLS_DHE_RSA_WITH_AES_256_CBC_SHA, TLS_DHE_RSA_WITH_AES_256_GCM_SHA384, TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA, TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256, TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256, TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA, TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384, TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384, TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA, TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256, TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256, TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA, TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384, TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384, TLS_RSA_WITH_3DES_EDE_CBC_SHA, TLS_RSA_WITH_AES_128_CBC_SHA, TLS_RSA_WITH_AES_128_CBC_SHA256, TLS_RSA_WITH_AES_128_GCM_SHA256, TLS_RSA_WITH_AES_256_CBC_SHA, TLS_RSA_WITH_AES_256_CBC_SHA256, TLS_RSA_WITH_AES_256_GCM_SHA384]`
+- Default:
+  ```Bicep
+  [
+    'TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256'
+    'TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384'
+  ]
+  ```
+- Allowed:
+  ```Bicep
+  [
+    'TLS_DHE_DSS_WITH_3DES_EDE_CBC_SHA'
+    'TLS_DHE_DSS_WITH_AES_128_CBC_SHA'
+    'TLS_DHE_DSS_WITH_AES_128_CBC_SHA256'
+    'TLS_DHE_DSS_WITH_AES_256_CBC_SHA'
+    'TLS_DHE_DSS_WITH_AES_256_CBC_SHA256'
+    'TLS_DHE_RSA_WITH_AES_128_CBC_SHA'
+    'TLS_DHE_RSA_WITH_AES_128_GCM_SHA256'
+    'TLS_DHE_RSA_WITH_AES_256_CBC_SHA'
+    'TLS_DHE_RSA_WITH_AES_256_GCM_SHA384'
+    'TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA'
+    'TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256'
+    'TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256'
+    'TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA'
+    'TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384'
+    'TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384'
+    'TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA'
+    'TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256'
+    'TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256'
+    'TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA'
+    'TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384'
+    'TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384'
+    'TLS_RSA_WITH_3DES_EDE_CBC_SHA'
+    'TLS_RSA_WITH_AES_128_CBC_SHA'
+    'TLS_RSA_WITH_AES_128_CBC_SHA256'
+    'TLS_RSA_WITH_AES_128_GCM_SHA256'
+    'TLS_RSA_WITH_AES_256_CBC_SHA'
+    'TLS_RSA_WITH_AES_256_CBC_SHA256'
+    'TLS_RSA_WITH_AES_256_GCM_SHA384'
+  ]
+  ```
 
 ### Parameter: `sslPolicyMinProtocolVersion`
 
@@ -1622,7 +1723,15 @@ Ssl protocol enums.
 - Required: No
 - Type: string
 - Default: `'TLSv1_2'`
-- Allowed: `[TLSv1_0, TLSv1_1, TLSv1_2, TLSv1_3]`
+- Allowed:
+  ```Bicep
+  [
+    'TLSv1_0'
+    'TLSv1_1'
+    'TLSv1_2'
+    'TLSv1_3'
+  ]
+  ```
 
 ### Parameter: `sslPolicyName`
 
@@ -1630,7 +1739,17 @@ Ssl predefined policy name enums.
 - Required: No
 - Type: string
 - Default: `''`
-- Allowed: `['', AppGwSslPolicy20150501, AppGwSslPolicy20170401, AppGwSslPolicy20170401S, AppGwSslPolicy20220101, AppGwSslPolicy20220101S]`
+- Allowed:
+  ```Bicep
+  [
+    ''
+    'AppGwSslPolicy20150501'
+    'AppGwSslPolicy20170401'
+    'AppGwSslPolicy20170401S'
+    'AppGwSslPolicy20220101'
+    'AppGwSslPolicy20220101S'
+  ]
+  ```
 
 ### Parameter: `sslPolicyType`
 
@@ -1638,7 +1757,14 @@ Type of Ssl Policy.
 - Required: No
 - Type: string
 - Default: `'Custom'`
-- Allowed: `[Custom, CustomV2, Predefined]`
+- Allowed:
+  ```Bicep
+  [
+    'Custom'
+    'CustomV2'
+    'Predefined'
+  ]
+  ```
 
 ### Parameter: `sslProfiles`
 
@@ -1652,7 +1778,6 @@ SSL profiles of the application gateway resource.
 Resource tags.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `trustedClientCertificates`
 
@@ -1675,19 +1800,12 @@ URL path map of the application gateway resource.
 - Type: array
 - Default: `[]`
 
-### Parameter: `userAssignedIdentities`
-
-The ID(s) to assign to the resource.
-- Required: No
-- Type: object
-- Default: `{object}`
-
 ### Parameter: `webApplicationFirewallConfiguration`
 
 Application gateway web application firewall configuration. Should be configured for security reasons.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `zones`
 

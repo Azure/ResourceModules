@@ -86,7 +86,15 @@ The type of the secrect.
 - Required: No
 - Type: string
 - Default: `'AzureFirstPartyManagedCertificate'`
-- Allowed: `[AzureFirstPartyManagedCertificate, CustomerCertificate, ManagedCertificate, UrlSigningKey]`
+- Allowed:
+  ```Bicep
+  [
+    'AzureFirstPartyManagedCertificate'
+    'CustomerCertificate'
+    'ManagedCertificate'
+    'UrlSigningKey'
+  ]
+  ```
 
 ### Parameter: `useLatestVersion`
 

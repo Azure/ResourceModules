@@ -29,6 +29,7 @@ trigger:
     include:
       - '/modules/network/nat-gateway/*'
       - '/modules/network/public-ip-address/*'
+      - '/modules/network/public-ip-prefix/*'
       - '/.azuredevops/modulePipelines/ms.network.natgateways.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
       - '/utilities/pipelines/*'

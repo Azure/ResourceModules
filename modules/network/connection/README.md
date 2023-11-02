@@ -171,7 +171,14 @@ The connection connectionMode for this connection. Available for IPSec connectio
 - Required: No
 - Type: string
 - Default: `'Default'`
-- Allowed: `[Default, InitiatorOnly, ResponderOnly]`
+- Allowed:
+  ```Bicep
+  [
+    'Default'
+    'InitiatorOnly'
+    'ResponderOnly'
+  ]
+  ```
 
 ### Parameter: `connectionProtocol`
 
@@ -179,7 +186,13 @@ Connection connectionProtocol used for this connection. Available for IPSec conn
 - Required: No
 - Type: string
 - Default: `'IKEv2'`
-- Allowed: `[IKEv1, IKEv2]`
+- Allowed:
+  ```Bicep
+  [
+    'IKEv1'
+    'IKEv2'
+  ]
+  ```
 
 ### Parameter: `connectionType`
 
@@ -187,14 +200,34 @@ Gateway connection connectionType.
 - Required: No
 - Type: string
 - Default: `'IPsec'`
-- Allowed: `[ExpressRoute, IPsec, Vnet2Vnet, VPNClient]`
+- Allowed:
+  ```Bicep
+  [
+    'ExpressRoute'
+    'IPsec'
+    'Vnet2Vnet'
+    'VPNClient'
+  ]
+  ```
 
 ### Parameter: `customIPSecPolicy`
 
 The IPSec Policies to be considered by this connection.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default:
+  ```Bicep
+  {
+      dhGroup: ''
+      ikeEncryption: ''
+      ikeIntegrity: ''
+      ipsecEncryption: ''
+      ipsecIntegrity: ''
+      pfsGroup: ''
+      saDataSizeKilobytes: 0
+      saLifeTimeSeconds: 0
+  }
+  ```
 
 ### Parameter: `dpdTimeoutSeconds`
 
@@ -236,7 +269,7 @@ Bypass ExpressRoute Gateway for data forwarding. Only available when connection 
 The local network gateway. Used for connection type [IPsec].
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `location`
 
@@ -283,7 +316,7 @@ Remote connection name.
 The remote peer. Used for connection connectionType [ExpressRoute].
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `routingWeight`
 
@@ -297,7 +330,6 @@ The weight added to routes learned from this BGP speaker.
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `useLocalAzureIpAddress`
 
@@ -324,7 +356,7 @@ The primary Virtual Network Gateway.
 The remote Virtual Network Gateway. Used for connection connectionType [Vnet2Vnet].
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `vpnSharedKey`
 

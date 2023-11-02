@@ -77,7 +77,6 @@ The name of the parent registry. Required if the template is used in a standalon
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `zoneRedundancy`
 
@@ -85,7 +84,13 @@ Whether or not zone redundancy is enabled for this container registry.
 - Required: No
 - Type: string
 - Default: `'Disabled'`
-- Allowed: `[Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 
 ## Outputs
