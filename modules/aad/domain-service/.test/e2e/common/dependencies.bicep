@@ -84,7 +84,7 @@ resource certDeploymentScript 'Microsoft.Resources/deploymentScripts@2020-10-01'
     azPowerShellVersion: '3.0'
     retentionInterval: 'P1D'
     arguments: ' -KeyVaultName "${keyVault.name}" -ResourceGroupName "${resourceGroup().name}" -CertPWSecretName "${certPWSecretName}" -CertSecretName "${certSecretName}"'
-    scriptContent: loadTextContent('../../../../.shared/.scripts/Set-PfxCertificateInKeyVault.ps1')
+    scriptContent: loadTextContent('../../../../../.shared/.scripts/Set-PfxCertificateInKeyVault.ps1')
   }
 }
 

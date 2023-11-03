@@ -1,18 +1,21 @@
 targetScope = 'subscription'
 
+metadata name = 'Using large parameter set'
+metadata description = 'This instance deploys the module with most of its features enabled.'
+
 // ========== //
 // Parameters //
 // ========== //
 
 @description('Optional. The name of the resource group to deploy for testing purposes.')
 @maxLength(90)
-param resourceGroupName string = 'dep-${namePrefix}-analysisservices.servers-${serviceShort}-rg'
+param resourceGroupName string = 'dep-${namePrefix}-aad.domainservices-${serviceShort}-rg'
 
 @description('Optional. The location to deploy resources to.')
 param location string = deployment().location
 
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints.')
-param serviceShort string = 'assmax'
+param serviceShort string = 'aaddscom'
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
@@ -35,17 +38,20 @@ module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
+    virtualNetworkName: 'dep-${namePrefix}-vnet-${serviceShort}'
+    keyVaultName: 'dep-${namePrefix}-kv-${serviceShort}'
     managedIdentityName: 'dep-${namePrefix}-msi-${serviceShort}'
+    certDeploymentScriptName: 'dep-${namePrefix}-ds-${serviceShort}'
   }
 }
 
 // Diagnostics
 // ===========
-module diagnosticDependencies '../../../../.shared/.templates/diagnostic.dependencies.bicep' = {
+module diagnosticDependencies '../../../../../.shared/.templates/diagnostic.dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-diagnosticDependencies'
   params: {
-    storageAccountName: 'dep${namePrefix}azsa${serviceShort}01'
+    storageAccountName: 'dep${namePrefix}diasa${serviceShort}01'
     logAnalyticsWorkspaceName: 'dep-${namePrefix}-law-${serviceShort}'
     eventHubNamespaceEventHubName: 'dep-${namePrefix}-evh-${serviceShort}'
     eventHubNamespaceName: 'dep-${namePrefix}-evhns-${serviceShort}'
@@ -57,56 +63,47 @@ module diagnosticDependencies '../../../../.shared/.templates/diagnostic.depende
 // Test Execution //
 // ============== //
 
-module testDeployment '../../main.bicep' = {
-  scope: az.resourceGroup(resourceGroupName)
-  name: '${uniqueString(deployment().name)}-test-${serviceShort}'
+resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' existing = {
+  name: last(split(nestedDependencies.outputs.keyVaultResourceId, '/'))
+  scope: resourceGroup
+}
+
+module testDeployment '../../../main.bicep' = {
+  scope: resourceGroup
+  name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
-    name: '${namePrefix}${serviceShort}'
-    lock: {
-      kind: 'CanNotDelete'
-      name: 'myCustomLockName'
-    }
-    skuName: 'S0'
-    skuCapacity: 1
-    firewallSettings: {
-      firewallRules: [
-        {
-          firewallRuleName: 'AllowFromAll'
-          rangeStart: '0.0.0.0'
-          rangeEnd: '255.255.255.255'
-        }
-      ]
-      enablePowerBIService: true
-    }
-    roleAssignments: [
-      {
-        roleDefinitionIdOrName: 'Reader'
-        principalId: nestedDependencies.outputs.managedIdentityPrincipalId
-        principalType: 'ServicePrincipal'
-      }
+    name: '${namePrefix}${serviceShort}001'
+    domainName: '${namePrefix}.onmicrosoft.com'
+    additionalRecipients: [
+      '${namePrefix}@noreply.github.com'
     ]
     diagnosticSettings: [
       {
         name: 'customSetting'
-        metricCategories: [
-          {
-            category: 'AllMetrics'
-          }
-        ]
-        logCategoriesAndGroups: [
-          {
-            category: 'Engine'
-          }
-          {
-            category: 'Service'
-          }
-        ]
         eventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
         eventHubAuthorizationRuleResourceId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
         storageAccountResourceId: diagnosticDependencies.outputs.storageAccountResourceId
         workspaceResourceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
       }
     ]
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    pfxCertificate: keyVault.getSecret(nestedDependencies.outputs.certSecretName)
+    pfxCertificatePassword: keyVault.getSecret(nestedDependencies.outputs.certPWSecretName)
+    replicaSets: [
+      {
+        location: 'WestEurope'
+        subnetId: nestedDependencies.outputs.subnetResourceId
+      }
+    ]
+    sku: 'Standard'
+    tags: {
+      'hidden-title': 'This is visible in the resource name'
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }
