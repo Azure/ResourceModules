@@ -53,7 +53,7 @@ module nestedDependencies 'dependencies.bicep' = {
 var networkManagerName = '${namePrefix}${serviceShort}001'
 var networkManagerExpecetedResourceID = '${resourceGroup.id}/providers/Microsoft.Network/networkManagers/${networkManagerName}'
 
-module testDeployment '../../main.bicep' = {
+module testDeployment '../../../main.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
   params: {

@@ -46,7 +46,7 @@ module nestedDependencies 'dependencies.bicep' = {
 var redisCacheEnterpriseName = '${namePrefix}${serviceShort}001'
 var redisCacheEnterpriseExpectedResourceID = '${resourceGroup.id}/providers/Microsoft.Cache/redisEnterprise/${redisCacheEnterpriseName}'
 
-module testDeployment '../../main.bicep' = {
+module testDeployment '../../../main.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
   params: {

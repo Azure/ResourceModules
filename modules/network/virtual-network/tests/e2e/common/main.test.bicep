@@ -63,7 +63,7 @@ module diagnosticDependencies '../../../../../.shared/.templates/diagnostic.depe
 // ============== //
 
 var addressPrefix = '10.0.0.0/16'
-module testDeployment '../../main.bicep' = {
+module testDeployment '../../../main.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
   params: {

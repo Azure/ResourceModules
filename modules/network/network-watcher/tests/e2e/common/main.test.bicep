@@ -66,7 +66,7 @@ module diagnosticDependencies '../../../../../.shared/.templates/diagnostic.depe
 // ============== //
 #disable-next-line no-hardcoded-location // Disabled as the default RG & location are created in always one location, but each test has to deploy into a different one
 var testLocation = 'westeurope'
-module testDeployment '../../main.bicep' = {
+module testDeployment '../../../main.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, testLocation)}-test-${serviceShort}'
   params: {

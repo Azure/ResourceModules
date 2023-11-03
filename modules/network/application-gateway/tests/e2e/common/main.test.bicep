@@ -66,7 +66,7 @@ module diagnosticDependencies '../../../../../.shared/.templates/diagnostic.depe
 
 var appGWName = '${namePrefix}${serviceShort}001'
 var appGWExpectedResourceID = '${resourceGroup.id}/providers/Microsoft.Network/applicationGateways/${appGWName}'
-module testDeployment '../../main.bicep' = {
+module testDeployment '../../../main.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
   params: {
