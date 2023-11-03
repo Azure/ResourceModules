@@ -42,7 +42,7 @@ resource createPubKeyScript 'Microsoft.Resources/deploymentScripts@2020-10-01' =
         azPowerShellVersion: '8.0'
         retentionInterval: 'P1D'
         arguments: '-ResourceGroupName ${resourceGroup().name} -SSHKeyName ${sshKeyName}'
-        scriptContent: loadTextContent('../../../../.shared/.scripts/New-SSHKey.ps1')
+        scriptContent: loadTextContent('../../../../../.shared/.scripts/New-SSHKey.ps1')
         cleanupPreference: 'OnExpiration'
         forceUpdateTag: utcValue
     }

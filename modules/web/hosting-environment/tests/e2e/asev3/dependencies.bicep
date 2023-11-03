@@ -118,7 +118,7 @@ resource certDeploymentScript 'Microsoft.Resources/deploymentScripts@2020-10-01'
     azPowerShellVersion: '8.0'
     retentionInterval: 'P1D'
     arguments: '-KeyVaultName "${keyVault.name}" -CertName "asev3certificate" -CertSubjectName "CN=*.internal.contoso.com"'
-    scriptContent: loadTextContent('../../../../.shared/.scripts/Set-CertificateInKeyVault.ps1')
+    scriptContent: loadTextContent('../../../../../.shared/.scripts/Set-CertificateInKeyVault.ps1')
   }
 }
 
