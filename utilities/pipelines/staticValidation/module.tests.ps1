@@ -81,7 +81,7 @@ Describe 'File/folder tests' -Tag 'Modules' {
                 [string] $moduleFolderPath
             )
 
-            $pathExisting = Test-Path (Join-Path -Path $moduleFolderPath '.test')
+            $pathExisting = Test-Path (Join-Path -Path $moduleFolderPath 'tests')
             $pathExisting | Should -Be $true
         }
 
