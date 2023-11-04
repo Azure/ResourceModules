@@ -38,7 +38,7 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module metricAlert 'br:bicep/modules/insights.metric-alert:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-imacom'
+  name: '${uniqueString(deployment().name, location)}-test-imamax'
   params: {
     // Required parameters
     criterias: [
@@ -52,7 +52,7 @@ module metricAlert 'br:bicep/modules/insights.metric-alert:1.0.0' = {
         timeAggregation: 'Average'
       }
     ]
-    name: 'imacom001'
+    name: 'imamax001'
     // Non-required parameters
     actions: [
       '<actionGroupResourceId>'
@@ -105,7 +105,7 @@ module metricAlert 'br:bicep/modules/insights.metric-alert:1.0.0' = {
       ]
     },
     "name": {
-      "value": "imacom001"
+      "value": "imamax001"
     },
     // Non-required parameters
     "actions": {

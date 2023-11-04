@@ -35,11 +35,59 @@ The following section provides usage examples for the module, which were used to
 
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/relay.namespace:1.0.0`.
 
-- [Using large parameter set](#example-1-using-large-parameter-set)
-- [Using only defaults](#example-2-using-only-defaults)
+- [Using only defaults](#example-1-using-only-defaults)
+- [Using large parameter set](#example-2-using-large-parameter-set)
 - [Pe](#example-3-pe)
 
-### Example 1: _Using large parameter set_
+### Example 1: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module namespace 'br:bicep/modules/relay.namespace:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-rnmin'
+  params: {
+    // Required parameters
+    name: 'rnmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "rnmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 2: _Using large parameter set_
 
 This instance deploys the module with most of its features enabled.
 
@@ -50,10 +98,10 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module namespace 'br:bicep/modules/relay.namespace:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-rncom'
+  name: '${uniqueString(deployment().name, location)}-test-rnmax'
   params: {
     // Required parameters
-    name: 'rncom001'
+    name: 'rnmax001'
     // Non-required parameters
     authorizationRules: [
       {
@@ -89,7 +137,7 @@ module namespace 'br:bicep/modules/relay.namespace:1.0.0' = {
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     hybridConnections: [
       {
-        name: 'rncomhc001'
+        name: 'rnmaxhc001'
         roleAssignments: [
           {
             principalId: '<principalId>'
@@ -155,7 +203,7 @@ module namespace 'br:bicep/modules/relay.namespace:1.0.0' = {
     }
     wcfRelays: [
       {
-        name: 'rncomwcf001'
+        name: 'rnmaxwcf001'
         relayType: 'NetTcp'
         roleAssignments: [
           {
@@ -184,7 +232,7 @@ module namespace 'br:bicep/modules/relay.namespace:1.0.0' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "rncom001"
+      "value": "rnmax001"
     },
     // Non-required parameters
     "authorizationRules": {
@@ -228,7 +276,7 @@ module namespace 'br:bicep/modules/relay.namespace:1.0.0' = {
     "hybridConnections": {
       "value": [
         {
-          "name": "rncomhc001",
+          "name": "rnmaxhc001",
           "roleAssignments": [
             {
               "principalId": "<principalId>",
@@ -308,7 +356,7 @@ module namespace 'br:bicep/modules/relay.namespace:1.0.0' = {
     "wcfRelays": {
       "value": [
         {
-          "name": "rncomwcf001",
+          "name": "rnmaxwcf001",
           "relayType": "NetTcp",
           "roleAssignments": [
             {
@@ -319,54 +367,6 @@ module namespace 'br:bicep/modules/relay.namespace:1.0.0' = {
           ]
         }
       ]
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-### Example 2: _Using only defaults_
-
-This instance deploys the module with the minimum set of required parameters.
-
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module namespace 'br:bicep/modules/relay.namespace:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-rnmin'
-  params: {
-    // Required parameters
-    name: 'rnmin001'
-    // Non-required parameters
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "rnmin001"
-    },
-    // Non-required parameters
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
     }
   }
 }

@@ -30,11 +30,59 @@ The following section provides usage examples for the module, which were used to
 
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/search.search-service:1.0.0`.
 
-- [Using large parameter set](#example-1-using-large-parameter-set)
-- [Using only defaults](#example-2-using-only-defaults)
+- [Using only defaults](#example-1-using-only-defaults)
+- [Using large parameter set](#example-2-using-large-parameter-set)
 - [Pe](#example-3-pe)
 
-### Example 1: _Using large parameter set_
+### Example 1: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module searchService 'br:bicep/modules/search.search-service:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-sssmin'
+  params: {
+    // Required parameters
+    name: 'sssmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "sssmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 2: _Using large parameter set_
 
 This instance deploys the module with most of its features enabled.
 
@@ -45,10 +93,10 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module searchService 'br:bicep/modules/search.search-service:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-ssscom'
+  name: '${uniqueString(deployment().name, location)}-test-sssmax'
   params: {
     // Required parameters
-    name: 'ssscom001'
+    name: 'sssmax001'
     // Non-required parameters
     authOptions: {
       aadOrApiKey: {
@@ -128,7 +176,7 @@ module searchService 'br:bicep/modules/search.search-service:1.0.0' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "ssscom001"
+      "value": "sssmax001"
     },
     // Non-required parameters
     "authOptions": {
@@ -218,54 +266,6 @@ module searchService 'br:bicep/modules/search.search-service:1.0.0' = {
         "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-### Example 2: _Using only defaults_
-
-This instance deploys the module with the minimum set of required parameters.
-
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module searchService 'br:bicep/modules/search.search-service:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-sssmin'
-  params: {
-    // Required parameters
-    name: 'sssmin001'
-    // Non-required parameters
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "sssmin001"
-    },
-    // Non-required parameters
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
     }
   }
 }

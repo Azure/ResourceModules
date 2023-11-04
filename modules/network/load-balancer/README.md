@@ -30,299 +30,11 @@ The following section provides usage examples for the module, which were used to
 
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/network.load-balancer:1.0.0`.
 
-- [Using large parameter set](#example-1-using-large-parameter-set)
-- [Using only defaults](#example-2-using-only-defaults)
-- [Internal](#example-3-internal)
+- [Using only defaults](#example-1-using-only-defaults)
+- [Internal](#example-2-internal)
+- [Using large parameter set](#example-3-using-large-parameter-set)
 
-### Example 1: _Using large parameter set_
-
-This instance deploys the module with most of its features enabled.
-
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module loadBalancer 'br:bicep/modules/network.load-balancer:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-nlbcom'
-  params: {
-    // Required parameters
-    frontendIPConfigurations: [
-      {
-        name: 'publicIPConfig1'
-        publicIPAddressId: '<publicIPAddressId>'
-      }
-    ]
-    name: 'nlbcom001'
-    // Non-required parameters
-    backendAddressPools: [
-      {
-        name: 'backendAddressPool1'
-      }
-      {
-        name: 'backendAddressPool2'
-      }
-    ]
-    diagnosticSettings: [
-      {
-        eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
-        eventHubName: '<eventHubName>'
-        metricCategories: [
-          {
-            category: 'AllMetrics'
-          }
-        ]
-        name: 'customSetting'
-        storageAccountResourceId: '<storageAccountResourceId>'
-        workspaceResourceId: '<workspaceResourceId>'
-      }
-    ]
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    inboundNatRules: [
-      {
-        backendPort: 443
-        enableFloatingIP: false
-        enableTcpReset: false
-        frontendIPConfigurationName: 'publicIPConfig1'
-        frontendPort: 443
-        idleTimeoutInMinutes: 4
-        name: 'inboundNatRule1'
-        protocol: 'Tcp'
-      }
-      {
-        backendPort: 3389
-        frontendIPConfigurationName: 'publicIPConfig1'
-        frontendPort: 3389
-        name: 'inboundNatRule2'
-      }
-    ]
-    loadBalancingRules: [
-      {
-        backendAddressPoolName: 'backendAddressPool1'
-        backendPort: 80
-        disableOutboundSnat: true
-        enableFloatingIP: false
-        enableTcpReset: false
-        frontendIPConfigurationName: 'publicIPConfig1'
-        frontendPort: 80
-        idleTimeoutInMinutes: 5
-        loadDistribution: 'Default'
-        name: 'publicIPLBRule1'
-        probeName: 'probe1'
-        protocol: 'Tcp'
-      }
-      {
-        backendAddressPoolName: 'backendAddressPool2'
-        backendPort: 8080
-        frontendIPConfigurationName: 'publicIPConfig1'
-        frontendPort: 8080
-        loadDistribution: 'Default'
-        name: 'publicIPLBRule2'
-        probeName: 'probe2'
-      }
-    ]
-    lock: {
-      kind: 'CanNotDelete'
-      name: 'myCustomLockName'
-    }
-    outboundRules: [
-      {
-        allocatedOutboundPorts: 63984
-        backendAddressPoolName: 'backendAddressPool1'
-        frontendIPConfigurationName: 'publicIPConfig1'
-        name: 'outboundRule1'
-      }
-    ]
-    probes: [
-      {
-        intervalInSeconds: 10
-        name: 'probe1'
-        numberOfProbes: 5
-        port: 80
-        protocol: 'Tcp'
-      }
-      {
-        name: 'probe2'
-        port: 443
-        protocol: 'Https'
-        requestPath: '/'
-      }
-    ]
-    roleAssignments: [
-      {
-        principalId: '<principalId>'
-        principalType: 'ServicePrincipal'
-        roleDefinitionIdOrName: 'Reader'
-      }
-    ]
-    tags: {
-      Environment: 'Non-Prod'
-      'hidden-title': 'This is visible in the resource name'
-      Role: 'DeploymentValidation'
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "frontendIPConfigurations": {
-      "value": [
-        {
-          "name": "publicIPConfig1",
-          "publicIPAddressId": "<publicIPAddressId>"
-        }
-      ]
-    },
-    "name": {
-      "value": "nlbcom001"
-    },
-    // Non-required parameters
-    "backendAddressPools": {
-      "value": [
-        {
-          "name": "backendAddressPool1"
-        },
-        {
-          "name": "backendAddressPool2"
-        }
-      ]
-    },
-    "diagnosticSettings": {
-      "value": [
-        {
-          "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
-          "eventHubName": "<eventHubName>",
-          "metricCategories": [
-            {
-              "category": "AllMetrics"
-            }
-          ],
-          "name": "customSetting",
-          "storageAccountResourceId": "<storageAccountResourceId>",
-          "workspaceResourceId": "<workspaceResourceId>"
-        }
-      ]
-    },
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
-    "inboundNatRules": {
-      "value": [
-        {
-          "backendPort": 443,
-          "enableFloatingIP": false,
-          "enableTcpReset": false,
-          "frontendIPConfigurationName": "publicIPConfig1",
-          "frontendPort": 443,
-          "idleTimeoutInMinutes": 4,
-          "name": "inboundNatRule1",
-          "protocol": "Tcp"
-        },
-        {
-          "backendPort": 3389,
-          "frontendIPConfigurationName": "publicIPConfig1",
-          "frontendPort": 3389,
-          "name": "inboundNatRule2"
-        }
-      ]
-    },
-    "loadBalancingRules": {
-      "value": [
-        {
-          "backendAddressPoolName": "backendAddressPool1",
-          "backendPort": 80,
-          "disableOutboundSnat": true,
-          "enableFloatingIP": false,
-          "enableTcpReset": false,
-          "frontendIPConfigurationName": "publicIPConfig1",
-          "frontendPort": 80,
-          "idleTimeoutInMinutes": 5,
-          "loadDistribution": "Default",
-          "name": "publicIPLBRule1",
-          "probeName": "probe1",
-          "protocol": "Tcp"
-        },
-        {
-          "backendAddressPoolName": "backendAddressPool2",
-          "backendPort": 8080,
-          "frontendIPConfigurationName": "publicIPConfig1",
-          "frontendPort": 8080,
-          "loadDistribution": "Default",
-          "name": "publicIPLBRule2",
-          "probeName": "probe2"
-        }
-      ]
-    },
-    "lock": {
-      "value": {
-        "kind": "CanNotDelete",
-        "name": "myCustomLockName"
-      }
-    },
-    "outboundRules": {
-      "value": [
-        {
-          "allocatedOutboundPorts": 63984,
-          "backendAddressPoolName": "backendAddressPool1",
-          "frontendIPConfigurationName": "publicIPConfig1",
-          "name": "outboundRule1"
-        }
-      ]
-    },
-    "probes": {
-      "value": [
-        {
-          "intervalInSeconds": 10,
-          "name": "probe1",
-          "numberOfProbes": 5,
-          "port": 80,
-          "protocol": "Tcp"
-        },
-        {
-          "name": "probe2",
-          "port": 443,
-          "protocol": "Https",
-          "requestPath": "/"
-        }
-      ]
-    },
-    "roleAssignments": {
-      "value": [
-        {
-          "principalId": "<principalId>",
-          "principalType": "ServicePrincipal",
-          "roleDefinitionIdOrName": "Reader"
-        }
-      ]
-    },
-    "tags": {
-      "value": {
-        "Environment": "Non-Prod",
-        "hidden-title": "This is visible in the resource name",
-        "Role": "DeploymentValidation"
-      }
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-### Example 2: _Using only defaults_
+### Example 1: _Using only defaults_
 
 This instance deploys the module with the minimum set of required parameters.
 
@@ -384,7 +96,7 @@ module loadBalancer 'br:bicep/modules/network.load-balancer:1.0.0' = {
 </details>
 <p>
 
-### Example 3: _Internal_
+### Example 2: _Internal_
 
 <details>
 
@@ -594,6 +306,294 @@ module loadBalancer 'br:bicep/modules/network.load-balancer:1.0.0' = {
     },
     "skuName": {
       "value": "Standard"
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 3: _Using large parameter set_
+
+This instance deploys the module with most of its features enabled.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module loadBalancer 'br:bicep/modules/network.load-balancer:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-nlbmax'
+  params: {
+    // Required parameters
+    frontendIPConfigurations: [
+      {
+        name: 'publicIPConfig1'
+        publicIPAddressId: '<publicIPAddressId>'
+      }
+    ]
+    name: 'nlbmax001'
+    // Non-required parameters
+    backendAddressPools: [
+      {
+        name: 'backendAddressPool1'
+      }
+      {
+        name: 'backendAddressPool2'
+      }
+    ]
+    diagnosticSettings: [
+      {
+        eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+        eventHubName: '<eventHubName>'
+        metricCategories: [
+          {
+            category: 'AllMetrics'
+          }
+        ]
+        name: 'customSetting'
+        storageAccountResourceId: '<storageAccountResourceId>'
+        workspaceResourceId: '<workspaceResourceId>'
+      }
+    ]
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    inboundNatRules: [
+      {
+        backendPort: 443
+        enableFloatingIP: false
+        enableTcpReset: false
+        frontendIPConfigurationName: 'publicIPConfig1'
+        frontendPort: 443
+        idleTimeoutInMinutes: 4
+        name: 'inboundNatRule1'
+        protocol: 'Tcp'
+      }
+      {
+        backendPort: 3389
+        frontendIPConfigurationName: 'publicIPConfig1'
+        frontendPort: 3389
+        name: 'inboundNatRule2'
+      }
+    ]
+    loadBalancingRules: [
+      {
+        backendAddressPoolName: 'backendAddressPool1'
+        backendPort: 80
+        disableOutboundSnat: true
+        enableFloatingIP: false
+        enableTcpReset: false
+        frontendIPConfigurationName: 'publicIPConfig1'
+        frontendPort: 80
+        idleTimeoutInMinutes: 5
+        loadDistribution: 'Default'
+        name: 'publicIPLBRule1'
+        probeName: 'probe1'
+        protocol: 'Tcp'
+      }
+      {
+        backendAddressPoolName: 'backendAddressPool2'
+        backendPort: 8080
+        frontendIPConfigurationName: 'publicIPConfig1'
+        frontendPort: 8080
+        loadDistribution: 'Default'
+        name: 'publicIPLBRule2'
+        probeName: 'probe2'
+      }
+    ]
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    outboundRules: [
+      {
+        allocatedOutboundPorts: 63984
+        backendAddressPoolName: 'backendAddressPool1'
+        frontendIPConfigurationName: 'publicIPConfig1'
+        name: 'outboundRule1'
+      }
+    ]
+    probes: [
+      {
+        intervalInSeconds: 10
+        name: 'probe1'
+        numberOfProbes: 5
+        port: 80
+        protocol: 'Tcp'
+      }
+      {
+        name: 'probe2'
+        port: 443
+        protocol: 'Https'
+        requestPath: '/'
+      }
+    ]
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "frontendIPConfigurations": {
+      "value": [
+        {
+          "name": "publicIPConfig1",
+          "publicIPAddressId": "<publicIPAddressId>"
+        }
+      ]
+    },
+    "name": {
+      "value": "nlbmax001"
+    },
+    // Non-required parameters
+    "backendAddressPools": {
+      "value": [
+        {
+          "name": "backendAddressPool1"
+        },
+        {
+          "name": "backendAddressPool2"
+        }
+      ]
+    },
+    "diagnosticSettings": {
+      "value": [
+        {
+          "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+          "eventHubName": "<eventHubName>",
+          "metricCategories": [
+            {
+              "category": "AllMetrics"
+            }
+          ],
+          "name": "customSetting",
+          "storageAccountResourceId": "<storageAccountResourceId>",
+          "workspaceResourceId": "<workspaceResourceId>"
+        }
+      ]
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "inboundNatRules": {
+      "value": [
+        {
+          "backendPort": 443,
+          "enableFloatingIP": false,
+          "enableTcpReset": false,
+          "frontendIPConfigurationName": "publicIPConfig1",
+          "frontendPort": 443,
+          "idleTimeoutInMinutes": 4,
+          "name": "inboundNatRule1",
+          "protocol": "Tcp"
+        },
+        {
+          "backendPort": 3389,
+          "frontendIPConfigurationName": "publicIPConfig1",
+          "frontendPort": 3389,
+          "name": "inboundNatRule2"
+        }
+      ]
+    },
+    "loadBalancingRules": {
+      "value": [
+        {
+          "backendAddressPoolName": "backendAddressPool1",
+          "backendPort": 80,
+          "disableOutboundSnat": true,
+          "enableFloatingIP": false,
+          "enableTcpReset": false,
+          "frontendIPConfigurationName": "publicIPConfig1",
+          "frontendPort": 80,
+          "idleTimeoutInMinutes": 5,
+          "loadDistribution": "Default",
+          "name": "publicIPLBRule1",
+          "probeName": "probe1",
+          "protocol": "Tcp"
+        },
+        {
+          "backendAddressPoolName": "backendAddressPool2",
+          "backendPort": 8080,
+          "frontendIPConfigurationName": "publicIPConfig1",
+          "frontendPort": 8080,
+          "loadDistribution": "Default",
+          "name": "publicIPLBRule2",
+          "probeName": "probe2"
+        }
+      ]
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "outboundRules": {
+      "value": [
+        {
+          "allocatedOutboundPorts": 63984,
+          "backendAddressPoolName": "backendAddressPool1",
+          "frontendIPConfigurationName": "publicIPConfig1",
+          "name": "outboundRule1"
+        }
+      ]
+    },
+    "probes": {
+      "value": [
+        {
+          "intervalInSeconds": 10,
+          "name": "probe1",
+          "numberOfProbes": 5,
+          "port": 80,
+          "protocol": "Tcp"
+        },
+        {
+          "name": "probe2",
+          "port": 443,
+          "protocol": "Https",
+          "requestPath": "/"
+        }
+      ]
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
     },
     "tags": {
       "value": {

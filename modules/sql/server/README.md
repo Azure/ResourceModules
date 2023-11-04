@@ -118,10 +118,10 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module server 'br:bicep/modules/sql.server:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-sqlscom'
+  name: '${uniqueString(deployment().name, location)}-test-sqlsmax'
   params: {
     // Required parameters
-    name: 'sqlscom'
+    name: 'sqlsmax'
     // Non-required parameters
     administratorLogin: 'adminUserName'
     administratorLoginPassword: '<administratorLoginPassword>'
@@ -151,7 +151,7 @@ module server 'br:bicep/modules/sql.server:1.0.0' = {
         }
         licenseType: 'LicenseIncluded'
         maxSizeBytes: 34359738368
-        name: 'sqlscomdb-001'
+        name: 'sqlsmaxdb-001'
         skuName: 'ElasticPool'
         skuTier: 'GeneralPurpose'
       }
@@ -159,7 +159,7 @@ module server 'br:bicep/modules/sql.server:1.0.0' = {
     elasticPools: [
       {
         maintenanceConfigurationId: '<maintenanceConfigurationId>'
-        name: 'sqlscom-ep-001'
+        name: 'sqlsmax-ep-001'
         skuCapacity: 10
         skuName: 'GP_Gen5'
         skuTier: 'GeneralPurpose'
@@ -260,7 +260,7 @@ module server 'br:bicep/modules/sql.server:1.0.0' = {
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
-      "value": "sqlscom"
+      "value": "sqlsmax"
     },
     "administratorLogin": {
       "value": "adminUserName"
@@ -295,7 +295,7 @@ module server 'br:bicep/modules/sql.server:1.0.0' = {
           },
           "licenseType": "LicenseIncluded",
           "maxSizeBytes": 34359738368,
-          "name": "sqlscomdb-001",
+          "name": "sqlsmaxdb-001",
           "skuName": "ElasticPool",
           "skuTier": "GeneralPurpose"
         }
@@ -305,7 +305,7 @@ module server 'br:bicep/modules/sql.server:1.0.0' = {
       "value": [
         {
           "maintenanceConfigurationId": "<maintenanceConfigurationId>",
-          "name": "sqlscom-ep-001",
+          "name": "sqlsmax-ep-001",
           "skuCapacity": 10,
           "skuName": "GP_Gen5",
           "skuTier": "GeneralPurpose"

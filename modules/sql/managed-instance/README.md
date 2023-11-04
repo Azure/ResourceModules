@@ -36,11 +36,71 @@ The following section provides usage examples for the module, which were used to
 
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/sql.managed-instance:1.0.0`.
 
-- [Using large parameter set](#example-1-using-large-parameter-set)
-- [Using only defaults](#example-2-using-only-defaults)
+- [Using only defaults](#example-1-using-only-defaults)
+- [Using large parameter set](#example-2-using-large-parameter-set)
 - [Vulnassm](#example-3-vulnassm)
 
-### Example 1: _Using large parameter set_
+### Example 1: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module managedInstance 'br:bicep/modules/sql.managed-instance:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-sqlmimin'
+  params: {
+    // Required parameters
+    administratorLogin: 'adminUserName'
+    administratorLoginPassword: '<administratorLoginPassword>'
+    name: 'sqlmimin'
+    subnetId: '<subnetId>'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "administratorLogin": {
+      "value": "adminUserName"
+    },
+    "administratorLoginPassword": {
+      "value": "<administratorLoginPassword>"
+    },
+    "name": {
+      "value": "sqlmimin"
+    },
+    "subnetId": {
+      "value": "<subnetId>"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 2: _Using large parameter set_
 
 This instance deploys the module with most of its features enabled.
 
@@ -51,12 +111,12 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module managedInstance 'br:bicep/modules/sql.managed-instance:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-sqlmicom'
+  name: '${uniqueString(deployment().name, location)}-test-sqlmimax'
   params: {
     // Required parameters
     administratorLogin: 'adminUserName'
     administratorLoginPassword: '<administratorLoginPassword>'
-    name: 'sqlmicom'
+    name: 'sqlmimax'
     subnetId: '<subnetId>'
     // Non-required parameters
     collation: 'SQL_Latin1_General_CP1_CI_AS'
@@ -77,7 +137,7 @@ module managedInstance 'br:bicep/modules/sql.managed-instance:1.0.0' = {
             workspaceResourceId: '<workspaceResourceId>'
           }
         ]
-        name: 'sqlmicom-db-001'
+        name: 'sqlmimax-db-001'
       }
     ]
     diagnosticSettings: [
@@ -178,7 +238,7 @@ module managedInstance 'br:bicep/modules/sql.managed-instance:1.0.0' = {
       "value": "<administratorLoginPassword>"
     },
     "name": {
-      "value": "sqlmicom"
+      "value": "sqlmimax"
     },
     "subnetId": {
       "value": "<subnetId>"
@@ -204,7 +264,7 @@ module managedInstance 'br:bicep/modules/sql.managed-instance:1.0.0' = {
               "workspaceResourceId": "<workspaceResourceId>"
             }
           ],
-          "name": "sqlmicom-db-001"
+          "name": "sqlmimax-db-001"
         }
       ]
     },
@@ -324,66 +384,6 @@ module managedInstance 'br:bicep/modules/sql.managed-instance:1.0.0' = {
           "Role": "DeploymentValidation"
         }
       }
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-### Example 2: _Using only defaults_
-
-This instance deploys the module with the minimum set of required parameters.
-
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module managedInstance 'br:bicep/modules/sql.managed-instance:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-sqlmimin'
-  params: {
-    // Required parameters
-    administratorLogin: 'adminUserName'
-    administratorLoginPassword: '<administratorLoginPassword>'
-    name: 'sqlmimin'
-    subnetId: '<subnetId>'
-    // Non-required parameters
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "administratorLogin": {
-      "value": "adminUserName"
-    },
-    "administratorLoginPassword": {
-      "value": "<administratorLoginPassword>"
-    },
-    "name": {
-      "value": "sqlmimin"
-    },
-    "subnetId": {
-      "value": "<subnetId>"
-    },
-    // Non-required parameters
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
     }
   }
 }

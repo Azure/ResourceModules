@@ -26,126 +26,12 @@ The following section provides usage examples for the module, which were used to
 
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/compute.disk:1.0.0`.
 
-- [Using large parameter set](#example-1-using-large-parameter-set)
-- [Using only defaults](#example-2-using-only-defaults)
-- [Image](#example-3-image)
-- [Import](#example-4-import)
+- [Using only defaults](#example-1-using-only-defaults)
+- [Image](#example-2-image)
+- [Import](#example-3-import)
+- [Using large parameter set](#example-4-using-large-parameter-set)
 
-### Example 1: _Using large parameter set_
-
-This instance deploys the module with most of its features enabled.
-
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module disk 'br:bicep/modules/compute.disk:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-cdcom'
-  params: {
-    // Required parameters
-    name: 'cdcom001'
-    sku: 'UltraSSD_LRS'
-    // Non-required parameters
-    diskIOPSReadWrite: 500
-    diskMBpsReadWrite: 60
-    diskSizeGB: 128
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    lock: {
-      kind: 'CanNotDelete'
-      name: 'myCustomLockName'
-    }
-    logicalSectorSize: 512
-    osType: 'Windows'
-    publicNetworkAccess: 'Enabled'
-    roleAssignments: [
-      {
-        principalId: '<principalId>'
-        principalType: 'ServicePrincipal'
-        roleDefinitionIdOrName: 'Reader'
-      }
-    ]
-    tags: {
-      Environment: 'Non-Prod'
-      'hidden-title': 'This is visible in the resource name'
-      Role: 'DeploymentValidation'
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "cdcom001"
-    },
-    "sku": {
-      "value": "UltraSSD_LRS"
-    },
-    // Non-required parameters
-    "diskIOPSReadWrite": {
-      "value": 500
-    },
-    "diskMBpsReadWrite": {
-      "value": 60
-    },
-    "diskSizeGB": {
-      "value": 128
-    },
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
-    "lock": {
-      "value": {
-        "kind": "CanNotDelete",
-        "name": "myCustomLockName"
-      }
-    },
-    "logicalSectorSize": {
-      "value": 512
-    },
-    "osType": {
-      "value": "Windows"
-    },
-    "publicNetworkAccess": {
-      "value": "Enabled"
-    },
-    "roleAssignments": {
-      "value": [
-        {
-          "principalId": "<principalId>",
-          "principalType": "ServicePrincipal",
-          "roleDefinitionIdOrName": "Reader"
-        }
-      ]
-    },
-    "tags": {
-      "value": {
-        "Environment": "Non-Prod",
-        "hidden-title": "This is visible in the resource name",
-        "Role": "DeploymentValidation"
-      }
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-### Example 2: _Using only defaults_
+### Example 1: _Using only defaults_
 
 This instance deploys the module with the minimum set of required parameters.
 
@@ -201,7 +87,7 @@ module disk 'br:bicep/modules/compute.disk:1.0.0' = {
 </details>
 <p>
 
-### Example 3: _Image_
+### Example 2: _Image_
 
 <details>
 
@@ -286,7 +172,7 @@ module disk 'br:bicep/modules/compute.disk:1.0.0' = {
 </details>
 <p>
 
-### Example 4: _Import_
+### Example 3: _Import_
 
 <details>
 
@@ -360,6 +246,120 @@ module disk 'br:bicep/modules/compute.disk:1.0.0' = {
     },
     "storageAccountId": {
       "value": "<storageAccountId>"
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 4: _Using large parameter set_
+
+This instance deploys the module with most of its features enabled.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module disk 'br:bicep/modules/compute.disk:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-cdmax'
+  params: {
+    // Required parameters
+    name: 'cdmax001'
+    sku: 'UltraSSD_LRS'
+    // Non-required parameters
+    diskIOPSReadWrite: 500
+    diskMBpsReadWrite: 60
+    diskSizeGB: 128
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    logicalSectorSize: 512
+    osType: 'Windows'
+    publicNetworkAccess: 'Enabled'
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "cdmax001"
+    },
+    "sku": {
+      "value": "UltraSSD_LRS"
+    },
+    // Non-required parameters
+    "diskIOPSReadWrite": {
+      "value": 500
+    },
+    "diskMBpsReadWrite": {
+      "value": 60
+    },
+    "diskSizeGB": {
+      "value": 128
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "logicalSectorSize": {
+      "value": 512
+    },
+    "osType": {
+      "value": "Windows"
+    },
+    "publicNetworkAccess": {
+      "value": "Enabled"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
     },
     "tags": {
       "value": {

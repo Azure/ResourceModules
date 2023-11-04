@@ -39,10 +39,10 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module applicationSecurityGroup 'br:bicep/modules/network.application-security-group:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-nasgcom'
+  name: '${uniqueString(deployment().name, location)}-test-nasgmax'
   params: {
     // Required parameters
-    name: 'nasgcom001'
+    name: 'nasgmax001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: {
@@ -79,7 +79,7 @@ module applicationSecurityGroup 'br:bicep/modules/network.application-security-g
   "parameters": {
     // Required parameters
     "name": {
-      "value": "nasgcom001"
+      "value": "nasgmax001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {

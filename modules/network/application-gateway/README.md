@@ -42,7 +42,7 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module applicationGateway 'br:bicep/modules/network.application-gateway:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-nagcom'
+  name: '${uniqueString(deployment().name, location)}-test-nagmax'
   params: {
     // Required parameters
     name: '<name>'

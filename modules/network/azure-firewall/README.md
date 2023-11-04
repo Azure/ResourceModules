@@ -29,11 +29,11 @@ The following section provides usage examples for the module, which were used to
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/network.azure-firewall:1.0.0`.
 
 - [Addpip](#example-1-addpip)
-- [Using large parameter set](#example-2-using-large-parameter-set)
-- [Custompip](#example-3-custompip)
-- [Using only defaults](#example-4-using-only-defaults)
-- [Hubcommon](#example-5-hubcommon)
-- [Hubmin](#example-6-hubmin)
+- [Custompip](#example-2-custompip)
+- [Using only defaults](#example-3-using-only-defaults)
+- [Hubcommon](#example-4-hubcommon)
+- [Hubmin](#example-5-hubmin)
+- [Using large parameter set](#example-6-using-large-parameter-set)
 
 ### Example 1: _Addpip_
 
@@ -136,7 +136,316 @@ module azureFirewall 'br:bicep/modules/network.azure-firewall:1.0.0' = {
 </details>
 <p>
 
-### Example 2: _Using large parameter set_
+### Example 2: _Custompip_
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module azureFirewall 'br:bicep/modules/network.azure-firewall:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-nafcstpip'
+  params: {
+    // Required parameters
+    name: 'nafcstpip001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    publicIPAddressObject: {
+      diagnosticSettings: [
+        {
+          eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+          eventHubName: '<eventHubName>'
+          metricCategories: [
+            {
+              category: 'AllMetrics'
+            }
+          ]
+          name: 'customSetting'
+          storageAccountResourceId: '<storageAccountResourceId>'
+          workspaceResourceId: '<workspaceResourceId>'
+        }
+      ]
+      name: 'new-pip-nafcstpip'
+      publicIPAllocationMethod: 'Static'
+      publicIPPrefixResourceId: ''
+      roleAssignments: [
+        {
+          principalId: '<principalId>'
+          principalType: 'ServicePrincipal'
+          roleDefinitionIdOrName: 'Reader'
+        }
+      ]
+      skuName: 'Standard'
+      skuTier: 'Regional'
+    }
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+    vNetId: '<vNetId>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "nafcstpip001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "publicIPAddressObject": {
+      "value": {
+        "diagnosticSettings": [
+          {
+            "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+            "eventHubName": "<eventHubName>",
+            "metricCategories": [
+              {
+                "category": "AllMetrics"
+              }
+            ],
+            "name": "customSetting",
+            "storageAccountResourceId": "<storageAccountResourceId>",
+            "workspaceResourceId": "<workspaceResourceId>"
+          }
+        ],
+        "name": "new-pip-nafcstpip",
+        "publicIPAllocationMethod": "Static",
+        "publicIPPrefixResourceId": "",
+        "roleAssignments": [
+          {
+            "principalId": "<principalId>",
+            "principalType": "ServicePrincipal",
+            "roleDefinitionIdOrName": "Reader"
+          }
+        ],
+        "skuName": "Standard",
+        "skuTier": "Regional"
+      }
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    },
+    "vNetId": {
+      "value": "<vNetId>"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 3: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module azureFirewall 'br:bicep/modules/network.azure-firewall:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-nafmin'
+  params: {
+    // Required parameters
+    name: 'nafmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    vNetId: '<vNetId>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "nafmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "vNetId": {
+      "value": "<vNetId>"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 4: _Hubcommon_
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module azureFirewall 'br:bicep/modules/network.azure-firewall:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-nafhubcom'
+  params: {
+    // Required parameters
+    name: 'nafhubcom001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    firewallPolicyId: '<firewallPolicyId>'
+    hubIPAddresses: {
+      publicIPs: {
+        count: 1
+      }
+    }
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+    virtualHubId: '<virtualHubId>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "nafhubcom001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "firewallPolicyId": {
+      "value": "<firewallPolicyId>"
+    },
+    "hubIPAddresses": {
+      "value": {
+        "publicIPs": {
+          "count": 1
+        }
+      }
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    },
+    "virtualHubId": {
+      "value": "<virtualHubId>"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 5: _Hubmin_
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module azureFirewall 'br:bicep/modules/network.azure-firewall:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-nafhubmin'
+  params: {
+    // Required parameters
+    name: 'nafhubmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    hubIPAddresses: {
+      publicIPs: {
+        count: 1
+      }
+    }
+    virtualHubId: '<virtualHubId>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "nafhubmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "hubIPAddresses": {
+      "value": {
+        "publicIPs": {
+          "count": 1
+        }
+      }
+    },
+    "virtualHubId": {
+      "value": "<virtualHubId>"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 6: _Using large parameter set_
 
 This instance deploys the module with most of its features enabled.
 
@@ -147,10 +456,10 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module azureFirewall 'br:bicep/modules/network.azure-firewall:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-nafcom'
+  name: '${uniqueString(deployment().name, location)}-test-nafmax'
   params: {
     // Required parameters
-    name: 'nafcom001'
+    name: 'nafmax001'
     // Non-required parameters
     applicationRuleCollections: [
       {
@@ -289,7 +598,7 @@ module azureFirewall 'br:bicep/modules/network.azure-firewall:1.0.0' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "nafcom001"
+      "value": "nafmax001"
     },
     // Non-required parameters
     "applicationRuleCollections": {
@@ -430,315 +739,6 @@ module azureFirewall 'br:bicep/modules/network.azure-firewall:1.0.0' = {
         "2",
         "3"
       ]
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-### Example 3: _Custompip_
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module azureFirewall 'br:bicep/modules/network.azure-firewall:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-nafcstpip'
-  params: {
-    // Required parameters
-    name: 'nafcstpip001'
-    // Non-required parameters
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    publicIPAddressObject: {
-      diagnosticSettings: [
-        {
-          eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
-          eventHubName: '<eventHubName>'
-          metricCategories: [
-            {
-              category: 'AllMetrics'
-            }
-          ]
-          name: 'customSetting'
-          storageAccountResourceId: '<storageAccountResourceId>'
-          workspaceResourceId: '<workspaceResourceId>'
-        }
-      ]
-      name: 'new-pip-nafcstpip'
-      publicIPAllocationMethod: 'Static'
-      publicIPPrefixResourceId: ''
-      roleAssignments: [
-        {
-          principalId: '<principalId>'
-          principalType: 'ServicePrincipal'
-          roleDefinitionIdOrName: 'Reader'
-        }
-      ]
-      skuName: 'Standard'
-      skuTier: 'Regional'
-    }
-    tags: {
-      Environment: 'Non-Prod'
-      'hidden-title': 'This is visible in the resource name'
-      Role: 'DeploymentValidation'
-    }
-    vNetId: '<vNetId>'
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "nafcstpip001"
-    },
-    // Non-required parameters
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
-    "publicIPAddressObject": {
-      "value": {
-        "diagnosticSettings": [
-          {
-            "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
-            "eventHubName": "<eventHubName>",
-            "metricCategories": [
-              {
-                "category": "AllMetrics"
-              }
-            ],
-            "name": "customSetting",
-            "storageAccountResourceId": "<storageAccountResourceId>",
-            "workspaceResourceId": "<workspaceResourceId>"
-          }
-        ],
-        "name": "new-pip-nafcstpip",
-        "publicIPAllocationMethod": "Static",
-        "publicIPPrefixResourceId": "",
-        "roleAssignments": [
-          {
-            "principalId": "<principalId>",
-            "principalType": "ServicePrincipal",
-            "roleDefinitionIdOrName": "Reader"
-          }
-        ],
-        "skuName": "Standard",
-        "skuTier": "Regional"
-      }
-    },
-    "tags": {
-      "value": {
-        "Environment": "Non-Prod",
-        "hidden-title": "This is visible in the resource name",
-        "Role": "DeploymentValidation"
-      }
-    },
-    "vNetId": {
-      "value": "<vNetId>"
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-### Example 4: _Using only defaults_
-
-This instance deploys the module with the minimum set of required parameters.
-
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module azureFirewall 'br:bicep/modules/network.azure-firewall:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-nafmin'
-  params: {
-    // Required parameters
-    name: 'nafmin001'
-    // Non-required parameters
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    vNetId: '<vNetId>'
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "nafmin001"
-    },
-    // Non-required parameters
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
-    "vNetId": {
-      "value": "<vNetId>"
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-### Example 5: _Hubcommon_
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module azureFirewall 'br:bicep/modules/network.azure-firewall:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-nafhubcom'
-  params: {
-    // Required parameters
-    name: 'nafhubcom001'
-    // Non-required parameters
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    firewallPolicyId: '<firewallPolicyId>'
-    hubIPAddresses: {
-      publicIPs: {
-        count: 1
-      }
-    }
-    tags: {
-      Environment: 'Non-Prod'
-      'hidden-title': 'This is visible in the resource name'
-      Role: 'DeploymentValidation'
-    }
-    virtualHubId: '<virtualHubId>'
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "nafhubcom001"
-    },
-    // Non-required parameters
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
-    "firewallPolicyId": {
-      "value": "<firewallPolicyId>"
-    },
-    "hubIPAddresses": {
-      "value": {
-        "publicIPs": {
-          "count": 1
-        }
-      }
-    },
-    "tags": {
-      "value": {
-        "Environment": "Non-Prod",
-        "hidden-title": "This is visible in the resource name",
-        "Role": "DeploymentValidation"
-      }
-    },
-    "virtualHubId": {
-      "value": "<virtualHubId>"
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-### Example 6: _Hubmin_
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module azureFirewall 'br:bicep/modules/network.azure-firewall:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-nafhubmin'
-  params: {
-    // Required parameters
-    name: 'nafhubmin001'
-    // Non-required parameters
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    hubIPAddresses: {
-      publicIPs: {
-        count: 1
-      }
-    }
-    virtualHubId: '<virtualHubId>'
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "nafhubmin001"
-    },
-    // Non-required parameters
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
-    "hubIPAddresses": {
-      "value": {
-        "publicIPs": {
-          "count": 1
-        }
-      }
-    },
-    "virtualHubId": {
-      "value": "<virtualHubId>"
     }
   }
 }

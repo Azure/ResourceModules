@@ -43,10 +43,10 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module dnsResolver 'br:bicep/modules/network.dns-resolver:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-ndrcom'
+  name: '${uniqueString(deployment().name, location)}-test-ndrmax'
   params: {
     // Required parameters
-    name: 'ndrcom001'
+    name: 'ndrmax001'
     virtualNetworkId: '<virtualNetworkId>'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
@@ -85,7 +85,7 @@ module dnsResolver 'br:bicep/modules/network.dns-resolver:1.0.0' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "ndrcom001"
+      "value": "ndrmax001"
     },
     "virtualNetworkId": {
       "value": "<virtualNetworkId>"

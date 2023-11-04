@@ -26,10 +26,62 @@ The following section provides usage examples for the module, which were used to
 
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/insights.component:1.0.0`.
 
-- [Using large parameter set](#example-1-using-large-parameter-set)
-- [Using only defaults](#example-2-using-only-defaults)
+- [Using only defaults](#example-1-using-only-defaults)
+- [Using large parameter set](#example-2-using-large-parameter-set)
 
-### Example 1: _Using large parameter set_
+### Example 1: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module component 'br:bicep/modules/insights.component:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-icmin'
+  params: {
+    // Required parameters
+    name: 'icmin001'
+    workspaceResourceId: '<workspaceResourceId>'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "icmin001"
+    },
+    "workspaceResourceId": {
+      "value": "<workspaceResourceId>"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 2: _Using large parameter set_
 
 This instance deploys the module with most of its features enabled.
 
@@ -40,10 +92,10 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module component 'br:bicep/modules/insights.component:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-iccom'
+  name: '${uniqueString(deployment().name, location)}-test-icmax'
   params: {
     // Required parameters
-    name: 'iccom001'
+    name: 'icmax001'
     workspaceResourceId: '<workspaceResourceId>'
     // Non-required parameters
     diagnosticSettings: [
@@ -91,7 +143,7 @@ module component 'br:bicep/modules/insights.component:1.0.0' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "iccom001"
+      "value": "icmax001"
     },
     "workspaceResourceId": {
       "value": "<workspaceResourceId>"
@@ -131,58 +183,6 @@ module component 'br:bicep/modules/insights.component:1.0.0' = {
         "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-### Example 2: _Using only defaults_
-
-This instance deploys the module with the minimum set of required parameters.
-
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module component 'br:bicep/modules/insights.component:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-icmin'
-  params: {
-    // Required parameters
-    name: 'icmin001'
-    workspaceResourceId: '<workspaceResourceId>'
-    // Non-required parameters
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "icmin001"
-    },
-    "workspaceResourceId": {
-      "value": "<workspaceResourceId>"
-    },
-    // Non-required parameters
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
     }
   }
 }

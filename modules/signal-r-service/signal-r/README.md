@@ -28,10 +28,58 @@ The following section provides usage examples for the module, which were used to
 
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/signal-r-service.signal-r:1.0.0`.
 
-- [Using large parameter set](#example-1-using-large-parameter-set)
-- [Using only defaults](#example-2-using-only-defaults)
+- [Using only defaults](#example-1-using-only-defaults)
+- [Using large parameter set](#example-2-using-large-parameter-set)
 
-### Example 1: _Using large parameter set_
+### Example 1: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module signalR 'br:bicep/modules/signal-r-service.signal-r:1.0.0' = {
+  name: '${uniqueString(deployment().name)}-test-srsdrmin'
+  params: {
+    // Required parameters
+    name: 'srsdrmin-001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "srsdrmin-001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 2: _Using large parameter set_
 
 This instance deploys the module with most of its features enabled.
 
@@ -42,10 +90,10 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module signalR 'br:bicep/modules/signal-r-service.signal-r:1.0.0' = {
-  name: '${uniqueString(deployment().name)}-test-srssrcom'
+  name: '${uniqueString(deployment().name)}-test-srssrmax'
   params: {
     // Required parameters
-    name: 'srssrcom-001'
+    name: 'srssrmax-001'
     // Non-required parameters
     capacity: 2
     clientCertEnabled: false
@@ -67,7 +115,7 @@ module signalR 'br:bicep/modules/signal-r-service.signal-r:1.0.0' = {
             'ServerConnection'
             'Trace'
           ]
-          name: 'pe-srssrcom-001'
+          name: 'pe-srssrmax-001'
         }
       ]
       publicNetwork: {
@@ -125,7 +173,7 @@ module signalR 'br:bicep/modules/signal-r-service.signal-r:1.0.0' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "srssrcom-001"
+      "value": "srssrmax-001"
     },
     // Non-required parameters
     "capacity": {
@@ -165,7 +213,7 @@ module signalR 'br:bicep/modules/signal-r-service.signal-r:1.0.0' = {
               "ServerConnection",
               "Trace"
             ],
-            "name": "pe-srssrcom-001"
+            "name": "pe-srssrmax-001"
           }
         ],
         "publicNetwork": {
@@ -215,54 +263,6 @@ module signalR 'br:bicep/modules/signal-r-service.signal-r:1.0.0' = {
         "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-### Example 2: _Using only defaults_
-
-This instance deploys the module with the minimum set of required parameters.
-
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module signalR 'br:bicep/modules/signal-r-service.signal-r:1.0.0' = {
-  name: '${uniqueString(deployment().name)}-test-srsdrmin'
-  params: {
-    // Required parameters
-    name: 'srsdrmin-001'
-    // Non-required parameters
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "srsdrmin-001"
-    },
-    // Non-required parameters
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
     }
   }
 }

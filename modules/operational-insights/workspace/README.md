@@ -36,8 +36,8 @@ The following section provides usage examples for the module, which were used to
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/operational-insights.workspace:1.0.0`.
 
 - [Adv](#example-1-adv)
-- [Using large parameter set](#example-2-using-large-parameter-set)
-- [Using only defaults](#example-3-using-only-defaults)
+- [Using only defaults](#example-2-using-only-defaults)
+- [Using large parameter set](#example-3-using-large-parameter-set)
 
 ### Example 1: _Adv_
 
@@ -592,7 +592,55 @@ module workspace 'br:bicep/modules/operational-insights.workspace:1.0.0' = {
 </details>
 <p>
 
-### Example 2: _Using large parameter set_
+### Example 2: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module workspace 'br:bicep/modules/operational-insights.workspace:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-oiwmin'
+  params: {
+    // Required parameters
+    name: 'oiwmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "oiwmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 3: _Using large parameter set_
 
 This instance deploys the module with most of its features enabled.
 
@@ -603,10 +651,10 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module workspace 'br:bicep/modules/operational-insights.workspace:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-oiwcom'
+  name: '${uniqueString(deployment().name, location)}-test-oiwmax'
   params: {
     // Required parameters
-    name: 'oiwcom001'
+    name: 'oiwmax001'
     // Non-required parameters
     dailyQuotaGb: 10
     dataSources: [
@@ -792,7 +840,7 @@ module workspace 'br:bicep/modules/operational-insights.workspace:1.0.0' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "oiwcom001"
+      "value": "oiwmax001"
     },
     // Non-required parameters
     "dailyQuotaGb": {
@@ -992,54 +1040,6 @@ module workspace 'br:bicep/modules/operational-insights.workspace:1.0.0' = {
     },
     "useResourcePermissions": {
       "value": true
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-### Example 3: _Using only defaults_
-
-This instance deploys the module with the minimum set of required parameters.
-
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module workspace 'br:bicep/modules/operational-insights.workspace:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-oiwmin'
-  params: {
-    // Required parameters
-    name: 'oiwmin001'
-    // Non-required parameters
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "oiwmin001"
-    },
-    // Non-required parameters
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
     }
   }
 }
