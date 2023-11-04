@@ -15,7 +15,7 @@ param resourceGroupName string = 'NetworkWatcherRG' // Note, this is the default
 param location string = deployment().location
 
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints.')
-param serviceShort string = 'nnwcom'
+param serviceShort string = 'nnwmax'
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true

@@ -15,7 +15,7 @@ param resourceGroupName string = 'dep-${namePrefix}-security.azureSecurityCenter
 param location string = deployment().location
 
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints.')
-param serviceShort string = 'sasccom'
+param serviceShort string = 'sascmax'
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true

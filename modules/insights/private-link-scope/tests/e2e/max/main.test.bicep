@@ -15,7 +15,7 @@ param resourceGroupName string = 'dep-${namePrefix}-insights.privatelinkscopes-$
 param location string = deployment().location
 
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints.')
-param serviceShort string = 'iplscom'
+param serviceShort string = 'iplsmax'
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true

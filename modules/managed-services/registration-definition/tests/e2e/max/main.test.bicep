@@ -8,7 +8,7 @@ metadata description = 'This instance deploys the module with most of its featur
 // ========== //
 
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints.')
-param serviceShort string = 'msrdcom'
+param serviceShort string = 'msrdmax'
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true

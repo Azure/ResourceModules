@@ -15,7 +15,7 @@ param resourceGroupName string = 'dep-${namePrefix}-eventhub.namespaces-${servic
 param location string = deployment().location
 
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints.')
-param serviceShort string = 'ehncom'
+param serviceShort string = 'ehnmax'
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true

@@ -15,7 +15,7 @@ param resourceGroupName string = 'dep-${namePrefix}-automation.account-${service
 param location string = deployment().location
 
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints.')
-param serviceShort string = 'aacom'
+param serviceShort string = 'aamax'
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
