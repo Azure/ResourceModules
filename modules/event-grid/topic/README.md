@@ -30,11 +30,59 @@ The following section provides usage examples for the module, which were used to
 
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/event-grid.topic:1.0.0`.
 
-- [Using large parameter set](#example-1-using-large-parameter-set)
-- [Using only defaults](#example-2-using-only-defaults)
+- [Using only defaults](#example-1-using-only-defaults)
+- [Using large parameter set](#example-2-using-large-parameter-set)
 - [Pe](#example-3-pe)
 
-### Example 1: _Using large parameter set_
+### Example 1: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module topic 'br:bicep/modules/event-grid.topic:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-egtmin'
+  params: {
+    // Required parameters
+    name: 'egtmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "egtmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 2: _Using large parameter set_
 
 This instance deploys the module with most of its features enabled.
 
@@ -45,10 +93,10 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module topic 'br:bicep/modules/event-grid.topic:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-egtcom'
+  name: '${uniqueString(deployment().name, location)}-test-egtmax'
   params: {
     // Required parameters
-    name: 'egtcom001'
+    name: 'egtmax001'
     // Non-required parameters
     diagnosticSettings: [
       {
@@ -82,7 +130,7 @@ module topic 'br:bicep/modules/event-grid.topic:1.0.0' = {
           enableAdvancedFilteringOnArrays: true
           isSubjectCaseSensitive: false
         }
-        name: 'egtcom001'
+        name: 'egtmax001'
         retryPolicy: {
           eventTimeToLive: '120'
           maxDeliveryAttempts: 10
@@ -143,7 +191,7 @@ module topic 'br:bicep/modules/event-grid.topic:1.0.0' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "egtcom001"
+      "value": "egtmax001"
     },
     // Non-required parameters
     "diagnosticSettings": {
@@ -183,7 +231,7 @@ module topic 'br:bicep/modules/event-grid.topic:1.0.0' = {
             "enableAdvancedFilteringOnArrays": true,
             "isSubjectCaseSensitive": false
           },
-          "name": "egtcom001",
+          "name": "egtmax001",
           "retryPolicy": {
             "eventTimeToLive": "120",
             "maxDeliveryAttempts": 10
@@ -236,54 +284,6 @@ module topic 'br:bicep/modules/event-grid.topic:1.0.0' = {
         "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-### Example 2: _Using only defaults_
-
-This instance deploys the module with the minimum set of required parameters.
-
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module topic 'br:bicep/modules/event-grid.topic:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-egtmin'
-  params: {
-    // Required parameters
-    name: 'egtmin001'
-    // Non-required parameters
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "egtmin001"
-    },
-    // Non-required parameters
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
     }
   }
 }

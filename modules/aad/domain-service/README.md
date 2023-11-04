@@ -41,7 +41,7 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module domainService 'br:bicep/modules/aad.domain-service:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-aaddscom'
+  name: '${uniqueString(deployment().name, location)}-test-aaddsmax'
   params: {
     // Required parameters
     domainName: 'onmicrosoft.com'
@@ -63,7 +63,7 @@ module domainService 'br:bicep/modules/aad.domain-service:1.0.0' = {
       kind: 'CanNotDelete'
       name: 'myCustomLockName'
     }
-    name: 'aaddscom001'
+    name: 'aaddsmax001'
     pfxCertificate: '<pfxCertificate>'
     pfxCertificatePassword: '<pfxCertificatePassword>'
     replicaSets: [
@@ -125,7 +125,7 @@ module domainService 'br:bicep/modules/aad.domain-service:1.0.0' = {
       }
     },
     "name": {
-      "value": "aaddscom001"
+      "value": "aaddsmax001"
     },
     "pfxCertificate": {
       "value": "<pfxCertificate>"

@@ -39,7 +39,7 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module connection 'br:bicep/modules/web.connection:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-wccom'
+  name: '${uniqueString(deployment().name, location)}-test-wcmax'
   params: {
     // Required parameters
     displayName: 'azuremonitorlogs'

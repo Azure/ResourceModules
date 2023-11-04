@@ -33,10 +33,58 @@ The following section provides usage examples for the module, which were used to
 
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/data-factory.factory:1.0.0`.
 
-- [Using large parameter set](#example-1-using-large-parameter-set)
-- [Using only defaults](#example-2-using-only-defaults)
+- [Using only defaults](#example-1-using-only-defaults)
+- [Using large parameter set](#example-2-using-large-parameter-set)
 
-### Example 1: _Using large parameter set_
+### Example 1: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module factory 'br:bicep/modules/data-factory.factory:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-dffmin'
+  params: {
+    // Required parameters
+    name: 'dffmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "dffmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 2: _Using large parameter set_
 
 This instance deploys the module with most of its features enabled.
 
@@ -47,10 +95,10 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module factory 'br:bicep/modules/data-factory.factory:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-dffcom'
+  name: '${uniqueString(deployment().name, location)}-test-dffmax'
   params: {
     // Required parameters
-    name: 'dffcom001'
+    name: 'dffmax001'
     // Non-required parameters
     customerManagedKey: {
       keyName: '<keyName>'
@@ -158,7 +206,7 @@ module factory 'br:bicep/modules/data-factory.factory:1.0.0' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "dffcom001"
+      "value": "dffmax001"
     },
     // Non-required parameters
     "customerManagedKey": {
@@ -274,54 +322,6 @@ module factory 'br:bicep/modules/data-factory.factory:1.0.0' = {
         "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-### Example 2: _Using only defaults_
-
-This instance deploys the module with the minimum set of required parameters.
-
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module factory 'br:bicep/modules/data-factory.factory:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-dffmin'
-  params: {
-    // Required parameters
-    name: 'dffmin001'
-    // Non-required parameters
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "dffmin001"
-    },
-    // Non-required parameters
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
     }
   }
 }

@@ -41,10 +41,10 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module workflow 'br:bicep/modules/logic.workflow:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-lwcom'
+  name: '${uniqueString(deployment().name, location)}-test-lwmax'
   params: {
     // Required parameters
-    name: 'lwcom001'
+    name: 'lwmax001'
     // Non-required parameters
     diagnosticSettings: [
       {
@@ -131,7 +131,7 @@ module workflow 'br:bicep/modules/logic.workflow:1.0.0' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "lwcom001"
+      "value": "lwmax001"
     },
     // Non-required parameters
     "diagnosticSettings": {

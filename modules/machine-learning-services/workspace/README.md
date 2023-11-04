@@ -31,263 +31,11 @@ The following section provides usage examples for the module, which were used to
 
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/machine-learning-services.workspace:1.0.0`.
 
-- [Using large parameter set](#example-1-using-large-parameter-set)
-- [Using only defaults](#example-2-using-only-defaults)
-- [Encr](#example-3-encr)
+- [Using only defaults](#example-1-using-only-defaults)
+- [Encr](#example-2-encr)
+- [Using large parameter set](#example-3-using-large-parameter-set)
 
-### Example 1: _Using large parameter set_
-
-This instance deploys the module with most of its features enabled.
-
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module workspace 'br:bicep/modules/machine-learning-services.workspace:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-mlswcom'
-  params: {
-    // Required parameters
-    associatedApplicationInsightsResourceId: '<associatedApplicationInsightsResourceId>'
-    associatedKeyVaultResourceId: '<associatedKeyVaultResourceId>'
-    associatedStorageAccountResourceId: '<associatedStorageAccountResourceId>'
-    name: 'mlswcom001'
-    sku: 'Premium'
-    // Non-required parameters
-    computes: [
-      {
-        computeLocation: 'westeurope'
-        computeType: 'AmlCompute'
-        description: 'Default CPU Cluster'
-        disableLocalAuth: false
-        location: 'westeurope'
-        managedIdentities: {
-          systemAssigned: false
-          userAssignedResourcesIds: [
-            '<managedIdentityResourceId>'
-          ]
-        }
-        name: 'DefaultCPU'
-        properties: {
-          enableNodePublicIp: true
-          isolatedNetwork: false
-          osType: 'Linux'
-          remoteLoginPortPublicAccess: 'Disabled'
-          scaleSettings: {
-            maxNodeCount: 3
-            minNodeCount: 0
-            nodeIdleTimeBeforeScaleDown: 'PT5M'
-          }
-          vmPriority: 'Dedicated'
-          vmSize: 'STANDARD_DS11_V2'
-        }
-        sku: 'Basic'
-      }
-    ]
-    description: 'The cake is a lie.'
-    diagnosticSettings: [
-      {
-        eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
-        eventHubName: '<eventHubName>'
-        metricCategories: [
-          {
-            category: 'AllMetrics'
-          }
-        ]
-        name: 'customSetting'
-        storageAccountResourceId: '<storageAccountResourceId>'
-        workspaceResourceId: '<workspaceResourceId>'
-      }
-    ]
-    discoveryUrl: 'http://example.com'
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    imageBuildCompute: 'testcompute'
-    lock: {
-      kind: 'CanNotDelete'
-      name: 'myCustomLockName'
-    }
-    managedIdentities: {
-      systemAssigned: false
-      userAssignedResourcesIds: [
-        '<managedIdentityResourceId>'
-      ]
-    }
-    primaryUserAssignedIdentity: '<primaryUserAssignedIdentity>'
-    privateEndpoints: [
-      {
-        privateDnsZoneResourceIds: [
-          '<privateDNSZoneResourceId>'
-        ]
-        subnetResourceId: '<subnetResourceId>'
-        tags: {
-          Environment: 'Non-Prod'
-          'hidden-title': 'This is visible in the resource name'
-          Role: 'DeploymentValidation'
-        }
-      }
-    ]
-    roleAssignments: [
-      {
-        principalId: '<principalId>'
-        principalType: 'ServicePrincipal'
-        roleDefinitionIdOrName: 'Reader'
-      }
-    ]
-    tags: {
-      Environment: 'Non-Prod'
-      'hidden-title': 'This is visible in the resource name'
-      Role: 'DeploymentValidation'
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "associatedApplicationInsightsResourceId": {
-      "value": "<associatedApplicationInsightsResourceId>"
-    },
-    "associatedKeyVaultResourceId": {
-      "value": "<associatedKeyVaultResourceId>"
-    },
-    "associatedStorageAccountResourceId": {
-      "value": "<associatedStorageAccountResourceId>"
-    },
-    "name": {
-      "value": "mlswcom001"
-    },
-    "sku": {
-      "value": "Premium"
-    },
-    // Non-required parameters
-    "computes": {
-      "value": [
-        {
-          "computeLocation": "westeurope",
-          "computeType": "AmlCompute",
-          "description": "Default CPU Cluster",
-          "disableLocalAuth": false,
-          "location": "westeurope",
-          "managedIdentities": {
-            "systemAssigned": false,
-            "userAssignedResourcesIds": [
-              "<managedIdentityResourceId>"
-            ]
-          },
-          "name": "DefaultCPU",
-          "properties": {
-            "enableNodePublicIp": true,
-            "isolatedNetwork": false,
-            "osType": "Linux",
-            "remoteLoginPortPublicAccess": "Disabled",
-            "scaleSettings": {
-              "maxNodeCount": 3,
-              "minNodeCount": 0,
-              "nodeIdleTimeBeforeScaleDown": "PT5M"
-            },
-            "vmPriority": "Dedicated",
-            "vmSize": "STANDARD_DS11_V2"
-          },
-          "sku": "Basic"
-        }
-      ]
-    },
-    "description": {
-      "value": "The cake is a lie."
-    },
-    "diagnosticSettings": {
-      "value": [
-        {
-          "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
-          "eventHubName": "<eventHubName>",
-          "metricCategories": [
-            {
-              "category": "AllMetrics"
-            }
-          ],
-          "name": "customSetting",
-          "storageAccountResourceId": "<storageAccountResourceId>",
-          "workspaceResourceId": "<workspaceResourceId>"
-        }
-      ]
-    },
-    "discoveryUrl": {
-      "value": "http://example.com"
-    },
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
-    "imageBuildCompute": {
-      "value": "testcompute"
-    },
-    "lock": {
-      "value": {
-        "kind": "CanNotDelete",
-        "name": "myCustomLockName"
-      }
-    },
-    "managedIdentities": {
-      "value": {
-        "systemAssigned": false,
-        "userAssignedResourcesIds": [
-          "<managedIdentityResourceId>"
-        ]
-      }
-    },
-    "primaryUserAssignedIdentity": {
-      "value": "<primaryUserAssignedIdentity>"
-    },
-    "privateEndpoints": {
-      "value": [
-        {
-          "privateDnsZoneResourceIds": [
-            "<privateDNSZoneResourceId>"
-          ],
-          "subnetResourceId": "<subnetResourceId>",
-          "tags": {
-            "Environment": "Non-Prod",
-            "hidden-title": "This is visible in the resource name",
-            "Role": "DeploymentValidation"
-          }
-        }
-      ]
-    },
-    "roleAssignments": {
-      "value": [
-        {
-          "principalId": "<principalId>",
-          "principalType": "ServicePrincipal",
-          "roleDefinitionIdOrName": "Reader"
-        }
-      ]
-    },
-    "tags": {
-      "value": {
-        "Environment": "Non-Prod",
-        "hidden-title": "This is visible in the resource name",
-        "Role": "DeploymentValidation"
-      }
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-### Example 2: _Using only defaults_
+### Example 1: _Using only defaults_
 
 This instance deploys the module with the minimum set of required parameters.
 
@@ -359,7 +107,7 @@ module workspace 'br:bicep/modules/machine-learning-services.workspace:1.0.0' = 
 </details>
 <p>
 
-### Example 3: _Encr_
+### Example 2: _Encr_
 
 <details>
 
@@ -475,6 +223,258 @@ module workspace 'br:bicep/modules/machine-learning-services.workspace:1.0.0' = 
             "hidden-title": "This is visible in the resource name",
             "Role": "DeploymentValidation"
           }
+        }
+      ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 3: _Using large parameter set_
+
+This instance deploys the module with most of its features enabled.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module workspace 'br:bicep/modules/machine-learning-services.workspace:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-mlswmax'
+  params: {
+    // Required parameters
+    associatedApplicationInsightsResourceId: '<associatedApplicationInsightsResourceId>'
+    associatedKeyVaultResourceId: '<associatedKeyVaultResourceId>'
+    associatedStorageAccountResourceId: '<associatedStorageAccountResourceId>'
+    name: 'mlswmax001'
+    sku: 'Premium'
+    // Non-required parameters
+    computes: [
+      {
+        computeLocation: 'westeurope'
+        computeType: 'AmlCompute'
+        description: 'Default CPU Cluster'
+        disableLocalAuth: false
+        location: 'westeurope'
+        managedIdentities: {
+          systemAssigned: false
+          userAssignedResourcesIds: [
+            '<managedIdentityResourceId>'
+          ]
+        }
+        name: 'DefaultCPU'
+        properties: {
+          enableNodePublicIp: true
+          isolatedNetwork: false
+          osType: 'Linux'
+          remoteLoginPortPublicAccess: 'Disabled'
+          scaleSettings: {
+            maxNodeCount: 3
+            minNodeCount: 0
+            nodeIdleTimeBeforeScaleDown: 'PT5M'
+          }
+          vmPriority: 'Dedicated'
+          vmSize: 'STANDARD_DS11_V2'
+        }
+        sku: 'Basic'
+      }
+    ]
+    description: 'The cake is a lie.'
+    diagnosticSettings: [
+      {
+        eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+        eventHubName: '<eventHubName>'
+        metricCategories: [
+          {
+            category: 'AllMetrics'
+          }
+        ]
+        name: 'customSetting'
+        storageAccountResourceId: '<storageAccountResourceId>'
+        workspaceResourceId: '<workspaceResourceId>'
+      }
+    ]
+    discoveryUrl: 'http://example.com'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    imageBuildCompute: 'testcompute'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    managedIdentities: {
+      systemAssigned: false
+      userAssignedResourcesIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
+    primaryUserAssignedIdentity: '<primaryUserAssignedIdentity>'
+    privateEndpoints: [
+      {
+        privateDnsZoneResourceIds: [
+          '<privateDNSZoneResourceId>'
+        ]
+        subnetResourceId: '<subnetResourceId>'
+        tags: {
+          Environment: 'Non-Prod'
+          'hidden-title': 'This is visible in the resource name'
+          Role: 'DeploymentValidation'
+        }
+      }
+    ]
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "associatedApplicationInsightsResourceId": {
+      "value": "<associatedApplicationInsightsResourceId>"
+    },
+    "associatedKeyVaultResourceId": {
+      "value": "<associatedKeyVaultResourceId>"
+    },
+    "associatedStorageAccountResourceId": {
+      "value": "<associatedStorageAccountResourceId>"
+    },
+    "name": {
+      "value": "mlswmax001"
+    },
+    "sku": {
+      "value": "Premium"
+    },
+    // Non-required parameters
+    "computes": {
+      "value": [
+        {
+          "computeLocation": "westeurope",
+          "computeType": "AmlCompute",
+          "description": "Default CPU Cluster",
+          "disableLocalAuth": false,
+          "location": "westeurope",
+          "managedIdentities": {
+            "systemAssigned": false,
+            "userAssignedResourcesIds": [
+              "<managedIdentityResourceId>"
+            ]
+          },
+          "name": "DefaultCPU",
+          "properties": {
+            "enableNodePublicIp": true,
+            "isolatedNetwork": false,
+            "osType": "Linux",
+            "remoteLoginPortPublicAccess": "Disabled",
+            "scaleSettings": {
+              "maxNodeCount": 3,
+              "minNodeCount": 0,
+              "nodeIdleTimeBeforeScaleDown": "PT5M"
+            },
+            "vmPriority": "Dedicated",
+            "vmSize": "STANDARD_DS11_V2"
+          },
+          "sku": "Basic"
+        }
+      ]
+    },
+    "description": {
+      "value": "The cake is a lie."
+    },
+    "diagnosticSettings": {
+      "value": [
+        {
+          "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+          "eventHubName": "<eventHubName>",
+          "metricCategories": [
+            {
+              "category": "AllMetrics"
+            }
+          ],
+          "name": "customSetting",
+          "storageAccountResourceId": "<storageAccountResourceId>",
+          "workspaceResourceId": "<workspaceResourceId>"
+        }
+      ]
+    },
+    "discoveryUrl": {
+      "value": "http://example.com"
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "imageBuildCompute": {
+      "value": "testcompute"
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "managedIdentities": {
+      "value": {
+        "systemAssigned": false,
+        "userAssignedResourcesIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
+    },
+    "primaryUserAssignedIdentity": {
+      "value": "<primaryUserAssignedIdentity>"
+    },
+    "privateEndpoints": {
+      "value": [
+        {
+          "privateDnsZoneResourceIds": [
+            "<privateDNSZoneResourceId>"
+          ],
+          "subnetResourceId": "<subnetResourceId>",
+          "tags": {
+            "Environment": "Non-Prod",
+            "hidden-title": "This is visible in the resource name",
+            "Role": "DeploymentValidation"
+          }
+        }
+      ]
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
         }
       ]
     },

@@ -28,10 +28,54 @@ The following section provides usage examples for the module, which were used to
 
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/network.network-watcher:1.0.0`.
 
-- [Using large parameter set](#example-1-using-large-parameter-set)
-- [Using only defaults](#example-2-using-only-defaults)
+- [Using only defaults](#example-1-using-only-defaults)
+- [Using large parameter set](#example-2-using-large-parameter-set)
 
-### Example 1: _Using large parameter set_
+### Example 1: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module networkWatcher 'br:bicep/modules/network.network-watcher:1.0.0' = {
+  name: '${uniqueString(deployment().name, testLocation)}-test-nnwmin'
+  params: {
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    location: '<location>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "location": {
+      "value": "<location>"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 2: _Using large parameter set_
 
 This instance deploys the module with most of its features enabled.
 
@@ -42,7 +86,7 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module networkWatcher 'br:bicep/modules/network.network-watcher:1.0.0' = {
-  name: '${uniqueString(deployment().name, testLocation)}-test-nnwcom'
+  name: '${uniqueString(deployment().name, testLocation)}-test-nnwmax'
   params: {
     connectionMonitors: [
       {
@@ -58,7 +102,7 @@ module networkWatcher 'br:bicep/modules/network.network-watcher:1.0.0' = {
             type: 'ExternalAddress'
           }
         ]
-        name: 'nnwcom-cm-001'
+        name: 'nnwmax-cm-001'
         testConfigurations: [
           {
             httpConfiguration: {
@@ -106,7 +150,7 @@ module networkWatcher 'br:bicep/modules/network.network-watcher:1.0.0' = {
       }
       {
         formatVersion: 1
-        name: 'nnwcom-fl-001'
+        name: 'nnwmax-fl-001'
         retentionInDays: 8
         storageId: '<storageId>'
         targetResourceId: '<targetResourceId>'
@@ -159,7 +203,7 @@ module networkWatcher 'br:bicep/modules/network.network-watcher:1.0.0' = {
               "type": "ExternalAddress"
             }
           ],
-          "name": "nnwcom-cm-001",
+          "name": "nnwmax-cm-001",
           "testConfigurations": [
             {
               "httpConfiguration": {
@@ -211,7 +255,7 @@ module networkWatcher 'br:bicep/modules/network.network-watcher:1.0.0' = {
         },
         {
           "formatVersion": 1,
-          "name": "nnwcom-fl-001",
+          "name": "nnwmax-fl-001",
           "retentionInDays": 8,
           "storageId": "<storageId>",
           "targetResourceId": "<targetResourceId>",
@@ -241,50 +285,6 @@ module networkWatcher 'br:bicep/modules/network.network-watcher:1.0.0' = {
         "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-### Example 2: _Using only defaults_
-
-This instance deploys the module with the minimum set of required parameters.
-
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module networkWatcher 'br:bicep/modules/network.network-watcher:1.0.0' = {
-  name: '${uniqueString(deployment().name, testLocation)}-test-nnwmin'
-  params: {
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    location: '<location>'
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
-    "location": {
-      "value": "<location>"
     }
   }
 }

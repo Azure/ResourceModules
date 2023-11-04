@@ -32,10 +32,58 @@ The following section provides usage examples for the module, which were used to
 
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/dev-test-lab.lab:1.0.0`.
 
-- [Using large parameter set](#example-1-using-large-parameter-set)
-- [Using only defaults](#example-2-using-only-defaults)
+- [Using only defaults](#example-1-using-only-defaults)
+- [Using large parameter set](#example-2-using-large-parameter-set)
 
-### Example 1: _Using large parameter set_
+### Example 1: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module lab 'br:bicep/modules/dev-test-lab.lab:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-dtllmin'
+  params: {
+    // Required parameters
+    name: 'dtllmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "dtllmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 2: _Using large parameter set_
 
 This instance deploys the module with most of its features enabled.
 
@@ -46,10 +94,10 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module lab 'br:bicep/modules/dev-test-lab.lab:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-dtllcom'
+  name: '${uniqueString(deployment().name, location)}-test-dtllmax'
   params: {
     // Required parameters
-    name: 'dtllcom001'
+    name: 'dtllmax001'
     // Non-required parameters
     announcement: {
       enabled: 'Enabled'
@@ -236,7 +284,7 @@ module lab 'br:bicep/modules/dev-test-lab.lab:1.0.0' = {
     }
     tags: {
       'hidden-title': 'This is visible in the resource name'
-      labName: 'dtllcom001'
+      labName: 'dtllmax001'
       resourceType: 'DevTest Lab'
     }
     virtualnetworks: [
@@ -292,7 +340,7 @@ module lab 'br:bicep/modules/dev-test-lab.lab:1.0.0' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "dtllcom001"
+      "value": "dtllmax001"
     },
     // Non-required parameters
     "announcement": {
@@ -527,7 +575,7 @@ module lab 'br:bicep/modules/dev-test-lab.lab:1.0.0' = {
     "tags": {
       "value": {
         "hidden-title": "This is visible in the resource name",
-        "labName": "dtllcom001",
+        "labName": "dtllmax001",
         "resourceType": "DevTest Lab"
       }
     },
@@ -569,54 +617,6 @@ module lab 'br:bicep/modules/dev-test-lab.lab:1.0.0' = {
     },
     "vmCreationResourceGroupId": {
       "value": "<vmCreationResourceGroupId>"
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-### Example 2: _Using only defaults_
-
-This instance deploys the module with the minimum set of required parameters.
-
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module lab 'br:bicep/modules/dev-test-lab.lab:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-dtllmin'
-  params: {
-    // Required parameters
-    name: 'dtllmin001'
-    // Non-required parameters
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "dtllmin001"
-    },
-    // Non-required parameters
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
     }
   }
 }

@@ -38,10 +38,10 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module image 'br:bicep/modules/compute.image:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-cicom'
+  name: '${uniqueString(deployment().name, location)}-test-cimax'
   params: {
     // Required parameters
-    name: 'cicom001'
+    name: 'cimax001'
     osAccountType: 'Premium_LRS'
     osDiskBlobUri: '<osDiskBlobUri>'
     osDiskCaching: 'ReadWrite'
@@ -83,7 +83,7 @@ module image 'br:bicep/modules/compute.image:1.0.0' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "cicom001"
+      "value": "cimax001"
     },
     "osAccountType": {
       "value": "Premium_LRS"

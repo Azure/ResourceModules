@@ -27,182 +27,10 @@ The following section provides usage examples for the module, which were used to
 
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/virtual-machine-images.image-template:1.0.0`.
 
-- [Using large parameter set](#example-1-using-large-parameter-set)
-- [Using only defaults](#example-2-using-only-defaults)
+- [Using only defaults](#example-1-using-only-defaults)
+- [Using large parameter set](#example-2-using-large-parameter-set)
 
-### Example 1: _Using large parameter set_
-
-This instance deploys the module with most of its features enabled.
-
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module imageTemplate 'br:bicep/modules/virtual-machine-images.image-template:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-vmiitcom'
-  params: {
-    // Required parameters
-    customizationSteps: [
-      {
-        restartTimeout: '10m'
-        type: 'WindowsRestart'
-      }
-    ]
-    imageSource: {
-      offer: 'Windows-11'
-      publisher: 'MicrosoftWindowsDesktop'
-      sku: 'win11-22h2-avd'
-      type: 'PlatformImage'
-      version: 'latest'
-    }
-    name: 'vmiitcom001'
-    userMsiName: '<userMsiName>'
-    // Non-required parameters
-    buildTimeoutInMinutes: 60
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    imageReplicationRegions: []
-    lock: {
-      kind: 'CanNotDelete'
-      name: 'myCustomLockName'
-    }
-    managedImageName: 'mi-vmiitcom-001'
-    osDiskSizeGB: 127
-    roleAssignments: [
-      {
-        principalId: '<principalId>'
-        principalType: 'ServicePrincipal'
-        roleDefinitionIdOrName: 'Reader'
-      }
-    ]
-    sigImageDefinitionId: '<sigImageDefinitionId>'
-    sigImageVersion: '<sigImageVersion>'
-    stagingResourceGroup: '<stagingResourceGroup>'
-    subnetId: '<subnetId>'
-    tags: {
-      Environment: 'Non-Prod'
-      'hidden-title': 'This is visible in the resource name'
-      Role: 'DeploymentValidation'
-    }
-    unManagedImageName: 'umi-vmiitcom-001'
-    userAssignedIdentities: [
-      '<managedIdentityResourceId>'
-    ]
-    userMsiResourceGroup: '<userMsiResourceGroup>'
-    vmSize: 'Standard_D2s_v3'
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "customizationSteps": {
-      "value": [
-        {
-          "restartTimeout": "10m",
-          "type": "WindowsRestart"
-        }
-      ]
-    },
-    "imageSource": {
-      "value": {
-        "offer": "Windows-11",
-        "publisher": "MicrosoftWindowsDesktop",
-        "sku": "win11-22h2-avd",
-        "type": "PlatformImage",
-        "version": "latest"
-      }
-    },
-    "name": {
-      "value": "vmiitcom001"
-    },
-    "userMsiName": {
-      "value": "<userMsiName>"
-    },
-    // Non-required parameters
-    "buildTimeoutInMinutes": {
-      "value": 60
-    },
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
-    "imageReplicationRegions": {
-      "value": []
-    },
-    "lock": {
-      "value": {
-        "kind": "CanNotDelete",
-        "name": "myCustomLockName"
-      }
-    },
-    "managedImageName": {
-      "value": "mi-vmiitcom-001"
-    },
-    "osDiskSizeGB": {
-      "value": 127
-    },
-    "roleAssignments": {
-      "value": [
-        {
-          "principalId": "<principalId>",
-          "principalType": "ServicePrincipal",
-          "roleDefinitionIdOrName": "Reader"
-        }
-      ]
-    },
-    "sigImageDefinitionId": {
-      "value": "<sigImageDefinitionId>"
-    },
-    "sigImageVersion": {
-      "value": "<sigImageVersion>"
-    },
-    "stagingResourceGroup": {
-      "value": "<stagingResourceGroup>"
-    },
-    "subnetId": {
-      "value": "<subnetId>"
-    },
-    "tags": {
-      "value": {
-        "Environment": "Non-Prod",
-        "hidden-title": "This is visible in the resource name",
-        "Role": "DeploymentValidation"
-      }
-    },
-    "unManagedImageName": {
-      "value": "umi-vmiitcom-001"
-    },
-    "userAssignedIdentities": {
-      "value": [
-        "<managedIdentityResourceId>"
-      ]
-    },
-    "userMsiResourceGroup": {
-      "value": "<userMsiResourceGroup>"
-    },
-    "vmSize": {
-      "value": "Standard_D2s_v3"
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-### Example 2: _Using only defaults_
+### Example 1: _Using only defaults_
 
 This instance deploys the module with the minimum set of required parameters.
 
@@ -284,6 +112,178 @@ module imageTemplate 'br:bicep/modules/virtual-machine-images.image-template:1.0
     },
     "userMsiResourceGroup": {
       "value": "<userMsiResourceGroup>"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 2: _Using large parameter set_
+
+This instance deploys the module with most of its features enabled.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module imageTemplate 'br:bicep/modules/virtual-machine-images.image-template:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-vmiitmax'
+  params: {
+    // Required parameters
+    customizationSteps: [
+      {
+        restartTimeout: '10m'
+        type: 'WindowsRestart'
+      }
+    ]
+    imageSource: {
+      offer: 'Windows-11'
+      publisher: 'MicrosoftWindowsDesktop'
+      sku: 'win11-22h2-avd'
+      type: 'PlatformImage'
+      version: 'latest'
+    }
+    name: 'vmiitmax001'
+    userMsiName: '<userMsiName>'
+    // Non-required parameters
+    buildTimeoutInMinutes: 60
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    imageReplicationRegions: []
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    managedImageName: 'mi-vmiitmax-001'
+    osDiskSizeGB: 127
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    sigImageDefinitionId: '<sigImageDefinitionId>'
+    sigImageVersion: '<sigImageVersion>'
+    stagingResourceGroup: '<stagingResourceGroup>'
+    subnetId: '<subnetId>'
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+    unManagedImageName: 'umi-vmiitmax-001'
+    userAssignedIdentities: [
+      '<managedIdentityResourceId>'
+    ]
+    userMsiResourceGroup: '<userMsiResourceGroup>'
+    vmSize: 'Standard_D2s_v3'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "customizationSteps": {
+      "value": [
+        {
+          "restartTimeout": "10m",
+          "type": "WindowsRestart"
+        }
+      ]
+    },
+    "imageSource": {
+      "value": {
+        "offer": "Windows-11",
+        "publisher": "MicrosoftWindowsDesktop",
+        "sku": "win11-22h2-avd",
+        "type": "PlatformImage",
+        "version": "latest"
+      }
+    },
+    "name": {
+      "value": "vmiitmax001"
+    },
+    "userMsiName": {
+      "value": "<userMsiName>"
+    },
+    // Non-required parameters
+    "buildTimeoutInMinutes": {
+      "value": 60
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "imageReplicationRegions": {
+      "value": []
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "managedImageName": {
+      "value": "mi-vmiitmax-001"
+    },
+    "osDiskSizeGB": {
+      "value": 127
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "sigImageDefinitionId": {
+      "value": "<sigImageDefinitionId>"
+    },
+    "sigImageVersion": {
+      "value": "<sigImageVersion>"
+    },
+    "stagingResourceGroup": {
+      "value": "<stagingResourceGroup>"
+    },
+    "subnetId": {
+      "value": "<subnetId>"
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    },
+    "unManagedImageName": {
+      "value": "umi-vmiitmax-001"
+    },
+    "userAssignedIdentities": {
+      "value": [
+        "<managedIdentityResourceId>"
+      ]
+    },
+    "userMsiResourceGroup": {
+      "value": "<userMsiResourceGroup>"
+    },
+    "vmSize": {
+      "value": "Standard_D2s_v3"
     }
   }
 }

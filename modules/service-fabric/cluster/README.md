@@ -29,8 +29,8 @@ The following section provides usage examples for the module, which were used to
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/service-fabric.cluster:1.0.0`.
 
 - [Cert](#example-1-cert)
-- [Using large parameter set](#example-2-using-large-parameter-set)
-- [Using only defaults](#example-3-using-only-defaults)
+- [Using only defaults](#example-2-using-only-defaults)
+- [Using large parameter set](#example-3-using-large-parameter-set)
 
 ### Example 1: _Cert_
 
@@ -143,7 +143,99 @@ module cluster 'br:bicep/modules/service-fabric.cluster:1.0.0' = {
 </details>
 <p>
 
-### Example 2: _Using large parameter set_
+### Example 2: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module cluster 'br:bicep/modules/service-fabric.cluster:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-sfcmin'
+  params: {
+    // Required parameters
+    managementEndpoint: 'https://sfcmin001.westeurope.cloudapp.azure.com:19080'
+    name: 'sfcmin001'
+    nodeTypes: [
+      {
+        applicationPorts: {
+          endPort: 30000
+          startPort: 20000
+        }
+        clientConnectionEndpointPort: 19000
+        durabilityLevel: 'Bronze'
+        ephemeralPorts: {
+          endPort: 65534
+          startPort: 49152
+        }
+        httpGatewayEndpointPort: 19080
+        isPrimary: true
+        name: 'Node01'
+      }
+    ]
+    reliabilityLevel: 'None'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "managementEndpoint": {
+      "value": "https://sfcmin001.westeurope.cloudapp.azure.com:19080"
+    },
+    "name": {
+      "value": "sfcmin001"
+    },
+    "nodeTypes": {
+      "value": [
+        {
+          "applicationPorts": {
+            "endPort": 30000,
+            "startPort": 20000
+          },
+          "clientConnectionEndpointPort": 19000,
+          "durabilityLevel": "Bronze",
+          "ephemeralPorts": {
+            "endPort": 65534,
+            "startPort": 49152
+          },
+          "httpGatewayEndpointPort": 19080,
+          "isPrimary": true,
+          "name": "Node01"
+        }
+      ]
+    },
+    "reliabilityLevel": {
+      "value": "None"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 3: _Using large parameter set_
 
 This instance deploys the module with most of its features enabled.
 
@@ -154,11 +246,11 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module cluster 'br:bicep/modules/service-fabric.cluster:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-sfccom'
+  name: '${uniqueString(deployment().name, location)}-test-sfcmax'
   params: {
     // Required parameters
-    managementEndpoint: 'https://sfccom001.westeurope.cloudapp.azure.com:19080'
-    name: 'sfccom001'
+    managementEndpoint: 'https://sfcmax001.westeurope.cloudapp.azure.com:19080'
+    name: 'sfcmax001'
     nodeTypes: [
       {
         applicationPorts: {
@@ -302,7 +394,7 @@ module cluster 'br:bicep/modules/service-fabric.cluster:1.0.0' = {
       }
     ]
     tags: {
-      clusterName: 'sfccom001'
+      clusterName: 'sfcmax001'
       'hidden-title': 'This is visible in the resource name'
       resourceType: 'Service Fabric'
     }
@@ -343,10 +435,10 @@ module cluster 'br:bicep/modules/service-fabric.cluster:1.0.0' = {
   "parameters": {
     // Required parameters
     "managementEndpoint": {
-      "value": "https://sfccom001.westeurope.cloudapp.azure.com:19080"
+      "value": "https://sfcmax001.westeurope.cloudapp.azure.com:19080"
     },
     "name": {
-      "value": "sfccom001"
+      "value": "sfcmax001"
     },
     "nodeTypes": {
       "value": [
@@ -522,7 +614,7 @@ module cluster 'br:bicep/modules/service-fabric.cluster:1.0.0' = {
     },
     "tags": {
       "value": {
-        "clusterName": "sfccom001",
+        "clusterName": "sfcmax001",
         "hidden-title": "This is visible in the resource name",
         "resourceType": "Service Fabric"
       }
@@ -549,98 +641,6 @@ module cluster 'br:bicep/modules/service-fabric.cluster:1.0.0' = {
     },
     "vmImage": {
       "value": "Linux"
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-### Example 3: _Using only defaults_
-
-This instance deploys the module with the minimum set of required parameters.
-
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module cluster 'br:bicep/modules/service-fabric.cluster:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-sfcmin'
-  params: {
-    // Required parameters
-    managementEndpoint: 'https://sfcmin001.westeurope.cloudapp.azure.com:19080'
-    name: 'sfcmin001'
-    nodeTypes: [
-      {
-        applicationPorts: {
-          endPort: 30000
-          startPort: 20000
-        }
-        clientConnectionEndpointPort: 19000
-        durabilityLevel: 'Bronze'
-        ephemeralPorts: {
-          endPort: 65534
-          startPort: 49152
-        }
-        httpGatewayEndpointPort: 19080
-        isPrimary: true
-        name: 'Node01'
-      }
-    ]
-    reliabilityLevel: 'None'
-    // Non-required parameters
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "managementEndpoint": {
-      "value": "https://sfcmin001.westeurope.cloudapp.azure.com:19080"
-    },
-    "name": {
-      "value": "sfcmin001"
-    },
-    "nodeTypes": {
-      "value": [
-        {
-          "applicationPorts": {
-            "endPort": 30000,
-            "startPort": 20000
-          },
-          "clientConnectionEndpointPort": 19000,
-          "durabilityLevel": "Bronze",
-          "ephemeralPorts": {
-            "endPort": 65534,
-            "startPort": 49152
-          },
-          "httpGatewayEndpointPort": 19080,
-          "isPrimary": true,
-          "name": "Node01"
-        }
-      ]
-    },
-    "reliabilityLevel": {
-      "value": "None"
-    },
-    // Non-required parameters
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
     }
   }
 }

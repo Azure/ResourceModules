@@ -37,7 +37,7 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module diagnosticSetting 'br:bicep/modules/insights.diagnostic-setting:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-idscom'
+  name: '${uniqueString(deployment().name, location)}-test-idsmax'
   params: {
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
@@ -47,7 +47,7 @@ module diagnosticSetting 'br:bicep/modules/insights.diagnostic-setting:1.0.0' = 
         category: 'AllMetrics'
       }
     ]
-    name: 'idscom001'
+    name: 'idsmax001'
     storageAccountResourceId: '<storageAccountResourceId>'
     workspaceResourceId: '<workspaceResourceId>'
   }
@@ -83,7 +83,7 @@ module diagnosticSetting 'br:bicep/modules/insights.diagnostic-setting:1.0.0' = 
       ]
     },
     "name": {
-      "value": "idscom001"
+      "value": "idsmax001"
     },
     "storageAccountResourceId": {
       "value": "<storageAccountResourceId>"

@@ -38,7 +38,7 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module scheduledQueryRule 'br:bicep/modules/insights.scheduled-query-rule:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-isqrcom'
+  name: '${uniqueString(deployment().name, location)}-test-isqrmax'
   params: {
     // Required parameters
     criterias: {
@@ -68,7 +68,7 @@ module scheduledQueryRule 'br:bicep/modules/insights.scheduled-query-rule:1.0.0'
         }
       ]
     }
-    name: 'isqrcom001'
+    name: 'isqrmax001'
     scopes: [
       '<logAnalyticsWorkspaceResourceId>'
     ]
@@ -139,7 +139,7 @@ module scheduledQueryRule 'br:bicep/modules/insights.scheduled-query-rule:1.0.0'
       }
     },
     "name": {
-      "value": "isqrcom001"
+      "value": "isqrmax001"
     },
     "scopes": {
       "value": [

@@ -43,10 +43,10 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module natGateway 'br:bicep/modules/network.nat-gateway:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-nngcom'
+  name: '${uniqueString(deployment().name, location)}-test-nngmax'
   params: {
     // Required parameters
-    name: 'nngcom001'
+    name: 'nngmax001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: {
@@ -69,7 +69,7 @@ module natGateway 'br:bicep/modules/network.nat-gateway:1.0.0' = {
             workspaceResourceId: '<workspaceResourceId>'
           }
         ]
-        name: 'nngcom001-pip'
+        name: 'nngmax001-pip'
         roleAssignments: [
           {
             principalId: '<principalId>'
@@ -115,7 +115,7 @@ module natGateway 'br:bicep/modules/network.nat-gateway:1.0.0' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "nngcom001"
+      "value": "nngmax001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {
@@ -144,7 +144,7 @@ module natGateway 'br:bicep/modules/network.nat-gateway:1.0.0' = {
               "workspaceResourceId": "<workspaceResourceId>"
             }
           ],
-          "name": "nngcom001-pip",
+          "name": "nngmax001-pip",
           "roleAssignments": [
             {
               "principalId": "<principalId>",

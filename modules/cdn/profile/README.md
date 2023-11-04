@@ -267,10 +267,10 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module profile 'br:bicep/modules/cdn.profile:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-cdnpcom'
+  name: '${uniqueString(deployment().name, location)}-test-cdnpmax'
   params: {
     // Required parameters
-    name: 'dep-test-cdnpcom'
+    name: 'dep-test-cdnpmax'
     sku: 'Standard_Verizon'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
@@ -335,7 +335,7 @@ module profile 'br:bicep/modules/cdn.profile:1.0.0' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "dep-test-cdnpcom"
+      "value": "dep-test-cdnpmax"
     },
     "sku": {
       "value": "Standard_Verizon"

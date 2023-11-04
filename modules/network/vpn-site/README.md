@@ -27,186 +27,10 @@ The following section provides usage examples for the module, which were used to
 
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/network.vpn-site:1.0.0`.
 
-- [Using large parameter set](#example-1-using-large-parameter-set)
-- [Using only defaults](#example-2-using-only-defaults)
+- [Using only defaults](#example-1-using-only-defaults)
+- [Using large parameter set](#example-2-using-large-parameter-set)
 
-### Example 1: _Using large parameter set_
-
-This instance deploys the module with most of its features enabled.
-
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module vpnSite 'br:bicep/modules/network.vpn-site:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-nvscom'
-  params: {
-    // Required parameters
-    name: 'nvscom'
-    virtualWanId: '<virtualWanId>'
-    // Non-required parameters
-    deviceProperties: {
-      linkSpeedInMbps: 0
-    }
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    lock: {
-      kind: 'CanNotDelete'
-      name: 'myCustomLockName'
-    }
-    o365Policy: {
-      breakOutCategories: {
-        allow: true
-        default: true
-        optimize: true
-      }
-    }
-    roleAssignments: [
-      {
-        principalId: '<principalId>'
-        principalType: 'ServicePrincipal'
-        roleDefinitionIdOrName: 'Reader'
-      }
-    ]
-    tags: {
-      'hidden-title': 'This is visible in the resource name'
-      tagA: 'valueA'
-      tagB: 'valueB'
-    }
-    vpnSiteLinks: [
-      {
-        name: 'vSite-nvscom'
-        properties: {
-          bgpProperties: {
-            asn: 65010
-            bgpPeeringAddress: '1.1.1.1'
-          }
-          ipAddress: '1.2.3.4'
-          linkProperties: {
-            linkProviderName: 'contoso'
-            linkSpeedInMbps: 5
-          }
-        }
-      }
-      {
-        name: 'Link1'
-        properties: {
-          bgpProperties: {
-            asn: 65020
-            bgpPeeringAddress: '192.168.1.0'
-          }
-          ipAddress: '2.2.2.2'
-          linkProperties: {
-            linkProviderName: 'contoso'
-            linkSpeedInMbps: 5
-          }
-        }
-      }
-    ]
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "nvscom"
-    },
-    "virtualWanId": {
-      "value": "<virtualWanId>"
-    },
-    // Non-required parameters
-    "deviceProperties": {
-      "value": {
-        "linkSpeedInMbps": 0
-      }
-    },
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
-    "lock": {
-      "value": {
-        "kind": "CanNotDelete",
-        "name": "myCustomLockName"
-      }
-    },
-    "o365Policy": {
-      "value": {
-        "breakOutCategories": {
-          "allow": true,
-          "default": true,
-          "optimize": true
-        }
-      }
-    },
-    "roleAssignments": {
-      "value": [
-        {
-          "principalId": "<principalId>",
-          "principalType": "ServicePrincipal",
-          "roleDefinitionIdOrName": "Reader"
-        }
-      ]
-    },
-    "tags": {
-      "value": {
-        "hidden-title": "This is visible in the resource name",
-        "tagA": "valueA",
-        "tagB": "valueB"
-      }
-    },
-    "vpnSiteLinks": {
-      "value": [
-        {
-          "name": "vSite-nvscom",
-          "properties": {
-            "bgpProperties": {
-              "asn": 65010,
-              "bgpPeeringAddress": "1.1.1.1"
-            },
-            "ipAddress": "1.2.3.4",
-            "linkProperties": {
-              "linkProviderName": "contoso",
-              "linkSpeedInMbps": 5
-            }
-          }
-        },
-        {
-          "name": "Link1",
-          "properties": {
-            "bgpProperties": {
-              "asn": 65020,
-              "bgpPeeringAddress": "192.168.1.0"
-            },
-            "ipAddress": "2.2.2.2",
-            "linkProperties": {
-              "linkProviderName": "contoso",
-              "linkSpeedInMbps": 5
-            }
-          }
-        }
-      ]
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-### Example 2: _Using only defaults_
+### Example 1: _Using only defaults_
 
 This instance deploys the module with the minimum set of required parameters.
 
@@ -262,6 +86,182 @@ module vpnSite 'br:bicep/modules/network.vpn-site:1.0.0' = {
     },
     "ipAddress": {
       "value": "1.2.3.4"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 2: _Using large parameter set_
+
+This instance deploys the module with most of its features enabled.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module vpnSite 'br:bicep/modules/network.vpn-site:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-nvsmax'
+  params: {
+    // Required parameters
+    name: 'nvsmax'
+    virtualWanId: '<virtualWanId>'
+    // Non-required parameters
+    deviceProperties: {
+      linkSpeedInMbps: 0
+    }
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    o365Policy: {
+      breakOutCategories: {
+        allow: true
+        default: true
+        optimize: true
+      }
+    }
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    tags: {
+      'hidden-title': 'This is visible in the resource name'
+      tagA: 'valueA'
+      tagB: 'valueB'
+    }
+    vpnSiteLinks: [
+      {
+        name: 'vSite-nvsmax'
+        properties: {
+          bgpProperties: {
+            asn: 65010
+            bgpPeeringAddress: '1.1.1.1'
+          }
+          ipAddress: '1.2.3.4'
+          linkProperties: {
+            linkProviderName: 'contoso'
+            linkSpeedInMbps: 5
+          }
+        }
+      }
+      {
+        name: 'Link1'
+        properties: {
+          bgpProperties: {
+            asn: 65020
+            bgpPeeringAddress: '192.168.1.0'
+          }
+          ipAddress: '2.2.2.2'
+          linkProperties: {
+            linkProviderName: 'contoso'
+            linkSpeedInMbps: 5
+          }
+        }
+      }
+    ]
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "nvsmax"
+    },
+    "virtualWanId": {
+      "value": "<virtualWanId>"
+    },
+    // Non-required parameters
+    "deviceProperties": {
+      "value": {
+        "linkSpeedInMbps": 0
+      }
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "o365Policy": {
+      "value": {
+        "breakOutCategories": {
+          "allow": true,
+          "default": true,
+          "optimize": true
+        }
+      }
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "tags": {
+      "value": {
+        "hidden-title": "This is visible in the resource name",
+        "tagA": "valueA",
+        "tagB": "valueB"
+      }
+    },
+    "vpnSiteLinks": {
+      "value": [
+        {
+          "name": "vSite-nvsmax",
+          "properties": {
+            "bgpProperties": {
+              "asn": 65010,
+              "bgpPeeringAddress": "1.1.1.1"
+            },
+            "ipAddress": "1.2.3.4",
+            "linkProperties": {
+              "linkProviderName": "contoso",
+              "linkSpeedInMbps": 5
+            }
+          }
+        },
+        {
+          "name": "Link1",
+          "properties": {
+            "bgpProperties": {
+              "asn": 65020,
+              "bgpPeeringAddress": "192.168.1.0"
+            },
+            "ipAddress": "2.2.2.2",
+            "linkProperties": {
+              "linkProviderName": "contoso",
+              "linkSpeedInMbps": 5
+            }
+          }
+        }
+      ]
     }
   }
 }

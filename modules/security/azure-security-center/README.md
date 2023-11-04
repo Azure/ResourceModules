@@ -42,7 +42,7 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module azureSecurityCenter 'br:bicep/modules/security.azure-security-center:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-sasccom'
+  name: '${uniqueString(deployment().name, location)}-test-sascmax'
   params: {
     // Required parameters
     workspaceId: '<workspaceId>'

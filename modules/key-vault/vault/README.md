@@ -35,8 +35,8 @@ The following section provides usage examples for the module, which were used to
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/key-vault.vault:1.0.0`.
 
 - [Accesspolicies](#example-1-accesspolicies)
-- [Using large parameter set](#example-2-using-large-parameter-set)
-- [Using only defaults](#example-3-using-only-defaults)
+- [Using only defaults](#example-2-using-only-defaults)
+- [Using large parameter set](#example-3-using-large-parameter-set)
 - [Pe](#example-4-pe)
 
 ### Example 1: _Accesspolicies_
@@ -226,7 +226,59 @@ module vault 'br:bicep/modules/key-vault.vault:1.0.0' = {
 </details>
 <p>
 
-### Example 2: _Using large parameter set_
+### Example 2: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module vault 'br:bicep/modules/key-vault.vault:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-kvvmin'
+  params: {
+    // Required parameters
+    name: 'kvvmin002'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    enablePurgeProtection: false
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "kvvmin002"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "enablePurgeProtection": {
+      "value": false
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 3: _Using large parameter set_
 
 This instance deploys the module with most of its features enabled.
 
@@ -237,10 +289,10 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module vault 'br:bicep/modules/key-vault.vault:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-kvvcom'
+  name: '${uniqueString(deployment().name, location)}-test-kvvmax'
   params: {
     // Required parameters
-    name: 'kvvcom002'
+    name: 'kvvmax002'
     // Non-required parameters
     diagnosticSettings: [
       {
@@ -377,7 +429,7 @@ module vault 'br:bicep/modules/key-vault.vault:1.0.0' = {
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
-      "value": "kvvcom002"
+      "value": "kvvmax002"
     },
     "diagnosticSettings": {
       "value": [
@@ -520,58 +572,6 @@ module vault 'br:bicep/modules/key-vault.vault:1.0.0' = {
         "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-### Example 3: _Using only defaults_
-
-This instance deploys the module with the minimum set of required parameters.
-
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module vault 'br:bicep/modules/key-vault.vault:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-kvvmin'
-  params: {
-    // Required parameters
-    name: 'kvvmin002'
-    // Non-required parameters
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    enablePurgeProtection: false
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "kvvmin002"
-    },
-    // Non-required parameters
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
-    "enablePurgeProtection": {
-      "value": false
     }
   }
 }

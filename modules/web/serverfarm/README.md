@@ -40,10 +40,10 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module serverfarm 'br:bicep/modules/web.serverfarm:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-wsfcom'
+  name: '${uniqueString(deployment().name, location)}-test-wsfmax'
   params: {
     // Required parameters
-    name: 'wsfcom001'
+    name: 'wsfmax001'
     sku: {
       capacity: '1'
       family: 'S'
@@ -101,7 +101,7 @@ module serverfarm 'br:bicep/modules/web.serverfarm:1.0.0' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "wsfcom001"
+      "value": "wsfmax001"
     },
     "sku": {
       "value": {

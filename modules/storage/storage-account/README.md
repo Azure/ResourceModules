@@ -41,13 +41,234 @@ The following section provides usage examples for the module, which were used to
 
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/storage.storage-account:1.0.0`.
 
-- [Using large parameter set](#example-1-using-large-parameter-set)
-- [Using only defaults](#example-2-using-only-defaults)
-- [Encr](#example-3-encr)
+- [Using only defaults](#example-1-using-only-defaults)
+- [Encr](#example-2-encr)
+- [Using large parameter set](#example-3-using-large-parameter-set)
 - [Nfs](#example-4-nfs)
 - [V1](#example-5-v1)
 
-### Example 1: _Using large parameter set_
+### Example 1: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module storageAccount 'br:bicep/modules/storage.storage-account:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-ssamin'
+  params: {
+    // Required parameters
+    name: 'ssamin001'
+    // Non-required parameters
+    allowBlobPublicAccess: false
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "ssamin001"
+    },
+    // Non-required parameters
+    "allowBlobPublicAccess": {
+      "value": false
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 2: _Encr_
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module storageAccount 'br:bicep/modules/storage.storage-account:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-ssaencr'
+  params: {
+    // Required parameters
+    name: 'ssaencr001'
+    // Non-required parameters
+    allowBlobPublicAccess: false
+    blobServices: {
+      automaticSnapshotPolicyEnabled: true
+      changeFeedEnabled: true
+      changeFeedRetentionInDays: 10
+      containerDeleteRetentionPolicyAllowPermanentDelete: true
+      containerDeleteRetentionPolicyDays: 10
+      containerDeleteRetentionPolicyEnabled: true
+      containers: [
+        {
+          name: 'container'
+          publicAccess: 'None'
+        }
+      ]
+      defaultServiceVersion: '2008-10-27'
+      deleteRetentionPolicyDays: 9
+      deleteRetentionPolicyEnabled: true
+      isVersioningEnabled: true
+      lastAccessTimeTrackingPolicyEnable: true
+      restorePolicyDays: 8
+      restorePolicyEnabled: true
+    }
+    customerManagedKey: {
+      keyName: '<keyName>'
+      keyVaultResourceId: '<keyVaultResourceId>'
+      userAssignedIdentityResourceId: '<userAssignedIdentityResourceId>'
+    }
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    managedIdentities: {
+      systemAssigned: false
+      userAssignedResourcesIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
+    privateEndpoints: [
+      {
+        privateDnsZoneResourceIds: [
+          '<privateDNSZoneResourceId>'
+        ]
+        service: 'blob'
+        subnetResourceId: '<subnetResourceId>'
+        tags: {
+          Environment: 'Non-Prod'
+          'hidden-title': 'This is visible in the resource name'
+          Role: 'DeploymentValidation'
+        }
+      }
+    ]
+    requireInfrastructureEncryption: true
+    skuName: 'Standard_LRS'
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "ssaencr001"
+    },
+    // Non-required parameters
+    "allowBlobPublicAccess": {
+      "value": false
+    },
+    "blobServices": {
+      "value": {
+        "automaticSnapshotPolicyEnabled": true,
+        "changeFeedEnabled": true,
+        "changeFeedRetentionInDays": 10,
+        "containerDeleteRetentionPolicyAllowPermanentDelete": true,
+        "containerDeleteRetentionPolicyDays": 10,
+        "containerDeleteRetentionPolicyEnabled": true,
+        "containers": [
+          {
+            "name": "container",
+            "publicAccess": "None"
+          }
+        ],
+        "defaultServiceVersion": "2008-10-27",
+        "deleteRetentionPolicyDays": 9,
+        "deleteRetentionPolicyEnabled": true,
+        "isVersioningEnabled": true,
+        "lastAccessTimeTrackingPolicyEnable": true,
+        "restorePolicyDays": 8,
+        "restorePolicyEnabled": true
+      }
+    },
+    "customerManagedKey": {
+      "value": {
+        "keyName": "<keyName>",
+        "keyVaultResourceId": "<keyVaultResourceId>",
+        "userAssignedIdentityResourceId": "<userAssignedIdentityResourceId>"
+      }
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "managedIdentities": {
+      "value": {
+        "systemAssigned": false,
+        "userAssignedResourcesIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
+    },
+    "privateEndpoints": {
+      "value": [
+        {
+          "privateDnsZoneResourceIds": [
+            "<privateDNSZoneResourceId>"
+          ],
+          "service": "blob",
+          "subnetResourceId": "<subnetResourceId>",
+          "tags": {
+            "Environment": "Non-Prod",
+            "hidden-title": "This is visible in the resource name",
+            "Role": "DeploymentValidation"
+          }
+        }
+      ]
+    },
+    "requireInfrastructureEncryption": {
+      "value": true
+    },
+    "skuName": {
+      "value": "Standard_LRS"
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 3: _Using large parameter set_
 
 This instance deploys the module with most of its features enabled.
 
@@ -58,10 +279,10 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module storageAccount 'br:bicep/modules/storage.storage-account:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-ssacom'
+  name: '${uniqueString(deployment().name, location)}-test-ssamax'
   params: {
     // Required parameters
-    name: 'ssacom001'
+    name: 'ssamax001'
     // Non-required parameters
     allowBlobPublicAccess: false
     blobServices: {
@@ -178,7 +399,7 @@ module storageAccount 'br:bicep/modules/storage.storage-account:1.0.0' = {
             service: 'blob'
           }
         ]
-        storageAccountName: 'ssacom001'
+        storageAccountName: 'ssamax001'
       }
     ]
     lock: {
@@ -344,7 +565,7 @@ module storageAccount 'br:bicep/modules/storage.storage-account:1.0.0' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "ssacom001"
+      "value": "ssamax001"
     },
     // Non-required parameters
     "allowBlobPublicAccess": {
@@ -481,7 +702,7 @@ module storageAccount 'br:bicep/modules/storage.storage-account:1.0.0' = {
               "service": "blob"
             }
           ],
-          "storageAccountName": "ssacom001"
+          "storageAccountName": "ssamax001"
         }
       ]
     },
@@ -646,227 +867,6 @@ module storageAccount 'br:bicep/modules/storage.storage-account:1.0.0' = {
           "table2"
         ]
       }
-    },
-    "tags": {
-      "value": {
-        "Environment": "Non-Prod",
-        "hidden-title": "This is visible in the resource name",
-        "Role": "DeploymentValidation"
-      }
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-### Example 2: _Using only defaults_
-
-This instance deploys the module with the minimum set of required parameters.
-
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module storageAccount 'br:bicep/modules/storage.storage-account:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-ssamin'
-  params: {
-    // Required parameters
-    name: 'ssamin001'
-    // Non-required parameters
-    allowBlobPublicAccess: false
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "ssamin001"
-    },
-    // Non-required parameters
-    "allowBlobPublicAccess": {
-      "value": false
-    },
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-### Example 3: _Encr_
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module storageAccount 'br:bicep/modules/storage.storage-account:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-ssaencr'
-  params: {
-    // Required parameters
-    name: 'ssaencr001'
-    // Non-required parameters
-    allowBlobPublicAccess: false
-    blobServices: {
-      automaticSnapshotPolicyEnabled: true
-      changeFeedEnabled: true
-      changeFeedRetentionInDays: 10
-      containerDeleteRetentionPolicyAllowPermanentDelete: true
-      containerDeleteRetentionPolicyDays: 10
-      containerDeleteRetentionPolicyEnabled: true
-      containers: [
-        {
-          name: 'container'
-          publicAccess: 'None'
-        }
-      ]
-      defaultServiceVersion: '2008-10-27'
-      deleteRetentionPolicyDays: 9
-      deleteRetentionPolicyEnabled: true
-      isVersioningEnabled: true
-      lastAccessTimeTrackingPolicyEnable: true
-      restorePolicyDays: 8
-      restorePolicyEnabled: true
-    }
-    customerManagedKey: {
-      keyName: '<keyName>'
-      keyVaultResourceId: '<keyVaultResourceId>'
-      userAssignedIdentityResourceId: '<userAssignedIdentityResourceId>'
-    }
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    managedIdentities: {
-      systemAssigned: false
-      userAssignedResourcesIds: [
-        '<managedIdentityResourceId>'
-      ]
-    }
-    privateEndpoints: [
-      {
-        privateDnsZoneResourceIds: [
-          '<privateDNSZoneResourceId>'
-        ]
-        service: 'blob'
-        subnetResourceId: '<subnetResourceId>'
-        tags: {
-          Environment: 'Non-Prod'
-          'hidden-title': 'This is visible in the resource name'
-          Role: 'DeploymentValidation'
-        }
-      }
-    ]
-    requireInfrastructureEncryption: true
-    skuName: 'Standard_LRS'
-    tags: {
-      Environment: 'Non-Prod'
-      'hidden-title': 'This is visible in the resource name'
-      Role: 'DeploymentValidation'
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "ssaencr001"
-    },
-    // Non-required parameters
-    "allowBlobPublicAccess": {
-      "value": false
-    },
-    "blobServices": {
-      "value": {
-        "automaticSnapshotPolicyEnabled": true,
-        "changeFeedEnabled": true,
-        "changeFeedRetentionInDays": 10,
-        "containerDeleteRetentionPolicyAllowPermanentDelete": true,
-        "containerDeleteRetentionPolicyDays": 10,
-        "containerDeleteRetentionPolicyEnabled": true,
-        "containers": [
-          {
-            "name": "container",
-            "publicAccess": "None"
-          }
-        ],
-        "defaultServiceVersion": "2008-10-27",
-        "deleteRetentionPolicyDays": 9,
-        "deleteRetentionPolicyEnabled": true,
-        "isVersioningEnabled": true,
-        "lastAccessTimeTrackingPolicyEnable": true,
-        "restorePolicyDays": 8,
-        "restorePolicyEnabled": true
-      }
-    },
-    "customerManagedKey": {
-      "value": {
-        "keyName": "<keyName>",
-        "keyVaultResourceId": "<keyVaultResourceId>",
-        "userAssignedIdentityResourceId": "<userAssignedIdentityResourceId>"
-      }
-    },
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
-    "managedIdentities": {
-      "value": {
-        "systemAssigned": false,
-        "userAssignedResourcesIds": [
-          "<managedIdentityResourceId>"
-        ]
-      }
-    },
-    "privateEndpoints": {
-      "value": [
-        {
-          "privateDnsZoneResourceIds": [
-            "<privateDNSZoneResourceId>"
-          ],
-          "service": "blob",
-          "subnetResourceId": "<subnetResourceId>",
-          "tags": {
-            "Environment": "Non-Prod",
-            "hidden-title": "This is visible in the resource name",
-            "Role": "DeploymentValidation"
-          }
-        }
-      ]
-    },
-    "requireInfrastructureEncryption": {
-      "value": true
-    },
-    "skuName": {
-      "value": "Standard_LRS"
     },
     "tags": {
       "value": {

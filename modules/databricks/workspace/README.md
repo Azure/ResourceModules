@@ -30,10 +30,58 @@ The following section provides usage examples for the module, which were used to
 
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/databricks.workspace:1.0.0`.
 
-- [Using large parameter set](#example-1-using-large-parameter-set)
-- [Using only defaults](#example-2-using-only-defaults)
+- [Using only defaults](#example-1-using-only-defaults)
+- [Using large parameter set](#example-2-using-large-parameter-set)
 
-### Example 1: _Using large parameter set_
+### Example 1: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module workspace 'br:bicep/modules/databricks.workspace:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-dwmin'
+  params: {
+    // Required parameters
+    name: 'dwmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "dwmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 2: _Using large parameter set_
 
 This instance deploys the module with most of its features enabled.
 
@@ -44,10 +92,10 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module workspace 'br:bicep/modules/databricks.workspace:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-dwcom'
+  name: '${uniqueString(deployment().name, location)}-test-dwmax'
   params: {
     // Required parameters
-    name: 'dwcom001'
+    name: 'dwmax001'
     // Non-required parameters
     amlWorkspaceResourceId: '<amlWorkspaceResourceId>'
     customerManagedKey: {
@@ -115,7 +163,7 @@ module workspace 'br:bicep/modules/databricks.workspace:1.0.0' = {
       }
     ]
     skuName: 'premium'
-    storageAccountName: 'sadwcom001'
+    storageAccountName: 'sadwmax001'
     storageAccountSkuName: 'Standard_ZRS'
     tags: {
       Environment: 'Non-Prod'
@@ -141,7 +189,7 @@ module workspace 'br:bicep/modules/databricks.workspace:1.0.0' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "dwcom001"
+      "value": "dwmax001"
     },
     // Non-required parameters
     "amlWorkspaceResourceId": {
@@ -257,7 +305,7 @@ module workspace 'br:bicep/modules/databricks.workspace:1.0.0' = {
       "value": "premium"
     },
     "storageAccountName": {
-      "value": "sadwcom001"
+      "value": "sadwmax001"
     },
     "storageAccountSkuName": {
       "value": "Standard_ZRS"
@@ -271,54 +319,6 @@ module workspace 'br:bicep/modules/databricks.workspace:1.0.0' = {
     },
     "vnetAddressPrefix": {
       "value": "10.100"
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-### Example 2: _Using only defaults_
-
-This instance deploys the module with the minimum set of required parameters.
-
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module workspace 'br:bicep/modules/databricks.workspace:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-dwmin'
-  params: {
-    // Required parameters
-    name: 'dwmin001'
-    // Non-required parameters
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "dwmin001"
-    },
-    // Non-required parameters
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
     }
   }
 }

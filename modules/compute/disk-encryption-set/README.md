@@ -137,12 +137,12 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module diskEncryptionSet 'br:bicep/modules/compute.disk-encryption-set:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-cdescom'
+  name: '${uniqueString(deployment().name, location)}-test-cdesmax'
   params: {
     // Required parameters
     keyName: '<keyName>'
     keyVaultResourceId: '<keyVaultResourceId>'
-    name: 'cdescom001'
+    name: 'cdesmax001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: {
@@ -190,7 +190,7 @@ module diskEncryptionSet 'br:bicep/modules/compute.disk-encryption-set:1.0.0' = 
       "value": "<keyVaultResourceId>"
     },
     "name": {
-      "value": "cdescom001"
+      "value": "cdesmax001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {
