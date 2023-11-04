@@ -71,6 +71,17 @@ module testDeployment '../../../main.bicep' = {
       name: 'myCustomLockName'
     }
     skuName: 'S0'
+    skuCapacity: 1
+    firewallSettings: {
+      firewallRules: [
+        {
+          firewallRuleName: 'AllowFromAll'
+          rangeStart: '0.0.0.0'
+          rangeEnd: '255.255.255.255'
+        }
+      ]
+      enablePowerBIService: true
+    }
     roleAssignments: [
       {
         roleDefinitionIdOrName: 'Reader'
@@ -84,6 +95,14 @@ module testDeployment '../../../main.bicep' = {
         metricCategories: [
           {
             category: 'AllMetrics'
+          }
+        ]
+        logCategoriesAndGroups: [
+          {
+            category: 'Engine'
+          }
+          {
+            category: 'Service'
           }
         ]
         eventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
