@@ -31,9 +31,9 @@ The following section provides usage examples for the module, which were used to
 - [Addpip](#example-1-addpip)
 - [Using large parameter set](#example-2-using-large-parameter-set)
 - [Custompip](#example-3-custompip)
-- [Hubcommon](#example-4-hubcommon)
-- [Hubmin](#example-5-hubmin)
-- [Using only defaults](#example-6-using-only-defaults)
+- [Using only defaults](#example-4-using-only-defaults)
+- [Hubcommon](#example-5-hubcommon)
+- [Hubmin](#example-6-hubmin)
 
 ### Example 1: _Addpip_
 
@@ -557,7 +557,59 @@ module azureFirewall 'br:bicep/modules/network.azure-firewall:1.0.0' = {
 </details>
 <p>
 
-### Example 4: _Hubcommon_
+### Example 4: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module azureFirewall 'br:bicep/modules/network.azure-firewall:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-nafmin'
+  params: {
+    // Required parameters
+    name: 'nafmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    vNetId: '<vNetId>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "nafmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "vNetId": {
+      "value": "<vNetId>"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 5: _Hubcommon_
 
 <details>
 
@@ -634,7 +686,7 @@ module azureFirewall 'br:bicep/modules/network.azure-firewall:1.0.0' = {
 </details>
 <p>
 
-### Example 5: _Hubmin_
+### Example 6: _Hubmin_
 
 <details>
 
@@ -687,58 +739,6 @@ module azureFirewall 'br:bicep/modules/network.azure-firewall:1.0.0' = {
     },
     "virtualHubId": {
       "value": "<virtualHubId>"
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-### Example 6: _Using only defaults_
-
-This instance deploys the module with the minimum set of required parameters.
-
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module azureFirewall 'br:bicep/modules/network.azure-firewall:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-nafmin'
-  params: {
-    // Required parameters
-    name: 'nafmin001'
-    // Non-required parameters
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    vNetId: '<vNetId>'
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "nafmin001"
-    },
-    // Non-required parameters
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
-    "vNetId": {
-      "value": "<vNetId>"
     }
   }
 }

@@ -33,10 +33,10 @@ The following section provides usage examples for the module, which were used to
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/synapse.workspace:1.0.0`.
 
 - [Using large parameter set](#example-1-using-large-parameter-set)
-- [Encrwsai](#example-2-encrwsai)
-- [Encrwuai](#example-3-encrwuai)
-- [Managedvnet](#example-4-managedvnet)
-- [Using only defaults](#example-5-using-only-defaults)
+- [Using only defaults](#example-2-using-only-defaults)
+- [Encrwsai](#example-3-encrwsai)
+- [Encrwuai](#example-4-encrwuai)
+- [Managedvnet](#example-5-managedvnet)
 
 ### Example 1: _Using large parameter set_
 
@@ -210,7 +210,67 @@ module workspace 'br:bicep/modules/synapse.workspace:1.0.0' = {
 </details>
 <p>
 
-### Example 2: _Encrwsai_
+### Example 2: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module workspace 'br:bicep/modules/synapse.workspace:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-swmin'
+  params: {
+    // Required parameters
+    defaultDataLakeStorageAccountResourceId: '<defaultDataLakeStorageAccountResourceId>'
+    defaultDataLakeStorageFilesystem: '<defaultDataLakeStorageFilesystem>'
+    name: 'swmin001'
+    sqlAdministratorLogin: 'synwsadmin'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "defaultDataLakeStorageAccountResourceId": {
+      "value": "<defaultDataLakeStorageAccountResourceId>"
+    },
+    "defaultDataLakeStorageFilesystem": {
+      "value": "<defaultDataLakeStorageFilesystem>"
+    },
+    "name": {
+      "value": "swmin001"
+    },
+    "sqlAdministratorLogin": {
+      "value": "synwsadmin"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 3: _Encrwsai_
 
 <details>
 
@@ -281,7 +341,7 @@ module workspace 'br:bicep/modules/synapse.workspace:1.0.0' = {
 </details>
 <p>
 
-### Example 3: _Encrwuai_
+### Example 4: _Encrwuai_
 
 <details>
 
@@ -362,7 +422,7 @@ module workspace 'br:bicep/modules/synapse.workspace:1.0.0' = {
 </details>
 <p>
 
-### Example 4: _Managedvnet_
+### Example 5: _Managedvnet_
 
 <details>
 
@@ -439,66 +499,6 @@ module workspace 'br:bicep/modules/synapse.workspace:1.0.0' = {
         "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-### Example 5: _Using only defaults_
-
-This instance deploys the module with the minimum set of required parameters.
-
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module workspace 'br:bicep/modules/synapse.workspace:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-swmin'
-  params: {
-    // Required parameters
-    defaultDataLakeStorageAccountResourceId: '<defaultDataLakeStorageAccountResourceId>'
-    defaultDataLakeStorageFilesystem: '<defaultDataLakeStorageFilesystem>'
-    name: 'swmin001'
-    sqlAdministratorLogin: 'synwsadmin'
-    // Non-required parameters
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "defaultDataLakeStorageAccountResourceId": {
-      "value": "<defaultDataLakeStorageAccountResourceId>"
-    },
-    "defaultDataLakeStorageFilesystem": {
-      "value": "<defaultDataLakeStorageFilesystem>"
-    },
-    "name": {
-      "value": "swmin001"
-    },
-    "sqlAdministratorLogin": {
-      "value": "synwsadmin"
-    },
-    // Non-required parameters
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
     }
   }
 }

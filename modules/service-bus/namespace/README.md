@@ -38,8 +38,8 @@ The following section provides usage examples for the module, which were used to
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/service-bus.namespace:1.0.0`.
 
 - [Using large parameter set](#example-1-using-large-parameter-set)
-- [Encr](#example-2-encr)
-- [Using only defaults](#example-3-using-only-defaults)
+- [Using only defaults](#example-2-using-only-defaults)
+- [Encr](#example-3-encr)
 - [Pe](#example-4-pe)
 
 ### Example 1: _Using large parameter set_
@@ -432,7 +432,55 @@ module namespace 'br:bicep/modules/service-bus.namespace:1.0.0' = {
 </details>
 <p>
 
-### Example 2: _Encr_
+### Example 2: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module namespace 'br:bicep/modules/service-bus.namespace:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-sbnmin'
+  params: {
+    // Required parameters
+    name: 'sbnmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "sbnmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 3: _Encr_
 
 <details>
 
@@ -605,54 +653,6 @@ module namespace 'br:bicep/modules/service-bus.namespace:1.0.0' = {
         "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-### Example 3: _Using only defaults_
-
-This instance deploys the module with the minimum set of required parameters.
-
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module namespace 'br:bicep/modules/service-bus.namespace:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-sbnmin'
-  params: {
-    // Required parameters
-    name: 'sbnmin001'
-    // Non-required parameters
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "sbnmin001"
-    },
-    // Non-required parameters
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
     }
   }
 }
