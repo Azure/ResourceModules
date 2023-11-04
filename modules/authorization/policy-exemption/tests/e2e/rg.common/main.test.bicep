@@ -89,7 +89,7 @@ resource policySetAssignment 'Microsoft.Authorization/policyAssignments@2021-06-
 // Test Execution //
 // ============== //
 
-module testDeployment '../../resource-group/main.bicep' = {
+module testDeployment '../../../resource-group/main.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {

@@ -17,7 +17,7 @@ param namePrefix string = '[[namePrefix]]'
 // Test Execution //
 // ============== //
 
-module testDeployment '../../subscription/main.bicep' = {
+module testDeployment '../../../subscription/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
