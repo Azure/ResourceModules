@@ -27,8 +27,8 @@ The following section provides usage examples for the module, which were used to
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/container-instance.container-group:1.0.0`.
 
 - [Using large parameter set](#example-1-using-large-parameter-set)
-- [Encr](#example-2-encr)
-- [Using only defaults](#example-3-using-only-defaults)
+- [Using only defaults](#example-2-using-only-defaults)
+- [Encr](#example-3-encr)
 - [Private](#example-4-private)
 
 ### Example 1: _Using large parameter set_
@@ -231,7 +231,111 @@ module containerGroup 'br:bicep/modules/container-instance.container-group:1.0.0
 </details>
 <p>
 
-### Example 2: _Encr_
+### Example 2: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module containerGroup 'br:bicep/modules/container-instance.container-group:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-cicgmin'
+  params: {
+    // Required parameters
+    containers: [
+      {
+        name: 'az-aci-x-001'
+        properties: {
+          image: 'mcr.microsoft.com/azuredocs/aci-helloworld'
+          ports: [
+            {
+              port: '443'
+              protocol: 'Tcp'
+            }
+          ]
+          resources: {
+            requests: {
+              cpu: 2
+              memoryInGB: 2
+            }
+          }
+        }
+      }
+    ]
+    name: 'cicgmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    ipAddressPorts: [
+      {
+        port: 443
+        protocol: 'Tcp'
+      }
+    ]
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "containers": {
+      "value": [
+        {
+          "name": "az-aci-x-001",
+          "properties": {
+            "image": "mcr.microsoft.com/azuredocs/aci-helloworld",
+            "ports": [
+              {
+                "port": "443",
+                "protocol": "Tcp"
+              }
+            ],
+            "resources": {
+              "requests": {
+                "cpu": 2,
+                "memoryInGB": 2
+              }
+            }
+          }
+        }
+      ]
+    },
+    "name": {
+      "value": "cicgmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "ipAddressPorts": {
+      "value": [
+        {
+          "port": 443,
+          "protocol": "Tcp"
+        }
+      ]
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 3: _Encr_
 
 <details>
 
@@ -432,110 +536,6 @@ module containerGroup 'br:bicep/modules/container-instance.container-group:1.0.0
         "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-### Example 3: _Using only defaults_
-
-This instance deploys the module with the minimum set of required parameters.
-
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module containerGroup 'br:bicep/modules/container-instance.container-group:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-cicgmin'
-  params: {
-    // Required parameters
-    containers: [
-      {
-        name: 'az-aci-x-001'
-        properties: {
-          image: 'mcr.microsoft.com/azuredocs/aci-helloworld'
-          ports: [
-            {
-              port: '443'
-              protocol: 'Tcp'
-            }
-          ]
-          resources: {
-            requests: {
-              cpu: 2
-              memoryInGB: 2
-            }
-          }
-        }
-      }
-    ]
-    name: 'cicgmin001'
-    // Non-required parameters
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    ipAddressPorts: [
-      {
-        port: 443
-        protocol: 'Tcp'
-      }
-    ]
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "containers": {
-      "value": [
-        {
-          "name": "az-aci-x-001",
-          "properties": {
-            "image": "mcr.microsoft.com/azuredocs/aci-helloworld",
-            "ports": [
-              {
-                "port": "443",
-                "protocol": "Tcp"
-              }
-            ],
-            "resources": {
-              "requests": {
-                "cpu": 2,
-                "memoryInGB": 2
-              }
-            }
-          }
-        }
-      ]
-    },
-    "name": {
-      "value": "cicgmin001"
-    },
-    // Non-required parameters
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
-    "ipAddressPorts": {
-      "value": [
-        {
-          "port": 443,
-          "protocol": "Tcp"
-        }
-      ]
     }
   }
 }

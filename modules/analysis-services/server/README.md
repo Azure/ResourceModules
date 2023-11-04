@@ -28,8 +28,8 @@ The following section provides usage examples for the module, which were used to
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/analysis-services.server:1.0.0`.
 
 - [Using large parameter set](#example-1-using-large-parameter-set)
-- [Max](#example-2-max)
-- [Using only defaults](#example-3-using-only-defaults)
+- [Using only defaults](#example-2-using-only-defaults)
+- [Max](#example-3-max)
 
 ### Example 1: _Using large parameter set_
 
@@ -151,7 +151,55 @@ module server 'br:bicep/modules/analysis-services.server:1.0.0' = {
 </details>
 <p>
 
-### Example 2: _Max_
+### Example 2: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module server 'br:bicep/modules/analysis-services.server:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-assmin'
+  params: {
+    // Required parameters
+    name: 'assmin'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "assmin"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 3: _Max_
 
 <details>
 
@@ -290,54 +338,6 @@ module server 'br:bicep/modules/analysis-services.server:1.0.0' = {
     },
     "skuName": {
       "value": "S0"
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-### Example 3: _Using only defaults_
-
-This instance deploys the module with the minimum set of required parameters.
-
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module server 'br:bicep/modules/analysis-services.server:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-assmin'
-  params: {
-    // Required parameters
-    name: 'assmin'
-    // Non-required parameters
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "assmin"
-    },
-    // Non-required parameters
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
     }
   }
 }

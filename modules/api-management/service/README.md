@@ -43,8 +43,8 @@ The following section provides usage examples for the module, which were used to
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/api-management.service:1.0.0`.
 
 - [Using large parameter set](#example-1-using-large-parameter-set)
-- [Max](#example-2-max)
-- [Using only defaults](#example-3-using-only-defaults)
+- [Using only defaults](#example-2-using-only-defaults)
+- [Max](#example-3-max)
 
 ### Example 1: _Using large parameter set_
 
@@ -200,7 +200,63 @@ module service 'br:bicep/modules/api-management.service:1.0.0' = {
 </details>
 <p>
 
-### Example 2: _Max_
+### Example 2: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module service 'br:bicep/modules/api-management.service:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-apismin'
+  params: {
+    // Required parameters
+    name: 'apismin001'
+    publisherEmail: 'apimgmt-noreply@mail.windowsazure.com'
+    publisherName: 'az-amorg-x-001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "apismin001"
+    },
+    "publisherEmail": {
+      "value": "apimgmt-noreply@mail.windowsazure.com"
+    },
+    "publisherName": {
+      "value": "az-amorg-x-001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 3: _Max_
 
 <details>
 
@@ -559,62 +615,6 @@ module service 'br:bicep/modules/api-management.service:1.0.0' = {
         "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-### Example 3: _Using only defaults_
-
-This instance deploys the module with the minimum set of required parameters.
-
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module service 'br:bicep/modules/api-management.service:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-apismin'
-  params: {
-    // Required parameters
-    name: 'apismin001'
-    publisherEmail: 'apimgmt-noreply@mail.windowsazure.com'
-    publisherName: 'az-amorg-x-001'
-    // Non-required parameters
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "apismin001"
-    },
-    "publisherEmail": {
-      "value": "apimgmt-noreply@mail.windowsazure.com"
-    },
-    "publisherName": {
-      "value": "az-amorg-x-001"
-    },
-    // Non-required parameters
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
     }
   }
 }

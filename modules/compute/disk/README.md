@@ -27,9 +27,9 @@ The following section provides usage examples for the module, which were used to
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/compute.disk:1.0.0`.
 
 - [Using large parameter set](#example-1-using-large-parameter-set)
-- [Image](#example-2-image)
-- [Import](#example-3-import)
-- [Using only defaults](#example-4-using-only-defaults)
+- [Using only defaults](#example-2-using-only-defaults)
+- [Image](#example-3-image)
+- [Import](#example-4-import)
 
 ### Example 1: _Using large parameter set_
 
@@ -145,7 +145,63 @@ module disk 'br:bicep/modules/compute.disk:1.0.0' = {
 </details>
 <p>
 
-### Example 2: _Image_
+### Example 2: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module disk 'br:bicep/modules/compute.disk:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-cdmin'
+  params: {
+    // Required parameters
+    name: 'cdmin001'
+    sku: 'Standard_LRS'
+    // Non-required parameters
+    diskSizeGB: 1
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "cdmin001"
+    },
+    "sku": {
+      "value": "Standard_LRS"
+    },
+    // Non-required parameters
+    "diskSizeGB": {
+      "value": 1
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 3: _Image_
 
 <details>
 
@@ -230,7 +286,7 @@ module disk 'br:bicep/modules/compute.disk:1.0.0' = {
 </details>
 <p>
 
-### Example 3: _Import_
+### Example 4: _Import_
 
 <details>
 
@@ -311,62 +367,6 @@ module disk 'br:bicep/modules/compute.disk:1.0.0' = {
         "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-### Example 4: _Using only defaults_
-
-This instance deploys the module with the minimum set of required parameters.
-
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module disk 'br:bicep/modules/compute.disk:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-cdmin'
-  params: {
-    // Required parameters
-    name: 'cdmin001'
-    sku: 'Standard_LRS'
-    // Non-required parameters
-    diskSizeGB: 1
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "cdmin001"
-    },
-    "sku": {
-      "value": "Standard_LRS"
-    },
-    // Non-required parameters
-    "diskSizeGB": {
-      "value": 1
-    },
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
     }
   }
 }

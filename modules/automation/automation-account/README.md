@@ -38,8 +38,8 @@ The following section provides usage examples for the module, which were used to
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/automation.automation-account:1.0.0`.
 
 - [Using large parameter set](#example-1-using-large-parameter-set)
-- [Encr](#example-2-encr)
-- [Using only defaults](#example-3-using-only-defaults)
+- [Using only defaults](#example-2-using-only-defaults)
+- [Encr](#example-3-encr)
 
 ### Example 1: _Using large parameter set_
 
@@ -497,7 +497,55 @@ module automationAccount 'br:bicep/modules/automation.automation-account:1.0.0' 
 </details>
 <p>
 
-### Example 2: _Encr_
+### Example 2: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module automationAccount 'br:bicep/modules/automation.automation-account:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-aamin'
+  params: {
+    // Required parameters
+    name: 'aamin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "aamin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 3: _Encr_
 
 <details>
 
@@ -558,54 +606,6 @@ module automationAccount 'br:bicep/modules/automation.automation-account:1.0.0' 
           "<managedIdentityResourceId>"
         ]
       }
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-### Example 3: _Using only defaults_
-
-This instance deploys the module with the minimum set of required parameters.
-
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module automationAccount 'br:bicep/modules/automation.automation-account:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-aamin'
-  params: {
-    // Required parameters
-    name: 'aamin001'
-    // Non-required parameters
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "aamin001"
-    },
-    // Non-required parameters
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
     }
   }
 }

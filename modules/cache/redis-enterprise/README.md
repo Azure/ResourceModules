@@ -31,8 +31,8 @@ The following section provides usage examples for the module, which were used to
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/cache.redis-enterprise:1.0.0`.
 
 - [Using large parameter set](#example-1-using-large-parameter-set)
-- [Geo](#example-2-geo)
-- [Using only defaults](#example-3-using-only-defaults)
+- [Using only defaults](#example-2-using-only-defaults)
+- [Geo](#example-3-geo)
 
 ### Example 1: _Using large parameter set_
 
@@ -228,7 +228,55 @@ module redisEnterprise 'br:bicep/modules/cache.redis-enterprise:1.0.0' = {
 </details>
 <p>
 
-### Example 2: _Geo_
+### Example 2: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module redisEnterprise 'br:bicep/modules/cache.redis-enterprise:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-cremin'
+  params: {
+    // Required parameters
+    name: 'cremin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "cremin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 3: _Geo_
 
 <details>
 
@@ -341,54 +389,6 @@ module redisEnterprise 'br:bicep/modules/cache.redis-enterprise:1.0.0' = {
     },
     "zoneRedundant": {
       "value": true
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-### Example 3: _Using only defaults_
-
-This instance deploys the module with the minimum set of required parameters.
-
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module redisEnterprise 'br:bicep/modules/cache.redis-enterprise:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-cremin'
-  params: {
-    // Required parameters
-    name: 'cremin001'
-    // Non-required parameters
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "cremin001"
-    },
-    // Non-required parameters
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
     }
   }
 }

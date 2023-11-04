@@ -42,8 +42,8 @@ The following section provides usage examples for the module, which were used to
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/storage.storage-account:1.0.0`.
 
 - [Using large parameter set](#example-1-using-large-parameter-set)
-- [Encr](#example-2-encr)
-- [Using only defaults](#example-3-using-only-defaults)
+- [Using only defaults](#example-2-using-only-defaults)
+- [Encr](#example-3-encr)
 - [Nfs](#example-4-nfs)
 - [V1](#example-5-v1)
 
@@ -661,7 +661,59 @@ module storageAccount 'br:bicep/modules/storage.storage-account:1.0.0' = {
 </details>
 <p>
 
-### Example 2: _Encr_
+### Example 2: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module storageAccount 'br:bicep/modules/storage.storage-account:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-ssamin'
+  params: {
+    // Required parameters
+    name: 'ssamin001'
+    // Non-required parameters
+    allowBlobPublicAccess: false
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "ssamin001"
+    },
+    // Non-required parameters
+    "allowBlobPublicAccess": {
+      "value": false
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 3: _Encr_
 
 <details>
 
@@ -822,58 +874,6 @@ module storageAccount 'br:bicep/modules/storage.storage-account:1.0.0' = {
         "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-### Example 3: _Using only defaults_
-
-This instance deploys the module with the minimum set of required parameters.
-
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module storageAccount 'br:bicep/modules/storage.storage-account:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-ssamin'
-  params: {
-    // Required parameters
-    name: 'ssamin001'
-    // Non-required parameters
-    allowBlobPublicAccess: false
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "ssamin001"
-    },
-    // Non-required parameters
-    "allowBlobPublicAccess": {
-      "value": false
-    },
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
     }
   }
 }
