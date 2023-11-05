@@ -28,6 +28,7 @@ The following section provides usage examples for the module, which were used to
 
 - [Using only defaults](#example-1-using-only-defaults)
 - [Using large parameter set](#example-2-using-large-parameter-set)
+- [WAF-aligned](#example-3-waf-aligned)
 
 ### Example 1: _Using only defaults_
 
@@ -177,6 +178,196 @@ module scalingPlan 'br:bicep/modules/desktop-virtualization.scaling-plan:1.0.0' 
     // Required parameters
     "name": {
       "value": "dvspmax001"
+    },
+    // Non-required parameters
+    "description": {
+      "value": "My Scaling Plan Description"
+    },
+    "diagnosticSettings": {
+      "value": [
+        {
+          "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+          "eventHubName": "<eventHubName>",
+          "name": "customSetting",
+          "storageAccountResourceId": "<storageAccountResourceId>",
+          "workspaceResourceId": "<workspaceResourceId>"
+        }
+      ]
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "friendlyName": {
+      "value": "My Scaling Plan"
+    },
+    "hostPoolType": {
+      "value": "Pooled"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "schedules": {
+      "value": [
+        {
+          "daysOfWeek": [
+            "Friday",
+            "Monday",
+            "Thursday",
+            "Tuesday",
+            "Wednesday"
+          ],
+          "name": "weekdays_schedule",
+          "offPeakLoadBalancingAlgorithm": "DepthFirst",
+          "offPeakStartTime": {
+            "hour": 20,
+            "minute": 0
+          },
+          "peakLoadBalancingAlgorithm": "DepthFirst",
+          "peakStartTime": {
+            "hour": 9,
+            "minute": 0
+          },
+          "rampDownCapacityThresholdPct": 90,
+          "rampDownForceLogoffUsers": true,
+          "rampDownLoadBalancingAlgorithm": "DepthFirst",
+          "rampDownMinimumHostsPct": 10,
+          "rampDownNotificationMessage": "You will be logged off in 30 min. Make sure to save your work.",
+          "rampDownStartTime": {
+            "hour": 18,
+            "minute": 0
+          },
+          "rampDownStopHostsWhen": "ZeroSessions",
+          "rampDownWaitTimeMinutes": 30,
+          "rampUpCapacityThresholdPct": 60,
+          "rampUpLoadBalancingAlgorithm": "DepthFirst",
+          "rampUpMinimumHostsPct": 20,
+          "rampUpStartTime": {
+            "hour": 7,
+            "minute": 0
+          }
+        }
+      ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 3: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module scalingPlan 'br:bicep/modules/desktop-virtualization.scaling-plan:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-dvspwaf'
+  params: {
+    // Required parameters
+    name: 'dvspwaf001'
+    // Non-required parameters
+    description: 'My Scaling Plan Description'
+    diagnosticSettings: [
+      {
+        eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+        eventHubName: '<eventHubName>'
+        name: 'customSetting'
+        storageAccountResourceId: '<storageAccountResourceId>'
+        workspaceResourceId: '<workspaceResourceId>'
+      }
+    ]
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    friendlyName: 'My Scaling Plan'
+    hostPoolType: 'Pooled'
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    schedules: [
+      {
+        daysOfWeek: [
+          'Friday'
+          'Monday'
+          'Thursday'
+          'Tuesday'
+          'Wednesday'
+        ]
+        name: 'weekdays_schedule'
+        offPeakLoadBalancingAlgorithm: 'DepthFirst'
+        offPeakStartTime: {
+          hour: 20
+          minute: 0
+        }
+        peakLoadBalancingAlgorithm: 'DepthFirst'
+        peakStartTime: {
+          hour: 9
+          minute: 0
+        }
+        rampDownCapacityThresholdPct: 90
+        rampDownForceLogoffUsers: true
+        rampDownLoadBalancingAlgorithm: 'DepthFirst'
+        rampDownMinimumHostsPct: 10
+        rampDownNotificationMessage: 'You will be logged off in 30 min. Make sure to save your work.'
+        rampDownStartTime: {
+          hour: 18
+          minute: 0
+        }
+        rampDownStopHostsWhen: 'ZeroSessions'
+        rampDownWaitTimeMinutes: 30
+        rampUpCapacityThresholdPct: 60
+        rampUpLoadBalancingAlgorithm: 'DepthFirst'
+        rampUpMinimumHostsPct: 20
+        rampUpStartTime: {
+          hour: 7
+          minute: 0
+        }
+      }
+    ]
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "dvspwaf001"
     },
     // Non-required parameters
     "description": {

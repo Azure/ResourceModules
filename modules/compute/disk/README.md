@@ -30,6 +30,7 @@ The following section provides usage examples for the module, which were used to
 - [Image](#example-2-image)
 - [Import](#example-3-import)
 - [Using large parameter set](#example-4-using-large-parameter-set)
+- [WAF-aligned](#example-5-waf-aligned)
 
 ### Example 1: _Using only defaults_
 
@@ -320,6 +321,120 @@ module disk 'br:bicep/modules/compute.disk:1.0.0' = {
     // Required parameters
     "name": {
       "value": "cdmax001"
+    },
+    "sku": {
+      "value": "UltraSSD_LRS"
+    },
+    // Non-required parameters
+    "diskIOPSReadWrite": {
+      "value": 500
+    },
+    "diskMBpsReadWrite": {
+      "value": 60
+    },
+    "diskSizeGB": {
+      "value": 128
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "logicalSectorSize": {
+      "value": 512
+    },
+    "osType": {
+      "value": "Windows"
+    },
+    "publicNetworkAccess": {
+      "value": "Enabled"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 5: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module disk 'br:bicep/modules/compute.disk:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-cdwaf'
+  params: {
+    // Required parameters
+    name: 'cdwaf001'
+    sku: 'UltraSSD_LRS'
+    // Non-required parameters
+    diskIOPSReadWrite: 500
+    diskMBpsReadWrite: 60
+    diskSizeGB: 128
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    logicalSectorSize: 512
+    osType: 'Windows'
+    publicNetworkAccess: 'Enabled'
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "cdwaf001"
     },
     "sku": {
       "value": "UltraSSD_LRS"

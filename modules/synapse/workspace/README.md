@@ -37,6 +37,7 @@ The following section provides usage examples for the module, which were used to
 - [Encrwuai](#example-3-encrwuai)
 - [Managedvnet](#example-4-managedvnet)
 - [Using large parameter set](#example-5-using-large-parameter-set)
+- [WAF-aligned](#example-6-waf-aligned)
 
 ### Example 1: _Using only defaults_
 
@@ -429,6 +430,178 @@ module workspace 'br:bicep/modules/synapse.workspace:1.0.0' = {
     },
     "name": {
       "value": "swmax001"
+    },
+    "sqlAdministratorLogin": {
+      "value": "synwsadmin"
+    },
+    // Non-required parameters
+    "diagnosticSettings": {
+      "value": [
+        {
+          "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+          "eventHubName": "<eventHubName>",
+          "logCategoriesAndGroups": [
+            {
+              "category": "SynapseRbacOperations"
+            },
+            {
+              "category": "SynapseLinkEvent"
+            }
+          ],
+          "name": "customSetting",
+          "storageAccountResourceId": "<storageAccountResourceId>",
+          "workspaceResourceId": "<workspaceResourceId>"
+        }
+      ]
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "initialWorkspaceAdminObjectID": {
+      "value": "<initialWorkspaceAdminObjectID>"
+    },
+    "integrationRuntimes": {
+      "value": [
+        {
+          "name": "shir01",
+          "type": "SelfHosted"
+        }
+      ]
+    },
+    "managedVirtualNetwork": {
+      "value": true
+    },
+    "privateEndpoints": {
+      "value": [
+        {
+          "privateDnsZoneResourceIds": [
+            "<privateDNSZoneResourceId>"
+          ],
+          "service": "SQL",
+          "subnetResourceId": "<subnetResourceId>",
+          "tags": {
+            "Environment": "Non-Prod",
+            "hidden-title": "This is visible in the resource name",
+            "Role": "DeploymentValidation"
+          }
+        }
+      ]
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "userAssignedIdentities": {
+      "value": {
+        "<managedIdentityResourceId>": {}
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 6: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module workspace 'br:bicep/modules/synapse.workspace:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-swwaf'
+  params: {
+    // Required parameters
+    defaultDataLakeStorageAccountResourceId: '<defaultDataLakeStorageAccountResourceId>'
+    defaultDataLakeStorageFilesystem: '<defaultDataLakeStorageFilesystem>'
+    name: 'swwaf001'
+    sqlAdministratorLogin: 'synwsadmin'
+    // Non-required parameters
+    diagnosticSettings: [
+      {
+        eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+        eventHubName: '<eventHubName>'
+        logCategoriesAndGroups: [
+          {
+            category: 'SynapseRbacOperations'
+          }
+          {
+            category: 'SynapseLinkEvent'
+          }
+        ]
+        name: 'customSetting'
+        storageAccountResourceId: '<storageAccountResourceId>'
+        workspaceResourceId: '<workspaceResourceId>'
+      }
+    ]
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    initialWorkspaceAdminObjectID: '<initialWorkspaceAdminObjectID>'
+    integrationRuntimes: [
+      {
+        name: 'shir01'
+        type: 'SelfHosted'
+      }
+    ]
+    managedVirtualNetwork: true
+    privateEndpoints: [
+      {
+        privateDnsZoneResourceIds: [
+          '<privateDNSZoneResourceId>'
+        ]
+        service: 'SQL'
+        subnetResourceId: '<subnetResourceId>'
+        tags: {
+          Environment: 'Non-Prod'
+          'hidden-title': 'This is visible in the resource name'
+          Role: 'DeploymentValidation'
+        }
+      }
+    ]
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    userAssignedIdentities: {
+      '<managedIdentityResourceId>': {}
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "defaultDataLakeStorageAccountResourceId": {
+      "value": "<defaultDataLakeStorageAccountResourceId>"
+    },
+    "defaultDataLakeStorageFilesystem": {
+      "value": "<defaultDataLakeStorageFilesystem>"
+    },
+    "name": {
+      "value": "swwaf001"
     },
     "sqlAdministratorLogin": {
       "value": "synwsadmin"

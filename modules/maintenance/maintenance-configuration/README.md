@@ -28,6 +28,7 @@ The following section provides usage examples for the module, which were used to
 
 - [Using only defaults](#example-1-using-only-defaults)
 - [Using large parameter set](#example-2-using-large-parameter-set)
+- [WAF-aligned](#example-3-waf-aligned)
 
 ### Example 1: _Using only defaults_
 
@@ -202,6 +203,158 @@ module maintenanceConfiguration 'br:bicep/modules/maintenance.maintenance-config
     },
     "namespace": {
       "value": "mmcmaxns"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    },
+    "visibility": {
+      "value": "Custom"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 3: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module maintenanceConfiguration 'br:bicep/modules/maintenance.maintenance-configuration:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-mmcwaf'
+  params: {
+    // Required parameters
+    name: 'mmcwaf001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    extensionProperties: {
+      InGuestPatchMode: 'User'
+    }
+    installPatches: {
+      linuxParameters: {
+        classificationsToInclude: '<classificationsToInclude>'
+        packageNameMasksToExclude: '<packageNameMasksToExclude>'
+        packageNameMasksToInclude: '<packageNameMasksToInclude>'
+      }
+      rebootSetting: 'IfRequired'
+      windowsParameters: {
+        classificationsToInclude: [
+          'Critical'
+          'Security'
+        ]
+        kbNumbersToExclude: '<kbNumbersToExclude>'
+        kbNumbersToInclude: '<kbNumbersToInclude>'
+      }
+    }
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    maintenanceWindow: {
+      duration: '03:00'
+      expirationDateTime: '9999-12-31 23:59:59'
+      recurEvery: 'Day'
+      startDateTime: '2022-12-31 13:00'
+      timeZone: 'W. Europe Standard Time'
+    }
+    namespace: 'mmcwafns'
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+    visibility: 'Custom'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "mmcwaf001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "extensionProperties": {
+      "value": {
+        "InGuestPatchMode": "User"
+      }
+    },
+    "installPatches": {
+      "value": {
+        "linuxParameters": {
+          "classificationsToInclude": "<classificationsToInclude>",
+          "packageNameMasksToExclude": "<packageNameMasksToExclude>",
+          "packageNameMasksToInclude": "<packageNameMasksToInclude>"
+        },
+        "rebootSetting": "IfRequired",
+        "windowsParameters": {
+          "classificationsToInclude": [
+            "Critical",
+            "Security"
+          ],
+          "kbNumbersToExclude": "<kbNumbersToExclude>",
+          "kbNumbersToInclude": "<kbNumbersToInclude>"
+        }
+      }
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "maintenanceWindow": {
+      "value": {
+        "duration": "03:00",
+        "expirationDateTime": "9999-12-31 23:59:59",
+        "recurEvery": "Day",
+        "startDateTime": "2022-12-31 13:00",
+        "timeZone": "W. Europe Standard Time"
+      }
+    },
+    "namespace": {
+      "value": "mmcwafns"
     },
     "roleAssignments": {
       "value": [

@@ -36,6 +36,7 @@ The following section provides usage examples for the module, which were used to
 - [Encr](#example-2-encr)
 - [Using large parameter set](#example-3-using-large-parameter-set)
 - [Pe](#example-4-pe)
+- [WAF-aligned](#example-5-waf-aligned)
 
 ### Example 1: _Using only defaults_
 
@@ -511,6 +512,262 @@ module registry 'br:bicep/modules/container-registry.registry:1.0.0' = {
         "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 5: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module registry 'br:bicep/modules/container-registry.registry:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-crrwaf'
+  params: {
+    // Required parameters
+    name: 'crrwaf001'
+    // Non-required parameters
+    acrAdminUserEnabled: false
+    acrSku: 'Premium'
+    azureADAuthenticationAsArmPolicyStatus: 'enabled'
+    cacheRules: [
+      {
+        name: 'customRule'
+        sourceRepository: 'docker.io/library/hello-world'
+        targetRepository: 'cached-docker-hub/hello-world'
+      }
+      {
+        sourceRepository: 'docker.io/library/hello-world'
+      }
+    ]
+    diagnosticSettings: [
+      {
+        eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+        eventHubName: '<eventHubName>'
+        metricCategories: [
+          {
+            category: 'AllMetrics'
+          }
+        ]
+        name: 'customSetting'
+        storageAccountResourceId: '<storageAccountResourceId>'
+        workspaceResourceId: '<workspaceResourceId>'
+      }
+    ]
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    exportPolicyStatus: 'enabled'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    managedIdentities: {
+      systemAssigned: true
+      userAssignedResourcesIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
+    networkRuleSetIpRules: [
+      {
+        action: 'Allow'
+        value: '40.74.28.0/23'
+      }
+    ]
+    privateEndpoints: [
+      {
+        privateDnsZoneResourceIds: [
+          '<privateDNSZoneResourceId>'
+        ]
+        service: 'registry'
+        subnetResourceId: '<subnetResourceId>'
+        tags: {
+          Environment: 'Non-Prod'
+          'hidden-title': 'This is visible in the resource name'
+          Role: 'DeploymentValidation'
+        }
+      }
+    ]
+    quarantinePolicyStatus: 'enabled'
+    replications: [
+      {
+        location: '<location>'
+        name: '<name>'
+      }
+    ]
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    softDeletePolicyDays: 7
+    softDeletePolicyStatus: 'disabled'
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+    trustPolicyStatus: 'enabled'
+    webhooks: [
+      {
+        name: 'acrx001webhook'
+        serviceUri: 'https://www.contoso.com/webhook'
+      }
+    ]
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "crrwaf001"
+    },
+    // Non-required parameters
+    "acrAdminUserEnabled": {
+      "value": false
+    },
+    "acrSku": {
+      "value": "Premium"
+    },
+    "azureADAuthenticationAsArmPolicyStatus": {
+      "value": "enabled"
+    },
+    "cacheRules": {
+      "value": [
+        {
+          "name": "customRule",
+          "sourceRepository": "docker.io/library/hello-world",
+          "targetRepository": "cached-docker-hub/hello-world"
+        },
+        {
+          "sourceRepository": "docker.io/library/hello-world"
+        }
+      ]
+    },
+    "diagnosticSettings": {
+      "value": [
+        {
+          "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+          "eventHubName": "<eventHubName>",
+          "metricCategories": [
+            {
+              "category": "AllMetrics"
+            }
+          ],
+          "name": "customSetting",
+          "storageAccountResourceId": "<storageAccountResourceId>",
+          "workspaceResourceId": "<workspaceResourceId>"
+        }
+      ]
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "exportPolicyStatus": {
+      "value": "enabled"
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "managedIdentities": {
+      "value": {
+        "systemAssigned": true,
+        "userAssignedResourcesIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
+    },
+    "networkRuleSetIpRules": {
+      "value": [
+        {
+          "action": "Allow",
+          "value": "40.74.28.0/23"
+        }
+      ]
+    },
+    "privateEndpoints": {
+      "value": [
+        {
+          "privateDnsZoneResourceIds": [
+            "<privateDNSZoneResourceId>"
+          ],
+          "service": "registry",
+          "subnetResourceId": "<subnetResourceId>",
+          "tags": {
+            "Environment": "Non-Prod",
+            "hidden-title": "This is visible in the resource name",
+            "Role": "DeploymentValidation"
+          }
+        }
+      ]
+    },
+    "quarantinePolicyStatus": {
+      "value": "enabled"
+    },
+    "replications": {
+      "value": [
+        {
+          "location": "<location>",
+          "name": "<name>"
+        }
+      ]
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "softDeletePolicyDays": {
+      "value": 7
+    },
+    "softDeletePolicyStatus": {
+      "value": "disabled"
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    },
+    "trustPolicyStatus": {
+      "value": "enabled"
+    },
+    "webhooks": {
+      "value": [
+        {
+          "name": "acrx001webhook",
+          "serviceUri": "https://www.contoso.com/webhook"
+        }
+      ]
     }
   }
 }

@@ -30,6 +30,7 @@ The following section provides usage examples for the module, which were used to
 
 - [Using only defaults](#example-1-using-only-defaults)
 - [Using large parameter set](#example-2-using-large-parameter-set)
+- [WAF-aligned](#example-3-waf-aligned)
 
 ### Example 1: _Using only defaults_
 
@@ -154,6 +155,128 @@ module actionGroup 'br:bicep/modules/insights.action-group:1.0.0' = {
     },
     "name": {
       "value": "iagmax001"
+    },
+    // Non-required parameters
+    "emailReceivers": {
+      "value": [
+        {
+          "emailAddress": "test.user@testcompany.com",
+          "name": "TestUser_-EmailAction-",
+          "useCommonAlertSchema": true
+        },
+        {
+          "emailAddress": "test.user2@testcompany.com",
+          "name": "TestUser2",
+          "useCommonAlertSchema": true
+        }
+      ]
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "smsReceivers": {
+      "value": [
+        {
+          "countryCode": "1",
+          "name": "TestUser_-SMSAction-",
+          "phoneNumber": "2345678901"
+        }
+      ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 3: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module actionGroup 'br:bicep/modules/insights.action-group:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-iagwaf'
+  params: {
+    // Required parameters
+    groupShortName: 'agiagwaf001'
+    name: 'iagwaf001'
+    // Non-required parameters
+    emailReceivers: [
+      {
+        emailAddress: 'test.user@testcompany.com'
+        name: 'TestUser_-EmailAction-'
+        useCommonAlertSchema: true
+      }
+      {
+        emailAddress: 'test.user2@testcompany.com'
+        name: 'TestUser2'
+        useCommonAlertSchema: true
+      }
+    ]
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    smsReceivers: [
+      {
+        countryCode: '1'
+        name: 'TestUser_-SMSAction-'
+        phoneNumber: '2345678901'
+      }
+    ]
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "groupShortName": {
+      "value": "agiagwaf001"
+    },
+    "name": {
+      "value": "iagwaf001"
     },
     // Non-required parameters
     "emailReceivers": {

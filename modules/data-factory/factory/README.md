@@ -35,6 +35,7 @@ The following section provides usage examples for the module, which were used to
 
 - [Using only defaults](#example-1-using-only-defaults)
 - [Using large parameter set](#example-2-using-large-parameter-set)
+- [WAF-aligned](#example-3-waf-aligned)
 
 ### Example 1: _Using only defaults_
 
@@ -207,6 +208,252 @@ module factory 'br:bicep/modules/data-factory.factory:1.0.0' = {
     // Required parameters
     "name": {
       "value": "dffmax001"
+    },
+    // Non-required parameters
+    "customerManagedKey": {
+      "value": {
+        "keyName": "<keyName>",
+        "keyVaultResourceId": "<keyVaultResourceId>",
+        "userAssignedIdentityResourceId": "<userAssignedIdentityResourceId>"
+      }
+    },
+    "diagnosticSettings": {
+      "value": [
+        {
+          "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+          "eventHubName": "<eventHubName>",
+          "metricCategories": [
+            {
+              "category": "AllMetrics"
+            }
+          ],
+          "name": "customSetting",
+          "storageAccountResourceId": "<storageAccountResourceId>",
+          "workspaceResourceId": "<workspaceResourceId>"
+        }
+      ]
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "gitConfigureLater": {
+      "value": true
+    },
+    "globalParameters": {
+      "value": {
+        "testParameter1": {
+          "type": "String",
+          "value": "testValue1"
+        }
+      }
+    },
+    "integrationRuntimes": {
+      "value": [
+        {
+          "managedVirtualNetworkName": "default",
+          "name": "AutoResolveIntegrationRuntime",
+          "type": "Managed",
+          "typeProperties": {
+            "computeProperties": {
+              "location": "AutoResolve"
+            }
+          }
+        },
+        {
+          "name": "TestRuntime",
+          "type": "SelfHosted"
+        }
+      ]
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "managedIdentities": {
+      "value": {
+        "systemAssigned": true,
+        "userAssignedResourcesIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
+    },
+    "managedPrivateEndpoints": {
+      "value": [
+        {
+          "fqdns": [
+            "<storageAccountBlobEndpoint>"
+          ],
+          "groupId": "blob",
+          "name": "<name>",
+          "privateLinkResourceId": "<privateLinkResourceId>"
+        }
+      ]
+    },
+    "managedVirtualNetworkName": {
+      "value": "default"
+    },
+    "privateEndpoints": {
+      "value": [
+        {
+          "privateDnsZoneResourceIds": [
+            "<privateDNSZoneResourceId>"
+          ],
+          "subnetResourceId": "<subnetResourceId>",
+          "tags": {
+            "application": "CARML",
+            "hidden-title": "This is visible in the resource name"
+          }
+        }
+      ]
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 3: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module factory 'br:bicep/modules/data-factory.factory:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-dffwaf'
+  params: {
+    // Required parameters
+    name: 'dffwaf001'
+    // Non-required parameters
+    customerManagedKey: {
+      keyName: '<keyName>'
+      keyVaultResourceId: '<keyVaultResourceId>'
+      userAssignedIdentityResourceId: '<userAssignedIdentityResourceId>'
+    }
+    diagnosticSettings: [
+      {
+        eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+        eventHubName: '<eventHubName>'
+        metricCategories: [
+          {
+            category: 'AllMetrics'
+          }
+        ]
+        name: 'customSetting'
+        storageAccountResourceId: '<storageAccountResourceId>'
+        workspaceResourceId: '<workspaceResourceId>'
+      }
+    ]
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    gitConfigureLater: true
+    globalParameters: {
+      testParameter1: {
+        type: 'String'
+        value: 'testValue1'
+      }
+    }
+    integrationRuntimes: [
+      {
+        managedVirtualNetworkName: 'default'
+        name: 'AutoResolveIntegrationRuntime'
+        type: 'Managed'
+        typeProperties: {
+          computeProperties: {
+            location: 'AutoResolve'
+          }
+        }
+      }
+      {
+        name: 'TestRuntime'
+        type: 'SelfHosted'
+      }
+    ]
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    managedIdentities: {
+      systemAssigned: true
+      userAssignedResourcesIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
+    managedPrivateEndpoints: [
+      {
+        fqdns: [
+          '<storageAccountBlobEndpoint>'
+        ]
+        groupId: 'blob'
+        name: '<name>'
+        privateLinkResourceId: '<privateLinkResourceId>'
+      }
+    ]
+    managedVirtualNetworkName: 'default'
+    privateEndpoints: [
+      {
+        privateDnsZoneResourceIds: [
+          '<privateDNSZoneResourceId>'
+        ]
+        subnetResourceId: '<subnetResourceId>'
+        tags: {
+          application: 'CARML'
+          'hidden-title': 'This is visible in the resource name'
+        }
+      }
+    ]
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "dffwaf001"
     },
     // Non-required parameters
     "customerManagedKey": {

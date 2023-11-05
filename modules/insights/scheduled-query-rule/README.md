@@ -26,6 +26,7 @@ The following section provides usage examples for the module, which were used to
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/insights.scheduled-query-rule:1.0.0`.
 
 - [Using large parameter set](#example-1-using-large-parameter-set)
+- [WAF-aligned](#example-2-waf-aligned)
 
 ### Example 1: _Using large parameter set_
 
@@ -140,6 +141,170 @@ module scheduledQueryRule 'br:bicep/modules/insights.scheduled-query-rule:1.0.0'
     },
     "name": {
       "value": "isqrmax001"
+    },
+    "scopes": {
+      "value": [
+        "<logAnalyticsWorkspaceResourceId>"
+      ]
+    },
+    // Non-required parameters
+    "alertDescription": {
+      "value": "My sample Alert"
+    },
+    "autoMitigate": {
+      "value": false
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "evaluationFrequency": {
+      "value": "PT5M"
+    },
+    "queryTimeRange": {
+      "value": "PT5M"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "suppressForMinutes": {
+      "value": "PT5M"
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    },
+    "windowSize": {
+      "value": "PT5M"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 2: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module scheduledQueryRule 'br:bicep/modules/insights.scheduled-query-rule:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-isqrwaf'
+  params: {
+    // Required parameters
+    criterias: {
+      allOf: [
+        {
+          dimensions: [
+            {
+              name: 'Computer'
+              operator: 'Include'
+              values: [
+                '*'
+              ]
+            }
+            {
+              name: 'InstanceName'
+              operator: 'Include'
+              values: [
+                '*'
+              ]
+            }
+          ]
+          metricMeasureColumn: 'AggregatedValue'
+          operator: 'GreaterThan'
+          query: 'Perf | where ObjectName == \'LogicalDisk\' | where CounterName == \'% Free Space\' | where InstanceName <> \'HarddiskVolume1\' and InstanceName <> \'_Total\' | summarize AggregatedValue = min(CounterValue) by Computer InstanceName bin(TimeGenerated5m)'
+          threshold: 0
+          timeAggregation: 'Average'
+        }
+      ]
+    }
+    name: 'isqrwaf001'
+    scopes: [
+      '<logAnalyticsWorkspaceResourceId>'
+    ]
+    // Non-required parameters
+    alertDescription: 'My sample Alert'
+    autoMitigate: false
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    evaluationFrequency: 'PT5M'
+    queryTimeRange: 'PT5M'
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    suppressForMinutes: 'PT5M'
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+    windowSize: 'PT5M'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "criterias": {
+      "value": {
+        "allOf": [
+          {
+            "dimensions": [
+              {
+                "name": "Computer",
+                "operator": "Include",
+                "values": [
+                  "*"
+                ]
+              },
+              {
+                "name": "InstanceName",
+                "operator": "Include",
+                "values": [
+                  "*"
+                ]
+              }
+            ],
+            "metricMeasureColumn": "AggregatedValue",
+            "operator": "GreaterThan",
+            "query": "Perf | where ObjectName == \"LogicalDisk\" | where CounterName == \"% Free Space\" | where InstanceName <> \"HarddiskVolume1\" and InstanceName <> \"_Total\" | summarize AggregatedValue = min(CounterValue) by Computer, InstanceName, bin(TimeGenerated,5m)",
+            "threshold": 0,
+            "timeAggregation": "Average"
+          }
+        ]
+      }
+    },
+    "name": {
+      "value": "isqrwaf001"
     },
     "scopes": {
       "value": [

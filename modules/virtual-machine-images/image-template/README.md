@@ -29,6 +29,7 @@ The following section provides usage examples for the module, which were used to
 
 - [Using only defaults](#example-1-using-only-defaults)
 - [Using large parameter set](#example-2-using-large-parameter-set)
+- [WAF-aligned](#example-3-waf-aligned)
 
 ### Example 1: _Using only defaults_
 
@@ -273,6 +274,178 @@ module imageTemplate 'br:bicep/modules/virtual-machine-images.image-template:1.0
     },
     "unManagedImageName": {
       "value": "umi-vmiitmax-001"
+    },
+    "userAssignedIdentities": {
+      "value": [
+        "<managedIdentityResourceId>"
+      ]
+    },
+    "userMsiResourceGroup": {
+      "value": "<userMsiResourceGroup>"
+    },
+    "vmSize": {
+      "value": "Standard_D2s_v3"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 3: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module imageTemplate 'br:bicep/modules/virtual-machine-images.image-template:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-vmiitwaf'
+  params: {
+    // Required parameters
+    customizationSteps: [
+      {
+        restartTimeout: '10m'
+        type: 'WindowsRestart'
+      }
+    ]
+    imageSource: {
+      offer: 'Windows-11'
+      publisher: 'MicrosoftWindowsDesktop'
+      sku: 'win11-22h2-avd'
+      type: 'PlatformImage'
+      version: 'latest'
+    }
+    name: 'vmiitwaf001'
+    userMsiName: '<userMsiName>'
+    // Non-required parameters
+    buildTimeoutInMinutes: 60
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    imageReplicationRegions: []
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    managedImageName: 'mi-vmiitwaf-001'
+    osDiskSizeGB: 127
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    sigImageDefinitionId: '<sigImageDefinitionId>'
+    sigImageVersion: '<sigImageVersion>'
+    stagingResourceGroup: '<stagingResourceGroup>'
+    subnetId: '<subnetId>'
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+    unManagedImageName: 'umi-vmiitwaf-001'
+    userAssignedIdentities: [
+      '<managedIdentityResourceId>'
+    ]
+    userMsiResourceGroup: '<userMsiResourceGroup>'
+    vmSize: 'Standard_D2s_v3'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "customizationSteps": {
+      "value": [
+        {
+          "restartTimeout": "10m",
+          "type": "WindowsRestart"
+        }
+      ]
+    },
+    "imageSource": {
+      "value": {
+        "offer": "Windows-11",
+        "publisher": "MicrosoftWindowsDesktop",
+        "sku": "win11-22h2-avd",
+        "type": "PlatformImage",
+        "version": "latest"
+      }
+    },
+    "name": {
+      "value": "vmiitwaf001"
+    },
+    "userMsiName": {
+      "value": "<userMsiName>"
+    },
+    // Non-required parameters
+    "buildTimeoutInMinutes": {
+      "value": 60
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "imageReplicationRegions": {
+      "value": []
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "managedImageName": {
+      "value": "mi-vmiitwaf-001"
+    },
+    "osDiskSizeGB": {
+      "value": 127
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "sigImageDefinitionId": {
+      "value": "<sigImageDefinitionId>"
+    },
+    "sigImageVersion": {
+      "value": "<sigImageVersion>"
+    },
+    "stagingResourceGroup": {
+      "value": "<stagingResourceGroup>"
+    },
+    "subnetId": {
+      "value": "<subnetId>"
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    },
+    "unManagedImageName": {
+      "value": "umi-vmiitwaf-001"
     },
     "userAssignedIdentities": {
       "value": [

@@ -30,6 +30,7 @@ The following section provides usage examples for the module, which were used to
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/network.application-gateway:1.0.0`.
 
 - [Using large parameter set](#example-1-using-large-parameter-set)
+- [WAF-aligned](#example-2-waf-aligned)
 
 ### Example 1: _Using large parameter set_
 
@@ -43,6 +44,940 @@ This instance deploys the module with most of its features enabled.
 ```bicep
 module applicationGateway 'br:bicep/modules/network.application-gateway:1.0.0' = {
   name: '${uniqueString(deployment().name, location)}-test-nagmax'
+  params: {
+    // Required parameters
+    name: '<name>'
+    // Non-required parameters
+    backendAddressPools: [
+      {
+        name: 'appServiceBackendPool'
+        properties: {
+          backendAddresses: [
+            {
+              fqdn: 'aghapp.azurewebsites.net'
+            }
+          ]
+        }
+      }
+      {
+        name: 'privateVmBackendPool'
+        properties: {
+          backendAddresses: [
+            {
+              ipAddress: '10.0.0.4'
+            }
+          ]
+        }
+      }
+    ]
+    backendHttpSettingsCollection: [
+      {
+        name: 'appServiceBackendHttpsSetting'
+        properties: {
+          cookieBasedAffinity: 'Disabled'
+          pickHostNameFromBackendAddress: true
+          port: 443
+          protocol: 'Https'
+          requestTimeout: 30
+        }
+      }
+      {
+        name: 'privateVmHttpSetting'
+        properties: {
+          cookieBasedAffinity: 'Disabled'
+          pickHostNameFromBackendAddress: false
+          port: 80
+          probe: {
+            id: '<id>'
+          }
+          protocol: 'Http'
+          requestTimeout: 30
+        }
+      }
+    ]
+    diagnosticSettings: [
+      {
+        eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+        eventHubName: '<eventHubName>'
+        metricCategories: [
+          {
+            category: 'AllMetrics'
+          }
+        ]
+        name: 'customSetting'
+        storageAccountResourceId: '<storageAccountResourceId>'
+        workspaceResourceId: '<workspaceResourceId>'
+      }
+    ]
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    enableHttp2: true
+    frontendIPConfigurations: [
+      {
+        name: 'private'
+        properties: {
+          privateIPAddress: '10.0.0.20'
+          privateIPAllocationMethod: 'Static'
+          subnet: {
+            id: '<id>'
+          }
+        }
+      }
+      {
+        name: 'public'
+        properties: {
+          privateIPAllocationMethod: 'Dynamic'
+          privateLinkConfiguration: {
+            id: '<id>'
+          }
+          publicIPAddress: {
+            id: '<id>'
+          }
+        }
+      }
+    ]
+    frontendPorts: [
+      {
+        name: 'port443'
+        properties: {
+          port: 443
+        }
+      }
+      {
+        name: 'port4433'
+        properties: {
+          port: 4433
+        }
+      }
+      {
+        name: 'port80'
+        properties: {
+          port: 80
+        }
+      }
+      {
+        name: 'port8080'
+        properties: {
+          port: 8080
+        }
+      }
+    ]
+    gatewayIPConfigurations: [
+      {
+        name: 'apw-ip-configuration'
+        properties: {
+          subnet: {
+            id: '<id>'
+          }
+        }
+      }
+    ]
+    httpListeners: [
+      {
+        name: 'public443'
+        properties: {
+          frontendIPConfiguration: {
+            id: '<id>'
+          }
+          frontendPort: {
+            id: '<id>'
+          }
+          hostNames: []
+          protocol: 'https'
+          requireServerNameIndication: false
+          sslCertificate: {
+            id: '<id>'
+          }
+        }
+      }
+      {
+        name: 'private4433'
+        properties: {
+          frontendIPConfiguration: {
+            id: '<id>'
+          }
+          frontendPort: {
+            id: '<id>'
+          }
+          hostNames: []
+          protocol: 'https'
+          requireServerNameIndication: false
+          sslCertificate: {
+            id: '<id>'
+          }
+        }
+      }
+      {
+        name: 'httpRedirect80'
+        properties: {
+          frontendIPConfiguration: {
+            id: '<id>'
+          }
+          frontendPort: {
+            id: '<id>'
+          }
+          hostNames: []
+          protocol: 'Http'
+          requireServerNameIndication: false
+        }
+      }
+      {
+        name: 'httpRedirect8080'
+        properties: {
+          frontendIPConfiguration: {
+            id: '<id>'
+          }
+          frontendPort: {
+            id: '<id>'
+          }
+          hostNames: []
+          protocol: 'Http'
+          requireServerNameIndication: false
+        }
+      }
+    ]
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    managedIdentities: {
+      userAssignedResourcesIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
+    privateEndpoints: [
+      {
+        privateDnsZoneResourceIds: [
+          '<privateDNSZoneResourceId>'
+        ]
+        service: 'public'
+        subnetResourceId: '<subnetResourceId>'
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
+      }
+    ]
+    privateLinkConfigurations: [
+      {
+        id: '<id>'
+        name: 'pvtlink01'
+        properties: {
+          ipConfigurations: [
+            {
+              id: '<id>'
+              name: 'privateLinkIpConfig1'
+              properties: {
+                primary: false
+                privateIPAllocationMethod: 'Dynamic'
+                subnet: {
+                  id: '<id>'
+                }
+              }
+            }
+          ]
+        }
+      }
+    ]
+    probes: [
+      {
+        name: 'privateVmHttpSettingProbe'
+        properties: {
+          host: '10.0.0.4'
+          interval: 60
+          match: {
+            statusCodes: [
+              '200'
+              '401'
+            ]
+          }
+          minServers: 3
+          path: '/'
+          pickHostNameFromBackendHttpSettings: false
+          protocol: 'Http'
+          timeout: 15
+          unhealthyThreshold: 5
+        }
+      }
+    ]
+    redirectConfigurations: [
+      {
+        name: 'httpRedirect80'
+        properties: {
+          includePath: true
+          includeQueryString: true
+          redirectType: 'Permanent'
+          requestRoutingRules: [
+            {
+              id: '<id>'
+            }
+          ]
+          targetListener: {
+            id: '<id>'
+          }
+        }
+      }
+      {
+        name: 'httpRedirect8080'
+        properties: {
+          includePath: true
+          includeQueryString: true
+          redirectType: 'Permanent'
+          requestRoutingRules: [
+            {
+              id: '<id>'
+            }
+          ]
+          targetListener: {
+            id: '<id>'
+          }
+        }
+      }
+    ]
+    requestRoutingRules: [
+      {
+        name: 'public443-appServiceBackendHttpsSetting-appServiceBackendHttpsSetting'
+        properties: {
+          backendAddressPool: {
+            id: '<id>'
+          }
+          backendHttpSettings: {
+            id: '<id>'
+          }
+          httpListener: {
+            id: '<id>'
+          }
+          priority: 200
+          ruleType: 'Basic'
+        }
+      }
+      {
+        name: 'private4433-privateVmHttpSetting-privateVmHttpSetting'
+        properties: {
+          backendAddressPool: {
+            id: '<id>'
+          }
+          backendHttpSettings: {
+            id: '<id>'
+          }
+          httpListener: {
+            id: '<id>'
+          }
+          priority: 250
+          ruleType: 'Basic'
+        }
+      }
+      {
+        name: 'httpRedirect80-public443'
+        properties: {
+          httpListener: {
+            id: '<id>'
+          }
+          priority: 300
+          redirectConfiguration: {
+            id: '<id>'
+          }
+          ruleType: 'Basic'
+        }
+      }
+      {
+        name: 'httpRedirect8080-private4433'
+        properties: {
+          httpListener: {
+            id: '<id>'
+          }
+          priority: 350
+          redirectConfiguration: {
+            id: '<id>'
+          }
+          rewriteRuleSet: {
+            id: '<id>'
+          }
+          ruleType: 'Basic'
+        }
+      }
+    ]
+    rewriteRuleSets: [
+      {
+        id: '<id>'
+        name: 'customRewrite'
+        properties: {
+          rewriteRules: [
+            {
+              actionSet: {
+                requestHeaderConfigurations: [
+                  {
+                    headerName: 'Content-Type'
+                    headerValue: 'JSON'
+                  }
+                  {
+                    headerName: 'someheader'
+                  }
+                ]
+                responseHeaderConfigurations: []
+              }
+              conditions: []
+              name: 'NewRewrite'
+              ruleSequence: 100
+            }
+          ]
+        }
+      }
+    ]
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    sku: 'WAF_v2'
+    sslCertificates: [
+      {
+        name: 'az-apgw-x-001-ssl-certificate'
+        properties: {
+          keyVaultSecretId: '<keyVaultSecretId>'
+        }
+      }
+    ]
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+    webApplicationFirewallConfiguration: {
+      disabledRuleGroups: [
+        {
+          ruleGroupName: 'Known-CVEs'
+        }
+        {
+          ruleGroupName: 'REQUEST-943-APPLICATION-ATTACK-SESSION-FIXATION'
+        }
+        {
+          ruleGroupName: 'REQUEST-941-APPLICATION-ATTACK-XSS'
+        }
+      ]
+      enabled: true
+      exclusions: [
+        {
+          matchVariable: 'RequestHeaderNames'
+          selector: 'hola'
+          selectorMatchOperator: 'StartsWith'
+        }
+      ]
+      fileUploadLimitInMb: 100
+      firewallMode: 'Detection'
+      maxRequestBodySizeInKb: 128
+      requestBodyCheck: true
+      ruleSetType: 'OWASP'
+      ruleSetVersion: '3.0'
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "<name>"
+    },
+    // Non-required parameters
+    "backendAddressPools": {
+      "value": [
+        {
+          "name": "appServiceBackendPool",
+          "properties": {
+            "backendAddresses": [
+              {
+                "fqdn": "aghapp.azurewebsites.net"
+              }
+            ]
+          }
+        },
+        {
+          "name": "privateVmBackendPool",
+          "properties": {
+            "backendAddresses": [
+              {
+                "ipAddress": "10.0.0.4"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "backendHttpSettingsCollection": {
+      "value": [
+        {
+          "name": "appServiceBackendHttpsSetting",
+          "properties": {
+            "cookieBasedAffinity": "Disabled",
+            "pickHostNameFromBackendAddress": true,
+            "port": 443,
+            "protocol": "Https",
+            "requestTimeout": 30
+          }
+        },
+        {
+          "name": "privateVmHttpSetting",
+          "properties": {
+            "cookieBasedAffinity": "Disabled",
+            "pickHostNameFromBackendAddress": false,
+            "port": 80,
+            "probe": {
+              "id": "<id>"
+            },
+            "protocol": "Http",
+            "requestTimeout": 30
+          }
+        }
+      ]
+    },
+    "diagnosticSettings": {
+      "value": [
+        {
+          "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+          "eventHubName": "<eventHubName>",
+          "metricCategories": [
+            {
+              "category": "AllMetrics"
+            }
+          ],
+          "name": "customSetting",
+          "storageAccountResourceId": "<storageAccountResourceId>",
+          "workspaceResourceId": "<workspaceResourceId>"
+        }
+      ]
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "enableHttp2": {
+      "value": true
+    },
+    "frontendIPConfigurations": {
+      "value": [
+        {
+          "name": "private",
+          "properties": {
+            "privateIPAddress": "10.0.0.20",
+            "privateIPAllocationMethod": "Static",
+            "subnet": {
+              "id": "<id>"
+            }
+          }
+        },
+        {
+          "name": "public",
+          "properties": {
+            "privateIPAllocationMethod": "Dynamic",
+            "privateLinkConfiguration": {
+              "id": "<id>"
+            },
+            "publicIPAddress": {
+              "id": "<id>"
+            }
+          }
+        }
+      ]
+    },
+    "frontendPorts": {
+      "value": [
+        {
+          "name": "port443",
+          "properties": {
+            "port": 443
+          }
+        },
+        {
+          "name": "port4433",
+          "properties": {
+            "port": 4433
+          }
+        },
+        {
+          "name": "port80",
+          "properties": {
+            "port": 80
+          }
+        },
+        {
+          "name": "port8080",
+          "properties": {
+            "port": 8080
+          }
+        }
+      ]
+    },
+    "gatewayIPConfigurations": {
+      "value": [
+        {
+          "name": "apw-ip-configuration",
+          "properties": {
+            "subnet": {
+              "id": "<id>"
+            }
+          }
+        }
+      ]
+    },
+    "httpListeners": {
+      "value": [
+        {
+          "name": "public443",
+          "properties": {
+            "frontendIPConfiguration": {
+              "id": "<id>"
+            },
+            "frontendPort": {
+              "id": "<id>"
+            },
+            "hostNames": [],
+            "protocol": "https",
+            "requireServerNameIndication": false,
+            "sslCertificate": {
+              "id": "<id>"
+            }
+          }
+        },
+        {
+          "name": "private4433",
+          "properties": {
+            "frontendIPConfiguration": {
+              "id": "<id>"
+            },
+            "frontendPort": {
+              "id": "<id>"
+            },
+            "hostNames": [],
+            "protocol": "https",
+            "requireServerNameIndication": false,
+            "sslCertificate": {
+              "id": "<id>"
+            }
+          }
+        },
+        {
+          "name": "httpRedirect80",
+          "properties": {
+            "frontendIPConfiguration": {
+              "id": "<id>"
+            },
+            "frontendPort": {
+              "id": "<id>"
+            },
+            "hostNames": [],
+            "protocol": "Http",
+            "requireServerNameIndication": false
+          }
+        },
+        {
+          "name": "httpRedirect8080",
+          "properties": {
+            "frontendIPConfiguration": {
+              "id": "<id>"
+            },
+            "frontendPort": {
+              "id": "<id>"
+            },
+            "hostNames": [],
+            "protocol": "Http",
+            "requireServerNameIndication": false
+          }
+        }
+      ]
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "managedIdentities": {
+      "value": {
+        "userAssignedResourcesIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
+    },
+    "privateEndpoints": {
+      "value": [
+        {
+          "privateDnsZoneResourceIds": [
+            "<privateDNSZoneResourceId>"
+          ],
+          "service": "public",
+          "subnetResourceId": "<subnetResourceId>",
+          "tags": {
+            "Environment": "Non-Prod",
+            "Role": "DeploymentValidation"
+          }
+        }
+      ]
+    },
+    "privateLinkConfigurations": {
+      "value": [
+        {
+          "id": "<id>",
+          "name": "pvtlink01",
+          "properties": {
+            "ipConfigurations": [
+              {
+                "id": "<id>",
+                "name": "privateLinkIpConfig1",
+                "properties": {
+                  "primary": false,
+                  "privateIPAllocationMethod": "Dynamic",
+                  "subnet": {
+                    "id": "<id>"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "probes": {
+      "value": [
+        {
+          "name": "privateVmHttpSettingProbe",
+          "properties": {
+            "host": "10.0.0.4",
+            "interval": 60,
+            "match": {
+              "statusCodes": [
+                "200",
+                "401"
+              ]
+            },
+            "minServers": 3,
+            "path": "/",
+            "pickHostNameFromBackendHttpSettings": false,
+            "protocol": "Http",
+            "timeout": 15,
+            "unhealthyThreshold": 5
+          }
+        }
+      ]
+    },
+    "redirectConfigurations": {
+      "value": [
+        {
+          "name": "httpRedirect80",
+          "properties": {
+            "includePath": true,
+            "includeQueryString": true,
+            "redirectType": "Permanent",
+            "requestRoutingRules": [
+              {
+                "id": "<id>"
+              }
+            ],
+            "targetListener": {
+              "id": "<id>"
+            }
+          }
+        },
+        {
+          "name": "httpRedirect8080",
+          "properties": {
+            "includePath": true,
+            "includeQueryString": true,
+            "redirectType": "Permanent",
+            "requestRoutingRules": [
+              {
+                "id": "<id>"
+              }
+            ],
+            "targetListener": {
+              "id": "<id>"
+            }
+          }
+        }
+      ]
+    },
+    "requestRoutingRules": {
+      "value": [
+        {
+          "name": "public443-appServiceBackendHttpsSetting-appServiceBackendHttpsSetting",
+          "properties": {
+            "backendAddressPool": {
+              "id": "<id>"
+            },
+            "backendHttpSettings": {
+              "id": "<id>"
+            },
+            "httpListener": {
+              "id": "<id>"
+            },
+            "priority": 200,
+            "ruleType": "Basic"
+          }
+        },
+        {
+          "name": "private4433-privateVmHttpSetting-privateVmHttpSetting",
+          "properties": {
+            "backendAddressPool": {
+              "id": "<id>"
+            },
+            "backendHttpSettings": {
+              "id": "<id>"
+            },
+            "httpListener": {
+              "id": "<id>"
+            },
+            "priority": 250,
+            "ruleType": "Basic"
+          }
+        },
+        {
+          "name": "httpRedirect80-public443",
+          "properties": {
+            "httpListener": {
+              "id": "<id>"
+            },
+            "priority": 300,
+            "redirectConfiguration": {
+              "id": "<id>"
+            },
+            "ruleType": "Basic"
+          }
+        },
+        {
+          "name": "httpRedirect8080-private4433",
+          "properties": {
+            "httpListener": {
+              "id": "<id>"
+            },
+            "priority": 350,
+            "redirectConfiguration": {
+              "id": "<id>"
+            },
+            "rewriteRuleSet": {
+              "id": "<id>"
+            },
+            "ruleType": "Basic"
+          }
+        }
+      ]
+    },
+    "rewriteRuleSets": {
+      "value": [
+        {
+          "id": "<id>",
+          "name": "customRewrite",
+          "properties": {
+            "rewriteRules": [
+              {
+                "actionSet": {
+                  "requestHeaderConfigurations": [
+                    {
+                      "headerName": "Content-Type",
+                      "headerValue": "JSON"
+                    },
+                    {
+                      "headerName": "someheader"
+                    }
+                  ],
+                  "responseHeaderConfigurations": []
+                },
+                "conditions": [],
+                "name": "NewRewrite",
+                "ruleSequence": 100
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "sku": {
+      "value": "WAF_v2"
+    },
+    "sslCertificates": {
+      "value": [
+        {
+          "name": "az-apgw-x-001-ssl-certificate",
+          "properties": {
+            "keyVaultSecretId": "<keyVaultSecretId>"
+          }
+        }
+      ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    },
+    "webApplicationFirewallConfiguration": {
+      "value": {
+        "disabledRuleGroups": [
+          {
+            "ruleGroupName": "Known-CVEs"
+          },
+          {
+            "ruleGroupName": "REQUEST-943-APPLICATION-ATTACK-SESSION-FIXATION"
+          },
+          {
+            "ruleGroupName": "REQUEST-941-APPLICATION-ATTACK-XSS"
+          }
+        ],
+        "enabled": true,
+        "exclusions": [
+          {
+            "matchVariable": "RequestHeaderNames",
+            "selector": "hola",
+            "selectorMatchOperator": "StartsWith"
+          }
+        ],
+        "fileUploadLimitInMb": 100,
+        "firewallMode": "Detection",
+        "maxRequestBodySizeInKb": 128,
+        "requestBodyCheck": true,
+        "ruleSetType": "OWASP",
+        "ruleSetVersion": "3.0"
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 2: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module applicationGateway 'br:bicep/modules/network.application-gateway:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-nagwaf'
   params: {
     // Required parameters
     name: '<name>'

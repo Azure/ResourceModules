@@ -46,6 +46,7 @@ The following section provides usage examples for the module, which were used to
 - [Using large parameter set](#example-3-using-large-parameter-set)
 - [Nfs](#example-4-nfs)
 - [V1](#example-5-v1)
+- [WAF-aligned](#example-6-waf-aligned)
 
 ### Example 1: _Using only defaults_
 
@@ -1093,6 +1094,620 @@ module storageAccount 'br:bicep/modules/storage.storage-account:1.0.0' = {
     },
     "kind": {
       "value": "Storage"
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 6: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module storageAccount 'br:bicep/modules/storage.storage-account:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-ssawaf'
+  params: {
+    // Required parameters
+    name: 'ssawaf001'
+    // Non-required parameters
+    allowBlobPublicAccess: false
+    blobServices: {
+      automaticSnapshotPolicyEnabled: true
+      containerDeleteRetentionPolicyDays: 10
+      containerDeleteRetentionPolicyEnabled: true
+      containers: [
+        {
+          enableNfsV3AllSquash: true
+          enableNfsV3RootSquash: true
+          name: 'avdscripts'
+          publicAccess: 'None'
+          roleAssignments: [
+            {
+              principalId: '<principalId>'
+              principalType: 'ServicePrincipal'
+              roleDefinitionIdOrName: 'Reader'
+            }
+          ]
+        }
+        {
+          allowProtectedAppendWrites: false
+          enableWORM: true
+          metadata: {
+            testKey: 'testValue'
+          }
+          name: 'archivecontainer'
+          publicAccess: 'None'
+          WORMRetention: 666
+        }
+      ]
+      deleteRetentionPolicyDays: 9
+      deleteRetentionPolicyEnabled: true
+      diagnosticSettings: [
+        {
+          eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+          eventHubName: '<eventHubName>'
+          metricCategories: [
+            {
+              category: 'AllMetrics'
+            }
+          ]
+          name: 'customSetting'
+          storageAccountResourceId: '<storageAccountResourceId>'
+          workspaceResourceId: '<workspaceResourceId>'
+        }
+      ]
+      lastAccessTimeTrackingPolicyEnabled: true
+    }
+    diagnosticSettings: [
+      {
+        eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+        eventHubName: '<eventHubName>'
+        metricCategories: [
+          {
+            category: 'AllMetrics'
+          }
+        ]
+        name: 'customSetting'
+        storageAccountResourceId: '<storageAccountResourceId>'
+        workspaceResourceId: '<workspaceResourceId>'
+      }
+    ]
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    enableHierarchicalNamespace: true
+    enableNfsV3: true
+    enableSftp: true
+    fileServices: {
+      diagnosticSettings: [
+        {
+          eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+          eventHubName: '<eventHubName>'
+          metricCategories: [
+            {
+              category: 'AllMetrics'
+            }
+          ]
+          name: 'customSetting'
+          storageAccountResourceId: '<storageAccountResourceId>'
+          workspaceResourceId: '<workspaceResourceId>'
+        }
+      ]
+      shares: [
+        {
+          accessTier: 'Hot'
+          name: 'avdprofiles'
+          roleAssignments: [
+            {
+              principalId: '<principalId>'
+              principalType: 'ServicePrincipal'
+              roleDefinitionIdOrName: 'Reader'
+            }
+          ]
+          shareQuota: 5120
+        }
+        {
+          name: 'avdprofiles2'
+          shareQuota: 102400
+        }
+      ]
+    }
+    largeFileSharesState: 'Enabled'
+    localUsers: [
+      {
+        hasSharedKey: false
+        hasSshKey: true
+        hasSshPassword: false
+        homeDirectory: 'avdscripts'
+        name: 'testuser'
+        permissionScopes: [
+          {
+            permissions: 'r'
+            resourceName: 'avdscripts'
+            service: 'blob'
+          }
+        ]
+        storageAccountName: 'ssawaf001'
+      }
+    ]
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    managedIdentities: {
+      systemAssigned: true
+      userAssignedResourcesIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
+    managementPolicyRules: [
+      {
+        definition: {
+          actions: {
+            baseBlob: {
+              delete: {
+                daysAfterModificationGreaterThan: 30
+              }
+              tierToCool: {
+                daysAfterLastAccessTimeGreaterThan: 5
+              }
+            }
+          }
+          filters: {
+            blobIndexMatch: [
+              {
+                name: 'BlobIndex'
+                op: '=='
+                value: '1'
+              }
+            ]
+            blobTypes: [
+              'blockBlob'
+            ]
+            prefixMatch: [
+              'sample-container/log'
+            ]
+          }
+        }
+        enabled: true
+        name: 'FirstRule'
+        type: 'Lifecycle'
+      }
+    ]
+    networkAcls: {
+      bypass: 'AzureServices'
+      defaultAction: 'Deny'
+      ipRules: [
+        {
+          action: 'Allow'
+          value: '1.1.1.1'
+        }
+      ]
+      virtualNetworkRules: [
+        {
+          action: 'Allow'
+          id: '<id>'
+        }
+      ]
+    }
+    privateEndpoints: [
+      {
+        privateDnsZoneResourceIds: [
+          '<privateDNSZoneResourceId>'
+        ]
+        service: 'blob'
+        subnetResourceId: '<subnetResourceId>'
+        tags: {
+          Environment: 'Non-Prod'
+          'hidden-title': 'This is visible in the resource name'
+          Role: 'DeploymentValidation'
+        }
+      }
+    ]
+    queueServices: {
+      diagnosticSettings: [
+        {
+          eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+          eventHubName: '<eventHubName>'
+          metricCategories: [
+            {
+              category: 'AllMetrics'
+            }
+          ]
+          name: 'customSetting'
+          storageAccountResourceId: '<storageAccountResourceId>'
+          workspaceResourceId: '<workspaceResourceId>'
+        }
+      ]
+      queues: [
+        {
+          metadata: {
+            key1: 'value1'
+            key2: 'value2'
+          }
+          name: 'queue1'
+          roleAssignments: [
+            {
+              principalId: '<principalId>'
+              principalType: 'ServicePrincipal'
+              roleDefinitionIdOrName: 'Reader'
+            }
+          ]
+        }
+        {
+          metadata: {}
+          name: 'queue2'
+        }
+      ]
+    }
+    requireInfrastructureEncryption: true
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    sasExpirationPeriod: '180.00:00:00'
+    skuName: 'Standard_LRS'
+    tableServices: {
+      diagnosticSettings: [
+        {
+          eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+          eventHubName: '<eventHubName>'
+          metricCategories: [
+            {
+              category: 'AllMetrics'
+            }
+          ]
+          name: 'customSetting'
+          storageAccountResourceId: '<storageAccountResourceId>'
+          workspaceResourceId: '<workspaceResourceId>'
+        }
+      ]
+      tables: [
+        'table1'
+        'table2'
+      ]
+    }
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "ssawaf001"
+    },
+    // Non-required parameters
+    "allowBlobPublicAccess": {
+      "value": false
+    },
+    "blobServices": {
+      "value": {
+        "automaticSnapshotPolicyEnabled": true,
+        "containerDeleteRetentionPolicyDays": 10,
+        "containerDeleteRetentionPolicyEnabled": true,
+        "containers": [
+          {
+            "enableNfsV3AllSquash": true,
+            "enableNfsV3RootSquash": true,
+            "name": "avdscripts",
+            "publicAccess": "None",
+            "roleAssignments": [
+              {
+                "principalId": "<principalId>",
+                "principalType": "ServicePrincipal",
+                "roleDefinitionIdOrName": "Reader"
+              }
+            ]
+          },
+          {
+            "allowProtectedAppendWrites": false,
+            "enableWORM": true,
+            "metadata": {
+              "testKey": "testValue"
+            },
+            "name": "archivecontainer",
+            "publicAccess": "None",
+            "WORMRetention": 666
+          }
+        ],
+        "deleteRetentionPolicyDays": 9,
+        "deleteRetentionPolicyEnabled": true,
+        "diagnosticSettings": [
+          {
+            "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+            "eventHubName": "<eventHubName>",
+            "metricCategories": [
+              {
+                "category": "AllMetrics"
+              }
+            ],
+            "name": "customSetting",
+            "storageAccountResourceId": "<storageAccountResourceId>",
+            "workspaceResourceId": "<workspaceResourceId>"
+          }
+        ],
+        "lastAccessTimeTrackingPolicyEnabled": true
+      }
+    },
+    "diagnosticSettings": {
+      "value": [
+        {
+          "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+          "eventHubName": "<eventHubName>",
+          "metricCategories": [
+            {
+              "category": "AllMetrics"
+            }
+          ],
+          "name": "customSetting",
+          "storageAccountResourceId": "<storageAccountResourceId>",
+          "workspaceResourceId": "<workspaceResourceId>"
+        }
+      ]
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "enableHierarchicalNamespace": {
+      "value": true
+    },
+    "enableNfsV3": {
+      "value": true
+    },
+    "enableSftp": {
+      "value": true
+    },
+    "fileServices": {
+      "value": {
+        "diagnosticSettings": [
+          {
+            "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+            "eventHubName": "<eventHubName>",
+            "metricCategories": [
+              {
+                "category": "AllMetrics"
+              }
+            ],
+            "name": "customSetting",
+            "storageAccountResourceId": "<storageAccountResourceId>",
+            "workspaceResourceId": "<workspaceResourceId>"
+          }
+        ],
+        "shares": [
+          {
+            "accessTier": "Hot",
+            "name": "avdprofiles",
+            "roleAssignments": [
+              {
+                "principalId": "<principalId>",
+                "principalType": "ServicePrincipal",
+                "roleDefinitionIdOrName": "Reader"
+              }
+            ],
+            "shareQuota": 5120
+          },
+          {
+            "name": "avdprofiles2",
+            "shareQuota": 102400
+          }
+        ]
+      }
+    },
+    "largeFileSharesState": {
+      "value": "Enabled"
+    },
+    "localUsers": {
+      "value": [
+        {
+          "hasSharedKey": false,
+          "hasSshKey": true,
+          "hasSshPassword": false,
+          "homeDirectory": "avdscripts",
+          "name": "testuser",
+          "permissionScopes": [
+            {
+              "permissions": "r",
+              "resourceName": "avdscripts",
+              "service": "blob"
+            }
+          ],
+          "storageAccountName": "ssawaf001"
+        }
+      ]
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "managedIdentities": {
+      "value": {
+        "systemAssigned": true,
+        "userAssignedResourcesIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
+    },
+    "managementPolicyRules": {
+      "value": [
+        {
+          "definition": {
+            "actions": {
+              "baseBlob": {
+                "delete": {
+                  "daysAfterModificationGreaterThan": 30
+                },
+                "tierToCool": {
+                  "daysAfterLastAccessTimeGreaterThan": 5
+                }
+              }
+            },
+            "filters": {
+              "blobIndexMatch": [
+                {
+                  "name": "BlobIndex",
+                  "op": "==",
+                  "value": "1"
+                }
+              ],
+              "blobTypes": [
+                "blockBlob"
+              ],
+              "prefixMatch": [
+                "sample-container/log"
+              ]
+            }
+          },
+          "enabled": true,
+          "name": "FirstRule",
+          "type": "Lifecycle"
+        }
+      ]
+    },
+    "networkAcls": {
+      "value": {
+        "bypass": "AzureServices",
+        "defaultAction": "Deny",
+        "ipRules": [
+          {
+            "action": "Allow",
+            "value": "1.1.1.1"
+          }
+        ],
+        "virtualNetworkRules": [
+          {
+            "action": "Allow",
+            "id": "<id>"
+          }
+        ]
+      }
+    },
+    "privateEndpoints": {
+      "value": [
+        {
+          "privateDnsZoneResourceIds": [
+            "<privateDNSZoneResourceId>"
+          ],
+          "service": "blob",
+          "subnetResourceId": "<subnetResourceId>",
+          "tags": {
+            "Environment": "Non-Prod",
+            "hidden-title": "This is visible in the resource name",
+            "Role": "DeploymentValidation"
+          }
+        }
+      ]
+    },
+    "queueServices": {
+      "value": {
+        "diagnosticSettings": [
+          {
+            "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+            "eventHubName": "<eventHubName>",
+            "metricCategories": [
+              {
+                "category": "AllMetrics"
+              }
+            ],
+            "name": "customSetting",
+            "storageAccountResourceId": "<storageAccountResourceId>",
+            "workspaceResourceId": "<workspaceResourceId>"
+          }
+        ],
+        "queues": [
+          {
+            "metadata": {
+              "key1": "value1",
+              "key2": "value2"
+            },
+            "name": "queue1",
+            "roleAssignments": [
+              {
+                "principalId": "<principalId>",
+                "principalType": "ServicePrincipal",
+                "roleDefinitionIdOrName": "Reader"
+              }
+            ]
+          },
+          {
+            "metadata": {},
+            "name": "queue2"
+          }
+        ]
+      }
+    },
+    "requireInfrastructureEncryption": {
+      "value": true
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "sasExpirationPeriod": {
+      "value": "180.00:00:00"
+    },
+    "skuName": {
+      "value": "Standard_LRS"
+    },
+    "tableServices": {
+      "value": {
+        "diagnosticSettings": [
+          {
+            "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+            "eventHubName": "<eventHubName>",
+            "metricCategories": [
+              {
+                "category": "AllMetrics"
+              }
+            ],
+            "name": "customSetting",
+            "storageAccountResourceId": "<storageAccountResourceId>",
+            "workspaceResourceId": "<workspaceResourceId>"
+          }
+        ],
+        "tables": [
+          "table1",
+          "table2"
+        ]
+      }
     },
     "tags": {
       "value": {

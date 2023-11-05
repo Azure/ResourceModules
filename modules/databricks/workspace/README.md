@@ -32,6 +32,7 @@ The following section provides usage examples for the module, which were used to
 
 - [Using only defaults](#example-1-using-only-defaults)
 - [Using large parameter set](#example-2-using-large-parameter-set)
+- [WAF-aligned](#example-3-waf-aligned)
 
 ### Example 1: _Using only defaults_
 
@@ -306,6 +307,252 @@ module workspace 'br:bicep/modules/databricks.workspace:1.0.0' = {
     },
     "storageAccountName": {
       "value": "sadwmax001"
+    },
+    "storageAccountSkuName": {
+      "value": "Standard_ZRS"
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    },
+    "vnetAddressPrefix": {
+      "value": "10.100"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 3: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module workspace 'br:bicep/modules/databricks.workspace:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-dwwaf'
+  params: {
+    // Required parameters
+    name: 'dwwaf001'
+    // Non-required parameters
+    amlWorkspaceResourceId: '<amlWorkspaceResourceId>'
+    customerManagedKey: {
+      keyName: '<keyName>'
+      keyVaultResourceId: '<keyVaultResourceId>'
+    }
+    customerManagedKeyManagedDisk: {
+      keyName: '<keyName>'
+      keyVaultResourceId: '<keyVaultResourceId>'
+      rotationToLatestKeyVersionEnabled: true
+    }
+    customPrivateSubnetName: '<customPrivateSubnetName>'
+    customPublicSubnetName: '<customPublicSubnetName>'
+    customVirtualNetworkResourceId: '<customVirtualNetworkResourceId>'
+    diagnosticSettings: [
+      {
+        eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+        eventHubName: '<eventHubName>'
+        logCategoriesAndGroups: [
+          {
+            category: 'jobs'
+          }
+          {
+            category: 'notebook'
+          }
+        ]
+        name: 'customSetting'
+        storageAccountResourceId: '<storageAccountResourceId>'
+        workspaceResourceId: '<workspaceResourceId>'
+      }
+    ]
+    disablePublicIp: true
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    loadBalancerBackendPoolName: '<loadBalancerBackendPoolName>'
+    loadBalancerResourceId: '<loadBalancerResourceId>'
+    location: '<location>'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    managedResourceGroupResourceId: '<managedResourceGroupResourceId>'
+    natGatewayName: 'nat-gateway'
+    prepareEncryption: true
+    privateEndpoints: [
+      {
+        privateDnsZoneResourceIds: [
+          '<privateDNSZoneResourceId>'
+        ]
+        subnetResourceId: '<subnetResourceId>'
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
+      }
+    ]
+    publicIpName: 'nat-gw-public-ip'
+    publicNetworkAccess: 'Disabled'
+    requiredNsgRules: 'NoAzureDatabricksRules'
+    requireInfrastructureEncryption: true
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    skuName: 'premium'
+    storageAccountName: 'sadwwaf001'
+    storageAccountSkuName: 'Standard_ZRS'
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+    vnetAddressPrefix: '10.100'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "dwwaf001"
+    },
+    // Non-required parameters
+    "amlWorkspaceResourceId": {
+      "value": "<amlWorkspaceResourceId>"
+    },
+    "customerManagedKey": {
+      "value": {
+        "keyName": "<keyName>",
+        "keyVaultResourceId": "<keyVaultResourceId>"
+      }
+    },
+    "customerManagedKeyManagedDisk": {
+      "value": {
+        "keyName": "<keyName>",
+        "keyVaultResourceId": "<keyVaultResourceId>",
+        "rotationToLatestKeyVersionEnabled": true
+      }
+    },
+    "customPrivateSubnetName": {
+      "value": "<customPrivateSubnetName>"
+    },
+    "customPublicSubnetName": {
+      "value": "<customPublicSubnetName>"
+    },
+    "customVirtualNetworkResourceId": {
+      "value": "<customVirtualNetworkResourceId>"
+    },
+    "diagnosticSettings": {
+      "value": [
+        {
+          "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+          "eventHubName": "<eventHubName>",
+          "logCategoriesAndGroups": [
+            {
+              "category": "jobs"
+            },
+            {
+              "category": "notebook"
+            }
+          ],
+          "name": "customSetting",
+          "storageAccountResourceId": "<storageAccountResourceId>",
+          "workspaceResourceId": "<workspaceResourceId>"
+        }
+      ]
+    },
+    "disablePublicIp": {
+      "value": true
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "loadBalancerBackendPoolName": {
+      "value": "<loadBalancerBackendPoolName>"
+    },
+    "loadBalancerResourceId": {
+      "value": "<loadBalancerResourceId>"
+    },
+    "location": {
+      "value": "<location>"
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "managedResourceGroupResourceId": {
+      "value": "<managedResourceGroupResourceId>"
+    },
+    "natGatewayName": {
+      "value": "nat-gateway"
+    },
+    "prepareEncryption": {
+      "value": true
+    },
+    "privateEndpoints": {
+      "value": [
+        {
+          "privateDnsZoneResourceIds": [
+            "<privateDNSZoneResourceId>"
+          ],
+          "subnetResourceId": "<subnetResourceId>",
+          "tags": {
+            "Environment": "Non-Prod",
+            "Role": "DeploymentValidation"
+          }
+        }
+      ]
+    },
+    "publicIpName": {
+      "value": "nat-gw-public-ip"
+    },
+    "publicNetworkAccess": {
+      "value": "Disabled"
+    },
+    "requiredNsgRules": {
+      "value": "NoAzureDatabricksRules"
+    },
+    "requireInfrastructureEncryption": {
+      "value": true
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "skuName": {
+      "value": "premium"
+    },
+    "storageAccountName": {
+      "value": "sadwwaf001"
     },
     "storageAccountSkuName": {
       "value": "Standard_ZRS"
