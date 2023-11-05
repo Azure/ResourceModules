@@ -15,7 +15,7 @@ param resourceGroupName string = 'dep-${namePrefix}-web.serverfarms-${serviceSho
 param location string = deployment().location
 
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints.')
-param serviceShort string = 'wsfmax'
+param serviceShort string = 'wsfwaf'
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true

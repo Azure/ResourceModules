@@ -14,7 +14,7 @@ param resourceGroupName string = 'dep-${namePrefix}-purview-${serviceShort}-rg'
 param location string = 'eastus' // Only available in selected locations: eastus, eastus2, southcentralus, westcentralus, westus, westus2, westus3
 
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints.')
-param serviceShort string = 'pvamax'
+param serviceShort string = 'pvawaf'
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true

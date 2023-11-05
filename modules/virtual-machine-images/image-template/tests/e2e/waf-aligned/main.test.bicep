@@ -15,7 +15,7 @@ param resourceGroupName string = 'dep-${namePrefix}-virtualmachineimages.imagete
 param location string = deployment().location
 
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints.')
-param serviceShort string = 'vmiitmax'
+param serviceShort string = 'vmiitwaf'
 
 @description('Optional. The version of the Azure Compute Gallery Image Definition to be added.')
 param sigImageVersion string = utcNow('yyyy.MM.dd')

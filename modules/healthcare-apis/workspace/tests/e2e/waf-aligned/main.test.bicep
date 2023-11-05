@@ -14,7 +14,7 @@ param resourceGroupName string = 'dep-${namePrefix}-healthcareapis.workspaces-${
 param location string = deployment().location
 
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints.')
-param serviceShort string = 'hawmax'
+param serviceShort string = 'hawwaf'
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true

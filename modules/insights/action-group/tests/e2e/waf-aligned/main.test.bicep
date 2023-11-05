@@ -15,7 +15,7 @@ param resourceGroupName string = 'dep-${namePrefix}-insights.actiongroups-${serv
 param location string = deployment().location
 
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints.')
-param serviceShort string = 'iagmax'
+param serviceShort string = 'iagwaf'
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true

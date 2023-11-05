@@ -15,7 +15,7 @@ param resourceGroupName string = 'dep-${namePrefix}-network.routetables-${servic
 param location string = deployment().location
 
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints.')
-param serviceShort string = 'nrtmax'
+param serviceShort string = 'nrtwaf'
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
