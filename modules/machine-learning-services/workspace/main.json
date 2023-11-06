@@ -6,13 +6,35 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "9862874616442885683"
+      "templateHash": "308162699302204935"
     },
     "name": "Machine Learning Services Workspaces",
     "description": "This module deploys a Machine Learning Services Workspace.",
     "owner": "Azure/module-maintainers"
   },
   "definitions": {
+    "managedIdentitiesType": {
+      "type": "object",
+      "properties": {
+        "systemAssigned": {
+          "type": "bool",
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Enables system assigned managed identity on the resource."
+          }
+        },
+        "userAssignedResourcesIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. The resource ID(s) to assign to the resource."
+          }
+        }
+      }
+    },
     "lockType": {
       "type": "object",
       "properties": {
@@ -183,14 +205,19 @@
                 "name": {
                   "type": "string"
                 },
-                "groupId": {
-                  "type": "string"
-                },
-                "memberName": {
-                  "type": "string"
-                },
-                "privateIpAddress": {
-                  "type": "string"
+                "properties": {
+                  "type": "object",
+                  "properties": {
+                    "groupId": {
+                      "type": "string"
+                    },
+                    "memberName": {
+                      "type": "string"
+                    },
+                    "privateIPAddress": {
+                      "type": "string"
+                    }
+                  }
                 }
               }
             },
@@ -358,6 +385,38 @@
         }
       },
       "nullable": true
+    },
+    "customerManagedKeyType": {
+      "type": "object",
+      "properties": {
+        "keyVaultResourceId": {
+          "type": "string",
+          "metadata": {
+            "description": "Required. The resource ID of a key vault to reference a customer managed key for encryption from."
+          }
+        },
+        "keyName": {
+          "type": "string",
+          "metadata": {
+            "description": "Required. The name of the customer managed key to use for encryption."
+          }
+        },
+        "keyVersion": {
+          "type": "string",
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. The version of the customer managed key to reference for encryption. If not provided, using 'latest'."
+          }
+        },
+        "userAssignedIdentityResourceId": {
+          "type": "string",
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. User assigned identity to use when fetching the customer managed key. Required if no system assigned identity is available for use."
+          }
+        }
+      },
+      "nullable": true
     }
   },
   "parameters": {
@@ -452,7 +511,7 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Resource tags."
       }
@@ -464,18 +523,13 @@
         "description": "Optional. Enable telemetry via a Globally Unique Identifier (GUID)."
       }
     },
-    "systemAssignedIdentity": {
-      "type": "bool",
-      "defaultValue": false,
+    "managedIdentities": {
+      "$ref": "#/definitions/managedIdentitiesType",
+      "defaultValue": {
+        "systemAssigned": true
+      },
       "metadata": {
-        "description": "Conditional. Enables system assigned managed identity on the resource. Required if `userAssignedIdentities` is not provided."
-      }
-    },
-    "userAssignedIdentities": {
-      "type": "object",
-      "defaultValue": {},
-      "metadata": {
-        "description": "Conditional. The ID(s) to assign to the resource. Required if `systemAssignedIdentity` is set to false."
+        "description": "Optional. The managed identity definition for this resource. At least one identity type is required."
       }
     },
     "diagnosticSettings": {
@@ -498,32 +552,10 @@
         "description": "Optional. URL for the discovery service to identify regional endpoints for machine learning experimentation services."
       }
     },
-    "cMKKeyVaultResourceId": {
-      "type": "string",
-      "defaultValue": "",
+    "customerManagedKey": {
+      "$ref": "#/definitions/customerManagedKeyType",
       "metadata": {
-        "description": "Conditional. The resource ID of a key vault to reference a customer managed key for encryption from. Required if 'cMKKeyName' is not empty."
-      }
-    },
-    "cMKKeyName": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": "Optional. The name of the customer managed key to use for encryption."
-      }
-    },
-    "cMKKeyVersion": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": "Optional. The version of the customer managed key to reference for encryption. If not provided, the latest key version is used."
-      }
-    },
-    "cMKUserAssignedIdentityResourceId": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": "Optional. User assigned identity to use when fetching the customer managed key. If not provided, a system-assigned identity can be used - but must be given access to the referenced key vault first."
+        "description": "Optional. The customer managed key definition."
       }
     },
     "imageBuildCompute": {
@@ -569,8 +601,8 @@
   },
   "variables": {
     "enableReferencedModulesTelemetry": false,
-    "identityType": "[if(parameters('systemAssignedIdentity'), if(not(empty(parameters('userAssignedIdentities'))), 'SystemAssigned,UserAssigned', 'SystemAssigned'), if(not(empty(parameters('userAssignedIdentities'))), 'UserAssigned', 'None'))]",
-    "identity": "[if(not(equals(variables('identityType'), 'None')), createObject('type', variables('identityType'), 'userAssignedIdentities', if(not(empty(parameters('userAssignedIdentities'))), parameters('userAssignedIdentities'), null())), null())]",
+    "formattedUserAssignedIdentities": "[reduce(map(coalesce(tryGet(parameters('managedIdentities'), 'userAssignedResourcesIds'), createArray()), lambda('id', createObject(format('{0}', lambdaVariables('id')), createObject()))), createObject(), lambda('cur', 'next', union(lambdaVariables('cur'), lambdaVariables('next'))))]",
+    "identity": "[if(not(empty(parameters('managedIdentities'))), createObject('type', if(coalesce(tryGet(parameters('managedIdentities'), 'systemAssigned'), false()), if(not(empty(coalesce(tryGet(parameters('managedIdentities'), 'userAssignedResourcesIds'), createObject()))), 'SystemAssigned,UserAssigned', 'SystemAssigned'), if(not(empty(coalesce(tryGet(parameters('managedIdentities'), 'userAssignedResourcesIds'), createObject()))), 'UserAssigned', null())), 'userAssignedIdentities', if(not(empty(variables('formattedUserAssignedIdentities'))), variables('formattedUserAssignedIdentities'), null())), null())]",
     "builtInRoleNames": {
       "AzureML Compute Operator": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'e503ece1-11d0-4e8e-8e2c-7a6c3bf38815')]",
       "AzureML Data Scientist": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'f6c7c914-8db3-469d-8ca1-694a8f32e121')]",
@@ -585,13 +617,13 @@
   },
   "resources": {
     "cMKKeyVault::cMKKey": {
-      "condition": "[and(not(empty(parameters('cMKKeyVaultResourceId'))), not(empty(parameters('cMKKeyName'))))]",
+      "condition": "[and(not(empty(tryGet(parameters('customerManagedKey'), 'keyVaultResourceId'))), and(not(empty(tryGet(parameters('customerManagedKey'), 'keyVaultResourceId'))), not(empty(tryGet(parameters('customerManagedKey'), 'keyName')))))]",
       "existing": true,
       "type": "Microsoft.KeyVault/vaults/keys",
       "apiVersion": "2023-02-01",
-      "subscriptionId": "[split(if(not(empty(parameters('cMKKeyVaultResourceId'))), parameters('cMKKeyVaultResourceId'), '//'), '/')[2]]",
-      "resourceGroup": "[split(if(not(empty(parameters('cMKKeyVaultResourceId'))), parameters('cMKKeyVaultResourceId'), '////'), '/')[4]]",
-      "name": "[format('{0}/{1}', last(split(if(not(empty(parameters('cMKKeyVaultResourceId'))), parameters('cMKKeyVaultResourceId'), 'dummyVault'), '/')), if(not(empty(parameters('cMKKeyName'))), parameters('cMKKeyName'), 'dummyKey'))]",
+      "subscriptionId": "[split(coalesce(tryGet(parameters('customerManagedKey'), 'keyVaultResourceId'), '//'), '/')[2]]",
+      "resourceGroup": "[split(coalesce(tryGet(parameters('customerManagedKey'), 'keyVaultResourceId'), '////'), '/')[4]]",
+      "name": "[format('{0}/{1}', last(split(coalesce(tryGet(parameters('customerManagedKey'), 'keyVaultResourceId'), 'dummyVault'), '/')), coalesce(tryGet(parameters('customerManagedKey'), 'keyName'), 'dummyKey'))]",
       "dependsOn": [
         "cMKKeyVault"
       ]
@@ -611,13 +643,22 @@
       }
     },
     "cMKKeyVault": {
-      "condition": "[not(empty(parameters('cMKKeyVaultResourceId')))]",
+      "condition": "[not(empty(tryGet(parameters('customerManagedKey'), 'keyVaultResourceId')))]",
       "existing": true,
       "type": "Microsoft.KeyVault/vaults",
-      "apiVersion": "2021-10-01",
-      "subscriptionId": "[split(if(not(empty(parameters('cMKKeyVaultResourceId'))), parameters('cMKKeyVaultResourceId'), '//'), '/')[2]]",
-      "resourceGroup": "[split(if(not(empty(parameters('cMKKeyVaultResourceId'))), parameters('cMKKeyVaultResourceId'), '////'), '/')[4]]",
-      "name": "[last(split(if(not(empty(parameters('cMKKeyVaultResourceId'))), parameters('cMKKeyVaultResourceId'), 'dummyVault'), '/'))]"
+      "apiVersion": "2023-02-01",
+      "subscriptionId": "[split(coalesce(tryGet(parameters('customerManagedKey'), 'keyVaultResourceId'), '//'), '/')[2]]",
+      "resourceGroup": "[split(coalesce(tryGet(parameters('customerManagedKey'), 'keyVaultResourceId'), '////'), '/')[4]]",
+      "name": "[last(split(coalesce(tryGet(parameters('customerManagedKey'), 'keyVaultResourceId'), 'dummyVault'), '/'))]"
+    },
+    "cMKUserAssignedIdentity": {
+      "condition": "[not(empty(tryGet(parameters('customerManagedKey'), 'userAssignedIdentityResourceId')))]",
+      "existing": true,
+      "type": "Microsoft.ManagedIdentity/userAssignedIdentities",
+      "apiVersion": "2023-01-31",
+      "subscriptionId": "[split(coalesce(tryGet(parameters('customerManagedKey'), 'userAssignedIdentityResourceId'), '//'), '/')[2]]",
+      "resourceGroup": "[split(coalesce(tryGet(parameters('customerManagedKey'), 'userAssignedIdentityResourceId'), '////'), '/')[4]]",
+      "name": "[last(split(coalesce(tryGet(parameters('customerManagedKey'), 'userAssignedIdentityResourceId'), 'dummyMsi'), '/'))]"
     },
     "workspace": {
       "type": "Microsoft.MachineLearningServices/workspaces",
@@ -640,7 +681,7 @@
         "allowPublicAccessWhenBehindVnet": "[parameters('allowPublicAccessWhenBehindVnet')]",
         "description": "[parameters('description')]",
         "discoveryUrl": "[parameters('discoveryUrl')]",
-        "encryption": "[if(not(empty(parameters('cMKKeyName'))), createObject('status', 'Enabled', 'identity', if(not(empty(parameters('cMKUserAssignedIdentityResourceId'))), createObject('userAssignedIdentity', parameters('cMKUserAssignedIdentityResourceId')), null()), 'keyVaultProperties', createObject('keyVaultArmId', parameters('cMKKeyVaultResourceId'), 'keyIdentifier', if(not(empty(parameters('cMKKeyVersion'))), format('{0}/{1}', reference('cMKKeyVault::cMKKey').keyUri, parameters('cMKKeyVersion')), reference('cMKKeyVault::cMKKey').keyUriWithVersion))), null())]",
+        "encryption": "[if(not(empty(parameters('customerManagedKey'))), createObject('status', 'Enabled', 'identity', if(not(empty(tryGet(parameters('customerManagedKey'), 'userAssignedIdentityResourceId'))), createObject('userAssignedIdentity', extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', split(coalesce(tryGet(parameters('customerManagedKey'), 'userAssignedIdentityResourceId'), '//'), '/')[2], split(coalesce(tryGet(parameters('customerManagedKey'), 'userAssignedIdentityResourceId'), '////'), '/')[4]), 'Microsoft.ManagedIdentity/userAssignedIdentities', last(split(coalesce(tryGet(parameters('customerManagedKey'), 'userAssignedIdentityResourceId'), 'dummyMsi'), '/')))), null()), 'keyVaultProperties', createObject('keyVaultArmId', extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', split(coalesce(tryGet(parameters('customerManagedKey'), 'keyVaultResourceId'), '//'), '/')[2], split(coalesce(tryGet(parameters('customerManagedKey'), 'keyVaultResourceId'), '////'), '/')[4]), 'Microsoft.KeyVault/vaults', last(split(coalesce(tryGet(parameters('customerManagedKey'), 'keyVaultResourceId'), 'dummyVault'), '/'))), 'keyIdentifier', if(not(empty(coalesce(tryGet(parameters('customerManagedKey'), 'keyVersion'), ''))), format('{0}/{1}', reference('cMKKeyVault::cMKKey').keyUri, parameters('customerManagedKey').keyVersion), reference('cMKKeyVault::cMKKey').keyUriWithVersion))), null())]",
         "imageBuildCompute": "[parameters('imageBuildCompute')]",
         "primaryUserAssignedIdentity": "[parameters('primaryUserAssignedIdentity')]",
         "publicNetworkAccess": "[if(not(empty(parameters('publicNetworkAccess'))), parameters('publicNetworkAccess'), if(not(empty(parameters('privateEndpoints'))), 'Disabled', 'Enabled'))]",
@@ -648,7 +689,8 @@
         "sharedPrivateLinkResources": "[parameters('sharedPrivateLinkResources')]"
       },
       "dependsOn": [
-        "cMKKeyVault"
+        "cMKKeyVault",
+        "cMKUserAssignedIdentity"
       ]
     },
     "workspace_lock": {
@@ -734,8 +776,7 @@
             "value": "[parameters('computes')[copyIndex()].location]"
           },
           "sku": "[if(contains(parameters('computes')[copyIndex()], 'sku'), createObject('value', parameters('computes')[copyIndex()].sku), createObject('value', ''))]",
-          "systemAssignedIdentity": "[if(contains(parameters('computes')[copyIndex()], 'systemAssignedIdentity'), createObject('value', parameters('computes')[copyIndex()].systemAssignedIdentity), createObject('value', false()))]",
-          "userAssignedIdentities": "[if(contains(parameters('computes')[copyIndex()], 'userAssignedIdentities'), createObject('value', parameters('computes')[copyIndex()].userAssignedIdentities), createObject('value', createObject()))]",
+          "managedIdentities": "[if(contains(parameters('computes')[copyIndex()], 'managedIdentities'), createObject('value', parameters('computes')[copyIndex()].managedIdentities), createObject('value', null()))]",
           "tags": "[if(contains(parameters('computes')[copyIndex()], 'tags'), createObject('value', parameters('computes')[copyIndex()].tags), createObject('value', createObject()))]",
           "deployCompute": "[if(contains(parameters('computes')[copyIndex()], 'deployCompute'), createObject('value', parameters('computes')[copyIndex()].deployCompute), createObject('value', true()))]",
           "computeLocation": "[if(contains(parameters('computes')[copyIndex()], 'computeLocation'), createObject('value', parameters('computes')[copyIndex()].computeLocation), createObject('value', ''))]",
@@ -751,16 +792,42 @@
         },
         "template": {
           "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "languageVersion": "2.0",
           "contentVersion": "1.0.0.0",
           "metadata": {
             "_generator": {
               "name": "bicep",
               "version": "0.22.6.54827",
-              "templateHash": "12652944532720556326"
+              "templateHash": "4219662265444129565"
             },
             "name": "Machine Learning Services Workspaces Computes",
             "description": "This module deploys a Machine Learning Services Workspaces Compute.\r\n\r\nAttaching a compute is not idempotent and will fail in case you try to redeploy over an existing compute in AML (see parameter `deployCompute`).",
             "owner": "Azure/module-maintainers"
+          },
+          "definitions": {
+            "managedIdentitiesType": {
+              "type": "object",
+              "properties": {
+                "systemAssigned": {
+                  "type": "bool",
+                  "nullable": true,
+                  "metadata": {
+                    "description": "Optional. Enables system assigned managed identity on the resource."
+                  }
+                },
+                "userAssignedResourcesIds": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "nullable": true,
+                  "metadata": {
+                    "description": "Optional. The resource ID(s) to assign to the resource."
+                  }
+                }
+              },
+              "nullable": true
+            }
           },
           "parameters": {
             "machineLearningWorkspaceName": {
@@ -800,7 +867,7 @@
             },
             "tags": {
               "type": "object",
-              "defaultValue": {},
+              "nullable": true,
               "metadata": {
                 "description": "Optional. Contains resource tags defined as key-value pairs. Ignored when attaching a compute resource, i.e. when you provide a resource ID."
               }
@@ -872,27 +939,25 @@
                 "description": "Optional. Enable telemetry via a Globally Unique Identifier (GUID)."
               }
             },
-            "systemAssignedIdentity": {
-              "type": "bool",
-              "defaultValue": false,
+            "managedIdentities": {
+              "$ref": "#/definitions/managedIdentitiesType",
               "metadata": {
-                "description": "Optional. Enables system assigned managed identity on the resource. Ignored when attaching a compute resource, i.e. when you provide a resource ID."
-              }
-            },
-            "userAssignedIdentities": {
-              "type": "object",
-              "defaultValue": {},
-              "metadata": {
-                "description": "Optional. The ID(s) to assign to the resource. Ignored when attaching a compute resource, i.e. when you provide a resource ID."
+                "description": "Optional. The managed identity definition for this resource."
               }
             }
           },
           "variables": {
-            "identityType": "[if(parameters('systemAssignedIdentity'), if(not(empty(parameters('userAssignedIdentities'))), 'SystemAssigned,UserAssigned', 'SystemAssigned'), if(not(empty(parameters('userAssignedIdentities'))), 'UserAssigned', 'None'))]",
-            "identity": "[if(not(equals(variables('identityType'), 'None')), createObject('type', variables('identityType'), 'userAssignedIdentities', if(not(empty(parameters('userAssignedIdentities'))), parameters('userAssignedIdentities'), null())), null())]"
+            "formattedUserAssignedIdentities": "[reduce(map(coalesce(tryGet(parameters('managedIdentities'), 'userAssignedResourcesIds'), createArray()), lambda('id', createObject(format('{0}', lambdaVariables('id')), createObject()))), createObject(), lambda('cur', 'next', union(lambdaVariables('cur'), lambdaVariables('next'))))]",
+            "identity": "[if(not(empty(parameters('managedIdentities'))), createObject('type', if(coalesce(tryGet(parameters('managedIdentities'), 'systemAssigned'), false()), if(not(empty(coalesce(tryGet(parameters('managedIdentities'), 'userAssignedResourcesIds'), createObject()))), 'SystemAssigned,UserAssigned', 'SystemAssigned'), if(not(empty(coalesce(tryGet(parameters('managedIdentities'), 'userAssignedResourcesIds'), createObject()))), 'UserAssigned', null())), 'userAssignedIdentities', if(not(empty(variables('formattedUserAssignedIdentities'))), variables('formattedUserAssignedIdentities'), null())), null())]"
           },
-          "resources": [
-            {
+          "resources": {
+            "machineLearningWorkspace": {
+              "existing": true,
+              "type": "Microsoft.MachineLearningServices/workspaces",
+              "apiVersion": "2022-10-01",
+              "name": "[parameters('machineLearningWorkspaceName')]"
+            },
+            "defaultTelemetry": {
               "condition": "[parameters('enableDefaultTelemetry')]",
               "type": "Microsoft.Resources/deployments",
               "apiVersion": "2021-04-01",
@@ -906,7 +971,7 @@
                 }
               }
             },
-            {
+            "machineLearningWorkspaceCompute": {
               "condition": "[equals(parameters('deployCompute'), true())]",
               "type": "Microsoft.MachineLearningServices/workspaces/computes",
               "apiVersion": "2022-10-01",
@@ -915,9 +980,12 @@
               "tags": "[if(empty(parameters('resourceId')), parameters('tags'), null())]",
               "sku": "[if(empty(parameters('resourceId')), createObject('name', parameters('sku'), 'tier', parameters('sku')), null())]",
               "identity": "[if(empty(parameters('resourceId')), variables('identity'), null())]",
-              "properties": "[union(createObject('description', parameters('description'), 'disableLocalAuth', parameters('disableLocalAuth'), 'computeType', parameters('computeType')), if(not(empty(parameters('resourceId'))), createObject('resourceId', parameters('resourceId')), createObject('computeLocation', parameters('computeLocation'), 'properties', parameters('properties'))))]"
+              "properties": "[union(createObject('description', parameters('description'), 'disableLocalAuth', parameters('disableLocalAuth'), 'computeType', parameters('computeType')), if(not(empty(parameters('resourceId'))), createObject('resourceId', parameters('resourceId')), createObject('computeLocation', parameters('computeLocation'), 'properties', parameters('properties'))))]",
+              "dependsOn": [
+                "machineLearningWorkspace"
+              ]
             }
-          ],
+          },
           "outputs": {
             "name": {
               "type": "string",
@@ -940,19 +1008,19 @@
               },
               "value": "[resourceGroup().name]"
             },
-            "systemAssignedPrincipalId": {
+            "systemAssignedMIPrincipalId": {
               "type": "string",
               "metadata": {
-                "description": "The principal ID of the system assigned identity. Is null in case of attaching a compute resource, i.e. when you provide a resource ID."
+                "description": "The principal ID of the system assigned identity."
               },
-              "value": "[if(empty(parameters('resourceId')), if(and(parameters('systemAssignedIdentity'), contains(reference(resourceId('Microsoft.MachineLearningServices/workspaces/computes', parameters('machineLearningWorkspaceName'), parameters('name')), '2022-10-01', 'full').identity, 'principalId')), reference(resourceId('Microsoft.MachineLearningServices/workspaces/computes', parameters('machineLearningWorkspaceName'), parameters('name')), '2022-10-01', 'full').identity.principalId, ''), '')]"
+              "value": "[if(and(coalesce(tryGet(parameters('managedIdentities'), 'systemAssigned'), false()), contains(reference('machineLearningWorkspace', '2022-10-01', 'full').identity, 'principalId')), reference('machineLearningWorkspace', '2022-10-01', 'full').identity.principalId, '')]"
             },
             "location": {
               "type": "string",
               "metadata": {
                 "description": "The location the resource was deployed into."
               },
-              "value": "[reference(resourceId('Microsoft.MachineLearningServices/workspaces/computes', parameters('machineLearningWorkspaceName'), parameters('name')), '2022-10-01', 'full').location]"
+              "value": "[reference('machineLearningWorkspaceCompute', '2022-10-01', 'full').location]"
             }
           }
         }
@@ -1035,7 +1103,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.22.6.54827",
-              "templateHash": "16178508232344722616"
+              "templateHash": "12078057657290521609"
             },
             "name": "Private Endpoints",
             "description": "This module deploys a Private Endpoint.",
@@ -1132,6 +1200,71 @@
                 }
               },
               "nullable": true
+            },
+            "ipConfigurationsType": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "metadata": {
+                      "description": "Required. The name of the resource that is unique within a resource group."
+                    }
+                  },
+                  "properties": {
+                    "type": "object",
+                    "properties": {
+                      "groupId": {
+                        "type": "string",
+                        "metadata": {
+                          "description": "Required. The ID of a group obtained from the remote resource that this private endpoint should connect to."
+                        }
+                      },
+                      "memberName": {
+                        "type": "string",
+                        "metadata": {
+                          "description": "Required. The member name of a group obtained from the remote resource that this private endpoint should connect to."
+                        }
+                      },
+                      "privateIPAddress": {
+                        "type": "string",
+                        "metadata": {
+                          "description": "Required. A private ip address obtained from the private endpoint's subnet."
+                        }
+                      }
+                    },
+                    "metadata": {
+                      "description": "Required. Properties of private endpoint IP configurations."
+                    }
+                  }
+                }
+              },
+              "nullable": true
+            },
+            "customDnsConfigType": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "fqdn": {
+                    "type": "string",
+                    "metadata": {
+                      "description": "Required. Fqdn that resolves to private endpoint ip address."
+                    }
+                  },
+                  "ipAddresses": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "metadata": {
+                      "description": "Required. A list of private ip addresses of the private endpoint."
+                    }
+                  }
+                }
+              },
+              "nullable": true
             }
           },
           "parameters": {
@@ -1168,7 +1301,7 @@
               }
             },
             "ipConfigurations": {
-              "type": "array",
+              "$ref": "#/definitions/ipConfigurationsType",
               "nullable": true,
               "metadata": {
                 "description": "Optional. A list of IP configurations of the private endpoint. This will be used to map to the First Party Service endpoints."
@@ -1221,7 +1354,7 @@
               }
             },
             "customDnsConfigs": {
-              "type": "array",
+              "$ref": "#/definitions/customDnsConfigType",
               "nullable": true,
               "metadata": {
                 "description": "Optional. Custom DNS configurations."
@@ -1288,7 +1421,7 @@
                     }
                   }
                 ],
-                "customDnsConfigs": "[coalesce(parameters('customDnsConfigs'), createArray())]",
+                "customDnsConfigs": "[parameters('customDnsConfigs')]",
                 "customNetworkInterfaceName": "[coalesce(parameters('customNetworkInterfaceName'), '')]",
                 "ipConfigurations": "[coalesce(parameters('ipConfigurations'), createArray())]",
                 "manualPrivateLinkServiceConnections": "[coalesce(parameters('manualPrivateLinkServiceConnections'), createArray())]",
@@ -1536,12 +1669,12 @@
       },
       "value": "[parameters('name')]"
     },
-    "principalId": {
+    "systemAssignedMIPrincipalId": {
       "type": "string",
       "metadata": {
         "description": "The principal ID of the system assigned identity."
       },
-      "value": "[if(and(not(empty(variables('identity'))), contains(variables('identity').type, 'SystemAssigned')), reference('workspace', '2022-10-01', 'full').identity.principalId, '')]"
+      "value": "[if(and(coalesce(tryGet(parameters('managedIdentities'), 'systemAssigned'), false()), contains(reference('workspace', '2022-10-01', 'full').identity, 'principalId')), reference('workspace', '2022-10-01', 'full').identity.principalId, '')]"
     },
     "location": {
       "type": "string",

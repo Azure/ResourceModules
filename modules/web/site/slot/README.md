@@ -64,6 +64,7 @@ This module deploys a Web or Function App Deployment Slot.
 | [`keyVaultAccessIdentityResourceId`](#parameter-keyvaultaccessidentityresourceid) | string | The resource ID of the assigned identity to be used to access a key vault with. |
 | [`location`](#parameter-location) | string | Location for all Resources. |
 | [`lock`](#parameter-lock) | object | The lock settings of the service. |
+| [`managedIdentities`](#parameter-managedidentities) | object | The managed identity definition for this resource. |
 | [`privateEndpoints`](#parameter-privateendpoints) | array | Configuration details for private endpoints. |
 | [`publicNetworkAccess`](#parameter-publicnetworkaccess) | string | Allow or block all public traffic. |
 | [`redundancyMode`](#parameter-redundancymode) | string | Site redundancy mode. |
@@ -73,9 +74,7 @@ This module deploys a Web or Function App Deployment Slot.
 | [`siteConfig`](#parameter-siteconfig) | object | The site config object. |
 | [`storageAccountRequired`](#parameter-storageaccountrequired) | bool | Checks if Customer provided storage account is required. |
 | [`storageAccountResourceId`](#parameter-storageaccountresourceid) | string | Required if app of kind functionapp. Resource ID of the storage account to manage triggers and logging function executions. |
-| [`systemAssignedIdentity`](#parameter-systemassignedidentity) | bool | Enables system assigned managed identity on the resource. |
 | [`tags`](#parameter-tags) | object | Tags of the resource. |
-| [`userAssignedIdentities`](#parameter-userassignedidentities) | object | The ID(s) to assign to the resource. |
 | [`virtualNetworkSubnetId`](#parameter-virtualnetworksubnetid) | string | Azure Resource Manager ID of the Virtual network and subnet to be joined by Regional VNET Integration. This must be of the form /subscriptions/{subscriptionName}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{vnetName}/subnets/{subnetName}. |
 | [`vnetContentShareEnabled`](#parameter-vnetcontentshareenabled) | bool | To enable accessing content over virtual network. |
 | [`vnetImagePullEnabled`](#parameter-vnetimagepullenabled) | bool | To enable pulling image over Virtual Network. |
@@ -106,14 +105,14 @@ The resource ID of the app service environment to use for this resource.
 The app settings-value pairs except for AzureWebJobsStorage, AzureWebJobsDashboard, APPINSIGHTS_INSTRUMENTATIONKEY and APPLICATIONINSIGHTS_CONNECTION_STRING.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `authSettingV2Configuration`
 
 The auth settings V2 configuration.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `clientAffinityEnabled`
 
@@ -142,14 +141,21 @@ This composes with ClientCertEnabled setting.</p>- ClientCertEnabled: false mean
 - Required: No
 - Type: string
 - Default: `'Optional'`
-- Allowed: `[Optional, OptionalInteractiveUser, Required]`
+- Allowed:
+  ```Bicep
+  [
+    'Optional'
+    'OptionalInteractiveUser'
+    'Required'
+  ]
+  ```
 
 ### Parameter: `cloningInfo`
 
 If specified during app creation, the app is cloned from a source app.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `containerSize`
 
@@ -341,7 +347,16 @@ The resource ID of the assigned identity to be used to access a key vault with.
 Type of slot to deploy.
 - Required: Yes
 - Type: string
-- Allowed: `[app, functionapp, functionapp,linux, functionapp,workflowapp, functionapp,workflowapp,linux]`
+- Allowed:
+  ```Bicep
+  [
+    'app'
+    'functionapp'
+    'functionapplinux'
+    'functionappworkflowapp'
+    'functionappworkflowapplinux'
+  ]
+  ```
 
 ### Parameter: `location`
 
@@ -376,6 +391,32 @@ Optional. Specify the name of lock.
 
 - Required: No
 - Type: string
+
+### Parameter: `managedIdentities`
+
+The managed identity definition for this resource.
+- Required: No
+- Type: object
+
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`systemAssigned`](#parameter-managedidentitiessystemassigned) | No | bool | Optional. Enables system assigned managed identity on the resource. |
+| [`userAssignedResourcesIds`](#parameter-managedidentitiesuserassignedresourcesids) | No | array | Optional. The resource ID(s) to assign to the resource. |
+
+### Parameter: `managedIdentities.systemAssigned`
+
+Optional. Enables system assigned managed identity on the resource.
+
+- Required: No
+- Type: bool
+
+### Parameter: `managedIdentities.userAssignedResourcesIds`
+
+Optional. The resource ID(s) to assign to the resource.
+
+- Required: No
+- Type: array
 
 ### Parameter: `name`
 
@@ -424,14 +465,20 @@ Optional. Custom DNS configurations.
 
 | Name | Required | Type | Description |
 | :-- | :-- | :--| :-- |
-| [`fqdn`](#parameter-privateendpointscustomdnsconfigsfqdn) | No | string |  |
-| [`ipAddresses`](#parameter-privateendpointscustomdnsconfigsipaddresses) | Yes | array |  |
+| [`fqdn`](#parameter-privateendpointscustomdnsconfigsfqdn) | No | string | Required. Fqdn that resolves to private endpoint ip address. |
+| [`ipAddresses`](#parameter-privateendpointscustomdnsconfigsipaddresses) | Yes | array | Required. A list of private ip addresses of the private endpoint. |
 
 ### Parameter: `privateEndpoints.customDnsConfigs.fqdn`
+
+Required. Fqdn that resolves to private endpoint ip address.
+
 - Required: No
 - Type: string
 
 ### Parameter: `privateEndpoints.customDnsConfigs.ipAddresses`
+
+Required. A list of private ip addresses of the private endpoint.
+
 - Required: Yes
 - Type: array
 
@@ -459,26 +506,50 @@ Optional. A list of IP configurations of the private endpoint. This will be used
 
 | Name | Required | Type | Description |
 | :-- | :-- | :--| :-- |
-| [`groupId`](#parameter-privateendpointsipconfigurationsgroupid) | Yes | string |  |
-| [`memberName`](#parameter-privateendpointsipconfigurationsmembername) | Yes | string |  |
-| [`name`](#parameter-privateendpointsipconfigurationsname) | Yes | string |  |
-| [`privateIpAddress`](#parameter-privateendpointsipconfigurationsprivateipaddress) | Yes | string |  |
-
-### Parameter: `privateEndpoints.ipConfigurations.groupId`
-- Required: Yes
-- Type: string
-
-### Parameter: `privateEndpoints.ipConfigurations.memberName`
-- Required: Yes
-- Type: string
+| [`name`](#parameter-privateendpointsipconfigurationsname) | Yes | string | Required. The name of the resource that is unique within a resource group. |
+| [`properties`](#parameter-privateendpointsipconfigurationsproperties) | Yes | object | Required. Properties of private endpoint IP configurations. |
 
 ### Parameter: `privateEndpoints.ipConfigurations.name`
+
+Required. The name of the resource that is unique within a resource group.
+
 - Required: Yes
 - Type: string
 
-### Parameter: `privateEndpoints.ipConfigurations.privateIpAddress`
+### Parameter: `privateEndpoints.ipConfigurations.properties`
+
+Required. Properties of private endpoint IP configurations.
+
+- Required: Yes
+- Type: object
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`groupId`](#parameter-privateendpointsipconfigurationspropertiesgroupid) | Yes | string | Required. The ID of a group obtained from the remote resource that this private endpoint should connect to. |
+| [`memberName`](#parameter-privateendpointsipconfigurationspropertiesmembername) | Yes | string | Required. The member name of a group obtained from the remote resource that this private endpoint should connect to. |
+| [`privateIPAddress`](#parameter-privateendpointsipconfigurationspropertiesprivateipaddress) | Yes | string | Required. A private ip address obtained from the private endpoint's subnet. |
+
+### Parameter: `privateEndpoints.ipConfigurations.properties.groupId`
+
+Required. The ID of a group obtained from the remote resource that this private endpoint should connect to.
+
 - Required: Yes
 - Type: string
+
+### Parameter: `privateEndpoints.ipConfigurations.properties.memberName`
+
+Required. The member name of a group obtained from the remote resource that this private endpoint should connect to.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `privateEndpoints.ipConfigurations.properties.privateIPAddress`
+
+Required. A private ip address obtained from the private endpoint's subnet.
+
+- Required: Yes
+- Type: string
+
 
 
 ### Parameter: `privateEndpoints.location`
@@ -557,7 +628,14 @@ Allow or block all public traffic.
 - Required: No
 - Type: string
 - Default: `''`
-- Allowed: `['', Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    ''
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 ### Parameter: `redundancyMode`
 
@@ -565,7 +643,16 @@ Site redundancy mode.
 - Required: No
 - Type: string
 - Default: `'None'`
-- Allowed: `[ActiveActive, Failover, GeoRedundant, Manual, None]`
+- Allowed:
+  ```Bicep
+  [
+    'ActiveActive'
+    'Failover'
+    'GeoRedundant'
+    'Manual'
+    'None'
+  ]
+  ```
 
 ### Parameter: `roleAssignments`
 
@@ -654,7 +741,7 @@ For function apps. If true the app settings "AzureWebJobsDashboard" will be set.
 The site config object.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `storageAccountRequired`
 
@@ -670,26 +757,11 @@ Required if app of kind functionapp. Resource ID of the storage account to manag
 - Type: string
 - Default: `''`
 
-### Parameter: `systemAssignedIdentity`
-
-Enables system assigned managed identity on the resource.
-- Required: No
-- Type: bool
-- Default: `False`
-
 ### Parameter: `tags`
 
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
-
-### Parameter: `userAssignedIdentities`
-
-The ID(s) to assign to the resource.
-- Required: No
-- Type: object
-- Default: `{object}`
 
 ### Parameter: `virtualNetworkSubnetId`
 
@@ -728,7 +800,7 @@ Virtual Network Route All enabled. This causes all outbound traffic to have Virt
 | `name` | string | The name of the slot. |
 | `resourceGroupName` | string | The resource group the slot was deployed into. |
 | `resourceId` | string | The resource ID of the slot. |
-| `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
+| `systemAssignedMIPrincipalId` | string | The principal ID of the system assigned identity. |
 
 ## Cross-referenced modules
 

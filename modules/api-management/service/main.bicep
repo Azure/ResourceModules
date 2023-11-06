@@ -27,11 +27,8 @@ param enableClientCertificate bool = false
 @description('Optional. Custom hostname configuration of the API Management service.')
 param hostnameConfigurations array = []
 
-@description('Optional. Enables system assigned managed identity on the resource.')
-param systemAssignedIdentity bool = false
-
-@description('Optional. The ID(s) to assign to the resource.')
-param userAssignedIdentities object = {}
+@description('Optional. The managed identity definition for this resource.')
+param managedIdentities managedIdentitiesType
 
 @description('Optional. Location for all Resources.')
 param location string = resourceGroup().location
@@ -78,7 +75,7 @@ param skuCount int = 1
 param subnetResourceId string = ''
 
 @description('Optional. Tags of the resource.')
-param tags object = {}
+param tags object?
 
 @description('Optional. The type of VPN in which API Management service needs to be configured in. None (Default Value) means the API Management service is not part of any Virtual Network, External means the API Management deployment is set up inside a Virtual Network having an internet Facing Endpoint, and Internal means that API Management deployment is setup inside a Virtual Network having an Intranet Facing Endpoint only.')
 @allowed([
@@ -135,11 +132,11 @@ var enableReferencedModulesTelemetry = false
 
 var authorizationServerList = !empty(authorizationServers) ? authorizationServers.secureList : []
 
-var identityType = systemAssignedIdentity ? (!empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
+var formattedUserAssignedIdentities = reduce(map((managedIdentities.?userAssignedResourcesIds ?? []), (id) => { '${id}': {} }), {}, (cur, next) => union(cur, next)) // Converts the flat array to an object like { '${id1}': {}, '${id2}': {} }
 
-var identity = identityType != 'None' ? {
-  type: identityType
-  userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
+var identity = !empty(managedIdentities) ? {
+  type: (managedIdentities.?systemAssigned ?? false) ? (!empty(managedIdentities.?userAssignedResourcesIds ?? {}) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(managedIdentities.?userAssignedResourcesIds ?? {}) ? 'UserAssigned' : null)
+  userAssignedIdentities: !empty(formattedUserAssignedIdentities) ? formattedUserAssignedIdentities : null
 } : null
 
 var builtInRoleNames = {
@@ -333,7 +330,7 @@ module service_namedValues 'named-value/main.bicep' = [for (namedValue, index) i
     displayName: namedValue.displayName
     keyVault: contains(namedValue, 'keyVault') ? namedValue.keyVault : {}
     name: namedValue.name
-    tags: contains(namedValue, 'tags') ? namedValue.tags : []
+    tags: namedValue.?tags // Note: these are not resource tags
     secret: contains(namedValue, 'secret') ? namedValue.secret : false
     value: contains(namedValue, 'value') ? namedValue.value : newGuidValue
     enableDefaultTelemetry: enableReferencedModulesTelemetry
@@ -454,7 +451,7 @@ output resourceId string = service.id
 output resourceGroupName string = resourceGroup().name
 
 @description('The principal ID of the system assigned identity.')
-output systemAssignedPrincipalId string = systemAssignedIdentity && contains(service.identity, 'principalId') ? service.identity.principalId : ''
+output systemAssignedMIPrincipalId string = (managedIdentities.?systemAssigned ?? false) && contains(service.identity, 'principalId') ? service.identity.principalId : ''
 
 @description('The location the resource was deployed into.')
 output location string = service.location
@@ -462,6 +459,14 @@ output location string = service.location
 // =============== //
 //   Definitions   //
 // =============== //
+
+type managedIdentitiesType = {
+  @description('Optional. Enables system assigned managed identity on the resource.')
+  systemAssigned: bool?
+
+  @description('Optional. The resource ID(s) to assign to the resource.')
+  userAssignedResourcesIds: string[]?
+}?
 
 type lockType = {
   @description('Optional. Specify the name of lock.')

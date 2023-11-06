@@ -52,7 +52,14 @@ A security admin configuration contains a set of rule collections. Each rule col
 Indicates the access allowed for this particular rule. "Allow" means traffic matching this rule will be allowed. "Deny" means traffic matching this rule will be blocked. "AlwaysAllow" means that traffic matching this rule will be allowed regardless of other rules with lower priority or user-defined NSGs.
 - Required: Yes
 - Type: string
-- Allowed: `[Allow, AlwaysAllow, Deny]`
+- Allowed:
+  ```Bicep
+  [
+    'Allow'
+    'AlwaysAllow'
+    'Deny'
+  ]
+  ```
 
 ### Parameter: `description`
 
@@ -80,7 +87,13 @@ The destnations filter can be an IP Address or a service tag. Each filter contai
 Indicates if the traffic matched against the rule in inbound or outbound.
 - Required: Yes
 - Type: string
-- Allowed: `[Inbound, Outbound]`
+- Allowed:
+  ```Bicep
+  [
+    'Inbound'
+    'Outbound'
+  ]
+  ```
 
 ### Parameter: `enableDefaultTelemetry`
 
@@ -112,7 +125,17 @@ The priority of the rule. The value can be between 1 and 4096. The priority numb
 Network protocol this rule applies to.
 - Required: Yes
 - Type: string
-- Allowed: `[Ah, Any, Esp, Icmp, Tcp, Udp]`
+- Allowed:
+  ```Bicep
+  [
+    'Ah'
+    'Any'
+    'Esp'
+    'Icmp'
+    'Tcp'
+    'Udp'
+  ]
+  ```
 
 ### Parameter: `ruleCollectionName`
 

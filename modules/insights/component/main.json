@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "803183035503673320"
+      "templateHash": "15854449149260650767"
     },
     "name": "Application Insights",
     "description": "This component deploys an Application Insights instance.",
@@ -281,7 +281,7 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Tags of the resource."
       }

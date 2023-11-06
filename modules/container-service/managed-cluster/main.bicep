@@ -11,11 +11,8 @@ param location string = resourceGroup().location
 @description('Optional. Specifies the DNS prefix specified when creating the managed cluster.')
 param dnsPrefix string = name
 
-@description('Optional. Enables system assigned managed identity on the resource.')
-param systemAssignedIdentity bool = false
-
-@description('Optional. The ID(s) to assign to the resource.')
-param userAssignedIdentities object = {}
+@description('Optional. The managed identity definition for this resource. Only one type of identity is supported: system-assigned or user-assigned, but not both.')
+param managedIdentities managedIdentitiesType
 
 @description('Optional. Network dataplane used in the Kubernetes cluster. Not compatible with kubenet network plugin.')
 @allowed([
@@ -333,7 +330,7 @@ param roleAssignments roleAssignmentType
 param lock lockType
 
 @description('Optional. Tags of the resource.')
-param tags object = {}
+param tags object?
 
 @description('Optional. The resource ID of the disc encryption set to apply to the cluster. For security reasons, this value should be provided.')
 param diskEncryptionSetID string = ''
@@ -351,12 +348,12 @@ param httpProxyConfig object = {}
 @description('Optional. Identities associated with the cluster.')
 param identityProfile object = {}
 
-var identityType = systemAssignedIdentity ? 'SystemAssigned' : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
+var formattedUserAssignedIdentities = reduce(map((managedIdentities.?userAssignedResourcesIds ?? []), (id) => { '${id}': {} }), {}, (cur, next) => union(cur, next)) // Converts the flat array to an object like { '${id1}': {}, '${id2}': {} }
 
-var identity = {
-  type: identityType
-  userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
-}
+var identity = !empty(managedIdentities) ? {
+  type: (managedIdentities.?systemAssigned ?? false) ? 'SystemAssigned' : (!empty(managedIdentities.?userAssignedResourcesIds ?? {}) ? 'UserAssigned' : null)
+  userAssignedIdentities: !empty(formattedUserAssignedIdentities) ? formattedUserAssignedIdentities : null
+} : null
 
 var linuxProfile = {
   adminUsername: adminUsername
@@ -603,7 +600,7 @@ module managedCluster_agentPools 'agent-pool/main.bicep' = [for (agentPool, inde
     scaleSetEvictionPolicy: contains(agentPool, 'scaleSetEvictionPolicy') ? agentPool.scaleSetEvictionPolicy : 'Delete'
     scaleSetPriority: contains(agentPool, 'scaleSetPriority') ? agentPool.scaleSetPriority : ''
     spotMaxPrice: contains(agentPool, 'spotMaxPrice') ? agentPool.spotMaxPrice : -1
-    tags: contains(agentPool, 'tags') ? agentPool.tags : {}
+    tags: agentPool.?tags ?? tags
     type: contains(agentPool, 'type') ? agentPool.type : ''
     maxSurge: contains(agentPool, 'maxSurge') ? agentPool.maxSurge : ''
     vmSize: contains(agentPool, 'vmSize') ? agentPool.vmSize : 'Standard_D2s_v3'
@@ -706,7 +703,7 @@ output name string = managedCluster.name
 output controlPlaneFQDN string = enablePrivateCluster ? managedCluster.properties.privateFQDN : managedCluster.properties.fqdn
 
 @description('The principal ID of the system assigned identity.')
-output systemAssignedPrincipalId string = systemAssignedIdentity && contains(managedCluster.identity, 'principalId') ? managedCluster.identity.principalId : ''
+output systemAssignedMIPrincipalId string = (managedIdentities.?systemAssigned ?? false) && contains(managedCluster.identity, 'principalId') ? managedCluster.identity.principalId : ''
 
 @description('The Object ID of the AKS identity.')
 output kubeletidentityObjectId string = contains(managedCluster.properties, 'identityProfile') ? contains(managedCluster.properties.identityProfile, 'kubeletidentity') ? managedCluster.properties.identityProfile.kubeletidentity.objectId : '' : ''
@@ -732,6 +729,14 @@ output addonProfiles object = contains(managedCluster.properties, 'addonProfiles
 // =============== //
 //   Definitions   //
 // =============== //
+
+type managedIdentitiesType = {
+  @description('Optional. Enables system assigned managed identity on the resource.')
+  systemAssigned: bool?
+
+  @description('Optional. The resource ID(s) to assign to the resource.')
+  userAssignedResourcesIds: string[]?
+}?
 
 type lockType = {
   @description('Optional. Specify the name of lock.')

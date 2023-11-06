@@ -5,8 +5,8 @@ metadata owner = 'Azure/module-maintainers'
 @description('Required. Display name of the script to be run.')
 param name string
 
-@description('Optional. The ID(s) to assign to the resource.')
-param userAssignedIdentities object = {}
+@description('Optional. The managed identity definition for this resource.')
+param managedIdentities managedIdentitiesType
 
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
@@ -70,7 +70,7 @@ param baseTime string = utcNow('yyyy-MM-dd-HH-mm-ss')
 param lock lockType
 
 @description('Optional. Tags of the resource.')
-param tags object = {}
+param tags object?
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
@@ -79,11 +79,11 @@ var containerSettings = {
   containerGroupName: containerGroupName
 }
 
-var identityType = !empty(userAssignedIdentities) ? 'UserAssigned' : 'None'
+var formattedUserAssignedIdentities = reduce(map((managedIdentities.?userAssignedResourcesIds ?? []), (id) => { '${id}': {} }), {}, (cur, next) => union(cur, next)) // Converts the flat array to an object like { '${id1}': {}, '${id2}': {} }
 
-var identity = identityType != 'None' ? {
-  type: identityType
-  userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
+var identity = !empty(managedIdentities) ? {
+  type: !empty(managedIdentities.?userAssignedResourcesIds ?? {}) ? 'UserAssigned' : null
+  userAssignedIdentities: !empty(formattedUserAssignedIdentities) ? formattedUserAssignedIdentities : null
 } : null
 
 var storageAccountSettings = !empty(storageAccountResourceId) ? {
@@ -153,6 +153,11 @@ output outputs object = contains(deploymentScript.properties, 'outputs') ? deplo
 // =============== //
 //   Definitions   //
 // =============== //
+
+type managedIdentitiesType = {
+  @description('Optional. The resource ID(s) to assign to the resource.')
+  userAssignedResourcesIds: string[]
+}?
 
 type lockType = {
   @description('Optional. Specify the name of lock.')

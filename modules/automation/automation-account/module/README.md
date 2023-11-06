@@ -70,7 +70,6 @@ Name of the Automation Account module.
 Tags of the Automation Account resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `uri`
 

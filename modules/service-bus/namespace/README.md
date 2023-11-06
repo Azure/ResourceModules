@@ -37,12 +37,241 @@ The following section provides usage examples for the module, which were used to
 
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/service-bus.namespace:1.0.0`.
 
-- [Using large parameter set](#example-1-using-large-parameter-set)
+- [Using only defaults](#example-1-using-only-defaults)
 - [Encr](#example-2-encr)
-- [Using only defaults](#example-3-using-only-defaults)
+- [Using large parameter set](#example-3-using-large-parameter-set)
 - [Pe](#example-4-pe)
 
-### Example 1: _Using large parameter set_
+### Example 1: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module namespace 'br:bicep/modules/service-bus.namespace:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-sbnmin'
+  params: {
+    // Required parameters
+    name: 'sbnmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "sbnmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 2: _Encr_
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module namespace 'br:bicep/modules/service-bus.namespace:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-sbnencr'
+  params: {
+    // Required parameters
+    name: 'sbnencr001'
+    // Non-required parameters
+    authorizationRules: [
+      {
+        name: 'RootManageSharedAccessKey'
+        rights: [
+          'Listen'
+          'Manage'
+          'Send'
+        ]
+      }
+      {
+        name: 'AnotherKey'
+        rights: [
+          'Listen'
+          'Send'
+        ]
+      }
+    ]
+    customerManagedKey: {
+      keyName: '<keyName>'
+      keyVaultResourceId: '<keyVaultResourceId>'
+      userAssignedIdentityResourceId: '<userAssignedIdentityResourceId>'
+    }
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    managedIdentities: {
+      systemAssigned: false
+      userAssignedResourcesIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
+    networkRuleSets: {
+      defaultAction: 'Deny'
+      ipRules: [
+        {
+          action: 'Allow'
+          ipMask: '10.0.1.0/32'
+        }
+        {
+          action: 'Allow'
+          ipMask: '10.0.2.0/32'
+        }
+      ]
+      trustedServiceAccessEnabled: true
+      virtualNetworkRules: [
+        {
+          ignoreMissingVnetServiceEndpoint: true
+          subnetResourceId: '<subnetResourceId>'
+        }
+      ]
+    }
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    skuName: 'Premium'
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "sbnencr001"
+    },
+    // Non-required parameters
+    "authorizationRules": {
+      "value": [
+        {
+          "name": "RootManageSharedAccessKey",
+          "rights": [
+            "Listen",
+            "Manage",
+            "Send"
+          ]
+        },
+        {
+          "name": "AnotherKey",
+          "rights": [
+            "Listen",
+            "Send"
+          ]
+        }
+      ]
+    },
+    "customerManagedKey": {
+      "value": {
+        "keyName": "<keyName>",
+        "keyVaultResourceId": "<keyVaultResourceId>",
+        "userAssignedIdentityResourceId": "<userAssignedIdentityResourceId>"
+      }
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "managedIdentities": {
+      "value": {
+        "systemAssigned": false,
+        "userAssignedResourcesIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
+    },
+    "networkRuleSets": {
+      "value": {
+        "defaultAction": "Deny",
+        "ipRules": [
+          {
+            "action": "Allow",
+            "ipMask": "10.0.1.0/32"
+          },
+          {
+            "action": "Allow",
+            "ipMask": "10.0.2.0/32"
+          }
+        ],
+        "trustedServiceAccessEnabled": true,
+        "virtualNetworkRules": [
+          {
+            "ignoreMissingVnetServiceEndpoint": true,
+            "subnetResourceId": "<subnetResourceId>"
+          }
+        ]
+      }
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "skuName": {
+      "value": "Premium"
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 3: _Using large parameter set_
 
 This instance deploys the module with most of its features enabled.
 
@@ -53,10 +282,10 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module namespace 'br:bicep/modules/service-bus.namespace:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-sbncom'
+  name: '${uniqueString(deployment().name, location)}-test-sbnmax'
   params: {
     // Required parameters
-    name: 'sbncom001'
+    name: 'sbnmax001'
     // Non-required parameters
     authorizationRules: [
       {
@@ -94,6 +323,12 @@ module namespace 'br:bicep/modules/service-bus.namespace:1.0.0' = {
     lock: {
       kind: 'CanNotDelete'
       name: 'myCustomLockName'
+    }
+    managedIdentities: {
+      systemAssigned: true
+      userAssignedResourcesIds: [
+        '<managedIdentityResourceId>'
+      ]
     }
     minimumTlsVersion: '1.2'
     networkRuleSets: {
@@ -153,7 +388,7 @@ module namespace 'br:bicep/modules/service-bus.namespace:1.0.0' = {
         ]
         autoDeleteOnIdle: 'PT5M'
         maxMessageSizeInKilobytes: 2048
-        name: 'sbncomq001'
+        name: 'sbnmaxq001'
         roleAssignments: [
           {
             principalId: '<principalId>'
@@ -172,7 +407,6 @@ module namespace 'br:bicep/modules/service-bus.namespace:1.0.0' = {
     ]
     skuCapacity: 2
     skuName: 'Premium'
-    systemAssignedIdentity: true
     tags: {
       Environment: 'Non-Prod'
       'hidden-title': 'This is visible in the resource name'
@@ -197,7 +431,7 @@ module namespace 'br:bicep/modules/service-bus.namespace:1.0.0' = {
             ]
           }
         ]
-        name: 'sbncomt001'
+        name: 'sbnmaxt001'
         roleAssignments: [
           {
             principalId: '<principalId>'
@@ -207,9 +441,6 @@ module namespace 'br:bicep/modules/service-bus.namespace:1.0.0' = {
         ]
       }
     ]
-    userAssignedIdentities: {
-      '<managedIdentityResourceId>': {}
-    }
     zoneRedundant: true
   }
 }
@@ -229,7 +460,7 @@ module namespace 'br:bicep/modules/service-bus.namespace:1.0.0' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "sbncom001"
+      "value": "sbnmax001"
     },
     // Non-required parameters
     "authorizationRules": {
@@ -277,6 +508,14 @@ module namespace 'br:bicep/modules/service-bus.namespace:1.0.0' = {
       "value": {
         "kind": "CanNotDelete",
         "name": "myCustomLockName"
+      }
+    },
+    "managedIdentities": {
+      "value": {
+        "systemAssigned": true,
+        "userAssignedResourcesIds": [
+          "<managedIdentityResourceId>"
+        ]
       }
     },
     "minimumTlsVersion": {
@@ -348,7 +587,7 @@ module namespace 'br:bicep/modules/service-bus.namespace:1.0.0' = {
           ],
           "autoDeleteOnIdle": "PT5M",
           "maxMessageSizeInKilobytes": 2048,
-          "name": "sbncomq001",
+          "name": "sbnmaxq001",
           "roleAssignments": [
             {
               "principalId": "<principalId>",
@@ -373,9 +612,6 @@ module namespace 'br:bicep/modules/service-bus.namespace:1.0.0' = {
     },
     "skuName": {
       "value": "Premium"
-    },
-    "systemAssignedIdentity": {
-      "value": true
     },
     "tags": {
       "value": {
@@ -404,7 +640,7 @@ module namespace 'br:bicep/modules/service-bus.namespace:1.0.0' = {
               ]
             }
           ],
-          "name": "sbncomt001",
+          "name": "sbnmaxt001",
           "roleAssignments": [
             {
               "principalId": "<principalId>",
@@ -415,240 +651,8 @@ module namespace 'br:bicep/modules/service-bus.namespace:1.0.0' = {
         }
       ]
     },
-    "userAssignedIdentities": {
-      "value": {
-        "<managedIdentityResourceId>": {}
-      }
-    },
     "zoneRedundant": {
       "value": true
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-### Example 2: _Encr_
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module namespace 'br:bicep/modules/service-bus.namespace:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-sbnencr'
-  params: {
-    // Required parameters
-    name: 'sbnencr001'
-    // Non-required parameters
-    authorizationRules: [
-      {
-        name: 'RootManageSharedAccessKey'
-        rights: [
-          'Listen'
-          'Manage'
-          'Send'
-        ]
-      }
-      {
-        name: 'AnotherKey'
-        rights: [
-          'Listen'
-          'Send'
-        ]
-      }
-    ]
-    cMKKeyName: '<cMKKeyName>'
-    cMKKeyVaultResourceId: '<cMKKeyVaultResourceId>'
-    cMKUserAssignedIdentityResourceId: '<cMKUserAssignedIdentityResourceId>'
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    networkRuleSets: {
-      defaultAction: 'Deny'
-      ipRules: [
-        {
-          action: 'Allow'
-          ipMask: '10.0.1.0/32'
-        }
-        {
-          action: 'Allow'
-          ipMask: '10.0.2.0/32'
-        }
-      ]
-      trustedServiceAccessEnabled: true
-      virtualNetworkRules: [
-        {
-          ignoreMissingVnetServiceEndpoint: true
-          subnetResourceId: '<subnetResourceId>'
-        }
-      ]
-    }
-    roleAssignments: [
-      {
-        principalId: '<principalId>'
-        principalType: 'ServicePrincipal'
-        roleDefinitionIdOrName: 'Reader'
-      }
-    ]
-    skuName: 'Premium'
-    systemAssignedIdentity: false
-    tags: {
-      Environment: 'Non-Prod'
-      'hidden-title': 'This is visible in the resource name'
-      Role: 'DeploymentValidation'
-    }
-    userAssignedIdentities: {
-      '<managedIdentityResourceId>': {}
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "sbnencr001"
-    },
-    // Non-required parameters
-    "authorizationRules": {
-      "value": [
-        {
-          "name": "RootManageSharedAccessKey",
-          "rights": [
-            "Listen",
-            "Manage",
-            "Send"
-          ]
-        },
-        {
-          "name": "AnotherKey",
-          "rights": [
-            "Listen",
-            "Send"
-          ]
-        }
-      ]
-    },
-    "cMKKeyName": {
-      "value": "<cMKKeyName>"
-    },
-    "cMKKeyVaultResourceId": {
-      "value": "<cMKKeyVaultResourceId>"
-    },
-    "cMKUserAssignedIdentityResourceId": {
-      "value": "<cMKUserAssignedIdentityResourceId>"
-    },
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
-    "networkRuleSets": {
-      "value": {
-        "defaultAction": "Deny",
-        "ipRules": [
-          {
-            "action": "Allow",
-            "ipMask": "10.0.1.0/32"
-          },
-          {
-            "action": "Allow",
-            "ipMask": "10.0.2.0/32"
-          }
-        ],
-        "trustedServiceAccessEnabled": true,
-        "virtualNetworkRules": [
-          {
-            "ignoreMissingVnetServiceEndpoint": true,
-            "subnetResourceId": "<subnetResourceId>"
-          }
-        ]
-      }
-    },
-    "roleAssignments": {
-      "value": [
-        {
-          "principalId": "<principalId>",
-          "principalType": "ServicePrincipal",
-          "roleDefinitionIdOrName": "Reader"
-        }
-      ]
-    },
-    "skuName": {
-      "value": "Premium"
-    },
-    "systemAssignedIdentity": {
-      "value": false
-    },
-    "tags": {
-      "value": {
-        "Environment": "Non-Prod",
-        "hidden-title": "This is visible in the resource name",
-        "Role": "DeploymentValidation"
-      }
-    },
-    "userAssignedIdentities": {
-      "value": {
-        "<managedIdentityResourceId>": {}
-      }
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-### Example 3: _Using only defaults_
-
-This instance deploys the module with the minimum set of required parameters.
-
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module namespace 'br:bicep/modules/service-bus.namespace:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-sbnmin'
-  params: {
-    // Required parameters
-    name: 'sbnmin001'
-    // Non-required parameters
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "sbnmin001"
-    },
-    // Non-required parameters
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
     }
   }
 }
@@ -759,27 +763,20 @@ module namespace 'br:bicep/modules/service-bus.namespace:1.0.0' = {
 | :-- | :-- | :-- |
 | [`name`](#parameter-name) | string | Name of the Service Bus Namespace. |
 
-**Conditional parameters**
-
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`cMKKeyVaultResourceId`](#parameter-cmkkeyvaultresourceid) | string | The resource ID of a key vault to reference a customer managed key for encryption from. Required if 'cMKKeyName' is not empty. |
-
 **Optional parameters**
 
 | Parameter | Type | Description |
 | :-- | :-- | :-- |
 | [`alternateName`](#parameter-alternatename) | string | Alternate name for namespace. |
 | [`authorizationRules`](#parameter-authorizationrules) | array | Authorization Rules for the Service Bus namespace. |
-| [`cMKKeyName`](#parameter-cmkkeyname) | string | The name of the customer managed key to use for encryption. If not provided, encryption is automatically enabled with a Microsoft-managed key. |
-| [`cMKKeyVersion`](#parameter-cmkkeyversion) | string | The version of the customer managed key to reference for encryption. If not provided, the latest key version is used. |
-| [`cMKUserAssignedIdentityResourceId`](#parameter-cmkuserassignedidentityresourceid) | string | User assigned identity to use when fetching the customer managed key. If not provided, a system-assigned identity can be used - but must be given access to the referenced key vault first. |
+| [`customerManagedKey`](#parameter-customermanagedkey) | object | The customer managed key definition. |
 | [`diagnosticSettings`](#parameter-diagnosticsettings) | array | The diagnostic settings of the service. |
 | [`disableLocalAuth`](#parameter-disablelocalauth) | bool | This property disables SAS authentication for the Service Bus namespace. |
 | [`disasterRecoveryConfigs`](#parameter-disasterrecoveryconfigs) | object | The disaster recovery configuration. |
 | [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
 | [`location`](#parameter-location) | string | Location for all resources. |
 | [`lock`](#parameter-lock) | object | The lock settings of the service. |
+| [`managedIdentities`](#parameter-managedidentities) | object | The managed identity definition for this resource. |
 | [`migrationConfigurations`](#parameter-migrationconfigurations) | object | The migration configuration. |
 | [`minimumTlsVersion`](#parameter-minimumtlsversion) | string | The minimum TLS version for the cluster to support. |
 | [`networkRuleSets`](#parameter-networkrulesets) | object | Configure networking options for Premium SKU Service Bus. This object contains IPs/Subnets to allow or restrict access to private endpoints only. For security reasons, it is recommended to configure this object on the Namespace. |
@@ -791,10 +788,8 @@ module namespace 'br:bicep/modules/service-bus.namespace:1.0.0' = {
 | [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | [`skuCapacity`](#parameter-skucapacity) | int | The specified messaging units for the tier. Only used for Premium Sku tier. |
 | [`skuName`](#parameter-skuname) | string | Name of this SKU. - Basic, Standard, Premium. |
-| [`systemAssignedIdentity`](#parameter-systemassignedidentity) | bool | Enables system assigned managed identity on the resource. |
 | [`tags`](#parameter-tags) | object | Tags of the resource. |
 | [`topics`](#parameter-topics) | array | The topics to create in the service bus namespace. |
-| [`userAssignedIdentities`](#parameter-userassignedidentities) | object | The ID(s) to assign to the resource. |
 | [`zoneRedundant`](#parameter-zoneredundant) | bool | Enabling this property creates a Premium Service Bus Namespace in regions supported availability zones. |
 
 ### Parameter: `alternateName`
@@ -809,35 +804,61 @@ Alternate name for namespace.
 Authorization Rules for the Service Bus namespace.
 - Required: No
 - Type: array
-- Default: `[System.Management.Automation.OrderedHashtable]`
+- Default:
+  ```Bicep
+  [
+    {
+      name: 'RootManageSharedAccessKey'
+      rights: [
+        'Listen'
+        'Manage'
+        'Send'
+      ]
+    }
+  ]
+  ```
 
-### Parameter: `cMKKeyName`
+### Parameter: `customerManagedKey`
 
-The name of the customer managed key to use for encryption. If not provided, encryption is automatically enabled with a Microsoft-managed key.
+The customer managed key definition.
+- Required: No
+- Type: object
+
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`keyName`](#parameter-customermanagedkeykeyname) | Yes | string | Required. The name of the customer managed key to use for encryption. |
+| [`keyVaultResourceId`](#parameter-customermanagedkeykeyvaultresourceid) | Yes | string | Required. The resource ID of a key vault to reference a customer managed key for encryption from. |
+| [`keyVersion`](#parameter-customermanagedkeykeyversion) | No | string | Optional. The version of the customer managed key to reference for encryption. If not provided, using 'latest'. |
+| [`userAssignedIdentityResourceId`](#parameter-customermanagedkeyuserassignedidentityresourceid) | No | string | Optional. User assigned identity to use when fetching the customer managed key. Required if no system assigned identity is available for use. |
+
+### Parameter: `customerManagedKey.keyName`
+
+Required. The name of the customer managed key to use for encryption.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `customerManagedKey.keyVaultResourceId`
+
+Required. The resource ID of a key vault to reference a customer managed key for encryption from.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `customerManagedKey.keyVersion`
+
+Optional. The version of the customer managed key to reference for encryption. If not provided, using 'latest'.
+
 - Required: No
 - Type: string
-- Default: `''`
 
-### Parameter: `cMKKeyVaultResourceId`
+### Parameter: `customerManagedKey.userAssignedIdentityResourceId`
 
-The resource ID of a key vault to reference a customer managed key for encryption from. Required if 'cMKKeyName' is not empty.
+Optional. User assigned identity to use when fetching the customer managed key. Required if no system assigned identity is available for use.
+
 - Required: No
 - Type: string
-- Default: `''`
-
-### Parameter: `cMKKeyVersion`
-
-The version of the customer managed key to reference for encryption. If not provided, the latest key version is used.
-- Required: No
-- Type: string
-- Default: `''`
-
-### Parameter: `cMKUserAssignedIdentityResourceId`
-
-User assigned identity to use when fetching the customer managed key. If not provided, a system-assigned identity can be used - but must be given access to the referenced key vault first.
-- Required: No
-- Type: string
-- Default: `''`
 
 ### Parameter: `diagnosticSettings`
 
@@ -966,7 +987,7 @@ This property disables SAS authentication for the Service Bus namespace.
 The disaster recovery configuration.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `enableDefaultTelemetry`
 
@@ -1009,12 +1030,38 @@ Optional. Specify the name of lock.
 - Required: No
 - Type: string
 
+### Parameter: `managedIdentities`
+
+The managed identity definition for this resource.
+- Required: No
+- Type: object
+
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`systemAssigned`](#parameter-managedidentitiessystemassigned) | No | bool | Optional. Enables system assigned managed identity on the resource. |
+| [`userAssignedResourcesIds`](#parameter-managedidentitiesuserassignedresourcesids) | No | array | Optional. The resource ID(s) to assign to the resource. |
+
+### Parameter: `managedIdentities.systemAssigned`
+
+Optional. Enables system assigned managed identity on the resource.
+
+- Required: No
+- Type: bool
+
+### Parameter: `managedIdentities.userAssignedResourcesIds`
+
+Optional. The resource ID(s) to assign to the resource.
+
+- Required: No
+- Type: array
+
 ### Parameter: `migrationConfigurations`
 
 The migration configuration.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `minimumTlsVersion`
 
@@ -1022,7 +1069,14 @@ The minimum TLS version for the cluster to support.
 - Required: No
 - Type: string
 - Default: `'1.2'`
-- Allowed: `[1.0, 1.1, 1.2]`
+- Allowed:
+  ```Bicep
+  [
+    '1.0'
+    '1.1'
+    '1.2'
+  ]
+  ```
 
 ### Parameter: `name`
 
@@ -1035,7 +1089,7 @@ Name of the Service Bus Namespace.
 Configure networking options for Premium SKU Service Bus. This object contains IPs/Subnets to allow or restrict access to private endpoints only. For security reasons, it is recommended to configure this object on the Namespace.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `premiumMessagingPartitions`
 
@@ -1085,14 +1139,20 @@ Optional. Custom DNS configurations.
 
 | Name | Required | Type | Description |
 | :-- | :-- | :--| :-- |
-| [`fqdn`](#parameter-privateendpointscustomdnsconfigsfqdn) | No | string |  |
-| [`ipAddresses`](#parameter-privateendpointscustomdnsconfigsipaddresses) | Yes | array |  |
+| [`fqdn`](#parameter-privateendpointscustomdnsconfigsfqdn) | No | string | Required. Fqdn that resolves to private endpoint ip address. |
+| [`ipAddresses`](#parameter-privateendpointscustomdnsconfigsipaddresses) | Yes | array | Required. A list of private ip addresses of the private endpoint. |
 
 ### Parameter: `privateEndpoints.customDnsConfigs.fqdn`
+
+Required. Fqdn that resolves to private endpoint ip address.
+
 - Required: No
 - Type: string
 
 ### Parameter: `privateEndpoints.customDnsConfigs.ipAddresses`
+
+Required. A list of private ip addresses of the private endpoint.
+
 - Required: Yes
 - Type: array
 
@@ -1120,26 +1180,50 @@ Optional. A list of IP configurations of the private endpoint. This will be used
 
 | Name | Required | Type | Description |
 | :-- | :-- | :--| :-- |
-| [`groupId`](#parameter-privateendpointsipconfigurationsgroupid) | Yes | string |  |
-| [`memberName`](#parameter-privateendpointsipconfigurationsmembername) | Yes | string |  |
-| [`name`](#parameter-privateendpointsipconfigurationsname) | Yes | string |  |
-| [`privateIpAddress`](#parameter-privateendpointsipconfigurationsprivateipaddress) | Yes | string |  |
-
-### Parameter: `privateEndpoints.ipConfigurations.groupId`
-- Required: Yes
-- Type: string
-
-### Parameter: `privateEndpoints.ipConfigurations.memberName`
-- Required: Yes
-- Type: string
+| [`name`](#parameter-privateendpointsipconfigurationsname) | Yes | string | Required. The name of the resource that is unique within a resource group. |
+| [`properties`](#parameter-privateendpointsipconfigurationsproperties) | Yes | object | Required. Properties of private endpoint IP configurations. |
 
 ### Parameter: `privateEndpoints.ipConfigurations.name`
+
+Required. The name of the resource that is unique within a resource group.
+
 - Required: Yes
 - Type: string
 
-### Parameter: `privateEndpoints.ipConfigurations.privateIpAddress`
+### Parameter: `privateEndpoints.ipConfigurations.properties`
+
+Required. Properties of private endpoint IP configurations.
+
+- Required: Yes
+- Type: object
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`groupId`](#parameter-privateendpointsipconfigurationspropertiesgroupid) | Yes | string | Required. The ID of a group obtained from the remote resource that this private endpoint should connect to. |
+| [`memberName`](#parameter-privateendpointsipconfigurationspropertiesmembername) | Yes | string | Required. The member name of a group obtained from the remote resource that this private endpoint should connect to. |
+| [`privateIPAddress`](#parameter-privateendpointsipconfigurationspropertiesprivateipaddress) | Yes | string | Required. A private ip address obtained from the private endpoint's subnet. |
+
+### Parameter: `privateEndpoints.ipConfigurations.properties.groupId`
+
+Required. The ID of a group obtained from the remote resource that this private endpoint should connect to.
+
 - Required: Yes
 - Type: string
+
+### Parameter: `privateEndpoints.ipConfigurations.properties.memberName`
+
+Required. The member name of a group obtained from the remote resource that this private endpoint should connect to.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `privateEndpoints.ipConfigurations.properties.privateIPAddress`
+
+Required. A private ip address obtained from the private endpoint's subnet.
+
+- Required: Yes
+- Type: string
+
 
 
 ### Parameter: `privateEndpoints.location`
@@ -1218,7 +1302,15 @@ Whether or not public network access is allowed for this resource. For security 
 - Required: No
 - Type: string
 - Default: `''`
-- Allowed: `['', Disabled, Enabled, SecuredByPerimeter]`
+- Allowed:
+  ```Bicep
+  [
+    ''
+    'Disabled'
+    'Enabled'
+    'SecuredByPerimeter'
+  ]
+  ```
 
 ### Parameter: `queues`
 
@@ -1308,7 +1400,17 @@ The specified messaging units for the tier. Only used for Premium Sku tier.
 - Required: No
 - Type: int
 - Default: `1`
-- Allowed: `[1, 2, 4, 8, 16, 32]`
+- Allowed:
+  ```Bicep
+  [
+    1
+    2
+    4
+    8
+    16
+    32
+  ]
+  ```
 
 ### Parameter: `skuName`
 
@@ -1316,21 +1418,20 @@ Name of this SKU. - Basic, Standard, Premium.
 - Required: No
 - Type: string
 - Default: `'Basic'`
-- Allowed: `[Basic, Premium, Standard]`
-
-### Parameter: `systemAssignedIdentity`
-
-Enables system assigned managed identity on the resource.
-- Required: No
-- Type: bool
-- Default: `False`
+- Allowed:
+  ```Bicep
+  [
+    'Basic'
+    'Premium'
+    'Standard'
+  ]
+  ```
 
 ### Parameter: `tags`
 
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `topics`
 
@@ -1338,13 +1439,6 @@ The topics to create in the service bus namespace.
 - Required: No
 - Type: array
 - Default: `[]`
-
-### Parameter: `userAssignedIdentities`
-
-The ID(s) to assign to the resource.
-- Required: No
-- Type: object
-- Default: `{object}`
 
 ### Parameter: `zoneRedundant`
 
@@ -1362,7 +1456,7 @@ Enabling this property creates a Premium Service Bus Namespace in regions suppor
 | `name` | string | The name of the deployed service bus namespace. |
 | `resourceGroupName` | string | The resource group of the deployed service bus namespace. |
 | `resourceId` | string | The resource ID of the deployed service bus namespace. |
-| `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
+| `systemAssignedMIPrincipalId` | string | The principal ID of the system assigned identity. |
 
 ## Cross-referenced modules
 

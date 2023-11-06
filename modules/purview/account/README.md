@@ -29,10 +29,62 @@ The following section provides usage examples for the module, which were used to
 
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/purview.account:1.0.0`.
 
-- [Using large parameter set](#example-1-using-large-parameter-set)
-- [Using only defaults](#example-2-using-only-defaults)
+- [Using only defaults](#example-1-using-only-defaults)
+- [Using large parameter set](#example-2-using-large-parameter-set)
 
-### Example 1: _Using large parameter set_
+### Example 1: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module account 'br:bicep/modules/purview.account:1.0.0' = {
+  name: '${uniqueString(deployment().name)}-test-pvamin'
+  params: {
+    // Required parameters
+    name: 'pvamin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    managedResourceGroupName: 'pvamin001-managed-rg'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "pvamin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "managedResourceGroupName": {
+      "value": "pvamin001-managed-rg"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 2: _Using large parameter set_
 
 This instance deploys the module with most of its features enabled.
 
@@ -43,10 +95,10 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module account 'br:bicep/modules/purview.account:1.0.0' = {
-  name: '${uniqueString(deployment().name)}-test-pvacom'
+  name: '${uniqueString(deployment().name)}-test-pvamax'
   params: {
     // Required parameters
-    name: 'pvacom001'
+    name: 'pvamax001'
     // Non-required parameters
     accountPrivateEndpoints: [
       {
@@ -96,7 +148,12 @@ module account 'br:bicep/modules/purview.account:1.0.0' = {
       kind: 'CanNotDelete'
       name: 'myCustomLockName'
     }
-    managedResourceGroupName: 'pvacom001-managed-rg'
+    managedIdentities: {
+      userAssignedResourcesIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
+    managedResourceGroupName: 'pvamax001-managed-rg'
     portalPrivateEndpoints: [
       {
         privateDnsZoneResourceIds: [
@@ -152,9 +209,6 @@ module account 'br:bicep/modules/purview.account:1.0.0' = {
       'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
     }
-    userAssignedIdentities: {
-      '<managedIdentityResourceId>': {}
-    }
   }
 }
 ```
@@ -173,7 +227,7 @@ module account 'br:bicep/modules/purview.account:1.0.0' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "pvacom001"
+      "value": "pvamax001"
     },
     // Non-required parameters
     "accountPrivateEndpoints": {
@@ -236,8 +290,15 @@ module account 'br:bicep/modules/purview.account:1.0.0' = {
         "name": "myCustomLockName"
       }
     },
+    "managedIdentities": {
+      "value": {
+        "userAssignedResourcesIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
+    },
     "managedResourceGroupName": {
-      "value": "pvacom001-managed-rg"
+      "value": "pvamax001-managed-rg"
     },
     "portalPrivateEndpoints": {
       "value": [
@@ -305,63 +366,6 @@ module account 'br:bicep/modules/purview.account:1.0.0' = {
         "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
-    },
-    "userAssignedIdentities": {
-      "value": {
-        "<managedIdentityResourceId>": {}
-      }
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-### Example 2: _Using only defaults_
-
-This instance deploys the module with the minimum set of required parameters.
-
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module account 'br:bicep/modules/purview.account:1.0.0' = {
-  name: '${uniqueString(deployment().name)}-test-pvamin'
-  params: {
-    // Required parameters
-    name: 'pvamin001'
-    // Non-required parameters
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    managedResourceGroupName: 'pvamin001-managed-rg'
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "pvamin001"
-    },
-    // Non-required parameters
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
-    "managedResourceGroupName": {
-      "value": "pvamin001-managed-rg"
     }
   }
 }
@@ -389,6 +393,7 @@ module account 'br:bicep/modules/purview.account:1.0.0' = {
 | [`eventHubPrivateEndpoints`](#parameter-eventhubprivateendpoints) | array | Configuration details for Purview Managed Event Hub namespace private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. Make sure the service property is set to 'namespace'. |
 | [`location`](#parameter-location) | string | Location for all resources. |
 | [`lock`](#parameter-lock) | object | The lock settings of the service. |
+| [`managedIdentities`](#parameter-managedidentities) | object | The managed identity definition for this resource. |
 | [`managedResourceGroupName`](#parameter-managedresourcegroupname) | string | The Managed Resource Group Name. A managed Storage Account, and an Event Hubs will be created in the selected subscription for catalog ingestion scenarios. Default is 'managed-rg-<purview-account-name>'. |
 | [`portalPrivateEndpoints`](#parameter-portalprivateendpoints) | array | Configuration details for Purview Portal private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. Make sure the service property is set to 'portal'. |
 | [`publicNetworkAccess`](#parameter-publicnetworkaccess) | string | Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set. |
@@ -396,7 +401,6 @@ module account 'br:bicep/modules/purview.account:1.0.0' = {
 | [`storageBlobPrivateEndpoints`](#parameter-storageblobprivateendpoints) | array | Configuration details for Purview Managed Storage Account blob private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. Make sure the service property is set to 'blob'. |
 | [`storageQueuePrivateEndpoints`](#parameter-storagequeueprivateendpoints) | array | Configuration details for Purview Managed Storage Account queue private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. Make sure the service property is set to 'queue'. |
 | [`tags`](#parameter-tags) | object | Tags of the resource. |
-| [`userAssignedIdentities`](#parameter-userassignedidentities) | object | The ID(s) to assign to the resource. |
 
 ### Parameter: `accountPrivateEndpoints`
 
@@ -568,6 +572,24 @@ Optional. Specify the name of lock.
 - Required: No
 - Type: string
 
+### Parameter: `managedIdentities`
+
+The managed identity definition for this resource.
+- Required: No
+- Type: object
+
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`userAssignedResourcesIds`](#parameter-managedidentitiesuserassignedresourcesids) | Yes | array | Optional. The resource ID(s) to assign to the resource. |
+
+### Parameter: `managedIdentities.userAssignedResourcesIds`
+
+Optional. The resource ID(s) to assign to the resource.
+
+- Required: Yes
+- Type: array
+
 ### Parameter: `managedResourceGroupName`
 
 The Managed Resource Group Name. A managed Storage Account, and an Event Hubs will be created in the selected subscription for catalog ingestion scenarios. Default is 'managed-rg-<purview-account-name>'.
@@ -594,7 +616,14 @@ Whether or not public network access is allowed for this resource. For security 
 - Required: No
 - Type: string
 - Default: `'NotSpecified'`
-- Allowed: `[Disabled, Enabled, NotSpecified]`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+    'NotSpecified'
+  ]
+  ```
 
 ### Parameter: `roleAssignments`
 
@@ -683,14 +712,6 @@ Configuration details for Purview Managed Storage Account queue private endpoint
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
-
-### Parameter: `userAssignedIdentities`
-
-The ID(s) to assign to the resource.
-- Required: No
-- Type: object
-- Default: `{object}`
 
 
 ## Outputs
@@ -705,7 +726,7 @@ The ID(s) to assign to the resource.
 | `name` | string | The name of the Purview Account. |
 | `resourceGroupName` | string | The resource group the Purview Account was deployed into. |
 | `resourceId` | string | The resource ID of the Purview Account. |
-| `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
+| `systemAssignedMIPrincipalId` | string | The principal ID of the system assigned identity. |
 
 ## Cross-referenced modules
 

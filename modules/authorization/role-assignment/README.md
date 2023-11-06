@@ -428,7 +428,12 @@ Version of the condition. Currently accepted value is "2.0".
 - Required: No
 - Type: string
 - Default: `'2.0'`
-- Allowed: `[2.0]`
+- Allowed:
+  ```Bicep
+  [
+    '2.0'
+  ]
+  ```
 
 ### Parameter: `delegatedManagedIdentityResourceId`
 
@@ -477,7 +482,17 @@ The principal type of the assigned principal ID.
 - Required: No
 - Type: string
 - Default: `''`
-- Allowed: `['', Device, ForeignGroup, Group, ServicePrincipal, User]`
+- Allowed:
+  ```Bicep
+  [
+    ''
+    'Device'
+    'ForeignGroup'
+    'Group'
+    'ServicePrincipal'
+    'User'
+  ]
+  ```
 
 ### Parameter: `resourceGroupName`
 

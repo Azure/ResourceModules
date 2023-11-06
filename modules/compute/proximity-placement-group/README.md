@@ -26,10 +26,58 @@ The following section provides usage examples for the module, which were used to
 
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/compute.proximity-placement-group:1.0.0`.
 
-- [Using large parameter set](#example-1-using-large-parameter-set)
-- [Using only defaults](#example-2-using-only-defaults)
+- [Using only defaults](#example-1-using-only-defaults)
+- [Using large parameter set](#example-2-using-large-parameter-set)
 
-### Example 1: _Using large parameter set_
+### Example 1: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module proximityPlacementGroup 'br:bicep/modules/compute.proximity-placement-group:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-cppgmin'
+  params: {
+    // Required parameters
+    name: 'cppgmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "cppgmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 2: _Using large parameter set_
 
 This instance deploys the module with most of its features enabled.
 
@@ -40,10 +88,10 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module proximityPlacementGroup 'br:bicep/modules/compute.proximity-placement-group:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-cppgcom'
+  name: '${uniqueString(deployment().name, location)}-test-cppgmax'
   params: {
     // Required parameters
-    name: 'cppgcom001'
+    name: 'cppgmax001'
     // Non-required parameters
     colocationStatus: {
       code: 'ColocationStatus/Aligned'
@@ -96,7 +144,7 @@ module proximityPlacementGroup 'br:bicep/modules/compute.proximity-placement-gro
   "parameters": {
     // Required parameters
     "name": {
-      "value": "cppgcom001"
+      "value": "cppgmax001"
     },
     // Non-required parameters
     "colocationStatus": {
@@ -155,54 +203,6 @@ module proximityPlacementGroup 'br:bicep/modules/compute.proximity-placement-gro
 </details>
 <p>
 
-### Example 2: _Using only defaults_
-
-This instance deploys the module with the minimum set of required parameters.
-
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module proximityPlacementGroup 'br:bicep/modules/compute.proximity-placement-group:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-cppgmin'
-  params: {
-    // Required parameters
-    name: 'cppgmin001'
-    // Non-required parameters
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "cppgmin001"
-    },
-    // Non-required parameters
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    }
-  }
-}
-```
-
-</details>
-<p>
-
 
 ## Parameters
 
@@ -231,7 +231,7 @@ module proximityPlacementGroup 'br:bicep/modules/compute.proximity-placement-gro
 Describes colocation status of the Proximity Placement Group.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `enableDefaultTelemetry`
 
@@ -245,7 +245,7 @@ Enable telemetry via a Globally Unique Identifier (GUID).
 Specifies the user intent of the proximity placement group.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `location`
 
@@ -360,7 +360,6 @@ Required. The name of the role to assign. If it cannot be found you can specify 
 Tags of the proximity placement group resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `type`
 
@@ -368,7 +367,13 @@ Specifies the type of the proximity placement group.
 - Required: No
 - Type: string
 - Default: `'Standard'`
-- Allowed: `[Standard, Ultra]`
+- Allowed:
+  ```Bicep
+  [
+    'Standard'
+    'Ultra'
+  ]
+  ```
 
 ### Parameter: `zones`
 

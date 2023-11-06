@@ -44,7 +44,7 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module registrationDefinition 'br:bicep/modules/managed-services.registration-definition:1.0.0' = {
-  name: '${uniqueString(deployment().name)}-test-msrdcom'
+  name: '${uniqueString(deployment().name)}-test-msrdmax'
   params: {
     // Required parameters
     authorizations: [
@@ -65,7 +65,7 @@ module registrationDefinition 'br:bicep/modules/managed-services.registration-de
       }
     ]
     managedByTenantId: '<< SET YOUR TENANT ID HERE >>'
-    name: 'Component Validation - msrdcom Subscription assignment'
+    name: 'Component Validation - msrdmax Subscription assignment'
     registrationDescription: 'Managed by Lighthouse'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
@@ -109,7 +109,7 @@ module registrationDefinition 'br:bicep/modules/managed-services.registration-de
       "value": "<< SET YOUR TENANT ID HERE >>"
     },
     "name": {
-      "value": "Component Validation - msrdcom Subscription assignment"
+      "value": "Component Validation - msrdmax Subscription assignment"
     },
     "registrationDescription": {
       "value": "Managed by Lighthouse"

@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "5064319070805092308"
+      "templateHash": "8921941475150538433"
     },
     "name": "Data Collection Endpoints",
     "description": "This module deploys a Data Collection Endpoint.",
@@ -162,7 +162,7 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Resource tags."
       }

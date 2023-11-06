@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "8742176141262908442"
+      "templateHash": "3152878379095233308"
     },
     "name": "Resource Groups",
     "description": "This module deploys a Resource Group.",
@@ -133,7 +133,7 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Tags of the storage account resource."
       }

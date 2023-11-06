@@ -47,7 +47,7 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module networkManager 'br:bicep/modules/network.network-manager:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-nnmcom'
+  name: '${uniqueString(deployment().name, location)}-test-nnmmax'
   params: {
     // Required parameters
     name: '<name>'
@@ -684,7 +684,6 @@ Security Admin Configurations, Rule Collections and Rules to create for the netw
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 
 ## Outputs

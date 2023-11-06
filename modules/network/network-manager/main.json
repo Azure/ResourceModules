@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "13647410280137569380"
+      "templateHash": "11982582623966534114"
     },
     "name": "Network Managers",
     "description": "This module deploys a Network Manager.",
@@ -135,7 +135,7 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Tags of the resource."
       }

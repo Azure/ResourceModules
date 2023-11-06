@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "17118988135887784728"
+      "templateHash": "9834860024329832524"
     },
     "name": "Local Network Gateways",
     "description": "This module deploys a Local Network Gateway.",
@@ -167,7 +167,7 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Tags of the resource."
       }

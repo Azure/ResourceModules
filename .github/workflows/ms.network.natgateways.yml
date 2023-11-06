@@ -29,6 +29,7 @@ on:
     paths:
       - 'modules/network/nat-gateway/**'
       - 'modules/network/public-ip-address/**'
+      - 'modules/network/public-ip-prefix/**'
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.network.natgateways.yml'

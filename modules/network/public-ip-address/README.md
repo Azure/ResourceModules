@@ -29,10 +29,58 @@ The following section provides usage examples for the module, which were used to
 
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/network.public-ip-address:1.0.0`.
 
-- [Using large parameter set](#example-1-using-large-parameter-set)
-- [Using only defaults](#example-2-using-only-defaults)
+- [Using only defaults](#example-1-using-only-defaults)
+- [Using large parameter set](#example-2-using-large-parameter-set)
 
-### Example 1: _Using large parameter set_
+### Example 1: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module publicIpAddress 'br:bicep/modules/network.public-ip-address:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-npiamin'
+  params: {
+    // Required parameters
+    name: 'npiamin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "npiamin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 2: _Using large parameter set_
 
 This instance deploys the module with most of its features enabled.
 
@@ -43,10 +91,10 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module publicIpAddress 'br:bicep/modules/network.public-ip-address:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-npiacom'
+  name: '${uniqueString(deployment().name, location)}-test-npiamax'
   params: {
     // Required parameters
-    name: 'npiacom001'
+    name: 'npiamax001'
     // Non-required parameters
     diagnosticSettings: [
       {
@@ -104,7 +152,7 @@ module publicIpAddress 'br:bicep/modules/network.public-ip-address:1.0.0' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "npiacom001"
+      "value": "npiamax001"
     },
     // Non-required parameters
     "diagnosticSettings": {
@@ -160,54 +208,6 @@ module publicIpAddress 'br:bicep/modules/network.public-ip-address:1.0.0' = {
         "2",
         "3"
       ]
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-### Example 2: _Using only defaults_
-
-This instance deploys the module with the minimum set of required parameters.
-
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module publicIpAddress 'br:bicep/modules/network.public-ip-address:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-npiamin'
-  params: {
-    // Required parameters
-    name: 'npiamin001'
-    // Non-required parameters
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "npiamin001"
-    },
-    // Non-required parameters
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
     }
   }
 }
@@ -374,7 +374,16 @@ The domain name label scope. If a domain name label and a domain name label scop
 - Required: No
 - Type: string
 - Default: `''`
-- Allowed: `['', NoReuse, ResourceGroupReuse, SubscriptionReuse, TenantReuse]`
+- Allowed:
+  ```Bicep
+  [
+    ''
+    'NoReuse'
+    'ResourceGroupReuse'
+    'SubscriptionReuse'
+    'TenantReuse'
+  ]
+  ```
 
 ### Parameter: `enableDefaultTelemetry`
 
@@ -436,7 +445,13 @@ IP address version.
 - Required: No
 - Type: string
 - Default: `'IPv4'`
-- Allowed: `[IPv4, IPv6]`
+- Allowed:
+  ```Bicep
+  [
+    'IPv4'
+    'IPv6'
+  ]
+  ```
 
 ### Parameter: `publicIPAllocationMethod`
 
@@ -444,7 +459,13 @@ The public IP address allocation method.
 - Required: No
 - Type: string
 - Default: `'Static'`
-- Allowed: `[Dynamic, Static]`
+- Allowed:
+  ```Bicep
+  [
+    'Dynamic'
+    'Static'
+  ]
+  ```
 
 ### Parameter: `publicIPPrefixResourceId`
 
@@ -534,7 +555,13 @@ Name of a public IP address SKU.
 - Required: No
 - Type: string
 - Default: `'Standard'`
-- Allowed: `[Basic, Standard]`
+- Allowed:
+  ```Bicep
+  [
+    'Basic'
+    'Standard'
+  ]
+  ```
 
 ### Parameter: `skuTier`
 
@@ -542,14 +569,19 @@ Tier of a public IP address SKU.
 - Required: No
 - Type: string
 - Default: `'Regional'`
-- Allowed: `[Global, Regional]`
+- Allowed:
+  ```Bicep
+  [
+    'Global'
+    'Regional'
+  ]
+  ```
 
 ### Parameter: `tags`
 
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `zones`
 

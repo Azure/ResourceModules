@@ -28,184 +28,10 @@ The following section provides usage examples for the module, which were used to
 
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/event-grid.system-topic:1.0.0`.
 
-- [Using large parameter set](#example-1-using-large-parameter-set)
-- [Using only defaults](#example-2-using-only-defaults)
+- [Using only defaults](#example-1-using-only-defaults)
+- [Using large parameter set](#example-2-using-large-parameter-set)
 
-### Example 1: _Using large parameter set_
-
-This instance deploys the module with most of its features enabled.
-
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module systemTopic 'br:bicep/modules/event-grid.system-topic:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-egstcom'
-  params: {
-    // Required parameters
-    name: 'egstcom001'
-    source: '<source>'
-    topicType: 'Microsoft.Storage.StorageAccounts'
-    // Non-required parameters
-    diagnosticSettings: [
-      {
-        eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
-        eventHubName: '<eventHubName>'
-        metricCategories: [
-          {
-            category: 'AllMetrics'
-          }
-        ]
-        name: 'customSetting'
-        storageAccountResourceId: '<storageAccountResourceId>'
-        workspaceResourceId: '<workspaceResourceId>'
-      }
-    ]
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    eventSubscriptions: [
-      {
-        destination: {
-          endpointType: 'StorageQueue'
-          properties: {
-            queueMessageTimeToLiveInSeconds: 86400
-            queueName: '<queueName>'
-            resourceId: '<resourceId>'
-          }
-        }
-        enableDefaultTelemetry: '<enableDefaultTelemetry>'
-        eventDeliverySchema: 'CloudEventSchemaV1_0'
-        expirationTimeUtc: '2099-01-01T11:00:21.715Z'
-        filter: {
-          enableAdvancedFilteringOnArrays: true
-          isSubjectCaseSensitive: false
-        }
-        name: 'egstcom001'
-        retryPolicy: {
-          eventTimeToLive: '120'
-          maxDeliveryAttempts: 10
-        }
-      }
-    ]
-    lock: {
-      kind: 'CanNotDelete'
-      name: 'myCustomLockName'
-    }
-    roleAssignments: [
-      {
-        principalId: '<principalId>'
-        principalType: 'ServicePrincipal'
-        roleDefinitionIdOrName: 'Reader'
-      }
-    ]
-    tags: {
-      Environment: 'Non-Prod'
-      'hidden-title': 'This is visible in the resource name'
-      Role: 'DeploymentValidation'
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "egstcom001"
-    },
-    "source": {
-      "value": "<source>"
-    },
-    "topicType": {
-      "value": "Microsoft.Storage.StorageAccounts"
-    },
-    // Non-required parameters
-    "diagnosticSettings": {
-      "value": [
-        {
-          "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
-          "eventHubName": "<eventHubName>",
-          "metricCategories": [
-            {
-              "category": "AllMetrics"
-            }
-          ],
-          "name": "customSetting",
-          "storageAccountResourceId": "<storageAccountResourceId>",
-          "workspaceResourceId": "<workspaceResourceId>"
-        }
-      ]
-    },
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
-    "eventSubscriptions": {
-      "value": [
-        {
-          "destination": {
-            "endpointType": "StorageQueue",
-            "properties": {
-              "queueMessageTimeToLiveInSeconds": 86400,
-              "queueName": "<queueName>",
-              "resourceId": "<resourceId>"
-            }
-          },
-          "enableDefaultTelemetry": "<enableDefaultTelemetry>",
-          "eventDeliverySchema": "CloudEventSchemaV1_0",
-          "expirationTimeUtc": "2099-01-01T11:00:21.715Z",
-          "filter": {
-            "enableAdvancedFilteringOnArrays": true,
-            "isSubjectCaseSensitive": false
-          },
-          "name": "egstcom001",
-          "retryPolicy": {
-            "eventTimeToLive": "120",
-            "maxDeliveryAttempts": 10
-          }
-        }
-      ]
-    },
-    "lock": {
-      "value": {
-        "kind": "CanNotDelete",
-        "name": "myCustomLockName"
-      }
-    },
-    "roleAssignments": {
-      "value": [
-        {
-          "principalId": "<principalId>",
-          "principalType": "ServicePrincipal",
-          "roleDefinitionIdOrName": "Reader"
-        }
-      ]
-    },
-    "tags": {
-      "value": {
-        "Environment": "Non-Prod",
-        "hidden-title": "This is visible in the resource name",
-        "Role": "DeploymentValidation"
-      }
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-### Example 2: _Using only defaults_
+### Example 1: _Using only defaults_
 
 This instance deploys the module with the minimum set of required parameters.
 
@@ -261,6 +87,188 @@ module systemTopic 'br:bicep/modules/event-grid.system-topic:1.0.0' = {
 </details>
 <p>
 
+### Example 2: _Using large parameter set_
+
+This instance deploys the module with most of its features enabled.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module systemTopic 'br:bicep/modules/event-grid.system-topic:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-egstmax'
+  params: {
+    // Required parameters
+    name: 'egstmax001'
+    source: '<source>'
+    topicType: 'Microsoft.Storage.StorageAccounts'
+    // Non-required parameters
+    diagnosticSettings: [
+      {
+        eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+        eventHubName: '<eventHubName>'
+        metricCategories: [
+          {
+            category: 'AllMetrics'
+          }
+        ]
+        name: 'customSetting'
+        storageAccountResourceId: '<storageAccountResourceId>'
+        workspaceResourceId: '<workspaceResourceId>'
+      }
+    ]
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    eventSubscriptions: [
+      {
+        destination: {
+          endpointType: 'StorageQueue'
+          properties: {
+            queueMessageTimeToLiveInSeconds: 86400
+            queueName: '<queueName>'
+            resourceId: '<resourceId>'
+          }
+        }
+        enableDefaultTelemetry: '<enableDefaultTelemetry>'
+        eventDeliverySchema: 'CloudEventSchemaV1_0'
+        expirationTimeUtc: '2099-01-01T11:00:21.715Z'
+        filter: {
+          enableAdvancedFilteringOnArrays: true
+          isSubjectCaseSensitive: false
+        }
+        name: 'egstmax001'
+        retryPolicy: {
+          eventTimeToLive: '120'
+          maxDeliveryAttempts: 10
+        }
+      }
+    ]
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    managedIdentities: {
+      systemAssigned: true
+    }
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "egstmax001"
+    },
+    "source": {
+      "value": "<source>"
+    },
+    "topicType": {
+      "value": "Microsoft.Storage.StorageAccounts"
+    },
+    // Non-required parameters
+    "diagnosticSettings": {
+      "value": [
+        {
+          "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+          "eventHubName": "<eventHubName>",
+          "metricCategories": [
+            {
+              "category": "AllMetrics"
+            }
+          ],
+          "name": "customSetting",
+          "storageAccountResourceId": "<storageAccountResourceId>",
+          "workspaceResourceId": "<workspaceResourceId>"
+        }
+      ]
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "eventSubscriptions": {
+      "value": [
+        {
+          "destination": {
+            "endpointType": "StorageQueue",
+            "properties": {
+              "queueMessageTimeToLiveInSeconds": 86400,
+              "queueName": "<queueName>",
+              "resourceId": "<resourceId>"
+            }
+          },
+          "enableDefaultTelemetry": "<enableDefaultTelemetry>",
+          "eventDeliverySchema": "CloudEventSchemaV1_0",
+          "expirationTimeUtc": "2099-01-01T11:00:21.715Z",
+          "filter": {
+            "enableAdvancedFilteringOnArrays": true,
+            "isSubjectCaseSensitive": false
+          },
+          "name": "egstmax001",
+          "retryPolicy": {
+            "eventTimeToLive": "120",
+            "maxDeliveryAttempts": 10
+          }
+        }
+      ]
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "managedIdentities": {
+      "value": {
+        "systemAssigned": true
+      }
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
 
 ## Parameters
 
@@ -281,10 +289,9 @@ module systemTopic 'br:bicep/modules/event-grid.system-topic:1.0.0' = {
 | [`eventSubscriptions`](#parameter-eventsubscriptions) | array | Event subscriptions to deploy. |
 | [`location`](#parameter-location) | string | Location for all Resources. |
 | [`lock`](#parameter-lock) | object | The lock settings of the service. |
+| [`managedIdentities`](#parameter-managedidentities) | object | The managed identity definition for this resource. |
 | [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| [`systemAssignedIdentity`](#parameter-systemassignedidentity) | bool | Enables system assigned managed identity on the resource. |
 | [`tags`](#parameter-tags) | object | Tags of the resource. |
-| [`userAssignedIdentities`](#parameter-userassignedidentities) | object | The ID(s) to assign to the resource. |
 
 ### Parameter: `diagnosticSettings`
 
@@ -449,6 +456,32 @@ Optional. Specify the name of lock.
 - Required: No
 - Type: string
 
+### Parameter: `managedIdentities`
+
+The managed identity definition for this resource.
+- Required: No
+- Type: object
+
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`systemAssigned`](#parameter-managedidentitiessystemassigned) | No | bool | Optional. Enables system assigned managed identity on the resource. |
+| [`userAssignedResourcesIds`](#parameter-managedidentitiesuserassignedresourcesids) | No | array | Optional. The resource ID(s) to assign to the resource. |
+
+### Parameter: `managedIdentities.systemAssigned`
+
+Optional. Enables system assigned managed identity on the resource.
+
+- Required: No
+- Type: bool
+
+### Parameter: `managedIdentities.userAssignedResourcesIds`
+
+Optional. The resource ID(s) to assign to the resource.
+
+- Required: No
+- Type: array
+
 ### Parameter: `name`
 
 The name of the Event Grid Topic.
@@ -529,32 +562,17 @@ Source for the system topic.
 - Required: Yes
 - Type: string
 
-### Parameter: `systemAssignedIdentity`
-
-Enables system assigned managed identity on the resource.
-- Required: No
-- Type: bool
-- Default: `False`
-
 ### Parameter: `tags`
 
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `topicType`
 
 TopicType for the system topic.
 - Required: Yes
 - Type: string
-
-### Parameter: `userAssignedIdentities`
-
-The ID(s) to assign to the resource.
-- Required: No
-- Type: object
-- Default: `{object}`
 
 
 ## Outputs
@@ -565,7 +583,7 @@ The ID(s) to assign to the resource.
 | `name` | string | The name of the event grid system topic. |
 | `resourceGroupName` | string | The name of the resource group the event grid system topic was deployed into. |
 | `resourceId` | string | The resource ID of the event grid system topic. |
-| `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
+| `systemAssignedMIPrincipalId` | string | The principal ID of the system assigned identity. |
 
 ## Cross-referenced modules
 

@@ -63,7 +63,7 @@ param minCapacity string = ''
 param autoPauseDelay int = 0
 
 @description('Optional. Tags of the resource.')
-param tags object = {}
+param tags object?
 
 @description('Optional. The resource ID of the elastic pool containing this database.')
 param elasticPoolId string = ''

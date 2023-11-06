@@ -38,7 +38,7 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module activityLogAlert 'br:bicep/modules/insights.activity-log-alert:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-ialacom'
+  name: '${uniqueString(deployment().name, location)}-test-ialamax'
   params: {
     // Required parameters
     conditions: [
@@ -73,7 +73,7 @@ module activityLogAlert 'br:bicep/modules/insights.activity-log-alert:1.0.0' = {
         field: 'properties.impactedServices[*].ImpactedRegions[*].RegionName'
       }
     ]
-    name: 'ialacom001'
+    name: 'ialamax001'
     // Non-required parameters
     actions: [
       {
@@ -148,7 +148,7 @@ module activityLogAlert 'br:bicep/modules/insights.activity-log-alert:1.0.0' = {
       ]
     },
     "name": {
-      "value": "ialacom001"
+      "value": "ialamax001"
     },
     // Non-required parameters
     "actions": {
@@ -332,14 +332,18 @@ Required. The name of the role to assign. If it cannot be found you can specify 
 The list of resource IDs that this Activity Log Alert is scoped to.
 - Required: No
 - Type: array
-- Default: `[[subscription().id]]`
+- Default:
+  ```Bicep
+  [
+    '[subscription().id]'
+  ]
+  ```
 
 ### Parameter: `tags`
 
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 
 ## Outputs

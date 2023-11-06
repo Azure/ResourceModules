@@ -52,7 +52,7 @@ Lab schedules are used to modify the settings for auto-shutdown, auto-start for 
 If the schedule will occur once each day of the week, specify the daily recurrence.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `enableDefaultTelemetry`
 
@@ -66,7 +66,7 @@ Enable telemetry via a Globally Unique Identifier (GUID).
 If the schedule will occur multiple times a day, specify the hourly recurrence.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `labName`
 
@@ -79,7 +79,13 @@ The name of the parent lab. Required if the template is used in a standalone dep
 The name of the schedule.
 - Required: Yes
 - Type: string
-- Allowed: `[LabVmAutoStart, LabVmsShutdown]`
+- Allowed:
+  ```Bicep
+  [
+    'LabVmAutoStart'
+    'LabVmsShutdown'
+  ]
+  ```
 
 ### Parameter: `notificationSettingsStatus`
 
@@ -87,7 +93,13 @@ If notifications are enabled for this schedule (i.e. Enabled, Disabled).
 - Required: No
 - Type: string
 - Default: `'Disabled'`
-- Allowed: `[Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 ### Parameter: `notificationSettingsTimeInMinutes`
 
@@ -102,14 +114,19 @@ The status of the schedule (i.e. Enabled, Disabled).
 - Required: No
 - Type: string
 - Default: `'Enabled'`
-- Allowed: `[Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 ### Parameter: `tags`
 
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `targetResourceId`
 
@@ -123,7 +140,13 @@ The resource ID to which the schedule belongs.
 The task type of the schedule (e.g. LabVmsShutdownTask, LabVmsStartupTask).
 - Required: Yes
 - Type: string
-- Allowed: `[LabVmsShutdownTask, LabVmsStartupTask]`
+- Allowed:
+  ```Bicep
+  [
+    'LabVmsShutdownTask'
+    'LabVmsStartupTask'
+  ]
+  ```
 
 ### Parameter: `timeZoneId`
 
@@ -137,7 +160,7 @@ The time zone ID (e.g. Pacific Standard time).
 If the schedule will occur only some days of the week, specify the weekly recurrence.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 
 ## Outputs

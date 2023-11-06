@@ -50,7 +50,31 @@ This module deploys a Relay Namespace WCF Relay.
 Authorization Rules for the WCF Relay.
 - Required: No
 - Type: array
-- Default: `[System.Management.Automation.OrderedHashtable, System.Management.Automation.OrderedHashtable, System.Management.Automation.OrderedHashtable]`
+- Default:
+  ```Bicep
+  [
+    {
+      name: 'RootManageSharedAccessKey'
+      rights: [
+        'Listen'
+        'Manage'
+        'Send'
+      ]
+    }
+    {
+      name: 'defaultListener'
+      rights: [
+        'Listen'
+      ]
+    }
+    {
+      name: 'defaultSender'
+      rights: [
+        'Send'
+      ]
+    }
+  ]
+  ```
 
 ### Parameter: `enableDefaultTelemetry`
 
@@ -103,7 +127,13 @@ The name of the parent Relay Namespace for the WCF Relay. Required if the templa
 Type of WCF Relay.
 - Required: Yes
 - Type: string
-- Allowed: `[Http, NetTcp]`
+- Allowed:
+  ```Bicep
+  [
+    'Http'
+    'NetTcp'
+  ]
+  ```
 
 ### Parameter: `requiresClientAuthorization`
 

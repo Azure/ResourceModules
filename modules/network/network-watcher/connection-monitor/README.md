@@ -75,7 +75,6 @@ Name of the network watcher resource. Must be in the resource group where the Fl
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `testConfigurations`
 

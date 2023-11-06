@@ -18,7 +18,7 @@ param lock lockType
 param roleAssignments roleAssignmentType
 
 @description('Optional. Tags of the resource.')
-param tags object = {}
+param tags object?
 
 @description('Optional. The unit count of the resource. 1 by default.')
 param capacity int = 1
@@ -30,11 +30,8 @@ param capacity int = 1
 @description('Optional. Pricing tier of the resource.')
 param sku string = 'Standard_S1'
 
-@description('Optional. Enables system assigned managed identity on the resource.')
-param systemAssignedIdentity bool = false
-
-@description('Optional. The ID(s) to assign to the resource.')
-param userAssignedIdentities object = {}
+@description('Optional. The managed identity definition for this resource. Only one type of identity is supported: system-assigned or user-assigned, but not both.')
+param managedIdentities managedIdentitiesType
 
 @description('Optional. When set as true, connection with AuthType=aad won\'t work.')
 param disableAadAuth bool = false
@@ -69,19 +66,19 @@ param networkAcls object = {}
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
+var enableReferencedModulesTelemetry = false
+
 var resourceLogConfiguration = [for configuration in resourceLogConfigurationsToEnable: {
   name: configuration
   enabled: 'true'
 }]
 
-var identityType = systemAssignedIdentity ? 'SystemAssigned' : !empty(userAssignedIdentities) ? 'UserAssigned' : 'None'
+var formattedUserAssignedIdentities = reduce(map((managedIdentities.?userAssignedResourcesIds ?? []), (id) => { '${id}': {} }), {}, (cur, next) => union(cur, next)) // Converts the flat array to an object like { '${id1}': {}, '${id2}': {} }
 
-var enableReferencedModulesTelemetry = false
-
-var identity = {
-  type: identityType
-  userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
-}
+var identity = !empty(managedIdentities) ? {
+  type: (managedIdentities.?systemAssigned ?? false) ? 'SystemAssigned' : (!empty(managedIdentities.?userAssignedResourcesIds ?? {}) ? 'UserAssigned' : null)
+  userAssignedIdentities: !empty(formattedUserAssignedIdentities) ? formattedUserAssignedIdentities : null
+} : null
 
 var builtInRoleNames = {
   Contributor: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')
@@ -203,12 +200,23 @@ output publicPort int = webPubSub.properties.publicPort
 @description('The Web PubSub serverPort.')
 output serverPort int = webPubSub.properties.serverPort
 
+@description('The principal ID of the system assigned identity.')
+output systemAssignedMIPrincipalId string = (managedIdentities.?systemAssigned ?? false) && contains(webPubSub.identity, 'principalId') ? webPubSub.identity.principalId : ''
+
 @description('The location the resource was deployed into.')
 output location string = webPubSub.location
 
 // =============== //
 //   Definitions   //
 // =============== //
+
+type managedIdentitiesType = {
+  @description('Optional. Enables system assigned managed identity on the resource.')
+  systemAssigned: bool?
+
+  @description('Optional. The resource ID(s) to assign to the resource.')
+  userAssignedResourcesIds: string[]?
+}?
 
 type lockType = {
   @description('Optional. Specify the name of lock.')
@@ -262,16 +270,29 @@ type privateEndpointType = {
 
   @description('Optional. Custom DNS configurations.')
   customDnsConfigs: {
+    @description('Required. Fqdn that resolves to private endpoint ip address.')
     fqdn: string?
+
+    @description('Required. A list of private ip addresses of the private endpoint.')
     ipAddresses: string[]
   }[]?
 
   @description('Optional. A list of IP configurations of the private endpoint. This will be used to map to the First Party Service endpoints.')
   ipConfigurations: {
+    @description('Required. The name of the resource that is unique within a resource group.')
     name: string
-    groupId: string
-    memberName: string
-    privateIpAddress: string
+
+    @description('Required. Properties of private endpoint IP configurations.')
+    properties: {
+      @description('Required. The ID of a group obtained from the remote resource that this private endpoint should connect to.')
+      groupId: string
+
+      @description('Required. The member name of a group obtained from the remote resource that this private endpoint should connect to.')
+      memberName: string
+
+      @description('Required. A private ip address obtained from the private endpoint\'s subnet.')
+      privateIPAddress: string
+    }
   }[]?
 
   @description('Optional. Application security groups in which the private endpoint IP configuration is included.')

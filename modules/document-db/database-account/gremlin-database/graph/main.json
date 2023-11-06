@@ -1,11 +1,12 @@
 {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "languageVersion": "2.0",
   "contentVersion": "1.0.0.0",
   "metadata": {
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "18333404401527081455"
+      "templateHash": "16432474498986701571"
     },
     "name": "DocumentDB Database Accounts Gremlin Databases Graphs",
     "description": "This module deploys a DocumentDB Database Accounts Gremlin Database Graph.",
@@ -20,7 +21,7 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Tags of the Gremlin graph resource."
       }
@@ -59,8 +60,17 @@
       }
     }
   },
-  "resources": [
-    {
+  "resources": {
+    "databaseAccount::gremlinDatabase": {
+      "existing": true,
+      "type": "Microsoft.DocumentDB/databaseAccounts/gremlinDatabases",
+      "apiVersion": "2023-04-15",
+      "name": "[format('{0}/{1}', parameters('databaseAccountName'), parameters('gremlinDatabaseName'))]",
+      "dependsOn": [
+        "databaseAccount"
+      ]
+    },
+    "defaultTelemetry": {
       "condition": "[parameters('enableDefaultTelemetry')]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
@@ -74,7 +84,13 @@
         }
       }
     },
-    {
+    "databaseAccount": {
+      "existing": true,
+      "type": "Microsoft.DocumentDB/databaseAccounts",
+      "apiVersion": "2023-04-15",
+      "name": "[parameters('databaseAccountName')]"
+    },
+    "gremlinGraph": {
       "type": "Microsoft.DocumentDB/databaseAccounts/gremlinDatabases/graphs",
       "apiVersion": "2023-04-15",
       "name": "[format('{0}/{1}/{2}', parameters('databaseAccountName'), parameters('gremlinDatabaseName'), parameters('name'))]",
@@ -87,9 +103,12 @@
             "paths": "[if(not(empty(parameters('partitionKeyPaths'))), parameters('partitionKeyPaths'), null())]"
           }
         }
-      }
+      },
+      "dependsOn": [
+        "databaseAccount::gremlinDatabase"
+      ]
     }
-  ],
+  },
   "outputs": {
     "name": {
       "type": "string",

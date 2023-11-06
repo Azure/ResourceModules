@@ -1,5 +1,7 @@
 # DNS Resolvers `[Microsoft.Network/dnsResolvers]`
 
+> This module has already been migrated to [AVM](https://github.com/Azure/bicep-registry-modules/tree/main/avm/res). Only the AVM version is expected to receive updates / new features. Please do not work on improving this module in [CARML](https://aka.ms/carml).
+
 This module deploys a DNS Resolver.
 
 ## Navigation
@@ -41,10 +43,10 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module dnsResolver 'br:bicep/modules/network.dns-resolver:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-ndrcom'
+  name: '${uniqueString(deployment().name, location)}-test-ndrmax'
   params: {
     // Required parameters
-    name: 'ndrcom001'
+    name: 'ndrmax001'
     virtualNetworkId: '<virtualNetworkId>'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
@@ -83,7 +85,7 @@ module dnsResolver 'br:bicep/modules/network.dns-resolver:1.0.0' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "ndrcom001"
+      "value": "ndrmax001"
     },
     "virtualNetworkId": {
       "value": "<virtualNetworkId>"
@@ -278,7 +280,6 @@ Required. The name of the role to assign. If it cannot be found you can specify 
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `virtualNetworkId`
 

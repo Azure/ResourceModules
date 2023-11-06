@@ -141,7 +141,17 @@ Identity Provider Type identifier.
 - Required: No
 - Type: string
 - Default: `'aad'`
-- Allowed: `[aad, aadB2C, facebook, google, microsoft, twitter]`
+- Allowed:
+  ```Bicep
+  [
+    'aad'
+    'aadB2C'
+    'facebook'
+    'google'
+    'microsoft'
+    'twitter'
+  ]
+  ```
 
 
 ## Outputs

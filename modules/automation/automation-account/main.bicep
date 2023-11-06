@@ -15,17 +15,8 @@ param location string = resourceGroup().location
 ])
 param skuName string = 'Basic'
 
-@description('Conditional. The resource ID of a key vault to reference a customer managed key for encryption from. Required if \'cMKKeyName\' is not empty.')
-param cMKKeyVaultResourceId string = ''
-
-@description('Optional. The name of the customer managed key to use for encryption.')
-param cMKKeyName string = ''
-
-@description('Conditional. User assigned identity to use when fetching the customer managed key. Required if \'cMKKeyName\' is not empty.')
-param cMKUserAssignedIdentityResourceId string = ''
-
-@description('Optional. The version of the customer managed key to reference for encryption. If not provided, the latest key version is used.')
-param cMKKeyVersion string = ''
+@description('Optional. The customer managed key definition.')
+param customerManagedKey customerManagedKeyType
 
 @description('Optional. List of modules to be created in the automation account.')
 param modules array = []
@@ -68,11 +59,8 @@ param privateEndpoints privateEndpointType
 @description('Optional. The diagnostic settings of the service.')
 param diagnosticSettings diagnosticSettingType
 
-@description('Optional. Enables system assigned managed identity on the resource.')
-param systemAssignedIdentity bool = false
-
-@description('Optional. The ID(s) to assign to the resource.')
-param userAssignedIdentities object = {}
+@description('Optional. The managed identity definition for this resource.')
+param managedIdentities managedIdentitiesType
 
 @description('Optional. The lock settings of the service.')
 param lock lockType
@@ -81,18 +69,18 @@ param lock lockType
 param roleAssignments roleAssignmentType
 
 @description('Optional. Tags of the Automation Account resource.')
-param tags object = {}
+param tags object?
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 var enableReferencedModulesTelemetry = false
 
-var identityType = systemAssignedIdentity ? (!empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
+var formattedUserAssignedIdentities = reduce(map((managedIdentities.?userAssignedResourcesIds ?? []), (id) => { '${id}': {} }), {}, (cur, next) => union(cur, next)) // Converts the flat array to an object like { '${id1}': {}, '${id2}': {} }
 
-var identity = identityType != 'None' ? {
-  type: identityType
-  userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
+var identity = !empty(managedIdentities) ? {
+  type: (managedIdentities.?systemAssigned ?? false) ? (!empty(managedIdentities.?userAssignedResourcesIds ?? {}) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(managedIdentities.?userAssignedResourcesIds ?? {}) ? 'UserAssigned' : null)
+  userAssignedIdentities: !empty(formattedUserAssignedIdentities) ? formattedUserAssignedIdentities : null
 } : null
 
 var builtInRoleNames = {
@@ -119,13 +107,18 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource cMKKeyVault 'Microsoft.KeyVault/vaults@2021-10-01' existing = if (!empty(cMKKeyVaultResourceId)) {
-  name: last(split((!empty(cMKKeyVaultResourceId) ? cMKKeyVaultResourceId : 'dummyVault'), '/'))!
-  scope: resourceGroup(split((!empty(cMKKeyVaultResourceId) ? cMKKeyVaultResourceId : '//'), '/')[2], split((!empty(cMKKeyVaultResourceId) ? cMKKeyVaultResourceId : '////'), '/')[4])
+resource cMKKeyVault 'Microsoft.KeyVault/vaults@2023-02-01' existing = if (!empty(customerManagedKey.?keyVaultResourceId)) {
+  name: last(split((customerManagedKey.?keyVaultResourceId ?? 'dummyVault'), '/'))
+  scope: resourceGroup(split((customerManagedKey.?keyVaultResourceId ?? '//'), '/')[2], split((customerManagedKey.?keyVaultResourceId ?? '////'), '/')[4])
 
-  resource cMKKey 'keys@2023-02-01' existing = if (!empty(cMKKeyName)) {
-    name: !empty(cMKKeyName) ? cMKKeyName : 'dummyKey'
+  resource cMKKey 'keys@2023-02-01' existing = if (!empty(customerManagedKey.?keyVaultResourceId) && !empty(customerManagedKey.?keyName)) {
+    name: customerManagedKey.?keyName ?? 'dummyKey'
   }
+}
+
+resource cMKUserAssignedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' existing = if (!empty(customerManagedKey.?userAssignedIdentityResourceId)) {
+  name: last(split(customerManagedKey.?userAssignedIdentityResourceId ?? 'dummyMsi', '/'))
+  scope: resourceGroup(split((customerManagedKey.?userAssignedIdentityResourceId ?? '//'), '/')[2], split((customerManagedKey.?userAssignedIdentityResourceId ?? '////'), '/')[4])
 }
 
 resource automationAccount 'Microsoft.Automation/automationAccounts@2022-08-08' = {
@@ -137,15 +130,15 @@ resource automationAccount 'Microsoft.Automation/automationAccounts@2022-08-08' 
     sku: {
       name: skuName
     }
-    encryption: !empty(cMKKeyName) ? {
+    encryption: !empty(customerManagedKey) ? {
       keySource: 'Microsoft.KeyVault'
-      identity: {
-        userAssignedIdentity: cMKUserAssignedIdentityResourceId
-      }
+      identity: !empty(customerManagedKey.?userAssignedIdentityResourceId) ? {
+        userAssignedIdentity: cMKUserAssignedIdentity.id
+      } : null
       keyVaultProperties: {
-        keyName: cMKKeyName
+        keyName: customerManagedKey!.keyName
         keyVaultUri: cMKKeyVault.properties.vaultUri
-        keyVersion: !empty(cMKKeyVersion) ? cMKKeyVersion : last(split(cMKKeyVault::cMKKey.properties.keyUriWithVersion, '/'))
+        keyVersion: !empty(customerManagedKey.?keyVersion ?? '') ? customerManagedKey!.keyVersion : last(split(cMKKeyVault::cMKKey.properties.keyUriWithVersion, '/'))
       }
     } : null
     publicNetworkAccess: !empty(publicNetworkAccess) ? (publicNetworkAccess == 'Disabled' ? false : true) : (!empty(privateEndpoints) ? false : null)
@@ -161,7 +154,7 @@ module automationAccount_modules 'module/main.bicep' = [for (module, index) in m
     version: module.version
     uri: module.uri
     location: location
-    tags: tags
+    tags: module.?tags ?? tags
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
@@ -191,8 +184,10 @@ module automationAccount_runbooks 'runbook/main.bicep' = [for (runbook, index) i
     description: contains(runbook, 'description') ? runbook.description : ''
     uri: contains(runbook, 'uri') ? runbook.uri : ''
     version: contains(runbook, 'version') ? runbook.version : ''
+    sasTokenValidityLength: runbook.?sasTokenValidityLength
+    scriptStorageAccountResourceId: runbook.?scriptStorageAccountResourceId
     location: location
-    tags: tags
+    tags: runbook.?tags ?? tags
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
@@ -236,7 +231,7 @@ module automationAccount_linkedService '../../operational-insights/workspace/lin
   }
   // This is to support linked services to law in different subscription and resource group than the automation account.
   // The current scope is used by default if no linked service is intended to be created.
-  scope: resourceGroup(!empty(linkedWorkspaceResourceId) ? split(linkedWorkspaceResourceId, '/')[2] : subscription().subscriptionId, !empty(linkedWorkspaceResourceId) ? split(linkedWorkspaceResourceId, '/')[4] : resourceGroup().name)
+  scope: resourceGroup((!empty(linkedWorkspaceResourceId) ? (split((!empty(linkedWorkspaceResourceId) ? linkedWorkspaceResourceId : '//'), '/')[2]) : subscription().subscriptionId), !empty(linkedWorkspaceResourceId) ? (split((!empty(linkedWorkspaceResourceId) ? linkedWorkspaceResourceId : '////'), '/')[4]) : resourceGroup().name)
 }
 
 module automationAccount_solutions '../../operations-management/solution/main.bicep' = [for (gallerySolution, index) in gallerySolutions: if (!empty(linkedWorkspaceResourceId)) {
@@ -251,7 +246,7 @@ module automationAccount_solutions '../../operations-management/solution/main.bi
   }
   // This is to support solution to law in different subscription and resource group than the automation account.
   // The current scope is used by default if no linked service is intended to be created.
-  scope: resourceGroup(!empty(linkedWorkspaceResourceId) ? split(linkedWorkspaceResourceId, '/')[2] : subscription().subscriptionId, !empty(linkedWorkspaceResourceId) ? split(linkedWorkspaceResourceId, '/')[4] : resourceGroup().name)
+  scope: resourceGroup((!empty(linkedWorkspaceResourceId) ? (split((!empty(linkedWorkspaceResourceId) ? linkedWorkspaceResourceId : '//'), '/')[2]) : subscription().subscriptionId), !empty(linkedWorkspaceResourceId) ? (split((!empty(linkedWorkspaceResourceId) ? linkedWorkspaceResourceId : '////'), '/')[4]) : resourceGroup().name)
   dependsOn: [
     automationAccount_linkedService
   ]
@@ -387,7 +382,7 @@ output resourceId string = automationAccount.id
 output resourceGroupName string = resourceGroup().name
 
 @description('The principal ID of the system assigned identity.')
-output systemAssignedPrincipalId string = systemAssignedIdentity && contains(automationAccount.identity, 'principalId') ? automationAccount.identity.principalId : ''
+output systemAssignedMIPrincipalId string = (managedIdentities.?systemAssigned ?? false) && contains(automationAccount.identity, 'principalId') ? automationAccount.identity.principalId : ''
 
 @description('The location the resource was deployed into.')
 output location string = automationAccount.location
@@ -395,6 +390,14 @@ output location string = automationAccount.location
 // =============== //
 //   Definitions   //
 // =============== //
+
+type managedIdentitiesType = {
+  @description('Optional. Enables system assigned managed identity on the resource.')
+  systemAssigned: bool?
+
+  @description('Optional. The resource ID(s) to assign to the resource.')
+  userAssignedResourcesIds: string[]?
+}?
 
 type lockType = {
   @description('Optional. Specify the name of lock.')
@@ -448,16 +451,29 @@ type privateEndpointType = {
 
   @description('Optional. Custom DNS configurations.')
   customDnsConfigs: {
+    @description('Required. Fqdn that resolves to private endpoint ip address.')
     fqdn: string?
+
+    @description('Required. A list of private ip addresses of the private endpoint.')
     ipAddresses: string[]
   }[]?
 
   @description('Optional. A list of IP configurations of the private endpoint. This will be used to map to the First Party Service endpoints.')
   ipConfigurations: {
+    @description('Required. The name of the resource that is unique within a resource group.')
     name: string
-    groupId: string
-    memberName: string
-    privateIpAddress: string
+
+    @description('Required. Properties of private endpoint IP configurations.')
+    properties: {
+      @description('Required. The ID of a group obtained from the remote resource that this private endpoint should connect to.')
+      groupId: string
+
+      @description('Required. The member name of a group obtained from the remote resource that this private endpoint should connect to.')
+      memberName: string
+
+      @description('Required. A private ip address obtained from the private endpoint\'s subnet.')
+      privateIPAddress: string
+    }
   }[]?
 
   @description('Optional. Application security groups in which the private endpoint IP configuration is included.')
@@ -519,3 +535,17 @@ type diagnosticSettingType = {
   @description('Optional. The full ARM resource ID of the Marketplace resource to which you would like to send Diagnostic Logs.')
   marketplacePartnerResourceId: string?
 }[]?
+
+type customerManagedKeyType = {
+  @description('Required. The resource ID of a key vault to reference a customer managed key for encryption from.')
+  keyVaultResourceId: string
+
+  @description('Required. The name of the customer managed key to use for encryption.')
+  keyName: string
+
+  @description('Optional. The version of the customer managed key to reference for encryption. If not provided, using \'latest\'.')
+  keyVersion: string?
+
+  @description('Optional. User assigned identity to use when fetching the customer managed key. Required if no system assigned identity is available for use.')
+  userAssignedIdentityResourceId: string?
+}?

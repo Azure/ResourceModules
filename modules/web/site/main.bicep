@@ -30,11 +30,8 @@ param clientAffinityEnabled bool = true
 @description('Optional. The resource ID of the app service environment to use for this resource.')
 param appServiceEnvironmentResourceId string = ''
 
-@description('Optional. Enables system assigned managed identity on the resource.')
-param systemAssignedIdentity bool = false
-
-@description('Optional. The ID(s) to assign to the resource.')
-param userAssignedIdentities object = {}
+@description('Optional. The managed identity definition for this resource.')
+param managedIdentities managedIdentitiesType
 
 @description('Optional. The resource ID of the assigned identity to be used to access a key vault with.')
 param keyVaultAccessIdentityResourceId string = ''
@@ -85,7 +82,7 @@ param privateEndpoints privateEndpointType
 param slots array = []
 
 @description('Optional. Tags of the resource.')
-param tags object = {}
+param tags object?
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
@@ -155,11 +152,11 @@ param hybridConnectionRelays array = []
 ])
 param publicNetworkAccess string = ''
 
-var identityType = systemAssignedIdentity ? (!empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
+var formattedUserAssignedIdentities = reduce(map((managedIdentities.?userAssignedResourcesIds ?? []), (id) => { '${id}': {} }), {}, (cur, next) => union(cur, next)) // Converts the flat array to an object like { '${id1}': {}, '${id2}': {} }
 
-var identity = identityType != 'None' ? {
-  type: identityType
-  userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
+var identity = !empty(managedIdentities) ? {
+  type: (managedIdentities.?systemAssigned ?? false) ? (!empty(managedIdentities.?userAssignedResourcesIds ?? {}) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(managedIdentities.?userAssignedResourcesIds ?? {}) ? 'UserAssigned' : null)
+  userAssignedIdentities: !empty(formattedUserAssignedIdentities) ? formattedUserAssignedIdentities : null
 } : null
 
 var enableReferencedModulesTelemetry = false
@@ -258,8 +255,7 @@ module app_slots 'slot/main.bicep' = [for (slot, index) in slots: {
     httpsOnly: contains(slot, 'httpsOnly') ? slot.httpsOnly : httpsOnly
     appServiceEnvironmentResourceId: !empty(appServiceEnvironmentResourceId) ? appServiceEnvironmentResourceId : ''
     clientAffinityEnabled: contains(slot, 'clientAffinityEnabled') ? slot.clientAffinityEnabled : clientAffinityEnabled
-    systemAssignedIdentity: contains(slot, 'systemAssignedIdentity') ? slot.systemAssignedIdentity : systemAssignedIdentity
-    userAssignedIdentities: contains(slot, 'userAssignedIdentities') ? slot.userAssignedIdentities : userAssignedIdentities
+    managedIdentities: contains(slot, 'managedIdentities') ? slot.managedIdentities : managedIdentities
     keyVaultAccessIdentityResourceId: contains(slot, 'keyVaultAccessIdentityResourceId') ? slot.keyVaultAccessIdentityResourceId : keyVaultAccessIdentityResourceId
     storageAccountRequired: contains(slot, 'storageAccountRequired') ? slot.storageAccountRequired : storageAccountRequired
     virtualNetworkSubnetId: contains(slot, 'virtualNetworkSubnetId') ? slot.virtualNetworkSubnetId : virtualNetworkSubnetId
@@ -272,9 +268,9 @@ module app_slots 'slot/main.bicep' = [for (slot, index) in slots: {
     diagnosticSettings: slot.?diagnosticSettings
     roleAssignments: contains(slot, 'roleAssignments') ? slot.roleAssignments : roleAssignments
     appSettingsKeyValuePairs: contains(slot, 'appSettingsKeyValuePairs') ? slot.appSettingsKeyValuePairs : appSettingsKeyValuePairs
-    lock: contains(slot, 'lock') ? slot.lock : lock
+    lock: slot.?lock ?? lock
     privateEndpoints: contains(slot, 'privateEndpoints') ? slot.privateEndpoints : privateEndpoints
-    tags: tags
+    tags: slot.?tags ?? tags
     clientCertEnabled: contains(slot, 'clientCertEnabled') ? slot.clientCertEnabled : false
     clientCertExclusionPaths: contains(slot, 'clientCertExclusionPaths') ? slot.clientCertExclusionPaths : ''
     clientCertMode: contains(slot, 'clientCertMode') ? slot.clientCertMode : 'Optional'
@@ -402,10 +398,10 @@ output slotResourceIds array = [for (slot, index) in slots: app_slots[index].out
 output resourceGroupName string = resourceGroup().name
 
 @description('The principal ID of the system assigned identity.')
-output systemAssignedPrincipalId string = systemAssignedIdentity && contains(app.identity, 'principalId') ? app.identity.principalId : ''
+output systemAssignedMIPrincipalId string = (managedIdentities.?systemAssigned ?? false) && contains(app.identity, 'principalId') ? app.identity.principalId : ''
 
 @description('The principal ID of the system assigned identity of slots.')
-output slotSystemAssignedPrincipalIds array = [for (slot, index) in slots: app_slots[index].outputs.systemAssignedPrincipalId]
+output slotSystemAssignedPrincipalIds array = [for (slot, index) in slots: app_slots[index].outputs.systemAssignedMIPrincipalId]
 
 @description('The location the resource was deployed into.')
 output location string = app.location
@@ -416,6 +412,14 @@ output defaultHostname string = app.properties.defaultHostName
 // =============== //
 //   Definitions   //
 // =============== //
+
+type managedIdentitiesType = {
+  @description('Optional. Enables system assigned managed identity on the resource.')
+  systemAssigned: bool?
+
+  @description('Optional. The resource ID(s) to assign to the resource.')
+  userAssignedResourcesIds: string[]?
+}?
 
 type lockType = {
   @description('Optional. Specify the name of lock.')
@@ -469,16 +473,29 @@ type privateEndpointType = {
 
   @description('Optional. Custom DNS configurations.')
   customDnsConfigs: {
+    @description('Required. Fqdn that resolves to private endpoint ip address.')
     fqdn: string?
+
+    @description('Required. A list of private ip addresses of the private endpoint.')
     ipAddresses: string[]
   }[]?
 
   @description('Optional. A list of IP configurations of the private endpoint. This will be used to map to the First Party Service endpoints.')
   ipConfigurations: {
+    @description('Required. The name of the resource that is unique within a resource group.')
     name: string
-    groupId: string
-    memberName: string
-    privateIpAddress: string
+
+    @description('Required. Properties of private endpoint IP configurations.')
+    properties: {
+      @description('Required. The ID of a group obtained from the remote resource that this private endpoint should connect to.')
+      groupId: string
+
+      @description('Required. The member name of a group obtained from the remote resource that this private endpoint should connect to.')
+      memberName: string
+
+      @description('Required. A private ip address obtained from the private endpoint\'s subnet.')
+      privateIPAddress: string
+    }
   }[]?
 
   @description('Optional. Application security groups in which the private endpoint IP configuration is included.')

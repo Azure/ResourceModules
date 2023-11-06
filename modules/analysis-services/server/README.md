@@ -27,13 +27,12 @@ The following section provides usage examples for the module, which were used to
 
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/analysis-services.server:1.0.0`.
 
-- [Using large parameter set](#example-1-using-large-parameter-set)
-- [Max](#example-2-max)
-- [Using only defaults](#example-3-using-only-defaults)
+- [Using only defaults](#example-1-using-only-defaults)
+- [Using large parameter set](#example-2-using-large-parameter-set)
 
-### Example 1: _Using large parameter set_
+### Example 1: _Using only defaults_
 
-This instance deploys the module with most of its features enabled.
+This instance deploys the module with the minimum set of required parameters.
 
 
 <details>
@@ -42,43 +41,12 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module server 'br:bicep/modules/analysis-services.server:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-asscom'
+  name: '${uniqueString(deployment().name, location)}-test-assmin'
   params: {
     // Required parameters
-    name: 'asscom'
+    name: 'assmin'
     // Non-required parameters
-    diagnosticSettings: [
-      {
-        eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
-        eventHubName: '<eventHubName>'
-        metricCategories: [
-          {
-            category: 'AllMetrics'
-          }
-        ]
-        name: 'customSetting'
-        storageAccountResourceId: '<storageAccountResourceId>'
-        workspaceResourceId: '<workspaceResourceId>'
-      }
-    ]
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    lock: {
-      kind: 'CanNotDelete'
-      name: 'myCustomLockName'
-    }
-    roleAssignments: [
-      {
-        principalId: '<principalId>'
-        principalType: 'ServicePrincipal'
-        roleDefinitionIdOrName: 'Reader'
-      }
-    ]
-    skuName: 'S0'
-    tags: {
-      Environment: 'Non-Prod'
-      'hidden-title': 'This is visible in the resource name'
-      Role: 'DeploymentValidation'
-    }
   }
 }
 ```
@@ -97,52 +65,11 @@ module server 'br:bicep/modules/analysis-services.server:1.0.0' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "asscom"
+      "value": "assmin"
     },
     // Non-required parameters
-    "diagnosticSettings": {
-      "value": [
-        {
-          "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
-          "eventHubName": "<eventHubName>",
-          "metricCategories": [
-            {
-              "category": "AllMetrics"
-            }
-          ],
-          "name": "customSetting",
-          "storageAccountResourceId": "<storageAccountResourceId>",
-          "workspaceResourceId": "<workspaceResourceId>"
-        }
-      ]
-    },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
-    },
-    "lock": {
-      "value": {
-        "kind": "CanNotDelete",
-        "name": "myCustomLockName"
-      }
-    },
-    "roleAssignments": {
-      "value": [
-        {
-          "principalId": "<principalId>",
-          "principalType": "ServicePrincipal",
-          "roleDefinitionIdOrName": "Reader"
-        }
-      ]
-    },
-    "skuName": {
-      "value": "S0"
-    },
-    "tags": {
-      "value": {
-        "Environment": "Non-Prod",
-        "hidden-title": "This is visible in the resource name",
-        "Role": "DeploymentValidation"
-      }
     }
   }
 }
@@ -151,7 +78,10 @@ module server 'br:bicep/modules/analysis-services.server:1.0.0' = {
 </details>
 <p>
 
-### Example 2: _Max_
+### Example 2: _Using large parameter set_
+
+This instance deploys the module with most of its features enabled.
+
 
 <details>
 
@@ -159,7 +89,7 @@ module server 'br:bicep/modules/analysis-services.server:1.0.0' = {
 
 ```bicep
 module server 'br:bicep/modules/analysis-services.server:1.0.0' = {
-  name: '${uniqueString(deployment().name)}-test-assmax'
+  name: '${uniqueString(deployment().name, location)}-test-assmax'
   params: {
     // Required parameters
     name: 'assmax'
@@ -210,6 +140,11 @@ module server 'br:bicep/modules/analysis-services.server:1.0.0' = {
     ]
     skuCapacity: 1
     skuName: 'S0'
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -290,54 +225,13 @@ module server 'br:bicep/modules/analysis-services.server:1.0.0' = {
     },
     "skuName": {
       "value": "S0"
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-### Example 3: _Using only defaults_
-
-This instance deploys the module with the minimum set of required parameters.
-
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module server 'br:bicep/modules/analysis-services.server:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-assmin'
-  params: {
-    // Required parameters
-    name: 'assmin'
-    // Non-required parameters
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "assmin"
     },
-    // Non-required parameters
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }
@@ -496,7 +390,19 @@ Enable telemetry via a Globally Unique Identifier (GUID).
 The inbound firewall rules to define on the server. If not specified, firewall is disabled.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default:
+  ```Bicep
+  {
+      enablePowerBIService: true
+      firewallRules: [
+        {
+          firewallRuleName: 'AllowFromAll'
+          rangeEnd: '255.255.255.255'
+          rangeStart: '0.0.0.0'
+        }
+      ]
+  }
+  ```
 
 ### Parameter: `location`
 
@@ -625,7 +531,6 @@ The SKU name of the Azure Analysis Services server to create.
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 
 ## Outputs

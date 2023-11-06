@@ -26,106 +26,10 @@ The following section provides usage examples for the module, which were used to
 
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/network.express-route-gateway:1.0.0`.
 
-- [Using large parameter set](#example-1-using-large-parameter-set)
-- [Using only defaults](#example-2-using-only-defaults)
+- [Using only defaults](#example-1-using-only-defaults)
+- [Using large parameter set](#example-2-using-large-parameter-set)
 
-### Example 1: _Using large parameter set_
-
-This instance deploys the module with most of its features enabled.
-
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module expressRouteGateway 'br:bicep/modules/network.express-route-gateway:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-nergcom'
-  params: {
-    // Required parameters
-    name: 'nergcom001'
-    virtualHubId: '<virtualHubId>'
-    // Non-required parameters
-    autoScaleConfigurationBoundsMax: 3
-    autoScaleConfigurationBoundsMin: 2
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    lock: {
-      kind: 'CanNotDelete'
-      name: 'myCustomLockName'
-    }
-    roleAssignments: [
-      {
-        principalId: '<principalId>'
-        principalType: 'ServicePrincipal'
-        roleDefinitionIdOrName: 'Reader'
-      }
-    ]
-    tags: {
-      hello: 'world'
-      'hidden-title': 'This is visible in the resource name'
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "nergcom001"
-    },
-    "virtualHubId": {
-      "value": "<virtualHubId>"
-    },
-    // Non-required parameters
-    "autoScaleConfigurationBoundsMax": {
-      "value": 3
-    },
-    "autoScaleConfigurationBoundsMin": {
-      "value": 2
-    },
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
-    "lock": {
-      "value": {
-        "kind": "CanNotDelete",
-        "name": "myCustomLockName"
-      }
-    },
-    "roleAssignments": {
-      "value": [
-        {
-          "principalId": "<principalId>",
-          "principalType": "ServicePrincipal",
-          "roleDefinitionIdOrName": "Reader"
-        }
-      ]
-    },
-    "tags": {
-      "value": {
-        "hello": "world",
-        "hidden-title": "This is visible in the resource name"
-      }
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-### Example 2: _Using only defaults_
+### Example 1: _Using only defaults_
 
 This instance deploys the module with the minimum set of required parameters.
 
@@ -169,6 +73,102 @@ module expressRouteGateway 'br:bicep/modules/network.express-route-gateway:1.0.0
     // Non-required parameters
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 2: _Using large parameter set_
+
+This instance deploys the module with most of its features enabled.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module expressRouteGateway 'br:bicep/modules/network.express-route-gateway:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-nergmax'
+  params: {
+    // Required parameters
+    name: 'nergmax001'
+    virtualHubId: '<virtualHubId>'
+    // Non-required parameters
+    autoScaleConfigurationBoundsMax: 3
+    autoScaleConfigurationBoundsMin: 2
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    tags: {
+      hello: 'world'
+      'hidden-title': 'This is visible in the resource name'
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "nergmax001"
+    },
+    "virtualHubId": {
+      "value": "<virtualHubId>"
+    },
+    // Non-required parameters
+    "autoScaleConfigurationBoundsMax": {
+      "value": 3
+    },
+    "autoScaleConfigurationBoundsMin": {
+      "value": 2
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "tags": {
+      "value": {
+        "hello": "world",
+        "hidden-title": "This is visible in the resource name"
+      }
     }
   }
 }
@@ -349,7 +349,6 @@ Required. The name of the role to assign. If it cannot be found you can specify 
 Tags of the Firewall policy resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `virtualHubId`
 

@@ -44,7 +44,6 @@ Instead of overwriting the existing tags, combine them with the new tags.
 Tags for the resource group. If not provided, removes existing tags.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 
 ## Outputs

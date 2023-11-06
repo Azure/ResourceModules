@@ -37,10 +37,10 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module applicationGatewayWebApplicationFirewallPolicy 'br:bicep/modules/network.application-gateway-web-application-firewall-policy:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-nagwafpcom'
+  name: '${uniqueString(deployment().name, location)}-test-nagwafpmax'
   params: {
     // Required parameters
-    name: 'nagwafpcom001'
+    name: 'nagwafpmax001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     managedRules: {
@@ -85,7 +85,7 @@ module applicationGatewayWebApplicationFirewallPolicy 'br:bicep/modules/network.
   "parameters": {
     // Required parameters
     "name": {
-      "value": "nagwafpcom001"
+      "value": "nagwafpmax001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {
@@ -174,7 +174,7 @@ Location for all resources.
 Describes the managedRules structure.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `name`
 
@@ -187,14 +187,13 @@ Name of the Application Gateway WAF policy.
 The PolicySettings for policy.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `tags`
 
 Resource tags.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 
 ## Outputs

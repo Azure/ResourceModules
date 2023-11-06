@@ -27,10 +27,58 @@ The following section provides usage examples for the module, which were used to
 
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/desktop-virtualization.host-pool:1.0.0`.
 
-- [Using large parameter set](#example-1-using-large-parameter-set)
-- [Using only defaults](#example-2-using-only-defaults)
+- [Using only defaults](#example-1-using-only-defaults)
+- [Using large parameter set](#example-2-using-large-parameter-set)
 
-### Example 1: _Using large parameter set_
+### Example 1: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module hostPool 'br:bicep/modules/desktop-virtualization.host-pool:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-dvhpmin'
+  params: {
+    // Required parameters
+    name: 'dvhpmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "dvhpmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 2: _Using large parameter set_
 
 This instance deploys the module with most of its features enabled.
 
@@ -41,10 +89,10 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module hostPool 'br:bicep/modules/desktop-virtualization.host-pool:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-dvhpcom'
+  name: '${uniqueString(deployment().name, location)}-test-dvhpmax'
   params: {
     // Required parameters
-    name: 'dvhpcom001'
+    name: 'dvhpmax001'
     // Non-required parameters
     agentUpdate: {
       maintenanceWindows: [
@@ -130,7 +178,7 @@ module hostPool 'br:bicep/modules/desktop-virtualization.host-pool:1.0.0' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "dvhpcom001"
+      "value": "dvhpmax001"
     },
     // Non-required parameters
     "agentUpdate": {
@@ -236,54 +284,6 @@ module hostPool 'br:bicep/modules/desktop-virtualization.host-pool:1.0.0' = {
 </details>
 <p>
 
-### Example 2: _Using only defaults_
-
-This instance deploys the module with the minimum set of required parameters.
-
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module hostPool 'br:bicep/modules/desktop-virtualization.host-pool:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-dvhpmin'
-  params: {
-    // Required parameters
-    name: 'dvhpmin001'
-    // Non-required parameters
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "dvhpmin001"
-    },
-    // Non-required parameters
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    }
-  }
-}
-```
-
-</details>
-<p>
-
 
 ## Parameters
 
@@ -339,7 +339,15 @@ module hostPool 'br:bicep/modules/desktop-virtualization.host-pool:1.0.0' = {
 The session host configuration for updating agent, monitoring agent, and stack component.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default:
+  ```Bicep
+  {
+      maintenanceWindows: '[parameters(\'agentUpdateMaintenanceWindows\')]'
+      maintenanceWindowTimeZone: '[parameters(\'agentUpdateMaintenanceWindowTimeZone\')]'
+      type: '[parameters(\'agentUpdateType\')]'
+      useSessionHostLocalTime: '[parameters(\'agentUpdateUseSessionHostLocalTime\')]'
+  }
+  ```
 
 ### Parameter: `agentUpdateMaintenanceWindowDayOfWeek`
 
@@ -347,7 +355,18 @@ Update day for scheduled agent updates.
 - Required: No
 - Type: string
 - Default: `'Sunday'`
-- Allowed: `[Friday, Monday, Saturday, Sunday, Thursday, Tuesday, Wednesday]`
+- Allowed:
+  ```Bicep
+  [
+    'Friday'
+    'Monday'
+    'Saturday'
+    'Sunday'
+    'Thursday'
+    'Tuesday'
+    'Wednesday'
+  ]
+  ```
 
 ### Parameter: `agentUpdateMaintenanceWindowHour`
 
@@ -361,7 +380,15 @@ Update hour for scheduled agent updates.
 List of maintenance windows for scheduled agent updates.
 - Required: No
 - Type: array
-- Default: `[System.Management.Automation.OrderedHashtable]`
+- Default:
+  ```Bicep
+  [
+    {
+      dayOfWeek: '[parameters(\'agentUpdateMaintenanceWindowDayOfWeek\')]'
+      hour: '[parameters(\'agentUpdateMaintenanceWindowHour\')]'
+    }
+  ]
+  ```
 
 ### Parameter: `agentUpdateMaintenanceWindowTimeZone`
 
@@ -376,7 +403,13 @@ Enable scheduled agent updates, Default means agent updates will automatically b
 - Required: No
 - Type: string
 - Default: `'Default'`
-- Allowed: `[Default, Scheduled]`
+- Allowed:
+  ```Bicep
+  [
+    'Default'
+    'Scheduled'
+  ]
+  ```
 
 ### Parameter: `agentUpdateUseSessionHostLocalTime`
 
@@ -521,7 +554,14 @@ Type of load balancer algorithm.
 - Required: No
 - Type: string
 - Default: `'BreadthFirst'`
-- Allowed: `[BreadthFirst, DepthFirst, Persistent]`
+- Allowed:
+  ```Bicep
+  [
+    'BreadthFirst'
+    'DepthFirst'
+    'Persistent'
+  ]
+  ```
 
 ### Parameter: `location`
 
@@ -576,7 +616,14 @@ Set the type of assignment for a Personal Host Pool type.
 - Required: No
 - Type: string
 - Default: `''`
-- Allowed: `['', Automatic, Direct]`
+- Allowed:
+  ```Bicep
+  [
+    ''
+    'Automatic'
+    'Direct'
+  ]
+  ```
 
 ### Parameter: `preferredAppGroupType`
 
@@ -584,7 +631,14 @@ The type of preferred application group type, default to Desktop Application Gro
 - Required: No
 - Type: string
 - Default: `'Desktop'`
-- Allowed: `[Desktop, None, RailApplications]`
+- Allowed:
+  ```Bicep
+  [
+    'Desktop'
+    'None'
+    'RailApplications'
+  ]
+  ```
 
 ### Parameter: `ring`
 
@@ -688,7 +742,16 @@ The type of single sign on Secret Type.
 - Required: No
 - Type: string
 - Default: `''`
-- Allowed: `['', Certificate, CertificateInKeyVault, SharedKey, SharedKeyInKeyVault]`
+- Allowed:
+  ```Bicep
+  [
+    ''
+    'Certificate'
+    'CertificateInKeyVault'
+    'SharedKey'
+    'SharedKeyInKeyVault'
+  ]
+  ```
 
 ### Parameter: `startVMOnConnect`
 
@@ -702,7 +765,6 @@ Enable Start VM on connect to allow users to start the virtual machine from a de
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `tokenValidityLength`
 
@@ -717,7 +779,13 @@ Set this parameter to Personal if you would like to enable Persistent Desktop ex
 - Required: No
 - Type: string
 - Default: `'Pooled'`
-- Allowed: `[Personal, Pooled]`
+- Allowed:
+  ```Bicep
+  [
+    'Personal'
+    'Pooled'
+  ]
+  ```
 
 ### Parameter: `validationEnvironment`
 
@@ -731,7 +799,7 @@ Validation host pools allows you to test service changes before they are deploye
 The necessary information for adding more VMs to this Host Pool. The object is converted to an in-line string when handed over to the resource deployment, since that only takes strings.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 
 ## Outputs

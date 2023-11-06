@@ -26,14 +26,14 @@ The following section provides usage examples for the module, which were used to
 
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/compute.disk:1.0.0`.
 
-- [Using large parameter set](#example-1-using-large-parameter-set)
+- [Using only defaults](#example-1-using-only-defaults)
 - [Image](#example-2-image)
 - [Import](#example-3-import)
-- [Using only defaults](#example-4-using-only-defaults)
+- [Using large parameter set](#example-4-using-large-parameter-set)
 
-### Example 1: _Using large parameter set_
+### Example 1: _Using only defaults_
 
-This instance deploys the module with most of its features enabled.
+This instance deploys the module with the minimum set of required parameters.
 
 
 <details>
@@ -42,35 +42,14 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module disk 'br:bicep/modules/compute.disk:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-cdcom'
+  name: '${uniqueString(deployment().name, location)}-test-cdmin'
   params: {
     // Required parameters
-    name: 'cdcom001'
-    sku: 'UltraSSD_LRS'
+    name: 'cdmin001'
+    sku: 'Standard_LRS'
     // Non-required parameters
-    diskIOPSReadWrite: 500
-    diskMBpsReadWrite: 60
-    diskSizeGB: 128
+    diskSizeGB: 1
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    lock: {
-      kind: 'CanNotDelete'
-      name: 'myCustomLockName'
-    }
-    logicalSectorSize: 512
-    osType: 'Windows'
-    publicNetworkAccess: 'Enabled'
-    roleAssignments: [
-      {
-        principalId: '<principalId>'
-        principalType: 'ServicePrincipal'
-        roleDefinitionIdOrName: 'Reader'
-      }
-    ]
-    tags: {
-      Environment: 'Non-Prod'
-      'hidden-title': 'This is visible in the resource name'
-      Role: 'DeploymentValidation'
-    }
   }
 }
 ```
@@ -89,54 +68,17 @@ module disk 'br:bicep/modules/compute.disk:1.0.0' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "cdcom001"
+      "value": "cdmin001"
     },
     "sku": {
-      "value": "UltraSSD_LRS"
+      "value": "Standard_LRS"
     },
     // Non-required parameters
-    "diskIOPSReadWrite": {
-      "value": 500
-    },
-    "diskMBpsReadWrite": {
-      "value": 60
-    },
     "diskSizeGB": {
-      "value": 128
+      "value": 1
     },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
-    },
-    "lock": {
-      "value": {
-        "kind": "CanNotDelete",
-        "name": "myCustomLockName"
-      }
-    },
-    "logicalSectorSize": {
-      "value": 512
-    },
-    "osType": {
-      "value": "Windows"
-    },
-    "publicNetworkAccess": {
-      "value": "Enabled"
-    },
-    "roleAssignments": {
-      "value": [
-        {
-          "principalId": "<principalId>",
-          "principalType": "ServicePrincipal",
-          "roleDefinitionIdOrName": "Reader"
-        }
-      ]
-    },
-    "tags": {
-      "value": {
-        "Environment": "Non-Prod",
-        "hidden-title": "This is visible in the resource name",
-        "Role": "DeploymentValidation"
-      }
     }
   }
 }
@@ -319,9 +261,9 @@ module disk 'br:bicep/modules/compute.disk:1.0.0' = {
 </details>
 <p>
 
-### Example 4: _Using only defaults_
+### Example 4: _Using large parameter set_
 
-This instance deploys the module with the minimum set of required parameters.
+This instance deploys the module with most of its features enabled.
 
 
 <details>
@@ -330,14 +272,35 @@ This instance deploys the module with the minimum set of required parameters.
 
 ```bicep
 module disk 'br:bicep/modules/compute.disk:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-cdmin'
+  name: '${uniqueString(deployment().name, location)}-test-cdmax'
   params: {
     // Required parameters
-    name: 'cdmin001'
-    sku: 'Standard_LRS'
+    name: 'cdmax001'
+    sku: 'UltraSSD_LRS'
     // Non-required parameters
-    diskSizeGB: 1
+    diskIOPSReadWrite: 500
+    diskMBpsReadWrite: 60
+    diskSizeGB: 128
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    logicalSectorSize: 512
+    osType: 'Windows'
+    publicNetworkAccess: 'Enabled'
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -356,17 +319,54 @@ module disk 'br:bicep/modules/compute.disk:1.0.0' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "cdmin001"
+      "value": "cdmax001"
     },
     "sku": {
-      "value": "Standard_LRS"
+      "value": "UltraSSD_LRS"
     },
     // Non-required parameters
+    "diskIOPSReadWrite": {
+      "value": 500
+    },
+    "diskMBpsReadWrite": {
+      "value": 60
+    },
     "diskSizeGB": {
-      "value": 1
+      "value": 128
     },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "logicalSectorSize": {
+      "value": 512
+    },
+    "osType": {
+      "value": "Windows"
+    },
+    "publicNetworkAccess": {
+      "value": "Enabled"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }
@@ -434,7 +434,14 @@ CPU architecture supported by an OS disk.
 - Required: No
 - Type: string
 - Default: `''`
-- Allowed: `['', Arm64, x64]`
+- Allowed:
+  ```Bicep
+  [
+    ''
+    'Arm64'
+    'x64'
+  ]
+  ```
 
 ### Parameter: `burstingEnabled`
 
@@ -456,7 +463,21 @@ Sources of a disk creation.
 - Required: No
 - Type: string
 - Default: `'Empty'`
-- Allowed: `[Attach, Copy, CopyStart, Empty, FromImage, Import, ImportSecure, Restore, Upload, UploadPreparedSecure]`
+- Allowed:
+  ```Bicep
+  [
+    'Attach'
+    'Copy'
+    'CopyStart'
+    'Empty'
+    'FromImage'
+    'Import'
+    'ImportSecure'
+    'Restore'
+    'Upload'
+    'UploadPreparedSecure'
+  ]
+  ```
 
 ### Parameter: `diskIOPSReadWrite`
 
@@ -492,7 +513,13 @@ The hypervisor generation of the Virtual Machine. Applicable to OS disks only.
 - Required: No
 - Type: string
 - Default: `'V2'`
-- Allowed: `[V1, V2]`
+- Allowed:
+  ```Bicep
+  [
+    'V1'
+    'V2'
+  ]
+  ```
 
 ### Parameter: `imageReferenceId`
 
@@ -561,7 +588,14 @@ Policy for accessing the disk via network.
 - Required: No
 - Type: string
 - Default: `'DenyAll'`
-- Allowed: `[AllowAll, AllowPrivate, DenyAll]`
+- Allowed:
+  ```Bicep
+  [
+    'AllowAll'
+    'AllowPrivate'
+    'DenyAll'
+  ]
+  ```
 
 ### Parameter: `optimizedForFrequentAttach`
 
@@ -576,7 +610,14 @@ Sources of a disk creation.
 - Required: No
 - Type: string
 - Default: `''`
-- Allowed: `['', Linux, Windows]`
+- Allowed:
+  ```Bicep
+  [
+    ''
+    'Linux'
+    'Windows'
+  ]
+  ```
 
 ### Parameter: `publicNetworkAccess`
 
@@ -584,7 +625,13 @@ Policy for controlling export on the disk.
 - Required: No
 - Type: string
 - Default: `'Disabled'`
-- Allowed: `[Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 ### Parameter: `roleAssignments`
 
@@ -666,7 +713,18 @@ If create option is ImportSecure, this is the URI of a blob to be imported into 
 The disks sku name. Can be .
 - Required: Yes
 - Type: string
-- Allowed: `[Premium_LRS, Premium_ZRS, Premium_ZRS, PremiumV2_LRS, Standard_LRS, StandardSSD_LRS, UltraSSD_LRS]`
+- Allowed:
+  ```Bicep
+  [
+    'Premium_LRS'
+    'Premium_ZRS'
+    'Premium_ZRS'
+    'PremiumV2_LRS'
+    'Standard_LRS'
+    'StandardSSD_LRS'
+    'UltraSSD_LRS'
+  ]
+  ```
 
 ### Parameter: `sourceResourceId`
 
@@ -694,7 +752,6 @@ The resource ID of the storage account containing the blob to import as a disk. 
 Tags of the availability set resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `uploadSizeBytes`
 

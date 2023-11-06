@@ -60,14 +60,20 @@ Instruct the system how to handle and charge the logs ingested to this table.
 - Required: No
 - Type: string
 - Default: `'Analytics'`
-- Allowed: `[Analytics, Basic]`
+- Allowed:
+  ```Bicep
+  [
+    'Analytics'
+    'Basic'
+  ]
+  ```
 
 ### Parameter: `restoredLogs`
 
 Restore parameters.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `retentionInDays`
 
@@ -81,14 +87,14 @@ The table retention in days, between 4 and 730. Setting this property to -1 will
 Table's schema.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `searchResults`
 
 Parameters of the search job that initiated this table.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `totalRetentionInDays`
 

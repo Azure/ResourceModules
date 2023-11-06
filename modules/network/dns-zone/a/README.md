@@ -66,7 +66,7 @@ Enable telemetry via a Globally Unique Identifier (GUID).
 The metadata attached to the record set.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `name`
 

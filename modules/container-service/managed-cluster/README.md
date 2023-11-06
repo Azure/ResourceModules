@@ -32,8 +32,8 @@ The following section provides usage examples for the module, which were used to
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/container-service.managed-cluster:1.0.0`.
 
 - [Azure](#example-1-azure)
-- [Kubenet](#example-2-kubenet)
-- [Using only defaults](#example-3-using-only-defaults)
+- [Using only defaults](#example-2-using-only-defaults)
+- [Kubenet](#example-3-kubenet)
 - [Priv](#example-4-priv)
 
 ### Example 1: _Azure_
@@ -214,6 +214,11 @@ module managedCluster 'br:bicep/modules/container-service.managed-cluster:1.0.0'
       kind: 'CanNotDelete'
       name: 'myCustomLockName'
     }
+    managedIdentities: {
+      userAssignedResourcesIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
     monitoringWorkspaceId: '<monitoringWorkspaceId>'
     networkDataplane: 'azure'
     networkPlugin: 'azure'
@@ -231,9 +236,6 @@ module managedCluster 'br:bicep/modules/container-service.managed-cluster:1.0.0'
       Environment: 'Non-Prod'
       'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
-    }
-    userAssignedIdentities: {
-      '<managedIdentityResourceId>': {}
     }
   }
 }
@@ -457,6 +459,13 @@ module managedCluster 'br:bicep/modules/container-service.managed-cluster:1.0.0'
         "name": "myCustomLockName"
       }
     },
+    "managedIdentities": {
+      "value": {
+        "userAssignedResourcesIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
+    },
     "monitoringWorkspaceId": {
       "value": "<monitoringWorkspaceId>"
     },
@@ -490,10 +499,79 @@ module managedCluster 'br:bicep/modules/container-service.managed-cluster:1.0.0'
         "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 2: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module managedCluster 'br:bicep/modules/container-service.managed-cluster:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-csmmin'
+  params: {
+    // Required parameters
+    name: 'csmmin001'
+    primaryAgentPoolProfile: [
+      {
+        count: 1
+        mode: 'System'
+        name: 'systempool'
+        vmSize: 'Standard_DS2_v2'
+      }
+    ]
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    managedIdentities: {
+      systemAssigned: true
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "csmmin001"
     },
-    "userAssignedIdentities": {
+    "primaryAgentPoolProfile": {
+      "value": [
+        {
+          "count": 1,
+          "mode": "System",
+          "name": "systempool",
+          "vmSize": "Standard_DS2_v2"
+        }
+      ]
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "managedIdentities": {
       "value": {
-        "<managedIdentityResourceId>": {}
+        "systemAssigned": true
       }
     }
   }
@@ -503,7 +581,7 @@ module managedCluster 'br:bicep/modules/container-service.managed-cluster:1.0.0'
 </details>
 <p>
 
-### Example 2: _Kubenet_
+### Example 3: _Kubenet_
 
 <details>
 
@@ -601,6 +679,11 @@ module managedCluster 'br:bicep/modules/container-service.managed-cluster:1.0.0'
       }
     ]
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    managedIdentities: {
+      userAssignedResourcesIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
     networkPlugin: 'kubenet'
     roleAssignments: [
       {
@@ -613,9 +696,6 @@ module managedCluster 'br:bicep/modules/container-service.managed-cluster:1.0.0'
       Environment: 'Non-Prod'
       'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
-    }
-    userAssignedIdentities: {
-      '<managedIdentityResourceId>': {}
     }
   }
 }
@@ -731,6 +811,13 @@ module managedCluster 'br:bicep/modules/container-service.managed-cluster:1.0.0'
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     },
+    "managedIdentities": {
+      "value": {
+        "userAssignedResourcesIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
+    },
     "networkPlugin": {
       "value": "kubenet"
     },
@@ -749,81 +836,6 @@ module managedCluster 'br:bicep/modules/container-service.managed-cluster:1.0.0'
         "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
-    },
-    "userAssignedIdentities": {
-      "value": {
-        "<managedIdentityResourceId>": {}
-      }
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-### Example 3: _Using only defaults_
-
-This instance deploys the module with the minimum set of required parameters.
-
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module managedCluster 'br:bicep/modules/container-service.managed-cluster:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-csmmin'
-  params: {
-    // Required parameters
-    name: 'csmmin001'
-    primaryAgentPoolProfile: [
-      {
-        count: 1
-        mode: 'System'
-        name: 'systempool'
-        vmSize: 'Standard_DS2_v2'
-      }
-    ]
-    // Non-required parameters
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    systemAssignedIdentity: true
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "csmmin001"
-    },
-    "primaryAgentPoolProfile": {
-      "value": [
-        {
-          "count": 1,
-          "mode": "System",
-          "name": "systempool",
-          "vmSize": "Standard_DS2_v2"
-        }
-      ]
-    },
-    // Non-required parameters
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
-    "systemAssignedIdentity": {
-      "value": true
     }
   }
 }
@@ -934,6 +946,11 @@ module managedCluster 'br:bicep/modules/container-service.managed-cluster:1.0.0'
     dnsServiceIP: '10.10.200.10'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     enablePrivateCluster: true
+    managedIdentities: {
+      userAssignedResourcesIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
     networkPlugin: 'azure'
     privateDNSZone: '<privateDNSZone>'
     serviceCidr: '10.10.200.0/24'
@@ -942,9 +959,6 @@ module managedCluster 'br:bicep/modules/container-service.managed-cluster:1.0.0'
       Environment: 'Non-Prod'
       'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
-    }
-    userAssignedIdentities: {
-      '<managedIdentityResourceId>': {}
     }
   }
 }
@@ -1068,6 +1082,13 @@ module managedCluster 'br:bicep/modules/container-service.managed-cluster:1.0.0'
     "enablePrivateCluster": {
       "value": true
     },
+    "managedIdentities": {
+      "value": {
+        "userAssignedResourcesIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
+    },
     "networkPlugin": {
       "value": "azure"
     },
@@ -1085,11 +1106,6 @@ module managedCluster 'br:bicep/modules/container-service.managed-cluster:1.0.0'
         "Environment": "Non-Prod",
         "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
-      }
-    },
-    "userAssignedIdentities": {
-      "value": {
-        "<managedIdentityResourceId>": {}
       }
     }
   }
@@ -1184,6 +1200,7 @@ module managedCluster 'br:bicep/modules/container-service.managed-cluster:1.0.0'
 | [`loadBalancerSku`](#parameter-loadbalancersku) | string | Specifies the sku of the load balancer used by the virtual machine scale sets used by nodepools. |
 | [`location`](#parameter-location) | string | Specifies the location of AKS cluster. It picks up Resource Group's location by default. |
 | [`lock`](#parameter-lock) | object | The lock settings of the service. |
+| [`managedIdentities`](#parameter-managedidentities) | object | The managed identity definition for this resource. Only one type of identity is supported: system-assigned or user-assigned, but not both. |
 | [`managedOutboundIPCount`](#parameter-managedoutboundipcount) | int | Outbound IP Count for the Load balancer. |
 | [`monitoringWorkspaceId`](#parameter-monitoringworkspaceid) | string | Resource ID of the monitoring log analytics workspace. |
 | [`networkDataplane`](#parameter-networkdataplane) | string | Network dataplane used in the Kubernetes cluster. Not compatible with kubenet network plugin. |
@@ -1205,9 +1222,7 @@ module managedCluster 'br:bicep/modules/container-service.managed-cluster:1.0.0'
 | [`skuTier`](#parameter-skutier) | string | Tier of a managed cluster SKU. - Free or Standard. |
 | [`sshPublicKey`](#parameter-sshpublickey) | string | Specifies the SSH RSA public key string for the Linux nodes. |
 | [`supportPlan`](#parameter-supportplan) | string | The support plan for the Managed Cluster. |
-| [`systemAssignedIdentity`](#parameter-systemassignedidentity) | bool | Enables system assigned managed identity on the resource. |
 | [`tags`](#parameter-tags) | object | Tags of the resource. |
-| [`userAssignedIdentities`](#parameter-userassignedidentities) | object | The ID(s) to assign to the resource. |
 | [`webApplicationRoutingEnabled`](#parameter-webapplicationroutingenabled) | bool | Specifies whether the webApplicationRoutingEnabled add-on is enabled or not. |
 
 ### Parameter: `aadProfileAdminGroupObjectIDs`
@@ -1285,7 +1300,7 @@ Define one or more secondary/additional agent pools.
 Information about a service principal identity for the cluster to use for manipulating Azure APIs. Required if no managed identities are assigned to the cluster.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `appGatewayResourceId`
 
@@ -1307,7 +1322,13 @@ Specifies the balance of similar node groups for the auto-scaler of the AKS clus
 - Required: No
 - Type: string
 - Default: `'false'`
-- Allowed: `[false, true]`
+- Allowed:
+  ```Bicep
+  [
+    'false'
+    'true'
+  ]
+  ```
 
 ### Parameter: `autoScalerProfileExpander`
 
@@ -1315,7 +1336,15 @@ Specifies the expand strategy for the auto-scaler of the AKS cluster.
 - Required: No
 - Type: string
 - Default: `'random'`
-- Allowed: `[least-waste, most-pods, priority, random]`
+- Allowed:
+  ```Bicep
+  [
+    'least-waste'
+    'most-pods'
+    'priority'
+    'random'
+  ]
+  ```
 
 ### Parameter: `autoScalerProfileMaxEmptyBulkDelete`
 
@@ -1407,7 +1436,13 @@ Specifies if nodes with local storage should be skipped for the auto-scaler of t
 - Required: No
 - Type: string
 - Default: `'true'`
-- Allowed: `[false, true]`
+- Allowed:
+  ```Bicep
+  [
+    'false'
+    'true'
+  ]
+  ```
 
 ### Parameter: `autoScalerProfileSkipNodesWithSystemPods`
 
@@ -1415,7 +1450,13 @@ Specifies if nodes with system pods should be skipped for the auto-scaler of the
 - Required: No
 - Type: string
 - Default: `'true'`
-- Allowed: `[false, true]`
+- Allowed:
+  ```Bicep
+  [
+    'false'
+    'true'
+  ]
+  ```
 
 ### Parameter: `autoScalerProfileUtilizationThreshold`
 
@@ -1430,7 +1471,17 @@ Auto-upgrade channel on the AKS cluster.
 - Required: No
 - Type: string
 - Default: `''`
-- Allowed: `['', node-image, none, patch, rapid, stable]`
+- Allowed:
+  ```Bicep
+  [
+    ''
+    'node-image'
+    'none'
+    'patch'
+    'rapid'
+    'stable'
+  ]
+  ```
 
 ### Parameter: `azurePolicyEnabled`
 
@@ -1672,7 +1723,13 @@ Specifies whether the KeyvaultSecretsProvider add-on uses secret rotation.
 - Required: No
 - Type: string
 - Default: `'false'`
-- Allowed: `[false, true]`
+- Allowed:
+  ```Bicep
+  [
+    'false'
+    'true'
+  ]
+  ```
 
 ### Parameter: `enableStorageProfileBlobCSIDriver`
 
@@ -1714,14 +1771,14 @@ Whether to enable Workload Identity. Requires OIDC issuer profile to be enabled.
 Configuration settings that are sensitive, as name-value pairs for configuring this extension.
 - Required: No
 - Type: secureObject
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `fluxExtension`
 
 Settings and configurations for the flux extension.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `httpApplicationRoutingEnabled`
 
@@ -1735,14 +1792,14 @@ Specifies whether the httpApplicationRouting add-on is enabled or not.
 Configurations for provisioning the cluster with HTTP proxy servers.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `identityProfile`
 
 Identities associated with the cluster.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `ingressApplicationGatewayEnabled`
 
@@ -1771,7 +1828,13 @@ Specifies the sku of the load balancer used by the virtual machine scale sets us
 - Required: No
 - Type: string
 - Default: `'standard'`
-- Allowed: `[basic, standard]`
+- Allowed:
+  ```Bicep
+  [
+    'basic'
+    'standard'
+  ]
+  ```
 
 ### Parameter: `location`
 
@@ -1807,6 +1870,32 @@ Optional. Specify the name of lock.
 - Required: No
 - Type: string
 
+### Parameter: `managedIdentities`
+
+The managed identity definition for this resource. Only one type of identity is supported: system-assigned or user-assigned, but not both.
+- Required: No
+- Type: object
+
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`systemAssigned`](#parameter-managedidentitiessystemassigned) | No | bool | Optional. Enables system assigned managed identity on the resource. |
+| [`userAssignedResourcesIds`](#parameter-managedidentitiesuserassignedresourcesids) | No | array | Optional. The resource ID(s) to assign to the resource. |
+
+### Parameter: `managedIdentities.systemAssigned`
+
+Optional. Enables system assigned managed identity on the resource.
+
+- Required: No
+- Type: bool
+
+### Parameter: `managedIdentities.userAssignedResourcesIds`
+
+Optional. The resource ID(s) to assign to the resource.
+
+- Required: No
+- Type: array
+
 ### Parameter: `managedOutboundIPCount`
 
 Outbound IP Count for the Load balancer.
@@ -1833,7 +1922,14 @@ Network dataplane used in the Kubernetes cluster. Not compatible with kubenet ne
 - Required: No
 - Type: string
 - Default: `''`
-- Allowed: `['', azure, cilium]`
+- Allowed:
+  ```Bicep
+  [
+    ''
+    'azure'
+    'cilium'
+  ]
+  ```
 
 ### Parameter: `networkPlugin`
 
@@ -1841,7 +1937,14 @@ Specifies the network plugin used for building Kubernetes network.
 - Required: No
 - Type: string
 - Default: `''`
-- Allowed: `['', azure, kubenet]`
+- Allowed:
+  ```Bicep
+  [
+    ''
+    'azure'
+    'kubenet'
+  ]
+  ```
 
 ### Parameter: `networkPluginMode`
 
@@ -1849,7 +1952,13 @@ Network plugin mode used for building the Kubernetes network. Not compatible wit
 - Required: No
 - Type: string
 - Default: `''`
-- Allowed: `['', overlay]`
+- Allowed:
+  ```Bicep
+  [
+    ''
+    'overlay'
+  ]
+  ```
 
 ### Parameter: `networkPolicy`
 
@@ -1857,7 +1966,14 @@ Specifies the network policy used for building Kubernetes network. - calico or a
 - Required: No
 - Type: string
 - Default: `''`
-- Allowed: `['', azure, calico]`
+- Allowed:
+  ```Bicep
+  [
+    ''
+    'azure'
+    'calico'
+  ]
+  ```
 
 ### Parameter: `nodeResourceGroup`
 
@@ -1886,7 +2002,13 @@ Specifies outbound (egress) routing method. - loadBalancer or userDefinedRouting
 - Required: No
 - Type: string
 - Default: `'loadBalancer'`
-- Allowed: `[loadBalancer, userDefinedRouting]`
+- Allowed:
+  ```Bicep
+  [
+    'loadBalancer'
+    'userDefinedRouting'
+  ]
+  ```
 
 ### Parameter: `podCidr`
 
@@ -2017,7 +2139,14 @@ Tier of a managed cluster SKU. - Free or Standard.
 - Required: No
 - Type: string
 - Default: `'Free'`
-- Allowed: `[Free, Premium, Standard]`
+- Allowed:
+  ```Bicep
+  [
+    'Free'
+    'Premium'
+    'Standard'
+  ]
+  ```
 
 ### Parameter: `sshPublicKey`
 
@@ -2032,28 +2161,19 @@ The support plan for the Managed Cluster.
 - Required: No
 - Type: string
 - Default: `'KubernetesOfficial'`
-- Allowed: `[AKSLongTermSupport, KubernetesOfficial]`
-
-### Parameter: `systemAssignedIdentity`
-
-Enables system assigned managed identity on the resource.
-- Required: No
-- Type: bool
-- Default: `False`
+- Allowed:
+  ```Bicep
+  [
+    'AKSLongTermSupport'
+    'KubernetesOfficial'
+  ]
+  ```
 
 ### Parameter: `tags`
 
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
-
-### Parameter: `userAssignedIdentities`
-
-The ID(s) to assign to the resource.
-- Required: No
-- Type: object
-- Default: `{object}`
 
 ### Parameter: `webApplicationRoutingEnabled`
 
@@ -2078,7 +2198,7 @@ Specifies whether the webApplicationRoutingEnabled add-on is enabled or not.
 | `omsagentIdentityObjectId` | string | The Object ID of the OMS agent identity. |
 | `resourceGroupName` | string | The resource group the managed cluster was deployed into. |
 | `resourceId` | string | The resource ID of the managed cluster. |
-| `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
+| `systemAssignedMIPrincipalId` | string | The principal ID of the system assigned identity. |
 
 ## Cross-referenced modules
 

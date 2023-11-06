@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "12929247318394653560"
+      "templateHash": "2029998281934386338"
     },
     "name": "Data Collection Rules",
     "description": "This module deploys a Data Collection Rule.",
@@ -190,7 +190,7 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Resource tags."
       }

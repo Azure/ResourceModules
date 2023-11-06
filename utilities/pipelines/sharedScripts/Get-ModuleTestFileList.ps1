@@ -18,7 +18,7 @@ Optional. The pattern of test files to search for. For example '*.json'
 .EXAMPLE
 Get-ModuleTestFileList -ModulePath 'C:\ResourceModules\modules\compute\virtual-machine'
 
-Returns the relative file paths of all test files of the virtual-machine module in the default test folder ('.test').
+Returns the relative file paths of all test files of the virtual-machine module in the default test folder ('tests').
 
 .EXAMPLE
 Get-ModuleTestFileList -ModulePath 'C:\ResourceModules\modules\compute\virtual-machine' -SearchFolder 'parameters'
@@ -33,7 +33,7 @@ function Get-ModuleTestFileList {
         [string] $ModulePath,
 
         [Parameter(Mandatory = $false)]
-        [string] $SearchFolder = '.test',
+        [string] $SearchFolder = 'tests',
 
         [Parameter(Mandatory = $false)]
         [string[]] $TestFilePattern = @('*.json', 'main.test.bicep')
@@ -41,9 +41,7 @@ function Get-ModuleTestFileList {
 
     $deploymentTests = @()
     if (Test-Path (Join-Path $ModulePath $SearchFolder)) {
-        $deploymentTests += (Get-ChildItem -Path (Join-Path $ModulePath $SearchFolder) -Recurse -Include $TestFilePattern -File).FullName | Where-Object {
-            $_ -ne (Join-Path (Join-Path $ModulePath $SearchFolder) 'main.test.bicep') # Excluding PBR test file
-        }
+        $deploymentTests += (Get-ChildItem -Path (Join-Path $ModulePath $SearchFolder) -Recurse -Include $TestFilePattern -File).FullName
     }
 
     if (-not $deploymentTests) {

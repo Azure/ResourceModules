@@ -28,10 +28,58 @@ The following section provides usage examples for the module, which were used to
 
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/compute.gallery:1.0.0`.
 
-- [Using large parameter set](#example-1-using-large-parameter-set)
-- [Using only defaults](#example-2-using-only-defaults)
+- [Using only defaults](#example-1-using-only-defaults)
+- [Using large parameter set](#example-2-using-large-parameter-set)
 
-### Example 1: _Using large parameter set_
+### Example 1: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module gallery 'br:bicep/modules/compute.gallery:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-cgmin'
+  params: {
+    // Required parameters
+    name: 'cgmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "cgmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 2: _Using large parameter set_
 
 This instance deploys the module with most of its features enabled.
 
@@ -42,17 +90,17 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module gallery 'br:bicep/modules/compute.gallery:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-cgcom'
+  name: '${uniqueString(deployment().name, location)}-test-cgmax'
   params: {
     // Required parameters
-    name: 'cgcom001'
+    name: 'cgmax001'
     // Non-required parameters
     applications: [
       {
-        name: 'cgcom-appd-001'
+        name: 'cgmax-appd-001'
       }
       {
-        name: 'cgcom-appd-002'
+        name: 'cgmax-appd-002'
         roleAssignments: [
           {
             principalId: '<principalId>'
@@ -199,16 +247,16 @@ module gallery 'br:bicep/modules/compute.gallery:1.0.0' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "cgcom001"
+      "value": "cgmax001"
     },
     // Non-required parameters
     "applications": {
       "value": [
         {
-          "name": "cgcom-appd-001"
+          "name": "cgmax-appd-001"
         },
         {
-          "name": "cgcom-appd-002",
+          "name": "cgmax-appd-002",
           "roleAssignments": [
             {
               "principalId": "<principalId>",
@@ -347,54 +395,6 @@ module gallery 'br:bicep/modules/compute.gallery:1.0.0' = {
         "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-### Example 2: _Using only defaults_
-
-This instance deploys the module with the minimum set of required parameters.
-
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module gallery 'br:bicep/modules/compute.gallery:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-cgmin'
-  params: {
-    // Required parameters
-    name: 'cgmin001'
-    // Non-required parameters
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "cgmin001"
-    },
-    // Non-required parameters
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
     }
   }
 }
@@ -566,7 +566,6 @@ Required. The name of the role to assign. If it cannot be found you can specify 
 Tags for all resources.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 
 ## Outputs

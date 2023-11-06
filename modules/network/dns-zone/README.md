@@ -1,5 +1,7 @@
 # Public DNS Zones `[Microsoft.Network/dnsZones]`
 
+> This module has already been migrated to [AVM](https://github.com/Azure/bicep-registry-modules/tree/main/avm/res). Only the AVM version is expected to receive updates / new features. Please do not work on improving this module in [CARML](https://aka.ms/carml).
+
 This module deploys a Public DNS zone.
 
 ## Navigation
@@ -36,10 +38,58 @@ The following section provides usage examples for the module, which were used to
 
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/network.dns-zone:1.0.0`.
 
-- [Using large parameter set](#example-1-using-large-parameter-set)
-- [Using only defaults](#example-2-using-only-defaults)
+- [Using only defaults](#example-1-using-only-defaults)
+- [Using large parameter set](#example-2-using-large-parameter-set)
 
-### Example 1: _Using large parameter set_
+### Example 1: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module dnsZone 'br:bicep/modules/network.dns-zone:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-ndzmin'
+  params: {
+    // Required parameters
+    name: 'ndzmin001.com'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "ndzmin001.com"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 2: _Using large parameter set_
 
 This instance deploys the module with most of its features enabled.
 
@@ -50,10 +100,10 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module dnsZone 'br:bicep/modules/network.dns-zone:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-ndzcom'
+  name: '${uniqueString(deployment().name, location)}-test-ndzmax'
   params: {
     // Required parameters
-    name: 'ndzcom001.com'
+    name: 'ndzmax001.com'
     // Non-required parameters
     a: [
       {
@@ -239,7 +289,7 @@ module dnsZone 'br:bicep/modules/network.dns-zone:1.0.0' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "ndzcom001.com"
+      "value": "ndzmax001.com"
     },
     // Non-required parameters
     "a": {
@@ -431,54 +481,6 @@ module dnsZone 'br:bicep/modules/network.dns-zone:1.0.0' = {
           ]
         }
       ]
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-### Example 2: _Using only defaults_
-
-This instance deploys the module with the minimum set of required parameters.
-
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module dnsZone 'br:bicep/modules/network.dns-zone:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-ndzmin'
-  params: {
-    // Required parameters
-    name: 'ndzmin001.com'
-    // Non-required parameters
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "ndzmin001.com"
-    },
-    // Non-required parameters
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
     }
   }
 }
@@ -699,7 +701,6 @@ Array of SRV records.
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `txt`
 

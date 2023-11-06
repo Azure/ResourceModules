@@ -45,7 +45,7 @@ This module deploys a Private DNS Zone CNAME record.
 A CNAME record.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `enableDefaultTelemetry`
 
@@ -59,7 +59,7 @@ Enable telemetry via a Globally Unique Identifier (GUID).
 The metadata attached to the record set.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `name`
 

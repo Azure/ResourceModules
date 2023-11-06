@@ -10,7 +10,7 @@ param networkWatcherName string = 'NetworkWatcher_${resourceGroup().location}'
 param name string = '${last(split(targetResourceId, '/'))}-${split(targetResourceId, '/')[4]}-flowlog'
 
 @description('Optional. Tags of the resource.')
-param tags object = {}
+param tags object?
 
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location

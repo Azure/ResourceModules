@@ -35,8 +35,8 @@ The following section provides usage examples for the module, which were used to
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/key-vault.vault:1.0.0`.
 
 - [Accesspolicies](#example-1-accesspolicies)
-- [Using large parameter set](#example-2-using-large-parameter-set)
-- [Using only defaults](#example-3-using-only-defaults)
+- [Using only defaults](#example-2-using-only-defaults)
+- [Using large parameter set](#example-3-using-large-parameter-set)
 - [Pe](#example-4-pe)
 
 ### Example 1: _Accesspolicies_
@@ -226,7 +226,59 @@ module vault 'br:bicep/modules/key-vault.vault:1.0.0' = {
 </details>
 <p>
 
-### Example 2: _Using large parameter set_
+### Example 2: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module vault 'br:bicep/modules/key-vault.vault:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-kvvmin'
+  params: {
+    // Required parameters
+    name: 'kvvmin002'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    enablePurgeProtection: false
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "kvvmin002"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "enablePurgeProtection": {
+      "value": false
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 3: _Using large parameter set_
 
 This instance deploys the module with most of its features enabled.
 
@@ -237,10 +289,10 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module vault 'br:bicep/modules/key-vault.vault:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-kvvcom'
+  name: '${uniqueString(deployment().name, location)}-test-kvvmax'
   params: {
     // Required parameters
-    name: 'kvvcom002'
+    name: 'kvvmax002'
     // Non-required parameters
     diagnosticSettings: [
       {
@@ -377,7 +429,7 @@ module vault 'br:bicep/modules/key-vault.vault:1.0.0' = {
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
-      "value": "kvvcom002"
+      "value": "kvvmax002"
     },
     "diagnosticSettings": {
       "value": [
@@ -528,58 +580,6 @@ module vault 'br:bicep/modules/key-vault.vault:1.0.0' = {
 </details>
 <p>
 
-### Example 3: _Using only defaults_
-
-This instance deploys the module with the minimum set of required parameters.
-
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module vault 'br:bicep/modules/key-vault.vault:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-kvvmin'
-  params: {
-    // Required parameters
-    name: 'kvvmin002'
-    // Non-required parameters
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    enablePurgeProtection: false
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "kvvmin002"
-    },
-    // Non-required parameters
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
-    "enablePurgeProtection": {
-      "value": false
-    }
-  }
-}
-```
-
-</details>
-<p>
-
 ### Example 4: _Pe_
 
 <details>
@@ -627,6 +627,24 @@ module vault 'br:bicep/modules/key-vault.vault:1.0.0' = {
     }
     privateEndpoints: [
       {
+        customDnsConfigs: [
+          {
+            fqdn: 'abc.keyvault.com'
+            ipAddresses: [
+              '10.0.0.10'
+            ]
+          }
+        ]
+        ipConfigurations: [
+          {
+            name: 'myIPconfig'
+            properties: {
+              groupId: 'vault'
+              memberName: 'default'
+              privateIPAddress: '10.0.0.10'
+            }
+          }
+        ]
         name: 'dep-pe-kvvpe'
         privateDnsZoneResourceIds: [
           '<privateDNSZoneResourceId>'
@@ -711,6 +729,24 @@ module vault 'br:bicep/modules/key-vault.vault:1.0.0' = {
     "privateEndpoints": {
       "value": [
         {
+          "customDnsConfigs": [
+            {
+              "fqdn": "abc.keyvault.com",
+              "ipAddresses": [
+                "10.0.0.10"
+              ]
+            }
+          ],
+          "ipConfigurations": [
+            {
+              "name": "myIPconfig",
+              "properties": {
+                "groupId": "vault",
+                "memberName": "default",
+                "privateIPAddress": "10.0.0.10"
+              }
+            }
+          ],
           "name": "dep-pe-kvvpe",
           "privateDnsZoneResourceIds": [
             "<privateDNSZoneResourceId>"
@@ -1004,7 +1040,7 @@ Name of the Key Vault. Must be globally unique.
 Service endpoint object information. For security reasons, it is recommended to set the DefaultAction Deny.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `privateEndpoints`
 
@@ -1047,14 +1083,20 @@ Optional. Custom DNS configurations.
 
 | Name | Required | Type | Description |
 | :-- | :-- | :--| :-- |
-| [`fqdn`](#parameter-privateendpointscustomdnsconfigsfqdn) | No | string |  |
-| [`ipAddresses`](#parameter-privateendpointscustomdnsconfigsipaddresses) | Yes | array |  |
+| [`fqdn`](#parameter-privateendpointscustomdnsconfigsfqdn) | No | string | Required. Fqdn that resolves to private endpoint ip address. |
+| [`ipAddresses`](#parameter-privateendpointscustomdnsconfigsipaddresses) | Yes | array | Required. A list of private ip addresses of the private endpoint. |
 
 ### Parameter: `privateEndpoints.customDnsConfigs.fqdn`
+
+Required. Fqdn that resolves to private endpoint ip address.
+
 - Required: No
 - Type: string
 
 ### Parameter: `privateEndpoints.customDnsConfigs.ipAddresses`
+
+Required. A list of private ip addresses of the private endpoint.
+
 - Required: Yes
 - Type: array
 
@@ -1082,26 +1124,50 @@ Optional. A list of IP configurations of the private endpoint. This will be used
 
 | Name | Required | Type | Description |
 | :-- | :-- | :--| :-- |
-| [`groupId`](#parameter-privateendpointsipconfigurationsgroupid) | Yes | string |  |
-| [`memberName`](#parameter-privateendpointsipconfigurationsmembername) | Yes | string |  |
-| [`name`](#parameter-privateendpointsipconfigurationsname) | Yes | string |  |
-| [`privateIpAddress`](#parameter-privateendpointsipconfigurationsprivateipaddress) | Yes | string |  |
-
-### Parameter: `privateEndpoints.ipConfigurations.groupId`
-- Required: Yes
-- Type: string
-
-### Parameter: `privateEndpoints.ipConfigurations.memberName`
-- Required: Yes
-- Type: string
+| [`name`](#parameter-privateendpointsipconfigurationsname) | Yes | string | Required. The name of the resource that is unique within a resource group. |
+| [`properties`](#parameter-privateendpointsipconfigurationsproperties) | Yes | object | Required. Properties of private endpoint IP configurations. |
 
 ### Parameter: `privateEndpoints.ipConfigurations.name`
+
+Required. The name of the resource that is unique within a resource group.
+
 - Required: Yes
 - Type: string
 
-### Parameter: `privateEndpoints.ipConfigurations.privateIpAddress`
+### Parameter: `privateEndpoints.ipConfigurations.properties`
+
+Required. Properties of private endpoint IP configurations.
+
+- Required: Yes
+- Type: object
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`groupId`](#parameter-privateendpointsipconfigurationspropertiesgroupid) | Yes | string | Required. The ID of a group obtained from the remote resource that this private endpoint should connect to. |
+| [`memberName`](#parameter-privateendpointsipconfigurationspropertiesmembername) | Yes | string | Required. The member name of a group obtained from the remote resource that this private endpoint should connect to. |
+| [`privateIPAddress`](#parameter-privateendpointsipconfigurationspropertiesprivateipaddress) | Yes | string | Required. A private ip address obtained from the private endpoint's subnet. |
+
+### Parameter: `privateEndpoints.ipConfigurations.properties.groupId`
+
+Required. The ID of a group obtained from the remote resource that this private endpoint should connect to.
+
 - Required: Yes
 - Type: string
+
+### Parameter: `privateEndpoints.ipConfigurations.properties.memberName`
+
+Required. The member name of a group obtained from the remote resource that this private endpoint should connect to.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `privateEndpoints.ipConfigurations.properties.privateIPAddress`
+
+Required. A private ip address obtained from the private endpoint's subnet.
+
+- Required: Yes
+- Type: string
+
 
 
 ### Parameter: `privateEndpoints.location`
@@ -1180,7 +1246,14 @@ Whether or not public network access is allowed for this resource. For security 
 - Required: No
 - Type: string
 - Default: `''`
-- Allowed: `['', Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    ''
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 ### Parameter: `roleAssignments`
 
@@ -1255,7 +1328,7 @@ Required. The name of the role to assign. If it cannot be found you can specify 
 All secrets to create.
 - Required: No
 - Type: secureObject
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `softDeleteRetentionInDays`
 
@@ -1269,7 +1342,6 @@ softDelete data retention days. It accepts >=7 and <=90.
 Resource tags.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `vaultSku`
 
@@ -1277,7 +1349,13 @@ Specifies the SKU for the vault.
 - Required: No
 - Type: string
 - Default: `'premium'`
-- Allowed: `[premium, standard]`
+- Allowed:
+  ```Bicep
+  [
+    'premium'
+    'standard'
+  ]
+  ```
 
 
 ## Outputs

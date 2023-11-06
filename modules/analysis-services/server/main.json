@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "7051724089747387450"
+      "templateHash": "17464709928355207715"
     },
     "name": "Analysis Services Servers",
     "description": "This module deploys an Analysis Services Server.",
@@ -275,7 +275,7 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Tags of the resource."
       }

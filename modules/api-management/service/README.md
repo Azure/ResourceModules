@@ -42,13 +42,12 @@ The following section provides usage examples for the module, which were used to
 
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/api-management.service:1.0.0`.
 
-- [Using large parameter set](#example-1-using-large-parameter-set)
-- [Max](#example-2-max)
-- [Using only defaults](#example-3-using-only-defaults)
+- [Using only defaults](#example-1-using-only-defaults)
+- [Using large parameter set](#example-2-using-large-parameter-set)
 
-### Example 1: _Using large parameter set_
+### Example 1: _Using only defaults_
 
-This instance deploys the module with most of its features enabled.
+This instance deploys the module with the minimum set of required parameters.
 
 
 <details>
@@ -57,54 +56,14 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module service 'br:bicep/modules/api-management.service:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-apiscom'
+  name: '${uniqueString(deployment().name, location)}-test-apismin'
   params: {
     // Required parameters
-    name: 'apiscom001'
+    name: 'apismin001'
     publisherEmail: 'apimgmt-noreply@mail.windowsazure.com'
     publisherName: 'az-amorg-x-001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    lock: {
-      kind: 'CanNotDelete'
-      name: 'myCustomLockName'
-    }
-    policies: [
-      {
-        format: 'xml'
-        value: '<policies> <inbound> <rate-limit-by-key calls=\'250\' renewal-period=\'60\' counter-key=\'@(context.Request.IpAddress)\' /> </inbound> <backend> <forward-request /> </backend> <outbound> </outbound> </policies>'
-      }
-    ]
-    portalsettings: [
-      {
-        name: 'signin'
-        properties: {
-          enabled: false
-        }
-      }
-      {
-        name: 'signup'
-        properties: {
-          enabled: false
-          termsOfService: {
-            consentRequired: false
-            enabled: false
-          }
-        }
-      }
-    ]
-    roleAssignments: [
-      {
-        principalId: '<principalId>'
-        principalType: 'ServicePrincipal'
-        roleDefinitionIdOrName: 'Reader'
-      }
-    ]
-    tags: {
-      Environment: 'Non-Prod'
-      'hidden-title': 'This is visible in the resource name'
-      Role: 'DeploymentValidation'
-    }
   }
 }
 ```
@@ -123,7 +82,7 @@ module service 'br:bicep/modules/api-management.service:1.0.0' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "apiscom001"
+      "value": "apismin001"
     },
     "publisherEmail": {
       "value": "apimgmt-noreply@mail.windowsazure.com"
@@ -134,56 +93,6 @@ module service 'br:bicep/modules/api-management.service:1.0.0' = {
     // Non-required parameters
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
-    },
-    "lock": {
-      "value": {
-        "kind": "CanNotDelete",
-        "name": "myCustomLockName"
-      }
-    },
-    "policies": {
-      "value": [
-        {
-          "format": "xml",
-          "value": "<policies> <inbound> <rate-limit-by-key calls=\"250\" renewal-period=\"60\" counter-key=\"@(context.Request.IpAddress)\" /> </inbound> <backend> <forward-request /> </backend> <outbound> </outbound> </policies>"
-        }
-      ]
-    },
-    "portalsettings": {
-      "value": [
-        {
-          "name": "signin",
-          "properties": {
-            "enabled": false
-          }
-        },
-        {
-          "name": "signup",
-          "properties": {
-            "enabled": false,
-            "termsOfService": {
-              "consentRequired": false,
-              "enabled": false
-            }
-          }
-        }
-      ]
-    },
-    "roleAssignments": {
-      "value": [
-        {
-          "principalId": "<principalId>",
-          "principalType": "ServicePrincipal",
-          "roleDefinitionIdOrName": "Reader"
-        }
-      ]
-    },
-    "tags": {
-      "value": {
-        "Environment": "Non-Prod",
-        "hidden-title": "This is visible in the resource name",
-        "Role": "DeploymentValidation"
-      }
     }
   }
 }
@@ -192,7 +101,10 @@ module service 'br:bicep/modules/api-management.service:1.0.0' = {
 </details>
 <p>
 
-### Example 2: _Max_
+### Example 2: _Using large parameter set_
+
+This instance deploys the module with most of its features enabled.
+
 
 <details>
 
@@ -279,6 +191,12 @@ module service 'br:bicep/modules/api-management.service:1.0.0' = {
       kind: 'CanNotDelete'
       name: 'myCustomLockName'
     }
+    managedIdentities: {
+      systemAssigned: true
+      userAssignedResourcesIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
     namedValues: [
       {
         displayName: 'apimkey'
@@ -339,14 +257,10 @@ module service 'br:bicep/modules/api-management.service:1.0.0' = {
         name: 'testArmSubscriptionAllApis'
       }
     ]
-    systemAssignedIdentity: true
     tags: {
       Environment: 'Non-Prod'
       'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
-    }
-    userAssignedIdentities: {
-      '<managedIdentityResourceId>': {}
     }
   }
 }
@@ -463,6 +377,14 @@ module service 'br:bicep/modules/api-management.service:1.0.0' = {
         "name": "myCustomLockName"
       }
     },
+    "managedIdentities": {
+      "value": {
+        "systemAssigned": true,
+        "userAssignedResourcesIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
+    },
     "namedValues": {
       "value": [
         {
@@ -535,76 +457,12 @@ module service 'br:bicep/modules/api-management.service:1.0.0' = {
         }
       ]
     },
-    "systemAssignedIdentity": {
-      "value": true
-    },
     "tags": {
       "value": {
         "Environment": "Non-Prod",
         "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
-    },
-    "userAssignedIdentities": {
-      "value": {
-        "<managedIdentityResourceId>": {}
-      }
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-### Example 3: _Using only defaults_
-
-This instance deploys the module with the minimum set of required parameters.
-
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module service 'br:bicep/modules/api-management.service:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-apismin'
-  params: {
-    // Required parameters
-    name: 'apismin001'
-    publisherEmail: 'apimgmt-noreply@mail.windowsazure.com'
-    publisherName: 'az-amorg-x-001'
-    // Non-required parameters
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "apismin001"
-    },
-    "publisherEmail": {
-      "value": "apimgmt-noreply@mail.windowsazure.com"
-    },
-    "publisherName": {
-      "value": "az-amorg-x-001"
-    },
-    // Non-required parameters
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
     }
   }
 }
@@ -644,6 +502,7 @@ module service 'br:bicep/modules/api-management.service:1.0.0' = {
 | [`identityProviders`](#parameter-identityproviders) | array | Identity providers. |
 | [`location`](#parameter-location) | string | Location for all Resources. |
 | [`lock`](#parameter-lock) | object | The lock settings of the service. |
+| [`managedIdentities`](#parameter-managedidentities) | object | The managed identity definition for this resource. |
 | [`minApiVersion`](#parameter-minapiversion) | string | Limit control plane API calls to API Management service with version equal to or newer than this value. |
 | [`namedValues`](#parameter-namedvalues) | array | Named values. |
 | [`newGuidValue`](#parameter-newguidvalue) | string | Necessary to create a new GUID. |
@@ -657,9 +516,7 @@ module service 'br:bicep/modules/api-management.service:1.0.0' = {
 | [`skuCount`](#parameter-skucount) | int | The instance size of this API Management service. |
 | [`subnetResourceId`](#parameter-subnetresourceid) | string | The full resource ID of a subnet in a virtual network to deploy the API Management service in. |
 | [`subscriptions`](#parameter-subscriptions) | array | Subscriptions. |
-| [`systemAssignedIdentity`](#parameter-systemassignedidentity) | bool | Enables system assigned managed identity on the resource. |
 | [`tags`](#parameter-tags) | object | Tags of the resource. |
-| [`userAssignedIdentities`](#parameter-userassignedidentities) | object | The ID(s) to assign to the resource. |
 | [`virtualNetworkType`](#parameter-virtualnetworktype) | string | The type of VPN in which API Management service needs to be configured in. None (Default Value) means the API Management service is not part of any Virtual Network, External means the API Management deployment is set up inside a Virtual Network having an internet Facing Endpoint, and Internal means that API Management deployment is setup inside a Virtual Network having an Intranet Facing Endpoint only. |
 | [`zones`](#parameter-zones) | array | A list of availability zones denoting where the resource needs to come from. |
 
@@ -689,7 +546,7 @@ API Version Sets.
 Authorization servers.
 - Required: No
 - Type: secureObject
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `backends`
 
@@ -717,7 +574,7 @@ List of Certificates that need to be installed in the API Management service. Ma
 Custom properties of the API Management service.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `diagnosticSettings`
 
@@ -903,6 +760,32 @@ Optional. Specify the name of lock.
 - Required: No
 - Type: string
 
+### Parameter: `managedIdentities`
+
+The managed identity definition for this resource.
+- Required: No
+- Type: object
+
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`systemAssigned`](#parameter-managedidentitiessystemassigned) | No | bool | Optional. Enables system assigned managed identity on the resource. |
+| [`userAssignedResourcesIds`](#parameter-managedidentitiesuserassignedresourcesids) | No | array | Optional. The resource ID(s) to assign to the resource. |
+
+### Parameter: `managedIdentities.systemAssigned`
+
+Optional. Enables system assigned managed identity on the resource.
+
+- Required: No
+- Type: bool
+
+### Parameter: `managedIdentities.userAssignedResourcesIds`
+
+Optional. The resource ID(s) to assign to the resource.
+
+- Required: No
+- Type: array
+
 ### Parameter: `minApiVersion`
 
 Limit control plane API calls to API Management service with version equal to or newer than this value.
@@ -1051,7 +934,16 @@ The pricing tier of this API Management service.
 - Required: No
 - Type: string
 - Default: `'Developer'`
-- Allowed: `[Basic, Consumption, Developer, Premium, Standard]`
+- Allowed:
+  ```Bicep
+  [
+    'Basic'
+    'Consumption'
+    'Developer'
+    'Premium'
+    'Standard'
+  ]
+  ```
 
 ### Parameter: `skuCount`
 
@@ -1059,7 +951,13 @@ The instance size of this API Management service.
 - Required: No
 - Type: int
 - Default: `1`
-- Allowed: `[1, 2]`
+- Allowed:
+  ```Bicep
+  [
+    1
+    2
+  ]
+  ```
 
 ### Parameter: `subnetResourceId`
 
@@ -1075,26 +973,11 @@ Subscriptions.
 - Type: array
 - Default: `[]`
 
-### Parameter: `systemAssignedIdentity`
-
-Enables system assigned managed identity on the resource.
-- Required: No
-- Type: bool
-- Default: `False`
-
 ### Parameter: `tags`
 
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
-
-### Parameter: `userAssignedIdentities`
-
-The ID(s) to assign to the resource.
-- Required: No
-- Type: object
-- Default: `{object}`
 
 ### Parameter: `virtualNetworkType`
 
@@ -1102,7 +985,14 @@ The type of VPN in which API Management service needs to be configured in. None 
 - Required: No
 - Type: string
 - Default: `'None'`
-- Allowed: `[External, Internal, None]`
+- Allowed:
+  ```Bicep
+  [
+    'External'
+    'Internal'
+    'None'
+  ]
+  ```
 
 ### Parameter: `zones`
 
@@ -1120,7 +1010,7 @@ A list of availability zones denoting where the resource needs to come from.
 | `name` | string | The name of the API management service. |
 | `resourceGroupName` | string | The resource group the API management service was deployed into. |
 | `resourceId` | string | The resource ID of the API management service. |
-| `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
+| `systemAssignedMIPrincipalId` | string | The principal ID of the system assigned identity. |
 
 ## Cross-referenced modules
 

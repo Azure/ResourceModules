@@ -37,7 +37,7 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module lock 'br:bicep/modules/authorization.lock:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-alcom'
+  name: '${uniqueString(deployment().name, location)}-test-almax'
   params: {
     // Required parameters
     level: 'CanNotDelete'
@@ -113,7 +113,13 @@ Enable telemetry via a Globally Unique Identifier (GUID).
 Set lock level.
 - Required: Yes
 - Type: string
-- Allowed: `[CanNotDelete, ReadOnly]`
+- Allowed:
+  ```Bicep
+  [
+    'CanNotDelete'
+    'ReadOnly'
+  ]
+  ```
 
 ### Parameter: `location`
 

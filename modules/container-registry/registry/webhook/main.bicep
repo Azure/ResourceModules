@@ -33,7 +33,7 @@ param action array = [
 param location string = resourceGroup().location
 
 @description('Optional. Tags of the resource.')
-param tags object = {}
+param tags object?
 
 @description('Optional. Custom headers that will be added to the webhook notifications.')
 param customHeaders object = {}

@@ -69,7 +69,7 @@ Location deployment metadata.
 The policy Definition metadata. Metadata is an open ended object and is typically a collection of key-value pairs.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `mode`
 
@@ -77,7 +77,17 @@ The policy definition mode. Default is All, Some examples are All, Indexed, Micr
 - Required: No
 - Type: string
 - Default: `'All'`
-- Allowed: `[All, Indexed, Microsoft.ContainerService.Data, Microsoft.KeyVault.Data, Microsoft.Kubernetes.Data, Microsoft.Network.Data]`
+- Allowed:
+  ```Bicep
+  [
+    'All'
+    'Indexed'
+    'Microsoft.ContainerService.Data'
+    'Microsoft.KeyVault.Data'
+    'Microsoft.Kubernetes.Data'
+    'Microsoft.Network.Data'
+  ]
+  ```
 
 ### Parameter: `name`
 
@@ -90,7 +100,7 @@ Specifies the name of the policy definition. Maximum length is 64 characters.
 The policy definition parameters that can be used in policy definition references.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `policyRule`
 

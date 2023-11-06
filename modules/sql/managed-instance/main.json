@@ -6,13 +6,36 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "16983144264523357035"
+      "templateHash": "12495888352047670800"
     },
     "name": "SQL Managed Instances",
     "description": "This module deploys a SQL Managed Instance.",
     "owner": "Azure/module-maintainers"
   },
   "definitions": {
+    "managedIdentitiesType": {
+      "type": "object",
+      "properties": {
+        "systemAssigned": {
+          "type": "bool",
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Enables system assigned managed identity on the resource."
+          }
+        },
+        "userAssignedResourcesIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. The resource ID(s) to assign to the resource."
+          }
+        }
+      },
+      "nullable": true
+    },
     "lockType": {
       "type": "object",
       "properties": {
@@ -399,7 +422,7 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Tags of the resource."
       }
@@ -411,18 +434,10 @@
         "description": "Optional. Enable telemetry via a Globally Unique Identifier (GUID)."
       }
     },
-    "systemAssignedIdentity": {
-      "type": "bool",
-      "defaultValue": false,
+    "managedIdentities": {
+      "$ref": "#/definitions/managedIdentitiesType",
       "metadata": {
-        "description": "Optional. Enables system assigned managed identity on the resource."
-      }
-    },
-    "userAssignedIdentities": {
-      "type": "object",
-      "defaultValue": {},
-      "metadata": {
-        "description": "Optional. The ID(s) to assign to the resource."
+        "description": "Optional. The managed identity definition for this resource."
       }
     },
     "primaryUserAssignedIdentityId": {
@@ -502,8 +517,8 @@
     }
   },
   "variables": {
-    "identityType": "[if(parameters('systemAssignedIdentity'), if(not(empty(parameters('userAssignedIdentities'))), 'SystemAssigned,UserAssigned', 'SystemAssigned'), if(not(empty(parameters('userAssignedIdentities'))), 'UserAssigned', 'None'))]",
-    "identity": "[if(not(equals(variables('identityType'), 'None')), createObject('type', variables('identityType'), 'userAssignedIdentities', if(not(empty(parameters('userAssignedIdentities'))), parameters('userAssignedIdentities'), null())), null())]",
+    "formattedUserAssignedIdentities": "[reduce(map(coalesce(tryGet(parameters('managedIdentities'), 'userAssignedResourcesIds'), createArray()), lambda('id', createObject(format('{0}', lambdaVariables('id')), createObject()))), createObject(), lambda('cur', 'next', union(lambdaVariables('cur'), lambdaVariables('next'))))]",
+    "identity": "[if(not(empty(parameters('managedIdentities'))), createObject('type', if(coalesce(tryGet(parameters('managedIdentities'), 'systemAssigned'), false()), if(not(empty(coalesce(tryGet(parameters('managedIdentities'), 'userAssignedResourcesIds'), createObject()))), 'SystemAssigned,UserAssigned', 'SystemAssigned'), if(not(empty(coalesce(tryGet(parameters('managedIdentities'), 'userAssignedResourcesIds'), createObject()))), 'UserAssigned', null())), 'userAssignedIdentities', if(not(empty(variables('formattedUserAssignedIdentities'))), variables('formattedUserAssignedIdentities'), null())), null())]",
     "enableReferencedModulesTelemetry": false,
     "builtInRoleNames": {
       "Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]",
@@ -668,7 +683,9 @@
           "sourceDatabaseId": "[if(contains(parameters('databases')[copyIndex()], 'sourceDatabaseId'), createObject('value', parameters('databases')[copyIndex()].sourceDatabaseId), createObject('value', ''))]",
           "storageContainerSasToken": "[if(contains(parameters('databases')[copyIndex()], 'storageContainerSasToken'), createObject('value', parameters('databases')[copyIndex()].storageContainerSasToken), createObject('value', ''))]",
           "storageContainerUri": "[if(contains(parameters('databases')[copyIndex()], 'storageContainerUri'), createObject('value', parameters('databases')[copyIndex()].storageContainerUri), createObject('value', ''))]",
-          "tags": "[if(contains(parameters('databases')[copyIndex()], 'tags'), createObject('value', parameters('databases')[copyIndex()].tags), createObject('value', createObject()))]",
+          "tags": {
+            "value": "[coalesce(tryGet(parameters('databases')[copyIndex()], 'tags'), parameters('tags'))]"
+          },
           "backupShortTermRetentionPoliciesObj": "[if(contains(parameters('databases')[copyIndex()], 'backupShortTermRetentionPolicies'), createObject('value', parameters('databases')[copyIndex()].backupShortTermRetentionPolicies), createObject('value', createObject()))]",
           "backupLongTermRetentionPoliciesObj": "[if(contains(parameters('databases')[copyIndex()], 'backupLongTermRetentionPolicies'), createObject('value', parameters('databases')[copyIndex()].backupLongTermRetentionPolicies), createObject('value', createObject()))]",
           "enableDefaultTelemetry": {
@@ -683,7 +700,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.22.6.54827",
-              "templateHash": "11809118815295815977"
+              "templateHash": "8385261968552186747"
             },
             "name": "SQL Managed Instance Databases",
             "description": "This module deploys a SQL Managed Instance Database.",
@@ -929,7 +946,7 @@
             },
             "tags": {
               "type": "object",
-              "defaultValue": {},
+              "nullable": true,
               "metadata": {
                 "description": "Optional. Tags of the resource."
               }
@@ -1468,7 +1485,7 @@
       ]
     },
     "managedInstance_vulnerabilityAssessment": {
-      "condition": "[and(not(empty(parameters('vulnerabilityAssessmentsObj'))), parameters('systemAssignedIdentity'))]",
+      "condition": "[and(not(empty(parameters('vulnerabilityAssessmentsObj'))), coalesce(tryGet(parameters('managedIdentities'), 'systemAssigned'), false()))]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
       "name": "[format('{0}-SqlMi-VulnAssessm', uniqueString(deployment().name, parameters('location')))]",
@@ -2102,12 +2119,12 @@
       },
       "value": "[resourceGroup().name]"
     },
-    "systemAssignedPrincipalId": {
+    "systemAssignedMIPrincipalId": {
       "type": "string",
       "metadata": {
         "description": "The principal ID of the system assigned identity."
       },
-      "value": "[if(and(parameters('systemAssignedIdentity'), contains(reference('managedInstance', '2022-05-01-preview', 'full').identity, 'principalId')), reference('managedInstance', '2022-05-01-preview', 'full').identity.principalId, '')]"
+      "value": "[if(and(coalesce(tryGet(parameters('managedIdentities'), 'systemAssigned'), false()), contains(reference('managedInstance', '2022-05-01-preview', 'full').identity, 'principalId')), reference('managedInstance', '2022-05-01-preview', 'full').identity.principalId, '')]"
     },
     "location": {
       "type": "string",

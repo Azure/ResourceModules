@@ -41,10 +41,10 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module workflow 'br:bicep/modules/logic.workflow:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-lwcom'
+  name: '${uniqueString(deployment().name, location)}-test-lwmax'
   params: {
     // Required parameters
-    name: 'lwcom001'
+    name: 'lwmax001'
     // Non-required parameters
     diagnosticSettings: [
       {
@@ -65,6 +65,11 @@ module workflow 'br:bicep/modules/logic.workflow:1.0.0' = {
       kind: 'CanNotDelete'
       name: 'myCustomLockName'
     }
+    managedIdentities: {
+      userAssignedResourcesIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
     roleAssignments: [
       {
         principalId: '<principalId>'
@@ -76,9 +81,6 @@ module workflow 'br:bicep/modules/logic.workflow:1.0.0' = {
       Environment: 'Non-Prod'
       'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
-    }
-    userAssignedIdentities: {
-      '<managedIdentityResourceId>': {}
     }
     workflowActions: {
       HTTP: {
@@ -129,7 +131,7 @@ module workflow 'br:bicep/modules/logic.workflow:1.0.0' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "lwcom001"
+      "value": "lwmax001"
     },
     // Non-required parameters
     "diagnosticSettings": {
@@ -157,6 +159,13 @@ module workflow 'br:bicep/modules/logic.workflow:1.0.0' = {
         "name": "myCustomLockName"
       }
     },
+    "managedIdentities": {
+      "value": {
+        "userAssignedResourcesIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
+    },
     "roleAssignments": {
       "value": [
         {
@@ -171,11 +180,6 @@ module workflow 'br:bicep/modules/logic.workflow:1.0.0' = {
         "Environment": "Non-Prod",
         "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
-      }
-    },
-    "userAssignedIdentities": {
-      "value": {
-        "<managedIdentityResourceId>": {}
       }
     },
     "workflowActions": {
@@ -243,12 +247,11 @@ module workflow 'br:bicep/modules/logic.workflow:1.0.0' = {
 | [`integrationServiceEnvironmentResourceId`](#parameter-integrationserviceenvironmentresourceid) | string | The integration service environment Id. |
 | [`location`](#parameter-location) | string | Location for all resources. |
 | [`lock`](#parameter-lock) | object | The lock settings of the service. |
+| [`managedIdentities`](#parameter-managedidentities) | object | The managed identity definition for this resource. Only one type of identity is supported: system-assigned or user-assigned, but not both. |
 | [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | [`state`](#parameter-state) | string | The state. - NotSpecified, Completed, Enabled, Disabled, Deleted, Suspended. |
-| [`systemAssignedIdentity`](#parameter-systemassignedidentity) | bool | Enables system assigned managed identity on the resource. |
 | [`tags`](#parameter-tags) | object | Tags of the resource. |
 | [`triggersAccessControlConfiguration`](#parameter-triggersaccesscontrolconfiguration) | object | The access control configuration for invoking workflow triggers. |
-| [`userAssignedIdentities`](#parameter-userassignedidentities) | object | The ID(s) to assign to the resource. |
 | [`workflowActions`](#parameter-workflowactions) | object | The definitions for one or more actions to execute at workflow runtime. |
 | [`workflowEndpointsConfiguration`](#parameter-workflowendpointsconfiguration) | object | The endpoints configuration:  Access endpoint and outgoing IP addresses for the workflow. |
 | [`workflowManagementAccessControlConfiguration`](#parameter-workflowmanagementaccesscontrolconfiguration) | object | The access control configuration for workflow management. |
@@ -262,28 +265,28 @@ module workflow 'br:bicep/modules/logic.workflow:1.0.0' = {
 The access control configuration for workflow actions.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `connectorEndpointsConfiguration`
 
 The endpoints configuration:  Access endpoint and outgoing IP addresses for the connector.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `contentsAccessControlConfiguration`
 
 The access control configuration for accessing workflow run contents.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `definitionParameters`
 
 Parameters for the definition template.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `diagnosticSettings`
 
@@ -412,7 +415,7 @@ Enable telemetry via a Globally Unique Identifier (GUID).
 The integration account.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `integrationServiceEnvironmentResourceId`
 
@@ -454,6 +457,32 @@ Optional. Specify the name of lock.
 
 - Required: No
 - Type: string
+
+### Parameter: `managedIdentities`
+
+The managed identity definition for this resource. Only one type of identity is supported: system-assigned or user-assigned, but not both.
+- Required: No
+- Type: object
+
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`systemAssigned`](#parameter-managedidentitiessystemassigned) | No | bool | Optional. Enables system assigned managed identity on the resource. |
+| [`userAssignedResourcesIds`](#parameter-managedidentitiesuserassignedresourcesids) | No | array | Optional. The resource ID(s) to assign to the resource. |
+
+### Parameter: `managedIdentities.systemAssigned`
+
+Optional. Enables system assigned managed identity on the resource.
+
+- Required: No
+- Type: bool
+
+### Parameter: `managedIdentities.userAssignedResourcesIds`
+
+Optional. The resource ID(s) to assign to the resource.
+
+- Required: No
+- Type: array
 
 ### Parameter: `name`
 
@@ -535,84 +564,79 @@ The state. - NotSpecified, Completed, Enabled, Disabled, Deleted, Suspended.
 - Required: No
 - Type: string
 - Default: `'Enabled'`
-- Allowed: `[Completed, Deleted, Disabled, Enabled, NotSpecified, Suspended]`
-
-### Parameter: `systemAssignedIdentity`
-
-Enables system assigned managed identity on the resource.
-- Required: No
-- Type: bool
-- Default: `False`
+- Allowed:
+  ```Bicep
+  [
+    'Completed'
+    'Deleted'
+    'Disabled'
+    'Enabled'
+    'NotSpecified'
+    'Suspended'
+  ]
+  ```
 
 ### Parameter: `tags`
 
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `triggersAccessControlConfiguration`
 
 The access control configuration for invoking workflow triggers.
 - Required: No
 - Type: object
-- Default: `{object}`
-
-### Parameter: `userAssignedIdentities`
-
-The ID(s) to assign to the resource.
-- Required: No
-- Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `workflowActions`
 
 The definitions for one or more actions to execute at workflow runtime.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `workflowEndpointsConfiguration`
 
 The endpoints configuration:  Access endpoint and outgoing IP addresses for the workflow.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `workflowManagementAccessControlConfiguration`
 
 The access control configuration for workflow management.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `workflowOutputs`
 
 The definitions for the outputs to return from a workflow run.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `workflowParameters`
 
 The definitions for one or more parameters that pass the values to use at your logic app's runtime.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `workflowStaticResults`
 
 The definitions for one or more static results returned by actions as mock outputs when static results are enabled on those actions. In each action definition, the runtimeConfiguration.staticResult.name attribute references the corresponding definition inside staticResults.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `workflowTriggers`
 
 The definitions for one or more triggers that instantiate your workflow. You can define more than one trigger, but only with the Workflow Definition Language, not visually through the Logic Apps Designer.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 
 ## Outputs
@@ -623,7 +647,7 @@ The definitions for one or more triggers that instantiate your workflow. You can
 | `name` | string | The name of the logic app. |
 | `resourceGroupName` | string | The resource group the logic app was deployed into. |
 | `resourceId` | string | The resource ID of the logic app. |
-| `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
+| `systemAssignedMIPrincipalId` | string | The principal ID of the system assigned identity. |
 
 ## Cross-referenced modules
 

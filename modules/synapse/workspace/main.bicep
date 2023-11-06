@@ -11,7 +11,7 @@ param name string
 param location string = resourceGroup().location
 
 @description('Optional. Tags of the resource.')
-param tags object = {}
+param tags object?
 
 @description('Optional. Enable or Disable AzureADOnlyAuthentication on All Workspace sub-resource.')
 param azureADOnlyAuthentication bool = false
@@ -28,20 +28,8 @@ param defaultDataLakeStorageFilesystem string
 @description('Optional. Create managed private endpoint to the default storage account or not. If Yes is selected, a managed private endpoint connection request is sent to the workspace\'s primary Data Lake Storage Gen2 account for Spark pools to access data. This must be approved by an owner of the storage account.')
 param defaultDataLakeStorageCreateManagedPrivateEndpoint bool = false
 
-@description('Optional. Double encryption using a customer-managed key.')
-param encryption bool = false
-
-@description('Conditional. The resource ID of a key vault to reference a customer managed key for encryption from. Required if \'cMKKeyName\' is not empty.')
-param cMKKeyVaultResourceId string = ''
-
-@description('Optional. The name of the customer managed key to use for encryption.')
-param cMKKeyName string = ''
-
-@description('Optional. Use System Assigned Managed identity that will be used to access your customer-managed key stored in key vault.')
-param cMKUseSystemAssignedIdentity bool = false
-
-@description('Optional. The ID of User Assigned Managed identity that will be used to access your customer-managed key stored in key vault.')
-param cMKUserAssignedIdentityResourceId string = ''
+@description('Optional. The customer managed key definition.')
+param customerManagedKey customerManagedKeyType
 
 @description('Optional. Activate workspace by adding the system managed identity in the KeyVault containing the customer managed key and activating the workspace.')
 param encryptionActivateWorkspace bool = false
@@ -104,8 +92,8 @@ param privateEndpoints privateEndpointType
 param diagnosticSettings diagnosticSettingType
 
 // Variables
-var userAssignedIdentitiesUnion = union(userAssignedIdentities, !empty(cMKUserAssignedIdentityResourceId) ? {
-    '${cMKUserAssignedIdentityResourceId}': {}
+var userAssignedIdentitiesUnion = union(userAssignedIdentities, !empty(customerManagedKey.?userAssignedIdentityResourceId ?? []) ? {
+    '${customerManagedKey!.userAssignedIdentityResourceId}': {}
   } : {})
 
 var identityType = !empty(userAssignedIdentitiesUnion) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned'
@@ -126,13 +114,18 @@ var builtInRoleNames = {
   'User Access Administrator': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '18d7d88d-d35e-4fb5-a5c3-7773c20a72d9')
 }
 
-resource cMKKeyVault 'Microsoft.KeyVault/vaults@2021-10-01' existing = if (!empty(cMKKeyVaultResourceId)) {
-  name: last(split((!empty(cMKKeyVaultResourceId) ? cMKKeyVaultResourceId : 'dummyVault'), '/'))!
-  scope: resourceGroup(split((!empty(cMKKeyVaultResourceId) ? cMKKeyVaultResourceId : '//'), '/')[2], split((!empty(cMKKeyVaultResourceId) ? cMKKeyVaultResourceId : '////'), '/')[4])
+resource cMKKeyVault 'Microsoft.KeyVault/vaults@2023-02-01' existing = if (!empty(customerManagedKey.?keyVaultResourceId)) {
+  name: last(split((customerManagedKey.?keyVaultResourceId ?? 'dummyVault'), '/'))
+  scope: resourceGroup(split((customerManagedKey.?keyVaultResourceId ?? '//'), '/')[2], split((customerManagedKey.?keyVaultResourceId ?? '////'), '/')[4])
 
-  resource cMKKey 'keys@2023-02-01' existing = if (!empty(cMKKeyName)) {
-    name: !empty(cMKKeyName) ? cMKKeyName : 'dummyKey'
+  resource cMKKey 'keys@2023-02-01' existing = if (!empty(customerManagedKey.?keyVaultResourceId) && !empty(customerManagedKey.?keyName)) {
+    name: customerManagedKey.?keyName ?? 'dummyKey'
   }
+}
+
+resource cMKUserAssignedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' existing = if (!empty(customerManagedKey.?userAssignedIdentityResourceId)) {
+  name: last(split(customerManagedKey.?userAssignedIdentityResourceId ?? 'dummyMsi', '/'))
+  scope: resourceGroup(split((customerManagedKey.?userAssignedIdentityResourceId ?? '//'), '/')[2], split((customerManagedKey.?userAssignedIdentityResourceId ?? '////'), '/')[4])
 }
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
@@ -163,15 +156,21 @@ resource workspace 'Microsoft.Synapse/workspaces@2021-06-01' = {
       filesystem: defaultDataLakeStorageFilesystem
       createManagedPrivateEndpoint: managedVirtualNetwork ? defaultDataLakeStorageCreateManagedPrivateEndpoint : null
     }
-    encryption: encryption ? {
+    encryption: !empty(customerManagedKey) ? {
       cmk: {
-        kekIdentity: {
-          userAssignedIdentity: !empty(cMKUserAssignedIdentityResourceId) ? cMKUserAssignedIdentityResourceId : null
-          useSystemAssignedIdentity: cMKUseSystemAssignedIdentity
+        kekIdentity: !empty(customerManagedKey.?userAssignedIdentityResourceId) ? {
+          userAssignedIdentity: cMKUserAssignedIdentity.id
+        } : {
+          useSystemAssignedIdentity: empty(customerManagedKey.?userAssignedIdentityResourceId)
         }
+
+        identity: !empty(customerManagedKey.?userAssignedIdentityResourceId) ? {
+          userAssignedIdentity: cMKUserAssignedIdentity.id
+        } : null
+
         key: {
           keyVaultUrl: cMKKeyVault::cMKKey.properties.keyUri
-          name: cMKKeyName
+          name: customerManagedKey!.keyName
         }
       }
     } : null
@@ -210,19 +209,19 @@ module workspace_cmk_rbac 'modules/nested_cmkRbac.bicep' = if (encryptionActivat
   name: '${workspace.name}-cmk-rbac'
   params: {
     workspaceIndentityPrincipalId: workspace.identity.principalId
-    keyvaultName: !empty(cMKKeyVaultResourceId) ? cMKKeyVault.name : ''
-    usesRbacAuthorization: !empty(cMKKeyVaultResourceId) ? cMKKeyVault.properties.enableRbacAuthorization : true
+    keyvaultName: !empty(customerManagedKey.?keyVaultResourceId) ? cMKKeyVault.name : ''
+    usesRbacAuthorization: !empty(customerManagedKey.?keyVaultResourceId) ? cMKKeyVault.properties.enableRbacAuthorization : true
   }
-  scope: encryptionActivateWorkspace ? resourceGroup(split(cMKKeyVaultResourceId, '/')[2], split(cMKKeyVaultResourceId, '/')[4]) : resourceGroup()
+  scope: encryptionActivateWorkspace ? resourceGroup(split((customerManagedKey.?keyVaultResourceId ?? '//'), '/')[2], split((customerManagedKey.?keyVaultResourceId ?? '////'), '/')[4]) : resourceGroup()
 }
 
 // - Workspace encryption - Activate Workspace
 module workspace_key 'key/main.bicep' = if (encryptionActivateWorkspace) {
   name: '${workspace.name}-cmk-activation'
   params: {
-    name: cMKKeyName
+    name: customerManagedKey!.keyName
     isActiveCMK: true
-    keyVaultResourceId: cMKKeyVaultResourceId
+    keyVaultResourceId: cMKKeyVault.id
     workspaceName: workspace.name
   }
   dependsOn: [
@@ -374,16 +373,29 @@ type privateEndpointType = {
 
   @description('Optional. Custom DNS configurations.')
   customDnsConfigs: {
+    @description('Required. Fqdn that resolves to private endpoint ip address.')
     fqdn: string?
+
+    @description('Required. A list of private ip addresses of the private endpoint.')
     ipAddresses: string[]
   }[]?
 
   @description('Optional. A list of IP configurations of the private endpoint. This will be used to map to the First Party Service endpoints.')
   ipConfigurations: {
+    @description('Required. The name of the resource that is unique within a resource group.')
     name: string
-    groupId: string
-    memberName: string
-    privateIpAddress: string
+
+    @description('Required. Properties of private endpoint IP configurations.')
+    properties: {
+      @description('Required. The ID of a group obtained from the remote resource that this private endpoint should connect to.')
+      groupId: string
+
+      @description('Required. The member name of a group obtained from the remote resource that this private endpoint should connect to.')
+      memberName: string
+
+      @description('Required. A private ip address obtained from the private endpoint\'s subnet.')
+      privateIPAddress: string
+    }
   }[]?
 
   @description('Optional. Application security groups in which the private endpoint IP configuration is included.')
@@ -439,3 +451,17 @@ type diagnosticSettingType = {
   @description('Optional. The full ARM resource ID of the Marketplace resource to which you would like to send Diagnostic Logs.')
   marketplacePartnerResourceId: string?
 }[]?
+
+type customerManagedKeyType = {
+  @description('Required. The resource ID of a key vault to reference a customer managed key for encryption from.')
+  keyVaultResourceId: string
+
+  @description('Required. The name of the customer managed key to use for encryption.')
+  keyName: string
+
+  @description('Optional. The version of the customer managed key to reference for encryption. If not provided, using \'latest\'.')
+  keyVersion: string?
+
+  @description('Optional. User assigned identity to use when fetching the customer managed key. Required if no system assigned identity is available for use.')
+  userAssignedIdentityResourceId: string?
+}?

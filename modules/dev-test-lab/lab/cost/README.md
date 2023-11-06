@@ -79,7 +79,13 @@ Reporting cycle start date in the zulu time format (e.g. 2023-12-01T00:00:00.000
 Reporting cycle type.
 - Required: Yes
 - Type: string
-- Allowed: `[CalendarMonth, Custom]`
+- Allowed:
+  ```Bicep
+  [
+    'CalendarMonth'
+    'Custom'
+  ]
+  ```
 
 ### Parameter: `enableDefaultTelemetry`
 
@@ -100,14 +106,19 @@ Target cost status.
 - Required: No
 - Type: string
 - Default: `'Enabled'`
-- Allowed: `[Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 ### Parameter: `tags`
 
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `target`
 
@@ -122,7 +133,13 @@ Target Cost threshold at 100% display on chart. Indicates whether this threshold
 - Required: No
 - Type: string
 - Default: `'Disabled'`
-- Allowed: `[Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 ### Parameter: `thresholdValue100SendNotificationWhenExceeded`
 
@@ -130,7 +147,13 @@ Target cost threshold at 100% send notification when exceeded. Indicates whether
 - Required: No
 - Type: string
 - Default: `'Disabled'`
-- Allowed: `[Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 ### Parameter: `thresholdValue125DisplayOnChart`
 
@@ -138,7 +161,13 @@ Target Cost threshold at 125% display on chart. Indicates whether this threshold
 - Required: No
 - Type: string
 - Default: `'Disabled'`
-- Allowed: `[Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 ### Parameter: `thresholdValue125SendNotificationWhenExceeded`
 
@@ -146,7 +175,13 @@ Target cost threshold at 125% send notification when exceeded. Indicates whether
 - Required: No
 - Type: string
 - Default: `'Disabled'`
-- Allowed: `[Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 ### Parameter: `thresholdValue25DisplayOnChart`
 
@@ -154,7 +189,13 @@ Target Cost threshold at 25% display on chart. Indicates whether this threshold 
 - Required: No
 - Type: string
 - Default: `'Disabled'`
-- Allowed: `[Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 ### Parameter: `thresholdValue25SendNotificationWhenExceeded`
 
@@ -162,7 +203,13 @@ Target cost threshold at 25% send notification when exceeded. Indicates whether 
 - Required: No
 - Type: string
 - Default: `'Disabled'`
-- Allowed: `[Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 ### Parameter: `thresholdValue50DisplayOnChart`
 
@@ -170,7 +217,13 @@ Target Cost threshold at 50% display on chart. Indicates whether this threshold 
 - Required: No
 - Type: string
 - Default: `'Disabled'`
-- Allowed: `[Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 ### Parameter: `thresholdValue50SendNotificationWhenExceeded`
 
@@ -178,7 +231,13 @@ Target cost threshold at 50% send notification when exceeded. Indicates whether 
 - Required: No
 - Type: string
 - Default: `'Disabled'`
-- Allowed: `[Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 ### Parameter: `thresholdValue75DisplayOnChart`
 
@@ -186,7 +245,13 @@ Target Cost threshold at 75% display on chart. Indicates whether this threshold 
 - Required: No
 - Type: string
 - Default: `'Disabled'`
-- Allowed: `[Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 ### Parameter: `thresholdValue75SendNotificationWhenExceeded`
 
@@ -194,7 +259,13 @@ Target cost threshold at 75% send notification when exceeded. Indicates whether 
 - Required: No
 - Type: string
 - Default: `'Disabled'`
-- Allowed: `[Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 
 ## Outputs

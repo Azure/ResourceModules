@@ -1,5 +1,7 @@
 # Action Groups `[Microsoft.Insights/actionGroups]`
 
+> This module has already been migrated to [AVM](https://github.com/Azure/bicep-registry-modules/tree/main/avm/res). Only the AVM version is expected to receive updates / new features. Please do not work on improving this module in [CARML](https://aka.ms/carml).
+
 This module deploys an Action Group.
 
 ## Navigation
@@ -26,10 +28,62 @@ The following section provides usage examples for the module, which were used to
 
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/insights.action-group:1.0.0`.
 
-- [Using large parameter set](#example-1-using-large-parameter-set)
-- [Using only defaults](#example-2-using-only-defaults)
+- [Using only defaults](#example-1-using-only-defaults)
+- [Using large parameter set](#example-2-using-large-parameter-set)
 
-### Example 1: _Using large parameter set_
+### Example 1: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module actionGroup 'br:bicep/modules/insights.action-group:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-iagmin'
+  params: {
+    // Required parameters
+    groupShortName: 'agiagmin001'
+    name: 'iagmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "groupShortName": {
+      "value": "agiagmin001"
+    },
+    "name": {
+      "value": "iagmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 2: _Using large parameter set_
 
 This instance deploys the module with most of its features enabled.
 
@@ -40,11 +94,11 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module actionGroup 'br:bicep/modules/insights.action-group:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-iagcom'
+  name: '${uniqueString(deployment().name, location)}-test-iagmax'
   params: {
     // Required parameters
-    groupShortName: 'agiagcom001'
-    name: 'iagcom001'
+    groupShortName: 'agiagmax001'
+    name: 'iagmax001'
     // Non-required parameters
     emailReceivers: [
       {
@@ -96,10 +150,10 @@ module actionGroup 'br:bicep/modules/insights.action-group:1.0.0' = {
   "parameters": {
     // Required parameters
     "groupShortName": {
-      "value": "agiagcom001"
+      "value": "agiagmax001"
     },
     "name": {
-      "value": "iagcom001"
+      "value": "iagmax001"
     },
     // Non-required parameters
     "emailReceivers": {
@@ -143,58 +197,6 @@ module actionGroup 'br:bicep/modules/insights.action-group:1.0.0' = {
         "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-### Example 2: _Using only defaults_
-
-This instance deploys the module with the minimum set of required parameters.
-
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module actionGroup 'br:bicep/modules/insights.action-group:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-iagmin'
-  params: {
-    // Required parameters
-    groupShortName: 'agiagmin001'
-    name: 'iagmin001'
-    // Non-required parameters
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "groupShortName": {
-      "value": "agiagmin001"
-    },
-    "name": {
-      "value": "iagmin001"
-    },
-    // Non-required parameters
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
     }
   }
 }
@@ -395,7 +397,6 @@ The list of SMS receivers that are part of this action group.
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `voiceReceivers`
 

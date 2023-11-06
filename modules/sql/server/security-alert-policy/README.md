@@ -95,7 +95,13 @@ Specifies the state of the policy, whether it is enabled or disabled or a policy
 - Required: No
 - Type: string
 - Default: `'Disabled'`
-- Allowed: `[Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 ### Parameter: `storageAccountAccessKey`
 

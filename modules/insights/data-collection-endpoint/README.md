@@ -26,104 +26,10 @@ The following section provides usage examples for the module, which were used to
 
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/insights.data-collection-endpoint:1.0.0`.
 
-- [Using large parameter set](#example-1-using-large-parameter-set)
-- [Using only defaults](#example-2-using-only-defaults)
+- [Using only defaults](#example-1-using-only-defaults)
+- [Using large parameter set](#example-2-using-large-parameter-set)
 
-### Example 1: _Using large parameter set_
-
-This instance deploys the module with most of its features enabled.
-
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module dataCollectionEndpoint 'br:bicep/modules/insights.data-collection-endpoint:1.0.0' = {
-  name: '${uniqueString(deployment().name)}-test-idcecom'
-  params: {
-    // Required parameters
-    name: 'idcecom001'
-    // Non-required parameters
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    kind: 'Windows'
-    lock: {
-      kind: 'CanNotDelete'
-      name: 'myCustomLockName'
-    }
-    publicNetworkAccess: 'Enabled'
-    roleAssignments: [
-      {
-        principalId: '<principalId>'
-        principalType: 'ServicePrincipal'
-        roleDefinitionIdOrName: 'Reader'
-      }
-    ]
-    tags: {
-      'hidden-title': 'This is visible in the resource name'
-      kind: 'Windows'
-      resourceType: 'Data Collection Rules'
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "idcecom001"
-    },
-    // Non-required parameters
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
-    "kind": {
-      "value": "Windows"
-    },
-    "lock": {
-      "value": {
-        "kind": "CanNotDelete",
-        "name": "myCustomLockName"
-      }
-    },
-    "publicNetworkAccess": {
-      "value": "Enabled"
-    },
-    "roleAssignments": {
-      "value": [
-        {
-          "principalId": "<principalId>",
-          "principalType": "ServicePrincipal",
-          "roleDefinitionIdOrName": "Reader"
-        }
-      ]
-    },
-    "tags": {
-      "value": {
-        "hidden-title": "This is visible in the resource name",
-        "kind": "Windows",
-        "resourceType": "Data Collection Rules"
-      }
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-### Example 2: _Using only defaults_
+### Example 1: _Using only defaults_
 
 This instance deploys the module with the minimum set of required parameters.
 
@@ -171,6 +77,100 @@ module dataCollectionEndpoint 'br:bicep/modules/insights.data-collection-endpoin
 </details>
 <p>
 
+### Example 2: _Using large parameter set_
+
+This instance deploys the module with most of its features enabled.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module dataCollectionEndpoint 'br:bicep/modules/insights.data-collection-endpoint:1.0.0' = {
+  name: '${uniqueString(deployment().name)}-test-idcemax'
+  params: {
+    // Required parameters
+    name: 'idcemax001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    kind: 'Windows'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    publicNetworkAccess: 'Enabled'
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    tags: {
+      'hidden-title': 'This is visible in the resource name'
+      kind: 'Windows'
+      resourceType: 'Data Collection Rules'
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "idcemax001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "kind": {
+      "value": "Windows"
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "publicNetworkAccess": {
+      "value": "Enabled"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "tags": {
+      "value": {
+        "hidden-title": "This is visible in the resource name",
+        "kind": "Windows",
+        "resourceType": "Data Collection Rules"
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
 
 ## Parameters
 
@@ -205,7 +205,13 @@ The kind of the resource.
 - Required: No
 - Type: string
 - Default: `'Linux'`
-- Allowed: `[Linux, Windows]`
+- Allowed:
+  ```Bicep
+  [
+    'Linux'
+    'Windows'
+  ]
+  ```
 
 ### Parameter: `location`
 
@@ -253,7 +259,13 @@ The configuration to set whether network access from public internet to the endp
 - Required: No
 - Type: string
 - Default: `'Disabled'`
-- Allowed: `[Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 ### Parameter: `roleAssignments`
 
@@ -328,7 +340,6 @@ Required. The name of the role to assign. If it cannot be found you can specify 
 Resource tags.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 
 ## Outputs

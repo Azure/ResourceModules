@@ -26,110 +26,10 @@ The following section provides usage examples for the module, which were used to
 
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/app.managed-environment:1.0.0`.
 
-- [Using large parameter set](#example-1-using-large-parameter-set)
-- [Using only defaults](#example-2-using-only-defaults)
+- [Using only defaults](#example-1-using-only-defaults)
+- [Using large parameter set](#example-2-using-large-parameter-set)
 
-### Example 1: _Using large parameter set_
-
-This instance deploys the module with most of its features enabled.
-
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module managedEnvironment 'br:bicep/modules/app.managed-environment:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-amecom'
-  params: {
-    // Required parameters
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    logAnalyticsWorkspaceResourceId: '<logAnalyticsWorkspaceResourceId>'
-    name: 'amecom001'
-    // Non-required parameters
-    dockerBridgeCidr: '172.16.0.1/28'
-    infrastructureSubnetId: '<infrastructureSubnetId>'
-    internal: true
-    location: '<location>'
-    lock: {
-      kind: 'CanNotDelete'
-      name: 'myCustomLockName'
-    }
-    platformReservedCidr: '172.17.17.0/24'
-    platformReservedDnsIP: '172.17.17.17'
-    skuName: 'Consumption'
-    tags: {
-      Env: 'test'
-      'hidden-title': 'This is visible in the resource name'
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
-    "logAnalyticsWorkspaceResourceId": {
-      "value": "<logAnalyticsWorkspaceResourceId>"
-    },
-    "name": {
-      "value": "amecom001"
-    },
-    // Non-required parameters
-    "dockerBridgeCidr": {
-      "value": "172.16.0.1/28"
-    },
-    "infrastructureSubnetId": {
-      "value": "<infrastructureSubnetId>"
-    },
-    "internal": {
-      "value": true
-    },
-    "location": {
-      "value": "<location>"
-    },
-    "lock": {
-      "value": {
-        "kind": "CanNotDelete",
-        "name": "myCustomLockName"
-      }
-    },
-    "platformReservedCidr": {
-      "value": "172.17.17.0/24"
-    },
-    "platformReservedDnsIP": {
-      "value": "172.17.17.17"
-    },
-    "skuName": {
-      "value": "Consumption"
-    },
-    "tags": {
-      "value": {
-        "Env": "test",
-        "hidden-title": "This is visible in the resource name"
-      }
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-### Example 2: _Using only defaults_
+### Example 1: _Using only defaults_
 
 This instance deploys the module with the minimum set of required parameters.
 
@@ -171,6 +71,106 @@ module managedEnvironment 'br:bicep/modules/app.managed-environment:1.0.0' = {
     },
     "name": {
       "value": "amemin001"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 2: _Using large parameter set_
+
+This instance deploys the module with most of its features enabled.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module managedEnvironment 'br:bicep/modules/app.managed-environment:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-amemax'
+  params: {
+    // Required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    logAnalyticsWorkspaceResourceId: '<logAnalyticsWorkspaceResourceId>'
+    name: 'amemax001'
+    // Non-required parameters
+    dockerBridgeCidr: '172.16.0.1/28'
+    infrastructureSubnetId: '<infrastructureSubnetId>'
+    internal: true
+    location: '<location>'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    platformReservedCidr: '172.17.17.0/24'
+    platformReservedDnsIP: '172.17.17.17'
+    skuName: 'Consumption'
+    tags: {
+      Env: 'test'
+      'hidden-title': 'This is visible in the resource name'
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "logAnalyticsWorkspaceResourceId": {
+      "value": "<logAnalyticsWorkspaceResourceId>"
+    },
+    "name": {
+      "value": "amemax001"
+    },
+    // Non-required parameters
+    "dockerBridgeCidr": {
+      "value": "172.16.0.1/28"
+    },
+    "infrastructureSubnetId": {
+      "value": "<infrastructureSubnetId>"
+    },
+    "internal": {
+      "value": true
+    },
+    "location": {
+      "value": "<location>"
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "platformReservedCidr": {
+      "value": "172.17.17.0/24"
+    },
+    "platformReservedDnsIP": {
+      "value": "172.17.17.17"
+    },
+    "skuName": {
+      "value": "Consumption"
+    },
+    "tags": {
+      "value": {
+        "Env": "test",
+        "hidden-title": "This is visible in the resource name"
+      }
     }
   }
 }
@@ -421,14 +421,19 @@ Managed environment SKU.
 - Required: No
 - Type: string
 - Default: `'Consumption'`
-- Allowed: `[Consumption, Premium]`
+- Allowed:
+  ```Bicep
+  [
+    'Consumption'
+    'Premium'
+  ]
+  ```
 
 ### Parameter: `tags`
 
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `workloadProfiles`
 

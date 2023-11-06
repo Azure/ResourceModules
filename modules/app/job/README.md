@@ -26,208 +26,10 @@ The following section provides usage examples for the module, which were used to
 
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/app.job:1.0.0`.
 
-- [Using large parameter set](#example-1-using-large-parameter-set)
-- [Using only defaults](#example-2-using-only-defaults)
+- [Using only defaults](#example-1-using-only-defaults)
+- [Using large parameter set](#example-2-using-large-parameter-set)
 
-### Example 1: _Using large parameter set_
-
-This instance deploys the module with most of its features enabled.
-
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module job 'br:bicep/modules/app.job:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-ajcom'
-  params: {
-    // Required parameters
-    containers: [
-      {
-        image: 'mcr.microsoft.com/azuredocs/containerapps-helloworld:latest'
-        name: 'simple-hello-world-container'
-        probes: [
-          {
-            httpGet: {
-              httpHeaders: [
-                {
-                  name: 'Custom-Header'
-                  value: 'Awesome'
-                }
-              ]
-              path: '/health'
-              port: 8080
-            }
-            initialDelaySeconds: 3
-            periodSeconds: 3
-            type: 'Liveness'
-          }
-        ]
-        resources: {
-          cpu: '<cpu>'
-          memory: '0.5Gi'
-        }
-      }
-    ]
-    environmentId: '<environmentId>'
-    name: 'ajcom001'
-    triggerType: 'Manual'
-    // Non-required parameters
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    location: '<location>'
-    lock: {
-      kind: 'CanNotDelete'
-      name: 'myCustomLockName'
-    }
-    managedIdentities: {
-      systemAssigned: true
-      userAssignedResourcesIds: [
-        '<managedIdentityResourceId>'
-      ]
-    }
-    manualTriggerConfig: {
-      parallelism: 1
-      replicaCompletionCount: 1
-    }
-    roleAssignments: [
-      {
-        principalId: '<principalId>'
-        principalType: 'ServicePrincipal'
-        roleDefinitionIdOrName: 'ContainerApp Reader'
-      }
-    ]
-    secrets: {
-      secureList: [
-        {
-          name: 'customtest'
-          value: '<value>'
-        }
-      ]
-    }
-    tags: {
-      Env: 'test'
-      'hidden-title': 'This is visible in the resource name'
-    }
-    workloadProfileName: '<workloadProfileName>'
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "containers": {
-      "value": [
-        {
-          "image": "mcr.microsoft.com/azuredocs/containerapps-helloworld:latest",
-          "name": "simple-hello-world-container",
-          "probes": [
-            {
-              "httpGet": {
-                "httpHeaders": [
-                  {
-                    "name": "Custom-Header",
-                    "value": "Awesome"
-                  }
-                ],
-                "path": "/health",
-                "port": 8080
-              },
-              "initialDelaySeconds": 3,
-              "periodSeconds": 3,
-              "type": "Liveness"
-            }
-          ],
-          "resources": {
-            "cpu": "<cpu>",
-            "memory": "0.5Gi"
-          }
-        }
-      ]
-    },
-    "environmentId": {
-      "value": "<environmentId>"
-    },
-    "name": {
-      "value": "ajcom001"
-    },
-    "triggerType": {
-      "value": "Manual"
-    },
-    // Non-required parameters
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
-    "location": {
-      "value": "<location>"
-    },
-    "lock": {
-      "value": {
-        "kind": "CanNotDelete",
-        "name": "myCustomLockName"
-      }
-    },
-    "managedIdentities": {
-      "value": {
-        "systemAssigned": true,
-        "userAssignedResourcesIds": [
-          "<managedIdentityResourceId>"
-        ]
-      }
-    },
-    "manualTriggerConfig": {
-      "value": {
-        "parallelism": 1,
-        "replicaCompletionCount": 1
-      }
-    },
-    "roleAssignments": {
-      "value": [
-        {
-          "principalId": "<principalId>",
-          "principalType": "ServicePrincipal",
-          "roleDefinitionIdOrName": "ContainerApp Reader"
-        }
-      ]
-    },
-    "secrets": {
-      "value": {
-        "secureList": [
-          {
-            "name": "customtest",
-            "value": "<value>"
-          }
-        ]
-      }
-    },
-    "tags": {
-      "value": {
-        "Env": "test",
-        "hidden-title": "This is visible in the resource name"
-      }
-    },
-    "workloadProfileName": {
-      "value": "<workloadProfileName>"
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-### Example 2: _Using only defaults_
+### Example 1: _Using only defaults_
 
 This instance deploys the module with the minimum set of required parameters.
 
@@ -329,6 +131,204 @@ module job 'br:bicep/modules/app.job:1.0.0' = {
 </details>
 <p>
 
+### Example 2: _Using large parameter set_
+
+This instance deploys the module with most of its features enabled.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module job 'br:bicep/modules/app.job:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-ajmax'
+  params: {
+    // Required parameters
+    containers: [
+      {
+        image: 'mcr.microsoft.com/azuredocs/containerapps-helloworld:latest'
+        name: 'simple-hello-world-container'
+        probes: [
+          {
+            httpGet: {
+              httpHeaders: [
+                {
+                  name: 'Custom-Header'
+                  value: 'Awesome'
+                }
+              ]
+              path: '/health'
+              port: 8080
+            }
+            initialDelaySeconds: 3
+            periodSeconds: 3
+            type: 'Liveness'
+          }
+        ]
+        resources: {
+          cpu: '<cpu>'
+          memory: '0.5Gi'
+        }
+      }
+    ]
+    environmentId: '<environmentId>'
+    name: 'ajmax001'
+    triggerType: 'Manual'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    location: '<location>'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    managedIdentities: {
+      systemAssigned: true
+      userAssignedResourcesIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
+    manualTriggerConfig: {
+      parallelism: 1
+      replicaCompletionCount: 1
+    }
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'ContainerApp Reader'
+      }
+    ]
+    secrets: {
+      secureList: [
+        {
+          name: 'customtest'
+          value: '<value>'
+        }
+      ]
+    }
+    tags: {
+      Env: 'test'
+      'hidden-title': 'This is visible in the resource name'
+    }
+    workloadProfileName: '<workloadProfileName>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "containers": {
+      "value": [
+        {
+          "image": "mcr.microsoft.com/azuredocs/containerapps-helloworld:latest",
+          "name": "simple-hello-world-container",
+          "probes": [
+            {
+              "httpGet": {
+                "httpHeaders": [
+                  {
+                    "name": "Custom-Header",
+                    "value": "Awesome"
+                  }
+                ],
+                "path": "/health",
+                "port": 8080
+              },
+              "initialDelaySeconds": 3,
+              "periodSeconds": 3,
+              "type": "Liveness"
+            }
+          ],
+          "resources": {
+            "cpu": "<cpu>",
+            "memory": "0.5Gi"
+          }
+        }
+      ]
+    },
+    "environmentId": {
+      "value": "<environmentId>"
+    },
+    "name": {
+      "value": "ajmax001"
+    },
+    "triggerType": {
+      "value": "Manual"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "location": {
+      "value": "<location>"
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "managedIdentities": {
+      "value": {
+        "systemAssigned": true,
+        "userAssignedResourcesIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
+    },
+    "manualTriggerConfig": {
+      "value": {
+        "parallelism": 1,
+        "replicaCompletionCount": 1
+      }
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "ContainerApp Reader"
+        }
+      ]
+    },
+    "secrets": {
+      "value": {
+        "secureList": [
+          {
+            "name": "customtest",
+            "value": "<value>"
+          }
+        ]
+      }
+    },
+    "tags": {
+      "value": {
+        "Env": "test",
+        "hidden-title": "This is visible in the resource name"
+      }
+    },
+    "workloadProfileName": {
+      "value": "<workloadProfileName>"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
 
 ## Parameters
 
@@ -386,7 +386,7 @@ Resource ID of environment.
 Required if TriggerType is Event. Configuration of an event driven job.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `initContainersTemplate`
 
@@ -460,7 +460,7 @@ Optional. The resource ID(s) to assign to the resource. Required if a user assig
 Required if TriggerType is Manual. Configuration of a manual job.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `name`
 
@@ -562,28 +562,35 @@ Required. The name of the role to assign. If it cannot be found you can specify 
 Required if TriggerType is Schedule. Configuration of a schedule based job.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `secrets`
 
 The secrets of the Container App.
 - Required: No
 - Type: secureObject
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `tags`
 
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `triggerType`
 
 Trigger type of the job.
 - Required: Yes
 - Type: string
-- Allowed: `[Event, Manual, Schedule]`
+- Allowed:
+  ```Bicep
+  [
+    'Event'
+    'Manual'
+    'Schedule'
+  ]
+  ```
 
 ### Parameter: `volumes`
 

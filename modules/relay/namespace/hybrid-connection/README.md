@@ -48,7 +48,31 @@ This module deploys a Relay Namespace Hybrid Connection.
 Authorization Rules for the Relay Hybrid Connection.
 - Required: No
 - Type: array
-- Default: `[System.Management.Automation.OrderedHashtable, System.Management.Automation.OrderedHashtable, System.Management.Automation.OrderedHashtable]`
+- Default:
+  ```Bicep
+  [
+    {
+      name: 'RootManageSharedAccessKey'
+      rights: [
+        'Listen'
+        'Manage'
+        'Send'
+      ]
+    }
+    {
+      name: 'defaultListener'
+      rights: [
+        'Listen'
+      ]
+    }
+    {
+      name: 'defaultSender'
+      rights: [
+        'Send'
+      ]
+    }
+  ]
+  ```
 
 ### Parameter: `enableDefaultTelemetry`
 

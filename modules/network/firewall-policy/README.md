@@ -25,10 +25,58 @@ The following section provides usage examples for the module, which were used to
 
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/network.firewall-policy:1.0.0`.
 
-- [Using large parameter set](#example-1-using-large-parameter-set)
-- [Using only defaults](#example-2-using-only-defaults)
+- [Using only defaults](#example-1-using-only-defaults)
+- [Using large parameter set](#example-2-using-large-parameter-set)
 
-### Example 1: _Using large parameter set_
+### Example 1: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module firewallPolicy 'br:bicep/modules/network.firewall-policy:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-nfpmin'
+  params: {
+    // Required parameters
+    name: 'nfpmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "nfpmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 2: _Using large parameter set_
 
 This instance deploys the module with most of its features enabled.
 
@@ -39,10 +87,10 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module firewallPolicy 'br:bicep/modules/network.firewall-policy:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-nfpcom'
+  name: '${uniqueString(deployment().name, location)}-test-nfpmax'
   params: {
     // Required parameters
-    name: 'nfpcom001'
+    name: 'nfpmax001'
     // Non-required parameters
     allowSqlRedirect: true
     autoLearnPrivateRanges: 'Enabled'
@@ -108,7 +156,7 @@ module firewallPolicy 'br:bicep/modules/network.firewall-policy:1.0.0' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "nfpcom001"
+      "value": "nfpmax001"
     },
     // Non-required parameters
     "allowSqlRedirect": {
@@ -174,54 +222,6 @@ module firewallPolicy 'br:bicep/modules/network.firewall-policy:1.0.0' = {
 </details>
 <p>
 
-### Example 2: _Using only defaults_
-
-This instance deploys the module with the minimum set of required parameters.
-
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module firewallPolicy 'br:bicep/modules/network.firewall-policy:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-nfpmin'
-  params: {
-    // Required parameters
-    name: 'nfpmin001'
-    // Non-required parameters
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "nfpmin001"
-    },
-    // Non-required parameters
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    }
-  }
-}
-```
-
-</details>
-<p>
-
 
 ## Parameters
 
@@ -248,6 +248,7 @@ module firewallPolicy 'br:bicep/modules/network.firewall-policy:1.0.0' = {
 | [`ipAddresses`](#parameter-ipaddresses) | array | List of IP addresses for the ThreatIntel Allowlist. |
 | [`keyVaultSecretId`](#parameter-keyvaultsecretid) | string | Secret ID of (base-64 encoded unencrypted PFX) Secret or Certificate object stored in KeyVault. |
 | [`location`](#parameter-location) | string | Location for all resources. |
+| [`managedIdentities`](#parameter-managedidentities) | object | The managed identity definition for this resource. |
 | [`mode`](#parameter-mode) | string | The configuring of intrusion detection. |
 | [`privateRanges`](#parameter-privateranges) | array | List of private IP addresses/IP address ranges to not be SNAT. |
 | [`retentionDays`](#parameter-retentiondays) | int | Number of days the insights should be enabled on the policy. |
@@ -257,7 +258,6 @@ module firewallPolicy 'br:bicep/modules/network.firewall-policy:1.0.0' = {
 | [`tags`](#parameter-tags) | object | Tags of the Firewall policy resource. |
 | [`threatIntelMode`](#parameter-threatintelmode) | string | The operation mode for Threat Intel. |
 | [`tier`](#parameter-tier) | string | Tier of Firewall Policy. |
-| [`userAssignedIdentities`](#parameter-userassignedidentities) | object | The ID(s) to assign to the resource. |
 | [`workspaces`](#parameter-workspaces) | array | List of workspaces for Firewall Policy Insights. |
 
 ### Parameter: `allowSqlRedirect`
@@ -273,7 +273,13 @@ The operation mode for automatically learning private ranges to not be SNAT.
 - Required: No
 - Type: string
 - Default: `'Disabled'`
-- Allowed: `[Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 ### Parameter: `basePolicyResourceId`
 
@@ -352,13 +358,38 @@ Location for all resources.
 - Type: string
 - Default: `[resourceGroup().location]`
 
+### Parameter: `managedIdentities`
+
+The managed identity definition for this resource.
+- Required: No
+- Type: object
+
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`userAssignedResourcesIds`](#parameter-managedidentitiesuserassignedresourcesids) | Yes | array | Optional. The resource ID(s) to assign to the resource. |
+
+### Parameter: `managedIdentities.userAssignedResourcesIds`
+
+Optional. The resource ID(s) to assign to the resource.
+
+- Required: Yes
+- Type: array
+
 ### Parameter: `mode`
 
 The configuring of intrusion detection.
 - Required: No
 - Type: string
 - Default: `'Off'`
-- Allowed: `[Alert, Deny, Off]`
+- Allowed:
+  ```Bicep
+  [
+    'Alert'
+    'Deny'
+    'Off'
+  ]
+  ```
 
 ### Parameter: `name`
 
@@ -406,7 +437,6 @@ List of specific signatures states.
 Tags of the Firewall policy resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `threatIntelMode`
 
@@ -414,7 +444,14 @@ The operation mode for Threat Intel.
 - Required: No
 - Type: string
 - Default: `'Off'`
-- Allowed: `[Alert, Deny, Off]`
+- Allowed:
+  ```Bicep
+  [
+    'Alert'
+    'Deny'
+    'Off'
+  ]
+  ```
 
 ### Parameter: `tier`
 
@@ -422,14 +459,13 @@ Tier of Firewall Policy.
 - Required: No
 - Type: string
 - Default: `'Standard'`
-- Allowed: `[Premium, Standard]`
-
-### Parameter: `userAssignedIdentities`
-
-The ID(s) to assign to the resource.
-- Required: No
-- Type: object
-- Default: `{object}`
+- Allowed:
+  ```Bicep
+  [
+    'Premium'
+    'Standard'
+  ]
+  ```
 
 ### Parameter: `workspaces`
 

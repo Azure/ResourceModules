@@ -29,8 +29,8 @@ The following section provides usage examples for the module, which were used to
 - [Customadv](#example-1-customadv)
 - [Custombasic](#example-2-custombasic)
 - [Customiis](#example-3-customiis)
-- [Linux](#example-4-linux)
-- [Using only defaults](#example-5-using-only-defaults)
+- [Using only defaults](#example-4-using-only-defaults)
+- [Linux](#example-5-linux)
 - [Windows](#example-6-windows)
 
 ### Example 1: _Customadv_
@@ -654,7 +654,141 @@ module dataCollectionRule 'br:bicep/modules/insights.data-collection-rule:1.0.0'
 </details>
 <p>
 
-### Example 4: _Linux_
+### Example 4: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module dataCollectionRule 'br:bicep/modules/insights.data-collection-rule:1.0.0' = {
+  name: '${uniqueString(deployment().name)}-test-idcrmin'
+  params: {
+    // Required parameters
+    dataFlows: [
+      {
+        destinations: [
+          'azureMonitorMetrics-default'
+        ]
+        streams: [
+          'Microsoft-InsightsMetrics'
+        ]
+      }
+    ]
+    dataSources: {
+      performanceCounters: [
+        {
+          counterSpecifiers: [
+            '\\Process(_Total)\\Handle Count'
+            '\\Process(_Total)\\Thread Count'
+            '\\Processor Information(_Total)\\% Privileged Time'
+            '\\Processor Information(_Total)\\% Processor Time'
+            '\\Processor Information(_Total)\\% User Time'
+            '\\Processor Information(_Total)\\Processor Frequency'
+            '\\System\\Context Switches/sec'
+            '\\System\\Processes'
+            '\\System\\Processor Queue Length'
+            '\\System\\System Up Time'
+          ]
+          name: 'perfCounterDataSource60'
+          samplingFrequencyInSeconds: 60
+          streams: [
+            'Microsoft-InsightsMetrics'
+          ]
+        }
+      ]
+    }
+    destinations: {
+      azureMonitorMetrics: {
+        name: 'azureMonitorMetrics-default'
+      }
+    }
+    name: 'idcrmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    kind: 'Windows'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "dataFlows": {
+      "value": [
+        {
+          "destinations": [
+            "azureMonitorMetrics-default"
+          ],
+          "streams": [
+            "Microsoft-InsightsMetrics"
+          ]
+        }
+      ]
+    },
+    "dataSources": {
+      "value": {
+        "performanceCounters": [
+          {
+            "counterSpecifiers": [
+              "\\Process(_Total)\\Handle Count",
+              "\\Process(_Total)\\Thread Count",
+              "\\Processor Information(_Total)\\% Privileged Time",
+              "\\Processor Information(_Total)\\% Processor Time",
+              "\\Processor Information(_Total)\\% User Time",
+              "\\Processor Information(_Total)\\Processor Frequency",
+              "\\System\\Context Switches/sec",
+              "\\System\\Processes",
+              "\\System\\Processor Queue Length",
+              "\\System\\System Up Time"
+            ],
+            "name": "perfCounterDataSource60",
+            "samplingFrequencyInSeconds": 60,
+            "streams": [
+              "Microsoft-InsightsMetrics"
+            ]
+          }
+        ]
+      }
+    },
+    "destinations": {
+      "value": {
+        "azureMonitorMetrics": {
+          "name": "azureMonitorMetrics-default"
+        }
+      }
+    },
+    "name": {
+      "value": "idcrmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "kind": {
+      "value": "Windows"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 5: _Linux_
 
 <details>
 
@@ -1045,140 +1179,6 @@ module dataCollectionRule 'br:bicep/modules/insights.data-collection-rule:1.0.0'
 </details>
 <p>
 
-### Example 5: _Using only defaults_
-
-This instance deploys the module with the minimum set of required parameters.
-
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module dataCollectionRule 'br:bicep/modules/insights.data-collection-rule:1.0.0' = {
-  name: '${uniqueString(deployment().name)}-test-idcrmin'
-  params: {
-    // Required parameters
-    dataFlows: [
-      {
-        destinations: [
-          'azureMonitorMetrics-default'
-        ]
-        streams: [
-          'Microsoft-InsightsMetrics'
-        ]
-      }
-    ]
-    dataSources: {
-      performanceCounters: [
-        {
-          counterSpecifiers: [
-            '\\Process(_Total)\\Handle Count'
-            '\\Process(_Total)\\Thread Count'
-            '\\Processor Information(_Total)\\% Privileged Time'
-            '\\Processor Information(_Total)\\% Processor Time'
-            '\\Processor Information(_Total)\\% User Time'
-            '\\Processor Information(_Total)\\Processor Frequency'
-            '\\System\\Context Switches/sec'
-            '\\System\\Processes'
-            '\\System\\Processor Queue Length'
-            '\\System\\System Up Time'
-          ]
-          name: 'perfCounterDataSource60'
-          samplingFrequencyInSeconds: 60
-          streams: [
-            'Microsoft-InsightsMetrics'
-          ]
-        }
-      ]
-    }
-    destinations: {
-      azureMonitorMetrics: {
-        name: 'azureMonitorMetrics-default'
-      }
-    }
-    name: 'idcrmin001'
-    // Non-required parameters
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    kind: 'Windows'
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "dataFlows": {
-      "value": [
-        {
-          "destinations": [
-            "azureMonitorMetrics-default"
-          ],
-          "streams": [
-            "Microsoft-InsightsMetrics"
-          ]
-        }
-      ]
-    },
-    "dataSources": {
-      "value": {
-        "performanceCounters": [
-          {
-            "counterSpecifiers": [
-              "\\Process(_Total)\\Handle Count",
-              "\\Process(_Total)\\Thread Count",
-              "\\Processor Information(_Total)\\% Privileged Time",
-              "\\Processor Information(_Total)\\% Processor Time",
-              "\\Processor Information(_Total)\\% User Time",
-              "\\Processor Information(_Total)\\Processor Frequency",
-              "\\System\\Context Switches/sec",
-              "\\System\\Processes",
-              "\\System\\Processor Queue Length",
-              "\\System\\System Up Time"
-            ],
-            "name": "perfCounterDataSource60",
-            "samplingFrequencyInSeconds": 60,
-            "streams": [
-              "Microsoft-InsightsMetrics"
-            ]
-          }
-        ]
-      }
-    },
-    "destinations": {
-      "value": {
-        "azureMonitorMetrics": {
-          "name": "azureMonitorMetrics-default"
-        }
-      }
-    },
-    "name": {
-      "value": "idcrmin001"
-    },
-    // Non-required parameters
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
-    "kind": {
-      "value": "Windows"
-    }
-  }
-}
-```
-
-</details>
-<p>
-
 ### Example 6: _Windows_
 
 <details>
@@ -1549,7 +1549,13 @@ The kind of the resource.
 - Required: No
 - Type: string
 - Default: `'Linux'`
-- Allowed: `[Linux, Windows]`
+- Allowed:
+  ```Bicep
+  [
+    'Linux'
+    'Windows'
+  ]
+  ```
 
 ### Parameter: `location`
 
@@ -1664,14 +1670,13 @@ Required. The name of the role to assign. If it cannot be found you can specify 
 Declaration of custom streams used in this rule.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `tags`
 
 Resource tags.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 
 ## Outputs

@@ -28,149 +28,11 @@ The following section provides usage examples for the module, which were used to
 
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/network.bastion-host:1.0.0`.
 
-- [Using large parameter set](#example-1-using-large-parameter-set)
-- [Custompip](#example-2-custompip)
-- [Using only defaults](#example-3-using-only-defaults)
+- [Custompip](#example-1-custompip)
+- [Using only defaults](#example-2-using-only-defaults)
+- [Using large parameter set](#example-3-using-large-parameter-set)
 
-### Example 1: _Using large parameter set_
-
-This instance deploys the module with most of its features enabled.
-
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module bastionHost 'br:bicep/modules/network.bastion-host:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-nbhcom'
-  params: {
-    // Required parameters
-    name: 'nbhcom001'
-    vNetId: '<vNetId>'
-    // Non-required parameters
-    bastionSubnetPublicIpResourceId: '<bastionSubnetPublicIpResourceId>'
-    diagnosticSettings: [
-      {
-        eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
-        eventHubName: '<eventHubName>'
-        name: 'customSetting'
-        storageAccountResourceId: '<storageAccountResourceId>'
-        workspaceResourceId: '<workspaceResourceId>'
-      }
-    ]
-    disableCopyPaste: true
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    enableFileCopy: false
-    enableIpConnect: false
-    enableShareableLink: false
-    lock: {
-      kind: 'CanNotDelete'
-      name: 'myCustomLockName'
-    }
-    roleAssignments: [
-      {
-        principalId: '<principalId>'
-        principalType: 'ServicePrincipal'
-        roleDefinitionIdOrName: 'Reader'
-      }
-    ]
-    scaleUnits: 4
-    skuName: 'Standard'
-    tags: {
-      Environment: 'Non-Prod'
-      'hidden-title': 'This is visible in the resource name'
-      Role: 'DeploymentValidation'
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "nbhcom001"
-    },
-    "vNetId": {
-      "value": "<vNetId>"
-    },
-    // Non-required parameters
-    "bastionSubnetPublicIpResourceId": {
-      "value": "<bastionSubnetPublicIpResourceId>"
-    },
-    "diagnosticSettings": {
-      "value": [
-        {
-          "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
-          "eventHubName": "<eventHubName>",
-          "name": "customSetting",
-          "storageAccountResourceId": "<storageAccountResourceId>",
-          "workspaceResourceId": "<workspaceResourceId>"
-        }
-      ]
-    },
-    "disableCopyPaste": {
-      "value": true
-    },
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
-    "enableFileCopy": {
-      "value": false
-    },
-    "enableIpConnect": {
-      "value": false
-    },
-    "enableShareableLink": {
-      "value": false
-    },
-    "lock": {
-      "value": {
-        "kind": "CanNotDelete",
-        "name": "myCustomLockName"
-      }
-    },
-    "roleAssignments": {
-      "value": [
-        {
-          "principalId": "<principalId>",
-          "principalType": "ServicePrincipal",
-          "roleDefinitionIdOrName": "Reader"
-        }
-      ]
-    },
-    "scaleUnits": {
-      "value": 4
-    },
-    "skuName": {
-      "value": "Standard"
-    },
-    "tags": {
-      "value": {
-        "Environment": "Non-Prod",
-        "hidden-title": "This is visible in the resource name",
-        "Role": "DeploymentValidation"
-      }
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-### Example 2: _Custompip_
+### Example 1: _Custompip_
 
 <details>
 
@@ -299,7 +161,7 @@ module bastionHost 'br:bicep/modules/network.bastion-host:1.0.0' = {
 </details>
 <p>
 
-### Example 3: _Using only defaults_
+### Example 2: _Using only defaults_
 
 This instance deploys the module with the minimum set of required parameters.
 
@@ -351,6 +213,144 @@ module bastionHost 'br:bicep/modules/network.bastion-host:1.0.0' = {
 </details>
 <p>
 
+### Example 3: _Using large parameter set_
+
+This instance deploys the module with most of its features enabled.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module bastionHost 'br:bicep/modules/network.bastion-host:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-nbhmax'
+  params: {
+    // Required parameters
+    name: 'nbhmax001'
+    vNetId: '<vNetId>'
+    // Non-required parameters
+    bastionSubnetPublicIpResourceId: '<bastionSubnetPublicIpResourceId>'
+    diagnosticSettings: [
+      {
+        eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+        eventHubName: '<eventHubName>'
+        name: 'customSetting'
+        storageAccountResourceId: '<storageAccountResourceId>'
+        workspaceResourceId: '<workspaceResourceId>'
+      }
+    ]
+    disableCopyPaste: true
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    enableFileCopy: false
+    enableIpConnect: false
+    enableShareableLink: false
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    scaleUnits: 4
+    skuName: 'Standard'
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "nbhmax001"
+    },
+    "vNetId": {
+      "value": "<vNetId>"
+    },
+    // Non-required parameters
+    "bastionSubnetPublicIpResourceId": {
+      "value": "<bastionSubnetPublicIpResourceId>"
+    },
+    "diagnosticSettings": {
+      "value": [
+        {
+          "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+          "eventHubName": "<eventHubName>",
+          "name": "customSetting",
+          "storageAccountResourceId": "<storageAccountResourceId>",
+          "workspaceResourceId": "<workspaceResourceId>"
+        }
+      ]
+    },
+    "disableCopyPaste": {
+      "value": true
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "enableFileCopy": {
+      "value": false
+    },
+    "enableIpConnect": {
+      "value": false
+    },
+    "enableShareableLink": {
+      "value": false
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "scaleUnits": {
+      "value": 4
+    },
+    "skuName": {
+      "value": "Standard"
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
 
 ## Parameters
 
@@ -373,10 +373,9 @@ module bastionHost 'br:bicep/modules/network.bastion-host:1.0.0' = {
 | [`enableIpConnect`](#parameter-enableipconnect) | bool | Choose to disable or enable IP Connect. |
 | [`enableKerberos`](#parameter-enablekerberos) | bool | Choose to disable or enable Kerberos authentication. |
 | [`enableShareableLink`](#parameter-enableshareablelink) | bool | Choose to disable or enable Shareable Link. |
-| [`isCreateDefaultPublicIP`](#parameter-iscreatedefaultpublicip) | bool | Specifies if a Public IP should be created by default if one is not provided. |
 | [`location`](#parameter-location) | string | Location for all resources. |
 | [`lock`](#parameter-lock) | object | The lock settings of the service. |
-| [`publicIPAddressObject`](#parameter-publicipaddressobject) | object | Specifies the properties of the Public IP to create and be used by Azure Bastion. If it's not provided and publicIPAddressResourceId is empty, a '-pip' suffix will be appended to the Bastion's name. |
+| [`publicIPAddressObject`](#parameter-publicipaddressobject) | object | Specifies the properties of the Public IP to create and be used by Azure Bastion, if no existing public IP was provided. |
 | [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | [`scaleUnits`](#parameter-scaleunits) | int | The scale units for the Bastion Host resource. |
 | [`skuName`](#parameter-skuname) | string | The SKU of this Bastion Host. |
@@ -526,13 +525,6 @@ Choose to disable or enable Shareable Link.
 - Type: bool
 - Default: `False`
 
-### Parameter: `isCreateDefaultPublicIP`
-
-Specifies if a Public IP should be created by default if one is not provided.
-- Required: No
-- Type: bool
-- Default: `True`
-
 ### Parameter: `location`
 
 Location for all resources.
@@ -575,10 +567,15 @@ Name of the Azure Bastion resource.
 
 ### Parameter: `publicIPAddressObject`
 
-Specifies the properties of the Public IP to create and be used by Azure Bastion. If it's not provided and publicIPAddressResourceId is empty, a '-pip' suffix will be appended to the Bastion's name.
+Specifies the properties of the Public IP to create and be used by Azure Bastion, if no existing public IP was provided.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default:
+  ```Bicep
+  {
+      name: '[format(\'{0}-pip\' parameters(\'name\'))]'
+  }
+  ```
 
 ### Parameter: `roleAssignments`
 
@@ -661,14 +658,19 @@ The SKU of this Bastion Host.
 - Required: No
 - Type: string
 - Default: `'Basic'`
-- Allowed: `[Basic, Standard]`
+- Allowed:
+  ```Bicep
+  [
+    'Basic'
+    'Standard'
+  ]
+  ```
 
 ### Parameter: `tags`
 
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `vNetId`
 

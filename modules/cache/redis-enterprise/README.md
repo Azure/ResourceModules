@@ -30,13 +30,13 @@ The following section provides usage examples for the module, which were used to
 
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/cache.redis-enterprise:1.0.0`.
 
-- [Using large parameter set](#example-1-using-large-parameter-set)
+- [Using only defaults](#example-1-using-only-defaults)
 - [Geo](#example-2-geo)
-- [Using only defaults](#example-3-using-only-defaults)
+- [Using large parameter set](#example-3-using-large-parameter-set)
 
-### Example 1: _Using large parameter set_
+### Example 1: _Using only defaults_
 
-This instance deploys the module with most of its features enabled.
+This instance deploys the module with the minimum set of required parameters.
 
 
 <details>
@@ -45,76 +45,12 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module redisEnterprise 'br:bicep/modules/cache.redis-enterprise:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-crecom'
+  name: '${uniqueString(deployment().name, location)}-test-cremin'
   params: {
     // Required parameters
-    name: 'crecom001'
+    name: 'cremin001'
     // Non-required parameters
-    capacity: 2
-    databases: [
-      {
-        clusteringPolicy: 'EnterpriseCluster'
-        evictionPolicy: 'AllKeysLFU'
-        modules: [
-          {
-            name: 'RedisBloom'
-          }
-          {
-            args: 'RETENTION_POLICY 20'
-            name: 'RedisTimeSeries'
-          }
-        ]
-        persistenceAofEnabled: true
-        persistenceAofFrequency: '1s'
-        persistenceRdbEnabled: false
-        port: 10000
-      }
-    ]
-    diagnosticSettings: [
-      {
-        eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
-        eventHubName: '<eventHubName>'
-        metricCategories: [
-          {
-            category: 'AllMetrics'
-          }
-        ]
-        name: 'customSetting'
-        storageAccountResourceId: '<storageAccountResourceId>'
-        workspaceResourceId: '<workspaceResourceId>'
-      }
-    ]
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    lock: {
-      kind: 'CanNotDelete'
-      name: 'myCustomLockName'
-    }
-    minimumTlsVersion: '1.2'
-    privateEndpoints: [
-      {
-        privateDnsZoneResourceIds: [
-          '<privateDNSZoneResourceId>'
-        ]
-        subnetResourceId: '<subnetResourceId>'
-        tags: {
-          Environment: 'Non-Prod'
-          'hidden-title': 'This is visible in the resource name'
-          Role: 'DeploymentValidation'
-        }
-      }
-    ]
-    roleAssignments: [
-      {
-        principalId: '<principalId>'
-        principalType: 'ServicePrincipal'
-        roleDefinitionIdOrName: 'Reader'
-      }
-    ]
-    tags: {
-      'hidden-title': 'This is visible in the resource name'
-      resourceType: 'Redis Cache Enterprise'
-    }
-    zoneRedundant: true
   }
 }
 ```
@@ -133,93 +69,11 @@ module redisEnterprise 'br:bicep/modules/cache.redis-enterprise:1.0.0' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "crecom001"
+      "value": "cremin001"
     },
     // Non-required parameters
-    "capacity": {
-      "value": 2
-    },
-    "databases": {
-      "value": [
-        {
-          "clusteringPolicy": "EnterpriseCluster",
-          "evictionPolicy": "AllKeysLFU",
-          "modules": [
-            {
-              "name": "RedisBloom"
-            },
-            {
-              "args": "RETENTION_POLICY 20",
-              "name": "RedisTimeSeries"
-            }
-          ],
-          "persistenceAofEnabled": true,
-          "persistenceAofFrequency": "1s",
-          "persistenceRdbEnabled": false,
-          "port": 10000
-        }
-      ]
-    },
-    "diagnosticSettings": {
-      "value": [
-        {
-          "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
-          "eventHubName": "<eventHubName>",
-          "metricCategories": [
-            {
-              "category": "AllMetrics"
-            }
-          ],
-          "name": "customSetting",
-          "storageAccountResourceId": "<storageAccountResourceId>",
-          "workspaceResourceId": "<workspaceResourceId>"
-        }
-      ]
-    },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
-    },
-    "lock": {
-      "value": {
-        "kind": "CanNotDelete",
-        "name": "myCustomLockName"
-      }
-    },
-    "minimumTlsVersion": {
-      "value": "1.2"
-    },
-    "privateEndpoints": {
-      "value": [
-        {
-          "privateDnsZoneResourceIds": [
-            "<privateDNSZoneResourceId>"
-          ],
-          "subnetResourceId": "<subnetResourceId>",
-          "tags": {
-            "Environment": "Non-Prod",
-            "hidden-title": "This is visible in the resource name",
-            "Role": "DeploymentValidation"
-          }
-        }
-      ]
-    },
-    "roleAssignments": {
-      "value": [
-        {
-          "principalId": "<principalId>",
-          "principalType": "ServicePrincipal",
-          "roleDefinitionIdOrName": "Reader"
-        }
-      ]
-    },
-    "tags": {
-      "value": {
-        "hidden-title": "This is visible in the resource name",
-        "resourceType": "Redis Cache Enterprise"
-      }
-    },
-    "zoneRedundant": {
-      "value": true
     }
   }
 }
@@ -349,9 +203,9 @@ module redisEnterprise 'br:bicep/modules/cache.redis-enterprise:1.0.0' = {
 </details>
 <p>
 
-### Example 3: _Using only defaults_
+### Example 3: _Using large parameter set_
 
-This instance deploys the module with the minimum set of required parameters.
+This instance deploys the module with most of its features enabled.
 
 
 <details>
@@ -360,12 +214,76 @@ This instance deploys the module with the minimum set of required parameters.
 
 ```bicep
 module redisEnterprise 'br:bicep/modules/cache.redis-enterprise:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-cremin'
+  name: '${uniqueString(deployment().name, location)}-test-cremax'
   params: {
     // Required parameters
-    name: 'cremin001'
+    name: 'cremax001'
     // Non-required parameters
+    capacity: 2
+    databases: [
+      {
+        clusteringPolicy: 'EnterpriseCluster'
+        evictionPolicy: 'AllKeysLFU'
+        modules: [
+          {
+            name: 'RedisBloom'
+          }
+          {
+            args: 'RETENTION_POLICY 20'
+            name: 'RedisTimeSeries'
+          }
+        ]
+        persistenceAofEnabled: true
+        persistenceAofFrequency: '1s'
+        persistenceRdbEnabled: false
+        port: 10000
+      }
+    ]
+    diagnosticSettings: [
+      {
+        eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+        eventHubName: '<eventHubName>'
+        metricCategories: [
+          {
+            category: 'AllMetrics'
+          }
+        ]
+        name: 'customSetting'
+        storageAccountResourceId: '<storageAccountResourceId>'
+        workspaceResourceId: '<workspaceResourceId>'
+      }
+    ]
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    minimumTlsVersion: '1.2'
+    privateEndpoints: [
+      {
+        privateDnsZoneResourceIds: [
+          '<privateDNSZoneResourceId>'
+        ]
+        subnetResourceId: '<subnetResourceId>'
+        tags: {
+          Environment: 'Non-Prod'
+          'hidden-title': 'This is visible in the resource name'
+          Role: 'DeploymentValidation'
+        }
+      }
+    ]
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    tags: {
+      'hidden-title': 'This is visible in the resource name'
+      resourceType: 'Redis Cache Enterprise'
+    }
+    zoneRedundant: true
   }
 }
 ```
@@ -384,11 +302,93 @@ module redisEnterprise 'br:bicep/modules/cache.redis-enterprise:1.0.0' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "cremin001"
+      "value": "cremax001"
     },
     // Non-required parameters
+    "capacity": {
+      "value": 2
+    },
+    "databases": {
+      "value": [
+        {
+          "clusteringPolicy": "EnterpriseCluster",
+          "evictionPolicy": "AllKeysLFU",
+          "modules": [
+            {
+              "name": "RedisBloom"
+            },
+            {
+              "args": "RETENTION_POLICY 20",
+              "name": "RedisTimeSeries"
+            }
+          ],
+          "persistenceAofEnabled": true,
+          "persistenceAofFrequency": "1s",
+          "persistenceRdbEnabled": false,
+          "port": 10000
+        }
+      ]
+    },
+    "diagnosticSettings": {
+      "value": [
+        {
+          "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+          "eventHubName": "<eventHubName>",
+          "metricCategories": [
+            {
+              "category": "AllMetrics"
+            }
+          ],
+          "name": "customSetting",
+          "storageAccountResourceId": "<storageAccountResourceId>",
+          "workspaceResourceId": "<workspaceResourceId>"
+        }
+      ]
+    },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "minimumTlsVersion": {
+      "value": "1.2"
+    },
+    "privateEndpoints": {
+      "value": [
+        {
+          "privateDnsZoneResourceIds": [
+            "<privateDNSZoneResourceId>"
+          ],
+          "subnetResourceId": "<subnetResourceId>",
+          "tags": {
+            "Environment": "Non-Prod",
+            "hidden-title": "This is visible in the resource name",
+            "Role": "DeploymentValidation"
+          }
+        }
+      ]
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "tags": {
+      "value": {
+        "hidden-title": "This is visible in the resource name",
+        "resourceType": "Redis Cache Enterprise"
+      }
+    },
+    "zoneRedundant": {
+      "value": true
     }
   }
 }
@@ -449,7 +449,6 @@ The diagnostic settings of the service.
 | [`eventHubAuthorizationRuleResourceId`](#parameter-diagnosticsettingseventhubauthorizationruleresourceid) | No | string | Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | [`eventHubName`](#parameter-diagnosticsettingseventhubname) | No | string | Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
 | [`logAnalyticsDestinationType`](#parameter-diagnosticsettingsloganalyticsdestinationtype) | No | string | Optional. A string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destination type. |
-| [`logCategoriesAndGroups`](#parameter-diagnosticsettingslogcategoriesandgroups) | No | array | Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
 | [`marketplacePartnerResourceId`](#parameter-diagnosticsettingsmarketplacepartnerresourceid) | No | string | Optional. The full ARM resource ID of the Marketplace resource to which you would like to send Diagnostic Logs. |
 | [`metricCategories`](#parameter-diagnosticsettingsmetriccategories) | No | array | Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
 | [`name`](#parameter-diagnosticsettingsname) | No | string | Optional. The name of diagnostic setting. |
@@ -477,33 +476,6 @@ Optional. A string indicating whether the export to Log Analytics should use the
 - Required: No
 - Type: string
 - Allowed: `[AzureDiagnostics, Dedicated]`
-
-### Parameter: `diagnosticSettings.logCategoriesAndGroups`
-
-Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection.
-
-- Required: No
-- Type: array
-
-| Name | Required | Type | Description |
-| :-- | :-- | :--| :-- |
-| [`category`](#parameter-diagnosticsettingslogcategoriesandgroupscategory) | No | string | Optional. Name of a Diagnostic Log category for a resource type this setting is applied to. Set the specific logs to collect here. |
-| [`categoryGroup`](#parameter-diagnosticsettingslogcategoriesandgroupscategorygroup) | No | string | Optional. Name of a Diagnostic Log category group for a resource type this setting is applied to. Set to 'AllLogs' to collect all logs. |
-
-### Parameter: `diagnosticSettings.logCategoriesAndGroups.category`
-
-Optional. Name of a Diagnostic Log category for a resource type this setting is applied to. Set the specific logs to collect here.
-
-- Required: No
-- Type: string
-
-### Parameter: `diagnosticSettings.logCategoriesAndGroups.categoryGroup`
-
-Optional. Name of a Diagnostic Log category group for a resource type this setting is applied to. Set to 'AllLogs' to collect all logs.
-
-- Required: No
-- Type: string
-
 
 ### Parameter: `diagnosticSettings.marketplacePartnerResourceId`
 
@@ -599,7 +571,14 @@ Requires clients to use a specified TLS version (or higher) to connect.
 - Required: No
 - Type: string
 - Default: `'1.2'`
-- Allowed: `[1.0, 1.1, 1.2]`
+- Allowed:
+  ```Bicep
+  [
+    '1.0'
+    '1.1'
+    '1.2'
+  ]
+  ```
 
 ### Parameter: `name`
 
@@ -648,14 +627,20 @@ Optional. Custom DNS configurations.
 
 | Name | Required | Type | Description |
 | :-- | :-- | :--| :-- |
-| [`fqdn`](#parameter-privateendpointscustomdnsconfigsfqdn) | No | string |  |
-| [`ipAddresses`](#parameter-privateendpointscustomdnsconfigsipaddresses) | Yes | array |  |
+| [`fqdn`](#parameter-privateendpointscustomdnsconfigsfqdn) | No | string | Required. Fqdn that resolves to private endpoint ip address. |
+| [`ipAddresses`](#parameter-privateendpointscustomdnsconfigsipaddresses) | Yes | array | Required. A list of private ip addresses of the private endpoint. |
 
 ### Parameter: `privateEndpoints.customDnsConfigs.fqdn`
+
+Required. Fqdn that resolves to private endpoint ip address.
+
 - Required: No
 - Type: string
 
 ### Parameter: `privateEndpoints.customDnsConfigs.ipAddresses`
+
+Required. A list of private ip addresses of the private endpoint.
+
 - Required: Yes
 - Type: array
 
@@ -683,26 +668,50 @@ Optional. A list of IP configurations of the private endpoint. This will be used
 
 | Name | Required | Type | Description |
 | :-- | :-- | :--| :-- |
-| [`groupId`](#parameter-privateendpointsipconfigurationsgroupid) | Yes | string |  |
-| [`memberName`](#parameter-privateendpointsipconfigurationsmembername) | Yes | string |  |
-| [`name`](#parameter-privateendpointsipconfigurationsname) | Yes | string |  |
-| [`privateIpAddress`](#parameter-privateendpointsipconfigurationsprivateipaddress) | Yes | string |  |
-
-### Parameter: `privateEndpoints.ipConfigurations.groupId`
-- Required: Yes
-- Type: string
-
-### Parameter: `privateEndpoints.ipConfigurations.memberName`
-- Required: Yes
-- Type: string
+| [`name`](#parameter-privateendpointsipconfigurationsname) | Yes | string | Required. The name of the resource that is unique within a resource group. |
+| [`properties`](#parameter-privateendpointsipconfigurationsproperties) | Yes | object | Required. Properties of private endpoint IP configurations. |
 
 ### Parameter: `privateEndpoints.ipConfigurations.name`
+
+Required. The name of the resource that is unique within a resource group.
+
 - Required: Yes
 - Type: string
 
-### Parameter: `privateEndpoints.ipConfigurations.privateIpAddress`
+### Parameter: `privateEndpoints.ipConfigurations.properties`
+
+Required. Properties of private endpoint IP configurations.
+
+- Required: Yes
+- Type: object
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`groupId`](#parameter-privateendpointsipconfigurationspropertiesgroupid) | Yes | string | Required. The ID of a group obtained from the remote resource that this private endpoint should connect to. |
+| [`memberName`](#parameter-privateendpointsipconfigurationspropertiesmembername) | Yes | string | Required. The member name of a group obtained from the remote resource that this private endpoint should connect to. |
+| [`privateIPAddress`](#parameter-privateendpointsipconfigurationspropertiesprivateipaddress) | Yes | string | Required. A private ip address obtained from the private endpoint's subnet. |
+
+### Parameter: `privateEndpoints.ipConfigurations.properties.groupId`
+
+Required. The ID of a group obtained from the remote resource that this private endpoint should connect to.
+
 - Required: Yes
 - Type: string
+
+### Parameter: `privateEndpoints.ipConfigurations.properties.memberName`
+
+Required. The member name of a group obtained from the remote resource that this private endpoint should connect to.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `privateEndpoints.ipConfigurations.properties.privateIPAddress`
+
+Required. A private ip address obtained from the private endpoint's subnet.
+
+- Required: Yes
+- Type: string
+
 
 
 ### Parameter: `privateEndpoints.location`
@@ -849,14 +858,24 @@ The type of Redis Enterprise Cluster to deploy.
 - Required: No
 - Type: string
 - Default: `'Enterprise_E10'`
-- Allowed: `[Enterprise_E10, Enterprise_E100, Enterprise_E20, Enterprise_E50, EnterpriseFlash_F1500, EnterpriseFlash_F300, EnterpriseFlash_F700]`
+- Allowed:
+  ```Bicep
+  [
+    'Enterprise_E10'
+    'Enterprise_E100'
+    'Enterprise_E20'
+    'Enterprise_E50'
+    'EnterpriseFlash_F1500'
+    'EnterpriseFlash_F300'
+    'EnterpriseFlash_F700'
+  ]
+  ```
 
 ### Parameter: `tags`
 
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `zoneRedundant`
 

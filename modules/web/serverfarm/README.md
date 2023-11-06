@@ -40,10 +40,10 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module serverfarm 'br:bicep/modules/web.serverfarm:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-wsfcom'
+  name: '${uniqueString(deployment().name, location)}-test-wsfmax'
   params: {
     // Required parameters
-    name: 'wsfcom001'
+    name: 'wsfmax001'
     sku: {
       capacity: '1'
       family: 'S'
@@ -101,7 +101,7 @@ module serverfarm 'br:bicep/modules/web.serverfarm:1.0.0' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "wsfcom001"
+      "value": "wsfmax001"
     },
     "sku": {
       "value": {
@@ -303,7 +303,16 @@ Kind of server OS.
 - Required: No
 - Type: string
 - Default: `'Windows'`
-- Allowed: `[App, Elastic, FunctionApp, Linux, Windows]`
+- Allowed:
+  ```Bicep
+  [
+    'App'
+    'Elastic'
+    'FunctionApp'
+    'Linux'
+    'Windows'
+  ]
+  ```
 
 ### Parameter: `location`
 
@@ -445,7 +454,6 @@ Defines the name, tier, size, family and capacity of the App Service Plan.
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `targetWorkerCount`
 
@@ -460,7 +468,14 @@ The instance size of the hosting plan (small, medium, or large).
 - Required: No
 - Type: int
 - Default: `0`
-- Allowed: `[0, 1, 2]`
+- Allowed:
+  ```Bicep
+  [
+    0
+    1
+    2
+  ]
+  ```
 
 ### Parameter: `workerTierName`
 
