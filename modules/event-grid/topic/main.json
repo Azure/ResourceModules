@@ -5,8 +5,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.22.6.54827",
-      "templateHash": "8337019560033170518"
+      "version": "0.23.1.45101",
+      "templateHash": "14687827055675085151"
     },
     "name": "Event Grid Topics",
     "description": "This module deploys an Event Grid Topic.",
@@ -426,7 +426,7 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Tags of the resource."
       }
@@ -578,8 +578,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.22.6.54827",
-              "templateHash": "2222106647839764321"
+              "version": "0.23.1.45101",
+              "templateHash": "19673224192591950"
             },
             "name": "EventGrid Topic Event Subscriptions",
             "description": "This module deploys an Event Grid Topic Event Subscription.",
@@ -821,8 +821,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.22.6.54827",
-              "templateHash": "16178508232344722616"
+              "version": "0.23.1.45101",
+              "templateHash": "17217392944107550551"
             },
             "name": "Private Endpoints",
             "description": "This module deploys a Private Endpoint.",
@@ -1159,8 +1159,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.22.6.54827",
-                      "templateHash": "16391702514342252839"
+                      "version": "0.23.1.45101",
+                      "templateHash": "17578977753131828304"
                     },
                     "name": "Private Endpoint Private DNS Zone Groups",
                     "description": "This module deploys a Private Endpoint Private DNS Zone Group.",

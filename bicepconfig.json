@@ -13,5 +13,9 @@
                 }
             }
         }
+    },
+
+    "experimentalFeaturesEnabled": {
+        "userDefinedTypes": true
     }
 }
