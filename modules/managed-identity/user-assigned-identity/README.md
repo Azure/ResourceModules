@@ -29,6 +29,7 @@ The following section provides usage examples for the module, which were used to
 
 - [Using only defaults](#example-1-using-only-defaults)
 - [Using large parameter set](#example-2-using-large-parameter-set)
+- [WAF-aligned](#example-3-waf-aligned)
 
 ### Example 1: _Using only defaults_
 
@@ -41,10 +42,9 @@ This instance deploys the module with the minimum set of required parameters.
 
 ```bicep
 module userAssignedIdentity 'br:bicep/modules/managed-identity.user-assigned-identity:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-miuaimin'
-  params: {
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-  }
+ scope: resourceGroup
+ name: '${uniqueString(deployment().name, location)}-test-${serviceShort}-${iteration}'
+ params: {}
 }
 ```
 
@@ -59,11 +59,7 @@ module userAssignedIdentity 'br:bicep/modules/managed-identity.user-assigned-ide
 {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
-  "parameters": {
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    }
-  }
+  "parameters": {}
 }
 ```
 
@@ -81,34 +77,34 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module userAssignedIdentity 'br:bicep/modules/managed-identity.user-assigned-identity:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-miuaimax'
+name: '${uniqueString(deployment().name, location)}-test-miauimax'
   params: {
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    federatedIdentityCredentials: [
-      {
-        audiences: [
-          'api://AzureADTokenExchange'
-        ]
-        issuer: '<issuer>'
-        name: 'test-fed-cred-miuaimax-001'
-        subject: 'system:serviceaccount:default:workload-identity-sa'
-      }
-    ]
+    name: 'miuaimax001'
+    enableTelemetry: '<enableTelemetry>'
     lock: {
       kind: 'CanNotDelete'
       name: 'myCustomLockName'
     }
-    name: 'miuaimax001'
+    federatedIdentityCredentials: [
+      {
+        name: 'test-fed-cred-miuaimax-001'
+        audiences: [
+          'api://AzureADTokenExchange'
+        ]
+        issuer: '<issuer>'
+        subject: 'system:serviceaccount:default:workload-identity-sa'
+      }
+    ]
     roleAssignments: [
       {
+        roleDefinitionIdOrName: 'Reader'
         principalId: '<principalId>'
         principalType: 'ServicePrincipal'
-        roleDefinitionIdOrName: 'Reader'
       }
     ]
     tags: {
-      Environment: 'Non-Prod'
       'hidden-title': 'This is visible in the resource name'
+      Environment: 'Non-Prod'
       Role: 'DeploymentValidation'
     }
   }
@@ -127,7 +123,7 @@ module userAssignedIdentity 'br:bicep/modules/managed-identity.user-assigned-ide
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "enableDefaultTelemetry": {
+    "enableTelemetry": {
       "value": "<enableDefaultTelemetry>"
     },
     "federatedIdentityCredentials": {
@@ -174,6 +170,106 @@ module userAssignedIdentity 'br:bicep/modules/managed-identity.user-assigned-ide
 </details>
 <p>
 
+### Example 3: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-pratices of the Well-Architectured-Framework.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module userAssignedIdentity 'br:bicep/modules/managed-identity.user-assigned-identity:1.0.0' = {
+name: '${uniqueString(deployment().name, location)}-test-miauiwaf'
+  params: {
+    name: 'miuaiwaf001'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    federatedIdentityCredentials: [
+      {
+        name: 'test-fed-cred-miuaiwaf-001'
+        audiences: [
+          'api://AzureADTokenExchange'
+        ]
+        issuer: '<issuer>'
+        subject: 'system:serviceaccount:default:workload-identity-sa'
+      }
+    ]
+    roleAssignments: [
+      {
+        roleDefinitionIdOrName: 'Reader'
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+      }
+    ]
+    tags: {
+      'hidden-title': 'This is visible in the resource name'
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "federatedIdentityCredentials": {
+      "value": [
+        {
+          "audiences": [
+            "api://AzureADTokenExchange"
+          ],
+          "issuer": "<issuer>",
+          "name": "test-fed-cred-miuaiwaf-001",
+          "subject": "system:serviceaccount:default:workload-identity-sa"
+        }
+      ]
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "name": {
+      "value": "miuaiwaf001"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
 
 ## Parameters
 
@@ -181,7 +277,7 @@ module userAssignedIdentity 'br:bicep/modules/managed-identity.user-assigned-ide
 
 | Parameter | Type | Description |
 | :-- | :-- | :-- |
-| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`enableTelemetry`](#parameter-enabletelemetry) | bool | Enable/Disable usage telemetry for module. |
 | [`federatedIdentityCredentials`](#parameter-federatedidentitycredentials) | array | The federated identity credentials list to indicate which token from the external IdP should be trusted by your application. Federated identity credentials are supported on applications only. A maximum of 20 federated identity credentials can be added per application object. |
 | [`location`](#parameter-location) | string | Location for all resources. |
 | [`lock`](#parameter-lock) | object | The lock settings of the service. |
@@ -189,9 +285,9 @@ module userAssignedIdentity 'br:bicep/modules/managed-identity.user-assigned-ide
 | [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | [`tags`](#parameter-tags) | object | Tags of the resource. |
 
-### Parameter: `enableDefaultTelemetry`
+### Parameter: `enableTelemetry`
 
-Enable telemetry via a Globally Unique Identifier (GUID).
+Enable/Disable usage telemetry for module.
 - Required: No
 - Type: bool
 - Default: `True`
