@@ -31,6 +31,7 @@ The following section provides usage examples for the module, which were used to
 
 - [Using only defaults](#example-1-using-only-defaults)
 - [Using large parameter set](#example-2-using-large-parameter-set)
+- [WAF-aligned](#example-3-waf-aligned)
 
 ### Example 1: _Using only defaults_
 
@@ -299,6 +300,296 @@ module account 'br:bicep/modules/purview.account:1.0.0' = {
     },
     "managedResourceGroupName": {
       "value": "pvamax001-managed-rg"
+    },
+    "portalPrivateEndpoints": {
+      "value": [
+        {
+          "privateDnsZoneResourceIds": [
+            "<purviewPortalPrivateDNSResourceId>"
+          ],
+          "service": "portal",
+          "subnetResourceId": "<subnetResourceId>",
+          "tags": {
+            "Environment": "Non-Prod",
+            "hidden-title": "This is visible in the resource name",
+            "Role": "DeploymentValidation"
+          }
+        }
+      ]
+    },
+    "publicNetworkAccess": {
+      "value": "Disabled"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "storageBlobPrivateEndpoints": {
+      "value": [
+        {
+          "privateDnsZoneResourceIds": [
+            "<storageBlobPrivateDNSResourceId>"
+          ],
+          "service": "blob",
+          "subnetResourceId": "<subnetResourceId>",
+          "tags": {
+            "Environment": "Non-Prod",
+            "hidden-title": "This is visible in the resource name",
+            "Role": "DeploymentValidation"
+          }
+        }
+      ]
+    },
+    "storageQueuePrivateEndpoints": {
+      "value": [
+        {
+          "privateDnsZoneResourceIds": [
+            "<storageQueuePrivateDNSResourceId>"
+          ],
+          "service": "queue",
+          "subnetResourceId": "<subnetResourceId>",
+          "tags": {
+            "Environment": "Non-Prod",
+            "hidden-title": "This is visible in the resource name",
+            "Role": "DeploymentValidation"
+          }
+        }
+      ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 3: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module account 'br:bicep/modules/purview.account:1.0.0' = {
+  name: '${uniqueString(deployment().name)}-test-pvawaf'
+  params: {
+    // Required parameters
+    name: 'pvawaf001'
+    // Non-required parameters
+    accountPrivateEndpoints: [
+      {
+        privateDnsZoneResourceIds: [
+          '<purviewAccountPrivateDNSResourceId>'
+        ]
+        service: 'account'
+        subnetResourceId: '<subnetResourceId>'
+        tags: {
+          Environment: 'Non-Prod'
+          'hidden-title': 'This is visible in the resource name'
+          Role: 'DeploymentValidation'
+        }
+      }
+    ]
+    diagnosticSettings: [
+      {
+        eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+        eventHubName: '<eventHubName>'
+        metricCategories: [
+          {
+            category: 'AllMetrics'
+          }
+        ]
+        name: 'customSetting'
+        storageAccountResourceId: '<storageAccountResourceId>'
+        workspaceResourceId: '<workspaceResourceId>'
+      }
+    ]
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    eventHubPrivateEndpoints: [
+      {
+        privateDnsZoneResourceIds: [
+          '<eventHubPrivateDNSResourceId>'
+        ]
+        service: 'namespace'
+        subnetResourceId: '<subnetResourceId>'
+        tags: {
+          Environment: 'Non-Prod'
+          'hidden-title': 'This is visible in the resource name'
+          Role: 'DeploymentValidation'
+        }
+      }
+    ]
+    location: '<location>'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    managedIdentities: {
+      userAssignedResourcesIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
+    managedResourceGroupName: 'pvawaf001-managed-rg'
+    portalPrivateEndpoints: [
+      {
+        privateDnsZoneResourceIds: [
+          '<purviewPortalPrivateDNSResourceId>'
+        ]
+        service: 'portal'
+        subnetResourceId: '<subnetResourceId>'
+        tags: {
+          Environment: 'Non-Prod'
+          'hidden-title': 'This is visible in the resource name'
+          Role: 'DeploymentValidation'
+        }
+      }
+    ]
+    publicNetworkAccess: 'Disabled'
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    storageBlobPrivateEndpoints: [
+      {
+        privateDnsZoneResourceIds: [
+          '<storageBlobPrivateDNSResourceId>'
+        ]
+        service: 'blob'
+        subnetResourceId: '<subnetResourceId>'
+        tags: {
+          Environment: 'Non-Prod'
+          'hidden-title': 'This is visible in the resource name'
+          Role: 'DeploymentValidation'
+        }
+      }
+    ]
+    storageQueuePrivateEndpoints: [
+      {
+        privateDnsZoneResourceIds: [
+          '<storageQueuePrivateDNSResourceId>'
+        ]
+        service: 'queue'
+        subnetResourceId: '<subnetResourceId>'
+        tags: {
+          Environment: 'Non-Prod'
+          'hidden-title': 'This is visible in the resource name'
+          Role: 'DeploymentValidation'
+        }
+      }
+    ]
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "pvawaf001"
+    },
+    // Non-required parameters
+    "accountPrivateEndpoints": {
+      "value": [
+        {
+          "privateDnsZoneResourceIds": [
+            "<purviewAccountPrivateDNSResourceId>"
+          ],
+          "service": "account",
+          "subnetResourceId": "<subnetResourceId>",
+          "tags": {
+            "Environment": "Non-Prod",
+            "hidden-title": "This is visible in the resource name",
+            "Role": "DeploymentValidation"
+          }
+        }
+      ]
+    },
+    "diagnosticSettings": {
+      "value": [
+        {
+          "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+          "eventHubName": "<eventHubName>",
+          "metricCategories": [
+            {
+              "category": "AllMetrics"
+            }
+          ],
+          "name": "customSetting",
+          "storageAccountResourceId": "<storageAccountResourceId>",
+          "workspaceResourceId": "<workspaceResourceId>"
+        }
+      ]
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "eventHubPrivateEndpoints": {
+      "value": [
+        {
+          "privateDnsZoneResourceIds": [
+            "<eventHubPrivateDNSResourceId>"
+          ],
+          "service": "namespace",
+          "subnetResourceId": "<subnetResourceId>",
+          "tags": {
+            "Environment": "Non-Prod",
+            "hidden-title": "This is visible in the resource name",
+            "Role": "DeploymentValidation"
+          }
+        }
+      ]
+    },
+    "location": {
+      "value": "<location>"
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "managedIdentities": {
+      "value": {
+        "userAssignedResourcesIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
+    },
+    "managedResourceGroupName": {
+      "value": "pvawaf001-managed-rg"
     },
     "portalPrivateEndpoints": {
       "value": [

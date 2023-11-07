@@ -29,6 +29,7 @@ The following section provides usage examples for the module, which were used to
 
 - [Using only defaults](#example-1-using-only-defaults)
 - [Using large parameter set](#example-2-using-large-parameter-set)
+- [WAF-aligned](#example-3-waf-aligned)
 
 ### Example 1: _Using only defaults_
 
@@ -171,6 +172,108 @@ module fluxConfiguration 'br:bicep/modules/kubernetes-configuration.flux-configu
     },
     "name": {
       "value": "kcfcmax001"
+    },
+    "namespace": {
+      "value": "flux-system"
+    },
+    "sourceKind": {
+      "value": "GitRepository"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "gitRepository": {
+      "value": {
+        "repositoryRef": {
+          "branch": "main"
+        },
+        "sshKnownHosts": "",
+        "syncIntervalInSeconds": 300,
+        "timeoutInSeconds": 180,
+        "url": "https://github.com/mspnp/aks-baseline"
+      }
+    },
+    "kustomizations": {
+      "value": {
+        "unified": {
+          "dependsOn": [],
+          "force": false,
+          "path": "./cluster-manifests",
+          "prune": true,
+          "syncIntervalInSeconds": 300,
+          "timeoutInSeconds": 300
+        }
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 3: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module fluxConfiguration 'br:bicep/modules/kubernetes-configuration.flux-configuration:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-kcfcwaf'
+  params: {
+    // Required parameters
+    clusterName: '<clusterName>'
+    name: 'kcfcwaf001'
+    namespace: 'flux-system'
+    sourceKind: 'GitRepository'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    gitRepository: {
+      repositoryRef: {
+        branch: 'main'
+      }
+      sshKnownHosts: ''
+      syncIntervalInSeconds: 300
+      timeoutInSeconds: 180
+      url: 'https://github.com/mspnp/aks-baseline'
+    }
+    kustomizations: {
+      unified: {
+        dependsOn: []
+        force: false
+        path: './cluster-manifests'
+        prune: true
+        syncIntervalInSeconds: 300
+        timeoutInSeconds: 300
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "clusterName": {
+      "value": "<clusterName>"
+    },
+    "name": {
+      "value": "kcfcwaf001"
     },
     "namespace": {
       "value": "flux-system"

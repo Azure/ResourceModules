@@ -29,6 +29,7 @@ The following section provides usage examples for the module, which were used to
 
 - [Using only defaults](#example-1-using-only-defaults)
 - [Using large parameter set](#example-2-using-large-parameter-set)
+- [WAF-aligned](#example-3-waf-aligned)
 
 ### Example 1: _Using only defaults_
 
@@ -235,6 +236,182 @@ module vpnSite 'br:bicep/modules/network.vpn-site:1.0.0' = {
       "value": [
         {
           "name": "vSite-nvsmax",
+          "properties": {
+            "bgpProperties": {
+              "asn": 65010,
+              "bgpPeeringAddress": "1.1.1.1"
+            },
+            "ipAddress": "1.2.3.4",
+            "linkProperties": {
+              "linkProviderName": "contoso",
+              "linkSpeedInMbps": 5
+            }
+          }
+        },
+        {
+          "name": "Link1",
+          "properties": {
+            "bgpProperties": {
+              "asn": 65020,
+              "bgpPeeringAddress": "192.168.1.0"
+            },
+            "ipAddress": "2.2.2.2",
+            "linkProperties": {
+              "linkProviderName": "contoso",
+              "linkSpeedInMbps": 5
+            }
+          }
+        }
+      ]
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 3: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module vpnSite 'br:bicep/modules/network.vpn-site:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-nvswaf'
+  params: {
+    // Required parameters
+    name: 'nvswaf'
+    virtualWanId: '<virtualWanId>'
+    // Non-required parameters
+    deviceProperties: {
+      linkSpeedInMbps: 0
+    }
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    o365Policy: {
+      breakOutCategories: {
+        allow: true
+        default: true
+        optimize: true
+      }
+    }
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    tags: {
+      'hidden-title': 'This is visible in the resource name'
+      tagA: 'valueA'
+      tagB: 'valueB'
+    }
+    vpnSiteLinks: [
+      {
+        name: 'vSite-nvswaf'
+        properties: {
+          bgpProperties: {
+            asn: 65010
+            bgpPeeringAddress: '1.1.1.1'
+          }
+          ipAddress: '1.2.3.4'
+          linkProperties: {
+            linkProviderName: 'contoso'
+            linkSpeedInMbps: 5
+          }
+        }
+      }
+      {
+        name: 'Link1'
+        properties: {
+          bgpProperties: {
+            asn: 65020
+            bgpPeeringAddress: '192.168.1.0'
+          }
+          ipAddress: '2.2.2.2'
+          linkProperties: {
+            linkProviderName: 'contoso'
+            linkSpeedInMbps: 5
+          }
+        }
+      }
+    ]
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "nvswaf"
+    },
+    "virtualWanId": {
+      "value": "<virtualWanId>"
+    },
+    // Non-required parameters
+    "deviceProperties": {
+      "value": {
+        "linkSpeedInMbps": 0
+      }
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "o365Policy": {
+      "value": {
+        "breakOutCategories": {
+          "allow": true,
+          "default": true,
+          "optimize": true
+        }
+      }
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "tags": {
+      "value": {
+        "hidden-title": "This is visible in the resource name",
+        "tagA": "valueA",
+        "tagB": "valueB"
+      }
+    },
+    "vpnSiteLinks": {
+      "value": [
+        {
+          "name": "vSite-nvswaf",
           "properties": {
             "bgpProperties": {
               "asn": 65010,

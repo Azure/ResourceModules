@@ -28,6 +28,7 @@ The following section provides usage examples for the module, which were used to
 
 - [Using only defaults](#example-1-using-only-defaults)
 - [Using large parameter set](#example-2-using-large-parameter-set)
+- [WAF-aligned](#example-3-waf-aligned)
 
 ### Example 1: _Using only defaults_
 
@@ -155,6 +156,112 @@ module localNetworkGateway 'br:bicep/modules/network.local-network-gateway:1.0.0
     },
     "name": {
       "value": "nlngmax001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "localAsn": {
+      "value": "65123"
+    },
+    "localBgpPeeringAddress": {
+      "value": "192.168.1.5"
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 3: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module localNetworkGateway 'br:bicep/modules/network.local-network-gateway:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-nlngwaf'
+  params: {
+    // Required parameters
+    localAddressPrefixes: [
+      '192.168.1.0/24'
+    ]
+    localGatewayPublicIpAddress: '8.8.8.8'
+    name: 'nlngwaf001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    localAsn: '65123'
+    localBgpPeeringAddress: '192.168.1.5'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "localAddressPrefixes": {
+      "value": [
+        "192.168.1.0/24"
+      ]
+    },
+    "localGatewayPublicIpAddress": {
+      "value": "8.8.8.8"
+    },
+    "name": {
+      "value": "nlngwaf001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {

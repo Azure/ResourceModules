@@ -28,6 +28,7 @@ The following section provides usage examples for the module, which were used to
 
 - [Using only defaults](#example-1-using-only-defaults)
 - [Using large parameter set](#example-2-using-large-parameter-set)
+- [WAF-aligned](#example-3-waf-aligned)
 
 ### Example 1: _Using only defaults_
 
@@ -192,6 +193,226 @@ module frontDoorWebApplicationFirewallPolicy 'br:bicep/modules/network.front-doo
     // Required parameters
     "name": {
       "value": "nagwafpmax001"
+    },
+    // Non-required parameters
+    "customRules": {
+      "value": {
+        "rules": [
+          {
+            "action": "Block",
+            "enabledState": "Enabled",
+            "matchConditions": [
+              {
+                "matchValue": [
+                  "CH"
+                ],
+                "matchVariable": "RemoteAddr",
+                "negateCondition": false,
+                "operator": "GeoMatch",
+                "selector": "<selector>",
+                "transforms": []
+              },
+              {
+                "matchValue": [
+                  "windows"
+                ],
+                "matchVariable": "RequestHeader",
+                "negateCondition": false,
+                "operator": "Contains",
+                "selector": "UserAgent",
+                "transforms": []
+              },
+              {
+                "matchValue": [
+                  "?>",
+                  "<?php"
+                ],
+                "matchVariable": "QueryString",
+                "negateCondition": false,
+                "operator": "Contains",
+                "transforms": [
+                  "Lowercase",
+                  "UrlDecode"
+                ]
+              }
+            ],
+            "name": "CustomRule1",
+            "priority": 2,
+            "rateLimitDurationInMinutes": 1,
+            "rateLimitThreshold": 10,
+            "ruleType": "MatchRule"
+          }
+        ]
+      }
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "managedRules": {
+      "value": {
+        "managedRuleSets": [
+          {
+            "ruleSetType": "Microsoft_BotManagerRuleSet",
+            "ruleSetVersion": "1.0"
+          }
+        ]
+      }
+    },
+    "policySettings": {
+      "value": {
+        "customBlockResponseBody": "PGh0bWw+CjxoZWFkZXI+PHRpdGxlPkhlbGxvPC90aXRsZT48L2hlYWRlcj4KPGJvZHk+CkhlbGxvIHdvcmxkCjwvYm9keT4KPC9odG1sPg==",
+        "customBlockResponseStatusCode": 200,
+        "mode": "Prevention",
+        "redirectUrl": "http://www.bing.com"
+      }
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "sku": {
+      "value": "Premium_AzureFrontDoor"
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 3: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module frontDoorWebApplicationFirewallPolicy 'br:bicep/modules/network.front-door-web-application-firewall-policy:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-nagwafpwaf'
+  params: {
+    // Required parameters
+    name: 'nagwafpwaf001'
+    // Non-required parameters
+    customRules: {
+      rules: [
+        {
+          action: 'Block'
+          enabledState: 'Enabled'
+          matchConditions: [
+            {
+              matchValue: [
+                'CH'
+              ]
+              matchVariable: 'RemoteAddr'
+              negateCondition: false
+              operator: 'GeoMatch'
+              selector: '<selector>'
+              transforms: []
+            }
+            {
+              matchValue: [
+                'windows'
+              ]
+              matchVariable: 'RequestHeader'
+              negateCondition: false
+              operator: 'Contains'
+              selector: 'UserAgent'
+              transforms: []
+            }
+            {
+              matchValue: [
+                '?>'
+                '<?php'
+              ]
+              matchVariable: 'QueryString'
+              negateCondition: false
+              operator: 'Contains'
+              transforms: [
+                'Lowercase'
+                'UrlDecode'
+              ]
+            }
+          ]
+          name: 'CustomRule1'
+          priority: 2
+          rateLimitDurationInMinutes: 1
+          rateLimitThreshold: 10
+          ruleType: 'MatchRule'
+        }
+      ]
+    }
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    managedRules: {
+      managedRuleSets: [
+        {
+          ruleSetType: 'Microsoft_BotManagerRuleSet'
+          ruleSetVersion: '1.0'
+        }
+      ]
+    }
+    policySettings: {
+      customBlockResponseBody: 'PGh0bWw+CjxoZWFkZXI+PHRpdGxlPkhlbGxvPC90aXRsZT48L2hlYWRlcj4KPGJvZHk+CkhlbGxvIHdvcmxkCjwvYm9keT4KPC9odG1sPg=='
+      customBlockResponseStatusCode: 200
+      mode: 'Prevention'
+      redirectUrl: 'http://www.bing.com'
+    }
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    sku: 'Premium_AzureFrontDoor'
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "nagwafpwaf001"
     },
     // Non-required parameters
     "customRules": {

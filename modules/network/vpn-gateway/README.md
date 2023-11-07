@@ -30,6 +30,7 @@ The following section provides usage examples for the module, which were used to
 
 - [Using only defaults](#example-1-using-only-defaults)
 - [Using large parameter set](#example-2-using-large-parameter-set)
+- [WAF-aligned](#example-3-waf-aligned)
 
 ### Example 1: _Using only defaults_
 
@@ -164,6 +165,156 @@ module vpnGateway 'br:bicep/modules/network.vpn-gateway:1.0.0' = {
     // Required parameters
     "name": {
       "value": "nvgmax001"
+    },
+    "virtualHubResourceId": {
+      "value": "<virtualHubResourceId>"
+    },
+    // Non-required parameters
+    "bgpSettings": {
+      "value": {
+        "asn": 65515,
+        "peerWeight": 0
+      }
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "natRules": {
+      "value": [
+        {
+          "externalMappings": [
+            {
+              "addressSpace": "192.168.21.0/24"
+            }
+          ],
+          "internalMappings": [
+            {
+              "addressSpace": "10.4.0.0/24"
+            }
+          ],
+          "mode": "EgressSnat",
+          "name": "natRule1",
+          "type": "Static"
+        }
+      ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    },
+    "vpnConnections": {
+      "value": [
+        {
+          "connectionBandwidth": 100,
+          "enableBgp": false,
+          "enableInternetSecurity": true,
+          "enableRateLimiting": false,
+          "name": "<name>",
+          "remoteVpnSiteResourceId": "<remoteVpnSiteResourceId>",
+          "routingWeight": 0,
+          "useLocalAzureIpAddress": false,
+          "usePolicyBasedTrafficSelectors": false,
+          "vpnConnectionProtocolType": "IKEv2"
+        }
+      ]
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 3: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module vpnGateway 'br:bicep/modules/network.vpn-gateway:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-nvgwaf'
+  params: {
+    // Required parameters
+    name: 'nvgwaf001'
+    virtualHubResourceId: '<virtualHubResourceId>'
+    // Non-required parameters
+    bgpSettings: {
+      asn: 65515
+      peerWeight: 0
+    }
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    natRules: [
+      {
+        externalMappings: [
+          {
+            addressSpace: '192.168.21.0/24'
+          }
+        ]
+        internalMappings: [
+          {
+            addressSpace: '10.4.0.0/24'
+          }
+        ]
+        mode: 'EgressSnat'
+        name: 'natRule1'
+        type: 'Static'
+      }
+    ]
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+    vpnConnections: [
+      {
+        connectionBandwidth: 100
+        enableBgp: false
+        enableInternetSecurity: true
+        enableRateLimiting: false
+        name: '<name>'
+        remoteVpnSiteResourceId: '<remoteVpnSiteResourceId>'
+        routingWeight: 0
+        useLocalAzureIpAddress: false
+        usePolicyBasedTrafficSelectors: false
+        vpnConnectionProtocolType: 'IKEv2'
+      }
+    ]
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "nvgwaf001"
     },
     "virtualHubResourceId": {
       "value": "<virtualHubResourceId>"

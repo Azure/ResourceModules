@@ -33,6 +33,7 @@ The following section provides usage examples for the module, which were used to
 - [Using only defaults](#example-1-using-only-defaults)
 - [Geo](#example-2-geo)
 - [Using large parameter set](#example-3-using-large-parameter-set)
+- [WAF-aligned](#example-4-waf-aligned)
 
 ### Example 1: _Using only defaults_
 
@@ -303,6 +304,200 @@ module redisEnterprise 'br:bicep/modules/cache.redis-enterprise:1.0.0' = {
     // Required parameters
     "name": {
       "value": "cremax001"
+    },
+    // Non-required parameters
+    "capacity": {
+      "value": 2
+    },
+    "databases": {
+      "value": [
+        {
+          "clusteringPolicy": "EnterpriseCluster",
+          "evictionPolicy": "AllKeysLFU",
+          "modules": [
+            {
+              "name": "RedisBloom"
+            },
+            {
+              "args": "RETENTION_POLICY 20",
+              "name": "RedisTimeSeries"
+            }
+          ],
+          "persistenceAofEnabled": true,
+          "persistenceAofFrequency": "1s",
+          "persistenceRdbEnabled": false,
+          "port": 10000
+        }
+      ]
+    },
+    "diagnosticSettings": {
+      "value": [
+        {
+          "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+          "eventHubName": "<eventHubName>",
+          "metricCategories": [
+            {
+              "category": "AllMetrics"
+            }
+          ],
+          "name": "customSetting",
+          "storageAccountResourceId": "<storageAccountResourceId>",
+          "workspaceResourceId": "<workspaceResourceId>"
+        }
+      ]
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "minimumTlsVersion": {
+      "value": "1.2"
+    },
+    "privateEndpoints": {
+      "value": [
+        {
+          "privateDnsZoneResourceIds": [
+            "<privateDNSZoneResourceId>"
+          ],
+          "subnetResourceId": "<subnetResourceId>",
+          "tags": {
+            "Environment": "Non-Prod",
+            "hidden-title": "This is visible in the resource name",
+            "Role": "DeploymentValidation"
+          }
+        }
+      ]
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "tags": {
+      "value": {
+        "hidden-title": "This is visible in the resource name",
+        "resourceType": "Redis Cache Enterprise"
+      }
+    },
+    "zoneRedundant": {
+      "value": true
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 4: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module redisEnterprise 'br:bicep/modules/cache.redis-enterprise:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-crewaf'
+  params: {
+    // Required parameters
+    name: 'crewaf001'
+    // Non-required parameters
+    capacity: 2
+    databases: [
+      {
+        clusteringPolicy: 'EnterpriseCluster'
+        evictionPolicy: 'AllKeysLFU'
+        modules: [
+          {
+            name: 'RedisBloom'
+          }
+          {
+            args: 'RETENTION_POLICY 20'
+            name: 'RedisTimeSeries'
+          }
+        ]
+        persistenceAofEnabled: true
+        persistenceAofFrequency: '1s'
+        persistenceRdbEnabled: false
+        port: 10000
+      }
+    ]
+    diagnosticSettings: [
+      {
+        eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+        eventHubName: '<eventHubName>'
+        metricCategories: [
+          {
+            category: 'AllMetrics'
+          }
+        ]
+        name: 'customSetting'
+        storageAccountResourceId: '<storageAccountResourceId>'
+        workspaceResourceId: '<workspaceResourceId>'
+      }
+    ]
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    minimumTlsVersion: '1.2'
+    privateEndpoints: [
+      {
+        privateDnsZoneResourceIds: [
+          '<privateDNSZoneResourceId>'
+        ]
+        subnetResourceId: '<subnetResourceId>'
+        tags: {
+          Environment: 'Non-Prod'
+          'hidden-title': 'This is visible in the resource name'
+          Role: 'DeploymentValidation'
+        }
+      }
+    ]
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    tags: {
+      'hidden-title': 'This is visible in the resource name'
+      resourceType: 'Redis Cache Enterprise'
+    }
+    zoneRedundant: true
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "crewaf001"
     },
     // Non-required parameters
     "capacity": {

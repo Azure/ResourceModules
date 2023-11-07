@@ -32,6 +32,7 @@ The following section provides usage examples for the module, which were used to
 
 - [Using only defaults](#example-1-using-only-defaults)
 - [Using large parameter set](#example-2-using-large-parameter-set)
+- [WAF-aligned](#example-3-waf-aligned)
 
 ### Example 1: _Using only defaults_
 
@@ -118,6 +119,58 @@ module sshPublicKey 'br:bicep/modules/compute.ssh-public-key:1.0.0' = {
     // Required parameters
     "name": {
       "value": "sshkey-cspkmax001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "publicKey": {
+      "value": "<publicKey>"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 3: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module sshPublicKey 'br:bicep/modules/compute.ssh-public-key:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-cspkwaf'
+  params: {
+    // Required parameters
+    name: 'sshkey-cspkwaf001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    publicKey: '<publicKey>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "sshkey-cspkwaf001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {

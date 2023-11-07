@@ -39,6 +39,7 @@ The following section provides usage examples for the module, which were used to
 - [Encr](#example-2-encr)
 - [Using large parameter set](#example-3-using-large-parameter-set)
 - [Pe](#example-4-pe)
+- [WAF-aligned](#example-5-waf-aligned)
 
 ### Example 1: _Using only defaults_
 
@@ -658,6 +659,402 @@ module namespace 'br:bicep/modules/event-hub.namespace:1.0.0' = {
     },
     "skuName": {
       "value": "Premium"
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    },
+    "zoneRedundant": {
+      "value": true
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 5: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module namespace 'br:bicep/modules/event-hub.namespace:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-ehnwaf'
+  params: {
+    // Required parameters
+    name: 'ehnwaf001'
+    // Non-required parameters
+    authorizationRules: [
+      {
+        name: 'RootManageSharedAccessKey'
+        rights: [
+          'Listen'
+          'Manage'
+          'Send'
+        ]
+      }
+      {
+        name: 'SendListenAccess'
+        rights: [
+          'Listen'
+          'Send'
+        ]
+      }
+    ]
+    diagnosticSettings: [
+      {
+        eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+        eventHubName: '<eventHubName>'
+        metricCategories: [
+          {
+            category: 'AllMetrics'
+          }
+        ]
+        name: 'customSetting'
+        storageAccountResourceId: '<storageAccountResourceId>'
+        workspaceResourceId: '<workspaceResourceId>'
+      }
+    ]
+    disableLocalAuth: true
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    eventhubs: [
+      {
+        name: 'az-evh-x-001'
+        roleAssignments: [
+          {
+            principalId: '<principalId>'
+            principalType: 'ServicePrincipal'
+            roleDefinitionIdOrName: 'Reader'
+          }
+        ]
+      }
+      {
+        authorizationRules: [
+          {
+            name: 'RootManageSharedAccessKey'
+            rights: [
+              'Listen'
+              'Manage'
+              'Send'
+            ]
+          }
+          {
+            name: 'SendListenAccess'
+            rights: [
+              'Listen'
+              'Send'
+            ]
+          }
+        ]
+        captureDescriptionDestinationArchiveNameFormat: '{Namespace}/{EventHub}/{PartitionId}/{Year}/{Month}/{Day}/{Hour}/{Minute}/{Second}'
+        captureDescriptionDestinationBlobContainer: 'eventhub'
+        captureDescriptionDestinationName: 'EventHubArchive.AzureBlockBlob'
+        captureDescriptionDestinationStorageAccountResourceId: '<captureDescriptionDestinationStorageAccountResourceId>'
+        captureDescriptionEnabled: true
+        captureDescriptionEncoding: 'Avro'
+        captureDescriptionIntervalInSeconds: 300
+        captureDescriptionSizeLimitInBytes: 314572800
+        captureDescriptionSkipEmptyArchives: true
+        consumergroups: [
+          {
+            name: 'custom'
+            userMetadata: 'customMetadata'
+          }
+        ]
+        messageRetentionInDays: 1
+        name: 'az-evh-x-002'
+        partitionCount: 2
+        retentionDescriptionCleanupPolicy: 'Delete'
+        retentionDescriptionRetentionTimeInHours: 3
+        roleAssignments: [
+          {
+            principalId: '<principalId>'
+            principalType: 'ServicePrincipal'
+            roleDefinitionIdOrName: 'Reader'
+          }
+        ]
+        status: 'Active'
+      }
+      {
+        name: 'az-evh-x-003'
+        retentionDescriptionCleanupPolicy: 'Compact'
+        retentionDescriptionTombstoneRetentionTimeInHours: 24
+      }
+    ]
+    isAutoInflateEnabled: true
+    kafkaEnabled: true
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    managedIdentities: {
+      systemAssigned: true
+      userAssignedResourcesIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
+    maximumThroughputUnits: 4
+    minimumTlsVersion: '1.2'
+    networkRuleSets: {
+      defaultAction: 'Deny'
+      ipRules: [
+        {
+          action: 'Allow'
+          ipMask: '10.10.10.10'
+        }
+      ]
+      trustedServiceAccessEnabled: false
+      virtualNetworkRules: [
+        {
+          ignoreMissingVnetServiceEndpoint: true
+          subnetResourceId: '<subnetResourceId>'
+        }
+      ]
+    }
+    privateEndpoints: [
+      {
+        privateDnsZoneResourceIds: [
+          '<privateDNSZoneResourceId>'
+        ]
+        service: 'namespace'
+        subnetResourceId: '<subnetResourceId>'
+        tags: {
+          Environment: 'Non-Prod'
+          'hidden-title': 'This is visible in the resource name'
+          Role: 'DeploymentValidation'
+        }
+      }
+    ]
+    publicNetworkAccess: 'Disabled'
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    skuCapacity: 2
+    skuName: 'Standard'
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+    zoneRedundant: true
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "ehnwaf001"
+    },
+    // Non-required parameters
+    "authorizationRules": {
+      "value": [
+        {
+          "name": "RootManageSharedAccessKey",
+          "rights": [
+            "Listen",
+            "Manage",
+            "Send"
+          ]
+        },
+        {
+          "name": "SendListenAccess",
+          "rights": [
+            "Listen",
+            "Send"
+          ]
+        }
+      ]
+    },
+    "diagnosticSettings": {
+      "value": [
+        {
+          "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+          "eventHubName": "<eventHubName>",
+          "metricCategories": [
+            {
+              "category": "AllMetrics"
+            }
+          ],
+          "name": "customSetting",
+          "storageAccountResourceId": "<storageAccountResourceId>",
+          "workspaceResourceId": "<workspaceResourceId>"
+        }
+      ]
+    },
+    "disableLocalAuth": {
+      "value": true
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "eventhubs": {
+      "value": [
+        {
+          "name": "az-evh-x-001",
+          "roleAssignments": [
+            {
+              "principalId": "<principalId>",
+              "principalType": "ServicePrincipal",
+              "roleDefinitionIdOrName": "Reader"
+            }
+          ]
+        },
+        {
+          "authorizationRules": [
+            {
+              "name": "RootManageSharedAccessKey",
+              "rights": [
+                "Listen",
+                "Manage",
+                "Send"
+              ]
+            },
+            {
+              "name": "SendListenAccess",
+              "rights": [
+                "Listen",
+                "Send"
+              ]
+            }
+          ],
+          "captureDescriptionDestinationArchiveNameFormat": "{Namespace}/{EventHub}/{PartitionId}/{Year}/{Month}/{Day}/{Hour}/{Minute}/{Second}",
+          "captureDescriptionDestinationBlobContainer": "eventhub",
+          "captureDescriptionDestinationName": "EventHubArchive.AzureBlockBlob",
+          "captureDescriptionDestinationStorageAccountResourceId": "<captureDescriptionDestinationStorageAccountResourceId>",
+          "captureDescriptionEnabled": true,
+          "captureDescriptionEncoding": "Avro",
+          "captureDescriptionIntervalInSeconds": 300,
+          "captureDescriptionSizeLimitInBytes": 314572800,
+          "captureDescriptionSkipEmptyArchives": true,
+          "consumergroups": [
+            {
+              "name": "custom",
+              "userMetadata": "customMetadata"
+            }
+          ],
+          "messageRetentionInDays": 1,
+          "name": "az-evh-x-002",
+          "partitionCount": 2,
+          "retentionDescriptionCleanupPolicy": "Delete",
+          "retentionDescriptionRetentionTimeInHours": 3,
+          "roleAssignments": [
+            {
+              "principalId": "<principalId>",
+              "principalType": "ServicePrincipal",
+              "roleDefinitionIdOrName": "Reader"
+            }
+          ],
+          "status": "Active"
+        },
+        {
+          "name": "az-evh-x-003",
+          "retentionDescriptionCleanupPolicy": "Compact",
+          "retentionDescriptionTombstoneRetentionTimeInHours": 24
+        }
+      ]
+    },
+    "isAutoInflateEnabled": {
+      "value": true
+    },
+    "kafkaEnabled": {
+      "value": true
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "managedIdentities": {
+      "value": {
+        "systemAssigned": true,
+        "userAssignedResourcesIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
+    },
+    "maximumThroughputUnits": {
+      "value": 4
+    },
+    "minimumTlsVersion": {
+      "value": "1.2"
+    },
+    "networkRuleSets": {
+      "value": {
+        "defaultAction": "Deny",
+        "ipRules": [
+          {
+            "action": "Allow",
+            "ipMask": "10.10.10.10"
+          }
+        ],
+        "trustedServiceAccessEnabled": false,
+        "virtualNetworkRules": [
+          {
+            "ignoreMissingVnetServiceEndpoint": true,
+            "subnetResourceId": "<subnetResourceId>"
+          }
+        ]
+      }
+    },
+    "privateEndpoints": {
+      "value": [
+        {
+          "privateDnsZoneResourceIds": [
+            "<privateDNSZoneResourceId>"
+          ],
+          "service": "namespace",
+          "subnetResourceId": "<subnetResourceId>",
+          "tags": {
+            "Environment": "Non-Prod",
+            "hidden-title": "This is visible in the resource name",
+            "Role": "DeploymentValidation"
+          }
+        }
+      ]
+    },
+    "publicNetworkAccess": {
+      "value": "Disabled"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "skuCapacity": {
+      "value": 2
+    },
+    "skuName": {
+      "value": "Standard"
     },
     "tags": {
       "value": {

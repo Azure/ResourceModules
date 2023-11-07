@@ -29,6 +29,7 @@ The following section provides usage examples for the module, which were used to
 
 - [Using only defaults](#example-1-using-only-defaults)
 - [Using large parameter set](#example-2-using-large-parameter-set)
+- [WAF-aligned](#example-3-waf-aligned)
 
 ### Example 1: _Using only defaults_
 
@@ -221,6 +222,168 @@ module privateLinkService 'br:bicep/modules/network.private-link-service:1.0.0' 
       "value": [
         {
           "name": "nplsmax01",
+          "properties": {
+            "primary": true,
+            "privateIPAllocationMethod": "Dynamic",
+            "subnet": {
+              "id": "<id>"
+            }
+          }
+        }
+      ]
+    },
+    "loadBalancerFrontendIpConfigurations": {
+      "value": [
+        {
+          "id": "<id>"
+        }
+      ]
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    },
+    "visibility": {
+      "value": {
+        "subscriptions": [
+          "<subscriptionId>"
+        ]
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 3: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module privateLinkService 'br:bicep/modules/network.private-link-service:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-nplswaf'
+  params: {
+    // Required parameters
+    name: 'nplswaf001'
+    // Non-required parameters
+    autoApproval: {
+      subscriptions: [
+        '*'
+      ]
+    }
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    enableProxyProtocol: true
+    fqdns: [
+      'nplswaf.plsfqdn01.azure.privatelinkservice'
+      'nplswaf.plsfqdn02.azure.privatelinkservice'
+    ]
+    ipConfigurations: [
+      {
+        name: 'nplswaf01'
+        properties: {
+          primary: true
+          privateIPAllocationMethod: 'Dynamic'
+          subnet: {
+            id: '<id>'
+          }
+        }
+      }
+    ]
+    loadBalancerFrontendIpConfigurations: [
+      {
+        id: '<id>'
+      }
+    ]
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+    visibility: {
+      subscriptions: [
+        '<subscriptionId>'
+      ]
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "nplswaf001"
+    },
+    // Non-required parameters
+    "autoApproval": {
+      "value": {
+        "subscriptions": [
+          "*"
+        ]
+      }
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "enableProxyProtocol": {
+      "value": true
+    },
+    "fqdns": {
+      "value": [
+        "nplswaf.plsfqdn01.azure.privatelinkservice",
+        "nplswaf.plsfqdn02.azure.privatelinkservice"
+      ]
+    },
+    "ipConfigurations": {
+      "value": [
+        {
+          "name": "nplswaf01",
           "properties": {
             "primary": true,
             "privateIPAllocationMethod": "Dynamic",

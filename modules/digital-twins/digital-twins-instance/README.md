@@ -32,6 +32,7 @@ The following section provides usage examples for the module, which were used to
 
 - [Using only defaults](#example-1-using-only-defaults)
 - [Using large parameter set](#example-2-using-large-parameter-set)
+- [WAF-aligned](#example-3-waf-aligned)
 
 ### Example 1: _Using only defaults_
 
@@ -174,6 +175,186 @@ module digitalTwinsInstance 'br:bicep/modules/digital-twins.digital-twins-instan
     // Required parameters
     "name": {
       "value": "dtdtimax001"
+    },
+    // Non-required parameters
+    "diagnosticSettings": {
+      "value": [
+        {
+          "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+          "eventHubName": "<eventHubName>",
+          "metricCategories": [
+            {
+              "category": "AllMetrics"
+            }
+          ],
+          "name": "customSetting",
+          "storageAccountResourceId": "<storageAccountResourceId>",
+          "workspaceResourceId": "<workspaceResourceId>"
+        }
+      ]
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "eventGridEndpoint": {
+      "value": {
+        "eventGridDomainId": "<eventGridDomainId>",
+        "topicEndpoint": "<topicEndpoint>"
+      }
+    },
+    "eventHubEndpoint": {
+      "value": {
+        "authenticationType": "IdentityBased",
+        "endpointUri": "<endpointUri>",
+        "entityPath": "<entityPath>",
+        "userAssignedIdentity": "<userAssignedIdentity>"
+      }
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "privateEndpoints": {
+      "value": [
+        {
+          "privateDnsZoneResourceIds": [
+            "<privateDNSZoneResourceId>"
+          ],
+          "subnetResourceId": "<subnetResourceId>"
+        }
+      ]
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "serviceBusEndpoint": {
+      "value": {
+        "authenticationType": "IdentityBased",
+        "endpointUri": "<endpointUri>",
+        "entityPath": "<entityPath>",
+        "userAssignedIdentity": "<userAssignedIdentity>"
+      }
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    },
+    "userAssignedIdentities": {
+      "value": {
+        "<managedIdentityResourceId>": {}
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 3: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module digitalTwinsInstance 'br:bicep/modules/digital-twins.digital-twins-instance:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-dtdtiwaf'
+  params: {
+    // Required parameters
+    name: 'dtdtiwaf001'
+    // Non-required parameters
+    diagnosticSettings: [
+      {
+        eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+        eventHubName: '<eventHubName>'
+        metricCategories: [
+          {
+            category: 'AllMetrics'
+          }
+        ]
+        name: 'customSetting'
+        storageAccountResourceId: '<storageAccountResourceId>'
+        workspaceResourceId: '<workspaceResourceId>'
+      }
+    ]
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    eventGridEndpoint: {
+      eventGridDomainId: '<eventGridDomainId>'
+      topicEndpoint: '<topicEndpoint>'
+    }
+    eventHubEndpoint: {
+      authenticationType: 'IdentityBased'
+      endpointUri: '<endpointUri>'
+      entityPath: '<entityPath>'
+      userAssignedIdentity: '<userAssignedIdentity>'
+    }
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    privateEndpoints: [
+      {
+        privateDnsZoneResourceIds: [
+          '<privateDNSZoneResourceId>'
+        ]
+        subnetResourceId: '<subnetResourceId>'
+      }
+    ]
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    serviceBusEndpoint: {
+      authenticationType: 'IdentityBased'
+      endpointUri: '<endpointUri>'
+      entityPath: '<entityPath>'
+      userAssignedIdentity: '<userAssignedIdentity>'
+    }
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+    userAssignedIdentities: {
+      '<managedIdentityResourceId>': {}
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "dtdtiwaf001"
     },
     // Non-required parameters
     "diagnosticSettings": {

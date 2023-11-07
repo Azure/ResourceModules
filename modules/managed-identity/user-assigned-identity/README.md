@@ -29,6 +29,7 @@ The following section provides usage examples for the module, which were used to
 
 - [Using only defaults](#example-1-using-only-defaults)
 - [Using large parameter set](#example-2-using-large-parameter-set)
+- [WAF-aligned](#example-3-waf-aligned)
 
 ### Example 1: _Using only defaults_
 
@@ -150,6 +151,110 @@ module userAssignedIdentity 'br:bicep/modules/managed-identity.user-assigned-ide
     },
     "name": {
       "value": "miuaimax001"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 3: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module userAssignedIdentity 'br:bicep/modules/managed-identity.user-assigned-identity:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-miuaiwaf'
+  params: {
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    federatedIdentityCredentials: [
+      {
+        audiences: [
+          'api://AzureADTokenExchange'
+        ]
+        issuer: '<issuer>'
+        name: 'test-fed-cred-miuaiwaf-001'
+        subject: 'system:serviceaccount:default:workload-identity-sa'
+      }
+    ]
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    name: 'miuaiwaf001'
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "federatedIdentityCredentials": {
+      "value": [
+        {
+          "audiences": [
+            "api://AzureADTokenExchange"
+          ],
+          "issuer": "<issuer>",
+          "name": "test-fed-cred-miuaiwaf-001",
+          "subject": "system:serviceaccount:default:workload-identity-sa"
+        }
+      ]
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "name": {
+      "value": "miuaiwaf001"
     },
     "roleAssignments": {
       "value": [

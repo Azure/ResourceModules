@@ -45,6 +45,7 @@ The following section provides usage examples for the module, which were used to
 - [Pe](#example-3-pe)
 - [Secondary](#example-4-secondary)
 - [Vulnassm](#example-5-vulnassm)
+- [WAF-aligned](#example-6-waf-aligned)
 
 ### Example 1: _Admin_
 
@@ -725,6 +726,324 @@ module server 'br:bicep/modules/sql.server:1.0.0' = {
         "recurringScansIsEnabled": true,
         "storageAccountResourceId": "<storageAccountResourceId>",
         "useStorageAccountAccessKey": false
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 6: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module server 'br:bicep/modules/sql.server:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-sqlswaf'
+  params: {
+    // Required parameters
+    name: 'sqlswaf'
+    // Non-required parameters
+    administratorLogin: 'adminUserName'
+    administratorLoginPassword: '<administratorLoginPassword>'
+    databases: [
+      {
+        backupLongTermRetentionPolicy: {
+          monthlyRetention: 'P6M'
+        }
+        backupShortTermRetentionPolicy: {
+          retentionDays: 14
+        }
+        capacity: 0
+        collation: 'SQL_Latin1_General_CP1_CI_AS'
+        diagnosticSettings: [
+          {
+            eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+            eventHubName: '<eventHubName>'
+            name: 'customSetting'
+            storageAccountResourceId: '<storageAccountResourceId>'
+            workspaceResourceId: '<workspaceResourceId>'
+          }
+        ]
+        elasticPoolId: '<elasticPoolId>'
+        encryptionProtectorObj: {
+          serverKeyName: '<serverKeyName>'
+          serverKeyType: 'AzureKeyVault'
+        }
+        licenseType: 'LicenseIncluded'
+        maxSizeBytes: 34359738368
+        name: 'sqlswafdb-001'
+        skuName: 'ElasticPool'
+        skuTier: 'GeneralPurpose'
+      }
+    ]
+    elasticPools: [
+      {
+        maintenanceConfigurationId: '<maintenanceConfigurationId>'
+        name: 'sqlswaf-ep-001'
+        skuCapacity: 10
+        skuName: 'GP_Gen5'
+        skuTier: 'GeneralPurpose'
+      }
+    ]
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    firewallRules: [
+      {
+        endIpAddress: '0.0.0.0'
+        name: 'AllowAllWindowsAzureIps'
+        startIpAddress: '0.0.0.0'
+      }
+    ]
+    keys: [
+      {
+        name: '<name>'
+        serverKeyType: 'AzureKeyVault'
+        uri: '<uri>'
+      }
+    ]
+    location: '<location>'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    managedIdentities: {
+      systemAssigned: true
+      userAssignedResourcesIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
+    primaryUserAssignedIdentityId: '<primaryUserAssignedIdentityId>'
+    privateEndpoints: [
+      {
+        privateDnsZoneResourceIds: [
+          '<privateDNSZoneResourceId>'
+        ]
+        service: 'sqlServer'
+        subnetResourceId: '<subnetResourceId>'
+        tags: {
+          Environment: 'Non-Prod'
+          'hidden-title': 'This is visible in the resource name'
+          Role: 'DeploymentValidation'
+        }
+      }
+    ]
+    restrictOutboundNetworkAccess: 'Disabled'
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    securityAlertPolicies: [
+      {
+        emailAccountAdmins: true
+        name: 'Default'
+        state: 'Enabled'
+      }
+    ]
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+    virtualNetworkRules: [
+      {
+        ignoreMissingVnetServiceEndpoint: true
+        name: 'newVnetRule1'
+        virtualNetworkSubnetId: '<virtualNetworkSubnetId>'
+      }
+    ]
+    vulnerabilityAssessmentsObj: {
+      emailSubscriptionAdmins: true
+      name: 'default'
+      recurringScansEmails: [
+        'test1@contoso.com'
+        'test2@contoso.com'
+      ]
+      recurringScansIsEnabled: true
+      storageAccountResourceId: '<storageAccountResourceId>'
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "sqlswaf"
+    },
+    "administratorLogin": {
+      "value": "adminUserName"
+    },
+    "administratorLoginPassword": {
+      "value": "<administratorLoginPassword>"
+    },
+    "databases": {
+      "value": [
+        {
+          "backupLongTermRetentionPolicy": {
+            "monthlyRetention": "P6M"
+          },
+          "backupShortTermRetentionPolicy": {
+            "retentionDays": 14
+          },
+          "capacity": 0,
+          "collation": "SQL_Latin1_General_CP1_CI_AS",
+          "diagnosticSettings": [
+            {
+              "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+              "eventHubName": "<eventHubName>",
+              "name": "customSetting",
+              "storageAccountResourceId": "<storageAccountResourceId>",
+              "workspaceResourceId": "<workspaceResourceId>"
+            }
+          ],
+          "elasticPoolId": "<elasticPoolId>",
+          "encryptionProtectorObj": {
+            "serverKeyName": "<serverKeyName>",
+            "serverKeyType": "AzureKeyVault"
+          },
+          "licenseType": "LicenseIncluded",
+          "maxSizeBytes": 34359738368,
+          "name": "sqlswafdb-001",
+          "skuName": "ElasticPool",
+          "skuTier": "GeneralPurpose"
+        }
+      ]
+    },
+    "elasticPools": {
+      "value": [
+        {
+          "maintenanceConfigurationId": "<maintenanceConfigurationId>",
+          "name": "sqlswaf-ep-001",
+          "skuCapacity": 10,
+          "skuName": "GP_Gen5",
+          "skuTier": "GeneralPurpose"
+        }
+      ]
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "firewallRules": {
+      "value": [
+        {
+          "endIpAddress": "0.0.0.0",
+          "name": "AllowAllWindowsAzureIps",
+          "startIpAddress": "0.0.0.0"
+        }
+      ]
+    },
+    "keys": {
+      "value": [
+        {
+          "name": "<name>",
+          "serverKeyType": "AzureKeyVault",
+          "uri": "<uri>"
+        }
+      ]
+    },
+    "location": {
+      "value": "<location>"
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "managedIdentities": {
+      "value": {
+        "systemAssigned": true,
+        "userAssignedResourcesIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
+    },
+    "primaryUserAssignedIdentityId": {
+      "value": "<primaryUserAssignedIdentityId>"
+    },
+    "privateEndpoints": {
+      "value": [
+        {
+          "privateDnsZoneResourceIds": [
+            "<privateDNSZoneResourceId>"
+          ],
+          "service": "sqlServer",
+          "subnetResourceId": "<subnetResourceId>",
+          "tags": {
+            "Environment": "Non-Prod",
+            "hidden-title": "This is visible in the resource name",
+            "Role": "DeploymentValidation"
+          }
+        }
+      ]
+    },
+    "restrictOutboundNetworkAccess": {
+      "value": "Disabled"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "securityAlertPolicies": {
+      "value": [
+        {
+          "emailAccountAdmins": true,
+          "name": "Default",
+          "state": "Enabled"
+        }
+      ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    },
+    "virtualNetworkRules": {
+      "value": [
+        {
+          "ignoreMissingVnetServiceEndpoint": true,
+          "name": "newVnetRule1",
+          "virtualNetworkSubnetId": "<virtualNetworkSubnetId>"
+        }
+      ]
+    },
+    "vulnerabilityAssessmentsObj": {
+      "value": {
+        "emailSubscriptionAdmins": true,
+        "name": "default",
+        "recurringScansEmails": [
+          "test1@contoso.com",
+          "test2@contoso.com"
+        ],
+        "recurringScansIsEnabled": true,
+        "storageAccountResourceId": "<storageAccountResourceId>"
       }
     }
   }

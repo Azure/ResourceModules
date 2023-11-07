@@ -27,6 +27,7 @@ The following section provides usage examples for the module, which were used to
 
 - [Using only defaults](#example-1-using-only-defaults)
 - [Using large parameter set](#example-2-using-large-parameter-set)
+- [WAF-aligned](#example-3-waf-aligned)
 
 ### Example 1: _Using only defaults_
 
@@ -157,6 +158,152 @@ module firewallPolicy 'br:bicep/modules/network.firewall-policy:1.0.0' = {
     // Required parameters
     "name": {
       "value": "nfpmax001"
+    },
+    // Non-required parameters
+    "allowSqlRedirect": {
+      "value": true
+    },
+    "autoLearnPrivateRanges": {
+      "value": "Enabled"
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "ruleCollectionGroups": {
+      "value": [
+        {
+          "name": "rule-001",
+          "priority": 5000,
+          "ruleCollections": [
+            {
+              "action": {
+                "type": "Allow"
+              },
+              "name": "collection002",
+              "priority": 5555,
+              "ruleCollectionType": "FirewallPolicyFilterRuleCollection",
+              "rules": [
+                {
+                  "destinationAddresses": [
+                    "*"
+                  ],
+                  "destinationFqdns": [],
+                  "destinationIpGroups": [],
+                  "destinationPorts": [
+                    "80"
+                  ],
+                  "ipProtocols": [
+                    "TCP",
+                    "UDP"
+                  ],
+                  "name": "rule002",
+                  "ruleType": "NetworkRule",
+                  "sourceAddresses": [
+                    "*"
+                  ],
+                  "sourceIpGroups": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 3: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module firewallPolicy 'br:bicep/modules/network.firewall-policy:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-nfpwaf'
+  params: {
+    // Required parameters
+    name: 'nfpwaf001'
+    // Non-required parameters
+    allowSqlRedirect: true
+    autoLearnPrivateRanges: 'Enabled'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    ruleCollectionGroups: [
+      {
+        name: 'rule-001'
+        priority: 5000
+        ruleCollections: [
+          {
+            action: {
+              type: 'Allow'
+            }
+            name: 'collection002'
+            priority: 5555
+            ruleCollectionType: 'FirewallPolicyFilterRuleCollection'
+            rules: [
+              {
+                destinationAddresses: [
+                  '*'
+                ]
+                destinationFqdns: []
+                destinationIpGroups: []
+                destinationPorts: [
+                  '80'
+                ]
+                ipProtocols: [
+                  'TCP'
+                  'UDP'
+                ]
+                name: 'rule002'
+                ruleType: 'NetworkRule'
+                sourceAddresses: [
+                  '*'
+                ]
+                sourceIpGroups: []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "nfpwaf001"
     },
     // Non-required parameters
     "allowSqlRedirect": {

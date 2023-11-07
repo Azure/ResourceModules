@@ -26,6 +26,7 @@ The following section provides usage examples for the module, which were used to
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/insights.metric-alert:1.0.0`.
 
 - [Using large parameter set](#example-1-using-large-parameter-set)
+- [WAF-aligned](#example-2-waf-aligned)
 
 ### Example 1: _Using large parameter set_
 
@@ -106,6 +107,130 @@ module metricAlert 'br:bicep/modules/insights.metric-alert:1.0.0' = {
     },
     "name": {
       "value": "imamax001"
+    },
+    // Non-required parameters
+    "actions": {
+      "value": [
+        "<actionGroupResourceId>"
+      ]
+    },
+    "alertCriteriaType": {
+      "value": "Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria"
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    },
+    "targetResourceRegion": {
+      "value": "westeurope"
+    },
+    "targetResourceType": {
+      "value": "microsoft.compute/virtualmachines"
+    },
+    "windowSize": {
+      "value": "PT15M"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 2: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module metricAlert 'br:bicep/modules/insights.metric-alert:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-imawaf'
+  params: {
+    // Required parameters
+    criterias: [
+      {
+        criterionType: 'StaticThresholdCriterion'
+        metricName: 'Percentage CPU'
+        metricNamespace: 'microsoft.compute/virtualmachines'
+        name: 'HighCPU'
+        operator: 'GreaterThan'
+        threshold: '90'
+        timeAggregation: 'Average'
+      }
+    ]
+    name: 'imawaf001'
+    // Non-required parameters
+    actions: [
+      '<actionGroupResourceId>'
+    ]
+    alertCriteriaType: 'Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+    targetResourceRegion: 'westeurope'
+    targetResourceType: 'microsoft.compute/virtualmachines'
+    windowSize: 'PT15M'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "criterias": {
+      "value": [
+        {
+          "criterionType": "StaticThresholdCriterion",
+          "metricName": "Percentage CPU",
+          "metricNamespace": "microsoft.compute/virtualmachines",
+          "name": "HighCPU",
+          "operator": "GreaterThan",
+          "threshold": "90",
+          "timeAggregation": "Average"
+        }
+      ]
+    },
+    "name": {
+      "value": "imawaf001"
     },
     // Non-required parameters
     "actions": {

@@ -30,6 +30,7 @@ The following section provides usage examples for the module, which were used to
 
 - [Using only defaults](#example-1-using-only-defaults)
 - [Using large parameter set](#example-2-using-large-parameter-set)
+- [WAF-aligned](#example-3-waf-aligned)
 
 ### Example 1: _Using only defaults_
 
@@ -257,6 +258,330 @@ module gallery 'br:bicep/modules/compute.gallery:1.0.0' = {
         },
         {
           "name": "cgmax-appd-002",
+          "roleAssignments": [
+            {
+              "principalId": "<principalId>",
+              "principalType": "ServicePrincipal",
+              "roleDefinitionIdOrName": "Reader"
+            }
+          ],
+          "supportedOSType": "Windows"
+        }
+      ]
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "images": {
+      "value": [
+        {
+          "name": "az-imgd-ws-001"
+        },
+        {
+          "hyperVGeneration": "V1",
+          "maxRecommendedMemory": 16,
+          "maxRecommendedvCPUs": 8,
+          "minRecommendedMemory": 4,
+          "minRecommendedvCPUs": 2,
+          "name": "az-imgd-ws-002",
+          "offer": "WindowsServer",
+          "osState": "Generalized",
+          "osType": "Windows",
+          "publisher": "MicrosoftWindowsServer",
+          "roleAssignments": [
+            {
+              "principalId": "<principalId>",
+              "principalType": "ServicePrincipal",
+              "roleDefinitionIdOrName": "Reader"
+            }
+          ],
+          "sku": "2022-datacenter-azure-edition"
+        },
+        {
+          "hyperVGeneration": "V2",
+          "isHibernateSupported": "true",
+          "maxRecommendedMemory": 16,
+          "maxRecommendedvCPUs": 8,
+          "minRecommendedMemory": 4,
+          "minRecommendedvCPUs": 2,
+          "name": "az-imgd-ws-003",
+          "offer": "WindowsServer",
+          "osState": "Generalized",
+          "osType": "Windows",
+          "publisher": "MicrosoftWindowsServer",
+          "roleAssignments": [
+            {
+              "principalId": "<principalId>",
+              "principalType": "ServicePrincipal",
+              "roleDefinitionIdOrName": "Reader"
+            }
+          ],
+          "sku": "2022-datacenter-azure-edition-hibernate"
+        },
+        {
+          "hyperVGeneration": "V2",
+          "isAcceleratedNetworkSupported": "true",
+          "maxRecommendedMemory": 16,
+          "maxRecommendedvCPUs": 8,
+          "minRecommendedMemory": 4,
+          "minRecommendedvCPUs": 2,
+          "name": "az-imgd-ws-004",
+          "offer": "WindowsServer",
+          "osState": "Generalized",
+          "osType": "Windows",
+          "publisher": "MicrosoftWindowsServer",
+          "roleAssignments": [
+            {
+              "principalId": "<principalId>",
+              "principalType": "ServicePrincipal",
+              "roleDefinitionIdOrName": "Reader"
+            }
+          ],
+          "sku": "2022-datacenter-azure-edition-accnet"
+        },
+        {
+          "hyperVGeneration": "V2",
+          "maxRecommendedMemory": 16,
+          "maxRecommendedvCPUs": 4,
+          "minRecommendedMemory": 4,
+          "minRecommendedvCPUs": 2,
+          "name": "az-imgd-wdtl-002",
+          "offer": "WindowsDesktop",
+          "osState": "Generalized",
+          "osType": "Windows",
+          "publisher": "MicrosoftWindowsDesktop",
+          "roleAssignments": [
+            {
+              "principalId": "<principalId>",
+              "principalType": "ServicePrincipal",
+              "roleDefinitionIdOrName": "Reader"
+            }
+          ],
+          "securityType": "TrustedLaunch",
+          "sku": "Win11-21H2"
+        },
+        {
+          "hyperVGeneration": "V2",
+          "maxRecommendedMemory": 32,
+          "maxRecommendedvCPUs": 4,
+          "minRecommendedMemory": 4,
+          "minRecommendedvCPUs": 1,
+          "name": "az-imgd-us-001",
+          "offer": "0001-com-ubuntu-server-focal",
+          "osState": "Generalized",
+          "osType": "Linux",
+          "publisher": "canonical",
+          "sku": "20_04-lts-gen2"
+        }
+      ]
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 3: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module gallery 'br:bicep/modules/compute.gallery:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-cgwaf'
+  params: {
+    // Required parameters
+    name: 'cgwaf001'
+    // Non-required parameters
+    applications: [
+      {
+        name: 'cgwaf-appd-001'
+      }
+      {
+        name: 'cgwaf-appd-002'
+        roleAssignments: [
+          {
+            principalId: '<principalId>'
+            principalType: 'ServicePrincipal'
+            roleDefinitionIdOrName: 'Reader'
+          }
+        ]
+        supportedOSType: 'Windows'
+      }
+    ]
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    images: [
+      {
+        name: 'az-imgd-ws-001'
+      }
+      {
+        hyperVGeneration: 'V1'
+        maxRecommendedMemory: 16
+        maxRecommendedvCPUs: 8
+        minRecommendedMemory: 4
+        minRecommendedvCPUs: 2
+        name: 'az-imgd-ws-002'
+        offer: 'WindowsServer'
+        osState: 'Generalized'
+        osType: 'Windows'
+        publisher: 'MicrosoftWindowsServer'
+        roleAssignments: [
+          {
+            principalId: '<principalId>'
+            principalType: 'ServicePrincipal'
+            roleDefinitionIdOrName: 'Reader'
+          }
+        ]
+        sku: '2022-datacenter-azure-edition'
+      }
+      {
+        hyperVGeneration: 'V2'
+        isHibernateSupported: 'true'
+        maxRecommendedMemory: 16
+        maxRecommendedvCPUs: 8
+        minRecommendedMemory: 4
+        minRecommendedvCPUs: 2
+        name: 'az-imgd-ws-003'
+        offer: 'WindowsServer'
+        osState: 'Generalized'
+        osType: 'Windows'
+        publisher: 'MicrosoftWindowsServer'
+        roleAssignments: [
+          {
+            principalId: '<principalId>'
+            principalType: 'ServicePrincipal'
+            roleDefinitionIdOrName: 'Reader'
+          }
+        ]
+        sku: '2022-datacenter-azure-edition-hibernate'
+      }
+      {
+        hyperVGeneration: 'V2'
+        isAcceleratedNetworkSupported: 'true'
+        maxRecommendedMemory: 16
+        maxRecommendedvCPUs: 8
+        minRecommendedMemory: 4
+        minRecommendedvCPUs: 2
+        name: 'az-imgd-ws-004'
+        offer: 'WindowsServer'
+        osState: 'Generalized'
+        osType: 'Windows'
+        publisher: 'MicrosoftWindowsServer'
+        roleAssignments: [
+          {
+            principalId: '<principalId>'
+            principalType: 'ServicePrincipal'
+            roleDefinitionIdOrName: 'Reader'
+          }
+        ]
+        sku: '2022-datacenter-azure-edition-accnet'
+      }
+      {
+        hyperVGeneration: 'V2'
+        maxRecommendedMemory: 16
+        maxRecommendedvCPUs: 4
+        minRecommendedMemory: 4
+        minRecommendedvCPUs: 2
+        name: 'az-imgd-wdtl-002'
+        offer: 'WindowsDesktop'
+        osState: 'Generalized'
+        osType: 'Windows'
+        publisher: 'MicrosoftWindowsDesktop'
+        roleAssignments: [
+          {
+            principalId: '<principalId>'
+            principalType: 'ServicePrincipal'
+            roleDefinitionIdOrName: 'Reader'
+          }
+        ]
+        securityType: 'TrustedLaunch'
+        sku: 'Win11-21H2'
+      }
+      {
+        hyperVGeneration: 'V2'
+        maxRecommendedMemory: 32
+        maxRecommendedvCPUs: 4
+        minRecommendedMemory: 4
+        minRecommendedvCPUs: 1
+        name: 'az-imgd-us-001'
+        offer: '0001-com-ubuntu-server-focal'
+        osState: 'Generalized'
+        osType: 'Linux'
+        publisher: 'canonical'
+        sku: '20_04-lts-gen2'
+      }
+    ]
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "cgwaf001"
+    },
+    // Non-required parameters
+    "applications": {
+      "value": [
+        {
+          "name": "cgwaf-appd-001"
+        },
+        {
+          "name": "cgwaf-appd-002",
           "roleAssignments": [
             {
               "principalId": "<principalId>",
