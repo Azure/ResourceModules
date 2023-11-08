@@ -1,5 +1,7 @@
 <h1 style="color: steelblue;">⚠️ Upcoming breaking changes ⚠️</h1>
 
+TEST CHANGE
+
 Following the recent release of [`0.11.0`](https://github.com/Azure/ResourceModules/releases/tag/v0.11.0), the upcoming period will focus on implementing the remaining changes required to align CARML's modules to the specifications of [Azure Verified Modules](https://aka.ms/avm) (currently in development). This will enable us to move & publish the modules of the CARML library to the official [Public Bicep Registry](https://github.com/Azure/bicep-registry-modules). You can read more about CARML's future in AVM [here](https://azure.github.io/Azure-Verified-Modules/faq/#what-is-happening-to-existing-initiatives-like-carml-and-tfvm).
 
 > You can find details on the status of the migration in this [issue](https://github.com/Azure/ResourceModules/issues/4020).
