@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.22.6.54827",
-      "templateHash": "5305729672150633375"
+      "version": "0.23.1.45101",
+      "templateHash": "12265634131995953652"
     },
     "name": "Web Site Basic Publishing Credentials Policies",
     "description": "This module deploys a Web Site Basic Publishing Credentials Policy.",
@@ -20,6 +20,13 @@
       ],
       "metadata": {
         "description": "Required. The name of the resource."
+      }
+    },
+    "allow": {
+      "type": "bool",
+      "defaultValue": true,
+      "metadata": {
+        "description": "Optional. Set to true to allow access to or false to diable a publishing method."
       }
     },
     "webAppName": {
@@ -64,7 +71,7 @@
       "name": "[format('{0}/{1}', parameters('webAppName'), parameters('name'))]",
       "location": "[parameters('location')]",
       "properties": {
-        "allow": true
+        "allow": "[parameters('allow')]"
       }
     }
   ],
