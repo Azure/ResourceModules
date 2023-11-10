@@ -5,8 +5,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.22.6.54827",
-      "templateHash": "3962832552855663187"
+      "version": "0.23.1.45101",
+      "templateHash": "18196957481129520546"
     },
     "name": "Web/Function Apps",
     "description": "This module deploys a Web or Function App.",
@@ -884,8 +884,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.22.6.54827",
-              "templateHash": "12140652943143922490"
+              "version": "0.23.1.45101",
+              "templateHash": "12410494471478708764"
             },
             "name": "Site App Settings",
             "description": "This module deploys a Site App Setting.",
@@ -1029,8 +1029,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.22.6.54827",
-              "templateHash": "1120403064106188130"
+              "version": "0.23.1.45101",
+              "templateHash": "15667145082226037238"
             },
             "name": "Site Auth Settings V2 Config",
             "description": "This module deploys a Site Auth Settings V2 Configuration.",
@@ -1204,8 +1204,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.22.6.54827",
-              "templateHash": "842322474793993092"
+              "version": "0.23.1.45101",
+              "templateHash": "17728495950787678705"
             },
             "name": "Web/Function App Deployment Slots",
             "description": "This module deploys a Web or Function App Deployment Slot.",
@@ -2080,8 +2080,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.22.6.54827",
-                      "templateHash": "13223616826795830599"
+                      "version": "0.23.1.45101",
+                      "templateHash": "10562313393461278954"
                     },
                     "name": "Site Slot App Settings",
                     "description": "This module deploys a Site Slot App Setting.",
@@ -2235,8 +2235,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.22.6.54827",
-                      "templateHash": "16157844933162881953"
+                      "version": "0.23.1.45101",
+                      "templateHash": "13215271953171449159"
                     },
                     "name": "Site Slot Auth Settings V2 Config",
                     "description": "This module deploys a Site Auth Settings V2 Configuration.",
@@ -2369,8 +2369,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.22.6.54827",
-                      "templateHash": "11888981629758921842"
+                      "version": "0.23.1.45101",
+                      "templateHash": "299894459930368764"
                     },
                     "name": "Web/Function Apps Slot Hybrid Connection Relay",
                     "description": "This module deploys a Site Slot Hybrid Connection Namespace Relay.",
@@ -2550,8 +2550,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.22.6.54827",
-                      "templateHash": "12078057657290521609"
+                      "version": "0.23.1.45101",
+                      "templateHash": "6873008238043407177"
                     },
                     "name": "Private Endpoints",
                     "description": "This module deploys a Private Endpoint.",
@@ -2953,8 +2953,8 @@
                           "metadata": {
                             "_generator": {
                               "name": "bicep",
-                              "version": "0.22.6.54827",
-                              "templateHash": "16391702514342252839"
+                              "version": "0.23.1.45101",
+                              "templateHash": "17578977753131828304"
                             },
                             "name": "Private Endpoint Private DNS Zone Groups",
                             "description": "This module deploys a Private Endpoint Private DNS Zone Group.",
@@ -3168,8 +3168,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.22.6.54827",
-              "templateHash": "5305729672150633375"
+              "version": "0.23.1.45101",
+              "templateHash": "12265634131995953652"
             },
             "name": "Web Site Basic Publishing Credentials Policies",
             "description": "This module deploys a Web Site Basic Publishing Credentials Policy.",
@@ -3184,6 +3184,13 @@
               ],
               "metadata": {
                 "description": "Required. The name of the resource."
+              }
+            },
+            "allow": {
+              "type": "bool",
+              "defaultValue": true,
+              "metadata": {
+                "description": "Optional. Set to true to allow access to or false to diable a publishing method."
               }
             },
             "webAppName": {
@@ -3228,7 +3235,7 @@
               "name": "[format('{0}/{1}', parameters('webAppName'), parameters('name'))]",
               "location": "[parameters('location')]",
               "properties": {
-                "allow": true
+                "allow": "[parameters('allow')]"
               }
             }
           ],
@@ -3299,8 +3306,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.22.6.54827",
-              "templateHash": "10458383238656360850"
+              "version": "0.23.1.45101",
+              "templateHash": "14574905385050050440"
             },
             "name": "Web/Function Apps Hybrid Connection Relay",
             "description": "This module deploys a Site Hybrid Connection Namespace Relay.",
@@ -3473,8 +3480,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.22.6.54827",
-              "templateHash": "12078057657290521609"
+              "version": "0.23.1.45101",
+              "templateHash": "6873008238043407177"
             },
             "name": "Private Endpoints",
             "description": "This module deploys a Private Endpoint.",
@@ -3876,8 +3883,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.22.6.54827",
-                      "templateHash": "16391702514342252839"
+                      "version": "0.23.1.45101",
+                      "templateHash": "17578977753131828304"
                     },
                     "name": "Private Endpoint Private DNS Zone Groups",
                     "description": "This module deploys a Private Endpoint Private DNS Zone Group.",
