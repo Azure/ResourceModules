@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.23.1.45101",
-      "templateHash": "12265634131995953652"
+      "templateHash": "12054216906297236281"
     },
     "name": "Web Site Basic Publishing Credentials Policies",
     "description": "This module deploys a Web Site Basic Publishing Credentials Policy.",
@@ -26,7 +26,7 @@
       "type": "bool",
       "defaultValue": true,
       "metadata": {
-        "description": "Optional. Set to true to allow access to or false to diable a publishing method."
+        "description": "Optional. Set to true to enable or false to disable a publishing method."
       }
     },
     "webAppName": {
