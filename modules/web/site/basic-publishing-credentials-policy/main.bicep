@@ -9,7 +9,7 @@ metadata owner = 'Azure/module-maintainers'
 ])
 param name string
 
-@sys.description('Optional. Set to true to allow access to or false to diable a publishing method.')
+@sys.description('Optional. Set to true to enable or false to disable a publishing method.')
 param allow bool = true
 
 @sys.description('Conditional. The name of the parent web site. Required if the template is used in a standalone deployment.')
