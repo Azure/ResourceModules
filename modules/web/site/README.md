@@ -125,6 +125,16 @@ module site 'br:bicep/modules/web.site:1.0.0' = {
         runtimeVersion: '~1'
       }
     }
+    basicPublishingCredentialsPolicies: [
+      {
+        allow: false
+        name: 'ftp'
+      }
+      {
+        allow: false
+        name: 'scm'
+      }
+    ]
     diagnosticSettings: [
       {
         eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
@@ -284,6 +294,18 @@ module site 'br:bicep/modules/web.site:1.0.0' = {
           "runtimeVersion": "~1"
         }
       }
+    },
+    "basicPublishingCredentialsPolicies": {
+      "value": [
+        {
+          "allow": false,
+          "name": "ftp"
+        },
+        {
+          "allow": false,
+          "name": "scm"
+        }
+      ]
     },
     "diagnosticSettings": {
       "value": [
@@ -450,9 +472,11 @@ module site 'br:bicep/modules/web.site:1.0.0' = {
     // Non-required parameters
     basicPublishingCredentialsPolicies: [
       {
+        allow: true
         name: 'ftp'
       }
       {
+        allow: true
         name: 'scm'
       }
     ]
@@ -604,9 +628,11 @@ module site 'br:bicep/modules/web.site:1.0.0' = {
     "basicPublishingCredentialsPolicies": {
       "value": [
         {
+          "allow": true,
           "name": "ftp"
         },
         {
+          "allow": true,
           "name": "scm"
         }
       ]

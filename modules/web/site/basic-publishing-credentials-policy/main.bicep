@@ -9,6 +9,9 @@ metadata owner = 'Azure/module-maintainers'
 ])
 param name string
 
+@sys.description('Optional. Set to true to allow access to or false to diable a publishing method.')
+param allow bool = true
+
 @sys.description('Conditional. The name of the parent web site. Required if the template is used in a standalone deployment.')
 param webAppName string
 
@@ -39,7 +42,7 @@ resource basicPublishingCredentialsPolicy 'Microsoft.Web/sites/basicPublishingCr
   location: location
   parent: webApp
   properties: {
-    allow: true
+    allow: allow
   }
 }
 
