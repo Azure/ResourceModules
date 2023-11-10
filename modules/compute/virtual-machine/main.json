@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "10963953838389818589"
+      "templateHash": "6920007226521594959"
     },
     "name": "Virtual Machines",
     "description": "This module deploys a Virtual Machine with one or multiple NICs and optionally one or multiple public IPs.",
@@ -607,7 +607,7 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Tags of the resource."
       }
@@ -973,9 +973,6 @@
           "location": {
             "value": "[parameters('location')]"
           },
-          "tags": {
-            "value": "[parameters('tags')]"
-          },
           "enableIPForwarding": "[if(contains(parameters('nicConfigurations')[copyIndex()], 'enableIPForwarding'), if(not(empty(parameters('nicConfigurations')[copyIndex()].enableIPForwarding)), createObject('value', parameters('nicConfigurations')[copyIndex()].enableIPForwarding), createObject('value', false())), createObject('value', false()))]",
           "enableAcceleratedNetworking": "[if(contains(parameters('nicConfigurations')[copyIndex()], 'enableAcceleratedNetworking'), createObject('value', parameters('nicConfigurations')[copyIndex()].enableAcceleratedNetworking), createObject('value', true()))]",
           "dnsServers": "[if(contains(parameters('nicConfigurations')[copyIndex()], 'dnsServers'), if(not(empty(parameters('nicConfigurations')[copyIndex()].dnsServers)), createObject('value', parameters('nicConfigurations')[copyIndex()].dnsServers), createObject('value', createArray())), createObject('value', createArray()))]",
@@ -984,12 +981,17 @@
             "value": "[parameters('nicConfigurations')[copyIndex()].ipConfigurations]"
           },
           "lock": {
-            "value": "[parameters('lock')]"
+            "value": "[coalesce(tryGet(parameters('nicConfigurations')[copyIndex()], 'lock'), parameters('lock'))]"
+          },
+          "tags": {
+            "value": "[coalesce(tryGet(parameters('nicConfigurations')[copyIndex()], 'tags'), parameters('tags'))]"
           },
           "diagnosticSettings": {
             "value": "[tryGet(parameters('nicConfigurations')[copyIndex()], 'diagnosticSettings')]"
           },
-          "roleAssignments": "[if(contains(parameters('nicConfigurations')[copyIndex()], 'roleAssignments'), if(not(empty(parameters('nicConfigurations')[copyIndex()].roleAssignments)), createObject('value', parameters('nicConfigurations')[copyIndex()].roleAssignments), createObject('value', createArray())), createObject('value', createArray()))]"
+          "roleAssignments": {
+            "value": "[tryGet(parameters('nicConfigurations')[copyIndex()], 'roleAssignments')]"
+          }
         },
         "template": {
           "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
@@ -999,7 +1001,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.22.6.54827",
-              "templateHash": "17831295506111976442"
+              "templateHash": "10482660512843717253"
             }
           },
           "definitions": {
@@ -1133,6 +1135,72 @@
                 }
               },
               "nullable": true
+            },
+            "roleAssignmentType": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "roleDefinitionIdOrName": {
+                    "type": "string",
+                    "metadata": {
+                      "description": "Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead."
+                    }
+                  },
+                  "principalId": {
+                    "type": "string",
+                    "metadata": {
+                      "description": "Required. The principal ID of the principal (user/group/identity) to assign the role to."
+                    }
+                  },
+                  "principalType": {
+                    "type": "string",
+                    "allowedValues": [
+                      "Device",
+                      "ForeignGroup",
+                      "Group",
+                      "ServicePrincipal",
+                      "User"
+                    ],
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. The principal type of the assigned principal ID."
+                    }
+                  },
+                  "description": {
+                    "type": "string",
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. The description of the role assignment."
+                    }
+                  },
+                  "condition": {
+                    "type": "string",
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase \"foo_storage_container\""
+                    }
+                  },
+                  "conditionVersion": {
+                    "type": "string",
+                    "allowedValues": [
+                      "2.0"
+                    ],
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. Version of the condition."
+                    }
+                  },
+                  "delegatedManagedIdentityResourceId": {
+                    "type": "string",
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. The Resource Id of the delegated managed identity resource."
+                    }
+                  }
+                }
+              },
+              "nullable": true
             }
           },
           "parameters": {
@@ -1146,7 +1214,8 @@
               "type": "string"
             },
             "tags": {
-              "type": "object"
+              "type": "object",
+              "nullable": true
             },
             "enableIPForwarding": {
               "type": "bool",
@@ -1180,8 +1249,7 @@
               }
             },
             "roleAssignments": {
-              "type": "array",
-              "defaultValue": [],
+              "$ref": "#/definitions/roleAssignmentType",
               "metadata": {
                 "description": "Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'."
               }
@@ -1225,7 +1293,7 @@
                   "skuName": "[if(contains(parameters('ipConfigurations')[copyIndex()], 'skuName'), createObject('value', parameters('ipConfigurations')[copyIndex()].skuName), createObject('value', 'Standard'))]",
                   "skuTier": "[if(contains(parameters('ipConfigurations')[copyIndex()], 'skuTier'), createObject('value', parameters('ipConfigurations')[copyIndex()].skuTier), createObject('value', 'Regional'))]",
                   "tags": {
-                    "value": "[parameters('tags')]"
+                    "value": "[coalesce(tryGet(parameters('ipConfigurations')[copyIndex()], 'tags'), parameters('tags'))]"
                   },
                   "zones": "[if(contains(parameters('ipConfigurations')[copyIndex()], 'zones'), createObject('value', parameters('ipConfigurations')[copyIndex()].zones), createObject('value', createArray()))]"
                 },
@@ -1237,7 +1305,7 @@
                     "_generator": {
                       "name": "bicep",
                       "version": "0.22.6.54827",
-                      "templateHash": "968771326214380550"
+                      "templateHash": "18404193892947466906"
                     },
                     "name": "Public IP Addresses",
                     "description": "This module deploys a Public IP Address.",
@@ -1576,7 +1644,7 @@
                     },
                     "tags": {
                       "type": "object",
-                      "defaultValue": {},
+                      "nullable": true,
                       "metadata": {
                         "description": "Optional. Tags of the resource."
                       }
@@ -1782,7 +1850,7 @@
                     "_generator": {
                       "name": "bicep",
                       "version": "0.22.6.54827",
-                      "templateHash": "8812824728238881787"
+                      "templateHash": "6506615823435977032"
                     },
                     "name": "Network Interface",
                     "description": "This module deploys a Network Interface.",
@@ -1977,7 +2045,7 @@
                     },
                     "tags": {
                       "type": "object",
-                      "defaultValue": {},
+                      "nullable": true,
                       "metadata": {
                         "description": "Optional. Tags of the resource."
                       }
@@ -2265,16 +2333,19 @@
           "autoUpgradeMinorVersion": "[if(contains(parameters('extensionAadJoinConfig'), 'autoUpgradeMinorVersion'), createObject('value', parameters('extensionAadJoinConfig').autoUpgradeMinorVersion), createObject('value', true()))]",
           "enableAutomaticUpgrade": "[if(contains(parameters('extensionAadJoinConfig'), 'enableAutomaticUpgrade'), createObject('value', parameters('extensionAadJoinConfig').enableAutomaticUpgrade), createObject('value', false()))]",
           "settings": "[if(contains(parameters('extensionAadJoinConfig'), 'settings'), createObject('value', parameters('extensionAadJoinConfig').settings), createObject('value', createObject()))]",
-          "tags": "[if(contains(parameters('extensionAadJoinConfig'), 'tags'), createObject('value', parameters('extensionAadJoinConfig').tags), createObject('value', createObject()))]"
+          "tags": {
+            "value": "[coalesce(tryGet(parameters('extensionAadJoinConfig'), 'tags'), parameters('tags'))]"
+          }
         },
         "template": {
           "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "languageVersion": "2.0",
           "contentVersion": "1.0.0.0",
           "metadata": {
             "_generator": {
               "name": "bicep",
               "version": "0.22.6.54827",
-              "templateHash": "16166330808348655128"
+              "templateHash": "9638144716839375831"
             },
             "name": "Virtual Machine Extensions",
             "description": "This module deploys a Virtual Machine Extension.",
@@ -2367,14 +2438,14 @@
             },
             "tags": {
               "type": "object",
-              "defaultValue": {},
+              "nullable": true,
               "metadata": {
                 "description": "Optional. Tags of the resource."
               }
             }
           },
-          "resources": [
-            {
+          "resources": {
+            "defaultTelemetry": {
               "condition": "[parameters('enableDefaultTelemetry')]",
               "type": "Microsoft.Resources/deployments",
               "apiVersion": "2021-04-01",
@@ -2388,7 +2459,13 @@
                 }
               }
             },
-            {
+            "virtualMachine": {
+              "existing": true,
+              "type": "Microsoft.Compute/virtualMachines",
+              "apiVersion": "2022-11-01",
+              "name": "[parameters('virtualMachineName')]"
+            },
+            "extension": {
               "type": "Microsoft.Compute/virtualMachines/extensions",
               "apiVersion": "2022-11-01",
               "name": "[format('{0}/{1}', parameters('virtualMachineName'), parameters('name'))]",
@@ -2404,9 +2481,12 @@
                 "settings": "[if(not(empty(parameters('settings'))), parameters('settings'), null())]",
                 "protectedSettings": "[if(not(empty(parameters('protectedSettings'))), parameters('protectedSettings'), null())]",
                 "suppressFailures": "[parameters('supressFailures')]"
-              }
+              },
+              "dependsOn": [
+                "virtualMachine"
+              ]
             }
-          ],
+          },
           "outputs": {
             "name": {
               "type": "string",
@@ -2434,7 +2514,7 @@
               "metadata": {
                 "description": "The location the resource was deployed into."
               },
-              "value": "[reference(resourceId('Microsoft.Compute/virtualMachines/extensions', parameters('virtualMachineName'), parameters('name')), '2022-11-01', 'full').location]"
+              "value": "[reference('extension', '2022-11-01', 'full').location]"
             }
           }
         }
@@ -2472,7 +2552,9 @@
           "settings": {
             "value": "[parameters('extensionDomainJoinConfig').settings]"
           },
-          "tags": "[if(contains(parameters('extensionDomainJoinConfig'), 'tags'), createObject('value', parameters('extensionDomainJoinConfig').tags), createObject('value', createObject()))]",
+          "tags": {
+            "value": "[coalesce(tryGet(parameters('extensionDomainJoinConfig'), 'tags'), parameters('tags'))]"
+          },
           "protectedSettings": {
             "value": {
               "Password": "[parameters('extensionDomainJoinPassword')]"
@@ -2484,12 +2566,13 @@
         },
         "template": {
           "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "languageVersion": "2.0",
           "contentVersion": "1.0.0.0",
           "metadata": {
             "_generator": {
               "name": "bicep",
               "version": "0.22.6.54827",
-              "templateHash": "16166330808348655128"
+              "templateHash": "9638144716839375831"
             },
             "name": "Virtual Machine Extensions",
             "description": "This module deploys a Virtual Machine Extension.",
@@ -2582,14 +2665,14 @@
             },
             "tags": {
               "type": "object",
-              "defaultValue": {},
+              "nullable": true,
               "metadata": {
                 "description": "Optional. Tags of the resource."
               }
             }
           },
-          "resources": [
-            {
+          "resources": {
+            "defaultTelemetry": {
               "condition": "[parameters('enableDefaultTelemetry')]",
               "type": "Microsoft.Resources/deployments",
               "apiVersion": "2021-04-01",
@@ -2603,7 +2686,13 @@
                 }
               }
             },
-            {
+            "virtualMachine": {
+              "existing": true,
+              "type": "Microsoft.Compute/virtualMachines",
+              "apiVersion": "2022-11-01",
+              "name": "[parameters('virtualMachineName')]"
+            },
+            "extension": {
               "type": "Microsoft.Compute/virtualMachines/extensions",
               "apiVersion": "2022-11-01",
               "name": "[format('{0}/{1}', parameters('virtualMachineName'), parameters('name'))]",
@@ -2619,9 +2708,12 @@
                 "settings": "[if(not(empty(parameters('settings'))), parameters('settings'), null())]",
                 "protectedSettings": "[if(not(empty(parameters('protectedSettings'))), parameters('protectedSettings'), null())]",
                 "suppressFailures": "[parameters('supressFailures')]"
-              }
+              },
+              "dependsOn": [
+                "virtualMachine"
+              ]
             }
-          ],
+          },
           "outputs": {
             "name": {
               "type": "string",
@@ -2649,7 +2741,7 @@
               "metadata": {
                 "description": "The location the resource was deployed into."
               },
-              "value": "[reference(resourceId('Microsoft.Compute/virtualMachines/extensions', parameters('virtualMachineName'), parameters('name')), '2022-11-01', 'full').location]"
+              "value": "[reference('extension', '2022-11-01', 'full').location]"
             }
           }
         }
@@ -2687,19 +2779,22 @@
           "settings": {
             "value": "[parameters('extensionAntiMalwareConfig').settings]"
           },
-          "tags": "[if(contains(parameters('extensionAntiMalwareConfig'), 'tags'), createObject('value', parameters('extensionAntiMalwareConfig').tags), createObject('value', createObject()))]",
+          "tags": {
+            "value": "[coalesce(tryGet(parameters('extensionAntiMalwareConfig'), 'tags'), parameters('tags'))]"
+          },
           "enableDefaultTelemetry": {
             "value": "[variables('enableReferencedModulesTelemetry')]"
           }
         },
         "template": {
           "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "languageVersion": "2.0",
           "contentVersion": "1.0.0.0",
           "metadata": {
             "_generator": {
               "name": "bicep",
               "version": "0.22.6.54827",
-              "templateHash": "16166330808348655128"
+              "templateHash": "9638144716839375831"
             },
             "name": "Virtual Machine Extensions",
             "description": "This module deploys a Virtual Machine Extension.",
@@ -2792,14 +2887,14 @@
             },
             "tags": {
               "type": "object",
-              "defaultValue": {},
+              "nullable": true,
               "metadata": {
                 "description": "Optional. Tags of the resource."
               }
             }
           },
-          "resources": [
-            {
+          "resources": {
+            "defaultTelemetry": {
               "condition": "[parameters('enableDefaultTelemetry')]",
               "type": "Microsoft.Resources/deployments",
               "apiVersion": "2021-04-01",
@@ -2813,7 +2908,13 @@
                 }
               }
             },
-            {
+            "virtualMachine": {
+              "existing": true,
+              "type": "Microsoft.Compute/virtualMachines",
+              "apiVersion": "2022-11-01",
+              "name": "[parameters('virtualMachineName')]"
+            },
+            "extension": {
               "type": "Microsoft.Compute/virtualMachines/extensions",
               "apiVersion": "2022-11-01",
               "name": "[format('{0}/{1}', parameters('virtualMachineName'), parameters('name'))]",
@@ -2829,9 +2930,12 @@
                 "settings": "[if(not(empty(parameters('settings'))), parameters('settings'), null())]",
                 "protectedSettings": "[if(not(empty(parameters('protectedSettings'))), parameters('protectedSettings'), null())]",
                 "suppressFailures": "[parameters('supressFailures')]"
-              }
+              },
+              "dependsOn": [
+                "virtualMachine"
+              ]
             }
-          ],
+          },
           "outputs": {
             "name": {
               "type": "string",
@@ -2859,7 +2963,7 @@
               "metadata": {
                 "description": "The location the resource was deployed into."
               },
-              "value": "[reference(resourceId('Microsoft.Compute/virtualMachines/extensions', parameters('virtualMachineName'), parameters('name')), '2022-11-01', 'full').location]"
+              "value": "[reference('extension', '2022-11-01', 'full').location]"
             }
           }
         }
@@ -2897,7 +3001,9 @@
               "workspaceId": "[if(not(empty(parameters('monitoringWorkspaceId'))), reference('vm_logAnalyticsWorkspace').customerId, '')]"
             }
           },
-          "tags": "[if(contains(parameters('extensionMonitoringAgentConfig'), 'tags'), createObject('value', parameters('extensionMonitoringAgentConfig').tags), createObject('value', createObject()))]",
+          "tags": {
+            "value": "[coalesce(tryGet(parameters('extensionMonitoringAgentConfig'), 'tags'), parameters('tags'))]"
+          },
           "protectedSettings": {
             "value": {
               "workspaceKey": "[if(not(empty(parameters('monitoringWorkspaceId'))), listKeys(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', split(if(not(empty(parameters('monitoringWorkspaceId'))), parameters('monitoringWorkspaceId'), '//'), '/')[2], split(if(not(empty(parameters('monitoringWorkspaceId'))), parameters('monitoringWorkspaceId'), '////'), '/')[4]), 'Microsoft.OperationalInsights/workspaces', last(split(if(not(empty(parameters('monitoringWorkspaceId'))), parameters('monitoringWorkspaceId'), 'law'), '/'))), '2021-06-01').primarySharedKey, '')]"
@@ -2909,12 +3015,13 @@
         },
         "template": {
           "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "languageVersion": "2.0",
           "contentVersion": "1.0.0.0",
           "metadata": {
             "_generator": {
               "name": "bicep",
               "version": "0.22.6.54827",
-              "templateHash": "16166330808348655128"
+              "templateHash": "9638144716839375831"
             },
             "name": "Virtual Machine Extensions",
             "description": "This module deploys a Virtual Machine Extension.",
@@ -3007,14 +3114,14 @@
             },
             "tags": {
               "type": "object",
-              "defaultValue": {},
+              "nullable": true,
               "metadata": {
                 "description": "Optional. Tags of the resource."
               }
             }
           },
-          "resources": [
-            {
+          "resources": {
+            "defaultTelemetry": {
               "condition": "[parameters('enableDefaultTelemetry')]",
               "type": "Microsoft.Resources/deployments",
               "apiVersion": "2021-04-01",
@@ -3028,7 +3135,13 @@
                 }
               }
             },
-            {
+            "virtualMachine": {
+              "existing": true,
+              "type": "Microsoft.Compute/virtualMachines",
+              "apiVersion": "2022-11-01",
+              "name": "[parameters('virtualMachineName')]"
+            },
+            "extension": {
               "type": "Microsoft.Compute/virtualMachines/extensions",
               "apiVersion": "2022-11-01",
               "name": "[format('{0}/{1}', parameters('virtualMachineName'), parameters('name'))]",
@@ -3044,9 +3157,12 @@
                 "settings": "[if(not(empty(parameters('settings'))), parameters('settings'), null())]",
                 "protectedSettings": "[if(not(empty(parameters('protectedSettings'))), parameters('protectedSettings'), null())]",
                 "suppressFailures": "[parameters('supressFailures')]"
-              }
+              },
+              "dependsOn": [
+                "virtualMachine"
+              ]
             }
-          ],
+          },
           "outputs": {
             "name": {
               "type": "string",
@@ -3074,7 +3190,7 @@
               "metadata": {
                 "description": "The location the resource was deployed into."
               },
-              "value": "[reference(resourceId('Microsoft.Compute/virtualMachines/extensions', parameters('virtualMachineName'), parameters('name')), '2022-11-01', 'full').location]"
+              "value": "[reference('extension', '2022-11-01', 'full').location]"
             }
           }
         }
@@ -3111,16 +3227,19 @@
           "enableDefaultTelemetry": {
             "value": "[variables('enableReferencedModulesTelemetry')]"
           },
-          "tags": "[if(contains(parameters('extensionDependencyAgentConfig'), 'tags'), createObject('value', parameters('extensionDependencyAgentConfig').tags), createObject('value', createObject()))]"
+          "tags": {
+            "value": "[coalesce(tryGet(parameters('extensionDependencyAgentConfig'), 'tags'), parameters('tags'))]"
+          }
         },
         "template": {
           "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "languageVersion": "2.0",
           "contentVersion": "1.0.0.0",
           "metadata": {
             "_generator": {
               "name": "bicep",
               "version": "0.22.6.54827",
-              "templateHash": "16166330808348655128"
+              "templateHash": "9638144716839375831"
             },
             "name": "Virtual Machine Extensions",
             "description": "This module deploys a Virtual Machine Extension.",
@@ -3213,14 +3332,14 @@
             },
             "tags": {
               "type": "object",
-              "defaultValue": {},
+              "nullable": true,
               "metadata": {
                 "description": "Optional. Tags of the resource."
               }
             }
           },
-          "resources": [
-            {
+          "resources": {
+            "defaultTelemetry": {
               "condition": "[parameters('enableDefaultTelemetry')]",
               "type": "Microsoft.Resources/deployments",
               "apiVersion": "2021-04-01",
@@ -3234,7 +3353,13 @@
                 }
               }
             },
-            {
+            "virtualMachine": {
+              "existing": true,
+              "type": "Microsoft.Compute/virtualMachines",
+              "apiVersion": "2022-11-01",
+              "name": "[parameters('virtualMachineName')]"
+            },
+            "extension": {
               "type": "Microsoft.Compute/virtualMachines/extensions",
               "apiVersion": "2022-11-01",
               "name": "[format('{0}/{1}', parameters('virtualMachineName'), parameters('name'))]",
@@ -3250,9 +3375,12 @@
                 "settings": "[if(not(empty(parameters('settings'))), parameters('settings'), null())]",
                 "protectedSettings": "[if(not(empty(parameters('protectedSettings'))), parameters('protectedSettings'), null())]",
                 "suppressFailures": "[parameters('supressFailures')]"
-              }
+              },
+              "dependsOn": [
+                "virtualMachine"
+              ]
             }
-          ],
+          },
           "outputs": {
             "name": {
               "type": "string",
@@ -3280,7 +3408,7 @@
               "metadata": {
                 "description": "The location the resource was deployed into."
               },
-              "value": "[reference(resourceId('Microsoft.Compute/virtualMachines/extensions', parameters('virtualMachineName'), parameters('name')), '2022-11-01', 'full').location]"
+              "value": "[reference('extension', '2022-11-01', 'full').location]"
             }
           }
         }
@@ -3316,16 +3444,19 @@
           "enableDefaultTelemetry": {
             "value": "[variables('enableReferencedModulesTelemetry')]"
           },
-          "tags": "[if(contains(parameters('extensionNetworkWatcherAgentConfig'), 'tags'), createObject('value', parameters('extensionNetworkWatcherAgentConfig').tags), createObject('value', createObject()))]"
+          "tags": {
+            "value": "[coalesce(tryGet(parameters('extensionNetworkWatcherAgentConfig'), 'tags'), parameters('tags'))]"
+          }
         },
         "template": {
           "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "languageVersion": "2.0",
           "contentVersion": "1.0.0.0",
           "metadata": {
             "_generator": {
               "name": "bicep",
               "version": "0.22.6.54827",
-              "templateHash": "16166330808348655128"
+              "templateHash": "9638144716839375831"
             },
             "name": "Virtual Machine Extensions",
             "description": "This module deploys a Virtual Machine Extension.",
@@ -3418,14 +3549,14 @@
             },
             "tags": {
               "type": "object",
-              "defaultValue": {},
+              "nullable": true,
               "metadata": {
                 "description": "Optional. Tags of the resource."
               }
             }
           },
-          "resources": [
-            {
+          "resources": {
+            "defaultTelemetry": {
               "condition": "[parameters('enableDefaultTelemetry')]",
               "type": "Microsoft.Resources/deployments",
               "apiVersion": "2021-04-01",
@@ -3439,7 +3570,13 @@
                 }
               }
             },
-            {
+            "virtualMachine": {
+              "existing": true,
+              "type": "Microsoft.Compute/virtualMachines",
+              "apiVersion": "2022-11-01",
+              "name": "[parameters('virtualMachineName')]"
+            },
+            "extension": {
               "type": "Microsoft.Compute/virtualMachines/extensions",
               "apiVersion": "2022-11-01",
               "name": "[format('{0}/{1}', parameters('virtualMachineName'), parameters('name'))]",
@@ -3455,9 +3592,12 @@
                 "settings": "[if(not(empty(parameters('settings'))), parameters('settings'), null())]",
                 "protectedSettings": "[if(not(empty(parameters('protectedSettings'))), parameters('protectedSettings'), null())]",
                 "suppressFailures": "[parameters('supressFailures')]"
-              }
+              },
+              "dependsOn": [
+                "virtualMachine"
+              ]
             }
-          ],
+          },
           "outputs": {
             "name": {
               "type": "string",
@@ -3485,7 +3625,7 @@
               "metadata": {
                 "description": "The location the resource was deployed into."
               },
-              "value": "[reference(resourceId('Microsoft.Compute/virtualMachines/extensions', parameters('virtualMachineName'), parameters('name')), '2022-11-01', 'full').location]"
+              "value": "[reference('extension', '2022-11-01', 'full').location]"
             }
           }
         }
@@ -3521,7 +3661,9 @@
           "autoUpgradeMinorVersion": "[if(contains(parameters('extensionDSCConfig'), 'autoUpgradeMinorVersion'), createObject('value', parameters('extensionDSCConfig').autoUpgradeMinorVersion), createObject('value', true()))]",
           "enableAutomaticUpgrade": "[if(contains(parameters('extensionDSCConfig'), 'enableAutomaticUpgrade'), createObject('value', parameters('extensionDSCConfig').enableAutomaticUpgrade), createObject('value', false()))]",
           "settings": "[if(contains(parameters('extensionDSCConfig'), 'settings'), createObject('value', parameters('extensionDSCConfig').settings), createObject('value', createObject()))]",
-          "tags": "[if(contains(parameters('extensionDSCConfig'), 'tags'), createObject('value', parameters('extensionDSCConfig').tags), createObject('value', createObject()))]",
+          "tags": {
+            "value": "[coalesce(tryGet(parameters('extensionDSCConfig'), 'tags'), parameters('tags'))]"
+          },
           "protectedSettings": "[if(contains(parameters('extensionDSCConfig'), 'protectedSettings'), createObject('value', parameters('extensionDSCConfig').protectedSettings), createObject('value', createObject()))]",
           "enableDefaultTelemetry": {
             "value": "[variables('enableReferencedModulesTelemetry')]"
@@ -3529,12 +3671,13 @@
         },
         "template": {
           "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "languageVersion": "2.0",
           "contentVersion": "1.0.0.0",
           "metadata": {
             "_generator": {
               "name": "bicep",
               "version": "0.22.6.54827",
-              "templateHash": "16166330808348655128"
+              "templateHash": "9638144716839375831"
             },
             "name": "Virtual Machine Extensions",
             "description": "This module deploys a Virtual Machine Extension.",
@@ -3627,14 +3770,14 @@
             },
             "tags": {
               "type": "object",
-              "defaultValue": {},
+              "nullable": true,
               "metadata": {
                 "description": "Optional. Tags of the resource."
               }
             }
           },
-          "resources": [
-            {
+          "resources": {
+            "defaultTelemetry": {
               "condition": "[parameters('enableDefaultTelemetry')]",
               "type": "Microsoft.Resources/deployments",
               "apiVersion": "2021-04-01",
@@ -3648,7 +3791,13 @@
                 }
               }
             },
-            {
+            "virtualMachine": {
+              "existing": true,
+              "type": "Microsoft.Compute/virtualMachines",
+              "apiVersion": "2022-11-01",
+              "name": "[parameters('virtualMachineName')]"
+            },
+            "extension": {
               "type": "Microsoft.Compute/virtualMachines/extensions",
               "apiVersion": "2022-11-01",
               "name": "[format('{0}/{1}', parameters('virtualMachineName'), parameters('name'))]",
@@ -3664,9 +3813,12 @@
                 "settings": "[if(not(empty(parameters('settings'))), parameters('settings'), null())]",
                 "protectedSettings": "[if(not(empty(parameters('protectedSettings'))), parameters('protectedSettings'), null())]",
                 "suppressFailures": "[parameters('supressFailures')]"
-              }
+              },
+              "dependsOn": [
+                "virtualMachine"
+              ]
             }
-          ],
+          },
           "outputs": {
             "name": {
               "type": "string",
@@ -3694,7 +3846,7 @@
               "metadata": {
                 "description": "The location the resource was deployed into."
               },
-              "value": "[reference(resourceId('Microsoft.Compute/virtualMachines/extensions', parameters('virtualMachineName'), parameters('name')), '2022-11-01', 'full').location]"
+              "value": "[reference('extension', '2022-11-01', 'full').location]"
             }
           }
         }
@@ -3736,7 +3888,9 @@
               ]
             }
           },
-          "tags": "[if(contains(parameters('extensionCustomScriptConfig'), 'tags'), createObject('value', parameters('extensionCustomScriptConfig').tags), createObject('value', createObject()))]",
+          "tags": {
+            "value": "[coalesce(tryGet(parameters('extensionCustomScriptConfig'), 'tags'), parameters('tags'))]"
+          },
           "protectedSettings": {
             "value": "[parameters('extensionCustomScriptProtectedSetting')]"
           },
@@ -3746,12 +3900,13 @@
         },
         "template": {
           "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "languageVersion": "2.0",
           "contentVersion": "1.0.0.0",
           "metadata": {
             "_generator": {
               "name": "bicep",
               "version": "0.22.6.54827",
-              "templateHash": "16166330808348655128"
+              "templateHash": "9638144716839375831"
             },
             "name": "Virtual Machine Extensions",
             "description": "This module deploys a Virtual Machine Extension.",
@@ -3844,14 +3999,14 @@
             },
             "tags": {
               "type": "object",
-              "defaultValue": {},
+              "nullable": true,
               "metadata": {
                 "description": "Optional. Tags of the resource."
               }
             }
           },
-          "resources": [
-            {
+          "resources": {
+            "defaultTelemetry": {
               "condition": "[parameters('enableDefaultTelemetry')]",
               "type": "Microsoft.Resources/deployments",
               "apiVersion": "2021-04-01",
@@ -3865,7 +4020,13 @@
                 }
               }
             },
-            {
+            "virtualMachine": {
+              "existing": true,
+              "type": "Microsoft.Compute/virtualMachines",
+              "apiVersion": "2022-11-01",
+              "name": "[parameters('virtualMachineName')]"
+            },
+            "extension": {
               "type": "Microsoft.Compute/virtualMachines/extensions",
               "apiVersion": "2022-11-01",
               "name": "[format('{0}/{1}', parameters('virtualMachineName'), parameters('name'))]",
@@ -3881,9 +4042,12 @@
                 "settings": "[if(not(empty(parameters('settings'))), parameters('settings'), null())]",
                 "protectedSettings": "[if(not(empty(parameters('protectedSettings'))), parameters('protectedSettings'), null())]",
                 "suppressFailures": "[parameters('supressFailures')]"
-              }
+              },
+              "dependsOn": [
+                "virtualMachine"
+              ]
             }
-          ],
+          },
           "outputs": {
             "name": {
               "type": "string",
@@ -3911,7 +4075,7 @@
               "metadata": {
                 "description": "The location the resource was deployed into."
               },
-              "value": "[reference(resourceId('Microsoft.Compute/virtualMachines/extensions', parameters('virtualMachineName'), parameters('name')), '2022-11-01', 'full').location]"
+              "value": "[reference('extension', '2022-11-01', 'full').location]"
             }
           }
         }
@@ -3949,19 +4113,22 @@
           "settings": {
             "value": "[parameters('extensionAzureDiskEncryptionConfig').settings]"
           },
-          "tags": "[if(contains(parameters('extensionAzureDiskEncryptionConfig'), 'tags'), createObject('value', parameters('extensionAzureDiskEncryptionConfig').tags), createObject('value', createObject()))]",
+          "tags": {
+            "value": "[coalesce(tryGet(parameters('extensionAzureDiskEncryptionConfig'), 'tags'), parameters('tags'))]"
+          },
           "enableDefaultTelemetry": {
             "value": "[variables('enableReferencedModulesTelemetry')]"
           }
         },
         "template": {
           "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "languageVersion": "2.0",
           "contentVersion": "1.0.0.0",
           "metadata": {
             "_generator": {
               "name": "bicep",
               "version": "0.22.6.54827",
-              "templateHash": "16166330808348655128"
+              "templateHash": "9638144716839375831"
             },
             "name": "Virtual Machine Extensions",
             "description": "This module deploys a Virtual Machine Extension.",
@@ -4054,14 +4221,14 @@
             },
             "tags": {
               "type": "object",
-              "defaultValue": {},
+              "nullable": true,
               "metadata": {
                 "description": "Optional. Tags of the resource."
               }
             }
           },
-          "resources": [
-            {
+          "resources": {
+            "defaultTelemetry": {
               "condition": "[parameters('enableDefaultTelemetry')]",
               "type": "Microsoft.Resources/deployments",
               "apiVersion": "2021-04-01",
@@ -4075,7 +4242,13 @@
                 }
               }
             },
-            {
+            "virtualMachine": {
+              "existing": true,
+              "type": "Microsoft.Compute/virtualMachines",
+              "apiVersion": "2022-11-01",
+              "name": "[parameters('virtualMachineName')]"
+            },
+            "extension": {
               "type": "Microsoft.Compute/virtualMachines/extensions",
               "apiVersion": "2022-11-01",
               "name": "[format('{0}/{1}', parameters('virtualMachineName'), parameters('name'))]",
@@ -4091,9 +4264,12 @@
                 "settings": "[if(not(empty(parameters('settings'))), parameters('settings'), null())]",
                 "protectedSettings": "[if(not(empty(parameters('protectedSettings'))), parameters('protectedSettings'), null())]",
                 "suppressFailures": "[parameters('supressFailures')]"
-              }
+              },
+              "dependsOn": [
+                "virtualMachine"
+              ]
             }
-          ],
+          },
           "outputs": {
             "name": {
               "type": "string",
@@ -4121,7 +4297,7 @@
               "metadata": {
                 "description": "The location the resource was deployed into."
               },
-              "value": "[reference(resourceId('Microsoft.Compute/virtualMachines/extensions', parameters('virtualMachineName'), parameters('name')), '2022-11-01', 'full').location]"
+              "value": "[reference('extension', '2022-11-01', 'full').location]"
             }
           }
         }

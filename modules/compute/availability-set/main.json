@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "9800465206429537522"
+      "templateHash": "1732304861308894467"
     },
     "name": "Availability Sets",
     "description": "This module deploys an Availability Set.",
@@ -161,7 +161,7 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Tags of the availability set resource."
       }

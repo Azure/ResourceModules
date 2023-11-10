@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "6558922436832597627"
+      "templateHash": "9102511166724334580"
     },
     "name": "Healthcare API Workspaces",
     "description": "This module deploys a Healthcare API Workspace.",
@@ -145,7 +145,7 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Tags of the resource."
       }
@@ -285,7 +285,9 @@
           "kind": {
             "value": "[parameters('fhirservices')[copyIndex()].kind]"
           },
-          "tags": "[if(contains(parameters('fhirservices')[copyIndex()], 'tags'), createObject('value', parameters('fhirservices')[copyIndex()].tags), createObject('value', createObject()))]",
+          "tags": {
+            "value": "[coalesce(tryGet(parameters('fhirservices')[copyIndex()], 'tags'), parameters('tags'))]"
+          },
           "publicNetworkAccess": "[if(contains(parameters('fhirservices')[copyIndex()], 'publicNetworkAccess'), createObject('value', parameters('fhirservices')[copyIndex()].publicNetworkAccess), createObject('value', 'Disabled'))]",
           "managedIdentities": "[if(contains(parameters('fhirservices')[copyIndex()], 'managedIdentities'), createObject('value', parameters('fhirservices')[copyIndex()].managedIdentities), createObject('value', null()))]",
           "roleAssignments": "[if(contains(parameters('fhirservices')[copyIndex()], 'roleAssignments'), createObject('value', parameters('fhirservices')[copyIndex()].roleAssignments), createObject('value', createArray()))]",
@@ -324,7 +326,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.22.6.54827",
-              "templateHash": "14914386228020873144"
+              "templateHash": "8893393036207321770"
             },
             "name": "Healthcare API Workspace FHIR Services",
             "description": "This module deploys a Healthcare API Workspace FHIR Service.",
@@ -753,7 +755,7 @@
             },
             "tags": {
               "type": "object",
-              "defaultValue": {},
+              "nullable": true,
               "metadata": {
                 "description": "Optional. Tags of the resource."
               }
@@ -994,7 +996,9 @@
           "workspaceName": {
             "value": "[parameters('name')]"
           },
-          "tags": "[if(contains(parameters('dicomservices')[copyIndex()], 'tags'), createObject('value', parameters('dicomservices')[copyIndex()].tags), createObject('value', createObject()))]",
+          "tags": {
+            "value": "[coalesce(tryGet(parameters('dicomservices')[copyIndex()], 'tags'), parameters('tags'))]"
+          },
           "publicNetworkAccess": "[if(contains(parameters('dicomservices')[copyIndex()], 'publicNetworkAccess'), createObject('value', parameters('dicomservices')[copyIndex()].publicNetworkAccess), createObject('value', 'Disabled'))]",
           "managedIdentities": "[if(contains(parameters('dicomservices')[copyIndex()], 'managedIdentities'), createObject('value', parameters('dicomservices')[copyIndex()].managedIdentities), createObject('value', null()))]",
           "corsOrigins": "[if(contains(parameters('dicomservices')[copyIndex()], 'corsOrigins'), createObject('value', parameters('dicomservices')[copyIndex()].corsOrigins), createObject('value', createArray()))]",
@@ -1020,7 +1024,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.22.6.54827",
-              "templateHash": "4165874741118763430"
+              "templateHash": "10991463946028183992"
             },
             "name": "Healthcare API Workspace DICOM Services",
             "description": "This module deploys a Healthcare API Workspace DICOM Service.",
@@ -1277,7 +1281,7 @@
             },
             "tags": {
               "type": "object",
-              "defaultValue": {},
+              "nullable": true,
               "metadata": {
                 "description": "Optional. Tags of the resource."
               }
@@ -1440,7 +1444,9 @@
           "workspaceName": {
             "value": "[parameters('name')]"
           },
-          "tags": "[if(contains(parameters('iotconnectors')[copyIndex()], 'tags'), createObject('value', parameters('iotconnectors')[copyIndex()].tags), createObject('value', createObject()))]",
+          "tags": {
+            "value": "[coalesce(tryGet(parameters('iotconnectors')[copyIndex()], 'tags'), parameters('tags'))]"
+          },
           "eventHubName": {
             "value": "[parameters('iotconnectors')[copyIndex()].eventHubName]"
           },
@@ -1469,7 +1475,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.22.6.54827",
-              "templateHash": "9502385350114367681"
+              "templateHash": "16117637432944064764"
             },
             "name": "Healthcare API Workspace IoT Connectors",
             "description": "This module deploys a Healthcare API Workspace IoT Connector.",
@@ -1708,7 +1714,7 @@
             },
             "tags": {
               "type": "object",
-              "defaultValue": {},
+              "nullable": true,
               "metadata": {
                 "description": "Optional. Tags of the resource."
               }

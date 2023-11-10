@@ -28,10 +28,63 @@ The following section provides usage examples for the module, which were used to
 
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/network.trafficmanagerprofile:1.0.0`.
 
-- [Using large parameter set](#example-1-using-large-parameter-set)
-- [Using only defaults](#example-2-using-only-defaults)
+- [Using only defaults](#example-1-using-only-defaults)
+- [Using large parameter set](#example-2-using-large-parameter-set)
+- [WAF-aligned](#example-3-waf-aligned)
 
-### Example 1: _Using large parameter set_
+### Example 1: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module trafficmanagerprofile 'br:bicep/modules/network.trafficmanagerprofile:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-ntmpmin'
+  params: {
+    // Required parameters
+    name: '<name>'
+    relativeName: '<relativeName>'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "<name>"
+    },
+    "relativeName": {
+      "value": "<relativeName>"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 2: _Using large parameter set_
 
 This instance deploys the module with most of its features enabled.
 
@@ -42,7 +95,7 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module trafficmanagerprofile 'br:bicep/modules/network.trafficmanagerprofile:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-ntmpcom'
+  name: '${uniqueString(deployment().name, location)}-test-ntmpmax'
   params: {
     // Required parameters
     name: '<name>'
@@ -151,9 +204,9 @@ module trafficmanagerprofile 'br:bicep/modules/network.trafficmanagerprofile:1.0
 </details>
 <p>
 
-### Example 2: _Using only defaults_
+### Example 3: _WAF-aligned_
 
-This instance deploys the module with the minimum set of required parameters.
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
 
 
 <details>
@@ -162,13 +215,43 @@ This instance deploys the module with the minimum set of required parameters.
 
 ```bicep
 module trafficmanagerprofile 'br:bicep/modules/network.trafficmanagerprofile:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-ntmpmin'
+  name: '${uniqueString(deployment().name, location)}-test-ntmpwaf'
   params: {
     // Required parameters
     name: '<name>'
     relativeName: '<relativeName>'
     // Non-required parameters
+    diagnosticSettings: [
+      {
+        eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+        eventHubName: '<eventHubName>'
+        metricCategories: [
+          {
+            category: 'AllMetrics'
+          }
+        ]
+        name: 'customSetting'
+        storageAccountResourceId: '<storageAccountResourceId>'
+        workspaceResourceId: '<workspaceResourceId>'
+      }
+    ]
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -193,8 +276,46 @@ module trafficmanagerprofile 'br:bicep/modules/network.trafficmanagerprofile:1.0
       "value": "<relativeName>"
     },
     // Non-required parameters
+    "diagnosticSettings": {
+      "value": [
+        {
+          "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+          "eventHubName": "<eventHubName>",
+          "metricCategories": [
+            {
+              "category": "AllMetrics"
+            }
+          ],
+          "name": "customSetting",
+          "storageAccountResourceId": "<storageAccountResourceId>",
+          "workspaceResourceId": "<workspaceResourceId>"
+        }
+      ]
+    },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }
@@ -398,7 +519,14 @@ Maximum number of endpoints to be returned for MultiValue routing type.
 The endpoint monitoring settings of the Traffic Manager profile.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default:
+  ```Bicep
+  {
+      path: '/'
+      port: '80'
+      protocol: 'http'
+  }
+  ```
 
 ### Parameter: `name`
 
@@ -412,7 +540,13 @@ The status of the Traffic Manager profile.
 - Required: No
 - Type: string
 - Default: `'Enabled'`
-- Allowed: `[Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 ### Parameter: `relativeName`
 
@@ -493,7 +627,6 @@ Required. The name of the role to assign. If it cannot be found you can specify 
 Resource tags.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `trafficRoutingMethod`
 
@@ -501,7 +634,17 @@ The traffic routing method of the Traffic Manager profile.
 - Required: No
 - Type: string
 - Default: `'Performance'`
-- Allowed: `[Geographic, MultiValue, Performance, Priority, Subnet, Weighted]`
+- Allowed:
+  ```Bicep
+  [
+    'Geographic'
+    'MultiValue'
+    'Performance'
+    'Priority'
+    'Subnet'
+    'Weighted'
+  ]
+  ```
 
 ### Parameter: `trafficViewEnrollmentStatus`
 
@@ -509,7 +652,13 @@ Indicates whether Traffic View is 'Enabled' or 'Disabled' for the Traffic Manage
 - Required: No
 - Type: string
 - Default: `'Disabled'`
-- Allowed: `[Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 ### Parameter: `ttl`
 

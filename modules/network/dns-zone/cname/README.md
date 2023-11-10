@@ -46,7 +46,7 @@ This module deploys a Public DNS Zone CNAME record.
 A CNAME record. Cannot be used in conjuction with the "targetResource" property.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `dnsZoneName`
 
@@ -66,7 +66,7 @@ Enable telemetry via a Globally Unique Identifier (GUID).
 The metadata attached to the record set.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `name`
 

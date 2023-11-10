@@ -32,6 +32,7 @@ The following section provides usage examples for the module, which were used to
 
 - [Using large parameter set](#example-1-using-large-parameter-set)
 - [Rg](#example-2-rg)
+- [WAF-aligned](#example-3-waf-aligned)
 
 ### Example 1: _Using large parameter set_
 
@@ -44,7 +45,7 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module registrationDefinition 'br:bicep/modules/managed-services.registration-definition:1.0.0' = {
-  name: '${uniqueString(deployment().name)}-test-msrdcom'
+  name: '${uniqueString(deployment().name)}-test-msrdmax'
   params: {
     // Required parameters
     authorizations: [
@@ -65,7 +66,7 @@ module registrationDefinition 'br:bicep/modules/managed-services.registration-de
       }
     ]
     managedByTenantId: '<< SET YOUR TENANT ID HERE >>'
-    name: 'Component Validation - msrdcom Subscription assignment'
+    name: 'Component Validation - msrdmax Subscription assignment'
     registrationDescription: 'Managed by Lighthouse'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
@@ -109,7 +110,7 @@ module registrationDefinition 'br:bicep/modules/managed-services.registration-de
       "value": "<< SET YOUR TENANT ID HERE >>"
     },
     "name": {
-      "value": "Component Validation - msrdcom Subscription assignment"
+      "value": "Component Validation - msrdmax Subscription assignment"
     },
     "registrationDescription": {
       "value": "Managed by Lighthouse"
@@ -210,6 +211,98 @@ module registrationDefinition 'br:bicep/modules/managed-services.registration-de
     },
     "resourceGroupName": {
       "value": "<resourceGroupName>"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 3: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module registrationDefinition 'br:bicep/modules/managed-services.registration-definition:1.0.0' = {
+  name: '${uniqueString(deployment().name)}-test-msrdwaf'
+  params: {
+    // Required parameters
+    authorizations: [
+      {
+        principalId: '<< SET YOUR PRINCIPAL ID 1 HERE >>'
+        principalIdDisplayName: 'ResourceModules-Reader'
+        roleDefinitionId: 'acdd72a7-3385-48ef-bd42-f606fba81ae7'
+      }
+      {
+        principalId: '<< SET YOUR PRINCIPAL ID 2 HERE >>'
+        principalIdDisplayName: 'ResourceModules-Contributor'
+        roleDefinitionId: 'b24988ac-6180-42a0-ab88-20f7382dd24c'
+      }
+      {
+        principalId: '<< SET YOUR PRINCIPAL ID 3 HERE >>'
+        principalIdDisplayName: 'ResourceModules-LHManagement'
+        roleDefinitionId: '91c1777a-f3dc-4fae-b103-61d183457e46'
+      }
+    ]
+    managedByTenantId: '<< SET YOUR TENANT ID HERE >>'
+    name: 'Component Validation - msrdwaf Subscription assignment'
+    registrationDescription: 'Managed by Lighthouse'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "authorizations": {
+      "value": [
+        {
+          "principalId": "<< SET YOUR PRINCIPAL ID 1 HERE >>",
+          "principalIdDisplayName": "ResourceModules-Reader",
+          "roleDefinitionId": "acdd72a7-3385-48ef-bd42-f606fba81ae7"
+        },
+        {
+          "principalId": "<< SET YOUR PRINCIPAL ID 2 HERE >>",
+          "principalIdDisplayName": "ResourceModules-Contributor",
+          "roleDefinitionId": "b24988ac-6180-42a0-ab88-20f7382dd24c"
+        },
+        {
+          "principalId": "<< SET YOUR PRINCIPAL ID 3 HERE >>",
+          "principalIdDisplayName": "ResourceModules-LHManagement",
+          "roleDefinitionId": "91c1777a-f3dc-4fae-b103-61d183457e46"
+        }
+      ]
+    },
+    "managedByTenantId": {
+      "value": "<< SET YOUR TENANT ID HERE >>"
+    },
+    "name": {
+      "value": "Component Validation - msrdwaf Subscription assignment"
+    },
+    "registrationDescription": {
+      "value": "Managed by Lighthouse"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }

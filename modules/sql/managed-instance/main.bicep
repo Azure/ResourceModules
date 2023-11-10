@@ -96,7 +96,7 @@ param lock lockType
 param roleAssignments roleAssignmentType
 
 @description('Optional. Tags of the resource.')
-param tags object = {}
+param tags object?
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
@@ -282,7 +282,7 @@ module managedInstance_databases 'database/main.bicep' = [for (database, index) 
     sourceDatabaseId: contains(database, 'sourceDatabaseId') ? database.sourceDatabaseId : ''
     storageContainerSasToken: contains(database, 'storageContainerSasToken') ? database.storageContainerSasToken : ''
     storageContainerUri: contains(database, 'storageContainerUri') ? database.storageContainerUri : ''
-    tags: contains(database, 'tags') ? database.tags : {}
+    tags: database.?tags ?? tags
     backupShortTermRetentionPoliciesObj: contains(database, 'backupShortTermRetentionPolicies') ? database.backupShortTermRetentionPolicies : {}
     backupLongTermRetentionPoliciesObj: contains(database, 'backupLongTermRetentionPolicies') ? database.backupLongTermRetentionPolicies : {}
     enableDefaultTelemetry: enableReferencedModulesTelemetry

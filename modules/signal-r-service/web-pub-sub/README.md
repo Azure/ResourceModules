@@ -28,11 +28,60 @@ The following section provides usage examples for the module, which were used to
 
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/signal-r-service.web-pub-sub:1.0.0`.
 
-- [Using large parameter set](#example-1-using-large-parameter-set)
-- [Using only defaults](#example-2-using-only-defaults)
+- [Using only defaults](#example-1-using-only-defaults)
+- [Using large parameter set](#example-2-using-large-parameter-set)
 - [Pe](#example-3-pe)
+- [WAF-aligned](#example-4-waf-aligned)
 
-### Example 1: _Using large parameter set_
+### Example 1: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module webPubSub 'br:bicep/modules/signal-r-service.web-pub-sub:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-srswpsmin'
+  params: {
+    // Required parameters
+    name: 'srswpsmin-001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "srswpsmin-001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 2: _Using large parameter set_
 
 This instance deploys the module with most of its features enabled.
 
@@ -43,10 +92,10 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module webPubSub 'br:bicep/modules/signal-r-service.web-pub-sub:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-srswpscom'
+  name: '${uniqueString(deployment().name, location)}-test-srswpsmax'
   params: {
     // Required parameters
-    name: 'srswpscom-001'
+    name: 'srswpsmax-001'
     // Non-required parameters
     capacity: 2
     clientCertEnabled: false
@@ -70,7 +119,7 @@ module webPubSub 'br:bicep/modules/signal-r-service.web-pub-sub:1.0.0' = {
             'ServerConnection'
             'Trace'
           ]
-          name: 'pe-srswpscom-001'
+          name: 'pe-srswpsmax-001'
         }
       ]
       publicNetwork: {
@@ -129,7 +178,7 @@ module webPubSub 'br:bicep/modules/signal-r-service.web-pub-sub:1.0.0' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "srswpscom-001"
+      "value": "srswpsmax-001"
     },
     // Non-required parameters
     "capacity": {
@@ -171,7 +220,7 @@ module webPubSub 'br:bicep/modules/signal-r-service.web-pub-sub:1.0.0' = {
               "ServerConnection",
               "Trace"
             ],
-            "name": "pe-srswpscom-001"
+            "name": "pe-srswpsmax-001"
           }
         ],
         "publicNetwork": {
@@ -222,54 +271,6 @@ module webPubSub 'br:bicep/modules/signal-r-service.web-pub-sub:1.0.0' = {
         "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-### Example 2: _Using only defaults_
-
-This instance deploys the module with the minimum set of required parameters.
-
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module webPubSub 'br:bicep/modules/signal-r-service.web-pub-sub:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-srswpsmin'
-  params: {
-    // Required parameters
-    name: 'srswpsmin-001'
-    // Non-required parameters
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "srswpsmin-001"
-    },
-    // Non-required parameters
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
     }
   }
 }
@@ -347,6 +348,204 @@ module webPubSub 'br:bicep/modules/signal-r-service.web-pub-sub:1.0.0' = {
             "hidden-title": "This is visible in the resource name",
             "Role": "DeploymentValidation"
           }
+        }
+      ]
+    },
+    "sku": {
+      "value": "Standard_S1"
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 4: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module webPubSub 'br:bicep/modules/signal-r-service.web-pub-sub:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-srswpswaf'
+  params: {
+    // Required parameters
+    name: 'srswpswaf-001'
+    // Non-required parameters
+    capacity: 2
+    clientCertEnabled: false
+    disableAadAuth: false
+    disableLocalAuth: true
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    location: '<location>'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    managedIdentities: {
+      systemAssigned: true
+    }
+    networkAcls: {
+      defaultAction: 'Allow'
+      privateEndpoints: [
+        {
+          allow: []
+          deny: [
+            'ServerConnection'
+            'Trace'
+          ]
+          name: 'pe-srswpswaf-001'
+        }
+      ]
+      publicNetwork: {
+        allow: []
+        deny: [
+          'RESTAPI'
+          'Trace'
+        ]
+      }
+    }
+    privateEndpoints: [
+      {
+        privateDnsZoneResourceIds: [
+          '<privateDNSZoneResourceId>'
+        ]
+        service: 'webpubsub'
+        subnetResourceId: '<subnetResourceId>'
+        tags: {
+          Environment: 'Non-Prod'
+          'hidden-title': 'This is visible in the resource name'
+          Role: 'DeploymentValidation'
+        }
+      }
+    ]
+    resourceLogConfigurationsToEnable: [
+      'ConnectivityLogs'
+    ]
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    sku: 'Standard_S1'
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "srswpswaf-001"
+    },
+    // Non-required parameters
+    "capacity": {
+      "value": 2
+    },
+    "clientCertEnabled": {
+      "value": false
+    },
+    "disableAadAuth": {
+      "value": false
+    },
+    "disableLocalAuth": {
+      "value": true
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "location": {
+      "value": "<location>"
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "managedIdentities": {
+      "value": {
+        "systemAssigned": true
+      }
+    },
+    "networkAcls": {
+      "value": {
+        "defaultAction": "Allow",
+        "privateEndpoints": [
+          {
+            "allow": [],
+            "deny": [
+              "ServerConnection",
+              "Trace"
+            ],
+            "name": "pe-srswpswaf-001"
+          }
+        ],
+        "publicNetwork": {
+          "allow": [],
+          "deny": [
+            "RESTAPI",
+            "Trace"
+          ]
+        }
+      }
+    },
+    "privateEndpoints": {
+      "value": [
+        {
+          "privateDnsZoneResourceIds": [
+            "<privateDNSZoneResourceId>"
+          ],
+          "service": "webpubsub",
+          "subnetResourceId": "<subnetResourceId>",
+          "tags": {
+            "Environment": "Non-Prod",
+            "hidden-title": "This is visible in the resource name",
+            "Role": "DeploymentValidation"
+          }
+        }
+      ]
+    },
+    "resourceLogConfigurationsToEnable": {
+      "value": [
+        "ConnectivityLogs"
+      ]
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
         }
       ]
     },
@@ -502,7 +701,7 @@ The name of the Web PubSub Service resource.
 Networks ACLs, this value contains IPs to allow and/or Subnet information. Can only be set if the 'SKU' is not 'Free_F1'. For security reasons, it is recommended to set the DefaultAction Deny.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `privateEndpoints`
 
@@ -545,14 +744,20 @@ Optional. Custom DNS configurations.
 
 | Name | Required | Type | Description |
 | :-- | :-- | :--| :-- |
-| [`fqdn`](#parameter-privateendpointscustomdnsconfigsfqdn) | No | string |  |
-| [`ipAddresses`](#parameter-privateendpointscustomdnsconfigsipaddresses) | Yes | array |  |
+| [`fqdn`](#parameter-privateendpointscustomdnsconfigsfqdn) | No | string | Required. Fqdn that resolves to private endpoint ip address. |
+| [`ipAddresses`](#parameter-privateendpointscustomdnsconfigsipaddresses) | Yes | array | Required. A list of private ip addresses of the private endpoint. |
 
 ### Parameter: `privateEndpoints.customDnsConfigs.fqdn`
+
+Required. Fqdn that resolves to private endpoint ip address.
+
 - Required: No
 - Type: string
 
 ### Parameter: `privateEndpoints.customDnsConfigs.ipAddresses`
+
+Required. A list of private ip addresses of the private endpoint.
+
 - Required: Yes
 - Type: array
 
@@ -580,26 +785,50 @@ Optional. A list of IP configurations of the private endpoint. This will be used
 
 | Name | Required | Type | Description |
 | :-- | :-- | :--| :-- |
-| [`groupId`](#parameter-privateendpointsipconfigurationsgroupid) | Yes | string |  |
-| [`memberName`](#parameter-privateendpointsipconfigurationsmembername) | Yes | string |  |
-| [`name`](#parameter-privateendpointsipconfigurationsname) | Yes | string |  |
-| [`privateIpAddress`](#parameter-privateendpointsipconfigurationsprivateipaddress) | Yes | string |  |
-
-### Parameter: `privateEndpoints.ipConfigurations.groupId`
-- Required: Yes
-- Type: string
-
-### Parameter: `privateEndpoints.ipConfigurations.memberName`
-- Required: Yes
-- Type: string
+| [`name`](#parameter-privateendpointsipconfigurationsname) | Yes | string | Required. The name of the resource that is unique within a resource group. |
+| [`properties`](#parameter-privateendpointsipconfigurationsproperties) | Yes | object | Required. Properties of private endpoint IP configurations. |
 
 ### Parameter: `privateEndpoints.ipConfigurations.name`
+
+Required. The name of the resource that is unique within a resource group.
+
 - Required: Yes
 - Type: string
 
-### Parameter: `privateEndpoints.ipConfigurations.privateIpAddress`
+### Parameter: `privateEndpoints.ipConfigurations.properties`
+
+Required. Properties of private endpoint IP configurations.
+
+- Required: Yes
+- Type: object
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`groupId`](#parameter-privateendpointsipconfigurationspropertiesgroupid) | Yes | string | Required. The ID of a group obtained from the remote resource that this private endpoint should connect to. |
+| [`memberName`](#parameter-privateendpointsipconfigurationspropertiesmembername) | Yes | string | Required. The member name of a group obtained from the remote resource that this private endpoint should connect to. |
+| [`privateIPAddress`](#parameter-privateendpointsipconfigurationspropertiesprivateipaddress) | Yes | string | Required. A private ip address obtained from the private endpoint's subnet. |
+
+### Parameter: `privateEndpoints.ipConfigurations.properties.groupId`
+
+Required. The ID of a group obtained from the remote resource that this private endpoint should connect to.
+
 - Required: Yes
 - Type: string
+
+### Parameter: `privateEndpoints.ipConfigurations.properties.memberName`
+
+Required. The member name of a group obtained from the remote resource that this private endpoint should connect to.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `privateEndpoints.ipConfigurations.properties.privateIPAddress`
+
+Required. A private ip address obtained from the private endpoint's subnet.
+
+- Required: Yes
+- Type: string
+
 
 
 ### Parameter: `privateEndpoints.location`
@@ -678,15 +907,34 @@ Whether or not public network access is allowed for this resource. For security 
 - Required: No
 - Type: string
 - Default: `''`
-- Allowed: `['', Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    ''
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 ### Parameter: `resourceLogConfigurationsToEnable`
 
 Control permission for data plane traffic coming from public networks while private endpoint is enabled.
 - Required: No
 - Type: array
-- Default: `[ConnectivityLogs, MessagingLogs]`
-- Allowed: `[ConnectivityLogs, MessagingLogs]`
+- Default:
+  ```Bicep
+  [
+    'ConnectivityLogs'
+    'MessagingLogs'
+  ]
+  ```
+- Allowed:
+  ```Bicep
+  [
+    'ConnectivityLogs'
+    'MessagingLogs'
+  ]
+  ```
 
 ### Parameter: `roleAssignments`
 
@@ -762,14 +1010,19 @@ Pricing tier of the resource.
 - Required: No
 - Type: string
 - Default: `'Standard_S1'`
-- Allowed: `[Free_F1, Standard_S1]`
+- Allowed:
+  ```Bicep
+  [
+    'Free_F1'
+    'Standard_S1'
+  ]
+  ```
 
 ### Parameter: `tags`
 
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 
 ## Outputs

@@ -46,7 +46,13 @@ This module deploys a Healthcare API Workspace IoT Connector FHIR Destination.
 The mapping JSON that determines how normalized data is converted to FHIR Observations.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default:
+  ```Bicep
+  {
+      template: []
+      templateType: 'CollectionFhir'
+  }
+  ```
 
 ### Parameter: `enableDefaultTelemetry`
 
@@ -86,7 +92,13 @@ Determines how resource identity is resolved on the destination.
 - Required: No
 - Type: string
 - Default: `'Lookup'`
-- Allowed: `[Create, Lookup]`
+- Allowed:
+  ```Bicep
+  [
+    'Create'
+    'Lookup'
+  ]
+  ```
 
 ### Parameter: `workspaceName`
 

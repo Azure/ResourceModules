@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "18408981482699771035"
+      "templateHash": "16148547066067055796"
     },
     "name": "Purview Accounts",
     "description": "This module deploys a Purview Account.",
@@ -244,7 +244,7 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Tags of the resource."
       }
@@ -475,7 +475,9 @@
           "privateDnsZoneGroupName": "[if(contains(parameters('accountPrivateEndpoints')[copyIndex()], 'privateDnsZoneGroupName'), createObject('value', parameters('accountPrivateEndpoints')[copyIndex()].privateDnsZoneGroupName), createObject('value', 'default'))]",
           "privateDnsZoneResourceIds": "[if(contains(parameters('accountPrivateEndpoints')[copyIndex()], 'privateDnsZoneResourceIds'), createObject('value', parameters('accountPrivateEndpoints')[copyIndex()].privateDnsZoneResourceIds), createObject('value', createArray()))]",
           "roleAssignments": "[if(contains(parameters('accountPrivateEndpoints')[copyIndex()], 'roleAssignments'), createObject('value', parameters('accountPrivateEndpoints')[copyIndex()].roleAssignments), createObject('value', createArray()))]",
-          "tags": "[if(contains(parameters('accountPrivateEndpoints')[copyIndex()], 'tags'), createObject('value', parameters('accountPrivateEndpoints')[copyIndex()].tags), createObject('value', createObject()))]",
+          "tags": {
+            "value": "[coalesce(tryGet(parameters('accountPrivateEndpoints')[copyIndex()], 'tags'), parameters('tags'))]"
+          },
           "manualPrivateLinkServiceConnections": "[if(contains(parameters('accountPrivateEndpoints')[copyIndex()], 'manualPrivateLinkServiceConnections'), createObject('value', parameters('accountPrivateEndpoints')[copyIndex()].manualPrivateLinkServiceConnections), createObject('value', createArray()))]",
           "customDnsConfigs": "[if(contains(parameters('accountPrivateEndpoints')[copyIndex()], 'customDnsConfigs'), createObject('value', parameters('accountPrivateEndpoints')[copyIndex()].customDnsConfigs), createObject('value', createArray()))]",
           "ipConfigurations": "[if(contains(parameters('accountPrivateEndpoints')[copyIndex()], 'ipConfigurations'), createObject('value', parameters('accountPrivateEndpoints')[copyIndex()].ipConfigurations), createObject('value', createArray()))]",
@@ -490,7 +492,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.22.6.54827",
-              "templateHash": "16178508232344722616"
+              "templateHash": "12078057657290521609"
             },
             "name": "Private Endpoints",
             "description": "This module deploys a Private Endpoint.",
@@ -587,6 +589,71 @@
                 }
               },
               "nullable": true
+            },
+            "ipConfigurationsType": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "metadata": {
+                      "description": "Required. The name of the resource that is unique within a resource group."
+                    }
+                  },
+                  "properties": {
+                    "type": "object",
+                    "properties": {
+                      "groupId": {
+                        "type": "string",
+                        "metadata": {
+                          "description": "Required. The ID of a group obtained from the remote resource that this private endpoint should connect to."
+                        }
+                      },
+                      "memberName": {
+                        "type": "string",
+                        "metadata": {
+                          "description": "Required. The member name of a group obtained from the remote resource that this private endpoint should connect to."
+                        }
+                      },
+                      "privateIPAddress": {
+                        "type": "string",
+                        "metadata": {
+                          "description": "Required. A private ip address obtained from the private endpoint's subnet."
+                        }
+                      }
+                    },
+                    "metadata": {
+                      "description": "Required. Properties of private endpoint IP configurations."
+                    }
+                  }
+                }
+              },
+              "nullable": true
+            },
+            "customDnsConfigType": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "fqdn": {
+                    "type": "string",
+                    "metadata": {
+                      "description": "Required. Fqdn that resolves to private endpoint ip address."
+                    }
+                  },
+                  "ipAddresses": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "metadata": {
+                      "description": "Required. A list of private ip addresses of the private endpoint."
+                    }
+                  }
+                }
+              },
+              "nullable": true
             }
           },
           "parameters": {
@@ -623,7 +690,7 @@
               }
             },
             "ipConfigurations": {
-              "type": "array",
+              "$ref": "#/definitions/ipConfigurationsType",
               "nullable": true,
               "metadata": {
                 "description": "Optional. A list of IP configurations of the private endpoint. This will be used to map to the First Party Service endpoints."
@@ -676,7 +743,7 @@
               }
             },
             "customDnsConfigs": {
-              "type": "array",
+              "$ref": "#/definitions/customDnsConfigType",
               "nullable": true,
               "metadata": {
                 "description": "Optional. Custom DNS configurations."
@@ -743,7 +810,7 @@
                     }
                   }
                 ],
-                "customDnsConfigs": "[coalesce(parameters('customDnsConfigs'), createArray())]",
+                "customDnsConfigs": "[parameters('customDnsConfigs')]",
                 "customNetworkInterfaceName": "[coalesce(parameters('customNetworkInterfaceName'), '')]",
                 "ipConfigurations": "[coalesce(parameters('ipConfigurations'), createArray())]",
                 "manualPrivateLinkServiceConnections": "[coalesce(parameters('manualPrivateLinkServiceConnections'), createArray())]",
@@ -1006,7 +1073,9 @@
           "privateDnsZoneGroupName": "[if(contains(parameters('portalPrivateEndpoints')[copyIndex()], 'privateDnsZoneGroupName'), createObject('value', parameters('portalPrivateEndpoints')[copyIndex()].privateDnsZoneGroupName), createObject('value', 'default'))]",
           "privateDnsZoneResourceIds": "[if(contains(parameters('portalPrivateEndpoints')[copyIndex()], 'privateDnsZoneResourceIds'), createObject('value', parameters('portalPrivateEndpoints')[copyIndex()].privateDnsZoneResourceIds), createObject('value', createArray()))]",
           "roleAssignments": "[if(contains(parameters('portalPrivateEndpoints')[copyIndex()], 'roleAssignments'), createObject('value', parameters('portalPrivateEndpoints')[copyIndex()].roleAssignments), createObject('value', createArray()))]",
-          "tags": "[if(contains(parameters('portalPrivateEndpoints')[copyIndex()], 'tags'), createObject('value', parameters('portalPrivateEndpoints')[copyIndex()].tags), createObject('value', createObject()))]",
+          "tags": {
+            "value": "[coalesce(tryGet(parameters('portalPrivateEndpoints')[copyIndex()], 'tags'), parameters('tags'))]"
+          },
           "manualPrivateLinkServiceConnections": "[if(contains(parameters('portalPrivateEndpoints')[copyIndex()], 'manualPrivateLinkServiceConnections'), createObject('value', parameters('portalPrivateEndpoints')[copyIndex()].manualPrivateLinkServiceConnections), createObject('value', createArray()))]",
           "customDnsConfigs": "[if(contains(parameters('portalPrivateEndpoints')[copyIndex()], 'customDnsConfigs'), createObject('value', parameters('portalPrivateEndpoints')[copyIndex()].customDnsConfigs), createObject('value', createArray()))]",
           "ipConfigurations": "[if(contains(parameters('portalPrivateEndpoints')[copyIndex()], 'ipConfigurations'), createObject('value', parameters('portalPrivateEndpoints')[copyIndex()].ipConfigurations), createObject('value', createArray()))]",
@@ -1021,7 +1090,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.22.6.54827",
-              "templateHash": "16178508232344722616"
+              "templateHash": "12078057657290521609"
             },
             "name": "Private Endpoints",
             "description": "This module deploys a Private Endpoint.",
@@ -1118,6 +1187,71 @@
                 }
               },
               "nullable": true
+            },
+            "ipConfigurationsType": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "metadata": {
+                      "description": "Required. The name of the resource that is unique within a resource group."
+                    }
+                  },
+                  "properties": {
+                    "type": "object",
+                    "properties": {
+                      "groupId": {
+                        "type": "string",
+                        "metadata": {
+                          "description": "Required. The ID of a group obtained from the remote resource that this private endpoint should connect to."
+                        }
+                      },
+                      "memberName": {
+                        "type": "string",
+                        "metadata": {
+                          "description": "Required. The member name of a group obtained from the remote resource that this private endpoint should connect to."
+                        }
+                      },
+                      "privateIPAddress": {
+                        "type": "string",
+                        "metadata": {
+                          "description": "Required. A private ip address obtained from the private endpoint's subnet."
+                        }
+                      }
+                    },
+                    "metadata": {
+                      "description": "Required. Properties of private endpoint IP configurations."
+                    }
+                  }
+                }
+              },
+              "nullable": true
+            },
+            "customDnsConfigType": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "fqdn": {
+                    "type": "string",
+                    "metadata": {
+                      "description": "Required. Fqdn that resolves to private endpoint ip address."
+                    }
+                  },
+                  "ipAddresses": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "metadata": {
+                      "description": "Required. A list of private ip addresses of the private endpoint."
+                    }
+                  }
+                }
+              },
+              "nullable": true
             }
           },
           "parameters": {
@@ -1154,7 +1288,7 @@
               }
             },
             "ipConfigurations": {
-              "type": "array",
+              "$ref": "#/definitions/ipConfigurationsType",
               "nullable": true,
               "metadata": {
                 "description": "Optional. A list of IP configurations of the private endpoint. This will be used to map to the First Party Service endpoints."
@@ -1207,7 +1341,7 @@
               }
             },
             "customDnsConfigs": {
-              "type": "array",
+              "$ref": "#/definitions/customDnsConfigType",
               "nullable": true,
               "metadata": {
                 "description": "Optional. Custom DNS configurations."
@@ -1274,7 +1408,7 @@
                     }
                   }
                 ],
-                "customDnsConfigs": "[coalesce(parameters('customDnsConfigs'), createArray())]",
+                "customDnsConfigs": "[parameters('customDnsConfigs')]",
                 "customNetworkInterfaceName": "[coalesce(parameters('customNetworkInterfaceName'), '')]",
                 "ipConfigurations": "[coalesce(parameters('ipConfigurations'), createArray())]",
                 "manualPrivateLinkServiceConnections": "[coalesce(parameters('manualPrivateLinkServiceConnections'), createArray())]",
@@ -1537,7 +1671,9 @@
           "privateDnsZoneGroupName": "[if(contains(parameters('storageBlobPrivateEndpoints')[copyIndex()], 'privateDnsZoneGroupName'), createObject('value', parameters('storageBlobPrivateEndpoints')[copyIndex()].privateDnsZoneGroupName), createObject('value', 'default'))]",
           "privateDnsZoneResourceIds": "[if(contains(parameters('storageBlobPrivateEndpoints')[copyIndex()], 'privateDnsZoneResourceIds'), createObject('value', parameters('storageBlobPrivateEndpoints')[copyIndex()].privateDnsZoneResourceIds), createObject('value', createArray()))]",
           "roleAssignments": "[if(contains(parameters('storageBlobPrivateEndpoints')[copyIndex()], 'roleAssignments'), createObject('value', parameters('storageBlobPrivateEndpoints')[copyIndex()].roleAssignments), createObject('value', createArray()))]",
-          "tags": "[if(contains(parameters('storageBlobPrivateEndpoints')[copyIndex()], 'tags'), createObject('value', parameters('storageBlobPrivateEndpoints')[copyIndex()].tags), createObject('value', createObject()))]",
+          "tags": {
+            "value": "[coalesce(tryGet(parameters('storageBlobPrivateEndpoints')[copyIndex()], 'tags'), parameters('tags'))]"
+          },
           "manualPrivateLinkServiceConnections": "[if(contains(parameters('storageBlobPrivateEndpoints')[copyIndex()], 'manualPrivateLinkServiceConnections'), createObject('value', parameters('storageBlobPrivateEndpoints')[copyIndex()].manualPrivateLinkServiceConnections), createObject('value', createArray()))]",
           "customDnsConfigs": "[if(contains(parameters('storageBlobPrivateEndpoints')[copyIndex()], 'customDnsConfigs'), createObject('value', parameters('storageBlobPrivateEndpoints')[copyIndex()].customDnsConfigs), createObject('value', createArray()))]",
           "ipConfigurations": "[if(contains(parameters('storageBlobPrivateEndpoints')[copyIndex()], 'ipConfigurations'), createObject('value', parameters('storageBlobPrivateEndpoints')[copyIndex()].ipConfigurations), createObject('value', createArray()))]",
@@ -1552,7 +1688,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.22.6.54827",
-              "templateHash": "16178508232344722616"
+              "templateHash": "12078057657290521609"
             },
             "name": "Private Endpoints",
             "description": "This module deploys a Private Endpoint.",
@@ -1649,6 +1785,71 @@
                 }
               },
               "nullable": true
+            },
+            "ipConfigurationsType": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "metadata": {
+                      "description": "Required. The name of the resource that is unique within a resource group."
+                    }
+                  },
+                  "properties": {
+                    "type": "object",
+                    "properties": {
+                      "groupId": {
+                        "type": "string",
+                        "metadata": {
+                          "description": "Required. The ID of a group obtained from the remote resource that this private endpoint should connect to."
+                        }
+                      },
+                      "memberName": {
+                        "type": "string",
+                        "metadata": {
+                          "description": "Required. The member name of a group obtained from the remote resource that this private endpoint should connect to."
+                        }
+                      },
+                      "privateIPAddress": {
+                        "type": "string",
+                        "metadata": {
+                          "description": "Required. A private ip address obtained from the private endpoint's subnet."
+                        }
+                      }
+                    },
+                    "metadata": {
+                      "description": "Required. Properties of private endpoint IP configurations."
+                    }
+                  }
+                }
+              },
+              "nullable": true
+            },
+            "customDnsConfigType": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "fqdn": {
+                    "type": "string",
+                    "metadata": {
+                      "description": "Required. Fqdn that resolves to private endpoint ip address."
+                    }
+                  },
+                  "ipAddresses": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "metadata": {
+                      "description": "Required. A list of private ip addresses of the private endpoint."
+                    }
+                  }
+                }
+              },
+              "nullable": true
             }
           },
           "parameters": {
@@ -1685,7 +1886,7 @@
               }
             },
             "ipConfigurations": {
-              "type": "array",
+              "$ref": "#/definitions/ipConfigurationsType",
               "nullable": true,
               "metadata": {
                 "description": "Optional. A list of IP configurations of the private endpoint. This will be used to map to the First Party Service endpoints."
@@ -1738,7 +1939,7 @@
               }
             },
             "customDnsConfigs": {
-              "type": "array",
+              "$ref": "#/definitions/customDnsConfigType",
               "nullable": true,
               "metadata": {
                 "description": "Optional. Custom DNS configurations."
@@ -1805,7 +2006,7 @@
                     }
                   }
                 ],
-                "customDnsConfigs": "[coalesce(parameters('customDnsConfigs'), createArray())]",
+                "customDnsConfigs": "[parameters('customDnsConfigs')]",
                 "customNetworkInterfaceName": "[coalesce(parameters('customNetworkInterfaceName'), '')]",
                 "ipConfigurations": "[coalesce(parameters('ipConfigurations'), createArray())]",
                 "manualPrivateLinkServiceConnections": "[coalesce(parameters('manualPrivateLinkServiceConnections'), createArray())]",
@@ -2068,7 +2269,9 @@
           "privateDnsZoneGroupName": "[if(contains(parameters('storageQueuePrivateEndpoints')[copyIndex()], 'privateDnsZoneGroupName'), createObject('value', parameters('storageQueuePrivateEndpoints')[copyIndex()].privateDnsZoneGroupName), createObject('value', 'default'))]",
           "privateDnsZoneResourceIds": "[if(contains(parameters('storageQueuePrivateEndpoints')[copyIndex()], 'privateDnsZoneResourceIds'), createObject('value', parameters('storageQueuePrivateEndpoints')[copyIndex()].privateDnsZoneResourceIds), createObject('value', createArray()))]",
           "roleAssignments": "[if(contains(parameters('storageQueuePrivateEndpoints')[copyIndex()], 'roleAssignments'), createObject('value', parameters('storageQueuePrivateEndpoints')[copyIndex()].roleAssignments), createObject('value', createArray()))]",
-          "tags": "[if(contains(parameters('storageQueuePrivateEndpoints')[copyIndex()], 'tags'), createObject('value', parameters('storageQueuePrivateEndpoints')[copyIndex()].tags), createObject('value', createObject()))]",
+          "tags": {
+            "value": "[coalesce(tryGet(parameters('storageQueuePrivateEndpoints')[copyIndex()], 'tags'), parameters('tags'))]"
+          },
           "manualPrivateLinkServiceConnections": "[if(contains(parameters('storageQueuePrivateEndpoints')[copyIndex()], 'manualPrivateLinkServiceConnections'), createObject('value', parameters('storageQueuePrivateEndpoints')[copyIndex()].manualPrivateLinkServiceConnections), createObject('value', createArray()))]",
           "customDnsConfigs": "[if(contains(parameters('storageQueuePrivateEndpoints')[copyIndex()], 'customDnsConfigs'), createObject('value', parameters('storageQueuePrivateEndpoints')[copyIndex()].customDnsConfigs), createObject('value', createArray()))]",
           "ipConfigurations": "[if(contains(parameters('storageQueuePrivateEndpoints')[copyIndex()], 'ipConfigurations'), createObject('value', parameters('storageQueuePrivateEndpoints')[copyIndex()].ipConfigurations), createObject('value', createArray()))]",
@@ -2083,7 +2286,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.22.6.54827",
-              "templateHash": "16178508232344722616"
+              "templateHash": "12078057657290521609"
             },
             "name": "Private Endpoints",
             "description": "This module deploys a Private Endpoint.",
@@ -2180,6 +2383,71 @@
                 }
               },
               "nullable": true
+            },
+            "ipConfigurationsType": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "metadata": {
+                      "description": "Required. The name of the resource that is unique within a resource group."
+                    }
+                  },
+                  "properties": {
+                    "type": "object",
+                    "properties": {
+                      "groupId": {
+                        "type": "string",
+                        "metadata": {
+                          "description": "Required. The ID of a group obtained from the remote resource that this private endpoint should connect to."
+                        }
+                      },
+                      "memberName": {
+                        "type": "string",
+                        "metadata": {
+                          "description": "Required. The member name of a group obtained from the remote resource that this private endpoint should connect to."
+                        }
+                      },
+                      "privateIPAddress": {
+                        "type": "string",
+                        "metadata": {
+                          "description": "Required. A private ip address obtained from the private endpoint's subnet."
+                        }
+                      }
+                    },
+                    "metadata": {
+                      "description": "Required. Properties of private endpoint IP configurations."
+                    }
+                  }
+                }
+              },
+              "nullable": true
+            },
+            "customDnsConfigType": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "fqdn": {
+                    "type": "string",
+                    "metadata": {
+                      "description": "Required. Fqdn that resolves to private endpoint ip address."
+                    }
+                  },
+                  "ipAddresses": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "metadata": {
+                      "description": "Required. A list of private ip addresses of the private endpoint."
+                    }
+                  }
+                }
+              },
+              "nullable": true
             }
           },
           "parameters": {
@@ -2216,7 +2484,7 @@
               }
             },
             "ipConfigurations": {
-              "type": "array",
+              "$ref": "#/definitions/ipConfigurationsType",
               "nullable": true,
               "metadata": {
                 "description": "Optional. A list of IP configurations of the private endpoint. This will be used to map to the First Party Service endpoints."
@@ -2269,7 +2537,7 @@
               }
             },
             "customDnsConfigs": {
-              "type": "array",
+              "$ref": "#/definitions/customDnsConfigType",
               "nullable": true,
               "metadata": {
                 "description": "Optional. Custom DNS configurations."
@@ -2336,7 +2604,7 @@
                     }
                   }
                 ],
-                "customDnsConfigs": "[coalesce(parameters('customDnsConfigs'), createArray())]",
+                "customDnsConfigs": "[parameters('customDnsConfigs')]",
                 "customNetworkInterfaceName": "[coalesce(parameters('customNetworkInterfaceName'), '')]",
                 "ipConfigurations": "[coalesce(parameters('ipConfigurations'), createArray())]",
                 "manualPrivateLinkServiceConnections": "[coalesce(parameters('manualPrivateLinkServiceConnections'), createArray())]",
@@ -2599,7 +2867,9 @@
           "privateDnsZoneGroupName": "[if(contains(parameters('eventHubPrivateEndpoints')[copyIndex()], 'privateDnsZoneGroupName'), createObject('value', parameters('eventHubPrivateEndpoints')[copyIndex()].privateDnsZoneGroupName), createObject('value', 'default'))]",
           "privateDnsZoneResourceIds": "[if(contains(parameters('eventHubPrivateEndpoints')[copyIndex()], 'privateDnsZoneResourceIds'), createObject('value', parameters('eventHubPrivateEndpoints')[copyIndex()].privateDnsZoneResourceIds), createObject('value', createArray()))]",
           "roleAssignments": "[if(contains(parameters('eventHubPrivateEndpoints')[copyIndex()], 'roleAssignments'), createObject('value', parameters('eventHubPrivateEndpoints')[copyIndex()].roleAssignments), createObject('value', createArray()))]",
-          "tags": "[if(contains(parameters('eventHubPrivateEndpoints')[copyIndex()], 'tags'), createObject('value', parameters('eventHubPrivateEndpoints')[copyIndex()].tags), createObject('value', createObject()))]",
+          "tags": {
+            "value": "[coalesce(tryGet(parameters('eventHubPrivateEndpoints')[copyIndex()], 'tags'), parameters('tags'))]"
+          },
           "manualPrivateLinkServiceConnections": "[if(contains(parameters('eventHubPrivateEndpoints')[copyIndex()], 'manualPrivateLinkServiceConnections'), createObject('value', parameters('eventHubPrivateEndpoints')[copyIndex()].manualPrivateLinkServiceConnections), createObject('value', createArray()))]",
           "customDnsConfigs": "[if(contains(parameters('eventHubPrivateEndpoints')[copyIndex()], 'customDnsConfigs'), createObject('value', parameters('eventHubPrivateEndpoints')[copyIndex()].customDnsConfigs), createObject('value', createArray()))]",
           "ipConfigurations": "[if(contains(parameters('eventHubPrivateEndpoints')[copyIndex()], 'ipConfigurations'), createObject('value', parameters('eventHubPrivateEndpoints')[copyIndex()].ipConfigurations), createObject('value', createArray()))]",
@@ -2614,7 +2884,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.22.6.54827",
-              "templateHash": "16178508232344722616"
+              "templateHash": "12078057657290521609"
             },
             "name": "Private Endpoints",
             "description": "This module deploys a Private Endpoint.",
@@ -2711,6 +2981,71 @@
                 }
               },
               "nullable": true
+            },
+            "ipConfigurationsType": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "metadata": {
+                      "description": "Required. The name of the resource that is unique within a resource group."
+                    }
+                  },
+                  "properties": {
+                    "type": "object",
+                    "properties": {
+                      "groupId": {
+                        "type": "string",
+                        "metadata": {
+                          "description": "Required. The ID of a group obtained from the remote resource that this private endpoint should connect to."
+                        }
+                      },
+                      "memberName": {
+                        "type": "string",
+                        "metadata": {
+                          "description": "Required. The member name of a group obtained from the remote resource that this private endpoint should connect to."
+                        }
+                      },
+                      "privateIPAddress": {
+                        "type": "string",
+                        "metadata": {
+                          "description": "Required. A private ip address obtained from the private endpoint's subnet."
+                        }
+                      }
+                    },
+                    "metadata": {
+                      "description": "Required. Properties of private endpoint IP configurations."
+                    }
+                  }
+                }
+              },
+              "nullable": true
+            },
+            "customDnsConfigType": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "fqdn": {
+                    "type": "string",
+                    "metadata": {
+                      "description": "Required. Fqdn that resolves to private endpoint ip address."
+                    }
+                  },
+                  "ipAddresses": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "metadata": {
+                      "description": "Required. A list of private ip addresses of the private endpoint."
+                    }
+                  }
+                }
+              },
+              "nullable": true
             }
           },
           "parameters": {
@@ -2747,7 +3082,7 @@
               }
             },
             "ipConfigurations": {
-              "type": "array",
+              "$ref": "#/definitions/ipConfigurationsType",
               "nullable": true,
               "metadata": {
                 "description": "Optional. A list of IP configurations of the private endpoint. This will be used to map to the First Party Service endpoints."
@@ -2800,7 +3135,7 @@
               }
             },
             "customDnsConfigs": {
-              "type": "array",
+              "$ref": "#/definitions/customDnsConfigType",
               "nullable": true,
               "metadata": {
                 "description": "Optional. Custom DNS configurations."
@@ -2867,7 +3202,7 @@
                     }
                   }
                 ],
-                "customDnsConfigs": "[coalesce(parameters('customDnsConfigs'), createArray())]",
+                "customDnsConfigs": "[parameters('customDnsConfigs')]",
                 "customNetworkInterfaceName": "[coalesce(parameters('customNetworkInterfaceName'), '')]",
                 "ipConfigurations": "[coalesce(parameters('ipConfigurations'), createArray())]",
                 "manualPrivateLinkServiceConnections": "[coalesce(parameters('manualPrivateLinkServiceConnections'), createArray())]",

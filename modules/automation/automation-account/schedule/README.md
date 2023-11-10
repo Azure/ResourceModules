@@ -53,7 +53,7 @@ This module deploys an Azure Automation Account Schedule.
 The properties of the create Advanced Schedule.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `automationAccountName`
 
@@ -95,7 +95,17 @@ The frequency of the schedule.
 - Required: No
 - Type: string
 - Default: `'OneTime'`
-- Allowed: `[Day, Hour, Minute, Month, OneTime, Week]`
+- Allowed:
+  ```Bicep
+  [
+    'Day'
+    'Hour'
+    'Minute'
+    'Month'
+    'OneTime'
+    'Week'
+  ]
+  ```
 
 ### Parameter: `interval`
 

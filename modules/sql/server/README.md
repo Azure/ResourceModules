@@ -45,6 +45,7 @@ The following section provides usage examples for the module, which were used to
 - [Pe](#example-3-pe)
 - [Secondary](#example-4-secondary)
 - [Vulnassm](#example-5-vulnassm)
+- [WAF-aligned](#example-6-waf-aligned)
 
 ### Example 1: _Admin_
 
@@ -118,10 +119,10 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module server 'br:bicep/modules/sql.server:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-sqlscom'
+  name: '${uniqueString(deployment().name, location)}-test-sqlsmax'
   params: {
     // Required parameters
-    name: 'sqlscom'
+    name: 'sqlsmax'
     // Non-required parameters
     administratorLogin: 'adminUserName'
     administratorLoginPassword: '<administratorLoginPassword>'
@@ -151,7 +152,7 @@ module server 'br:bicep/modules/sql.server:1.0.0' = {
         }
         licenseType: 'LicenseIncluded'
         maxSizeBytes: 34359738368
-        name: 'sqlscomdb-001'
+        name: 'sqlsmaxdb-001'
         skuName: 'ElasticPool'
         skuTier: 'GeneralPurpose'
       }
@@ -159,7 +160,7 @@ module server 'br:bicep/modules/sql.server:1.0.0' = {
     elasticPools: [
       {
         maintenanceConfigurationId: '<maintenanceConfigurationId>'
-        name: 'sqlscom-ep-001'
+        name: 'sqlsmax-ep-001'
         skuCapacity: 10
         skuName: 'GP_Gen5'
         skuTier: 'GeneralPurpose'
@@ -260,7 +261,7 @@ module server 'br:bicep/modules/sql.server:1.0.0' = {
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
-      "value": "sqlscom"
+      "value": "sqlsmax"
     },
     "administratorLogin": {
       "value": "adminUserName"
@@ -295,7 +296,7 @@ module server 'br:bicep/modules/sql.server:1.0.0' = {
           },
           "licenseType": "LicenseIncluded",
           "maxSizeBytes": 34359738368,
-          "name": "sqlscomdb-001",
+          "name": "sqlsmaxdb-001",
           "skuName": "ElasticPool",
           "skuTier": "GeneralPurpose"
         }
@@ -305,7 +306,7 @@ module server 'br:bicep/modules/sql.server:1.0.0' = {
       "value": [
         {
           "maintenanceConfigurationId": "<maintenanceConfigurationId>",
-          "name": "sqlscom-ep-001",
+          "name": "sqlsmax-ep-001",
           "skuCapacity": 10,
           "skuName": "GP_Gen5",
           "skuTier": "GeneralPurpose"
@@ -734,6 +735,324 @@ module server 'br:bicep/modules/sql.server:1.0.0' = {
 </details>
 <p>
 
+### Example 6: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module server 'br:bicep/modules/sql.server:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-sqlswaf'
+  params: {
+    // Required parameters
+    name: 'sqlswaf'
+    // Non-required parameters
+    administratorLogin: 'adminUserName'
+    administratorLoginPassword: '<administratorLoginPassword>'
+    databases: [
+      {
+        backupLongTermRetentionPolicy: {
+          monthlyRetention: 'P6M'
+        }
+        backupShortTermRetentionPolicy: {
+          retentionDays: 14
+        }
+        capacity: 0
+        collation: 'SQL_Latin1_General_CP1_CI_AS'
+        diagnosticSettings: [
+          {
+            eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+            eventHubName: '<eventHubName>'
+            name: 'customSetting'
+            storageAccountResourceId: '<storageAccountResourceId>'
+            workspaceResourceId: '<workspaceResourceId>'
+          }
+        ]
+        elasticPoolId: '<elasticPoolId>'
+        encryptionProtectorObj: {
+          serverKeyName: '<serverKeyName>'
+          serverKeyType: 'AzureKeyVault'
+        }
+        licenseType: 'LicenseIncluded'
+        maxSizeBytes: 34359738368
+        name: 'sqlswafdb-001'
+        skuName: 'ElasticPool'
+        skuTier: 'GeneralPurpose'
+      }
+    ]
+    elasticPools: [
+      {
+        maintenanceConfigurationId: '<maintenanceConfigurationId>'
+        name: 'sqlswaf-ep-001'
+        skuCapacity: 10
+        skuName: 'GP_Gen5'
+        skuTier: 'GeneralPurpose'
+      }
+    ]
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    firewallRules: [
+      {
+        endIpAddress: '0.0.0.0'
+        name: 'AllowAllWindowsAzureIps'
+        startIpAddress: '0.0.0.0'
+      }
+    ]
+    keys: [
+      {
+        name: '<name>'
+        serverKeyType: 'AzureKeyVault'
+        uri: '<uri>'
+      }
+    ]
+    location: '<location>'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    managedIdentities: {
+      systemAssigned: true
+      userAssignedResourcesIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
+    primaryUserAssignedIdentityId: '<primaryUserAssignedIdentityId>'
+    privateEndpoints: [
+      {
+        privateDnsZoneResourceIds: [
+          '<privateDNSZoneResourceId>'
+        ]
+        service: 'sqlServer'
+        subnetResourceId: '<subnetResourceId>'
+        tags: {
+          Environment: 'Non-Prod'
+          'hidden-title': 'This is visible in the resource name'
+          Role: 'DeploymentValidation'
+        }
+      }
+    ]
+    restrictOutboundNetworkAccess: 'Disabled'
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    securityAlertPolicies: [
+      {
+        emailAccountAdmins: true
+        name: 'Default'
+        state: 'Enabled'
+      }
+    ]
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+    virtualNetworkRules: [
+      {
+        ignoreMissingVnetServiceEndpoint: true
+        name: 'newVnetRule1'
+        virtualNetworkSubnetId: '<virtualNetworkSubnetId>'
+      }
+    ]
+    vulnerabilityAssessmentsObj: {
+      emailSubscriptionAdmins: true
+      name: 'default'
+      recurringScansEmails: [
+        'test1@contoso.com'
+        'test2@contoso.com'
+      ]
+      recurringScansIsEnabled: true
+      storageAccountResourceId: '<storageAccountResourceId>'
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "sqlswaf"
+    },
+    "administratorLogin": {
+      "value": "adminUserName"
+    },
+    "administratorLoginPassword": {
+      "value": "<administratorLoginPassword>"
+    },
+    "databases": {
+      "value": [
+        {
+          "backupLongTermRetentionPolicy": {
+            "monthlyRetention": "P6M"
+          },
+          "backupShortTermRetentionPolicy": {
+            "retentionDays": 14
+          },
+          "capacity": 0,
+          "collation": "SQL_Latin1_General_CP1_CI_AS",
+          "diagnosticSettings": [
+            {
+              "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+              "eventHubName": "<eventHubName>",
+              "name": "customSetting",
+              "storageAccountResourceId": "<storageAccountResourceId>",
+              "workspaceResourceId": "<workspaceResourceId>"
+            }
+          ],
+          "elasticPoolId": "<elasticPoolId>",
+          "encryptionProtectorObj": {
+            "serverKeyName": "<serverKeyName>",
+            "serverKeyType": "AzureKeyVault"
+          },
+          "licenseType": "LicenseIncluded",
+          "maxSizeBytes": 34359738368,
+          "name": "sqlswafdb-001",
+          "skuName": "ElasticPool",
+          "skuTier": "GeneralPurpose"
+        }
+      ]
+    },
+    "elasticPools": {
+      "value": [
+        {
+          "maintenanceConfigurationId": "<maintenanceConfigurationId>",
+          "name": "sqlswaf-ep-001",
+          "skuCapacity": 10,
+          "skuName": "GP_Gen5",
+          "skuTier": "GeneralPurpose"
+        }
+      ]
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "firewallRules": {
+      "value": [
+        {
+          "endIpAddress": "0.0.0.0",
+          "name": "AllowAllWindowsAzureIps",
+          "startIpAddress": "0.0.0.0"
+        }
+      ]
+    },
+    "keys": {
+      "value": [
+        {
+          "name": "<name>",
+          "serverKeyType": "AzureKeyVault",
+          "uri": "<uri>"
+        }
+      ]
+    },
+    "location": {
+      "value": "<location>"
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "managedIdentities": {
+      "value": {
+        "systemAssigned": true,
+        "userAssignedResourcesIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
+    },
+    "primaryUserAssignedIdentityId": {
+      "value": "<primaryUserAssignedIdentityId>"
+    },
+    "privateEndpoints": {
+      "value": [
+        {
+          "privateDnsZoneResourceIds": [
+            "<privateDNSZoneResourceId>"
+          ],
+          "service": "sqlServer",
+          "subnetResourceId": "<subnetResourceId>",
+          "tags": {
+            "Environment": "Non-Prod",
+            "hidden-title": "This is visible in the resource name",
+            "Role": "DeploymentValidation"
+          }
+        }
+      ]
+    },
+    "restrictOutboundNetworkAccess": {
+      "value": "Disabled"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "securityAlertPolicies": {
+      "value": [
+        {
+          "emailAccountAdmins": true,
+          "name": "Default",
+          "state": "Enabled"
+        }
+      ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    },
+    "virtualNetworkRules": {
+      "value": [
+        {
+          "ignoreMissingVnetServiceEndpoint": true,
+          "name": "newVnetRule1",
+          "virtualNetworkSubnetId": "<virtualNetworkSubnetId>"
+        }
+      ]
+    },
+    "vulnerabilityAssessmentsObj": {
+      "value": {
+        "emailSubscriptionAdmins": true,
+        "name": "default",
+        "recurringScansEmails": [
+          "test1@contoso.com",
+          "test2@contoso.com"
+        ],
+        "recurringScansIsEnabled": true,
+        "storageAccountResourceId": "<storageAccountResourceId>"
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
 
 ## Parameters
 
@@ -794,7 +1113,7 @@ The administrator login password. Required if no `administrators` object for AAD
 The Azure Active Directory (AAD) administrator authentication. Required if no `administratorLogin` & `administratorLoginPassword` is provided.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `databases`
 
@@ -822,7 +1141,7 @@ Enable telemetry via a Globally Unique Identifier (GUID).
 The encryption protection configuration.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `firewallRules`
 
@@ -904,7 +1223,14 @@ Minimal TLS version allowed.
 - Required: No
 - Type: string
 - Default: `'1.2'`
-- Allowed: `[1.0, 1.1, 1.2]`
+- Allowed:
+  ```Bicep
+  [
+    '1.0'
+    '1.1'
+    '1.2'
+  ]
+  ```
 
 ### Parameter: `name`
 
@@ -960,14 +1286,20 @@ Optional. Custom DNS configurations.
 
 | Name | Required | Type | Description |
 | :-- | :-- | :--| :-- |
-| [`fqdn`](#parameter-privateendpointscustomdnsconfigsfqdn) | No | string |  |
-| [`ipAddresses`](#parameter-privateendpointscustomdnsconfigsipaddresses) | Yes | array |  |
+| [`fqdn`](#parameter-privateendpointscustomdnsconfigsfqdn) | No | string | Required. Fqdn that resolves to private endpoint ip address. |
+| [`ipAddresses`](#parameter-privateendpointscustomdnsconfigsipaddresses) | Yes | array | Required. A list of private ip addresses of the private endpoint. |
 
 ### Parameter: `privateEndpoints.customDnsConfigs.fqdn`
+
+Required. Fqdn that resolves to private endpoint ip address.
+
 - Required: No
 - Type: string
 
 ### Parameter: `privateEndpoints.customDnsConfigs.ipAddresses`
+
+Required. A list of private ip addresses of the private endpoint.
+
 - Required: Yes
 - Type: array
 
@@ -995,26 +1327,50 @@ Optional. A list of IP configurations of the private endpoint. This will be used
 
 | Name | Required | Type | Description |
 | :-- | :-- | :--| :-- |
-| [`groupId`](#parameter-privateendpointsipconfigurationsgroupid) | Yes | string |  |
-| [`memberName`](#parameter-privateendpointsipconfigurationsmembername) | Yes | string |  |
-| [`name`](#parameter-privateendpointsipconfigurationsname) | Yes | string |  |
-| [`privateIpAddress`](#parameter-privateendpointsipconfigurationsprivateipaddress) | Yes | string |  |
-
-### Parameter: `privateEndpoints.ipConfigurations.groupId`
-- Required: Yes
-- Type: string
-
-### Parameter: `privateEndpoints.ipConfigurations.memberName`
-- Required: Yes
-- Type: string
+| [`name`](#parameter-privateendpointsipconfigurationsname) | Yes | string | Required. The name of the resource that is unique within a resource group. |
+| [`properties`](#parameter-privateendpointsipconfigurationsproperties) | Yes | object | Required. Properties of private endpoint IP configurations. |
 
 ### Parameter: `privateEndpoints.ipConfigurations.name`
+
+Required. The name of the resource that is unique within a resource group.
+
 - Required: Yes
 - Type: string
 
-### Parameter: `privateEndpoints.ipConfigurations.privateIpAddress`
+### Parameter: `privateEndpoints.ipConfigurations.properties`
+
+Required. Properties of private endpoint IP configurations.
+
+- Required: Yes
+- Type: object
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`groupId`](#parameter-privateendpointsipconfigurationspropertiesgroupid) | Yes | string | Required. The ID of a group obtained from the remote resource that this private endpoint should connect to. |
+| [`memberName`](#parameter-privateendpointsipconfigurationspropertiesmembername) | Yes | string | Required. The member name of a group obtained from the remote resource that this private endpoint should connect to. |
+| [`privateIPAddress`](#parameter-privateendpointsipconfigurationspropertiesprivateipaddress) | Yes | string | Required. A private ip address obtained from the private endpoint's subnet. |
+
+### Parameter: `privateEndpoints.ipConfigurations.properties.groupId`
+
+Required. The ID of a group obtained from the remote resource that this private endpoint should connect to.
+
 - Required: Yes
 - Type: string
+
+### Parameter: `privateEndpoints.ipConfigurations.properties.memberName`
+
+Required. The member name of a group obtained from the remote resource that this private endpoint should connect to.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `privateEndpoints.ipConfigurations.properties.privateIPAddress`
+
+Required. A private ip address obtained from the private endpoint's subnet.
+
+- Required: Yes
+- Type: string
+
 
 
 ### Parameter: `privateEndpoints.location`
@@ -1093,7 +1449,14 @@ Whether or not public network access is allowed for this resource. For security 
 - Required: No
 - Type: string
 - Default: `''`
-- Allowed: `['', Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    ''
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 ### Parameter: `restrictOutboundNetworkAccess`
 
@@ -1101,7 +1464,14 @@ Whether or not to restrict outbound network access for this server.
 - Required: No
 - Type: string
 - Default: `''`
-- Allowed: `['', Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    ''
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 ### Parameter: `roleAssignments`
 
@@ -1183,7 +1553,6 @@ The security alert policies to create in the server.
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `virtualNetworkRules`
 
@@ -1197,7 +1566,7 @@ The virtual network rules to create in the server.
 The vulnerability assessment configuration.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 
 ## Outputs

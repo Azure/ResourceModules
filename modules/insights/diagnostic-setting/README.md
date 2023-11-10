@@ -25,6 +25,7 @@ The following section provides usage examples for the module, which were used to
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/insights.diagnostic-setting:1.0.0`.
 
 - [Using large parameter set](#example-1-using-large-parameter-set)
+- [WAF-aligned](#example-2-waf-aligned)
 
 ### Example 1: _Using large parameter set_
 
@@ -37,7 +38,7 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module diagnosticSetting 'br:bicep/modules/insights.diagnostic-setting:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-idscom'
+  name: '${uniqueString(deployment().name, location)}-test-idsmax'
   params: {
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
@@ -47,7 +48,7 @@ module diagnosticSetting 'br:bicep/modules/insights.diagnostic-setting:1.0.0' = 
         category: 'AllMetrics'
       }
     ]
-    name: 'idscom001'
+    name: 'idsmax001'
     storageAccountResourceId: '<storageAccountResourceId>'
     workspaceResourceId: '<workspaceResourceId>'
   }
@@ -83,7 +84,79 @@ module diagnosticSetting 'br:bicep/modules/insights.diagnostic-setting:1.0.0' = 
       ]
     },
     "name": {
-      "value": "idscom001"
+      "value": "idsmax001"
+    },
+    "storageAccountResourceId": {
+      "value": "<storageAccountResourceId>"
+    },
+    "workspaceResourceId": {
+      "value": "<workspaceResourceId>"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 2: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module diagnosticSetting 'br:bicep/modules/insights.diagnostic-setting:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-idswaf'
+  params: {
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+    eventHubName: '<eventHubName>'
+    metricCategories: [
+      {
+        category: 'AllMetrics'
+      }
+    ]
+    name: 'idswaf001'
+    storageAccountResourceId: '<storageAccountResourceId>'
+    workspaceResourceId: '<workspaceResourceId>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "eventHubAuthorizationRuleResourceId": {
+      "value": "<eventHubAuthorizationRuleResourceId>"
+    },
+    "eventHubName": {
+      "value": "<eventHubName>"
+    },
+    "metricCategories": {
+      "value": [
+        {
+          "category": "AllMetrics"
+        }
+      ]
+    },
+    "name": {
+      "value": "idswaf001"
     },
     "storageAccountResourceId": {
       "value": "<storageAccountResourceId>"
@@ -149,7 +222,14 @@ A string indicating whether the export to Log Analytics should use the default d
 - Required: No
 - Type: string
 - Default: `''`
-- Allowed: `['', AzureDiagnostics, Dedicated]`
+- Allowed:
+  ```Bicep
+  [
+    ''
+    'AzureDiagnostics'
+    'Dedicated'
+  ]
+  ```
 
 ### Parameter: `logCategoriesAndGroups`
 

@@ -54,7 +54,13 @@ Resource reference to the Azure DNS zone.
 The type of the certificate used for secure delivery.
 - Required: Yes
 - Type: string
-- Allowed: `[CustomerCertificate, ManagedCertificate]`
+- Allowed:
+  ```Bicep
+  [
+    'CustomerCertificate'
+    'ManagedCertificate'
+  ]
+  ```
 
 ### Parameter: `enableDefaultTelemetry`
 
@@ -68,7 +74,7 @@ Enable telemetry via a Globally Unique Identifier (GUID).
 Key-Value pair representing migration properties for domains.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `hostName`
 
@@ -82,7 +88,13 @@ The minimum TLS version required for the custom domain. Default value: TLS12.
 - Required: No
 - Type: string
 - Default: `'TLS12'`
-- Allowed: `[TLS10, TLS12]`
+- Allowed:
+  ```Bicep
+  [
+    'TLS10'
+    'TLS12'
+  ]
+  ```
 
 ### Parameter: `name`
 

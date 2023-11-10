@@ -32,12 +32,150 @@ The following section provides usage examples for the module, which were used to
 
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/container-registry.registry:1.0.0`.
 
-- [Using large parameter set](#example-1-using-large-parameter-set)
+- [Using only defaults](#example-1-using-only-defaults)
 - [Encr](#example-2-encr)
-- [Using only defaults](#example-3-using-only-defaults)
+- [Using large parameter set](#example-3-using-large-parameter-set)
 - [Pe](#example-4-pe)
+- [WAF-aligned](#example-5-waf-aligned)
 
-### Example 1: _Using large parameter set_
+### Example 1: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module registry 'br:bicep/modules/container-registry.registry:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-crrmin'
+  params: {
+    // Required parameters
+    name: 'crrmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "crrmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 2: _Encr_
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module registry 'br:bicep/modules/container-registry.registry:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-crrencr'
+  params: {
+    // Required parameters
+    name: 'crrencr001'
+    // Non-required parameters
+    acrSku: 'Premium'
+    customerManagedKey: {
+      keyName: '<keyName>'
+      keyVaultResourceId: '<keyVaultResourceId>'
+      userAssignedIdentityResourceId: '<userAssignedIdentityResourceId>'
+    }
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    managedIdentities: {
+      userAssignedResourcesIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
+    publicNetworkAccess: 'Disabled'
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "crrencr001"
+    },
+    // Non-required parameters
+    "acrSku": {
+      "value": "Premium"
+    },
+    "customerManagedKey": {
+      "value": {
+        "keyName": "<keyName>",
+        "keyVaultResourceId": "<keyVaultResourceId>",
+        "userAssignedIdentityResourceId": "<userAssignedIdentityResourceId>"
+      }
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "managedIdentities": {
+      "value": {
+        "userAssignedResourcesIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
+    },
+    "publicNetworkAccess": {
+      "value": "Disabled"
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 3: _Using large parameter set_
 
 This instance deploys the module with most of its features enabled.
 
@@ -48,10 +186,10 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module registry 'br:bicep/modules/container-registry.registry:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-crrcom'
+  name: '${uniqueString(deployment().name, location)}-test-crrmax'
   params: {
     // Required parameters
-    name: 'crrcom001'
+    name: 'crrmax001'
     // Non-required parameters
     acrAdminUserEnabled: false
     acrSku: 'Premium'
@@ -158,7 +296,7 @@ module registry 'br:bicep/modules/container-registry.registry:1.0.0' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "crrcom001"
+      "value": "crrmax001"
     },
     // Non-required parameters
     "acrAdminUserEnabled": {
@@ -293,143 +431,6 @@ module registry 'br:bicep/modules/container-registry.registry:1.0.0' = {
 </details>
 <p>
 
-### Example 2: _Encr_
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module registry 'br:bicep/modules/container-registry.registry:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-crrencr'
-  params: {
-    // Required parameters
-    name: 'crrencr001'
-    // Non-required parameters
-    acrSku: 'Premium'
-    cMKKeyName: '<cMKKeyName>'
-    cMKKeyVaultResourceId: '<cMKKeyVaultResourceId>'
-    cMKUserAssignedIdentityResourceId: '<cMKUserAssignedIdentityResourceId>'
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    managedIdentities: {
-      userAssignedResourcesIds: [
-        '<managedIdentityResourceId>'
-      ]
-    }
-    publicNetworkAccess: 'Disabled'
-    tags: {
-      Environment: 'Non-Prod'
-      'hidden-title': 'This is visible in the resource name'
-      Role: 'DeploymentValidation'
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "crrencr001"
-    },
-    // Non-required parameters
-    "acrSku": {
-      "value": "Premium"
-    },
-    "cMKKeyName": {
-      "value": "<cMKKeyName>"
-    },
-    "cMKKeyVaultResourceId": {
-      "value": "<cMKKeyVaultResourceId>"
-    },
-    "cMKUserAssignedIdentityResourceId": {
-      "value": "<cMKUserAssignedIdentityResourceId>"
-    },
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
-    "managedIdentities": {
-      "value": {
-        "userAssignedResourcesIds": [
-          "<managedIdentityResourceId>"
-        ]
-      }
-    },
-    "publicNetworkAccess": {
-      "value": "Disabled"
-    },
-    "tags": {
-      "value": {
-        "Environment": "Non-Prod",
-        "hidden-title": "This is visible in the resource name",
-        "Role": "DeploymentValidation"
-      }
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-### Example 3: _Using only defaults_
-
-This instance deploys the module with the minimum set of required parameters.
-
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module registry 'br:bicep/modules/container-registry.registry:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-crrmin'
-  params: {
-    // Required parameters
-    name: 'crrmin001'
-    // Non-required parameters
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "crrmin001"
-    },
-    // Non-required parameters
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    }
-  }
-}
-```
-
-</details>
-<p>
-
 ### Example 4: _Pe_
 
 <details>
@@ -519,6 +520,262 @@ module registry 'br:bicep/modules/container-registry.registry:1.0.0' = {
 </details>
 <p>
 
+### Example 5: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module registry 'br:bicep/modules/container-registry.registry:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-crrwaf'
+  params: {
+    // Required parameters
+    name: 'crrwaf001'
+    // Non-required parameters
+    acrAdminUserEnabled: false
+    acrSku: 'Premium'
+    azureADAuthenticationAsArmPolicyStatus: 'enabled'
+    cacheRules: [
+      {
+        name: 'customRule'
+        sourceRepository: 'docker.io/library/hello-world'
+        targetRepository: 'cached-docker-hub/hello-world'
+      }
+      {
+        sourceRepository: 'docker.io/library/hello-world'
+      }
+    ]
+    diagnosticSettings: [
+      {
+        eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+        eventHubName: '<eventHubName>'
+        metricCategories: [
+          {
+            category: 'AllMetrics'
+          }
+        ]
+        name: 'customSetting'
+        storageAccountResourceId: '<storageAccountResourceId>'
+        workspaceResourceId: '<workspaceResourceId>'
+      }
+    ]
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    exportPolicyStatus: 'enabled'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    managedIdentities: {
+      systemAssigned: true
+      userAssignedResourcesIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
+    networkRuleSetIpRules: [
+      {
+        action: 'Allow'
+        value: '40.74.28.0/23'
+      }
+    ]
+    privateEndpoints: [
+      {
+        privateDnsZoneResourceIds: [
+          '<privateDNSZoneResourceId>'
+        ]
+        service: 'registry'
+        subnetResourceId: '<subnetResourceId>'
+        tags: {
+          Environment: 'Non-Prod'
+          'hidden-title': 'This is visible in the resource name'
+          Role: 'DeploymentValidation'
+        }
+      }
+    ]
+    quarantinePolicyStatus: 'enabled'
+    replications: [
+      {
+        location: '<location>'
+        name: '<name>'
+      }
+    ]
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    softDeletePolicyDays: 7
+    softDeletePolicyStatus: 'disabled'
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+    trustPolicyStatus: 'enabled'
+    webhooks: [
+      {
+        name: 'acrx001webhook'
+        serviceUri: 'https://www.contoso.com/webhook'
+      }
+    ]
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "crrwaf001"
+    },
+    // Non-required parameters
+    "acrAdminUserEnabled": {
+      "value": false
+    },
+    "acrSku": {
+      "value": "Premium"
+    },
+    "azureADAuthenticationAsArmPolicyStatus": {
+      "value": "enabled"
+    },
+    "cacheRules": {
+      "value": [
+        {
+          "name": "customRule",
+          "sourceRepository": "docker.io/library/hello-world",
+          "targetRepository": "cached-docker-hub/hello-world"
+        },
+        {
+          "sourceRepository": "docker.io/library/hello-world"
+        }
+      ]
+    },
+    "diagnosticSettings": {
+      "value": [
+        {
+          "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+          "eventHubName": "<eventHubName>",
+          "metricCategories": [
+            {
+              "category": "AllMetrics"
+            }
+          ],
+          "name": "customSetting",
+          "storageAccountResourceId": "<storageAccountResourceId>",
+          "workspaceResourceId": "<workspaceResourceId>"
+        }
+      ]
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "exportPolicyStatus": {
+      "value": "enabled"
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "managedIdentities": {
+      "value": {
+        "systemAssigned": true,
+        "userAssignedResourcesIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
+    },
+    "networkRuleSetIpRules": {
+      "value": [
+        {
+          "action": "Allow",
+          "value": "40.74.28.0/23"
+        }
+      ]
+    },
+    "privateEndpoints": {
+      "value": [
+        {
+          "privateDnsZoneResourceIds": [
+            "<privateDNSZoneResourceId>"
+          ],
+          "service": "registry",
+          "subnetResourceId": "<subnetResourceId>",
+          "tags": {
+            "Environment": "Non-Prod",
+            "hidden-title": "This is visible in the resource name",
+            "Role": "DeploymentValidation"
+          }
+        }
+      ]
+    },
+    "quarantinePolicyStatus": {
+      "value": "enabled"
+    },
+    "replications": {
+      "value": [
+        {
+          "location": "<location>",
+          "name": "<name>"
+        }
+      ]
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "softDeletePolicyDays": {
+      "value": 7
+    },
+    "softDeletePolicyStatus": {
+      "value": "disabled"
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    },
+    "trustPolicyStatus": {
+      "value": "enabled"
+    },
+    "webhooks": {
+      "value": [
+        {
+          "name": "acrx001webhook",
+          "serviceUri": "https://www.contoso.com/webhook"
+        }
+      ]
+    }
+  }
+}
+```
+
+</details>
+<p>
+
 
 ## Parameters
 
@@ -527,12 +784,6 @@ module registry 'br:bicep/modules/container-registry.registry:1.0.0' = {
 | Parameter | Type | Description |
 | :-- | :-- | :-- |
 | [`name`](#parameter-name) | string | Name of your Azure container registry. |
-
-**Conditional parameters**
-
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`cMKUserAssignedIdentityResourceId`](#parameter-cmkuserassignedidentityresourceid) | string | User assigned identity to use when fetching the customer managed key. Note, CMK requires the 'acrSku' to be 'Premium'. Required if 'cMKKeyName' is not empty. |
 
 **Optional parameters**
 
@@ -543,9 +794,7 @@ module registry 'br:bicep/modules/container-registry.registry:1.0.0' = {
 | [`anonymousPullEnabled`](#parameter-anonymouspullenabled) | bool | Enables registry-wide pull from unauthenticated clients. It's in preview and available in the Standard and Premium service tiers. |
 | [`azureADAuthenticationAsArmPolicyStatus`](#parameter-azureadauthenticationasarmpolicystatus) | string | The value that indicates whether the policy for using ARM audience token for a container registr is enabled or not. Default is enabled. |
 | [`cacheRules`](#parameter-cacherules) | array | Array of Cache Rules. Note: This is a preview feature ([ref](https://learn.microsoft.com/en-us/azure/container-registry/tutorial-registry-cache#cache-for-acr-preview)). |
-| [`cMKKeyName`](#parameter-cmkkeyname) | string | The name of the customer managed key to use for encryption. Note, CMK requires the 'acrSku' to be 'Premium'. |
-| [`cMKKeyVaultResourceId`](#parameter-cmkkeyvaultresourceid) | string | The resource ID of a key vault to reference a customer managed key for encryption from. Note, CMK requires the 'acrSku' to be 'Premium'. |
-| [`cMKKeyVersion`](#parameter-cmkkeyversion) | string | The version of the customer managed key to reference for encryption. If not provided, the latest key version is used. |
+| [`customerManagedKey`](#parameter-customermanagedkey) | object | The customer managed key definition. |
 | [`dataEndpointEnabled`](#parameter-dataendpointenabled) | bool | Enable a single data endpoint per region for serving data. Not relevant in case of disabled public access. Note, requires the 'acrSku' to be 'Premium'. |
 | [`diagnosticSettings`](#parameter-diagnosticsettings) | array | The diagnostic settings of the service. |
 | [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
@@ -583,7 +832,14 @@ Tier of your Azure container registry.
 - Required: No
 - Type: string
 - Default: `'Basic'`
-- Allowed: `[Basic, Premium, Standard]`
+- Allowed:
+  ```Bicep
+  [
+    'Basic'
+    'Premium'
+    'Standard'
+  ]
+  ```
 
 ### Parameter: `anonymousPullEnabled`
 
@@ -598,7 +854,13 @@ The value that indicates whether the policy for using ARM audience token for a c
 - Required: No
 - Type: string
 - Default: `'enabled'`
-- Allowed: `[disabled, enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'disabled'
+    'enabled'
+  ]
+  ```
 
 ### Parameter: `cacheRules`
 
@@ -607,33 +869,47 @@ Array of Cache Rules. Note: This is a preview feature ([ref](https://learn.micro
 - Type: array
 - Default: `[]`
 
-### Parameter: `cMKKeyName`
+### Parameter: `customerManagedKey`
 
-The name of the customer managed key to use for encryption. Note, CMK requires the 'acrSku' to be 'Premium'.
+The customer managed key definition.
+- Required: No
+- Type: object
+
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`keyName`](#parameter-customermanagedkeykeyname) | Yes | string | Required. The name of the customer managed key to use for encryption. |
+| [`keyVaultResourceId`](#parameter-customermanagedkeykeyvaultresourceid) | Yes | string | Required. The resource ID of a key vault to reference a customer managed key for encryption from. |
+| [`keyVersion`](#parameter-customermanagedkeykeyversion) | No | string | Optional. The version of the customer managed key to reference for encryption. If not provided, using 'latest'. |
+| [`userAssignedIdentityResourceId`](#parameter-customermanagedkeyuserassignedidentityresourceid) | No | string | Optional. User assigned identity to use when fetching the customer managed key. Required if no system assigned identity is available for use. |
+
+### Parameter: `customerManagedKey.keyName`
+
+Required. The name of the customer managed key to use for encryption.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `customerManagedKey.keyVaultResourceId`
+
+Required. The resource ID of a key vault to reference a customer managed key for encryption from.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `customerManagedKey.keyVersion`
+
+Optional. The version of the customer managed key to reference for encryption. If not provided, using 'latest'.
+
 - Required: No
 - Type: string
-- Default: `''`
 
-### Parameter: `cMKKeyVaultResourceId`
+### Parameter: `customerManagedKey.userAssignedIdentityResourceId`
 
-The resource ID of a key vault to reference a customer managed key for encryption from. Note, CMK requires the 'acrSku' to be 'Premium'.
+Optional. User assigned identity to use when fetching the customer managed key. Required if no system assigned identity is available for use.
+
 - Required: No
 - Type: string
-- Default: `''`
-
-### Parameter: `cMKKeyVersion`
-
-The version of the customer managed key to reference for encryption. If not provided, the latest key version is used.
-- Required: No
-- Type: string
-- Default: `''`
-
-### Parameter: `cMKUserAssignedIdentityResourceId`
-
-User assigned identity to use when fetching the customer managed key. Note, CMK requires the 'acrSku' to be 'Premium'. Required if 'cMKKeyName' is not empty.
-- Required: No
-- Type: string
-- Default: `''`
 
 ### Parameter: `dataEndpointEnabled`
 
@@ -770,7 +1046,13 @@ The value that indicates whether the export policy is enabled or not.
 - Required: No
 - Type: string
 - Default: `'disabled'`
-- Allowed: `[disabled, enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'disabled'
+    'enabled'
+  ]
+  ```
 
 ### Parameter: `location`
 
@@ -844,7 +1126,13 @@ Whether to allow trusted Azure services to access a network restricted registry.
 - Required: No
 - Type: string
 - Default: `'AzureServices'`
-- Allowed: `[AzureServices, None]`
+- Allowed:
+  ```Bicep
+  [
+    'AzureServices'
+    'None'
+  ]
+  ```
 
 ### Parameter: `networkRuleSetDefaultAction`
 
@@ -852,7 +1140,13 @@ The default action of allow or deny when no other rules match.
 - Required: No
 - Type: string
 - Default: `'Deny'`
-- Allowed: `[Allow, Deny]`
+- Allowed:
+  ```Bicep
+  [
+    'Allow'
+    'Deny'
+  ]
+  ```
 
 ### Parameter: `networkRuleSetIpRules`
 
@@ -902,14 +1196,20 @@ Optional. Custom DNS configurations.
 
 | Name | Required | Type | Description |
 | :-- | :-- | :--| :-- |
-| [`fqdn`](#parameter-privateendpointscustomdnsconfigsfqdn) | No | string |  |
-| [`ipAddresses`](#parameter-privateendpointscustomdnsconfigsipaddresses) | Yes | array |  |
+| [`fqdn`](#parameter-privateendpointscustomdnsconfigsfqdn) | No | string | Required. Fqdn that resolves to private endpoint ip address. |
+| [`ipAddresses`](#parameter-privateendpointscustomdnsconfigsipaddresses) | Yes | array | Required. A list of private ip addresses of the private endpoint. |
 
 ### Parameter: `privateEndpoints.customDnsConfigs.fqdn`
+
+Required. Fqdn that resolves to private endpoint ip address.
+
 - Required: No
 - Type: string
 
 ### Parameter: `privateEndpoints.customDnsConfigs.ipAddresses`
+
+Required. A list of private ip addresses of the private endpoint.
+
 - Required: Yes
 - Type: array
 
@@ -937,26 +1237,50 @@ Optional. A list of IP configurations of the private endpoint. This will be used
 
 | Name | Required | Type | Description |
 | :-- | :-- | :--| :-- |
-| [`groupId`](#parameter-privateendpointsipconfigurationsgroupid) | Yes | string |  |
-| [`memberName`](#parameter-privateendpointsipconfigurationsmembername) | Yes | string |  |
-| [`name`](#parameter-privateendpointsipconfigurationsname) | Yes | string |  |
-| [`privateIpAddress`](#parameter-privateendpointsipconfigurationsprivateipaddress) | Yes | string |  |
-
-### Parameter: `privateEndpoints.ipConfigurations.groupId`
-- Required: Yes
-- Type: string
-
-### Parameter: `privateEndpoints.ipConfigurations.memberName`
-- Required: Yes
-- Type: string
+| [`name`](#parameter-privateendpointsipconfigurationsname) | Yes | string | Required. The name of the resource that is unique within a resource group. |
+| [`properties`](#parameter-privateendpointsipconfigurationsproperties) | Yes | object | Required. Properties of private endpoint IP configurations. |
 
 ### Parameter: `privateEndpoints.ipConfigurations.name`
+
+Required. The name of the resource that is unique within a resource group.
+
 - Required: Yes
 - Type: string
 
-### Parameter: `privateEndpoints.ipConfigurations.privateIpAddress`
+### Parameter: `privateEndpoints.ipConfigurations.properties`
+
+Required. Properties of private endpoint IP configurations.
+
+- Required: Yes
+- Type: object
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`groupId`](#parameter-privateendpointsipconfigurationspropertiesgroupid) | Yes | string | Required. The ID of a group obtained from the remote resource that this private endpoint should connect to. |
+| [`memberName`](#parameter-privateendpointsipconfigurationspropertiesmembername) | Yes | string | Required. The member name of a group obtained from the remote resource that this private endpoint should connect to. |
+| [`privateIPAddress`](#parameter-privateendpointsipconfigurationspropertiesprivateipaddress) | Yes | string | Required. A private ip address obtained from the private endpoint's subnet. |
+
+### Parameter: `privateEndpoints.ipConfigurations.properties.groupId`
+
+Required. The ID of a group obtained from the remote resource that this private endpoint should connect to.
+
 - Required: Yes
 - Type: string
+
+### Parameter: `privateEndpoints.ipConfigurations.properties.memberName`
+
+Required. The member name of a group obtained from the remote resource that this private endpoint should connect to.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `privateEndpoints.ipConfigurations.properties.privateIPAddress`
+
+Required. A private ip address obtained from the private endpoint's subnet.
+
+- Required: Yes
+- Type: string
+
 
 
 ### Parameter: `privateEndpoints.location`
@@ -1035,7 +1359,14 @@ Whether or not public network access is allowed for this resource. For security 
 - Required: No
 - Type: string
 - Default: `''`
-- Allowed: `['', Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    ''
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 ### Parameter: `quarantinePolicyStatus`
 
@@ -1043,7 +1374,13 @@ The value that indicates whether the quarantine policy is enabled or not.
 - Required: No
 - Type: string
 - Default: `'disabled'`
-- Allowed: `[disabled, enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'disabled'
+    'enabled'
+  ]
+  ```
 
 ### Parameter: `replications`
 
@@ -1065,7 +1402,13 @@ The value that indicates whether the retention policy is enabled or not.
 - Required: No
 - Type: string
 - Default: `'enabled'`
-- Allowed: `[disabled, enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'disabled'
+    'enabled'
+  ]
+  ```
 
 ### Parameter: `roleAssignments`
 
@@ -1148,14 +1491,19 @@ Soft Delete policy status. Default is disabled.
 - Required: No
 - Type: string
 - Default: `'disabled'`
-- Allowed: `[disabled, enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'disabled'
+    'enabled'
+  ]
+  ```
 
 ### Parameter: `tags`
 
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `trustPolicyStatus`
 
@@ -1163,7 +1511,13 @@ The value that indicates whether the trust policy is enabled or not.
 - Required: No
 - Type: string
 - Default: `'disabled'`
-- Allowed: `[disabled, enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'disabled'
+    'enabled'
+  ]
+  ```
 
 ### Parameter: `webhooks`
 
@@ -1178,7 +1532,13 @@ Whether or not zone redundancy is enabled for this container registry.
 - Required: No
 - Type: string
 - Default: `'Disabled'`
-- Allowed: `[Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 
 ## Outputs

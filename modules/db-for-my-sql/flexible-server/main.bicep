@@ -12,7 +12,7 @@ param lock lockType
 param location string = resourceGroup().location
 
 @description('Optional. Tags of the resource.')
-param tags object = {}
+param tags object?
 
 @description('Optional. The administrator login name of a server. Can only be specified when the MySQL server is being created.')
 param administratorLogin string = ''
@@ -65,32 +65,14 @@ param geoRedundantBackup string = 'Disabled'
 @description('Optional. The mode to create a new MySQL server.')
 param createMode string = 'Default'
 
-@description('Conditional. The managed identity definition for this resource. Required if \'cMKKeyName\' is not empty.')
+@description('Conditional. The managed identity definition for this resource. Required if \'customerManagedKey\' is not empty.')
 param managedIdentities managedIdentitiesType
 
-@description('Conditional. The resource ID of a key vault to reference a customer managed key for encryption from. Required if "cMKKeyName" is not empty.')
-param cMKKeyVaultResourceId string = ''
+@description('Optional. The customer managed key definition to use for the managed service.')
+param customerManagedKey customerManagedKeyType
 
-@description('Optional. The name of the customer managed key to use for encryption.')
-param cMKKeyName string = ''
-
-@description('Optional. The version of the customer managed key to reference for encryption. If not provided, the latest key version is used.')
-param cMKKeyVersion string = ''
-
-@description('Conditional. User assigned identity to use when fetching the customer managed key. The identity should have key usage permissions on the Key Vault Key. Required if "cMKKeyName" is not empty.')
-param cMKUserAssignedIdentityResourceId string = ''
-
-@description('Conditional. The resource ID of a key vault to reference a customer managed key for encryption from. Required if "cMKKeyName" is not empty and geoRedundantBackup is "Enabled".')
-param geoBackupCMKKeyVaultResourceId string = ''
-
-@description('Optional. The name of the customer managed key to use for encryption when geoRedundantBackup is "Enabled".')
-param geoBackupCMKKeyName string = ''
-
-@description('Optional. The version of the customer managed key to reference for encryption when geoRedundantBackup is "Enabled". If not provided, the latest key version is used.')
-param geoBackupCMKKeyVersion string = ''
-
-@description('Conditional. Geo backup user identity resource ID as identity cant cross region, need identity in same region as geo backup. The identity should have key usage permissions on the Key Vault Key. Required if "cMKKeyName" is not empty and geoRedundantBackup is "Enabled".')
-param geoBackupCMKUserAssignedIdentityResourceId string = ''
+@description('Optional. The customer managed key definition to use when geoRedundantBackup is "Enabled".')
+param customerManagedKeyGeo customerManagedKeyType
 
 @allowed([
   'Disabled'
@@ -210,22 +192,32 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2022-09-01' = if (ena
   }
 }
 
-resource cMKKeyVault 'Microsoft.KeyVault/vaults@2021-10-01' existing = if (!empty(cMKKeyVaultResourceId)) {
-  name: last(split((!empty(cMKKeyVaultResourceId) ? cMKKeyVaultResourceId : 'dummyVault'), '/'))!
-  scope: resourceGroup(split((!empty(cMKKeyVaultResourceId) ? cMKKeyVaultResourceId : '//'), '/')[2], split((!empty(cMKKeyVaultResourceId) ? cMKKeyVaultResourceId : '////'), '/')[4])
+resource cMKKeyVault 'Microsoft.KeyVault/vaults@2023-02-01' existing = if (!empty(customerManagedKey.?keyVaultResourceId)) {
+  name: last(split((customerManagedKey.?keyVaultResourceId ?? 'dummyVault'), '/'))
+  scope: resourceGroup(split((customerManagedKey.?keyVaultResourceId ?? '//'), '/')[2], split((customerManagedKey.?keyVaultResourceId ?? '////'), '/')[4])
 
-  resource cMKKey 'keys@2023-02-01' existing = if (!empty(cMKKeyName)) {
-    name: !empty(cMKKeyName) ? cMKKeyName : 'dummyKey'
+  resource cMKKey 'keys@2023-02-01' existing = if (!empty(customerManagedKey.?keyVaultResourceId) && !empty(customerManagedKey.?keyName)) {
+    name: customerManagedKey.?keyName ?? 'dummyKey'
   }
 }
 
-resource geoBackupCMKKeyVault 'Microsoft.KeyVault/vaults@2021-10-01' existing = if (!empty(geoBackupCMKKeyVaultResourceId)) {
-  name: last(split((!empty(geoBackupCMKKeyVaultResourceId) ? geoBackupCMKKeyVaultResourceId : 'dummyVault'), '/'))!
-  scope: resourceGroup(split((!empty(geoBackupCMKKeyVaultResourceId) ? geoBackupCMKKeyVaultResourceId : '//'), '/')[2], split((!empty(geoBackupCMKKeyVaultResourceId) ? geoBackupCMKKeyVaultResourceId : '////'), '/')[4])
+resource cMKUserAssignedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' existing = if (!empty(customerManagedKey.?userAssignedIdentityResourceId)) {
+  name: last(split(customerManagedKey.?userAssignedIdentityResourceId ?? 'dummyMsi', '/'))
+  scope: resourceGroup(split((customerManagedKey.?userAssignedIdentityResourceId ?? '//'), '/')[2], split((customerManagedKey.?userAssignedIdentityResourceId ?? '////'), '/')[4])
+}
 
-  resource geoBackupCMKKey 'keys@2023-02-01' existing = if (!empty(geoBackupCMKKeyName)) {
-    name: !empty(geoBackupCMKKeyName) ? geoBackupCMKKeyName : 'dummyKey'
+resource cMKGeoKeyVault 'Microsoft.KeyVault/vaults@2023-02-01' existing = if (!empty(customerManagedKeyGeo.?keyVaultResourceId)) {
+  name: last(split((customerManagedKeyGeo.?keyVaultResourceId ?? 'dummyVault'), '/'))
+  scope: resourceGroup(split((customerManagedKeyGeo.?keyVaultResourceId ?? '//'), '/')[2], split((customerManagedKeyGeo.?keyVaultResourceId ?? '////'), '/')[4])
+
+  resource cMKKey 'keys@2023-02-01' existing = if (!empty(customerManagedKeyGeo.?keyVaultResourceId) && !empty(customerManagedKeyGeo.?keyName)) {
+    name: customerManagedKeyGeo.?keyName ?? 'dummyKey'
   }
+}
+
+resource cMKGeoUserAssignedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' existing = if (!empty(customerManagedKeyGeo.?userAssignedIdentityResourceId)) {
+  name: last(split(customerManagedKeyGeo.?userAssignedIdentityResourceId ?? 'dummyMsi', '/'))
+  scope: resourceGroup(split((customerManagedKeyGeo.?userAssignedIdentityResourceId ?? '//'), '/')[2], split((customerManagedKeyGeo.?userAssignedIdentityResourceId ?? '////'), '/')[4])
 }
 
 resource flexibleServer 'Microsoft.DBforMySQL/flexibleServers@2022-09-30-preview' = {
@@ -246,12 +238,12 @@ resource flexibleServer 'Microsoft.DBforMySQL/flexibleServers@2022-09-30-preview
       geoRedundantBackup: geoRedundantBackup
     }
     createMode: createMode
-    dataEncryption: !empty(cMKKeyName) ? {
+    dataEncryption: !empty(customerManagedKey) ? {
       type: 'AzureKeyVault'
-      geoBackupKeyURI: geoRedundantBackup == 'Enabled' ? (!empty(geoBackupCMKKeyVersion) ? '${geoBackupCMKKeyVault::geoBackupCMKKey.properties.keyUri}/${geoBackupCMKKeyVersion}' : geoBackupCMKKeyVault::geoBackupCMKKey.properties.keyUriWithVersion) : null
-      geoBackupUserAssignedIdentityId: geoRedundantBackup == 'Enabled' ? geoBackupCMKUserAssignedIdentityResourceId : null
-      primaryKeyURI: !empty(cMKKeyVersion) ? '${cMKKeyVault::cMKKey.properties.keyUri}/${cMKKeyVersion}' : cMKKeyVault::cMKKey.properties.keyUriWithVersion
-      primaryUserAssignedIdentityId: cMKUserAssignedIdentityResourceId
+      geoBackupKeyURI: geoRedundantBackup == 'Enabled' ? (!empty(customerManagedKeyGeo.?keyVersion ?? '') ? '${cMKGeoKeyVault::cMKKey.properties.keyUri}/${customerManagedKeyGeo!.keyVersion}' : cMKGeoKeyVault::cMKKey.properties.keyUriWithVersion) : null
+      geoBackupUserAssignedIdentityId: geoRedundantBackup == 'Enabled' ? cMKGeoUserAssignedIdentity.id : null
+      primaryKeyURI: !empty(customerManagedKey.?keyVersion ?? '') ? '${cMKKeyVault::cMKKey.properties.keyUri}/${customerManagedKey!.keyVersion}' : cMKKeyVault::cMKKey.properties.keyUriWithVersion
+      primaryUserAssignedIdentityId: cMKUserAssignedIdentity.id
     } : null
     highAvailability: {
       mode: highAvailability
@@ -451,3 +443,17 @@ type diagnosticSettingType = {
   @description('Optional. The full ARM resource ID of the Marketplace resource to which you would like to send Diagnostic Logs.')
   marketplacePartnerResourceId: string?
 }[]?
+
+type customerManagedKeyType = {
+  @description('Required. The resource ID of a key vault to reference a customer managed key for encryption from.')
+  keyVaultResourceId: string
+
+  @description('Required. The name of the customer managed key to use for encryption.')
+  keyName: string
+
+  @description('Optional. The version of the customer managed key to reference for encryption. If not provided, using \'latest\'.')
+  keyVersion: string?
+
+  @description('Required. User assigned identity to use when fetching the customer managed key.')
+  userAssignedIdentityResourceId: string
+}?

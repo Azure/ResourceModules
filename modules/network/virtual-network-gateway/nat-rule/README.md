@@ -74,7 +74,14 @@ The type of NAT rule for Virtual Network NAT. IngressSnat mode (also known as In
 - Required: No
 - Type: string
 - Default: `''`
-- Allowed: `['', EgressSnat, IngressSnat]`
+- Allowed:
+  ```Bicep
+  [
+    ''
+    'EgressSnat'
+    'IngressSnat'
+  ]
+  ```
 
 ### Parameter: `name`
 
@@ -88,7 +95,14 @@ The type of NAT rule for Virtual Network NAT. Static one-to-one NAT establishes 
 - Required: No
 - Type: string
 - Default: `''`
-- Allowed: `['', Dynamic, Static]`
+- Allowed:
+  ```Bicep
+  [
+    ''
+    'Dynamic'
+    'Static'
+  ]
+  ```
 
 ### Parameter: `virtualNetworkGatewayName`
 

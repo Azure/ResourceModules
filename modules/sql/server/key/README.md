@@ -56,7 +56,13 @@ The encryption protector type like "ServiceManaged", "AzureKeyVault".
 - Required: No
 - Type: string
 - Default: `'ServiceManaged'`
-- Allowed: `[AzureKeyVault, ServiceManaged]`
+- Allowed:
+  ```Bicep
+  [
+    'AzureKeyVault'
+    'ServiceManaged'
+  ]
+  ```
 
 ### Parameter: `serverName`
 

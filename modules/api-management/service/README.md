@@ -42,13 +42,13 @@ The following section provides usage examples for the module, which were used to
 
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/api-management.service:1.0.0`.
 
-- [Using large parameter set](#example-1-using-large-parameter-set)
-- [Max](#example-2-max)
-- [Using only defaults](#example-3-using-only-defaults)
+- [Using only defaults](#example-1-using-only-defaults)
+- [Using large parameter set](#example-2-using-large-parameter-set)
+- [WAF-aligned](#example-3-waf-aligned)
 
-### Example 1: _Using large parameter set_
+### Example 1: _Using only defaults_
 
-This instance deploys the module with most of its features enabled.
+This instance deploys the module with the minimum set of required parameters.
 
 
 <details>
@@ -57,57 +57,14 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module service 'br:bicep/modules/api-management.service:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-apiscom'
+  name: '${uniqueString(deployment().name, location)}-test-apismin'
   params: {
     // Required parameters
-    name: 'apiscom001'
+    name: 'apismin001'
     publisherEmail: 'apimgmt-noreply@mail.windowsazure.com'
     publisherName: 'az-amorg-x-001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    lock: {
-      kind: 'CanNotDelete'
-      name: 'myCustomLockName'
-    }
-    managedIdentities: {
-      systemAssigned: true
-    }
-    policies: [
-      {
-        format: 'xml'
-        value: '<policies> <inbound> <rate-limit-by-key calls=\'250\' renewal-period=\'60\' counter-key=\'@(context.Request.IpAddress)\' /> </inbound> <backend> <forward-request /> </backend> <outbound> </outbound> </policies>'
-      }
-    ]
-    portalsettings: [
-      {
-        name: 'signin'
-        properties: {
-          enabled: false
-        }
-      }
-      {
-        name: 'signup'
-        properties: {
-          enabled: false
-          termsOfService: {
-            consentRequired: false
-            enabled: false
-          }
-        }
-      }
-    ]
-    roleAssignments: [
-      {
-        principalId: '<principalId>'
-        principalType: 'ServicePrincipal'
-        roleDefinitionIdOrName: 'Reader'
-      }
-    ]
-    tags: {
-      Environment: 'Non-Prod'
-      'hidden-title': 'This is visible in the resource name'
-      Role: 'DeploymentValidation'
-    }
   }
 }
 ```
@@ -126,7 +83,7 @@ module service 'br:bicep/modules/api-management.service:1.0.0' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "apiscom001"
+      "value": "apismin001"
     },
     "publisherEmail": {
       "value": "apimgmt-noreply@mail.windowsazure.com"
@@ -137,61 +94,6 @@ module service 'br:bicep/modules/api-management.service:1.0.0' = {
     // Non-required parameters
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
-    },
-    "lock": {
-      "value": {
-        "kind": "CanNotDelete",
-        "name": "myCustomLockName"
-      }
-    },
-    "managedIdentities": {
-      "value": {
-        "systemAssigned": true
-      }
-    },
-    "policies": {
-      "value": [
-        {
-          "format": "xml",
-          "value": "<policies> <inbound> <rate-limit-by-key calls=\"250\" renewal-period=\"60\" counter-key=\"@(context.Request.IpAddress)\" /> </inbound> <backend> <forward-request /> </backend> <outbound> </outbound> </policies>"
-        }
-      ]
-    },
-    "portalsettings": {
-      "value": [
-        {
-          "name": "signin",
-          "properties": {
-            "enabled": false
-          }
-        },
-        {
-          "name": "signup",
-          "properties": {
-            "enabled": false,
-            "termsOfService": {
-              "consentRequired": false,
-              "enabled": false
-            }
-          }
-        }
-      ]
-    },
-    "roleAssignments": {
-      "value": [
-        {
-          "principalId": "<principalId>",
-          "principalType": "ServicePrincipal",
-          "roleDefinitionIdOrName": "Reader"
-        }
-      ]
-    },
-    "tags": {
-      "value": {
-        "Environment": "Non-Prod",
-        "hidden-title": "This is visible in the resource name",
-        "Role": "DeploymentValidation"
-      }
     }
   }
 }
@@ -200,7 +102,10 @@ module service 'br:bicep/modules/api-management.service:1.0.0' = {
 </details>
 <p>
 
-### Example 2: _Max_
+### Example 2: _Using large parameter set_
+
+This instance deploys the module with most of its features enabled.
+
 
 <details>
 
@@ -567,9 +472,9 @@ module service 'br:bicep/modules/api-management.service:1.0.0' = {
 </details>
 <p>
 
-### Example 3: _Using only defaults_
+### Example 3: _WAF-aligned_
 
-This instance deploys the module with the minimum set of required parameters.
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
 
 
 <details>
@@ -578,14 +483,156 @@ This instance deploys the module with the minimum set of required parameters.
 
 ```bicep
 module service 'br:bicep/modules/api-management.service:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-apismin'
+  name: '${uniqueString(deployment().name, location)}-test-apiswaf'
   params: {
     // Required parameters
-    name: 'apismin001'
+    name: 'apiswaf001'
     publisherEmail: 'apimgmt-noreply@mail.windowsazure.com'
     publisherName: 'az-amorg-x-001'
     // Non-required parameters
+    apis: [
+      {
+        apiVersionSet: {
+          name: 'echo-version-set'
+          properties: {
+            description: 'echo-version-set'
+            displayName: 'echo-version-set'
+            versioningScheme: 'Segment'
+          }
+        }
+        displayName: 'Echo API'
+        name: 'echo-api'
+        path: 'echo'
+        serviceUrl: 'http://echoapi.cloudapp.net/api'
+      }
+    ]
+    authorizationServers: {
+      secureList: [
+        {
+          authorizationEndpoint: '<authorizationEndpoint>'
+          clientId: 'apimclientid'
+          clientRegistrationEndpoint: 'http://localhost'
+          clientSecret: '<clientSecret>'
+          grantTypes: [
+            'authorizationCode'
+          ]
+          name: 'AuthServer1'
+          tokenEndpoint: '<tokenEndpoint>'
+        }
+      ]
+    }
+    backends: [
+      {
+        name: 'backend'
+        tls: {
+          validateCertificateChain: false
+          validateCertificateName: false
+        }
+        url: 'http://echoapi.cloudapp.net/api'
+      }
+    ]
+    caches: [
+      {
+        connectionString: 'connectionstringtest'
+        name: 'westeurope'
+        useFromLocation: 'westeurope'
+      }
+    ]
+    diagnosticSettings: [
+      {
+        eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+        eventHubName: '<eventHubName>'
+        metricCategories: [
+          {
+            category: 'AllMetrics'
+          }
+        ]
+        name: 'customSetting'
+        storageAccountResourceId: '<storageAccountResourceId>'
+        workspaceResourceId: '<workspaceResourceId>'
+      }
+    ]
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    identityProviders: [
+      {
+        name: 'aadProvider'
+      }
+    ]
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    managedIdentities: {
+      systemAssigned: true
+      userAssignedResourcesIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
+    namedValues: [
+      {
+        displayName: 'apimkey'
+        name: 'apimkey'
+        secret: true
+      }
+    ]
+    policies: [
+      {
+        format: 'xml'
+        value: '<policies> <inbound> <rate-limit-by-key calls=\'250\' renewal-period=\'60\' counter-key=\'@(context.Request.IpAddress)\' /> </inbound> <backend> <forward-request /> </backend> <outbound> </outbound> </policies>'
+      }
+    ]
+    portalsettings: [
+      {
+        name: 'signin'
+        properties: {
+          enabled: false
+        }
+      }
+      {
+        name: 'signup'
+        properties: {
+          enabled: false
+          termsOfService: {
+            consentRequired: false
+            enabled: false
+          }
+        }
+      }
+    ]
+    products: [
+      {
+        apis: [
+          {
+            name: 'echo-api'
+          }
+        ]
+        approvalRequired: false
+        groups: [
+          {
+            name: 'developers'
+          }
+        ]
+        name: 'Starter'
+        subscriptionRequired: false
+      }
+    ]
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    subscriptions: [
+      {
+        name: 'testArmSubscriptionAllApis'
+      }
+    ]
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -604,7 +651,7 @@ module service 'br:bicep/modules/api-management.service:1.0.0' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "apismin001"
+      "value": "apiswaf001"
     },
     "publisherEmail": {
       "value": "apimgmt-noreply@mail.windowsazure.com"
@@ -613,8 +660,180 @@ module service 'br:bicep/modules/api-management.service:1.0.0' = {
       "value": "az-amorg-x-001"
     },
     // Non-required parameters
+    "apis": {
+      "value": [
+        {
+          "apiVersionSet": {
+            "name": "echo-version-set",
+            "properties": {
+              "description": "echo-version-set",
+              "displayName": "echo-version-set",
+              "versioningScheme": "Segment"
+            }
+          },
+          "displayName": "Echo API",
+          "name": "echo-api",
+          "path": "echo",
+          "serviceUrl": "http://echoapi.cloudapp.net/api"
+        }
+      ]
+    },
+    "authorizationServers": {
+      "value": {
+        "secureList": [
+          {
+            "authorizationEndpoint": "<authorizationEndpoint>",
+            "clientId": "apimclientid",
+            "clientRegistrationEndpoint": "http://localhost",
+            "clientSecret": "<clientSecret>",
+            "grantTypes": [
+              "authorizationCode"
+            ],
+            "name": "AuthServer1",
+            "tokenEndpoint": "<tokenEndpoint>"
+          }
+        ]
+      }
+    },
+    "backends": {
+      "value": [
+        {
+          "name": "backend",
+          "tls": {
+            "validateCertificateChain": false,
+            "validateCertificateName": false
+          },
+          "url": "http://echoapi.cloudapp.net/api"
+        }
+      ]
+    },
+    "caches": {
+      "value": [
+        {
+          "connectionString": "connectionstringtest",
+          "name": "westeurope",
+          "useFromLocation": "westeurope"
+        }
+      ]
+    },
+    "diagnosticSettings": {
+      "value": [
+        {
+          "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+          "eventHubName": "<eventHubName>",
+          "metricCategories": [
+            {
+              "category": "AllMetrics"
+            }
+          ],
+          "name": "customSetting",
+          "storageAccountResourceId": "<storageAccountResourceId>",
+          "workspaceResourceId": "<workspaceResourceId>"
+        }
+      ]
+    },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
+    },
+    "identityProviders": {
+      "value": [
+        {
+          "name": "aadProvider"
+        }
+      ]
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "managedIdentities": {
+      "value": {
+        "systemAssigned": true,
+        "userAssignedResourcesIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
+    },
+    "namedValues": {
+      "value": [
+        {
+          "displayName": "apimkey",
+          "name": "apimkey",
+          "secret": true
+        }
+      ]
+    },
+    "policies": {
+      "value": [
+        {
+          "format": "xml",
+          "value": "<policies> <inbound> <rate-limit-by-key calls=\"250\" renewal-period=\"60\" counter-key=\"@(context.Request.IpAddress)\" /> </inbound> <backend> <forward-request /> </backend> <outbound> </outbound> </policies>"
+        }
+      ]
+    },
+    "portalsettings": {
+      "value": [
+        {
+          "name": "signin",
+          "properties": {
+            "enabled": false
+          }
+        },
+        {
+          "name": "signup",
+          "properties": {
+            "enabled": false,
+            "termsOfService": {
+              "consentRequired": false,
+              "enabled": false
+            }
+          }
+        }
+      ]
+    },
+    "products": {
+      "value": [
+        {
+          "apis": [
+            {
+              "name": "echo-api"
+            }
+          ],
+          "approvalRequired": false,
+          "groups": [
+            {
+              "name": "developers"
+            }
+          ],
+          "name": "Starter",
+          "subscriptionRequired": false
+        }
+      ]
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "subscriptions": {
+      "value": [
+        {
+          "name": "testArmSubscriptionAllApis"
+        }
+      ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }
@@ -698,7 +917,7 @@ API Version Sets.
 Authorization servers.
 - Required: No
 - Type: secureObject
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `backends`
 
@@ -726,7 +945,7 @@ List of Certificates that need to be installed in the API Management service. Ma
 Custom properties of the API Management service.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `diagnosticSettings`
 
@@ -1086,7 +1305,16 @@ The pricing tier of this API Management service.
 - Required: No
 - Type: string
 - Default: `'Developer'`
-- Allowed: `[Basic, Consumption, Developer, Premium, Standard]`
+- Allowed:
+  ```Bicep
+  [
+    'Basic'
+    'Consumption'
+    'Developer'
+    'Premium'
+    'Standard'
+  ]
+  ```
 
 ### Parameter: `skuCount`
 
@@ -1094,7 +1322,13 @@ The instance size of this API Management service.
 - Required: No
 - Type: int
 - Default: `1`
-- Allowed: `[1, 2]`
+- Allowed:
+  ```Bicep
+  [
+    1
+    2
+  ]
+  ```
 
 ### Parameter: `subnetResourceId`
 
@@ -1115,7 +1349,6 @@ Subscriptions.
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `virtualNetworkType`
 
@@ -1123,7 +1356,14 @@ The type of VPN in which API Management service needs to be configured in. None 
 - Required: No
 - Type: string
 - Default: `'None'`
-- Allowed: `[External, Internal, None]`
+- Allowed:
+  ```Bicep
+  [
+    'External'
+    'Internal'
+    'None'
+  ]
+  ```
 
 ### Parameter: `zones`
 

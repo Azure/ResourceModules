@@ -26,10 +26,59 @@ The following section provides usage examples for the module, which were used to
 
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/desktop-virtualization.scaling-plan:1.0.0`.
 
-- [Using large parameter set](#example-1-using-large-parameter-set)
-- [Using only defaults](#example-2-using-only-defaults)
+- [Using only defaults](#example-1-using-only-defaults)
+- [Using large parameter set](#example-2-using-large-parameter-set)
+- [WAF-aligned](#example-3-waf-aligned)
 
-### Example 1: _Using large parameter set_
+### Example 1: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module scalingPlan 'br:bicep/modules/desktop-virtualization.scaling-plan:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-dvspmin'
+  params: {
+    // Required parameters
+    name: 'dvspmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "dvspmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 2: _Using large parameter set_
 
 This instance deploys the module with most of its features enabled.
 
@@ -40,10 +89,10 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module scalingPlan 'br:bicep/modules/desktop-virtualization.scaling-plan:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-dvspcom'
+  name: '${uniqueString(deployment().name, location)}-test-dvspmax'
   params: {
     // Required parameters
-    name: 'dvspcom001'
+    name: 'dvspmax001'
     // Non-required parameters
     description: 'My Scaling Plan Description'
     diagnosticSettings: [
@@ -128,7 +177,7 @@ module scalingPlan 'br:bicep/modules/desktop-virtualization.scaling-plan:1.0.0' 
   "parameters": {
     // Required parameters
     "name": {
-      "value": "dvspcom001"
+      "value": "dvspmax001"
     },
     // Non-required parameters
     "description": {
@@ -219,9 +268,9 @@ module scalingPlan 'br:bicep/modules/desktop-virtualization.scaling-plan:1.0.0' 
 </details>
 <p>
 
-### Example 2: _Using only defaults_
+### Example 3: _WAF-aligned_
 
-This instance deploys the module with the minimum set of required parameters.
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
 
 
 <details>
@@ -230,12 +279,76 @@ This instance deploys the module with the minimum set of required parameters.
 
 ```bicep
 module scalingPlan 'br:bicep/modules/desktop-virtualization.scaling-plan:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-dvspmin'
+  name: '${uniqueString(deployment().name, location)}-test-dvspwaf'
   params: {
     // Required parameters
-    name: 'dvspmin001'
+    name: 'dvspwaf001'
     // Non-required parameters
+    description: 'My Scaling Plan Description'
+    diagnosticSettings: [
+      {
+        eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+        eventHubName: '<eventHubName>'
+        name: 'customSetting'
+        storageAccountResourceId: '<storageAccountResourceId>'
+        workspaceResourceId: '<workspaceResourceId>'
+      }
+    ]
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    friendlyName: 'My Scaling Plan'
+    hostPoolType: 'Pooled'
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    schedules: [
+      {
+        daysOfWeek: [
+          'Friday'
+          'Monday'
+          'Thursday'
+          'Tuesday'
+          'Wednesday'
+        ]
+        name: 'weekdays_schedule'
+        offPeakLoadBalancingAlgorithm: 'DepthFirst'
+        offPeakStartTime: {
+          hour: 20
+          minute: 0
+        }
+        peakLoadBalancingAlgorithm: 'DepthFirst'
+        peakStartTime: {
+          hour: 9
+          minute: 0
+        }
+        rampDownCapacityThresholdPct: 90
+        rampDownForceLogoffUsers: true
+        rampDownLoadBalancingAlgorithm: 'DepthFirst'
+        rampDownMinimumHostsPct: 10
+        rampDownNotificationMessage: 'You will be logged off in 30 min. Make sure to save your work.'
+        rampDownStartTime: {
+          hour: 18
+          minute: 0
+        }
+        rampDownStopHostsWhen: 'ZeroSessions'
+        rampDownWaitTimeMinutes: 30
+        rampUpCapacityThresholdPct: 60
+        rampUpLoadBalancingAlgorithm: 'DepthFirst'
+        rampUpMinimumHostsPct: 20
+        rampUpStartTime: {
+          hour: 7
+          minute: 0
+        }
+      }
+    ]
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -254,11 +367,89 @@ module scalingPlan 'br:bicep/modules/desktop-virtualization.scaling-plan:1.0.0' 
   "parameters": {
     // Required parameters
     "name": {
-      "value": "dvspmin001"
+      "value": "dvspwaf001"
     },
     // Non-required parameters
+    "description": {
+      "value": "My Scaling Plan Description"
+    },
+    "diagnosticSettings": {
+      "value": [
+        {
+          "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+          "eventHubName": "<eventHubName>",
+          "name": "customSetting",
+          "storageAccountResourceId": "<storageAccountResourceId>",
+          "workspaceResourceId": "<workspaceResourceId>"
+        }
+      ]
+    },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
+    },
+    "friendlyName": {
+      "value": "My Scaling Plan"
+    },
+    "hostPoolType": {
+      "value": "Pooled"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "schedules": {
+      "value": [
+        {
+          "daysOfWeek": [
+            "Friday",
+            "Monday",
+            "Thursday",
+            "Tuesday",
+            "Wednesday"
+          ],
+          "name": "weekdays_schedule",
+          "offPeakLoadBalancingAlgorithm": "DepthFirst",
+          "offPeakStartTime": {
+            "hour": 20,
+            "minute": 0
+          },
+          "peakLoadBalancingAlgorithm": "DepthFirst",
+          "peakStartTime": {
+            "hour": 9,
+            "minute": 0
+          },
+          "rampDownCapacityThresholdPct": 90,
+          "rampDownForceLogoffUsers": true,
+          "rampDownLoadBalancingAlgorithm": "DepthFirst",
+          "rampDownMinimumHostsPct": 10,
+          "rampDownNotificationMessage": "You will be logged off in 30 min. Make sure to save your work.",
+          "rampDownStartTime": {
+            "hour": 18,
+            "minute": 0
+          },
+          "rampDownStopHostsWhen": "ZeroSessions",
+          "rampDownWaitTimeMinutes": 30,
+          "rampUpCapacityThresholdPct": 60,
+          "rampUpLoadBalancingAlgorithm": "DepthFirst",
+          "rampUpMinimumHostsPct": 20,
+          "rampUpStartTime": {
+            "hour": 7,
+            "minute": 0
+          }
+        }
+      ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }
@@ -429,7 +620,12 @@ The type of hostpool where this scaling plan should be applied.
 - Required: No
 - Type: string
 - Default: `'Pooled'`
-- Allowed: `[Pooled]`
+- Allowed:
+  ```Bicep
+  [
+    'Pooled'
+  ]
+  ```
 
 ### Parameter: `location`
 
@@ -517,14 +713,55 @@ Required. The name of the role to assign. If it cannot be found you can specify 
 The schedules related to this scaling plan. If no value is provided a default schedule will be provided.
 - Required: No
 - Type: array
-- Default: `[System.Management.Automation.OrderedHashtable]`
+- Default:
+  ```Bicep
+  [
+    {
+      daysOfWeek: [
+        'Friday'
+        'Monday'
+        'Thursday'
+        'Tuesday'
+        'Wednesday'
+      ]
+      name: 'weekdays_schedule'
+      offPeakLoadBalancingAlgorithm: 'DepthFirst'
+      offPeakStartTime: {
+        hour: 20
+        minute: 0
+      }
+      peakLoadBalancingAlgorithm: 'DepthFirst'
+      peakStartTime: {
+        hour: 9
+        minute: 0
+      }
+      rampDownCapacityThresholdPct: 90
+      rampDownForceLogoffUsers: true
+      rampDownLoadBalancingAlgorithm: 'DepthFirst'
+      rampDownMinimumHostsPct: 10
+      rampDownNotificationMessage: 'You will be logged off in 30 min. Make sure to save your work.'
+      rampDownStartTime: {
+        hour: 18
+        minute: 0
+      }
+      rampDownStopHostsWhen: 'ZeroSessions'
+      rampDownWaitTimeMinutes: 30
+      rampUpCapacityThresholdPct: 60
+      rampUpLoadBalancingAlgorithm: 'DepthFirst'
+      rampUpMinimumHostsPct: 20
+      rampUpStartTime: {
+        hour: 7
+        minute: 0
+      }
+    }
+  ]
+  ```
 
 ### Parameter: `tags`
 
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `timeZone`
 

@@ -24,86 +24,11 @@ The following section provides usage examples for the module, which were used to
 
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/consumption.budget:1.0.0`.
 
-- [Using large parameter set](#example-1-using-large-parameter-set)
-- [Using only defaults](#example-2-using-only-defaults)
+- [Using only defaults](#example-1-using-only-defaults)
+- [Using large parameter set](#example-2-using-large-parameter-set)
+- [WAF-aligned](#example-3-waf-aligned)
 
-### Example 1: _Using large parameter set_
-
-This instance deploys the module with most of its features enabled.
-
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module budget 'br:bicep/modules/consumption.budget:1.0.0' = {
-  name: '${uniqueString(deployment().name)}-test-cbcom'
-  params: {
-    // Required parameters
-    amount: 500
-    name: 'cbcom001'
-    // Non-required parameters
-    contactEmails: [
-      'dummy@contoso.com'
-    ]
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    thresholds: [
-      50
-      75
-      90
-      100
-      110
-    ]
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "amount": {
-      "value": 500
-    },
-    "name": {
-      "value": "cbcom001"
-    },
-    // Non-required parameters
-    "contactEmails": {
-      "value": [
-        "dummy@contoso.com"
-      ]
-    },
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
-    "thresholds": {
-      "value": [
-        50,
-        75,
-        90,
-        100,
-        110
-      ]
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-### Example 2: _Using only defaults_
+### Example 1: _Using only defaults_
 
 This instance deploys the module with the minimum set of required parameters.
 
@@ -163,6 +88,158 @@ module budget 'br:bicep/modules/consumption.budget:1.0.0' = {
 </details>
 <p>
 
+### Example 2: _Using large parameter set_
+
+This instance deploys the module with most of its features enabled.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module budget 'br:bicep/modules/consumption.budget:1.0.0' = {
+  name: '${uniqueString(deployment().name)}-test-cbmax'
+  params: {
+    // Required parameters
+    amount: 500
+    name: 'cbmax001'
+    // Non-required parameters
+    contactEmails: [
+      'dummy@contoso.com'
+    ]
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    thresholds: [
+      50
+      75
+      90
+      100
+      110
+    ]
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "amount": {
+      "value": 500
+    },
+    "name": {
+      "value": "cbmax001"
+    },
+    // Non-required parameters
+    "contactEmails": {
+      "value": [
+        "dummy@contoso.com"
+      ]
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "thresholds": {
+      "value": [
+        50,
+        75,
+        90,
+        100,
+        110
+      ]
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 3: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module budget 'br:bicep/modules/consumption.budget:1.0.0' = {
+  name: '${uniqueString(deployment().name)}-test-cbwaf'
+  params: {
+    // Required parameters
+    amount: 500
+    name: 'cbwaf001'
+    // Non-required parameters
+    contactEmails: [
+      'dummy@contoso.com'
+    ]
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    thresholds: [
+      50
+      75
+      90
+      100
+      110
+    ]
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "amount": {
+      "value": 500
+    },
+    "name": {
+      "value": "cbwaf001"
+    },
+    // Non-required parameters
+    "contactEmails": {
+      "value": [
+        "dummy@contoso.com"
+      ]
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "thresholds": {
+      "value": [
+        50,
+        75,
+        90,
+        100,
+        110
+      ]
+    }
+  }
+}
+```
+
+</details>
+<p>
+
 
 ## Parameters
 
@@ -212,7 +289,13 @@ The category of the budget, whether the budget tracks cost or usage.
 - Required: No
 - Type: string
 - Default: `'Cost'`
-- Allowed: `[Cost, Usage]`
+- Allowed:
+  ```Bicep
+  [
+    'Cost'
+    'Usage'
+  ]
+  ```
 
 ### Parameter: `contactEmails`
 
@@ -261,7 +344,17 @@ The time covered by a budget. Tracking of the amount will be reset based on the 
 - Required: No
 - Type: string
 - Default: `'Monthly'`
-- Allowed: `[Annually, BillingAnnual, BillingMonth, BillingQuarter, Monthly, Quarterly]`
+- Allowed:
+  ```Bicep
+  [
+    'Annually'
+    'BillingAnnual'
+    'BillingMonth'
+    'BillingQuarter'
+    'Monthly'
+    'Quarterly'
+  ]
+  ```
 
 ### Parameter: `startDate`
 
@@ -275,7 +368,16 @@ The start date for the budget. Start date should be the first day of the month a
 Percent thresholds of budget for when to get a notification. Can be up to 5 thresholds, where each must be between 1 and 1000.
 - Required: No
 - Type: array
-- Default: `[50, 75, 90, 100, 110]`
+- Default:
+  ```Bicep
+  [
+    50
+    75
+    90
+    100
+    110
+  ]
+  ```
 
 
 ## Outputs

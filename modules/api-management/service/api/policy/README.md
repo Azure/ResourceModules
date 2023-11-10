@@ -63,7 +63,15 @@ Format of the policyContent.
 - Required: No
 - Type: string
 - Default: `'xml'`
-- Allowed: `[rawxml, rawxml-link, xml, xml-link]`
+- Allowed:
+  ```Bicep
+  [
+    'rawxml'
+    'rawxml-link'
+    'xml'
+    'xml-link'
+  ]
+  ```
 
 ### Parameter: `name`
 

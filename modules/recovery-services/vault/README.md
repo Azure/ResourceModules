@@ -39,11 +39,231 @@ The following section provides usage examples for the module, which were used to
 
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/recovery-services.vault:1.0.0`.
 
-- [Using large parameter set](#example-1-using-large-parameter-set)
+- [Using only defaults](#example-1-using-only-defaults)
 - [Dr](#example-2-dr)
-- [Using only defaults](#example-3-using-only-defaults)
+- [Using large parameter set](#example-3-using-large-parameter-set)
+- [WAF-aligned](#example-4-waf-aligned)
 
-### Example 1: _Using large parameter set_
+### Example 1: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module vault 'br:bicep/modules/recovery-services.vault:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-rsvmin'
+  params: {
+    // Required parameters
+    name: 'rsvmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "rsvmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 2: _Dr_
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module vault 'br:bicep/modules/recovery-services.vault:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-rsvdr'
+  params: {
+    // Required parameters
+    name: '<name>'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    replicationFabrics: [
+      {
+        location: 'NorthEurope'
+        replicationContainers: [
+          {
+            name: 'ne-container1'
+            replicationContainerMappings: [
+              {
+                policyName: 'Default_values'
+                targetContainerName: 'pluto'
+                targetProtectionContainerId: '<targetProtectionContainerId>'
+              }
+            ]
+          }
+          {
+            name: 'ne-container2'
+            replicationContainerMappings: [
+              {
+                policyName: 'Default_values'
+                targetContainerFabricName: 'WE-2'
+                targetContainerName: 'we-container1'
+              }
+            ]
+          }
+        ]
+      }
+      {
+        location: 'WestEurope'
+        name: 'WE-2'
+        replicationContainers: [
+          {
+            name: 'we-container1'
+            replicationContainerMappings: [
+              {
+                policyName: 'Default_values'
+                targetContainerFabricName: 'NorthEurope'
+                targetContainerName: 'ne-container2'
+              }
+            ]
+          }
+        ]
+      }
+    ]
+    replicationPolicies: [
+      {
+        name: 'Default_values'
+      }
+      {
+        appConsistentFrequencyInMinutes: 240
+        crashConsistentFrequencyInMinutes: 7
+        multiVmSyncStatus: 'Disable'
+        name: 'Custom_values'
+        recoveryPointHistory: 2880
+      }
+    ]
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "<name>"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "replicationFabrics": {
+      "value": [
+        {
+          "location": "NorthEurope",
+          "replicationContainers": [
+            {
+              "name": "ne-container1",
+              "replicationContainerMappings": [
+                {
+                  "policyName": "Default_values",
+                  "targetContainerName": "pluto",
+                  "targetProtectionContainerId": "<targetProtectionContainerId>"
+                }
+              ]
+            },
+            {
+              "name": "ne-container2",
+              "replicationContainerMappings": [
+                {
+                  "policyName": "Default_values",
+                  "targetContainerFabricName": "WE-2",
+                  "targetContainerName": "we-container1"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "location": "WestEurope",
+          "name": "WE-2",
+          "replicationContainers": [
+            {
+              "name": "we-container1",
+              "replicationContainerMappings": [
+                {
+                  "policyName": "Default_values",
+                  "targetContainerFabricName": "NorthEurope",
+                  "targetContainerName": "ne-container2"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "replicationPolicies": {
+      "value": [
+        {
+          "name": "Default_values"
+        },
+        {
+          "appConsistentFrequencyInMinutes": 240,
+          "crashConsistentFrequencyInMinutes": 7,
+          "multiVmSyncStatus": "Disable",
+          "name": "Custom_values",
+          "recoveryPointHistory": 2880
+        }
+      ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 3: _Using large parameter set_
 
 This instance deploys the module with most of its features enabled.
 
@@ -54,10 +274,10 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module vault 'br:bicep/modules/recovery-services.vault:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-rsvcom'
+  name: '${uniqueString(deployment().name, location)}-test-rsvmax'
   params: {
     // Required parameters
-    name: 'rsvcom001'
+    name: 'rsvmax001'
     // Non-required parameters
     backupConfig: {
       enhancedSecurityState: 'Disabled'
@@ -385,7 +605,7 @@ module vault 'br:bicep/modules/recovery-services.vault:1.0.0' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "rsvcom001"
+      "value": "rsvmax001"
     },
     // Non-required parameters
     "backupConfig": {
@@ -729,7 +949,10 @@ module vault 'br:bicep/modules/recovery-services.vault:1.0.0' = {
 </details>
 <p>
 
-### Example 2: _Dr_
+### Example 4: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
 
 <details>
 
@@ -737,67 +960,314 @@ module vault 'br:bicep/modules/recovery-services.vault:1.0.0' = {
 
 ```bicep
 module vault 'br:bicep/modules/recovery-services.vault:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-rsvdr'
+  name: '${uniqueString(deployment().name, location)}-test-rsvwaf'
   params: {
     // Required parameters
-    name: '<name>'
+    name: 'rsvwaf001'
     // Non-required parameters
+    backupConfig: {
+      enhancedSecurityState: 'Disabled'
+      softDeleteFeatureState: 'Disabled'
+    }
+    backupPolicies: [
+      {
+        name: 'VMpolicy'
+        properties: {
+          backupManagementType: 'AzureIaasVM'
+          instantRPDetails: {}
+          instantRpRetentionRangeInDays: 2
+          protectedItemsCount: 0
+          retentionPolicy: {
+            dailySchedule: {
+              retentionDuration: {
+                count: 180
+                durationType: 'Days'
+              }
+              retentionTimes: [
+                '2019-11-07T07:00:00Z'
+              ]
+            }
+            monthlySchedule: {
+              retentionDuration: {
+                count: 60
+                durationType: 'Months'
+              }
+              retentionScheduleFormatType: 'Weekly'
+              retentionScheduleWeekly: {
+                daysOfTheWeek: [
+                  'Sunday'
+                ]
+                weeksOfTheMonth: [
+                  'First'
+                ]
+              }
+              retentionTimes: [
+                '2019-11-07T07:00:00Z'
+              ]
+            }
+            retentionPolicyType: 'LongTermRetentionPolicy'
+            weeklySchedule: {
+              daysOfTheWeek: [
+                'Sunday'
+              ]
+              retentionDuration: {
+                count: 12
+                durationType: 'Weeks'
+              }
+              retentionTimes: [
+                '2019-11-07T07:00:00Z'
+              ]
+            }
+            yearlySchedule: {
+              monthsOfYear: [
+                'January'
+              ]
+              retentionDuration: {
+                count: 10
+                durationType: 'Years'
+              }
+              retentionScheduleFormatType: 'Weekly'
+              retentionScheduleWeekly: {
+                daysOfTheWeek: [
+                  'Sunday'
+                ]
+                weeksOfTheMonth: [
+                  'First'
+                ]
+              }
+              retentionTimes: [
+                '2019-11-07T07:00:00Z'
+              ]
+            }
+          }
+          schedulePolicy: {
+            schedulePolicyType: 'SimpleSchedulePolicy'
+            scheduleRunFrequency: 'Daily'
+            scheduleRunTimes: [
+              '2019-11-07T07:00:00Z'
+            ]
+            scheduleWeeklyFrequency: 0
+          }
+          timeZone: 'UTC'
+        }
+      }
+      {
+        name: 'sqlpolicy'
+        properties: {
+          backupManagementType: 'AzureWorkload'
+          protectedItemsCount: 0
+          settings: {
+            isCompression: true
+            issqlcompression: true
+            timeZone: 'UTC'
+          }
+          subProtectionPolicy: [
+            {
+              policyType: 'Full'
+              retentionPolicy: {
+                monthlySchedule: {
+                  retentionDuration: {
+                    count: 60
+                    durationType: 'Months'
+                  }
+                  retentionScheduleFormatType: 'Weekly'
+                  retentionScheduleWeekly: {
+                    daysOfTheWeek: [
+                      'Sunday'
+                    ]
+                    weeksOfTheMonth: [
+                      'First'
+                    ]
+                  }
+                  retentionTimes: [
+                    '2019-11-07T22:00:00Z'
+                  ]
+                }
+                retentionPolicyType: 'LongTermRetentionPolicy'
+                weeklySchedule: {
+                  daysOfTheWeek: [
+                    'Sunday'
+                  ]
+                  retentionDuration: {
+                    count: 104
+                    durationType: 'Weeks'
+                  }
+                  retentionTimes: [
+                    '2019-11-07T22:00:00Z'
+                  ]
+                }
+                yearlySchedule: {
+                  monthsOfYear: [
+                    'January'
+                  ]
+                  retentionDuration: {
+                    count: 10
+                    durationType: 'Years'
+                  }
+                  retentionScheduleFormatType: 'Weekly'
+                  retentionScheduleWeekly: {
+                    daysOfTheWeek: [
+                      'Sunday'
+                    ]
+                    weeksOfTheMonth: [
+                      'First'
+                    ]
+                  }
+                  retentionTimes: [
+                    '2019-11-07T22:00:00Z'
+                  ]
+                }
+              }
+              schedulePolicy: {
+                schedulePolicyType: 'SimpleSchedulePolicy'
+                scheduleRunDays: [
+                  'Sunday'
+                ]
+                scheduleRunFrequency: 'Weekly'
+                scheduleRunTimes: [
+                  '2019-11-07T22:00:00Z'
+                ]
+                scheduleWeeklyFrequency: 0
+              }
+            }
+            {
+              policyType: 'Differential'
+              retentionPolicy: {
+                retentionDuration: {
+                  count: 30
+                  durationType: 'Days'
+                }
+                retentionPolicyType: 'SimpleRetentionPolicy'
+              }
+              schedulePolicy: {
+                schedulePolicyType: 'SimpleSchedulePolicy'
+                scheduleRunDays: [
+                  'Monday'
+                ]
+                scheduleRunFrequency: 'Weekly'
+                scheduleRunTimes: [
+                  '2017-03-07T02:00:00Z'
+                ]
+                scheduleWeeklyFrequency: 0
+              }
+            }
+            {
+              policyType: 'Log'
+              retentionPolicy: {
+                retentionDuration: {
+                  count: 15
+                  durationType: 'Days'
+                }
+                retentionPolicyType: 'SimpleRetentionPolicy'
+              }
+              schedulePolicy: {
+                scheduleFrequencyInMins: 120
+                schedulePolicyType: 'LogSchedulePolicy'
+              }
+            }
+          ]
+          workLoadType: 'SQLDataBase'
+        }
+      }
+      {
+        name: 'filesharepolicy'
+        properties: {
+          backupManagementType: 'AzureStorage'
+          protectedItemsCount: 0
+          retentionPolicy: {
+            dailySchedule: {
+              retentionDuration: {
+                count: 30
+                durationType: 'Days'
+              }
+              retentionTimes: [
+                '2019-11-07T04:30:00Z'
+              ]
+            }
+            retentionPolicyType: 'LongTermRetentionPolicy'
+          }
+          schedulePolicy: {
+            schedulePolicyType: 'SimpleSchedulePolicy'
+            scheduleRunFrequency: 'Daily'
+            scheduleRunTimes: [
+              '2019-11-07T04:30:00Z'
+            ]
+            scheduleWeeklyFrequency: 0
+          }
+          timeZone: 'UTC'
+          workloadType: 'AzureFileShare'
+        }
+      }
+    ]
+    backupStorageConfig: {
+      crossRegionRestoreFlag: true
+      storageModelType: 'GeoRedundant'
+    }
+    diagnosticSettings: [
+      {
+        eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+        eventHubName: '<eventHubName>'
+        metricCategories: [
+          {
+            category: 'AllMetrics'
+          }
+        ]
+        name: 'customSetting'
+        storageAccountResourceId: '<storageAccountResourceId>'
+        workspaceResourceId: '<workspaceResourceId>'
+      }
+    ]
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    replicationFabrics: [
-      {
-        location: 'NorthEurope'
-        replicationContainers: [
-          {
-            name: 'ne-container1'
-            replicationContainerMappings: [
-              {
-                policyName: 'Default_values'
-                targetContainerName: 'pluto'
-                targetProtectionContainerId: '<targetProtectionContainerId>'
-              }
-            ]
-          }
-          {
-            name: 'ne-container2'
-            replicationContainerMappings: [
-              {
-                policyName: 'Default_values'
-                targetContainerFabricName: 'WE-2'
-                targetContainerName: 'we-container1'
-              }
-            ]
-          }
-        ]
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    managedIdentities: {
+      systemAssigned: true
+      userAssignedResourcesIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
+    monitoringSettings: {
+      azureMonitorAlertSettings: {
+        alertsForAllJobFailures: 'Enabled'
       }
+      classicAlertSettings: {
+        alertsForCriticalOperations: 'Enabled'
+      }
+    }
+    privateEndpoints: [
       {
-        location: 'WestEurope'
-        name: 'WE-2'
-        replicationContainers: [
-          {
-            name: 'we-container1'
-            replicationContainerMappings: [
-              {
-                policyName: 'Default_values'
-                targetContainerFabricName: 'NorthEurope'
-                targetContainerName: 'ne-container2'
-              }
-            ]
-          }
+        privateDnsZoneResourceIds: [
+          '<privateDNSZoneResourceId>'
         ]
+        subnetResourceId: '<subnetResourceId>'
+        tags: {
+          Environment: 'Non-Prod'
+          'hidden-title': 'This is visible in the resource name'
+          Role: 'DeploymentValidation'
+        }
       }
     ]
-    replicationPolicies: [
+    replicationAlertSettings: {
+      customEmailAddresses: [
+        'test.user@testcompany.com'
+      ]
+      locale: 'en-US'
+      sendToOwners: 'Send'
+    }
+    roleAssignments: [
       {
-        name: 'Default_values'
-      }
-      {
-        appConsistentFrequencyInMinutes: 240
-        crashConsistentFrequencyInMinutes: 7
-        multiVmSyncStatus: 'Disable'
-        name: 'Custom_values'
-        recoveryPointHistory: 2880
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
       }
     ]
+    securitySettings: {
+      immutabilitySettings: {
+        state: 'Unlocked'
+      }
+    }
     tags: {
       Environment: 'Non-Prod'
       'hidden-title': 'This is visible in the resource name'
@@ -821,70 +1291,335 @@ module vault 'br:bicep/modules/recovery-services.vault:1.0.0' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<name>"
+      "value": "rsvwaf001"
     },
     // Non-required parameters
+    "backupConfig": {
+      "value": {
+        "enhancedSecurityState": "Disabled",
+        "softDeleteFeatureState": "Disabled"
+      }
+    },
+    "backupPolicies": {
+      "value": [
+        {
+          "name": "VMpolicy",
+          "properties": {
+            "backupManagementType": "AzureIaasVM",
+            "instantRPDetails": {},
+            "instantRpRetentionRangeInDays": 2,
+            "protectedItemsCount": 0,
+            "retentionPolicy": {
+              "dailySchedule": {
+                "retentionDuration": {
+                  "count": 180,
+                  "durationType": "Days"
+                },
+                "retentionTimes": [
+                  "2019-11-07T07:00:00Z"
+                ]
+              },
+              "monthlySchedule": {
+                "retentionDuration": {
+                  "count": 60,
+                  "durationType": "Months"
+                },
+                "retentionScheduleFormatType": "Weekly",
+                "retentionScheduleWeekly": {
+                  "daysOfTheWeek": [
+                    "Sunday"
+                  ],
+                  "weeksOfTheMonth": [
+                    "First"
+                  ]
+                },
+                "retentionTimes": [
+                  "2019-11-07T07:00:00Z"
+                ]
+              },
+              "retentionPolicyType": "LongTermRetentionPolicy",
+              "weeklySchedule": {
+                "daysOfTheWeek": [
+                  "Sunday"
+                ],
+                "retentionDuration": {
+                  "count": 12,
+                  "durationType": "Weeks"
+                },
+                "retentionTimes": [
+                  "2019-11-07T07:00:00Z"
+                ]
+              },
+              "yearlySchedule": {
+                "monthsOfYear": [
+                  "January"
+                ],
+                "retentionDuration": {
+                  "count": 10,
+                  "durationType": "Years"
+                },
+                "retentionScheduleFormatType": "Weekly",
+                "retentionScheduleWeekly": {
+                  "daysOfTheWeek": [
+                    "Sunday"
+                  ],
+                  "weeksOfTheMonth": [
+                    "First"
+                  ]
+                },
+                "retentionTimes": [
+                  "2019-11-07T07:00:00Z"
+                ]
+              }
+            },
+            "schedulePolicy": {
+              "schedulePolicyType": "SimpleSchedulePolicy",
+              "scheduleRunFrequency": "Daily",
+              "scheduleRunTimes": [
+                "2019-11-07T07:00:00Z"
+              ],
+              "scheduleWeeklyFrequency": 0
+            },
+            "timeZone": "UTC"
+          }
+        },
+        {
+          "name": "sqlpolicy",
+          "properties": {
+            "backupManagementType": "AzureWorkload",
+            "protectedItemsCount": 0,
+            "settings": {
+              "isCompression": true,
+              "issqlcompression": true,
+              "timeZone": "UTC"
+            },
+            "subProtectionPolicy": [
+              {
+                "policyType": "Full",
+                "retentionPolicy": {
+                  "monthlySchedule": {
+                    "retentionDuration": {
+                      "count": 60,
+                      "durationType": "Months"
+                    },
+                    "retentionScheduleFormatType": "Weekly",
+                    "retentionScheduleWeekly": {
+                      "daysOfTheWeek": [
+                        "Sunday"
+                      ],
+                      "weeksOfTheMonth": [
+                        "First"
+                      ]
+                    },
+                    "retentionTimes": [
+                      "2019-11-07T22:00:00Z"
+                    ]
+                  },
+                  "retentionPolicyType": "LongTermRetentionPolicy",
+                  "weeklySchedule": {
+                    "daysOfTheWeek": [
+                      "Sunday"
+                    ],
+                    "retentionDuration": {
+                      "count": 104,
+                      "durationType": "Weeks"
+                    },
+                    "retentionTimes": [
+                      "2019-11-07T22:00:00Z"
+                    ]
+                  },
+                  "yearlySchedule": {
+                    "monthsOfYear": [
+                      "January"
+                    ],
+                    "retentionDuration": {
+                      "count": 10,
+                      "durationType": "Years"
+                    },
+                    "retentionScheduleFormatType": "Weekly",
+                    "retentionScheduleWeekly": {
+                      "daysOfTheWeek": [
+                        "Sunday"
+                      ],
+                      "weeksOfTheMonth": [
+                        "First"
+                      ]
+                    },
+                    "retentionTimes": [
+                      "2019-11-07T22:00:00Z"
+                    ]
+                  }
+                },
+                "schedulePolicy": {
+                  "schedulePolicyType": "SimpleSchedulePolicy",
+                  "scheduleRunDays": [
+                    "Sunday"
+                  ],
+                  "scheduleRunFrequency": "Weekly",
+                  "scheduleRunTimes": [
+                    "2019-11-07T22:00:00Z"
+                  ],
+                  "scheduleWeeklyFrequency": 0
+                }
+              },
+              {
+                "policyType": "Differential",
+                "retentionPolicy": {
+                  "retentionDuration": {
+                    "count": 30,
+                    "durationType": "Days"
+                  },
+                  "retentionPolicyType": "SimpleRetentionPolicy"
+                },
+                "schedulePolicy": {
+                  "schedulePolicyType": "SimpleSchedulePolicy",
+                  "scheduleRunDays": [
+                    "Monday"
+                  ],
+                  "scheduleRunFrequency": "Weekly",
+                  "scheduleRunTimes": [
+                    "2017-03-07T02:00:00Z"
+                  ],
+                  "scheduleWeeklyFrequency": 0
+                }
+              },
+              {
+                "policyType": "Log",
+                "retentionPolicy": {
+                  "retentionDuration": {
+                    "count": 15,
+                    "durationType": "Days"
+                  },
+                  "retentionPolicyType": "SimpleRetentionPolicy"
+                },
+                "schedulePolicy": {
+                  "scheduleFrequencyInMins": 120,
+                  "schedulePolicyType": "LogSchedulePolicy"
+                }
+              }
+            ],
+            "workLoadType": "SQLDataBase"
+          }
+        },
+        {
+          "name": "filesharepolicy",
+          "properties": {
+            "backupManagementType": "AzureStorage",
+            "protectedItemsCount": 0,
+            "retentionPolicy": {
+              "dailySchedule": {
+                "retentionDuration": {
+                  "count": 30,
+                  "durationType": "Days"
+                },
+                "retentionTimes": [
+                  "2019-11-07T04:30:00Z"
+                ]
+              },
+              "retentionPolicyType": "LongTermRetentionPolicy"
+            },
+            "schedulePolicy": {
+              "schedulePolicyType": "SimpleSchedulePolicy",
+              "scheduleRunFrequency": "Daily",
+              "scheduleRunTimes": [
+                "2019-11-07T04:30:00Z"
+              ],
+              "scheduleWeeklyFrequency": 0
+            },
+            "timeZone": "UTC",
+            "workloadType": "AzureFileShare"
+          }
+        }
+      ]
+    },
+    "backupStorageConfig": {
+      "value": {
+        "crossRegionRestoreFlag": true,
+        "storageModelType": "GeoRedundant"
+      }
+    },
+    "diagnosticSettings": {
+      "value": [
+        {
+          "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+          "eventHubName": "<eventHubName>",
+          "metricCategories": [
+            {
+              "category": "AllMetrics"
+            }
+          ],
+          "name": "customSetting",
+          "storageAccountResourceId": "<storageAccountResourceId>",
+          "workspaceResourceId": "<workspaceResourceId>"
+        }
+      ]
+    },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     },
-    "replicationFabrics": {
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "managedIdentities": {
+      "value": {
+        "systemAssigned": true,
+        "userAssignedResourcesIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
+    },
+    "monitoringSettings": {
+      "value": {
+        "azureMonitorAlertSettings": {
+          "alertsForAllJobFailures": "Enabled"
+        },
+        "classicAlertSettings": {
+          "alertsForCriticalOperations": "Enabled"
+        }
+      }
+    },
+    "privateEndpoints": {
       "value": [
         {
-          "location": "NorthEurope",
-          "replicationContainers": [
-            {
-              "name": "ne-container1",
-              "replicationContainerMappings": [
-                {
-                  "policyName": "Default_values",
-                  "targetContainerName": "pluto",
-                  "targetProtectionContainerId": "<targetProtectionContainerId>"
-                }
-              ]
-            },
-            {
-              "name": "ne-container2",
-              "replicationContainerMappings": [
-                {
-                  "policyName": "Default_values",
-                  "targetContainerFabricName": "WE-2",
-                  "targetContainerName": "we-container1"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "location": "WestEurope",
-          "name": "WE-2",
-          "replicationContainers": [
-            {
-              "name": "we-container1",
-              "replicationContainerMappings": [
-                {
-                  "policyName": "Default_values",
-                  "targetContainerFabricName": "NorthEurope",
-                  "targetContainerName": "ne-container2"
-                }
-              ]
-            }
-          ]
+          "privateDnsZoneResourceIds": [
+            "<privateDNSZoneResourceId>"
+          ],
+          "subnetResourceId": "<subnetResourceId>",
+          "tags": {
+            "Environment": "Non-Prod",
+            "hidden-title": "This is visible in the resource name",
+            "Role": "DeploymentValidation"
+          }
         }
       ]
     },
-    "replicationPolicies": {
+    "replicationAlertSettings": {
+      "value": {
+        "customEmailAddresses": [
+          "test.user@testcompany.com"
+        ],
+        "locale": "en-US",
+        "sendToOwners": "Send"
+      }
+    },
+    "roleAssignments": {
       "value": [
         {
-          "name": "Default_values"
-        },
-        {
-          "appConsistentFrequencyInMinutes": 240,
-          "crashConsistentFrequencyInMinutes": 7,
-          "multiVmSyncStatus": "Disable",
-          "name": "Custom_values",
-          "recoveryPointHistory": 2880
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
         }
       ]
+    },
+    "securitySettings": {
+      "value": {
+        "immutabilitySettings": {
+          "state": "Unlocked"
+        }
+      }
     },
     "tags": {
       "value": {
@@ -892,54 +1627,6 @@ module vault 'br:bicep/modules/recovery-services.vault:1.0.0' = {
         "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-### Example 3: _Using only defaults_
-
-This instance deploys the module with the minimum set of required parameters.
-
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module vault 'br:bicep/modules/recovery-services.vault:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-rsvmin'
-  params: {
-    // Required parameters
-    name: 'rsvmin001'
-    // Non-required parameters
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "rsvmin001"
-    },
-    // Non-required parameters
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
     }
   }
 }
@@ -985,7 +1672,7 @@ module vault 'br:bicep/modules/recovery-services.vault:1.0.0' = {
 The backup configuration.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `backupPolicies`
 
@@ -999,7 +1686,7 @@ List of all backup policies.
 The storage configuration for the Azure Recovery Service Vault.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `diagnosticSettings`
 
@@ -1188,7 +1875,7 @@ Optional. The resource ID(s) to assign to the resource.
 Monitoring Settings of the vault.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `name`
 
@@ -1237,14 +1924,20 @@ Optional. Custom DNS configurations.
 
 | Name | Required | Type | Description |
 | :-- | :-- | :--| :-- |
-| [`fqdn`](#parameter-privateendpointscustomdnsconfigsfqdn) | No | string |  |
-| [`ipAddresses`](#parameter-privateendpointscustomdnsconfigsipaddresses) | Yes | array |  |
+| [`fqdn`](#parameter-privateendpointscustomdnsconfigsfqdn) | No | string | Required. Fqdn that resolves to private endpoint ip address. |
+| [`ipAddresses`](#parameter-privateendpointscustomdnsconfigsipaddresses) | Yes | array | Required. A list of private ip addresses of the private endpoint. |
 
 ### Parameter: `privateEndpoints.customDnsConfigs.fqdn`
+
+Required. Fqdn that resolves to private endpoint ip address.
+
 - Required: No
 - Type: string
 
 ### Parameter: `privateEndpoints.customDnsConfigs.ipAddresses`
+
+Required. A list of private ip addresses of the private endpoint.
+
 - Required: Yes
 - Type: array
 
@@ -1272,26 +1965,50 @@ Optional. A list of IP configurations of the private endpoint. This will be used
 
 | Name | Required | Type | Description |
 | :-- | :-- | :--| :-- |
-| [`groupId`](#parameter-privateendpointsipconfigurationsgroupid) | Yes | string |  |
-| [`memberName`](#parameter-privateendpointsipconfigurationsmembername) | Yes | string |  |
-| [`name`](#parameter-privateendpointsipconfigurationsname) | Yes | string |  |
-| [`privateIpAddress`](#parameter-privateendpointsipconfigurationsprivateipaddress) | Yes | string |  |
-
-### Parameter: `privateEndpoints.ipConfigurations.groupId`
-- Required: Yes
-- Type: string
-
-### Parameter: `privateEndpoints.ipConfigurations.memberName`
-- Required: Yes
-- Type: string
+| [`name`](#parameter-privateendpointsipconfigurationsname) | Yes | string | Required. The name of the resource that is unique within a resource group. |
+| [`properties`](#parameter-privateendpointsipconfigurationsproperties) | Yes | object | Required. Properties of private endpoint IP configurations. |
 
 ### Parameter: `privateEndpoints.ipConfigurations.name`
+
+Required. The name of the resource that is unique within a resource group.
+
 - Required: Yes
 - Type: string
 
-### Parameter: `privateEndpoints.ipConfigurations.privateIpAddress`
+### Parameter: `privateEndpoints.ipConfigurations.properties`
+
+Required. Properties of private endpoint IP configurations.
+
+- Required: Yes
+- Type: object
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`groupId`](#parameter-privateendpointsipconfigurationspropertiesgroupid) | Yes | string | Required. The ID of a group obtained from the remote resource that this private endpoint should connect to. |
+| [`memberName`](#parameter-privateendpointsipconfigurationspropertiesmembername) | Yes | string | Required. The member name of a group obtained from the remote resource that this private endpoint should connect to. |
+| [`privateIPAddress`](#parameter-privateendpointsipconfigurationspropertiesprivateipaddress) | Yes | string | Required. A private ip address obtained from the private endpoint's subnet. |
+
+### Parameter: `privateEndpoints.ipConfigurations.properties.groupId`
+
+Required. The ID of a group obtained from the remote resource that this private endpoint should connect to.
+
 - Required: Yes
 - Type: string
+
+### Parameter: `privateEndpoints.ipConfigurations.properties.memberName`
+
+Required. The member name of a group obtained from the remote resource that this private endpoint should connect to.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `privateEndpoints.ipConfigurations.properties.privateIPAddress`
+
+Required. A private ip address obtained from the private endpoint's subnet.
+
+- Required: Yes
+- Type: string
+
 
 
 ### Parameter: `privateEndpoints.location`
@@ -1377,14 +2094,20 @@ Whether or not public network access is allowed for this resource. For security 
 - Required: No
 - Type: string
 - Default: `'Disabled'`
-- Allowed: `[Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 ### Parameter: `replicationAlertSettings`
 
 Replication alert settings.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `replicationFabrics`
 
@@ -1473,14 +2196,13 @@ Required. The name of the role to assign. If it cannot be found you can specify 
 Security Settings of the vault.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `tags`
 
 Tags of the Recovery Service Vault resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 
 ## Outputs

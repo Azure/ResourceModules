@@ -29,11 +29,12 @@ The following section provides usage examples for the module, which were used to
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/network.azure-firewall:1.0.0`.
 
 - [Addpip](#example-1-addpip)
-- [Using large parameter set](#example-2-using-large-parameter-set)
-- [Custompip](#example-3-custompip)
+- [Custompip](#example-2-custompip)
+- [Using only defaults](#example-3-using-only-defaults)
 - [Hubcommon](#example-4-hubcommon)
 - [Hubmin](#example-5-hubmin)
-- [Using only defaults](#example-6-using-only-defaults)
+- [Using large parameter set](#example-6-using-large-parameter-set)
+- [WAF-aligned](#example-7-waf-aligned)
 
 ### Example 1: _Addpip_
 
@@ -136,309 +137,7 @@ module azureFirewall 'br:bicep/modules/network.azure-firewall:1.0.0' = {
 </details>
 <p>
 
-### Example 2: _Using large parameter set_
-
-This instance deploys the module with most of its features enabled.
-
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module azureFirewall 'br:bicep/modules/network.azure-firewall:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-nafcom'
-  params: {
-    // Required parameters
-    name: 'nafcom001'
-    // Non-required parameters
-    applicationRuleCollections: [
-      {
-        name: 'allow-app-rules'
-        properties: {
-          action: {
-            type: 'allow'
-          }
-          priority: 100
-          rules: [
-            {
-              fqdnTags: [
-                'AppServiceEnvironment'
-                'WindowsUpdate'
-              ]
-              name: 'allow-ase-tags'
-              protocols: [
-                {
-                  port: '80'
-                  protocolType: 'HTTP'
-                }
-                {
-                  port: '443'
-                  protocolType: 'HTTPS'
-                }
-              ]
-              sourceAddresses: [
-                '*'
-              ]
-            }
-            {
-              name: 'allow-ase-management'
-              protocols: [
-                {
-                  port: '80'
-                  protocolType: 'HTTP'
-                }
-                {
-                  port: '443'
-                  protocolType: 'HTTPS'
-                }
-              ]
-              sourceAddresses: [
-                '*'
-              ]
-              targetFqdns: [
-                'bing.com'
-              ]
-            }
-          ]
-        }
-      }
-    ]
-    diagnosticSettings: [
-      {
-        eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
-        eventHubName: '<eventHubName>'
-        metricCategories: [
-          {
-            category: 'AllMetrics'
-          }
-        ]
-        name: 'customSetting'
-        storageAccountResourceId: '<storageAccountResourceId>'
-        workspaceResourceId: '<workspaceResourceId>'
-      }
-    ]
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    lock: {
-      kind: 'CanNotDelete'
-      name: 'myCustomLockName'
-    }
-    networkRuleCollections: [
-      {
-        name: 'allow-network-rules'
-        properties: {
-          action: {
-            type: 'allow'
-          }
-          priority: 100
-          rules: [
-            {
-              destinationAddresses: [
-                '*'
-              ]
-              destinationPorts: [
-                '12000'
-                '123'
-              ]
-              name: 'allow-ntp'
-              protocols: [
-                'Any'
-              ]
-              sourceAddresses: [
-                '*'
-              ]
-            }
-          ]
-        }
-      }
-    ]
-    publicIPResourceID: '<publicIPResourceID>'
-    roleAssignments: [
-      {
-        principalId: '<principalId>'
-        principalType: 'ServicePrincipal'
-        roleDefinitionIdOrName: 'Reader'
-      }
-    ]
-    tags: {
-      Environment: 'Non-Prod'
-      'hidden-title': 'This is visible in the resource name'
-      Role: 'DeploymentValidation'
-    }
-    vNetId: '<vNetId>'
-    zones: [
-      '1'
-      '2'
-      '3'
-    ]
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "nafcom001"
-    },
-    // Non-required parameters
-    "applicationRuleCollections": {
-      "value": [
-        {
-          "name": "allow-app-rules",
-          "properties": {
-            "action": {
-              "type": "allow"
-            },
-            "priority": 100,
-            "rules": [
-              {
-                "fqdnTags": [
-                  "AppServiceEnvironment",
-                  "WindowsUpdate"
-                ],
-                "name": "allow-ase-tags",
-                "protocols": [
-                  {
-                    "port": "80",
-                    "protocolType": "HTTP"
-                  },
-                  {
-                    "port": "443",
-                    "protocolType": "HTTPS"
-                  }
-                ],
-                "sourceAddresses": [
-                  "*"
-                ]
-              },
-              {
-                "name": "allow-ase-management",
-                "protocols": [
-                  {
-                    "port": "80",
-                    "protocolType": "HTTP"
-                  },
-                  {
-                    "port": "443",
-                    "protocolType": "HTTPS"
-                  }
-                ],
-                "sourceAddresses": [
-                  "*"
-                ],
-                "targetFqdns": [
-                  "bing.com"
-                ]
-              }
-            ]
-          }
-        }
-      ]
-    },
-    "diagnosticSettings": {
-      "value": [
-        {
-          "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
-          "eventHubName": "<eventHubName>",
-          "metricCategories": [
-            {
-              "category": "AllMetrics"
-            }
-          ],
-          "name": "customSetting",
-          "storageAccountResourceId": "<storageAccountResourceId>",
-          "workspaceResourceId": "<workspaceResourceId>"
-        }
-      ]
-    },
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
-    "lock": {
-      "value": {
-        "kind": "CanNotDelete",
-        "name": "myCustomLockName"
-      }
-    },
-    "networkRuleCollections": {
-      "value": [
-        {
-          "name": "allow-network-rules",
-          "properties": {
-            "action": {
-              "type": "allow"
-            },
-            "priority": 100,
-            "rules": [
-              {
-                "destinationAddresses": [
-                  "*"
-                ],
-                "destinationPorts": [
-                  "12000",
-                  "123"
-                ],
-                "name": "allow-ntp",
-                "protocols": [
-                  "Any"
-                ],
-                "sourceAddresses": [
-                  "*"
-                ]
-              }
-            ]
-          }
-        }
-      ]
-    },
-    "publicIPResourceID": {
-      "value": "<publicIPResourceID>"
-    },
-    "roleAssignments": {
-      "value": [
-        {
-          "principalId": "<principalId>",
-          "principalType": "ServicePrincipal",
-          "roleDefinitionIdOrName": "Reader"
-        }
-      ]
-    },
-    "tags": {
-      "value": {
-        "Environment": "Non-Prod",
-        "hidden-title": "This is visible in the resource name",
-        "Role": "DeploymentValidation"
-      }
-    },
-    "vNetId": {
-      "value": "<vNetId>"
-    },
-    "zones": {
-      "value": [
-        "1",
-        "2",
-        "3"
-      ]
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-### Example 3: _Custompip_
+### Example 2: _Custompip_
 
 <details>
 
@@ -546,6 +245,58 @@ module azureFirewall 'br:bicep/modules/network.azure-firewall:1.0.0' = {
         "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
+    },
+    "vNetId": {
+      "value": "<vNetId>"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 3: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module azureFirewall 'br:bicep/modules/network.azure-firewall:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-nafmin'
+  params: {
+    // Required parameters
+    name: 'nafmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    vNetId: '<vNetId>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "nafmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     },
     "vNetId": {
       "value": "<vNetId>"
@@ -695,9 +446,9 @@ module azureFirewall 'br:bicep/modules/network.azure-firewall:1.0.0' = {
 </details>
 <p>
 
-### Example 6: _Using only defaults_
+### Example 6: _Using large parameter set_
 
-This instance deploys the module with the minimum set of required parameters.
+This instance deploys the module with most of its features enabled.
 
 
 <details>
@@ -706,13 +457,130 @@ This instance deploys the module with the minimum set of required parameters.
 
 ```bicep
 module azureFirewall 'br:bicep/modules/network.azure-firewall:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-nafmin'
+  name: '${uniqueString(deployment().name, location)}-test-nafmax'
   params: {
     // Required parameters
-    name: 'nafmin001'
+    name: 'nafmax001'
     // Non-required parameters
+    applicationRuleCollections: [
+      {
+        name: 'allow-app-rules'
+        properties: {
+          action: {
+            type: 'allow'
+          }
+          priority: 100
+          rules: [
+            {
+              fqdnTags: [
+                'AppServiceEnvironment'
+                'WindowsUpdate'
+              ]
+              name: 'allow-ase-tags'
+              protocols: [
+                {
+                  port: '80'
+                  protocolType: 'HTTP'
+                }
+                {
+                  port: '443'
+                  protocolType: 'HTTPS'
+                }
+              ]
+              sourceAddresses: [
+                '*'
+              ]
+            }
+            {
+              name: 'allow-ase-management'
+              protocols: [
+                {
+                  port: '80'
+                  protocolType: 'HTTP'
+                }
+                {
+                  port: '443'
+                  protocolType: 'HTTPS'
+                }
+              ]
+              sourceAddresses: [
+                '*'
+              ]
+              targetFqdns: [
+                'bing.com'
+              ]
+            }
+          ]
+        }
+      }
+    ]
+    diagnosticSettings: [
+      {
+        eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+        eventHubName: '<eventHubName>'
+        metricCategories: [
+          {
+            category: 'AllMetrics'
+          }
+        ]
+        name: 'customSetting'
+        storageAccountResourceId: '<storageAccountResourceId>'
+        workspaceResourceId: '<workspaceResourceId>'
+      }
+    ]
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    networkRuleCollections: [
+      {
+        name: 'allow-network-rules'
+        properties: {
+          action: {
+            type: 'allow'
+          }
+          priority: 100
+          rules: [
+            {
+              destinationAddresses: [
+                '*'
+              ]
+              destinationPorts: [
+                '12000'
+                '123'
+              ]
+              name: 'allow-ntp'
+              protocols: [
+                'Any'
+              ]
+              sourceAddresses: [
+                '*'
+              ]
+            }
+          ]
+        }
+      }
+    ]
+    publicIPResourceID: '<publicIPResourceID>'
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
     vNetId: '<vNetId>'
+    zones: [
+      '1'
+      '2'
+      '3'
+    ]
   }
 }
 ```
@@ -731,14 +599,449 @@ module azureFirewall 'br:bicep/modules/network.azure-firewall:1.0.0' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "nafmin001"
+      "value": "nafmax001"
     },
     // Non-required parameters
+    "applicationRuleCollections": {
+      "value": [
+        {
+          "name": "allow-app-rules",
+          "properties": {
+            "action": {
+              "type": "allow"
+            },
+            "priority": 100,
+            "rules": [
+              {
+                "fqdnTags": [
+                  "AppServiceEnvironment",
+                  "WindowsUpdate"
+                ],
+                "name": "allow-ase-tags",
+                "protocols": [
+                  {
+                    "port": "80",
+                    "protocolType": "HTTP"
+                  },
+                  {
+                    "port": "443",
+                    "protocolType": "HTTPS"
+                  }
+                ],
+                "sourceAddresses": [
+                  "*"
+                ]
+              },
+              {
+                "name": "allow-ase-management",
+                "protocols": [
+                  {
+                    "port": "80",
+                    "protocolType": "HTTP"
+                  },
+                  {
+                    "port": "443",
+                    "protocolType": "HTTPS"
+                  }
+                ],
+                "sourceAddresses": [
+                  "*"
+                ],
+                "targetFqdns": [
+                  "bing.com"
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "diagnosticSettings": {
+      "value": [
+        {
+          "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+          "eventHubName": "<eventHubName>",
+          "metricCategories": [
+            {
+              "category": "AllMetrics"
+            }
+          ],
+          "name": "customSetting",
+          "storageAccountResourceId": "<storageAccountResourceId>",
+          "workspaceResourceId": "<workspaceResourceId>"
+        }
+      ]
+    },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "networkRuleCollections": {
+      "value": [
+        {
+          "name": "allow-network-rules",
+          "properties": {
+            "action": {
+              "type": "allow"
+            },
+            "priority": 100,
+            "rules": [
+              {
+                "destinationAddresses": [
+                  "*"
+                ],
+                "destinationPorts": [
+                  "12000",
+                  "123"
+                ],
+                "name": "allow-ntp",
+                "protocols": [
+                  "Any"
+                ],
+                "sourceAddresses": [
+                  "*"
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "publicIPResourceID": {
+      "value": "<publicIPResourceID>"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    },
     "vNetId": {
       "value": "<vNetId>"
+    },
+    "zones": {
+      "value": [
+        "1",
+        "2",
+        "3"
+      ]
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 7: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module azureFirewall 'br:bicep/modules/network.azure-firewall:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-nafwaf'
+  params: {
+    // Required parameters
+    name: 'nafwaf001'
+    // Non-required parameters
+    applicationRuleCollections: [
+      {
+        name: 'allow-app-rules'
+        properties: {
+          action: {
+            type: 'allow'
+          }
+          priority: 100
+          rules: [
+            {
+              fqdnTags: [
+                'AppServiceEnvironment'
+                'WindowsUpdate'
+              ]
+              name: 'allow-ase-tags'
+              protocols: [
+                {
+                  port: '80'
+                  protocolType: 'HTTP'
+                }
+                {
+                  port: '443'
+                  protocolType: 'HTTPS'
+                }
+              ]
+              sourceAddresses: [
+                '*'
+              ]
+            }
+            {
+              name: 'allow-ase-management'
+              protocols: [
+                {
+                  port: '80'
+                  protocolType: 'HTTP'
+                }
+                {
+                  port: '443'
+                  protocolType: 'HTTPS'
+                }
+              ]
+              sourceAddresses: [
+                '*'
+              ]
+              targetFqdns: [
+                'bing.com'
+              ]
+            }
+          ]
+        }
+      }
+    ]
+    diagnosticSettings: [
+      {
+        eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+        eventHubName: '<eventHubName>'
+        metricCategories: [
+          {
+            category: 'AllMetrics'
+          }
+        ]
+        name: 'customSetting'
+        storageAccountResourceId: '<storageAccountResourceId>'
+        workspaceResourceId: '<workspaceResourceId>'
+      }
+    ]
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    networkRuleCollections: [
+      {
+        name: 'allow-network-rules'
+        properties: {
+          action: {
+            type: 'allow'
+          }
+          priority: 100
+          rules: [
+            {
+              destinationAddresses: [
+                '*'
+              ]
+              destinationPorts: [
+                '12000'
+                '123'
+              ]
+              name: 'allow-ntp'
+              protocols: [
+                'Any'
+              ]
+              sourceAddresses: [
+                '*'
+              ]
+            }
+          ]
+        }
+      }
+    ]
+    publicIPResourceID: '<publicIPResourceID>'
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+    vNetId: '<vNetId>'
+    zones: [
+      '1'
+      '2'
+      '3'
+    ]
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "nafwaf001"
+    },
+    // Non-required parameters
+    "applicationRuleCollections": {
+      "value": [
+        {
+          "name": "allow-app-rules",
+          "properties": {
+            "action": {
+              "type": "allow"
+            },
+            "priority": 100,
+            "rules": [
+              {
+                "fqdnTags": [
+                  "AppServiceEnvironment",
+                  "WindowsUpdate"
+                ],
+                "name": "allow-ase-tags",
+                "protocols": [
+                  {
+                    "port": "80",
+                    "protocolType": "HTTP"
+                  },
+                  {
+                    "port": "443",
+                    "protocolType": "HTTPS"
+                  }
+                ],
+                "sourceAddresses": [
+                  "*"
+                ]
+              },
+              {
+                "name": "allow-ase-management",
+                "protocols": [
+                  {
+                    "port": "80",
+                    "protocolType": "HTTP"
+                  },
+                  {
+                    "port": "443",
+                    "protocolType": "HTTPS"
+                  }
+                ],
+                "sourceAddresses": [
+                  "*"
+                ],
+                "targetFqdns": [
+                  "bing.com"
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "diagnosticSettings": {
+      "value": [
+        {
+          "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+          "eventHubName": "<eventHubName>",
+          "metricCategories": [
+            {
+              "category": "AllMetrics"
+            }
+          ],
+          "name": "customSetting",
+          "storageAccountResourceId": "<storageAccountResourceId>",
+          "workspaceResourceId": "<workspaceResourceId>"
+        }
+      ]
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "networkRuleCollections": {
+      "value": [
+        {
+          "name": "allow-network-rules",
+          "properties": {
+            "action": {
+              "type": "allow"
+            },
+            "priority": 100,
+            "rules": [
+              {
+                "destinationAddresses": [
+                  "*"
+                ],
+                "destinationPorts": [
+                  "12000",
+                  "123"
+                ],
+                "name": "allow-ntp",
+                "protocols": [
+                  "Any"
+                ],
+                "sourceAddresses": [
+                  "*"
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "publicIPResourceID": {
+      "value": "<publicIPResourceID>"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    },
+    "vNetId": {
+      "value": "<vNetId>"
+    },
+    "zones": {
+      "value": [
+        "1",
+        "2",
+        "3"
+      ]
     }
   }
 }
@@ -774,14 +1077,13 @@ module azureFirewall 'br:bicep/modules/network.azure-firewall:1.0.0' = {
 | [`diagnosticSettings`](#parameter-diagnosticsettings) | array | The diagnostic settings of the service. |
 | [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
 | [`firewallPolicyId`](#parameter-firewallpolicyid) | string | Resource ID of the Firewall Policy that should be attached. |
-| [`isCreateDefaultPublicIP`](#parameter-iscreatedefaultpublicip) | bool | Specifies if a Public IP should be created by default if one is not provided. |
 | [`location`](#parameter-location) | string | Location for all resources. |
 | [`lock`](#parameter-lock) | object | The lock settings of the service. |
 | [`managementIPAddressObject`](#parameter-managementipaddressobject) | object | Specifies the properties of the Management Public IP to create and be used by Azure Firewall. If it's not provided and managementIPResourceID is empty, a '-mip' suffix will be appended to the Firewall's name. |
 | [`managementIPResourceID`](#parameter-managementipresourceid) | string | The Management Public IP resource ID to associate to the AzureFirewallManagementSubnet. If empty, then the Management Public IP that is created as part of this module will be applied to the AzureFirewallManagementSubnet. |
 | [`natRuleCollections`](#parameter-natrulecollections) | array | Collection of NAT rule collections used by Azure Firewall. |
 | [`networkRuleCollections`](#parameter-networkrulecollections) | array | Collection of network rule collections used by Azure Firewall. |
-| [`publicIPAddressObject`](#parameter-publicipaddressobject) | object | Specifies the properties of the Public IP to create and be used by Azure Firewall. If it's not provided and publicIPResourceID is empty, a '-pip' suffix will be appended to the Firewall's name. |
+| [`publicIPAddressObject`](#parameter-publicipaddressobject) | object | Specifies the properties of the Public IP to create and be used by the Firewall, if no existing public IP was provided. |
 | [`publicIPResourceID`](#parameter-publicipresourceid) | string | The Public IP resource ID to associate to the AzureFirewallSubnet. If empty, then the Public IP that is created as part of this module will be applied to the AzureFirewallSubnet. |
 | [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | [`tags`](#parameter-tags) | object | Tags of the Azure Firewall resource. |
@@ -808,7 +1110,14 @@ Tier of an Azure Firewall.
 - Required: No
 - Type: string
 - Default: `'Standard'`
-- Allowed: `[Basic, Premium, Standard]`
+- Allowed:
+  ```Bicep
+  [
+    'Basic'
+    'Premium'
+    'Standard'
+  ]
+  ```
 
 ### Parameter: `diagnosticSettings`
 
@@ -944,14 +1253,7 @@ Resource ID of the Firewall Policy that should be attached.
 IP addresses associated with AzureFirewall. Required if `virtualHubId` is supplied.
 - Required: No
 - Type: object
-- Default: `{object}`
-
-### Parameter: `isCreateDefaultPublicIP`
-
-Specifies if a Public IP should be created by default if one is not provided.
-- Required: No
-- Type: bool
-- Default: `True`
+- Default: `{}`
 
 ### Parameter: `location`
 
@@ -992,7 +1294,7 @@ Optional. Specify the name of lock.
 Specifies the properties of the Management Public IP to create and be used by Azure Firewall. If it's not provided and managementIPResourceID is empty, a '-mip' suffix will be appended to the Firewall's name.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `managementIPResourceID`
 
@@ -1023,10 +1325,15 @@ Collection of network rule collections used by Azure Firewall.
 
 ### Parameter: `publicIPAddressObject`
 
-Specifies the properties of the Public IP to create and be used by Azure Firewall. If it's not provided and publicIPResourceID is empty, a '-pip' suffix will be appended to the Firewall's name.
+Specifies the properties of the Public IP to create and be used by the Firewall, if no existing public IP was provided.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default:
+  ```Bicep
+  {
+      name: '[format(\'{0}-pip\' parameters(\'name\'))]'
+  }
+  ```
 
 ### Parameter: `publicIPResourceID`
 
@@ -1108,7 +1415,6 @@ Required. The name of the role to assign. If it cannot be found you can specify 
 Tags of the Azure Firewall resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `threatIntelMode`
 
@@ -1116,7 +1422,14 @@ The operation mode for Threat Intel.
 - Required: No
 - Type: string
 - Default: `'Deny'`
-- Allowed: `[Alert, Deny, Off]`
+- Allowed:
+  ```Bicep
+  [
+    'Alert'
+    'Deny'
+    'Off'
+  ]
+  ```
 
 ### Parameter: `virtualHubId`
 
@@ -1137,7 +1450,14 @@ Shared services Virtual Network resource ID. The virtual network ID containing A
 Zone numbers e.g. 1,2,3.
 - Required: No
 - Type: array
-- Default: `[1, 2, 3]`
+- Default:
+  ```Bicep
+  [
+    '1'
+    '2'
+    '3'
+  ]
+  ```
 
 
 ## Outputs

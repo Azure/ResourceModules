@@ -47,7 +47,13 @@ Specifies whether redis clients can connect using TLS-encrypted or plaintext red
 - Required: No
 - Type: string
 - Default: `'Encrypted'`
-- Allowed: `[Encrypted, Plaintext]`
+- Allowed:
+  ```Bicep
+  [
+    'Encrypted'
+    'Plaintext'
+  ]
+  ```
 
 ### Parameter: `clusteringPolicy`
 
@@ -55,7 +61,13 @@ Specifies the clustering policy to enable at creation time of the Redis Cache En
 - Required: No
 - Type: string
 - Default: `'OSSCluster'`
-- Allowed: `[EnterpriseCluster, OSSCluster]`
+- Allowed:
+  ```Bicep
+  [
+    'EnterpriseCluster'
+    'OSSCluster'
+  ]
+  ```
 
 ### Parameter: `enableDefaultTelemetry`
 
@@ -70,14 +82,26 @@ Redis eviction policy - default is VolatileLRU.
 - Required: No
 - Type: string
 - Default: `'VolatileLRU'`
-- Allowed: `[AllKeysLFU, AllKeysLRU, AllKeysRandom, NoEviction, VolatileLFU, VolatileLRU, VolatileRandom, VolatileTTL]`
+- Allowed:
+  ```Bicep
+  [
+    'AllKeysLFU'
+    'AllKeysLRU'
+    'AllKeysRandom'
+    'NoEviction'
+    'VolatileLFU'
+    'VolatileLRU'
+    'VolatileRandom'
+    'VolatileTTL'
+  ]
+  ```
 
 ### Parameter: `geoReplication`
 
 Optional set of properties to configure geo replication for this database. Geo replication prerequisites must be met. See "https://learn.microsoft.com/en-us/azure/azure-cache-for-redis/cache-how-to-active-geo-replication#active-geo-replication-prerequisites" for more information.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `location`
 
@@ -106,7 +130,14 @@ Sets the frequency at which data is written to disk. Required if AOF persistence
 - Required: No
 - Type: string
 - Default: `''`
-- Allowed: `['', 1s, always]`
+- Allowed:
+  ```Bicep
+  [
+    ''
+    '1s'
+    'always'
+  ]
+  ```
 
 ### Parameter: `persistenceRdbEnabled`
 
@@ -121,7 +152,15 @@ Sets the frequency at which a snapshot of the database is created. Required if R
 - Required: No
 - Type: string
 - Default: `''`
-- Allowed: `['', 12h, 1h, 6h]`
+- Allowed:
+  ```Bicep
+  [
+    ''
+    '12h'
+    '1h'
+    '6h'
+  ]
+  ```
 
 ### Parameter: `port`
 

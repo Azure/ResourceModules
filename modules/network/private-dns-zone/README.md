@@ -37,10 +37,59 @@ The following section provides usage examples for the module, which were used to
 
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/network.private-dns-zone:1.0.0`.
 
-- [Using large parameter set](#example-1-using-large-parameter-set)
-- [Using only defaults](#example-2-using-only-defaults)
+- [Using only defaults](#example-1-using-only-defaults)
+- [Using large parameter set](#example-2-using-large-parameter-set)
+- [WAF-aligned](#example-3-waf-aligned)
 
-### Example 1: _Using large parameter set_
+### Example 1: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module privateDnsZone 'br:bicep/modules/network.private-dns-zone:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-npdzmin'
+  params: {
+    // Required parameters
+    name: 'npdzmin001.com'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "npdzmin001.com"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 2: _Using large parameter set_
 
 This instance deploys the module with most of its features enabled.
 
@@ -51,10 +100,10 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module privateDnsZone 'br:bicep/modules/network.private-dns-zone:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-npdzcom'
+  name: '${uniqueString(deployment().name, location)}-test-npdzmax'
   params: {
     // Required parameters
-    name: 'npdzcom001.com'
+    name: 'npdzmax001.com'
     // Non-required parameters
     a: [
       {
@@ -242,7 +291,7 @@ module privateDnsZone 'br:bicep/modules/network.private-dns-zone:1.0.0' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "npdzcom001.com"
+      "value": "npdzmax001.com"
     },
     // Non-required parameters
     "a": {
@@ -446,9 +495,9 @@ module privateDnsZone 'br:bicep/modules/network.private-dns-zone:1.0.0' = {
 </details>
 <p>
 
-### Example 2: _Using only defaults_
+### Example 3: _WAF-aligned_
 
-This instance deploys the module with the minimum set of required parameters.
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
 
 
 <details>
@@ -457,12 +506,179 @@ This instance deploys the module with the minimum set of required parameters.
 
 ```bicep
 module privateDnsZone 'br:bicep/modules/network.private-dns-zone:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-npdzmin'
+  name: '${uniqueString(deployment().name, location)}-test-npdzwaf'
   params: {
     // Required parameters
-    name: 'npdzmin001.com'
+    name: 'npdzwaf001.com'
     // Non-required parameters
+    a: [
+      {
+        aRecords: [
+          {
+            ipv4Address: '10.240.4.4'
+          }
+        ]
+        name: 'A_10.240.4.4'
+        roleAssignments: [
+          {
+            principalId: '<principalId>'
+            principalType: 'ServicePrincipal'
+            roleDefinitionIdOrName: 'Reader'
+          }
+        ]
+        ttl: 3600
+      }
+    ]
+    aaaa: [
+      {
+        aaaaRecords: [
+          {
+            ipv6Address: '2001:0db8:85a3:0000:0000:8a2e:0370:7334'
+          }
+        ]
+        name: 'AAAA_2001_0db8_85a3_0000_0000_8a2e_0370_7334'
+        ttl: 3600
+      }
+    ]
+    cname: [
+      {
+        cnameRecord: {
+          cname: 'test'
+        }
+        name: 'CNAME_test'
+        roleAssignments: [
+          {
+            principalId: '<principalId>'
+            principalType: 'ServicePrincipal'
+            roleDefinitionIdOrName: 'Reader'
+          }
+        ]
+        ttl: 3600
+      }
+    ]
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    mx: [
+      {
+        mxRecords: [
+          {
+            exchange: 'contoso.com'
+            preference: 100
+          }
+        ]
+        name: 'MX_contoso'
+        roleAssignments: [
+          {
+            principalId: '<principalId>'
+            principalType: 'ServicePrincipal'
+            roleDefinitionIdOrName: 'Reader'
+          }
+        ]
+        ttl: 3600
+      }
+    ]
+    ptr: [
+      {
+        name: 'PTR_contoso'
+        ptrRecords: [
+          {
+            ptrdname: 'contoso.com'
+          }
+        ]
+        roleAssignments: [
+          {
+            principalId: '<principalId>'
+            principalType: 'ServicePrincipal'
+            roleDefinitionIdOrName: 'Reader'
+          }
+        ]
+        ttl: 3600
+      }
+    ]
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    soa: [
+      {
+        name: '@'
+        roleAssignments: [
+          {
+            principalId: '<principalId>'
+            principalType: 'ServicePrincipal'
+            roleDefinitionIdOrName: 'Reader'
+          }
+        ]
+        soaRecord: {
+          email: 'azureprivatedns-host.microsoft.com'
+          expireTime: 2419200
+          host: 'azureprivatedns.net'
+          minimumTtl: 10
+          refreshTime: 3600
+          retryTime: 300
+          serialNumber: '1'
+        }
+        ttl: 3600
+      }
+    ]
+    srv: [
+      {
+        name: 'SRV_contoso'
+        roleAssignments: [
+          {
+            principalId: '<principalId>'
+            principalType: 'ServicePrincipal'
+            roleDefinitionIdOrName: 'Reader'
+          }
+        ]
+        srvRecords: [
+          {
+            port: 9332
+            priority: 0
+            target: 'test.contoso.com'
+            weight: 0
+          }
+        ]
+        ttl: 3600
+      }
+    ]
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+    txt: [
+      {
+        name: 'TXT_test'
+        roleAssignments: [
+          {
+            principalId: '<principalId>'
+            principalType: 'ServicePrincipal'
+            roleDefinitionIdOrName: 'Reader'
+          }
+        ]
+        ttl: 3600
+        txtRecords: [
+          {
+            value: [
+              'test'
+            ]
+          }
+        ]
+      }
+    ]
+    virtualNetworkLinks: [
+      {
+        registrationEnabled: true
+        virtualNetworkResourceId: '<virtualNetworkResourceId>'
+      }
+    ]
   }
 }
 ```
@@ -481,11 +697,202 @@ module privateDnsZone 'br:bicep/modules/network.private-dns-zone:1.0.0' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "npdzmin001.com"
+      "value": "npdzwaf001.com"
     },
     // Non-required parameters
+    "a": {
+      "value": [
+        {
+          "aRecords": [
+            {
+              "ipv4Address": "10.240.4.4"
+            }
+          ],
+          "name": "A_10.240.4.4",
+          "roleAssignments": [
+            {
+              "principalId": "<principalId>",
+              "principalType": "ServicePrincipal",
+              "roleDefinitionIdOrName": "Reader"
+            }
+          ],
+          "ttl": 3600
+        }
+      ]
+    },
+    "aaaa": {
+      "value": [
+        {
+          "aaaaRecords": [
+            {
+              "ipv6Address": "2001:0db8:85a3:0000:0000:8a2e:0370:7334"
+            }
+          ],
+          "name": "AAAA_2001_0db8_85a3_0000_0000_8a2e_0370_7334",
+          "ttl": 3600
+        }
+      ]
+    },
+    "cname": {
+      "value": [
+        {
+          "cnameRecord": {
+            "cname": "test"
+          },
+          "name": "CNAME_test",
+          "roleAssignments": [
+            {
+              "principalId": "<principalId>",
+              "principalType": "ServicePrincipal",
+              "roleDefinitionIdOrName": "Reader"
+            }
+          ],
+          "ttl": 3600
+        }
+      ]
+    },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "mx": {
+      "value": [
+        {
+          "mxRecords": [
+            {
+              "exchange": "contoso.com",
+              "preference": 100
+            }
+          ],
+          "name": "MX_contoso",
+          "roleAssignments": [
+            {
+              "principalId": "<principalId>",
+              "principalType": "ServicePrincipal",
+              "roleDefinitionIdOrName": "Reader"
+            }
+          ],
+          "ttl": 3600
+        }
+      ]
+    },
+    "ptr": {
+      "value": [
+        {
+          "name": "PTR_contoso",
+          "ptrRecords": [
+            {
+              "ptrdname": "contoso.com"
+            }
+          ],
+          "roleAssignments": [
+            {
+              "principalId": "<principalId>",
+              "principalType": "ServicePrincipal",
+              "roleDefinitionIdOrName": "Reader"
+            }
+          ],
+          "ttl": 3600
+        }
+      ]
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "soa": {
+      "value": [
+        {
+          "name": "@",
+          "roleAssignments": [
+            {
+              "principalId": "<principalId>",
+              "principalType": "ServicePrincipal",
+              "roleDefinitionIdOrName": "Reader"
+            }
+          ],
+          "soaRecord": {
+            "email": "azureprivatedns-host.microsoft.com",
+            "expireTime": 2419200,
+            "host": "azureprivatedns.net",
+            "minimumTtl": 10,
+            "refreshTime": 3600,
+            "retryTime": 300,
+            "serialNumber": "1"
+          },
+          "ttl": 3600
+        }
+      ]
+    },
+    "srv": {
+      "value": [
+        {
+          "name": "SRV_contoso",
+          "roleAssignments": [
+            {
+              "principalId": "<principalId>",
+              "principalType": "ServicePrincipal",
+              "roleDefinitionIdOrName": "Reader"
+            }
+          ],
+          "srvRecords": [
+            {
+              "port": 9332,
+              "priority": 0,
+              "target": "test.contoso.com",
+              "weight": 0
+            }
+          ],
+          "ttl": 3600
+        }
+      ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    },
+    "txt": {
+      "value": [
+        {
+          "name": "TXT_test",
+          "roleAssignments": [
+            {
+              "principalId": "<principalId>",
+              "principalType": "ServicePrincipal",
+              "roleDefinitionIdOrName": "Reader"
+            }
+          ],
+          "ttl": 3600,
+          "txtRecords": [
+            {
+              "value": [
+                "test"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "virtualNetworkLinks": {
+      "value": [
+        {
+          "registrationEnabled": true,
+          "virtualNetworkResourceId": "<virtualNetworkResourceId>"
+        }
+      ]
     }
   }
 }
@@ -691,7 +1098,6 @@ Array of SRV records.
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `txt`
 

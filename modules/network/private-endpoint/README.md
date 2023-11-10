@@ -29,154 +29,11 @@ The following section provides usage examples for the module, which were used to
 
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/network.private-endpoint:1.0.0`.
 
-- [Using large parameter set](#example-1-using-large-parameter-set)
-- [Using only defaults](#example-2-using-only-defaults)
+- [Using only defaults](#example-1-using-only-defaults)
+- [Using large parameter set](#example-2-using-large-parameter-set)
+- [WAF-aligned](#example-3-waf-aligned)
 
-### Example 1: _Using large parameter set_
-
-This instance deploys the module with most of its features enabled.
-
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module privateEndpoint 'br:bicep/modules/network.private-endpoint:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-npecom'
-  params: {
-    // Required parameters
-    groupIds: [
-      'vault'
-    ]
-    name: 'npecom001'
-    serviceResourceId: '<serviceResourceId>'
-    subnetResourceId: '<subnetResourceId>'
-    // Non-required parameters
-    applicationSecurityGroupResourceIds: [
-      '<applicationSecurityGroupResourceId>'
-    ]
-    customNetworkInterfaceName: 'npecom001nic'
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    ipConfigurations: [
-      {
-        name: 'myIPconfig'
-        properties: {
-          groupId: 'vault'
-          memberName: 'default'
-          privateIPAddress: '10.0.0.10'
-        }
-      }
-    ]
-    lock: {
-      kind: 'CanNotDelete'
-      name: 'myCustomLockName'
-    }
-    privateDnsZoneResourceIds: [
-      '<privateDNSZoneResourceId>'
-    ]
-    roleAssignments: [
-      {
-        principalId: '<principalId>'
-        principalType: 'ServicePrincipal'
-        roleDefinitionIdOrName: 'Reader'
-      }
-    ]
-    tags: {
-      Environment: 'Non-Prod'
-      'hidden-title': 'This is visible in the resource name'
-      Role: 'DeploymentValidation'
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "groupIds": {
-      "value": [
-        "vault"
-      ]
-    },
-    "name": {
-      "value": "npecom001"
-    },
-    "serviceResourceId": {
-      "value": "<serviceResourceId>"
-    },
-    "subnetResourceId": {
-      "value": "<subnetResourceId>"
-    },
-    // Non-required parameters
-    "applicationSecurityGroupResourceIds": {
-      "value": [
-        "<applicationSecurityGroupResourceId>"
-      ]
-    },
-    "customNetworkInterfaceName": {
-      "value": "npecom001nic"
-    },
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
-    "ipConfigurations": {
-      "value": [
-        {
-          "name": "myIPconfig",
-          "properties": {
-            "groupId": "vault",
-            "memberName": "default",
-            "privateIPAddress": "10.0.0.10"
-          }
-        }
-      ]
-    },
-    "lock": {
-      "value": {
-        "kind": "CanNotDelete",
-        "name": "myCustomLockName"
-      }
-    },
-    "privateDnsZoneResourceIds": {
-      "value": [
-        "<privateDNSZoneResourceId>"
-      ]
-    },
-    "roleAssignments": {
-      "value": [
-        {
-          "principalId": "<principalId>",
-          "principalType": "ServicePrincipal",
-          "roleDefinitionIdOrName": "Reader"
-        }
-      ]
-    },
-    "tags": {
-      "value": {
-        "Environment": "Non-Prod",
-        "hidden-title": "This is visible in the resource name",
-        "Role": "DeploymentValidation"
-      }
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-### Example 2: _Using only defaults_
+### Example 1: _Using only defaults_
 
 This instance deploys the module with the minimum set of required parameters.
 
@@ -240,6 +97,330 @@ module privateEndpoint 'br:bicep/modules/network.private-endpoint:1.0.0' = {
 </details>
 <p>
 
+### Example 2: _Using large parameter set_
+
+This instance deploys the module with most of its features enabled.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module privateEndpoint 'br:bicep/modules/network.private-endpoint:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-npemax'
+  params: {
+    // Required parameters
+    groupIds: [
+      'vault'
+    ]
+    name: 'npemax001'
+    serviceResourceId: '<serviceResourceId>'
+    subnetResourceId: '<subnetResourceId>'
+    // Non-required parameters
+    applicationSecurityGroupResourceIds: [
+      '<applicationSecurityGroupResourceId>'
+    ]
+    customDnsConfigs: [
+      {
+        fqdn: 'abc.keyvault.com'
+        ipAddresses: [
+          '10.0.0.10'
+        ]
+      }
+    ]
+    customNetworkInterfaceName: 'npemax001nic'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    ipConfigurations: [
+      {
+        name: 'myIPconfig'
+        properties: {
+          groupId: 'vault'
+          memberName: 'default'
+          privateIPAddress: '10.0.0.10'
+        }
+      }
+    ]
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    privateDnsZoneResourceIds: [
+      '<privateDNSZoneResourceId>'
+    ]
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "groupIds": {
+      "value": [
+        "vault"
+      ]
+    },
+    "name": {
+      "value": "npemax001"
+    },
+    "serviceResourceId": {
+      "value": "<serviceResourceId>"
+    },
+    "subnetResourceId": {
+      "value": "<subnetResourceId>"
+    },
+    // Non-required parameters
+    "applicationSecurityGroupResourceIds": {
+      "value": [
+        "<applicationSecurityGroupResourceId>"
+      ]
+    },
+    "customDnsConfigs": {
+      "value": [
+        {
+          "fqdn": "abc.keyvault.com",
+          "ipAddresses": [
+            "10.0.0.10"
+          ]
+        }
+      ]
+    },
+    "customNetworkInterfaceName": {
+      "value": "npemax001nic"
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "ipConfigurations": {
+      "value": [
+        {
+          "name": "myIPconfig",
+          "properties": {
+            "groupId": "vault",
+            "memberName": "default",
+            "privateIPAddress": "10.0.0.10"
+          }
+        }
+      ]
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "privateDnsZoneResourceIds": {
+      "value": [
+        "<privateDNSZoneResourceId>"
+      ]
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 3: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module privateEndpoint 'br:bicep/modules/network.private-endpoint:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-npewaf'
+  params: {
+    // Required parameters
+    groupIds: [
+      'vault'
+    ]
+    name: 'npewaf001'
+    serviceResourceId: '<serviceResourceId>'
+    subnetResourceId: '<subnetResourceId>'
+    // Non-required parameters
+    applicationSecurityGroupResourceIds: [
+      '<applicationSecurityGroupResourceId>'
+    ]
+    customDnsConfigs: [
+      {
+        fqdn: 'abc.keyvault.com'
+        ipAddresses: [
+          '10.0.0.10'
+        ]
+      }
+    ]
+    customNetworkInterfaceName: 'npewaf001nic'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    ipConfigurations: [
+      {
+        name: 'myIPconfig'
+        properties: {
+          groupId: 'vault'
+          memberName: 'default'
+          privateIPAddress: '10.0.0.10'
+        }
+      }
+    ]
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    privateDnsZoneResourceIds: [
+      '<privateDNSZoneResourceId>'
+    ]
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "groupIds": {
+      "value": [
+        "vault"
+      ]
+    },
+    "name": {
+      "value": "npewaf001"
+    },
+    "serviceResourceId": {
+      "value": "<serviceResourceId>"
+    },
+    "subnetResourceId": {
+      "value": "<subnetResourceId>"
+    },
+    // Non-required parameters
+    "applicationSecurityGroupResourceIds": {
+      "value": [
+        "<applicationSecurityGroupResourceId>"
+      ]
+    },
+    "customDnsConfigs": {
+      "value": [
+        {
+          "fqdn": "abc.keyvault.com",
+          "ipAddresses": [
+            "10.0.0.10"
+          ]
+        }
+      ]
+    },
+    "customNetworkInterfaceName": {
+      "value": "npewaf001nic"
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "ipConfigurations": {
+      "value": [
+        {
+          "name": "myIPconfig",
+          "properties": {
+            "groupId": "vault",
+            "memberName": "default",
+            "privateIPAddress": "10.0.0.10"
+          }
+        }
+      ]
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "privateDnsZoneResourceIds": {
+      "value": [
+        "<privateDNSZoneResourceId>"
+      ]
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
 
 ## Parameters
 
@@ -281,6 +462,26 @@ Custom DNS configurations.
 - Required: No
 - Type: array
 
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`fqdn`](#parameter-customdnsconfigsfqdn) | Yes | string | Required. Fqdn that resolves to private endpoint ip address. |
+| [`ipAddresses`](#parameter-customdnsconfigsipaddresses) | Yes | array | Required. A list of private ip addresses of the private endpoint. |
+
+### Parameter: `customDnsConfigs.fqdn`
+
+Required. Fqdn that resolves to private endpoint ip address.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `customDnsConfigs.ipAddresses`
+
+Required. A list of private ip addresses of the private endpoint.
+
+- Required: Yes
+- Type: array
+
 ### Parameter: `customNetworkInterfaceName`
 
 The custom name of the network interface attached to the private endpoint.
@@ -305,6 +506,54 @@ Subtype(s) of the connection to be created. The allowed values depend on the typ
 A list of IP configurations of the private endpoint. This will be used to map to the First Party Service endpoints.
 - Required: No
 - Type: array
+
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`name`](#parameter-ipconfigurationsname) | Yes | string | Required. The name of the resource that is unique within a resource group. |
+| [`properties`](#parameter-ipconfigurationsproperties) | Yes | object | Required. Properties of private endpoint IP configurations. |
+
+### Parameter: `ipConfigurations.name`
+
+Required. The name of the resource that is unique within a resource group.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `ipConfigurations.properties`
+
+Required. Properties of private endpoint IP configurations.
+
+- Required: Yes
+- Type: object
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`groupId`](#parameter-ipconfigurationspropertiesgroupid) | Yes | string | Required. The ID of a group obtained from the remote resource that this private endpoint should connect to. |
+| [`memberName`](#parameter-ipconfigurationspropertiesmembername) | Yes | string | Required. The member name of a group obtained from the remote resource that this private endpoint should connect to. |
+| [`privateIPAddress`](#parameter-ipconfigurationspropertiesprivateipaddress) | Yes | string | Required. A private ip address obtained from the private endpoint's subnet. |
+
+### Parameter: `ipConfigurations.properties.groupId`
+
+Required. The ID of a group obtained from the remote resource that this private endpoint should connect to.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `ipConfigurations.properties.memberName`
+
+Required. The member name of a group obtained from the remote resource that this private endpoint should connect to.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `ipConfigurations.properties.privateIPAddress`
+
+Required. A private ip address obtained from the private endpoint's subnet.
+
+- Required: Yes
+- Type: string
+
 
 ### Parameter: `location`
 

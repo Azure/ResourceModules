@@ -1,11 +1,12 @@
 {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "languageVersion": "2.0",
   "contentVersion": "1.0.0.0",
   "metadata": {
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "4180084937723506143"
+      "templateHash": "12165020180713564819"
     },
     "name": "DevTest Lab Artifact Sources",
     "description": "This module deploys a DevTest Lab Artifact Source.\r\n\r\nAn artifact source allows you to create custom artifacts for the VMs in the lab, or use Azure Resource Manager templates to create a custom test environment. You must add a private Git repository for the artifacts or Resource Manager templates that your team creates. The repository can be hosted on GitHub or on Azure DevOps Services.",
@@ -26,7 +27,7 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Tags of the resource."
       }
@@ -104,8 +105,8 @@
       }
     }
   },
-  "resources": [
-    {
+  "resources": {
+    "defaultTelemetry": {
       "condition": "[parameters('enableDefaultTelemetry')]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2021-04-01",
@@ -119,7 +120,13 @@
         }
       }
     },
-    {
+    "lab": {
+      "existing": true,
+      "type": "Microsoft.DevTestLab/labs",
+      "apiVersion": "2018-09-15",
+      "name": "[parameters('labName')]"
+    },
+    "artifactsource": {
       "type": "Microsoft.DevTestLab/labs/artifactsources",
       "apiVersion": "2018-09-15",
       "name": "[format('{0}/{1}', parameters('labName'), parameters('name'))]",
@@ -133,9 +140,12 @@
         "sourceType": "[if(not(empty(parameters('sourceType'))), parameters('sourceType'), null())]",
         "status": "[parameters('status')]",
         "uri": "[parameters('uri')]"
-      }
+      },
+      "dependsOn": [
+        "lab"
+      ]
     }
-  ],
+  },
   "outputs": {
     "name": {
       "type": "string",

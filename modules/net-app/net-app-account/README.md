@@ -750,7 +750,6 @@ Required if domainName is specified. NetBIOS name of the SMB server. A computer 
 Tags for all resources.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 
 ## Outputs

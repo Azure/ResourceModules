@@ -29,6 +29,7 @@ The following section provides usage examples for the module, which were used to
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/logic.workflow:1.0.0`.
 
 - [Using large parameter set](#example-1-using-large-parameter-set)
+- [WAF-aligned](#example-2-waf-aligned)
 
 ### Example 1: _Using large parameter set_
 
@@ -41,10 +42,10 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module workflow 'br:bicep/modules/logic.workflow:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-lwcom'
+  name: '${uniqueString(deployment().name, location)}-test-lwmax'
   params: {
     // Required parameters
-    name: 'lwcom001'
+    name: 'lwmax001'
     // Non-required parameters
     diagnosticSettings: [
       {
@@ -131,7 +132,201 @@ module workflow 'br:bicep/modules/logic.workflow:1.0.0' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "lwcom001"
+      "value": "lwmax001"
+    },
+    // Non-required parameters
+    "diagnosticSettings": {
+      "value": [
+        {
+          "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+          "eventHubName": "<eventHubName>",
+          "metricCategories": [
+            {
+              "category": "AllMetrics"
+            }
+          ],
+          "name": "customSetting",
+          "storageAccountResourceId": "<storageAccountResourceId>",
+          "workspaceResourceId": "<workspaceResourceId>"
+        }
+      ]
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "managedIdentities": {
+      "value": {
+        "userAssignedResourcesIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    },
+    "workflowActions": {
+      "value": {
+        "HTTP": {
+          "inputs": {
+            "body": {
+              "BeginPeakTime": "<BeginPeakTime>",
+              "EndPeakTime": "<EndPeakTime>",
+              "HostPoolName": "<HostPoolName>",
+              "LAWorkspaceName": "<LAWorkspaceName>",
+              "LimitSecondsToForceLogOffUser": "<LimitSecondsToForceLogOffUser>",
+              "LogOffMessageBody": "<LogOffMessageBody>",
+              "LogOffMessageTitle": "<LogOffMessageTitle>",
+              "MinimumNumberOfRDSH": 1,
+              "ResourceGroupName": "<ResourceGroupName>",
+              "SessionThresholdPerCPU": 1,
+              "UtcOffset": "<UtcOffset>"
+            },
+            "method": "POST",
+            "uri": "https://testStringForValidation.com"
+          },
+          "type": "Http"
+        }
+      }
+    },
+    "workflowTriggers": {
+      "value": {
+        "Recurrence": {
+          "recurrence": {
+            "frequency": "Minute",
+            "interval": 15
+          },
+          "type": "Recurrence"
+        }
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 2: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module workflow 'br:bicep/modules/logic.workflow:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-lwwaf'
+  params: {
+    // Required parameters
+    name: 'lwwaf001'
+    // Non-required parameters
+    diagnosticSettings: [
+      {
+        eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+        eventHubName: '<eventHubName>'
+        metricCategories: [
+          {
+            category: 'AllMetrics'
+          }
+        ]
+        name: 'customSetting'
+        storageAccountResourceId: '<storageAccountResourceId>'
+        workspaceResourceId: '<workspaceResourceId>'
+      }
+    ]
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    managedIdentities: {
+      userAssignedResourcesIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+    workflowActions: {
+      HTTP: {
+        inputs: {
+          body: {
+            BeginPeakTime: '<BeginPeakTime>'
+            EndPeakTime: '<EndPeakTime>'
+            HostPoolName: '<HostPoolName>'
+            LAWorkspaceName: '<LAWorkspaceName>'
+            LimitSecondsToForceLogOffUser: '<LimitSecondsToForceLogOffUser>'
+            LogOffMessageBody: '<LogOffMessageBody>'
+            LogOffMessageTitle: '<LogOffMessageTitle>'
+            MinimumNumberOfRDSH: 1
+            ResourceGroupName: '<ResourceGroupName>'
+            SessionThresholdPerCPU: 1
+            UtcOffset: '<UtcOffset>'
+          }
+          method: 'POST'
+          uri: 'https://testStringForValidation.com'
+        }
+        type: 'Http'
+      }
+    }
+    workflowTriggers: {
+      Recurrence: {
+        recurrence: {
+          frequency: 'Minute'
+          interval: 15
+        }
+        type: 'Recurrence'
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "lwwaf001"
     },
     // Non-required parameters
     "diagnosticSettings": {
@@ -265,28 +460,28 @@ module workflow 'br:bicep/modules/logic.workflow:1.0.0' = {
 The access control configuration for workflow actions.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `connectorEndpointsConfiguration`
 
 The endpoints configuration:  Access endpoint and outgoing IP addresses for the connector.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `contentsAccessControlConfiguration`
 
 The access control configuration for accessing workflow run contents.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `definitionParameters`
 
 Parameters for the definition template.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `diagnosticSettings`
 
@@ -415,7 +610,7 @@ Enable telemetry via a Globally Unique Identifier (GUID).
 The integration account.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `integrationServiceEnvironmentResourceId`
 
@@ -564,70 +759,79 @@ The state. - NotSpecified, Completed, Enabled, Disabled, Deleted, Suspended.
 - Required: No
 - Type: string
 - Default: `'Enabled'`
-- Allowed: `[Completed, Deleted, Disabled, Enabled, NotSpecified, Suspended]`
+- Allowed:
+  ```Bicep
+  [
+    'Completed'
+    'Deleted'
+    'Disabled'
+    'Enabled'
+    'NotSpecified'
+    'Suspended'
+  ]
+  ```
 
 ### Parameter: `tags`
 
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `triggersAccessControlConfiguration`
 
 The access control configuration for invoking workflow triggers.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `workflowActions`
 
 The definitions for one or more actions to execute at workflow runtime.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `workflowEndpointsConfiguration`
 
 The endpoints configuration:  Access endpoint and outgoing IP addresses for the workflow.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `workflowManagementAccessControlConfiguration`
 
 The access control configuration for workflow management.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `workflowOutputs`
 
 The definitions for the outputs to return from a workflow run.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `workflowParameters`
 
 The definitions for one or more parameters that pass the values to use at your logic app's runtime.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `workflowStaticResults`
 
 The definitions for one or more static results returned by actions as mock outputs when static results are enabled on those actions. In each action definition, the runtimeConfiguration.staticResult.name attribute references the corresponding definition inside staticResults.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `workflowTriggers`
 
 The definitions for one or more triggers that instantiate your workflow. You can define more than one trigger, but only with the Workflow Definition Language, not visually through the Logic Apps Designer.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 
 ## Outputs

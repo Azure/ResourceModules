@@ -126,7 +126,17 @@ Specify the allowed HTTP methods.
 - Required: No
 - Type: array
 - Default: `[]`
-- Allowed: `[DELETE, GET, OPTIONS, PATCH, POST, PUT]`
+- Allowed:
+  ```Bicep
+  [
+    'DELETE'
+    'GET'
+    'OPTIONS'
+    'PATCH'
+    'POST'
+    'PUT'
+  ]
+  ```
 
 ### Parameter: `corsOrigins`
 
@@ -291,7 +301,13 @@ The kind of the service. Defaults to R4.
 - Required: No
 - Type: string
 - Default: `'fhir-R4'`
-- Allowed: `[fhir-R4, fhir-Stu3]`
+- Allowed:
+  ```Bicep
+  [
+    'fhir-R4'
+    'fhir-Stu3'
+  ]
+  ```
 
 ### Parameter: `location`
 
@@ -365,14 +381,20 @@ Control permission for data plane traffic coming from public networks while priv
 - Required: No
 - Type: string
 - Default: `'Disabled'`
-- Allowed: `[Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 ### Parameter: `resourceVersionOverrides`
 
 A list of FHIR Resources and their version policy overrides.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `resourceVersionPolicy`
 
@@ -380,7 +402,14 @@ The default value for tracking history across all resources.
 - Required: No
 - Type: string
 - Default: `'versioned'`
-- Allowed: `[no-version, versioned, versioned-update]`
+- Allowed:
+  ```Bicep
+  [
+    'no-version'
+    'versioned'
+    'versioned-update'
+  ]
+  ```
 
 ### Parameter: `roleAssignments`
 
@@ -462,7 +491,6 @@ If the SMART on FHIR proxy is enabled.
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `workspaceName`
 

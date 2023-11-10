@@ -49,7 +49,13 @@ Enable telemetry via a Globally Unique Identifier (GUID).
 Type of settings to apply.
 - Required: Yes
 - Type: string
-- Allowed: `[appsettings, functionappsettings]`
+- Allowed:
+  ```Bicep
+  [
+    'appsettings'
+    'functionappsettings'
+  ]
+  ```
 
 ### Parameter: `location`
 

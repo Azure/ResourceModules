@@ -27,10 +27,71 @@ The following section provides usage examples for the module, which were used to
 
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/network.express-route-circuit:1.0.0`.
 
-- [Using large parameter set](#example-1-using-large-parameter-set)
-- [Using only defaults](#example-2-using-only-defaults)
+- [Using only defaults](#example-1-using-only-defaults)
+- [Using large parameter set](#example-2-using-large-parameter-set)
+- [WAF-aligned](#example-3-waf-aligned)
 
-### Example 1: _Using large parameter set_
+### Example 1: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module expressRouteCircuit 'br:bicep/modules/network.express-route-circuit:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-nercmin'
+  params: {
+    // Required parameters
+    bandwidthInMbps: 50
+    name: 'nercmin001'
+    peeringLocation: 'Amsterdam'
+    serviceProviderName: 'Equinix'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "bandwidthInMbps": {
+      "value": 50
+    },
+    "name": {
+      "value": "nercmin001"
+    },
+    "peeringLocation": {
+      "value": "Amsterdam"
+    },
+    "serviceProviderName": {
+      "value": "Equinix"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 2: _Using large parameter set_
 
 This instance deploys the module with most of its features enabled.
 
@@ -41,11 +102,11 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module expressRouteCircuit 'br:bicep/modules/network.express-route-circuit:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-nerccom'
+  name: '${uniqueString(deployment().name, location)}-test-nercmax'
   params: {
     // Required parameters
     bandwidthInMbps: 50
-    name: 'nerccom001'
+    name: 'nercmax001'
     peeringLocation: 'Amsterdam'
     serviceProviderName: 'Equinix'
     // Non-required parameters
@@ -104,7 +165,7 @@ module expressRouteCircuit 'br:bicep/modules/network.express-route-circuit:1.0.0
       "value": 50
     },
     "name": {
-      "value": "nerccom001"
+      "value": "nercmax001"
     },
     "peeringLocation": {
       "value": "Amsterdam"
@@ -170,9 +231,9 @@ module expressRouteCircuit 'br:bicep/modules/network.express-route-circuit:1.0.0
 </details>
 <p>
 
-### Example 2: _Using only defaults_
+### Example 3: _WAF-aligned_
 
-This instance deploys the module with the minimum set of required parameters.
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
 
 
 <details>
@@ -181,15 +242,48 @@ This instance deploys the module with the minimum set of required parameters.
 
 ```bicep
 module expressRouteCircuit 'br:bicep/modules/network.express-route-circuit:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-nercmin'
+  name: '${uniqueString(deployment().name, location)}-test-nercwaf'
   params: {
     // Required parameters
     bandwidthInMbps: 50
-    name: 'nercmin001'
+    name: 'nercwaf001'
     peeringLocation: 'Amsterdam'
     serviceProviderName: 'Equinix'
     // Non-required parameters
+    allowClassicOperations: true
+    diagnosticSettings: [
+      {
+        eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+        eventHubName: '<eventHubName>'
+        metricCategories: [
+          {
+            category: 'AllMetrics'
+          }
+        ]
+        name: 'customSetting'
+        storageAccountResourceId: '<storageAccountResourceId>'
+        workspaceResourceId: '<workspaceResourceId>'
+      }
+    ]
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    skuFamily: 'MeteredData'
+    skuTier: 'Standard'
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -211,7 +305,7 @@ module expressRouteCircuit 'br:bicep/modules/network.express-route-circuit:1.0.0
       "value": 50
     },
     "name": {
-      "value": "nercmin001"
+      "value": "nercwaf001"
     },
     "peeringLocation": {
       "value": "Amsterdam"
@@ -220,8 +314,55 @@ module expressRouteCircuit 'br:bicep/modules/network.express-route-circuit:1.0.0
       "value": "Equinix"
     },
     // Non-required parameters
+    "allowClassicOperations": {
+      "value": true
+    },
+    "diagnosticSettings": {
+      "value": [
+        {
+          "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+          "eventHubName": "<eventHubName>",
+          "metricCategories": [
+            {
+              "category": "AllMetrics"
+            }
+          ],
+          "name": "customSetting",
+          "storageAccountResourceId": "<storageAccountResourceId>",
+          "workspaceResourceId": "<workspaceResourceId>"
+        }
+      ]
+    },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "skuFamily": {
+      "value": "MeteredData"
+    },
+    "skuTier": {
+      "value": "Standard"
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }
@@ -488,7 +629,13 @@ BGP peering type for the Circuit. Choose from AzurePrivatePeering, AzurePublicPe
 - Required: No
 - Type: string
 - Default: `'AzurePrivatePeering'`
-- Allowed: `[AzurePrivatePeering, MicrosoftPeering]`
+- Allowed:
+  ```Bicep
+  [
+    'AzurePrivatePeering'
+    'MicrosoftPeering'
+  ]
+  ```
 
 ### Parameter: `primaryPeerAddressPrefix`
 
@@ -591,7 +738,13 @@ Chosen SKU family of ExpressRoute circuit. Choose from MeteredData or UnlimitedD
 - Required: No
 - Type: string
 - Default: `'MeteredData'`
-- Allowed: `[MeteredData, UnlimitedData]`
+- Allowed:
+  ```Bicep
+  [
+    'MeteredData'
+    'UnlimitedData'
+  ]
+  ```
 
 ### Parameter: `skuTier`
 
@@ -599,14 +752,20 @@ Chosen SKU Tier of ExpressRoute circuit. Choose from Local, Premium or Standard 
 - Required: No
 - Type: string
 - Default: `'Standard'`
-- Allowed: `[Local, Premium, Standard]`
+- Allowed:
+  ```Bicep
+  [
+    'Local'
+    'Premium'
+    'Standard'
+  ]
+  ```
 
 ### Parameter: `tags`
 
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `vlanId`
 

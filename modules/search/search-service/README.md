@@ -30,11 +30,60 @@ The following section provides usage examples for the module, which were used to
 
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/search.search-service:1.0.0`.
 
-- [Using large parameter set](#example-1-using-large-parameter-set)
-- [Using only defaults](#example-2-using-only-defaults)
+- [Using only defaults](#example-1-using-only-defaults)
+- [Using large parameter set](#example-2-using-large-parameter-set)
 - [Pe](#example-3-pe)
+- [WAF-aligned](#example-4-waf-aligned)
 
-### Example 1: _Using large parameter set_
+### Example 1: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module searchService 'br:bicep/modules/search.search-service:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-sssmin'
+  params: {
+    // Required parameters
+    name: 'sssmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "sssmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 2: _Using large parameter set_
 
 This instance deploys the module with most of its features enabled.
 
@@ -45,10 +94,10 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module searchService 'br:bicep/modules/search.search-service:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-ssscom'
+  name: '${uniqueString(deployment().name, location)}-test-sssmax'
   params: {
     // Required parameters
-    name: 'ssscom001'
+    name: 'sssmax001'
     // Non-required parameters
     authOptions: {
       aadOrApiKey: {
@@ -128,7 +177,7 @@ module searchService 'br:bicep/modules/search.search-service:1.0.0' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "ssscom001"
+      "value": "sssmax001"
     },
     // Non-required parameters
     "authOptions": {
@@ -218,54 +267,6 @@ module searchService 'br:bicep/modules/search.search-service:1.0.0' = {
         "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-### Example 2: _Using only defaults_
-
-This instance deploys the module with the minimum set of required parameters.
-
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module searchService 'br:bicep/modules/search.search-service:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-sssmin'
-  params: {
-    // Required parameters
-    name: 'sssmin001'
-    // Non-required parameters
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "sssmin001"
-    },
-    // Non-required parameters
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
     }
   }
 }
@@ -395,6 +396,198 @@ module searchService 'br:bicep/modules/search.search-service:1.0.0' = {
 </details>
 <p>
 
+### Example 4: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module searchService 'br:bicep/modules/search.search-service:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-ssswaf'
+  params: {
+    // Required parameters
+    name: 'ssswaf001'
+    // Non-required parameters
+    authOptions: {
+      aadOrApiKey: {
+        aadAuthFailureMode: 'http401WithBearerChallenge'
+      }
+    }
+    cmkEnforcement: 'Enabled'
+    diagnosticSettings: [
+      {
+        eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+        eventHubName: '<eventHubName>'
+        metricCategories: [
+          {
+            category: 'AllMetrics'
+          }
+        ]
+        name: 'customSetting'
+        storageAccountResourceId: '<storageAccountResourceId>'
+        workspaceResourceId: '<workspaceResourceId>'
+      }
+    ]
+    disableLocalAuth: false
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    hostingMode: 'highDensity'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    managedIdentities: {
+      systemAssigned: true
+    }
+    networkRuleSet: {
+      ipRules: [
+        {
+          value: '40.74.28.0/23'
+        }
+        {
+          value: '87.147.204.13'
+        }
+      ]
+    }
+    partitionCount: 2
+    replicaCount: 3
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Search Service Contributor'
+      }
+    ]
+    sku: 'standard3'
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "ssswaf001"
+    },
+    // Non-required parameters
+    "authOptions": {
+      "value": {
+        "aadOrApiKey": {
+          "aadAuthFailureMode": "http401WithBearerChallenge"
+        }
+      }
+    },
+    "cmkEnforcement": {
+      "value": "Enabled"
+    },
+    "diagnosticSettings": {
+      "value": [
+        {
+          "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+          "eventHubName": "<eventHubName>",
+          "metricCategories": [
+            {
+              "category": "AllMetrics"
+            }
+          ],
+          "name": "customSetting",
+          "storageAccountResourceId": "<storageAccountResourceId>",
+          "workspaceResourceId": "<workspaceResourceId>"
+        }
+      ]
+    },
+    "disableLocalAuth": {
+      "value": false
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "hostingMode": {
+      "value": "highDensity"
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "managedIdentities": {
+      "value": {
+        "systemAssigned": true
+      }
+    },
+    "networkRuleSet": {
+      "value": {
+        "ipRules": [
+          {
+            "value": "40.74.28.0/23"
+          },
+          {
+            "value": "87.147.204.13"
+          }
+        ]
+      }
+    },
+    "partitionCount": {
+      "value": 2
+    },
+    "replicaCount": {
+      "value": 3
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        },
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Search Service Contributor"
+        }
+      ]
+    },
+    "sku": {
+      "value": "standard3"
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
 
 ## Parameters
 
@@ -432,7 +625,7 @@ module searchService 'br:bicep/modules/search.search-service:1.0.0' = {
 Defines the options for how the data plane API of a Search service authenticates requests. Must remain an empty object {} if 'disableLocalAuth' is set to true.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `cmkEnforcement`
 
@@ -440,7 +633,14 @@ Describes a policy that determines how resources within the search service are t
 - Required: No
 - Type: string
 - Default: `'Unspecified'`
-- Allowed: `[Disabled, Enabled, Unspecified]`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+    'Unspecified'
+  ]
+  ```
 
 ### Parameter: `diagnosticSettings`
 
@@ -577,7 +777,13 @@ Applicable only for the standard3 SKU. You can set this property to enable up to
 - Required: No
 - Type: string
 - Default: `'default'`
-- Allowed: `[default, highDensity]`
+- Allowed:
+  ```Bicep
+  [
+    'default'
+    'highDensity'
+  ]
+  ```
 
 ### Parameter: `location`
 
@@ -642,7 +848,7 @@ The name of the Azure Cognitive Search service to create or update. Search servi
 Network specific rules that determine how the Azure Cognitive Search service may be reached.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `partitionCount`
 
@@ -692,14 +898,20 @@ Optional. Custom DNS configurations.
 
 | Name | Required | Type | Description |
 | :-- | :-- | :--| :-- |
-| [`fqdn`](#parameter-privateendpointscustomdnsconfigsfqdn) | No | string |  |
-| [`ipAddresses`](#parameter-privateendpointscustomdnsconfigsipaddresses) | Yes | array |  |
+| [`fqdn`](#parameter-privateendpointscustomdnsconfigsfqdn) | No | string | Required. Fqdn that resolves to private endpoint ip address. |
+| [`ipAddresses`](#parameter-privateendpointscustomdnsconfigsipaddresses) | Yes | array | Required. A list of private ip addresses of the private endpoint. |
 
 ### Parameter: `privateEndpoints.customDnsConfigs.fqdn`
+
+Required. Fqdn that resolves to private endpoint ip address.
+
 - Required: No
 - Type: string
 
 ### Parameter: `privateEndpoints.customDnsConfigs.ipAddresses`
+
+Required. A list of private ip addresses of the private endpoint.
+
 - Required: Yes
 - Type: array
 
@@ -727,26 +939,50 @@ Optional. A list of IP configurations of the private endpoint. This will be used
 
 | Name | Required | Type | Description |
 | :-- | :-- | :--| :-- |
-| [`groupId`](#parameter-privateendpointsipconfigurationsgroupid) | Yes | string |  |
-| [`memberName`](#parameter-privateendpointsipconfigurationsmembername) | Yes | string |  |
-| [`name`](#parameter-privateendpointsipconfigurationsname) | Yes | string |  |
-| [`privateIpAddress`](#parameter-privateendpointsipconfigurationsprivateipaddress) | Yes | string |  |
-
-### Parameter: `privateEndpoints.ipConfigurations.groupId`
-- Required: Yes
-- Type: string
-
-### Parameter: `privateEndpoints.ipConfigurations.memberName`
-- Required: Yes
-- Type: string
+| [`name`](#parameter-privateendpointsipconfigurationsname) | Yes | string | Required. The name of the resource that is unique within a resource group. |
+| [`properties`](#parameter-privateendpointsipconfigurationsproperties) | Yes | object | Required. Properties of private endpoint IP configurations. |
 
 ### Parameter: `privateEndpoints.ipConfigurations.name`
+
+Required. The name of the resource that is unique within a resource group.
+
 - Required: Yes
 - Type: string
 
-### Parameter: `privateEndpoints.ipConfigurations.privateIpAddress`
+### Parameter: `privateEndpoints.ipConfigurations.properties`
+
+Required. Properties of private endpoint IP configurations.
+
+- Required: Yes
+- Type: object
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`groupId`](#parameter-privateendpointsipconfigurationspropertiesgroupid) | Yes | string | Required. The ID of a group obtained from the remote resource that this private endpoint should connect to. |
+| [`memberName`](#parameter-privateendpointsipconfigurationspropertiesmembername) | Yes | string | Required. The member name of a group obtained from the remote resource that this private endpoint should connect to. |
+| [`privateIPAddress`](#parameter-privateendpointsipconfigurationspropertiesprivateipaddress) | Yes | string | Required. A private ip address obtained from the private endpoint's subnet. |
+
+### Parameter: `privateEndpoints.ipConfigurations.properties.groupId`
+
+Required. The ID of a group obtained from the remote resource that this private endpoint should connect to.
+
 - Required: Yes
 - Type: string
+
+### Parameter: `privateEndpoints.ipConfigurations.properties.memberName`
+
+Required. The member name of a group obtained from the remote resource that this private endpoint should connect to.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `privateEndpoints.ipConfigurations.properties.privateIPAddress`
+
+Required. A private ip address obtained from the private endpoint's subnet.
+
+- Required: Yes
+- Type: string
+
 
 
 ### Parameter: `privateEndpoints.location`
@@ -825,7 +1061,13 @@ This value can be set to 'enabled' to avoid breaking changes on existing custome
 - Required: No
 - Type: string
 - Default: `'enabled'`
-- Allowed: `[disabled, enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'disabled'
+    'enabled'
+  ]
+  ```
 
 ### Parameter: `replicaCount`
 
@@ -915,14 +1157,24 @@ Defines the SKU of an Azure Cognitive Search Service, which determines price tie
 - Required: No
 - Type: string
 - Default: `'standard'`
-- Allowed: `[basic, free, standard, standard2, standard3, storage_optimized_l1, storage_optimized_l2]`
+- Allowed:
+  ```Bicep
+  [
+    'basic'
+    'free'
+    'standard'
+    'standard2'
+    'standard3'
+    'storage_optimized_l1'
+    'storage_optimized_l2'
+  ]
+  ```
 
 ### Parameter: `tags`
 
 Tags to help categorize the resource in the Azure portal.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 
 ## Outputs

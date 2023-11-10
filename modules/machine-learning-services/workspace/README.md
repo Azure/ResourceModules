@@ -31,11 +31,217 @@ The following section provides usage examples for the module, which were used to
 
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/machine-learning-services.workspace:1.0.0`.
 
-- [Using large parameter set](#example-1-using-large-parameter-set)
+- [Using only defaults](#example-1-using-only-defaults)
 - [Encr](#example-2-encr)
-- [Using only defaults](#example-3-using-only-defaults)
+- [Using large parameter set](#example-3-using-large-parameter-set)
+- [WAF-aligned](#example-4-waf-aligned)
 
-### Example 1: _Using large parameter set_
+### Example 1: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module workspace 'br:bicep/modules/machine-learning-services.workspace:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-mlswmin'
+  params: {
+    // Required parameters
+    associatedApplicationInsightsResourceId: '<associatedApplicationInsightsResourceId>'
+    associatedKeyVaultResourceId: '<associatedKeyVaultResourceId>'
+    associatedStorageAccountResourceId: '<associatedStorageAccountResourceId>'
+    name: 'mlswmin001'
+    sku: 'Basic'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    managedIdentities: {
+      systemAssigned: true
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "associatedApplicationInsightsResourceId": {
+      "value": "<associatedApplicationInsightsResourceId>"
+    },
+    "associatedKeyVaultResourceId": {
+      "value": "<associatedKeyVaultResourceId>"
+    },
+    "associatedStorageAccountResourceId": {
+      "value": "<associatedStorageAccountResourceId>"
+    },
+    "name": {
+      "value": "mlswmin001"
+    },
+    "sku": {
+      "value": "Basic"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "managedIdentities": {
+      "value": {
+        "systemAssigned": true
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 2: _Encr_
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module workspace 'br:bicep/modules/machine-learning-services.workspace:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-mlswecr'
+  params: {
+    // Required parameters
+    associatedApplicationInsightsResourceId: '<associatedApplicationInsightsResourceId>'
+    associatedKeyVaultResourceId: '<associatedKeyVaultResourceId>'
+    associatedStorageAccountResourceId: '<associatedStorageAccountResourceId>'
+    name: 'mlswecr001'
+    sku: 'Basic'
+    // Non-required parameters
+    customerManagedKey: {
+      keyName: '<keyName>'
+      keyVaultResourceId: '<keyVaultResourceId>'
+      userAssignedIdentityResourceId: '<userAssignedIdentityResourceId>'
+    }
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    managedIdentities: {
+      systemAssigned: false
+      userAssignedResourcesIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
+    primaryUserAssignedIdentity: '<primaryUserAssignedIdentity>'
+    privateEndpoints: [
+      {
+        privateDnsZoneResourceIds: [
+          '<privateDNSZoneResourceId>'
+        ]
+        service: 'amlworkspace'
+        subnetResourceId: '<subnetResourceId>'
+        tags: {
+          Environment: 'Non-Prod'
+          'hidden-title': 'This is visible in the resource name'
+          Role: 'DeploymentValidation'
+        }
+      }
+    ]
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "associatedApplicationInsightsResourceId": {
+      "value": "<associatedApplicationInsightsResourceId>"
+    },
+    "associatedKeyVaultResourceId": {
+      "value": "<associatedKeyVaultResourceId>"
+    },
+    "associatedStorageAccountResourceId": {
+      "value": "<associatedStorageAccountResourceId>"
+    },
+    "name": {
+      "value": "mlswecr001"
+    },
+    "sku": {
+      "value": "Basic"
+    },
+    // Non-required parameters
+    "customerManagedKey": {
+      "value": {
+        "keyName": "<keyName>",
+        "keyVaultResourceId": "<keyVaultResourceId>",
+        "userAssignedIdentityResourceId": "<userAssignedIdentityResourceId>"
+      }
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "managedIdentities": {
+      "value": {
+        "systemAssigned": false,
+        "userAssignedResourcesIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
+    },
+    "primaryUserAssignedIdentity": {
+      "value": "<primaryUserAssignedIdentity>"
+    },
+    "privateEndpoints": {
+      "value": [
+        {
+          "privateDnsZoneResourceIds": [
+            "<privateDNSZoneResourceId>"
+          ],
+          "service": "amlworkspace",
+          "subnetResourceId": "<subnetResourceId>",
+          "tags": {
+            "Environment": "Non-Prod",
+            "hidden-title": "This is visible in the resource name",
+            "Role": "DeploymentValidation"
+          }
+        }
+      ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 3: _Using large parameter set_
 
 This instance deploys the module with most of its features enabled.
 
@@ -46,13 +252,13 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module workspace 'br:bicep/modules/machine-learning-services.workspace:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-mlswcom'
+  name: '${uniqueString(deployment().name, location)}-test-mlswmax'
   params: {
     // Required parameters
     associatedApplicationInsightsResourceId: '<associatedApplicationInsightsResourceId>'
     associatedKeyVaultResourceId: '<associatedKeyVaultResourceId>'
     associatedStorageAccountResourceId: '<associatedStorageAccountResourceId>'
-    name: 'mlswcom001'
+    name: 'mlswmax001'
     sku: 'Premium'
     // Non-required parameters
     computes: [
@@ -166,7 +372,7 @@ module workspace 'br:bicep/modules/machine-learning-services.workspace:1.0.0' = 
       "value": "<associatedStorageAccountResourceId>"
     },
     "name": {
-      "value": "mlswcom001"
+      "value": "mlswmax001"
     },
     "sku": {
       "value": "Premium"
@@ -287,7 +493,10 @@ module workspace 'br:bicep/modules/machine-learning-services.workspace:1.0.0' = 
 </details>
 <p>
 
-### Example 2: _Encr_
+### Example 4: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
 
 <details>
 
@@ -295,19 +504,67 @@ module workspace 'br:bicep/modules/machine-learning-services.workspace:1.0.0' = 
 
 ```bicep
 module workspace 'br:bicep/modules/machine-learning-services.workspace:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-mlswecr'
+  name: '${uniqueString(deployment().name, location)}-test-mlswwaf'
   params: {
     // Required parameters
     associatedApplicationInsightsResourceId: '<associatedApplicationInsightsResourceId>'
     associatedKeyVaultResourceId: '<associatedKeyVaultResourceId>'
     associatedStorageAccountResourceId: '<associatedStorageAccountResourceId>'
-    name: 'mlswecr001'
-    sku: 'Basic'
+    name: 'mlswwaf001'
+    sku: 'Premium'
     // Non-required parameters
-    cMKKeyName: '<cMKKeyName>'
-    cMKKeyVaultResourceId: '<cMKKeyVaultResourceId>'
-    cMKUserAssignedIdentityResourceId: '<cMKUserAssignedIdentityResourceId>'
+    computes: [
+      {
+        computeLocation: 'westeurope'
+        computeType: 'AmlCompute'
+        description: 'Default CPU Cluster'
+        disableLocalAuth: false
+        location: 'westeurope'
+        managedIdentities: {
+          systemAssigned: false
+          userAssignedResourcesIds: [
+            '<managedIdentityResourceId>'
+          ]
+        }
+        name: 'DefaultCPU'
+        properties: {
+          enableNodePublicIp: true
+          isolatedNetwork: false
+          osType: 'Linux'
+          remoteLoginPortPublicAccess: 'Disabled'
+          scaleSettings: {
+            maxNodeCount: 3
+            minNodeCount: 0
+            nodeIdleTimeBeforeScaleDown: 'PT5M'
+          }
+          vmPriority: 'Dedicated'
+          vmSize: 'STANDARD_DS11_V2'
+        }
+        sku: 'Basic'
+      }
+    ]
+    description: 'The cake is a lie.'
+    diagnosticSettings: [
+      {
+        eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+        eventHubName: '<eventHubName>'
+        metricCategories: [
+          {
+            category: 'AllMetrics'
+          }
+        ]
+        name: 'customSetting'
+        storageAccountResourceId: '<storageAccountResourceId>'
+        workspaceResourceId: '<workspaceResourceId>'
+      }
+    ]
+    discoveryUrl: 'http://example.com'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    imageBuildCompute: 'testcompute'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     managedIdentities: {
       systemAssigned: false
       userAssignedResourcesIds: [
@@ -320,13 +577,19 @@ module workspace 'br:bicep/modules/machine-learning-services.workspace:1.0.0' = 
         privateDnsZoneResourceIds: [
           '<privateDNSZoneResourceId>'
         ]
-        service: 'amlworkspace'
         subnetResourceId: '<subnetResourceId>'
         tags: {
           Environment: 'Non-Prod'
           'hidden-title': 'This is visible in the resource name'
           Role: 'DeploymentValidation'
         }
+      }
+    ]
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
       }
     ]
     tags: {
@@ -361,23 +624,77 @@ module workspace 'br:bicep/modules/machine-learning-services.workspace:1.0.0' = 
       "value": "<associatedStorageAccountResourceId>"
     },
     "name": {
-      "value": "mlswecr001"
+      "value": "mlswwaf001"
     },
     "sku": {
-      "value": "Basic"
+      "value": "Premium"
     },
     // Non-required parameters
-    "cMKKeyName": {
-      "value": "<cMKKeyName>"
+    "computes": {
+      "value": [
+        {
+          "computeLocation": "westeurope",
+          "computeType": "AmlCompute",
+          "description": "Default CPU Cluster",
+          "disableLocalAuth": false,
+          "location": "westeurope",
+          "managedIdentities": {
+            "systemAssigned": false,
+            "userAssignedResourcesIds": [
+              "<managedIdentityResourceId>"
+            ]
+          },
+          "name": "DefaultCPU",
+          "properties": {
+            "enableNodePublicIp": true,
+            "isolatedNetwork": false,
+            "osType": "Linux",
+            "remoteLoginPortPublicAccess": "Disabled",
+            "scaleSettings": {
+              "maxNodeCount": 3,
+              "minNodeCount": 0,
+              "nodeIdleTimeBeforeScaleDown": "PT5M"
+            },
+            "vmPriority": "Dedicated",
+            "vmSize": "STANDARD_DS11_V2"
+          },
+          "sku": "Basic"
+        }
+      ]
     },
-    "cMKKeyVaultResourceId": {
-      "value": "<cMKKeyVaultResourceId>"
+    "description": {
+      "value": "The cake is a lie."
     },
-    "cMKUserAssignedIdentityResourceId": {
-      "value": "<cMKUserAssignedIdentityResourceId>"
+    "diagnosticSettings": {
+      "value": [
+        {
+          "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+          "eventHubName": "<eventHubName>",
+          "metricCategories": [
+            {
+              "category": "AllMetrics"
+            }
+          ],
+          "name": "customSetting",
+          "storageAccountResourceId": "<storageAccountResourceId>",
+          "workspaceResourceId": "<workspaceResourceId>"
+        }
+      ]
+    },
+    "discoveryUrl": {
+      "value": "http://example.com"
     },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
+    },
+    "imageBuildCompute": {
+      "value": "testcompute"
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
     },
     "managedIdentities": {
       "value": {
@@ -396,7 +713,6 @@ module workspace 'br:bicep/modules/machine-learning-services.workspace:1.0.0' = 
           "privateDnsZoneResourceIds": [
             "<privateDNSZoneResourceId>"
           ],
-          "service": "amlworkspace",
           "subnetResourceId": "<subnetResourceId>",
           "tags": {
             "Environment": "Non-Prod",
@@ -406,83 +722,20 @@ module workspace 'br:bicep/modules/machine-learning-services.workspace:1.0.0' = 
         }
       ]
     },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
     "tags": {
       "value": {
         "Environment": "Non-Prod",
         "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
-      }
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-### Example 3: _Using only defaults_
-
-This instance deploys the module with the minimum set of required parameters.
-
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module workspace 'br:bicep/modules/machine-learning-services.workspace:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-mlswmin'
-  params: {
-    // Required parameters
-    associatedApplicationInsightsResourceId: '<associatedApplicationInsightsResourceId>'
-    associatedKeyVaultResourceId: '<associatedKeyVaultResourceId>'
-    associatedStorageAccountResourceId: '<associatedStorageAccountResourceId>'
-    name: 'mlswmin001'
-    sku: 'Basic'
-    // Non-required parameters
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    managedIdentities: {
-      systemAssigned: true
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "associatedApplicationInsightsResourceId": {
-      "value": "<associatedApplicationInsightsResourceId>"
-    },
-    "associatedKeyVaultResourceId": {
-      "value": "<associatedKeyVaultResourceId>"
-    },
-    "associatedStorageAccountResourceId": {
-      "value": "<associatedStorageAccountResourceId>"
-    },
-    "name": {
-      "value": "mlswmin001"
-    },
-    "sku": {
-      "value": "Basic"
-    },
-    // Non-required parameters
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
-    "managedIdentities": {
-      "value": {
-        "systemAssigned": true
       }
     }
   }
@@ -509,7 +762,6 @@ module workspace 'br:bicep/modules/machine-learning-services.workspace:1.0.0' = 
 
 | Parameter | Type | Description |
 | :-- | :-- | :-- |
-| [`cMKKeyVaultResourceId`](#parameter-cmkkeyvaultresourceid) | string | The resource ID of a key vault to reference a customer managed key for encryption from. Required if 'cMKKeyName' is not empty. |
 | [`primaryUserAssignedIdentity`](#parameter-primaryuserassignedidentity) | string | The user assigned identity resource ID that represents the workspace identity. Required if 'userAssignedIdentities' is not empty and may not be used if 'systemAssignedIdentity' is enabled. |
 
 **Optional parameters**
@@ -518,10 +770,8 @@ module workspace 'br:bicep/modules/machine-learning-services.workspace:1.0.0' = 
 | :-- | :-- | :-- |
 | [`allowPublicAccessWhenBehindVnet`](#parameter-allowpublicaccesswhenbehindvnet) | bool | The flag to indicate whether to allow public access when behind VNet. |
 | [`associatedContainerRegistryResourceId`](#parameter-associatedcontainerregistryresourceid) | string | The resource ID of the associated Container Registry. |
-| [`cMKKeyName`](#parameter-cmkkeyname) | string | The name of the customer managed key to use for encryption. |
-| [`cMKKeyVersion`](#parameter-cmkkeyversion) | string | The version of the customer managed key to reference for encryption. If not provided, the latest key version is used. |
-| [`cMKUserAssignedIdentityResourceId`](#parameter-cmkuserassignedidentityresourceid) | string | User assigned identity to use when fetching the customer managed key. If not provided, a system-assigned identity can be used - but must be given access to the referenced key vault first. |
 | [`computes`](#parameter-computes) | array | Computes to create respectively attach to the workspace. |
+| [`customerManagedKey`](#parameter-customermanagedkey) | object | The customer managed key definition. |
 | [`description`](#parameter-description) | string | The description of this workspace. |
 | [`diagnosticSettings`](#parameter-diagnosticsettings) | array | The diagnostic settings of the service. |
 | [`discoveryUrl`](#parameter-discoveryurl) | string | URL for the discovery service to identify regional endpoints for machine learning experimentation services. |
@@ -570,40 +820,54 @@ The resource ID of the associated Storage Account.
 - Required: Yes
 - Type: string
 
-### Parameter: `cMKKeyName`
-
-The name of the customer managed key to use for encryption.
-- Required: No
-- Type: string
-- Default: `''`
-
-### Parameter: `cMKKeyVaultResourceId`
-
-The resource ID of a key vault to reference a customer managed key for encryption from. Required if 'cMKKeyName' is not empty.
-- Required: No
-- Type: string
-- Default: `''`
-
-### Parameter: `cMKKeyVersion`
-
-The version of the customer managed key to reference for encryption. If not provided, the latest key version is used.
-- Required: No
-- Type: string
-- Default: `''`
-
-### Parameter: `cMKUserAssignedIdentityResourceId`
-
-User assigned identity to use when fetching the customer managed key. If not provided, a system-assigned identity can be used - but must be given access to the referenced key vault first.
-- Required: No
-- Type: string
-- Default: `''`
-
 ### Parameter: `computes`
 
 Computes to create respectively attach to the workspace.
 - Required: No
 - Type: array
 - Default: `[]`
+
+### Parameter: `customerManagedKey`
+
+The customer managed key definition.
+- Required: No
+- Type: object
+
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`keyName`](#parameter-customermanagedkeykeyname) | Yes | string | Required. The name of the customer managed key to use for encryption. |
+| [`keyVaultResourceId`](#parameter-customermanagedkeykeyvaultresourceid) | Yes | string | Required. The resource ID of a key vault to reference a customer managed key for encryption from. |
+| [`keyVersion`](#parameter-customermanagedkeykeyversion) | No | string | Optional. The version of the customer managed key to reference for encryption. If not provided, using 'latest'. |
+| [`userAssignedIdentityResourceId`](#parameter-customermanagedkeyuserassignedidentityresourceid) | No | string | Optional. User assigned identity to use when fetching the customer managed key. Required if no system assigned identity is available for use. |
+
+### Parameter: `customerManagedKey.keyName`
+
+Required. The name of the customer managed key to use for encryption.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `customerManagedKey.keyVaultResourceId`
+
+Required. The resource ID of a key vault to reference a customer managed key for encryption from.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `customerManagedKey.keyVersion`
+
+Optional. The version of the customer managed key to reference for encryption. If not provided, using 'latest'.
+
+- Required: No
+- Type: string
+
+### Parameter: `customerManagedKey.userAssignedIdentityResourceId`
+
+Optional. User assigned identity to use when fetching the customer managed key. Required if no system assigned identity is available for use.
+
+- Required: No
+- Type: string
 
 ### Parameter: `description`
 
@@ -792,8 +1056,14 @@ Optional. Specify the name of lock.
 ### Parameter: `managedIdentities`
 
 The managed identity definition for this resource. At least one identity type is required.
-- Required: Yes
+- Required: No
 - Type: object
+- Default:
+  ```Bicep
+  {
+      systemAssigned: true
+  }
+  ```
 
 
 | Name | Required | Type | Description |
@@ -904,26 +1174,35 @@ Optional. A list of IP configurations of the private endpoint. This will be used
 
 | Name | Required | Type | Description |
 | :-- | :-- | :--| :-- |
-| [`groupId`](#parameter-privateendpointsipconfigurationsgroupid) | Yes | string |  |
-| [`memberName`](#parameter-privateendpointsipconfigurationsmembername) | Yes | string |  |
 | [`name`](#parameter-privateendpointsipconfigurationsname) | Yes | string |  |
-| [`privateIpAddress`](#parameter-privateendpointsipconfigurationsprivateipaddress) | Yes | string |  |
-
-### Parameter: `privateEndpoints.ipConfigurations.groupId`
-- Required: Yes
-- Type: string
-
-### Parameter: `privateEndpoints.ipConfigurations.memberName`
-- Required: Yes
-- Type: string
+| [`properties`](#parameter-privateendpointsipconfigurationsproperties) | Yes | object |  |
 
 ### Parameter: `privateEndpoints.ipConfigurations.name`
 - Required: Yes
 - Type: string
 
-### Parameter: `privateEndpoints.ipConfigurations.privateIpAddress`
+### Parameter: `privateEndpoints.ipConfigurations.properties`
+- Required: Yes
+- Type: object
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`groupId`](#parameter-privateendpointsipconfigurationspropertiesgroupid) | Yes | string |  |
+| [`memberName`](#parameter-privateendpointsipconfigurationspropertiesmembername) | Yes | string |  |
+| [`privateIPAddress`](#parameter-privateendpointsipconfigurationspropertiesprivateipaddress) | Yes | string |  |
+
+### Parameter: `privateEndpoints.ipConfigurations.properties.groupId`
 - Required: Yes
 - Type: string
+
+### Parameter: `privateEndpoints.ipConfigurations.properties.memberName`
+- Required: Yes
+- Type: string
+
+### Parameter: `privateEndpoints.ipConfigurations.properties.privateIPAddress`
+- Required: Yes
+- Type: string
+
 
 
 ### Parameter: `privateEndpoints.location`
@@ -1002,7 +1281,14 @@ Whether or not public network access is allowed for this resource. For security 
 - Required: No
 - Type: string
 - Default: `''`
-- Allowed: `['', Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    ''
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 ### Parameter: `roleAssignments`
 
@@ -1077,7 +1363,7 @@ Required. The name of the role to assign. If it cannot be found you can specify 
 The service managed resource settings.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `sharedPrivateLinkResources`
 
@@ -1091,14 +1377,21 @@ The list of shared private link resources in this workspace.
 Specifies the SKU, also referred as 'edition' of the Azure Machine Learning workspace.
 - Required: Yes
 - Type: string
-- Allowed: `[Basic, Free, Premium, Standard]`
+- Allowed:
+  ```Bicep
+  [
+    'Basic'
+    'Free'
+    'Premium'
+    'Standard'
+  ]
+  ```
 
 ### Parameter: `tags`
 
 Resource tags.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 
 ## Outputs

@@ -81,7 +81,7 @@ The name of the virtual machine scale set extension.
 Any object that contains the extension specific protected settings.
 - Required: No
 - Type: secureObject
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `publisher`
 
@@ -94,7 +94,7 @@ The name of the extension handler publisher.
 Any object that contains the extension specific settings.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `supressFailures`
 

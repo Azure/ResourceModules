@@ -1325,7 +1325,13 @@ Configuration values for continuous mode backup.
 - Required: No
 - Type: string
 - Default: `'Continuous30Days'`
-- Allowed: `[Continuous30Days, Continuous7Days]`
+- Allowed:
+  ```Bicep
+  [
+    'Continuous30Days'
+    'Continuous7Days'
+  ]
+  ```
 
 ### Parameter: `backupPolicyType`
 
@@ -1333,7 +1339,13 @@ Describes the mode of backups.
 - Required: No
 - Type: string
 - Default: `'Continuous'`
-- Allowed: `[Continuous, Periodic]`
+- Allowed:
+  ```Bicep
+  [
+    'Continuous'
+    'Periodic'
+  ]
+  ```
 
 ### Parameter: `backupRetentionIntervalInHours`
 
@@ -1348,7 +1360,14 @@ Enum to indicate type of backup residency. Only applies to periodic backup type.
 - Required: No
 - Type: string
 - Default: `'Local'`
-- Allowed: `[Geo, Local, Zone]`
+- Allowed:
+  ```Bicep
+  [
+    'Geo'
+    'Local'
+    'Zone'
+  ]
+  ```
 
 ### Parameter: `capabilitiesToAdd`
 
@@ -1356,7 +1375,17 @@ List of Cosmos DB capabilities for the account.
 - Required: No
 - Type: array
 - Default: `[]`
-- Allowed: `[DisableRateLimitingResponses, EnableCassandra, EnableGremlin, EnableMongo, EnableServerless, EnableTable]`
+- Allowed:
+  ```Bicep
+  [
+    'DisableRateLimitingResponses'
+    'EnableCassandra'
+    'EnableGremlin'
+    'EnableMongo'
+    'EnableServerless'
+    'EnableTable'
+  ]
+  ```
 
 ### Parameter: `databaseAccountOfferType`
 
@@ -1364,7 +1393,12 @@ The offer type for the Cosmos DB database account.
 - Required: No
 - Type: string
 - Default: `'Standard'`
-- Allowed: `[Standard]`
+- Allowed:
+  ```Bicep
+  [
+    'Standard'
+  ]
+  ```
 
 ### Parameter: `defaultConsistencyLevel`
 
@@ -1372,7 +1406,16 @@ The default consistency level of the Cosmos DB account.
 - Required: No
 - Type: string
 - Default: `'Session'`
-- Allowed: `[BoundedStaleness, ConsistentPrefix, Eventual, Session, Strong]`
+- Allowed:
+  ```Bicep
+  [
+    'BoundedStaleness'
+    'ConsistentPrefix'
+    'Eventual'
+    'Session'
+    'Strong'
+  ]
+  ```
 
 ### Parameter: `diagnosticSettings`
 
@@ -1644,14 +1687,20 @@ Optional. Custom DNS configurations.
 
 | Name | Required | Type | Description |
 | :-- | :-- | :--| :-- |
-| [`fqdn`](#parameter-privateendpointscustomdnsconfigsfqdn) | No | string |  |
-| [`ipAddresses`](#parameter-privateendpointscustomdnsconfigsipaddresses) | Yes | array |  |
+| [`fqdn`](#parameter-privateendpointscustomdnsconfigsfqdn) | No | string | Required. Fqdn that resolves to private endpoint ip address. |
+| [`ipAddresses`](#parameter-privateendpointscustomdnsconfigsipaddresses) | Yes | array | Required. A list of private ip addresses of the private endpoint. |
 
 ### Parameter: `privateEndpoints.customDnsConfigs.fqdn`
+
+Required. Fqdn that resolves to private endpoint ip address.
+
 - Required: No
 - Type: string
 
 ### Parameter: `privateEndpoints.customDnsConfigs.ipAddresses`
+
+Required. A list of private ip addresses of the private endpoint.
+
 - Required: Yes
 - Type: array
 
@@ -1679,26 +1728,50 @@ Optional. A list of IP configurations of the private endpoint. This will be used
 
 | Name | Required | Type | Description |
 | :-- | :-- | :--| :-- |
-| [`groupId`](#parameter-privateendpointsipconfigurationsgroupid) | Yes | string |  |
-| [`memberName`](#parameter-privateendpointsipconfigurationsmembername) | Yes | string |  |
-| [`name`](#parameter-privateendpointsipconfigurationsname) | Yes | string |  |
-| [`privateIpAddress`](#parameter-privateendpointsipconfigurationsprivateipaddress) | Yes | string |  |
-
-### Parameter: `privateEndpoints.ipConfigurations.groupId`
-- Required: Yes
-- Type: string
-
-### Parameter: `privateEndpoints.ipConfigurations.memberName`
-- Required: Yes
-- Type: string
+| [`name`](#parameter-privateendpointsipconfigurationsname) | Yes | string | Required. The name of the resource that is unique within a resource group. |
+| [`properties`](#parameter-privateendpointsipconfigurationsproperties) | Yes | object | Required. Properties of private endpoint IP configurations. |
 
 ### Parameter: `privateEndpoints.ipConfigurations.name`
+
+Required. The name of the resource that is unique within a resource group.
+
 - Required: Yes
 - Type: string
 
-### Parameter: `privateEndpoints.ipConfigurations.privateIpAddress`
+### Parameter: `privateEndpoints.ipConfigurations.properties`
+
+Required. Properties of private endpoint IP configurations.
+
+- Required: Yes
+- Type: object
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`groupId`](#parameter-privateendpointsipconfigurationspropertiesgroupid) | Yes | string | Required. The ID of a group obtained from the remote resource that this private endpoint should connect to. |
+| [`memberName`](#parameter-privateendpointsipconfigurationspropertiesmembername) | Yes | string | Required. The member name of a group obtained from the remote resource that this private endpoint should connect to. |
+| [`privateIPAddress`](#parameter-privateendpointsipconfigurationspropertiesprivateipaddress) | Yes | string | Required. A private ip address obtained from the private endpoint's subnet. |
+
+### Parameter: `privateEndpoints.ipConfigurations.properties.groupId`
+
+Required. The ID of a group obtained from the remote resource that this private endpoint should connect to.
+
 - Required: Yes
 - Type: string
+
+### Parameter: `privateEndpoints.ipConfigurations.properties.memberName`
+
+Required. The member name of a group obtained from the remote resource that this private endpoint should connect to.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `privateEndpoints.ipConfigurations.properties.privateIPAddress`
+
+Required. A private ip address obtained from the private endpoint's subnet.
+
+- Required: Yes
+- Type: string
+
 
 
 ### Parameter: `privateEndpoints.location`
@@ -1845,7 +1918,15 @@ Specifies the MongoDB server version to use.
 - Required: No
 - Type: string
 - Default: `'4.2'`
-- Allowed: `[3.2, 3.6, 4.0, 4.2]`
+- Allowed:
+  ```Bicep
+  [
+    '3.2'
+    '3.6'
+    '4.0'
+    '4.2'
+  ]
+  ```
 
 ### Parameter: `sqlDatabases`
 
@@ -1859,7 +1940,6 @@ SQL Databases configurations.
 Tags of the Database Account resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 
 ## Outputs

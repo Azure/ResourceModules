@@ -27,10 +27,227 @@ The following section provides usage examples for the module, which were used to
 
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/network.front-door:1.0.0`.
 
-- [Using large parameter set](#example-1-using-large-parameter-set)
-- [Using only defaults](#example-2-using-only-defaults)
+- [Using only defaults](#example-1-using-only-defaults)
+- [Using large parameter set](#example-2-using-large-parameter-set)
+- [WAF-aligned](#example-3-waf-aligned)
 
-### Example 1: _Using large parameter set_
+### Example 1: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module frontDoor 'br:bicep/modules/network.front-door:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-nfdmin'
+  params: {
+    // Required parameters
+    backendPools: [
+      {
+        name: 'backendPool'
+        properties: {
+          backends: [
+            {
+              address: 'biceptest.local'
+              backendHostHeader: 'backendAddress'
+              enabledState: 'Enabled'
+              httpPort: 80
+              httpsPort: 443
+              priority: 1
+              weight: 50
+            }
+          ]
+          HealthProbeSettings: {
+            id: '<id>'
+          }
+          LoadBalancingSettings: {
+            id: '<id>'
+          }
+        }
+      }
+    ]
+    frontendEndpoints: [
+      {
+        name: 'frontEnd'
+        properties: {
+          hostName: '<hostName>'
+          sessionAffinityEnabledState: 'Disabled'
+          sessionAffinityTtlSeconds: 60
+        }
+      }
+    ]
+    healthProbeSettings: [
+      {
+        name: 'heathProbe'
+        properties: {
+          intervalInSeconds: 60
+          path: '/'
+          protocol: 'Https'
+        }
+      }
+    ]
+    loadBalancingSettings: [
+      {
+        name: 'loadBalancer'
+        properties: {
+          additionalLatencyMilliseconds: 0
+          sampleSize: 50
+          successfulSamplesRequired: 1
+        }
+      }
+    ]
+    name: '<name>'
+    routingRules: [
+      {
+        name: 'routingRule'
+        properties: {
+          acceptedProtocols: [
+            'Https'
+          ]
+          enabledState: 'Enabled'
+          frontendEndpoints: [
+            {
+              id: '<id>'
+            }
+          ]
+          patternsToMatch: [
+            '/*'
+          ]
+          routeConfiguration: {
+            '@odata.type': '#Microsoft.Azure.FrontDoor.Models.FrontdoorForwardingConfiguration'
+            backendPool: {
+              id: '<id>'
+            }
+          }
+        }
+      }
+    ]
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "backendPools": {
+      "value": [
+        {
+          "name": "backendPool",
+          "properties": {
+            "backends": [
+              {
+                "address": "biceptest.local",
+                "backendHostHeader": "backendAddress",
+                "enabledState": "Enabled",
+                "httpPort": 80,
+                "httpsPort": 443,
+                "priority": 1,
+                "weight": 50
+              }
+            ],
+            "HealthProbeSettings": {
+              "id": "<id>"
+            },
+            "LoadBalancingSettings": {
+              "id": "<id>"
+            }
+          }
+        }
+      ]
+    },
+    "frontendEndpoints": {
+      "value": [
+        {
+          "name": "frontEnd",
+          "properties": {
+            "hostName": "<hostName>",
+            "sessionAffinityEnabledState": "Disabled",
+            "sessionAffinityTtlSeconds": 60
+          }
+        }
+      ]
+    },
+    "healthProbeSettings": {
+      "value": [
+        {
+          "name": "heathProbe",
+          "properties": {
+            "intervalInSeconds": 60,
+            "path": "/",
+            "protocol": "Https"
+          }
+        }
+      ]
+    },
+    "loadBalancingSettings": {
+      "value": [
+        {
+          "name": "loadBalancer",
+          "properties": {
+            "additionalLatencyMilliseconds": 0,
+            "sampleSize": 50,
+            "successfulSamplesRequired": 1
+          }
+        }
+      ]
+    },
+    "name": {
+      "value": "<name>"
+    },
+    "routingRules": {
+      "value": [
+        {
+          "name": "routingRule",
+          "properties": {
+            "acceptedProtocols": [
+              "Https"
+            ],
+            "enabledState": "Enabled",
+            "frontendEndpoints": [
+              {
+                "id": "<id>"
+              }
+            ],
+            "patternsToMatch": [
+              "/*"
+            ],
+            "routeConfiguration": {
+              "@odata.type": "#Microsoft.Azure.FrontDoor.Models.FrontdoorForwardingConfiguration",
+              "backendPool": {
+                "id": "<id>"
+              }
+            }
+          }
+        }
+      ]
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 2: _Using large parameter set_
 
 This instance deploys the module with most of its features enabled.
 
@@ -41,7 +258,7 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module frontDoor 'br:bicep/modules/network.front-door:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-nfdcom'
+  name: '${uniqueString(deployment().name, location)}-test-nfdmax'
   params: {
     // Required parameters
     backendPools: [
@@ -308,9 +525,9 @@ module frontDoor 'br:bicep/modules/network.front-door:1.0.0' = {
 </details>
 <p>
 
-### Example 2: _Using only defaults_
+### Example 3: _WAF-aligned_
 
-This instance deploys the module with the minimum set of required parameters.
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
 
 
 <details>
@@ -319,7 +536,7 @@ This instance deploys the module with the minimum set of required parameters.
 
 ```bicep
 module frontDoor 'br:bicep/modules/network.front-door:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-nfdmin'
+  name: '${uniqueString(deployment().name, location)}-test-nfdwaf'
   params: {
     // Required parameters
     backendPools: [
@@ -334,6 +551,10 @@ module frontDoor 'br:bicep/modules/network.front-door:1.0.0' = {
               httpPort: 80
               httpsPort: 443
               priority: 1
+              privateLinkAlias: ''
+              privateLinkApprovalMessage: ''
+              privateLinkLocation: ''
+              privateLinkResourceId: ''
               weight: 50
             }
           ]
@@ -360,6 +581,8 @@ module frontDoor 'br:bicep/modules/network.front-door:1.0.0' = {
       {
         name: 'heathProbe'
         properties: {
+          enabledState: ''
+          healthProbeMethod: ''
           intervalInSeconds: 60
           path: '/'
           protocol: 'Https'
@@ -382,6 +605,7 @@ module frontDoor 'br:bicep/modules/network.front-door:1.0.0' = {
         name: 'routingRule'
         properties: {
           acceptedProtocols: [
+            'Http'
             'Https'
           ]
           enabledState: 'Enabled'
@@ -398,12 +622,31 @@ module frontDoor 'br:bicep/modules/network.front-door:1.0.0' = {
             backendPool: {
               id: '<id>'
             }
+            forwardingProtocol: 'MatchRequest'
           }
         }
       }
     ]
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    enforceCertificateNameCheck: 'Disabled'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    sendRecvTimeoutSeconds: 10
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -434,6 +677,10 @@ module frontDoor 'br:bicep/modules/network.front-door:1.0.0' = {
                 "httpPort": 80,
                 "httpsPort": 443,
                 "priority": 1,
+                "privateLinkAlias": "",
+                "privateLinkApprovalMessage": "",
+                "privateLinkLocation": "",
+                "privateLinkResourceId": "",
                 "weight": 50
               }
             ],
@@ -464,6 +711,8 @@ module frontDoor 'br:bicep/modules/network.front-door:1.0.0' = {
         {
           "name": "heathProbe",
           "properties": {
+            "enabledState": "",
+            "healthProbeMethod": "",
             "intervalInSeconds": 60,
             "path": "/",
             "protocol": "Https"
@@ -492,6 +741,7 @@ module frontDoor 'br:bicep/modules/network.front-door:1.0.0' = {
           "name": "routingRule",
           "properties": {
             "acceptedProtocols": [
+              "Http",
               "Https"
             ],
             "enabledState": "Enabled",
@@ -507,7 +757,8 @@ module frontDoor 'br:bicep/modules/network.front-door:1.0.0' = {
               "@odata.type": "#Microsoft.Azure.FrontDoor.Models.FrontdoorForwardingConfiguration",
               "backendPool": {
                 "id": "<id>"
-              }
+              },
+              "forwardingProtocol": "MatchRequest"
             }
           }
         }
@@ -516,6 +767,34 @@ module frontDoor 'br:bicep/modules/network.front-door:1.0.0' = {
     // Non-required parameters
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
+    },
+    "enforceCertificateNameCheck": {
+      "value": "Disabled"
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "sendRecvTimeoutSeconds": {
+      "value": 10
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }
@@ -846,7 +1125,6 @@ Certificate name check time of the frontdoor resource.
 Resource tags.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 
 ## Outputs

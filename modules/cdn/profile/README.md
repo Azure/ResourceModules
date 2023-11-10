@@ -38,6 +38,7 @@ The following section provides usage examples for the module, which were used to
 
 - [Afd](#example-1-afd)
 - [Using large parameter set](#example-2-using-large-parameter-set)
+- [WAF-aligned](#example-3-waf-aligned)
 
 ### Example 1: _Afd_
 
@@ -267,10 +268,10 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module profile 'br:bicep/modules/cdn.profile:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-cdnpcom'
+  name: '${uniqueString(deployment().name, location)}-test-cdnpmax'
   params: {
     // Required parameters
-    name: 'dep-test-cdnpcom'
+    name: 'dep-test-cdnpmax'
     sku: 'Standard_Verizon'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
@@ -335,7 +336,155 @@ module profile 'br:bicep/modules/cdn.profile:1.0.0' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "dep-test-cdnpcom"
+      "value": "dep-test-cdnpmax"
+    },
+    "sku": {
+      "value": "Standard_Verizon"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "endpointProperties": {
+      "value": {
+        "contentTypesToCompress": [
+          "application/javascript",
+          "application/json",
+          "application/x-javascript",
+          "application/xml",
+          "text/css",
+          "text/html",
+          "text/javascript",
+          "text/plain"
+        ],
+        "geoFilters": [],
+        "isCompressionEnabled": true,
+        "isHttpAllowed": true,
+        "isHttpsAllowed": true,
+        "originGroups": [],
+        "originHostHeader": "<originHostHeader>",
+        "origins": [
+          {
+            "name": "dep-cdn-endpoint01",
+            "properties": {
+              "enabled": true,
+              "hostName": "<hostName>",
+              "httpPort": 80,
+              "httpsPort": 443
+            }
+          }
+        ],
+        "queryStringCachingBehavior": "IgnoreQueryString"
+      }
+    },
+    "location": {
+      "value": "<location>"
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "originResponseTimeoutSeconds": {
+      "value": 60
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 3: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module profile 'br:bicep/modules/cdn.profile:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-cdnpwaf'
+  params: {
+    // Required parameters
+    name: 'dep-test-cdnpwaf'
+    sku: 'Standard_Verizon'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    endpointProperties: {
+      contentTypesToCompress: [
+        'application/javascript'
+        'application/json'
+        'application/x-javascript'
+        'application/xml'
+        'text/css'
+        'text/html'
+        'text/javascript'
+        'text/plain'
+      ]
+      geoFilters: []
+      isCompressionEnabled: true
+      isHttpAllowed: true
+      isHttpsAllowed: true
+      originGroups: []
+      originHostHeader: '<originHostHeader>'
+      origins: [
+        {
+          name: 'dep-cdn-endpoint01'
+          properties: {
+            enabled: true
+            hostName: '<hostName>'
+            httpPort: 80
+            httpsPort: 443
+          }
+        }
+      ]
+      queryStringCachingBehavior: 'IgnoreQueryString'
+    }
+    location: '<location>'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    originResponseTimeoutSeconds: 60
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "dep-test-cdnpwaf"
     },
     "sku": {
       "value": "Standard_Verizon"
@@ -470,7 +619,7 @@ Name of the endpoint under the profile which is unique globally.
 Endpoint properties (see https://learn.microsoft.com/en-us/azure/templates/microsoft.cdn/profiles/endpoints?pivots=deployment-language-bicep#endpointproperties for details).
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `location`
 
@@ -613,14 +762,30 @@ Array of secret objects.
 The pricing tier (defines a CDN provider, feature list and rate) of the CDN profile.
 - Required: Yes
 - Type: string
-- Allowed: `[Custom_Verizon, Premium_AzureFrontDoor, Premium_Verizon, Standard_955BandWidth_ChinaCdn, Standard_Akamai, Standard_AvgBandWidth_ChinaCdn, Standard_AzureFrontDoor, Standard_ChinaCdn, Standard_Microsoft, Standard_Verizon, StandardPlus_955BandWidth_ChinaCdn, StandardPlus_AvgBandWidth_ChinaCdn, StandardPlus_ChinaCdn]`
+- Allowed:
+  ```Bicep
+  [
+    'Custom_Verizon'
+    'Premium_AzureFrontDoor'
+    'Premium_Verizon'
+    'Standard_955BandWidth_ChinaCdn'
+    'Standard_Akamai'
+    'Standard_AvgBandWidth_ChinaCdn'
+    'Standard_AzureFrontDoor'
+    'Standard_ChinaCdn'
+    'Standard_Microsoft'
+    'Standard_Verizon'
+    'StandardPlus_955BandWidth_ChinaCdn'
+    'StandardPlus_AvgBandWidth_ChinaCdn'
+    'StandardPlus_ChinaCdn'
+  ]
+  ```
 
 ### Parameter: `tags`
 
 Endpoint tags.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 
 ## Outputs

@@ -61,7 +61,16 @@ Enable telemetry via the Customer Usage Attribution ID (GUID).
 Type of slot to deploy.
 - Required: Yes
 - Type: string
-- Allowed: `[app, functionapp, functionapp,linux, functionapp,workflowapp, functionapp,workflowapp,linux]`
+- Allowed:
+  ```Bicep
+  [
+    'app'
+    'functionapp'
+    'functionapplinux'
+    'functionappworkflowapp'
+    'functionappworkflowapplinux'
+  ]
+  ```
 
 ### Parameter: `slotName`
 

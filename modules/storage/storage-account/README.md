@@ -41,13 +41,235 @@ The following section provides usage examples for the module, which were used to
 
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/storage.storage-account:1.0.0`.
 
-- [Using large parameter set](#example-1-using-large-parameter-set)
+- [Using only defaults](#example-1-using-only-defaults)
 - [Encr](#example-2-encr)
-- [Using only defaults](#example-3-using-only-defaults)
+- [Using large parameter set](#example-3-using-large-parameter-set)
 - [Nfs](#example-4-nfs)
 - [V1](#example-5-v1)
+- [WAF-aligned](#example-6-waf-aligned)
 
-### Example 1: _Using large parameter set_
+### Example 1: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module storageAccount 'br:bicep/modules/storage.storage-account:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-ssamin'
+  params: {
+    // Required parameters
+    name: 'ssamin001'
+    // Non-required parameters
+    allowBlobPublicAccess: false
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "ssamin001"
+    },
+    // Non-required parameters
+    "allowBlobPublicAccess": {
+      "value": false
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 2: _Encr_
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module storageAccount 'br:bicep/modules/storage.storage-account:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-ssaencr'
+  params: {
+    // Required parameters
+    name: 'ssaencr001'
+    // Non-required parameters
+    allowBlobPublicAccess: false
+    blobServices: {
+      automaticSnapshotPolicyEnabled: true
+      changeFeedEnabled: true
+      changeFeedRetentionInDays: 10
+      containerDeleteRetentionPolicyAllowPermanentDelete: true
+      containerDeleteRetentionPolicyDays: 10
+      containerDeleteRetentionPolicyEnabled: true
+      containers: [
+        {
+          name: 'container'
+          publicAccess: 'None'
+        }
+      ]
+      defaultServiceVersion: '2008-10-27'
+      deleteRetentionPolicyDays: 9
+      deleteRetentionPolicyEnabled: true
+      isVersioningEnabled: true
+      lastAccessTimeTrackingPolicyEnable: true
+      restorePolicyDays: 8
+      restorePolicyEnabled: true
+    }
+    customerManagedKey: {
+      keyName: '<keyName>'
+      keyVaultResourceId: '<keyVaultResourceId>'
+      userAssignedIdentityResourceId: '<userAssignedIdentityResourceId>'
+    }
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    managedIdentities: {
+      systemAssigned: false
+      userAssignedResourcesIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
+    privateEndpoints: [
+      {
+        privateDnsZoneResourceIds: [
+          '<privateDNSZoneResourceId>'
+        ]
+        service: 'blob'
+        subnetResourceId: '<subnetResourceId>'
+        tags: {
+          Environment: 'Non-Prod'
+          'hidden-title': 'This is visible in the resource name'
+          Role: 'DeploymentValidation'
+        }
+      }
+    ]
+    requireInfrastructureEncryption: true
+    skuName: 'Standard_LRS'
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "ssaencr001"
+    },
+    // Non-required parameters
+    "allowBlobPublicAccess": {
+      "value": false
+    },
+    "blobServices": {
+      "value": {
+        "automaticSnapshotPolicyEnabled": true,
+        "changeFeedEnabled": true,
+        "changeFeedRetentionInDays": 10,
+        "containerDeleteRetentionPolicyAllowPermanentDelete": true,
+        "containerDeleteRetentionPolicyDays": 10,
+        "containerDeleteRetentionPolicyEnabled": true,
+        "containers": [
+          {
+            "name": "container",
+            "publicAccess": "None"
+          }
+        ],
+        "defaultServiceVersion": "2008-10-27",
+        "deleteRetentionPolicyDays": 9,
+        "deleteRetentionPolicyEnabled": true,
+        "isVersioningEnabled": true,
+        "lastAccessTimeTrackingPolicyEnable": true,
+        "restorePolicyDays": 8,
+        "restorePolicyEnabled": true
+      }
+    },
+    "customerManagedKey": {
+      "value": {
+        "keyName": "<keyName>",
+        "keyVaultResourceId": "<keyVaultResourceId>",
+        "userAssignedIdentityResourceId": "<userAssignedIdentityResourceId>"
+      }
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "managedIdentities": {
+      "value": {
+        "systemAssigned": false,
+        "userAssignedResourcesIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
+    },
+    "privateEndpoints": {
+      "value": [
+        {
+          "privateDnsZoneResourceIds": [
+            "<privateDNSZoneResourceId>"
+          ],
+          "service": "blob",
+          "subnetResourceId": "<subnetResourceId>",
+          "tags": {
+            "Environment": "Non-Prod",
+            "hidden-title": "This is visible in the resource name",
+            "Role": "DeploymentValidation"
+          }
+        }
+      ]
+    },
+    "requireInfrastructureEncryption": {
+      "value": true
+    },
+    "skuName": {
+      "value": "Standard_LRS"
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 3: _Using large parameter set_
 
 This instance deploys the module with most of its features enabled.
 
@@ -58,10 +280,10 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module storageAccount 'br:bicep/modules/storage.storage-account:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-ssacom'
+  name: '${uniqueString(deployment().name, location)}-test-ssamax'
   params: {
     // Required parameters
-    name: 'ssacom001'
+    name: 'ssamax001'
     // Non-required parameters
     allowBlobPublicAccess: false
     blobServices: {
@@ -178,7 +400,7 @@ module storageAccount 'br:bicep/modules/storage.storage-account:1.0.0' = {
             service: 'blob'
           }
         ]
-        storageAccountName: 'ssacom001'
+        storageAccountName: 'ssamax001'
       }
     ]
     lock: {
@@ -344,7 +566,7 @@ module storageAccount 'br:bicep/modules/storage.storage-account:1.0.0' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "ssacom001"
+      "value": "ssamax001"
     },
     // Non-required parameters
     "allowBlobPublicAccess": {
@@ -481,7 +703,7 @@ module storageAccount 'br:bicep/modules/storage.storage-account:1.0.0' = {
               "service": "blob"
             }
           ],
-          "storageAccountName": "ssacom001"
+          "storageAccountName": "ssamax001"
         }
       ]
     },
@@ -653,227 +875,6 @@ module storageAccount 'br:bicep/modules/storage.storage-account:1.0.0' = {
         "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-### Example 2: _Encr_
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module storageAccount 'br:bicep/modules/storage.storage-account:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-ssaencr'
-  params: {
-    // Required parameters
-    name: 'ssaencr001'
-    // Non-required parameters
-    allowBlobPublicAccess: false
-    blobServices: {
-      automaticSnapshotPolicyEnabled: true
-      changeFeedEnabled: true
-      changeFeedRetentionInDays: 10
-      containerDeleteRetentionPolicyAllowPermanentDelete: true
-      containerDeleteRetentionPolicyDays: 10
-      containerDeleteRetentionPolicyEnabled: true
-      containers: [
-        {
-          name: 'container'
-          publicAccess: 'None'
-        }
-      ]
-      defaultServiceVersion: '2008-10-27'
-      deleteRetentionPolicyDays: 9
-      deleteRetentionPolicyEnabled: true
-      isVersioningEnabled: true
-      lastAccessTimeTrackingPolicyEnable: true
-      restorePolicyDays: 8
-      restorePolicyEnabled: true
-    }
-    cMKKeyName: '<cMKKeyName>'
-    cMKKeyVaultResourceId: '<cMKKeyVaultResourceId>'
-    cMKUserAssignedIdentityResourceId: '<cMKUserAssignedIdentityResourceId>'
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    managedIdentities: {
-      systemAssigned: false
-      userAssignedResourcesIds: [
-        '<managedIdentityResourceId>'
-      ]
-    }
-    privateEndpoints: [
-      {
-        privateDnsZoneResourceIds: [
-          '<privateDNSZoneResourceId>'
-        ]
-        service: 'blob'
-        subnetResourceId: '<subnetResourceId>'
-        tags: {
-          Environment: 'Non-Prod'
-          'hidden-title': 'This is visible in the resource name'
-          Role: 'DeploymentValidation'
-        }
-      }
-    ]
-    requireInfrastructureEncryption: true
-    skuName: 'Standard_LRS'
-    tags: {
-      Environment: 'Non-Prod'
-      'hidden-title': 'This is visible in the resource name'
-      Role: 'DeploymentValidation'
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "ssaencr001"
-    },
-    // Non-required parameters
-    "allowBlobPublicAccess": {
-      "value": false
-    },
-    "blobServices": {
-      "value": {
-        "automaticSnapshotPolicyEnabled": true,
-        "changeFeedEnabled": true,
-        "changeFeedRetentionInDays": 10,
-        "containerDeleteRetentionPolicyAllowPermanentDelete": true,
-        "containerDeleteRetentionPolicyDays": 10,
-        "containerDeleteRetentionPolicyEnabled": true,
-        "containers": [
-          {
-            "name": "container",
-            "publicAccess": "None"
-          }
-        ],
-        "defaultServiceVersion": "2008-10-27",
-        "deleteRetentionPolicyDays": 9,
-        "deleteRetentionPolicyEnabled": true,
-        "isVersioningEnabled": true,
-        "lastAccessTimeTrackingPolicyEnable": true,
-        "restorePolicyDays": 8,
-        "restorePolicyEnabled": true
-      }
-    },
-    "cMKKeyName": {
-      "value": "<cMKKeyName>"
-    },
-    "cMKKeyVaultResourceId": {
-      "value": "<cMKKeyVaultResourceId>"
-    },
-    "cMKUserAssignedIdentityResourceId": {
-      "value": "<cMKUserAssignedIdentityResourceId>"
-    },
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
-    "managedIdentities": {
-      "value": {
-        "systemAssigned": false,
-        "userAssignedResourcesIds": [
-          "<managedIdentityResourceId>"
-        ]
-      }
-    },
-    "privateEndpoints": {
-      "value": [
-        {
-          "privateDnsZoneResourceIds": [
-            "<privateDNSZoneResourceId>"
-          ],
-          "service": "blob",
-          "subnetResourceId": "<subnetResourceId>",
-          "tags": {
-            "Environment": "Non-Prod",
-            "hidden-title": "This is visible in the resource name",
-            "Role": "DeploymentValidation"
-          }
-        }
-      ]
-    },
-    "requireInfrastructureEncryption": {
-      "value": true
-    },
-    "skuName": {
-      "value": "Standard_LRS"
-    },
-    "tags": {
-      "value": {
-        "Environment": "Non-Prod",
-        "hidden-title": "This is visible in the resource name",
-        "Role": "DeploymentValidation"
-      }
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-### Example 3: _Using only defaults_
-
-This instance deploys the module with the minimum set of required parameters.
-
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module storageAccount 'br:bicep/modules/storage.storage-account:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-ssamin'
-  params: {
-    // Required parameters
-    name: 'ssamin001'
-    // Non-required parameters
-    allowBlobPublicAccess: false
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "ssamin001"
-    },
-    // Non-required parameters
-    "allowBlobPublicAccess": {
-      "value": false
-    },
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
     }
   }
 }
@@ -1108,6 +1109,620 @@ module storageAccount 'br:bicep/modules/storage.storage-account:1.0.0' = {
 </details>
 <p>
 
+### Example 6: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module storageAccount 'br:bicep/modules/storage.storage-account:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-ssawaf'
+  params: {
+    // Required parameters
+    name: 'ssawaf001'
+    // Non-required parameters
+    allowBlobPublicAccess: false
+    blobServices: {
+      automaticSnapshotPolicyEnabled: true
+      containerDeleteRetentionPolicyDays: 10
+      containerDeleteRetentionPolicyEnabled: true
+      containers: [
+        {
+          enableNfsV3AllSquash: true
+          enableNfsV3RootSquash: true
+          name: 'avdscripts'
+          publicAccess: 'None'
+          roleAssignments: [
+            {
+              principalId: '<principalId>'
+              principalType: 'ServicePrincipal'
+              roleDefinitionIdOrName: 'Reader'
+            }
+          ]
+        }
+        {
+          allowProtectedAppendWrites: false
+          enableWORM: true
+          metadata: {
+            testKey: 'testValue'
+          }
+          name: 'archivecontainer'
+          publicAccess: 'None'
+          WORMRetention: 666
+        }
+      ]
+      deleteRetentionPolicyDays: 9
+      deleteRetentionPolicyEnabled: true
+      diagnosticSettings: [
+        {
+          eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+          eventHubName: '<eventHubName>'
+          metricCategories: [
+            {
+              category: 'AllMetrics'
+            }
+          ]
+          name: 'customSetting'
+          storageAccountResourceId: '<storageAccountResourceId>'
+          workspaceResourceId: '<workspaceResourceId>'
+        }
+      ]
+      lastAccessTimeTrackingPolicyEnabled: true
+    }
+    diagnosticSettings: [
+      {
+        eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+        eventHubName: '<eventHubName>'
+        metricCategories: [
+          {
+            category: 'AllMetrics'
+          }
+        ]
+        name: 'customSetting'
+        storageAccountResourceId: '<storageAccountResourceId>'
+        workspaceResourceId: '<workspaceResourceId>'
+      }
+    ]
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    enableHierarchicalNamespace: true
+    enableNfsV3: true
+    enableSftp: true
+    fileServices: {
+      diagnosticSettings: [
+        {
+          eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+          eventHubName: '<eventHubName>'
+          metricCategories: [
+            {
+              category: 'AllMetrics'
+            }
+          ]
+          name: 'customSetting'
+          storageAccountResourceId: '<storageAccountResourceId>'
+          workspaceResourceId: '<workspaceResourceId>'
+        }
+      ]
+      shares: [
+        {
+          accessTier: 'Hot'
+          name: 'avdprofiles'
+          roleAssignments: [
+            {
+              principalId: '<principalId>'
+              principalType: 'ServicePrincipal'
+              roleDefinitionIdOrName: 'Reader'
+            }
+          ]
+          shareQuota: 5120
+        }
+        {
+          name: 'avdprofiles2'
+          shareQuota: 102400
+        }
+      ]
+    }
+    largeFileSharesState: 'Enabled'
+    localUsers: [
+      {
+        hasSharedKey: false
+        hasSshKey: true
+        hasSshPassword: false
+        homeDirectory: 'avdscripts'
+        name: 'testuser'
+        permissionScopes: [
+          {
+            permissions: 'r'
+            resourceName: 'avdscripts'
+            service: 'blob'
+          }
+        ]
+        storageAccountName: 'ssawaf001'
+      }
+    ]
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    managedIdentities: {
+      systemAssigned: true
+      userAssignedResourcesIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
+    managementPolicyRules: [
+      {
+        definition: {
+          actions: {
+            baseBlob: {
+              delete: {
+                daysAfterModificationGreaterThan: 30
+              }
+              tierToCool: {
+                daysAfterLastAccessTimeGreaterThan: 5
+              }
+            }
+          }
+          filters: {
+            blobIndexMatch: [
+              {
+                name: 'BlobIndex'
+                op: '=='
+                value: '1'
+              }
+            ]
+            blobTypes: [
+              'blockBlob'
+            ]
+            prefixMatch: [
+              'sample-container/log'
+            ]
+          }
+        }
+        enabled: true
+        name: 'FirstRule'
+        type: 'Lifecycle'
+      }
+    ]
+    networkAcls: {
+      bypass: 'AzureServices'
+      defaultAction: 'Deny'
+      ipRules: [
+        {
+          action: 'Allow'
+          value: '1.1.1.1'
+        }
+      ]
+      virtualNetworkRules: [
+        {
+          action: 'Allow'
+          id: '<id>'
+        }
+      ]
+    }
+    privateEndpoints: [
+      {
+        privateDnsZoneResourceIds: [
+          '<privateDNSZoneResourceId>'
+        ]
+        service: 'blob'
+        subnetResourceId: '<subnetResourceId>'
+        tags: {
+          Environment: 'Non-Prod'
+          'hidden-title': 'This is visible in the resource name'
+          Role: 'DeploymentValidation'
+        }
+      }
+    ]
+    queueServices: {
+      diagnosticSettings: [
+        {
+          eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+          eventHubName: '<eventHubName>'
+          metricCategories: [
+            {
+              category: 'AllMetrics'
+            }
+          ]
+          name: 'customSetting'
+          storageAccountResourceId: '<storageAccountResourceId>'
+          workspaceResourceId: '<workspaceResourceId>'
+        }
+      ]
+      queues: [
+        {
+          metadata: {
+            key1: 'value1'
+            key2: 'value2'
+          }
+          name: 'queue1'
+          roleAssignments: [
+            {
+              principalId: '<principalId>'
+              principalType: 'ServicePrincipal'
+              roleDefinitionIdOrName: 'Reader'
+            }
+          ]
+        }
+        {
+          metadata: {}
+          name: 'queue2'
+        }
+      ]
+    }
+    requireInfrastructureEncryption: true
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    sasExpirationPeriod: '180.00:00:00'
+    skuName: 'Standard_LRS'
+    tableServices: {
+      diagnosticSettings: [
+        {
+          eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+          eventHubName: '<eventHubName>'
+          metricCategories: [
+            {
+              category: 'AllMetrics'
+            }
+          ]
+          name: 'customSetting'
+          storageAccountResourceId: '<storageAccountResourceId>'
+          workspaceResourceId: '<workspaceResourceId>'
+        }
+      ]
+      tables: [
+        'table1'
+        'table2'
+      ]
+    }
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "ssawaf001"
+    },
+    // Non-required parameters
+    "allowBlobPublicAccess": {
+      "value": false
+    },
+    "blobServices": {
+      "value": {
+        "automaticSnapshotPolicyEnabled": true,
+        "containerDeleteRetentionPolicyDays": 10,
+        "containerDeleteRetentionPolicyEnabled": true,
+        "containers": [
+          {
+            "enableNfsV3AllSquash": true,
+            "enableNfsV3RootSquash": true,
+            "name": "avdscripts",
+            "publicAccess": "None",
+            "roleAssignments": [
+              {
+                "principalId": "<principalId>",
+                "principalType": "ServicePrincipal",
+                "roleDefinitionIdOrName": "Reader"
+              }
+            ]
+          },
+          {
+            "allowProtectedAppendWrites": false,
+            "enableWORM": true,
+            "metadata": {
+              "testKey": "testValue"
+            },
+            "name": "archivecontainer",
+            "publicAccess": "None",
+            "WORMRetention": 666
+          }
+        ],
+        "deleteRetentionPolicyDays": 9,
+        "deleteRetentionPolicyEnabled": true,
+        "diagnosticSettings": [
+          {
+            "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+            "eventHubName": "<eventHubName>",
+            "metricCategories": [
+              {
+                "category": "AllMetrics"
+              }
+            ],
+            "name": "customSetting",
+            "storageAccountResourceId": "<storageAccountResourceId>",
+            "workspaceResourceId": "<workspaceResourceId>"
+          }
+        ],
+        "lastAccessTimeTrackingPolicyEnabled": true
+      }
+    },
+    "diagnosticSettings": {
+      "value": [
+        {
+          "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+          "eventHubName": "<eventHubName>",
+          "metricCategories": [
+            {
+              "category": "AllMetrics"
+            }
+          ],
+          "name": "customSetting",
+          "storageAccountResourceId": "<storageAccountResourceId>",
+          "workspaceResourceId": "<workspaceResourceId>"
+        }
+      ]
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "enableHierarchicalNamespace": {
+      "value": true
+    },
+    "enableNfsV3": {
+      "value": true
+    },
+    "enableSftp": {
+      "value": true
+    },
+    "fileServices": {
+      "value": {
+        "diagnosticSettings": [
+          {
+            "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+            "eventHubName": "<eventHubName>",
+            "metricCategories": [
+              {
+                "category": "AllMetrics"
+              }
+            ],
+            "name": "customSetting",
+            "storageAccountResourceId": "<storageAccountResourceId>",
+            "workspaceResourceId": "<workspaceResourceId>"
+          }
+        ],
+        "shares": [
+          {
+            "accessTier": "Hot",
+            "name": "avdprofiles",
+            "roleAssignments": [
+              {
+                "principalId": "<principalId>",
+                "principalType": "ServicePrincipal",
+                "roleDefinitionIdOrName": "Reader"
+              }
+            ],
+            "shareQuota": 5120
+          },
+          {
+            "name": "avdprofiles2",
+            "shareQuota": 102400
+          }
+        ]
+      }
+    },
+    "largeFileSharesState": {
+      "value": "Enabled"
+    },
+    "localUsers": {
+      "value": [
+        {
+          "hasSharedKey": false,
+          "hasSshKey": true,
+          "hasSshPassword": false,
+          "homeDirectory": "avdscripts",
+          "name": "testuser",
+          "permissionScopes": [
+            {
+              "permissions": "r",
+              "resourceName": "avdscripts",
+              "service": "blob"
+            }
+          ],
+          "storageAccountName": "ssawaf001"
+        }
+      ]
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "managedIdentities": {
+      "value": {
+        "systemAssigned": true,
+        "userAssignedResourcesIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
+    },
+    "managementPolicyRules": {
+      "value": [
+        {
+          "definition": {
+            "actions": {
+              "baseBlob": {
+                "delete": {
+                  "daysAfterModificationGreaterThan": 30
+                },
+                "tierToCool": {
+                  "daysAfterLastAccessTimeGreaterThan": 5
+                }
+              }
+            },
+            "filters": {
+              "blobIndexMatch": [
+                {
+                  "name": "BlobIndex",
+                  "op": "==",
+                  "value": "1"
+                }
+              ],
+              "blobTypes": [
+                "blockBlob"
+              ],
+              "prefixMatch": [
+                "sample-container/log"
+              ]
+            }
+          },
+          "enabled": true,
+          "name": "FirstRule",
+          "type": "Lifecycle"
+        }
+      ]
+    },
+    "networkAcls": {
+      "value": {
+        "bypass": "AzureServices",
+        "defaultAction": "Deny",
+        "ipRules": [
+          {
+            "action": "Allow",
+            "value": "1.1.1.1"
+          }
+        ],
+        "virtualNetworkRules": [
+          {
+            "action": "Allow",
+            "id": "<id>"
+          }
+        ]
+      }
+    },
+    "privateEndpoints": {
+      "value": [
+        {
+          "privateDnsZoneResourceIds": [
+            "<privateDNSZoneResourceId>"
+          ],
+          "service": "blob",
+          "subnetResourceId": "<subnetResourceId>",
+          "tags": {
+            "Environment": "Non-Prod",
+            "hidden-title": "This is visible in the resource name",
+            "Role": "DeploymentValidation"
+          }
+        }
+      ]
+    },
+    "queueServices": {
+      "value": {
+        "diagnosticSettings": [
+          {
+            "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+            "eventHubName": "<eventHubName>",
+            "metricCategories": [
+              {
+                "category": "AllMetrics"
+              }
+            ],
+            "name": "customSetting",
+            "storageAccountResourceId": "<storageAccountResourceId>",
+            "workspaceResourceId": "<workspaceResourceId>"
+          }
+        ],
+        "queues": [
+          {
+            "metadata": {
+              "key1": "value1",
+              "key2": "value2"
+            },
+            "name": "queue1",
+            "roleAssignments": [
+              {
+                "principalId": "<principalId>",
+                "principalType": "ServicePrincipal",
+                "roleDefinitionIdOrName": "Reader"
+              }
+            ]
+          },
+          {
+            "metadata": {},
+            "name": "queue2"
+          }
+        ]
+      }
+    },
+    "requireInfrastructureEncryption": {
+      "value": true
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "sasExpirationPeriod": {
+      "value": "180.00:00:00"
+    },
+    "skuName": {
+      "value": "Standard_LRS"
+    },
+    "tableServices": {
+      "value": {
+        "diagnosticSettings": [
+          {
+            "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+            "eventHubName": "<eventHubName>",
+            "metricCategories": [
+              {
+                "category": "AllMetrics"
+              }
+            ],
+            "name": "customSetting",
+            "storageAccountResourceId": "<storageAccountResourceId>",
+            "workspaceResourceId": "<workspaceResourceId>"
+          }
+        ],
+        "tables": [
+          "table1",
+          "table2"
+        ]
+      }
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
 
 ## Parameters
 
@@ -1122,8 +1737,6 @@ module storageAccount 'br:bicep/modules/storage.storage-account:1.0.0' = {
 | Parameter | Type | Description |
 | :-- | :-- | :-- |
 | [`accessTier`](#parameter-accesstier) | string | Required if the Storage Account kind is set to BlobStorage. The access tier is used for billing. The "Premium" access tier is the default value for premium block blobs storage account type and it cannot be changed for the premium block blobs storage account type. |
-| [`cMKKeyVaultResourceId`](#parameter-cmkkeyvaultresourceid) | string | The resource ID of a key vault to reference a customer managed key for encryption from. Required if 'cMKKeyName' is not empty. |
-| [`cMKUserAssignedIdentityResourceId`](#parameter-cmkuserassignedidentityresourceid) | string | User assigned identity to use when fetching the customer managed key. Required if 'cMKKeyName' is not empty. |
 | [`enableHierarchicalNamespace`](#parameter-enablehierarchicalnamespace) | bool | If true, enables Hierarchical Namespace for the storage account. Required if enableSftp or enableNfsV3 is set to true. |
 
 **Optional parameters**
@@ -1136,10 +1749,9 @@ module storageAccount 'br:bicep/modules/storage.storage-account:1.0.0' = {
 | [`allowSharedKeyAccess`](#parameter-allowsharedkeyaccess) | bool | Indicates whether the storage account permits requests to be authorized with the account access key via Shared Key. If false, then all requests, including shared access signatures, must be authorized with Azure Active Directory (Azure AD). The default value is null, which is equivalent to true. |
 | [`azureFilesIdentityBasedAuthentication`](#parameter-azurefilesidentitybasedauthentication) | object | Provides the identity based authentication settings for Azure Files. |
 | [`blobServices`](#parameter-blobservices) | object | Blob service and containers to deploy. |
-| [`cMKKeyName`](#parameter-cmkkeyname) | string | The name of the customer managed key to use for encryption. Cannot be deployed together with the parameter 'systemAssignedIdentity' enabled. |
-| [`cMKKeyVersion`](#parameter-cmkkeyversion) | string | The version of the customer managed key to reference for encryption. If not provided, latest is used. |
 | [`customDomainName`](#parameter-customdomainname) | string | Sets the custom domain name assigned to the storage account. Name is the CNAME source. |
 | [`customDomainUseSubDomainName`](#parameter-customdomainusesubdomainname) | bool | Indicates whether indirect CName validation is enabled. This should only be set on updates. |
+| [`customerManagedKey`](#parameter-customermanagedkey) | object | The customer managed key definition. |
 | [`defaultToOAuthAuthentication`](#parameter-defaulttooauthauthentication) | bool | A boolean flag which indicates whether the default authentication is OAuth or not. |
 | [`diagnosticSettings`](#parameter-diagnosticsettings) | array | The diagnostic settings of the service. |
 | [`dnsEndpointType`](#parameter-dnsendpointtype) | string | Allows you to specify the type of endpoint. Set this to AzureDNSZone to create a large number of accounts in a single subscription, which creates accounts in an Azure DNS Zone and the endpoint URL will have an alphanumeric DNS Zone identifier. |
@@ -1174,7 +1786,14 @@ Required if the Storage Account kind is set to BlobStorage. The access tier is u
 - Required: No
 - Type: string
 - Default: `'Hot'`
-- Allowed: `[Cool, Hot, Premium]`
+- Allowed:
+  ```Bicep
+  [
+    'Cool'
+    'Hot'
+    'Premium'
+  ]
+  ```
 
 ### Parameter: `allowBlobPublicAccess`
 
@@ -1196,7 +1815,14 @@ Restrict copy to and from Storage Accounts within an AAD tenant or with Private 
 - Required: No
 - Type: string
 - Default: `''`
-- Allowed: `['', AAD, PrivateLink]`
+- Allowed:
+  ```Bicep
+  [
+    ''
+    'AAD'
+    'PrivateLink'
+  ]
+  ```
 
 ### Parameter: `allowSharedKeyAccess`
 
@@ -1210,42 +1836,14 @@ Indicates whether the storage account permits requests to be authorized with the
 Provides the identity based authentication settings for Azure Files.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `blobServices`
 
 Blob service and containers to deploy.
 - Required: No
 - Type: object
-- Default: `{object}`
-
-### Parameter: `cMKKeyName`
-
-The name of the customer managed key to use for encryption. Cannot be deployed together with the parameter 'systemAssignedIdentity' enabled.
-- Required: No
-- Type: string
-- Default: `''`
-
-### Parameter: `cMKKeyVaultResourceId`
-
-The resource ID of a key vault to reference a customer managed key for encryption from. Required if 'cMKKeyName' is not empty.
-- Required: No
-- Type: string
-- Default: `''`
-
-### Parameter: `cMKKeyVersion`
-
-The version of the customer managed key to reference for encryption. If not provided, latest is used.
-- Required: No
-- Type: string
-- Default: `''`
-
-### Parameter: `cMKUserAssignedIdentityResourceId`
-
-User assigned identity to use when fetching the customer managed key. Required if 'cMKKeyName' is not empty.
-- Required: No
-- Type: string
-- Default: `''`
+- Default: `{}`
 
 ### Parameter: `customDomainName`
 
@@ -1260,6 +1858,48 @@ Indicates whether indirect CName validation is enabled. This should only be set 
 - Required: No
 - Type: bool
 - Default: `False`
+
+### Parameter: `customerManagedKey`
+
+The customer managed key definition.
+- Required: No
+- Type: object
+
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`keyName`](#parameter-customermanagedkeykeyname) | Yes | string | Required. The name of the customer managed key to use for encryption. |
+| [`keyVaultResourceId`](#parameter-customermanagedkeykeyvaultresourceid) | Yes | string | Required. The resource ID of a key vault to reference a customer managed key for encryption from. |
+| [`keyVersion`](#parameter-customermanagedkeykeyversion) | No | string | Optional. The version of the customer managed key to reference for encryption. If not provided, using 'latest'. |
+| [`userAssignedIdentityResourceId`](#parameter-customermanagedkeyuserassignedidentityresourceid) | No | string | Optional. User assigned identity to use when fetching the customer managed key. Required if no system assigned identity is available for use. |
+
+### Parameter: `customerManagedKey.keyName`
+
+Required. The name of the customer managed key to use for encryption.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `customerManagedKey.keyVaultResourceId`
+
+Required. The resource ID of a key vault to reference a customer managed key for encryption from.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `customerManagedKey.keyVersion`
+
+Optional. The version of the customer managed key to reference for encryption. If not provided, using 'latest'.
+
+- Required: No
+- Type: string
+
+### Parameter: `customerManagedKey.userAssignedIdentityResourceId`
+
+Optional. User assigned identity to use when fetching the customer managed key. Required if no system assigned identity is available for use.
+
+- Required: No
+- Type: string
 
 ### Parameter: `defaultToOAuthAuthentication`
 
@@ -1361,7 +2001,14 @@ Allows you to specify the type of endpoint. Set this to AzureDNSZone to create a
 - Required: No
 - Type: string
 - Default: `''`
-- Allowed: `['', AzureDnsZone, Standard]`
+- Allowed:
+  ```Bicep
+  [
+    ''
+    'AzureDnsZone'
+    'Standard'
+  ]
+  ```
 
 ### Parameter: `enableDefaultTelemetry`
 
@@ -1396,7 +2043,7 @@ If true, enables Secure File Transfer Protocol for the storage account. Requires
 File service and shares to deploy.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `isLocalUserEnabled`
 
@@ -1411,7 +2058,16 @@ Type of Storage Account to create.
 - Required: No
 - Type: string
 - Default: `'StorageV2'`
-- Allowed: `[BlobStorage, BlockBlobStorage, FileStorage, Storage, StorageV2]`
+- Allowed:
+  ```Bicep
+  [
+    'BlobStorage'
+    'BlockBlobStorage'
+    'FileStorage'
+    'Storage'
+    'StorageV2'
+  ]
+  ```
 
 ### Parameter: `largeFileSharesState`
 
@@ -1419,7 +2075,13 @@ Allow large file shares if sets to 'Enabled'. It cannot be disabled once it is e
 - Required: No
 - Type: string
 - Default: `'Disabled'`
-- Allowed: `[Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 ### Parameter: `localUsers`
 
@@ -1501,7 +2163,14 @@ Set the minimum TLS version on request to storage.
 - Required: No
 - Type: string
 - Default: `'TLS1_2'`
-- Allowed: `[TLS1_0, TLS1_1, TLS1_2]`
+- Allowed:
+  ```Bicep
+  [
+    'TLS1_0'
+    'TLS1_1'
+    'TLS1_2'
+  ]
+  ```
 
 ### Parameter: `name`
 
@@ -1514,7 +2183,7 @@ Name of the Storage Account.
 Networks ACLs, this value contains IPs to whitelist and/or Subnet information. For security reasons, it is recommended to set the DefaultAction Deny.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `privateEndpoints`
 
@@ -1557,14 +2226,20 @@ Optional. Custom DNS configurations.
 
 | Name | Required | Type | Description |
 | :-- | :-- | :--| :-- |
-| [`fqdn`](#parameter-privateendpointscustomdnsconfigsfqdn) | No | string |  |
-| [`ipAddresses`](#parameter-privateendpointscustomdnsconfigsipaddresses) | Yes | array |  |
+| [`fqdn`](#parameter-privateendpointscustomdnsconfigsfqdn) | No | string | Required. Fqdn that resolves to private endpoint ip address. |
+| [`ipAddresses`](#parameter-privateendpointscustomdnsconfigsipaddresses) | Yes | array | Required. A list of private ip addresses of the private endpoint. |
 
 ### Parameter: `privateEndpoints.customDnsConfigs.fqdn`
+
+Required. Fqdn that resolves to private endpoint ip address.
+
 - Required: No
 - Type: string
 
 ### Parameter: `privateEndpoints.customDnsConfigs.ipAddresses`
+
+Required. A list of private ip addresses of the private endpoint.
+
 - Required: Yes
 - Type: array
 
@@ -1592,26 +2267,50 @@ Optional. A list of IP configurations of the private endpoint. This will be used
 
 | Name | Required | Type | Description |
 | :-- | :-- | :--| :-- |
-| [`groupId`](#parameter-privateendpointsipconfigurationsgroupid) | Yes | string |  |
-| [`memberName`](#parameter-privateendpointsipconfigurationsmembername) | Yes | string |  |
-| [`name`](#parameter-privateendpointsipconfigurationsname) | Yes | string |  |
-| [`privateIpAddress`](#parameter-privateendpointsipconfigurationsprivateipaddress) | Yes | string |  |
-
-### Parameter: `privateEndpoints.ipConfigurations.groupId`
-- Required: Yes
-- Type: string
-
-### Parameter: `privateEndpoints.ipConfigurations.memberName`
-- Required: Yes
-- Type: string
+| [`name`](#parameter-privateendpointsipconfigurationsname) | Yes | string | Required. The name of the resource that is unique within a resource group. |
+| [`properties`](#parameter-privateendpointsipconfigurationsproperties) | Yes | object | Required. Properties of private endpoint IP configurations. |
 
 ### Parameter: `privateEndpoints.ipConfigurations.name`
+
+Required. The name of the resource that is unique within a resource group.
+
 - Required: Yes
 - Type: string
 
-### Parameter: `privateEndpoints.ipConfigurations.privateIpAddress`
+### Parameter: `privateEndpoints.ipConfigurations.properties`
+
+Required. Properties of private endpoint IP configurations.
+
+- Required: Yes
+- Type: object
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`groupId`](#parameter-privateendpointsipconfigurationspropertiesgroupid) | Yes | string | Required. The ID of a group obtained from the remote resource that this private endpoint should connect to. |
+| [`memberName`](#parameter-privateendpointsipconfigurationspropertiesmembername) | Yes | string | Required. The member name of a group obtained from the remote resource that this private endpoint should connect to. |
+| [`privateIPAddress`](#parameter-privateendpointsipconfigurationspropertiesprivateipaddress) | Yes | string | Required. A private ip address obtained from the private endpoint's subnet. |
+
+### Parameter: `privateEndpoints.ipConfigurations.properties.groupId`
+
+Required. The ID of a group obtained from the remote resource that this private endpoint should connect to.
+
 - Required: Yes
 - Type: string
+
+### Parameter: `privateEndpoints.ipConfigurations.properties.memberName`
+
+Required. The member name of a group obtained from the remote resource that this private endpoint should connect to.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `privateEndpoints.ipConfigurations.properties.privateIPAddress`
+
+Required. A private ip address obtained from the private endpoint's subnet.
+
+- Required: Yes
+- Type: string
+
 
 
 ### Parameter: `privateEndpoints.location`
@@ -1690,14 +2389,21 @@ Whether or not public network access is allowed for this resource. For security 
 - Required: No
 - Type: string
 - Default: `''`
-- Allowed: `['', Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    ''
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 ### Parameter: `queueServices`
 
 Queue service and queues to create.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `requireInfrastructureEncryption`
 
@@ -1787,7 +2493,19 @@ Storage Account Sku Name.
 - Required: No
 - Type: string
 - Default: `'Standard_GRS'`
-- Allowed: `[Premium_LRS, Premium_ZRS, Standard_GRS, Standard_GZRS, Standard_LRS, Standard_RAGRS, Standard_RAGZRS, Standard_ZRS]`
+- Allowed:
+  ```Bicep
+  [
+    'Premium_LRS'
+    'Premium_ZRS'
+    'Standard_GRS'
+    'Standard_GZRS'
+    'Standard_LRS'
+    'Standard_RAGRS'
+    'Standard_RAGZRS'
+    'Standard_ZRS'
+  ]
+  ```
 
 ### Parameter: `supportsHttpsTrafficOnly`
 
@@ -1801,14 +2519,13 @@ Allows HTTPS traffic only to storage service if sets to true.
 Table service and tables to create.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `tags`
 
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 
 ## Outputs

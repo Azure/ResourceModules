@@ -48,7 +48,21 @@ Backup management type to execute the current Protection Container job.
 - Required: No
 - Type: string
 - Default: `''`
-- Allowed: `['', AzureBackupServer, AzureIaasVM, AzureSql, AzureStorage, AzureWorkload, DefaultBackup, DPM, Invalid, MAB]`
+- Allowed:
+  ```Bicep
+  [
+    ''
+    'AzureBackupServer'
+    'AzureIaasVM'
+    'AzureSql'
+    'AzureStorage'
+    'AzureWorkload'
+    'DefaultBackup'
+    'DPM'
+    'Invalid'
+    'MAB'
+  ]
+  ```
 
 ### Parameter: `containerType`
 
@@ -56,7 +70,21 @@ Type of the container.
 - Required: No
 - Type: string
 - Default: `''`
-- Allowed: `['', AzureBackupServerContainer, AzureSqlContainer, GenericContainer, Microsoft.ClassicCompute/virtualMachines, Microsoft.Compute/virtualMachines, SQLAGWorkLoadContainer, StorageContainer, VMAppContainer, Windows]`
+- Allowed:
+  ```Bicep
+  [
+    ''
+    'AzureBackupServerContainer'
+    'AzureSqlContainer'
+    'GenericContainer'
+    'Microsoft.ClassicCompute/virtualMachines'
+    'Microsoft.Compute/virtualMachines'
+    'SQLAGWorkLoadContainer'
+    'StorageContainer'
+    'VMAppContainer'
+    'Windows'
+  ]
+  ```
 
 ### Parameter: `enableDefaultTelemetry`
 

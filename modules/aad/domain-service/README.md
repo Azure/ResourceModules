@@ -29,6 +29,7 @@ The following section provides usage examples for the module, which were used to
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/aad.domain-service:1.0.0`.
 
 - [Using large parameter set](#example-1-using-large-parameter-set)
+- [WAF-aligned](#example-2-waf-aligned)
 
 ### Example 1: _Using large parameter set_
 
@@ -41,7 +42,7 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module domainService 'br:bicep/modules/aad.domain-service:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-aaddscom'
+  name: '${uniqueString(deployment().name, location)}-test-aaddsmax'
   params: {
     // Required parameters
     domainName: 'onmicrosoft.com'
@@ -63,7 +64,7 @@ module domainService 'br:bicep/modules/aad.domain-service:1.0.0' = {
       kind: 'CanNotDelete'
       name: 'myCustomLockName'
     }
-    name: 'aaddscom001'
+    name: 'aaddsmax001'
     pfxCertificate: '<pfxCertificate>'
     pfxCertificatePassword: '<pfxCertificatePassword>'
     replicaSets: [
@@ -125,7 +126,135 @@ module domainService 'br:bicep/modules/aad.domain-service:1.0.0' = {
       }
     },
     "name": {
-      "value": "aaddscom001"
+      "value": "aaddsmax001"
+    },
+    "pfxCertificate": {
+      "value": "<pfxCertificate>"
+    },
+    "pfxCertificatePassword": {
+      "value": "<pfxCertificatePassword>"
+    },
+    "replicaSets": {
+      "value": [
+        {
+          "location": "WestEurope",
+          "subnetId": "<subnetId>"
+        }
+      ]
+    },
+    "sku": {
+      "value": "Standard"
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 2: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module domainService 'br:bicep/modules/aad.domain-service:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-aaddswaf'
+  params: {
+    // Required parameters
+    domainName: 'onmicrosoft.com'
+    // Non-required parameters
+    additionalRecipients: [
+      '@noreply.github.com'
+    ]
+    diagnosticSettings: [
+      {
+        eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+        eventHubName: '<eventHubName>'
+        name: 'customSetting'
+        storageAccountResourceId: '<storageAccountResourceId>'
+        workspaceResourceId: '<workspaceResourceId>'
+      }
+    ]
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    name: 'aaddswaf001'
+    pfxCertificate: '<pfxCertificate>'
+    pfxCertificatePassword: '<pfxCertificatePassword>'
+    replicaSets: [
+      {
+        location: 'WestEurope'
+        subnetId: '<subnetId>'
+      }
+    ]
+    sku: 'Standard'
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "domainName": {
+      "value": "onmicrosoft.com"
+    },
+    // Non-required parameters
+    "additionalRecipients": {
+      "value": [
+        "@noreply.github.com"
+      ]
+    },
+    "diagnosticSettings": {
+      "value": [
+        {
+          "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+          "eventHubName": "<eventHubName>",
+          "name": "customSetting",
+          "storageAccountResourceId": "<storageAccountResourceId>",
+          "workspaceResourceId": "<workspaceResourceId>"
+        }
+      ]
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "name": {
+      "value": "aaddswaf001"
     },
     "pfxCertificate": {
       "value": "<pfxCertificate>"
@@ -309,7 +438,13 @@ The value is to provide domain configuration type.
 - Required: No
 - Type: string
 - Default: `'FullySynced'`
-- Allowed: `[FullySynced, ResourceTrusting]`
+- Allowed:
+  ```Bicep
+  [
+    'FullySynced'
+    'ResourceTrusting'
+  ]
+  ```
 
 ### Parameter: `domainName`
 
@@ -330,7 +465,13 @@ The value is to enable the Secure LDAP for external services of Azure ADDS Servi
 - Required: No
 - Type: string
 - Default: `'Enabled'`
-- Allowed: `[Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 ### Parameter: `filteredSync`
 
@@ -345,7 +486,13 @@ The value is to enable to provide a protected channel between the Kerberos clien
 - Required: No
 - Type: string
 - Default: `'Enabled'`
-- Allowed: `[Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 ### Parameter: `kerberosRc4Encryption`
 
@@ -353,7 +500,13 @@ The value is to enable Kerberos requests that use RC4 encryption.
 - Required: No
 - Type: string
 - Default: `'Enabled'`
-- Allowed: `[Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 ### Parameter: `ldaps`
 
@@ -361,7 +514,13 @@ A flag to determine whether or not Secure LDAP is enabled or disabled.
 - Required: No
 - Type: string
 - Default: `'Enabled'`
-- Allowed: `[Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 ### Parameter: `location`
 
@@ -410,7 +569,13 @@ The value is to notify the DC Admins.
 - Required: No
 - Type: string
 - Default: `'Enabled'`
-- Allowed: `[Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 ### Parameter: `notifyGlobalAdmins`
 
@@ -418,7 +583,13 @@ The value is to notify the Global Admins.
 - Required: No
 - Type: string
 - Default: `'Enabled'`
-- Allowed: `[Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 ### Parameter: `ntlmV1`
 
@@ -426,7 +597,13 @@ The value is to enable clients making request using NTLM v1.
 - Required: No
 - Type: string
 - Default: `'Enabled'`
-- Allowed: `[Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 ### Parameter: `pfxCertificate`
 
@@ -523,7 +700,14 @@ The name of the SKU specific to Azure ADDS Services.
 - Required: No
 - Type: string
 - Default: `'Standard'`
-- Allowed: `[Enterprise, Premium, Standard]`
+- Allowed:
+  ```Bicep
+  [
+    'Enterprise'
+    'Premium'
+    'Standard'
+  ]
+  ```
 
 ### Parameter: `syncNtlmPasswords`
 
@@ -531,7 +715,13 @@ The value is to enable synchronized users to use NTLM authentication.
 - Required: No
 - Type: string
 - Default: `'Enabled'`
-- Allowed: `[Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 ### Parameter: `syncOnPremPasswords`
 
@@ -539,14 +729,19 @@ The value is to enable on-premises users to authenticate against managed domain.
 - Required: No
 - Type: string
 - Default: `'Enabled'`
-- Allowed: `[Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 ### Parameter: `tags`
 
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `tlsV1`
 
@@ -554,7 +749,13 @@ The value is to enable clients making request using TLSv1.
 - Required: No
 - Type: string
 - Default: `'Enabled'`
-- Allowed: `[Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 
 ## Outputs

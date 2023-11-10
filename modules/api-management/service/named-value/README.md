@@ -65,7 +65,7 @@ Enable telemetry via a Globally Unique Identifier (GUID).
 KeyVault location details of the namedValue.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `name`
 
@@ -85,7 +85,6 @@ Determines whether the value is a secret and should be encrypted or not. Default
 Tags that when provided can be used to filter the NamedValue list. - string.
 - Required: No
 - Type: array
-- Default: `[]`
 
 ### Parameter: `value`
 

@@ -71,7 +71,21 @@ ID of the backup policy with which this item is backed up.
 The backup item type.
 - Required: Yes
 - Type: string
-- Allowed: `[AzureFileShareProtectedItem, AzureVmWorkloadSAPAseDatabase, AzureVmWorkloadSAPHanaDatabase, AzureVmWorkloadSQLDatabase, DPMProtectedItem, GenericProtectedItem, MabFileFolderProtectedItem, Microsoft.ClassicCompute/virtualMachines, Microsoft.Compute/virtualMachines, Microsoft.Sql/servers/databases]`
+- Allowed:
+  ```Bicep
+  [
+    'AzureFileShareProtectedItem'
+    'AzureVmWorkloadSAPAseDatabase'
+    'AzureVmWorkloadSAPHanaDatabase'
+    'AzureVmWorkloadSQLDatabase'
+    'DPMProtectedItem'
+    'GenericProtectedItem'
+    'MabFileFolderProtectedItem'
+    'Microsoft.ClassicCompute/virtualMachines'
+    'Microsoft.Compute/virtualMachines'
+    'Microsoft.Sql/servers/databases'
+  ]
+  ```
 
 ### Parameter: `protectionContainerName`
 

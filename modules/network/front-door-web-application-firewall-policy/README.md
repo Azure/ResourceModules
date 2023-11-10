@@ -26,10 +26,59 @@ The following section provides usage examples for the module, which were used to
 
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/network.front-door-web-application-firewall-policy:1.0.0`.
 
-- [Using large parameter set](#example-1-using-large-parameter-set)
-- [Using only defaults](#example-2-using-only-defaults)
+- [Using only defaults](#example-1-using-only-defaults)
+- [Using large parameter set](#example-2-using-large-parameter-set)
+- [WAF-aligned](#example-3-waf-aligned)
 
-### Example 1: _Using large parameter set_
+### Example 1: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module frontDoorWebApplicationFirewallPolicy 'br:bicep/modules/network.front-door-web-application-firewall-policy:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-nagwafpmin'
+  params: {
+    // Required parameters
+    name: 'nagwafpmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "nagwafpmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 2: _Using large parameter set_
 
 This instance deploys the module with most of its features enabled.
 
@@ -40,10 +89,10 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module frontDoorWebApplicationFirewallPolicy 'br:bicep/modules/network.front-door-web-application-firewall-policy:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-nagwafpcom'
+  name: '${uniqueString(deployment().name, location)}-test-nagwafpmax'
   params: {
     // Required parameters
-    name: 'nagwafpcom001'
+    name: 'nagwafpmax001'
     // Non-required parameters
     customRules: {
       rules: [
@@ -143,7 +192,7 @@ module frontDoorWebApplicationFirewallPolicy 'br:bicep/modules/network.front-doo
   "parameters": {
     // Required parameters
     "name": {
-      "value": "nagwafpcom001"
+      "value": "nagwafpmax001"
     },
     // Non-required parameters
     "customRules": {
@@ -249,9 +298,9 @@ module frontDoorWebApplicationFirewallPolicy 'br:bicep/modules/network.front-doo
 </details>
 <p>
 
-### Example 2: _Using only defaults_
+### Example 3: _WAF-aligned_
 
-This instance deploys the module with the minimum set of required parameters.
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
 
 
 <details>
@@ -260,12 +309,91 @@ This instance deploys the module with the minimum set of required parameters.
 
 ```bicep
 module frontDoorWebApplicationFirewallPolicy 'br:bicep/modules/network.front-door-web-application-firewall-policy:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-nagwafpmin'
+  name: '${uniqueString(deployment().name, location)}-test-nagwafpwaf'
   params: {
     // Required parameters
-    name: 'nagwafpmin001'
+    name: 'nagwafpwaf001'
     // Non-required parameters
+    customRules: {
+      rules: [
+        {
+          action: 'Block'
+          enabledState: 'Enabled'
+          matchConditions: [
+            {
+              matchValue: [
+                'CH'
+              ]
+              matchVariable: 'RemoteAddr'
+              negateCondition: false
+              operator: 'GeoMatch'
+              selector: '<selector>'
+              transforms: []
+            }
+            {
+              matchValue: [
+                'windows'
+              ]
+              matchVariable: 'RequestHeader'
+              negateCondition: false
+              operator: 'Contains'
+              selector: 'UserAgent'
+              transforms: []
+            }
+            {
+              matchValue: [
+                '?>'
+                '<?php'
+              ]
+              matchVariable: 'QueryString'
+              negateCondition: false
+              operator: 'Contains'
+              transforms: [
+                'Lowercase'
+                'UrlDecode'
+              ]
+            }
+          ]
+          name: 'CustomRule1'
+          priority: 2
+          rateLimitDurationInMinutes: 1
+          rateLimitThreshold: 10
+          ruleType: 'MatchRule'
+        }
+      ]
+    }
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    managedRules: {
+      managedRuleSets: [
+        {
+          ruleSetType: 'Microsoft_BotManagerRuleSet'
+          ruleSetVersion: '1.0'
+        }
+      ]
+    }
+    policySettings: {
+      customBlockResponseBody: 'PGh0bWw+CjxoZWFkZXI+PHRpdGxlPkhlbGxvPC90aXRsZT48L2hlYWRlcj4KPGJvZHk+CkhlbGxvIHdvcmxkCjwvYm9keT4KPC9odG1sPg=='
+      customBlockResponseStatusCode: 200
+      mode: 'Prevention'
+      redirectUrl: 'http://www.bing.com'
+    }
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    sku: 'Premium_AzureFrontDoor'
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -284,11 +412,104 @@ module frontDoorWebApplicationFirewallPolicy 'br:bicep/modules/network.front-doo
   "parameters": {
     // Required parameters
     "name": {
-      "value": "nagwafpmin001"
+      "value": "nagwafpwaf001"
     },
     // Non-required parameters
+    "customRules": {
+      "value": {
+        "rules": [
+          {
+            "action": "Block",
+            "enabledState": "Enabled",
+            "matchConditions": [
+              {
+                "matchValue": [
+                  "CH"
+                ],
+                "matchVariable": "RemoteAddr",
+                "negateCondition": false,
+                "operator": "GeoMatch",
+                "selector": "<selector>",
+                "transforms": []
+              },
+              {
+                "matchValue": [
+                  "windows"
+                ],
+                "matchVariable": "RequestHeader",
+                "negateCondition": false,
+                "operator": "Contains",
+                "selector": "UserAgent",
+                "transforms": []
+              },
+              {
+                "matchValue": [
+                  "?>",
+                  "<?php"
+                ],
+                "matchVariable": "QueryString",
+                "negateCondition": false,
+                "operator": "Contains",
+                "transforms": [
+                  "Lowercase",
+                  "UrlDecode"
+                ]
+              }
+            ],
+            "name": "CustomRule1",
+            "priority": 2,
+            "rateLimitDurationInMinutes": 1,
+            "rateLimitThreshold": 10,
+            "ruleType": "MatchRule"
+          }
+        ]
+      }
+    },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "managedRules": {
+      "value": {
+        "managedRuleSets": [
+          {
+            "ruleSetType": "Microsoft_BotManagerRuleSet",
+            "ruleSetVersion": "1.0"
+          }
+        ]
+      }
+    },
+    "policySettings": {
+      "value": {
+        "customBlockResponseBody": "PGh0bWw+CjxoZWFkZXI+PHRpdGxlPkhlbGxvPC90aXRsZT48L2hlYWRlcj4KPGJvZHk+CkhlbGxvIHdvcmxkCjwvYm9keT4KPC9odG1sPg==",
+        "customBlockResponseStatusCode": 200,
+        "mode": "Prevention",
+        "redirectUrl": "http://www.bing.com"
+      }
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "sku": {
+      "value": "Premium_AzureFrontDoor"
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }
@@ -325,7 +546,30 @@ module frontDoorWebApplicationFirewallPolicy 'br:bicep/modules/network.front-doo
 The custom rules inside the policy.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default:
+  ```Bicep
+  {
+      rules: [
+        {
+          action: 'Block'
+          enabledState: 'Enabled'
+          matchConditions: [
+            {
+              matchValue: [
+                'ZZ'
+              ]
+              matchVariable: 'RemoteAddr'
+              negateCondition: true
+              operator: 'GeoMatch'
+            }
+          ]
+          name: 'ApplyGeoFilter'
+          priority: 100
+          ruleType: 'MatchRule'
+        }
+      ]
+  }
+  ```
 
 ### Parameter: `enableDefaultTelemetry`
 
@@ -373,7 +617,26 @@ Optional. Specify the name of lock.
 Describes the managedRules structure.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default:
+  ```Bicep
+  {
+      managedRuleSets: [
+        {
+          exclusions: []
+          ruleGroupOverrides: []
+          ruleSetAction: 'Block'
+          ruleSetType: 'Microsoft_DefaultRuleSet'
+          ruleSetVersion: '2.1'
+        }
+        {
+          exclusions: []
+          ruleGroupOverrides: []
+          ruleSetType: 'Microsoft_BotManagerRuleSet'
+          ruleSetVersion: '1.0'
+        }
+      ]
+  }
+  ```
 
 ### Parameter: `name`
 
@@ -386,7 +649,13 @@ Name of the Front Door WAF policy.
 The PolicySettings for policy.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default:
+  ```Bicep
+  {
+      enabledState: 'Enabled'
+      mode: 'Prevention'
+  }
+  ```
 
 ### Parameter: `roleAssignments`
 
@@ -462,14 +731,19 @@ The pricing tier of the WAF profile.
 - Required: No
 - Type: string
 - Default: `'Standard_AzureFrontDoor'`
-- Allowed: `[Premium_AzureFrontDoor, Standard_AzureFrontDoor]`
+- Allowed:
+  ```Bicep
+  [
+    'Premium_AzureFrontDoor'
+    'Standard_AzureFrontDoor'
+  ]
+  ```
 
 ### Parameter: `tags`
 
 Resource tags.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 
 ## Outputs

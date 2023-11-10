@@ -28,6 +28,7 @@ The following section provides usage examples for the module, which were used to
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/web.serverfarm:1.0.0`.
 
 - [Using large parameter set](#example-1-using-large-parameter-set)
+- [WAF-aligned](#example-2-waf-aligned)
 
 ### Example 1: _Using large parameter set_
 
@@ -40,10 +41,10 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module serverfarm 'br:bicep/modules/web.serverfarm:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-wsfcom'
+  name: '${uniqueString(deployment().name, location)}-test-wsfmax'
   params: {
     // Required parameters
-    name: 'wsfcom001'
+    name: 'wsfmax001'
     sku: {
       capacity: '1'
       family: 'S'
@@ -101,7 +102,139 @@ module serverfarm 'br:bicep/modules/web.serverfarm:1.0.0' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "wsfcom001"
+      "value": "wsfmax001"
+    },
+    "sku": {
+      "value": {
+        "capacity": "1",
+        "family": "S",
+        "name": "S1",
+        "size": "S1",
+        "tier": "Standard"
+      }
+    },
+    // Non-required parameters
+    "diagnosticSettings": {
+      "value": [
+        {
+          "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+          "eventHubName": "<eventHubName>",
+          "metricCategories": [
+            {
+              "category": "AllMetrics"
+            }
+          ],
+          "name": "customSetting",
+          "storageAccountResourceId": "<storageAccountResourceId>",
+          "workspaceResourceId": "<workspaceResourceId>"
+        }
+      ]
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 2: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module serverfarm 'br:bicep/modules/web.serverfarm:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-wsfwaf'
+  params: {
+    // Required parameters
+    name: 'wsfwaf001'
+    sku: {
+      capacity: '1'
+      family: 'S'
+      name: 'S1'
+      size: 'S1'
+      tier: 'Standard'
+    }
+    // Non-required parameters
+    diagnosticSettings: [
+      {
+        eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+        eventHubName: '<eventHubName>'
+        metricCategories: [
+          {
+            category: 'AllMetrics'
+          }
+        ]
+        name: 'customSetting'
+        storageAccountResourceId: '<storageAccountResourceId>'
+        workspaceResourceId: '<workspaceResourceId>'
+      }
+    ]
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "wsfwaf001"
     },
     "sku": {
       "value": {
@@ -303,7 +436,16 @@ Kind of server OS.
 - Required: No
 - Type: string
 - Default: `'Windows'`
-- Allowed: `[App, Elastic, FunctionApp, Linux, Windows]`
+- Allowed:
+  ```Bicep
+  [
+    'App'
+    'Elastic'
+    'FunctionApp'
+    'Linux'
+    'Windows'
+  ]
+  ```
 
 ### Parameter: `location`
 
@@ -445,7 +587,6 @@ Defines the name, tier, size, family and capacity of the App Service Plan.
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `targetWorkerCount`
 
@@ -460,7 +601,14 @@ The instance size of the hosting plan (small, medium, or large).
 - Required: No
 - Type: int
 - Default: `0`
-- Allowed: `[0, 1, 2]`
+- Allowed:
+  ```Bicep
+  [
+    0
+    1
+    2
+  ]
+  ```
 
 ### Parameter: `workerTierName`
 

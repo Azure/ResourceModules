@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "4815130337915787009"
+      "templateHash": "9469986313045690324"
     },
     "name": "Azure Health Bots",
     "description": "This module deploys an Azure Health Bot.",
@@ -165,7 +165,7 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Tags of the resource."
       }
