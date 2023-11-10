@@ -404,7 +404,7 @@ param diagnosticMetricsToEnable array = [
   'AllMetrics'
 ]
 
-@description('Required. The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings".')
+@description('Optional. The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings".')
 param diagnosticSettingsName string = ''
 
 @description('Optional. Indicates if Application Monitoring Open Telemetry Metrics is enabled.')
