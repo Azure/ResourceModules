@@ -32,10 +32,67 @@ The following section provides usage examples for the module, which were used to
 
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/healthcare-apis.workspace:1.0.0`.
 
-- [Using large parameter set](#example-1-using-large-parameter-set)
-- [Using only defaults](#example-2-using-only-defaults)
+- [Using only defaults](#example-1-using-only-defaults)
+- [Using large parameter set](#example-2-using-large-parameter-set)
+- [WAF-aligned](#example-3-waf-aligned)
 
-### Example 1: _Using large parameter set_
+### Example 1: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module workspace 'br:bicep/modules/healthcare-apis.workspace:1.0.0' = {
+  name: '${uniqueString(deployment().name)}-test-hawmin'
+  params: {
+    // Required parameters
+    name: 'hawmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    location: '<location>'
+    publicNetworkAccess: 'Enabled'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "hawmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "location": {
+      "value": "<location>"
+    },
+    "publicNetworkAccess": {
+      "value": "Enabled"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 2: _Using large parameter set_
 
 This instance deploys the module with most of its features enabled.
 
@@ -46,10 +103,10 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module workspace 'br:bicep/modules/healthcare-apis.workspace:1.0.0' = {
-  name: '${uniqueString(deployment().name)}-test-hawcom'
+  name: '${uniqueString(deployment().name)}-test-hawmax'
   params: {
     // Required parameters
-    name: 'hawcom001'
+    name: 'hawmax001'
     // Non-required parameters
     dicomservices: [
       {
@@ -88,7 +145,7 @@ module workspace 'br:bicep/modules/healthcare-apis.workspace:1.0.0' = {
         }
         name: 'az-dicom-x-001'
         publicNetworkAccess: 'Enabled'
-        workspaceName: 'hawcom001'
+        workspaceName: 'hawmax001'
       }
     ]
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
@@ -141,7 +198,7 @@ module workspace 'br:bicep/modules/healthcare-apis.workspace:1.0.0' = {
           }
         ]
         smartProxyEnabled: false
-        workspaceName: 'hawcom001'
+        workspaceName: 'hawmax001'
       }
     ]
     location: '<location>'
@@ -180,7 +237,7 @@ module workspace 'br:bicep/modules/healthcare-apis.workspace:1.0.0' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "hawcom001"
+      "value": "hawmax001"
     },
     // Non-required parameters
     "dicomservices": {
@@ -221,7 +278,7 @@ module workspace 'br:bicep/modules/healthcare-apis.workspace:1.0.0' = {
           },
           "name": "az-dicom-x-001",
           "publicNetworkAccess": "Enabled",
-          "workspaceName": "hawcom001"
+          "workspaceName": "hawmax001"
         }
       ]
     },
@@ -278,7 +335,7 @@ module workspace 'br:bicep/modules/healthcare-apis.workspace:1.0.0' = {
             }
           ],
           "smartProxyEnabled": false,
-          "workspaceName": "hawcom001"
+          "workspaceName": "hawmax001"
         }
       ]
     },
@@ -317,9 +374,9 @@ module workspace 'br:bicep/modules/healthcare-apis.workspace:1.0.0' = {
 </details>
 <p>
 
-### Example 2: _Using only defaults_
+### Example 3: _WAF-aligned_
 
-This instance deploys the module with the minimum set of required parameters.
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
 
 
 <details>
@@ -328,14 +385,122 @@ This instance deploys the module with the minimum set of required parameters.
 
 ```bicep
 module workspace 'br:bicep/modules/healthcare-apis.workspace:1.0.0' = {
-  name: '${uniqueString(deployment().name)}-test-hawmin'
+  name: '${uniqueString(deployment().name)}-test-hawwaf'
   params: {
     // Required parameters
-    name: 'hawmin001'
+    name: 'hawwaf001'
     // Non-required parameters
+    dicomservices: [
+      {
+        corsAllowCredentials: false
+        corsHeaders: [
+          '*'
+        ]
+        corsMaxAge: 600
+        corsMethods: [
+          'GET'
+        ]
+        corsOrigins: [
+          '*'
+        ]
+        diagnosticSettings: [
+          {
+            eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+            eventHubName: '<eventHubName>'
+            metricCategories: [
+              {
+                category: 'AllMetrics'
+              }
+            ]
+            name: 'customSetting'
+            storageAccountResourceId: '<storageAccountResourceId>'
+            workspaceResourceId: '<workspaceResourceId>'
+          }
+        ]
+        enableDefaultTelemetry: '<enableDefaultTelemetry>'
+        location: '<location>'
+        managedIdentities: {
+          systemAssigned: false
+          userAssignedResourcesIds: [
+            '<managedIdentityResourceId>'
+          ]
+        }
+        name: 'az-dicom-x-001'
+        publicNetworkAccess: 'Enabled'
+        workspaceName: 'hawwaf001'
+      }
+    ]
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    fhirservices: [
+      {
+        corsAllowCredentials: false
+        corsHeaders: [
+          '*'
+        ]
+        corsMaxAge: 600
+        corsMethods: [
+          'GET'
+        ]
+        corsOrigins: [
+          '*'
+        ]
+        diagnosticSettings: [
+          {
+            eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+            eventHubName: '<eventHubName>'
+            metricCategories: [
+              {
+                category: 'AllMetrics'
+              }
+            ]
+            name: 'customSetting'
+            storageAccountResourceId: '<storageAccountResourceId>'
+            workspaceResourceId: '<workspaceResourceId>'
+          }
+        ]
+        enableDefaultTelemetry: '<enableDefaultTelemetry>'
+        importEnabled: false
+        initialImportMode: false
+        kind: 'fhir-R4'
+        location: '<location>'
+        managedIdentities: {
+          systemAssigned: false
+          userAssignedResourcesIds: [
+            '<managedIdentityResourceId>'
+          ]
+        }
+        name: 'az-fhir-x-001'
+        publicNetworkAccess: 'Enabled'
+        resourceVersionPolicy: 'versioned'
+        roleAssignments: [
+          {
+            principalId: '<principalId>'
+            principalType: 'ServicePrincipal'
+            roleDefinitionIdOrName: '<roleDefinitionIdOrName>'
+          }
+        ]
+        smartProxyEnabled: false
+        workspaceName: 'hawwaf001'
+      }
+    ]
     location: '<location>'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     publicNetworkAccess: 'Enabled'
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -354,17 +519,135 @@ module workspace 'br:bicep/modules/healthcare-apis.workspace:1.0.0' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "hawmin001"
+      "value": "hawwaf001"
     },
     // Non-required parameters
+    "dicomservices": {
+      "value": [
+        {
+          "corsAllowCredentials": false,
+          "corsHeaders": [
+            "*"
+          ],
+          "corsMaxAge": 600,
+          "corsMethods": [
+            "GET"
+          ],
+          "corsOrigins": [
+            "*"
+          ],
+          "diagnosticSettings": [
+            {
+              "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+              "eventHubName": "<eventHubName>",
+              "metricCategories": [
+                {
+                  "category": "AllMetrics"
+                }
+              ],
+              "name": "customSetting",
+              "storageAccountResourceId": "<storageAccountResourceId>",
+              "workspaceResourceId": "<workspaceResourceId>"
+            }
+          ],
+          "enableDefaultTelemetry": "<enableDefaultTelemetry>",
+          "location": "<location>",
+          "managedIdentities": {
+            "systemAssigned": false,
+            "userAssignedResourcesIds": [
+              "<managedIdentityResourceId>"
+            ]
+          },
+          "name": "az-dicom-x-001",
+          "publicNetworkAccess": "Enabled",
+          "workspaceName": "hawwaf001"
+        }
+      ]
+    },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
+    },
+    "fhirservices": {
+      "value": [
+        {
+          "corsAllowCredentials": false,
+          "corsHeaders": [
+            "*"
+          ],
+          "corsMaxAge": 600,
+          "corsMethods": [
+            "GET"
+          ],
+          "corsOrigins": [
+            "*"
+          ],
+          "diagnosticSettings": [
+            {
+              "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+              "eventHubName": "<eventHubName>",
+              "metricCategories": [
+                {
+                  "category": "AllMetrics"
+                }
+              ],
+              "name": "customSetting",
+              "storageAccountResourceId": "<storageAccountResourceId>",
+              "workspaceResourceId": "<workspaceResourceId>"
+            }
+          ],
+          "enableDefaultTelemetry": "<enableDefaultTelemetry>",
+          "importEnabled": false,
+          "initialImportMode": false,
+          "kind": "fhir-R4",
+          "location": "<location>",
+          "managedIdentities": {
+            "systemAssigned": false,
+            "userAssignedResourcesIds": [
+              "<managedIdentityResourceId>"
+            ]
+          },
+          "name": "az-fhir-x-001",
+          "publicNetworkAccess": "Enabled",
+          "resourceVersionPolicy": "versioned",
+          "roleAssignments": [
+            {
+              "principalId": "<principalId>",
+              "principalType": "ServicePrincipal",
+              "roleDefinitionIdOrName": "<roleDefinitionIdOrName>"
+            }
+          ],
+          "smartProxyEnabled": false,
+          "workspaceName": "hawwaf001"
+        }
+      ]
     },
     "location": {
       "value": "<location>"
     },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
     "publicNetworkAccess": {
       "value": "Enabled"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }

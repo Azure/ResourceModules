@@ -37,11 +37,129 @@ The following section provides usage examples for the module, which were used to
 
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/automation.automation-account:1.0.0`.
 
-- [Using large parameter set](#example-1-using-large-parameter-set)
+- [Using only defaults](#example-1-using-only-defaults)
 - [Encr](#example-2-encr)
-- [Using only defaults](#example-3-using-only-defaults)
+- [Using large parameter set](#example-3-using-large-parameter-set)
+- [WAF-aligned](#example-4-waf-aligned)
 
-### Example 1: _Using large parameter set_
+### Example 1: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module automationAccount 'br:bicep/modules/automation.automation-account:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-aamin'
+  params: {
+    // Required parameters
+    name: 'aamin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "aamin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 2: _Encr_
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module automationAccount 'br:bicep/modules/automation.automation-account:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-aaencr'
+  params: {
+    // Required parameters
+    name: 'aaencr001'
+    // Non-required parameters
+    customerManagedKey: {
+      keyName: '<keyName>'
+      keyVaultResourceId: '<keyVaultResourceId>'
+      userAssignedIdentityResourceId: '<userAssignedIdentityResourceId>'
+    }
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    managedIdentities: {
+      userAssignedResourcesIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "aaencr001"
+    },
+    // Non-required parameters
+    "customerManagedKey": {
+      "value": {
+        "keyName": "<keyName>",
+        "keyVaultResourceId": "<keyVaultResourceId>",
+        "userAssignedIdentityResourceId": "<userAssignedIdentityResourceId>"
+      }
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "managedIdentities": {
+      "value": {
+        "userAssignedResourcesIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 3: _Using large parameter set_
 
 This instance deploys the module with most of its features enabled.
 
@@ -52,10 +170,10 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module automationAccount 'br:bicep/modules/automation.automation-account:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-aacom'
+  name: '${uniqueString(deployment().name, location)}-test-aamax'
   params: {
     // Required parameters
-    name: 'aacom001'
+    name: 'aamax001'
     // Non-required parameters
     diagnosticSettings: [
       {
@@ -265,7 +383,7 @@ module automationAccount 'br:bicep/modules/automation.automation-account:1.0.0' 
   "parameters": {
     // Required parameters
     "name": {
-      "value": "aacom001"
+      "value": "aamax001"
     },
     // Non-required parameters
     "diagnosticSettings": {
@@ -497,7 +615,10 @@ module automationAccount 'br:bicep/modules/automation.automation-account:1.0.0' 
 </details>
 <p>
 
-### Example 2: _Encr_
+### Example 4: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
 
 <details>
 
@@ -505,22 +626,201 @@ module automationAccount 'br:bicep/modules/automation.automation-account:1.0.0' 
 
 ```bicep
 module automationAccount 'br:bicep/modules/automation.automation-account:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-aaencr'
+  name: '${uniqueString(deployment().name, location)}-test-aawaf'
   params: {
     // Required parameters
-    name: 'aaencr001'
+    name: 'aawaf001'
     // Non-required parameters
-    customerManagedKey: {
-      keyName: '<keyName>'
-      keyVaultResourceId: '<keyVaultResourceId>'
-      userAssignedIdentityResourceId: '<userAssignedIdentityResourceId>'
-    }
+    diagnosticSettings: [
+      {
+        eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+        eventHubName: '<eventHubName>'
+        metricCategories: [
+          {
+            category: 'AllMetrics'
+          }
+        ]
+        name: 'customSetting'
+        storageAccountResourceId: '<storageAccountResourceId>'
+        workspaceResourceId: '<workspaceResourceId>'
+      }
+    ]
+    disableLocalAuth: true
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    gallerySolutions: [
+      {
+        name: 'Updates'
+        product: 'OMSGallery'
+        publisher: 'Microsoft'
+      }
+    ]
+    jobSchedules: [
+      {
+        runbookName: 'TestRunbook'
+        scheduleName: 'TestSchedule'
+      }
+    ]
+    linkedWorkspaceResourceId: '<linkedWorkspaceResourceId>'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
     managedIdentities: {
+      systemAssigned: true
       userAssignedResourcesIds: [
         '<managedIdentityResourceId>'
       ]
     }
+    modules: [
+      {
+        name: 'PSWindowsUpdate'
+        uri: 'https://www.powershellgallery.com/api/v2/package'
+        version: 'latest'
+      }
+    ]
+    privateEndpoints: [
+      {
+        privateDnsZoneResourceIds: [
+          '<privateDNSZoneResourceId>'
+        ]
+        service: 'Webhook'
+        subnetResourceId: '<subnetResourceId>'
+        tags: {
+          Environment: 'Non-Prod'
+          'hidden-title': 'This is visible in the resource name'
+          Role: 'DeploymentValidation'
+        }
+      }
+      {
+        privateDnsZoneResourceIds: [
+          '<privateDNSZoneResourceId>'
+        ]
+        service: 'DSCAndHybridWorker'
+        subnetResourceId: '<subnetResourceId>'
+        tags: {
+          Environment: 'Non-Prod'
+          'hidden-title': 'This is visible in the resource name'
+          Role: 'DeploymentValidation'
+        }
+      }
+    ]
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    runbooks: [
+      {
+        description: 'Test runbook'
+        name: 'TestRunbook'
+        type: 'PowerShell'
+        uri: 'https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/quickstarts/microsoft.automation/101-automation/scripts/AzureAutomationTutorial.ps1'
+        version: '1.0.0.0'
+      }
+    ]
+    schedules: [
+      {
+        advancedSchedule: {}
+        expiryTime: '9999-12-31T13:00'
+        frequency: 'Hour'
+        interval: 12
+        name: 'TestSchedule'
+        startTime: ''
+        timeZone: 'Europe/Berlin'
+      }
+    ]
+    softwareUpdateConfigurations: [
+      {
+        excludeUpdates: [
+          '123456'
+        ]
+        frequency: 'Month'
+        includeUpdates: [
+          '654321'
+        ]
+        interval: 1
+        maintenanceWindow: 'PT4H'
+        monthlyOccurrences: [
+          {
+            day: 'Friday'
+            occurrence: 3
+          }
+        ]
+        name: 'Windows_ZeroDay'
+        operatingSystem: 'Windows'
+        rebootSetting: 'IfRequired'
+        scopeByTags: {
+          Update: [
+            'Automatic-Wave1'
+          ]
+        }
+        startTime: '22:00'
+        updateClassifications: [
+          'Critical'
+          'Definition'
+          'FeaturePack'
+          'Security'
+          'ServicePack'
+          'Tools'
+          'UpdateRollup'
+          'Updates'
+        ]
+      }
+      {
+        excludeUpdates: [
+          'icacls'
+        ]
+        frequency: 'OneTime'
+        includeUpdates: [
+          'kernel'
+        ]
+        maintenanceWindow: 'PT4H'
+        name: 'Linux_ZeroDay'
+        operatingSystem: 'Linux'
+        rebootSetting: 'IfRequired'
+        startTime: '22:00'
+        updateClassifications: [
+          'Critical'
+          'Other'
+          'Security'
+        ]
+      }
+    ]
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+    variables: [
+      {
+        description: 'TestStringDescription'
+        name: 'TestString'
+        value: '\'TestString\''
+      }
+      {
+        description: 'TestIntegerDescription'
+        name: 'TestInteger'
+        value: '500'
+      }
+      {
+        description: 'TestBooleanDescription'
+        name: 'TestBoolean'
+        value: 'false'
+      }
+      {
+        description: 'TestDateTimeDescription'
+        isEncrypted: false
+        name: 'TestDateTime'
+        value: '\'\\/Date(1637934042656)\\/\''
+      }
+      {
+        description: 'TestEncryptedDescription'
+        name: 'TestEncryptedVariable'
+        value: '\'TestEncryptedValue\''
+      }
+    ]
   }
 }
 ```
@@ -539,73 +839,230 @@ module automationAccount 'br:bicep/modules/automation.automation-account:1.0.0' 
   "parameters": {
     // Required parameters
     "name": {
-      "value": "aaencr001"
+      "value": "aawaf001"
     },
     // Non-required parameters
-    "customerManagedKey": {
-      "value": {
-        "keyName": "<keyName>",
-        "keyVaultResourceId": "<keyVaultResourceId>",
-        "userAssignedIdentityResourceId": "<userAssignedIdentityResourceId>"
-      }
+    "diagnosticSettings": {
+      "value": [
+        {
+          "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+          "eventHubName": "<eventHubName>",
+          "metricCategories": [
+            {
+              "category": "AllMetrics"
+            }
+          ],
+          "name": "customSetting",
+          "storageAccountResourceId": "<storageAccountResourceId>",
+          "workspaceResourceId": "<workspaceResourceId>"
+        }
+      ]
+    },
+    "disableLocalAuth": {
+      "value": true
     },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     },
+    "gallerySolutions": {
+      "value": [
+        {
+          "name": "Updates",
+          "product": "OMSGallery",
+          "publisher": "Microsoft"
+        }
+      ]
+    },
+    "jobSchedules": {
+      "value": [
+        {
+          "runbookName": "TestRunbook",
+          "scheduleName": "TestSchedule"
+        }
+      ]
+    },
+    "linkedWorkspaceResourceId": {
+      "value": "<linkedWorkspaceResourceId>"
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
     "managedIdentities": {
       "value": {
+        "systemAssigned": true,
         "userAssignedResourcesIds": [
           "<managedIdentityResourceId>"
         ]
       }
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-### Example 3: _Using only defaults_
-
-This instance deploys the module with the minimum set of required parameters.
-
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module automationAccount 'br:bicep/modules/automation.automation-account:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-aamin'
-  params: {
-    // Required parameters
-    name: 'aamin001'
-    // Non-required parameters
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "aamin001"
     },
-    // Non-required parameters
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
+    "modules": {
+      "value": [
+        {
+          "name": "PSWindowsUpdate",
+          "uri": "https://www.powershellgallery.com/api/v2/package",
+          "version": "latest"
+        }
+      ]
+    },
+    "privateEndpoints": {
+      "value": [
+        {
+          "privateDnsZoneResourceIds": [
+            "<privateDNSZoneResourceId>"
+          ],
+          "service": "Webhook",
+          "subnetResourceId": "<subnetResourceId>",
+          "tags": {
+            "Environment": "Non-Prod",
+            "hidden-title": "This is visible in the resource name",
+            "Role": "DeploymentValidation"
+          }
+        },
+        {
+          "privateDnsZoneResourceIds": [
+            "<privateDNSZoneResourceId>"
+          ],
+          "service": "DSCAndHybridWorker",
+          "subnetResourceId": "<subnetResourceId>",
+          "tags": {
+            "Environment": "Non-Prod",
+            "hidden-title": "This is visible in the resource name",
+            "Role": "DeploymentValidation"
+          }
+        }
+      ]
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "runbooks": {
+      "value": [
+        {
+          "description": "Test runbook",
+          "name": "TestRunbook",
+          "type": "PowerShell",
+          "uri": "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/quickstarts/microsoft.automation/101-automation/scripts/AzureAutomationTutorial.ps1",
+          "version": "1.0.0.0"
+        }
+      ]
+    },
+    "schedules": {
+      "value": [
+        {
+          "advancedSchedule": {},
+          "expiryTime": "9999-12-31T13:00",
+          "frequency": "Hour",
+          "interval": 12,
+          "name": "TestSchedule",
+          "startTime": "",
+          "timeZone": "Europe/Berlin"
+        }
+      ]
+    },
+    "softwareUpdateConfigurations": {
+      "value": [
+        {
+          "excludeUpdates": [
+            "123456"
+          ],
+          "frequency": "Month",
+          "includeUpdates": [
+            "654321"
+          ],
+          "interval": 1,
+          "maintenanceWindow": "PT4H",
+          "monthlyOccurrences": [
+            {
+              "day": "Friday",
+              "occurrence": 3
+            }
+          ],
+          "name": "Windows_ZeroDay",
+          "operatingSystem": "Windows",
+          "rebootSetting": "IfRequired",
+          "scopeByTags": {
+            "Update": [
+              "Automatic-Wave1"
+            ]
+          },
+          "startTime": "22:00",
+          "updateClassifications": [
+            "Critical",
+            "Definition",
+            "FeaturePack",
+            "Security",
+            "ServicePack",
+            "Tools",
+            "UpdateRollup",
+            "Updates"
+          ]
+        },
+        {
+          "excludeUpdates": [
+            "icacls"
+          ],
+          "frequency": "OneTime",
+          "includeUpdates": [
+            "kernel"
+          ],
+          "maintenanceWindow": "PT4H",
+          "name": "Linux_ZeroDay",
+          "operatingSystem": "Linux",
+          "rebootSetting": "IfRequired",
+          "startTime": "22:00",
+          "updateClassifications": [
+            "Critical",
+            "Other",
+            "Security"
+          ]
+        }
+      ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    },
+    "variables": {
+      "value": [
+        {
+          "description": "TestStringDescription",
+          "name": "TestString",
+          "value": "\"TestString\""
+        },
+        {
+          "description": "TestIntegerDescription",
+          "name": "TestInteger",
+          "value": "500"
+        },
+        {
+          "description": "TestBooleanDescription",
+          "name": "TestBoolean",
+          "value": "false"
+        },
+        {
+          "description": "TestDateTimeDescription",
+          "isEncrypted": false,
+          "name": "TestDateTime",
+          "value": "\"\\/Date(1637934042656)\\/\""
+        },
+        {
+          "description": "TestEncryptedDescription",
+          "name": "TestEncryptedVariable",
+          "value": "\"TestEncryptedValue\""
+        }
+      ]
     }
   }
 }

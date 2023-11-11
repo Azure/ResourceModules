@@ -27,13 +27,13 @@ The following section provides usage examples for the module, which were used to
 
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/analysis-services.server:1.0.0`.
 
-- [Using large parameter set](#example-1-using-large-parameter-set)
-- [Max](#example-2-max)
-- [Using only defaults](#example-3-using-only-defaults)
+- [Using only defaults](#example-1-using-only-defaults)
+- [Using large parameter set](#example-2-using-large-parameter-set)
+- [WAF-aligned](#example-3-waf-aligned)
 
-### Example 1: _Using large parameter set_
+### Example 1: _Using only defaults_
 
-This instance deploys the module with most of its features enabled.
+This instance deploys the module with the minimum set of required parameters.
 
 
 <details>
@@ -42,43 +42,12 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module server 'br:bicep/modules/analysis-services.server:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-asscom'
+  name: '${uniqueString(deployment().name, location)}-test-assmin'
   params: {
     // Required parameters
-    name: 'asscom'
+    name: 'assmin'
     // Non-required parameters
-    diagnosticSettings: [
-      {
-        eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
-        eventHubName: '<eventHubName>'
-        metricCategories: [
-          {
-            category: 'AllMetrics'
-          }
-        ]
-        name: 'customSetting'
-        storageAccountResourceId: '<storageAccountResourceId>'
-        workspaceResourceId: '<workspaceResourceId>'
-      }
-    ]
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    lock: {
-      kind: 'CanNotDelete'
-      name: 'myCustomLockName'
-    }
-    roleAssignments: [
-      {
-        principalId: '<principalId>'
-        principalType: 'ServicePrincipal'
-        roleDefinitionIdOrName: 'Reader'
-      }
-    ]
-    skuName: 'S0'
-    tags: {
-      Environment: 'Non-Prod'
-      'hidden-title': 'This is visible in the resource name'
-      Role: 'DeploymentValidation'
-    }
   }
 }
 ```
@@ -97,52 +66,11 @@ module server 'br:bicep/modules/analysis-services.server:1.0.0' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "asscom"
+      "value": "assmin"
     },
     // Non-required parameters
-    "diagnosticSettings": {
-      "value": [
-        {
-          "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
-          "eventHubName": "<eventHubName>",
-          "metricCategories": [
-            {
-              "category": "AllMetrics"
-            }
-          ],
-          "name": "customSetting",
-          "storageAccountResourceId": "<storageAccountResourceId>",
-          "workspaceResourceId": "<workspaceResourceId>"
-        }
-      ]
-    },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
-    },
-    "lock": {
-      "value": {
-        "kind": "CanNotDelete",
-        "name": "myCustomLockName"
-      }
-    },
-    "roleAssignments": {
-      "value": [
-        {
-          "principalId": "<principalId>",
-          "principalType": "ServicePrincipal",
-          "roleDefinitionIdOrName": "Reader"
-        }
-      ]
-    },
-    "skuName": {
-      "value": "S0"
-    },
-    "tags": {
-      "value": {
-        "Environment": "Non-Prod",
-        "hidden-title": "This is visible in the resource name",
-        "Role": "DeploymentValidation"
-      }
     }
   }
 }
@@ -151,7 +79,10 @@ module server 'br:bicep/modules/analysis-services.server:1.0.0' = {
 </details>
 <p>
 
-### Example 2: _Max_
+### Example 2: _Using large parameter set_
+
+This instance deploys the module with most of its features enabled.
+
 
 <details>
 
@@ -159,7 +90,7 @@ module server 'br:bicep/modules/analysis-services.server:1.0.0' = {
 
 ```bicep
 module server 'br:bicep/modules/analysis-services.server:1.0.0' = {
-  name: '${uniqueString(deployment().name)}-test-assmax'
+  name: '${uniqueString(deployment().name, location)}-test-assmax'
   params: {
     // Required parameters
     name: 'assmax'
@@ -210,6 +141,11 @@ module server 'br:bicep/modules/analysis-services.server:1.0.0' = {
     ]
     skuCapacity: 1
     skuName: 'S0'
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -290,6 +226,13 @@ module server 'br:bicep/modules/analysis-services.server:1.0.0' = {
     },
     "skuName": {
       "value": "S0"
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }
@@ -298,9 +241,9 @@ module server 'br:bicep/modules/analysis-services.server:1.0.0' = {
 </details>
 <p>
 
-### Example 3: _Using only defaults_
+### Example 3: _WAF-aligned_
 
-This instance deploys the module with the minimum set of required parameters.
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
 
 
 <details>
@@ -309,12 +252,62 @@ This instance deploys the module with the minimum set of required parameters.
 
 ```bicep
 module server 'br:bicep/modules/analysis-services.server:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-assmin'
+  name: '${uniqueString(deployment().name, location)}-test-asswaf'
   params: {
     // Required parameters
-    name: 'assmin'
+    name: 'asswaf'
     // Non-required parameters
+    diagnosticSettings: [
+      {
+        eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+        eventHubName: '<eventHubName>'
+        logCategoriesAndGroups: [
+          {
+            category: 'Engine'
+          }
+          {
+            category: 'Service'
+          }
+        ]
+        metricCategories: [
+          {
+            category: 'AllMetrics'
+          }
+        ]
+        name: 'customSetting'
+        storageAccountResourceId: '<storageAccountResourceId>'
+        workspaceResourceId: '<workspaceResourceId>'
+      }
+    ]
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    firewallSettings: {
+      enablePowerBIService: true
+      firewallRules: [
+        {
+          firewallRuleName: 'AllowFromAll'
+          rangeEnd: '255.255.255.255'
+          rangeStart: '0.0.0.0'
+        }
+      ]
+    }
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    skuCapacity: 1
+    skuName: 'S0'
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -333,11 +326,75 @@ module server 'br:bicep/modules/analysis-services.server:1.0.0' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "assmin"
+      "value": "asswaf"
     },
     // Non-required parameters
+    "diagnosticSettings": {
+      "value": [
+        {
+          "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+          "eventHubName": "<eventHubName>",
+          "logCategoriesAndGroups": [
+            {
+              "category": "Engine"
+            },
+            {
+              "category": "Service"
+            }
+          ],
+          "metricCategories": [
+            {
+              "category": "AllMetrics"
+            }
+          ],
+          "name": "customSetting",
+          "storageAccountResourceId": "<storageAccountResourceId>",
+          "workspaceResourceId": "<workspaceResourceId>"
+        }
+      ]
+    },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
+    },
+    "firewallSettings": {
+      "value": {
+        "enablePowerBIService": true,
+        "firewallRules": [
+          {
+            "firewallRuleName": "AllowFromAll",
+            "rangeEnd": "255.255.255.255",
+            "rangeStart": "0.0.0.0"
+          }
+        ]
+      }
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "skuCapacity": {
+      "value": 1
+    },
+    "skuName": {
+      "value": "S0"
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }

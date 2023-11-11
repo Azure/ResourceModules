@@ -27,172 +27,11 @@ The following section provides usage examples for the module, which were used to
 
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/network.private-link-service:1.0.0`.
 
-- [Using large parameter set](#example-1-using-large-parameter-set)
-- [Using only defaults](#example-2-using-only-defaults)
+- [Using only defaults](#example-1-using-only-defaults)
+- [Using large parameter set](#example-2-using-large-parameter-set)
+- [WAF-aligned](#example-3-waf-aligned)
 
-### Example 1: _Using large parameter set_
-
-This instance deploys the module with most of its features enabled.
-
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module privateLinkService 'br:bicep/modules/network.private-link-service:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-nplscom'
-  params: {
-    // Required parameters
-    name: 'nplscom001'
-    // Non-required parameters
-    autoApproval: {
-      subscriptions: [
-        '*'
-      ]
-    }
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    enableProxyProtocol: true
-    fqdns: [
-      'nplscom.plsfqdn01.azure.privatelinkservice'
-      'nplscom.plsfqdn02.azure.privatelinkservice'
-    ]
-    ipConfigurations: [
-      {
-        name: 'nplscom01'
-        properties: {
-          primary: true
-          privateIPAllocationMethod: 'Dynamic'
-          subnet: {
-            id: '<id>'
-          }
-        }
-      }
-    ]
-    loadBalancerFrontendIpConfigurations: [
-      {
-        id: '<id>'
-      }
-    ]
-    lock: {
-      kind: 'CanNotDelete'
-      name: 'myCustomLockName'
-    }
-    roleAssignments: [
-      {
-        principalId: '<principalId>'
-        principalType: 'ServicePrincipal'
-        roleDefinitionIdOrName: 'Reader'
-      }
-    ]
-    tags: {
-      Environment: 'Non-Prod'
-      'hidden-title': 'This is visible in the resource name'
-      Role: 'DeploymentValidation'
-    }
-    visibility: {
-      subscriptions: [
-        '<subscriptionId>'
-      ]
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "nplscom001"
-    },
-    // Non-required parameters
-    "autoApproval": {
-      "value": {
-        "subscriptions": [
-          "*"
-        ]
-      }
-    },
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
-    "enableProxyProtocol": {
-      "value": true
-    },
-    "fqdns": {
-      "value": [
-        "nplscom.plsfqdn01.azure.privatelinkservice",
-        "nplscom.plsfqdn02.azure.privatelinkservice"
-      ]
-    },
-    "ipConfigurations": {
-      "value": [
-        {
-          "name": "nplscom01",
-          "properties": {
-            "primary": true,
-            "privateIPAllocationMethod": "Dynamic",
-            "subnet": {
-              "id": "<id>"
-            }
-          }
-        }
-      ]
-    },
-    "loadBalancerFrontendIpConfigurations": {
-      "value": [
-        {
-          "id": "<id>"
-        }
-      ]
-    },
-    "lock": {
-      "value": {
-        "kind": "CanNotDelete",
-        "name": "myCustomLockName"
-      }
-    },
-    "roleAssignments": {
-      "value": [
-        {
-          "principalId": "<principalId>",
-          "principalType": "ServicePrincipal",
-          "roleDefinitionIdOrName": "Reader"
-        }
-      ]
-    },
-    "tags": {
-      "value": {
-        "Environment": "Non-Prod",
-        "hidden-title": "This is visible in the resource name",
-        "Role": "DeploymentValidation"
-      }
-    },
-    "visibility": {
-      "value": {
-        "subscriptions": [
-          "<subscriptionId>"
-        ]
-      }
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-### Example 2: _Using only defaults_
+### Example 1: _Using only defaults_
 
 This instance deploys the module with the minimum set of required parameters.
 
@@ -266,6 +105,330 @@ module privateLinkService 'br:bicep/modules/network.private-link-service:1.0.0' 
           "id": "<id>"
         }
       ]
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 2: _Using large parameter set_
+
+This instance deploys the module with most of its features enabled.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module privateLinkService 'br:bicep/modules/network.private-link-service:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-nplsmax'
+  params: {
+    // Required parameters
+    name: 'nplsmax001'
+    // Non-required parameters
+    autoApproval: {
+      subscriptions: [
+        '*'
+      ]
+    }
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    enableProxyProtocol: true
+    fqdns: [
+      'nplsmax.plsfqdn01.azure.privatelinkservice'
+      'nplsmax.plsfqdn02.azure.privatelinkservice'
+    ]
+    ipConfigurations: [
+      {
+        name: 'nplsmax01'
+        properties: {
+          primary: true
+          privateIPAllocationMethod: 'Dynamic'
+          subnet: {
+            id: '<id>'
+          }
+        }
+      }
+    ]
+    loadBalancerFrontendIpConfigurations: [
+      {
+        id: '<id>'
+      }
+    ]
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+    visibility: {
+      subscriptions: [
+        '<subscriptionId>'
+      ]
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "nplsmax001"
+    },
+    // Non-required parameters
+    "autoApproval": {
+      "value": {
+        "subscriptions": [
+          "*"
+        ]
+      }
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "enableProxyProtocol": {
+      "value": true
+    },
+    "fqdns": {
+      "value": [
+        "nplsmax.plsfqdn01.azure.privatelinkservice",
+        "nplsmax.plsfqdn02.azure.privatelinkservice"
+      ]
+    },
+    "ipConfigurations": {
+      "value": [
+        {
+          "name": "nplsmax01",
+          "properties": {
+            "primary": true,
+            "privateIPAllocationMethod": "Dynamic",
+            "subnet": {
+              "id": "<id>"
+            }
+          }
+        }
+      ]
+    },
+    "loadBalancerFrontendIpConfigurations": {
+      "value": [
+        {
+          "id": "<id>"
+        }
+      ]
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    },
+    "visibility": {
+      "value": {
+        "subscriptions": [
+          "<subscriptionId>"
+        ]
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 3: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module privateLinkService 'br:bicep/modules/network.private-link-service:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-nplswaf'
+  params: {
+    // Required parameters
+    name: 'nplswaf001'
+    // Non-required parameters
+    autoApproval: {
+      subscriptions: [
+        '*'
+      ]
+    }
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    enableProxyProtocol: true
+    fqdns: [
+      'nplswaf.plsfqdn01.azure.privatelinkservice'
+      'nplswaf.plsfqdn02.azure.privatelinkservice'
+    ]
+    ipConfigurations: [
+      {
+        name: 'nplswaf01'
+        properties: {
+          primary: true
+          privateIPAllocationMethod: 'Dynamic'
+          subnet: {
+            id: '<id>'
+          }
+        }
+      }
+    ]
+    loadBalancerFrontendIpConfigurations: [
+      {
+        id: '<id>'
+      }
+    ]
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+    visibility: {
+      subscriptions: [
+        '<subscriptionId>'
+      ]
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "nplswaf001"
+    },
+    // Non-required parameters
+    "autoApproval": {
+      "value": {
+        "subscriptions": [
+          "*"
+        ]
+      }
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "enableProxyProtocol": {
+      "value": true
+    },
+    "fqdns": {
+      "value": [
+        "nplswaf.plsfqdn01.azure.privatelinkservice",
+        "nplswaf.plsfqdn02.azure.privatelinkservice"
+      ]
+    },
+    "ipConfigurations": {
+      "value": [
+        {
+          "name": "nplswaf01",
+          "properties": {
+            "primary": true,
+            "privateIPAllocationMethod": "Dynamic",
+            "subnet": {
+              "id": "<id>"
+            }
+          }
+        }
+      ]
+    },
+    "loadBalancerFrontendIpConfigurations": {
+      "value": [
+        {
+          "id": "<id>"
+        }
+      ]
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    },
+    "visibility": {
+      "value": {
+        "subscriptions": [
+          "<subscriptionId>"
+        ]
+      }
     }
   }
 }

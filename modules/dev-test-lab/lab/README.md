@@ -32,10 +32,59 @@ The following section provides usage examples for the module, which were used to
 
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/dev-test-lab.lab:1.0.0`.
 
-- [Using large parameter set](#example-1-using-large-parameter-set)
-- [Using only defaults](#example-2-using-only-defaults)
+- [Using only defaults](#example-1-using-only-defaults)
+- [Using large parameter set](#example-2-using-large-parameter-set)
+- [WAF-aligned](#example-3-waf-aligned)
 
-### Example 1: _Using large parameter set_
+### Example 1: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module lab 'br:bicep/modules/dev-test-lab.lab:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-dtllmin'
+  params: {
+    // Required parameters
+    name: 'dtllmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "dtllmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 2: _Using large parameter set_
 
 This instance deploys the module with most of its features enabled.
 
@@ -46,10 +95,10 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module lab 'br:bicep/modules/dev-test-lab.lab:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-dtllcom'
+  name: '${uniqueString(deployment().name, location)}-test-dtllmax'
   params: {
     // Required parameters
-    name: 'dtllcom001'
+    name: 'dtllmax001'
     // Non-required parameters
     announcement: {
       enabled: 'Enabled'
@@ -236,7 +285,7 @@ module lab 'br:bicep/modules/dev-test-lab.lab:1.0.0' = {
     }
     tags: {
       'hidden-title': 'This is visible in the resource name'
-      labName: 'dtllcom001'
+      labName: 'dtllmax001'
       resourceType: 'DevTest Lab'
     }
     virtualnetworks: [
@@ -292,7 +341,7 @@ module lab 'br:bicep/modules/dev-test-lab.lab:1.0.0' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "dtllcom001"
+      "value": "dtllmax001"
     },
     // Non-required parameters
     "announcement": {
@@ -527,7 +576,7 @@ module lab 'br:bicep/modules/dev-test-lab.lab:1.0.0' = {
     "tags": {
       "value": {
         "hidden-title": "This is visible in the resource name",
-        "labName": "dtllcom001",
+        "labName": "dtllmax001",
         "resourceType": "DevTest Lab"
       }
     },
@@ -577,9 +626,9 @@ module lab 'br:bicep/modules/dev-test-lab.lab:1.0.0' = {
 </details>
 <p>
 
-### Example 2: _Using only defaults_
+### Example 3: _WAF-aligned_
 
-This instance deploys the module with the minimum set of required parameters.
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
 
 
 <details>
@@ -588,12 +637,234 @@ This instance deploys the module with the minimum set of required parameters.
 
 ```bicep
 module lab 'br:bicep/modules/dev-test-lab.lab:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-dtllmin'
+  name: '${uniqueString(deployment().name, location)}-test-dtllwaf'
   params: {
     // Required parameters
-    name: 'dtllmin001'
+    name: 'dtllwaf001'
     // Non-required parameters
+    announcement: {
+      enabled: 'Enabled'
+      expirationDate: '2025-12-30T13:00:00Z'
+      markdown: 'DevTest Lab announcement text. <br> New line. It also supports Markdown'
+      title: 'DevTest announcement title'
+    }
+    artifactsources: [
+      {
+        branchRef: 'master'
+        displayName: 'Public Artifact Repo'
+        folderPath: '/Artifacts'
+        name: 'Public Repo'
+        sourceType: 'GitHub'
+        status: 'Disabled'
+        uri: 'https://github.com/Azure/azure-devtestlab.git'
+      }
+      {
+        armTemplateFolderPath: '/Environments'
+        branchRef: 'master'
+        displayName: 'Public Environment Repo'
+        name: 'Public Environment Repo'
+        sourceType: 'GitHub'
+        status: 'Disabled'
+        uri: 'https://github.com/Azure/azure-devtestlab.git'
+      }
+    ]
+    artifactsStorageAccount: '<artifactsStorageAccount>'
+    browserConnect: 'Enabled'
+    costs: {
+      cycleType: 'CalendarMonth'
+      status: 'Enabled'
+      target: 450
+      thresholdValue100DisplayOnChart: 'Enabled'
+      thresholdValue100SendNotificationWhenExceeded: 'Enabled'
+    }
+    disableAutoUpgradeCseMinorVersion: true
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    encryptionDiskEncryptionSetId: '<encryptionDiskEncryptionSetId>'
+    encryptionType: 'EncryptionAtRestWithCustomerKey'
+    environmentPermission: 'Contributor'
+    extendedProperties: {
+      RdpConnectionType: '7'
+    }
+    isolateLabResources: 'Enabled'
+    labStorageType: 'Premium'
+    location: '<location>'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    managedIdentities: {
+      userAssignedResourcesIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
+    managementIdentitiesResourceIds: [
+      '<managedIdentityResourceId>'
+    ]
+    notificationchannels: [
+      {
+        description: 'Integration configured for auto-shutdown'
+        emailRecipient: 'mail@contosodtlmail.com'
+        events: [
+          {
+            eventName: 'AutoShutdown'
+          }
+        ]
+        name: 'autoShutdown'
+        notificationLocale: 'en'
+        webHookUrl: 'https://webhook.contosotest.com'
+      }
+      {
+        events: [
+          {
+            eventName: 'Cost'
+          }
+        ]
+        name: 'costThreshold'
+        webHookUrl: 'https://webhook.contosotest.com'
+      }
+    ]
+    policies: [
+      {
+        evaluatorType: 'MaxValuePolicy'
+        factData: '<factData>'
+        factName: 'UserOwnedLabVmCountInSubnet'
+        name: '<name>'
+        threshold: '1'
+      }
+      {
+        evaluatorType: 'MaxValuePolicy'
+        factName: 'UserOwnedLabVmCount'
+        name: 'MaxVmsAllowedPerUser'
+        threshold: '2'
+      }
+      {
+        evaluatorType: 'MaxValuePolicy'
+        factName: 'UserOwnedLabPremiumVmCount'
+        name: 'MaxPremiumVmsAllowedPerUser'
+        status: 'Disabled'
+        threshold: '1'
+      }
+      {
+        evaluatorType: 'MaxValuePolicy'
+        factName: 'LabVmCount'
+        name: 'MaxVmsAllowedPerLab'
+        threshold: '3'
+      }
+      {
+        evaluatorType: 'MaxValuePolicy'
+        factName: 'LabPremiumVmCount'
+        name: 'MaxPremiumVmsAllowedPerLab'
+        threshold: '2'
+      }
+      {
+        evaluatorType: 'AllowedValuesPolicy'
+        factData: ''
+        factName: 'LabVmSize'
+        name: 'AllowedVmSizesInLab'
+        status: 'Enabled'
+        threshold: '<threshold>'
+      }
+      {
+        evaluatorType: 'AllowedValuesPolicy'
+        factName: 'ScheduleEditPermission'
+        name: 'ScheduleEditPermission'
+        threshold: '<threshold>'
+      }
+      {
+        evaluatorType: 'AllowedValuesPolicy'
+        factName: 'GalleryImage'
+        name: 'GalleryImage'
+        threshold: '<threshold>'
+      }
+      {
+        description: 'Public Environment Policy'
+        evaluatorType: 'AllowedValuesPolicy'
+        factName: 'EnvironmentTemplate'
+        name: 'EnvironmentTemplate'
+        threshold: '<threshold>'
+      }
+    ]
+    premiumDataDisks: 'Enabled'
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    schedules: [
+      {
+        dailyRecurrence: {
+          time: '0000'
+        }
+        name: 'LabVmsShutdown'
+        notificationSettingsStatus: 'Enabled'
+        notificationSettingsTimeInMinutes: 30
+        status: 'Enabled'
+        taskType: 'LabVmsShutdownTask'
+        timeZoneId: 'AUS Eastern Standard Time'
+      }
+      {
+        name: 'LabVmAutoStart'
+        status: 'Enabled'
+        taskType: 'LabVmsStartupTask'
+        timeZoneId: 'AUS Eastern Standard Time'
+        weeklyRecurrence: {
+          time: '0700'
+          weekdays: [
+            'Friday'
+            'Monday'
+            'Thursday'
+            'Tuesday'
+            'Wednesday'
+          ]
+        }
+      }
+    ]
+    support: {
+      enabled: 'Enabled'
+      markdown: 'DevTest Lab support text. <br> New line. It also supports Markdown'
+    }
+    tags: {
+      'hidden-title': 'This is visible in the resource name'
+      labName: 'dtllwaf001'
+      resourceType: 'DevTest Lab'
+    }
+    virtualnetworks: [
+      {
+        allowedSubnets: [
+          {
+            allowPublicIp: 'Allow'
+            labSubnetName: '<labSubnetName>'
+            resourceId: '<resourceId>'
+          }
+        ]
+        description: 'lab virtual network description'
+        externalProviderResourceId: '<externalProviderResourceId>'
+        name: '<name>'
+        subnetOverrides: [
+          {
+            labSubnetName: '<labSubnetName>'
+            resourceId: '<resourceId>'
+            sharedPublicIpAddressConfiguration: {
+              allowedPorts: [
+                {
+                  backendPort: 3389
+                  transportProtocol: 'Tcp'
+                }
+                {
+                  backendPort: 22
+                  transportProtocol: 'Tcp'
+                }
+              ]
+            }
+            useInVmCreationPermission: 'Allow'
+            usePublicIpAddressPermission: 'Allow'
+          }
+        ]
+      }
+    ]
+    vmCreationResourceGroupId: '<vmCreationResourceGroupId>'
   }
 }
 ```
@@ -612,11 +883,283 @@ module lab 'br:bicep/modules/dev-test-lab.lab:1.0.0' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "dtllmin001"
+      "value": "dtllwaf001"
     },
     // Non-required parameters
+    "announcement": {
+      "value": {
+        "enabled": "Enabled",
+        "expirationDate": "2025-12-30T13:00:00Z",
+        "markdown": "DevTest Lab announcement text. <br> New line. It also supports Markdown",
+        "title": "DevTest announcement title"
+      }
+    },
+    "artifactsources": {
+      "value": [
+        {
+          "branchRef": "master",
+          "displayName": "Public Artifact Repo",
+          "folderPath": "/Artifacts",
+          "name": "Public Repo",
+          "sourceType": "GitHub",
+          "status": "Disabled",
+          "uri": "https://github.com/Azure/azure-devtestlab.git"
+        },
+        {
+          "armTemplateFolderPath": "/Environments",
+          "branchRef": "master",
+          "displayName": "Public Environment Repo",
+          "name": "Public Environment Repo",
+          "sourceType": "GitHub",
+          "status": "Disabled",
+          "uri": "https://github.com/Azure/azure-devtestlab.git"
+        }
+      ]
+    },
+    "artifactsStorageAccount": {
+      "value": "<artifactsStorageAccount>"
+    },
+    "browserConnect": {
+      "value": "Enabled"
+    },
+    "costs": {
+      "value": {
+        "cycleType": "CalendarMonth",
+        "status": "Enabled",
+        "target": 450,
+        "thresholdValue100DisplayOnChart": "Enabled",
+        "thresholdValue100SendNotificationWhenExceeded": "Enabled"
+      }
+    },
+    "disableAutoUpgradeCseMinorVersion": {
+      "value": true
+    },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
+    },
+    "encryptionDiskEncryptionSetId": {
+      "value": "<encryptionDiskEncryptionSetId>"
+    },
+    "encryptionType": {
+      "value": "EncryptionAtRestWithCustomerKey"
+    },
+    "environmentPermission": {
+      "value": "Contributor"
+    },
+    "extendedProperties": {
+      "value": {
+        "RdpConnectionType": "7"
+      }
+    },
+    "isolateLabResources": {
+      "value": "Enabled"
+    },
+    "labStorageType": {
+      "value": "Premium"
+    },
+    "location": {
+      "value": "<location>"
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "managedIdentities": {
+      "value": {
+        "userAssignedResourcesIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
+    },
+    "managementIdentitiesResourceIds": {
+      "value": [
+        "<managedIdentityResourceId>"
+      ]
+    },
+    "notificationchannels": {
+      "value": [
+        {
+          "description": "Integration configured for auto-shutdown",
+          "emailRecipient": "mail@contosodtlmail.com",
+          "events": [
+            {
+              "eventName": "AutoShutdown"
+            }
+          ],
+          "name": "autoShutdown",
+          "notificationLocale": "en",
+          "webHookUrl": "https://webhook.contosotest.com"
+        },
+        {
+          "events": [
+            {
+              "eventName": "Cost"
+            }
+          ],
+          "name": "costThreshold",
+          "webHookUrl": "https://webhook.contosotest.com"
+        }
+      ]
+    },
+    "policies": {
+      "value": [
+        {
+          "evaluatorType": "MaxValuePolicy",
+          "factData": "<factData>",
+          "factName": "UserOwnedLabVmCountInSubnet",
+          "name": "<name>",
+          "threshold": "1"
+        },
+        {
+          "evaluatorType": "MaxValuePolicy",
+          "factName": "UserOwnedLabVmCount",
+          "name": "MaxVmsAllowedPerUser",
+          "threshold": "2"
+        },
+        {
+          "evaluatorType": "MaxValuePolicy",
+          "factName": "UserOwnedLabPremiumVmCount",
+          "name": "MaxPremiumVmsAllowedPerUser",
+          "status": "Disabled",
+          "threshold": "1"
+        },
+        {
+          "evaluatorType": "MaxValuePolicy",
+          "factName": "LabVmCount",
+          "name": "MaxVmsAllowedPerLab",
+          "threshold": "3"
+        },
+        {
+          "evaluatorType": "MaxValuePolicy",
+          "factName": "LabPremiumVmCount",
+          "name": "MaxPremiumVmsAllowedPerLab",
+          "threshold": "2"
+        },
+        {
+          "evaluatorType": "AllowedValuesPolicy",
+          "factData": "",
+          "factName": "LabVmSize",
+          "name": "AllowedVmSizesInLab",
+          "status": "Enabled",
+          "threshold": "<threshold>"
+        },
+        {
+          "evaluatorType": "AllowedValuesPolicy",
+          "factName": "ScheduleEditPermission",
+          "name": "ScheduleEditPermission",
+          "threshold": "<threshold>"
+        },
+        {
+          "evaluatorType": "AllowedValuesPolicy",
+          "factName": "GalleryImage",
+          "name": "GalleryImage",
+          "threshold": "<threshold>"
+        },
+        {
+          "description": "Public Environment Policy",
+          "evaluatorType": "AllowedValuesPolicy",
+          "factName": "EnvironmentTemplate",
+          "name": "EnvironmentTemplate",
+          "threshold": "<threshold>"
+        }
+      ]
+    },
+    "premiumDataDisks": {
+      "value": "Enabled"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "schedules": {
+      "value": [
+        {
+          "dailyRecurrence": {
+            "time": "0000"
+          },
+          "name": "LabVmsShutdown",
+          "notificationSettingsStatus": "Enabled",
+          "notificationSettingsTimeInMinutes": 30,
+          "status": "Enabled",
+          "taskType": "LabVmsShutdownTask",
+          "timeZoneId": "AUS Eastern Standard Time"
+        },
+        {
+          "name": "LabVmAutoStart",
+          "status": "Enabled",
+          "taskType": "LabVmsStartupTask",
+          "timeZoneId": "AUS Eastern Standard Time",
+          "weeklyRecurrence": {
+            "time": "0700",
+            "weekdays": [
+              "Friday",
+              "Monday",
+              "Thursday",
+              "Tuesday",
+              "Wednesday"
+            ]
+          }
+        }
+      ]
+    },
+    "support": {
+      "value": {
+        "enabled": "Enabled",
+        "markdown": "DevTest Lab support text. <br> New line. It also supports Markdown"
+      }
+    },
+    "tags": {
+      "value": {
+        "hidden-title": "This is visible in the resource name",
+        "labName": "dtllwaf001",
+        "resourceType": "DevTest Lab"
+      }
+    },
+    "virtualnetworks": {
+      "value": [
+        {
+          "allowedSubnets": [
+            {
+              "allowPublicIp": "Allow",
+              "labSubnetName": "<labSubnetName>",
+              "resourceId": "<resourceId>"
+            }
+          ],
+          "description": "lab virtual network description",
+          "externalProviderResourceId": "<externalProviderResourceId>",
+          "name": "<name>",
+          "subnetOverrides": [
+            {
+              "labSubnetName": "<labSubnetName>",
+              "resourceId": "<resourceId>",
+              "sharedPublicIpAddressConfiguration": {
+                "allowedPorts": [
+                  {
+                    "backendPort": 3389,
+                    "transportProtocol": "Tcp"
+                  },
+                  {
+                    "backendPort": 22,
+                    "transportProtocol": "Tcp"
+                  }
+                ]
+              },
+              "useInVmCreationPermission": "Allow",
+              "usePublicIpAddressPermission": "Allow"
+            }
+          ]
+        }
+      ]
+    },
+    "vmCreationResourceGroupId": {
+      "value": "<vmCreationResourceGroupId>"
     }
   }
 }

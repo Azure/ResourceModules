@@ -28,10 +28,59 @@ The following section provides usage examples for the module, which were used to
 
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/network.network-security-group:1.0.0`.
 
-- [Using large parameter set](#example-1-using-large-parameter-set)
-- [Using only defaults](#example-2-using-only-defaults)
+- [Using only defaults](#example-1-using-only-defaults)
+- [Using large parameter set](#example-2-using-large-parameter-set)
+- [WAF-aligned](#example-3-waf-aligned)
 
-### Example 1: _Using large parameter set_
+### Example 1: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module networkSecurityGroup 'br:bicep/modules/network.network-security-group:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-nnsgmin'
+  params: {
+    // Required parameters
+    name: 'nnsgmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "nnsgmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 2: _Using large parameter set_
 
 This instance deploys the module with most of its features enabled.
 
@@ -42,10 +91,10 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module networkSecurityGroup 'br:bicep/modules/network.network-security-group:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-nnsgcom'
+  name: '${uniqueString(deployment().name, location)}-test-nnsgmax'
   params: {
     // Required parameters
-    name: 'nnsgcom001'
+    name: 'nnsgmax001'
     // Non-required parameters
     diagnosticSettings: [
       {
@@ -155,7 +204,7 @@ module networkSecurityGroup 'br:bicep/modules/network.network-security-group:1.0
   "parameters": {
     // Required parameters
     "name": {
-      "value": "nnsgcom001"
+      "value": "nnsgmax001"
     },
     // Non-required parameters
     "diagnosticSettings": {
@@ -267,9 +316,9 @@ module networkSecurityGroup 'br:bicep/modules/network.network-security-group:1.0
 </details>
 <p>
 
-### Example 2: _Using only defaults_
+### Example 3: _WAF-aligned_
 
-This instance deploys the module with the minimum set of required parameters.
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
 
 
 <details>
@@ -278,12 +327,101 @@ This instance deploys the module with the minimum set of required parameters.
 
 ```bicep
 module networkSecurityGroup 'br:bicep/modules/network.network-security-group:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-nnsgmin'
+  name: '${uniqueString(deployment().name, location)}-test-nnsgwaf'
   params: {
     // Required parameters
-    name: 'nnsgmin001'
+    name: 'nnsgwaf001'
     // Non-required parameters
+    diagnosticSettings: [
+      {
+        eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+        eventHubName: '<eventHubName>'
+        name: 'customSetting'
+        storageAccountResourceId: '<storageAccountResourceId>'
+        workspaceResourceId: '<workspaceResourceId>'
+      }
+    ]
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    securityRules: [
+      {
+        name: 'Specific'
+        properties: {
+          access: 'Allow'
+          description: 'Tests specific IPs and ports'
+          destinationAddressPrefix: '*'
+          destinationPortRange: '8080'
+          direction: 'Inbound'
+          priority: 100
+          protocol: '*'
+          sourceAddressPrefix: '*'
+          sourcePortRange: '*'
+        }
+      }
+      {
+        name: 'Ranges'
+        properties: {
+          access: 'Allow'
+          description: 'Tests Ranges'
+          destinationAddressPrefixes: [
+            '10.2.0.0/16'
+            '10.3.0.0/16'
+          ]
+          destinationPortRanges: [
+            '90'
+            '91'
+          ]
+          direction: 'Inbound'
+          priority: 101
+          protocol: '*'
+          sourceAddressPrefixes: [
+            '10.0.0.0/16'
+            '10.1.0.0/16'
+          ]
+          sourcePortRanges: [
+            '80'
+            '81'
+          ]
+        }
+      }
+      {
+        name: 'Port_8082'
+        properties: {
+          access: 'Allow'
+          description: 'Allow inbound access on TCP 8082'
+          destinationApplicationSecurityGroups: [
+            {
+              id: '<id>'
+            }
+          ]
+          destinationPortRange: '8082'
+          direction: 'Inbound'
+          priority: 102
+          protocol: '*'
+          sourceApplicationSecurityGroups: [
+            {
+              id: '<id>'
+            }
+          ]
+          sourcePortRange: '*'
+        }
+      }
+    ]
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -302,11 +440,110 @@ module networkSecurityGroup 'br:bicep/modules/network.network-security-group:1.0
   "parameters": {
     // Required parameters
     "name": {
-      "value": "nnsgmin001"
+      "value": "nnsgwaf001"
     },
     // Non-required parameters
+    "diagnosticSettings": {
+      "value": [
+        {
+          "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+          "eventHubName": "<eventHubName>",
+          "name": "customSetting",
+          "storageAccountResourceId": "<storageAccountResourceId>",
+          "workspaceResourceId": "<workspaceResourceId>"
+        }
+      ]
+    },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "securityRules": {
+      "value": [
+        {
+          "name": "Specific",
+          "properties": {
+            "access": "Allow",
+            "description": "Tests specific IPs and ports",
+            "destinationAddressPrefix": "*",
+            "destinationPortRange": "8080",
+            "direction": "Inbound",
+            "priority": 100,
+            "protocol": "*",
+            "sourceAddressPrefix": "*",
+            "sourcePortRange": "*"
+          }
+        },
+        {
+          "name": "Ranges",
+          "properties": {
+            "access": "Allow",
+            "description": "Tests Ranges",
+            "destinationAddressPrefixes": [
+              "10.2.0.0/16",
+              "10.3.0.0/16"
+            ],
+            "destinationPortRanges": [
+              "90",
+              "91"
+            ],
+            "direction": "Inbound",
+            "priority": 101,
+            "protocol": "*",
+            "sourceAddressPrefixes": [
+              "10.0.0.0/16",
+              "10.1.0.0/16"
+            ],
+            "sourcePortRanges": [
+              "80",
+              "81"
+            ]
+          }
+        },
+        {
+          "name": "Port_8082",
+          "properties": {
+            "access": "Allow",
+            "description": "Allow inbound access on TCP 8082",
+            "destinationApplicationSecurityGroups": [
+              {
+                "id": "<id>"
+              }
+            ],
+            "destinationPortRange": "8082",
+            "direction": "Inbound",
+            "priority": 102,
+            "protocol": "*",
+            "sourceApplicationSecurityGroups": [
+              {
+                "id": "<id>"
+              }
+            ],
+            "sourcePortRange": "*"
+          }
+        }
+      ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }

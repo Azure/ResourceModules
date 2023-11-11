@@ -32,8 +32,8 @@ The following section provides usage examples for the module, which were used to
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/container-service.managed-cluster:1.0.0`.
 
 - [Azure](#example-1-azure)
-- [Kubenet](#example-2-kubenet)
-- [Using only defaults](#example-3-using-only-defaults)
+- [Using only defaults](#example-2-using-only-defaults)
+- [Kubenet](#example-3-kubenet)
 - [Priv](#example-4-priv)
 
 ### Example 1: _Azure_
@@ -507,7 +507,81 @@ module managedCluster 'br:bicep/modules/container-service.managed-cluster:1.0.0'
 </details>
 <p>
 
-### Example 2: _Kubenet_
+### Example 2: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module managedCluster 'br:bicep/modules/container-service.managed-cluster:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-csmmin'
+  params: {
+    // Required parameters
+    name: 'csmmin001'
+    primaryAgentPoolProfile: [
+      {
+        count: 1
+        mode: 'System'
+        name: 'systempool'
+        vmSize: 'Standard_DS2_v2'
+      }
+    ]
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    managedIdentities: {
+      systemAssigned: true
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "csmmin001"
+    },
+    "primaryAgentPoolProfile": {
+      "value": [
+        {
+          "count": 1,
+          "mode": "System",
+          "name": "systempool",
+          "vmSize": "Standard_DS2_v2"
+        }
+      ]
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "managedIdentities": {
+      "value": {
+        "systemAssigned": true
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 3: _Kubenet_
 
 <details>
 
@@ -761,80 +835,6 @@ module managedCluster 'br:bicep/modules/container-service.managed-cluster:1.0.0'
         "Environment": "Non-Prod",
         "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
-      }
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-### Example 3: _Using only defaults_
-
-This instance deploys the module with the minimum set of required parameters.
-
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module managedCluster 'br:bicep/modules/container-service.managed-cluster:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-csmmin'
-  params: {
-    // Required parameters
-    name: 'csmmin001'
-    primaryAgentPoolProfile: [
-      {
-        count: 1
-        mode: 'System'
-        name: 'systempool'
-        vmSize: 'Standard_DS2_v2'
-      }
-    ]
-    // Non-required parameters
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    managedIdentities: {
-      systemAssigned: true
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "csmmin001"
-    },
-    "primaryAgentPoolProfile": {
-      "value": [
-        {
-          "count": 1,
-          "mode": "System",
-          "name": "systempool",
-          "vmSize": "Standard_DS2_v2"
-        }
-      ]
-    },
-    // Non-required parameters
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
-    "managedIdentities": {
-      "value": {
-        "systemAssigned": true
       }
     }
   }

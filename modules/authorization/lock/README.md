@@ -25,6 +25,7 @@ The following section provides usage examples for the module, which were used to
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/authorization.lock:1.0.0`.
 
 - [Using large parameter set](#example-1-using-large-parameter-set)
+- [WAF-aligned](#example-2-waf-aligned)
 
 ### Example 1: _Using large parameter set_
 
@@ -37,7 +38,63 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module lock 'br:bicep/modules/authorization.lock:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-alcom'
+  name: '${uniqueString(deployment().name, location)}-test-almax'
+  params: {
+    // Required parameters
+    level: 'CanNotDelete'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    resourceGroupName: '<resourceGroupName>'
+    subscriptionId: '<subscriptionId>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "level": {
+      "value": "CanNotDelete"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "resourceGroupName": {
+      "value": "<resourceGroupName>"
+    },
+    "subscriptionId": {
+      "value": "<subscriptionId>"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 2: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module lock 'br:bicep/modules/authorization.lock:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-alwaf'
   params: {
     // Required parameters
     level: 'CanNotDelete'

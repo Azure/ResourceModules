@@ -26,6 +26,7 @@ The following section provides usage examples for the module, which were used to
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/insights.activity-log-alert:1.0.0`.
 
 - [Using large parameter set](#example-1-using-large-parameter-set)
+- [WAF-aligned](#example-2-waf-aligned)
 
 ### Example 1: _Using large parameter set_
 
@@ -38,7 +39,7 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module activityLogAlert 'br:bicep/modules/insights.activity-log-alert:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-ialacom'
+  name: '${uniqueString(deployment().name, location)}-test-ialamax'
   params: {
     // Required parameters
     conditions: [
@@ -73,7 +74,7 @@ module activityLogAlert 'br:bicep/modules/insights.activity-log-alert:1.0.0' = {
         field: 'properties.impactedServices[*].ImpactedRegions[*].RegionName'
       }
     ]
-    name: 'ialacom001'
+    name: 'ialamax001'
     // Non-required parameters
     actions: [
       {
@@ -148,7 +149,169 @@ module activityLogAlert 'br:bicep/modules/insights.activity-log-alert:1.0.0' = {
       ]
     },
     "name": {
-      "value": "ialacom001"
+      "value": "ialamax001"
+    },
+    // Non-required parameters
+    "actions": {
+      "value": [
+        {
+          "actionGroupId": "<actionGroupId>"
+        }
+      ]
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "scopes": {
+      "value": [
+        "<id>"
+      ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 2: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module activityLogAlert 'br:bicep/modules/insights.activity-log-alert:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-ialawaf'
+  params: {
+    // Required parameters
+    conditions: [
+      {
+        equals: 'ServiceHealth'
+        field: 'category'
+      }
+      {
+        anyOf: [
+          {
+            equals: 'Incident'
+            field: 'properties.incidentType'
+          }
+          {
+            equals: 'Maintenance'
+            field: 'properties.incidentType'
+          }
+        ]
+      }
+      {
+        containsAny: [
+          'Action Groups'
+          'Activity Logs & Alerts'
+        ]
+        field: 'properties.impactedServices[*].ServiceName'
+      }
+      {
+        containsAny: [
+          'Global'
+          'West Europe'
+        ]
+        field: 'properties.impactedServices[*].ImpactedRegions[*].RegionName'
+      }
+    ]
+    name: 'ialawaf001'
+    // Non-required parameters
+    actions: [
+      {
+        actionGroupId: '<actionGroupId>'
+      }
+    ]
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    scopes: [
+      '<id>'
+    ]
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "conditions": {
+      "value": [
+        {
+          "equals": "ServiceHealth",
+          "field": "category"
+        },
+        {
+          "anyOf": [
+            {
+              "equals": "Incident",
+              "field": "properties.incidentType"
+            },
+            {
+              "equals": "Maintenance",
+              "field": "properties.incidentType"
+            }
+          ]
+        },
+        {
+          "containsAny": [
+            "Action Groups",
+            "Activity Logs & Alerts"
+          ],
+          "field": "properties.impactedServices[*].ServiceName"
+        },
+        {
+          "containsAny": [
+            "Global",
+            "West Europe"
+          ],
+          "field": "properties.impactedServices[*].ImpactedRegions[*].RegionName"
+        }
+      ]
+    },
+    "name": {
+      "value": "ialawaf001"
     },
     // Non-required parameters
     "actions": {

@@ -26,6 +26,7 @@ The following section provides usage examples for the module, which were used to
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/compute.image:1.0.0`.
 
 - [Using large parameter set](#example-1-using-large-parameter-set)
+- [WAF-aligned](#example-2-waf-aligned)
 
 ### Example 1: _Using large parameter set_
 
@@ -38,10 +39,10 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module image 'br:bicep/modules/compute.image:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-cicom'
+  name: '${uniqueString(deployment().name, location)}-test-cimax'
   params: {
     // Required parameters
-    name: 'cicom001'
+    name: 'cimax001'
     osAccountType: 'Premium_LRS'
     osDiskBlobUri: '<osDiskBlobUri>'
     osDiskCaching: 'ReadWrite'
@@ -83,7 +84,119 @@ module image 'br:bicep/modules/compute.image:1.0.0' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "cicom001"
+      "value": "cimax001"
+    },
+    "osAccountType": {
+      "value": "Premium_LRS"
+    },
+    "osDiskBlobUri": {
+      "value": "<osDiskBlobUri>"
+    },
+    "osDiskCaching": {
+      "value": "ReadWrite"
+    },
+    "osType": {
+      "value": "Windows"
+    },
+    // Non-required parameters
+    "diskEncryptionSetResourceId": {
+      "value": "<diskEncryptionSetResourceId>"
+    },
+    "diskSizeGB": {
+      "value": 128
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "hyperVGeneration": {
+      "value": "V1"
+    },
+    "osState": {
+      "value": "Generalized"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "tags": {
+      "value": {
+        "hidden-title": "This is visible in the resource name",
+        "tagA": "You\"re it",
+        "tagB": "Player"
+      }
+    },
+    "zoneResilient": {
+      "value": true
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 2: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module image 'br:bicep/modules/compute.image:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-ciwaf'
+  params: {
+    // Required parameters
+    name: 'ciwaf001'
+    osAccountType: 'Premium_LRS'
+    osDiskBlobUri: '<osDiskBlobUri>'
+    osDiskCaching: 'ReadWrite'
+    osType: 'Windows'
+    // Non-required parameters
+    diskEncryptionSetResourceId: '<diskEncryptionSetResourceId>'
+    diskSizeGB: 128
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    hyperVGeneration: 'V1'
+    osState: 'Generalized'
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    tags: {
+      'hidden-title': 'This is visible in the resource name'
+      tagA: 'You\'re it'
+      tagB: 'Player'
+    }
+    zoneResilient: true
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "ciwaf001"
     },
     "osAccountType": {
       "value": "Premium_LRS"

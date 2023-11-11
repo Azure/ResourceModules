@@ -28,10 +28,67 @@ The following section provides usage examples for the module, which were used to
 
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/desktop-virtualization.application-group:1.0.0`.
 
-- [Using large parameter set](#example-1-using-large-parameter-set)
-- [Using only defaults](#example-2-using-only-defaults)
+- [Using only defaults](#example-1-using-only-defaults)
+- [Using large parameter set](#example-2-using-large-parameter-set)
+- [WAF-aligned](#example-3-waf-aligned)
 
-### Example 1: _Using large parameter set_
+### Example 1: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module applicationGroup 'br:bicep/modules/desktop-virtualization.application-group:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-dvagmin'
+  params: {
+    // Required parameters
+    applicationGroupType: 'RemoteApp'
+    hostpoolName: '<hostpoolName>'
+    name: 'dvagmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "applicationGroupType": {
+      "value": "RemoteApp"
+    },
+    "hostpoolName": {
+      "value": "<hostpoolName>"
+    },
+    "name": {
+      "value": "dvagmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 2: _Using large parameter set_
 
 This instance deploys the module with most of its features enabled.
 
@@ -42,12 +99,12 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module applicationGroup 'br:bicep/modules/desktop-virtualization.application-group:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-dvagcom'
+  name: '${uniqueString(deployment().name, location)}-test-dvagmax'
   params: {
     // Required parameters
     applicationGroupType: 'RemoteApp'
     hostpoolName: '<hostpoolName>'
-    name: 'dvagcom001'
+    name: 'dvagmax001'
     // Non-required parameters
     applications: [
       {
@@ -120,7 +177,7 @@ module applicationGroup 'br:bicep/modules/desktop-virtualization.application-gro
       "value": "<hostpoolName>"
     },
     "name": {
-      "value": "dvagcom001"
+      "value": "dvagmax001"
     },
     // Non-required parameters
     "applications": {
@@ -195,9 +252,9 @@ module applicationGroup 'br:bicep/modules/desktop-virtualization.application-gro
 </details>
 <p>
 
-### Example 2: _Using only defaults_
+### Example 3: _WAF-aligned_
 
-This instance deploys the module with the minimum set of required parameters.
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
 
 
 <details>
@@ -206,14 +263,60 @@ This instance deploys the module with the minimum set of required parameters.
 
 ```bicep
 module applicationGroup 'br:bicep/modules/desktop-virtualization.application-group:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-dvagmin'
+  name: '${uniqueString(deployment().name, location)}-test-dvagwaf'
   params: {
     // Required parameters
     applicationGroupType: 'RemoteApp'
     hostpoolName: '<hostpoolName>'
-    name: 'dvagmin001'
+    name: 'dvagwaf001'
     // Non-required parameters
+    applications: [
+      {
+        commandLineArguments: ''
+        commandLineSetting: 'DoNotAllow'
+        description: 'Notepad by ARM template'
+        filePath: 'C:\\Windows\\System32\\notepad.exe'
+        friendlyName: 'Notepad'
+        iconIndex: 0
+        iconPath: 'C:\\Windows\\System32\\notepad.exe'
+        name: 'notepad'
+        showInPortal: true
+      }
+      {
+        filePath: 'C:\\Program Files\\Windows NT\\Accessories\\wordpad.exe'
+        friendlyName: 'Wordpad'
+        name: 'wordpad'
+      }
+    ]
+    description: 'This is my first Remote Applications bundle'
+    diagnosticSettings: [
+      {
+        eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+        eventHubName: '<eventHubName>'
+        name: 'customSetting'
+        storageAccountResourceId: '<storageAccountResourceId>'
+        workspaceResourceId: '<workspaceResourceId>'
+      }
+    ]
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    friendlyName: 'Remote Applications 1'
+    location: '<location>'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -238,11 +341,73 @@ module applicationGroup 'br:bicep/modules/desktop-virtualization.application-gro
       "value": "<hostpoolName>"
     },
     "name": {
-      "value": "dvagmin001"
+      "value": "dvagwaf001"
     },
     // Non-required parameters
+    "applications": {
+      "value": [
+        {
+          "commandLineArguments": "",
+          "commandLineSetting": "DoNotAllow",
+          "description": "Notepad by ARM template",
+          "filePath": "C:\\Windows\\System32\\notepad.exe",
+          "friendlyName": "Notepad",
+          "iconIndex": 0,
+          "iconPath": "C:\\Windows\\System32\\notepad.exe",
+          "name": "notepad",
+          "showInPortal": true
+        },
+        {
+          "filePath": "C:\\Program Files\\Windows NT\\Accessories\\wordpad.exe",
+          "friendlyName": "Wordpad",
+          "name": "wordpad"
+        }
+      ]
+    },
+    "description": {
+      "value": "This is my first Remote Applications bundle"
+    },
+    "diagnosticSettings": {
+      "value": [
+        {
+          "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+          "eventHubName": "<eventHubName>",
+          "name": "customSetting",
+          "storageAccountResourceId": "<storageAccountResourceId>",
+          "workspaceResourceId": "<workspaceResourceId>"
+        }
+      ]
+    },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
+    },
+    "friendlyName": {
+      "value": "Remote Applications 1"
+    },
+    "location": {
+      "value": "<location>"
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }

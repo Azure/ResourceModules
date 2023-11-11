@@ -29,10 +29,59 @@ The following section provides usage examples for the module, which were used to
 
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/network.public-ip-address:1.0.0`.
 
-- [Using large parameter set](#example-1-using-large-parameter-set)
-- [Using only defaults](#example-2-using-only-defaults)
+- [Using only defaults](#example-1-using-only-defaults)
+- [Using large parameter set](#example-2-using-large-parameter-set)
+- [WAF-aligned](#example-3-waf-aligned)
 
-### Example 1: _Using large parameter set_
+### Example 1: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module publicIpAddress 'br:bicep/modules/network.public-ip-address:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-npiamin'
+  params: {
+    // Required parameters
+    name: 'npiamin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "npiamin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 2: _Using large parameter set_
 
 This instance deploys the module with most of its features enabled.
 
@@ -43,10 +92,10 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module publicIpAddress 'br:bicep/modules/network.public-ip-address:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-npiacom'
+  name: '${uniqueString(deployment().name, location)}-test-npiamax'
   params: {
     // Required parameters
-    name: 'npiacom001'
+    name: 'npiamax001'
     // Non-required parameters
     diagnosticSettings: [
       {
@@ -104,7 +153,7 @@ module publicIpAddress 'br:bicep/modules/network.public-ip-address:1.0.0' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "npiacom001"
+      "value": "npiamax001"
     },
     // Non-required parameters
     "diagnosticSettings": {
@@ -168,9 +217,9 @@ module publicIpAddress 'br:bicep/modules/network.public-ip-address:1.0.0' = {
 </details>
 <p>
 
-### Example 2: _Using only defaults_
+### Example 3: _WAF-aligned_
 
-This instance deploys the module with the minimum set of required parameters.
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
 
 
 <details>
@@ -179,12 +228,49 @@ This instance deploys the module with the minimum set of required parameters.
 
 ```bicep
 module publicIpAddress 'br:bicep/modules/network.public-ip-address:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-npiamin'
+  name: '${uniqueString(deployment().name, location)}-test-npiawaf'
   params: {
     // Required parameters
-    name: 'npiamin001'
+    name: 'npiawaf001'
     // Non-required parameters
+    diagnosticSettings: [
+      {
+        eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+        eventHubName: '<eventHubName>'
+        metricCategories: [
+          {
+            category: 'AllMetrics'
+          }
+        ]
+        name: 'customSetting'
+        storageAccountResourceId: '<storageAccountResourceId>'
+        workspaceResourceId: '<workspaceResourceId>'
+      }
+    ]
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    publicIPAllocationMethod: 'Static'
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    skuName: 'Standard'
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+    zones: [
+      '1'
+      '2'
+      '3'
+    ]
   }
 }
 ```
@@ -203,11 +289,62 @@ module publicIpAddress 'br:bicep/modules/network.public-ip-address:1.0.0' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "npiamin001"
+      "value": "npiawaf001"
     },
     // Non-required parameters
+    "diagnosticSettings": {
+      "value": [
+        {
+          "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+          "eventHubName": "<eventHubName>",
+          "metricCategories": [
+            {
+              "category": "AllMetrics"
+            }
+          ],
+          "name": "customSetting",
+          "storageAccountResourceId": "<storageAccountResourceId>",
+          "workspaceResourceId": "<workspaceResourceId>"
+        }
+      ]
+    },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "publicIPAllocationMethod": {
+      "value": "Static"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "skuName": {
+      "value": "Standard"
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    },
+    "zones": {
+      "value": [
+        "1",
+        "2",
+        "3"
+      ]
     }
   }
 }

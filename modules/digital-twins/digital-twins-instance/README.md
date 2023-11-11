@@ -30,10 +30,59 @@ The following section provides usage examples for the module, which were used to
 
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/digital-twins.digital-twins-instance:1.0.0`.
 
-- [Using large parameter set](#example-1-using-large-parameter-set)
-- [Using only defaults](#example-2-using-only-defaults)
+- [Using only defaults](#example-1-using-only-defaults)
+- [Using large parameter set](#example-2-using-large-parameter-set)
+- [WAF-aligned](#example-3-waf-aligned)
 
-### Example 1: _Using large parameter set_
+### Example 1: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module digitalTwinsInstance 'br:bicep/modules/digital-twins.digital-twins-instance:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-dtdtimin'
+  params: {
+    // Required parameters
+    name: 'dtdtimin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "dtdtimin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 2: _Using large parameter set_
 
 This instance deploys the module with most of its features enabled.
 
@@ -44,10 +93,10 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module digitalTwinsInstance 'br:bicep/modules/digital-twins.digital-twins-instance:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-dtdticom'
+  name: '${uniqueString(deployment().name, location)}-test-dtdtimax'
   params: {
     // Required parameters
-    name: 'dtdticom001'
+    name: 'dtdtimax001'
     // Non-required parameters
     diagnosticSettings: [
       {
@@ -125,7 +174,7 @@ module digitalTwinsInstance 'br:bicep/modules/digital-twins.digital-twins-instan
   "parameters": {
     // Required parameters
     "name": {
-      "value": "dtdticom001"
+      "value": "dtdtimax001"
     },
     // Non-required parameters
     "diagnosticSettings": {
@@ -213,9 +262,9 @@ module digitalTwinsInstance 'br:bicep/modules/digital-twins.digital-twins-instan
 </details>
 <p>
 
-### Example 2: _Using only defaults_
+### Example 3: _WAF-aligned_
 
-This instance deploys the module with the minimum set of required parameters.
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
 
 
 <details>
@@ -224,12 +273,69 @@ This instance deploys the module with the minimum set of required parameters.
 
 ```bicep
 module digitalTwinsInstance 'br:bicep/modules/digital-twins.digital-twins-instance:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-dtdtimin'
+  name: '${uniqueString(deployment().name, location)}-test-dtdtiwaf'
   params: {
     // Required parameters
-    name: 'dtdtimin001'
+    name: 'dtdtiwaf001'
     // Non-required parameters
+    diagnosticSettings: [
+      {
+        eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+        eventHubName: '<eventHubName>'
+        metricCategories: [
+          {
+            category: 'AllMetrics'
+          }
+        ]
+        name: 'customSetting'
+        storageAccountResourceId: '<storageAccountResourceId>'
+        workspaceResourceId: '<workspaceResourceId>'
+      }
+    ]
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    eventGridEndpoint: {
+      eventGridDomainId: '<eventGridDomainId>'
+      topicEndpoint: '<topicEndpoint>'
+    }
+    eventHubEndpoint: {
+      authenticationType: 'IdentityBased'
+      endpointUri: '<endpointUri>'
+      entityPath: '<entityPath>'
+      userAssignedIdentity: '<userAssignedIdentity>'
+    }
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    privateEndpoints: [
+      {
+        privateDnsZoneResourceIds: [
+          '<privateDNSZoneResourceId>'
+        ]
+        subnetResourceId: '<subnetResourceId>'
+      }
+    ]
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    serviceBusEndpoint: {
+      authenticationType: 'IdentityBased'
+      endpointUri: '<endpointUri>'
+      entityPath: '<entityPath>'
+      userAssignedIdentity: '<userAssignedIdentity>'
+    }
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+    userAssignedIdentities: {
+      '<managedIdentityResourceId>': {}
+    }
   }
 }
 ```
@@ -248,11 +354,86 @@ module digitalTwinsInstance 'br:bicep/modules/digital-twins.digital-twins-instan
   "parameters": {
     // Required parameters
     "name": {
-      "value": "dtdtimin001"
+      "value": "dtdtiwaf001"
     },
     // Non-required parameters
+    "diagnosticSettings": {
+      "value": [
+        {
+          "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+          "eventHubName": "<eventHubName>",
+          "metricCategories": [
+            {
+              "category": "AllMetrics"
+            }
+          ],
+          "name": "customSetting",
+          "storageAccountResourceId": "<storageAccountResourceId>",
+          "workspaceResourceId": "<workspaceResourceId>"
+        }
+      ]
+    },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
+    },
+    "eventGridEndpoint": {
+      "value": {
+        "eventGridDomainId": "<eventGridDomainId>",
+        "topicEndpoint": "<topicEndpoint>"
+      }
+    },
+    "eventHubEndpoint": {
+      "value": {
+        "authenticationType": "IdentityBased",
+        "endpointUri": "<endpointUri>",
+        "entityPath": "<entityPath>",
+        "userAssignedIdentity": "<userAssignedIdentity>"
+      }
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "privateEndpoints": {
+      "value": [
+        {
+          "privateDnsZoneResourceIds": [
+            "<privateDNSZoneResourceId>"
+          ],
+          "subnetResourceId": "<subnetResourceId>"
+        }
+      ]
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "serviceBusEndpoint": {
+      "value": {
+        "authenticationType": "IdentityBased",
+        "endpointUri": "<endpointUri>",
+        "entityPath": "<entityPath>",
+        "userAssignedIdentity": "<userAssignedIdentity>"
+      }
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    },
+    "userAssignedIdentities": {
+      "value": {
+        "<managedIdentityResourceId>": {}
+      }
     }
   }
 }

@@ -26,10 +26,59 @@ The following section provides usage examples for the module, which were used to
 
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/databricks.access-connector:1.0.0`.
 
-- [Using large parameter set](#example-1-using-large-parameter-set)
-- [Using only defaults](#example-2-using-only-defaults)
+- [Using only defaults](#example-1-using-only-defaults)
+- [Using large parameter set](#example-2-using-large-parameter-set)
+- [WAF-aligned](#example-3-waf-aligned)
 
-### Example 1: _Using large parameter set_
+### Example 1: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module accessConnector 'br:bicep/modules/databricks.access-connector:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-dacmin'
+  params: {
+    // Required parameters
+    name: 'dacmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "dacmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 2: _Using large parameter set_
 
 This instance deploys the module with most of its features enabled.
 
@@ -40,10 +89,10 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module accessConnector 'br:bicep/modules/databricks.access-connector:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-daccom'
+  name: '${uniqueString(deployment().name, location)}-test-dacmax'
   params: {
     // Required parameters
-    name: 'daccom001'
+    name: 'dacmax001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     location: '<location>'
@@ -87,7 +136,7 @@ module accessConnector 'br:bicep/modules/databricks.access-connector:1.0.0' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "daccom001"
+      "value": "dacmax001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {
@@ -133,9 +182,9 @@ module accessConnector 'br:bicep/modules/databricks.access-connector:1.0.0' = {
 </details>
 <p>
 
-### Example 2: _Using only defaults_
+### Example 3: _WAF-aligned_
 
-This instance deploys the module with the minimum set of required parameters.
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
 
 
 <details>
@@ -144,12 +193,35 @@ This instance deploys the module with the minimum set of required parameters.
 
 ```bicep
 module accessConnector 'br:bicep/modules/databricks.access-connector:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-dacmin'
+  name: '${uniqueString(deployment().name, location)}-test-dacwaf'
   params: {
     // Required parameters
-    name: 'dacmin001'
+    name: 'dacwaf001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    location: '<location>'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    managedIdentities: {
+      systemAssigned: true
+      userAssignedResourcesIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -168,11 +240,44 @@ module accessConnector 'br:bicep/modules/databricks.access-connector:1.0.0' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "dacmin001"
+      "value": "dacwaf001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
+    },
+    "location": {
+      "value": "<location>"
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "managedIdentities": {
+      "value": {
+        "systemAssigned": true,
+        "userAssignedResourcesIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }

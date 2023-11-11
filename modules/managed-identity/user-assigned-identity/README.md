@@ -27,10 +27,51 @@ The following section provides usage examples for the module, which were used to
 
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/managed-identity.user-assigned-identity:1.0.0`.
 
-- [Using large parameter set](#example-1-using-large-parameter-set)
-- [Using only defaults](#example-2-using-only-defaults)
+- [Using only defaults](#example-1-using-only-defaults)
+- [Using large parameter set](#example-2-using-large-parameter-set)
+- [WAF-aligned](#example-3-waf-aligned)
 
-### Example 1: _Using large parameter set_
+### Example 1: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module userAssignedIdentity 'br:bicep/modules/managed-identity.user-assigned-identity:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-miuaimin'
+  params: {
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 2: _Using large parameter set_
 
 This instance deploys the module with most of its features enabled.
 
@@ -41,7 +82,7 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module userAssignedIdentity 'br:bicep/modules/managed-identity.user-assigned-identity:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-miuaicom'
+  name: '${uniqueString(deployment().name, location)}-test-miuaimax'
   params: {
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     federatedIdentityCredentials: [
@@ -50,7 +91,7 @@ module userAssignedIdentity 'br:bicep/modules/managed-identity.user-assigned-ide
           'api://AzureADTokenExchange'
         ]
         issuer: '<issuer>'
-        name: 'test-fed-cred-miuaicom-001'
+        name: 'test-fed-cred-miuaimax-001'
         subject: 'system:serviceaccount:default:workload-identity-sa'
       }
     ]
@@ -58,7 +99,7 @@ module userAssignedIdentity 'br:bicep/modules/managed-identity.user-assigned-ide
       kind: 'CanNotDelete'
       name: 'myCustomLockName'
     }
-    name: 'miuaicom001'
+    name: 'miuaimax001'
     roleAssignments: [
       {
         principalId: '<principalId>'
@@ -97,7 +138,7 @@ module userAssignedIdentity 'br:bicep/modules/managed-identity.user-assigned-ide
             "api://AzureADTokenExchange"
           ],
           "issuer": "<issuer>",
-          "name": "test-fed-cred-miuaicom-001",
+          "name": "test-fed-cred-miuaimax-001",
           "subject": "system:serviceaccount:default:workload-identity-sa"
         }
       ]
@@ -109,7 +150,7 @@ module userAssignedIdentity 'br:bicep/modules/managed-identity.user-assigned-ide
       }
     },
     "name": {
-      "value": "miuaicom001"
+      "value": "miuaimax001"
     },
     "roleAssignments": {
       "value": [
@@ -134,9 +175,9 @@ module userAssignedIdentity 'br:bicep/modules/managed-identity.user-assigned-ide
 </details>
 <p>
 
-### Example 2: _Using only defaults_
+### Example 3: _WAF-aligned_
 
-This instance deploys the module with the minimum set of required parameters.
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
 
 
 <details>
@@ -145,9 +186,36 @@ This instance deploys the module with the minimum set of required parameters.
 
 ```bicep
 module userAssignedIdentity 'br:bicep/modules/managed-identity.user-assigned-identity:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-miuaimin'
+  name: '${uniqueString(deployment().name, location)}-test-miuaiwaf'
   params: {
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    federatedIdentityCredentials: [
+      {
+        audiences: [
+          'api://AzureADTokenExchange'
+        ]
+        issuer: '<issuer>'
+        name: 'test-fed-cred-miuaiwaf-001'
+        subject: 'system:serviceaccount:default:workload-identity-sa'
+      }
+    ]
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    name: 'miuaiwaf001'
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -166,6 +234,43 @@ module userAssignedIdentity 'br:bicep/modules/managed-identity.user-assigned-ide
   "parameters": {
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
+    },
+    "federatedIdentityCredentials": {
+      "value": [
+        {
+          "audiences": [
+            "api://AzureADTokenExchange"
+          ],
+          "issuer": "<issuer>",
+          "name": "test-fed-cred-miuaiwaf-001",
+          "subject": "system:serviceaccount:default:workload-identity-sa"
+        }
+      ]
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "name": {
+      "value": "miuaiwaf001"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }

@@ -30,11 +30,68 @@ The following section provides usage examples for the module, which were used to
 
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/network.virtual-network:1.0.0`.
 
-- [Using large parameter set](#example-1-using-large-parameter-set)
-- [Using only defaults](#example-2-using-only-defaults)
+- [Using only defaults](#example-1-using-only-defaults)
+- [Using large parameter set](#example-2-using-large-parameter-set)
 - [Vnetpeering](#example-3-vnetpeering)
+- [WAF-aligned](#example-4-waf-aligned)
 
-### Example 1: _Using large parameter set_
+### Example 1: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module virtualNetwork 'br:bicep/modules/network.virtual-network:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-nvnmin'
+  params: {
+    // Required parameters
+    addressPrefixes: [
+      '10.0.0.0/16'
+    ]
+    name: 'nvnmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "addressPrefixes": {
+      "value": [
+        "10.0.0.0/16"
+      ]
+    },
+    "name": {
+      "value": "nvnmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 2: _Using large parameter set_
 
 This instance deploys the module with most of its features enabled.
 
@@ -45,13 +102,13 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module virtualNetwork 'br:bicep/modules/network.virtual-network:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-nvncom'
+  name: '${uniqueString(deployment().name, location)}-test-nvnmax'
   params: {
     // Required parameters
     addressPrefixes: [
       '<addressPrefix>'
     ]
-    name: 'nvncom001'
+    name: 'nvnmax001'
     // Non-required parameters
     diagnosticSettings: [
       {
@@ -157,7 +214,7 @@ module virtualNetwork 'br:bicep/modules/network.virtual-network:1.0.0' = {
       ]
     },
     "name": {
-      "value": "nvncom001"
+      "value": "nvnmax001"
     },
     // Non-required parameters
     "diagnosticSettings": {
@@ -264,62 +321,6 @@ module virtualNetwork 'br:bicep/modules/network.virtual-network:1.0.0' = {
 </details>
 <p>
 
-### Example 2: _Using only defaults_
-
-This instance deploys the module with the minimum set of required parameters.
-
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module virtualNetwork 'br:bicep/modules/network.virtual-network:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-nvnmin'
-  params: {
-    // Required parameters
-    addressPrefixes: [
-      '10.0.0.0/16'
-    ]
-    name: 'nvnmin001'
-    // Non-required parameters
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "addressPrefixes": {
-      "value": [
-        "10.0.0.0/16"
-      ]
-    },
-    "name": {
-      "value": "nvnmin001"
-    },
-    // Non-required parameters
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    }
-  }
-}
-```
-
-</details>
-<p>
-
 ### Example 3: _Vnetpeering_
 
 <details>
@@ -410,6 +411,236 @@ module virtualNetwork 'br:bicep/modules/network.virtual-network:1.0.0' = {
         {
           "addressPrefix": "10.1.0.0/26",
           "name": "GatewaySubnet"
+        }
+      ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 4: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module virtualNetwork 'br:bicep/modules/network.virtual-network:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-nvnwaf'
+  params: {
+    // Required parameters
+    addressPrefixes: [
+      '<addressPrefix>'
+    ]
+    name: 'nvnwaf001'
+    // Non-required parameters
+    diagnosticSettings: [
+      {
+        eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+        eventHubName: '<eventHubName>'
+        metricCategories: [
+          {
+            category: 'AllMetrics'
+          }
+        ]
+        name: 'customSetting'
+        storageAccountResourceId: '<storageAccountResourceId>'
+        workspaceResourceId: '<workspaceResourceId>'
+      }
+    ]
+    dnsServers: [
+      '10.0.1.4'
+      '10.0.1.5'
+    ]
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    flowTimeoutInMinutes: 20
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    subnets: [
+      {
+        addressPrefix: '<addressPrefix>'
+        name: 'GatewaySubnet'
+      }
+      {
+        addressPrefix: '<addressPrefix>'
+        name: 'az-subnet-x-001'
+        networkSecurityGroupId: '<networkSecurityGroupId>'
+        roleAssignments: [
+          {
+            principalId: '<principalId>'
+            principalType: 'ServicePrincipal'
+            roleDefinitionIdOrName: 'Reader'
+          }
+        ]
+        routeTableId: '<routeTableId>'
+        serviceEndpoints: [
+          {
+            service: 'Microsoft.Storage'
+          }
+          {
+            service: 'Microsoft.Sql'
+          }
+        ]
+      }
+      {
+        addressPrefix: '<addressPrefix>'
+        delegations: [
+          {
+            name: 'netappDel'
+            properties: {
+              serviceName: 'Microsoft.Netapp/volumes'
+            }
+          }
+        ]
+        name: 'az-subnet-x-002'
+      }
+      {
+        addressPrefix: '<addressPrefix>'
+        name: 'az-subnet-x-003'
+        privateEndpointNetworkPolicies: 'Disabled'
+        privateLinkServiceNetworkPolicies: 'Enabled'
+      }
+    ]
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "addressPrefixes": {
+      "value": [
+        "<addressPrefix>"
+      ]
+    },
+    "name": {
+      "value": "nvnwaf001"
+    },
+    // Non-required parameters
+    "diagnosticSettings": {
+      "value": [
+        {
+          "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+          "eventHubName": "<eventHubName>",
+          "metricCategories": [
+            {
+              "category": "AllMetrics"
+            }
+          ],
+          "name": "customSetting",
+          "storageAccountResourceId": "<storageAccountResourceId>",
+          "workspaceResourceId": "<workspaceResourceId>"
+        }
+      ]
+    },
+    "dnsServers": {
+      "value": [
+        "10.0.1.4",
+        "10.0.1.5"
+      ]
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "flowTimeoutInMinutes": {
+      "value": 20
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "subnets": {
+      "value": [
+        {
+          "addressPrefix": "<addressPrefix>",
+          "name": "GatewaySubnet"
+        },
+        {
+          "addressPrefix": "<addressPrefix>",
+          "name": "az-subnet-x-001",
+          "networkSecurityGroupId": "<networkSecurityGroupId>",
+          "roleAssignments": [
+            {
+              "principalId": "<principalId>",
+              "principalType": "ServicePrincipal",
+              "roleDefinitionIdOrName": "Reader"
+            }
+          ],
+          "routeTableId": "<routeTableId>",
+          "serviceEndpoints": [
+            {
+              "service": "Microsoft.Storage"
+            },
+            {
+              "service": "Microsoft.Sql"
+            }
+          ]
+        },
+        {
+          "addressPrefix": "<addressPrefix>",
+          "delegations": [
+            {
+              "name": "netappDel",
+              "properties": {
+                "serviceName": "Microsoft.Netapp/volumes"
+              }
+            }
+          ],
+          "name": "az-subnet-x-002"
+        },
+        {
+          "addressPrefix": "<addressPrefix>",
+          "name": "az-subnet-x-003",
+          "privateEndpointNetworkPolicies": "Disabled",
+          "privateLinkServiceNetworkPolicies": "Enabled"
         }
       ]
     },

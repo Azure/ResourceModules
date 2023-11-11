@@ -26,14 +26,15 @@ The following section provides usage examples for the module, which were used to
 
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/container-instance.container-group:1.0.0`.
 
-- [Using large parameter set](#example-1-using-large-parameter-set)
+- [Using only defaults](#example-1-using-only-defaults)
 - [Encr](#example-2-encr)
-- [Using only defaults](#example-3-using-only-defaults)
+- [Using large parameter set](#example-3-using-large-parameter-set)
 - [Private](#example-4-private)
+- [WAF-aligned](#example-5-waf-aligned)
 
-### Example 1: _Using large parameter set_
+### Example 1: _Using only defaults_
 
-This instance deploys the module with most of its features enabled.
+This instance deploys the module with the minimum set of required parameters.
 
 
 <details>
@@ -42,21 +43,15 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module containerGroup 'br:bicep/modules/container-instance.container-group:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-cicgcom'
+  name: '${uniqueString(deployment().name, location)}-test-cicgmin'
   params: {
     // Required parameters
     containers: [
       {
         name: 'az-aci-x-001'
         properties: {
-          command: []
-          environmentVariables: []
           image: 'mcr.microsoft.com/azuredocs/aci-helloworld'
           ports: [
-            {
-              port: '80'
-              protocol: 'Tcp'
-            }
             {
               port: '443'
               protocol: 'Tcp'
@@ -70,55 +65,16 @@ module containerGroup 'br:bicep/modules/container-instance.container-group:1.0.0
           }
         }
       }
-      {
-        name: 'az-aci-x-002'
-        properties: {
-          command: []
-          environmentVariables: []
-          image: 'mcr.microsoft.com/azuredocs/aci-helloworld'
-          ports: [
-            {
-              port: '8080'
-              protocol: 'Tcp'
-            }
-          ]
-          resources: {
-            requests: {
-              cpu: 2
-              memoryInGB: 2
-            }
-          }
-        }
-      }
     ]
-    name: 'cicgcom001'
+    name: 'cicgmin001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     ipAddressPorts: [
-      {
-        port: 80
-        protocol: 'Tcp'
-      }
       {
         port: 443
         protocol: 'Tcp'
       }
     ]
-    lock: {
-      kind: 'CanNotDelete'
-      name: 'myCustomLockName'
-    }
-    managedIdentities: {
-      systemAssigned: true
-      userAssignedResourcesIds: [
-        '<managedIdentityResourceId>'
-      ]
-    }
-    tags: {
-      Environment: 'Non-Prod'
-      'hidden-title': 'This is visible in the resource name'
-      Role: 'DeploymentValidation'
-    }
   }
 }
 ```
@@ -141,36 +97,10 @@ module containerGroup 'br:bicep/modules/container-instance.container-group:1.0.0
         {
           "name": "az-aci-x-001",
           "properties": {
-            "command": [],
-            "environmentVariables": [],
             "image": "mcr.microsoft.com/azuredocs/aci-helloworld",
             "ports": [
-              {
-                "port": "80",
-                "protocol": "Tcp"
-              },
               {
                 "port": "443",
-                "protocol": "Tcp"
-              }
-            ],
-            "resources": {
-              "requests": {
-                "cpu": 2,
-                "memoryInGB": 2
-              }
-            }
-          }
-        },
-        {
-          "name": "az-aci-x-002",
-          "properties": {
-            "command": [],
-            "environmentVariables": [],
-            "image": "mcr.microsoft.com/azuredocs/aci-helloworld",
-            "ports": [
-              {
-                "port": "8080",
                 "protocol": "Tcp"
               }
             ],
@@ -185,7 +115,7 @@ module containerGroup 'br:bicep/modules/container-instance.container-group:1.0.0
       ]
     },
     "name": {
-      "value": "cicgcom001"
+      "value": "cicgmin001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {
@@ -194,35 +124,10 @@ module containerGroup 'br:bicep/modules/container-instance.container-group:1.0.0
     "ipAddressPorts": {
       "value": [
         {
-          "port": 80,
-          "protocol": "Tcp"
-        },
-        {
           "port": 443,
           "protocol": "Tcp"
         }
       ]
-    },
-    "lock": {
-      "value": {
-        "kind": "CanNotDelete",
-        "name": "myCustomLockName"
-      }
-    },
-    "managedIdentities": {
-      "value": {
-        "systemAssigned": true,
-        "userAssignedResourcesIds": [
-          "<managedIdentityResourceId>"
-        ]
-      }
-    },
-    "tags": {
-      "value": {
-        "Environment": "Non-Prod",
-        "hidden-title": "This is visible in the resource name",
-        "Role": "DeploymentValidation"
-      }
     }
   }
 }
@@ -440,9 +345,9 @@ module containerGroup 'br:bicep/modules/container-instance.container-group:1.0.0
 </details>
 <p>
 
-### Example 3: _Using only defaults_
+### Example 3: _Using large parameter set_
 
-This instance deploys the module with the minimum set of required parameters.
+This instance deploys the module with most of its features enabled.
 
 
 <details>
@@ -451,15 +356,21 @@ This instance deploys the module with the minimum set of required parameters.
 
 ```bicep
 module containerGroup 'br:bicep/modules/container-instance.container-group:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-cicgmin'
+  name: '${uniqueString(deployment().name, location)}-test-cicgmax'
   params: {
     // Required parameters
     containers: [
       {
         name: 'az-aci-x-001'
         properties: {
+          command: []
+          environmentVariables: []
           image: 'mcr.microsoft.com/azuredocs/aci-helloworld'
           ports: [
+            {
+              port: '80'
+              protocol: 'Tcp'
+            }
             {
               port: '443'
               protocol: 'Tcp'
@@ -473,16 +384,55 @@ module containerGroup 'br:bicep/modules/container-instance.container-group:1.0.0
           }
         }
       }
+      {
+        name: 'az-aci-x-002'
+        properties: {
+          command: []
+          environmentVariables: []
+          image: 'mcr.microsoft.com/azuredocs/aci-helloworld'
+          ports: [
+            {
+              port: '8080'
+              protocol: 'Tcp'
+            }
+          ]
+          resources: {
+            requests: {
+              cpu: 2
+              memoryInGB: 2
+            }
+          }
+        }
+      }
     ]
-    name: 'cicgmin001'
+    name: 'cicgmax001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     ipAddressPorts: [
+      {
+        port: 80
+        protocol: 'Tcp'
+      }
       {
         port: 443
         protocol: 'Tcp'
       }
     ]
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    managedIdentities: {
+      systemAssigned: true
+      userAssignedResourcesIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -505,10 +455,36 @@ module containerGroup 'br:bicep/modules/container-instance.container-group:1.0.0
         {
           "name": "az-aci-x-001",
           "properties": {
+            "command": [],
+            "environmentVariables": [],
             "image": "mcr.microsoft.com/azuredocs/aci-helloworld",
             "ports": [
               {
+                "port": "80",
+                "protocol": "Tcp"
+              },
+              {
                 "port": "443",
+                "protocol": "Tcp"
+              }
+            ],
+            "resources": {
+              "requests": {
+                "cpu": 2,
+                "memoryInGB": 2
+              }
+            }
+          }
+        },
+        {
+          "name": "az-aci-x-002",
+          "properties": {
+            "command": [],
+            "environmentVariables": [],
+            "image": "mcr.microsoft.com/azuredocs/aci-helloworld",
+            "ports": [
+              {
+                "port": "8080",
                 "protocol": "Tcp"
               }
             ],
@@ -523,7 +499,7 @@ module containerGroup 'br:bicep/modules/container-instance.container-group:1.0.0
       ]
     },
     "name": {
-      "value": "cicgmin001"
+      "value": "cicgmax001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {
@@ -532,10 +508,35 @@ module containerGroup 'br:bicep/modules/container-instance.container-group:1.0.0
     "ipAddressPorts": {
       "value": [
         {
+          "port": 80,
+          "protocol": "Tcp"
+        },
+        {
           "port": 443,
           "protocol": "Tcp"
         }
       ]
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "managedIdentities": {
+      "value": {
+        "systemAssigned": true,
+        "userAssignedResourcesIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }
@@ -775,6 +776,206 @@ module containerGroup 'br:bicep/modules/container-instance.container-group:1.0.0
           "name": "my-name"
         }
       ]
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 5: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module containerGroup 'br:bicep/modules/container-instance.container-group:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-cicgwaf'
+  params: {
+    // Required parameters
+    containers: [
+      {
+        name: 'az-aci-x-001'
+        properties: {
+          command: []
+          environmentVariables: []
+          image: 'mcr.microsoft.com/azuredocs/aci-helloworld'
+          ports: [
+            {
+              port: '80'
+              protocol: 'Tcp'
+            }
+            {
+              port: '443'
+              protocol: 'Tcp'
+            }
+          ]
+          resources: {
+            requests: {
+              cpu: 2
+              memoryInGB: 2
+            }
+          }
+        }
+      }
+      {
+        name: 'az-aci-x-002'
+        properties: {
+          command: []
+          environmentVariables: []
+          image: 'mcr.microsoft.com/azuredocs/aci-helloworld'
+          ports: [
+            {
+              port: '8080'
+              protocol: 'Tcp'
+            }
+          ]
+          resources: {
+            requests: {
+              cpu: 2
+              memoryInGB: 2
+            }
+          }
+        }
+      }
+    ]
+    name: 'cicgwaf001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    ipAddressPorts: [
+      {
+        port: 80
+        protocol: 'Tcp'
+      }
+      {
+        port: 443
+        protocol: 'Tcp'
+      }
+    ]
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    managedIdentities: {
+      systemAssigned: true
+      userAssignedResourcesIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "containers": {
+      "value": [
+        {
+          "name": "az-aci-x-001",
+          "properties": {
+            "command": [],
+            "environmentVariables": [],
+            "image": "mcr.microsoft.com/azuredocs/aci-helloworld",
+            "ports": [
+              {
+                "port": "80",
+                "protocol": "Tcp"
+              },
+              {
+                "port": "443",
+                "protocol": "Tcp"
+              }
+            ],
+            "resources": {
+              "requests": {
+                "cpu": 2,
+                "memoryInGB": 2
+              }
+            }
+          }
+        },
+        {
+          "name": "az-aci-x-002",
+          "properties": {
+            "command": [],
+            "environmentVariables": [],
+            "image": "mcr.microsoft.com/azuredocs/aci-helloworld",
+            "ports": [
+              {
+                "port": "8080",
+                "protocol": "Tcp"
+              }
+            ],
+            "resources": {
+              "requests": {
+                "cpu": 2,
+                "memoryInGB": 2
+              }
+            }
+          }
+        }
+      ]
+    },
+    "name": {
+      "value": "cicgwaf001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "ipAddressPorts": {
+      "value": [
+        {
+          "port": 80,
+          "protocol": "Tcp"
+        },
+        {
+          "port": 443,
+          "protocol": "Tcp"
+        }
+      ]
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "managedIdentities": {
+      "value": {
+        "systemAssigned": true,
+        "userAssignedResourcesIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }

@@ -30,13 +30,14 @@ The following section provides usage examples for the module, which were used to
 
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/cache.redis-enterprise:1.0.0`.
 
-- [Using large parameter set](#example-1-using-large-parameter-set)
+- [Using only defaults](#example-1-using-only-defaults)
 - [Geo](#example-2-geo)
-- [Using only defaults](#example-3-using-only-defaults)
+- [Using large parameter set](#example-3-using-large-parameter-set)
+- [WAF-aligned](#example-4-waf-aligned)
 
-### Example 1: _Using large parameter set_
+### Example 1: _Using only defaults_
 
-This instance deploys the module with most of its features enabled.
+This instance deploys the module with the minimum set of required parameters.
 
 
 <details>
@@ -45,76 +46,12 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module redisEnterprise 'br:bicep/modules/cache.redis-enterprise:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-crecom'
+  name: '${uniqueString(deployment().name, location)}-test-cremin'
   params: {
     // Required parameters
-    name: 'crecom001'
+    name: 'cremin001'
     // Non-required parameters
-    capacity: 2
-    databases: [
-      {
-        clusteringPolicy: 'EnterpriseCluster'
-        evictionPolicy: 'AllKeysLFU'
-        modules: [
-          {
-            name: 'RedisBloom'
-          }
-          {
-            args: 'RETENTION_POLICY 20'
-            name: 'RedisTimeSeries'
-          }
-        ]
-        persistenceAofEnabled: true
-        persistenceAofFrequency: '1s'
-        persistenceRdbEnabled: false
-        port: 10000
-      }
-    ]
-    diagnosticSettings: [
-      {
-        eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
-        eventHubName: '<eventHubName>'
-        metricCategories: [
-          {
-            category: 'AllMetrics'
-          }
-        ]
-        name: 'customSetting'
-        storageAccountResourceId: '<storageAccountResourceId>'
-        workspaceResourceId: '<workspaceResourceId>'
-      }
-    ]
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    lock: {
-      kind: 'CanNotDelete'
-      name: 'myCustomLockName'
-    }
-    minimumTlsVersion: '1.2'
-    privateEndpoints: [
-      {
-        privateDnsZoneResourceIds: [
-          '<privateDNSZoneResourceId>'
-        ]
-        subnetResourceId: '<subnetResourceId>'
-        tags: {
-          Environment: 'Non-Prod'
-          'hidden-title': 'This is visible in the resource name'
-          Role: 'DeploymentValidation'
-        }
-      }
-    ]
-    roleAssignments: [
-      {
-        principalId: '<principalId>'
-        principalType: 'ServicePrincipal'
-        roleDefinitionIdOrName: 'Reader'
-      }
-    ]
-    tags: {
-      'hidden-title': 'This is visible in the resource name'
-      resourceType: 'Redis Cache Enterprise'
-    }
-    zoneRedundant: true
   }
 }
 ```
@@ -133,93 +70,11 @@ module redisEnterprise 'br:bicep/modules/cache.redis-enterprise:1.0.0' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "crecom001"
+      "value": "cremin001"
     },
     // Non-required parameters
-    "capacity": {
-      "value": 2
-    },
-    "databases": {
-      "value": [
-        {
-          "clusteringPolicy": "EnterpriseCluster",
-          "evictionPolicy": "AllKeysLFU",
-          "modules": [
-            {
-              "name": "RedisBloom"
-            },
-            {
-              "args": "RETENTION_POLICY 20",
-              "name": "RedisTimeSeries"
-            }
-          ],
-          "persistenceAofEnabled": true,
-          "persistenceAofFrequency": "1s",
-          "persistenceRdbEnabled": false,
-          "port": 10000
-        }
-      ]
-    },
-    "diagnosticSettings": {
-      "value": [
-        {
-          "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
-          "eventHubName": "<eventHubName>",
-          "metricCategories": [
-            {
-              "category": "AllMetrics"
-            }
-          ],
-          "name": "customSetting",
-          "storageAccountResourceId": "<storageAccountResourceId>",
-          "workspaceResourceId": "<workspaceResourceId>"
-        }
-      ]
-    },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
-    },
-    "lock": {
-      "value": {
-        "kind": "CanNotDelete",
-        "name": "myCustomLockName"
-      }
-    },
-    "minimumTlsVersion": {
-      "value": "1.2"
-    },
-    "privateEndpoints": {
-      "value": [
-        {
-          "privateDnsZoneResourceIds": [
-            "<privateDNSZoneResourceId>"
-          ],
-          "subnetResourceId": "<subnetResourceId>",
-          "tags": {
-            "Environment": "Non-Prod",
-            "hidden-title": "This is visible in the resource name",
-            "Role": "DeploymentValidation"
-          }
-        }
-      ]
-    },
-    "roleAssignments": {
-      "value": [
-        {
-          "principalId": "<principalId>",
-          "principalType": "ServicePrincipal",
-          "roleDefinitionIdOrName": "Reader"
-        }
-      ]
-    },
-    "tags": {
-      "value": {
-        "hidden-title": "This is visible in the resource name",
-        "resourceType": "Redis Cache Enterprise"
-      }
-    },
-    "zoneRedundant": {
-      "value": true
     }
   }
 }
@@ -349,9 +204,9 @@ module redisEnterprise 'br:bicep/modules/cache.redis-enterprise:1.0.0' = {
 </details>
 <p>
 
-### Example 3: _Using only defaults_
+### Example 3: _Using large parameter set_
 
-This instance deploys the module with the minimum set of required parameters.
+This instance deploys the module with most of its features enabled.
 
 
 <details>
@@ -360,12 +215,76 @@ This instance deploys the module with the minimum set of required parameters.
 
 ```bicep
 module redisEnterprise 'br:bicep/modules/cache.redis-enterprise:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-cremin'
+  name: '${uniqueString(deployment().name, location)}-test-cremax'
   params: {
     // Required parameters
-    name: 'cremin001'
+    name: 'cremax001'
     // Non-required parameters
+    capacity: 2
+    databases: [
+      {
+        clusteringPolicy: 'EnterpriseCluster'
+        evictionPolicy: 'AllKeysLFU'
+        modules: [
+          {
+            name: 'RedisBloom'
+          }
+          {
+            args: 'RETENTION_POLICY 20'
+            name: 'RedisTimeSeries'
+          }
+        ]
+        persistenceAofEnabled: true
+        persistenceAofFrequency: '1s'
+        persistenceRdbEnabled: false
+        port: 10000
+      }
+    ]
+    diagnosticSettings: [
+      {
+        eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+        eventHubName: '<eventHubName>'
+        metricCategories: [
+          {
+            category: 'AllMetrics'
+          }
+        ]
+        name: 'customSetting'
+        storageAccountResourceId: '<storageAccountResourceId>'
+        workspaceResourceId: '<workspaceResourceId>'
+      }
+    ]
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    minimumTlsVersion: '1.2'
+    privateEndpoints: [
+      {
+        privateDnsZoneResourceIds: [
+          '<privateDNSZoneResourceId>'
+        ]
+        subnetResourceId: '<subnetResourceId>'
+        tags: {
+          Environment: 'Non-Prod'
+          'hidden-title': 'This is visible in the resource name'
+          Role: 'DeploymentValidation'
+        }
+      }
+    ]
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    tags: {
+      'hidden-title': 'This is visible in the resource name'
+      resourceType: 'Redis Cache Enterprise'
+    }
+    zoneRedundant: true
   }
 }
 ```
@@ -384,11 +303,287 @@ module redisEnterprise 'br:bicep/modules/cache.redis-enterprise:1.0.0' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "cremin001"
+      "value": "cremax001"
     },
     // Non-required parameters
+    "capacity": {
+      "value": 2
+    },
+    "databases": {
+      "value": [
+        {
+          "clusteringPolicy": "EnterpriseCluster",
+          "evictionPolicy": "AllKeysLFU",
+          "modules": [
+            {
+              "name": "RedisBloom"
+            },
+            {
+              "args": "RETENTION_POLICY 20",
+              "name": "RedisTimeSeries"
+            }
+          ],
+          "persistenceAofEnabled": true,
+          "persistenceAofFrequency": "1s",
+          "persistenceRdbEnabled": false,
+          "port": 10000
+        }
+      ]
+    },
+    "diagnosticSettings": {
+      "value": [
+        {
+          "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+          "eventHubName": "<eventHubName>",
+          "metricCategories": [
+            {
+              "category": "AllMetrics"
+            }
+          ],
+          "name": "customSetting",
+          "storageAccountResourceId": "<storageAccountResourceId>",
+          "workspaceResourceId": "<workspaceResourceId>"
+        }
+      ]
+    },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "minimumTlsVersion": {
+      "value": "1.2"
+    },
+    "privateEndpoints": {
+      "value": [
+        {
+          "privateDnsZoneResourceIds": [
+            "<privateDNSZoneResourceId>"
+          ],
+          "subnetResourceId": "<subnetResourceId>",
+          "tags": {
+            "Environment": "Non-Prod",
+            "hidden-title": "This is visible in the resource name",
+            "Role": "DeploymentValidation"
+          }
+        }
+      ]
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "tags": {
+      "value": {
+        "hidden-title": "This is visible in the resource name",
+        "resourceType": "Redis Cache Enterprise"
+      }
+    },
+    "zoneRedundant": {
+      "value": true
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 4: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module redisEnterprise 'br:bicep/modules/cache.redis-enterprise:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-crewaf'
+  params: {
+    // Required parameters
+    name: 'crewaf001'
+    // Non-required parameters
+    capacity: 2
+    databases: [
+      {
+        clusteringPolicy: 'EnterpriseCluster'
+        evictionPolicy: 'AllKeysLFU'
+        modules: [
+          {
+            name: 'RedisBloom'
+          }
+          {
+            args: 'RETENTION_POLICY 20'
+            name: 'RedisTimeSeries'
+          }
+        ]
+        persistenceAofEnabled: true
+        persistenceAofFrequency: '1s'
+        persistenceRdbEnabled: false
+        port: 10000
+      }
+    ]
+    diagnosticSettings: [
+      {
+        eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+        eventHubName: '<eventHubName>'
+        metricCategories: [
+          {
+            category: 'AllMetrics'
+          }
+        ]
+        name: 'customSetting'
+        storageAccountResourceId: '<storageAccountResourceId>'
+        workspaceResourceId: '<workspaceResourceId>'
+      }
+    ]
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    minimumTlsVersion: '1.2'
+    privateEndpoints: [
+      {
+        privateDnsZoneResourceIds: [
+          '<privateDNSZoneResourceId>'
+        ]
+        subnetResourceId: '<subnetResourceId>'
+        tags: {
+          Environment: 'Non-Prod'
+          'hidden-title': 'This is visible in the resource name'
+          Role: 'DeploymentValidation'
+        }
+      }
+    ]
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    tags: {
+      'hidden-title': 'This is visible in the resource name'
+      resourceType: 'Redis Cache Enterprise'
+    }
+    zoneRedundant: true
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "crewaf001"
+    },
+    // Non-required parameters
+    "capacity": {
+      "value": 2
+    },
+    "databases": {
+      "value": [
+        {
+          "clusteringPolicy": "EnterpriseCluster",
+          "evictionPolicy": "AllKeysLFU",
+          "modules": [
+            {
+              "name": "RedisBloom"
+            },
+            {
+              "args": "RETENTION_POLICY 20",
+              "name": "RedisTimeSeries"
+            }
+          ],
+          "persistenceAofEnabled": true,
+          "persistenceAofFrequency": "1s",
+          "persistenceRdbEnabled": false,
+          "port": 10000
+        }
+      ]
+    },
+    "diagnosticSettings": {
+      "value": [
+        {
+          "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+          "eventHubName": "<eventHubName>",
+          "metricCategories": [
+            {
+              "category": "AllMetrics"
+            }
+          ],
+          "name": "customSetting",
+          "storageAccountResourceId": "<storageAccountResourceId>",
+          "workspaceResourceId": "<workspaceResourceId>"
+        }
+      ]
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "minimumTlsVersion": {
+      "value": "1.2"
+    },
+    "privateEndpoints": {
+      "value": [
+        {
+          "privateDnsZoneResourceIds": [
+            "<privateDNSZoneResourceId>"
+          ],
+          "subnetResourceId": "<subnetResourceId>",
+          "tags": {
+            "Environment": "Non-Prod",
+            "hidden-title": "This is visible in the resource name",
+            "Role": "DeploymentValidation"
+          }
+        }
+      ]
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "tags": {
+      "value": {
+        "hidden-title": "This is visible in the resource name",
+        "resourceType": "Redis Cache Enterprise"
+      }
+    },
+    "zoneRedundant": {
+      "value": true
     }
   }
 }

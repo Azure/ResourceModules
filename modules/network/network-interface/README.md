@@ -29,10 +29,73 @@ The following section provides usage examples for the module, which were used to
 
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/network.network-interface:1.0.0`.
 
-- [Using large parameter set](#example-1-using-large-parameter-set)
-- [Using only defaults](#example-2-using-only-defaults)
+- [Using only defaults](#example-1-using-only-defaults)
+- [Using large parameter set](#example-2-using-large-parameter-set)
+- [WAF-aligned](#example-3-waf-aligned)
 
-### Example 1: _Using large parameter set_
+### Example 1: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module networkInterface 'br:bicep/modules/network.network-interface:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-nnimin'
+  params: {
+    // Required parameters
+    ipConfigurations: [
+      {
+        name: 'ipconfig01'
+        subnetResourceId: '<subnetResourceId>'
+      }
+    ]
+    name: 'nnimin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "ipConfigurations": {
+      "value": [
+        {
+          "name": "ipconfig01",
+          "subnetResourceId": "<subnetResourceId>"
+        }
+      ]
+    },
+    "name": {
+      "value": "nnimin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 2: _Using large parameter set_
 
 This instance deploys the module with most of its features enabled.
 
@@ -43,7 +106,7 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module networkInterface 'br:bicep/modules/network.network-interface:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-nnicom'
+  name: '${uniqueString(deployment().name, location)}-test-nnimax'
   params: {
     // Required parameters
     ipConfigurations: [
@@ -70,7 +133,7 @@ module networkInterface 'br:bicep/modules/network.network-interface:1.0.0' = {
         subnetResourceId: '<subnetResourceId>'
       }
     ]
-    name: 'nnicom001'
+    name: 'nnimax001'
     // Non-required parameters
     diagnosticSettings: [
       {
@@ -147,7 +210,7 @@ module networkInterface 'br:bicep/modules/network.network-interface:1.0.0' = {
       ]
     },
     "name": {
-      "value": "nnicom001"
+      "value": "nnimax001"
     },
     // Non-required parameters
     "diagnosticSettings": {
@@ -198,9 +261,9 @@ module networkInterface 'br:bicep/modules/network.network-interface:1.0.0' = {
 </details>
 <p>
 
-### Example 2: _Using only defaults_
+### Example 3: _WAF-aligned_
 
-This instance deploys the module with the minimum set of required parameters.
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
 
 
 <details>
@@ -209,18 +272,66 @@ This instance deploys the module with the minimum set of required parameters.
 
 ```bicep
 module networkInterface 'br:bicep/modules/network.network-interface:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-nnimin'
+  name: '${uniqueString(deployment().name, location)}-test-nniwaf'
   params: {
     // Required parameters
     ipConfigurations: [
       {
+        applicationSecurityGroups: [
+          {
+            id: '<id>'
+          }
+        ]
+        loadBalancerBackendAddressPools: [
+          {
+            id: '<id>'
+          }
+        ]
         name: 'ipconfig01'
         subnetResourceId: '<subnetResourceId>'
       }
+      {
+        applicationSecurityGroups: [
+          {
+            id: '<id>'
+          }
+        ]
+        subnetResourceId: '<subnetResourceId>'
+      }
     ]
-    name: 'nnimin001'
+    name: 'nniwaf001'
     // Non-required parameters
+    diagnosticSettings: [
+      {
+        eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+        eventHubName: '<eventHubName>'
+        metricCategories: [
+          {
+            category: 'AllMetrics'
+          }
+        ]
+        name: 'customSetting'
+        storageAccountResourceId: '<storageAccountResourceId>'
+        workspaceResourceId: '<workspaceResourceId>'
+      }
+    ]
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -241,17 +352,73 @@ module networkInterface 'br:bicep/modules/network.network-interface:1.0.0' = {
     "ipConfigurations": {
       "value": [
         {
+          "applicationSecurityGroups": [
+            {
+              "id": "<id>"
+            }
+          ],
+          "loadBalancerBackendAddressPools": [
+            {
+              "id": "<id>"
+            }
+          ],
           "name": "ipconfig01",
+          "subnetResourceId": "<subnetResourceId>"
+        },
+        {
+          "applicationSecurityGroups": [
+            {
+              "id": "<id>"
+            }
+          ],
           "subnetResourceId": "<subnetResourceId>"
         }
       ]
     },
     "name": {
-      "value": "nnimin001"
+      "value": "nniwaf001"
     },
     // Non-required parameters
+    "diagnosticSettings": {
+      "value": [
+        {
+          "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+          "eventHubName": "<eventHubName>",
+          "metricCategories": [
+            {
+              "category": "AllMetrics"
+            }
+          ],
+          "name": "customSetting",
+          "storageAccountResourceId": "<storageAccountResourceId>",
+          "workspaceResourceId": "<workspaceResourceId>"
+        }
+      ]
+    },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }

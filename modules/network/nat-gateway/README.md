@@ -31,6 +31,7 @@ The following section provides usage examples for the module, which were used to
 
 - [Using large parameter set](#example-1-using-large-parameter-set)
 - [Combine a generated and provided Public IP Prefix](#example-2-combine-a-generated-and-provided-public-ip-prefix)
+- [WAF-aligned](#example-3-waf-aligned)
 
 ### Example 1: _Using large parameter set_
 
@@ -43,10 +44,10 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module natGateway 'br:bicep/modules/network.nat-gateway:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-nngcom'
+  name: '${uniqueString(deployment().name, location)}-test-nngmax'
   params: {
     // Required parameters
-    name: 'nngcom001'
+    name: 'nngmax001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: {
@@ -69,7 +70,7 @@ module natGateway 'br:bicep/modules/network.nat-gateway:1.0.0' = {
             workspaceResourceId: '<workspaceResourceId>'
           }
         ]
-        name: 'nngcom001-pip'
+        name: 'nngmax001-pip'
         roleAssignments: [
           {
             principalId: '<principalId>'
@@ -115,7 +116,7 @@ module natGateway 'br:bicep/modules/network.nat-gateway:1.0.0' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "nngcom001"
+      "value": "nngmax001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {
@@ -144,7 +145,7 @@ module natGateway 'br:bicep/modules/network.nat-gateway:1.0.0' = {
               "workspaceResourceId": "<workspaceResourceId>"
             }
           ],
-          "name": "nngcom001-pip",
+          "name": "nngmax001-pip",
           "roleAssignments": [
             {
               "principalId": "<principalId>",
@@ -287,6 +288,158 @@ module natGateway 'br:bicep/modules/network.nat-gateway:1.0.0' = {
     "publicIPPrefixResourceIds": {
       "value": [
         "<publicIpPrefixResourceId>"
+      ]
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 3: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module natGateway 'br:bicep/modules/network.nat-gateway:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-nngwaf'
+  params: {
+    // Required parameters
+    name: 'nngwaf001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    publicIPAddressObjects: [
+      {
+        diagnosticSettings: [
+          {
+            eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+            eventHubName: '<eventHubName>'
+            metricCategories: [
+              {
+                category: 'AllMetrics'
+              }
+            ]
+            name: 'customSetting'
+            storageAccountResourceId: '<storageAccountResourceId>'
+            workspaceResourceId: '<workspaceResourceId>'
+          }
+        ]
+        name: 'nngwaf001-pip'
+        roleAssignments: [
+          {
+            principalId: '<principalId>'
+            principalType: 'ServicePrincipal'
+            roleDefinitionIdOrName: 'Reader'
+          }
+        ]
+        skuTier: 'Regional'
+        zones: [
+          '1'
+          '2'
+          '3'
+        ]
+      }
+    ]
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "nngwaf001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "publicIPAddressObjects": {
+      "value": [
+        {
+          "diagnosticSettings": [
+            {
+              "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+              "eventHubName": "<eventHubName>",
+              "metricCategories": [
+                {
+                  "category": "AllMetrics"
+                }
+              ],
+              "name": "customSetting",
+              "storageAccountResourceId": "<storageAccountResourceId>",
+              "workspaceResourceId": "<workspaceResourceId>"
+            }
+          ],
+          "name": "nngwaf001-pip",
+          "roleAssignments": [
+            {
+              "principalId": "<principalId>",
+              "principalType": "ServicePrincipal",
+              "roleDefinitionIdOrName": "Reader"
+            }
+          ],
+          "skuTier": "Regional",
+          "zones": [
+            "1",
+            "2",
+            "3"
+          ]
+        }
       ]
     },
     "roleAssignments": {

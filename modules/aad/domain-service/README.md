@@ -29,6 +29,7 @@ The following section provides usage examples for the module, which were used to
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/aad.domain-service:1.0.0`.
 
 - [Using large parameter set](#example-1-using-large-parameter-set)
+- [WAF-aligned](#example-2-waf-aligned)
 
 ### Example 1: _Using large parameter set_
 
@@ -41,7 +42,7 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module domainService 'br:bicep/modules/aad.domain-service:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-aaddscom'
+  name: '${uniqueString(deployment().name, location)}-test-aaddsmax'
   params: {
     // Required parameters
     domainName: 'onmicrosoft.com'
@@ -63,7 +64,7 @@ module domainService 'br:bicep/modules/aad.domain-service:1.0.0' = {
       kind: 'CanNotDelete'
       name: 'myCustomLockName'
     }
-    name: 'aaddscom001'
+    name: 'aaddsmax001'
     pfxCertificate: '<pfxCertificate>'
     pfxCertificatePassword: '<pfxCertificatePassword>'
     replicaSets: [
@@ -125,7 +126,135 @@ module domainService 'br:bicep/modules/aad.domain-service:1.0.0' = {
       }
     },
     "name": {
-      "value": "aaddscom001"
+      "value": "aaddsmax001"
+    },
+    "pfxCertificate": {
+      "value": "<pfxCertificate>"
+    },
+    "pfxCertificatePassword": {
+      "value": "<pfxCertificatePassword>"
+    },
+    "replicaSets": {
+      "value": [
+        {
+          "location": "WestEurope",
+          "subnetId": "<subnetId>"
+        }
+      ]
+    },
+    "sku": {
+      "value": "Standard"
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 2: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module domainService 'br:bicep/modules/aad.domain-service:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-aaddswaf'
+  params: {
+    // Required parameters
+    domainName: 'onmicrosoft.com'
+    // Non-required parameters
+    additionalRecipients: [
+      '@noreply.github.com'
+    ]
+    diagnosticSettings: [
+      {
+        eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+        eventHubName: '<eventHubName>'
+        name: 'customSetting'
+        storageAccountResourceId: '<storageAccountResourceId>'
+        workspaceResourceId: '<workspaceResourceId>'
+      }
+    ]
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    name: 'aaddswaf001'
+    pfxCertificate: '<pfxCertificate>'
+    pfxCertificatePassword: '<pfxCertificatePassword>'
+    replicaSets: [
+      {
+        location: 'WestEurope'
+        subnetId: '<subnetId>'
+      }
+    ]
+    sku: 'Standard'
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "domainName": {
+      "value": "onmicrosoft.com"
+    },
+    // Non-required parameters
+    "additionalRecipients": {
+      "value": [
+        "@noreply.github.com"
+      ]
+    },
+    "diagnosticSettings": {
+      "value": [
+        {
+          "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+          "eventHubName": "<eventHubName>",
+          "name": "customSetting",
+          "storageAccountResourceId": "<storageAccountResourceId>",
+          "workspaceResourceId": "<workspaceResourceId>"
+        }
+      ]
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "name": {
+      "value": "aaddswaf001"
     },
     "pfxCertificate": {
       "value": "<pfxCertificate>"

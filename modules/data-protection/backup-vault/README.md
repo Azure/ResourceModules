@@ -28,10 +28,59 @@ The following section provides usage examples for the module, which were used to
 
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/data-protection.backup-vault:1.0.0`.
 
-- [Using large parameter set](#example-1-using-large-parameter-set)
-- [Using only defaults](#example-2-using-only-defaults)
+- [Using only defaults](#example-1-using-only-defaults)
+- [Using large parameter set](#example-2-using-large-parameter-set)
+- [WAF-aligned](#example-3-waf-aligned)
 
-### Example 1: _Using large parameter set_
+### Example 1: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module backupVault 'br:bicep/modules/data-protection.backup-vault:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-dpbvmin'
+  params: {
+    // Required parameters
+    name: 'dpbvmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "dpbvmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 2: _Using large parameter set_
 
 This instance deploys the module with most of its features enabled.
 
@@ -42,10 +91,10 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module backupVault 'br:bicep/modules/data-protection.backup-vault:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-dpbvcom'
+  name: '${uniqueString(deployment().name, location)}-test-dpbvmax'
   params: {
     // Required parameters
-    name: 'dpbvcom001'
+    name: 'dpbvmax001'
     // Non-required parameters
     azureMonitorAlertSettingsAlertsForAllJobFailures: 'Disabled'
     backupPolicies: [
@@ -148,7 +197,7 @@ module backupVault 'br:bicep/modules/data-protection.backup-vault:1.0.0' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "dpbvcom001"
+      "value": "dpbvmax001"
     },
     // Non-required parameters
     "azureMonitorAlertSettingsAlertsForAllJobFailures": {
@@ -255,9 +304,9 @@ module backupVault 'br:bicep/modules/data-protection.backup-vault:1.0.0' = {
 </details>
 <p>
 
-### Example 2: _Using only defaults_
+### Example 3: _WAF-aligned_
 
-This instance deploys the module with the minimum set of required parameters.
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
 
 
 <details>
@@ -266,12 +315,94 @@ This instance deploys the module with the minimum set of required parameters.
 
 ```bicep
 module backupVault 'br:bicep/modules/data-protection.backup-vault:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-dpbvmin'
+  name: '${uniqueString(deployment().name, location)}-test-dpbvwaf'
   params: {
     // Required parameters
-    name: 'dpbvmin001'
+    name: 'dpbvwaf001'
     // Non-required parameters
+    azureMonitorAlertSettingsAlertsForAllJobFailures: 'Disabled'
+    backupPolicies: [
+      {
+        name: 'DefaultPolicy'
+        properties: {
+          datasourceTypes: [
+            'Microsoft.Compute/disks'
+          ]
+          objectType: 'BackupPolicy'
+          policyRules: [
+            {
+              backupParameters: {
+                backupType: 'Incremental'
+                objectType: 'AzureBackupParams'
+              }
+              dataStore: {
+                dataStoreType: 'OperationalStore'
+                objectType: 'DataStoreInfoBase'
+              }
+              name: 'BackupDaily'
+              objectType: 'AzureBackupRule'
+              trigger: {
+                objectType: 'ScheduleBasedTriggerContext'
+                schedule: {
+                  repeatingTimeIntervals: [
+                    'R/2022-05-31T23:30:00+01:00/P1D'
+                  ]
+                  timeZone: 'W. Europe Standard Time'
+                }
+                taggingCriteria: [
+                  {
+                    isDefault: true
+                    taggingPriority: 99
+                    tagInfo: {
+                      id: 'Default_'
+                      tagName: 'Default'
+                    }
+                  }
+                ]
+              }
+            }
+            {
+              isDefault: true
+              lifecycles: [
+                {
+                  deleteAfter: {
+                    duration: 'P7D'
+                    objectType: 'AbsoluteDeleteOption'
+                  }
+                  sourceDataStore: {
+                    dataStoreType: 'OperationalStore'
+                    objectType: 'DataStoreInfoBase'
+                  }
+                  targetDataStoreCopySettings: []
+                }
+              ]
+              name: 'Default'
+              objectType: 'AzureRetentionRule'
+            }
+          ]
+        }
+      }
+    ]
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    managedIdentities: {
+      systemAssigned: true
+    }
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -290,11 +421,105 @@ module backupVault 'br:bicep/modules/data-protection.backup-vault:1.0.0' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "dpbvmin001"
+      "value": "dpbvwaf001"
     },
     // Non-required parameters
+    "azureMonitorAlertSettingsAlertsForAllJobFailures": {
+      "value": "Disabled"
+    },
+    "backupPolicies": {
+      "value": [
+        {
+          "name": "DefaultPolicy",
+          "properties": {
+            "datasourceTypes": [
+              "Microsoft.Compute/disks"
+            ],
+            "objectType": "BackupPolicy",
+            "policyRules": [
+              {
+                "backupParameters": {
+                  "backupType": "Incremental",
+                  "objectType": "AzureBackupParams"
+                },
+                "dataStore": {
+                  "dataStoreType": "OperationalStore",
+                  "objectType": "DataStoreInfoBase"
+                },
+                "name": "BackupDaily",
+                "objectType": "AzureBackupRule",
+                "trigger": {
+                  "objectType": "ScheduleBasedTriggerContext",
+                  "schedule": {
+                    "repeatingTimeIntervals": [
+                      "R/2022-05-31T23:30:00+01:00/P1D"
+                    ],
+                    "timeZone": "W. Europe Standard Time"
+                  },
+                  "taggingCriteria": [
+                    {
+                      "isDefault": true,
+                      "taggingPriority": 99,
+                      "tagInfo": {
+                        "id": "Default_",
+                        "tagName": "Default"
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "isDefault": true,
+                "lifecycles": [
+                  {
+                    "deleteAfter": {
+                      "duration": "P7D",
+                      "objectType": "AbsoluteDeleteOption"
+                    },
+                    "sourceDataStore": {
+                      "dataStoreType": "OperationalStore",
+                      "objectType": "DataStoreInfoBase"
+                    },
+                    "targetDataStoreCopySettings": []
+                  }
+                ],
+                "name": "Default",
+                "objectType": "AzureRetentionRule"
+              }
+            ]
+          }
+        }
+      ]
+    },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "managedIdentities": {
+      "value": {
+        "systemAssigned": true
+      }
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }

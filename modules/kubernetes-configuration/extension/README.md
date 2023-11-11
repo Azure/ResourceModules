@@ -27,124 +27,11 @@ The following section provides usage examples for the module, which were used to
 
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/kubernetes-configuration.extension:1.0.0`.
 
-- [Using large parameter set](#example-1-using-large-parameter-set)
-- [Using only defaults](#example-2-using-only-defaults)
+- [Using only defaults](#example-1-using-only-defaults)
+- [Using large parameter set](#example-2-using-large-parameter-set)
+- [WAF-aligned](#example-3-waf-aligned)
 
-### Example 1: _Using large parameter set_
-
-This instance deploys the module with most of its features enabled.
-
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module extension 'br:bicep/modules/kubernetes-configuration.extension:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-kcecom'
-  params: {
-    // Required parameters
-    clusterName: '<clusterName>'
-    extensionType: 'microsoft.flux'
-    name: 'kcecom001'
-    // Non-required parameters
-    configurationSettings: {
-      'image-automation-controller.enabled': 'false'
-      'image-reflector-controller.enabled': 'false'
-      'kustomize-controller.enabled': 'true'
-      'notification-controller.enabled': 'false'
-      'source-controller.enabled': 'true'
-    }
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    fluxConfigurations: [
-      {
-        gitRepository: {
-          repositoryRef: {
-            branch: 'main'
-          }
-          sshKnownHosts: ''
-          syncIntervalInSeconds: 300
-          timeoutInSeconds: 180
-          url: 'https://github.com/mspnp/aks-baseline'
-        }
-        namespace: 'flux-system'
-      }
-    ]
-    releaseNamespace: 'flux-system'
-    releaseTrain: 'Stable'
-    version: '0.5.2'
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "clusterName": {
-      "value": "<clusterName>"
-    },
-    "extensionType": {
-      "value": "microsoft.flux"
-    },
-    "name": {
-      "value": "kcecom001"
-    },
-    // Non-required parameters
-    "configurationSettings": {
-      "value": {
-        "image-automation-controller.enabled": "false",
-        "image-reflector-controller.enabled": "false",
-        "kustomize-controller.enabled": "true",
-        "notification-controller.enabled": "false",
-        "source-controller.enabled": "true"
-      }
-    },
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
-    "fluxConfigurations": {
-      "value": [
-        {
-          "gitRepository": {
-            "repositoryRef": {
-              "branch": "main"
-            },
-            "sshKnownHosts": "",
-            "syncIntervalInSeconds": 300,
-            "timeoutInSeconds": 180,
-            "url": "https://github.com/mspnp/aks-baseline"
-          },
-          "namespace": "flux-system"
-        }
-      ]
-    },
-    "releaseNamespace": {
-      "value": "flux-system"
-    },
-    "releaseTrain": {
-      "value": "Stable"
-    },
-    "version": {
-      "value": "0.5.2"
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-### Example 2: _Using only defaults_
+### Example 1: _Using only defaults_
 
 This instance deploys the module with the minimum set of required parameters.
 
@@ -200,6 +87,234 @@ module extension 'br:bicep/modules/kubernetes-configuration.extension:1.0.0' = {
     },
     "releaseTrain": {
       "value": "Stable"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 2: _Using large parameter set_
+
+This instance deploys the module with most of its features enabled.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module extension 'br:bicep/modules/kubernetes-configuration.extension:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-kcemax'
+  params: {
+    // Required parameters
+    clusterName: '<clusterName>'
+    extensionType: 'microsoft.flux'
+    name: 'kcemax001'
+    // Non-required parameters
+    configurationSettings: {
+      'image-automation-controller.enabled': 'false'
+      'image-reflector-controller.enabled': 'false'
+      'kustomize-controller.enabled': 'true'
+      'notification-controller.enabled': 'false'
+      'source-controller.enabled': 'true'
+    }
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    fluxConfigurations: [
+      {
+        gitRepository: {
+          repositoryRef: {
+            branch: 'main'
+          }
+          sshKnownHosts: ''
+          syncIntervalInSeconds: 300
+          timeoutInSeconds: 180
+          url: 'https://github.com/mspnp/aks-baseline'
+        }
+        namespace: 'flux-system'
+      }
+    ]
+    releaseNamespace: 'flux-system'
+    releaseTrain: 'Stable'
+    version: '0.5.2'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "clusterName": {
+      "value": "<clusterName>"
+    },
+    "extensionType": {
+      "value": "microsoft.flux"
+    },
+    "name": {
+      "value": "kcemax001"
+    },
+    // Non-required parameters
+    "configurationSettings": {
+      "value": {
+        "image-automation-controller.enabled": "false",
+        "image-reflector-controller.enabled": "false",
+        "kustomize-controller.enabled": "true",
+        "notification-controller.enabled": "false",
+        "source-controller.enabled": "true"
+      }
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "fluxConfigurations": {
+      "value": [
+        {
+          "gitRepository": {
+            "repositoryRef": {
+              "branch": "main"
+            },
+            "sshKnownHosts": "",
+            "syncIntervalInSeconds": 300,
+            "timeoutInSeconds": 180,
+            "url": "https://github.com/mspnp/aks-baseline"
+          },
+          "namespace": "flux-system"
+        }
+      ]
+    },
+    "releaseNamespace": {
+      "value": "flux-system"
+    },
+    "releaseTrain": {
+      "value": "Stable"
+    },
+    "version": {
+      "value": "0.5.2"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 3: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module extension 'br:bicep/modules/kubernetes-configuration.extension:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-kcewaf'
+  params: {
+    // Required parameters
+    clusterName: '<clusterName>'
+    extensionType: 'microsoft.flux'
+    name: 'kcewaf001'
+    // Non-required parameters
+    configurationSettings: {
+      'image-automation-controller.enabled': 'false'
+      'image-reflector-controller.enabled': 'false'
+      'kustomize-controller.enabled': 'true'
+      'notification-controller.enabled': 'false'
+      'source-controller.enabled': 'true'
+    }
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    fluxConfigurations: [
+      {
+        gitRepository: {
+          repositoryRef: {
+            branch: 'main'
+          }
+          sshKnownHosts: ''
+          syncIntervalInSeconds: 300
+          timeoutInSeconds: 180
+          url: 'https://github.com/mspnp/aks-baseline'
+        }
+        namespace: 'flux-system'
+      }
+    ]
+    releaseNamespace: 'flux-system'
+    releaseTrain: 'Stable'
+    version: '0.5.2'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "clusterName": {
+      "value": "<clusterName>"
+    },
+    "extensionType": {
+      "value": "microsoft.flux"
+    },
+    "name": {
+      "value": "kcewaf001"
+    },
+    // Non-required parameters
+    "configurationSettings": {
+      "value": {
+        "image-automation-controller.enabled": "false",
+        "image-reflector-controller.enabled": "false",
+        "kustomize-controller.enabled": "true",
+        "notification-controller.enabled": "false",
+        "source-controller.enabled": "true"
+      }
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "fluxConfigurations": {
+      "value": [
+        {
+          "gitRepository": {
+            "repositoryRef": {
+              "branch": "main"
+            },
+            "sshKnownHosts": "",
+            "syncIntervalInSeconds": 300,
+            "timeoutInSeconds": 180,
+            "url": "https://github.com/mspnp/aks-baseline"
+          },
+          "namespace": "flux-system"
+        }
+      ]
+    },
+    "releaseNamespace": {
+      "value": "flux-system"
+    },
+    "releaseTrain": {
+      "value": "Stable"
+    },
+    "version": {
+      "value": "0.5.2"
     }
   }
 }

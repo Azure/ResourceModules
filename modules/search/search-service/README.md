@@ -30,11 +30,60 @@ The following section provides usage examples for the module, which were used to
 
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/search.search-service:1.0.0`.
 
-- [Using large parameter set](#example-1-using-large-parameter-set)
-- [Using only defaults](#example-2-using-only-defaults)
+- [Using only defaults](#example-1-using-only-defaults)
+- [Using large parameter set](#example-2-using-large-parameter-set)
 - [Pe](#example-3-pe)
+- [WAF-aligned](#example-4-waf-aligned)
 
-### Example 1: _Using large parameter set_
+### Example 1: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module searchService 'br:bicep/modules/search.search-service:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-sssmin'
+  params: {
+    // Required parameters
+    name: 'sssmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "sssmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 2: _Using large parameter set_
 
 This instance deploys the module with most of its features enabled.
 
@@ -45,10 +94,10 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module searchService 'br:bicep/modules/search.search-service:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-ssscom'
+  name: '${uniqueString(deployment().name, location)}-test-sssmax'
   params: {
     // Required parameters
-    name: 'ssscom001'
+    name: 'sssmax001'
     // Non-required parameters
     authOptions: {
       aadOrApiKey: {
@@ -128,7 +177,7 @@ module searchService 'br:bicep/modules/search.search-service:1.0.0' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "ssscom001"
+      "value": "sssmax001"
     },
     // Non-required parameters
     "authOptions": {
@@ -218,54 +267,6 @@ module searchService 'br:bicep/modules/search.search-service:1.0.0' = {
         "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-### Example 2: _Using only defaults_
-
-This instance deploys the module with the minimum set of required parameters.
-
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module searchService 'br:bicep/modules/search.search-service:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-sssmin'
-  params: {
-    // Required parameters
-    name: 'sssmin001'
-    // Non-required parameters
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "sssmin001"
-    },
-    // Non-required parameters
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
     }
   }
 }
@@ -380,6 +381,198 @@ module searchService 'br:bicep/modules/search.search-service:1.0.0' = {
           "requestMessage": "Please approve this request"
         }
       ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 4: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module searchService 'br:bicep/modules/search.search-service:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-ssswaf'
+  params: {
+    // Required parameters
+    name: 'ssswaf001'
+    // Non-required parameters
+    authOptions: {
+      aadOrApiKey: {
+        aadAuthFailureMode: 'http401WithBearerChallenge'
+      }
+    }
+    cmkEnforcement: 'Enabled'
+    diagnosticSettings: [
+      {
+        eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+        eventHubName: '<eventHubName>'
+        metricCategories: [
+          {
+            category: 'AllMetrics'
+          }
+        ]
+        name: 'customSetting'
+        storageAccountResourceId: '<storageAccountResourceId>'
+        workspaceResourceId: '<workspaceResourceId>'
+      }
+    ]
+    disableLocalAuth: false
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    hostingMode: 'highDensity'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    managedIdentities: {
+      systemAssigned: true
+    }
+    networkRuleSet: {
+      ipRules: [
+        {
+          value: '40.74.28.0/23'
+        }
+        {
+          value: '87.147.204.13'
+        }
+      ]
+    }
+    partitionCount: 2
+    replicaCount: 3
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Search Service Contributor'
+      }
+    ]
+    sku: 'standard3'
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "ssswaf001"
+    },
+    // Non-required parameters
+    "authOptions": {
+      "value": {
+        "aadOrApiKey": {
+          "aadAuthFailureMode": "http401WithBearerChallenge"
+        }
+      }
+    },
+    "cmkEnforcement": {
+      "value": "Enabled"
+    },
+    "diagnosticSettings": {
+      "value": [
+        {
+          "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+          "eventHubName": "<eventHubName>",
+          "metricCategories": [
+            {
+              "category": "AllMetrics"
+            }
+          ],
+          "name": "customSetting",
+          "storageAccountResourceId": "<storageAccountResourceId>",
+          "workspaceResourceId": "<workspaceResourceId>"
+        }
+      ]
+    },
+    "disableLocalAuth": {
+      "value": false
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "hostingMode": {
+      "value": "highDensity"
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "managedIdentities": {
+      "value": {
+        "systemAssigned": true
+      }
+    },
+    "networkRuleSet": {
+      "value": {
+        "ipRules": [
+          {
+            "value": "40.74.28.0/23"
+          },
+          {
+            "value": "87.147.204.13"
+          }
+        ]
+      }
+    },
+    "partitionCount": {
+      "value": 2
+    },
+    "replicaCount": {
+      "value": 3
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        },
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Search Service Contributor"
+        }
+      ]
+    },
+    "sku": {
+      "value": "standard3"
     },
     "tags": {
       "value": {

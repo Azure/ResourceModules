@@ -31,10 +31,59 @@ The following section provides usage examples for the module, which were used to
 
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/web.static-site:1.0.0`.
 
-- [Using large parameter set](#example-1-using-large-parameter-set)
-- [Using only defaults](#example-2-using-only-defaults)
+- [Using only defaults](#example-1-using-only-defaults)
+- [Using large parameter set](#example-2-using-large-parameter-set)
+- [WAF-aligned](#example-3-waf-aligned)
 
-### Example 1: _Using large parameter set_
+### Example 1: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module staticSite 'br:bicep/modules/web.static-site:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-wssmin'
+  params: {
+    // Required parameters
+    name: 'wssmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "wssmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 2: _Using large parameter set_
 
 This instance deploys the module with most of its features enabled.
 
@@ -45,10 +94,10 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module staticSite 'br:bicep/modules/web.static-site:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-wsscom'
+  name: '${uniqueString(deployment().name, location)}-test-wssmax'
   params: {
     // Required parameters
-    name: 'wsscom001'
+    name: 'wssmax001'
     // Non-required parameters
     allowConfigFileUpdates: true
     appSettings: {
@@ -119,7 +168,7 @@ module staticSite 'br:bicep/modules/web.static-site:1.0.0' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "wsscom001"
+      "value": "wssmax001"
     },
     // Non-required parameters
     "allowConfigFileUpdates": {
@@ -206,9 +255,9 @@ module staticSite 'br:bicep/modules/web.static-site:1.0.0' = {
 </details>
 <p>
 
-### Example 2: _Using only defaults_
+### Example 3: _WAF-aligned_
 
-This instance deploys the module with the minimum set of required parameters.
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
 
 
 <details>
@@ -217,12 +266,62 @@ This instance deploys the module with the minimum set of required parameters.
 
 ```bicep
 module staticSite 'br:bicep/modules/web.static-site:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-wssmin'
+  name: '${uniqueString(deployment().name, location)}-test-wsswaf'
   params: {
     // Required parameters
-    name: 'wssmin001'
+    name: 'wsswaf001'
     // Non-required parameters
+    allowConfigFileUpdates: true
+    appSettings: {
+      foo: 'bar'
+      setting: 1
+    }
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    enterpriseGradeCdnStatus: 'Disabled'
+    functionAppSettings: {
+      foo: 'bar'
+      setting: 1
+    }
+    linkedBackend: {
+      resourceId: '<resourceId>'
+    }
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    managedIdentities: {
+      systemAssigned: true
+      userAssignedResourcesIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
+    privateEndpoints: [
+      {
+        privateDnsZoneResourceIds: [
+          '<privateDNSZoneResourceId>'
+        ]
+        subnetResourceId: '<subnetResourceId>'
+        tags: {
+          Environment: 'Non-Prod'
+          'hidden-title': 'This is visible in the resource name'
+          Role: 'DeploymentValidation'
+        }
+      }
+    ]
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    sku: 'Standard'
+    stagingEnvironmentPolicy: 'Enabled'
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -241,11 +340,85 @@ module staticSite 'br:bicep/modules/web.static-site:1.0.0' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "wssmin001"
+      "value": "wsswaf001"
     },
     // Non-required parameters
+    "allowConfigFileUpdates": {
+      "value": true
+    },
+    "appSettings": {
+      "value": {
+        "foo": "bar",
+        "setting": 1
+      }
+    },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
+    },
+    "enterpriseGradeCdnStatus": {
+      "value": "Disabled"
+    },
+    "functionAppSettings": {
+      "value": {
+        "foo": "bar",
+        "setting": 1
+      }
+    },
+    "linkedBackend": {
+      "value": {
+        "resourceId": "<resourceId>"
+      }
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "managedIdentities": {
+      "value": {
+        "systemAssigned": true,
+        "userAssignedResourcesIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
+    },
+    "privateEndpoints": {
+      "value": [
+        {
+          "privateDnsZoneResourceIds": [
+            "<privateDNSZoneResourceId>"
+          ],
+          "subnetResourceId": "<subnetResourceId>",
+          "tags": {
+            "Environment": "Non-Prod",
+            "hidden-title": "This is visible in the resource name",
+            "Role": "DeploymentValidation"
+          }
+        }
+      ]
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "sku": {
+      "value": "Standard"
+    },
+    "stagingEnvironmentPolicy": {
+      "value": "Enabled"
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }

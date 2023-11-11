@@ -31,6 +31,7 @@ The following section provides usage examples for the module, which were used to
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/network.dns-resolver:1.0.0`.
 
 - [Using large parameter set](#example-1-using-large-parameter-set)
+- [WAF-aligned](#example-2-waf-aligned)
 
 ### Example 1: _Using large parameter set_
 
@@ -43,10 +44,10 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module dnsResolver 'br:bicep/modules/network.dns-resolver:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-ndrcom'
+  name: '${uniqueString(deployment().name, location)}-test-ndrmax'
   params: {
     // Required parameters
-    name: 'ndrcom001'
+    name: 'ndrmax001'
     virtualNetworkId: '<virtualNetworkId>'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
@@ -85,7 +86,99 @@ module dnsResolver 'br:bicep/modules/network.dns-resolver:1.0.0' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "ndrcom001"
+      "value": "ndrmax001"
+    },
+    "virtualNetworkId": {
+      "value": "<virtualNetworkId>"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "inboundEndpoints": {
+      "value": [
+        {
+          "name": "az-pdnsin-x-001",
+          "subnetId": "<subnetId>"
+        }
+      ]
+    },
+    "outboundEndpoints": {
+      "value": [
+        {
+          "name": "az-pdnsout-x-001",
+          "subnetId": "<subnetId>"
+        }
+      ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 2: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module dnsResolver 'br:bicep/modules/network.dns-resolver:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-ndrwaf'
+  params: {
+    // Required parameters
+    name: 'ndrwaf001'
+    virtualNetworkId: '<virtualNetworkId>'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    inboundEndpoints: [
+      {
+        name: 'az-pdnsin-x-001'
+        subnetId: '<subnetId>'
+      }
+    ]
+    outboundEndpoints: [
+      {
+        name: 'az-pdnsout-x-001'
+        subnetId: '<subnetId>'
+      }
+    ]
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "ndrwaf001"
     },
     "virtualNetworkId": {
       "value": "<virtualNetworkId>"
