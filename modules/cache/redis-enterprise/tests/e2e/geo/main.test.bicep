@@ -46,9 +46,10 @@ module nestedDependencies 'dependencies.bicep' = {
 var redisCacheEnterpriseName = '${namePrefix}${serviceShort}001'
 var redisCacheEnterpriseExpectedResourceID = '${resourceGroup.id}/providers/Microsoft.Cache/redisEnterprise/${redisCacheEnterpriseName}'
 
-module testDeployment '../../../main.bicep' = {
+@batchSize(1)
+module testDeployment '../../../main.bicep' = [for iteration in [ 'init', 'idem' ]: {
   scope: resourceGroup
-  name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
+  name: '${uniqueString(deployment().name, location)}-test-${serviceShort}-${iteration}'
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: redisCacheEnterpriseName
@@ -87,4 +88,4 @@ module testDeployment '../../../main.bicep' = {
       resourceType: 'Redis Cache Enterprise'
     }
   }
-}
+}]
