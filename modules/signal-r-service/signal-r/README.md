@@ -43,7 +43,7 @@ This instance deploys the module with the minimum set of required parameters.
 
 ```bicep
 module signalR 'br:bicep/modules/signal-r-service.signal-r:1.0.0' = {
-  name: '${uniqueString(deployment().name)}-test-srsdrmin'
+  name: '${uniqueString(deployment().name, location)}-test-srsdrmin'
   params: {
     // Required parameters
     name: 'srsdrmin-001'
@@ -91,7 +91,7 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module signalR 'br:bicep/modules/signal-r-service.signal-r:1.0.0' = {
-  name: '${uniqueString(deployment().name)}-test-srssrmax'
+  name: '${uniqueString(deployment().name, location)}-test-srssrmax'
   params: {
     // Required parameters
     name: 'srssrmax-001'
@@ -283,7 +283,7 @@ This instance deploys the module in alignment with the best-practices of the Azu
 
 ```bicep
 module signalR 'br:bicep/modules/signal-r-service.signal-r:1.0.0' = {
-  name: '${uniqueString(deployment().name)}-test-srssrwaf'
+  name: '${uniqueString(deployment().name, location)}-test-srssrwaf'
   params: {
     // Required parameters
     name: 'srssrwaf-001'
