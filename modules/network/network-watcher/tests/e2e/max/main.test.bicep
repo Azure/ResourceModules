@@ -66,9 +66,10 @@ module diagnosticDependencies '../../../../../.shared/.templates/diagnostic.depe
 // ============== //
 #disable-next-line no-hardcoded-location // Disabled as the default RG & location are created in always one location, but each test has to deploy into a different one
 var testLocation = 'westeurope'
-module testDeployment '../../../main.bicep' = {
+@batchSize(1)
+module testDeployment '../../../main.bicep' = [for iteration in [ 'init', 'idem' ]: {
   scope: resourceGroup
-  name: '${uniqueString(deployment().name, testLocation)}-test-${serviceShort}'
+  name: '${uniqueString(deployment().name, location)}-test-${serviceShort}-${iteration}'
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: 'NetworkWatcher_${testLocation}'
@@ -155,4 +156,4 @@ module testDeployment '../../../main.bicep' = {
       Role: 'DeploymentValidation'
     }
   }
-}
+}]

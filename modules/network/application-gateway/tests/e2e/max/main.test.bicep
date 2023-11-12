@@ -66,9 +66,10 @@ module diagnosticDependencies '../../../../../.shared/.templates/diagnostic.depe
 
 var appGWName = '${namePrefix}${serviceShort}001'
 var appGWExpectedResourceID = '${resourceGroup.id}/providers/Microsoft.Network/applicationGateways/${appGWName}'
-module testDeployment '../../../main.bicep' = {
+@batchSize(1)
+module testDeployment '../../../main.bicep' = [for iteration in [ 'init', 'idem' ]: {
   scope: resourceGroup
-  name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
+  name: '${uniqueString(deployment().name, location)}-test-${serviceShort}-${iteration}'
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: appGWName
@@ -495,4 +496,4 @@ module testDeployment '../../../main.bicep' = {
       Role: 'DeploymentValidation'
     }
   }
-}
+}]
