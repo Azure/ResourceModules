@@ -295,6 +295,7 @@ module app_basicPublishingCredentialsPolicies 'basic-publishing-credentials-poli
   params: {
     webAppName: app.name
     name: basicPublishingCredentialsPolicy.name
+    allow: !empty(basicPublishingCredentialsPolicy.allow) ? basicPublishingCredentialsPolicy.allow : null
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]

@@ -46,6 +46,7 @@ This module deploys a Web or Function App Deployment Slot.
 | [`appServiceEnvironmentResourceId`](#parameter-appserviceenvironmentresourceid) | string | The resource ID of the app service environment to use for this resource. |
 | [`appSettingsKeyValuePairs`](#parameter-appsettingskeyvaluepairs) | object | The app settings-value pairs except for AzureWebJobsStorage, AzureWebJobsDashboard, APPINSIGHTS_INSTRUMENTATIONKEY and APPLICATIONINSIGHTS_CONNECTION_STRING. |
 | [`authSettingV2Configuration`](#parameter-authsettingv2configuration) | object | The auth settings V2 configuration. |
+| [`basicPublishingCredentialsPolicies`](#parameter-basicpublishingcredentialspolicies) | array | The site publishing credential policy names which are associated with the site slot. |
 | [`clientAffinityEnabled`](#parameter-clientaffinityenabled) | bool | If client affinity is enabled. |
 | [`clientCertEnabled`](#parameter-clientcertenabled) | bool | To enable client certificate authentication (TLS mutual authentication). |
 | [`clientCertExclusionPaths`](#parameter-clientcertexclusionpaths) | string | Client certificate authentication comma-separated exclusion paths. |
@@ -113,6 +114,13 @@ The auth settings V2 configuration.
 - Required: No
 - Type: object
 - Default: `{}`
+
+### Parameter: `basicPublishingCredentialsPolicies`
+
+The site publishing credential policy names which are associated with the site slot.
+- Required: No
+- Type: array
+- Default: `[]`
 
 ### Parameter: `clientAffinityEnabled`
 

@@ -114,6 +114,16 @@ module testDeployment '../../../main.bicep' = {
             }
           }
         ]
+        basicPublishingCredentialsPolicies: [
+          {
+            name: 'ftp'
+            allow: false
+          }
+          {
+            name: 'scm'
+            allow: false
+          }
+        ]
         roleAssignments: [
           {
             roleDefinitionIdOrName: 'Reader'

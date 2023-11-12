@@ -545,6 +545,16 @@ module site 'br:bicep/modules/web.site:1.0.0' = {
     }
     slots: [
       {
+        basicPublishingCredentialsPolicies: [
+          {
+            allow: false
+            name: 'ftp'
+          }
+          {
+            allow: false
+            name: 'scm'
+          }
+        ]
         diagnosticSettings: [
           {
             eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
@@ -725,6 +735,16 @@ module site 'br:bicep/modules/web.site:1.0.0' = {
     "slots": {
       "value": [
         {
+          "basicPublishingCredentialsPolicies": [
+            {
+              "allow": false,
+              "name": "ftp"
+            },
+            {
+              "allow": false,
+              "name": "scm"
+            }
+          ],
           "diagnosticSettings": [
             {
               "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
