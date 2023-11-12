@@ -53,9 +53,10 @@ module nestedDependencies 'dependencies.bicep' = {
 // Test Execution //
 // ============== //
 
-module testDeployment '../../../main.bicep' = {
+@batchSize(1)
+module testDeployment '../../../main.bicep' = [for iteration in [ 'init', 'idem' ]: {
   scope: resourceGroup
-  name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
+  name: '${uniqueString(deployment().name, location)}-test-${serviceShort}-${iteration}'
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '${namePrefix}-${serviceShort}'
@@ -63,4 +64,4 @@ module testDeployment '../../../main.bicep' = {
     administratorLoginPassword: password
     subnetId: nestedDependencies.outputs.subnetResourceId
   }
-}
+}]

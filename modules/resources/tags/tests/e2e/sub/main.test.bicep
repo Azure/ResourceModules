@@ -14,8 +14,9 @@ param enableDefaultTelemetry bool = true
 // Test Execution //
 // ============== //
 
-module testDeployment '../../../main.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-${serviceShort}'
+@batchSize(1)
+module testDeployment '../../../main.bicep' = [for iteration in [ 'init', 'idem' ]: {
+  name: '${uniqueString(deployment().name)}-test-${serviceShort}-${iteration}'
   params: {
     onlyUpdate: true
     tags: {
@@ -25,4 +26,4 @@ module testDeployment '../../../main.bicep' = {
     }
     enableDefaultTelemetry: enableDefaultTelemetry
   }
-}
+}]

@@ -35,11 +35,12 @@ resource policyAssignment 'Microsoft.Authorization/policyAssignments@2021-06-01'
 // Test Execution //
 // ============== //
 
-module testDeployment '../../../subscription/main.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-${serviceShort}'
+@batchSize(1)
+module testDeployment '../../../subscription/main.bicep' = [for iteration in [ 'init', 'idem' ]: {
+  name: '${uniqueString(deployment().name, location)}-test-${serviceShort}-${iteration}'
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '${namePrefix}${serviceShort}001'
     policyAssignmentId: policyAssignment.id
   }
-}
+}]

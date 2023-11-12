@@ -61,9 +61,10 @@ module diagnosticDependencies '../../../../../.shared/.templates/diagnostic.depe
 // Test Execution //
 // ============== //
 
-module testDeployment '../../../main.bicep' = {
+@batchSize(1)
+module testDeployment '../../../main.bicep' = [for iteration in [ 'init', 'idem' ]: {
+  name: '${uniqueString(deployment().name, location)}-test-${serviceShort}-${iteration}'
   scope: resourceGroup
-  name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
     name: '${namePrefix}${serviceShort}001'
     location: location
@@ -176,4 +177,4 @@ module testDeployment '../../../main.bicep' = {
       name: 'myCustomLockName'
     }
   }
-}
+}]
