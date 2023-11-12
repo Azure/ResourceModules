@@ -37,7 +37,8 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
 // Test Execution //
 // ============== //
 
-module testDeployment '../../../main.bicep' = {
+@batchSize(1)
+module testDeployment '../../../main.bicep' = [for iteration in [ 'init', 'idem' ]: {
   scope: resourceGroup
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
@@ -46,4 +47,4 @@ module testDeployment '../../../main.bicep' = {
     location: location
     publicNetworkAccess: 'Enabled'
   }
-}
+}]

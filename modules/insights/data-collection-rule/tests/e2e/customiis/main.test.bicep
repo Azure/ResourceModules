@@ -45,7 +45,8 @@ module resourceGroupResources 'dependencies.bicep' = {
 // Test Execution //
 // ============== //
 
-module testDeployment '../../../main.bicep' = {
+@batchSize(1)
+module testDeployment '../../../main.bicep' = [for iteration in [ 'init', 'idem' ]: {
   scope: resourceGroup
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
@@ -104,4 +105,4 @@ module testDeployment '../../../main.bicep' = {
       kind: 'Windows'
     }
   }
-}
+}]
