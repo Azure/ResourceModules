@@ -43,7 +43,7 @@ This instance deploys the module with the minimum set of required parameters.
 
 ```bicep
 module networkWatcher 'br:bicep/modules/network.network-watcher:1.0.0' = {
-  name: '${uniqueString(deployment().name, testLocation)}-test-nnwmin'
+  name: '${uniqueString(deployment().name, location)}-test-nnwmin'
   params: {
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     location: '<location>'
@@ -87,7 +87,7 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module networkWatcher 'br:bicep/modules/network.network-watcher:1.0.0' = {
-  name: '${uniqueString(deployment().name, testLocation)}-test-nnwmax'
+  name: '${uniqueString(deployment().name, location)}-test-nnwmax'
   params: {
     connectionMonitors: [
       {
@@ -305,7 +305,7 @@ This instance deploys the module in alignment with the best-practices of the Azu
 
 ```bicep
 module networkWatcher 'br:bicep/modules/network.network-watcher:1.0.0' = {
-  name: '${uniqueString(deployment().name, testLocation)}-test-nnwwaf'
+  name: '${uniqueString(deployment().name, location)}-test-nnwwaf'
   params: {
     connectionMonitors: [
       {
