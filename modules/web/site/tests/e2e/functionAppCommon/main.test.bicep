@@ -140,6 +140,16 @@ module testDeployment '../../../main.bicep' = {
         runtimeVersion: '~1'
       }
     }
+    basicPublishingCredentialsPolicies: [
+      {
+        name: 'ftp'
+        allow: false
+      }
+      {
+        name: 'scm'
+        allow: false
+      }
+    ]
     diagnosticSettings: [
       {
         name: 'customSetting'

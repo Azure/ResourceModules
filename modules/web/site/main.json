@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.23.1.45101",
-      "templateHash": "162197038147923889"
+      "templateHash": "874452179401925408"
     },
     "name": "Web/Function Apps",
     "description": "This module deploys a Web or Function App.",
@@ -3169,7 +3169,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.23.1.45101",
-              "templateHash": "8363894727563778226"
+              "templateHash": "12054216906297236281"
             },
             "name": "Web Site Basic Publishing Credentials Policies",
             "description": "This module deploys a Web Site Basic Publishing Credentials Policy.",
@@ -3184,6 +3184,13 @@
               ],
               "metadata": {
                 "description": "Required. The name of the resource."
+              }
+            },
+            "allow": {
+              "type": "bool",
+              "defaultValue": true,
+              "metadata": {
+                "description": "Optional. Set to true to enable or false to disable a publishing method."
               }
             },
             "webAppName": {
@@ -3228,7 +3235,7 @@
               "name": "[format('{0}/{1}', parameters('webAppName'), parameters('name'))]",
               "location": "[parameters('location')]",
               "properties": {
-                "allow": true
+                "allow": "[parameters('allow')]"
               }
             }
           ],
