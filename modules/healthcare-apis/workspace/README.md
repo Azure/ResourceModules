@@ -47,7 +47,7 @@ This instance deploys the module with the minimum set of required parameters.
 
 ```bicep
 module workspace 'br:bicep/modules/healthcare-apis.workspace:1.0.0' = {
-  name: '${uniqueString(deployment().name)}-test-hawmin'
+  name: '${uniqueString(deployment().name, location)}-test-hawmin'
   params: {
     // Required parameters
     name: 'hawmin001'
@@ -103,7 +103,7 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module workspace 'br:bicep/modules/healthcare-apis.workspace:1.0.0' = {
-  name: '${uniqueString(deployment().name)}-test-hawmax'
+  name: '${uniqueString(deployment().name, location)}-test-hawmax'
   params: {
     // Required parameters
     name: 'hawmax001'
@@ -385,7 +385,7 @@ This instance deploys the module in alignment with the best-practices of the Azu
 
 ```bicep
 module workspace 'br:bicep/modules/healthcare-apis.workspace:1.0.0' = {
-  name: '${uniqueString(deployment().name)}-test-hawwaf'
+  name: '${uniqueString(deployment().name, location)}-test-hawwaf'
   params: {
     // Required parameters
     name: 'hawwaf001'
