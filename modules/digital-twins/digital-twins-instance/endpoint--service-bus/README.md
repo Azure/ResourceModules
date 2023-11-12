@@ -34,10 +34,9 @@ This module deploys a Digital Twins Instance ServiceBus Endpoint.
 | [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | [`endpointUri`](#parameter-endpointuri) | string | The URL of the ServiceBus namespace for identity-based authentication. It must include the protocol 'sb://' (e.g. sb://xyz.servicebus.windows.net). |
 | [`entityPath`](#parameter-entitypath) | string | The ServiceBus Topic name for identity-based authentication. |
+| [`managedIdentities`](#parameter-managedidentities) | object | The managed identity definition for this resource. |
 | [`name`](#parameter-name) | string | The name of the Digital Twin Endpoint. |
 | [`secondaryConnectionString`](#parameter-secondaryconnectionstring) | securestring | SecondaryConnectionString of the endpoint for key-based authentication. Will be obfuscated during read. Only used if the `authenticationType` is "KeyBased". |
-| [`systemAssignedIdentity`](#parameter-systemassignedidentity) | bool | Enables system assigned managed identity on the resource. |
-| [`userAssignedIdentity`](#parameter-userassignedidentity) | string | The ID to assign to the resource. |
 
 ### Parameter: `authenticationType`
 
@@ -94,6 +93,32 @@ The ServiceBus Topic name for identity-based authentication.
 - Type: string
 - Default: `''`
 
+### Parameter: `managedIdentities`
+
+The managed identity definition for this resource.
+- Required: No
+- Type: object
+
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`systemAssigned`](#parameter-managedidentitiessystemassigned) | No | bool | Optional. Enables system assigned managed identity on the resource. |
+| [`userAssignedResourcesIds`](#parameter-managedidentitiesuserassignedresourcesids) | No | array | Optional. The resource ID(s) to assign to the resource. |
+
+### Parameter: `managedIdentities.systemAssigned`
+
+Optional. Enables system assigned managed identity on the resource.
+
+- Required: No
+- Type: bool
+
+### Parameter: `managedIdentities.userAssignedResourcesIds`
+
+Optional. The resource ID(s) to assign to the resource.
+
+- Required: No
+- Type: array
+
 ### Parameter: `name`
 
 The name of the Digital Twin Endpoint.
@@ -113,20 +138,6 @@ PrimaryConnectionString of the endpoint for key-based authentication. Will be ob
 SecondaryConnectionString of the endpoint for key-based authentication. Will be obfuscated during read. Only used if the `authenticationType` is "KeyBased".
 - Required: No
 - Type: securestring
-- Default: `''`
-
-### Parameter: `systemAssignedIdentity`
-
-Enables system assigned managed identity on the resource.
-- Required: No
-- Type: bool
-- Default: `False`
-
-### Parameter: `userAssignedIdentity`
-
-The ID to assign to the resource.
-- Required: No
-- Type: string
 - Default: `''`
 
 
