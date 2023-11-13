@@ -134,6 +134,9 @@ param publicNetworkAccess string = ''
 ])
 param redundancyMode string = 'None'
 
+@description('Optional. The site publishing credential policy names which are associated with the site slot.')
+param basicPublishingCredentialsPolicies array = []
+
 @description('Optional. To enable accessing content over virtual network.')
 param vnetContentShareEnabled bool = false
 
@@ -243,6 +246,16 @@ module slot_authsettingsv2 'config--authsettingsv2/main.bicep' = if (!empty(auth
   }
 }
 
+module slot_basicPublishingCredentialsPolicies 'basic-publishing-credentials-policy/main.bicep' = [for (basicPublishingCredentialsPolicy, index) in basicPublishingCredentialsPolicies: {
+  name: '${uniqueString(deployment().name, location)}-Slot-Publish-Cred-${index}'
+  params: {
+    appName: app.name
+    slotName: slot.name
+    name: basicPublishingCredentialsPolicy.name
+    allow: contains(basicPublishingCredentialsPolicy, 'allow') ? basicPublishingCredentialsPolicy.allow : null
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+  }
+}]
 module slot_hybridConnectionRelays 'hybrid-connection-namespace/relay/main.bicep' = [for (hybridConnectionRelay, index) in hybridConnectionRelays: {
   name: '${uniqueString(deployment().name, location)}-Slot-HybridConnectionRelay-${index}'
   params: {
