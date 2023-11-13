@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.23.1.45101",
-      "templateHash": "7988818487754577032"
+      "templateHash": "16473936111108164745"
     },
     "name": "Web/Function App Deployment Slots",
     "description": "This module deploys a Web or Function App Deployment Slot.",
@@ -1150,7 +1150,7 @@
       },
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
-      "name": "[format('{0}-Site-Publis-Cred-{1}', uniqueString(deployment().name, parameters('location')), copyIndex())]",
+      "name": "[format('{0}-Slot-Publish-Cred-{1}', uniqueString(deployment().name, parameters('location')), copyIndex())]",
       "properties": {
         "expressionEvaluationOptions": {
           "scope": "inner"
@@ -1166,7 +1166,7 @@
           "name": {
             "value": "[parameters('basicPublishingCredentialsPolicies')[copyIndex()].name]"
           },
-          "allow": "[if(not(empty(parameters('basicPublishingCredentialsPolicies')[copyIndex()].allow)), createObject('value', parameters('basicPublishingCredentialsPolicies')[copyIndex()].allow), createObject('value', null()))]",
+          "allow": "[if(contains(parameters('basicPublishingCredentialsPolicies')[copyIndex()], 'allow'), createObject('value', parameters('basicPublishingCredentialsPolicies')[copyIndex()].allow), createObject('value', null()))]",
           "enableDefaultTelemetry": {
             "value": "[variables('enableReferencedModulesTelemetry')]"
           }
