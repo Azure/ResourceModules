@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.23.1.45101",
-      "templateHash": "14682204068970148774"
+      "templateHash": "2749842619084568076"
     },
     "name": "Digital Twins Instances",
     "description": "This module deploys an Azure Digital Twins Instance.",
@@ -997,7 +997,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.23.1.45101",
-              "templateHash": "10411502010233155652"
+              "templateHash": "13121115050219114278"
             },
             "name": "Digital Twins Instance ServiceBus Endpoint",
             "description": "This module deploys a Digital Twins Instance ServiceBus Endpoint.",
@@ -1171,10 +1171,6 @@
                 "description": "The name of the Endpoint."
               },
               "value": "[parameters('name')]"
-            },
-            "identity": {
-              "$ref": "#/definitions/managedIdentitiesType",
-              "value": "[variables('identity')]"
             }
           }
         }
