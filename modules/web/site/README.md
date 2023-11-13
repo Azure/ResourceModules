@@ -473,11 +473,11 @@ module site 'br:bicep/modules/web.site:1.0.0' = {
     // Non-required parameters
     basicPublishingCredentialsPolicies: [
       {
-        allow: true
+        allow: false
         name: 'ftp'
       }
       {
-        allow: true
+        allow: false
         name: 'scm'
       }
     ]
@@ -639,11 +639,11 @@ module site 'br:bicep/modules/web.site:1.0.0' = {
     "basicPublishingCredentialsPolicies": {
       "value": [
         {
-          "allow": true,
+          "allow": false,
           "name": "ftp"
         },
         {
-          "allow": true,
+          "allow": false,
           "name": "scm"
         }
       ]

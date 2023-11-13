@@ -189,11 +189,11 @@ module testDeployment '../../../main.bicep' = {
     basicPublishingCredentialsPolicies: [
       {
         name: 'ftp'
-        allow: true
+        allow: false
       }
       {
         name: 'scm'
-        allow: true
+        allow: false
       }
 
     ]
