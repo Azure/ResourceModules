@@ -603,6 +603,16 @@ module site 'br:bicep/modules/web.site:1.0.0' = {
         }
       }
       {
+        basicPublishingCredentialsPolicies: [
+          {
+            allow: false
+            name: 'ftp'
+          }
+          {
+            allow: false
+            name: 'scm'
+          }
+        ]
         name: 'slot2'
       }
     ]
@@ -793,6 +803,16 @@ module site 'br:bicep/modules/web.site:1.0.0' = {
           }
         },
         {
+          "basicPublishingCredentialsPolicies": [
+            {
+              "allow": false,
+              "name": "ftp"
+            },
+            {
+              "allow": false,
+              "name": "scm"
+            }
+          ],
           "name": "slot2"
         }
       ]

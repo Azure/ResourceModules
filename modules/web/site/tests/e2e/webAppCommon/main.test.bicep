@@ -149,6 +149,16 @@ module testDeployment '../../../main.bicep' = {
       }
       {
         name: 'slot2'
+        basicPublishingCredentialsPolicies: [
+          {
+            name: 'ftp'
+            allow: false
+          }
+          {
+            name: 'scm'
+            allow: false
+          }
+        ]
       }
     ]
     privateEndpoints: [
