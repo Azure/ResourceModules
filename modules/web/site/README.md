@@ -25,6 +25,7 @@ This module deploys a Web or Function App.
 | `Microsoft.Web/sites/config` | [2022-09-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/sites) |
 | `Microsoft.Web/sites/hybridConnectionNamespaces/relays` | [2022-09-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/2022-09-01/sites/hybridConnectionNamespaces/relays) |
 | `Microsoft.Web/sites/slots` | [2022-09-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/2022-09-01/sites/slots) |
+| `Microsoft.Web/sites/slots/basicPublishingCredentialsPolicies` | [2022-09-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/sites) |
 | `Microsoft.Web/sites/slots/config` | [2022-09-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/sites) |
 | `Microsoft.Web/sites/slots/hybridConnectionNamespaces/relays` | [2022-09-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/2022-09-01/sites/slots/hybridConnectionNamespaces/relays) |
 
@@ -472,11 +473,11 @@ module site 'br:bicep/modules/web.site:1.0.0' = {
     // Non-required parameters
     basicPublishingCredentialsPolicies: [
       {
-        allow: true
+        allow: false
         name: 'ftp'
       }
       {
-        allow: true
+        allow: false
         name: 'scm'
       }
     ]
@@ -545,6 +546,16 @@ module site 'br:bicep/modules/web.site:1.0.0' = {
     }
     slots: [
       {
+        basicPublishingCredentialsPolicies: [
+          {
+            allow: false
+            name: 'ftp'
+          }
+          {
+            allow: false
+            name: 'scm'
+          }
+        ]
         diagnosticSettings: [
           {
             eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
@@ -592,6 +603,14 @@ module site 'br:bicep/modules/web.site:1.0.0' = {
         }
       }
       {
+        basicPublishingCredentialsPolicies: [
+          {
+            name: 'ftp'
+          }
+          {
+            name: 'scm'
+          }
+        ]
         name: 'slot2'
       }
     ]
@@ -628,11 +647,11 @@ module site 'br:bicep/modules/web.site:1.0.0' = {
     "basicPublishingCredentialsPolicies": {
       "value": [
         {
-          "allow": true,
+          "allow": false,
           "name": "ftp"
         },
         {
-          "allow": true,
+          "allow": false,
           "name": "scm"
         }
       ]
@@ -725,6 +744,16 @@ module site 'br:bicep/modules/web.site:1.0.0' = {
     "slots": {
       "value": [
         {
+          "basicPublishingCredentialsPolicies": [
+            {
+              "allow": false,
+              "name": "ftp"
+            },
+            {
+              "allow": false,
+              "name": "scm"
+            }
+          ],
           "diagnosticSettings": [
             {
               "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
@@ -772,6 +801,14 @@ module site 'br:bicep/modules/web.site:1.0.0' = {
           }
         },
         {
+          "basicPublishingCredentialsPolicies": [
+            {
+              "name": "ftp"
+            },
+            {
+              "name": "scm"
+            }
+          ],
           "name": "slot2"
         }
       ]
