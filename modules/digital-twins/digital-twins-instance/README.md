@@ -121,7 +121,9 @@ module digitalTwinsInstance 'br:bicep/modules/digital-twins.digital-twins-instan
       authenticationType: 'IdentityBased'
       endpointUri: '<endpointUri>'
       entityPath: '<entityPath>'
-      userAssignedIdentity: '<userAssignedIdentity>'
+      managedIdentities: {
+        userAssignedResourceId: '<userAssignedResourceId>'
+      }
     }
     lock: {
       kind: 'CanNotDelete'
@@ -151,7 +153,9 @@ module digitalTwinsInstance 'br:bicep/modules/digital-twins.digital-twins-instan
       authenticationType: 'IdentityBased'
       endpointUri: '<endpointUri>'
       entityPath: '<entityPath>'
-      userAssignedIdentity: '<userAssignedIdentity>'
+      managedIdentities: {
+        userAssignedResourceId: '<userAssignedResourceId>'
+      }
     }
     tags: {
       Environment: 'Non-Prod'
@@ -209,7 +213,9 @@ module digitalTwinsInstance 'br:bicep/modules/digital-twins.digital-twins-instan
         "authenticationType": "IdentityBased",
         "endpointUri": "<endpointUri>",
         "entityPath": "<entityPath>",
-        "userAssignedIdentity": "<userAssignedIdentity>"
+        "managedIdentities": {
+          "userAssignedResourceId": "<userAssignedResourceId>"
+        }
       }
     },
     "lock": {
@@ -249,7 +255,9 @@ module digitalTwinsInstance 'br:bicep/modules/digital-twins.digital-twins-instan
         "authenticationType": "IdentityBased",
         "endpointUri": "<endpointUri>",
         "entityPath": "<entityPath>",
-        "userAssignedIdentity": "<userAssignedIdentity>"
+        "managedIdentities": {
+          "userAssignedResourceId": "<userAssignedResourceId>"
+        }
       }
     },
     "tags": {
@@ -305,7 +313,9 @@ module digitalTwinsInstance 'br:bicep/modules/digital-twins.digital-twins-instan
       authenticationType: 'IdentityBased'
       endpointUri: '<endpointUri>'
       entityPath: '<entityPath>'
-      userAssignedIdentity: '<userAssignedIdentity>'
+      managedIdentities: {
+        userAssignedResourceId: '<userAssignedResourceId>'
+      }
     }
     lock: {
       kind: 'CanNotDelete'
@@ -335,7 +345,9 @@ module digitalTwinsInstance 'br:bicep/modules/digital-twins.digital-twins-instan
       authenticationType: 'IdentityBased'
       endpointUri: '<endpointUri>'
       entityPath: '<entityPath>'
-      userAssignedIdentity: '<userAssignedIdentity>'
+      managedIdentities: {
+        userAssignedResourceId: '<userAssignedResourceId>'
+      }
     }
     tags: {
       Environment: 'Non-Prod'
@@ -393,7 +405,9 @@ module digitalTwinsInstance 'br:bicep/modules/digital-twins.digital-twins-instan
         "authenticationType": "IdentityBased",
         "endpointUri": "<endpointUri>",
         "entityPath": "<entityPath>",
-        "userAssignedIdentity": "<userAssignedIdentity>"
+        "managedIdentities": {
+          "userAssignedResourceId": "<userAssignedResourceId>"
+        }
       }
     },
     "lock": {
@@ -433,7 +447,9 @@ module digitalTwinsInstance 'br:bicep/modules/digital-twins.digital-twins-instan
         "authenticationType": "IdentityBased",
         "endpointUri": "<endpointUri>",
         "entityPath": "<entityPath>",
-        "userAssignedIdentity": "<userAssignedIdentity>"
+        "managedIdentities": {
+          "userAssignedResourceId": "<userAssignedResourceId>"
+        }
       }
     },
     "tags": {

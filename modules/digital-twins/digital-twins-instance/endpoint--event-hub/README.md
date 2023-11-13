@@ -117,7 +117,7 @@ The managed identity definition for this resource.
 | Name | Required | Type | Description |
 | :-- | :-- | :--| :-- |
 | [`systemAssigned`](#parameter-managedidentitiessystemassigned) | No | bool | Optional. Enables system assigned managed identity on the resource. |
-| [`userAssignedResourcesIds`](#parameter-managedidentitiesuserassignedresourcesids) | No | array | Optional. The resource ID(s) to assign to the resource. |
+| [`userAssignedResourceId`](#parameter-managedidentitiesuserassignedresourceid) | No | string | Optional. The resource ID to assign to the resource. |
 
 ### Parameter: `managedIdentities.systemAssigned`
 
@@ -126,12 +126,12 @@ Optional. Enables system assigned managed identity on the resource.
 - Required: No
 - Type: bool
 
-### Parameter: `managedIdentities.userAssignedResourcesIds`
+### Parameter: `managedIdentities.userAssignedResourceId`
 
-Optional. The resource ID(s) to assign to the resource.
+Optional. The resource ID to assign to the resource.
 
 - Required: No
-- Type: array
+- Type: string
 
 ### Parameter: `name`
 

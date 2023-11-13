@@ -42,11 +42,9 @@ param enableDefaultTelemetry bool = true
 @description('Optional. The managed identity definition for this resource.')
 param managedIdentities managedIdentitiesType
 
-var formattedUserAssignedIdentities = reduce(map((managedIdentities.?userAssignedResourcesIds ?? []), (id) => { '${id}': {} }), {}, (cur, next) => union(cur, next)) // Converts the flat array to an object like { '${id1}': {}, '${id2}': {} }
-
 var identity = !empty(managedIdentities) ? {
-  type: (managedIdentities.?systemAssigned ?? false) ? (!empty(managedIdentities.?userAssignedResourcesIds ?? {}) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(managedIdentities.?userAssignedResourcesIds ?? {}) ? 'UserAssigned' : null)
-  userAssignedIdentities: !empty(formattedUserAssignedIdentities) ? formattedUserAssignedIdentities : null
+  type: (managedIdentities.?systemAssigned ?? false) ? (!empty(managedIdentities.?userAssignedResourceId ?? '') ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(managedIdentities.?userAssignedResourceId ?? '') ? 'UserAssigned' : null)
+  userAssignedIdentity: !empty(managedIdentities.?userAssignedResourceId) ? managedIdentities.?userAssignedResourceId : null
 } : null
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
@@ -98,6 +96,6 @@ type managedIdentitiesType = {
   @description('Optional. Enables system assigned managed identity on the resource.')
   systemAssigned: bool?
 
-  @description('Optional. The resource ID(s) to assign to the resource.')
-  userAssignedResourcesIds: string[]?
+  @description('Optional. The resource ID to assign to the resource.')
+  userAssignedResourceId: string?
 }?

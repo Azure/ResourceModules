@@ -73,13 +73,17 @@ module testDeployment '../../../main.bicep' = {
       authenticationType: 'IdentityBased'
       endpointUri: 'sb://${nestedDependencies.outputs.eventhubNamespaceName}.servicebus.windows.net/'
       entityPath: nestedDependencies.outputs.eventhubName
-      userAssignedIdentity: nestedDependencies.outputs.managedIdentityResourceId
+      managedIdentities: {
+        userAssignedResourceId: nestedDependencies.outputs.managedIdentityResourceId
+      }
     }
     serviceBusEndpoint: {
       authenticationType: 'IdentityBased'
       endpointUri: 'sb://${nestedDependencies.outputs.serviceBusName}.servicebus.windows.net/'
       entityPath: nestedDependencies.outputs.serviceBusTopicName
-      userAssignedIdentity: nestedDependencies.outputs.managedIdentityResourceId
+      managedIdentities: {
+        userAssignedResourceId: nestedDependencies.outputs.managedIdentityResourceId
+      }
     }
     eventGridEndpoint: {
       eventGridDomainId: nestedDependencies.outputs.eventGridDomainResourceId
