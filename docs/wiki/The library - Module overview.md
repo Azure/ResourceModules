@@ -148,9 +148,9 @@ This section provides an overview of the library's feature set.
 | 133 | web<p>connection | [![Web - Connections](https://github.com/Azure/ResourceModules/workflows/Web%20-%20Connections/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.web.connections.yml) |  |  |  |  |  |  | [L1:1, L2:1, L3:2] | 118 |
 | 134 | web<p>hosting-environment | [![Web - HostingEnvironments](https://github.com/Azure/ResourceModules/workflows/Web%20-%20HostingEnvironments/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.web.hostingenvironments.yml) |  |  |  |  |  |  | [L1:3, L2:1, L3:2] | 262 |
 | 135 | web<p>serverfarm | [![Web - Serverfarms](https://github.com/Azure/ResourceModules/workflows/Web%20-%20Serverfarms/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.web.serverfarms.yml) |  |  |  |  |  |  | [L1:1, L2:1, L3:2] | 194 |
-| 136 | web<p>site | [![Web - Sites](https://github.com/Azure/ResourceModules/workflows/Web%20-%20Sites/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.web.sites.yml) |  |  |  |  |  |  | [L1:6, L2:5, L3:5] | 453 |
+| 136 | web<p>site | [![Web - Sites](https://github.com/Azure/ResourceModules/workflows/Web%20-%20Sites/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.web.sites.yml) |  |  |  |  |  |  | [L1:6, L2:6, L3:5] | 455 |
 | 137 | web<p>static-site | [![Web - StaticSites](https://github.com/Azure/ResourceModules/workflows/Web%20-%20StaticSites/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.web.staticsites.yml) |  |  |  |  |  |  | [L1:4, L2:1, L3:3] | 284 |
-| Sum | | | 0 | 0 | 1 | 0 | 0 | 2 | 980 | 29852 |
+| Sum | | | 0 | 0 | 1 | 0 | 0 | 2 | 981 | 29854 |
 
 ## Legend
 
