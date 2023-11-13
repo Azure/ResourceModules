@@ -13,10 +13,10 @@ param name string
 param allow bool = true
 
 @sys.description('Conditional. The name of the parent web site. Required if the template is used in a standalone deployment.')
-param webAppName string
+param appName string
 
 @sys.description('Conditional. The name of the parent web site slot. Required if the template is used in a standalone deployment.')
-param webAppSlotName string
+param slotName string
 
 @description('Optional. Location for all Resources.')
 param location string = resourceGroup().location
@@ -36,18 +36,18 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource webApp 'Microsoft.Web/sites@2022-09-01' existing = {
-  name: webAppName
+resource app 'Microsoft.Web/sites@2022-09-01' existing = {
+  name: appName
 
-  resource webAppSlot 'slots@2022-09-01' existing = {
-    name: webAppSlotName
+  resource slot 'slots' existing = {
+    name: slotName
   }
 }
 
 resource basicPublishingCredentialsPolicy 'Microsoft.Web/sites/slots/basicPublishingCredentialsPolicies@2022-09-01' = {
   name: name
   location: location
-  parent: webApp::webAppSlot
+  parent: app::slot
   properties: {
     allow: allow
   }

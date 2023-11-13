@@ -268,6 +268,7 @@ module app_slots 'slot/main.bicep' = [for (slot, index) in slots: {
     diagnosticSettings: slot.?diagnosticSettings
     roleAssignments: contains(slot, 'roleAssignments') ? slot.roleAssignments : roleAssignments
     appSettingsKeyValuePairs: contains(slot, 'appSettingsKeyValuePairs') ? slot.appSettingsKeyValuePairs : appSettingsKeyValuePairs
+    basicPublishingCredentialsPolicies: contains(slot, 'basicPublishingCredentialsPolicies') ? slot.basicPublishingCredentialsPolicies : basicPublishingCredentialsPolicies
     lock: slot.?lock ?? lock
     privateEndpoints: contains(slot, 'privateEndpoints') ? slot.privateEndpoints : privateEndpoints
     tags: slot.?tags ?? tags

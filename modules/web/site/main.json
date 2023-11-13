@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.23.1.45101",
-      "templateHash": "609504469360814330"
+      "templateHash": "8496123525886789404"
     },
     "name": "Web/Function Apps",
     "description": "This module deploys a Web or Function App.",
@@ -1173,6 +1173,7 @@
           },
           "roleAssignments": "[if(contains(parameters('slots')[copyIndex()], 'roleAssignments'), createObject('value', parameters('slots')[copyIndex()].roleAssignments), createObject('value', parameters('roleAssignments')))]",
           "appSettingsKeyValuePairs": "[if(contains(parameters('slots')[copyIndex()], 'appSettingsKeyValuePairs'), createObject('value', parameters('slots')[copyIndex()].appSettingsKeyValuePairs), createObject('value', parameters('appSettingsKeyValuePairs')))]",
+          "basicPublishingCredentialsPolicies": "[if(contains(parameters('slots')[copyIndex()], 'basicPublishingCredentialsPolicies'), createObject('value', parameters('slots')[copyIndex()].basicPublishingCredentialsPolicies), createObject('value', parameters('basicPublishingCredentialsPolicies')))]",
           "lock": {
             "value": "[coalesce(tryGet(parameters('slots')[copyIndex()], 'lock'), parameters('lock'))]"
           },
@@ -1205,7 +1206,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.23.1.45101",
-              "templateHash": "16473936111108164745"
+              "templateHash": "8611977667171476388"
             },
             "name": "Web/Function App Deployment Slots",
             "description": "This module deploys a Web or Function App Deployment Slot.",
@@ -2356,10 +2357,10 @@
                 },
                 "mode": "Incremental",
                 "parameters": {
-                  "webAppName": {
+                  "appName": {
                     "value": "[parameters('appName')]"
                   },
-                  "webAppSlotName": {
+                  "slotName": {
                     "value": "[parameters('name')]"
                   },
                   "name": {
@@ -2377,7 +2378,7 @@
                     "_generator": {
                       "name": "bicep",
                       "version": "0.23.1.45101",
-                      "templateHash": "5781079163026918452"
+                      "templateHash": "9260112433322771379"
                     },
                     "name": "Web Site Slot Basic Publishing Credentials Policies",
                     "description": "This module deploys a Web Site Slot Basic Publishing Credentials Policy.",
@@ -2401,13 +2402,13 @@
                         "description": "Optional. Set to true to enable or false to disable a publishing method."
                       }
                     },
-                    "webAppName": {
+                    "appName": {
                       "type": "string",
                       "metadata": {
                         "description": "Conditional. The name of the parent web site. Required if the template is used in a standalone deployment."
                       }
                     },
-                    "webAppSlotName": {
+                    "slotName": {
                       "type": "string",
                       "metadata": {
                         "description": "Conditional. The name of the parent web site slot. Required if the template is used in a standalone deployment."
@@ -2446,7 +2447,7 @@
                     {
                       "type": "Microsoft.Web/sites/slots/basicPublishingCredentialsPolicies",
                       "apiVersion": "2022-09-01",
-                      "name": "[format('{0}/{1}/{2}', parameters('webAppName'), parameters('webAppSlotName'), parameters('name'))]",
+                      "name": "[format('{0}/{1}/{2}', parameters('appName'), parameters('slotName'), parameters('name'))]",
                       "location": "[parameters('location')]",
                       "properties": {
                         "allow": "[parameters('allow')]"
@@ -2466,7 +2467,7 @@
                       "metadata": {
                         "description": "The resource ID of the basic publishing credential policy."
                       },
-                      "value": "[resourceId('Microsoft.Web/sites/slots/basicPublishingCredentialsPolicies', parameters('webAppName'), parameters('webAppSlotName'), parameters('name'))]"
+                      "value": "[resourceId('Microsoft.Web/sites/slots/basicPublishingCredentialsPolicies', parameters('appName'), parameters('slotName'), parameters('name'))]"
                     },
                     "resourceGroupName": {
                       "type": "string",
@@ -2480,7 +2481,7 @@
                       "metadata": {
                         "description": "The location the resource was deployed into."
                       },
-                      "value": "[reference(resourceId('Microsoft.Web/sites/slots/basicPublishingCredentialsPolicies', parameters('webAppName'), parameters('webAppSlotName'), parameters('name')), '2022-09-01', 'full').location]"
+                      "value": "[reference(resourceId('Microsoft.Web/sites/slots/basicPublishingCredentialsPolicies', parameters('appName'), parameters('slotName'), parameters('name')), '2022-09-01', 'full').location]"
                     }
                   }
                 }

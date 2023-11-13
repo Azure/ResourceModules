@@ -249,8 +249,8 @@ module slot_authsettingsv2 'config--authsettingsv2/main.bicep' = if (!empty(auth
 module slot_basicPublishingCredentialsPolicies 'basic-publishing-credentials-policy/main.bicep' = [for (basicPublishingCredentialsPolicy, index) in basicPublishingCredentialsPolicies: {
   name: '${uniqueString(deployment().name, location)}-Slot-Publish-Cred-${index}'
   params: {
-    webAppName: app.name
-    webAppSlotName: slot.name
+    appName: app.name
+    slotName: slot.name
     name: basicPublishingCredentialsPolicy.name
     allow: contains(basicPublishingCredentialsPolicy, 'allow') ? basicPublishingCredentialsPolicy.allow : null
     enableDefaultTelemetry: enableReferencedModulesTelemetry
