@@ -27,8 +27,8 @@ This module deploys a Web Site Slot Basic Publishing Credentials Policy.
 
 | Parameter | Type | Description |
 | :-- | :-- | :-- |
-| [`webAppName`](#parameter-webappname) | string | The name of the parent web site. Required if the template is used in a standalone deployment. |
-| [`webAppSlotName`](#parameter-webappslotname) | string | The name of the parent web site slot. Required if the template is used in a standalone deployment. |
+| [`appName`](#parameter-appname) | string | The name of the parent web site. Required if the template is used in a standalone deployment. |
+| [`slotName`](#parameter-slotname) | string | The name of the parent web site slot. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 
@@ -44,6 +44,12 @@ Set to true to enable or false to disable a publishing method.
 - Required: No
 - Type: bool
 - Default: `True`
+
+### Parameter: `appName`
+
+The name of the parent web site. Required if the template is used in a standalone deployment.
+- Required: Yes
+- Type: string
 
 ### Parameter: `enableDefaultTelemetry`
 
@@ -72,13 +78,7 @@ The name of the resource.
   ]
   ```
 
-### Parameter: `webAppName`
-
-The name of the parent web site. Required if the template is used in a standalone deployment.
-- Required: Yes
-- Type: string
-
-### Parameter: `webAppSlotName`
+### Parameter: `slotName`
 
 The name of the parent web site slot. Required if the template is used in a standalone deployment.
 - Required: Yes
