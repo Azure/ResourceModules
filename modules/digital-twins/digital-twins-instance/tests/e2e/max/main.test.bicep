@@ -92,6 +92,7 @@ module testDeployment '../../../main.bicep' = {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '${namePrefix}${serviceShort}001'
     managedIdentities: {
+      systemAssigned: true
       userAssignedResourcesIds: [
         nestedDependencies.outputs.managedIdentityResourceId
       ]

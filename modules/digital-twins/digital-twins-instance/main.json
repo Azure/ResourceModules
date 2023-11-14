@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.23.1.45101",
-      "templateHash": "2749842619084568076"
+      "templateHash": "7414042721706079453"
     },
     "name": "Digital Twins Instances",
     "description": "This module deploys an Azure Digital Twins Instance.",
@@ -1831,6 +1831,13 @@
         "description": "The location the resource was deployed into."
       },
       "value": "[reference('digitalTwinsInstance', '2023-01-31', 'full').location]"
+    },
+    "systemAssignedMIPrincipalId": {
+      "type": "string",
+      "metadata": {
+        "description": "The principal ID of the system assigned identity."
+      },
+      "value": "[if(and(coalesce(tryGet(parameters('managedIdentities'), 'systemAssigned'), false()), contains(reference('digitalTwinsInstance', '2023-01-31', 'full').identity, 'principalId')), reference('digitalTwinsInstance', '2023-01-31', 'full').identity.principalId, '')]"
     }
   }
 }

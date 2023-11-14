@@ -130,6 +130,7 @@ module digitalTwinsInstance 'br:bicep/modules/digital-twins.digital-twins-instan
       name: 'myCustomLockName'
     }
     managedIdentities: {
+      systemAssigned: true
       userAssignedResourcesIds: [
         '<managedIdentityResourceId>'
       ]
@@ -226,6 +227,7 @@ module digitalTwinsInstance 'br:bicep/modules/digital-twins.digital-twins-instan
     },
     "managedIdentities": {
       "value": {
+        "systemAssigned": true,
         "userAssignedResourcesIds": [
           "<managedIdentityResourceId>"
         ]
@@ -998,6 +1000,7 @@ Resource tags.
 | `name` | string | The name of the Digital Twins Instance. |
 | `resourceGroupName` | string | The name of the resource group the resource was created in. |
 | `resourceId` | string | The resource ID of the Digital Twins Instance. |
+| `systemAssignedMIPrincipalId` | string | The principal ID of the system assigned identity. |
 
 ## Cross-referenced modules
 
