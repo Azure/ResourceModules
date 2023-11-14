@@ -303,9 +303,6 @@ resource lab_roleAssignments 'Microsoft.Authorization/roleAssignments@2022-04-01
   scope: lab
 }]
 
-@description('The principal ID of the system assigned identity.')
-output systemAssignedPrincipalId string = lab.identity.principalId
-
 @description('The unique identifier for the lab. Used to track tags that the lab applies to each resource that it creates.')
 output uniqueIdentifier string = lab.properties.uniqueIdentifier
 

@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.23.1.45101",
-      "templateHash": "8496123525886789404"
+      "templateHash": "5943221871747072299"
     },
     "name": "Web/Function Apps",
     "description": "This module deploys a Web or Function App.",
@@ -4231,7 +4231,7 @@
       },
       "value": "[if(and(coalesce(tryGet(parameters('managedIdentities'), 'systemAssigned'), false()), contains(reference('app', '2022-09-01', 'full').identity, 'principalId')), reference('app', '2022-09-01', 'full').identity.principalId, '')]"
     },
-    "slotSystemAssignedPrincipalIds": {
+    "slotSystemAssignedMIPrincipalIds": {
       "type": "array",
       "metadata": {
         "description": "The principal ID of the system assigned identity of slots."

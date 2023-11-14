@@ -380,6 +380,11 @@ module workspace 'br:bicep/modules/synapse.workspace:1.0.0' = {
         type: 'SelfHosted'
       }
     ]
+    managedIdentities: {
+      userAssignedResourcesIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
     managedVirtualNetwork: true
     privateEndpoints: [
       {
@@ -402,9 +407,6 @@ module workspace 'br:bicep/modules/synapse.workspace:1.0.0' = {
         roleDefinitionIdOrName: 'Reader'
       }
     ]
-    userAssignedIdentities: {
-      '<managedIdentityResourceId>': {}
-    }
   }
 }
 ```
@@ -468,6 +470,13 @@ module workspace 'br:bicep/modules/synapse.workspace:1.0.0' = {
         }
       ]
     },
+    "managedIdentities": {
+      "value": {
+        "userAssignedResourcesIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
+    },
     "managedVirtualNetwork": {
       "value": true
     },
@@ -495,11 +504,6 @@ module workspace 'br:bicep/modules/synapse.workspace:1.0.0' = {
           "roleDefinitionIdOrName": "Reader"
         }
       ]
-    },
-    "userAssignedIdentities": {
-      "value": {
-        "<managedIdentityResourceId>": {}
-      }
     }
   }
 }
@@ -552,6 +556,11 @@ module workspace 'br:bicep/modules/synapse.workspace:1.0.0' = {
         type: 'SelfHosted'
       }
     ]
+    managedIdentities: {
+      userAssignedResourcesIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
     managedVirtualNetwork: true
     privateEndpoints: [
       {
@@ -574,9 +583,6 @@ module workspace 'br:bicep/modules/synapse.workspace:1.0.0' = {
         roleDefinitionIdOrName: 'Reader'
       }
     ]
-    userAssignedIdentities: {
-      '<managedIdentityResourceId>': {}
-    }
   }
 }
 ```
@@ -640,6 +646,13 @@ module workspace 'br:bicep/modules/synapse.workspace:1.0.0' = {
         }
       ]
     },
+    "managedIdentities": {
+      "value": {
+        "userAssignedResourcesIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
+    },
     "managedVirtualNetwork": {
       "value": true
     },
@@ -667,11 +680,6 @@ module workspace 'br:bicep/modules/synapse.workspace:1.0.0' = {
           "roleDefinitionIdOrName": "Reader"
         }
       ]
-    },
-    "userAssignedIdentities": {
-      "value": {
-        "<managedIdentityResourceId>": {}
-      }
     }
   }
 }
@@ -708,6 +716,7 @@ module workspace 'br:bicep/modules/synapse.workspace:1.0.0' = {
 | [`linkedAccessCheckOnTargetResource`](#parameter-linkedaccesscheckontargetresource) | bool | Linked Access Check On Target Resource. |
 | [`location`](#parameter-location) | string | The geo-location where the resource lives. |
 | [`lock`](#parameter-lock) | object | The lock settings of the service. |
+| [`managedIdentities`](#parameter-managedidentities) | object | The managed identity definition for this resource. |
 | [`managedResourceGroupName`](#parameter-managedresourcegroupname) | string | Workspace managed resource group. The resource group name uniquely identifies the resource group within the user subscriptionId. The resource group name must be no longer than 90 characters long, and must be alphanumeric characters (Char.IsLetterOrDigit()) and '-', '_', '(', ')' and'.'. Note that the name cannot end with '.'. |
 | [`managedVirtualNetwork`](#parameter-managedvirtualnetwork) | bool | Enable this to ensure that connection from your workspace to your data sources use Azure Private Links. You can create managed private endpoints to your data sources. |
 | [`preventDataExfiltration`](#parameter-preventdataexfiltration) | bool | Prevent Data Exfiltration. |
@@ -717,7 +726,6 @@ module workspace 'br:bicep/modules/synapse.workspace:1.0.0' = {
 | [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | [`sqlAdministratorLoginPassword`](#parameter-sqladministratorloginpassword) | string | Password for administrator access to the workspace's SQL pools. If you don't provide a password, one will be automatically generated. You can change the password later. |
 | [`tags`](#parameter-tags) | object | Tags of the resource. |
-| [`userAssignedIdentities`](#parameter-userassignedidentities) | object | The ID(s) to assign to the resource. |
 | [`workspaceRepositoryConfiguration`](#parameter-workspacerepositoryconfiguration) | object | Git integration settings. |
 
 ### Parameter: `allowedAadTenantIdsForLinking`
@@ -958,6 +966,24 @@ Optional. Specify the name of lock.
 
 - Required: No
 - Type: string
+
+### Parameter: `managedIdentities`
+
+The managed identity definition for this resource.
+- Required: No
+- Type: object
+
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`userAssignedResourcesIds`](#parameter-managedidentitiesuserassignedresourcesids) | Yes | array | Optional. The resource ID(s) to assign to the resource. |
+
+### Parameter: `managedIdentities.userAssignedResourcesIds`
+
+Optional. The resource ID(s) to assign to the resource.
+
+- Required: Yes
+- Type: array
 
 ### Parameter: `managedResourceGroupName`
 
@@ -1292,13 +1318,6 @@ Tags of the resource.
 - Required: No
 - Type: object
 
-### Parameter: `userAssignedIdentities`
-
-The ID(s) to assign to the resource.
-- Required: No
-- Type: object
-- Default: `{}`
-
 ### Parameter: `workspaceRepositoryConfiguration`
 
 Git integration settings.
@@ -1316,7 +1335,7 @@ Git integration settings.
 | `name` | string | The name of the deployed Synapse Workspace. |
 | `resourceGroupName` | string | The resource group of the deployed Synapse Workspace. |
 | `resourceID` | string | The resource ID of the deployed Synapse Workspace. |
-| `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
+| `systemAssignedMIPrincipalId` | string | The principal ID of the system assigned identity. |
 
 ## Cross-referenced modules
 
