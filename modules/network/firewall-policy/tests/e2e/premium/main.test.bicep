@@ -1,12 +1,15 @@
 targetScope = 'subscription'
 
+metadata name = 'Premium dier'
+metadata description = 'This instance deploys the premium tier of the module.'
+
 // ========== //
 // Parameters //
 // ========== //
 
 @description('Optional. The name of the resource group to deploy for testing purposes.')
 @maxLength(90)
-param resourceGroupName string = 'ms.network.firewallpolicies-${serviceShort}-rg'
+param resourceGroupName string = 'dep-${namePrefix}-network.firewallpolicies-${serviceShort}-rg'
 
 @description('Optional. The location to deploy resources to.')
 param location string = deployment().location
@@ -17,6 +20,9 @@ param serviceShort string = 'nfppre'
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
+@description('Optional. A token to inject into the name of each resource.')
+param namePrefix string = '[[namePrefix]]'
+
 var certName = 'cert-${serviceShort}'
 
 // ============ //
@@ -25,7 +31,7 @@ var certName = 'cert-${serviceShort}'
 
 // General resources
 // =================
-resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
+resource resourceGroup 'Microsoft.Resources/resourceGroups@2023-07-01' = {
   name: resourceGroupName
   location: location
 }
@@ -34,9 +40,9 @@ module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
-    managedIdentityName: 'dep-[[namePrefix]]-msi-${serviceShort}'
-    certDeploymentScriptName: 'dep-[[namePrefix]]-ds-${serviceShort}'
-    keyVaultName: 'dep-[[namePrefix]]-kv-${serviceShort}'
+    managedIdentityName: 'dep-${namePrefix}-msi-${serviceShort}'
+    certDeploymentScriptName: 'dep-${namePrefix}-ds-${serviceShort}'
+    keyVaultName: 'dep-${namePrefix}-kv-${serviceShort}'
     certName: certName
   }
 }
@@ -45,15 +51,17 @@ module nestedDependencies 'dependencies.bicep' = {
 // Test Execution //
 // ============== //
 
-module testDeployment '../../main.bicep' = {
+module testDeployment '../../../main.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     tier: 'Premium'
-    name: '[[namePrefix]]${serviceShort}001'
-    userAssignedIdentities: {
-      '${nestedDependencies.outputs.managedIdentityResourceId}': {}
+    name: '${namePrefix}${serviceShort}001'
+    managedIdentities: {
+      userAssignedResourceIds: [
+        nestedDependencies.outputs.managedIdentityResourceId
+      ]
     }
     keyVaultSecretId: nestedDependencies.outputs.certificateSecretUrl
     certificateName: certName
@@ -77,7 +85,7 @@ module testDeployment '../../main.bicep' = {
     ]
     ruleCollectionGroups: [
       {
-        name: '[[namePrefix]]-rule-001'
+        name: '${namePrefix}-rule-001'
         priority: 5000
         ruleCollections: [
           {
