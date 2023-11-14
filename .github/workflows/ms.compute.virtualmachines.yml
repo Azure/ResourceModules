@@ -27,10 +27,10 @@ on:
     branches:
       - main
     paths:
-      - 'modules/compute/virtual-machines/**'
-      - 'modules/recovery-services/vaults/protection-containers/protected-items/**'
-      - 'modules/network/public-ip-addresses/**'
-      - 'modules/network/network-interfaces/**'
+      - 'modules/compute/virtual-machine/**'
+      - 'modules/recovery-services/vault/backup-fabric/protection-container/protected-item/**'
+      - 'modules/network/public-ip-address/**'
+      - 'modules/network/network-interface/**'
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.compute.virtualmachines.yml'
@@ -39,7 +39,7 @@ on:
       - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/compute/virtual-machines'
+  modulePath: 'modules/compute/virtual-machine'
   workflowPath: '.github/workflows/ms.compute.virtualmachines.yml'
 
 concurrency:
@@ -54,7 +54,7 @@ jobs:
     name: 'Initialize pipeline'
     steps:
       - name: 'Checkout'
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - name: 'Set input parameters to output variables'

@@ -93,7 +93,7 @@ jobs:
             . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
 
             # Define PS modules to install on the runner
-            $Modules = @(
+            $modules = @(
                 @{ Name = 'Az.Accounts' },
                 @{ Name = 'Az.Resources' },
                 @{ Name = 'powershell-yaml'; Version = '0.4.2'}
@@ -101,10 +101,11 @@ jobs:
 
             # Additional PS modules need to be installed for the removal step in case it is enabled
             if ('${{ parameters.removeDeployment}}' -eq 'true') {
-              $Modules += @(
+              $modules += @(
                 @{ Name = 'Az.CognitiveServices' },
                 @{ Name = 'Az.Compute' },
                 @{ Name = 'Az.KeyVault' },
+                @{ Name = 'Az.MachineLearningServices' },
                 @{ Name = 'Az.Monitor' },
                 @{ Name = 'Az.OperationalInsights' },
                 @{ Name = 'Az.RecoveryServices' }
@@ -112,7 +113,7 @@ jobs:
             }
 
             # Set agent up
-            Set-EnvironmentOnAgent -PSModules $Modules
+            Set-EnvironmentOnAgent -PSModules $modules
 
       # [Agent] Replace tokens
       #-----------------------
@@ -127,10 +128,20 @@ jobs:
           inline: |
             # Load used functions
             . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFileList.ps1')
+            . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'sharedScripts' 'Get-LocallyReferencedFileList.ps1')
+
 
             # Get target files
             $moduleTestFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(moduleTestFilePath)'
-            $targetFileList = @($moduleTestFilePath)
+
+            # Get target files
+            $targetFileList = @(
+              $moduleTestFilePath
+            )
+
+            # Add all module template files as they may contain tokens
+            $targetFileList += (Get-LocallyReferencedFileList -FilePath $moduleTestFilePath)
+            $targetFileList = $targetFileList | Sort-Object -Unique
 
             # Construct Token Function Input
             $ConvertTokensInputs = @{

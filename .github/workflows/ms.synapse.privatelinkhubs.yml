@@ -27,8 +27,8 @@ on:
     branches:
       - main
     paths:
-      - 'modules/synapse/private-link-hubs/**'
-      - 'modules/network/private-endpoints/**'
+      - 'modules/synapse/private-link-hub/**'
+      - 'modules/network/private-endpoint/**'
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.synapse.privatelinkhubs.yml'
@@ -37,7 +37,7 @@ on:
       - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/synapse/private-link-hubs'
+  modulePath: 'modules/synapse/private-link-hub'
   workflowPath: '.github/workflows/ms.synapse.privatelinkhubs.yml'
 
 concurrency:
@@ -52,7 +52,7 @@ jobs:
     name: 'Initialize pipeline'
     steps:
       - name: 'Checkout'
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - name: 'Set input parameters to output variables'

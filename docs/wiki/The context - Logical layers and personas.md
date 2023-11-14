@@ -49,6 +49,8 @@ This persona isn't consuming CARML directly, but is consuming CARML via a soluti
   - Existing CARML solutions (These links provide examples of real world solutions using CARML):
     - [AKS Landing Zone Accelerator](https://github.com/Azure/AKS-Landing-Zone-Accelerator)
     - [AVD Landing Zone Accelerator](https://github.com/Azure/avdaccelerator)
+    - [DevOps Self-Hosted](https://github.com/Azure/DevOps-Self-Hosted)
+
   - An internally developed multi-module solution for internal application or workload pattern
 
 > **Note**: Solution Consumers are not to be confused with end users. Solution Consumers are cloud administrators, deploying a complex solution and administering an application installed into such a cloud environment. An end user is someone who will use the application or workload hosted in the cloud for his/her work (ex., information worker or application developer).
@@ -70,7 +72,7 @@ This persona isn't consuming CARML directly, but is consuming CARML via a soluti
 
 ![SolutionDevelopers](./media/Personas/SolutionDevelopers.png)
 
-A **Solution Developer** is not a user. Their focus is on using CARML to **build end-to-end solutions** that are opinionated. These solutions will be published (publicly and/or privately) for consumption by others and will be used many times by many organizations/teams, in many environments/subscriptions/landing zones).
+A **Solution Developer** is not a user. Their focus is on using CARML to **build end-to-end solutions** that are opinionated. These solutions will be published (publicly and/or privately) for consumption by others and will be used many times by many organizations/teams, in many environments/subscriptions/landing zones.
 A Solution Developer uses the CARML library (its public or organization/customer specific implementation), with a chosen preference for using its modules via Bicep registry (public, private), or template specs, or direct reference, or using Git submodules, etc. Solution Developers might benefit the most from overcoming the learning curve - because of the standardization and scale they can achieve with CARML.
 
 - Modules: Use an existing code base to develop and test multi-module solutions (ex., a Landing Zone Accelerator, or an internal platform/workload team). This might also lead to creating/updating modules.

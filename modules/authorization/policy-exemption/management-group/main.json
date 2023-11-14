@@ -1,0 +1,165 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-08-01/managementGroupDeploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.22.6.54827",
+      "templateHash": "5606667569084267633"
+    },
+    "name": "Policy Exemptions (Management Group scope)",
+    "description": "This module deploys a Policy Exemption at a Management Group scope.",
+    "owner": "Azure/module-maintainers"
+  },
+  "parameters": {
+    "name": {
+      "type": "string",
+      "maxLength": 64,
+      "metadata": {
+        "description": "Required. Specifies the name of the policy exemption. Maximum length is 64 characters for management group scope."
+      }
+    },
+    "displayName": {
+      "type": "string",
+      "defaultValue": "",
+      "maxLength": 128,
+      "metadata": {
+        "description": "Optional. The display name of the policy assignment. Maximum length is 128 characters."
+      }
+    },
+    "description": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Optional. The description of the policy exemption."
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "defaultValue": {},
+      "metadata": {
+        "description": "Optional. The policy exemption metadata. Metadata is an open ended object and is typically a collection of key-value pairs."
+      }
+    },
+    "exemptionCategory": {
+      "type": "string",
+      "defaultValue": "Mitigated",
+      "allowedValues": [
+        "Mitigated",
+        "Waiver"
+      ],
+      "metadata": {
+        "description": "Optional. The policy exemption category. Possible values are Waiver and Mitigated. Default is Mitigated."
+      }
+    },
+    "policyAssignmentId": {
+      "type": "string",
+      "metadata": {
+        "description": "Required. The resource ID of the policy assignment that is being exempted."
+      }
+    },
+    "policyDefinitionReferenceIds": {
+      "type": "array",
+      "defaultValue": [],
+      "metadata": {
+        "description": "Optional. The policy definition reference ID list when the associated policy assignment is an assignment of a policy set definition."
+      }
+    },
+    "expiresOn": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Optional. The expiration date and time (in UTC ISO 8601 format yyyy-MM-ddTHH:mm:ssZ) of the policy exemption. e.g. 2021-10-02T03:57:00.000Z."
+      }
+    },
+    "location": {
+      "type": "string",
+      "defaultValue": "[deployment().location]",
+      "metadata": {
+        "description": "Optional. Location deployment metadata."
+      }
+    },
+    "assignmentScopeValidation": {
+      "type": "string",
+      "defaultValue": "",
+      "allowedValues": [
+        "",
+        "Default",
+        "DoNotValidate"
+      ],
+      "metadata": {
+        "description": "Optional. The option whether validate the exemption is at or under the assignment scope."
+      }
+    },
+    "resourceSelectors": {
+      "type": "array",
+      "defaultValue": [],
+      "metadata": {
+        "description": "Optional. The resource selector list to filter policies by resource properties."
+      }
+    },
+    "enableDefaultTelemetry": {
+      "type": "bool",
+      "defaultValue": true,
+      "metadata": {
+        "description": "Optional. Enable telemetry via a Globally Unique Identifier (GUID)."
+      }
+    }
+  },
+  "resources": [
+    {
+      "condition": "[parameters('enableDefaultTelemetry')]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2021-04-01",
+      "name": "[format('pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-{0}', uniqueString(deployment().name, parameters('location')))]",
+      "location": "[parameters('location')]",
+      "properties": {
+        "mode": "Incremental",
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "resources": []
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Authorization/policyExemptions",
+      "apiVersion": "2022-07-01-preview",
+      "name": "[parameters('name')]",
+      "properties": {
+        "displayName": "[if(not(empty(parameters('displayName'))), parameters('displayName'), null())]",
+        "description": "[if(not(empty(parameters('description'))), parameters('description'), null())]",
+        "metadata": "[if(not(empty(parameters('metadata'))), parameters('metadata'), null())]",
+        "exemptionCategory": "[parameters('exemptionCategory')]",
+        "policyAssignmentId": "[parameters('policyAssignmentId')]",
+        "policyDefinitionReferenceIds": "[if(not(empty(parameters('policyDefinitionReferenceIds'))), parameters('policyDefinitionReferenceIds'), createArray())]",
+        "expiresOn": "[if(not(empty(parameters('expiresOn'))), parameters('expiresOn'), null())]",
+        "assignmentScopeValidation": "[if(not(empty(parameters('assignmentScopeValidation'))), parameters('assignmentScopeValidation'), null())]",
+        "resourceSelectors": "[parameters('resourceSelectors')]"
+      }
+    }
+  ],
+  "outputs": {
+    "name": {
+      "type": "string",
+      "metadata": {
+        "description": "Policy Exemption Name."
+      },
+      "value": "[parameters('name')]"
+    },
+    "resourceId": {
+      "type": "string",
+      "metadata": {
+        "description": "Policy Exemption resource ID."
+      },
+      "value": "[extensionResourceId(managementGroup().id, 'Microsoft.Authorization/policyExemptions', parameters('name'))]"
+    },
+    "scope": {
+      "type": "string",
+      "metadata": {
+        "description": "Policy Exemption Scope."
+      },
+      "value": "[managementGroup().id]"
+    }
+  }
+}

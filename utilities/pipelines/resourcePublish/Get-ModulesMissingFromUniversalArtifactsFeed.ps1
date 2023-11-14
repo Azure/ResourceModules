@@ -20,11 +20,16 @@ Example: 'IaC'.
 Mandatory. Name to the feed to publish to.
 Example: 'Artifacts'.
 
+.PARAMETER UseApiSpecsAlignedName
+Optional. If set to true, the module name looked for is aligned with the Azure API naming. If not, it's one aligned with the module's folder path. See the following examples:
+- True:  microsoft.keyvault.vaults.secrets
+- False: key-vault.vault.secret
+
 .PARAMETER BearerToken
 Optional. The bearer token to use to authenticate the request. If not provided it MUST be existing in your environment as `$env:TOKEN`
 
 .EXAMPLE
-Get-ModulesMissingFromUniversalArtifactsFeed -TemplateFilePath 'C:\modules\key-vault\vaults\main.bicep' -vstsOrganizationUri 'https://dev.azure.com/fabrikam' -VstsProject 'IaC' -VstsFeedName 'Artifacts'
+Get-ModulesMissingFromUniversalArtifactsFeed -TemplateFilePath 'C:\modules\key-vault\vault\main.bicep' -vstsOrganizationUri 'https://dev.azure.com/fabrikam' -VstsProject 'IaC' -VstsFeedName 'Artifacts'
 
 Check if either the Key Vault module or any of its children (e.g. 'secret') is missing in artifacts feed 'Artifacts' of Azure DevOps project 'https://dev.azure.com/fabrikam/IaC'
 
@@ -32,13 +37,13 @@ Returns for example:
 Name                           Value
 ----                           -----
 Version                        0.4.0
-TemplateFilePath               C:\ResourceModules\modules\key-vault\vaults\access-policies\main.bicep
+TemplateFilePath               C:\ResourceModules\modules\key-vault\vault\access-policy\main.bicep
 Version                        0.4.0
-TemplateFilePath               C:\ResourceModules\modules\key-vault\vaults\keys\main.bicep
+TemplateFilePath               C:\ResourceModules\modules\key-vault\vault\key\main.bicep
 Version                        0.4.0
-TemplateFilePath               C:\ResourceModules\modules\key-vault\vaults\secrets\main.bicep
+TemplateFilePath               C:\ResourceModules\modules\key-vault\vault\secret\main.bicep
 Version                        0.5.0
-TemplateFilePath               C:\ResourceModules\modules\key-vault\vaults\main.bicep
+TemplateFilePath               C:\ResourceModules\modules\key-vault\vault\main.bicep
 #>
 function Get-ModulesMissingFromUniversalArtifactsFeed {
 
@@ -57,6 +62,9 @@ function Get-ModulesMissingFromUniversalArtifactsFeed {
         [string] $VstsFeedProject = '',
 
         [Parameter(Mandatory = $false)]
+        [bool] $UseApiSpecsAlignedName = $false,
+
+        [Parameter(Mandatory = $false)]
         [string] $BearerToken = $env:TOKEN
     )
 
@@ -68,8 +76,18 @@ function Get-ModulesMissingFromUniversalArtifactsFeed {
     }
 
     process {
-        # Get all children
-        $availableModuleTemplatePaths = (Get-ChildItem -Path (Split-Path $TemplateFilePath) -Recurse -Include @('main.bicep', 'main.json')).FullName
+        # Get all children, bicep templates only
+        $availableModuleTemplatePaths = (Get-ChildItem -Path (Split-Path $TemplateFilePath) -Recurse -Include @('main.bicep')).FullName
+
+        # Get all children, ARM templates only
+        $availableModuleTemplatePathsARM = (Get-ChildItem -Path (Split-Path $TemplateFilePath) -Recurse -Include @('main.json')).FullName
+
+        # Add ARM templates to the list of available modules only if there is no bicep template for the same module
+        foreach ($path in $availableModuleTemplatePathsARM) {
+            if ($availableModuleTemplatePaths -contains $path.Replace('.json', '.bicep')) { continue }
+            $availableModuleTemplatePaths += $path
+        }
+        $availableModuleTemplatePaths = $availableModuleTemplatePaths | Sort-Object
 
         # Get artifacts
         if ($VstsOrganizationUri -like '*/') {
@@ -94,7 +112,7 @@ function Get-ModulesMissingFromUniversalArtifactsFeed {
         foreach ($templatePath in $availableModuleTemplatePaths) {
 
             # Get a valid Universal Artifact name
-            $artifactsIdentifier = Get-UniversalArtifactsName -TemplateFilePath $templatePath
+            $artifactsIdentifier = Get-UniversalArtifactsName -TemplateFilePath $templatePath -UseApiSpecsAlignedName $UseApiSpecsAlignedName
 
             if ($publishedModules -notcontains $artifactsIdentifier) {
                 $missingTemplatePaths += $templatePath

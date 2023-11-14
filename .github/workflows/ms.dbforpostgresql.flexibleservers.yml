@@ -30,13 +30,13 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.dbforpostgresql.flexibleservers.yml'
-      - 'modules/db-for-postgre-sql/flexible-servers/**'
+      - 'modules/db-for-postgre-sql/flexible-server/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
       - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/db-for-postgre-sql/flexible-servers'
+  modulePath: 'modules/db-for-postgre-sql/flexible-server'
   workflowPath: '.github/workflows/ms.dbforpostgresql.flexibleservers.yml'
 
 concurrency:
@@ -51,7 +51,7 @@ jobs:
     name: 'Initialize pipeline'
     steps:
       - name: 'Checkout'
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - name: 'Set input parameters to output variables'

@@ -30,13 +30,13 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.compute.availabilitysets.yml'
-      - 'modules/compute/availability-sets/**'
+      - 'modules/compute/availability-set/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
       - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/compute/availability-sets'
+  modulePath: 'modules/compute/availability-set'
   workflowPath: '.github/workflows/ms.compute.availabilitysets.yml'
 
 concurrency:
@@ -51,7 +51,7 @@ jobs:
     name: 'Initialize pipeline'
     steps:
       - name: 'Checkout'
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - name: 'Set input parameters to output variables'

@@ -27,8 +27,8 @@ trigger:
       - main
   paths:
     include:
-      - '/modules/compute/disk-encryption-sets/*'
-      - '/modules/key-vault/vaults/access-policies/*'
+      - '/modules/compute/disk-encryption-set/*'
+      - '/modules/key-vault/vault/access-policy/*'
       - '/.azuredevops/modulePipelines/ms.compute.diskencryptionsets.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
       - '/utilities/pipelines/*'
@@ -40,7 +40,7 @@ variables:
   - template: '../../settings.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/modules/compute/disk-encryption-sets'
+    value: '/modules/compute/disk-encryption-set'
 
 stages:
   - template: /.azuredevops/pipelineTemplates/stages.module.yml

@@ -102,17 +102,17 @@ Optional. Maximum retry limit if the deployment fails. Default is 3.
 Optional. Do not throw an exception if it failed. Still returns the error message though
 
 .EXAMPLE
-New-TemplateDeploymentInner -templateFilePath 'C:/KeyVault/main.json' -parameterFilePath 'C:/KeyVault/.test/parameters.json' -location 'WestEurope' -resourceGroupName 'aLegendaryRg'
+New-TemplateDeploymentInner -templateFilePath 'C:/key-vault/vault/main.json' -parameterFilePath 'C:/key-vault/vault/.test/parameters.json' -location 'WestEurope' -resourceGroupName 'aLegendaryRg'
 
 Deploy the main.json of the KeyVault module with the parameter file 'parameters.json' using the resource group 'aLegendaryRg' in location 'WestEurope'
 
 .EXAMPLE
-New-TemplateDeploymentInner -templateFilePath 'C:/KeyVault/main.bicep' -location 'WestEurope' -resourceGroupName 'aLegendaryRg'
+New-TemplateDeploymentInner -templateFilePath 'C:/key-vault/vault/main.bicep' -location 'WestEurope' -resourceGroupName 'aLegendaryRg'
 
 Deploy the main.bicep of the KeyVault module using the resource group 'aLegendaryRg' in location 'WestEurope'
 
 .EXAMPLE
-New-TemplateDeploymentInner -templateFilePath 'C:/ResourceGroup/main.json' -location 'WestEurope'
+New-TemplateDeploymentInner -templateFilePath 'C:/resources/resource-group/main.json' -location 'WestEurope'
 
 Deploy the main.json of the ResourceGroup module without a parameter file in location 'WestEurope'
 #>
@@ -163,14 +163,16 @@ function New-TemplateDeploymentInner {
         if ([String]::IsNullOrEmpty($deploymentNamePrefix)) {
             $deploymentNamePrefix = 'templateDeployment-{0}' -f (Split-Path $templateFilePath -LeafBase)
         }
-        if ($templateFilePath -match '.*(\\|\/)Microsoft.+') {
-            # If we can assume we're operating in a module structure, we can further fetch the provider namespace & resource type
-            $shortPathElem = (($templateFilePath -split 'Microsoft\.')[1] -replace '\\', '/') -split '/' # e.g., AppConfiguration, configurationStores, .test, common, main.test.bicep
-            $providerNamespace = $shortPathElem[0] # e.g., AppConfiguration
-            $providerNamespaceShort = ($providerNamespace -creplace '[^A-Z]').ToLower() # e.g., ac
 
-            $resourceType = $shortPathElem[1] # e.g., configurationStores
-            $resourceTypeShort = ('{0}{1}' -f ($resourceType.ToLower())[0], ($resourceType -creplace '[^A-Z]')).ToLower() # e.g. cs
+        $modulesRegex = '.+[\\|\/]modules[\\|\/]'
+        if ($templateFilePath -match $modulesRegex) {
+            # If we can assume we're operating in a module structure, we can further fetch the provider namespace & resource type
+            $shortPathElem = (($templateFilePath -split $modulesRegex)[1] -replace '\\', '/') -split '/' # e.g., app-configuration, configuration-store, .test, common, main.test.bicep
+            $providerNamespace = $shortPathElem[0] # e.g., app-configuration
+            $providerNamespaceShort = ($providerNamespace -split '-' | ForEach-Object { $_[0] }) -join '' # e.g., ac
+
+            $resourceType = $shortPathElem[1] # e.g., configuration-store
+            $resourceTypeShort = ($resourceType -split '-' | ForEach-Object { $_[0] }) -join '' # e.g. cs
 
             $testFolderShort = Split-Path (Split-Path $templateFilePath -Parent) -Leaf  # e.g., common
 
@@ -362,7 +364,7 @@ Optional. ID of the subscription to deploy into. Mandatory if deploying into a s
 Optional. Name of the management group to deploy into. Mandatory if deploying into a management group (management group level)
 
 .PARAMETER additionalTags
-Optional. Provde a Key Value Pair (Object) that will be appended to the Parameter file tags. Example: @{myKey = 'myValue',myKey2 = 'myValue2'}.
+Optional. Provide a Key Value Pair (Object) that will be appended to the Parameter file tags. Example: @{myKey = 'myValue', myKey2 = 'myValue2'}.
 
 .PARAMETER additionalParameters
 Optional. Additional parameters you can provide with the deployment. E.g. @{ resourceGroupName = 'myResourceGroup' }
@@ -374,19 +376,19 @@ Optional. Maximum retry limit if the deployment fails. Default is 3.
 Optional. Do not throw an exception if it failed. Still returns the error message though
 
 .EXAMPLE
-New-TemplateDeployment -templateFilePath 'C:/KeyVault/main.bicep' -parameterFilePath 'C:/KeyVault/.test/parameters.json' -location 'WestEurope' -resourceGroupName 'aLegendaryRg'
+New-TemplateDeployment -templateFilePath 'C:/key-vault/vault/main.bicep' -parameterFilePath 'C:/key-vault/vault/.test/parameters.json' -location 'WestEurope' -resourceGroupName 'aLegendaryRg'
 
-Deploy the main.bicep of the KeyVault module with the parameter file 'parameters.json' using the resource group 'aLegendaryRg' in location 'WestEurope'
-
-.EXAMPLE
-New-TemplateDeployment -templateFilePath 'C:/ResourceGroup/main.bicep' -location 'WestEurope'
-
-Deploy the main.bicep of the ResourceGroup module in location 'WestEurope' without a parameter file
+Deploy the main.bicep of the 'key-vault/vault' module with the parameter file 'parameters.json' using the resource group 'aLegendaryRg' in location 'WestEurope'
 
 .EXAMPLE
-New-TemplateDeployment -templateFilePath 'C:/ResourceGroup/main.json' -parameterFilePath 'C:/ResourceGroup/.test/parameters.json' -location 'WestEurope'
+New-TemplateDeployment -templateFilePath 'C:/resources/resource-group/main.bicep' -location 'WestEurope'
 
-Deploy the main.json of the ResourceGroup module with the parameter file 'parameters.json' in location 'WestEurope'
+Deploy the main.bicep of the 'resources/resource-group' module in location 'WestEurope' without a parameter file
+
+.EXAMPLE
+New-TemplateDeployment -templateFilePath 'C:/resources/resource-group/main.json' -parameterFilePath 'C:/resources/resource-group/.test/parameters.json' -location 'WestEurope'
+
+Deploy the main.json of the 'resources/resource-group' module with the parameter file 'parameters.json' in location 'WestEurope'
 #>
 function New-TemplateDeployment {
 

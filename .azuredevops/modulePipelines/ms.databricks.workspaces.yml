@@ -29,7 +29,8 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.databricks.workspaces.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/modules/databricks/workspaces/*'
+      - '/modules/databricks/workspace/*'
+      - '/modules/network/private-endpoint/*'
       - '/utilities/pipelines/*'
     exclude:
       - '/utilities/pipelines/deploymentRemoval/*'
@@ -39,7 +40,7 @@ variables:
   - template: '../../settings.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/modules/databricks/workspaces'
+    value: '/modules/databricks/workspace'
 
 stages:
   - template: /.azuredevops/pipelineTemplates/stages.module.yml

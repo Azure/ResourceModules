@@ -34,7 +34,7 @@ jobs:
     if: (fromJson(inputs.workflowInput)).staticValidation == 'true'
     steps:
       - name: 'Checkout'
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - name: Set environment
@@ -60,7 +60,7 @@ jobs:
         moduleTestFilePaths: ${{ fromJson(inputs.moduleTestFilePaths) }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Set environment
         uses: ./.github/actions/templates/setEnvironment
         with:
@@ -91,7 +91,7 @@ jobs:
         moduleTestFilePaths: ${{ fromJson(inputs.moduleTestFilePaths) }}
     steps:
       - name: 'Checkout'
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - name: Set environment
@@ -119,7 +119,7 @@ jobs:
       - job_module_deploy_validation
     steps:
       - name: 'Checkout'
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - name: Set environment
@@ -130,6 +130,7 @@ jobs:
         uses: ./.github/actions/templates/publishModule
         with:
           templateFilePath: '${{ inputs.modulePath }}/main.bicep'
+          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           templateSpecsRGName: '${{ env.templateSpecsRGName }}'
           templateSpecsRGLocation: '${{ env.templateSpecsRGLocation }}'
           templateSpecsDescription: '${{ env.templateSpecsDescription }}'
@@ -139,3 +140,4 @@ jobs:
           bicepRegistryRgLocation: '${{ env.bicepRegistryRgLocation }}'
           bicepRegistryDoPublish: '${{ env.bicepRegistryDoPublish }}'
           publishLatest: '${{ env.publishLatest }}'
+          useApiSpecsAlignedName: '${{ env.useApiSpecsAlignedName }}'

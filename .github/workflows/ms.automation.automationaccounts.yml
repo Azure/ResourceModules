@@ -28,10 +28,10 @@ on:
     branches:
       - main
     paths:
-      - 'modules/automation/automation-accounts/**'
-      - 'modules/operational-insights/workspaces/linked-services/**'
-      - 'modules/operations-management/solutions/**'
-      - 'modules/network/private-endpoints/**'
+      - 'modules/automation/automation-account/**'
+      - 'modules/operational-insights/workspace/linked-service/**'
+      - 'modules/operations-management/solution/**'
+      - 'modules/network/private-endpoint/**'
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.automation.automationaccounts.yml'
@@ -40,7 +40,7 @@ on:
       - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/automation/automation-accounts'
+  modulePath: 'modules/automation/automation-account'
   workflowPath: '.github/workflows/ms.automation.automationaccounts.yml'
 
 concurrency:
@@ -55,7 +55,7 @@ jobs:
     name: 'Initialize pipeline'
     steps:
       - name: 'Checkout'
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - name: 'Set input parameters to output variables'

@@ -1,0 +1,148 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.22.6.54827",
+      "templateHash": "10616827856455579307"
+    },
+    "name": "Azure Virtual Desktop (AVD) Application Group Applications",
+    "description": "This module deploys an Azure Virtual Desktop (AVD) Application Group Application.",
+    "owner": "Azure/module-maintainers"
+  },
+  "parameters": {
+    "appGroupName": {
+      "type": "string",
+      "metadata": {
+        "description": "Conditional. The name of the parent Application Group to create the application(s) in. Required if the template is used in a standalone deployment."
+      }
+    },
+    "name": {
+      "type": "string",
+      "metadata": {
+        "description": "Required. Name of the Application to be created in the Application Group."
+      }
+    },
+    "description": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Optional. Description of Application.."
+      }
+    },
+    "friendlyName": {
+      "type": "string",
+      "metadata": {
+        "description": "Required. Friendly name of Application.."
+      }
+    },
+    "filePath": {
+      "type": "string",
+      "metadata": {
+        "description": "Required. Specifies a path for the executable file for the application."
+      }
+    },
+    "commandLineSetting": {
+      "type": "string",
+      "defaultValue": "DoNotAllow",
+      "allowedValues": [
+        "Allow",
+        "DoNotAllow",
+        "Require"
+      ],
+      "metadata": {
+        "description": "Optional. Specifies whether this published application can be launched with command-line arguments provided by the client, command-line arguments specified at publish time, or no command-line arguments at all."
+      }
+    },
+    "commandLineArguments": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Optional. Command-Line Arguments for Application."
+      }
+    },
+    "showInPortal": {
+      "type": "bool",
+      "defaultValue": false,
+      "metadata": {
+        "description": "Optional. Specifies whether to show the RemoteApp program in the RD Web Access server."
+      }
+    },
+    "iconPath": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Optional. Path to icon."
+      }
+    },
+    "iconIndex": {
+      "type": "int",
+      "defaultValue": 0,
+      "metadata": {
+        "description": "Optional. Index of the icon."
+      }
+    },
+    "enableDefaultTelemetry": {
+      "type": "bool",
+      "defaultValue": true,
+      "metadata": {
+        "description": "Optional. Enable telemetry via a Globally Unique Identifier (GUID)."
+      }
+    }
+  },
+  "resources": [
+    {
+      "condition": "[parameters('enableDefaultTelemetry')]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2021-04-01",
+      "name": "[format('pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-{0}', uniqueString(deployment().name))]",
+      "properties": {
+        "mode": "Incremental",
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "resources": []
+        }
+      }
+    },
+    {
+      "type": "Microsoft.DesktopVirtualization/applicationGroups/applications",
+      "apiVersion": "2022-09-09",
+      "name": "[format('{0}/{1}', parameters('appGroupName'), parameters('name'))]",
+      "properties": {
+        "description": "[parameters('description')]",
+        "friendlyName": "[parameters('friendlyName')]",
+        "filePath": "[parameters('filePath')]",
+        "commandLineSetting": "[parameters('commandLineSetting')]",
+        "commandLineArguments": "[parameters('commandLineArguments')]",
+        "showInPortal": "[parameters('showInPortal')]",
+        "iconPath": "[parameters('iconPath')]",
+        "iconIndex": "[parameters('iconIndex')]"
+      }
+    }
+  ],
+  "outputs": {
+    "resourceId": {
+      "type": "string",
+      "metadata": {
+        "description": "The resource ID of the deployed Application."
+      },
+      "value": "[resourceId('Microsoft.DesktopVirtualization/applicationGroups/applications', parameters('appGroupName'), parameters('name'))]"
+    },
+    "resourceGroupName": {
+      "type": "string",
+      "metadata": {
+        "description": "The name of the Resource Group the AVD Application was created in."
+      },
+      "value": "[resourceGroup().name]"
+    },
+    "name": {
+      "type": "string",
+      "metadata": {
+        "description": "The Name of the Application Group to register the Application in."
+      },
+      "value": "[parameters('appGroupName')]"
+    }
+  }
+}

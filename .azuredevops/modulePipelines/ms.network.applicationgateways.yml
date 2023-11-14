@@ -29,7 +29,8 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.network.applicationgateways.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/modules/network/application-gateways/*'
+      - '/modules/network/application-gateway/*'
+      - '/modules/network/private-endpoint/*'
       - '/utilities/pipelines/*'
     exclude:
       - '/utilities/pipelines/deploymentRemoval/*'
@@ -39,7 +40,7 @@ variables:
   - template: '../../settings.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/modules/network/application-gateways'
+    value: '/modules/network/application-gateway'
 
 stages:
   - template: /.azuredevops/pipelineTemplates/stages.module.yml

@@ -17,7 +17,7 @@ jobs:
     steps:
       # Analyze module library with PSRule
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Set environment
         uses: ./.github/actions/templates/setEnvironment
         with:

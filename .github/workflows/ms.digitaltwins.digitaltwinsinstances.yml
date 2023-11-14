@@ -30,14 +30,14 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.digitaltwins.digitaltwinsinstances.yml'
-      - 'modules/digital-twins/digital-twins-instances/**'
-      - 'modules/network/private-endpoints/**'
+      - 'modules/digital-twins/digital-twins-instance/**'
+      - 'modules/network/private-endpoint/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
       - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/digital-twins/digital-twins-instances'
+  modulePath: 'modules/digital-twins/digital-twins-instance'
   workflowPath: '.github/workflows/ms.digitaltwins.digitaltwinsinstances.yml'
 
 concurrency:
@@ -52,7 +52,7 @@ jobs:
     name: 'Initialize pipeline'
     steps:
       - name: 'Checkout'
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - name: 'Set input parameters to output variables'

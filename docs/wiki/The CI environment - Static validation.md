@@ -24,7 +24,6 @@ The following activities are performed by the [`utilities/pipelines/staticValida
     1. Module should contain a [` README.md `] file.
     1. Module should contain a [` .test `] folder.
     1. Module should contain a [` version.json `] file.
-    1. Module should contain a [` metadata.json `] file.
   - **.test folder**
     1. Folder should contain one or more test files.
     1. JSON test files in the `.test` folder should be valid json.
@@ -36,15 +35,6 @@ The following activities are performed by the [`utilities/pipelines/staticValida
 - **Module tests**
   - **Readme content tests**
     1. `README.md` file should not be empty.
-    1. `README.md` file should contain these sections in order: Navigation, Resource Types, Parameters, Outputs, Cross-referenced modules, Deployment examples.
-    1. Resources section should contain all resources from the template file.
-    1. Resources section should not contain more resources than the template file.
-    1. Parameters section should contain a table for each existing parameter category in the following order: Required, Conditional, Optional, Generated.
-    1. Parameter tables should provide columns in the following order: Parameter Name, Type, Default Value, Allowed Values, Description. Each column should be present unless empty for all the rows.
-    1. Parameters section should contain all parameters from the template file.
-    1. Outputs section should contain a table with these column names in order: Output Name, Type.
-    1. Output section should contain all outputs defined in the template file.
-    1. Dependencies section should contain all cross-references defined in the template file.
     1. `Set-ModuleReadMe` script should not apply any updates.
   - **Compiled ARM template tests**
     1. Compiled ARM template should be latest.
@@ -68,9 +58,8 @@ The following activities are performed by the [`utilities/pipelines/staticValida
     1. All required parameters in template file (`main.json`) should exist in parameters files.
     1. All non-required parameters in template file should not have description that start with "Required.".
   - **Metadata content tests**
-    1. `metadata.json` file should not be empty.
-    1. `metadata.json` file should have a module name specified.
-    1. `metadata.json` file should have a module description / summary specified.
+    1. template file should have a module name specified.
+    1. template file should have a module description specified.
 - **Test file tests**
   - **General test file**
     1. Bicep test deployment name should contain [`-test-`].
@@ -79,15 +68,12 @@ The following activities are performed by the [`utilities/pipelines/staticValida
     1. JSON test deployment should have parameter [`serviceShort`].
   - **Token usage**
     1. [Tokens] Test file should not contain the plain value for token guid.
-  - **Public Bicep Registry tests**
-    1. Module should have central test file [.test/main.test.bicep] for Public Bicep Registry CI
-    1. Module
 - **API version tests**
     1. In used resource type should use one of the recent API version(s). Currently using .
 
 ## Output example
 
-<img src="./media/CIEnvironment/staticValidationOutput.png" alt="Static Validation Output" height="400">
+<img src="./media/CIEnvironment/staticValidationOutput.png" alt="Static Validation Output" height="700">
 
 ## Additional resources
 
@@ -124,7 +110,7 @@ $pathToRepository = '<pathToClonedRepo>'
 
 # REQUIRED INPUT FOR TESTING
 $TestModuleLocallyInput = @{
-    templateFilePath              = "$pathToRepository\modules\Authorization\roleDefinitions\main.bicep"
+    templateFilePath              = "$pathToRepository\modules\authorization\role-definition\main.bicep"
     PesterTest                    = $true
     DeploymentTest                = $false
     ValidationTest                = $false

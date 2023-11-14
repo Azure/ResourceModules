@@ -5,7 +5,7 @@ metadata owner = 'Azure/module-maintainers'
 targetScope = 'subscription'
 
 @description('Optional. Tags for the resource group. If not provided, removes existing tags.')
-param tags object = {}
+param tags object?
 
 @description('Optional. Instead of overwriting the existing tags, combine them with the new tags.')
 param onlyUpdate bool = false
@@ -37,7 +37,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-module tags_sub 'subscriptions/main.bicep' = if (!empty(subscriptionId) && empty(resourceGroupName)) {
+module tags_sub 'subscription/main.bicep' = if (!empty(subscriptionId) && empty(resourceGroupName)) {
   name: '${deployment().name}-Tags-Sub'
   params: {
     onlyUpdate: onlyUpdate
@@ -47,7 +47,7 @@ module tags_sub 'subscriptions/main.bicep' = if (!empty(subscriptionId) && empty
   }
 }
 
-module tags_rg 'resource-groups/main.bicep' = if (!empty(resourceGroupName) && !empty(subscriptionId)) {
+module tags_rg 'resource-group/main.bicep' = if (!empty(resourceGroupName) && !empty(subscriptionId)) {
   name: '${deployment().name}-Tags-RG'
   scope: resourceGroup(resourceGroupName)
   params: {

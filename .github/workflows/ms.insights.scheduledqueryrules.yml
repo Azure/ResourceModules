@@ -30,13 +30,13 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.insights.scheduledqueryrules.yml'
-      - 'modules/insights/scheduled-query-rules/**'
+      - 'modules/insights/scheduled-query-rule/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
       - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/insights/scheduled-query-rules'
+  modulePath: 'modules/insights/scheduled-query-rule'
   workflowPath: '.github/workflows/ms.insights.scheduledqueryrules.yml'
 
 concurrency:
@@ -51,7 +51,7 @@ jobs:
     name: 'Initialize pipeline'
     steps:
       - name: 'Checkout'
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - name: 'Set input parameters to output variables'

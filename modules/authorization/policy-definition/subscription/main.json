@@ -1,0 +1,141 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.22.6.54827",
+      "templateHash": "15610043692526006499"
+    },
+    "name": "Policy Definitions (Subscription scope)",
+    "description": "This module deploys a Policy Definition at a Subscription scope.",
+    "owner": "Azure/module-maintainers"
+  },
+  "parameters": {
+    "name": {
+      "type": "string",
+      "maxLength": 64,
+      "metadata": {
+        "description": "Required. Specifies the name of the policy definition. Maximum length is 64 characters."
+      }
+    },
+    "displayName": {
+      "type": "string",
+      "defaultValue": "",
+      "maxLength": 128,
+      "metadata": {
+        "description": "Optional. The display name of the policy definition. Maximum length is 128 characters."
+      }
+    },
+    "description": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Optional. The policy definition description."
+      }
+    },
+    "mode": {
+      "type": "string",
+      "defaultValue": "All",
+      "allowedValues": [
+        "All",
+        "Indexed",
+        "Microsoft.KeyVault.Data",
+        "Microsoft.ContainerService.Data",
+        "Microsoft.Kubernetes.Data",
+        "Microsoft.Network.Data"
+      ],
+      "metadata": {
+        "description": "Optional. The policy definition mode. Default is All, Some examples are All, Indexed, Microsoft.KeyVault.Data."
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "defaultValue": {},
+      "metadata": {
+        "description": "Optional. The policy Definition metadata. Metadata is an open ended object and is typically a collection of key-value pairs."
+      }
+    },
+    "parameters": {
+      "type": "object",
+      "defaultValue": {},
+      "metadata": {
+        "description": "Optional. The policy definition parameters that can be used in policy definition references."
+      }
+    },
+    "policyRule": {
+      "type": "object",
+      "metadata": {
+        "description": "Required. The Policy Rule details for the Policy Definition."
+      }
+    },
+    "location": {
+      "type": "string",
+      "defaultValue": "[deployment().location]",
+      "metadata": {
+        "description": "Optional. Location deployment metadata."
+      }
+    },
+    "enableDefaultTelemetry": {
+      "type": "bool",
+      "defaultValue": true,
+      "metadata": {
+        "description": "Optional. Enable telemetry via a Globally Unique Identifier (GUID)."
+      }
+    }
+  },
+  "resources": [
+    {
+      "condition": "[parameters('enableDefaultTelemetry')]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2021-04-01",
+      "name": "[format('pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-{0}', uniqueString(deployment().name, parameters('location')))]",
+      "location": "[parameters('location')]",
+      "properties": {
+        "mode": "Incremental",
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "resources": []
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Authorization/policyDefinitions",
+      "apiVersion": "2021-06-01",
+      "name": "[parameters('name')]",
+      "properties": {
+        "policyType": "Custom",
+        "mode": "[parameters('mode')]",
+        "displayName": "[if(not(empty(parameters('displayName'))), parameters('displayName'), null())]",
+        "description": "[if(not(empty(parameters('description'))), parameters('description'), null())]",
+        "metadata": "[if(not(empty(parameters('metadata'))), parameters('metadata'), null())]",
+        "parameters": "[if(not(empty(parameters('parameters'))), parameters('parameters'), null())]",
+        "policyRule": "[parameters('policyRule')]"
+      }
+    }
+  ],
+  "outputs": {
+    "name": {
+      "type": "string",
+      "metadata": {
+        "description": "Policy Definition Name."
+      },
+      "value": "[parameters('name')]"
+    },
+    "resourceId": {
+      "type": "string",
+      "metadata": {
+        "description": "Policy Definition resource ID."
+      },
+      "value": "[subscriptionResourceId('Microsoft.Authorization/policyDefinitions', parameters('name'))]"
+    },
+    "roleDefinitionIds": {
+      "type": "array",
+      "metadata": {
+        "description": "Policy Definition Role Definition IDs."
+      },
+      "value": "[if(contains(reference(subscriptionResourceId('Microsoft.Authorization/policyDefinitions', parameters('name')), '2021-06-01').policyRule.then, 'details'), if(contains(reference(subscriptionResourceId('Microsoft.Authorization/policyDefinitions', parameters('name')), '2021-06-01').policyRule.then.details, 'roleDefinitionIds'), reference(subscriptionResourceId('Microsoft.Authorization/policyDefinitions', parameters('name')), '2021-06-01').policyRule.then.details.roleDefinitionIds, createArray()), createArray())]"
+    }
+  }
+}

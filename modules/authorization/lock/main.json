@@ -1,0 +1,364 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.22.6.54827",
+      "templateHash": "15385346851879884120"
+    },
+    "name": "Authorization Locks (All scopes)",
+    "description": "This module deploys an Authorization Lock at a Subscription or Resource Group scope.",
+    "owner": "Azure/module-maintainers"
+  },
+  "parameters": {
+    "level": {
+      "type": "string",
+      "allowedValues": [
+        "CanNotDelete",
+        "ReadOnly"
+      ],
+      "metadata": {
+        "description": "Required. Set lock level."
+      }
+    },
+    "notes": {
+      "type": "string",
+      "defaultValue": "[if(equals(parameters('level'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot modify the resource or child resources.')]",
+      "metadata": {
+        "description": "Optional. The decription attached to the lock."
+      }
+    },
+    "enableDefaultTelemetry": {
+      "type": "bool",
+      "defaultValue": true,
+      "metadata": {
+        "description": "Optional. Enable telemetry via a Globally Unique Identifier (GUID)."
+      }
+    },
+    "resourceGroupName": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Optional. Name of the Resource Group to assign the lock to. If Resource Group name is provided, and Subscription ID is provided, the module deploys at resource group level, therefore assigns the provided lock to the resource group."
+      }
+    },
+    "subscriptionId": {
+      "type": "string",
+      "defaultValue": "[subscription().id]",
+      "metadata": {
+        "description": "Optional. Subscription ID of the subscription to assign the lock to. If not provided, will use the current scope for deployment. If no resource group name is provided, the module deploys at subscription level, therefore assigns the provided locks to the subscription."
+      }
+    },
+    "location": {
+      "type": "string",
+      "defaultValue": "[deployment().location]",
+      "metadata": {
+        "description": "Optional. Location for all resources."
+      }
+    }
+  },
+  "variables": {
+    "enableReferencedModulesTelemetry": false
+  },
+  "resources": [
+    {
+      "condition": "[parameters('enableDefaultTelemetry')]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2021-04-01",
+      "name": "[format('pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-{0}', uniqueString(deployment().name, parameters('location')))]",
+      "location": "[parameters('location')]",
+      "properties": {
+        "mode": "Incremental",
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "resources": []
+        }
+      }
+    },
+    {
+      "condition": "[and(not(empty(parameters('subscriptionId'))), empty(parameters('resourceGroupName')))]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2022-09-01",
+      "name": "[format('{0}-Lock-Sub-Module', uniqueString(deployment().name, parameters('location')))]",
+      "subscriptionId": "[parameters('subscriptionId')]",
+      "location": "[deployment().location]",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "name": {
+            "value": "[format('{0}-{1}-lock', subscription().displayName, parameters('level'))]"
+          },
+          "level": {
+            "value": "[parameters('level')]"
+          },
+          "notes": {
+            "value": "[parameters('notes')]"
+          },
+          "enableDefaultTelemetry": {
+            "value": "[variables('enableReferencedModulesTelemetry')]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.22.6.54827",
+              "templateHash": "876321567657394219"
+            },
+            "name": "Authorization Locks (Subscription scope)",
+            "description": "This module deploys an Authorization Lock at a Subscription scope.",
+            "owner": "Azure/module-maintainers"
+          },
+          "parameters": {
+            "name": {
+              "type": "string",
+              "defaultValue": "[format('{0}-lock', parameters('level'))]",
+              "metadata": {
+                "description": "Optional. The name of the lock."
+              }
+            },
+            "level": {
+              "type": "string",
+              "allowedValues": [
+                "CanNotDelete",
+                "ReadOnly"
+              ],
+              "metadata": {
+                "description": "Required. Set lock level."
+              }
+            },
+            "notes": {
+              "type": "string",
+              "defaultValue": "[if(equals(parameters('level'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot modify the resource or child resources.')]",
+              "metadata": {
+                "description": "Optional. The decription attached to the lock."
+              }
+            },
+            "enableDefaultTelemetry": {
+              "type": "bool",
+              "defaultValue": true,
+              "metadata": {
+                "description": "Optional. Enable telemetry via a Globally Unique Identifier (GUID)."
+              }
+            }
+          },
+          "resources": [
+            {
+              "condition": "[parameters('enableDefaultTelemetry')]",
+              "type": "Microsoft.Resources/deployments",
+              "apiVersion": "2021-04-01",
+              "name": "[format('pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-{0}', uniqueString(deployment().name))]",
+              "properties": {
+                "mode": "Incremental",
+                "template": {
+                  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                  "contentVersion": "1.0.0.0",
+                  "resources": []
+                }
+              }
+            },
+            {
+              "type": "Microsoft.Authorization/locks",
+              "apiVersion": "2020-05-01",
+              "name": "[parameters('name')]",
+              "properties": {
+                "level": "[parameters('level')]",
+                "notes": "[parameters('notes')]"
+              }
+            }
+          ],
+          "outputs": {
+            "name": {
+              "type": "string",
+              "metadata": {
+                "description": "The name of the lock."
+              },
+              "value": "[parameters('name')]"
+            },
+            "resourceId": {
+              "type": "string",
+              "metadata": {
+                "description": "The resource ID of the lock."
+              },
+              "value": "[subscriptionResourceId('Microsoft.Authorization/locks', parameters('name'))]"
+            },
+            "subscriptionName": {
+              "type": "string",
+              "metadata": {
+                "description": "The subscription name the lock was deployed into."
+              },
+              "value": "[subscription().displayName]"
+            },
+            "scope": {
+              "type": "string",
+              "metadata": {
+                "description": "The scope this lock applies to."
+              },
+              "value": "[subscription().id]"
+            }
+          }
+        }
+      }
+    },
+    {
+      "condition": "[and(not(empty(parameters('subscriptionId'))), not(empty(parameters('resourceGroupName'))))]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2022-09-01",
+      "name": "[format('{0}-Lock-RG-Module', uniqueString(deployment().name, parameters('location')))]",
+      "subscriptionId": "[parameters('subscriptionId')]",
+      "resourceGroup": "[parameters('resourceGroupName')]",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "name": {
+            "value": "[format('{0}-{1}-lock', parameters('resourceGroupName'), parameters('level'))]"
+          },
+          "level": {
+            "value": "[parameters('level')]"
+          },
+          "notes": {
+            "value": "[parameters('notes')]"
+          },
+          "enableDefaultTelemetry": {
+            "value": "[variables('enableReferencedModulesTelemetry')]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.22.6.54827",
+              "templateHash": "8961143332409950444"
+            },
+            "name": "Authorization Locks (Resource Group scope)",
+            "description": "This module deploys an Authorization Lock at a Resource Group scope.",
+            "owner": "Azure/module-maintainers"
+          },
+          "parameters": {
+            "name": {
+              "type": "string",
+              "defaultValue": "[format('{0}-lock', parameters('level'))]",
+              "metadata": {
+                "description": "Optional. The name of the lock."
+              }
+            },
+            "level": {
+              "type": "string",
+              "allowedValues": [
+                "CanNotDelete",
+                "ReadOnly"
+              ],
+              "metadata": {
+                "description": "Required. Set lock level."
+              }
+            },
+            "notes": {
+              "type": "string",
+              "defaultValue": "[if(equals(parameters('level'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot modify the resource or child resources.')]",
+              "metadata": {
+                "description": "Optional. The decription attached to the lock."
+              }
+            },
+            "enableDefaultTelemetry": {
+              "type": "bool",
+              "defaultValue": true,
+              "metadata": {
+                "description": "Optional. Enable telemetry via a Globally Unique Identifier (GUID)."
+              }
+            }
+          },
+          "resources": [
+            {
+              "condition": "[parameters('enableDefaultTelemetry')]",
+              "type": "Microsoft.Resources/deployments",
+              "apiVersion": "2021-04-01",
+              "name": "[format('pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-{0}', uniqueString(deployment().name))]",
+              "properties": {
+                "mode": "Incremental",
+                "template": {
+                  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                  "contentVersion": "1.0.0.0",
+                  "resources": []
+                }
+              }
+            },
+            {
+              "type": "Microsoft.Authorization/locks",
+              "apiVersion": "2020-05-01",
+              "name": "[parameters('name')]",
+              "properties": {
+                "level": "[parameters('level')]",
+                "notes": "[parameters('notes')]"
+              }
+            }
+          ],
+          "outputs": {
+            "name": {
+              "type": "string",
+              "metadata": {
+                "description": "The name of the lock."
+              },
+              "value": "[parameters('name')]"
+            },
+            "resourceId": {
+              "type": "string",
+              "metadata": {
+                "description": "The resource ID of the lock."
+              },
+              "value": "[resourceId('Microsoft.Authorization/locks', parameters('name'))]"
+            },
+            "resourceGroupName": {
+              "type": "string",
+              "metadata": {
+                "description": "The name of the resource group name the lock was applied to."
+              },
+              "value": "[resourceGroup().name]"
+            },
+            "scope": {
+              "type": "string",
+              "metadata": {
+                "description": "The scope this lock applies to."
+              },
+              "value": "[resourceGroup().id]"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "name": {
+      "type": "string",
+      "metadata": {
+        "description": "The name of the lock."
+      },
+      "value": "[if(empty(parameters('resourceGroupName')), reference(subscriptionResourceId(parameters('subscriptionId'), 'Microsoft.Resources/deployments', format('{0}-Lock-Sub-Module', uniqueString(deployment().name, parameters('location')))), '2022-09-01').outputs.name.value, reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', parameters('subscriptionId'), parameters('resourceGroupName')), 'Microsoft.Resources/deployments', format('{0}-Lock-RG-Module', uniqueString(deployment().name, parameters('location')))), '2022-09-01').outputs.name.value)]"
+    },
+    "resourceId": {
+      "type": "string",
+      "metadata": {
+        "description": "The resource ID of the lock."
+      },
+      "value": "[if(empty(parameters('resourceGroupName')), reference(subscriptionResourceId(parameters('subscriptionId'), 'Microsoft.Resources/deployments', format('{0}-Lock-Sub-Module', uniqueString(deployment().name, parameters('location')))), '2022-09-01').outputs.resourceId.value, reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', parameters('subscriptionId'), parameters('resourceGroupName')), 'Microsoft.Resources/deployments', format('{0}-Lock-RG-Module', uniqueString(deployment().name, parameters('location')))), '2022-09-01').outputs.resourceId.value)]"
+    },
+    "scope": {
+      "type": "string",
+      "metadata": {
+        "description": "The scope this lock applies to."
+      },
+      "value": "[if(empty(parameters('resourceGroupName')), reference(subscriptionResourceId(parameters('subscriptionId'), 'Microsoft.Resources/deployments', format('{0}-Lock-Sub-Module', uniqueString(deployment().name, parameters('location')))), '2022-09-01').outputs.scope.value, reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', parameters('subscriptionId'), parameters('resourceGroupName')), 'Microsoft.Resources/deployments', format('{0}-Lock-RG-Module', uniqueString(deployment().name, parameters('location')))), '2022-09-01').outputs.scope.value)]"
+    }
+  }
+}

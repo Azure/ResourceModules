@@ -27,8 +27,8 @@ on:
     branches:
       - main
     paths:
-      - 'modules/service-bus/namespaces/**'
-      - 'modules/network/private-endpoints/**'
+      - 'modules/service-bus/namespace/**'
+      - 'modules/network/private-endpoint/**'
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.servicebus.namespaces.yml'
@@ -37,7 +37,7 @@ on:
       - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/service-bus/namespaces'
+  modulePath: 'modules/service-bus/namespace'
   workflowPath: '.github/workflows/ms.servicebus.namespaces.yml'
 
 concurrency:
@@ -52,7 +52,7 @@ jobs:
     name: 'Initialize pipeline'
     steps:
       - name: 'Checkout'
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - name: 'Set input parameters to output variables'

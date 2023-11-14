@@ -29,7 +29,7 @@ Optional. Input parameters to pass into the pipeline. Must match the names of th
 Required. The path to the workflow.
 
 .EXAMPLE
-Invoke-GitHubWorkflow -PersonalAccessToken '<Placeholder>' -GitHubRepositoryOwner 'Azure' -GitHubRepositoryName 'ResourceModules' -WorkflowFileName 'ms.analysisservices.servers.yml' -TargetBranch 'main' -GitHubPipelineInputs @{ prerelease = 'false'; deploymentValidation = 'false'; removeDeployment = 'true' }
+Invoke-GitHubWorkflow -PersonalAccessToken '<Placeholder>' -GitHubRepositoryOwner 'Azure' -GitHubRepositoryName 'ResourceModules' -WorkflowFileName 'ms.analysisservices.servers.yml' -TargetBranch 'main' -GitHubPipelineInputs @{ prerelease = 'false'; staticValidation = 'true'; deploymentValidation = 'true'; removeDeployment = 'true' }
 
 Trigger the workflow 'ms.analysisservices.servers.yml' with branch 'main' in repository 'Azure/ResourceModules'.
 #>
@@ -193,7 +193,7 @@ Optional. The Azure DevOps project to run the pipelines in. Required if the chos
 Optional. The folder in Azure DevOps the pipelines are registerd in. Required if the chosen environment is `AzureDevOps`. Defaults to 'CARML-Modules'.
 
 .EXAMPLE
-Invoke-PipelinesForBranch -PersonalAccessToken '<Placeholder>' -TargetBranch 'feature/branch' -Environment 'GitHub' -PipelineFilter 'ms.network.*' -GitHubPipelineInputs @{ prerelease = 'false'; deploymentValidation = 'false'; removeDeployment = 'true' }
+Invoke-PipelinesForBranch -PersonalAccessToken '<Placeholder>' -TargetBranch 'feature/branch' -Environment 'GitHub' -PipelineFilter 'ms.network.*' -GitHubPipelineInputs @{ prerelease = 'false'; staticValidation = 'true'; deploymentValidation = 'true'; removeDeployment = 'true' }
 
 Run all GitHub workflows that start with 'ms.network.*' using branch 'feature/branch'. Also returns all GitHub status badges.
 

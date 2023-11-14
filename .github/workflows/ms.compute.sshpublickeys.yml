@@ -27,7 +27,7 @@ on:
     branches:
       - main
     paths:
-      - 'modules/compute/ssh-public-keys/**'
+      - 'modules/compute/ssh-public-key/**'
       - '.github/actions/templates/**'
       - '.github/workflows/ms.compute.sshpublickeys.yml'
       - 'utilities/pipelines/**'
@@ -35,7 +35,7 @@ on:
       - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/compute/ssh-public-keys'
+  modulePath: 'modules/compute/ssh-public-key'
   workflowPath: '.github/workflows/ms.compute.sshpublickeys.yml'
 
 concurrency:
@@ -50,7 +50,7 @@ jobs:
     name: 'Initialize pipeline'
     steps:
       - name: 'Checkout'
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - name: 'Set input parameters to output variables'

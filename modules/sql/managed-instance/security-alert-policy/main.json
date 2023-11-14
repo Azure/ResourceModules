@@ -1,0 +1,101 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.22.6.54827",
+      "templateHash": "73480634697264424"
+    },
+    "name": "SQL Managed Instance Security Alert Policies",
+    "description": "This module deploys a SQL Managed Instance Security Alert Policy.",
+    "owner": "Azure/module-maintainers"
+  },
+  "parameters": {
+    "name": {
+      "type": "string",
+      "metadata": {
+        "description": "Required. The name of the security alert policy."
+      }
+    },
+    "managedInstanceName": {
+      "type": "string",
+      "metadata": {
+        "description": "Conditional. The name of the parent SQL managed instance. Required if the template is used in a standalone deployment."
+      }
+    },
+    "state": {
+      "type": "string",
+      "defaultValue": "Disabled",
+      "allowedValues": [
+        "Enabled",
+        "Disabled"
+      ],
+      "metadata": {
+        "description": "Optional. Enables advanced data security features, like recuring vulnerability assesment scans and ATP. If enabled, storage account must be provided."
+      }
+    },
+    "emailAccountAdmins": {
+      "type": "bool",
+      "defaultValue": false,
+      "metadata": {
+        "description": "Optional. Specifies that the schedule scan notification will be is sent to the subscription administrators."
+      }
+    },
+    "enableDefaultTelemetry": {
+      "type": "bool",
+      "defaultValue": true,
+      "metadata": {
+        "description": "Optional. Enable telemetry via a Globally Unique Identifier (GUID)."
+      }
+    }
+  },
+  "resources": [
+    {
+      "condition": "[parameters('enableDefaultTelemetry')]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2021-04-01",
+      "name": "[format('pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-{0}', uniqueString(deployment().name))]",
+      "properties": {
+        "mode": "Incremental",
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "resources": []
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Sql/managedInstances/securityAlertPolicies",
+      "apiVersion": "2022-05-01-preview",
+      "name": "[format('{0}/{1}', parameters('managedInstanceName'), parameters('name'))]",
+      "properties": {
+        "state": "[parameters('state')]",
+        "emailAccountAdmins": "[parameters('emailAccountAdmins')]"
+      }
+    }
+  ],
+  "outputs": {
+    "name": {
+      "type": "string",
+      "metadata": {
+        "description": "The name of the deployed security alert policy."
+      },
+      "value": "[parameters('name')]"
+    },
+    "resourceId": {
+      "type": "string",
+      "metadata": {
+        "description": "The resource ID of the deployed security alert policy."
+      },
+      "value": "[resourceId('Microsoft.Sql/managedInstances/securityAlertPolicies', parameters('managedInstanceName'), parameters('name'))]"
+    },
+    "resourceGroupName": {
+      "type": "string",
+      "metadata": {
+        "description": "The resource group of the deployed security alert policy."
+      },
+      "value": "[resourceGroup().name]"
+    }
+  }
+}

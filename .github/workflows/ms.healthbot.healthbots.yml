@@ -30,13 +30,13 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.healthbot.healthbots.yml'
-      - 'modules/health-bot/health-bots/**'
+      - 'modules/health-bot/health-bot/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
       - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/health-bot/health-bots'
+  modulePath: 'modules/health-bot/health-bot'
   workflowPath: '.github/workflows/ms.healthbot.healthbots.yml'
 
 concurrency:
@@ -51,7 +51,7 @@ jobs:
     name: 'Initialize pipeline'
     steps:
       - name: 'Checkout'
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - name: 'Set input parameters to output variables'

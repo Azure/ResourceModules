@@ -148,10 +148,10 @@ To use the environment's pipelines you should use the information you gathered d
 
 | Secret Name | Example | Description |
 | - | - | - |
-| `ARM_MGMTGROUP_ID` | `de33a0e7-64d9-4a94-8fe9-b018cedf1e05` | The group ID of the management group to test-deploy modules in. |
-| `ARM_SUBSCRIPTION_ID` | `d0312b25-9160-4550-914f-8738d9b5caf5` | The ID of the subscription to test-deploy modules in. |
-| `ARM_TENANT_ID` | `9734cec9-4384-445b-bbb6-767e7be6e5ec` | The tenant ID of the Azure Active Directory tenant to test-deploy modules in. |
-| `AZURE_CREDENTIALS` | `{"clientId": "4ce8ce4c-cac0-48eb-b815-65e5763e2929", "clientSecret": "<placeholder>", "subscriptionId": "d0312b25-9160-4550-914f-8738d9b5caf5", "tenantId": "9734cec9-4384-445b-bbb6-767e7be6e5ec" }` | The login credentials of the deployment principal used to log into the target Azure environment to test in. The format is described [here](https://github.com/Azure/login#configure-deployment-credentials). |
+| `ARM_MGMTGROUP_ID` | `11111111-1111-1111-1111-111111111111` | The group ID of the management group to test-deploy modules in. |
+| `ARM_SUBSCRIPTION_ID` | `22222222-2222-2222-2222-222222222222` | The ID of the subscription to test-deploy modules in. |
+| `ARM_TENANT_ID` | `33333333-3333-3333-3333-333333333333` | The tenant ID of the Azure Active Directory tenant to test-deploy modules in. |
+| `AZURE_CREDENTIALS` | `{"clientId": "44444444-4444-4444-4444-444444444444", "clientSecret": "<placeholder>", "subscriptionId": "22222222-2222-2222-2222-222222222222", "tenantId": "33333333-3333-3333-3333-333333333333" }` | The login credentials of the deployment principal used to log into the target Azure environment to test in. The format is described [here](https://github.com/Azure/login#configure-deployment-credentials). |
 | `PLATFORM_REPO_UPDATE_PAT` | `<placeholder>` | A private access token (PAT) with enough permissions assigned to it to push into the main branch. This PAT is leveraged by pipelines that automatically generate ReadMe files to keep them up to date. |
 | `TOKEN_NAMEPREFIX` | `cntso` | Optional. If you specify the name prefix token here, it is only applied if the `localToken_namePrefix` specified in the [settings.yml](https://github.com/Azure/ResourceModules/blob/main/settings.yml) is left empty.  |
 
@@ -183,7 +183,7 @@ To use the environment's pipelines you should use the information you gathered d
 > {"clientId": "<client_id>", "clientSecret": "<client_secret>", "subscriptionId": "<subscriptionId>", "tenantId": "<tenant_id>" }
 > ```
 >
-> **Make sure you create this object as one continuous string as shown above** - using the information you collected during [Step 1](#1-configure-your-azure-environment). Failing to format the secret as above, causes GitHub to consider each line of the json object as a separate secret string. If you're interested, you can find more information about this object [here](https://github.com/Azure/login#configure-deployment-credentials).
+> **Make sure you create this object as one continuous string as shown above** - using the information you collected during [Step 1](#1-configure-your-azure-environment). Failing to format the secret as above, causes GitHub to consider each line of the JSON object as a separate secret string. If you're interested, you can find more information about this object [here](https://github.com/Azure/login#configure-deployment-credentials).
 
 ### 3.2.2 Set up settings file
 
@@ -195,7 +195,15 @@ The primary pipeline settings file ([`settings.yml`](https://github.com/Azure/Re
 | Variable Name | Example Value | Description |
 | - | - | - |
 | `location` | `"WestEurope"` | The default location to deploy resources to and store deployment metadata at. If no location is specified in the deploying module test file, this location is used. |
-| `resourceGroupName` | `"validation-rg"` | The resource group to deploy all resources for validation to. |
+
+</details>
+
+<details>
+<summary>General (publishing)</summary>
+
+| Variable Name | Example Value | Description |
+| - | - | - |
+| `useApiSpecsAlignedName` | `'false'` |  Publish a module not using its folder path, but the matching name in the REST API (i.e., the classic naming). For example: `bicep/modules/microsoft.keyvault.vaults.secrets` instead of `bicep/modules/key-vault.vault.secret`. For more information, please refer to the [Publishing guidelines](./The%20CI%20environment%20-%20Publishing#Module-identifiers). |
 
 </details>
 
@@ -204,6 +212,7 @@ The primary pipeline settings file ([`settings.yml`](https://github.com/Azure/Re
 
 | Variable Name | Example Value | Description |
 | - | - | - |
+| `publishLatest` | `'true'` |  Publish an absolute latest version. Note: This version may include breaking changes and is not recommended for production environments. |
 | `templateSpecsRGName` | `"artifacts-rg"` | The resource group to host the created template-specs. |
 | `templateSpecsRGLocation` | `"WestEurope"` | The location of the resource group to host the template-specs. Is used to create a new resource group if not yet existing. |
 | `templateSpecsDescription` | `"This is a module from the [Common Azure Resource Modules Library]"` | A description to add to the published template specs. |
@@ -216,6 +225,7 @@ The primary pipeline settings file ([`settings.yml`](https://github.com/Azure/Re
 
 | Variable Name | Example Value | Description |
 | - | - | - |
+| `publishLatest` | `'true'` |  Publish an absolute latest version. Note: This version may include breaking changes and is not recommended for production environments. |
 | `bicepRegistryName` | `"adpsxxazacrx001"` | The container registry to publish Bicep templates to. <p> **NOTE:** Must be globally unique. |
 | `bicepRegistryRGName` | `"artifacts-rg"` | The resource group of the container registry to publish Bicep templates into. It is used to create a new container registry if not yet existing. |
 | `bicepRegistryRgLocation` | `'West Europe'` | The location of the resource group of the container registry to publish Bicep templates into. Is used to create a new resource group if not yet existing. |
@@ -281,9 +291,9 @@ Based on the information you gathered in the Azure setup [above](#1-configure-yo
 
 | Secret Name | Example | Description |
 | - | - | - |
-| `ARM_MGMTGROUP_ID` | `de33a0e7-64d9-4a94-8fe9-b018cedf1e05` | The group ID of the management group to test-deploy modules in. |
-| `ARM_SUBSCRIPTION_ID` | `d0312b25-9160-4550-914f-8738d9b5caf5` | The ID of the subscription to test-deploy modules in. |
-| `ARM_TENANT_ID` | `9734cec9-4384-445b-bbb6-767e7be6e5ec` | The tenant ID of the Azure Active Directory tenant to test-deploy modules in. |
+| `ARM_MGMTGROUP_ID` | `11111111-1111-1111-1111-111111111111` | The group ID of the management group to test-deploy modules in. |
+| `ARM_SUBSCRIPTION_ID` | `22222222-2222-2222-2222-222222222222` | The ID of the subscription to test-deploy modules in. |
+| `ARM_TENANT_ID` | `33333333-3333-3333-3333-333333333333` | The tenant ID of the Azure Active Directory tenant to test-deploy modules in. |
 | `TOKEN_NAMEPREFIX` | `<cntso>` | Optional. If you specify the name prefix token here, it is only applied if the `localToken_namePrefix` specified in the [settings.yml](https://github.com/Azure/ResourceModules/blob/main/settings.yml) is left empty.  |
 
 Make sure its name matches the `group` reference used in the module pipelines. For example
@@ -310,10 +320,20 @@ The primary pipeline settings file ([`settings.yml`](https://github.com/Azure/Re
 </details>
 
 <details>
+<summary>General (publishing)</summary>
+
+| Variable Name | Example Value | Description |
+| - | - | - |
+| `useApiSpecsAlignedName` | `'false'` |  Publish a module not using its folder path, but the matching name in the REST API (i.e., the classic naming). For example: `bicep/modules/microsoft.keyvault.vaults.secrets` instead of `bicep/modules/key-vault.vault.secret`. For more information, please refer to the [Publishing guidelines](./The%20CI%20environment%20-%20Publishing#Module-identifiers).  |
+
+</details>
+
+<details>
 <summary>Template-specs specific (publishing)</summary>
 
 | Variable Name | Example Value | Description |
 | - | - | - |
+| `publishLatest` | `'true'` |  Publish an absolute latest version. Note: This version may include breaking changes and is not recommended for production environments. |
 | `templateSpecsRGName` | `'artifacts-rg'` | The resource group to host the created template-specs. </p> Will be automatically created if not yet existing in the target subscription. |
 | `templateSpecsRGLocation` | `'WestEurope'` | The location of the resource group to host the template-specs. Is used to create a new resource group if not yet existing. |
 | `templateSpecsDescription` | `'This is a module from the [Common Azure Resource Modules Library]'` | A description to add to the published template specs. |
@@ -326,6 +346,7 @@ The primary pipeline settings file ([`settings.yml`](https://github.com/Azure/Re
 
 | Variable Name | Example Value | Description |
 | - | - | - |
+| `publishLatest` | `'true'` |  Publish an absolute latest version. Note: This version may include breaking changes and is not recommended for production environments. |
 | `bicepRegistryName` | `'adpsxxazacrx001'` | The container registry to publish Bicep templates to. </p> **NOTE:** Must be globally unique. </p> Will be automatically created if not yet existing in the target subscription. |
 | `bicepRegistryRGName` | `'artifacts-rg'` | The resource group of the container registry to publish Bicep templates to. Is used to create a new container registry if not yet existing. </p> Will be automatically created if not yet existing in the target subscription. |
 | `bicepRegistryRgLocation` | `'West Europe'` | The location of the resource group of the container registry to publish Bicep templates to. Is used to create a new resource group if not yet existing. |

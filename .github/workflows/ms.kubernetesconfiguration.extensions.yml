@@ -27,8 +27,8 @@ on:
     branches:
       - main
     paths:
-      - 'modules/kubernetes-configuration/extensions/**'
-      - 'modules/kubernetes-configuration/flux-configurations/**'
+      - 'modules/kubernetes-configuration/extension/**'
+      - 'modules/kubernetes-configuration/flux-configuration/**'
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.kubernetesconfiguration.extensions.yml'
@@ -37,7 +37,7 @@ on:
       - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/kubernetes-configuration/extensions'
+  modulePath: 'modules/kubernetes-configuration/extension'
   workflowPath: '.github/workflows/ms.kubernetesconfiguration.extensions.yml'
 
 concurrency:
@@ -52,7 +52,7 @@ jobs:
     name: 'Initialize pipeline'
     steps:
       - name: 'Checkout'
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - name: 'Set input parameters to output variables'

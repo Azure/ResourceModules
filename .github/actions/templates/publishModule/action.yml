@@ -12,20 +12,22 @@
 ## ACTION PARAMETERS                         ##
 ##-------------------------------------------##
 ##
-##   |===========================================================================================================================================================================================================|
-##   | Parameter                | Required | Default | Description                                                                                      | Example                                                |
-##   |--------------------------|----------|---------|--------------------------------------------------------------------------------------------------|--------------------------------------------------------|
-##   | templateFilePath         | true     | ''      | The path to the template file to publish                                                         | 'modules/api-management/service/main.bicep'            |
-##   | templateSpecsRgName      | false    | ''      | Required to publish to template spec. ResourceGroup of the template spec to publish to           | 'artifacts-rg'                                         |
-##   | templateSpecsRgLocation  | false    | ''      | Required to publish to template spec. Location of the template spec resource group               | 'WestEurope'                                           |
-##   | templateSpecsDescription | false    | ''      | Required to publish to template spec. Description of the template spec to publish to             | 'This is an API-Management service template'           |
-##   | templateSpecsDoPublish   | false    | 'false' | Flag to indicate whether or not to publish to template specs                                     | 'true'                                                 |
-##   | bicepRegistryName        | false    | ''      | Required to publish to private bicep registry. Name of the container registry to publish to      | 'myacr'                                                |
-##   | bicepRegistryRgName      | false    | ''      | Required to publish to private bicep registry. Name of the container registry resource group     | 'artifacts-rg'                                         |
-##   | bicepRegistryRgLocation  | false    | ''      | Required to publish to private bicep registry. Location of the container registry resource group | 'WestEurope'                                           |
-##   | bicepRegistryDoPublish   | false    | 'false' | Flag to indicate whether or not to publish to the private bicep registry                         | 'true'                                                 |
-##   | publishLatest            | false    | 'true'  | Flag to indicate whether or not to publish a "latest" version                                    | 'true'                                                 |
-##   |===========================================================================================================================================================================================================|
+##   |==============================================================================================================================================================================================================|
+##   | Parameter                  | Required | Default | Description                                                                                       | Example                                                |
+##   |----------------------------|----------|---------|---------------------------------------------------------------------------------------------------|--------------------------------------------------------|
+##   | templateFilePath           | true     | ''      | The path to the template file to publish                                                          | 'modules/api-management/service/main.bicep'            |
+##   | subscriptionId             | false    | ''      | The ID of the subscription to publish to                                                          | '11111111-1111-1111-1111-111111111111'                 |
+##   | templateSpecsRgName        | false    | ''      | Required to publish to template spec. ResourceGroup of the template spec to publish to            | 'artifacts-rg'                                         |
+##   | templateSpecsRgLocation    | false    | ''      | Required to publish to template spec. Location of the template spec resource group                | 'WestEurope'                                           |
+##   | templateSpecsDescription   | false    | ''      | Required to publish to template spec. Description of the template spec to publish to              | 'This is an API-Management service template'           |
+##   | templateSpecsDoPublish     | false    | 'false' | Flag to indicate whether or not to publish to template specs                                      | 'true'                                                 |
+##   | bicepRegistryName          | false    | ''      | Required to publish to private bicep registry. Name of the container registry to publish to       | 'myacr'                                                |
+##   | bicepRegistryRgName        | false    | ''      | Required to publish to private bicep registry. Name of the container registry resource group      | 'artifacts-rg'                                         |
+##   | bicepRegistryRgLocation    | false    | ''      | Required to publish to private bicep registry. Location of the container registry resource group  | 'WestEurope'                                           |
+##   | bicepRegistryDoPublish     | false    | 'false' | Flag to indicate whether or not to publish to the private bicep registry                          | 'true'                                                 |
+##   | publishLatest              | false    | 'true'  | Flag to indicate whether or not to publish a "latest" version                                     | 'true'                                                 |
+##   | useApiSpecsAlignedName     | false    | 'false' | Flag to indicate whether or not to publish module using their REST API, or their folder path name | 'true'                                                 |
+##   |==============================================================================================================================================================================================================|
 ##
 ##---------------------------------------------##
 name: 'Publishing'
@@ -35,6 +37,9 @@ inputs:
   templateFilePath:
     description: 'The path to the template file to publish'
     required: true
+  subscriptionId:
+    description: 'The ID of the subscription to publish to'
+    required: false
   templateSpecsRgName:
     description: 'Required to publish to template spec. ResourceGroup of the template spec to publish to'
     required: false
@@ -65,6 +70,10 @@ inputs:
     description: 'Flag to indicate whether or not to publish a "latest" version'
     default: 'true'
     required: false
+  useApiSpecsAlignedName:
+    description: 'Flag to indicate whether or not to publish module using their REST API, or their folder path name'
+    default: 'false'
+    required: false
 
 runs:
   using: 'composite'
@@ -84,6 +93,11 @@ runs:
           # Grouping task logs
           Write-Output '::group::Publish module to template specs'
 
+          if (-not [String]::IsNullOrEmpty('${{ inputs.subscriptionId }}')) {
+            Write-Verbose ('Setting context to subscription [{0}]' -f '${{ inputs.subscriptionId }}') -Verbose
+            $null = Set-AzContext -Subscription '${{ inputs.subscriptionId }}'
+          }
+
           # Load used functions
           . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourcePublish' 'Get-ModulesToPublish.ps1')
           . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourcePublish' 'Get-ModulesMissingFromTemplateSpecsRG.ps1')
@@ -96,7 +110,7 @@ runs:
           ################################
           $functionInput = @{
             TemplateFilePath = Join-Path $env:GITHUB_WORKSPACE "${{ inputs.templateFilePath }}"
-            PublishLatest    = [bool] "${{ inputs.publishLatest }}"
+            PublishLatest    = [System.Convert]::ToBoolean("${{ inputs.publishLatest }}")
           }
 
           Write-Verbose "Invoke task with" -Verbose
@@ -113,7 +127,7 @@ runs:
           $missingInputObject = @{
               TemplateFilePath    = Join-Path $env:GITHUB_WORKSPACE "${{ inputs.templateFilePath }}"
               TemplateSpecsRGName = '${{ inputs.templateSpecsRgName }}'
-              PublishLatest       = [bool] "${{ inputs.publishLatest }}"
+              PublishLatest       = [System.Convert]::ToBoolean("${{ inputs.publishLatest }}")
           }
 
           Write-Verbose "Invoke Get-ModulesMissingFromTemplateSpecsRG with" -Verbose
@@ -122,9 +136,16 @@ runs:
           $missingModules = Get-ModulesMissingFromTemplateSpecsRG @missingInputObject
 
           foreach($missingModule in $missingModules) {
-            if($modulsToPublish.TemplateFilePath -notcontains $missingModule.TemplateFilePath) {
+            if($modulesToPublish.TemplateFilePath -notcontains $missingModule.TemplateFilePath) {
               $modulesToPublish += $missingModule
             }
+          }
+
+          # Filter modules to publish 'prerelease' only if branch is not main/master
+          $BranchName = "$env:GITHUB_REF_NAME"
+          if ($BranchName -ne 'main' -and $BranchName -ne 'master') {
+            Write-Verbose "Filtering modules to only publish a [prerelease] version as the current branch [$BranchName] is not [main/master]." -Verbose
+            $modulesToPublish = $modulesToPublish | Where-Object -Property version -like '*-prerelease'
           }
 
           #################
@@ -140,6 +161,7 @@ runs:
               TemplateSpecsRgLocation  = '${{ inputs.templateSpecsRgLocation }}'
               TemplateSpecsDescription = '${{ inputs.templateSpecsDescription }}'
               ModuleVersion            = $moduleToPublish.Version
+              UseApiSpecsAlignedName   = [System.Convert]::ToBoolean('${{ inputs.useApiSpecsAlignedName }}')
             }
 
             Write-Verbose "Invoke task with" -Verbose
@@ -159,6 +181,11 @@ runs:
           # Grouping task logs
           Write-Output '::group::Publish module to private bicep registry'
 
+          if (-not [String]::IsNullOrEmpty('${{ inputs.subscriptionId }}')) {
+            Write-Verbose ('Setting context to subscription [{0}]' -f '${{ inputs.subscriptionId }}') -Verbose
+            $null = Set-AzContext -Subscription '${{ inputs.subscriptionId }}'
+          }
+
           # Load used functions
           . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourcePublish' 'Get-ModulesToPublish.ps1')
           . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourcePublish' 'Get-ModulesMissingFromPrivateBicepRegistry.ps1')
@@ -171,7 +198,7 @@ runs:
           ################################
           $functionInput = @{
             TemplateFilePath = Join-Path $env:GITHUB_WORKSPACE "${{ inputs.templateFilePath }}"
-            PublishLatest    = [bool] "${{ inputs.publishLatest }}"
+            PublishLatest    = [System.Convert]::ToBoolean("${{ inputs.publishLatest }}")
           }
 
           Write-Verbose "Invoke task with" -Verbose
@@ -188,7 +215,7 @@ runs:
               TemplateFilePath    = Join-Path $env:GITHUB_WORKSPACE "${{ inputs.templateFilePath }}"
               BicepRegistryName   = '${{ inputs.bicepRegistryName }}'
               BicepRegistryRgName = '${{ inputs.bicepRegistryRgName }}'
-              PublishLatest    = [bool] "${{ inputs.publishLatest }}"
+              PublishLatest       = [System.Convert]::ToBoolean("${{ inputs.publishLatest }}")
           }
 
           Write-Verbose "Invoke Get-ModulesMissingFromPrivateBicepRegistry with" -Verbose
@@ -197,9 +224,16 @@ runs:
           $missingModules = Get-ModulesMissingFromPrivateBicepRegistry @missingInputObject
 
           foreach($missingModule in $missingModules) {
-            if($modulsToPublish.TemplateFilePath -notcontains $missingModule.TemplateFilePath) {
+            if($modulesToPublish.TemplateFilePath -notcontains $missingModule.TemplateFilePath) {
               $modulesToPublish += $missingModule
             }
+          }
+
+          # Filter modules to publish 'prerelease' only if branch is not main/master
+          $BranchName = "$env:GITHUB_REF_NAME"
+          if ($BranchName -ne 'main' -and $BranchName -ne 'master') {
+            Write-Verbose "Filtering modules to only publish a [prerelease] version as the current branch [$BranchName] is not [main/master]." -Verbose
+            $modulesToPublish = $modulesToPublish | Where-Object -Property version -like '*-prerelease'
           }
 
           #################
@@ -215,6 +249,7 @@ runs:
               BicepRegistryRgName     = '${{ inputs.bicepRegistryRgName }}'
               BicepRegistryRgLocation = '${{ inputs.bicepRegistryRgLocation }}'
               ModuleVersion           = $moduleToPublish.Version
+              UseApiSpecsAlignedName  = [System.Convert]::ToBoolean('${{ inputs.useApiSpecsAlignedName }}')
             }
 
             Write-Verbose "Invoke task with" -Verbose

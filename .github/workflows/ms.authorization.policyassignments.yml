@@ -30,13 +30,13 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.authorization.policyassignments.yml'
-      - 'modules/authorization/policy-assignments/**'
+      - 'modules/authorization/policy-assignment/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
       - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/authorization/policy-assignments'
+  modulePath: 'modules/authorization/policy-assignment'
   workflowPath: '.github/workflows/ms.authorization.policyassignments.yml'
 
 concurrency:
@@ -51,7 +51,7 @@ jobs:
     name: 'Initialize pipeline'
     steps:
       - name: 'Checkout'
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - name: 'Set input parameters to output variables'

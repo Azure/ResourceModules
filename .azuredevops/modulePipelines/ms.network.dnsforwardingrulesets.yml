@@ -29,7 +29,7 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.network.dnsforwardingrulesets.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/modules/network/dns-forwarding-rulesets/*'
+      - '/modules/network/dns-forwarding-ruleset/*'
       - '/utilities/pipelines/*'
     exclude:
       - '/utilities/pipelines/deploymentRemoval/*'
@@ -39,7 +39,7 @@ variables:
   - template: '../../settings.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/modules/network/dns-forwarding-rulesets'
+    value: '/modules/network/dns-forwarding-ruleset'
 
 stages:
   - template: /.azuredevops/pipelineTemplates/stages.module.yml

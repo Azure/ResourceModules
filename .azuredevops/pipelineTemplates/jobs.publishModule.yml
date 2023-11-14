@@ -27,7 +27,8 @@
 ##   | vmImage                         | '$(vmImage)'                         | You can provide either a [poolname] or [vmImage] to run the job on                                      | 'ubuntu20.04'                     |
 ##   | defaultJobTimeoutInMinutes      | 120                                  | The timeout for the job in this pipeline                                                                | 120                               |
 ##   | modulePath                      | '$(modulePath)'                      | The path to the module to deploy. E.g. [c:/KeyVault]                                                    | 'c:/KeyVault'                     |
-##   | publishLatest                   | '$(publishLatest)'                   | Flag to indicate whether or not to publish a "latest" version to Bicep Registry and Template Specs                                           | true                              |
+##   | publishLatest                   | '$(publishLatest)'                   | Flag to indicate whether or not to publish a "latest" version to Bicep Registry and Template Specs      | true                              |
+##   | useApiSpecsAlignedName          | '$(useApiSpecsAlignedName)'          | Flag to indicate whether or not to publish module using their REST API, or their folder path name       | true                              |
 ##   | templateSpecsRGName             | '$(templateSpecsRGName)'             | Required to publish to template spec. ResourceGroup of the template spec to publish to                  | 'mgmt-rg'                         |
 ##   | templateSpecsRGLocation         | '$(templateSpecsRGLocation)'         | Required to publish to template spec. Location of the template spec resource group                      | 'West Europe'                     |
 ##   | templateSpecsDescription        | '$(templateSpecsDescription)'        | Required to publish to template spec. Description of the template spec to publish to                    | 'IaCs module'                     |
@@ -52,6 +53,7 @@ parameters:
   vmImage: '$(vmImage)'
   defaultJobTimeoutInMinutes: 120
   modulesRepository: '$(modulesRepository)'
+  subscriptionId: '$(ARM_SUBSCRIPTION_ID)'
 
   # Logic-related parameters
   ## Module-related
@@ -59,6 +61,7 @@ parameters:
 
   # Shared
   publishLatest: '$(publishLatest)'
+  useApiSpecsAlignedName: '$(useApiSpecsAlignedName)'
 
   ## TemplateSpec-related
   templateSpecsDoPublish: '$(templateSpecsDoPublish)'
@@ -109,14 +112,14 @@ jobs:
             . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
 
             # Define PS modules to install on the runner
-            $Modules = @(
+            $modules = @(
                 @{ Name = 'Az.Accounts' },
                 @{ Name = 'Az.ContainerRegistry' },
                 @{ Name = 'Az.Resources' }
             )
 
             # Set agent up
-            Set-EnvironmentOnAgent -PSModules $Modules
+            Set-EnvironmentOnAgent -PSModules $modules
 
       # [Universal Artifact-feed publish] task(s)
       #------------------------------------------
@@ -163,10 +166,11 @@ jobs:
             #############################
             # Add all modules that don't exist in the target location
             $missingInputObject = @{
-                TemplateFilePath    = $TemplateFilePath
-                VstsOrganizationUri = '${{ parameters.vstsOrganizationUri }}'
-                VstsFeedProject     = '${{ parameters.vstsFeedProject }}'
-                VstsFeedName        = '${{ parameters.vstsFeedName }}'
+                TemplateFilePath       = $TemplateFilePath
+                VstsOrganizationUri    = '${{ parameters.vstsOrganizationUri }}'
+                VstsFeedProject        = '${{ parameters.vstsFeedProject }}'
+                VstsFeedName           = '${{ parameters.vstsFeedName }}'
+                UseApiSpecsAlignedName = [System.Convert]::ToBoolean('${{ parameters.useApiSpecsAlignedName }}')
             }
 
             Write-Verbose "Invoke Get-ModulesMissingFromUniversalArtifactsFeed with" -Verbose
@@ -175,9 +179,16 @@ jobs:
             $missingModules = Get-ModulesMissingFromUniversalArtifactsFeed @missingInputObject -BearerToken $env:TOKEN
 
             foreach($missingModule in $missingModules) {
-              if($modulsToPublish.TemplateFilePath -notcontains $missingModule.TemplateFilePath) {
+              if($modulesToPublish.TemplateFilePath -notcontains $missingModule.TemplateFilePath) {
                 $modulesToPublish += $missingModule
               }
+            }
+
+            # Filter modules to publish 'prerelease' only if branch is not main/master
+            $BranchName = '$(Build.SourceBranch)'
+            if ($BranchName -ne 'refs/heads/main' -and $BranchName -ne 'refs/heads/master') {
+              Write-Verbose "Filtering modules to only publish a [prerelease] version as the current branch [$BranchName] is not [main/master]." -Verbose
+              $modulesToPublish = $modulesToPublish | Where-Object -Property version -like '*-prerelease'
             }
 
             #################
@@ -188,11 +199,12 @@ jobs:
               Write-Host "##[group]$(' - [{0}] [{1}]' -f $RelPath, $moduleToPublish.Version)"
 
               $functionInput = @{
-                TemplateFilePath    = $moduleToPublish.TemplateFilePath
-                VstsOrganizationUri = '${{ parameters.vstsOrganizationUri }}'
-                VstsFeedProject     = '${{ parameters.vstsFeedProject }}'
-                VstsFeedName        = '${{ parameters.vstsFeedName }}'
-                ModuleVersion       = $moduleToPublish.Version
+                TemplateFilePath       = $moduleToPublish.TemplateFilePath
+                VstsOrganizationUri    = '${{ parameters.vstsOrganizationUri }}'
+                VstsFeedProject        = '${{ parameters.vstsFeedProject }}'
+                VstsFeedName           = '${{ parameters.vstsFeedName }}'
+                ModuleVersion          = $moduleToPublish.Version
+                UseApiSpecsAlignedName = [System.Convert]::ToBoolean('${{ parameters.useApiSpecsAlignedName }}')
               }
 
               Write-Verbose "Invoke Publish-ModuleToUniversalArtifactsFeed with" -Verbose
@@ -220,6 +232,17 @@ jobs:
           pwsh: true
           ScriptType: InlineScript
           inline: |
+            # Load PS-Profile configuration
+            if (Test-Path $profile) {
+                . $profile
+            } else {
+                Write-Warning "No profile loaded from location [$profile]"
+            }
+
+            # Set context to chosen subscription
+            Write-Verbose ('Setting context to subscription [{0}]' -f '${{ parameters.subscriptionId }}') -Verbose
+            $null = Set-AzContext -Subscription '${{ parameters.subscriptionId }}'
+
             # Load used functions
             . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Get-ModulesToPublish.ps1')
             . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Get-ModulesMissingFromTemplateSpecsRG.ps1')
@@ -236,7 +259,7 @@ jobs:
             ################################
             $functionInput = @{
               TemplateFilePath = $TemplateFilePath
-              PublishLatest    = [bool] '${{ parameters.publishLatest }}'
+              PublishLatest    = [System.Convert]::ToBoolean('${{ parameters.publishLatest }}')
             }
 
             Write-Verbose "Invoke Get-ModulesToPublish with" -Verbose
@@ -253,9 +276,10 @@ jobs:
 
             # Add all modules that don't exist in the target location
             $missingInputObject = @{
-                TemplateFilePath    = $TemplateFilePath
-                TemplateSpecsRGName = '${{ parameters.templateSpecsRgName }}'
-                PublishLatest       = [bool] '${{ parameters.bicepRegistryRgName }}'
+                TemplateFilePath       = $TemplateFilePath
+                TemplateSpecsRGName    = '${{ parameters.templateSpecsRgName }}'
+                PublishLatest          = [System.Convert]::ToBoolean('${{ parameters.publishLatest }}')
+                UseApiSpecsAlignedName = [System.Convert]::ToBoolean('${{ parameters.useApiSpecsAlignedName }}')
             }
 
             Write-Verbose "Invoke Get-ModulesMissingFromTemplateSpecsRG with" -Verbose
@@ -264,9 +288,16 @@ jobs:
             $missingModules = Get-ModulesMissingFromTemplateSpecsRG @missingInputObject
 
             foreach($missingModule in $missingModules) {
-              if($modulsToPublish.TemplateFilePath -notcontains $missingModule.TemplateFilePath) {
+              if($modulesToPublish.TemplateFilePath -notcontains $missingModule.TemplateFilePath) {
                 $modulesToPublish += $missingModule
               }
+            }
+
+            # Filter modules to publish 'prerelease' only if branch is not main/master
+            $BranchName = '$(Build.SourceBranch)'
+            if ($BranchName -ne 'refs/heads/main' -and $BranchName -ne 'refs/heads/master') {
+              Write-Verbose "Filtering modules to only publish a [prerelease] version as the current branch [$BranchName] is not [main/master]." -Verbose
+              $modulesToPublish = $modulesToPublish | Where-Object -Property version -like '*-prerelease'
             }
 
             #################
@@ -282,6 +313,7 @@ jobs:
                 TemplateSpecsRgLocation  = '${{ parameters.templateSpecsRgLocation }}'
                 TemplateSpecsDescription = '${{ parameters.templateSpecsDescription }}'
                 ModuleVersion            = $moduleToPublish.Version
+                UseApiSpecsAlignedName   = [System.Convert]::ToBoolean('${{ parameters.useApiSpecsAlignedName }}')
               }
 
               Write-Verbose "Invoke Publish-ModuleToTemplateSpecsRG with" -Verbose
@@ -305,11 +337,21 @@ jobs:
           scriptType: pscore
           scriptLocation: inlineScript
           inlineScript: |
+            # Load PS-Profile configuration
+            if (Test-Path $profile) {
+                . $profile
+            } else {
+                Write-Warning "No profile loaded from location [$profile]"
+            }
+
             # Log into Az-PowerShell context
-            . $profile # Load PS-Profile configuration
             $SecuredPassword = ConvertTo-SecureString -AsPlainText -String $env:servicePrincipalKey
             $Credential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $env:servicePrincipalId, $SecuredPassword
             $null = Connect-AzAccount -ServicePrincipal -TenantId $env:tenantId -Credential $Credential
+
+            # Set context to chosen subscription
+            Write-Verbose ('Setting context to subscription [{0}]' -f '${{ parameters.subscriptionId }}') -Verbose
+            $null = Set-AzContext -Subscription '${{ parameters.subscriptionId }}'
 
             # Load used functions
             . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Get-ModulesToPublish.ps1')
@@ -327,7 +369,7 @@ jobs:
             ################################
             $functionInput = @{
               TemplateFilePath = $TemplateFilePath
-              PublishLatest    = [bool] '${{ parameters.publishLatest }}'
+              PublishLatest    = [System.Convert]::ToBoolean('${{ parameters.publishLatest }}')
             }
 
             Write-Verbose "Invoke Get-ModulesToPublish with" -Verbose
@@ -343,10 +385,11 @@ jobs:
             #############################
             # Add all modules that don't exist in the target location
             $missingInputObject = @{
-                TemplateFilePath    = $TemplateFilePath
-                BicepRegistryName   = '${{ parameters.bicepRegistryName }}'
-                BicepRegistryRgName = '${{ parameters.bicepRegistryRgName }}'
-                PublishLatest       = [bool] '${{ parameters.bicepRegistryRgName }}'
+                TemplateFilePath       = $TemplateFilePath
+                BicepRegistryName      = '${{ parameters.bicepRegistryName }}'
+                BicepRegistryRgName    = '${{ parameters.bicepRegistryRgName }}'
+                PublishLatest          = [System.Convert]::ToBoolean('${{ parameters.publishLatest }}')
+                UseApiSpecsAlignedName = [System.Convert]::ToBoolean('${{ parameters.useApiSpecsAlignedName }}')
             }
 
             Write-Verbose "Invoke Get-ModulesMissingFromPrivateBicepRegistry with" -Verbose
@@ -355,9 +398,16 @@ jobs:
             $missingModules = Get-ModulesMissingFromPrivateBicepRegistry @missingInputObject
 
             foreach($missingModule in $missingModules) {
-              if($modulsToPublish.TemplateFilePath -notcontains $missingModule.TemplateFilePath) {
+              if($modulesToPublish.TemplateFilePath -notcontains $missingModule.TemplateFilePath) {
                 $modulesToPublish += $missingModule
               }
+            }
+
+            # Filter modules to publish 'prerelease' only if branch is not main/master
+            $BranchName = '$(Build.SourceBranch)'
+            if ($BranchName -ne 'refs/heads/main' -and $BranchName -ne 'refs/heads/master') {
+              Write-Verbose "Filtering modules to only publish a [prerelease] version as the current branch [$BranchName] is not [main/master]." -Verbose
+              $modulesToPublish = $modulesToPublish | Where-Object -Property version -like '*-prerelease'
             }
 
             #################
@@ -373,6 +423,7 @@ jobs:
                 BicepRegistryRgName     = '${{ parameters.bicepRegistryRgName }}'
                 BicepRegistryRgLocation = '${{ parameters.bicepRegistryRgLocation }}'
                 ModuleVersion           = $moduleToPublish.Version
+                UseApiSpecsAlignedName  = [System.Convert]::ToBoolean('${{ parameters.useApiSpecsAlignedName }}')
               }
 
               Write-Verbose "Invoke Publish-ModuleToPrivateBicepRegistry with" -Verbose

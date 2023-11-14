@@ -18,8 +18,13 @@ Mandatory. The name of Resource Group the Container Registry is located it.
 Optional. Publish an absolute latest version.
 Note: This version may include breaking changes and is not recommended for production environments
 
+.PARAMETER UseApiSpecsAlignedName
+Optional. If set to true, the module name looked for is aligned with the Azure API naming. If not, it's one aligned with the module's folder path. See the following examples:
+- True:  microsoft.keyvault.vaults.secrets
+- False: key-vault.vault.secret
+
 .EXAMPLE
-Get-ModulesMissingFromPrivateBicepRegistry -TemplateFilePath 'C:\ResourceModules\modules\compute\virtual-machines\main.bicep' -BicepRegistryName 'adpsxxazacrx001' -BicepRegistryRgName 'artifacts-rg'
+Get-ModulesMissingFromPrivateBicepRegistry -TemplateFilePath 'C:\ResourceModules\modules\compute\virtual-machine\main.bicep' -BicepRegistryName 'adpsxxazacrx001' -BicepRegistryRgName 'artifacts-rg'
 
 Check if either the Virtual Machine module or any of its children (e.g. 'extension') is missing in the Container Registry 'adpsxxazacrx001' of Resource Group 'artifacts-rg'
 
@@ -27,21 +32,21 @@ Returns for example:
 Name                           Value
 ----                           -----
 Version                        0.4.0
-TemplateFilePath               C:\ResourceModules\modules\compute\virtual-machines\extensions\main.bicep
+TemplateFilePath               C:\ResourceModules\modules\compute\virtual-machine\extension\main.bicep
 Version                        0.4
-TemplateFilePath               C:\ResourceModules\modules\compute\virtual-machines\extensions\main.bicep
+TemplateFilePath               C:\ResourceModules\modules\compute\virtual-machine\extension\main.bicep
 Version                        0
-TemplateFilePath               C:\ResourceModules\modules\compute\virtual-machines\extensions\main.bicep
+TemplateFilePath               C:\ResourceModules\modules\compute\virtual-machine\extension\main.bicep
 Version                        latest
-TemplateFilePath               C:\ResourceModules\modules\compute\virtual-machines\extensions\main.bicep
+TemplateFilePath               C:\ResourceModules\modules\compute\virtual-machine\extension\main.bicep
 Version                        0.6.0
-TemplateFilePath               C:\ResourceModules\modules\compute\virtual-machines\main.bicep
+TemplateFilePath               C:\ResourceModules\modules\compute\virtual-machine\main.bicep
 Version                        0.6
-TemplateFilePath               C:\ResourceModules\modules\compute\virtual-machines\main.bicep
+TemplateFilePath               C:\ResourceModules\modules\compute\virtual-machine\main.bicep
 Version                        0
-TemplateFilePath               C:\ResourceModules\modules\compute\virtual-machines\main.bicep
+TemplateFilePath               C:\ResourceModules\modules\compute\virtual-machine\main.bicep
 Version                        latest
-TemplateFilePath               C:\ResourceModules\modules\compute\virtual-machines\main.bicep
+TemplateFilePath               C:\ResourceModules\modules\compute\virtual-machine\main.bicep
 #>
 function Get-ModulesMissingFromPrivateBicepRegistry {
 
@@ -57,7 +62,10 @@ function Get-ModulesMissingFromPrivateBicepRegistry {
         [string] $BicepRegistryRgName,
 
         [Parameter(Mandatory = $false)]
-        [bool] $PublishLatest = $true
+        [bool] $PublishLatest = $true,
+
+        [Parameter(Mandatory = $false)]
+        [bool] $UseApiSpecsAlignedName = $false
     )
 
     begin {
@@ -68,8 +76,18 @@ function Get-ModulesMissingFromPrivateBicepRegistry {
     }
 
     process {
-        # Get all children
-        $availableModuleTemplatePaths = (Get-ChildItem -Path (Split-Path $TemplateFilePath) -Recurse -Include @('main.bicep', 'main.json')).FullName
+        # Get all children, bicep templates only
+        $availableModuleTemplatePaths = (Get-ChildItem -Path (Split-Path $TemplateFilePath) -Recurse -Include @('main.bicep')).FullName
+
+        # Get all children, ARM templates only
+        $availableModuleTemplatePathsARM = (Get-ChildItem -Path (Split-Path $TemplateFilePath) -Recurse -Include @('main.json')).FullName
+
+        # Add ARM templates to the list of available modules only if there is no bicep template for the same module
+        foreach ($path in $availableModuleTemplatePathsARM) {
+            if ($availableModuleTemplatePaths -contains $path.Replace('.json', '.bicep')) { continue }
+            $availableModuleTemplatePaths += $path
+        }
+        $availableModuleTemplatePaths = $availableModuleTemplatePaths | Sort-Object
 
         if (-not (Get-AzContainerRegistry -Name $BicepRegistryName -ResourceGroupName $BicepRegistryRgName -ErrorAction 'SilentlyContinue')) {
             $missingTemplatePaths = $availableModuleTemplatePaths
@@ -79,11 +97,11 @@ function Get-ModulesMissingFromPrivateBicepRegistry {
             foreach ($templatePath in $availableModuleTemplatePaths) {
 
                 # Get a valid Container Registry name
-                $moduleRegistryIdentifier = Get-PrivateRegistryRepositoryName -TemplateFilePath $templatePath
+                $moduleRegistryIdentifier = Get-PrivateRegistryRepositoryName -TemplateFilePath $templatePath -UseApiSpecsAlignedName $UseApiSpecsAlignedName
 
                 $null = Get-AzContainerRegistryTag -RepositoryName $moduleRegistryIdentifier -RegistryName $BicepRegistryName -ErrorAction 'SilentlyContinue' -ErrorVariable 'result'
 
-                if ($result.exception.Response.StatusCode -eq 'NotFound') {
+                if ($result.Exception.Response.StatusCode -eq 'NotFound' -or $result.Exception.Status -eq '404') {
                     $missingTemplatePaths += $templatePath
                 }
             }

@@ -1,5 +1,4 @@
-﻿#region Helper functions
-<#
+﻿<#
 .SYNOPSIS
 Get a list of all resources (provider + service) in the given template content
 
@@ -25,8 +24,19 @@ function Get-NestedResourceList {
 
     $res = @()
     $currLevelResources = @()
+
     if ($TemplateFileContent.resources) {
-        $currLevelResources += $TemplateFileContent.resources
+        if ($TemplateFileContent.resources -is [System.Collections.Hashtable]) {
+            # With the introduction of user defined types, a compiled template's resources are not part of an ordered hashtable instead of an array.
+            $currLevelResources += $TemplateFileContent.resources.Keys | ForEach-Object {
+                $TemplateFileContent.resources[$_]
+            } | Where-Object {
+                $_.existing -ne $true
+            }
+        } else {
+            # Default array
+            $currLevelResources += $TemplateFileContent.resources
+        }
     }
     foreach ($resource in $currLevelResources) {
         $res += $resource

@@ -1,0 +1,2946 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "languageVersion": "2.0",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.22.6.54827",
+      "templateHash": "14383961739979857836"
+    },
+    "name": "Public DNS Zones",
+    "description": "This module deploys a Public DNS zone.",
+    "owner": "Azure/module-maintainers"
+  },
+  "definitions": {
+    "lockType": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Specify the name of lock."
+          }
+        },
+        "kind": {
+          "type": "string",
+          "allowedValues": [
+            "CanNotDelete",
+            "None",
+            "ReadOnly"
+          ],
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Specify the type of lock."
+          }
+        }
+      },
+      "nullable": true
+    },
+    "roleAssignmentType": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "roleDefinitionIdOrName": {
+            "type": "string",
+            "metadata": {
+              "description": "Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead."
+            }
+          },
+          "principalId": {
+            "type": "string",
+            "metadata": {
+              "description": "Required. The principal ID of the principal (user/group/identity) to assign the role to."
+            }
+          },
+          "principalType": {
+            "type": "string",
+            "allowedValues": [
+              "Device",
+              "ForeignGroup",
+              "Group",
+              "ServicePrincipal",
+              "User"
+            ],
+            "nullable": true,
+            "metadata": {
+              "description": "Optional. The principal type of the assigned principal ID."
+            }
+          },
+          "description": {
+            "type": "string",
+            "nullable": true,
+            "metadata": {
+              "description": "Optional. The description of the role assignment."
+            }
+          },
+          "condition": {
+            "type": "string",
+            "nullable": true,
+            "metadata": {
+              "description": "Optional. The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase \"foo_storage_container\""
+            }
+          },
+          "conditionVersion": {
+            "type": "string",
+            "allowedValues": [
+              "2.0"
+            ],
+            "nullable": true,
+            "metadata": {
+              "description": "Optional. Version of the condition."
+            }
+          },
+          "delegatedManagedIdentityResourceId": {
+            "type": "string",
+            "nullable": true,
+            "metadata": {
+              "description": "Optional. The Resource Id of the delegated managed identity resource."
+            }
+          }
+        }
+      },
+      "nullable": true
+    }
+  },
+  "parameters": {
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 63,
+      "metadata": {
+        "description": "Required. DNS zone name."
+      }
+    },
+    "a": {
+      "type": "array",
+      "defaultValue": [],
+      "metadata": {
+        "description": "Optional. Array of A records."
+      }
+    },
+    "aaaa": {
+      "type": "array",
+      "defaultValue": [],
+      "metadata": {
+        "description": "Optional. Array of AAAA records."
+      }
+    },
+    "cname": {
+      "type": "array",
+      "defaultValue": [],
+      "metadata": {
+        "description": "Optional. Array of CNAME records."
+      }
+    },
+    "caa": {
+      "type": "array",
+      "defaultValue": [],
+      "metadata": {
+        "description": "Optional. Array of CAA records."
+      }
+    },
+    "mx": {
+      "type": "array",
+      "defaultValue": [],
+      "metadata": {
+        "description": "Optional. Array of MX records."
+      }
+    },
+    "ns": {
+      "type": "array",
+      "defaultValue": [],
+      "metadata": {
+        "description": "Optional. Array of NS records."
+      }
+    },
+    "ptr": {
+      "type": "array",
+      "defaultValue": [],
+      "metadata": {
+        "description": "Optional. Array of PTR records."
+      }
+    },
+    "soa": {
+      "type": "array",
+      "defaultValue": [],
+      "metadata": {
+        "description": "Optional. Array of SOA records."
+      }
+    },
+    "srv": {
+      "type": "array",
+      "defaultValue": [],
+      "metadata": {
+        "description": "Optional. Array of SRV records."
+      }
+    },
+    "txt": {
+      "type": "array",
+      "defaultValue": [],
+      "metadata": {
+        "description": "Optional. Array of TXT records."
+      }
+    },
+    "location": {
+      "type": "string",
+      "defaultValue": "global",
+      "metadata": {
+        "description": "Optional. The location of the dnsZone. Should be global."
+      }
+    },
+    "roleAssignments": {
+      "$ref": "#/definitions/roleAssignmentType",
+      "metadata": {
+        "description": "Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'."
+      }
+    },
+    "tags": {
+      "type": "object",
+      "nullable": true,
+      "metadata": {
+        "description": "Optional. Tags of the resource."
+      }
+    },
+    "lock": {
+      "$ref": "#/definitions/lockType",
+      "metadata": {
+        "description": "Optional. The lock settings of the service."
+      }
+    },
+    "enableDefaultTelemetry": {
+      "type": "bool",
+      "defaultValue": true,
+      "metadata": {
+        "description": "Optional. Enable telemetry via a Globally Unique Identifier (GUID)."
+      }
+    }
+  },
+  "variables": {
+    "enableReferencedModulesTelemetry": false,
+    "builtInRoleNames": {
+      "Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]",
+      "DNS Resolver Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '0f2ebee7-ffd4-4fc0-b3b7-664099fdad5d')]",
+      "DNS Zone Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'befefa01-2a29-4197-83a8-272ff33ce314')]",
+      "Domain Services Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'eeaeda52-9324-47f6-8069-5d5bade478b2')]",
+      "Domain Services Reader": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '361898ef-9ed1-48c2-849c-a832951106bb')]",
+      "Network Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '4d97b98b-1d4f-4787-a291-c67834d212e7')]",
+      "Owner": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '8e3af657-a8ff-443c-a75c-2fe8c4bcb635')]",
+      "Private DNS Zone Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b12aa53e-6015-4669-85d0-8515ebb3ae7f')]",
+      "Reader": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'acdd72a7-3385-48ef-bd42-f606fba81ae7')]",
+      "Role Based Access Control Administrator (Preview)": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'f58310d9-a9f6-439a-9e8d-f62e7b41a168')]",
+      "User Access Administrator": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '18d7d88d-d35e-4fb5-a5c3-7773c20a72d9')]"
+    }
+  },
+  "resources": {
+    "defaultTelemetry": {
+      "condition": "[parameters('enableDefaultTelemetry')]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2021-04-01",
+      "name": "[format('pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-{0}', uniqueString(deployment().name, parameters('location')))]",
+      "properties": {
+        "mode": "Incremental",
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "resources": []
+        }
+      }
+    },
+    "dnsZone": {
+      "type": "Microsoft.Network/dnsZones",
+      "apiVersion": "2018-05-01",
+      "name": "[parameters('name')]",
+      "location": "[parameters('location')]",
+      "tags": "[parameters('tags')]",
+      "properties": {
+        "zoneType": "Public"
+      }
+    },
+    "dnsZone_lock": {
+      "condition": "[and(not(empty(coalesce(parameters('lock'), createObject()))), not(equals(tryGet(parameters('lock'), 'kind'), 'None')))]",
+      "type": "Microsoft.Authorization/locks",
+      "apiVersion": "2020-05-01",
+      "scope": "[format('Microsoft.Network/dnsZones/{0}', parameters('name'))]",
+      "name": "[coalesce(tryGet(parameters('lock'), 'name'), format('lock-{0}', parameters('name')))]",
+      "properties": {
+        "level": "[coalesce(tryGet(parameters('lock'), 'kind'), '')]",
+        "notes": "[if(equals(tryGet(parameters('lock'), 'kind'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot delete or modify the resource or child resources.')]"
+      },
+      "dependsOn": [
+        "dnsZone"
+      ]
+    },
+    "dnsZone_roleAssignments": {
+      "copy": {
+        "name": "dnsZone_roleAssignments",
+        "count": "[length(coalesce(parameters('roleAssignments'), createArray()))]"
+      },
+      "type": "Microsoft.Authorization/roleAssignments",
+      "apiVersion": "2022-04-01",
+      "scope": "[format('Microsoft.Network/dnsZones/{0}', parameters('name'))]",
+      "name": "[guid(resourceId('Microsoft.Network/dnsZones', parameters('name')), coalesce(parameters('roleAssignments'), createArray())[copyIndex()].principalId, coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName)]",
+      "properties": {
+        "roleDefinitionId": "[if(contains(variables('builtInRoleNames'), coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName), variables('builtInRoleNames')[coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName], coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName)]",
+        "principalId": "[coalesce(parameters('roleAssignments'), createArray())[copyIndex()].principalId]",
+        "description": "[tryGet(coalesce(parameters('roleAssignments'), createArray())[copyIndex()], 'description')]",
+        "principalType": "[tryGet(coalesce(parameters('roleAssignments'), createArray())[copyIndex()], 'principalType')]",
+        "condition": "[tryGet(coalesce(parameters('roleAssignments'), createArray())[copyIndex()], 'condition')]",
+        "conditionVersion": "[if(not(empty(tryGet(coalesce(parameters('roleAssignments'), createArray())[copyIndex()], 'condition'))), coalesce(tryGet(coalesce(parameters('roleAssignments'), createArray())[copyIndex()], 'conditionVersion'), '2.0'), null())]",
+        "delegatedManagedIdentityResourceId": "[tryGet(coalesce(parameters('roleAssignments'), createArray())[copyIndex()], 'delegatedManagedIdentityResourceId')]"
+      },
+      "dependsOn": [
+        "dnsZone"
+      ]
+    },
+    "dnsZone_A": {
+      "copy": {
+        "name": "dnsZone_A",
+        "count": "[length(parameters('a'))]"
+      },
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2022-09-01",
+      "name": "[format('{0}-dnsZone-ARecord-{1}', uniqueString(deployment().name, parameters('location')), copyIndex())]",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "dnsZoneName": {
+            "value": "[parameters('name')]"
+          },
+          "name": {
+            "value": "[parameters('a')[copyIndex()].name]"
+          },
+          "aRecords": "[if(contains(parameters('a')[copyIndex()], 'aRecords'), createObject('value', parameters('a')[copyIndex()].aRecords), createObject('value', createArray()))]",
+          "metadata": "[if(contains(parameters('a')[copyIndex()], 'metadata'), createObject('value', parameters('a')[copyIndex()].metadata), createObject('value', createObject()))]",
+          "ttl": "[if(contains(parameters('a')[copyIndex()], 'ttl'), createObject('value', parameters('a')[copyIndex()].ttl), createObject('value', 3600))]",
+          "targetResourceId": "[if(contains(parameters('a')[copyIndex()], 'targetResourceId'), createObject('value', parameters('a')[copyIndex()].targetResourceId), createObject('value', ''))]",
+          "roleAssignments": "[if(contains(parameters('a')[copyIndex()], 'roleAssignments'), createObject('value', parameters('a')[copyIndex()].roleAssignments), createObject('value', createArray()))]",
+          "enableDefaultTelemetry": {
+            "value": "[variables('enableReferencedModulesTelemetry')]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "languageVersion": "2.0",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.22.6.54827",
+              "templateHash": "10974837461645436691"
+            },
+            "name": "Public DNS Zone A record",
+            "description": "This module deploys a Public DNS Zone A record.",
+            "owner": "Azure/module-maintainers"
+          },
+          "definitions": {
+            "roleAssignmentType": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "roleDefinitionIdOrName": {
+                    "type": "string",
+                    "metadata": {
+                      "description": "Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead."
+                    }
+                  },
+                  "principalId": {
+                    "type": "string",
+                    "metadata": {
+                      "description": "Required. The principal ID of the principal (user/group/identity) to assign the role to."
+                    }
+                  },
+                  "principalType": {
+                    "type": "string",
+                    "allowedValues": [
+                      "Device",
+                      "ForeignGroup",
+                      "Group",
+                      "ServicePrincipal",
+                      "User"
+                    ],
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. The principal type of the assigned principal ID."
+                    }
+                  },
+                  "description": {
+                    "type": "string",
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. The description of the role assignment."
+                    }
+                  },
+                  "condition": {
+                    "type": "string",
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase \"foo_storage_container\""
+                    }
+                  },
+                  "conditionVersion": {
+                    "type": "string",
+                    "allowedValues": [
+                      "2.0"
+                    ],
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. Version of the condition."
+                    }
+                  },
+                  "delegatedManagedIdentityResourceId": {
+                    "type": "string",
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. The Resource Id of the delegated managed identity resource."
+                    }
+                  }
+                }
+              },
+              "nullable": true
+            }
+          },
+          "parameters": {
+            "dnsZoneName": {
+              "type": "string",
+              "metadata": {
+                "description": "Conditional. The name of the parent DNS zone. Required if the template is used in a standalone deployment."
+              }
+            },
+            "name": {
+              "type": "string",
+              "metadata": {
+                "description": "Required. The name of the A record."
+              }
+            },
+            "aRecords": {
+              "type": "array",
+              "defaultValue": [],
+              "metadata": {
+                "description": "Optional. The list of A records in the record set. Cannot be used in conjuction with the \"targetResource\" property."
+              }
+            },
+            "metadata": {
+              "type": "object",
+              "defaultValue": {},
+              "metadata": {
+                "description": "Optional. The metadata attached to the record set."
+              }
+            },
+            "ttl": {
+              "type": "int",
+              "defaultValue": 3600,
+              "metadata": {
+                "description": "Optional. The TTL (time-to-live) of the records in the record set."
+              }
+            },
+            "targetResourceId": {
+              "type": "string",
+              "defaultValue": "",
+              "metadata": {
+                "description": "Optional. A reference to an azure resource from where the dns resource value is taken. Also known as an alias record sets and are only supported for record types A, AAAA and CNAME. A resource ID can be an Azure Traffic Manager, Azure CDN, Front Door, Static Web App, or a resource ID of a record set of the same type in the DNS zone (i.e. A, AAAA or CNAME). Cannot be used in conjuction with the \"aRecords\" property."
+              }
+            },
+            "enableDefaultTelemetry": {
+              "type": "bool",
+              "defaultValue": true,
+              "metadata": {
+                "description": "Optional. Enable telemetry via a Globally Unique Identifier (GUID)."
+              }
+            },
+            "roleAssignments": {
+              "$ref": "#/definitions/roleAssignmentType",
+              "metadata": {
+                "description": "Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'."
+              }
+            }
+          },
+          "variables": {
+            "builtInRoleNames": {
+              "Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]",
+              "DNS Resolver Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '0f2ebee7-ffd4-4fc0-b3b7-664099fdad5d')]",
+              "DNS Zone Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'befefa01-2a29-4197-83a8-272ff33ce314')]",
+              "Domain Services Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'eeaeda52-9324-47f6-8069-5d5bade478b2')]",
+              "Domain Services Reader": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '361898ef-9ed1-48c2-849c-a832951106bb')]",
+              "Network Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '4d97b98b-1d4f-4787-a291-c67834d212e7')]",
+              "Owner": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '8e3af657-a8ff-443c-a75c-2fe8c4bcb635')]",
+              "Private DNS Zone Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b12aa53e-6015-4669-85d0-8515ebb3ae7f')]",
+              "Reader": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'acdd72a7-3385-48ef-bd42-f606fba81ae7')]",
+              "Role Based Access Control Administrator (Preview)": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'f58310d9-a9f6-439a-9e8d-f62e7b41a168')]",
+              "User Access Administrator": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '18d7d88d-d35e-4fb5-a5c3-7773c20a72d9')]"
+            }
+          },
+          "resources": {
+            "defaultTelemetry": {
+              "condition": "[parameters('enableDefaultTelemetry')]",
+              "type": "Microsoft.Resources/deployments",
+              "apiVersion": "2021-04-01",
+              "name": "[format('pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-{0}', uniqueString(deployment().name))]",
+              "properties": {
+                "mode": "Incremental",
+                "template": {
+                  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                  "contentVersion": "1.0.0.0",
+                  "resources": []
+                }
+              }
+            },
+            "dnsZone": {
+              "existing": true,
+              "type": "Microsoft.Network/dnsZones",
+              "apiVersion": "2018-05-01",
+              "name": "[parameters('dnsZoneName')]"
+            },
+            "A": {
+              "type": "Microsoft.Network/dnsZones/A",
+              "apiVersion": "2018-05-01",
+              "name": "[format('{0}/{1}', parameters('dnsZoneName'), parameters('name'))]",
+              "properties": {
+                "ARecords": "[if(not(empty(parameters('aRecords'))), parameters('aRecords'), null())]",
+                "metadata": "[parameters('metadata')]",
+                "TTL": "[parameters('ttl')]",
+                "targetResource": "[if(not(empty(parameters('targetResourceId'))), createObject('id', parameters('targetResourceId')), null())]"
+              },
+              "dependsOn": [
+                "dnsZone"
+              ]
+            },
+            "A_roleAssignments": {
+              "copy": {
+                "name": "A_roleAssignments",
+                "count": "[length(coalesce(parameters('roleAssignments'), createArray()))]"
+              },
+              "type": "Microsoft.Authorization/roleAssignments",
+              "apiVersion": "2022-04-01",
+              "scope": "[format('Microsoft.Network/dnsZones/{0}/A/{1}', parameters('dnsZoneName'), parameters('name'))]",
+              "name": "[guid(resourceId('Microsoft.Network/dnsZones/A', parameters('dnsZoneName'), parameters('name')), coalesce(parameters('roleAssignments'), createArray())[copyIndex()].principalId, coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName)]",
+              "properties": {
+                "roleDefinitionId": "[if(contains(variables('builtInRoleNames'), coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName), variables('builtInRoleNames')[coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName], coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName)]",
+                "principalId": "[coalesce(parameters('roleAssignments'), createArray())[copyIndex()].principalId]",
+                "description": "[tryGet(coalesce(parameters('roleAssignments'), createArray())[copyIndex()], 'description')]",
+                "principalType": "[tryGet(coalesce(parameters('roleAssignments'), createArray())[copyIndex()], 'principalType')]",
+                "condition": "[tryGet(coalesce(parameters('roleAssignments'), createArray())[copyIndex()], 'condition')]",
+                "conditionVersion": "[if(not(empty(tryGet(coalesce(parameters('roleAssignments'), createArray())[copyIndex()], 'condition'))), coalesce(tryGet(coalesce(parameters('roleAssignments'), createArray())[copyIndex()], 'conditionVersion'), '2.0'), null())]",
+                "delegatedManagedIdentityResourceId": "[tryGet(coalesce(parameters('roleAssignments'), createArray())[copyIndex()], 'delegatedManagedIdentityResourceId')]"
+              },
+              "dependsOn": [
+                "A"
+              ]
+            }
+          },
+          "outputs": {
+            "name": {
+              "type": "string",
+              "metadata": {
+                "description": "The name of the deployed A record."
+              },
+              "value": "[parameters('name')]"
+            },
+            "resourceId": {
+              "type": "string",
+              "metadata": {
+                "description": "The resource ID of the deployed A record."
+              },
+              "value": "[resourceId('Microsoft.Network/dnsZones/A', parameters('dnsZoneName'), parameters('name'))]"
+            },
+            "resourceGroupName": {
+              "type": "string",
+              "metadata": {
+                "description": "The resource group of the deployed A record."
+              },
+              "value": "[resourceGroup().name]"
+            }
+          }
+        }
+      },
+      "dependsOn": [
+        "dnsZone"
+      ]
+    },
+    "dnsZone_AAAA": {
+      "copy": {
+        "name": "dnsZone_AAAA",
+        "count": "[length(parameters('aaaa'))]"
+      },
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2022-09-01",
+      "name": "[format('{0}-dnsZone-AAAARecord-{1}', uniqueString(deployment().name, parameters('location')), copyIndex())]",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "dnsZoneName": {
+            "value": "[parameters('name')]"
+          },
+          "name": {
+            "value": "[parameters('aaaa')[copyIndex()].name]"
+          },
+          "aaaaRecords": "[if(contains(parameters('aaaa')[copyIndex()], 'aaaaRecords'), createObject('value', parameters('aaaa')[copyIndex()].aaaaRecords), createObject('value', createArray()))]",
+          "metadata": "[if(contains(parameters('aaaa')[copyIndex()], 'metadata'), createObject('value', parameters('aaaa')[copyIndex()].metadata), createObject('value', createObject()))]",
+          "ttl": "[if(contains(parameters('aaaa')[copyIndex()], 'ttl'), createObject('value', parameters('aaaa')[copyIndex()].ttl), createObject('value', 3600))]",
+          "targetResourceId": "[if(contains(parameters('aaaa')[copyIndex()], 'targetResourceId'), createObject('value', parameters('aaaa')[copyIndex()].targetResourceId), createObject('value', ''))]",
+          "roleAssignments": "[if(contains(parameters('aaaa')[copyIndex()], 'roleAssignments'), createObject('value', parameters('aaaa')[copyIndex()].roleAssignments), createObject('value', createArray()))]",
+          "enableDefaultTelemetry": {
+            "value": "[variables('enableReferencedModulesTelemetry')]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "languageVersion": "2.0",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.22.6.54827",
+              "templateHash": "11266429358803831455"
+            },
+            "name": "Public DNS Zone AAAA record",
+            "description": "This module deploys a Public DNS Zone AAAA record.",
+            "owner": "Azure/module-maintainers"
+          },
+          "definitions": {
+            "roleAssignmentType": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "roleDefinitionIdOrName": {
+                    "type": "string",
+                    "metadata": {
+                      "description": "Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead."
+                    }
+                  },
+                  "principalId": {
+                    "type": "string",
+                    "metadata": {
+                      "description": "Required. The principal ID of the principal (user/group/identity) to assign the role to."
+                    }
+                  },
+                  "principalType": {
+                    "type": "string",
+                    "allowedValues": [
+                      "Device",
+                      "ForeignGroup",
+                      "Group",
+                      "ServicePrincipal",
+                      "User"
+                    ],
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. The principal type of the assigned principal ID."
+                    }
+                  },
+                  "description": {
+                    "type": "string",
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. The description of the role assignment."
+                    }
+                  },
+                  "condition": {
+                    "type": "string",
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase \"foo_storage_container\""
+                    }
+                  },
+                  "conditionVersion": {
+                    "type": "string",
+                    "allowedValues": [
+                      "2.0"
+                    ],
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. Version of the condition."
+                    }
+                  },
+                  "delegatedManagedIdentityResourceId": {
+                    "type": "string",
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. The Resource Id of the delegated managed identity resource."
+                    }
+                  }
+                }
+              },
+              "nullable": true
+            }
+          },
+          "parameters": {
+            "dnsZoneName": {
+              "type": "string",
+              "metadata": {
+                "description": "Conditional. The name of the parent DNS zone. Required if the template is used in a standalone deployment."
+              }
+            },
+            "name": {
+              "type": "string",
+              "metadata": {
+                "description": "Required. The name of the AAAA record."
+              }
+            },
+            "aaaaRecords": {
+              "type": "array",
+              "defaultValue": [],
+              "metadata": {
+                "description": "Optional. The list of AAAA records in the record set. Cannot be used in conjuction with the \"targetResource\" property."
+              }
+            },
+            "metadata": {
+              "type": "object",
+              "defaultValue": {},
+              "metadata": {
+                "description": "Optional. The metadata attached to the record set."
+              }
+            },
+            "ttl": {
+              "type": "int",
+              "defaultValue": 3600,
+              "metadata": {
+                "description": "Optional. The TTL (time-to-live) of the records in the record set."
+              }
+            },
+            "targetResourceId": {
+              "type": "string",
+              "defaultValue": "",
+              "metadata": {
+                "description": "Optional. A reference to an azure resource from where the dns resource value is taken. Also known as an alias record sets and are only supported for record types A, AAAA and CNAME. A resource ID can be an Azure Traffic Manager, Azure CDN, Front Door, Static Web App, or a resource ID of a record set of the same type in the DNS zone (i.e. A, AAAA or CNAME). Cannot be used in conjuction with the \"aRecords\" property."
+              }
+            },
+            "enableDefaultTelemetry": {
+              "type": "bool",
+              "defaultValue": true,
+              "metadata": {
+                "description": "Optional. Enable telemetry via a Globally Unique Identifier (GUID)."
+              }
+            },
+            "roleAssignments": {
+              "$ref": "#/definitions/roleAssignmentType",
+              "metadata": {
+                "description": "Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'."
+              }
+            }
+          },
+          "variables": {
+            "builtInRoleNames": {
+              "Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]",
+              "DNS Resolver Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '0f2ebee7-ffd4-4fc0-b3b7-664099fdad5d')]",
+              "DNS Zone Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'befefa01-2a29-4197-83a8-272ff33ce314')]",
+              "Domain Services Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'eeaeda52-9324-47f6-8069-5d5bade478b2')]",
+              "Domain Services Reader": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '361898ef-9ed1-48c2-849c-a832951106bb')]",
+              "Network Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '4d97b98b-1d4f-4787-a291-c67834d212e7')]",
+              "Owner": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '8e3af657-a8ff-443c-a75c-2fe8c4bcb635')]",
+              "Private DNS Zone Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b12aa53e-6015-4669-85d0-8515ebb3ae7f')]",
+              "Reader": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'acdd72a7-3385-48ef-bd42-f606fba81ae7')]",
+              "Role Based Access Control Administrator (Preview)": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'f58310d9-a9f6-439a-9e8d-f62e7b41a168')]",
+              "User Access Administrator": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '18d7d88d-d35e-4fb5-a5c3-7773c20a72d9')]"
+            }
+          },
+          "resources": {
+            "defaultTelemetry": {
+              "condition": "[parameters('enableDefaultTelemetry')]",
+              "type": "Microsoft.Resources/deployments",
+              "apiVersion": "2021-04-01",
+              "name": "[format('pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-{0}', uniqueString(deployment().name))]",
+              "properties": {
+                "mode": "Incremental",
+                "template": {
+                  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                  "contentVersion": "1.0.0.0",
+                  "resources": []
+                }
+              }
+            },
+            "dnsZone": {
+              "existing": true,
+              "type": "Microsoft.Network/dnsZones",
+              "apiVersion": "2018-05-01",
+              "name": "[parameters('dnsZoneName')]"
+            },
+            "AAAA": {
+              "type": "Microsoft.Network/dnsZones/AAAA",
+              "apiVersion": "2018-05-01",
+              "name": "[format('{0}/{1}', parameters('dnsZoneName'), parameters('name'))]",
+              "properties": {
+                "AAAARecords": "[if(not(empty(parameters('aaaaRecords'))), parameters('aaaaRecords'), null())]",
+                "metadata": "[parameters('metadata')]",
+                "TTL": "[parameters('ttl')]",
+                "targetResource": "[if(not(empty(parameters('targetResourceId'))), createObject('id', parameters('targetResourceId')), null())]"
+              },
+              "dependsOn": [
+                "dnsZone"
+              ]
+            },
+            "AAAA_roleAssignments": {
+              "copy": {
+                "name": "AAAA_roleAssignments",
+                "count": "[length(coalesce(parameters('roleAssignments'), createArray()))]"
+              },
+              "type": "Microsoft.Authorization/roleAssignments",
+              "apiVersion": "2022-04-01",
+              "scope": "[format('Microsoft.Network/dnsZones/{0}/AAAA/{1}', parameters('dnsZoneName'), parameters('name'))]",
+              "name": "[guid(resourceId('Microsoft.Network/dnsZones/AAAA', parameters('dnsZoneName'), parameters('name')), coalesce(parameters('roleAssignments'), createArray())[copyIndex()].principalId, coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName)]",
+              "properties": {
+                "roleDefinitionId": "[if(contains(variables('builtInRoleNames'), coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName), variables('builtInRoleNames')[coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName], coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName)]",
+                "principalId": "[coalesce(parameters('roleAssignments'), createArray())[copyIndex()].principalId]",
+                "description": "[tryGet(coalesce(parameters('roleAssignments'), createArray())[copyIndex()], 'description')]",
+                "principalType": "[tryGet(coalesce(parameters('roleAssignments'), createArray())[copyIndex()], 'principalType')]",
+                "condition": "[tryGet(coalesce(parameters('roleAssignments'), createArray())[copyIndex()], 'condition')]",
+                "conditionVersion": "[if(not(empty(tryGet(coalesce(parameters('roleAssignments'), createArray())[copyIndex()], 'condition'))), coalesce(tryGet(coalesce(parameters('roleAssignments'), createArray())[copyIndex()], 'conditionVersion'), '2.0'), null())]",
+                "delegatedManagedIdentityResourceId": "[tryGet(coalesce(parameters('roleAssignments'), createArray())[copyIndex()], 'delegatedManagedIdentityResourceId')]"
+              },
+              "dependsOn": [
+                "AAAA"
+              ]
+            }
+          },
+          "outputs": {
+            "name": {
+              "type": "string",
+              "metadata": {
+                "description": "The name of the deployed AAAA record."
+              },
+              "value": "[parameters('name')]"
+            },
+            "resourceId": {
+              "type": "string",
+              "metadata": {
+                "description": "The resource ID of the deployed AAAA record."
+              },
+              "value": "[resourceId('Microsoft.Network/dnsZones/AAAA', parameters('dnsZoneName'), parameters('name'))]"
+            },
+            "resourceGroupName": {
+              "type": "string",
+              "metadata": {
+                "description": "The resource group of the deployed AAAA record."
+              },
+              "value": "[resourceGroup().name]"
+            }
+          }
+        }
+      },
+      "dependsOn": [
+        "dnsZone"
+      ]
+    },
+    "dnsZone_CNAME": {
+      "copy": {
+        "name": "dnsZone_CNAME",
+        "count": "[length(parameters('cname'))]"
+      },
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2022-09-01",
+      "name": "[format('{0}-dnsZone-CNAMERecord-{1}', uniqueString(deployment().name, parameters('location')), copyIndex())]",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "dnsZoneName": {
+            "value": "[parameters('name')]"
+          },
+          "name": {
+            "value": "[parameters('cname')[copyIndex()].name]"
+          },
+          "cnameRecord": "[if(contains(parameters('cname')[copyIndex()], 'cnameRecord'), createObject('value', parameters('cname')[copyIndex()].cnameRecord), createObject('value', createObject()))]",
+          "metadata": "[if(contains(parameters('cname')[copyIndex()], 'metadata'), createObject('value', parameters('cname')[copyIndex()].metadata), createObject('value', createObject()))]",
+          "ttl": "[if(contains(parameters('cname')[copyIndex()], 'ttl'), createObject('value', parameters('cname')[copyIndex()].ttl), createObject('value', 3600))]",
+          "targetResourceId": "[if(contains(parameters('cname')[copyIndex()], 'targetResourceId'), createObject('value', parameters('cname')[copyIndex()].targetResourceId), createObject('value', ''))]",
+          "roleAssignments": "[if(contains(parameters('cname')[copyIndex()], 'roleAssignments'), createObject('value', parameters('cname')[copyIndex()].roleAssignments), createObject('value', createArray()))]",
+          "enableDefaultTelemetry": {
+            "value": "[variables('enableReferencedModulesTelemetry')]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "languageVersion": "2.0",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.22.6.54827",
+              "templateHash": "13232609782269052972"
+            },
+            "name": "Public DNS Zone CNAME record",
+            "description": "This module deploys a Public DNS Zone CNAME record.",
+            "owner": "Azure/module-maintainers"
+          },
+          "definitions": {
+            "roleAssignmentType": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "roleDefinitionIdOrName": {
+                    "type": "string",
+                    "metadata": {
+                      "description": "Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead."
+                    }
+                  },
+                  "principalId": {
+                    "type": "string",
+                    "metadata": {
+                      "description": "Required. The principal ID of the principal (user/group/identity) to assign the role to."
+                    }
+                  },
+                  "principalType": {
+                    "type": "string",
+                    "allowedValues": [
+                      "Device",
+                      "ForeignGroup",
+                      "Group",
+                      "ServicePrincipal",
+                      "User"
+                    ],
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. The principal type of the assigned principal ID."
+                    }
+                  },
+                  "description": {
+                    "type": "string",
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. The description of the role assignment."
+                    }
+                  },
+                  "condition": {
+                    "type": "string",
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase \"foo_storage_container\""
+                    }
+                  },
+                  "conditionVersion": {
+                    "type": "string",
+                    "allowedValues": [
+                      "2.0"
+                    ],
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. Version of the condition."
+                    }
+                  },
+                  "delegatedManagedIdentityResourceId": {
+                    "type": "string",
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. The Resource Id of the delegated managed identity resource."
+                    }
+                  }
+                }
+              },
+              "nullable": true
+            }
+          },
+          "parameters": {
+            "dnsZoneName": {
+              "type": "string",
+              "metadata": {
+                "description": "Conditional. The name of the parent DNS zone. Required if the template is used in a standalone deployment."
+              }
+            },
+            "name": {
+              "type": "string",
+              "metadata": {
+                "description": "Required. The name of the CNAME record."
+              }
+            },
+            "cnameRecord": {
+              "type": "object",
+              "defaultValue": {},
+              "metadata": {
+                "description": "Optional. A CNAME record. Cannot be used in conjuction with the \"targetResource\" property."
+              }
+            },
+            "metadata": {
+              "type": "object",
+              "defaultValue": {},
+              "metadata": {
+                "description": "Optional. The metadata attached to the record set."
+              }
+            },
+            "ttl": {
+              "type": "int",
+              "defaultValue": 3600,
+              "metadata": {
+                "description": "Optional. The TTL (time-to-live) of the records in the record set."
+              }
+            },
+            "targetResourceId": {
+              "type": "string",
+              "defaultValue": "",
+              "metadata": {
+                "description": "Optional. A reference to an azure resource from where the dns resource value is taken. Also known as an alias record sets and are only supported for record types A, AAAA and CNAME. A resource ID can be an Azure Traffic Manager, Azure CDN, Front Door, Static Web App, or a resource ID of a record set of the same type in the DNS zone (i.e. A, AAAA or CNAME). Cannot be used in conjuction with the \"aRecords\" property."
+              }
+            },
+            "roleAssignments": {
+              "$ref": "#/definitions/roleAssignmentType",
+              "metadata": {
+                "description": "Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'."
+              }
+            },
+            "enableDefaultTelemetry": {
+              "type": "bool",
+              "defaultValue": true,
+              "metadata": {
+                "description": "Optional. Enable telemetry via a Globally Unique Identifier (GUID)."
+              }
+            }
+          },
+          "variables": {
+            "builtInRoleNames": {
+              "Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]",
+              "DNS Resolver Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '0f2ebee7-ffd4-4fc0-b3b7-664099fdad5d')]",
+              "DNS Zone Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'befefa01-2a29-4197-83a8-272ff33ce314')]",
+              "Domain Services Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'eeaeda52-9324-47f6-8069-5d5bade478b2')]",
+              "Domain Services Reader": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '361898ef-9ed1-48c2-849c-a832951106bb')]",
+              "Network Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '4d97b98b-1d4f-4787-a291-c67834d212e7')]",
+              "Owner": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '8e3af657-a8ff-443c-a75c-2fe8c4bcb635')]",
+              "Private DNS Zone Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b12aa53e-6015-4669-85d0-8515ebb3ae7f')]",
+              "Reader": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'acdd72a7-3385-48ef-bd42-f606fba81ae7')]",
+              "Role Based Access Control Administrator (Preview)": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'f58310d9-a9f6-439a-9e8d-f62e7b41a168')]",
+              "User Access Administrator": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '18d7d88d-d35e-4fb5-a5c3-7773c20a72d9')]"
+            }
+          },
+          "resources": {
+            "defaultTelemetry": {
+              "condition": "[parameters('enableDefaultTelemetry')]",
+              "type": "Microsoft.Resources/deployments",
+              "apiVersion": "2021-04-01",
+              "name": "[format('pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-{0}', uniqueString(deployment().name))]",
+              "properties": {
+                "mode": "Incremental",
+                "template": {
+                  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                  "contentVersion": "1.0.0.0",
+                  "resources": []
+                }
+              }
+            },
+            "dnsZone": {
+              "existing": true,
+              "type": "Microsoft.Network/dnsZones",
+              "apiVersion": "2018-05-01",
+              "name": "[parameters('dnsZoneName')]"
+            },
+            "CNAME": {
+              "type": "Microsoft.Network/dnsZones/CNAME",
+              "apiVersion": "2018-05-01",
+              "name": "[format('{0}/{1}', parameters('dnsZoneName'), parameters('name'))]",
+              "properties": {
+                "CNAMERecord": "[if(not(empty(parameters('cnameRecord'))), parameters('cnameRecord'), null())]",
+                "metadata": "[parameters('metadata')]",
+                "TTL": "[parameters('ttl')]",
+                "targetResource": "[if(not(empty(parameters('targetResourceId'))), createObject('id', parameters('targetResourceId')), null())]"
+              },
+              "dependsOn": [
+                "dnsZone"
+              ]
+            },
+            "CNAME_roleAssignments": {
+              "copy": {
+                "name": "CNAME_roleAssignments",
+                "count": "[length(coalesce(parameters('roleAssignments'), createArray()))]"
+              },
+              "type": "Microsoft.Authorization/roleAssignments",
+              "apiVersion": "2022-04-01",
+              "scope": "[format('Microsoft.Network/dnsZones/{0}/CNAME/{1}', parameters('dnsZoneName'), parameters('name'))]",
+              "name": "[guid(resourceId('Microsoft.Network/dnsZones/CNAME', parameters('dnsZoneName'), parameters('name')), coalesce(parameters('roleAssignments'), createArray())[copyIndex()].principalId, coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName)]",
+              "properties": {
+                "roleDefinitionId": "[if(contains(variables('builtInRoleNames'), coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName), variables('builtInRoleNames')[coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName], coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName)]",
+                "principalId": "[coalesce(parameters('roleAssignments'), createArray())[copyIndex()].principalId]",
+                "description": "[tryGet(coalesce(parameters('roleAssignments'), createArray())[copyIndex()], 'description')]",
+                "principalType": "[tryGet(coalesce(parameters('roleAssignments'), createArray())[copyIndex()], 'principalType')]",
+                "condition": "[tryGet(coalesce(parameters('roleAssignments'), createArray())[copyIndex()], 'condition')]",
+                "conditionVersion": "[if(not(empty(tryGet(coalesce(parameters('roleAssignments'), createArray())[copyIndex()], 'condition'))), coalesce(tryGet(coalesce(parameters('roleAssignments'), createArray())[copyIndex()], 'conditionVersion'), '2.0'), null())]",
+                "delegatedManagedIdentityResourceId": "[tryGet(coalesce(parameters('roleAssignments'), createArray())[copyIndex()], 'delegatedManagedIdentityResourceId')]"
+              },
+              "dependsOn": [
+                "CNAME"
+              ]
+            }
+          },
+          "outputs": {
+            "name": {
+              "type": "string",
+              "metadata": {
+                "description": "The name of the deployed CNAME record."
+              },
+              "value": "[parameters('name')]"
+            },
+            "resourceId": {
+              "type": "string",
+              "metadata": {
+                "description": "The resource ID of the deployed CNAME record."
+              },
+              "value": "[resourceId('Microsoft.Network/dnsZones/CNAME', parameters('dnsZoneName'), parameters('name'))]"
+            },
+            "resourceGroupName": {
+              "type": "string",
+              "metadata": {
+                "description": "The resource group of the deployed CNAME record."
+              },
+              "value": "[resourceGroup().name]"
+            }
+          }
+        }
+      },
+      "dependsOn": [
+        "dnsZone"
+      ]
+    },
+    "dnsZone_CAA": {
+      "copy": {
+        "name": "dnsZone_CAA",
+        "count": "[length(parameters('caa'))]"
+      },
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2022-09-01",
+      "name": "[format('{0}-dnsZone-CAARecord-{1}', uniqueString(deployment().name, parameters('location')), copyIndex())]",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "dnsZoneName": {
+            "value": "[parameters('name')]"
+          },
+          "name": {
+            "value": "[parameters('caa')[copyIndex()].name]"
+          },
+          "metadata": "[if(contains(parameters('caa')[copyIndex()], 'metadata'), createObject('value', parameters('caa')[copyIndex()].metadata), createObject('value', createObject()))]",
+          "caaRecords": "[if(contains(parameters('caa')[copyIndex()], 'caaRecords'), createObject('value', parameters('caa')[copyIndex()].caaRecords), createObject('value', createArray()))]",
+          "ttl": "[if(contains(parameters('caa')[copyIndex()], 'ttl'), createObject('value', parameters('caa')[copyIndex()].ttl), createObject('value', 3600))]",
+          "roleAssignments": "[if(contains(parameters('caa')[copyIndex()], 'roleAssignments'), createObject('value', parameters('caa')[copyIndex()].roleAssignments), createObject('value', createArray()))]",
+          "enableDefaultTelemetry": {
+            "value": "[variables('enableReferencedModulesTelemetry')]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "languageVersion": "2.0",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.22.6.54827",
+              "templateHash": "17336929917389994115"
+            },
+            "name": "Public DNS Zone CAA record",
+            "description": "This module deploys a Public DNS Zone CAA record.",
+            "owner": "Azure/module-maintainers"
+          },
+          "definitions": {
+            "roleAssignmentType": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "roleDefinitionIdOrName": {
+                    "type": "string",
+                    "metadata": {
+                      "description": "Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead."
+                    }
+                  },
+                  "principalId": {
+                    "type": "string",
+                    "metadata": {
+                      "description": "Required. The principal ID of the principal (user/group/identity) to assign the role to."
+                    }
+                  },
+                  "principalType": {
+                    "type": "string",
+                    "allowedValues": [
+                      "Device",
+                      "ForeignGroup",
+                      "Group",
+                      "ServicePrincipal",
+                      "User"
+                    ],
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. The principal type of the assigned principal ID."
+                    }
+                  },
+                  "description": {
+                    "type": "string",
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. The description of the role assignment."
+                    }
+                  },
+                  "condition": {
+                    "type": "string",
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase \"foo_storage_container\""
+                    }
+                  },
+                  "conditionVersion": {
+                    "type": "string",
+                    "allowedValues": [
+                      "2.0"
+                    ],
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. Version of the condition."
+                    }
+                  },
+                  "delegatedManagedIdentityResourceId": {
+                    "type": "string",
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. The Resource Id of the delegated managed identity resource."
+                    }
+                  }
+                }
+              },
+              "nullable": true
+            }
+          },
+          "parameters": {
+            "dnsZoneName": {
+              "type": "string",
+              "metadata": {
+                "description": "Conditional. The name of the parent DNS zone. Required if the template is used in a standalone deployment."
+              }
+            },
+            "name": {
+              "type": "string",
+              "metadata": {
+                "description": "Required. The name of the CAA record."
+              }
+            },
+            "metadata": {
+              "type": "object",
+              "defaultValue": {},
+              "metadata": {
+                "description": "Optional. The metadata attached to the record set."
+              }
+            },
+            "caaRecords": {
+              "type": "array",
+              "defaultValue": [],
+              "metadata": {
+                "description": "Optional. The list of CAA records in the record set."
+              }
+            },
+            "ttl": {
+              "type": "int",
+              "defaultValue": 3600,
+              "metadata": {
+                "description": "Optional. The TTL (time-to-live) of the records in the record set."
+              }
+            },
+            "roleAssignments": {
+              "$ref": "#/definitions/roleAssignmentType",
+              "metadata": {
+                "description": "Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'."
+              }
+            },
+            "enableDefaultTelemetry": {
+              "type": "bool",
+              "defaultValue": true,
+              "metadata": {
+                "description": "Optional. Enable telemetry via a Globally Unique Identifier (GUID)."
+              }
+            }
+          },
+          "variables": {
+            "builtInRoleNames": {
+              "Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]",
+              "DNS Resolver Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '0f2ebee7-ffd4-4fc0-b3b7-664099fdad5d')]",
+              "DNS Zone Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'befefa01-2a29-4197-83a8-272ff33ce314')]",
+              "Domain Services Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'eeaeda52-9324-47f6-8069-5d5bade478b2')]",
+              "Domain Services Reader": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '361898ef-9ed1-48c2-849c-a832951106bb')]",
+              "Network Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '4d97b98b-1d4f-4787-a291-c67834d212e7')]",
+              "Owner": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '8e3af657-a8ff-443c-a75c-2fe8c4bcb635')]",
+              "Private DNS Zone Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b12aa53e-6015-4669-85d0-8515ebb3ae7f')]",
+              "Reader": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'acdd72a7-3385-48ef-bd42-f606fba81ae7')]",
+              "Role Based Access Control Administrator (Preview)": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'f58310d9-a9f6-439a-9e8d-f62e7b41a168')]",
+              "User Access Administrator": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '18d7d88d-d35e-4fb5-a5c3-7773c20a72d9')]"
+            }
+          },
+          "resources": {
+            "defaultTelemetry": {
+              "condition": "[parameters('enableDefaultTelemetry')]",
+              "type": "Microsoft.Resources/deployments",
+              "apiVersion": "2021-04-01",
+              "name": "[format('pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-{0}', uniqueString(deployment().name))]",
+              "properties": {
+                "mode": "Incremental",
+                "template": {
+                  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                  "contentVersion": "1.0.0.0",
+                  "resources": []
+                }
+              }
+            },
+            "dnsZone": {
+              "existing": true,
+              "type": "Microsoft.Network/dnsZones",
+              "apiVersion": "2018-05-01",
+              "name": "[parameters('dnsZoneName')]"
+            },
+            "CAA": {
+              "type": "Microsoft.Network/dnsZones/CAA",
+              "apiVersion": "2018-05-01",
+              "name": "[format('{0}/{1}', parameters('dnsZoneName'), parameters('name'))]",
+              "properties": {
+                "metadata": "[parameters('metadata')]",
+                "caaRecords": "[parameters('caaRecords')]",
+                "TTL": "[parameters('ttl')]"
+              },
+              "dependsOn": [
+                "dnsZone"
+              ]
+            },
+            "CAA_roleAssignments": {
+              "copy": {
+                "name": "CAA_roleAssignments",
+                "count": "[length(coalesce(parameters('roleAssignments'), createArray()))]"
+              },
+              "type": "Microsoft.Authorization/roleAssignments",
+              "apiVersion": "2022-04-01",
+              "scope": "[format('Microsoft.Network/dnsZones/{0}/CAA/{1}', parameters('dnsZoneName'), parameters('name'))]",
+              "name": "[guid(resourceId('Microsoft.Network/dnsZones/CAA', parameters('dnsZoneName'), parameters('name')), coalesce(parameters('roleAssignments'), createArray())[copyIndex()].principalId, coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName)]",
+              "properties": {
+                "roleDefinitionId": "[if(contains(variables('builtInRoleNames'), coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName), variables('builtInRoleNames')[coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName], coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName)]",
+                "principalId": "[coalesce(parameters('roleAssignments'), createArray())[copyIndex()].principalId]",
+                "description": "[tryGet(coalesce(parameters('roleAssignments'), createArray())[copyIndex()], 'description')]",
+                "principalType": "[tryGet(coalesce(parameters('roleAssignments'), createArray())[copyIndex()], 'principalType')]",
+                "condition": "[tryGet(coalesce(parameters('roleAssignments'), createArray())[copyIndex()], 'condition')]",
+                "conditionVersion": "[if(not(empty(tryGet(coalesce(parameters('roleAssignments'), createArray())[copyIndex()], 'condition'))), coalesce(tryGet(coalesce(parameters('roleAssignments'), createArray())[copyIndex()], 'conditionVersion'), '2.0'), null())]",
+                "delegatedManagedIdentityResourceId": "[tryGet(coalesce(parameters('roleAssignments'), createArray())[copyIndex()], 'delegatedManagedIdentityResourceId')]"
+              },
+              "dependsOn": [
+                "CAA"
+              ]
+            }
+          },
+          "outputs": {
+            "name": {
+              "type": "string",
+              "metadata": {
+                "description": "The name of the deployed CAA record."
+              },
+              "value": "[parameters('name')]"
+            },
+            "resourceId": {
+              "type": "string",
+              "metadata": {
+                "description": "The resource ID of the deployed CAA record."
+              },
+              "value": "[resourceId('Microsoft.Network/dnsZones/CAA', parameters('dnsZoneName'), parameters('name'))]"
+            },
+            "resourceGroupName": {
+              "type": "string",
+              "metadata": {
+                "description": "The resource group of the deployed CAA record."
+              },
+              "value": "[resourceGroup().name]"
+            }
+          }
+        }
+      },
+      "dependsOn": [
+        "dnsZone"
+      ]
+    },
+    "dnsZone_MX": {
+      "copy": {
+        "name": "dnsZone_MX",
+        "count": "[length(parameters('mx'))]"
+      },
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2022-09-01",
+      "name": "[format('{0}-dnsZone-MXRecord-{1}', uniqueString(deployment().name, parameters('location')), copyIndex())]",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "dnsZoneName": {
+            "value": "[parameters('name')]"
+          },
+          "name": {
+            "value": "[parameters('mx')[copyIndex()].name]"
+          },
+          "metadata": "[if(contains(parameters('mx')[copyIndex()], 'metadata'), createObject('value', parameters('mx')[copyIndex()].metadata), createObject('value', createObject()))]",
+          "mxRecords": "[if(contains(parameters('mx')[copyIndex()], 'mxRecords'), createObject('value', parameters('mx')[copyIndex()].mxRecords), createObject('value', createArray()))]",
+          "ttl": "[if(contains(parameters('mx')[copyIndex()], 'ttl'), createObject('value', parameters('mx')[copyIndex()].ttl), createObject('value', 3600))]",
+          "roleAssignments": "[if(contains(parameters('mx')[copyIndex()], 'roleAssignments'), createObject('value', parameters('mx')[copyIndex()].roleAssignments), createObject('value', createArray()))]",
+          "enableDefaultTelemetry": {
+            "value": "[variables('enableReferencedModulesTelemetry')]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "languageVersion": "2.0",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.22.6.54827",
+              "templateHash": "16614736782890395121"
+            },
+            "name": "Public DNS Zone MX record",
+            "description": "This module deploys a Public DNS Zone MX record.",
+            "owner": "Azure/module-maintainers"
+          },
+          "definitions": {
+            "roleAssignmentType": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "roleDefinitionIdOrName": {
+                    "type": "string",
+                    "metadata": {
+                      "description": "Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead."
+                    }
+                  },
+                  "principalId": {
+                    "type": "string",
+                    "metadata": {
+                      "description": "Required. The principal ID of the principal (user/group/identity) to assign the role to."
+                    }
+                  },
+                  "principalType": {
+                    "type": "string",
+                    "allowedValues": [
+                      "Device",
+                      "ForeignGroup",
+                      "Group",
+                      "ServicePrincipal",
+                      "User"
+                    ],
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. The principal type of the assigned principal ID."
+                    }
+                  },
+                  "description": {
+                    "type": "string",
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. The description of the role assignment."
+                    }
+                  },
+                  "condition": {
+                    "type": "string",
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase \"foo_storage_container\""
+                    }
+                  },
+                  "conditionVersion": {
+                    "type": "string",
+                    "allowedValues": [
+                      "2.0"
+                    ],
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. Version of the condition."
+                    }
+                  },
+                  "delegatedManagedIdentityResourceId": {
+                    "type": "string",
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. The Resource Id of the delegated managed identity resource."
+                    }
+                  }
+                }
+              },
+              "nullable": true
+            }
+          },
+          "parameters": {
+            "dnsZoneName": {
+              "type": "string",
+              "metadata": {
+                "description": "Conditional. The name of the parent DNS zone. Required if the template is used in a standalone deployment."
+              }
+            },
+            "name": {
+              "type": "string",
+              "metadata": {
+                "description": "Required. The name of the MX record."
+              }
+            },
+            "metadata": {
+              "type": "object",
+              "defaultValue": {},
+              "metadata": {
+                "description": "Optional. The metadata attached to the record set."
+              }
+            },
+            "mxRecords": {
+              "type": "array",
+              "defaultValue": [],
+              "metadata": {
+                "description": "Optional. The list of MX records in the record set."
+              }
+            },
+            "ttl": {
+              "type": "int",
+              "defaultValue": 3600,
+              "metadata": {
+                "description": "Optional. The TTL (time-to-live) of the records in the record set."
+              }
+            },
+            "roleAssignments": {
+              "$ref": "#/definitions/roleAssignmentType",
+              "metadata": {
+                "description": "Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'."
+              }
+            },
+            "enableDefaultTelemetry": {
+              "type": "bool",
+              "defaultValue": true,
+              "metadata": {
+                "description": "Optional. Enable telemetry via a Globally Unique Identifier (GUID)."
+              }
+            }
+          },
+          "variables": {
+            "builtInRoleNames": {
+              "Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]",
+              "DNS Resolver Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '0f2ebee7-ffd4-4fc0-b3b7-664099fdad5d')]",
+              "DNS Zone Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'befefa01-2a29-4197-83a8-272ff33ce314')]",
+              "Domain Services Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'eeaeda52-9324-47f6-8069-5d5bade478b2')]",
+              "Domain Services Reader": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '361898ef-9ed1-48c2-849c-a832951106bb')]",
+              "Network Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '4d97b98b-1d4f-4787-a291-c67834d212e7')]",
+              "Owner": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '8e3af657-a8ff-443c-a75c-2fe8c4bcb635')]",
+              "Private DNS Zone Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b12aa53e-6015-4669-85d0-8515ebb3ae7f')]",
+              "Reader": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'acdd72a7-3385-48ef-bd42-f606fba81ae7')]",
+              "Role Based Access Control Administrator (Preview)": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'f58310d9-a9f6-439a-9e8d-f62e7b41a168')]",
+              "User Access Administrator": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '18d7d88d-d35e-4fb5-a5c3-7773c20a72d9')]"
+            }
+          },
+          "resources": {
+            "defaultTelemetry": {
+              "condition": "[parameters('enableDefaultTelemetry')]",
+              "type": "Microsoft.Resources/deployments",
+              "apiVersion": "2021-04-01",
+              "name": "[format('pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-{0}', uniqueString(deployment().name))]",
+              "properties": {
+                "mode": "Incremental",
+                "template": {
+                  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                  "contentVersion": "1.0.0.0",
+                  "resources": []
+                }
+              }
+            },
+            "dnsZone": {
+              "existing": true,
+              "type": "Microsoft.Network/dnsZones",
+              "apiVersion": "2018-05-01",
+              "name": "[parameters('dnsZoneName')]"
+            },
+            "MX": {
+              "type": "Microsoft.Network/dnsZones/MX",
+              "apiVersion": "2018-05-01",
+              "name": "[format('{0}/{1}', parameters('dnsZoneName'), parameters('name'))]",
+              "properties": {
+                "metadata": "[parameters('metadata')]",
+                "MXRecords": "[parameters('mxRecords')]",
+                "TTL": "[parameters('ttl')]"
+              },
+              "dependsOn": [
+                "dnsZone"
+              ]
+            },
+            "MX_roleAssignments": {
+              "copy": {
+                "name": "MX_roleAssignments",
+                "count": "[length(coalesce(parameters('roleAssignments'), createArray()))]"
+              },
+              "type": "Microsoft.Authorization/roleAssignments",
+              "apiVersion": "2022-04-01",
+              "scope": "[format('Microsoft.Network/dnsZones/{0}/MX/{1}', parameters('dnsZoneName'), parameters('name'))]",
+              "name": "[guid(resourceId('Microsoft.Network/dnsZones/MX', parameters('dnsZoneName'), parameters('name')), coalesce(parameters('roleAssignments'), createArray())[copyIndex()].principalId, coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName)]",
+              "properties": {
+                "roleDefinitionId": "[if(contains(variables('builtInRoleNames'), coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName), variables('builtInRoleNames')[coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName], coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName)]",
+                "principalId": "[coalesce(parameters('roleAssignments'), createArray())[copyIndex()].principalId]",
+                "description": "[tryGet(coalesce(parameters('roleAssignments'), createArray())[copyIndex()], 'description')]",
+                "principalType": "[tryGet(coalesce(parameters('roleAssignments'), createArray())[copyIndex()], 'principalType')]",
+                "condition": "[tryGet(coalesce(parameters('roleAssignments'), createArray())[copyIndex()], 'condition')]",
+                "conditionVersion": "[if(not(empty(tryGet(coalesce(parameters('roleAssignments'), createArray())[copyIndex()], 'condition'))), coalesce(tryGet(coalesce(parameters('roleAssignments'), createArray())[copyIndex()], 'conditionVersion'), '2.0'), null())]",
+                "delegatedManagedIdentityResourceId": "[tryGet(coalesce(parameters('roleAssignments'), createArray())[copyIndex()], 'delegatedManagedIdentityResourceId')]"
+              },
+              "dependsOn": [
+                "MX"
+              ]
+            }
+          },
+          "outputs": {
+            "name": {
+              "type": "string",
+              "metadata": {
+                "description": "The name of the deployed MX record."
+              },
+              "value": "[parameters('name')]"
+            },
+            "resourceId": {
+              "type": "string",
+              "metadata": {
+                "description": "The resource ID of the deployed MX record."
+              },
+              "value": "[resourceId('Microsoft.Network/dnsZones/MX', parameters('dnsZoneName'), parameters('name'))]"
+            },
+            "resourceGroupName": {
+              "type": "string",
+              "metadata": {
+                "description": "The resource group of the deployed MX record."
+              },
+              "value": "[resourceGroup().name]"
+            }
+          }
+        }
+      },
+      "dependsOn": [
+        "dnsZone"
+      ]
+    },
+    "dnsZone_NS": {
+      "copy": {
+        "name": "dnsZone_NS",
+        "count": "[length(parameters('ns'))]"
+      },
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2022-09-01",
+      "name": "[format('{0}-dnsZone-NSRecord-{1}', uniqueString(deployment().name, parameters('location')), copyIndex())]",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "dnsZoneName": {
+            "value": "[parameters('name')]"
+          },
+          "name": {
+            "value": "[parameters('ns')[copyIndex()].name]"
+          },
+          "metadata": "[if(contains(parameters('ns')[copyIndex()], 'metadata'), createObject('value', parameters('ns')[copyIndex()].metadata), createObject('value', createObject()))]",
+          "nsRecords": "[if(contains(parameters('ns')[copyIndex()], 'nsRecords'), createObject('value', parameters('ns')[copyIndex()].nsRecords), createObject('value', createArray()))]",
+          "ttl": "[if(contains(parameters('ns')[copyIndex()], 'ttl'), createObject('value', parameters('ns')[copyIndex()].ttl), createObject('value', 3600))]",
+          "roleAssignments": "[if(contains(parameters('ns')[copyIndex()], 'roleAssignments'), createObject('value', parameters('ns')[copyIndex()].roleAssignments), createObject('value', createArray()))]",
+          "enableDefaultTelemetry": {
+            "value": "[variables('enableReferencedModulesTelemetry')]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "languageVersion": "2.0",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.22.6.54827",
+              "templateHash": "10360566575253611568"
+            },
+            "name": "Public DNS Zone NS record",
+            "description": "This module deploys a Public DNS Zone NS record.",
+            "owner": "Azure/module-maintainers"
+          },
+          "definitions": {
+            "roleAssignmentType": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "roleDefinitionIdOrName": {
+                    "type": "string",
+                    "metadata": {
+                      "description": "Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead."
+                    }
+                  },
+                  "principalId": {
+                    "type": "string",
+                    "metadata": {
+                      "description": "Required. The principal ID of the principal (user/group/identity) to assign the role to."
+                    }
+                  },
+                  "principalType": {
+                    "type": "string",
+                    "allowedValues": [
+                      "Device",
+                      "ForeignGroup",
+                      "Group",
+                      "ServicePrincipal",
+                      "User"
+                    ],
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. The principal type of the assigned principal ID."
+                    }
+                  },
+                  "description": {
+                    "type": "string",
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. The description of the role assignment."
+                    }
+                  },
+                  "condition": {
+                    "type": "string",
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase \"foo_storage_container\""
+                    }
+                  },
+                  "conditionVersion": {
+                    "type": "string",
+                    "allowedValues": [
+                      "2.0"
+                    ],
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. Version of the condition."
+                    }
+                  },
+                  "delegatedManagedIdentityResourceId": {
+                    "type": "string",
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. The Resource Id of the delegated managed identity resource."
+                    }
+                  }
+                }
+              },
+              "nullable": true
+            }
+          },
+          "parameters": {
+            "dnsZoneName": {
+              "type": "string",
+              "metadata": {
+                "description": "Conditional. The name of the parent DNS zone. Required if the template is used in a standalone deployment."
+              }
+            },
+            "name": {
+              "type": "string",
+              "metadata": {
+                "description": "Required. The name of the NS record."
+              }
+            },
+            "metadata": {
+              "type": "object",
+              "defaultValue": {},
+              "metadata": {
+                "description": "Optional. The metadata attached to the record set."
+              }
+            },
+            "nsRecords": {
+              "type": "array",
+              "defaultValue": [],
+              "metadata": {
+                "description": "Optional. The list of NS records in the record set."
+              }
+            },
+            "ttl": {
+              "type": "int",
+              "defaultValue": 3600,
+              "metadata": {
+                "description": "Optional. The TTL (time-to-live) of the records in the record set."
+              }
+            },
+            "roleAssignments": {
+              "$ref": "#/definitions/roleAssignmentType",
+              "metadata": {
+                "description": "Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'."
+              }
+            },
+            "enableDefaultTelemetry": {
+              "type": "bool",
+              "defaultValue": true,
+              "metadata": {
+                "description": "Optional. Enable telemetry via a Globally Unique Identifier (GUID)."
+              }
+            }
+          },
+          "variables": {
+            "builtInRoleNames": {
+              "Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]",
+              "DNS Resolver Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '0f2ebee7-ffd4-4fc0-b3b7-664099fdad5d')]",
+              "DNS Zone Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'befefa01-2a29-4197-83a8-272ff33ce314')]",
+              "Domain Services Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'eeaeda52-9324-47f6-8069-5d5bade478b2')]",
+              "Domain Services Reader": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '361898ef-9ed1-48c2-849c-a832951106bb')]",
+              "Network Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '4d97b98b-1d4f-4787-a291-c67834d212e7')]",
+              "Owner": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '8e3af657-a8ff-443c-a75c-2fe8c4bcb635')]",
+              "Private DNS Zone Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b12aa53e-6015-4669-85d0-8515ebb3ae7f')]",
+              "Reader": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'acdd72a7-3385-48ef-bd42-f606fba81ae7')]",
+              "Role Based Access Control Administrator (Preview)": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'f58310d9-a9f6-439a-9e8d-f62e7b41a168')]",
+              "User Access Administrator": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '18d7d88d-d35e-4fb5-a5c3-7773c20a72d9')]"
+            }
+          },
+          "resources": {
+            "defaultTelemetry": {
+              "condition": "[parameters('enableDefaultTelemetry')]",
+              "type": "Microsoft.Resources/deployments",
+              "apiVersion": "2021-04-01",
+              "name": "[format('pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-{0}', uniqueString(deployment().name))]",
+              "properties": {
+                "mode": "Incremental",
+                "template": {
+                  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                  "contentVersion": "1.0.0.0",
+                  "resources": []
+                }
+              }
+            },
+            "dnsZone": {
+              "existing": true,
+              "type": "Microsoft.Network/dnsZones",
+              "apiVersion": "2018-05-01",
+              "name": "[parameters('dnsZoneName')]"
+            },
+            "NS": {
+              "type": "Microsoft.Network/dnsZones/NS",
+              "apiVersion": "2018-05-01",
+              "name": "[format('{0}/{1}', parameters('dnsZoneName'), parameters('name'))]",
+              "properties": {
+                "metadata": "[parameters('metadata')]",
+                "NSRecords": "[parameters('nsRecords')]",
+                "TTL": "[parameters('ttl')]"
+              },
+              "dependsOn": [
+                "dnsZone"
+              ]
+            },
+            "NS_roleAssignments": {
+              "copy": {
+                "name": "NS_roleAssignments",
+                "count": "[length(coalesce(parameters('roleAssignments'), createArray()))]"
+              },
+              "type": "Microsoft.Authorization/roleAssignments",
+              "apiVersion": "2022-04-01",
+              "scope": "[format('Microsoft.Network/dnsZones/{0}/NS/{1}', parameters('dnsZoneName'), parameters('name'))]",
+              "name": "[guid(resourceId('Microsoft.Network/dnsZones/NS', parameters('dnsZoneName'), parameters('name')), coalesce(parameters('roleAssignments'), createArray())[copyIndex()].principalId, coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName)]",
+              "properties": {
+                "roleDefinitionId": "[if(contains(variables('builtInRoleNames'), coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName), variables('builtInRoleNames')[coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName], coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName)]",
+                "principalId": "[coalesce(parameters('roleAssignments'), createArray())[copyIndex()].principalId]",
+                "description": "[tryGet(coalesce(parameters('roleAssignments'), createArray())[copyIndex()], 'description')]",
+                "principalType": "[tryGet(coalesce(parameters('roleAssignments'), createArray())[copyIndex()], 'principalType')]",
+                "condition": "[tryGet(coalesce(parameters('roleAssignments'), createArray())[copyIndex()], 'condition')]",
+                "conditionVersion": "[if(not(empty(tryGet(coalesce(parameters('roleAssignments'), createArray())[copyIndex()], 'condition'))), coalesce(tryGet(coalesce(parameters('roleAssignments'), createArray())[copyIndex()], 'conditionVersion'), '2.0'), null())]",
+                "delegatedManagedIdentityResourceId": "[tryGet(coalesce(parameters('roleAssignments'), createArray())[copyIndex()], 'delegatedManagedIdentityResourceId')]"
+              },
+              "dependsOn": [
+                "NS"
+              ]
+            }
+          },
+          "outputs": {
+            "name": {
+              "type": "string",
+              "metadata": {
+                "description": "The name of the deployed NS record."
+              },
+              "value": "[parameters('name')]"
+            },
+            "resourceId": {
+              "type": "string",
+              "metadata": {
+                "description": "The resource ID of the deployed NS record."
+              },
+              "value": "[resourceId('Microsoft.Network/dnsZones/NS', parameters('dnsZoneName'), parameters('name'))]"
+            },
+            "resourceGroupName": {
+              "type": "string",
+              "metadata": {
+                "description": "The resource group of the deployed NS record."
+              },
+              "value": "[resourceGroup().name]"
+            }
+          }
+        }
+      },
+      "dependsOn": [
+        "dnsZone"
+      ]
+    },
+    "dnsZone_PTR": {
+      "copy": {
+        "name": "dnsZone_PTR",
+        "count": "[length(parameters('ptr'))]"
+      },
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2022-09-01",
+      "name": "[format('{0}-dnsZone-PTRRecord-{1}', uniqueString(deployment().name, parameters('location')), copyIndex())]",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "dnsZoneName": {
+            "value": "[parameters('name')]"
+          },
+          "name": {
+            "value": "[parameters('ptr')[copyIndex()].name]"
+          },
+          "metadata": "[if(contains(parameters('ptr')[copyIndex()], 'metadata'), createObject('value', parameters('ptr')[copyIndex()].metadata), createObject('value', createObject()))]",
+          "ptrRecords": "[if(contains(parameters('ptr')[copyIndex()], 'ptrRecords'), createObject('value', parameters('ptr')[copyIndex()].ptrRecords), createObject('value', createArray()))]",
+          "ttl": "[if(contains(parameters('ptr')[copyIndex()], 'ttl'), createObject('value', parameters('ptr')[copyIndex()].ttl), createObject('value', 3600))]",
+          "roleAssignments": "[if(contains(parameters('ptr')[copyIndex()], 'roleAssignments'), createObject('value', parameters('ptr')[copyIndex()].roleAssignments), createObject('value', createArray()))]",
+          "enableDefaultTelemetry": {
+            "value": "[variables('enableReferencedModulesTelemetry')]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "languageVersion": "2.0",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.22.6.54827",
+              "templateHash": "694884293764156099"
+            },
+            "name": "Public DNS Zone PTR record",
+            "description": "This module deploys a Public DNS Zone PTR record.",
+            "owner": "Azure/module-maintainers"
+          },
+          "definitions": {
+            "roleAssignmentType": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "roleDefinitionIdOrName": {
+                    "type": "string",
+                    "metadata": {
+                      "description": "Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead."
+                    }
+                  },
+                  "principalId": {
+                    "type": "string",
+                    "metadata": {
+                      "description": "Required. The principal ID of the principal (user/group/identity) to assign the role to."
+                    }
+                  },
+                  "principalType": {
+                    "type": "string",
+                    "allowedValues": [
+                      "Device",
+                      "ForeignGroup",
+                      "Group",
+                      "ServicePrincipal",
+                      "User"
+                    ],
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. The principal type of the assigned principal ID."
+                    }
+                  },
+                  "description": {
+                    "type": "string",
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. The description of the role assignment."
+                    }
+                  },
+                  "condition": {
+                    "type": "string",
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase \"foo_storage_container\""
+                    }
+                  },
+                  "conditionVersion": {
+                    "type": "string",
+                    "allowedValues": [
+                      "2.0"
+                    ],
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. Version of the condition."
+                    }
+                  },
+                  "delegatedManagedIdentityResourceId": {
+                    "type": "string",
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. The Resource Id of the delegated managed identity resource."
+                    }
+                  }
+                }
+              },
+              "nullable": true
+            }
+          },
+          "parameters": {
+            "dnsZoneName": {
+              "type": "string",
+              "metadata": {
+                "description": "Conditional. The name of the parent DNS zone. Required if the template is used in a standalone deployment."
+              }
+            },
+            "name": {
+              "type": "string",
+              "metadata": {
+                "description": "Required. The name of the PTR record."
+              }
+            },
+            "metadata": {
+              "type": "object",
+              "defaultValue": {},
+              "metadata": {
+                "description": "Optional. The metadata attached to the record set."
+              }
+            },
+            "ptrRecords": {
+              "type": "array",
+              "defaultValue": [],
+              "metadata": {
+                "description": "Optional. The list of PTR records in the record set."
+              }
+            },
+            "ttl": {
+              "type": "int",
+              "defaultValue": 3600,
+              "metadata": {
+                "description": "Optional. The TTL (time-to-live) of the records in the record set."
+              }
+            },
+            "roleAssignments": {
+              "$ref": "#/definitions/roleAssignmentType",
+              "metadata": {
+                "description": "Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'."
+              }
+            },
+            "enableDefaultTelemetry": {
+              "type": "bool",
+              "defaultValue": true,
+              "metadata": {
+                "description": "Optional. Enable telemetry via a Globally Unique Identifier (GUID)."
+              }
+            }
+          },
+          "variables": {
+            "builtInRoleNames": {
+              "Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]",
+              "DNS Resolver Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '0f2ebee7-ffd4-4fc0-b3b7-664099fdad5d')]",
+              "DNS Zone Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'befefa01-2a29-4197-83a8-272ff33ce314')]",
+              "Domain Services Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'eeaeda52-9324-47f6-8069-5d5bade478b2')]",
+              "Domain Services Reader": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '361898ef-9ed1-48c2-849c-a832951106bb')]",
+              "Network Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '4d97b98b-1d4f-4787-a291-c67834d212e7')]",
+              "Owner": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '8e3af657-a8ff-443c-a75c-2fe8c4bcb635')]",
+              "Private DNS Zone Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b12aa53e-6015-4669-85d0-8515ebb3ae7f')]",
+              "Reader": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'acdd72a7-3385-48ef-bd42-f606fba81ae7')]",
+              "Role Based Access Control Administrator (Preview)": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'f58310d9-a9f6-439a-9e8d-f62e7b41a168')]",
+              "User Access Administrator": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '18d7d88d-d35e-4fb5-a5c3-7773c20a72d9')]"
+            }
+          },
+          "resources": {
+            "defaultTelemetry": {
+              "condition": "[parameters('enableDefaultTelemetry')]",
+              "type": "Microsoft.Resources/deployments",
+              "apiVersion": "2021-04-01",
+              "name": "[format('pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-{0}', uniqueString(deployment().name))]",
+              "properties": {
+                "mode": "Incremental",
+                "template": {
+                  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                  "contentVersion": "1.0.0.0",
+                  "resources": []
+                }
+              }
+            },
+            "dnsZone": {
+              "existing": true,
+              "type": "Microsoft.Network/dnsZones",
+              "apiVersion": "2018-05-01",
+              "name": "[parameters('dnsZoneName')]"
+            },
+            "PTR": {
+              "type": "Microsoft.Network/dnsZones/PTR",
+              "apiVersion": "2018-05-01",
+              "name": "[format('{0}/{1}', parameters('dnsZoneName'), parameters('name'))]",
+              "properties": {
+                "metadata": "[parameters('metadata')]",
+                "PTRRecords": "[parameters('ptrRecords')]",
+                "TTL": "[parameters('ttl')]"
+              },
+              "dependsOn": [
+                "dnsZone"
+              ]
+            },
+            "PTR_roleAssignments": {
+              "copy": {
+                "name": "PTR_roleAssignments",
+                "count": "[length(coalesce(parameters('roleAssignments'), createArray()))]"
+              },
+              "type": "Microsoft.Authorization/roleAssignments",
+              "apiVersion": "2022-04-01",
+              "scope": "[format('Microsoft.Network/dnsZones/{0}/PTR/{1}', parameters('dnsZoneName'), parameters('name'))]",
+              "name": "[guid(resourceId('Microsoft.Network/dnsZones/PTR', parameters('dnsZoneName'), parameters('name')), coalesce(parameters('roleAssignments'), createArray())[copyIndex()].principalId, coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName)]",
+              "properties": {
+                "roleDefinitionId": "[if(contains(variables('builtInRoleNames'), coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName), variables('builtInRoleNames')[coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName], coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName)]",
+                "principalId": "[coalesce(parameters('roleAssignments'), createArray())[copyIndex()].principalId]",
+                "description": "[tryGet(coalesce(parameters('roleAssignments'), createArray())[copyIndex()], 'description')]",
+                "principalType": "[tryGet(coalesce(parameters('roleAssignments'), createArray())[copyIndex()], 'principalType')]",
+                "condition": "[tryGet(coalesce(parameters('roleAssignments'), createArray())[copyIndex()], 'condition')]",
+                "conditionVersion": "[if(not(empty(tryGet(coalesce(parameters('roleAssignments'), createArray())[copyIndex()], 'condition'))), coalesce(tryGet(coalesce(parameters('roleAssignments'), createArray())[copyIndex()], 'conditionVersion'), '2.0'), null())]",
+                "delegatedManagedIdentityResourceId": "[tryGet(coalesce(parameters('roleAssignments'), createArray())[copyIndex()], 'delegatedManagedIdentityResourceId')]"
+              },
+              "dependsOn": [
+                "PTR"
+              ]
+            }
+          },
+          "outputs": {
+            "name": {
+              "type": "string",
+              "metadata": {
+                "description": "The name of the deployed PTR record."
+              },
+              "value": "[parameters('name')]"
+            },
+            "resourceId": {
+              "type": "string",
+              "metadata": {
+                "description": "The resource ID of the deployed PTR record."
+              },
+              "value": "[resourceId('Microsoft.Network/dnsZones/PTR', parameters('dnsZoneName'), parameters('name'))]"
+            },
+            "resourceGroupName": {
+              "type": "string",
+              "metadata": {
+                "description": "The resource group of the deployed PTR record."
+              },
+              "value": "[resourceGroup().name]"
+            }
+          }
+        }
+      },
+      "dependsOn": [
+        "dnsZone"
+      ]
+    },
+    "dnsZone_SOA": {
+      "copy": {
+        "name": "dnsZone_SOA",
+        "count": "[length(parameters('soa'))]"
+      },
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2022-09-01",
+      "name": "[format('{0}-dnsZone-SOARecord-{1}', uniqueString(deployment().name, parameters('location')), copyIndex())]",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "dnsZoneName": {
+            "value": "[parameters('name')]"
+          },
+          "name": {
+            "value": "[parameters('soa')[copyIndex()].name]"
+          },
+          "metadata": "[if(contains(parameters('soa')[copyIndex()], 'metadata'), createObject('value', parameters('soa')[copyIndex()].metadata), createObject('value', createObject()))]",
+          "soaRecord": "[if(contains(parameters('soa')[copyIndex()], 'soaRecord'), createObject('value', parameters('soa')[copyIndex()].soaRecord), createObject('value', createObject()))]",
+          "ttl": "[if(contains(parameters('soa')[copyIndex()], 'ttl'), createObject('value', parameters('soa')[copyIndex()].ttl), createObject('value', 3600))]",
+          "roleAssignments": "[if(contains(parameters('soa')[copyIndex()], 'roleAssignments'), createObject('value', parameters('soa')[copyIndex()].roleAssignments), createObject('value', createArray()))]",
+          "enableDefaultTelemetry": {
+            "value": "[variables('enableReferencedModulesTelemetry')]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "languageVersion": "2.0",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.22.6.54827",
+              "templateHash": "10526329700400149290"
+            },
+            "name": "Public DNS Zone SOA record",
+            "description": "This module deploys a Public DNS Zone SOA record.",
+            "owner": "Azure/module-maintainers"
+          },
+          "definitions": {
+            "roleAssignmentType": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "roleDefinitionIdOrName": {
+                    "type": "string",
+                    "metadata": {
+                      "description": "Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead."
+                    }
+                  },
+                  "principalId": {
+                    "type": "string",
+                    "metadata": {
+                      "description": "Required. The principal ID of the principal (user/group/identity) to assign the role to."
+                    }
+                  },
+                  "principalType": {
+                    "type": "string",
+                    "allowedValues": [
+                      "Device",
+                      "ForeignGroup",
+                      "Group",
+                      "ServicePrincipal",
+                      "User"
+                    ],
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. The principal type of the assigned principal ID."
+                    }
+                  },
+                  "description": {
+                    "type": "string",
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. The description of the role assignment."
+                    }
+                  },
+                  "condition": {
+                    "type": "string",
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase \"foo_storage_container\""
+                    }
+                  },
+                  "conditionVersion": {
+                    "type": "string",
+                    "allowedValues": [
+                      "2.0"
+                    ],
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. Version of the condition."
+                    }
+                  },
+                  "delegatedManagedIdentityResourceId": {
+                    "type": "string",
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. The Resource Id of the delegated managed identity resource."
+                    }
+                  }
+                }
+              },
+              "nullable": true
+            }
+          },
+          "parameters": {
+            "dnsZoneName": {
+              "type": "string",
+              "metadata": {
+                "description": "Conditional. The name of the parent DNS zone. Required if the template is used in a standalone deployment."
+              }
+            },
+            "name": {
+              "type": "string",
+              "metadata": {
+                "description": "Required. The name of the SOA record."
+              }
+            },
+            "metadata": {
+              "type": "object",
+              "defaultValue": {},
+              "metadata": {
+                "description": "Optional. The metadata attached to the record set."
+              }
+            },
+            "soaRecord": {
+              "type": "object",
+              "defaultValue": {},
+              "metadata": {
+                "description": "Optional. A SOA record."
+              }
+            },
+            "ttl": {
+              "type": "int",
+              "defaultValue": 3600,
+              "metadata": {
+                "description": "Optional. The TTL (time-to-live) of the records in the record set."
+              }
+            },
+            "roleAssignments": {
+              "$ref": "#/definitions/roleAssignmentType",
+              "metadata": {
+                "description": "Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'."
+              }
+            },
+            "enableDefaultTelemetry": {
+              "type": "bool",
+              "defaultValue": true,
+              "metadata": {
+                "description": "Optional. Enable telemetry via a Globally Unique Identifier (GUID)."
+              }
+            }
+          },
+          "variables": {
+            "builtInRoleNames": {
+              "Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]",
+              "DNS Resolver Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '0f2ebee7-ffd4-4fc0-b3b7-664099fdad5d')]",
+              "DNS Zone Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'befefa01-2a29-4197-83a8-272ff33ce314')]",
+              "Domain Services Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'eeaeda52-9324-47f6-8069-5d5bade478b2')]",
+              "Domain Services Reader": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '361898ef-9ed1-48c2-849c-a832951106bb')]",
+              "Network Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '4d97b98b-1d4f-4787-a291-c67834d212e7')]",
+              "Owner": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '8e3af657-a8ff-443c-a75c-2fe8c4bcb635')]",
+              "Private DNS Zone Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b12aa53e-6015-4669-85d0-8515ebb3ae7f')]",
+              "Reader": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'acdd72a7-3385-48ef-bd42-f606fba81ae7')]",
+              "Role Based Access Control Administrator (Preview)": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'f58310d9-a9f6-439a-9e8d-f62e7b41a168')]",
+              "User Access Administrator": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '18d7d88d-d35e-4fb5-a5c3-7773c20a72d9')]"
+            }
+          },
+          "resources": {
+            "defaultTelemetry": {
+              "condition": "[parameters('enableDefaultTelemetry')]",
+              "type": "Microsoft.Resources/deployments",
+              "apiVersion": "2021-04-01",
+              "name": "[format('pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-{0}', uniqueString(deployment().name))]",
+              "properties": {
+                "mode": "Incremental",
+                "template": {
+                  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                  "contentVersion": "1.0.0.0",
+                  "resources": []
+                }
+              }
+            },
+            "dnsZone": {
+              "existing": true,
+              "type": "Microsoft.Network/dnsZones",
+              "apiVersion": "2018-05-01",
+              "name": "[parameters('dnsZoneName')]"
+            },
+            "SOA": {
+              "type": "Microsoft.Network/dnsZones/SOA",
+              "apiVersion": "2018-05-01",
+              "name": "[format('{0}/{1}', parameters('dnsZoneName'), parameters('name'))]",
+              "properties": {
+                "metadata": "[parameters('metadata')]",
+                "SOARecord": "[parameters('soaRecord')]",
+                "TTL": "[parameters('ttl')]"
+              },
+              "dependsOn": [
+                "dnsZone"
+              ]
+            },
+            "SOA_roleAssignments": {
+              "copy": {
+                "name": "SOA_roleAssignments",
+                "count": "[length(coalesce(parameters('roleAssignments'), createArray()))]"
+              },
+              "type": "Microsoft.Authorization/roleAssignments",
+              "apiVersion": "2022-04-01",
+              "scope": "[format('Microsoft.Network/dnsZones/{0}/SOA/{1}', parameters('dnsZoneName'), parameters('name'))]",
+              "name": "[guid(resourceId('Microsoft.Network/dnsZones/SOA', parameters('dnsZoneName'), parameters('name')), coalesce(parameters('roleAssignments'), createArray())[copyIndex()].principalId, coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName)]",
+              "properties": {
+                "roleDefinitionId": "[if(contains(variables('builtInRoleNames'), coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName), variables('builtInRoleNames')[coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName], coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName)]",
+                "principalId": "[coalesce(parameters('roleAssignments'), createArray())[copyIndex()].principalId]",
+                "description": "[tryGet(coalesce(parameters('roleAssignments'), createArray())[copyIndex()], 'description')]",
+                "principalType": "[tryGet(coalesce(parameters('roleAssignments'), createArray())[copyIndex()], 'principalType')]",
+                "condition": "[tryGet(coalesce(parameters('roleAssignments'), createArray())[copyIndex()], 'condition')]",
+                "conditionVersion": "[if(not(empty(tryGet(coalesce(parameters('roleAssignments'), createArray())[copyIndex()], 'condition'))), coalesce(tryGet(coalesce(parameters('roleAssignments'), createArray())[copyIndex()], 'conditionVersion'), '2.0'), null())]",
+                "delegatedManagedIdentityResourceId": "[tryGet(coalesce(parameters('roleAssignments'), createArray())[copyIndex()], 'delegatedManagedIdentityResourceId')]"
+              },
+              "dependsOn": [
+                "SOA"
+              ]
+            }
+          },
+          "outputs": {
+            "name": {
+              "type": "string",
+              "metadata": {
+                "description": "The name of the deployed SOA record."
+              },
+              "value": "[parameters('name')]"
+            },
+            "resourceId": {
+              "type": "string",
+              "metadata": {
+                "description": "The resource ID of the deployed SOA record."
+              },
+              "value": "[resourceId('Microsoft.Network/dnsZones/SOA', parameters('dnsZoneName'), parameters('name'))]"
+            },
+            "resourceGroupName": {
+              "type": "string",
+              "metadata": {
+                "description": "The resource group of the deployed SOA record."
+              },
+              "value": "[resourceGroup().name]"
+            }
+          }
+        }
+      },
+      "dependsOn": [
+        "dnsZone"
+      ]
+    },
+    "dnsZone_SRV": {
+      "copy": {
+        "name": "dnsZone_SRV",
+        "count": "[length(parameters('srv'))]"
+      },
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2022-09-01",
+      "name": "[format('{0}-dnsZone-SRVRecord-{1}', uniqueString(deployment().name, parameters('location')), copyIndex())]",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "dnsZoneName": {
+            "value": "[parameters('name')]"
+          },
+          "name": {
+            "value": "[parameters('srv')[copyIndex()].name]"
+          },
+          "metadata": "[if(contains(parameters('srv')[copyIndex()], 'metadata'), createObject('value', parameters('srv')[copyIndex()].metadata), createObject('value', createObject()))]",
+          "srvRecords": "[if(contains(parameters('srv')[copyIndex()], 'srvRecords'), createObject('value', parameters('srv')[copyIndex()].srvRecords), createObject('value', createArray()))]",
+          "ttl": "[if(contains(parameters('srv')[copyIndex()], 'ttl'), createObject('value', parameters('srv')[copyIndex()].ttl), createObject('value', 3600))]",
+          "roleAssignments": "[if(contains(parameters('srv')[copyIndex()], 'roleAssignments'), createObject('value', parameters('srv')[copyIndex()].roleAssignments), createObject('value', createArray()))]",
+          "enableDefaultTelemetry": {
+            "value": "[variables('enableReferencedModulesTelemetry')]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "languageVersion": "2.0",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.22.6.54827",
+              "templateHash": "2773338273433722142"
+            },
+            "name": "Public DNS Zone SRV record",
+            "description": "This module deploys a Public DNS Zone SRV record.",
+            "owner": "Azure/module-maintainers"
+          },
+          "definitions": {
+            "roleAssignmentType": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "roleDefinitionIdOrName": {
+                    "type": "string",
+                    "metadata": {
+                      "description": "Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead."
+                    }
+                  },
+                  "principalId": {
+                    "type": "string",
+                    "metadata": {
+                      "description": "Required. The principal ID of the principal (user/group/identity) to assign the role to."
+                    }
+                  },
+                  "principalType": {
+                    "type": "string",
+                    "allowedValues": [
+                      "Device",
+                      "ForeignGroup",
+                      "Group",
+                      "ServicePrincipal",
+                      "User"
+                    ],
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. The principal type of the assigned principal ID."
+                    }
+                  },
+                  "description": {
+                    "type": "string",
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. The description of the role assignment."
+                    }
+                  },
+                  "condition": {
+                    "type": "string",
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase \"foo_storage_container\""
+                    }
+                  },
+                  "conditionVersion": {
+                    "type": "string",
+                    "allowedValues": [
+                      "2.0"
+                    ],
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. Version of the condition."
+                    }
+                  },
+                  "delegatedManagedIdentityResourceId": {
+                    "type": "string",
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. The Resource Id of the delegated managed identity resource."
+                    }
+                  }
+                }
+              },
+              "nullable": true
+            }
+          },
+          "parameters": {
+            "dnsZoneName": {
+              "type": "string",
+              "metadata": {
+                "description": "Conditional. The name of the parent DNS zone. Required if the template is used in a standalone deployment."
+              }
+            },
+            "name": {
+              "type": "string",
+              "metadata": {
+                "description": "Required. The name of the SRV record."
+              }
+            },
+            "metadata": {
+              "type": "object",
+              "defaultValue": {},
+              "metadata": {
+                "description": "Optional. The metadata attached to the record set."
+              }
+            },
+            "srvRecords": {
+              "type": "array",
+              "defaultValue": [],
+              "metadata": {
+                "description": "Optional. The list of SRV records in the record set."
+              }
+            },
+            "ttl": {
+              "type": "int",
+              "defaultValue": 3600,
+              "metadata": {
+                "description": "Optional. The TTL (time-to-live) of the records in the record set."
+              }
+            },
+            "roleAssignments": {
+              "$ref": "#/definitions/roleAssignmentType",
+              "metadata": {
+                "description": "Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'."
+              }
+            },
+            "enableDefaultTelemetry": {
+              "type": "bool",
+              "defaultValue": true,
+              "metadata": {
+                "description": "Optional. Enable telemetry via a Globally Unique Identifier (GUID)."
+              }
+            }
+          },
+          "variables": {
+            "builtInRoleNames": {
+              "Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]",
+              "DNS Resolver Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '0f2ebee7-ffd4-4fc0-b3b7-664099fdad5d')]",
+              "DNS Zone Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'befefa01-2a29-4197-83a8-272ff33ce314')]",
+              "Domain Services Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'eeaeda52-9324-47f6-8069-5d5bade478b2')]",
+              "Domain Services Reader": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '361898ef-9ed1-48c2-849c-a832951106bb')]",
+              "Network Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '4d97b98b-1d4f-4787-a291-c67834d212e7')]",
+              "Owner": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '8e3af657-a8ff-443c-a75c-2fe8c4bcb635')]",
+              "Private DNS Zone Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b12aa53e-6015-4669-85d0-8515ebb3ae7f')]",
+              "Reader": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'acdd72a7-3385-48ef-bd42-f606fba81ae7')]",
+              "Role Based Access Control Administrator (Preview)": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'f58310d9-a9f6-439a-9e8d-f62e7b41a168')]",
+              "User Access Administrator": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '18d7d88d-d35e-4fb5-a5c3-7773c20a72d9')]"
+            }
+          },
+          "resources": {
+            "defaultTelemetry": {
+              "condition": "[parameters('enableDefaultTelemetry')]",
+              "type": "Microsoft.Resources/deployments",
+              "apiVersion": "2021-04-01",
+              "name": "[format('pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-{0}', uniqueString(deployment().name))]",
+              "properties": {
+                "mode": "Incremental",
+                "template": {
+                  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                  "contentVersion": "1.0.0.0",
+                  "resources": []
+                }
+              }
+            },
+            "dnsZone": {
+              "existing": true,
+              "type": "Microsoft.Network/dnsZones",
+              "apiVersion": "2018-05-01",
+              "name": "[parameters('dnsZoneName')]"
+            },
+            "SRV": {
+              "type": "Microsoft.Network/dnsZones/SRV",
+              "apiVersion": "2018-05-01",
+              "name": "[format('{0}/{1}', parameters('dnsZoneName'), parameters('name'))]",
+              "properties": {
+                "metadata": "[parameters('metadata')]",
+                "SRVRecords": "[parameters('srvRecords')]",
+                "TTL": "[parameters('ttl')]"
+              },
+              "dependsOn": [
+                "dnsZone"
+              ]
+            },
+            "SRV_roleAssignments": {
+              "copy": {
+                "name": "SRV_roleAssignments",
+                "count": "[length(coalesce(parameters('roleAssignments'), createArray()))]"
+              },
+              "type": "Microsoft.Authorization/roleAssignments",
+              "apiVersion": "2022-04-01",
+              "scope": "[format('Microsoft.Network/dnsZones/{0}/SRV/{1}', parameters('dnsZoneName'), parameters('name'))]",
+              "name": "[guid(resourceId('Microsoft.Network/dnsZones/SRV', parameters('dnsZoneName'), parameters('name')), coalesce(parameters('roleAssignments'), createArray())[copyIndex()].principalId, coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName)]",
+              "properties": {
+                "roleDefinitionId": "[if(contains(variables('builtInRoleNames'), coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName), variables('builtInRoleNames')[coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName], coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName)]",
+                "principalId": "[coalesce(parameters('roleAssignments'), createArray())[copyIndex()].principalId]",
+                "description": "[tryGet(coalesce(parameters('roleAssignments'), createArray())[copyIndex()], 'description')]",
+                "principalType": "[tryGet(coalesce(parameters('roleAssignments'), createArray())[copyIndex()], 'principalType')]",
+                "condition": "[tryGet(coalesce(parameters('roleAssignments'), createArray())[copyIndex()], 'condition')]",
+                "conditionVersion": "[if(not(empty(tryGet(coalesce(parameters('roleAssignments'), createArray())[copyIndex()], 'condition'))), coalesce(tryGet(coalesce(parameters('roleAssignments'), createArray())[copyIndex()], 'conditionVersion'), '2.0'), null())]",
+                "delegatedManagedIdentityResourceId": "[tryGet(coalesce(parameters('roleAssignments'), createArray())[copyIndex()], 'delegatedManagedIdentityResourceId')]"
+              },
+              "dependsOn": [
+                "SRV"
+              ]
+            }
+          },
+          "outputs": {
+            "name": {
+              "type": "string",
+              "metadata": {
+                "description": "The name of the deployed SRV record."
+              },
+              "value": "[parameters('name')]"
+            },
+            "resourceId": {
+              "type": "string",
+              "metadata": {
+                "description": "The resource ID of the deployed SRV record."
+              },
+              "value": "[resourceId('Microsoft.Network/dnsZones/SRV', parameters('dnsZoneName'), parameters('name'))]"
+            },
+            "resourceGroupName": {
+              "type": "string",
+              "metadata": {
+                "description": "The resource group of the deployed SRV record."
+              },
+              "value": "[resourceGroup().name]"
+            }
+          }
+        }
+      },
+      "dependsOn": [
+        "dnsZone"
+      ]
+    },
+    "dnsZone_TXT": {
+      "copy": {
+        "name": "dnsZone_TXT",
+        "count": "[length(parameters('txt'))]"
+      },
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2022-09-01",
+      "name": "[format('{0}-dnsZone-TXTRecord-{1}', uniqueString(deployment().name, parameters('location')), copyIndex())]",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "dnsZoneName": {
+            "value": "[parameters('name')]"
+          },
+          "name": {
+            "value": "[parameters('txt')[copyIndex()].name]"
+          },
+          "metadata": "[if(contains(parameters('txt')[copyIndex()], 'metadata'), createObject('value', parameters('txt')[copyIndex()].metadata), createObject('value', createObject()))]",
+          "txtRecords": "[if(contains(parameters('txt')[copyIndex()], 'txtRecords'), createObject('value', parameters('txt')[copyIndex()].txtRecords), createObject('value', createArray()))]",
+          "ttl": "[if(contains(parameters('txt')[copyIndex()], 'ttl'), createObject('value', parameters('txt')[copyIndex()].ttl), createObject('value', 3600))]",
+          "roleAssignments": "[if(contains(parameters('txt')[copyIndex()], 'roleAssignments'), createObject('value', parameters('txt')[copyIndex()].roleAssignments), createObject('value', createArray()))]",
+          "enableDefaultTelemetry": {
+            "value": "[variables('enableReferencedModulesTelemetry')]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "languageVersion": "2.0",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.22.6.54827",
+              "templateHash": "8314659933691992641"
+            },
+            "name": "Public DNS Zone TXT record",
+            "description": "This module deploys a Public DNS Zone TXT record.",
+            "owner": "Azure/module-maintainers"
+          },
+          "definitions": {
+            "roleAssignmentType": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "roleDefinitionIdOrName": {
+                    "type": "string",
+                    "metadata": {
+                      "description": "Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead."
+                    }
+                  },
+                  "principalId": {
+                    "type": "string",
+                    "metadata": {
+                      "description": "Required. The principal ID of the principal (user/group/identity) to assign the role to."
+                    }
+                  },
+                  "principalType": {
+                    "type": "string",
+                    "allowedValues": [
+                      "Device",
+                      "ForeignGroup",
+                      "Group",
+                      "ServicePrincipal",
+                      "User"
+                    ],
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. The principal type of the assigned principal ID."
+                    }
+                  },
+                  "description": {
+                    "type": "string",
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. The description of the role assignment."
+                    }
+                  },
+                  "condition": {
+                    "type": "string",
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase \"foo_storage_container\""
+                    }
+                  },
+                  "conditionVersion": {
+                    "type": "string",
+                    "allowedValues": [
+                      "2.0"
+                    ],
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. Version of the condition."
+                    }
+                  },
+                  "delegatedManagedIdentityResourceId": {
+                    "type": "string",
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. The Resource Id of the delegated managed identity resource."
+                    }
+                  }
+                }
+              },
+              "nullable": true
+            }
+          },
+          "parameters": {
+            "dnsZoneName": {
+              "type": "string",
+              "metadata": {
+                "description": "Conditional. The name of the parent DNS zone. Required if the template is used in a standalone deployment."
+              }
+            },
+            "name": {
+              "type": "string",
+              "metadata": {
+                "description": "Required. The name of the TXT record."
+              }
+            },
+            "metadata": {
+              "type": "object",
+              "defaultValue": {},
+              "metadata": {
+                "description": "Optional. The metadata attached to the record set."
+              }
+            },
+            "ttl": {
+              "type": "int",
+              "defaultValue": 3600,
+              "metadata": {
+                "description": "Optional. The TTL (time-to-live) of the records in the record set."
+              }
+            },
+            "txtRecords": {
+              "type": "array",
+              "defaultValue": [],
+              "metadata": {
+                "description": "Optional. The list of TXT records in the record set."
+              }
+            },
+            "roleAssignments": {
+              "$ref": "#/definitions/roleAssignmentType",
+              "metadata": {
+                "description": "Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'."
+              }
+            },
+            "enableDefaultTelemetry": {
+              "type": "bool",
+              "defaultValue": true,
+              "metadata": {
+                "description": "Optional. Enable telemetry via a Globally Unique Identifier (GUID)."
+              }
+            }
+          },
+          "variables": {
+            "builtInRoleNames": {
+              "Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]",
+              "DNS Resolver Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '0f2ebee7-ffd4-4fc0-b3b7-664099fdad5d')]",
+              "DNS Zone Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'befefa01-2a29-4197-83a8-272ff33ce314')]",
+              "Domain Services Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'eeaeda52-9324-47f6-8069-5d5bade478b2')]",
+              "Domain Services Reader": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '361898ef-9ed1-48c2-849c-a832951106bb')]",
+              "Network Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '4d97b98b-1d4f-4787-a291-c67834d212e7')]",
+              "Owner": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '8e3af657-a8ff-443c-a75c-2fe8c4bcb635')]",
+              "Private DNS Zone Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b12aa53e-6015-4669-85d0-8515ebb3ae7f')]",
+              "Reader": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'acdd72a7-3385-48ef-bd42-f606fba81ae7')]",
+              "Role Based Access Control Administrator (Preview)": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'f58310d9-a9f6-439a-9e8d-f62e7b41a168')]",
+              "User Access Administrator": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '18d7d88d-d35e-4fb5-a5c3-7773c20a72d9')]"
+            }
+          },
+          "resources": {
+            "defaultTelemetry": {
+              "condition": "[parameters('enableDefaultTelemetry')]",
+              "type": "Microsoft.Resources/deployments",
+              "apiVersion": "2021-04-01",
+              "name": "[format('pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-{0}', uniqueString(deployment().name))]",
+              "properties": {
+                "mode": "Incremental",
+                "template": {
+                  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                  "contentVersion": "1.0.0.0",
+                  "resources": []
+                }
+              }
+            },
+            "dnsZone": {
+              "existing": true,
+              "type": "Microsoft.Network/dnsZones",
+              "apiVersion": "2018-05-01",
+              "name": "[parameters('dnsZoneName')]"
+            },
+            "TXT": {
+              "type": "Microsoft.Network/dnsZones/TXT",
+              "apiVersion": "2018-05-01",
+              "name": "[format('{0}/{1}', parameters('dnsZoneName'), parameters('name'))]",
+              "properties": {
+                "metadata": "[parameters('metadata')]",
+                "TTL": "[parameters('ttl')]",
+                "TXTRecords": "[parameters('txtRecords')]"
+              },
+              "dependsOn": [
+                "dnsZone"
+              ]
+            },
+            "TXT_roleAssignments": {
+              "copy": {
+                "name": "TXT_roleAssignments",
+                "count": "[length(coalesce(parameters('roleAssignments'), createArray()))]"
+              },
+              "type": "Microsoft.Authorization/roleAssignments",
+              "apiVersion": "2022-04-01",
+              "scope": "[format('Microsoft.Network/dnsZones/{0}/TXT/{1}', parameters('dnsZoneName'), parameters('name'))]",
+              "name": "[guid(resourceId('Microsoft.Network/dnsZones/TXT', parameters('dnsZoneName'), parameters('name')), coalesce(parameters('roleAssignments'), createArray())[copyIndex()].principalId, coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName)]",
+              "properties": {
+                "roleDefinitionId": "[if(contains(variables('builtInRoleNames'), coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName), variables('builtInRoleNames')[coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName], coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName)]",
+                "principalId": "[coalesce(parameters('roleAssignments'), createArray())[copyIndex()].principalId]",
+                "description": "[tryGet(coalesce(parameters('roleAssignments'), createArray())[copyIndex()], 'description')]",
+                "principalType": "[tryGet(coalesce(parameters('roleAssignments'), createArray())[copyIndex()], 'principalType')]",
+                "condition": "[tryGet(coalesce(parameters('roleAssignments'), createArray())[copyIndex()], 'condition')]",
+                "conditionVersion": "[if(not(empty(tryGet(coalesce(parameters('roleAssignments'), createArray())[copyIndex()], 'condition'))), coalesce(tryGet(coalesce(parameters('roleAssignments'), createArray())[copyIndex()], 'conditionVersion'), '2.0'), null())]",
+                "delegatedManagedIdentityResourceId": "[tryGet(coalesce(parameters('roleAssignments'), createArray())[copyIndex()], 'delegatedManagedIdentityResourceId')]"
+              },
+              "dependsOn": [
+                "TXT"
+              ]
+            }
+          },
+          "outputs": {
+            "name": {
+              "type": "string",
+              "metadata": {
+                "description": "The name of the deployed TXT record."
+              },
+              "value": "[parameters('name')]"
+            },
+            "resourceId": {
+              "type": "string",
+              "metadata": {
+                "description": "The resource ID of the deployed TXT record."
+              },
+              "value": "[resourceId('Microsoft.Network/dnsZones/TXT', parameters('dnsZoneName'), parameters('name'))]"
+            },
+            "resourceGroupName": {
+              "type": "string",
+              "metadata": {
+                "description": "The resource group of the deployed TXT record."
+              },
+              "value": "[resourceGroup().name]"
+            }
+          }
+        }
+      },
+      "dependsOn": [
+        "dnsZone"
+      ]
+    }
+  },
+  "outputs": {
+    "resourceGroupName": {
+      "type": "string",
+      "metadata": {
+        "description": "The resource group the DNS zone was deployed into."
+      },
+      "value": "[resourceGroup().name]"
+    },
+    "name": {
+      "type": "string",
+      "metadata": {
+        "description": "The name of the DNS zone."
+      },
+      "value": "[parameters('name')]"
+    },
+    "resourceId": {
+      "type": "string",
+      "metadata": {
+        "description": "The resource ID of the DNS zone."
+      },
+      "value": "[resourceId('Microsoft.Network/dnsZones', parameters('name'))]"
+    },
+    "location": {
+      "type": "string",
+      "metadata": {
+        "description": "The location the resource was deployed into."
+      },
+      "value": "[reference('dnsZone', '2018-05-01', 'full').location]"
+    }
+  }
+}

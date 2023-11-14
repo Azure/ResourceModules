@@ -27,8 +27,8 @@ on:
     branches:
       - main
     paths:
-      - 'modules/synapse/workspaces/**'
-      - 'modules/network/private-endpoints/**'
+      - 'modules/synapse/workspace/**'
+      - 'modules/network/private-endpoint/**'
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.synapse.workspaces.yml'
@@ -37,7 +37,7 @@ on:
       - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/synapse/workspaces'
+  modulePath: 'modules/synapse/workspace'
   workflowPath: '.github/workflows/ms.synapse.workspaces.yml'
 
 concurrency:
@@ -52,7 +52,7 @@ jobs:
     name: 'Initialize pipeline'
     steps:
       - name: 'Checkout'
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - name: 'Set input parameters to output variables'

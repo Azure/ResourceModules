@@ -69,9 +69,19 @@ runs:
 
           # Load used functions
           . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFileList.ps1')
+          . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Get-LocallyReferencedFileList.ps1')
 
           # Get target files
-          $targetFileList = @('${{ inputs.templateFilePath }}')
+          $templateFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
+
+          # Get target files
+          $targetFileList = @(
+            $templateFilePath
+          )
+
+          # Add all module template files as they may contain tokens
+          $targetFileList += (Get-LocallyReferencedFileList -FilePath $templateFilePath)
+          $targetFileList = $targetFileList | Sort-Object -Unique
 
           # Construct Token Function Input
           $ConvertTokensInputs = @{
@@ -252,7 +262,7 @@ runs:
     # [Deployment removal] task(s)
     # ----------------------------
     - name: 'Remove deployed resources'
-      if: ${{ always() && inputs.removeDeployment == 'true' && steps.deploy_step.outputs.deploymentNames != '' }}
+      if: ${{ (success() || failure()) && inputs.removeDeployment == 'true' && steps.deploy_step.outputs.deploymentNames != '' }}
       uses: azure/powershell@v1
       with:
         azPSVersion: 'latest'
@@ -267,6 +277,10 @@ runs:
             TemplateFilePath  = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
             DeploymentNames   = '${{ steps.deploy_step.outputs.deploymentNames }}' | ConvertFrom-Json
             ManagementGroupId = '${{ inputs.managementGroupId }}'
+          }
+
+          if (-not [String]::IsNullOrEmpty('${{ inputs.subscriptionId }}')) {
+              $functionInput['SubscriptionId'] = '${{ inputs.subscriptionId }}'
           }
 
           Write-Verbose 'Invoke task with' -Verbose

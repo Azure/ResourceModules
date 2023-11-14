@@ -8,7 +8,7 @@ The template spec is set up if not already existing.
 
 .PARAMETER TemplateFilePath
 Mandatory. Path to the module deployment file from root.
-Example: 'C:\modules\key-vault\vaults\main.bicep'
+Example: 'C:\modules\key-vault\vault\main.bicep'
 
 .PARAMETER ModuleVersion
 Mandatory. Version of the module to publish, following SemVer convention.
@@ -26,8 +26,13 @@ Example: 'West Europe'
 Mandatory. The description of the parent template spec.
 Example: 'iacs key vault'
 
+.PARAMETER UseApiSpecsAlignedName
+Optional. If set to true, the module will be published with a name that is aligned with the Azure API naming. If not, one aligned with the module's folder path. See the following examples:
+- True:  microsoft.keyvault.vaults.secrets
+- False: key-vault.vault.secret
+
 .EXAMPLE
-Publish-ModuleToTemplateSpecsRG -TemplateFilePath 'C:\modules\key-vault\vaults\main.bicep' -ModuleVersion '3.0.0-alpha' -TemplateSpecsRgName 'artifacts-rg' -TemplateSpecsRgLocation 'West Europe' -TemplateSpecsDescription 'iacs key vault'
+Publish-ModuleToTemplateSpecsRG -TemplateFilePath 'C:\modules\key-vault\vault\main.bicep' -ModuleVersion '3.0.0-alpha' -TemplateSpecsRgName 'artifacts-rg' -TemplateSpecsRgLocation 'West Europe' -TemplateSpecsDescription 'iacs key vault'
 
 Try to publish the KeyVault module with version 3.0.0-alpha to a template spec in resource group 'artifacts-rg'.
 #>
@@ -48,7 +53,10 @@ function Publish-ModuleToTemplateSpecsRG {
         [string] $TemplateSpecsRgLocation,
 
         [Parameter(Mandatory)]
-        [string] $TemplateSpecsDescription
+        [string] $TemplateSpecsDescription,
+
+        [Parameter(Mandatory = $false)]
+        [bool] $UseApiSpecsAlignedName = $false
     )
 
     begin {
@@ -69,7 +77,7 @@ function Publish-ModuleToTemplateSpecsRG {
         }
 
         # Get a valid Template Specs name
-        $templateSpecIdentifier = Get-TemplateSpecsName -TemplateFilePath $TemplateFilePath
+        $templateSpecIdentifier = Get-TemplateSpecsName -TemplateFilePath $TemplateFilePath -UseApiSpecsAlignedName $UseApiSpecsAlignedName
 
         ################################
         ##    Create template spec    ##

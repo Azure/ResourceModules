@@ -27,8 +27,8 @@ on:
     branches:
       - main
     paths:
-      - 'modules/network/virtual-network-gateways/**'
-      - 'modules/network/public-ip-addresses/**'
+      - 'modules/network/virtual-network-gateway/**'
+      - 'modules/network/public-ip-address/**'
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.network.virtualnetworkgateways.yml'
@@ -37,7 +37,7 @@ on:
       - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/network/virtual-network-gateways'
+  modulePath: 'modules/network/virtual-network-gateway'
   workflowPath: '.github/workflows/ms.network.virtualnetworkgateways.yml'
 
 concurrency:
@@ -52,7 +52,7 @@ jobs:
     name: 'Initialize pipeline'
     steps:
       - name: 'Checkout'
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - name: 'Set input parameters to output variables'

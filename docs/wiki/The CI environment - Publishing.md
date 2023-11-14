@@ -1,7 +1,7 @@
 This section provides an overview of the principles the publishing is built upon, how it is set up, and how you can interact with it.
 
 - [Publishing overview](#publishing-overview)
-- [Module identifiers](#module-identifiers)
+  - [Module identifiers](#module-identifiers)
 - [How it works](#how-it-works)
   - [Example scenario](#example-scenario)
   - [Output example](#output-example)
@@ -24,27 +24,31 @@ Besides the publishing phase's runtime, there is also the possibility to set the
 
 ## Module identifiers
 
-The names of published modules differ slighly depending on the location they are published to. This is rooted in the different requirements per target location. In the following you can find the rules applied for each:
+The names of published modules differ slightly depending on the location they are published to & settings you may have configured. This is rooted in the different requirements per target location. In the following you can find the rules applied for each:
 
 <details>
 <summary>Template Specs</summary>
 
 **Actions**
 
-- Remove the root folder name `modules` from provided module reference
-- Make lowercase
-- Replace `Microsoft` with `MS`
-- Replace all `\` or `/` with `.`
-- Remove all duplications in the path. For example, the path `virtualNetwork/virtualNetworkPeerings` would be shortened to `virtualNetwork/peerings`
+The final name is different based on the `useApiSpecsAlignedName` setting in the `settings.yml` file. The main difference is, that based on the module's path, the actual resource type identifier will be fetched from the `utilities/src/apiSpecsList.json` file. Following you can find the general flow and distinct differences in either case:
+
+1. (if `useApiSpecsAlignedName` is `true`)
+   1. Recover the original API Specs reference for the module from the `utilities/src/apiSpecsList.json` file
+   1. Replace `microsoft` with `ms`
+1. Remove the root folder name `modules` from provided module reference
+1. Make lowercase
+1. Replace all `\` or `/` with `.`
+1. Remove all duplications in the path. For example, in an identifier like `virtualNetworks/virtualNetworkPeerings` we'd trim down to `virtualNetworks/peerings` to shorten the path (as there is a maximum character limit for template specs)
 
 **Examples**
 
-  - Vaults
-    - Before: `modules\RecoveryServices\vaults`
-    - After: `ms.recoveryservices.vaults`
-  - ReplicationProtectionContainerMappings
-    - Before: `modules\RecoveryServices\vaults\replicationFabrics\replicationProtectionContainers\replicationProtectionContainerMappings`
-    - After: `ms.recoveryservices.vaults.replicationfabrics.replicationprotectioncontainers.mappings`
+| Module Path | `useApiSpecsAlignedName` | Result |
+| - | - | - |
+| `/recovery-services/vault` | `true` | `ms.recoveryservices.vaults` |
+| | `false` | `recovery-services.vault` |
+| `/recovery-services\vault\replication-fabric\replication-protection-container\replication-protection-container-mapping` | `true` | `ms.recoveryservices.vaults.replicationfabrics.replicationprotectioncontainers.mappings` |
+| | `false` | `recovery-services.vault.replication-fabric.replication-protection-container.mapping` |
 
 </details>
 
@@ -53,19 +57,23 @@ The names of published modules differ slighly depending on the location they are
 
 **Actions**
 
-- Remove the root folder name `modules` from provided module reference
-- Make lowercase
-- Replace all `\` or `/` with `.`
-- Add the `bicep/modules` prefix
+The final name is different based on the `useApiSpecsAlignedName` setting in the `settings.yml` file. The main difference is, that based on the module's path, the actual resource type identifier will be fetched from the `utilities/src/apiSpecsList.json` file. Following you can find the general flow and distinct differences in either case:
+
+1. (if `useApiSpecsAlignedName` is `true`)
+   1. Recover the original API Specs reference for the module from the `utilities/src/apiSpecsList.json` file
+1. Remove the root folder name `modules` from provided module reference
+1. Make lowercase
+1. Replace all `\` or `/` with `.`
+1. Add the `bicep/modules` prefix
 
 **Examples**
 
-- Vaults
-   - Before: `modules\RecoveryServices\vaults`
-   - After: `bicep/modules/recoveryservices.vaults`
-- ReplicationProtectionContainerMappings
-   - Before: `modules\RecoveryServices\vaults\replicationFabrics\replicationProtectionContainers\replicationProtectionContainerMappings`
-   - After: `bicep/modules/recoveryservices.vaults.replicationfabrics.replicationprotectioncontainers.replicationprotectioncontainermappings`
+| Module Path | `useApiSpecsAlignedName` | Result |
+| - | - | - |
+| `/recovery-services/vault` | `true` | `bicep/modules/microsoft.recoveryservices.vaults` |
+| | `false` | `bicep/modules/recovery-services.vault` |
+| `/recovery-services\vault\replication-fabric\replication-protection-container\replication-protection-container-mapping` | `true` | `bicep/modules/microsoft.recoveryservices.vaults.replicationfabrics.replicationprotectioncontainers.replicationprotectioncontainermappings` |
+| | `false` | `bicep/modules/recovery-services.vault.replication-fabric.replication-protection-container.replication-protection-container-mapping` |
 
 </details>
 
@@ -74,18 +82,23 @@ The names of published modules differ slighly depending on the location they are
 
 **Actions**
 
-- Remove the root folder name `modules` from provided module reference
-- Make lowercase
-- Replace all `\` or `/` with `.`
+
+The final name is different based on the `useApiSpecsAlignedName` setting in the `settings.yml` file. The main difference is, that based on the module's path, the actual resource type identifier will be fetched from the `utilities/src/apiSpecsList.json` file. Following you can find the general flow and distinct differences in either case:
+
+1. (if `useApiSpecsAlignedName` is `true`)
+   1. Recover the original API Specs reference for the module from the `utilities/src/apiSpecsList.json` file
+1. Remove the root folder name `modules` from provided module reference
+1. Make lowercase
+1. Replace all `\` or `/` with `.`
 
 **Examples**
 
-- Vaults
-  - Before: `modules\RecoveryServices\vaults`
-  - After: `microsoft.recoveryservices.vaults`
-- ReplicationProtectionContainerMappings
-  - Before: `modules\RecoveryServices\vaults\replicationFabrics\replicationProtectionContainers\replicationProtectionContainerMappings`
-  - After: `microsoft.recoveryservices.vaults.replicationfabrics.replicationprotectioncontainers.replicationprotectioncontainermappings`
+| Module Path | `useApiSpecsAlignedName` | Result |
+| - | - | - |
+| `/recovery-services/vault` | `true` | `microsoft.recoveryservices.vault` |
+| | `false` | `recovery-services.vault` |
+| `/recovery-services\vault\replication-fabric\replication-protection-container\replication-protection-container-mapping` | `true` | `microsoft.recoveryservices.vault.replicationfabric.replicationprotectioncontainer.replicationprotectioncontainermapping` |
+| | `false` | `recovery-services.vault.replication-fabric.replication-protection-container.replication-protection-container-mapping` |
 
 </details>
 
@@ -100,9 +113,9 @@ The publishing works as follows:
    1. The patch (`0.0.x`) version is calculated based on the number of commits on the `HEAD` ref (aka. git height). This will cause the patch version to never reset to 0 with major and/or minor increment, as specified for [semver](https://semver.org/).
    1. The module is published with a `major.minor.patch` version (`x.y.z`). For Template Specs and Bicep Registry only, a `major` version (`x`), a `major.minor` version (`x.y`) and a `latest` version are also updated, allowing a consumer to:
       - Reference the latest version of a major, i.e., the latest minor and patch of a major version.
-         > Example: Using Template Specs, the reference to a `major` could look like: `ts/modules:resources.resourcegroups:1` which means that the template will always consume whatever the potentially overwritten/updated version `1` contains.
+         > Example: Using Template Specs, the reference to a `major` could look like: `ts/modules:resources.resource-group:1` which means that the template will always consume whatever the potentially overwritten/updated version `1` contains.
       - Reference the latest version of a minor, i.e., the latest patch of a minor version.
-         > Example: Using the Bicep registry, the reference to a `major.minor` could look like: `br/modules:resources.resourcegroups:0.4` which means that the template will always consume whatever the potentially overwritten/updated version `0.4` contains.
+         > Example: Using the Bicep registry, the reference to a `major.minor` could look like: `br/modules:resources.resource-group:0.4` which means that the template will always consume whatever the potentially overwritten/updated version `0.4` contains.
    1. For a changed child module, the direct parent hierarchy is also registered for an update, following the same procedure as above.
    1. The list of module files paths and their versions are passed on as a array list.
 1. The [Get-ModulesMissingFrom*.ps1](https://github.com/Azure/ResourceModules/tree/main/utilities/pipelines/resourcePublish) scripts further check if a given module is missing from the corresponding target location (e.g., Azure Container Registry) and adds each missing entry to to aforementioned array - using the version specified in the module's `version.json` file.
@@ -146,4 +159,4 @@ C499 -> C500 ---> C501 ---> C502 ---> C503 (503)
 
 ## Output example
 
-<img src="./media/CIEnvironment/publishingOutput.png" alt="Publishing Output" height="300">
+<img src="./media/CIEnvironment/publishingOutput.png" alt="Publishing Output" height="400">

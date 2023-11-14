@@ -29,7 +29,7 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.resources.deploymentscripts.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/modules/resources/deployment-scripts/*'
+      - '/modules/resources/deployment-script/*'
       - '/utilities/pipelines/*'
     exclude:
       - '/utilities/pipelines/deploymentRemoval/*'
@@ -39,7 +39,7 @@ variables:
   - template: '../../settings.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/modules/resources/deployment-scripts'
+    value: '/modules/resources/deployment-script'
 
 stages:
   - template: /.azuredevops/pipelineTemplates/stages.module.yml

@@ -29,7 +29,7 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.web.connections.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/modules/web/connections/*'
+      - '/modules/web/connection/*'
       - '/utilities/pipelines/*'
     exclude:
       - '/utilities/pipelines/deploymentRemoval/*'
@@ -39,7 +39,7 @@ variables:
   - template: '../../settings.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/modules/web/connections'
+    value: '/modules/web/connection'
 
 stages:
   - template: /.azuredevops/pipelineTemplates/stages.module.yml

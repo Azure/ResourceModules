@@ -28,7 +28,7 @@ on:
       - main
     paths:
       - 'modules/cache/redis/**'
-      - 'modules/network/private-endpoints/**'
+      - 'modules/network/private-endpoint/**'
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.cache.redis.yml'
@@ -52,7 +52,7 @@ jobs:
     name: 'Initialize pipeline'
     steps:
       - name: 'Checkout'
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - name: 'Set input parameters to output variables'

@@ -1,0 +1,193 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.22.6.54827",
+      "templateHash": "8155705065039005753"
+    },
+    "name": "Redis Cache Enterprise Databases",
+    "description": "This module deploys a Redis Cache Enterprise Database.",
+    "owner": "Azure/module-maintainers"
+  },
+  "parameters": {
+    "redisCacheEnterpriseName": {
+      "type": "string",
+      "metadata": {
+        "description": "Conditional. The name of the parent Redis Cache Enterprise Cluster. Required if the template is used in a standalone deployment."
+      }
+    },
+    "clientProtocol": {
+      "type": "string",
+      "defaultValue": "Encrypted",
+      "allowedValues": [
+        "Encrypted",
+        "Plaintext"
+      ],
+      "metadata": {
+        "description": "Optional. Specifies whether redis clients can connect using TLS-encrypted or plaintext redis protocols. Default is TLS-encrypted."
+      }
+    },
+    "clusteringPolicy": {
+      "type": "string",
+      "defaultValue": "OSSCluster",
+      "allowedValues": [
+        "EnterpriseCluster",
+        "OSSCluster"
+      ],
+      "metadata": {
+        "description": "Optional. Specifies the clustering policy to enable at creation time of the Redis Cache Enterprise Cluster."
+      }
+    },
+    "evictionPolicy": {
+      "type": "string",
+      "defaultValue": "VolatileLRU",
+      "allowedValues": [
+        "AllKeysLFU",
+        "AllKeysLRU",
+        "AllKeysRandom",
+        "NoEviction",
+        "VolatileLFU",
+        "VolatileLRU",
+        "VolatileRandom",
+        "VolatileTTL"
+      ],
+      "metadata": {
+        "description": "Optional. Redis eviction policy - default is VolatileLRU."
+      }
+    },
+    "geoReplication": {
+      "type": "object",
+      "defaultValue": {},
+      "metadata": {
+        "description": "Optional. Optional set of properties to configure geo replication for this database. Geo replication prerequisites must be met. See \"https://learn.microsoft.com/en-us/azure/azure-cache-for-redis/cache-how-to-active-geo-replication#active-geo-replication-prerequisites\" for more information."
+      }
+    },
+    "modules": {
+      "type": "array",
+      "defaultValue": [],
+      "metadata": {
+        "description": "Optional. Optional set of redis modules to enable in this database - modules can only be added at creation time."
+      }
+    },
+    "persistenceAofEnabled": {
+      "type": "bool",
+      "defaultValue": false,
+      "metadata": {
+        "description": "Optional. Sets whether AOF is enabled. Required if setting AOF frequency. AOF and RDB persistence cannot be enabled at the same time."
+      }
+    },
+    "persistenceAofFrequency": {
+      "type": "string",
+      "defaultValue": "",
+      "allowedValues": [
+        "",
+        "1s",
+        "always"
+      ],
+      "metadata": {
+        "description": "Conditional. Sets the frequency at which data is written to disk. Required if AOF persistence is enabled."
+      }
+    },
+    "persistenceRdbEnabled": {
+      "type": "bool",
+      "defaultValue": false,
+      "metadata": {
+        "description": "Optional. Sets whether RDB is enabled. RDB and AOF persistence cannot be enabled at the same time."
+      }
+    },
+    "persistenceRdbFrequency": {
+      "type": "string",
+      "defaultValue": "",
+      "allowedValues": [
+        "",
+        "12h",
+        "1h",
+        "6h"
+      ],
+      "metadata": {
+        "description": "Conditional. Sets the frequency at which a snapshot of the database is created. Required if RDB persistence is enabled."
+      }
+    },
+    "port": {
+      "type": "int",
+      "defaultValue": -1,
+      "metadata": {
+        "description": "Optional. TCP port of the database endpoint. Specified at create time. Default is (-1) meaning value is not set and defaults to an available port. Current supported port is 10000."
+      }
+    },
+    "location": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().location]",
+      "metadata": {
+        "description": "Optional. Location for all resources."
+      }
+    },
+    "enableDefaultTelemetry": {
+      "type": "bool",
+      "defaultValue": true,
+      "metadata": {
+        "description": "Optional. Enable telemetry via a Globally Unique Identifier (GUID)."
+      }
+    }
+  },
+  "resources": [
+    {
+      "condition": "[parameters('enableDefaultTelemetry')]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2022-09-01",
+      "name": "[format('pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-{0}', uniqueString(deployment().name, parameters('location')))]",
+      "properties": {
+        "mode": "Incremental",
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "resources": []
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Cache/redisEnterprise/databases",
+      "apiVersion": "2022-01-01",
+      "name": "[format('{0}/{1}', parameters('redisCacheEnterpriseName'), 'default')]",
+      "properties": {
+        "clientProtocol": "[if(not(empty(parameters('clientProtocol'))), parameters('clientProtocol'), null())]",
+        "clusteringPolicy": "[if(not(empty(parameters('clusteringPolicy'))), parameters('clusteringPolicy'), null())]",
+        "evictionPolicy": "[if(not(empty(parameters('evictionPolicy'))), parameters('evictionPolicy'), null())]",
+        "geoReplication": "[if(not(empty(parameters('geoReplication'))), parameters('geoReplication'), null())]",
+        "modules": "[if(not(empty(parameters('modules'))), parameters('modules'), null())]",
+        "persistence": {
+          "aofEnabled": "[parameters('persistenceAofEnabled')]",
+          "aofFrequency": "[if(not(empty(parameters('persistenceAofFrequency'))), parameters('persistenceAofFrequency'), null())]",
+          "rdbEnabled": "[parameters('persistenceRdbEnabled')]",
+          "rdbFrequency": "[if(not(empty(parameters('persistenceRdbFrequency'))), parameters('persistenceRdbFrequency'), null())]"
+        },
+        "port": "[if(not(equals(parameters('port'), -1)), parameters('port'), null())]"
+      }
+    }
+  ],
+  "outputs": {
+    "name": {
+      "type": "string",
+      "metadata": {
+        "description": "The name of the deployed database."
+      },
+      "value": "default"
+    },
+    "resourceId": {
+      "type": "string",
+      "metadata": {
+        "description": "The resource ID of the deployed database."
+      },
+      "value": "[resourceId('Microsoft.Cache/redisEnterprise/databases', parameters('redisCacheEnterpriseName'), 'default')]"
+    },
+    "resourceGroupName": {
+      "type": "string",
+      "metadata": {
+        "description": "The resource group of the deployed database."
+      },
+      "value": "[resourceGroup().name]"
+    }
+  }
+}

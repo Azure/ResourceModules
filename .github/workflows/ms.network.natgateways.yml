@@ -27,8 +27,9 @@ on:
     branches:
       - main
     paths:
-      - 'modules/network/nat-gateways/**'
-      - 'modules/network/public-ip-addresses/**'
+      - 'modules/network/nat-gateway/**'
+      - 'modules/network/public-ip-address/**'
+      - 'modules/network/public-ip-prefix/**'
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.network.natgateways.yml'
@@ -37,7 +38,7 @@ on:
       - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/network/nat-gateways'
+  modulePath: 'modules/network/nat-gateway'
   workflowPath: '.github/workflows/ms.network.natgateways.yml'
 
 concurrency:
@@ -52,7 +53,7 @@ jobs:
     name: 'Initialize pipeline'
     steps:
       - name: 'Checkout'
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - name: 'Set input parameters to output variables'
