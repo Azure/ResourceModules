@@ -317,7 +317,6 @@ module serverfarm 'br:bicep/modules/web.serverfarm:1.0.0' = {
 | [`appServiceEnvironmentId`](#parameter-appserviceenvironmentid) | string | The Resource ID of the App Service Environment to use for the App Service Plan. |
 | [`diagnosticSettings`](#parameter-diagnosticsettings) | array | The diagnostic settings of the service. |
 | [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
-| [`kind`](#parameter-kind) | string | Kind of server OS. |
 | [`location`](#parameter-location) | string | Location for all resources. |
 | [`lock`](#parameter-lock) | object | The lock settings of the service. |
 | [`maximumElasticWorkerCount`](#parameter-maximumelasticworkercount) | int | Maximum number of total workers allowed for this ElasticScaleEnabled App Service Plan. |
@@ -429,24 +428,6 @@ Enable telemetry via a Globally Unique Identifier (GUID).
 - Required: No
 - Type: bool
 - Default: `True`
-
-### Parameter: `kind`
-
-Kind of server OS.
-- Required: No
-- Type: string
-- Default: `''`
-- Allowed:
-  ```Bicep
-  [
-    ''
-    'App'
-    'Elastic'
-    'FunctionApp'
-    'Linux'
-    'Windows'
-  ]
-  ```
 
 ### Parameter: `location`
 

@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.23.1.45101",
-      "templateHash": "8298394894981665863"
+      "templateHash": "10832175948195959384"
     },
     "name": "App Service Plans",
     "description": "This module deploys an App Service Plan.",
@@ -207,21 +207,6 @@
         "description": "Optional. Location for all resources."
       }
     },
-    "kind": {
-      "type": "string",
-      "defaultValue": "",
-      "allowedValues": [
-        "App",
-        "Elastic",
-        "FunctionApp",
-        "Windows",
-        "Linux",
-        ""
-      ],
-      "metadata": {
-        "description": "Optional. Kind of server OS."
-      }
-    },
     "reserved": {
       "type": "bool",
       "defaultValue": false,
@@ -346,7 +331,6 @@
       "type": "Microsoft.Web/serverfarms",
       "apiVersion": "2022-09-01",
       "name": "[parameters('name')]",
-      "kind": "[if(not(empty(parameters('kind'))), parameters('kind'), null())]",
       "location": "[parameters('location')]",
       "tags": "[parameters('tags')]",
       "sku": "[parameters('sku')]",
