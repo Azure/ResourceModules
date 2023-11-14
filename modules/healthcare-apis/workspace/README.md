@@ -47,7 +47,7 @@ This instance deploys the module with the minimum set of required parameters.
 
 ```bicep
 module workspace 'br:bicep/modules/healthcare-apis.workspace:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-hawmin'
+  name: '${uniqueString(deployment().name)}-test-hawmin'
   params: {
     // Required parameters
     name: 'hawmin001'
@@ -103,7 +103,7 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module workspace 'br:bicep/modules/healthcare-apis.workspace:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-hawmax'
+  name: '${uniqueString(deployment().name)}-test-hawmax'
   params: {
     // Required parameters
     name: 'hawmax001'
@@ -139,7 +139,7 @@ module workspace 'br:bicep/modules/healthcare-apis.workspace:1.0.0' = {
         location: '<location>'
         managedIdentities: {
           systemAssigned: false
-          userAssignedResourcesIds: [
+          userAssignedResourceIds: [
             '<managedIdentityResourceId>'
           ]
         }
@@ -183,7 +183,7 @@ module workspace 'br:bicep/modules/healthcare-apis.workspace:1.0.0' = {
         location: '<location>'
         managedIdentities: {
           systemAssigned: false
-          userAssignedResourcesIds: [
+          userAssignedResourceIds: [
             '<managedIdentityResourceId>'
           ]
         }
@@ -272,7 +272,7 @@ module workspace 'br:bicep/modules/healthcare-apis.workspace:1.0.0' = {
           "location": "<location>",
           "managedIdentities": {
             "systemAssigned": false,
-            "userAssignedResourcesIds": [
+            "userAssignedResourceIds": [
               "<managedIdentityResourceId>"
             ]
           },
@@ -320,7 +320,7 @@ module workspace 'br:bicep/modules/healthcare-apis.workspace:1.0.0' = {
           "location": "<location>",
           "managedIdentities": {
             "systemAssigned": false,
-            "userAssignedResourcesIds": [
+            "userAssignedResourceIds": [
               "<managedIdentityResourceId>"
             ]
           },
@@ -385,7 +385,7 @@ This instance deploys the module in alignment with the best-practices of the Azu
 
 ```bicep
 module workspace 'br:bicep/modules/healthcare-apis.workspace:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-hawwaf'
+  name: '${uniqueString(deployment().name)}-test-hawwaf'
   params: {
     // Required parameters
     name: 'hawwaf001'
@@ -421,7 +421,7 @@ module workspace 'br:bicep/modules/healthcare-apis.workspace:1.0.0' = {
         location: '<location>'
         managedIdentities: {
           systemAssigned: false
-          userAssignedResourcesIds: [
+          userAssignedResourceIds: [
             '<managedIdentityResourceId>'
           ]
         }
@@ -465,7 +465,7 @@ module workspace 'br:bicep/modules/healthcare-apis.workspace:1.0.0' = {
         location: '<location>'
         managedIdentities: {
           systemAssigned: false
-          userAssignedResourcesIds: [
+          userAssignedResourceIds: [
             '<managedIdentityResourceId>'
           ]
         }
@@ -554,7 +554,7 @@ module workspace 'br:bicep/modules/healthcare-apis.workspace:1.0.0' = {
           "location": "<location>",
           "managedIdentities": {
             "systemAssigned": false,
-            "userAssignedResourcesIds": [
+            "userAssignedResourceIds": [
               "<managedIdentityResourceId>"
             ]
           },
@@ -602,7 +602,7 @@ module workspace 'br:bicep/modules/healthcare-apis.workspace:1.0.0' = {
           "location": "<location>",
           "managedIdentities": {
             "systemAssigned": false,
-            "userAssignedResourcesIds": [
+            "userAssignedResourceIds": [
               "<managedIdentityResourceId>"
             ]
           },
