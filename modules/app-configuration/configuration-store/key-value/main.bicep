@@ -15,7 +15,7 @@ param appConfigurationName string
 param contentType string = ''
 
 @description('Optional. Tags of the resource.')
-param tags object = {}
+param tags object?
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).') // update all the descriptions
 param enableDefaultTelemetry bool = true
@@ -32,11 +32,11 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource appConfiguration 'Microsoft.AppConfiguration/configurationStores@2021-10-01-preview' existing = {
+resource appConfiguration 'Microsoft.AppConfiguration/configurationStores@2023-03-01' existing = {
   name: appConfigurationName
 }
 
-resource keyValues 'Microsoft.AppConfiguration/configurationStores/keyValues@2021-10-01-preview' = {
+resource keyValues 'Microsoft.AppConfiguration/configurationStores/keyValues@2023-03-01' = {
   name: name
   parent: appConfiguration
   properties: {

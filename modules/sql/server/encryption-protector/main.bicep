@@ -33,11 +33,11 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource sqlServer 'Microsoft.Sql/servers@2022-08-01-preview' existing = {
+resource sqlServer 'Microsoft.Sql/servers@2022-05-01-preview' existing = {
   name: sqlServerName
 }
 
-resource encryptionProtector 'Microsoft.Sql/servers/encryptionProtector@2022-08-01-preview' = {
+resource encryptionProtector 'Microsoft.Sql/servers/encryptionProtector@2022-05-01-preview' = {
   name: 'current'
   parent: sqlServer
   properties: {

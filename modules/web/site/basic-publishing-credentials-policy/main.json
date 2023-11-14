@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.20.4.51522",
-      "templateHash": "8892331579235840311"
+      "version": "0.23.1.45101",
+      "templateHash": "12054216906297236281"
     },
     "name": "Web Site Basic Publishing Credentials Policies",
     "description": "This module deploys a Web Site Basic Publishing Credentials Policy.",
@@ -20,6 +20,13 @@
       ],
       "metadata": {
         "description": "Required. The name of the resource."
+      }
+    },
+    "allow": {
+      "type": "bool",
+      "defaultValue": true,
+      "metadata": {
+        "description": "Optional. Set to true to enable or false to disable a publishing method."
       }
     },
     "webAppName": {
@@ -60,11 +67,11 @@
     },
     {
       "type": "Microsoft.Web/sites/basicPublishingCredentialsPolicies",
-      "apiVersion": "2022-03-01",
+      "apiVersion": "2022-09-01",
       "name": "[format('{0}/{1}', parameters('webAppName'), parameters('name'))]",
       "location": "[parameters('location')]",
       "properties": {
-        "allow": true
+        "allow": "[parameters('allow')]"
       }
     }
   ],
@@ -95,7 +102,7 @@
       "metadata": {
         "description": "The location the resource was deployed into."
       },
-      "value": "[reference(resourceId('Microsoft.Web/sites/basicPublishingCredentialsPolicies', parameters('webAppName'), parameters('name')), '2022-03-01', 'full').location]"
+      "value": "[reference(resourceId('Microsoft.Web/sites/basicPublishingCredentialsPolicies', parameters('webAppName'), parameters('name')), '2022-09-01', 'full').location]"
     }
   }
 }

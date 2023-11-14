@@ -21,83 +21,256 @@ Manage lab costs by setting a spending target that can be viewed in the Monthly 
 
 **Required parameters**
 
-| Parameter Name | Type | Allowed Values | Description |
-| :-- | :-- | :-- | :-- |
-| `cycleType` | string | `[CalendarMonth, Custom]` | Reporting cycle type. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`cycleType`](#parameter-cycletype) | string | Reporting cycle type. |
 
 **Conditional parameters**
 
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `cycleEndDateTime` | string | `''` | Reporting cycle end date in the zulu time format (e.g. 2023-12-01T00:00:00.000Z). Required if cycleType is set to "Custom". |
-| `cycleStartDateTime` | string | `''` | Reporting cycle start date in the zulu time format (e.g. 2023-12-01T00:00:00.000Z). Required if cycleType is set to "Custom". |
-| `labName` | string |  | The name of the parent lab. Required if the template is used in a standalone deployment. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`cycleEndDateTime`](#parameter-cycleenddatetime) | string | Reporting cycle end date in the zulu time format (e.g. 2023-12-01T00:00:00.000Z). Required if cycleType is set to "Custom". |
+| [`cycleStartDateTime`](#parameter-cyclestartdatetime) | string | Reporting cycle start date in the zulu time format (e.g. 2023-12-01T00:00:00.000Z). Required if cycleType is set to "Custom". |
+| [`labName`](#parameter-labname) | string | The name of the parent lab. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Allowed Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `currencyCode` | string | `'USD'` |  | The currency code of the cost. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `status` | string | `'Enabled'` | `[Disabled, Enabled]` | Target cost status. |
-| `tags` | object | `{object}` |  | Tags of the resource. |
-| `target` | int | `0` |  | Lab target cost (e.g. 100). The target cost will appear in the "Cost trend" chart to allow tracking lab spending relative to the target cost for the current reporting cycleSetting the target cost to 0 will disable all thresholds. |
-| `thresholdValue100DisplayOnChart` | string | `'Disabled'` | `[Disabled, Enabled]` | Target Cost threshold at 100% display on chart. Indicates whether this threshold will be displayed on cost charts. |
-| `thresholdValue100SendNotificationWhenExceeded` | string | `'Disabled'` | `[Disabled, Enabled]` | Target cost threshold at 100% send notification when exceeded. Indicates whether notifications will be sent when this threshold is exceeded. |
-| `thresholdValue125DisplayOnChart` | string | `'Disabled'` | `[Disabled, Enabled]` | Target Cost threshold at 125% display on chart. Indicates whether this threshold will be displayed on cost charts. |
-| `thresholdValue125SendNotificationWhenExceeded` | string | `'Disabled'` | `[Disabled, Enabled]` | Target cost threshold at 125% send notification when exceeded. Indicates whether notifications will be sent when this threshold is exceeded. |
-| `thresholdValue25DisplayOnChart` | string | `'Disabled'` | `[Disabled, Enabled]` | Target Cost threshold at 25% display on chart. Indicates whether this threshold will be displayed on cost charts. |
-| `thresholdValue25SendNotificationWhenExceeded` | string | `'Disabled'` | `[Disabled, Enabled]` | Target cost threshold at 25% send notification when exceeded. Indicates whether notifications will be sent when this threshold is exceeded. |
-| `thresholdValue50DisplayOnChart` | string | `'Disabled'` | `[Disabled, Enabled]` | Target Cost threshold at 50% display on chart. Indicates whether this threshold will be displayed on cost charts. |
-| `thresholdValue50SendNotificationWhenExceeded` | string | `'Disabled'` | `[Disabled, Enabled]` | Target cost threshold at 50% send notification when exceeded. Indicates whether notifications will be sent when this threshold is exceeded. |
-| `thresholdValue75DisplayOnChart` | string | `'Disabled'` | `[Disabled, Enabled]` | Target Cost threshold at 75% display on chart. Indicates whether this threshold will be displayed on cost charts. |
-| `thresholdValue75SendNotificationWhenExceeded` | string | `'Disabled'` | `[Disabled, Enabled]` | Target cost threshold at 75% send notification when exceeded. Indicates whether notifications will be sent when this threshold is exceeded. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`currencyCode`](#parameter-currencycode) | string | The currency code of the cost. |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`status`](#parameter-status) | string | Target cost status. |
+| [`tags`](#parameter-tags) | object | Tags of the resource. |
+| [`target`](#parameter-target) | int | Lab target cost (e.g. 100). The target cost will appear in the "Cost trend" chart to allow tracking lab spending relative to the target cost for the current reporting cycleSetting the target cost to 0 will disable all thresholds. |
+| [`thresholdValue100DisplayOnChart`](#parameter-thresholdvalue100displayonchart) | string | Target Cost threshold at 100% display on chart. Indicates whether this threshold will be displayed on cost charts. |
+| [`thresholdValue100SendNotificationWhenExceeded`](#parameter-thresholdvalue100sendnotificationwhenexceeded) | string | Target cost threshold at 100% send notification when exceeded. Indicates whether notifications will be sent when this threshold is exceeded. |
+| [`thresholdValue125DisplayOnChart`](#parameter-thresholdvalue125displayonchart) | string | Target Cost threshold at 125% display on chart. Indicates whether this threshold will be displayed on cost charts. |
+| [`thresholdValue125SendNotificationWhenExceeded`](#parameter-thresholdvalue125sendnotificationwhenexceeded) | string | Target cost threshold at 125% send notification when exceeded. Indicates whether notifications will be sent when this threshold is exceeded. |
+| [`thresholdValue25DisplayOnChart`](#parameter-thresholdvalue25displayonchart) | string | Target Cost threshold at 25% display on chart. Indicates whether this threshold will be displayed on cost charts. |
+| [`thresholdValue25SendNotificationWhenExceeded`](#parameter-thresholdvalue25sendnotificationwhenexceeded) | string | Target cost threshold at 25% send notification when exceeded. Indicates whether notifications will be sent when this threshold is exceeded. |
+| [`thresholdValue50DisplayOnChart`](#parameter-thresholdvalue50displayonchart) | string | Target Cost threshold at 50% display on chart. Indicates whether this threshold will be displayed on cost charts. |
+| [`thresholdValue50SendNotificationWhenExceeded`](#parameter-thresholdvalue50sendnotificationwhenexceeded) | string | Target cost threshold at 50% send notification when exceeded. Indicates whether notifications will be sent when this threshold is exceeded. |
+| [`thresholdValue75DisplayOnChart`](#parameter-thresholdvalue75displayonchart) | string | Target Cost threshold at 75% display on chart. Indicates whether this threshold will be displayed on cost charts. |
+| [`thresholdValue75SendNotificationWhenExceeded`](#parameter-thresholdvalue75sendnotificationwhenexceeded) | string | Target cost threshold at 75% send notification when exceeded. Indicates whether notifications will be sent when this threshold is exceeded. |
 
+### Parameter: `currencyCode`
 
-### Parameter Usage: `tags`
+The currency code of the cost.
+- Required: No
+- Type: string
+- Default: `'USD'`
 
-Tag names and tag values can be provided as needed. A tag can be left without a value.
+### Parameter: `cycleEndDateTime`
 
-<details>
+Reporting cycle end date in the zulu time format (e.g. 2023-12-01T00:00:00.000Z). Required if cycleType is set to "Custom".
+- Required: No
+- Type: string
+- Default: `''`
 
-<summary>Parameter JSON format</summary>
+### Parameter: `cycleStartDateTime`
 
-```json
-"tags": {
-    "value": {
-        "Environment": "Non-Prod",
-        "Contact": "test.user@testcompany.com",
-        "PurchaseOrder": "1234",
-        "CostCenter": "7890",
-        "ServiceName": "DeploymentValidation",
-        "Role": "DeploymentValidation"
-    }
-}
-```
+Reporting cycle start date in the zulu time format (e.g. 2023-12-01T00:00:00.000Z). Required if cycleType is set to "Custom".
+- Required: No
+- Type: string
+- Default: `''`
 
-</details>
+### Parameter: `cycleType`
 
-<details>
+Reporting cycle type.
+- Required: Yes
+- Type: string
+- Allowed:
+  ```Bicep
+  [
+    'CalendarMonth'
+    'Custom'
+  ]
+  ```
 
-<summary>Bicep format</summary>
+### Parameter: `enableDefaultTelemetry`
 
-```bicep
-tags: {
-    Environment: 'Non-Prod'
-    Contact: 'test.user@testcompany.com'
-    PurchaseOrder: '1234'
-    CostCenter: '7890'
-    ServiceName: 'DeploymentValidation'
-    Role: 'DeploymentValidation'
-}
-```
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
 
-</details>
-<p>
+### Parameter: `labName`
+
+The name of the parent lab. Required if the template is used in a standalone deployment.
+- Required: Yes
+- Type: string
+
+### Parameter: `status`
+
+Target cost status.
+- Required: No
+- Type: string
+- Default: `'Enabled'`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
+
+### Parameter: `tags`
+
+Tags of the resource.
+- Required: No
+- Type: object
+
+### Parameter: `target`
+
+Lab target cost (e.g. 100). The target cost will appear in the "Cost trend" chart to allow tracking lab spending relative to the target cost for the current reporting cycleSetting the target cost to 0 will disable all thresholds.
+- Required: No
+- Type: int
+- Default: `0`
+
+### Parameter: `thresholdValue100DisplayOnChart`
+
+Target Cost threshold at 100% display on chart. Indicates whether this threshold will be displayed on cost charts.
+- Required: No
+- Type: string
+- Default: `'Disabled'`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
+
+### Parameter: `thresholdValue100SendNotificationWhenExceeded`
+
+Target cost threshold at 100% send notification when exceeded. Indicates whether notifications will be sent when this threshold is exceeded.
+- Required: No
+- Type: string
+- Default: `'Disabled'`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
+
+### Parameter: `thresholdValue125DisplayOnChart`
+
+Target Cost threshold at 125% display on chart. Indicates whether this threshold will be displayed on cost charts.
+- Required: No
+- Type: string
+- Default: `'Disabled'`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
+
+### Parameter: `thresholdValue125SendNotificationWhenExceeded`
+
+Target cost threshold at 125% send notification when exceeded. Indicates whether notifications will be sent when this threshold is exceeded.
+- Required: No
+- Type: string
+- Default: `'Disabled'`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
+
+### Parameter: `thresholdValue25DisplayOnChart`
+
+Target Cost threshold at 25% display on chart. Indicates whether this threshold will be displayed on cost charts.
+- Required: No
+- Type: string
+- Default: `'Disabled'`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
+
+### Parameter: `thresholdValue25SendNotificationWhenExceeded`
+
+Target cost threshold at 25% send notification when exceeded. Indicates whether notifications will be sent when this threshold is exceeded.
+- Required: No
+- Type: string
+- Default: `'Disabled'`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
+
+### Parameter: `thresholdValue50DisplayOnChart`
+
+Target Cost threshold at 50% display on chart. Indicates whether this threshold will be displayed on cost charts.
+- Required: No
+- Type: string
+- Default: `'Disabled'`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
+
+### Parameter: `thresholdValue50SendNotificationWhenExceeded`
+
+Target cost threshold at 50% send notification when exceeded. Indicates whether notifications will be sent when this threshold is exceeded.
+- Required: No
+- Type: string
+- Default: `'Disabled'`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
+
+### Parameter: `thresholdValue75DisplayOnChart`
+
+Target Cost threshold at 75% display on chart. Indicates whether this threshold will be displayed on cost charts.
+- Required: No
+- Type: string
+- Default: `'Disabled'`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
+
+### Parameter: `thresholdValue75SendNotificationWhenExceeded`
+
+Target cost threshold at 75% send notification when exceeded. Indicates whether notifications will be sent when this threshold is exceeded.
+- Required: No
+- Type: string
+- Default: `'Disabled'`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
+
 
 ## Outputs
 
-| Output Name | Type | Description |
+| Output | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the cost. |
 | `resourceGroupName` | string | The name of the resource group the cost was created in. |

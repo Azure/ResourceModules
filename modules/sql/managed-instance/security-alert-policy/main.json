@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.20.4.51522",
-      "templateHash": "15021129035939475675"
+      "version": "0.22.6.54827",
+      "templateHash": "73480634697264424"
     },
     "name": "SQL Managed Instance Security Alert Policies",
     "description": "This module deploys a SQL Managed Instance Security Alert Policy.",
@@ -67,7 +67,7 @@
     },
     {
       "type": "Microsoft.Sql/managedInstances/securityAlertPolicies",
-      "apiVersion": "2022-02-01-preview",
+      "apiVersion": "2022-05-01-preview",
       "name": "[format('{0}/{1}', parameters('managedInstanceName'), parameters('name'))]",
       "properties": {
         "state": "[parameters('state')]",

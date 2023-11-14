@@ -19,68 +19,88 @@ This module deploys a Network Watcher Connection Monitor.
 
 **Required parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | Name of the resource. |
+| [`name`](#parameter-name) | string | Name of the resource. |
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `endpoints` | array | `[]` | List of connection monitor endpoints. |
-| `location` | string | `[resourceGroup().location]` | Location for all resources. |
-| `networkWatcherName` | string | `[format('NetworkWatcher_{0}', resourceGroup().location)]` | Name of the network watcher resource. Must be in the resource group where the Flow log will be created and same region as the NSG. |
-| `tags` | object | `{object}` | Tags of the resource. |
-| `testConfigurations` | array | `[]` | List of connection monitor test configurations. |
-| `testGroups` | array | `[]` | List of connection monitor test groups. |
-| `workspaceResourceId` | string | `''` | Specify the Log Analytics Workspace Resource ID. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`endpoints`](#parameter-endpoints) | array | List of connection monitor endpoints. |
+| [`location`](#parameter-location) | string | Location for all resources. |
+| [`networkWatcherName`](#parameter-networkwatchername) | string | Name of the network watcher resource. Must be in the resource group where the Flow log will be created and same region as the NSG. |
+| [`tags`](#parameter-tags) | object | Tags of the resource. |
+| [`testConfigurations`](#parameter-testconfigurations) | array | List of connection monitor test configurations. |
+| [`testGroups`](#parameter-testgroups) | array | List of connection monitor test groups. |
+| [`workspaceResourceId`](#parameter-workspaceresourceid) | string | Specify the Log Analytics Workspace Resource ID. |
 
+### Parameter: `enableDefaultTelemetry`
 
-### Parameter Usage: `tags`
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
 
-Tag names and tag values can be provided as needed. A tag can be left without a value.
+### Parameter: `endpoints`
 
-<details>
+List of connection monitor endpoints.
+- Required: No
+- Type: array
+- Default: `[]`
 
-<summary>Parameter JSON format</summary>
+### Parameter: `location`
 
-```json
-"tags": {
-    "value": {
-        "Environment": "Non-Prod",
-        "Contact": "test.user@testcompany.com",
-        "PurchaseOrder": "1234",
-        "CostCenter": "7890",
-        "ServiceName": "DeploymentValidation",
-        "Role": "DeploymentValidation"
-    }
-}
-```
+Location for all resources.
+- Required: No
+- Type: string
+- Default: `[resourceGroup().location]`
 
-</details>
+### Parameter: `name`
 
-<details>
+Name of the resource.
+- Required: Yes
+- Type: string
 
-<summary>Bicep format</summary>
+### Parameter: `networkWatcherName`
 
-```bicep
-tags: {
-    Environment: 'Non-Prod'
-    Contact: 'test.user@testcompany.com'
-    PurchaseOrder: '1234'
-    CostCenter: '7890'
-    ServiceName: 'DeploymentValidation'
-    Role: 'DeploymentValidation'
-}
-```
+Name of the network watcher resource. Must be in the resource group where the Flow log will be created and same region as the NSG.
+- Required: No
+- Type: string
+- Default: `[format('NetworkWatcher_{0}', resourceGroup().location)]`
 
-</details>
-<p>
+### Parameter: `tags`
+
+Tags of the resource.
+- Required: No
+- Type: object
+
+### Parameter: `testConfigurations`
+
+List of connection monitor test configurations.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `testGroups`
+
+List of connection monitor test groups.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `workspaceResourceId`
+
+Specify the Log Analytics Workspace Resource ID.
+- Required: No
+- Type: string
+- Default: `''`
+
 
 ## Outputs
 
-| Output Name | Type | Description |
+| Output | Type | Description |
 | :-- | :-- | :-- |
 | `location` | string | The location the resource was deployed into. |
 | `name` | string | The name of the deployed connection monitor. |

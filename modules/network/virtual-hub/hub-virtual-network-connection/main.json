@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.20.4.51522",
-      "templateHash": "5767473063979797254"
+      "version": "0.22.6.54827",
+      "templateHash": "16334618854228578572"
     },
     "name": "Virtual Hub Virtual Network Connections",
     "description": "This module deploys a Virtual Hub Virtual Network Connection.",

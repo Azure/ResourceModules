@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.20.4.51522",
-      "templateHash": "15871414282174794846"
+      "version": "0.22.6.54827",
+      "templateHash": "13108601447016690436"
     },
     "name": "Event Grid Domain Topics",
     "description": "This module deploys an Event Grid Domain Topic.",

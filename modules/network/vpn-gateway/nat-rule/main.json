@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.20.4.51522",
-      "templateHash": "6991949008498259337"
+      "version": "0.22.6.54827",
+      "templateHash": "4165642550711844737"
     },
     "name": "VPN Gateway NAT Rules",
     "description": "This module deploys a VPN Gateway NAT Rule.",

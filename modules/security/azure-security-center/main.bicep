@@ -191,6 +191,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
+@batchSize(1)
 resource pricingTiers 'Microsoft.Security/pricings@2018-06-01' = [for (pricing, index) in pricings: {
   name: pricing.name
   properties: {

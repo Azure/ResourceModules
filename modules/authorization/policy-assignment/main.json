@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.20.4.51522",
-      "templateHash": "16987051403501720199"
+      "version": "0.22.6.54827",
+      "templateHash": "10579624444479342334"
     },
     "name": "Policy Assignments (All scopes)",
     "description": "This module deploys a Policy Assignment at a Management Group, Subscription or Resource Group scope.",
@@ -226,8 +226,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.20.4.51522",
-              "templateHash": "8902545451587564927"
+              "version": "0.22.6.54827",
+              "templateHash": "14811948404877688716"
             },
             "name": "Policy Assignments (Management Group scope)",
             "description": "This module deploys a Policy Assignment at a Management Group scope.",
@@ -506,8 +506,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.20.4.51522",
-              "templateHash": "13568773713405945676"
+              "version": "0.22.6.54827",
+              "templateHash": "1296030047986147440"
             },
             "name": "Policy Assignments (Subscription scope)",
             "description": "This module deploys a Policy Assignment at a Subscription scope.",
@@ -786,8 +786,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.20.4.51522",
-              "templateHash": "18205418867751406787"
+              "version": "0.22.6.54827",
+              "templateHash": "15032410491892224041"
             },
             "name": "Policy Assignments (Resource Group scope)",
             "description": "This module deploys a Policy Assignment at a Resource Group scope.",

@@ -5,7 +5,7 @@ metadata owner = 'Azure/module-maintainers'
 targetScope = 'subscription'
 
 @description('Optional. Tags for the resource group. If not provided, removes existing tags.')
-param tags object = {}
+param tags object?
 
 @description('Optional. Instead of overwriting the existing tags, combine them with the new tags.')
 param onlyUpdate bool = false

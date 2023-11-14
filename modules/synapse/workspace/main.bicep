@@ -11,7 +11,7 @@ param name string
 param location string = resourceGroup().location
 
 @description('Optional. Tags of the resource.')
-param tags object = {}
+param tags object?
 
 @description('Optional. Enable or Disable AzureADOnlyAuthentication on All Workspace sub-resource.')
 param azureADOnlyAuthentication bool = false
@@ -28,20 +28,8 @@ param defaultDataLakeStorageFilesystem string
 @description('Optional. Create managed private endpoint to the default storage account or not. If Yes is selected, a managed private endpoint connection request is sent to the workspace\'s primary Data Lake Storage Gen2 account for Spark pools to access data. This must be approved by an owner of the storage account.')
 param defaultDataLakeStorageCreateManagedPrivateEndpoint bool = false
 
-@description('Optional. Double encryption using a customer-managed key.')
-param encryption bool = false
-
-@description('Conditional. The resource ID of a key vault to reference a customer managed key for encryption from. Required if \'cMKKeyName\' is not empty.')
-param cMKKeyVaultResourceId string = ''
-
-@description('Optional. The name of the customer managed key to use for encryption.')
-param cMKKeyName string = ''
-
-@description('Optional. Use System Assigned Managed identity that will be used to access your customer-managed key stored in key vault.')
-param cMKUseSystemAssignedIdentity bool = false
-
-@description('Optional. The ID of User Assigned Managed identity that will be used to access your customer-managed key stored in key vault.')
-param cMKUserAssignedIdentityResourceId string = ''
+@description('Optional. The customer managed key definition.')
+param customerManagedKey customerManagedKeyType
 
 @description('Optional. Activate workspace by adding the system managed identity in the KeyVault containing the customer managed key and activating the workspace.')
 param encryptionActivateWorkspace bool = false
@@ -88,89 +76,57 @@ param sqlAdministratorLoginPassword string = ''
 @description('Optional. Git integration settings.')
 param workspaceRepositoryConfiguration object = {}
 
-@description('Optional. The ID(s) to assign to the resource.')
-param userAssignedIdentities object = {}
+@description('Optional. The managed identity definition for this resource.')
+param managedIdentities managedIdentitiesType
 
-@allowed([
-  ''
-  'CanNotDelete'
-  'ReadOnly'
-])
-@description('Optional. Specify the type of lock.')
-param lock string = ''
+@description('Optional. The lock settings of the service.')
+param lock lockType
 
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
-param roleAssignments array = []
+param roleAssignments roleAssignmentType
 
 @description('Optional. Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.')
-param privateEndpoints array = []
+param privateEndpoints privateEndpointType
 
-@description('Optional. Resource ID of the diagnostic storage account.')
-param diagnosticStorageAccountId string = ''
-
-@description('Optional. Resource ID of the diagnostic log analytics workspace.')
-param diagnosticWorkspaceId string = ''
-
-@description('Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
-param diagnosticEventHubAuthorizationRuleId string = ''
-
-@description('Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
-param diagnosticEventHubName string = ''
-
-@description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to \'\' to disable log collection.')
-@allowed([
-  ''
-  'allLogs'
-  'SynapseRbacOperations'
-  'GatewayApiRequests'
-  'BuiltinSqlReqsEnded'
-  'IntegrationPipelineRuns'
-  'IntegrationActivityRuns'
-  'IntegrationTriggerRuns'
-  'SQLSecurityAuditEvents'
-  'SynapseLinkEvent'
-])
-param diagnosticLogCategoriesToEnable array = [
-  'allLogs'
-]
-
-@description('Optional. The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings".')
-param diagnosticSettingsName string = ''
+@description('Optional. The diagnostic settings of the service.')
+param diagnosticSettings diagnosticSettingType
 
 // Variables
-var userAssignedIdentitiesUnion = union(userAssignedIdentities, !empty(cMKUserAssignedIdentityResourceId) ? {
-    '${cMKUserAssignedIdentityResourceId}': {}
-  } : {})
 
-var identityType = !empty(userAssignedIdentitiesUnion) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned'
+var cmkUserAssignedIdentityAsArray = !empty(customerManagedKey.?userAssignedIdentityResourceId ?? []) ? [ customerManagedKey.?userAssignedIdentityResourceId ] : []
+
+var userAssignedIdentitiesUnion = !empty(managedIdentities) ? union(managedIdentities.?userAssignedResourceIds ?? [], cmkUserAssignedIdentityAsArray) : cmkUserAssignedIdentityAsArray
+
+var formattedUserAssignedIdentities = reduce(map((userAssignedIdentitiesUnion ?? []), (id) => { '${id}': {} }), {}, (cur, next) => union(cur, next)) // Converts the flat array to an object like { '${id1}': {}, '${id2}': {} }
 
 var identity = {
-  type: identityType
-  userAssignedIdentities: !empty(userAssignedIdentitiesUnion) ? userAssignedIdentitiesUnion : null
+  type: !empty(userAssignedIdentitiesUnion) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned'
+  userAssignedIdentities: !empty(formattedUserAssignedIdentities) ? formattedUserAssignedIdentities : null
 }
-
-var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs' && item != ''): {
-  category: category
-  enabled: true
-}]
-
-var diagnosticsLogs = contains(diagnosticLogCategoriesToEnable, 'allLogs') ? [
-  {
-    categoryGroup: 'allLogs'
-    enabled: true
-  }
-] : contains(diagnosticLogCategoriesToEnable, '') ? [] : diagnosticsLogsSpecified
 
 var enableReferencedModulesTelemetry = false
 
-resource cMKKeyVault 'Microsoft.KeyVault/vaults@2021-10-01' existing = if (!empty(cMKKeyVaultResourceId)) {
-  name: last(split(cMKKeyVaultResourceId, '/'))!
-  scope: resourceGroup(split(cMKKeyVaultResourceId, '/')[2], split(cMKKeyVaultResourceId, '/')[4])
+var builtInRoleNames = {
+  Contributor: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')
+  Owner: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '8e3af657-a8ff-443c-a75c-2fe8c4bcb635')
+  Reader: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'acdd72a7-3385-48ef-bd42-f606fba81ae7')
+  'Resource Policy Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '36243c78-bf99-498c-9df9-86d9f8d28608')
+  'Role Based Access Control Administrator (Preview)': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'f58310d9-a9f6-439a-9e8d-f62e7b41a168')
+  'User Access Administrator': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '18d7d88d-d35e-4fb5-a5c3-7773c20a72d9')
 }
 
-resource cMKKeyVaultKey 'Microsoft.KeyVault/vaults/keys@2021-10-01' existing = if (!empty(cMKKeyVaultResourceId) && !empty(cMKKeyName)) {
-  name: '${last(split(cMKKeyVaultResourceId, '/'))}/${cMKKeyName}'!
-  scope: resourceGroup(split(cMKKeyVaultResourceId, '/')[2], split(cMKKeyVaultResourceId, '/')[4])
+resource cMKKeyVault 'Microsoft.KeyVault/vaults@2023-02-01' existing = if (!empty(customerManagedKey.?keyVaultResourceId)) {
+  name: last(split((customerManagedKey.?keyVaultResourceId ?? 'dummyVault'), '/'))
+  scope: resourceGroup(split((customerManagedKey.?keyVaultResourceId ?? '//'), '/')[2], split((customerManagedKey.?keyVaultResourceId ?? '////'), '/')[4])
+
+  resource cMKKey 'keys@2023-02-01' existing = if (!empty(customerManagedKey.?keyVaultResourceId) && !empty(customerManagedKey.?keyName)) {
+    name: customerManagedKey.?keyName ?? 'dummyKey'
+  }
+}
+
+resource cMKUserAssignedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' existing = if (!empty(customerManagedKey.?userAssignedIdentityResourceId)) {
+  name: last(split(customerManagedKey.?userAssignedIdentityResourceId ?? 'dummyMsi', '/'))
+  scope: resourceGroup(split((customerManagedKey.?userAssignedIdentityResourceId ?? '//'), '/')[2], split((customerManagedKey.?userAssignedIdentityResourceId ?? '////'), '/')[4])
 }
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
@@ -201,15 +157,21 @@ resource workspace 'Microsoft.Synapse/workspaces@2021-06-01' = {
       filesystem: defaultDataLakeStorageFilesystem
       createManagedPrivateEndpoint: managedVirtualNetwork ? defaultDataLakeStorageCreateManagedPrivateEndpoint : null
     }
-    encryption: encryption ? {
+    encryption: !empty(customerManagedKey) ? {
       cmk: {
-        kekIdentity: {
-          userAssignedIdentity: !empty(cMKUserAssignedIdentityResourceId) ? cMKUserAssignedIdentityResourceId : null
-          useSystemAssignedIdentity: cMKUseSystemAssignedIdentity
+        kekIdentity: !empty(customerManagedKey.?userAssignedIdentityResourceId) ? {
+          userAssignedIdentity: cMKUserAssignedIdentity.id
+        } : {
+          useSystemAssignedIdentity: empty(customerManagedKey.?userAssignedIdentityResourceId)
         }
+
+        identity: !empty(customerManagedKey.?userAssignedIdentityResourceId) ? {
+          userAssignedIdentity: cMKUserAssignedIdentity.id
+        } : null
+
         key: {
-          keyVaultUrl: cMKKeyVaultKey.properties.keyUri
-          name: cMKKeyName
+          keyVaultUrl: cMKKeyVault::cMKKey.properties.keyUri
+          name: customerManagedKey!.keyName
         }
       }
     } : null
@@ -244,23 +206,23 @@ module synapse_integrationRuntimes 'integration-runtime/main.bicep' = [for (inte
 
 // Workspace encryption with customer managed keys
 // - Assign Synapse Workspace MSI access to encryption key
-module workspace_cmk_rbac './.bicep/nested_cmkRbac.bicep' = if (encryptionActivateWorkspace) {
+module workspace_cmk_rbac 'modules/nested_cmkRbac.bicep' = if (encryptionActivateWorkspace) {
   name: '${workspace.name}-cmk-rbac'
   params: {
     workspaceIndentityPrincipalId: workspace.identity.principalId
-    keyvaultName: !empty(cMKKeyVaultResourceId) ? cMKKeyVault.name : ''
-    usesRbacAuthorization: !empty(cMKKeyVaultResourceId) ? cMKKeyVault.properties.enableRbacAuthorization : true
+    keyvaultName: !empty(customerManagedKey.?keyVaultResourceId) ? cMKKeyVault.name : ''
+    usesRbacAuthorization: !empty(customerManagedKey.?keyVaultResourceId) ? cMKKeyVault.properties.enableRbacAuthorization : true
   }
-  scope: encryptionActivateWorkspace ? resourceGroup(split(cMKKeyVaultResourceId, '/')[2], split(cMKKeyVaultResourceId, '/')[4]) : resourceGroup()
+  scope: encryptionActivateWorkspace ? resourceGroup(split((customerManagedKey.?keyVaultResourceId ?? '//'), '/')[2], split((customerManagedKey.?keyVaultResourceId ?? '////'), '/')[4]) : resourceGroup()
 }
 
 // - Workspace encryption - Activate Workspace
-module workspace_key './key/main.bicep' = if (encryptionActivateWorkspace) {
+module workspace_key 'key/main.bicep' = if (encryptionActivateWorkspace) {
   name: '${workspace.name}-cmk-activation'
   params: {
-    name: cMKKeyName
+    name: customerManagedKey!.keyName
     isActiveCMK: true
-    keyVaultResourceId: cMKKeyVaultResourceId
+    keyVaultResourceId: cMKKeyVault.id
     workspaceName: workspace.name
   }
   dependsOn: [
@@ -269,61 +231,74 @@ module workspace_key './key/main.bicep' = if (encryptionActivateWorkspace) {
 }
 
 // Resource Lock
-resource workspace_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
-  name: '${workspace.name}-${lock}-lock'
+resource workspace_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock ?? {}) && lock.?kind != 'None') {
+  name: lock.?name ?? 'lock-${name}'
   properties: {
-    level: any(lock)
-    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+    level: lock.?kind ?? ''
+    notes: lock.?kind == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot delete or modify the resource or child resources.'
   }
   scope: workspace
 }
 
 // RBAC
-module workspace_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: '${uniqueString(deployment().name, location)}-Workspace-Rbac-${index}'
-  params: {
-    principalIds: roleAssignment.principalIds
-    roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    resourceId: workspace.id
+resource workspace_roleAssignments 'Microsoft.Authorization/roleAssignments@2022-04-01' = [for (roleAssignment, index) in (roleAssignments ?? []): {
+  name: guid(workspace.id, roleAssignment.principalId, roleAssignment.roleDefinitionIdOrName)
+  properties: {
+    roleDefinitionId: contains(builtInRoleNames, roleAssignment.roleDefinitionIdOrName) ? builtInRoleNames[roleAssignment.roleDefinitionIdOrName] : roleAssignment.roleDefinitionIdOrName
+    principalId: roleAssignment.principalId
+    description: roleAssignment.?description
+    principalType: roleAssignment.?principalType
+    condition: roleAssignment.?condition
+    conditionVersion: !empty(roleAssignment.?condition) ? (roleAssignment.?conditionVersion ?? '2.0') : null // Must only be set if condtion is set
+    delegatedManagedIdentityResourceId: roleAssignment.?delegatedManagedIdentityResourceId
   }
+  scope: workspace
 }]
 
 // Endpoints
-module workspace_privateEndpoints '../../network/private-endpoint/main.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
-  name: '${uniqueString(deployment().name, location)}-Workspace-PrivateEndpoint-${index}'
+module workspace_privateEndpoints '../../network/private-endpoint/main.bicep' = [for (privateEndpoint, index) in (privateEndpoints ?? []): {
+  name: '${uniqueString(deployment().name, location)}-workspace-PrivateEndpoint-${index}'
   params: {
     groupIds: [
       privateEndpoint.service
     ]
-    name: contains(privateEndpoint, 'name') ? privateEndpoint.name : 'pe-${last(split(workspace.id, '/'))}-${privateEndpoint.service}-${index}'
+    name: privateEndpoint.?name ?? 'pep-${last(split(workspace.id, '/'))}-${privateEndpoint.?service ?? privateEndpoint.service}-${index}'
     serviceResourceId: workspace.id
     subnetResourceId: privateEndpoint.subnetResourceId
-    enableDefaultTelemetry: enableReferencedModulesTelemetry
-    location: contains(privateEndpoint, 'location') ? privateEndpoint.location : reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
-    lock: contains(privateEndpoint, 'lock') ? privateEndpoint.lock : lock
-    privateDnsZoneGroup: contains(privateEndpoint, 'privateDnsZoneGroup') ? privateEndpoint.privateDnsZoneGroup : {}
-    roleAssignments: contains(privateEndpoint, 'roleAssignments') ? privateEndpoint.roleAssignments : []
-    tags: contains(privateEndpoint, 'tags') ? privateEndpoint.tags : {}
-    manualPrivateLinkServiceConnections: contains(privateEndpoint, 'manualPrivateLinkServiceConnections') ? privateEndpoint.manualPrivateLinkServiceConnections : []
-    customDnsConfigs: contains(privateEndpoint, 'customDnsConfigs') ? privateEndpoint.customDnsConfigs : []
-    ipConfigurations: contains(privateEndpoint, 'ipConfigurations') ? privateEndpoint.ipConfigurations : []
-    applicationSecurityGroups: contains(privateEndpoint, 'applicationSecurityGroups') ? privateEndpoint.applicationSecurityGroups : []
-    customNetworkInterfaceName: contains(privateEndpoint, 'customNetworkInterfaceName') ? privateEndpoint.customNetworkInterfaceName : ''
+    enableDefaultTelemetry: privateEndpoint.?enableDefaultTelemetry ?? enableReferencedModulesTelemetry
+    location: privateEndpoint.?location ?? reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
+    lock: privateEndpoint.?lock ?? lock
+    privateDnsZoneGroupName: privateEndpoint.?privateDnsZoneGroupName
+    privateDnsZoneResourceIds: privateEndpoint.?privateDnsZoneResourceIds
+    roleAssignments: privateEndpoint.?roleAssignments
+    tags: privateEndpoint.?tags ?? tags
+    manualPrivateLinkServiceConnections: privateEndpoint.?manualPrivateLinkServiceConnections
+    customDnsConfigs: privateEndpoint.?customDnsConfigs
+    ipConfigurations: privateEndpoint.?ipConfigurations
+    applicationSecurityGroupResourceIds: privateEndpoint.?applicationSecurityGroupResourceIds
+    customNetworkInterfaceName: privateEndpoint.?customNetworkInterfaceName
   }
 }]
 
 // Diagnostics Settings
-resource workspace_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if (!empty(diagnosticStorageAccountId) || !empty(diagnosticWorkspaceId) || !empty(diagnosticEventHubAuthorizationRuleId) || !empty(diagnosticEventHubName)) {
-  name: !empty(diagnosticSettingsName) ? diagnosticSettingsName : '${name}-diagnosticSettings'
+resource workspace_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = [for (diagnosticSetting, index) in (diagnosticSettings ?? []): {
+  name: diagnosticSetting.?name ?? '${name}-diagnosticSettings'
   properties: {
-    storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
-    workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null
-    eventHubAuthorizationRuleId: !empty(diagnosticEventHubAuthorizationRuleId) ? diagnosticEventHubAuthorizationRuleId : null
-    eventHubName: !empty(diagnosticEventHubName) ? diagnosticEventHubName : null
-    logs: diagnosticsLogs
+    storageAccountId: diagnosticSetting.?storageAccountResourceId
+    workspaceId: diagnosticSetting.?workspaceResourceId
+    eventHubAuthorizationRuleId: diagnosticSetting.?eventHubAuthorizationRuleResourceId
+    eventHubName: diagnosticSetting.?eventHubName
+    logs: diagnosticSetting.?logCategoriesAndGroups ?? [
+      {
+        categoryGroup: 'AllLogs'
+        enabled: true
+      }
+    ]
+    marketplacePartnerId: diagnosticSetting.?marketplacePartnerResourceId
+    logAnalyticsDestinationType: diagnosticSetting.?logAnalyticsDestinationType
   }
   scope: workspace
-}
+}]
 
 @description('The resource ID of the deployed Synapse Workspace.')
 output resourceID string = workspace.id
@@ -338,7 +313,161 @@ output resourceGroupName string = resourceGroup().name
 output connectivityEndpoints object = workspace.properties.connectivityEndpoints
 
 @description('The principal ID of the system assigned identity.')
-output systemAssignedPrincipalId string = contains(workspace.identity, 'principalId') ? workspace.identity.principalId : ''
+output systemAssignedMIPrincipalId string = contains(workspace.identity, 'principalId') ? workspace.identity.principalId : ''
 
 @description('The location the resource was deployed into.')
 output location string = workspace.location
+
+// =============== //
+//   Definitions   //
+// =============== //
+
+type managedIdentitiesType = {
+  @description('Optional. The resource ID(s) to assign to the resource.')
+  userAssignedResourceIds: string[]
+}?
+
+type lockType = {
+  @description('Optional. Specify the name of lock.')
+  name: string?
+
+  @description('Optional. Specify the type of lock.')
+  kind: ('CanNotDelete' | 'ReadOnly' | 'None')?
+}?
+
+type roleAssignmentType = {
+  @description('Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead.')
+  roleDefinitionIdOrName: string
+
+  @description('Required. The principal ID of the principal (user/group/identity) to assign the role to.')
+  principalId: string
+
+  @description('Optional. The principal type of the assigned principal ID.')
+  principalType: ('ServicePrincipal' | 'Group' | 'User' | 'ForeignGroup' | 'Device')?
+
+  @description('Optional. The description of the role assignment.')
+  description: string?
+
+  @description('Optional. The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container"')
+  condition: string?
+
+  @description('Optional. Version of the condition.')
+  conditionVersion: '2.0'?
+
+  @description('Optional. The Resource Id of the delegated managed identity resource.')
+  delegatedManagedIdentityResourceId: string?
+}[]?
+
+type privateEndpointType = {
+  @description('Optional. The name of the private endpoint.')
+  name: string?
+
+  @description('Optional. The location to deploy the private endpoint to.')
+  location: string?
+
+  @description('Required. The service (sub-) type to deploy the private endpoint for. For example "vault" or "blob".')
+  service: string
+
+  @description('Required. Resource ID of the subnet where the endpoint needs to be created.')
+  subnetResourceId: string
+
+  @description('Optional. The name of the private DNS zone group to create if privateDnsZoneResourceIds were provided.')
+  privateDnsZoneGroupName: string?
+
+  @description('Optional. The private DNS zone groups to associate the private endpoint with. A DNS zone group can support up to 5 DNS zones.')
+  privateDnsZoneResourceIds: string[]?
+
+  @description('Optional. Custom DNS configurations.')
+  customDnsConfigs: {
+    @description('Required. Fqdn that resolves to private endpoint ip address.')
+    fqdn: string?
+
+    @description('Required. A list of private ip addresses of the private endpoint.')
+    ipAddresses: string[]
+  }[]?
+
+  @description('Optional. A list of IP configurations of the private endpoint. This will be used to map to the First Party Service endpoints.')
+  ipConfigurations: {
+    @description('Required. The name of the resource that is unique within a resource group.')
+    name: string
+
+    @description('Required. Properties of private endpoint IP configurations.')
+    properties: {
+      @description('Required. The ID of a group obtained from the remote resource that this private endpoint should connect to.')
+      groupId: string
+
+      @description('Required. The member name of a group obtained from the remote resource that this private endpoint should connect to.')
+      memberName: string
+
+      @description('Required. A private ip address obtained from the private endpoint\'s subnet.')
+      privateIPAddress: string
+    }
+  }[]?
+
+  @description('Optional. Application security groups in which the private endpoint IP configuration is included.')
+  applicationSecurityGroupResourceIds: string[]?
+
+  @description('Optional. The custom name of the network interface attached to the private endpoint.')
+  customNetworkInterfaceName: string?
+
+  @description('Optional. Specify the type of lock.')
+  lock: lockType
+
+  @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
+  roleAssignments: roleAssignmentType
+
+  @description('Optional. Tags to be applied on all resources/resource groups in this deployment.')
+  tags: object?
+
+  @description('Optional. Manual PrivateLink Service Connections.')
+  manualPrivateLinkServiceConnections: array?
+
+  @description('Optional. Enable/Disable usage telemetry for module.')
+  enableTelemetry: bool?
+}[]?
+
+type diagnosticSettingType = {
+  @description('Optional. The name of diagnostic setting.')
+  name: string?
+
+  @description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to \'\' to disable log collection.')
+  logCategoriesAndGroups: {
+    @description('Optional. Name of a Diagnostic Log category for a resource type this setting is applied to. Set the specific logs to collect here.')
+    category: string?
+
+    @description('Optional. Name of a Diagnostic Log category group for a resource type this setting is applied to. Set to \'AllLogs\' to collect all logs.')
+    categoryGroup: string?
+  }[]?
+
+  @description('Optional. A string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destination type.')
+  logAnalyticsDestinationType: ('Dedicated' | 'AzureDiagnostics')?
+
+  @description('Optional. Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.')
+  workspaceResourceId: string?
+
+  @description('Optional. Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.')
+  storageAccountResourceId: string?
+
+  @description('Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
+  eventHubAuthorizationRuleResourceId: string?
+
+  @description('Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.')
+  eventHubName: string?
+
+  @description('Optional. The full ARM resource ID of the Marketplace resource to which you would like to send Diagnostic Logs.')
+  marketplacePartnerResourceId: string?
+}[]?
+
+type customerManagedKeyType = {
+  @description('Required. The resource ID of a key vault to reference a customer managed key for encryption from.')
+  keyVaultResourceId: string
+
+  @description('Required. The name of the customer managed key to use for encryption.')
+  keyName: string
+
+  @description('Optional. The version of the customer managed key to reference for encryption. If not provided, using \'latest\'.')
+  keyVersion: string?
+
+  @description('Optional. User assigned identity to use when fetching the customer managed key. Required if no system assigned identity is available for use.')
+  userAssignedIdentityResourceId: string?
+}?

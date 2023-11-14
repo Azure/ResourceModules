@@ -1,11 +1,12 @@
 {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "languageVersion": "2.0",
   "contentVersion": "1.0.0.0",
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.20.4.51522",
-      "templateHash": "842274698238951310"
+      "version": "0.22.6.54827",
+      "templateHash": "12719783741437890545"
     },
     "name": "Azure Container Registry (ACR) Replications",
     "description": "This module deploys an Azure Container Registry (ACR) Replication.",
@@ -33,7 +34,7 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Tags of the resource."
       }
@@ -64,8 +65,8 @@
       }
     }
   },
-  "resources": [
-    {
+  "resources": {
+    "defaultTelemetry": {
       "condition": "[parameters('enableDefaultTelemetry')]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2021-04-01",
@@ -79,7 +80,13 @@
         }
       }
     },
-    {
+    "registry": {
+      "existing": true,
+      "type": "Microsoft.ContainerRegistry/registries",
+      "apiVersion": "2023-06-01-preview",
+      "name": "[parameters('registryName')]"
+    },
+    "replication": {
       "type": "Microsoft.ContainerRegistry/registries/replications",
       "apiVersion": "2023-06-01-preview",
       "name": "[format('{0}/{1}', parameters('registryName'), parameters('name'))]",
@@ -88,9 +95,12 @@
       "properties": {
         "regionEndpointEnabled": "[parameters('regionEndpointEnabled')]",
         "zoneRedundancy": "[parameters('zoneRedundancy')]"
-      }
+      },
+      "dependsOn": [
+        "registry"
+      ]
     }
-  ],
+  },
   "outputs": {
     "name": {
       "type": "string",
@@ -118,7 +128,7 @@
       "metadata": {
         "description": "The location the resource was deployed into."
       },
-      "value": "[reference(resourceId('Microsoft.ContainerRegistry/registries/replications', parameters('registryName'), parameters('name')), '2023-06-01-preview', 'full').location]"
+      "value": "[reference('replication', '2023-06-01-preview', 'full').location]"
     }
   }
 }

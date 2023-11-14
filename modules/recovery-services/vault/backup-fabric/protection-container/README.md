@@ -4,12 +4,12 @@ This module deploys a Recovery Services Vault Protection Container.
 
 ## Navigation
 
-- [Resource types](#Resource-types)
+- [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
 
-## Resource types
+## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
@@ -20,32 +20,123 @@ This module deploys a Recovery Services Vault Protection Container.
 
 **Required parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | Name of the Azure Recovery Service Vault Protection Container. |
+| [`name`](#parameter-name) | string | Name of the Azure Recovery Service Vault Protection Container. |
 
 **Conditional parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `recoveryVaultName` | string | The name of the parent Azure Recovery Service Vault. Required if the template is used in a standalone deployment. |
+| [`recoveryVaultName`](#parameter-recoveryvaultname) | string | The name of the parent Azure Recovery Service Vault. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Allowed Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `backupManagementType` | string | `''` | `['', AzureBackupServer, AzureIaasVM, AzureSql, AzureStorage, AzureWorkload, DefaultBackup, DPM, Invalid, MAB]` | Backup management type to execute the current Protection Container job. |
-| `containerType` | string | `''` | `['', AzureBackupServerContainer, AzureSqlContainer, GenericContainer, Microsoft.ClassicCompute/virtualMachines, Microsoft.Compute/virtualMachines, SQLAGWorkLoadContainer, StorageContainer, VMAppContainer, Windows]` | Type of the container. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `friendlyName` | string | `''` |  | Friendly name of the Protection Container. |
-| `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
-| `protectedItems` | array | `[]` |  | Protected items to register in the container. |
-| `sourceResourceId` | string | `''` |  | Resource ID of the target resource for the Protection Container. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`backupManagementType`](#parameter-backupmanagementtype) | string | Backup management type to execute the current Protection Container job. |
+| [`containerType`](#parameter-containertype) | string | Type of the container. |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`friendlyName`](#parameter-friendlyname) | string | Friendly name of the Protection Container. |
+| [`location`](#parameter-location) | string | Location for all resources. |
+| [`protectedItems`](#parameter-protecteditems) | array | Protected items to register in the container. |
+| [`sourceResourceId`](#parameter-sourceresourceid) | string | Resource ID of the target resource for the Protection Container. |
+
+### Parameter: `backupManagementType`
+
+Backup management type to execute the current Protection Container job.
+- Required: No
+- Type: string
+- Default: `''`
+- Allowed:
+  ```Bicep
+  [
+    ''
+    'AzureBackupServer'
+    'AzureIaasVM'
+    'AzureSql'
+    'AzureStorage'
+    'AzureWorkload'
+    'DefaultBackup'
+    'DPM'
+    'Invalid'
+    'MAB'
+  ]
+  ```
+
+### Parameter: `containerType`
+
+Type of the container.
+- Required: No
+- Type: string
+- Default: `''`
+- Allowed:
+  ```Bicep
+  [
+    ''
+    'AzureBackupServerContainer'
+    'AzureSqlContainer'
+    'GenericContainer'
+    'Microsoft.ClassicCompute/virtualMachines'
+    'Microsoft.Compute/virtualMachines'
+    'SQLAGWorkLoadContainer'
+    'StorageContainer'
+    'VMAppContainer'
+    'Windows'
+  ]
+  ```
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `friendlyName`
+
+Friendly name of the Protection Container.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `location`
+
+Location for all resources.
+- Required: No
+- Type: string
+- Default: `[resourceGroup().location]`
+
+### Parameter: `name`
+
+Name of the Azure Recovery Service Vault Protection Container.
+- Required: Yes
+- Type: string
+
+### Parameter: `protectedItems`
+
+Protected items to register in the container.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `recoveryVaultName`
+
+The name of the parent Azure Recovery Service Vault. Required if the template is used in a standalone deployment.
+- Required: Yes
+- Type: string
+
+### Parameter: `sourceResourceId`
+
+Resource ID of the target resource for the Protection Container.
+- Required: No
+- Type: string
+- Default: `''`
 
 
 ## Outputs
 
-| Output Name | Type | Description |
+| Output | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The Name of the Protection Container. |
 | `resourceGroupName` | string | The name of the Resource Group the Protection Container was created in. |

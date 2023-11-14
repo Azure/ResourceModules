@@ -13,35 +13,74 @@ This module deploys a Site Slot Hybrid Connection Namespace Relay.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Web/sites/slots/hybridConnectionNamespaces/relays` | [2022-03-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/2022-03-01/sites/slots/hybridConnectionNamespaces/relays) |
+| `Microsoft.Web/sites/slots/hybridConnectionNamespaces/relays` | [2022-09-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/2022-09-01/sites/slots/hybridConnectionNamespaces/relays) |
 
 ## Parameters
 
 **Required parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `hybridConnectionResourceId` | string | The resource ID of the relay namespace hybrid connection. |
+| [`hybridConnectionResourceId`](#parameter-hybridconnectionresourceid) | string | The resource ID of the relay namespace hybrid connection. |
 
 **Conditional parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `appName` | string | The name of the parent web site. Required if the template is used in a standalone deployment. |
-| `slotName` | string | The name of the site slot. Required if the template is used in a standalone deployment. |
+| [`appName`](#parameter-appname) | string | The name of the parent web site. Required if the template is used in a standalone deployment. |
+| [`slotName`](#parameter-slotname) | string | The name of the site slot. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `location` | string | `[resourceGroup().location]` | Location for all Resources. |
-| `sendKeyName` | string | `'defaultSender'` | Name of the authorization rule send key to use. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`location`](#parameter-location) | string | Location for all Resources. |
+| [`sendKeyName`](#parameter-sendkeyname) | string | Name of the authorization rule send key to use. |
+
+### Parameter: `appName`
+
+The name of the parent web site. Required if the template is used in a standalone deployment.
+- Required: Yes
+- Type: string
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `hybridConnectionResourceId`
+
+The resource ID of the relay namespace hybrid connection.
+- Required: Yes
+- Type: string
+
+### Parameter: `location`
+
+Location for all Resources.
+- Required: No
+- Type: string
+- Default: `[resourceGroup().location]`
+
+### Parameter: `sendKeyName`
+
+Name of the authorization rule send key to use.
+- Required: No
+- Type: string
+- Default: `'defaultSender'`
+
+### Parameter: `slotName`
+
+The name of the site slot. Required if the template is used in a standalone deployment.
+- Required: Yes
+- Type: string
 
 
 ## Outputs
 
-| Output Name | Type | Description |
+| Output | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the hybrid connection relay.. |
 | `resourceGroupName` | string | The name of the resource group the resource was deployed into. |

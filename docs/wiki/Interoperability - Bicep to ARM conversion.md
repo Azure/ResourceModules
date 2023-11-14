@@ -5,7 +5,7 @@ However, for users who still prefer using ARM templates over Bicep, the CARML li
 
 This page documents the conversion utility and how to use it.
 
-> **NOTE:** As Bicep & ARM template files work slightly different (e.g., references as specified differently), the ReadMe we generate out of them using the [`/utilities/tools/Set-ModuleReadMe.ps1`](https://github.com/Azure/ResourceModules/blob/main/utilities/tools/Set-ModuleReadMe.ps1) utility may look differently. To this end, make sure to regenerate all ReadMEs after you converted the repository from Bicep to ARM. If you don't, the Pester tests in the pipeline may fail when reviewing the ReadMEs.
+> **NOTE:** As Bicep & ARM template files work slightly different (e.g., references as specified differently), the ReadMe we generate out of them using the [`/utilities/tools/Set-Module.ps1`](https://github.com/Azure/ResourceModules/blob/main/utilities/tools/Set-Module.ps1) utility may look differently. To this end, make sure to regenerate all ReadMEs after you converted the repository from Bicep to ARM. If you don't, the Pester tests in the pipeline may fail when reviewing the ReadMEs.
 
 ---
 

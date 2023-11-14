@@ -6,6 +6,7 @@ metadata owner = 'Azure/module-maintainers'
 param name string
 
 @description('Optional. Specifies a VPN shared key. The same value has to be specified on both Virtual Network Gateways.')
+@secure()
 param vpnSharedKey string = ''
 
 @description('Optional. Location for all resources.')
@@ -70,16 +71,11 @@ param customIPSecPolicy object = {
 @description('Optional. The weight added to routes learned from this BGP speaker.')
 param routingWeight int = -1
 
-@allowed([
-  ''
-  'CanNotDelete'
-  'ReadOnly'
-])
-@description('Optional. Specify the connectionType of lock.')
-param lock string = ''
+@description('Optional. The lock settings of the service.')
+param lock lockType
 
 @description('Optional. Tags of the resource.')
-param tags object = {}
+param tags object?
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
@@ -148,11 +144,11 @@ resource connection 'Microsoft.Network/connections@2023-04-01' = {
   }
 }
 
-resource connection_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
-  name: '${connection.name}-${lock}-lock'
+resource connection_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock ?? {}) && lock.?kind != 'None') {
+  name: lock.?name ?? 'lock-${name}'
   properties: {
-    level: any(lock)
-    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+    level: lock.?kind ?? ''
+    notes: lock.?kind == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot delete or modify the resource or child resources.'
   }
   scope: connection
 }
@@ -168,3 +164,15 @@ output resourceId string = connection.id
 
 @description('The location the resource was deployed into.')
 output location string = connection.location
+
+// =============== //
+//   Definitions   //
+// =============== //
+
+type lockType = {
+  @description('Optional. Specify the name of lock.')
+  name: string?
+
+  @description('Optional. Specify the type of lock.')
+  kind: ('CanNotDelete' | 'ReadOnly' | 'None')?
+}?

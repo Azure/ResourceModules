@@ -19,71 +19,76 @@ This module deploys a Private DNS Zone Virtual Network Link.
 
 **Required parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `virtualNetworkResourceId` | string | Link to another virtual network resource ID. |
+| [`virtualNetworkResourceId`](#parameter-virtualnetworkresourceid) | string | Link to another virtual network resource ID. |
 
 **Conditional parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `privateDnsZoneName` | string | The name of the parent Private DNS zone. Required if the template is used in a standalone deployment. |
+| [`privateDnsZoneName`](#parameter-privatednszonename) | string | The name of the parent Private DNS zone. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `location` | string | `'global'` | The location of the PrivateDNSZone. Should be global. |
-| `name` | string | `[format('{0}-vnetlink', last(split(parameters('virtualNetworkResourceId'), '/')))]` | The name of the virtual network link. |
-| `registrationEnabled` | bool | `False` | Is auto-registration of virtual machine records in the virtual network in the Private DNS zone enabled?. |
-| `tags` | object | `{object}` | Tags of the resource. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`location`](#parameter-location) | string | The location of the PrivateDNSZone. Should be global. |
+| [`name`](#parameter-name) | string | The name of the virtual network link. |
+| [`registrationEnabled`](#parameter-registrationenabled) | bool | Is auto-registration of virtual machine records in the virtual network in the Private DNS zone enabled?. |
+| [`tags`](#parameter-tags) | object | Tags of the resource. |
 
+### Parameter: `enableDefaultTelemetry`
 
-### Parameter Usage: `tags`
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
 
-Tag names and tag values can be provided as needed. A tag can be left without a value.
+### Parameter: `location`
 
-<details>
+The location of the PrivateDNSZone. Should be global.
+- Required: No
+- Type: string
+- Default: `'global'`
 
-<summary>Parameter JSON format</summary>
+### Parameter: `name`
 
-```json
-"tags": {
-    "value": {
-        "Environment": "Non-Prod",
-        "Contact": "test.user@testcompany.com",
-        "PurchaseOrder": "1234",
-        "CostCenter": "7890",
-        "ServiceName": "DeploymentValidation",
-        "Role": "DeploymentValidation"
-    }
-}
-```
+The name of the virtual network link.
+- Required: No
+- Type: string
+- Default: `[format('{0}-vnetlink', last(split(parameters('virtualNetworkResourceId'), '/')))]`
 
-</details>
+### Parameter: `privateDnsZoneName`
 
-<details>
+The name of the parent Private DNS zone. Required if the template is used in a standalone deployment.
+- Required: Yes
+- Type: string
 
-<summary>Bicep format</summary>
+### Parameter: `registrationEnabled`
 
-```bicep
-tags: {
-    Environment: 'Non-Prod'
-    Contact: 'test.user@testcompany.com'
-    PurchaseOrder: '1234'
-    CostCenter: '7890'
-    ServiceName: 'DeploymentValidation'
-    Role: 'DeploymentValidation'
-}
-```
+Is auto-registration of virtual machine records in the virtual network in the Private DNS zone enabled?.
+- Required: No
+- Type: bool
+- Default: `False`
 
-</details>
-<p>
+### Parameter: `tags`
+
+Tags of the resource.
+- Required: No
+- Type: object
+
+### Parameter: `virtualNetworkResourceId`
+
+Link to another virtual network resource ID.
+- Required: Yes
+- Type: string
+
 
 ## Outputs
 
-| Output Name | Type | Description |
+| Output | Type | Description |
 | :-- | :-- | :-- |
 | `location` | string | The location the resource was deployed into. |
 | `name` | string | The name of the deployed virtual network link. |

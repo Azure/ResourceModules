@@ -21,73 +21,99 @@ Notification channels are used by the schedule resource type in order to send no
 
 **Required parameters**
 
-| Parameter Name | Type | Allowed Values | Description |
-| :-- | :-- | :-- | :-- |
-| `events` | array |  | The list of event for which this notification is enabled. |
-| `name` | string | `[autoShutdown, costThreshold]` | The name of the notification channel. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`events`](#parameter-events) | array | The list of event for which this notification is enabled. |
+| [`name`](#parameter-name) | string | The name of the notification channel. |
 
 **Conditional parameters**
 
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `emailRecipient` | string | `''` | The email recipient to send notifications to (can be a list of semi-colon separated email addresses). Required if "webHookUrl" is empty. |
-| `labName` | string |  | The name of the parent lab. Required if the template is used in a standalone deployment. |
-| `webHookUrl` | string | `''` | The webhook URL to which the notification will be sent. Required if "emailRecipient" is empty. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`emailRecipient`](#parameter-emailrecipient) | string | The email recipient to send notifications to (can be a list of semi-colon separated email addresses). Required if "webHookUrl" is empty. |
+| [`labName`](#parameter-labname) | string | The name of the parent lab. Required if the template is used in a standalone deployment. |
+| [`webHookUrl`](#parameter-webhookurl) | string | The webhook URL to which the notification will be sent. Required if "emailRecipient" is empty. |
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `description` | string | `''` | Description of notification. |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `notificationLocale` | string | `'en'` | The locale to use when sending a notification (fallback for unsupported languages is EN). |
-| `tags` | object | `{object}` | Tags of the resource. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`description`](#parameter-description) | string | Description of notification. |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`notificationLocale`](#parameter-notificationlocale) | string | The locale to use when sending a notification (fallback for unsupported languages is EN). |
+| [`tags`](#parameter-tags) | object | Tags of the resource. |
 
+### Parameter: `description`
 
-### Parameter Usage: `tags`
+Description of notification.
+- Required: No
+- Type: string
+- Default: `''`
 
-Tag names and tag values can be provided as needed. A tag can be left without a value.
+### Parameter: `emailRecipient`
 
-<details>
+The email recipient to send notifications to (can be a list of semi-colon separated email addresses). Required if "webHookUrl" is empty.
+- Required: No
+- Type: string
+- Default: `''`
 
-<summary>Parameter JSON format</summary>
+### Parameter: `enableDefaultTelemetry`
 
-```json
-"tags": {
-    "value": {
-        "Environment": "Non-Prod",
-        "Contact": "test.user@testcompany.com",
-        "PurchaseOrder": "1234",
-        "CostCenter": "7890",
-        "ServiceName": "DeploymentValidation",
-        "Role": "DeploymentValidation"
-    }
-}
-```
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
 
-</details>
+### Parameter: `events`
 
-<details>
+The list of event for which this notification is enabled.
+- Required: No
+- Type: array
+- Default: `[]`
 
-<summary>Bicep format</summary>
+### Parameter: `labName`
 
-```bicep
-tags: {
-    Environment: 'Non-Prod'
-    Contact: 'test.user@testcompany.com'
-    PurchaseOrder: '1234'
-    CostCenter: '7890'
-    ServiceName: 'DeploymentValidation'
-    Role: 'DeploymentValidation'
-}
-```
+The name of the parent lab. Required if the template is used in a standalone deployment.
+- Required: Yes
+- Type: string
 
-</details>
-<p>
+### Parameter: `name`
+
+The name of the notification channel.
+- Required: Yes
+- Type: string
+- Allowed:
+  ```Bicep
+  [
+    'autoShutdown'
+    'costThreshold'
+  ]
+  ```
+
+### Parameter: `notificationLocale`
+
+The locale to use when sending a notification (fallback for unsupported languages is EN).
+- Required: No
+- Type: string
+- Default: `'en'`
+
+### Parameter: `tags`
+
+Tags of the resource.
+- Required: No
+- Type: object
+
+### Parameter: `webHookUrl`
+
+The webhook URL to which the notification will be sent. Required if "emailRecipient" is empty.
+- Required: No
+- Type: string
+- Default: `''`
+
 
 ## Outputs
 
-| Output Name | Type | Description |
+| Output | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the notification channel. |
 | `resourceGroupName` | string | The name of the resource group the notification channel was created in. |

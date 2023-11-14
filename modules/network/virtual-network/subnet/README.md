@@ -6,9 +6,9 @@ This module deploys a Virtual Network Subnet.
 
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
-- [Considerations](#Considerations)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
+- [Notes](#Notes)
 
 ## Resource Types
 
@@ -21,173 +21,225 @@ This module deploys a Virtual Network Subnet.
 
 **Required parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `addressPrefix` | string | The address prefix for the subnet. |
+| [`addressPrefix`](#parameter-addressprefix) | string | The address prefix for the subnet. |
 
 **Conditional parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `virtualNetworkName` | string | The name of the parent virtual network. Required if the template is used in a standalone deployment. |
+| [`virtualNetworkName`](#parameter-virtualnetworkname) | string | The name of the parent virtual network. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Allowed Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `addressPrefixes` | array | `[]` |  | List of address prefixes for the subnet. |
-| `applicationGatewayIPConfigurations` | array | `[]` |  | Application gateway IP configurations of virtual network resource. |
-| `delegations` | array | `[]` |  | The delegations to enable on the subnet. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `ipAllocations` | array | `[]` |  | Array of IpAllocation which reference this subnet. |
-| `name` | string |  |  | The Name of the subnet resource. |
-| `natGatewayId` | string | `''` |  | The resource ID of the NAT Gateway to use for the subnet. |
-| `networkSecurityGroupId` | string | `''` |  | The resource ID of the network security group to assign to the subnet. |
-| `privateEndpointNetworkPolicies` | string | `''` | `['', Disabled, Enabled]` | enable or disable apply network policies on private endpoint in the subnet. |
-| `privateLinkServiceNetworkPolicies` | string | `''` | `['', Disabled, Enabled]` | enable or disable apply network policies on private link service in the subnet. |
-| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| `routeTableId` | string | `''` |  | The resource ID of the route table to assign to the subnet. |
-| `serviceEndpointPolicies` | array | `[]` |  | An array of service endpoint policies. |
-| `serviceEndpoints` | array | `[]` |  | The service endpoints to enable on the subnet. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`addressPrefixes`](#parameter-addressprefixes) | array | List of address prefixes for the subnet. |
+| [`applicationGatewayIPConfigurations`](#parameter-applicationgatewayipconfigurations) | array | Application gateway IP configurations of virtual network resource. |
+| [`delegations`](#parameter-delegations) | array | The delegations to enable on the subnet. |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`ipAllocations`](#parameter-ipallocations) | array | Array of IpAllocation which reference this subnet. |
+| [`name`](#parameter-name) | string | The Name of the subnet resource. |
+| [`natGatewayId`](#parameter-natgatewayid) | string | The resource ID of the NAT Gateway to use for the subnet. |
+| [`networkSecurityGroupId`](#parameter-networksecuritygroupid) | string | The resource ID of the network security group to assign to the subnet. |
+| [`privateEndpointNetworkPolicies`](#parameter-privateendpointnetworkpolicies) | string | enable or disable apply network policies on private endpoint in the subnet. |
+| [`privateLinkServiceNetworkPolicies`](#parameter-privatelinkservicenetworkpolicies) | string | enable or disable apply network policies on private link service in the subnet. |
+| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| [`routeTableId`](#parameter-routetableid) | string | The resource ID of the route table to assign to the subnet. |
+| [`serviceEndpointPolicies`](#parameter-serviceendpointpolicies) | array | An array of service endpoint policies. |
+| [`serviceEndpoints`](#parameter-serviceendpoints) | array | The service endpoints to enable on the subnet. |
+
+### Parameter: `addressPrefix`
+
+The address prefix for the subnet.
+- Required: Yes
+- Type: string
+
+### Parameter: `addressPrefixes`
+
+List of address prefixes for the subnet.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `applicationGatewayIPConfigurations`
+
+Application gateway IP configurations of virtual network resource.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `delegations`
+
+The delegations to enable on the subnet.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `ipAllocations`
+
+Array of IpAllocation which reference this subnet.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `name`
+
+The Name of the subnet resource.
+- Required: Yes
+- Type: string
+
+### Parameter: `natGatewayId`
+
+The resource ID of the NAT Gateway to use for the subnet.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `networkSecurityGroupId`
+
+The resource ID of the network security group to assign to the subnet.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `privateEndpointNetworkPolicies`
+
+enable or disable apply network policies on private endpoint in the subnet.
+- Required: No
+- Type: string
+- Default: `''`
+- Allowed:
+  ```Bicep
+  [
+    ''
+    'Disabled'
+    'Enabled'
+  ]
+  ```
+
+### Parameter: `privateLinkServiceNetworkPolicies`
+
+enable or disable apply network policies on private link service in the subnet.
+- Required: No
+- Type: string
+- Default: `''`
+- Allowed:
+  ```Bicep
+  [
+    ''
+    'Disabled'
+    'Enabled'
+  ]
+  ```
+
+### Parameter: `roleAssignments`
+
+Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
+- Required: No
+- Type: array
 
 
-### Parameter Usage: `delegations`
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`condition`](#parameter-roleassignmentscondition) | No | string | Optional. The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container" |
+| [`conditionVersion`](#parameter-roleassignmentsconditionversion) | No | string | Optional. Version of the condition. |
+| [`delegatedManagedIdentityResourceId`](#parameter-roleassignmentsdelegatedmanagedidentityresourceid) | No | string | Optional. The Resource Id of the delegated managed identity resource. |
+| [`description`](#parameter-roleassignmentsdescription) | No | string | Optional. The description of the role assignment. |
+| [`principalId`](#parameter-roleassignmentsprincipalid) | Yes | string | Required. The principal ID of the principal (user/group/identity) to assign the role to. |
+| [`principalType`](#parameter-roleassignmentsprincipaltype) | No | string | Optional. The principal type of the assigned principal ID. |
+| [`roleDefinitionIdOrName`](#parameter-roleassignmentsroledefinitionidorname) | Yes | string | Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead. |
 
-<details>
+### Parameter: `roleAssignments.condition`
 
-<summary>Parameter JSON format</summary>
+Optional. The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container"
 
-```json
-"delegations": [
-    {
-        "name": "sqlMiDel",
-        "properties": {
-            "serviceName": "Microsoft.Sql/managedInstances"
-        }
-    }
-]
-```
+- Required: No
+- Type: string
 
-</details>
+### Parameter: `roleAssignments.conditionVersion`
 
-<details>
+Optional. Version of the condition.
 
-<summary>Bicep format</summary>
+- Required: No
+- Type: string
+- Allowed: `[2.0]`
 
-```bicep
-delegations: [
-    {
-        name: 'sqlMiDel'
-        properties: {
-            serviceName: 'Microsoft.Sql/managedInstances'
-        }
-    }
-]
-```
+### Parameter: `roleAssignments.delegatedManagedIdentityResourceId`
 
-</details>
-<p>
+Optional. The Resource Id of the delegated managed identity resource.
 
-### Parameter Usage: `serviceEndpoints`
+- Required: No
+- Type: string
 
-<details>
+### Parameter: `roleAssignments.description`
 
-<summary>Parameter JSON format</summary>
+Optional. The description of the role assignment.
 
-```json
-"serviceEndpoints": [
-    "Microsoft.EventHub",
-    "Microsoft.Sql",
-    "Microsoft.Storage",
-    "Microsoft.KeyVault"
-]
-```
+- Required: No
+- Type: string
 
-</details>
+### Parameter: `roleAssignments.principalId`
 
+Required. The principal ID of the principal (user/group/identity) to assign the role to.
 
-<details>
+- Required: Yes
+- Type: string
 
-<summary>Bicep format</summary>
+### Parameter: `roleAssignments.principalType`
 
-```bicep
-serviceEndpoints: [
-    'Microsoft.EventHub'
-    'Microsoft.Sql'
-    'Microsoft.Storage'
-    'Microsoft.KeyVault'
-]
-```
+Optional. The principal type of the assigned principal ID.
 
-</details>
-<p>
+- Required: No
+- Type: string
+- Allowed: `[Device, ForeignGroup, Group, ServicePrincipal, User]`
 
-### Parameter Usage: `roleAssignments`
+### Parameter: `roleAssignments.roleDefinitionIdOrName`
 
-Create a role assignment for the given resource. If you want to assign a service principal / managed identity that is created in the same deployment, make sure to also specify the `'principalType'` parameter and set it to `'ServicePrincipal'`. This will ensure the role assignment waits for the principal's propagation in Azure.
+Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead.
 
-<details>
+- Required: Yes
+- Type: string
 
-<summary>Parameter JSON format</summary>
+### Parameter: `routeTableId`
 
-```json
-"roleAssignments": {
-    "value": [
-        {
-            "roleDefinitionIdOrName": "Reader",
-            "description": "Reader Role Assignment",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012", // object 1
-                "78945612-1234-1234-1234-123456789012" // object 2
-            ]
-        },
-        {
-            "roleDefinitionIdOrName": "/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012" // object 1
-            ],
-            "principalType": "ServicePrincipal"
-        }
-    ]
-}
-```
+The resource ID of the route table to assign to the subnet.
+- Required: No
+- Type: string
+- Default: `''`
 
-</details>
+### Parameter: `serviceEndpointPolicies`
 
-<details>
+An array of service endpoint policies.
+- Required: No
+- Type: array
+- Default: `[]`
 
-<summary>Bicep format</summary>
+### Parameter: `serviceEndpoints`
 
-```bicep
-roleAssignments: [
-    {
-        roleDefinitionIdOrName: 'Reader'
-        description: 'Reader Role Assignment'
-        principalIds: [
-            '12345678-1234-1234-1234-123456789012' // object 1
-            '78945612-1234-1234-1234-123456789012' // object 2
-        ]
-    }
-    {
-        roleDefinitionIdOrName: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'
-        principalIds: [
-            '12345678-1234-1234-1234-123456789012' // object 1
-        ]
-        principalType: 'ServicePrincipal'
-    }
-]
-```
+The service endpoints to enable on the subnet.
+- Required: No
+- Type: array
+- Default: `[]`
 
-</details>
-<p>
+### Parameter: `virtualNetworkName`
 
-## Considerations
+The name of the parent virtual network. Required if the template is used in a standalone deployment.
+- Required: Yes
+- Type: string
 
-The `privateEndpointNetworkPolicies` property must be set to disabled for subnets that contain private endpoints. It confirms that NSGs rules will not apply to private endpoints (currently not supported, [reference](https://learn.microsoft.com/en-us/azure/private-link/private-endpoint-overview#limitations)). Default Value when not specified is "Enabled".
 
 ## Outputs
 
-| Output Name | Type | Description |
+| Output | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the virtual network peering. |
 | `resourceGroupName` | string | The resource group the virtual network peering was deployed into. |
@@ -198,3 +250,7 @@ The `privateEndpointNetworkPolicies` property must be set to disabled for subnet
 ## Cross-referenced modules
 
 _None_
+
+## Notes
+
+The `privateEndpointNetworkPolicies` property must be set to disabled for subnets that contain private endpoints. It confirms that NSGs rules will not apply to private endpoints (currently not supported, [reference](https://learn.microsoft.com/en-us/azure/private-link/private-endpoint-overview#limitations)). Default Value when not specified is "Enabled".

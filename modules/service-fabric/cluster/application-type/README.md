@@ -19,63 +19,48 @@ This module deploys a Service Fabric Cluster Application Type.
 
 **Conditional parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `serviceFabricClusterName` | string | The name of the parent Service Fabric cluster. Required if the template is used in a standalone deployment. |
+| [`serviceFabricClusterName`](#parameter-servicefabricclustername) | string | The name of the parent Service Fabric cluster. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `name` | string | `'defaultApplicationType'` | Application type name. |
-| `tags` | object | `{object}` | Tags of the resource. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`name`](#parameter-name) | string | Application type name. |
+| [`tags`](#parameter-tags) | object | Tags of the resource. |
 
+### Parameter: `enableDefaultTelemetry`
 
-### Parameter Usage: `tags`
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
 
-Tag names and tag values can be provided as needed. A tag can be left without a value.
+### Parameter: `name`
 
-<details>
+Application type name.
+- Required: No
+- Type: string
+- Default: `'defaultApplicationType'`
 
-<summary>Parameter JSON format</summary>
+### Parameter: `serviceFabricClusterName`
 
-```json
-"tags": {
-    "value": {
-        "Environment": "Non-Prod",
-        "Contact": "test.user@testcompany.com",
-        "PurchaseOrder": "1234",
-        "CostCenter": "7890",
-        "ServiceName": "DeploymentValidation",
-        "Role": "DeploymentValidation"
-    }
-}
-```
+The name of the parent Service Fabric cluster. Required if the template is used in a standalone deployment.
+- Required: Yes
+- Type: string
 
-</details>
+### Parameter: `tags`
 
-<details>
+Tags of the resource.
+- Required: No
+- Type: object
 
-<summary>Bicep format</summary>
-
-```bicep
-tags: {
-    Environment: 'Non-Prod'
-    Contact: 'test.user@testcompany.com'
-    PurchaseOrder: '1234'
-    CostCenter: '7890'
-    ServiceName: 'DeploymentValidation'
-    Role: 'DeploymentValidation'
-}
-```
-
-</details>
-<p>
 
 ## Outputs
 
-| Output Name | Type | Description |
+| Output | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The resource name of the Application type. |
 | `resourceGroupName` | string | The resource group of the Application type. |

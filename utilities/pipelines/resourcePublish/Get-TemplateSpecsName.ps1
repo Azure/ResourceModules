@@ -33,7 +33,7 @@ function Get-TemplateSpecsName {
 
     if ($UseApiSpecsAlignedName) {
         # Load helper script
-        . (Join-Path (Get-Item -Path $PSScriptRoot).Parent.Parent 'tools' 'helper' 'Get-SpecsAlignedResourceName.ps1')
+        . (Join-Path (Get-Item -Path $PSScriptRoot).Parent.Parent 'pipelines' 'sharedScripts' 'helper' 'Get-SpecsAlignedResourceName.ps1')
         $moduleIdentifier = Get-SpecsAlignedResourceName -ResourceIdentifier $moduleIdentifier
         $moduleIdentifier = $moduleIdentifier -replace 'microsoft', 'ms'
     }

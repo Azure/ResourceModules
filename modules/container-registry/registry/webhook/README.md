@@ -19,74 +19,116 @@ This module deploys an Azure Container Registry (ACR) Webhook.
 
 **Required parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `serviceUri` | string | The service URI for the webhook to post notifications. |
+| [`serviceUri`](#parameter-serviceuri) | string | The service URI for the webhook to post notifications. |
 
 **Conditional parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `registryName` | string | The name of the parent registry. Required if the template is used in a standalone deployment. |
+| [`registryName`](#parameter-registryname) | string | The name of the parent registry. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Allowed Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `action` | array | `[chart_delete, chart_push, delete, push, quarantine]` |  | The list of actions that trigger the webhook to post notifications. |
-| `customHeaders` | object | `{object}` |  | Custom headers that will be added to the webhook notifications. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
-| `name` | string | `[format('{0}webhook', parameters('registryName'))]` |  | The name of the registry webhook. |
-| `scope` | string | `''` |  | The scope of repositories where the event can be triggered. For example, 'foo:*' means events for all tags under repository 'foo'. 'foo:bar' means events for 'foo:bar' only. 'foo' is equivalent to 'foo:latest'. Empty means all events. |
-| `status` | string | `'enabled'` | `[disabled, enabled]` | The status of the webhook at the time the operation was called. |
-| `tags` | object | `{object}` |  | Tags of the resource. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`action`](#parameter-action) | array | The list of actions that trigger the webhook to post notifications. |
+| [`customHeaders`](#parameter-customheaders) | object | Custom headers that will be added to the webhook notifications. |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`location`](#parameter-location) | string | Location for all resources. |
+| [`name`](#parameter-name) | string | The name of the registry webhook. |
+| [`scope`](#parameter-scope) | string | The scope of repositories where the event can be triggered. For example, 'foo:*' means events for all tags under repository 'foo'. 'foo:bar' means events for 'foo:bar' only. 'foo' is equivalent to 'foo:latest'. Empty means all events. |
+| [`status`](#parameter-status) | string | The status of the webhook at the time the operation was called. |
+| [`tags`](#parameter-tags) | object | Tags of the resource. |
 
+### Parameter: `action`
 
-### Parameter Usage: `tags`
+The list of actions that trigger the webhook to post notifications.
+- Required: No
+- Type: array
+- Default:
+  ```Bicep
+  [
+    'chart_delete'
+    'chart_push'
+    'delete'
+    'push'
+    'quarantine'
+  ]
+  ```
 
-Tag names and tag values can be provided as needed. A tag can be left without a value.
+### Parameter: `customHeaders`
 
-<details>
+Custom headers that will be added to the webhook notifications.
+- Required: No
+- Type: object
+- Default: `{}`
 
-<summary>Parameter JSON format</summary>
+### Parameter: `enableDefaultTelemetry`
 
-```json
-"tags": {
-    "value": {
-        "Environment": "Non-Prod",
-        "Contact": "test.user@testcompany.com",
-        "PurchaseOrder": "1234",
-        "CostCenter": "7890",
-        "ServiceName": "DeploymentValidation",
-        "Role": "DeploymentValidation"
-    }
-}
-```
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
 
-</details>
+### Parameter: `location`
 
-<details>
+Location for all resources.
+- Required: No
+- Type: string
+- Default: `[resourceGroup().location]`
 
-<summary>Bicep format</summary>
+### Parameter: `name`
 
-```bicep
-tags: {
-    Environment: 'Non-Prod'
-    Contact: 'test.user@testcompany.com'
-    PurchaseOrder: '1234'
-    CostCenter: '7890'
-    ServiceName: 'DeploymentValidation'
-    Role: 'DeploymentValidation'
-}
-```
+The name of the registry webhook.
+- Required: No
+- Type: string
+- Default: `[format('{0}webhook', parameters('registryName'))]`
 
-</details>
-<p>
+### Parameter: `registryName`
+
+The name of the parent registry. Required if the template is used in a standalone deployment.
+- Required: Yes
+- Type: string
+
+### Parameter: `scope`
+
+The scope of repositories where the event can be triggered. For example, 'foo:*' means events for all tags under repository 'foo'. 'foo:bar' means events for 'foo:bar' only. 'foo' is equivalent to 'foo:latest'. Empty means all events.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `serviceUri`
+
+The service URI for the webhook to post notifications.
+- Required: Yes
+- Type: string
+
+### Parameter: `status`
+
+The status of the webhook at the time the operation was called.
+- Required: No
+- Type: string
+- Default: `'enabled'`
+- Allowed:
+  ```Bicep
+  [
+    'disabled'
+    'enabled'
+  ]
+  ```
+
+### Parameter: `tags`
+
+Tags of the resource.
+- Required: No
+- Type: object
+
 
 ## Outputs
 
-| Output Name | Type | Description |
+| Output | Type | Description |
 | :-- | :-- | :-- |
 | `actions` | array | The actions of the webhook. |
 | `location` | string | The location the resource was deployed into. |

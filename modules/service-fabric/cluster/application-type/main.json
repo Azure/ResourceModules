@@ -1,11 +1,12 @@
 {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "languageVersion": "2.0",
   "contentVersion": "1.0.0.0",
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.20.4.51522",
-      "templateHash": "18125415207616023954"
+      "version": "0.22.6.54827",
+      "templateHash": "16143571289588705380"
     },
     "name": "Service Fabric Cluster Application Types",
     "description": "This module deploys a Service Fabric Cluster Application Type.",
@@ -27,7 +28,7 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Tags of the resource."
       }
@@ -40,8 +41,8 @@
       }
     }
   },
-  "resources": [
-    {
+  "resources": {
+    "defaultTelemetry": {
       "condition": "[parameters('enableDefaultTelemetry')]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2021-04-01",
@@ -55,13 +56,22 @@
         }
       }
     },
-    {
+    "serviceFabricCluster": {
+      "existing": true,
+      "type": "Microsoft.ServiceFabric/clusters",
+      "apiVersion": "2021-06-01",
+      "name": "[parameters('serviceFabricClusterName')]"
+    },
+    "applicationTypes": {
       "type": "Microsoft.ServiceFabric/clusters/applicationTypes",
       "apiVersion": "2021-06-01",
       "name": "[format('{0}/{1}', parameters('serviceFabricClusterName'), parameters('name'))]",
-      "tags": "[parameters('tags')]"
+      "tags": "[parameters('tags')]",
+      "dependsOn": [
+        "serviceFabricCluster"
+      ]
     }
-  ],
+  },
   "outputs": {
     "name": {
       "type": "string",

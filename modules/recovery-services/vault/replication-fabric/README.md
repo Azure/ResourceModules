@@ -23,79 +23,62 @@ This module deploys a Replication Fabric for Azure to Azure disaster recovery sc
 
 **Required parameters**
 
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `location` | string | `[resourceGroup().location]` | The recovery location the fabric represents. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`location`](#parameter-location) | string | The recovery location the fabric represents. |
 
 **Conditional parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `recoveryVaultName` | string | The name of the parent Azure Recovery Service Vault. Required if the template is used in a standalone deployment. |
+| [`recoveryVaultName`](#parameter-recoveryvaultname) | string | The name of the parent Azure Recovery Service Vault. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `name` | string | `[parameters('location')]` | The name of the fabric. |
-| `replicationContainers` | array | `[]` | Replication containers to create. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`name`](#parameter-name) | string | The name of the fabric. |
+| [`replicationContainers`](#parameter-replicationcontainers) | array | Replication containers to create. |
 
+### Parameter: `enableDefaultTelemetry`
 
-### Parameter Usage: `replicationContainers`
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
 
-<details>
+### Parameter: `location`
 
-<summary>Parameter JSON format</summary>
+The recovery location the fabric represents.
+- Required: No
+- Type: string
+- Default: `[resourceGroup().location]`
 
-```json
-"replicationContainers": {
-    "value": [
-        {
-            "name": "we-container1",
-            "replicationContainerMappings": [ //optional
-                {
-                    "policyName": "Default_values",
-                    "targetContainerName": "we-container2"
-                }
-            ]
-        },
-        {
-            "name": "we-container2"
-        },
-    ]
-}
-```
+### Parameter: `name`
 
-</details>
+The name of the fabric.
+- Required: No
+- Type: string
+- Default: `[parameters('location')]`
 
-<details>
+### Parameter: `recoveryVaultName`
 
-<summary>Bicep format</summary>
+The name of the parent Azure Recovery Service Vault. Required if the template is used in a standalone deployment.
+- Required: Yes
+- Type: string
 
-```bicep
-replicationContainers: [
-    {
-        name: 'we-container1'
-        replicationContainerMappings: [ //optional
-            {
-                policyName: 'Default_values'
-                targetContainerName: 'we-container2'
-            }
-        ]
-    }
-    {
-        name: 'we-container2'
-    }
-]
-```
+### Parameter: `replicationContainers`
 
-</details>
-<p>
+Replication containers to create.
+- Required: No
+- Type: array
+- Default: `[]`
+
 
 ## Outputs
 
-| Output Name | Type | Description |
+| Output | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the replication fabric. |
 | `resourceGroupName` | string | The name of the resource group the replication fabric was created in. |

@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.20.4.51522",
-      "templateHash": "10927394621764774821"
+      "version": "0.22.6.54827",
+      "templateHash": "876321567657394219"
     },
     "name": "Authorization Locks (Subscription scope)",
     "description": "This module deploys an Authorization Lock at a Subscription scope.",

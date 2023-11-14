@@ -19,28 +19,67 @@ This module deploys a Static Web App Site Config.
 
 **Required parameters**
 
-| Parameter Name | Type | Allowed Values | Description |
-| :-- | :-- | :-- | :-- |
-| `kind` | string | `[appsettings, functionappsettings]` | Type of settings to apply. |
-| `properties` | object |  | App settings. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`kind`](#parameter-kind) | string | Type of settings to apply. |
+| [`properties`](#parameter-properties) | object | App settings. |
 
 **Conditional parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `staticSiteName` | string | The name of the parent Static Web App. Required if the template is used in a standalone deployment. |
+| [`staticSiteName`](#parameter-staticsitename) | string | The name of the parent Static Web App. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `location` | string | `[resourceGroup().location]` | Location for all resources. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`location`](#parameter-location) | string | Location for all resources. |
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `kind`
+
+Type of settings to apply.
+- Required: Yes
+- Type: string
+- Allowed:
+  ```Bicep
+  [
+    'appsettings'
+    'functionappsettings'
+  ]
+  ```
+
+### Parameter: `location`
+
+Location for all resources.
+- Required: No
+- Type: string
+- Default: `[resourceGroup().location]`
+
+### Parameter: `properties`
+
+App settings.
+- Required: Yes
+- Type: object
+
+### Parameter: `staticSiteName`
+
+The name of the parent Static Web App. Required if the template is used in a standalone deployment.
+- Required: Yes
+- Type: string
 
 
 ## Outputs
 
-| Output Name | Type | Description |
+| Output | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the config. |
 | `resourceGroupName` | string | The name of the resource group the config was created in. |

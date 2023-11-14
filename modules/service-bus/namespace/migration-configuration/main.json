@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.20.4.51522",
-      "templateHash": "15978046556546709106"
+      "version": "0.22.6.54827",
+      "templateHash": "11329412672781710568"
     },
     "name": "Service Bus Namespace Migration Configuration",
     "description": "This module deploys a Service Bus Namespace Migration Configuration.",
@@ -57,7 +57,7 @@
     },
     {
       "type": "Microsoft.ServiceBus/namespaces/migrationConfigurations",
-      "apiVersion": "2017-04-01",
+      "apiVersion": "2022-10-01-preview",
       "name": "[format('{0}/{1}', parameters('namespaceName'), '$default')]",
       "properties": {
         "targetNamespace": "[parameters('targetNamespaceResourceId')]",

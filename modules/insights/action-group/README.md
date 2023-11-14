@@ -1,378 +1,48 @@
 # Action Groups `[Microsoft.Insights/actionGroups]`
 
+> This module has already been migrated to [AVM](https://github.com/Azure/bicep-registry-modules/tree/main/avm/res). Only the AVM version is expected to receive updates / new features. Please do not work on improving this module in [CARML](https://aka.ms/carml).
+
 This module deploys an Action Group.
 
 ## Navigation
 
 - [Resource Types](#Resource-Types)
+- [Usage examples](#Usage-examples)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
-- [Deployment examples](#Deployment-examples)
+- [Notes](#Notes)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.Insights/actionGroups` | [2023-01-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/actionGroups) |
+| `Microsoft.Insights/actionGroups` | [2023-01-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2023-01-01/actionGroups) |
 
-## Parameters
+## Usage examples
 
-**Required parameters**
+The following section provides usage examples for the module, which were used to validate and deploy the module successfully. For a full reference, please review the module's test folder in its repository.
 
-| Parameter Name | Type | Description |
-| :-- | :-- | :-- |
-| `groupShortName` | string | The short name of the action group. |
-| `name` | string | The name of the action group. |
+>**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-**Optional parameters**
+>**Note**: To reference the module, please use the following syntax `br:bicep/modules/insights.action-group:1.0.0`.
 
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `armRoleReceivers` | array | `[]` | The list of ARM role receivers that are part of this action group. Roles are Azure RBAC roles and only built-in roles are supported. |
-| `automationRunbookReceivers` | array | `[]` | The list of AutomationRunbook receivers that are part of this action group. |
-| `azureAppPushReceivers` | array | `[]` | The list of AzureAppPush receivers that are part of this action group. |
-| `azureFunctionReceivers` | array | `[]` | The list of function receivers that are part of this action group. |
-| `emailReceivers` | array | `[]` | The list of email receivers that are part of this action group. |
-| `enabled` | bool | `True` | Indicates whether this action group is enabled. If an action group is not enabled, then none of its receivers will receive communications. |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `itsmReceivers` | array | `[]` | The list of ITSM receivers that are part of this action group. |
-| `location` | string | `'global'` | Location for all resources. |
-| `logicAppReceivers` | array | `[]` | The list of logic app receivers that are part of this action group. |
-| `roleAssignments` | array | `[]` | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| `smsReceivers` | array | `[]` | The list of SMS receivers that are part of this action group. |
-| `tags` | object | `{object}` | Tags of the resource. |
-| `voiceReceivers` | array | `[]` | The list of voice receivers that are part of this action group. |
-| `webhookReceivers` | array | `[]` | The list of webhook receivers that are part of this action group. |
+- [Using only defaults](#example-1-using-only-defaults)
+- [Using large parameter set](#example-2-using-large-parameter-set)
+- [WAF-aligned](#example-3-waf-aligned)
 
+### Example 1: _Using only defaults_
 
-### Parameter Usage: receivers
+This instance deploys the module with the minimum set of required parameters.
 
-See [Documentation](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2019-06-01/actiongroups) for description of parameters usage and syntax.
-
-<details>
-
-<summary>Parameter JSON file</summary>
-
-```json
-"emailReceivers": {
-    "value": [
-        {
-            "name": "TestUser_-EmailAction-",
-            "emailAddress": "test.user@testcompany.com",
-            "useCommonAlertSchema": true
-        },
-        {
-            "name": "TestUser2",
-            "emailAddress": "test.user2@testcompany.com",
-            "useCommonAlertSchema": true
-        }
-    ]
-},
-"smsReceivers": {
-    "value": [
-        {
-            "name": "TestUser_-SMSAction-",
-            "countryCode": "1",
-            "phoneNumber": "2345678901"
-        }
-    ]
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-emailReceivers: [
-    {
-        name: 'TestUser_-EmailAction-'
-        emailAddress: 'test.user@testcompany.com'
-        useCommonAlertSchema: true
-    }
-    {
-        name: 'TestUser2'
-        emailAddress: 'test.user2@testcompany.com'
-        useCommonAlertSchema: true
-    }
-]
-smsReceivers: [
-    {
-        name: 'TestUser_-SMSAction-'
-        countryCode: '1'
-        phoneNumber: '2345678901'
-    }
-]
-```
-
-</details>
-<p>
-
-### Parameter Usage: `roleAssignments`
-
-Create a role assignment for the given resource. If you want to assign a service principal / managed identity that is created in the same deployment, make sure to also specify the `'principalType'` parameter and set it to `'ServicePrincipal'`. This will ensure the role assignment waits for the principal's propagation in Azure.
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"roleAssignments": {
-    "value": [
-        {
-            "roleDefinitionIdOrName": "Reader",
-            "description": "Reader Role Assignment",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012", // object 1
-                "78945612-1234-1234-1234-123456789012" // object 2
-            ]
-        },
-        {
-            "roleDefinitionIdOrName": "/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012" // object 1
-            ],
-            "principalType": "ServicePrincipal"
-        }
-    ]
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-roleAssignments: [
-    {
-        roleDefinitionIdOrName: 'Reader'
-        description: 'Reader Role Assignment'
-        principalIds: [
-            '12345678-1234-1234-1234-123456789012' // object 1
-            '78945612-1234-1234-1234-123456789012' // object 2
-        ]
-    }
-    {
-        roleDefinitionIdOrName: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'
-        principalIds: [
-            '12345678-1234-1234-1234-123456789012' // object 1
-        ]
-        principalType: 'ServicePrincipal'
-    }
-]
-```
-
-</details>
-<p>
-
-### Parameter Usage: `tags`
-
-Tag names and tag values can be provided as needed. A tag can be left without a value.
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"tags": {
-    "value": {
-        "Environment": "Non-Prod",
-        "Contact": "test.user@testcompany.com",
-        "PurchaseOrder": "1234",
-        "CostCenter": "7890",
-        "ServiceName": "DeploymentValidation",
-        "Role": "DeploymentValidation"
-    }
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-tags: {
-    Environment: 'Non-Prod'
-    Contact: 'test.user@testcompany.com'
-    PurchaseOrder: '1234'
-    CostCenter: '7890'
-    ServiceName: 'DeploymentValidation'
-    Role: 'DeploymentValidation'
-}
-```
-
-</details>
-<p>
-
-### Additional notes on parameters
-
-- Receiver name must be unique across the ActionGroup
-- Email, SMS, Azure App push and Voice can be grouped in the same Action. To do so, the `name` field of the receivers must be in the `RecName_-ActionType-` format where:
-  - _RecName_ is the name you want to give to the Action
-  - _ActionType_ is one of the action types that can be grouped together. Possible values are:
-    - EmailAction
-    - SMSAction
-    - AzureAppAction
-    - VoiceAction
-- To understand the impact of the `useCommonAlertSchema` field, see [here](https://learn.microsoft.com/en-us/azure/azure-monitor/platform/alerts-common-schema)
-
-## Outputs
-
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of the action group . |
-| `resourceGroupName` | string | The resource group the action group was deployed into. |
-| `resourceId` | string | The resource ID of the action group . |
-
-## Cross-referenced modules
-
-_None_
-
-## Deployment examples
-
-The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
-   >**Note**: The name of each example is based on the name of the file from which it is taken.
-
-   >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
-
-<h3>Example 1: Common</h3>
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module actionGroup './insights/action-group/main.bicep' = {
-  name: '${uniqueString(deployment().name, location)}-test-iagcom'
-  params: {
-    // Required parameters
-    groupShortName: 'agiagcom001'
-    name: 'iagcom001'
-    // Non-required parameters
-    emailReceivers: [
-      {
-        emailAddress: 'test.user@testcompany.com'
-        name: 'TestUser_-EmailAction-'
-        useCommonAlertSchema: true
-      }
-      {
-        emailAddress: 'test.user2@testcompany.com'
-        name: 'TestUser2'
-        useCommonAlertSchema: true
-      }
-    ]
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    roleAssignments: [
-      {
-        principalIds: [
-          '<managedIdentityPrincipalId>'
-        ]
-        roleDefinitionIdOrName: 'Reader'
-      }
-    ]
-    smsReceivers: [
-      {
-        countryCode: '1'
-        name: 'TestUser_-SMSAction-'
-        phoneNumber: '2345678901'
-      }
-    ]
-    tags: {
-      Environment: 'Non-Prod'
-      'hidden-title': 'This is visible in the resource name'
-      Role: 'DeploymentValidation'
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "groupShortName": {
-      "value": "agiagcom001"
-    },
-    "name": {
-      "value": "iagcom001"
-    },
-    // Non-required parameters
-    "emailReceivers": {
-      "value": [
-        {
-          "emailAddress": "test.user@testcompany.com",
-          "name": "TestUser_-EmailAction-",
-          "useCommonAlertSchema": true
-        },
-        {
-          "emailAddress": "test.user2@testcompany.com",
-          "name": "TestUser2",
-          "useCommonAlertSchema": true
-        }
-      ]
-    },
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
-    "roleAssignments": {
-      "value": [
-        {
-          "principalIds": [
-            "<managedIdentityPrincipalId>"
-          ],
-          "roleDefinitionIdOrName": "Reader"
-        }
-      ]
-    },
-    "smsReceivers": {
-      "value": [
-        {
-          "countryCode": "1",
-          "name": "TestUser_-SMSAction-",
-          "phoneNumber": "2345678901"
-        }
-      ]
-    },
-    "tags": {
-      "value": {
-        "Environment": "Non-Prod",
-        "hidden-title": "This is visible in the resource name",
-        "Role": "DeploymentValidation"
-      }
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<h3>Example 2: Min</h3>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module actionGroup './insights/action-group/main.bicep' = {
+module actionGroup 'br:bicep/modules/insights.action-group:1.0.0' = {
   name: '${uniqueString(deployment().name, location)}-test-iagmin'
   params: {
     // Required parameters
@@ -413,3 +83,481 @@ module actionGroup './insights/action-group/main.bicep' = {
 
 </details>
 <p>
+
+### Example 2: _Using large parameter set_
+
+This instance deploys the module with most of its features enabled.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module actionGroup 'br:bicep/modules/insights.action-group:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-iagmax'
+  params: {
+    // Required parameters
+    groupShortName: 'agiagmax001'
+    name: 'iagmax001'
+    // Non-required parameters
+    emailReceivers: [
+      {
+        emailAddress: 'test.user@testcompany.com'
+        name: 'TestUser_-EmailAction-'
+        useCommonAlertSchema: true
+      }
+      {
+        emailAddress: 'test.user2@testcompany.com'
+        name: 'TestUser2'
+        useCommonAlertSchema: true
+      }
+    ]
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    smsReceivers: [
+      {
+        countryCode: '1'
+        name: 'TestUser_-SMSAction-'
+        phoneNumber: '2345678901'
+      }
+    ]
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "groupShortName": {
+      "value": "agiagmax001"
+    },
+    "name": {
+      "value": "iagmax001"
+    },
+    // Non-required parameters
+    "emailReceivers": {
+      "value": [
+        {
+          "emailAddress": "test.user@testcompany.com",
+          "name": "TestUser_-EmailAction-",
+          "useCommonAlertSchema": true
+        },
+        {
+          "emailAddress": "test.user2@testcompany.com",
+          "name": "TestUser2",
+          "useCommonAlertSchema": true
+        }
+      ]
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "smsReceivers": {
+      "value": [
+        {
+          "countryCode": "1",
+          "name": "TestUser_-SMSAction-",
+          "phoneNumber": "2345678901"
+        }
+      ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 3: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module actionGroup 'br:bicep/modules/insights.action-group:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-iagwaf'
+  params: {
+    // Required parameters
+    groupShortName: 'agiagwaf001'
+    name: 'iagwaf001'
+    // Non-required parameters
+    emailReceivers: [
+      {
+        emailAddress: 'test.user@testcompany.com'
+        name: 'TestUser_-EmailAction-'
+        useCommonAlertSchema: true
+      }
+      {
+        emailAddress: 'test.user2@testcompany.com'
+        name: 'TestUser2'
+        useCommonAlertSchema: true
+      }
+    ]
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    smsReceivers: [
+      {
+        countryCode: '1'
+        name: 'TestUser_-SMSAction-'
+        phoneNumber: '2345678901'
+      }
+    ]
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "groupShortName": {
+      "value": "agiagwaf001"
+    },
+    "name": {
+      "value": "iagwaf001"
+    },
+    // Non-required parameters
+    "emailReceivers": {
+      "value": [
+        {
+          "emailAddress": "test.user@testcompany.com",
+          "name": "TestUser_-EmailAction-",
+          "useCommonAlertSchema": true
+        },
+        {
+          "emailAddress": "test.user2@testcompany.com",
+          "name": "TestUser2",
+          "useCommonAlertSchema": true
+        }
+      ]
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "smsReceivers": {
+      "value": [
+        {
+          "countryCode": "1",
+          "name": "TestUser_-SMSAction-",
+          "phoneNumber": "2345678901"
+        }
+      ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+
+## Parameters
+
+**Required parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`groupShortName`](#parameter-groupshortname) | string | The short name of the action group. |
+| [`name`](#parameter-name) | string | The name of the action group. |
+
+**Optional parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`armRoleReceivers`](#parameter-armrolereceivers) | array | The list of ARM role receivers that are part of this action group. Roles are Azure RBAC roles and only built-in roles are supported. |
+| [`automationRunbookReceivers`](#parameter-automationrunbookreceivers) | array | The list of AutomationRunbook receivers that are part of this action group. |
+| [`azureAppPushReceivers`](#parameter-azureapppushreceivers) | array | The list of AzureAppPush receivers that are part of this action group. |
+| [`azureFunctionReceivers`](#parameter-azurefunctionreceivers) | array | The list of function receivers that are part of this action group. |
+| [`emailReceivers`](#parameter-emailreceivers) | array | The list of email receivers that are part of this action group. |
+| [`enabled`](#parameter-enabled) | bool | Indicates whether this action group is enabled. If an action group is not enabled, then none of its receivers will receive communications. |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`itsmReceivers`](#parameter-itsmreceivers) | array | The list of ITSM receivers that are part of this action group. |
+| [`location`](#parameter-location) | string | Location for all resources. |
+| [`logicAppReceivers`](#parameter-logicappreceivers) | array | The list of logic app receivers that are part of this action group. |
+| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| [`smsReceivers`](#parameter-smsreceivers) | array | The list of SMS receivers that are part of this action group. |
+| [`tags`](#parameter-tags) | object | Tags of the resource. |
+| [`voiceReceivers`](#parameter-voicereceivers) | array | The list of voice receivers that are part of this action group. |
+| [`webhookReceivers`](#parameter-webhookreceivers) | array | The list of webhook receivers that are part of this action group. |
+
+### Parameter: `armRoleReceivers`
+
+The list of ARM role receivers that are part of this action group. Roles are Azure RBAC roles and only built-in roles are supported.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `automationRunbookReceivers`
+
+The list of AutomationRunbook receivers that are part of this action group.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `azureAppPushReceivers`
+
+The list of AzureAppPush receivers that are part of this action group.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `azureFunctionReceivers`
+
+The list of function receivers that are part of this action group.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `emailReceivers`
+
+The list of email receivers that are part of this action group.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `enabled`
+
+Indicates whether this action group is enabled. If an action group is not enabled, then none of its receivers will receive communications.
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `groupShortName`
+
+The short name of the action group.
+- Required: Yes
+- Type: string
+
+### Parameter: `itsmReceivers`
+
+The list of ITSM receivers that are part of this action group.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `location`
+
+Location for all resources.
+- Required: No
+- Type: string
+- Default: `'global'`
+
+### Parameter: `logicAppReceivers`
+
+The list of logic app receivers that are part of this action group.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `name`
+
+The name of the action group.
+- Required: Yes
+- Type: string
+
+### Parameter: `roleAssignments`
+
+Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
+- Required: No
+- Type: array
+
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`condition`](#parameter-roleassignmentscondition) | No | string | Optional. The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container" |
+| [`conditionVersion`](#parameter-roleassignmentsconditionversion) | No | string | Optional. Version of the condition. |
+| [`delegatedManagedIdentityResourceId`](#parameter-roleassignmentsdelegatedmanagedidentityresourceid) | No | string | Optional. The Resource Id of the delegated managed identity resource. |
+| [`description`](#parameter-roleassignmentsdescription) | No | string | Optional. The description of the role assignment. |
+| [`principalId`](#parameter-roleassignmentsprincipalid) | Yes | string | Required. The principal ID of the principal (user/group/identity) to assign the role to. |
+| [`principalType`](#parameter-roleassignmentsprincipaltype) | No | string | Optional. The principal type of the assigned principal ID. |
+| [`roleDefinitionIdOrName`](#parameter-roleassignmentsroledefinitionidorname) | Yes | string | Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead. |
+
+### Parameter: `roleAssignments.condition`
+
+Optional. The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container"
+
+- Required: No
+- Type: string
+
+### Parameter: `roleAssignments.conditionVersion`
+
+Optional. Version of the condition.
+
+- Required: No
+- Type: string
+- Allowed: `[2.0]`
+
+### Parameter: `roleAssignments.delegatedManagedIdentityResourceId`
+
+Optional. The Resource Id of the delegated managed identity resource.
+
+- Required: No
+- Type: string
+
+### Parameter: `roleAssignments.description`
+
+Optional. The description of the role assignment.
+
+- Required: No
+- Type: string
+
+### Parameter: `roleAssignments.principalId`
+
+Required. The principal ID of the principal (user/group/identity) to assign the role to.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `roleAssignments.principalType`
+
+Optional. The principal type of the assigned principal ID.
+
+- Required: No
+- Type: string
+- Allowed: `[Device, ForeignGroup, Group, ServicePrincipal, User]`
+
+### Parameter: `roleAssignments.roleDefinitionIdOrName`
+
+Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `smsReceivers`
+
+The list of SMS receivers that are part of this action group.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `tags`
+
+Tags of the resource.
+- Required: No
+- Type: object
+
+### Parameter: `voiceReceivers`
+
+The list of voice receivers that are part of this action group.
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `webhookReceivers`
+
+The list of webhook receivers that are part of this action group.
+- Required: No
+- Type: array
+- Default: `[]`
+
+
+## Outputs
+
+| Output | Type | Description |
+| :-- | :-- | :-- |
+| `location` | string | The location the resource was deployed into. |
+| `name` | string | The name of the action group . |
+| `resourceGroupName` | string | The resource group the action group was deployed into. |
+| `resourceId` | string | The resource ID of the action group . |
+
+## Cross-referenced modules
+
+_None_
+
+## Notes
+
+- Receiver name must be unique across the ActionGroup.
+- Email, SMS, Azure App push and Voice can be grouped in the same Action. To do so, the `name` field of the receivers must be in the `RecName_-ActionType-` format where:
+  - _RecName_ is the name you want to give to the Action
+  - _ActionType_ is one of the action types that can be grouped together. Possible values are:
+    - EmailAction
+    - SMSAction
+    - AzureAppAction
+    - VoiceAction
+
+- To understand the impact of the `useCommonAlertSchema` field, see [documentation](https://learn.microsoft.com/en-us/azure/azure-monitor/platform/alerts-common-schema).

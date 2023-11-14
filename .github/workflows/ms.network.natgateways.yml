@@ -29,6 +29,7 @@ on:
     paths:
       - 'modules/network/nat-gateway/**'
       - 'modules/network/public-ip-address/**'
+      - 'modules/network/public-ip-prefix/**'
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.network.natgateways.yml'
@@ -52,7 +53,7 @@ jobs:
     name: 'Initialize pipeline'
     steps:
       - name: 'Checkout'
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - name: 'Set input parameters to output variables'

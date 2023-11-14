@@ -8,7 +8,6 @@ This template deploys Forwarding Rule in a Dns Forwarding Ruleset.
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
-- [Deployment examples](#Deployment-examples)
 
 ## Resource Types
 
@@ -20,131 +19,90 @@ This template deploys Forwarding Rule in a Dns Forwarding Ruleset.
 
 **Required parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `domainName` | string | The domain name for the forwarding rule. |
-| `name` | string | Name of the Forwarding Rule. |
-| `targetDnsServers` | array | DNS servers to forward the DNS query to. |
+| [`domainName`](#parameter-domainname) | string | The domain name for the forwarding rule. |
+| [`name`](#parameter-name) | string | Name of the Forwarding Rule. |
+| [`targetDnsServers`](#parameter-targetdnsservers) | array | DNS servers to forward the DNS query to. |
 
 **Conditional parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `dnsForwardingRulesetName` | string | Name of the parent DNS Forwarding Ruleset. Required if the template is used in a standalone deployment. |
+| [`dnsForwardingRulesetName`](#parameter-dnsforwardingrulesetname) | string | Name of the parent DNS Forwarding Ruleset. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Allowed Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `forwardingRuleState` | string | `'Enabled'` | `[Disabled, Enabled]` | The state of forwarding rule. |
-| `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
-| `metadata` | object | `{object}` |  | Metadata attached to the forwarding rule. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`forwardingRuleState`](#parameter-forwardingrulestate) | string | The state of forwarding rule. |
+| [`location`](#parameter-location) | string | Location for all resources. |
+| [`metadata`](#parameter-metadata) | object | Metadata attached to the forwarding rule. |
 
+### Parameter: `dnsForwardingRulesetName`
 
-### Parameter Usage: `roleAssignments`
+Name of the parent DNS Forwarding Ruleset. Required if the template is used in a standalone deployment.
+- Required: Yes
+- Type: string
 
-Create a role assignment for the given resource. If you want to assign a service principal / managed identity that is created in the same deployment, make sure to also specify the `'principalType'` parameter and set it to `'ServicePrincipal'`. This will ensure the role assignment waits for the principal's propagation in Azure.
+### Parameter: `domainName`
 
-<details>
+The domain name for the forwarding rule.
+- Required: Yes
+- Type: string
 
-<summary>Parameter JSON format</summary>
+### Parameter: `enableDefaultTelemetry`
 
-```json
-"roleAssignments": {
-    "value": [
-        {
-            "roleDefinitionIdOrName": "Reader",
-            "description": "Reader Role Assignment",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012", // object 1
-                "78945612-1234-1234-1234-123456789012" // object 2
-            ]
-        },
-        {
-            "roleDefinitionIdOrName": "/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012" // object 1
-            ],
-            "principalType": "ServicePrincipal"
-        }
-    ]
-}
-```
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
 
-</details>
+### Parameter: `forwardingRuleState`
 
-<details>
+The state of forwarding rule.
+- Required: No
+- Type: string
+- Default: `'Enabled'`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
-<summary>Bicep format</summary>
+### Parameter: `location`
 
-```bicep
-roleAssignments: [
-    {
-        roleDefinitionIdOrName: 'Reader'
-        description: 'Reader Role Assignment'
-        principalIds: [
-            '12345678-1234-1234-1234-123456789012' // object 1
-            '78945612-1234-1234-1234-123456789012' // object 2
-        ]
-    }
-    {
-        roleDefinitionIdOrName: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'
-        principalIds: [
-            '12345678-1234-1234-1234-123456789012' // object 1
-        ]
-        principalType: 'ServicePrincipal'
-    }
-]
-```
+Location for all resources.
+- Required: No
+- Type: string
+- Default: `[resourceGroup().location]`
 
-</details>
-<p>
+### Parameter: `metadata`
 
-### Parameter Usage: `tags`
+Metadata attached to the forwarding rule.
+- Required: No
+- Type: object
+- Default: `{}`
 
-Tag names and tag values can be provided as needed. A tag can be left without a value.
+### Parameter: `name`
 
-<details>
+Name of the Forwarding Rule.
+- Required: Yes
+- Type: string
 
-<summary>Parameter JSON format</summary>
+### Parameter: `targetDnsServers`
 
-```json
-"tags": {
-    "value": {
-        "Environment": "Non-Prod",
-        "Contact": "test.user@testcompany.com",
-        "PurchaseOrder": "1234",
-        "CostCenter": "7890",
-        "ServiceName": "DeploymentValidation",
-        "Role": "DeploymentValidation"
-    }
-}
-```
+DNS servers to forward the DNS query to.
+- Required: Yes
+- Type: array
 
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-tags: {
-    Environment: 'Non-Prod'
-    Contact: 'test.user@testcompany.com'
-    PurchaseOrder: '1234'
-    CostCenter: '7890'
-    ServiceName: 'DeploymentValidation'
-    Role: 'DeploymentValidation'
-}
-```
-
-</details>
-<p>
 
 ## Outputs
 
-| Output Name | Type | Description |
+| Output | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the Forwarding Rule. |
 | `resourceGroupName` | string | The resource group the Forwarding Rule was deployed into. |
@@ -153,69 +111,3 @@ tags: {
 ## Cross-referenced modules
 
 _None_
-
-## Deployment examples
-
-The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
-   >**Note**: The name of each example is based on the name of the file from which it is taken.
-
-   >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
-
-<h3>Example 1: Common</h3>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module dnsForwardingRulesets './Microsoft.Network/dnsForwardingRulesets/deploy.bicep' = {
-  name: '${uniqueString(deployment().name, location)}-test-ndfrscom'
-  params: {
-    // Required parameters
-    dnsResolverOutboundEndpointId: '<dnsResolverOutboundEndpointId>'
-    name: '[[namePrefix]]ndfrscom001'
-    // Non-required parameters
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    tags: {
-      Environment: 'Non-Prod'
-      Role: 'DeploymentValidation'
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "dnsResolverOutboundEndpointId": {
-      "value": "<dnsResolverOutboundEndpointId>"
-    },
-    "name": {
-      "value": "[[namePrefix]]ndfrscom001"
-    },
-    // Non-required parameters
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
-    "tags": {
-      "value": {
-        "Environment": "Non-Prod",
-        "Role": "DeploymentValidation"
-      }
-    }
-  }
-}
-```
-
-</details>
-<p>

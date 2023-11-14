@@ -35,15 +35,6 @@ The following activities are performed by the [`utilities/pipelines/staticValida
 - **Module tests**
   - **Readme content tests**
     1. `README.md` file should not be empty.
-    1. `README.md` file should contain these sections in order: Navigation, Resource Types, Parameters, Outputs, Cross-referenced modules, Deployment examples.
-    1. Resources section should contain all resources from the template file.
-    1. Resources section should not contain more resources than the template file.
-    1. Parameters section should contain a table for each existing parameter category in the following order: Required, Conditional, Optional, Generated.
-    1. Parameter tables should provide columns in the following order: Parameter Name, Type, Default Value, Allowed Values, Description. Each column should be present unless empty for all the rows.
-    1. Parameters section should contain all parameters from the template file.
-    1. Outputs section should contain a table with these column names in order: Output Name, Type.
-    1. Output section should contain all outputs defined in the template file.
-    1. Dependencies section should contain all cross-references defined in the template file.
     1. `Set-ModuleReadMe` script should not apply any updates.
   - **Compiled ARM template tests**
     1. Compiled ARM template should be latest.
@@ -77,9 +68,6 @@ The following activities are performed by the [`utilities/pipelines/staticValida
     1. JSON test deployment should have parameter [`serviceShort`].
   - **Token usage**
     1. [Tokens] Test file should not contain the plain value for token guid.
-  - **Public Bicep Registry tests**
-    1. Module should have central test file [.test/main.test.bicep] for Public Bicep Registry CI
-    1. Module
 - **API version tests**
     1. In used resource type should use one of the recent API version(s). Currently using .
 

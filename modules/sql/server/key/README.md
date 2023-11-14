@@ -19,28 +19,68 @@ This module deploys an Azure SQL Server Key.
 
 **Required parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the key. Must follow the [<keyVaultName>_<keyName>_<keyVersion>] pattern. |
+| [`name`](#parameter-name) | string | The name of the key. Must follow the [<keyVaultName>_<keyName>_<keyVersion>] pattern. |
 
 **Conditional parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `serverName` | string | The name of the parent SQL server. Required if the template is used in a standalone deployment. |
+| [`serverName`](#parameter-servername) | string | The name of the parent SQL server. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Allowed Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `serverKeyType` | string | `'ServiceManaged'` | `[AzureKeyVault, ServiceManaged]` | The encryption protector type like "ServiceManaged", "AzureKeyVault". |
-| `uri` | string | `''` |  | The URI of the key. If the ServerKeyType is AzureKeyVault, then either the URI or the keyVaultName/keyName combination is required. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`serverKeyType`](#parameter-serverkeytype) | string | The encryption protector type like "ServiceManaged", "AzureKeyVault". |
+| [`uri`](#parameter-uri) | string | The URI of the key. If the ServerKeyType is AzureKeyVault, then either the URI or the keyVaultName/keyName combination is required. |
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `name`
+
+The name of the key. Must follow the [<keyVaultName>_<keyName>_<keyVersion>] pattern.
+- Required: Yes
+- Type: string
+
+### Parameter: `serverKeyType`
+
+The encryption protector type like "ServiceManaged", "AzureKeyVault".
+- Required: No
+- Type: string
+- Default: `'ServiceManaged'`
+- Allowed:
+  ```Bicep
+  [
+    'AzureKeyVault'
+    'ServiceManaged'
+  ]
+  ```
+
+### Parameter: `serverName`
+
+The name of the parent SQL server. Required if the template is used in a standalone deployment.
+- Required: Yes
+- Type: string
+
+### Parameter: `uri`
+
+The URI of the key. If the ServerKeyType is AzureKeyVault, then either the URI or the keyVaultName/keyName combination is required.
+- Required: No
+- Type: string
+- Default: `''`
 
 
 ## Outputs
 
-| Output Name | Type | Description |
+| Output | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the deployed server key. |
 | `resourceGroupName` | string | The resource group of the deployed server key. |

@@ -20,71 +20,76 @@ This module deploys a SQL Database in a CosmosDB Account.
 
 **Required parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | Name of the SQL database . |
+| [`name`](#parameter-name) | string | Name of the SQL database . |
 
 **Conditional parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `databaseAccountName` | string | The name of the parent Database Account. Required if the template is used in a standalone deployment. |
+| [`databaseAccountName`](#parameter-databaseaccountname) | string | The name of the parent Database Account. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `autoscaleSettingsMaxThroughput` | int | `-1` | Specifies the Autoscale settings and represents maximum throughput, the resource can scale up to.  The autoscale throughput should have valid throughput values between 1000 and 1000000 inclusive in increments of 1000. If value is set to -1, then the property will be set to null and autoscale will be disabled. |
-| `containers` | array | `[]` | Array of containers to deploy in the SQL database. |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `tags` | object | `{object}` | Tags of the SQL database resource. |
-| `throughput` | int | `400` | Request units per second. Will be set to null if autoscaleSettingsMaxThroughput is used. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`autoscaleSettingsMaxThroughput`](#parameter-autoscalesettingsmaxthroughput) | int | Specifies the Autoscale settings and represents maximum throughput, the resource can scale up to.  The autoscale throughput should have valid throughput values between 1000 and 1000000 inclusive in increments of 1000. If value is set to -1, then the property will be set to null and autoscale will be disabled. |
+| [`containers`](#parameter-containers) | array | Array of containers to deploy in the SQL database. |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`tags`](#parameter-tags) | object | Tags of the SQL database resource. |
+| [`throughput`](#parameter-throughput) | int | Request units per second. Will be set to null if autoscaleSettingsMaxThroughput is used. |
 
+### Parameter: `autoscaleSettingsMaxThroughput`
 
-### Parameter Usage: `tags`
+Specifies the Autoscale settings and represents maximum throughput, the resource can scale up to.  The autoscale throughput should have valid throughput values between 1000 and 1000000 inclusive in increments of 1000. If value is set to -1, then the property will be set to null and autoscale will be disabled.
+- Required: No
+- Type: int
+- Default: `-1`
 
-Tag names and tag values can be provided as needed. A tag can be left without a value.
+### Parameter: `containers`
 
-<details>
+Array of containers to deploy in the SQL database.
+- Required: No
+- Type: array
+- Default: `[]`
 
-<summary>Parameter JSON format</summary>
+### Parameter: `databaseAccountName`
 
-```json
-"tags": {
-    "value": {
-        "Environment": "Non-Prod",
-        "Contact": "test.user@testcompany.com",
-        "PurchaseOrder": "1234",
-        "CostCenter": "7890",
-        "ServiceName": "DeploymentValidation",
-        "Role": "DeploymentValidation"
-    }
-}
-```
+The name of the parent Database Account. Required if the template is used in a standalone deployment.
+- Required: Yes
+- Type: string
 
-</details>
+### Parameter: `enableDefaultTelemetry`
 
-<details>
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
 
-<summary>Bicep format</summary>
+### Parameter: `name`
 
-```bicep
-tags: {
-    Environment: 'Non-Prod'
-    Contact: 'test.user@testcompany.com'
-    PurchaseOrder: '1234'
-    CostCenter: '7890'
-    ServiceName: 'DeploymentValidation'
-    Role: 'DeploymentValidation'
-}
-```
+Name of the SQL database .
+- Required: Yes
+- Type: string
 
-</details>
-<p>
+### Parameter: `tags`
+
+Tags of the SQL database resource.
+- Required: No
+- Type: object
+
+### Parameter: `throughput`
+
+Request units per second. Will be set to null if autoscaleSettingsMaxThroughput is used.
+- Required: No
+- Type: int
+- Default: `400`
+
 
 ## Outputs
 
-| Output Name | Type | Description |
+| Output | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the SQL database. |
 | `resourceGroupName` | string | The name of the resource group the SQL database was created in. |

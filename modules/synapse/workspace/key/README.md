@@ -7,7 +7,6 @@ This module deploys a Synapse Workspaces Key.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 - [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
@@ -20,37 +19,71 @@ This module deploys a Synapse Workspaces Key.
 
 **Required parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `isActiveCMK` | bool | Used to activate the workspace after a customer managed key is provided. |
-| `name` | string | Encryption key name. |
+| [`isActiveCMK`](#parameter-isactivecmk) | bool | Used to activate the workspace after a customer managed key is provided. |
+| [`keyVaultResourceId`](#parameter-keyvaultresourceid) | string | The resource ID of a key vault to reference a customer managed key for encryption from. |
+| [`name`](#parameter-name) | string | Encryption key name. |
 
 **Conditional parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `workspaceName` | string | The name of the parent Synapse Workspace. Required if the template is used in a standalone deployment. |
+| [`workspaceName`](#parameter-workspacename) | string | The name of the parent Synapse Workspace. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `keyVaultResourceId` | string | `''` | The resource ID of a key vault to reference a customer managed key for encryption from. |
-| `location` | string | `[resourceGroup().location]` | The geo-location where the resource lives. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`location`](#parameter-location) | string | The geo-location where the resource lives. |
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `isActiveCMK`
+
+Used to activate the workspace after a customer managed key is provided.
+- Required: Yes
+- Type: bool
+
+### Parameter: `keyVaultResourceId`
+
+The resource ID of a key vault to reference a customer managed key for encryption from.
+- Required: Yes
+- Type: string
+
+### Parameter: `location`
+
+The geo-location where the resource lives.
+- Required: No
+- Type: string
+- Default: `[resourceGroup().location]`
+
+### Parameter: `name`
+
+Encryption key name.
+- Required: Yes
+- Type: string
+
+### Parameter: `workspaceName`
+
+The name of the parent Synapse Workspace. Required if the template is used in a standalone deployment.
+- Required: Yes
+- Type: string
 
 
 ## Outputs
 
-| Output Name | Type | Description |
+| Output | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the deployed key. |
 | `resourceGroupName` | string | The resource group of the deployed key. |
 | `resourceId` | string | The resource ID of the deployed key. |
-
-## Template references
-
-- [Workspaces/Keys](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Synapse/2021-06-01/workspaces/keys)
 
 ## Cross-referenced modules
 

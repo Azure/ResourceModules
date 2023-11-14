@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.20.4.51522",
-      "templateHash": "18138499386350818749"
+      "version": "0.22.6.54827",
+      "templateHash": "11888981629758921842"
     },
     "name": "Web/Function Apps Slot Hybrid Connection Relay",
     "description": "This module deploys a Site Slot Hybrid Connection Namespace Relay.",
@@ -69,7 +69,7 @@
     },
     {
       "type": "Microsoft.Web/sites/slots/hybridConnectionNamespaces/relays",
-      "apiVersion": "2022-03-01",
+      "apiVersion": "2022-09-01",
       "name": "[format('{0}/{1}/{2}/{3}', parameters('appName'), parameters('slotName'), split(parameters('hybridConnectionResourceId'), '/')[8], split(parameters('hybridConnectionResourceId'), '/')[10])]",
       "properties": {
         "serviceBusNamespace": "[split(parameters('hybridConnectionResourceId'), '/')[8]]",

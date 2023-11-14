@@ -21,150 +21,181 @@ Attaching a compute is not idempotent and will fail in case you try to redeploy 
 
 **Required parameters**
 
-| Parameter Name | Type | Allowed Values | Description |
-| :-- | :-- | :-- | :-- |
-| `computeType` | string | `[AKS, AmlCompute, ComputeInstance, Databricks, DataFactory, DataLakeAnalytics, HDInsight, Kubernetes, SynapseSpark, VirtualMachine]` | Set the object type. |
-| `name` | string |  | Name of the compute. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`computeType`](#parameter-computetype) | string | Set the object type. |
+| [`name`](#parameter-name) | string | Name of the compute. |
 
 **Conditional parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `machineLearningWorkspaceName` | string | The name of the parent Machine Learning Workspace. Required if the template is used in a standalone deployment. |
+| [`machineLearningWorkspaceName`](#parameter-machinelearningworkspacename) | string | The name of the parent Machine Learning Workspace. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Allowed Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `computeLocation` | string | `[resourceGroup().location]` |  | Location for the underlying compute. Ignored when attaching a compute resource, i.e. when you provide a resource ID. |
-| `deployCompute` | bool | `True` |  | Flag to specify whether to deploy the compute. Required only for attach (i.e. providing a resource ID), as in this case the operation is not idempontent, i.e. a second deployment will fail. Therefore, this flag needs to be set to "false" as long as the compute resource exists. |
-| `description` | string | `''` |  | The description of the Machine Learning compute. |
-| `disableLocalAuth` | bool | `False` |  | Opt-out of local authentication and ensure customers can use only MSI and AAD exclusively for authentication. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `location` | string | `[resourceGroup().location]` |  | Specifies the location of the resource. |
-| `properties` | object | `{object}` |  | The properties of the compute. Will be ignored in case "resourceId" is set. |
-| `resourceId` | string | `''` |  | ARM resource ID of the underlying compute. |
-| `sku` | string | `''` | `['', Basic, Free, Premium, Standard]` | Specifies the sku, also referred as "edition". Required for creating a compute resource. |
-| `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. Ignored when attaching a compute resource, i.e. when you provide a resource ID. |
-| `tags` | object | `{object}` |  | Contains resource tags defined as key-value pairs. Ignored when attaching a compute resource, i.e. when you provide a resource ID. |
-| `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. Ignored when attaching a compute resource, i.e. when you provide a resource ID. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`computeLocation`](#parameter-computelocation) | string | Location for the underlying compute. Ignored when attaching a compute resource, i.e. when you provide a resource ID. |
+| [`deployCompute`](#parameter-deploycompute) | bool | Flag to specify whether to deploy the compute. Required only for attach (i.e. providing a resource ID), as in this case the operation is not idempotent, i.e. a second deployment will fail. Therefore, this flag needs to be set to "false" as long as the compute resource exists. |
+| [`description`](#parameter-description) | string | The description of the Machine Learning compute. |
+| [`disableLocalAuth`](#parameter-disablelocalauth) | bool | Opt-out of local authentication and ensure customers can use only MSI and AAD exclusively for authentication. |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`location`](#parameter-location) | string | Specifies the location of the resource. |
+| [`managedIdentities`](#parameter-managedidentities) | object | The managed identity definition for this resource. |
+| [`properties`](#parameter-properties) | object | The properties of the compute. Will be ignored in case "resourceId" is set. |
+| [`resourceId`](#parameter-resourceid) | string | ARM resource ID of the underlying compute. |
+| [`sku`](#parameter-sku) | string | Specifies the sku, also referred as "edition". Required for creating a compute resource. |
+| [`tags`](#parameter-tags) | object | Contains resource tags defined as key-value pairs. Ignored when attaching a compute resource, i.e. when you provide a resource ID. |
+
+### Parameter: `computeLocation`
+
+Location for the underlying compute. Ignored when attaching a compute resource, i.e. when you provide a resource ID.
+- Required: No
+- Type: string
+- Default: `[resourceGroup().location]`
+
+### Parameter: `computeType`
+
+Set the object type.
+- Required: Yes
+- Type: string
+- Allowed:
+  ```Bicep
+  [
+    'AKS'
+    'AmlCompute'
+    'ComputeInstance'
+    'Databricks'
+    'DataFactory'
+    'DataLakeAnalytics'
+    'HDInsight'
+    'Kubernetes'
+    'SynapseSpark'
+    'VirtualMachine'
+  ]
+  ```
+
+### Parameter: `deployCompute`
+
+Flag to specify whether to deploy the compute. Required only for attach (i.e. providing a resource ID), as in this case the operation is not idempotent, i.e. a second deployment will fail. Therefore, this flag needs to be set to "false" as long as the compute resource exists.
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `description`
+
+The description of the Machine Learning compute.
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `disableLocalAuth`
+
+Opt-out of local authentication and ensure customers can use only MSI and AAD exclusively for authentication.
+- Required: No
+- Type: bool
+- Default: `False`
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `location`
+
+Specifies the location of the resource.
+- Required: No
+- Type: string
+- Default: `[resourceGroup().location]`
+
+### Parameter: `machineLearningWorkspaceName`
+
+The name of the parent Machine Learning Workspace. Required if the template is used in a standalone deployment.
+- Required: Yes
+- Type: string
+
+### Parameter: `managedIdentities`
+
+The managed identity definition for this resource.
+- Required: No
+- Type: object
 
 
-### Parameter Usage: `properties`
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`systemAssigned`](#parameter-managedidentitiessystemassigned) | No | bool | Optional. Enables system assigned managed identity on the resource. |
+| [`userAssignedResourceIds`](#parameter-managedidentitiesuserassignedresourceids) | No | array | Optional. The resource ID(s) to assign to the resource. |
 
-Properties for the compute resource to create.
-Will be ignored in case a resource ID is provided.
+### Parameter: `managedIdentities.systemAssigned`
 
-<details>
+Optional. Enables system assigned managed identity on the resource.
 
-<summary>Parameter JSON format</summary>
+- Required: No
+- Type: bool
 
-```json
-"properties": {
-    "value": {
-        // See https://learn.microsoft.com/en-us/azure/templates/microsoft.machinelearningservices/workspaces/computes?tabs=bicep#compute for the properties for the difference compute types
-    }
-}
-```
+### Parameter: `managedIdentities.userAssignedResourceIds`
 
-</details>
+Optional. The resource ID(s) to assign to the resource.
 
-<details>
+- Required: No
+- Type: array
 
-<summary>Bicep format</summary>
+### Parameter: `name`
 
-```bicep
-properties: {
-    // See https://learn.microsoft.com/en-us/azure/templates/microsoft.machinelearningservices/workspaces/computes?tabs=bicep#compute for the properties for the difference compute types
-}
-```
+Name of the compute.
+- Required: Yes
+- Type: string
 
-</details>
-<p>
+### Parameter: `properties`
 
-### Parameter Usage: `tags`
+The properties of the compute. Will be ignored in case "resourceId" is set.
+- Required: No
+- Type: object
+- Default: `{}`
 
-Tag names and tag values can be provided as needed. A tag can be left without a value.
+### Parameter: `resourceId`
 
-<details>
+ARM resource ID of the underlying compute.
+- Required: No
+- Type: string
+- Default: `''`
 
-<summary>Parameter JSON format</summary>
+### Parameter: `sku`
 
-```json
-"tags": {
-    "value": {
-        "Environment": "Non-Prod",
-        "Contact": "test.user@testcompany.com",
-        "PurchaseOrder": "1234",
-        "CostCenter": "7890",
-        "ServiceName": "DeploymentValidation",
-        "Role": "DeploymentValidation"
-    }
-}
-```
+Specifies the sku, also referred as "edition". Required for creating a compute resource.
+- Required: No
+- Type: string
+- Default: `''`
+- Allowed:
+  ```Bicep
+  [
+    ''
+    'Basic'
+    'Free'
+    'Premium'
+    'Standard'
+  ]
+  ```
 
-</details>
+### Parameter: `tags`
 
-<details>
+Contains resource tags defined as key-value pairs. Ignored when attaching a compute resource, i.e. when you provide a resource ID.
+- Required: No
+- Type: object
 
-<summary>Bicep format</summary>
-
-```bicep
-tags: {
-    Environment: 'Non-Prod'
-    Contact: 'test.user@testcompany.com'
-    PurchaseOrder: '1234'
-    CostCenter: '7890'
-    ServiceName: 'DeploymentValidation'
-    Role: 'DeploymentValidation'
-}
-```
-
-</details>
-<p>
-
-### Parameter Usage: `userAssignedIdentities`
-
-You can specify multiple user assigned identities to a resource by providing additional resource IDs using the following format:
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"userAssignedIdentities": {
-    "value": {
-        "/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
-        "/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
-    }
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-userAssignedIdentities: {
-    '/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
-    '/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
-}
-```
-
-</details>
-<p>
 
 ## Outputs
 
-| Output Name | Type | Description |
+| Output | Type | Description |
 | :-- | :-- | :-- |
 | `location` | string | The location the resource was deployed into. |
 | `name` | string | The name of the compute. |
 | `resourceGroupName` | string | The resource group the compute was deployed into. |
 | `resourceId` | string | The resource ID of the compute. |
-| `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. Is null in case of attaching a compute resource, i.e. when you provide a resource ID. |
+| `systemAssignedMIPrincipalId` | string | The principal ID of the system assigned identity. |
 
 ## Cross-referenced modules
 

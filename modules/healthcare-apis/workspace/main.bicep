@@ -9,16 +9,11 @@ param name string
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
 
-@allowed([
-  ''
-  'CanNotDelete'
-  'ReadOnly'
-])
-@description('Optional. Specify the type of lock.')
-param lock string = ''
+@description('Optional. The lock settings of the service.')
+param lock lockType
 
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
-param roleAssignments array = []
+param roleAssignments roleAssignmentType
 
 @allowed([
   'Disabled'
@@ -28,7 +23,7 @@ param roleAssignments array = []
 param publicNetworkAccess string = 'Disabled'
 
 @description('Optional. Tags of the resource.')
-param tags object = {}
+param tags object?
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
@@ -47,6 +42,23 @@ var enableReferencedModulesTelemetry = false
 // =========== //
 // Deployments //
 // =========== //
+var builtInRoleNames = {
+  Contributor: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')
+  'DICOM Data Owner': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '58a3b984-7adf-4c20-983a-32417c86fbc8')
+  'DICOM Data Reader': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'e89c7a3c-2f64-4fa1-a847-3e4c9ba4283a')
+  'FHIR Data Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '5a1fc7df-4bf1-4951-a576-89034ee01acd')
+  'FHIR Data Converter': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'a1705bd2-3a8f-45a5-8683-466fcfd5cc24')
+  'FHIR Data Exporter': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '3db33094-8700-4567-8da5-1501d4e7e843')
+  'FHIR Data Importer': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '4465e953-8ced-4406-a58e-0f6e3f3b530b')
+  'FHIR Data Reader': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '4c8d0bbc-75d3-4935-991f-5f3c56d81508')
+  'FHIR Data Writer': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '3f88fce4-5892-4214-ae73-ba5294559913')
+  'FHIR SMART User': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '4ba50f17-9666-485c-a643-ff00808643f0')
+  Owner: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '8e3af657-a8ff-443c-a75c-2fe8c4bcb635')
+  Reader: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'acdd72a7-3385-48ef-bd42-f606fba81ae7')
+  'Role Based Access Control Administrator (Preview)': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'f58310d9-a9f6-439a-9e8d-f62e7b41a168')
+  'User Access Administrator': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '18d7d88d-d35e-4fb5-a5c3-7773c20a72d9')
+}
+
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
   properties: {
@@ -68,26 +80,27 @@ resource workspace 'Microsoft.HealthcareApis/workspaces@2022-06-01' = {
   }
 }
 
-resource workspace_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
-  name: '${workspace.name}-${lock}-lock'
+resource workspace_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock ?? {}) && lock.?kind != 'None') {
+  name: lock.?name ?? 'lock-${name}'
   properties: {
-    level: any(lock)
-    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+    level: lock.?kind ?? ''
+    notes: lock.?kind == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot delete or modify the resource or child resources.'
   }
   scope: workspace
 }
 
-module workspace_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: '${deployment().name}-Rbac-${index}'
-  params: {
-    description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
-    principalIds: roleAssignment.principalIds
-    principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
-    roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    condition: contains(roleAssignment, 'condition') ? roleAssignment.condition : ''
-    delegatedManagedIdentityResourceId: contains(roleAssignment, 'delegatedManagedIdentityResourceId') ? roleAssignment.delegatedManagedIdentityResourceId : ''
-    resourceId: workspace.id
+resource workspace_roleAssignments 'Microsoft.Authorization/roleAssignments@2022-04-01' = [for (roleAssignment, index) in (roleAssignments ?? []): {
+  name: guid(workspace.id, roleAssignment.principalId, roleAssignment.roleDefinitionIdOrName)
+  properties: {
+    roleDefinitionId: contains(builtInRoleNames, roleAssignment.roleDefinitionIdOrName) ? builtInRoleNames[roleAssignment.roleDefinitionIdOrName] : roleAssignment.roleDefinitionIdOrName
+    principalId: roleAssignment.principalId
+    description: roleAssignment.?description
+    principalType: roleAssignment.?principalType
+    condition: roleAssignment.?condition
+    conditionVersion: !empty(roleAssignment.?condition) ? (roleAssignment.?conditionVersion ?? '2.0') : null // Must only be set if condtion is set
+    delegatedManagedIdentityResourceId: roleAssignment.?delegatedManagedIdentityResourceId
   }
+  scope: workspace
 }]
 
 module workspace_fhirservices 'fhirservice/main.bicep' = [for (fhir, index) in fhirservices: {
@@ -97,9 +110,9 @@ module workspace_fhirservices 'fhirservice/main.bicep' = [for (fhir, index) in f
     location: location
     workspaceName: workspace.name
     kind: fhir.kind
-    tags: contains(fhir, 'tags') ? fhir.tags : {}
+    tags: fhir.?tags ?? tags
     publicNetworkAccess: contains(fhir, 'publicNetworkAccess') ? fhir.publicNetworkAccess : 'Disabled'
-    systemAssignedIdentity: contains(fhir, 'systemAssignedIdentity') ? fhir.systemAssignedIdentity : false
+    managedIdentities: contains(fhir, 'managedIdentities') ? fhir.managedIdentities : null
     roleAssignments: contains(fhir, 'roleAssignments') ? fhir.roleAssignments : []
     accessPolicyObjectIds: contains(fhir, 'accessPolicyObjectIds') ? fhir.accessPolicyObjectIds : []
     acrLoginServers: contains(fhir, 'acrLoginServers') ? fhir.acrLoginServers : []
@@ -111,21 +124,15 @@ module workspace_fhirservices 'fhirservice/main.bicep' = [for (fhir, index) in f
     corsMethods: contains(fhir, 'corsMethods') ? fhir.corsMethods : []
     corsMaxAge: contains(fhir, 'corsMaxAge') ? fhir.corsMaxAge : -1
     corsAllowCredentials: contains(fhir, 'corsAllowCredentials') ? fhir.corsAllowCredentials : false
-    diagnosticStorageAccountId: contains(fhir, 'diagnosticStorageAccountId') ? fhir.diagnosticStorageAccountId : ''
-    diagnosticWorkspaceId: contains(fhir, 'diagnosticWorkspaceId') ? fhir.diagnosticWorkspaceId : ''
-    diagnosticEventHubAuthorizationRuleId: contains(fhir, 'diagnosticEventHubAuthorizationRuleId') ? fhir.diagnosticEventHubAuthorizationRuleId : ''
-    diagnosticEventHubName: contains(fhir, 'diagnosticEventHubName') ? fhir.diagnosticEventHubName : ''
+    diagnosticSettings: fhir.?diagnosticSettings
     exportStorageAccountName: contains(fhir, 'exportStorageAccountName') ? fhir.exportStorageAccountName : ''
     importStorageAccountName: contains(fhir, 'importStorageAccountName') ? fhir.importStorageAccountName : ''
     importEnabled: contains(fhir, 'importEnabled') ? fhir.importEnabled : false
     initialImportMode: contains(fhir, 'initialImportMode') ? fhir.initialImportMode : false
-    lock: contains(fhir, 'lock') ? fhir.lock : ''
+    lock: fhir.?lock ?? lock
     resourceVersionPolicy: contains(fhir, 'resourceVersionPolicy') ? fhir.resourceVersionPolicy : 'versioned'
     resourceVersionOverrides: contains(fhir, 'resourceVersionOverrides') ? fhir.resourceVersionOverrides : {}
     smartProxyEnabled: contains(fhir, 'smartProxyEnabled') ? fhir.smartProxyEnabled : false
-    userAssignedIdentities: contains(fhir, 'userAssignedIdentities') ? fhir.userAssignedIdentities : {}
-    diagnosticLogCategoriesToEnable: contains(fhir, 'diagnosticLogCategoriesToEnable') ? fhir.diagnosticLogCategoriesToEnable : [ 'AuditLogs' ]
-    diagnosticMetricsToEnable: contains(fhir, 'diagnosticMetricsToEnable') ? fhir.diagnosticMetricsToEnable : [ 'AllMetrics' ]
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
@@ -136,21 +143,16 @@ module workspace_dicomservices 'dicomservice/main.bicep' = [for (dicom, index) i
     name: dicom.name
     location: location
     workspaceName: workspace.name
-    tags: contains(dicom, 'tags') ? dicom.tags : {}
+    tags: dicom.?tags ?? tags
     publicNetworkAccess: contains(dicom, 'publicNetworkAccess') ? dicom.publicNetworkAccess : 'Disabled'
-    systemAssignedIdentity: contains(dicom, 'systemAssignedIdentity') ? dicom.systemAssignedIdentity : false
+    managedIdentities: contains(dicom, 'managedIdentities') ? dicom.managedIdentities : null
     corsOrigins: contains(dicom, 'corsOrigins') ? dicom.corsOrigins : []
     corsHeaders: contains(dicom, 'corsHeaders') ? dicom.corsHeaders : []
     corsMethods: contains(dicom, 'corsMethods') ? dicom.corsMethods : []
     corsMaxAge: contains(dicom, 'corsMaxAge') ? dicom.corsMaxAge : -1
     corsAllowCredentials: contains(dicom, 'corsAllowCredentials') ? dicom.corsAllowCredentials : false
-    diagnosticStorageAccountId: contains(dicom, 'diagnosticStorageAccountId') ? dicom.diagnosticStorageAccountId : ''
-    diagnosticWorkspaceId: contains(dicom, 'diagnosticWorkspaceId') ? dicom.diagnosticWorkspaceId : ''
-    diagnosticEventHubAuthorizationRuleId: contains(dicom, 'diagnosticEventHubAuthorizationRuleId') ? dicom.diagnosticEventHubAuthorizationRuleId : ''
-    diagnosticEventHubName: contains(dicom, 'diagnosticEventHubName') ? dicom.diagnosticEventHubName : ''
-    lock: contains(dicom, 'lock') ? dicom.lock : ''
-    userAssignedIdentities: contains(dicom, 'userAssignedIdentities') ? dicom.userAssignedIdentities : {}
-    diagnosticLogCategoriesToEnable: contains(dicom, 'diagnosticLogCategoriesToEnable') ? dicom.diagnosticLogCategoriesToEnable : [ 'AuditLogs' ]
+    diagnosticSettings: dicom.?diagnosticSettings
+    lock: dicom.?lock ?? lock
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
@@ -161,7 +163,7 @@ module workspace_iotconnector 'iotconnector/main.bicep' = [for (iotConnector, in
     name: iotConnector.name
     location: location
     workspaceName: workspace.name
-    tags: contains(iotConnector, 'tags') ? iotConnector.tags : {}
+    tags: iotConnector.?tags ?? tags
     eventHubName: iotConnector.eventHubName
     eventHubNamespaceName: iotConnector.eventHubNamespaceName
     deviceMapping: contains(iotConnector, 'deviceMapping') ? iotConnector.deviceMapping : {
@@ -170,15 +172,9 @@ module workspace_iotconnector 'iotconnector/main.bicep' = [for (iotConnector, in
     }
     fhirdestination: contains(iotConnector, 'fhirdestination') ? iotConnector.fhirdestination : {}
     consumerGroup: contains(iotConnector, 'consumerGroup') ? iotConnector.consumerGroup : iotConnector.name
-    systemAssignedIdentity: contains(iotConnector, 'systemAssignedIdentity') ? iotConnector.systemAssignedIdentity : false
-    diagnosticStorageAccountId: contains(iotConnector, 'diagnosticStorageAccountId') ? iotConnector.diagnosticStorageAccountId : ''
-    diagnosticWorkspaceId: contains(iotConnector, 'diagnosticWorkspaceId') ? iotConnector.diagnosticWorkspaceId : ''
-    diagnosticEventHubAuthorizationRuleId: contains(iotConnector, 'diagnosticEventHubAuthorizationRuleId') ? iotConnector.diagnosticEventHubAuthorizationRuleId : ''
-    diagnosticEventHubName: contains(iotConnector, 'diagnosticEventHubName') ? iotConnector.diagnosticEventHubName : ''
-    lock: contains(iotConnector, 'lock') ? iotConnector.lock : ''
-    userAssignedIdentities: contains(iotConnector, 'userAssignedIdentities') ? iotConnector.userAssignedIdentities : {}
-    diagnosticLogCategoriesToEnable: contains(iotConnector, 'diagnosticLogCategoriesToEnable') ? iotConnector.diagnosticLogCategoriesToEnable : [ 'DiagnosticLogs' ]
-    diagnosticMetricsToEnable: contains(iotConnector, 'diagnosticMetricsToEnable') ? iotConnector.diagnosticMetricsToEnable : [ 'AllMetrics' ]
+    managedIdentities: contains(iotConnector, 'managedIdentities') ? iotConnector.managedIdentities : null
+    diagnosticSettings: iotConnector.?diagnosticSettings
+    lock: iotConnector.?lock ?? lock
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
@@ -194,3 +190,38 @@ output resourceGroupName string = resourceGroup().name
 
 @description('The location the resource was deployed into.')
 output location string = workspace.location
+
+// =============== //
+//   Definitions   //
+// =============== //
+
+type lockType = {
+  @description('Optional. Specify the name of lock.')
+  name: string?
+
+  @description('Optional. Specify the type of lock.')
+  kind: ('CanNotDelete' | 'ReadOnly' | 'None')?
+}?
+
+type roleAssignmentType = {
+  @description('Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead.')
+  roleDefinitionIdOrName: string
+
+  @description('Required. The principal ID of the principal (user/group/identity) to assign the role to.')
+  principalId: string
+
+  @description('Optional. The principal type of the assigned principal ID.')
+  principalType: ('ServicePrincipal' | 'Group' | 'User' | 'ForeignGroup' | 'Device')?
+
+  @description('Optional. The description of the role assignment.')
+  description: string?
+
+  @description('Optional. The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container"')
+  condition: string?
+
+  @description('Optional. Version of the condition.')
+  conditionVersion: '2.0'?
+
+  @description('Optional. The Resource Id of the delegated managed identity resource.')
+  delegatedManagedIdentityResourceId: string?
+}[]?
