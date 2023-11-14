@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.23.1.45101",
-      "templateHash": "13367947560388494083"
+      "templateHash": "1177002150217044728"
     },
     "name": "Container App Jobs",
     "description": "This module deploys a Container App Job.",
@@ -389,7 +389,7 @@
       },
       "value": "[reference('containerAppJob', '2023-05-01', 'full').location]"
     },
-    "systemAssignedPrincipalId": {
+    "systemAssignedMIPrincipalId": {
       "type": "string",
       "metadata": {
         "description": "The principal ID of the system assigned identity."

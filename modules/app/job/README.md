@@ -814,7 +814,7 @@ The name of the workload profile to use.
 | `name` | string | The name of the Container App Job. |
 | `resourceGroupName` | string | The name of the resource group the Container App Job was deployed into. |
 | `resourceId` | string | The resource ID of the Container App Job. |
-| `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
+| `systemAssignedMIPrincipalId` | string | The principal ID of the system assigned identity. |
 
 ## Cross-referenced modules
 

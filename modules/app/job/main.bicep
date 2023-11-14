@@ -159,7 +159,7 @@ output name string = containerAppJob.name
 output location string = containerAppJob.location
 
 @description('The principal ID of the system assigned identity.')
-output systemAssignedPrincipalId string = (managedIdentities.?systemAssigned ?? false) && contains(containerAppJob.identity, 'principalId') ? containerAppJob.identity.principalId : ''
+output systemAssignedMIPrincipalId string = (managedIdentities.?systemAssigned ?? false) && contains(containerAppJob.identity, 'principalId') ? containerAppJob.identity.principalId : ''
 
 // =============== //
 //   Definitions   //
