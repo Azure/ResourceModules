@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.23.1.45101",
-      "templateHash": "6590668030622118071"
+      "templateHash": "10325694451607731112"
     },
     "name": "DevTest Labs",
     "description": "This module deploys a DevTest Lab.",
@@ -1789,13 +1789,6 @@
     }
   },
   "outputs": {
-    "systemAssignedPrincipalId": {
-      "type": "string",
-      "metadata": {
-        "description": "The principal ID of the system assigned identity."
-      },
-      "value": "[reference('lab', '2018-10-15-preview', 'full').identity.principalId]"
-    },
     "uniqueIdentifier": {
       "type": "string",
       "metadata": {

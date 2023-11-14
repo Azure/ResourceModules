@@ -76,8 +76,8 @@ param sqlAdministratorLoginPassword string = ''
 @description('Optional. Git integration settings.')
 param workspaceRepositoryConfiguration object = {}
 
-@description('Optional. The ID(s) to assign to the resource.')
-param userAssignedIdentities object = {}
+@description('Optional. The managed identity definition for this resource.')
+param managedIdentities managedIdentitiesType
 
 @description('Optional. The lock settings of the service.')
 param lock lockType
@@ -92,15 +92,16 @@ param privateEndpoints privateEndpointType
 param diagnosticSettings diagnosticSettingType
 
 // Variables
-var userAssignedIdentitiesUnion = union(userAssignedIdentities, !empty(customerManagedKey.?userAssignedIdentityResourceId ?? []) ? {
-    '${customerManagedKey!.userAssignedIdentityResourceId}': {}
-  } : {})
 
-var identityType = !empty(userAssignedIdentitiesUnion) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned'
+var cmkUserAssignedIdentityAsArray = !empty(customerManagedKey.?userAssignedIdentityResourceId ?? []) ? [ customerManagedKey.?userAssignedIdentityResourceId ] : []
+
+var userAssignedIdentitiesUnion = !empty(managedIdentities) ? union(managedIdentities.?userAssignedResourcesIds ?? [], cmkUserAssignedIdentityAsArray) : cmkUserAssignedIdentityAsArray
+
+var formattedUserAssignedIdentities = reduce(map((userAssignedIdentitiesUnion ?? []), (id) => { '${id}': {} }), {}, (cur, next) => union(cur, next)) // Converts the flat array to an object like { '${id1}': {}, '${id2}': {} }
 
 var identity = {
-  type: identityType
-  userAssignedIdentities: !empty(userAssignedIdentitiesUnion) ? userAssignedIdentitiesUnion : null
+  type: !empty(userAssignedIdentitiesUnion) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned'
+  userAssignedIdentities: !empty(formattedUserAssignedIdentities) ? formattedUserAssignedIdentities : null
 }
 
 var enableReferencedModulesTelemetry = false
@@ -312,7 +313,7 @@ output resourceGroupName string = resourceGroup().name
 output connectivityEndpoints object = workspace.properties.connectivityEndpoints
 
 @description('The principal ID of the system assigned identity.')
-output systemAssignedPrincipalId string = contains(workspace.identity, 'principalId') ? workspace.identity.principalId : ''
+output systemAssignedMIPrincipalId string = contains(workspace.identity, 'principalId') ? workspace.identity.principalId : ''
 
 @description('The location the resource was deployed into.')
 output location string = workspace.location
@@ -320,6 +321,11 @@ output location string = workspace.location
 // =============== //
 //   Definitions   //
 // =============== //
+
+type managedIdentitiesType = {
+  @description('Optional. The resource ID(s) to assign to the resource.')
+  userAssignedResourcesIds: string[]
+}?
 
 type lockType = {
   @description('Optional. Specify the name of lock.')

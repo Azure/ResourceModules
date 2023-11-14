@@ -35,9 +35,8 @@ This module deploys a Digital Twins Instance EventHub Endpoint.
 | [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | [`endpointUri`](#parameter-endpointuri) | string | The URL of the EventHub namespace for identity-based authentication. It must include the protocol 'sb://' (i.e. sb://xyz.servicebus.windows.net). |
 | [`entityPath`](#parameter-entitypath) | string | The EventHub name in the EventHub namespace for identity-based authentication. |
+| [`managedIdentities`](#parameter-managedidentities) | object | The managed identity definition for this resource. |
 | [`name`](#parameter-name) | string | The name of the Digital Twin Endpoint. |
-| [`systemAssignedIdentity`](#parameter-systemassignedidentity) | bool | Enables system assigned managed identity on the resource. |
-| [`userAssignedIdentity`](#parameter-userassignedidentity) | string | The ID to assign to the resource. |
 
 ### Parameter: `authenticationType`
 
@@ -108,26 +107,38 @@ The EventHub name in the EventHub namespace for identity-based authentication.
 - Type: string
 - Default: `''`
 
+### Parameter: `managedIdentities`
+
+The managed identity definition for this resource.
+- Required: No
+- Type: object
+
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`systemAssigned`](#parameter-managedidentitiessystemassigned) | No | bool | Optional. Enables system assigned managed identity on the resource. |
+| [`userAssignedResourceId`](#parameter-managedidentitiesuserassignedresourceid) | No | string | Optional. The resource ID to assign to the resource. |
+
+### Parameter: `managedIdentities.systemAssigned`
+
+Optional. Enables system assigned managed identity on the resource.
+
+- Required: No
+- Type: bool
+
+### Parameter: `managedIdentities.userAssignedResourceId`
+
+Optional. The resource ID to assign to the resource.
+
+- Required: No
+- Type: string
+
 ### Parameter: `name`
 
 The name of the Digital Twin Endpoint.
 - Required: No
 - Type: string
 - Default: `'EventHubEndpoint'`
-
-### Parameter: `systemAssignedIdentity`
-
-Enables system assigned managed identity on the resource.
-- Required: No
-- Type: bool
-- Default: `False`
-
-### Parameter: `userAssignedIdentity`
-
-The ID to assign to the resource.
-- Required: No
-- Type: string
-- Default: `''`
 
 
 ## Outputs
