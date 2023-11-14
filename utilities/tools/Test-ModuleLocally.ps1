@@ -180,7 +180,7 @@ Run all Pester tests for the given template file including tests for the use of 
 
 .NOTES
 - Make sure you provide the right information in the 'ValidateOrDeployParameters' parameter for this function to work.
-- Ensure you have the ability to perform the deployment operations using your account (if planning to test deploy)
+- Ensure you have the ability to perform the deployment operations using your account (if planning to test deploy or performing what-if validation.)
 #>
 function Test-ModuleLocally {
 
