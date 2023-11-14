@@ -120,7 +120,7 @@ function Get-TemplateDeploymenWhatIf {
         } while ($deploymentName -notmatch '^[-\w\._\(\)]+$')
 
         if ($deploymentScope -ne 'resourceGroup') {
-            Write-Verbose "Testing with deployment name [$deploymentName]" -Verbose
+            Write-Verbose "What-If Deployment Test with deployment name [$deploymentName]" -Verbose
             $DeploymentInputs['DeploymentName'] = $deploymentName
         }
 
@@ -138,7 +138,7 @@ function Get-TemplateDeploymenWhatIf {
                         $null = New-AzResourceGroup -Name $resourceGroupName -Location $location
                     }
                 }
-                if ($PSCmdlet.ShouldProcess('Resource group level deployment', 'Test')) {
+                if ($PSCmdlet.ShouldProcess('Resource group level deployment', 'WhatIf')) {
                     $res = New-AzResourceGroupDeployment @DeploymentInputs -WhatIf
                 }
                 break
@@ -148,20 +148,20 @@ function Get-TemplateDeploymenWhatIf {
                     Write-Verbose ('Setting context to subscription [{0}]' -f $subscriptionId)
                     $null = Set-AzContext -Subscription $subscriptionId
                 }
-                if ($PSCmdlet.ShouldProcess('Subscription level deployment', 'Test')) {
+                if ($PSCmdlet.ShouldProcess('Subscription level deployment', 'WhatIf')) {
                     $res = New-AzDeployment @DeploymentInputs -Location $Location -WhatIf
                 }
                 break
             }
             'managementGroup' {
-                if ($PSCmdlet.ShouldProcess('Management group level deployment', 'Test')) {
+                if ($PSCmdlet.ShouldProcess('Management group level deployment', 'WhatIf')) {
                     $res = New-AzManagementGroupDeployment @DeploymentInputs -Location $Location -ManagementGroupId $ManagementGroupId -WhatIf
                 }
                 break
             }
             'tenant' {
                 Write-Verbose 'Handling tenant level validation'
-                if ($PSCmdlet.ShouldProcess('Tenant level deployment', 'Test')) {
+                if ($PSCmdlet.ShouldProcess('Tenant level deployment', 'WhatIf')) {
                     $res = New-AzTenantDeployment @DeploymentInputs -Location $location -WhatIf
                 }
                 break
