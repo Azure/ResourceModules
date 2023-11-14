@@ -139,7 +139,7 @@ module workspace 'br:bicep/modules/healthcare-apis.workspace:1.0.0' = {
         location: '<location>'
         managedIdentities: {
           systemAssigned: false
-          userAssignedResourcesIds: [
+          userAssignedResourceIds: [
             '<managedIdentityResourceId>'
           ]
         }
@@ -183,7 +183,7 @@ module workspace 'br:bicep/modules/healthcare-apis.workspace:1.0.0' = {
         location: '<location>'
         managedIdentities: {
           systemAssigned: false
-          userAssignedResourcesIds: [
+          userAssignedResourceIds: [
             '<managedIdentityResourceId>'
           ]
         }
@@ -272,7 +272,7 @@ module workspace 'br:bicep/modules/healthcare-apis.workspace:1.0.0' = {
           "location": "<location>",
           "managedIdentities": {
             "systemAssigned": false,
-            "userAssignedResourcesIds": [
+            "userAssignedResourceIds": [
               "<managedIdentityResourceId>"
             ]
           },
@@ -320,7 +320,7 @@ module workspace 'br:bicep/modules/healthcare-apis.workspace:1.0.0' = {
           "location": "<location>",
           "managedIdentities": {
             "systemAssigned": false,
-            "userAssignedResourcesIds": [
+            "userAssignedResourceIds": [
               "<managedIdentityResourceId>"
             ]
           },
@@ -421,7 +421,7 @@ module workspace 'br:bicep/modules/healthcare-apis.workspace:1.0.0' = {
         location: '<location>'
         managedIdentities: {
           systemAssigned: false
-          userAssignedResourcesIds: [
+          userAssignedResourceIds: [
             '<managedIdentityResourceId>'
           ]
         }
@@ -465,7 +465,7 @@ module workspace 'br:bicep/modules/healthcare-apis.workspace:1.0.0' = {
         location: '<location>'
         managedIdentities: {
           systemAssigned: false
-          userAssignedResourcesIds: [
+          userAssignedResourceIds: [
             '<managedIdentityResourceId>'
           ]
         }
@@ -554,7 +554,7 @@ module workspace 'br:bicep/modules/healthcare-apis.workspace:1.0.0' = {
           "location": "<location>",
           "managedIdentities": {
             "systemAssigned": false,
-            "userAssignedResourcesIds": [
+            "userAssignedResourceIds": [
               "<managedIdentityResourceId>"
             ]
           },
@@ -602,7 +602,7 @@ module workspace 'br:bicep/modules/healthcare-apis.workspace:1.0.0' = {
           "location": "<location>",
           "managedIdentities": {
             "systemAssigned": false,
-            "userAssignedResourcesIds": [
+            "userAssignedResourceIds": [
               "<managedIdentityResourceId>"
             ]
           },
