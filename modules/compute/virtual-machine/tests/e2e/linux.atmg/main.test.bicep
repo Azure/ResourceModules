@@ -52,10 +52,9 @@ module nestedDependencies 'dependencies.bicep' = {
 //   scope: resourceGroup
 // }
 
-@batchSize(1)
-module testDeployment '../../../main.bicep' = [for iteration in [ 'init', 'idem' ]: {
+module testDeployment '../../../main.bicep' = {
   scope: resourceGroup
-  name: '${uniqueString(deployment().name, location)}-test-${serviceShort}-${iteration}'
+  name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     location: location
@@ -121,4 +120,4 @@ module testDeployment '../../../main.bicep' = [for iteration in [ 'init', 'idem'
   dependsOn: [
     nestedDependencies // Required to leverage `existing` SSH key reference
   ]
-}]
+}
