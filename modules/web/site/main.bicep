@@ -152,10 +152,10 @@ param hybridConnectionRelays array = []
 ])
 param publicNetworkAccess string = ''
 
-var formattedUserAssignedIdentities = reduce(map((managedIdentities.?userAssignedResourcesIds ?? []), (id) => { '${id}': {} }), {}, (cur, next) => union(cur, next)) // Converts the flat array to an object like { '${id1}': {}, '${id2}': {} }
+var formattedUserAssignedIdentities = reduce(map((managedIdentities.?userAssignedResourceIds ?? []), (id) => { '${id}': {} }), {}, (cur, next) => union(cur, next)) // Converts the flat array to an object like { '${id1}': {}, '${id2}': {} }
 
 var identity = !empty(managedIdentities) ? {
-  type: (managedIdentities.?systemAssigned ?? false) ? (!empty(managedIdentities.?userAssignedResourcesIds ?? {}) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(managedIdentities.?userAssignedResourcesIds ?? {}) ? 'UserAssigned' : null)
+  type: (managedIdentities.?systemAssigned ?? false) ? (!empty(managedIdentities.?userAssignedResourceIds ?? {}) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(managedIdentities.?userAssignedResourceIds ?? {}) ? 'UserAssigned' : null)
   userAssignedIdentities: !empty(formattedUserAssignedIdentities) ? formattedUserAssignedIdentities : null
 } : null
 
@@ -268,6 +268,7 @@ module app_slots 'slot/main.bicep' = [for (slot, index) in slots: {
     diagnosticSettings: slot.?diagnosticSettings
     roleAssignments: contains(slot, 'roleAssignments') ? slot.roleAssignments : roleAssignments
     appSettingsKeyValuePairs: contains(slot, 'appSettingsKeyValuePairs') ? slot.appSettingsKeyValuePairs : appSettingsKeyValuePairs
+    basicPublishingCredentialsPolicies: contains(slot, 'basicPublishingCredentialsPolicies') ? slot.basicPublishingCredentialsPolicies : basicPublishingCredentialsPolicies
     lock: slot.?lock ?? lock
     privateEndpoints: contains(slot, 'privateEndpoints') ? slot.privateEndpoints : privateEndpoints
     tags: slot.?tags ?? tags
@@ -291,10 +292,11 @@ module app_slots 'slot/main.bicep' = [for (slot, index) in slots: {
 }]
 
 module app_basicPublishingCredentialsPolicies 'basic-publishing-credentials-policy/main.bicep' = [for (basicPublishingCredentialsPolicy, index) in basicPublishingCredentialsPolicies: {
-  name: '${uniqueString(deployment().name, location)}-Site-Publis-Cred-${index}'
+  name: '${uniqueString(deployment().name, location)}-Site-Publish-Cred-${index}'
   params: {
     webAppName: app.name
     name: basicPublishingCredentialsPolicy.name
+    allow: contains(basicPublishingCredentialsPolicy, 'allow') ? basicPublishingCredentialsPolicy.allow : null
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
@@ -401,7 +403,7 @@ output resourceGroupName string = resourceGroup().name
 output systemAssignedMIPrincipalId string = (managedIdentities.?systemAssigned ?? false) && contains(app.identity, 'principalId') ? app.identity.principalId : ''
 
 @description('The principal ID of the system assigned identity of slots.')
-output slotSystemAssignedPrincipalIds array = [for (slot, index) in slots: app_slots[index].outputs.systemAssignedMIPrincipalId]
+output slotSystemAssignedMIPrincipalIds array = [for (slot, index) in slots: app_slots[index].outputs.systemAssignedMIPrincipalId]
 
 @description('The location the resource was deployed into.')
 output location string = app.location
@@ -418,7 +420,7 @@ type managedIdentitiesType = {
   systemAssigned: bool?
 
   @description('Optional. The resource ID(s) to assign to the resource.')
-  userAssignedResourcesIds: string[]?
+  userAssignedResourceIds: string[]?
 }?
 
 type lockType = {

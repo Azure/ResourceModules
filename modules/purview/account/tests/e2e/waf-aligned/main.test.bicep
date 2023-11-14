@@ -73,7 +73,7 @@ module testDeployment '../../../main.bicep' = {
       Role: 'DeploymentValidation'
     }
     managedIdentities: {
-      userAssignedResourcesIds: [
+      userAssignedResourceIds: [
         nestedDependencies.outputs.managedIdentityResourceId
       ]
     }

@@ -155,7 +155,7 @@ module testDeployment '../../../main.bicep' = {
       userAssignedIdentityResourceId: nestedDependencies2.outputs.geoBackupManagedIdentityResourceId
     }
     managedIdentities: {
-      userAssignedResourcesIds: [
+      userAssignedResourceIds: [
         nestedDependencies2.outputs.managedIdentityResourceId
         nestedDependencies2.outputs.geoBackupManagedIdentityResourceId
       ]
