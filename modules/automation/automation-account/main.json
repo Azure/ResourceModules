@@ -5,8 +5,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.22.6.54827",
-      "templateHash": "11493438009443560879"
+      "version": "0.23.1.45101",
+      "templateHash": "3971272162822794152"
     },
     "name": "Automation Accounts",
     "description": "This module deploys an Azure Automation Account.",
@@ -23,7 +23,7 @@
             "description": "Optional. Enables system assigned managed identity on the resource."
           }
         },
-        "userAssignedResourcesIds": {
+        "userAssignedResourceIds": {
           "type": "array",
           "items": {
             "type": "string"
@@ -593,8 +593,8 @@
   },
   "variables": {
     "enableReferencedModulesTelemetry": false,
-    "formattedUserAssignedIdentities": "[reduce(map(coalesce(tryGet(parameters('managedIdentities'), 'userAssignedResourcesIds'), createArray()), lambda('id', createObject(format('{0}', lambdaVariables('id')), createObject()))), createObject(), lambda('cur', 'next', union(lambdaVariables('cur'), lambdaVariables('next'))))]",
-    "identity": "[if(not(empty(parameters('managedIdentities'))), createObject('type', if(coalesce(tryGet(parameters('managedIdentities'), 'systemAssigned'), false()), if(not(empty(coalesce(tryGet(parameters('managedIdentities'), 'userAssignedResourcesIds'), createObject()))), 'SystemAssigned,UserAssigned', 'SystemAssigned'), if(not(empty(coalesce(tryGet(parameters('managedIdentities'), 'userAssignedResourcesIds'), createObject()))), 'UserAssigned', null())), 'userAssignedIdentities', if(not(empty(variables('formattedUserAssignedIdentities'))), variables('formattedUserAssignedIdentities'), null())), null())]",
+    "formattedUserAssignedIdentities": "[reduce(map(coalesce(tryGet(parameters('managedIdentities'), 'userAssignedResourceIds'), createArray()), lambda('id', createObject(format('{0}', lambdaVariables('id')), createObject()))), createObject(), lambda('cur', 'next', union(lambdaVariables('cur'), lambdaVariables('next'))))]",
+    "identity": "[if(not(empty(parameters('managedIdentities'))), createObject('type', if(coalesce(tryGet(parameters('managedIdentities'), 'systemAssigned'), false()), if(not(empty(coalesce(tryGet(parameters('managedIdentities'), 'userAssignedResourceIds'), createObject()))), 'SystemAssigned,UserAssigned', 'SystemAssigned'), if(not(empty(coalesce(tryGet(parameters('managedIdentities'), 'userAssignedResourceIds'), createObject()))), 'UserAssigned', null())), 'userAssignedIdentities', if(not(empty(variables('formattedUserAssignedIdentities'))), variables('formattedUserAssignedIdentities'), null())), null())]",
     "builtInRoleNames": {
       "Automation Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'f353d9bd-d4a6-484e-a77a-8050b599b867')]",
       "Automation Job Operator": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '4fe576fe-1146-4730-92eb-48519fa6bf9f')]",
@@ -774,8 +774,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.22.6.54827",
-              "templateHash": "18249732142000845439"
+              "version": "0.23.1.45101",
+              "templateHash": "6971821068699927304"
             },
             "name": "Automation Account Modules",
             "description": "This module deploys an Azure Automation Account Module.",
@@ -940,8 +940,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.22.6.54827",
-              "templateHash": "4119330639685982378"
+              "version": "0.23.1.45101",
+              "templateHash": "3941184452068098954"
             },
             "name": "Automation Account Schedules",
             "description": "This module deploys an Azure Automation Account Schedule.",
@@ -1143,8 +1143,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.22.6.54827",
-              "templateHash": "1833872657708381069"
+              "version": "0.23.1.45101",
+              "templateHash": "3054091660106074138"
             },
             "name": "Automation Account Runbooks",
             "description": "This module deploys an Azure Automation Account Runbook.",
@@ -1367,8 +1367,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.22.6.54827",
-              "templateHash": "7560418296837405700"
+              "version": "0.23.1.45101",
+              "templateHash": "7940366869013991296"
             },
             "name": "Automation Account Job Schedules",
             "description": "This module deploys an Azure Automation Account Job Schedule.",
@@ -1519,8 +1519,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.22.6.54827",
-              "templateHash": "17400819380217562013"
+              "version": "0.23.1.45101",
+              "templateHash": "13399277967950966124"
             },
             "name": "Automation Account Variables",
             "description": "This module deploys an Azure Automation Account Variable.",
@@ -1658,8 +1658,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.22.6.54827",
-              "templateHash": "9970744617970664745"
+              "version": "0.23.1.45101",
+              "templateHash": "4319942183601642190"
             },
             "name": "Log Analytics Workspace Linked Services",
             "description": "This module deploys a Log Analytics Workspace Linked Service.",
@@ -1809,8 +1809,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.22.6.54827",
-              "templateHash": "2318608107759137473"
+              "version": "0.23.1.45101",
+              "templateHash": "6590935071601965866"
             },
             "name": "Operations Management Solutions",
             "description": "This module deploys an Operations Management Solution.",
@@ -1995,8 +1995,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.22.6.54827",
-              "templateHash": "10775503419002427646"
+              "version": "0.23.1.45101",
+              "templateHash": "17152541334253964982"
             },
             "name": "Automation Account Software Update Configurations",
             "description": "This module deploys an Azure Automation Account Software Update Configuration.",
@@ -2493,8 +2493,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.22.6.54827",
-              "templateHash": "12078057657290521609"
+              "version": "0.23.1.45101",
+              "templateHash": "6873008238043407177"
             },
             "name": "Private Endpoints",
             "description": "This module deploys a Private Endpoint.",
@@ -2896,8 +2896,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.22.6.54827",
-                      "templateHash": "16391702514342252839"
+                      "version": "0.23.1.45101",
+                      "templateHash": "17578977753131828304"
                     },
                     "name": "Private Endpoint Private DNS Zone Groups",
                     "description": "This module deploys a Private Endpoint Private DNS Zone Group.",

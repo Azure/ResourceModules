@@ -64,7 +64,7 @@ module testDeployment '../../../main.bicep' = [for iteration in [ 'init', 'idem'
     }
     publicNetworkAccess: 'Disabled'
     managedIdentities: {
-      userAssignedResourcesIds: [
+      userAssignedResourceIds: [
         nestedDependencies.outputs.managedIdentityResourceId
       ]
     }

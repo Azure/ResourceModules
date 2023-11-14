@@ -71,8 +71,10 @@ module testDeployment '../../../main.bicep' = {
     defaultDataLakeStorageFilesystem: nestedDependencies.outputs.storageContainerName
     sqlAdministratorLogin: 'synwsadmin'
     initialWorkspaceAdminObjectID: nestedDependencies.outputs.managedIdentityPrincipalId
-    userAssignedIdentities: {
-      '${nestedDependencies.outputs.managedIdentityResourceId}': {}
+    managedIdentities: {
+      userAssignedResourceIds: [
+        nestedDependencies.outputs.managedIdentityResourceId
+      ]
     }
     roleAssignments: [
       {

@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.22.6.54827",
-      "templateHash": "15429197908359098698"
+      "version": "0.23.1.45101",
+      "templateHash": "17503518990299492663"
     },
     "name": "Digital Twins Instance Event Grid Endpoints",
     "description": "This module deploys a Digital Twins Instance Event Grid Endpoint.",

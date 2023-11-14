@@ -240,7 +240,7 @@ module applicationGateway 'br:bicep/modules/network.application-gateway:1.0.0' =
       name: 'myCustomLockName'
     }
     managedIdentities: {
-      userAssignedResourcesIds: [
+      userAssignedResourceIds: [
         '<managedIdentityResourceId>'
       ]
     }
@@ -705,7 +705,7 @@ module applicationGateway 'br:bicep/modules/network.application-gateway:1.0.0' =
     },
     "managedIdentities": {
       "value": {
-        "userAssignedResourcesIds": [
+        "userAssignedResourceIds": [
           "<managedIdentityResourceId>"
         ]
       }
@@ -1174,7 +1174,7 @@ module applicationGateway 'br:bicep/modules/network.application-gateway:1.0.0' =
       name: 'myCustomLockName'
     }
     managedIdentities: {
-      userAssignedResourcesIds: [
+      userAssignedResourceIds: [
         '<managedIdentityResourceId>'
       ]
     }
@@ -1639,7 +1639,7 @@ module applicationGateway 'br:bicep/modules/network.application-gateway:1.0.0' =
     },
     "managedIdentities": {
       "value": {
-        "userAssignedResourcesIds": [
+        "userAssignedResourceIds": [
           "<managedIdentityResourceId>"
         ]
       }
@@ -2257,9 +2257,9 @@ The managed identity definition for this resource.
 
 | Name | Required | Type | Description |
 | :-- | :-- | :--| :-- |
-| [`userAssignedResourcesIds`](#parameter-managedidentitiesuserassignedresourcesids) | Yes | array | Optional. The resource ID(s) to assign to the resource. |
+| [`userAssignedResourceIds`](#parameter-managedidentitiesuserassignedresourceids) | Yes | array | Optional. The resource ID(s) to assign to the resource. |
 
-### Parameter: `managedIdentities.userAssignedResourcesIds`
+### Parameter: `managedIdentities.userAssignedResourceIds`
 
 Optional. The resource ID(s) to assign to the resource.
 

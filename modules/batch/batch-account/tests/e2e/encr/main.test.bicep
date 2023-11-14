@@ -78,7 +78,7 @@ module testDeployment '../../../main.bicep' = [for iteration in [ 'init', 'idem'
     storageAccessIdentity: nestedDependencies.outputs.managedIdentityResourceId
     storageAuthenticationMode: 'BatchAccountManagedIdentity'
     managedIdentities: {
-      userAssignedResourcesIds: [
+      userAssignedResourceIds: [
         nestedDependencies.outputs.managedIdentityResourceId
       ]
     }

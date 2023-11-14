@@ -162,10 +162,10 @@ param diagnosticSettings diagnosticSettingType
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-var formattedUserAssignedIdentities = reduce(map((managedIdentities.?userAssignedResourcesIds ?? []), (id) => { '${id}': {} }), {}, (cur, next) => union(cur, next)) // Converts the flat array to an object like { '${id1}': {}, '${id2}': {} }
+var formattedUserAssignedIdentities = reduce(map((managedIdentities.?userAssignedResourceIds ?? []), (id) => { '${id}': {} }), {}, (cur, next) => union(cur, next)) // Converts the flat array to an object like { '${id1}': {}, '${id2}': {} }
 
 var identity = !empty(managedIdentities) ? {
-  type: !empty(managedIdentities.?userAssignedResourcesIds ?? {}) ? 'UserAssigned' : null
+  type: !empty(managedIdentities.?userAssignedResourceIds ?? {}) ? 'UserAssigned' : null
   userAssignedIdentities: !empty(formattedUserAssignedIdentities) ? formattedUserAssignedIdentities : null
 } : null
 
@@ -372,7 +372,7 @@ output location string = flexibleServer.location
 
 type managedIdentitiesType = {
   @description('Optional. The resource ID(s) to assign to the resource.')
-  userAssignedResourcesIds: string[]
+  userAssignedResourceIds: string[]
 }?
 
 type lockType = {

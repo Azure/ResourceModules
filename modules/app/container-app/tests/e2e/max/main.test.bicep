@@ -66,7 +66,7 @@ module testDeployment '../../../main.bicep' = [for iteration in [ 'init', 'idem'
       name: 'myCustomLockName'
     }
     managedIdentities: {
-      userAssignedResourcesIds: [
+      userAssignedResourceIds: [
         nestedDependencies.outputs.managedIdentityResourceId
       ]
     }

@@ -82,7 +82,7 @@ module testDeployment '../../../main.bicep' = [for iteration in [ 'init', 'idem'
     ]
     softDeleteRetentionInDays: 1
     managedIdentities: {
-      userAssignedResourcesIds: [
+      userAssignedResourceIds: [
         nestedDependencies.outputs.managedIdentityResourceId
       ]
     }
