@@ -5,8 +5,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.22.6.54827",
-      "templateHash": "14947280208542929227"
+      "version": "0.23.1.45101",
+      "templateHash": "10325694451607731112"
     },
     "name": "DevTest Labs",
     "description": "This module deploys a DevTest Lab.",
@@ -16,7 +16,7 @@
     "managedIdentitiesType": {
       "type": "object",
       "properties": {
-        "userAssignedResourcesIds": {
+        "userAssignedResourceIds": {
           "type": "array",
           "items": {
             "type": "string"
@@ -351,8 +351,8 @@
   },
   "variables": {
     "enableReferencedModulesTelemetry": false,
-    "formattedUserAssignedIdentities": "[reduce(map(coalesce(tryGet(parameters('managedIdentities'), 'userAssignedResourcesIds'), createArray()), lambda('id', createObject(format('{0}', lambdaVariables('id')), createObject()))), createObject(), lambda('cur', 'next', union(lambdaVariables('cur'), lambdaVariables('next'))))]",
-    "identity": "[if(not(empty(parameters('managedIdentities'))), createObject('type', if(not(empty(coalesce(tryGet(parameters('managedIdentities'), 'userAssignedResourcesIds'), createObject()))), 'SystemAssigned,UserAssigned', 'SystemAssigned'), 'userAssignedIdentities', if(not(empty(variables('formattedUserAssignedIdentities'))), variables('formattedUserAssignedIdentities'), null())), null())]",
+    "formattedUserAssignedIdentities": "[reduce(map(coalesce(tryGet(parameters('managedIdentities'), 'userAssignedResourceIds'), createArray()), lambda('id', createObject(format('{0}', lambdaVariables('id')), createObject()))), createObject(), lambda('cur', 'next', union(lambdaVariables('cur'), lambdaVariables('next'))))]",
+    "identity": "[if(not(empty(parameters('managedIdentities'))), createObject('type', if(not(empty(coalesce(tryGet(parameters('managedIdentities'), 'userAssignedResourceIds'), createObject()))), 'SystemAssigned,UserAssigned', 'SystemAssigned'), 'userAssignedIdentities', if(not(empty(variables('formattedUserAssignedIdentities'))), variables('formattedUserAssignedIdentities'), null())), null())]",
     "formattedManagementIdentities": "[if(not(empty(parameters('managementIdentitiesResourceIds'))), reduce(map(coalesce(parameters('managementIdentitiesResourceIds'), createArray()), lambda('id', createObject(format('{0}', lambdaVariables('id')), createObject()))), createObject(), lambda('cur', 'next', union(lambdaVariables('cur'), lambdaVariables('next')))), createObject())]",
     "builtInRoleNames": {
       "Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]",
@@ -483,8 +483,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.22.6.54827",
-              "templateHash": "8382075673072622254"
+              "version": "0.23.1.45101",
+              "templateHash": "15407797032940609921"
             },
             "name": "DevTest Lab Virtual Networks",
             "description": "This module deploys a DevTest Lab Virtual Network.\r\n\r\nLab virtual machines must be deployed into a virtual network. This resource type allows configuring the virtual network and subnet settings used for the lab virtual machines.",
@@ -656,8 +656,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.22.6.54827",
-              "templateHash": "7402281637422771358"
+              "version": "0.23.1.45101",
+              "templateHash": "9914622679648067397"
             },
             "name": "DevTest Lab Policy Sets Policies",
             "description": "This module deploys a DevTest Lab Policy Sets Policy.\r\n\r\nDevTest lab policies are used to modify the lab settings such as only allowing certain VM Size SKUs, marketplace image types, number of VMs allowed per user and other settings.",
@@ -861,8 +861,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.22.6.54827",
-              "templateHash": "10592511541548002212"
+              "version": "0.23.1.45101",
+              "templateHash": "12981849767656574818"
             },
             "name": "DevTest Lab Schedules",
             "description": "This module deploys a DevTest Lab Schedule.\r\n\r\nLab schedules are used to modify the settings for auto-shutdown, auto-start for lab virtual machines.",
@@ -1085,8 +1085,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.22.6.54827",
-              "templateHash": "5225332129791836269"
+              "version": "0.23.1.45101",
+              "templateHash": "18307130406875558192"
             },
             "name": "DevTest Lab Notification Channels",
             "description": "This module deploys a DevTest Lab Notification Channel.\r\n\r\nNotification channels are used by the schedule resource type in order to send notifications or events to email addresses and/or webhooks.",
@@ -1269,8 +1269,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.22.6.54827",
-              "templateHash": "12165020180713564819"
+              "version": "0.23.1.45101",
+              "templateHash": "2347337632859394324"
             },
             "name": "DevTest Lab Artifact Sources",
             "description": "This module deploys a DevTest Lab Artifact Source.\r\n\r\nAn artifact source allows you to create custom artifacts for the VMs in the lab, or use Azure Resource Manager templates to create a custom test environment. You must add a private Git repository for the artifacts or Resource Manager templates that your team creates. The repository can be hosted on GitHub or on Azure DevOps Services.",
@@ -1485,8 +1485,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.22.6.54827",
-              "templateHash": "12104430168487418019"
+              "version": "0.23.1.45101",
+              "templateHash": "12516166788941938286"
             },
             "name": "DevTest Lab Costs",
             "description": "This module deploys a DevTest Lab Cost.\r\n\r\nManage lab costs by setting a spending target that can be viewed in the Monthly Estimated Cost Trend chart. DevTest Labs can send a notification when spending reaches the specified target threshold.",
@@ -1789,13 +1789,6 @@
     }
   },
   "outputs": {
-    "systemAssignedPrincipalId": {
-      "type": "string",
-      "metadata": {
-        "description": "The principal ID of the system assigned identity."
-      },
-      "value": "[reference('lab', '2018-10-15-preview', 'full').identity.principalId]"
-    },
     "uniqueIdentifier": {
       "type": "string",
       "metadata": {

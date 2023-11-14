@@ -151,7 +151,7 @@ module lab 'br:bicep/modules/dev-test-lab.lab:1.0.0' = {
       name: 'myCustomLockName'
     }
     managedIdentities: {
-      userAssignedResourcesIds: [
+      userAssignedResourceIds: [
         '<managedIdentityResourceId>'
       ]
     }
@@ -426,7 +426,7 @@ module lab 'br:bicep/modules/dev-test-lab.lab:1.0.0' = {
     },
     "managedIdentities": {
       "value": {
-        "userAssignedResourcesIds": [
+        "userAssignedResourceIds": [
           "<managedIdentityResourceId>"
         ]
       }
@@ -693,7 +693,7 @@ module lab 'br:bicep/modules/dev-test-lab.lab:1.0.0' = {
       name: 'myCustomLockName'
     }
     managedIdentities: {
-      userAssignedResourcesIds: [
+      userAssignedResourceIds: [
         '<managedIdentityResourceId>'
       ]
     }
@@ -968,7 +968,7 @@ module lab 'br:bicep/modules/dev-test-lab.lab:1.0.0' = {
     },
     "managedIdentities": {
       "value": {
-        "userAssignedResourcesIds": [
+        "userAssignedResourceIds": [
           "<managedIdentityResourceId>"
         ]
       }
@@ -1385,9 +1385,9 @@ The managed identity definition for this resource.
 
 | Name | Required | Type | Description |
 | :-- | :-- | :--| :-- |
-| [`userAssignedResourcesIds`](#parameter-managedidentitiesuserassignedresourcesids) | Yes | array | Optional. The resource ID(s) to assign to the resource. |
+| [`userAssignedResourceIds`](#parameter-managedidentitiesuserassignedresourceids) | Yes | array | Optional. The resource ID(s) to assign to the resource. |
 
-### Parameter: `managedIdentities.userAssignedResourcesIds`
+### Parameter: `managedIdentities.userAssignedResourceIds`
 
 Optional. The resource ID(s) to assign to the resource.
 
@@ -1561,7 +1561,6 @@ Resource Group allocation for virtual machines. If left empty, virtual machines 
 | `resourceGroupName` | string | The resource group the lab was deployed into. |
 | `resourceId` | string | The resource ID of the lab. |
 | `systemAssignedMIPrincipalId` | string | The principal ID of the system assigned identity. |
-| `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
 | `uniqueIdentifier` | string | The unique identifier for the lab. Used to track tags that the lab applies to each resource that it creates. |
 
 ## Cross-referenced modules
