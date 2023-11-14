@@ -147,10 +147,10 @@ This section provides an overview of the library's feature set.
 | 132 | virtual-machine-images<p>image-template | [![VirtualMachineImages - ImageTemplates](https://github.com/Azure/ResourceModules/workflows/VirtualMachineImages%20-%20ImageTemplates/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.virtualmachineimages.imagetemplates.yml) |  |  |  |  |  |  | [L1:1, L2:1, L3:3] | 216 |
 | 133 | web<p>connection | [![Web - Connections](https://github.com/Azure/ResourceModules/workflows/Web%20-%20Connections/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.web.connections.yml) |  |  |  |  |  |  | [L1:1, L2:1, L3:2] | 118 |
 | 134 | web<p>hosting-environment | [![Web - HostingEnvironments](https://github.com/Azure/ResourceModules/workflows/Web%20-%20HostingEnvironments/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.web.hostingenvironments.yml) |  |  |  |  |  |  | [L1:3, L2:1, L3:2] | 262 |
-| 135 | web<p>serverfarm | [![Web - Serverfarms](https://github.com/Azure/ResourceModules/workflows/Web%20-%20Serverfarms/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.web.serverfarms.yml) |  |  |  |  |  |  | [L1:1, L2:1, L3:2] | 194 |
+| 135 | web<p>serverfarm | [![Web - Serverfarms](https://github.com/Azure/ResourceModules/workflows/Web%20-%20Serverfarms/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.web.serverfarms.yml) |  |  |  |  |  |  | [L1:1, L2:1, L3:2] | 184 |
 | 136 | web<p>site | [![Web - Sites](https://github.com/Azure/ResourceModules/workflows/Web%20-%20Sites/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.web.sites.yml) |  |  |  |  |  |  | [L1:6, L2:6, L3:5] | 455 |
 | 137 | web<p>static-site | [![Web - StaticSites](https://github.com/Azure/ResourceModules/workflows/Web%20-%20StaticSites/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.web.staticsites.yml) |  |  |  |  |  |  | [L1:4, L2:1, L3:3] | 284 |
-| Sum | | | 0 | 0 | 1 | 0 | 0 | 2 | 981 | 29854 |
+| Sum | | | 0 | 0 | 1 | 0 | 0 | 2 | 981 | 29844 |
 
 ## Legend
 
