@@ -90,5 +90,5 @@ type managedIdentitiesType = {
   systemAssigned: bool?
 
   @description('Optional. The resource ID(s) to assign to the resource.')
-  userAssignedResourcesIds: string[]?
+  userAssignedResourceIds: string[]?
 }?

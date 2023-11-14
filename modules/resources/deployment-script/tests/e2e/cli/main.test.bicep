@@ -59,7 +59,7 @@ module testDeployment '../../../main.bicep' = {
     storageAccountResourceId: nestedDependencies.outputs.storageAccountResourceId
     timeout: 'PT30M'
     managedIdentities: {
-      userAssignedResourcesIds: [
+      userAssignedResourceIds: [
         nestedDependencies.outputs.managedIdentityResourceId
       ]
     }

@@ -206,7 +206,7 @@ module testDeployment '../../../main.bicep' = {
     ]
     managedIdentities: {
       systemAssigned: true
-      userAssignedResourcesIds: [
+      userAssignedResourceIds: [
         nestedDependencies.outputs.managedIdentityResourceId
       ]
     }
