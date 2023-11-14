@@ -5,8 +5,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.22.6.54827",
-      "templateHash": "14384863342174130916"
+      "version": "0.23.1.45101",
+      "templateHash": "17577108209638713488"
     },
     "name": "Maintenance Configurations",
     "description": "This module deploys a Maintenance Configuration.",
