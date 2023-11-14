@@ -64,7 +64,7 @@ module testDeployment '../../../main.bicep' = [for iteration in [ 'init', 'idem'
     storageAccountResourceId: nestedDependencies.outputs.storageAccountResourceId
     timeout: 'PT30M'
     managedIdentities: {
-      userAssignedResourcesIds: [
+      userAssignedResourceIds: [
         nestedDependencies.outputs.managedIdentityResourceId
       ]
     }

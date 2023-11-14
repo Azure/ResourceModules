@@ -157,7 +157,7 @@ module testDeployment '../../../main.bicep' = [for iteration in [ 'init', 'idem'
     storageSizeInGB: 32
     managedIdentities: {
       systemAssigned: true
-      userAssignedResourcesIds: [
+      userAssignedResourceIds: [
         nestedDependencies.outputs.managedIdentityResourceId
       ]
     }

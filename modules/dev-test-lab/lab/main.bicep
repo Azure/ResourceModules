@@ -116,10 +116,10 @@ param enableDefaultTelemetry bool = true
 
 var enableReferencedModulesTelemetry = false
 
-var formattedUserAssignedIdentities = reduce(map((managedIdentities.?userAssignedResourcesIds ?? []), (id) => { '${id}': {} }), {}, (cur, next) => union(cur, next)) // Converts the flat array to an object like { '${id1}': {}, '${id2}': {} }
+var formattedUserAssignedIdentities = reduce(map((managedIdentities.?userAssignedResourceIds ?? []), (id) => { '${id}': {} }), {}, (cur, next) => union(cur, next)) // Converts the flat array to an object like { '${id1}': {}, '${id2}': {} }
 
 var identity = !empty(managedIdentities) ? {
-  type: !empty(managedIdentities.?userAssignedResourcesIds ?? {}) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned'
+  type: !empty(managedIdentities.?userAssignedResourceIds ?? {}) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned'
   userAssignedIdentities: !empty(formattedUserAssignedIdentities) ? formattedUserAssignedIdentities : null
 } : any(null)
 
@@ -303,9 +303,6 @@ resource lab_roleAssignments 'Microsoft.Authorization/roleAssignments@2022-04-01
   scope: lab
 }]
 
-@description('The principal ID of the system assigned identity.')
-output systemAssignedPrincipalId string = lab.identity.principalId
-
 @description('The unique identifier for the lab. Used to track tags that the lab applies to each resource that it creates.')
 output uniqueIdentifier string = lab.properties.uniqueIdentifier
 
@@ -330,7 +327,7 @@ output location string = lab.location
 
 type managedIdentitiesType = {
   @description('Optional. The resource ID(s) to assign to the resource.')
-  userAssignedResourcesIds: string[]
+  userAssignedResourceIds: string[]
 }?
 
 type lockType = {

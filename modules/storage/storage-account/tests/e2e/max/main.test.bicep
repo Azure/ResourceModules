@@ -266,7 +266,7 @@ module testDeployment '../../../main.bicep' = [for iteration in [ 'init', 'idem'
     sasExpirationPeriod: '180.00:00:00'
     managedIdentities: {
       systemAssigned: true
-      userAssignedResourcesIds: [
+      userAssignedResourceIds: [
         nestedDependencies.outputs.managedIdentityResourceId
       ]
     }

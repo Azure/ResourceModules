@@ -115,6 +115,16 @@ module testDeployment '../../../main.bicep' = [for iteration in [ 'init', 'idem'
             }
           }
         ]
+        basicPublishingCredentialsPolicies: [
+          {
+            name: 'ftp'
+            allow: false
+          }
+          {
+            name: 'scm'
+            allow: false
+          }
+        ]
         roleAssignments: [
           {
             roleDefinitionIdOrName: 'Reader'
@@ -140,6 +150,14 @@ module testDeployment '../../../main.bicep' = [for iteration in [ 'init', 'idem'
       }
       {
         name: 'slot2'
+        basicPublishingCredentialsPolicies: [
+          {
+            name: 'ftp'
+          }
+          {
+            name: 'scm'
+          }
+        ]
       }
     ]
     privateEndpoints: [
@@ -173,18 +191,18 @@ module testDeployment '../../../main.bicep' = [for iteration in [ 'init', 'idem'
     }
     managedIdentities: {
       systemAssigned: true
-      userAssignedResourcesIds: [
+      userAssignedResourceIds: [
         nestedDependencies.outputs.managedIdentityResourceId
       ]
     }
     basicPublishingCredentialsPolicies: [
       {
         name: 'ftp'
-        allow: true
+        allow: false
       }
       {
         name: 'scm'
-        allow: true
+        allow: false
       }
 
     ]

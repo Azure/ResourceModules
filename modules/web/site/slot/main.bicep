@@ -134,6 +134,9 @@ param publicNetworkAccess string = ''
 ])
 param redundancyMode string = 'None'
 
+@description('Optional. The site publishing credential policy names which are associated with the site slot.')
+param basicPublishingCredentialsPolicies array = []
+
 @description('Optional. To enable accessing content over virtual network.')
 param vnetContentShareEnabled bool = false
 
@@ -146,10 +149,10 @@ param vnetRouteAllEnabled bool = false
 @description('Optional. Names of hybrid connection relays to connect app with.')
 param hybridConnectionRelays array = []
 
-var formattedUserAssignedIdentities = reduce(map((managedIdentities.?userAssignedResourcesIds ?? []), (id) => { '${id}': {} }), {}, (cur, next) => union(cur, next)) // Converts the flat array to an object like { '${id1}': {}, '${id2}': {} }
+var formattedUserAssignedIdentities = reduce(map((managedIdentities.?userAssignedResourceIds ?? []), (id) => { '${id}': {} }), {}, (cur, next) => union(cur, next)) // Converts the flat array to an object like { '${id1}': {}, '${id2}': {} }
 
 var identity = !empty(managedIdentities) ? {
-  type: (managedIdentities.?systemAssigned ?? false) ? (!empty(managedIdentities.?userAssignedResourcesIds ?? {}) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(managedIdentities.?userAssignedResourcesIds ?? {}) ? 'UserAssigned' : null)
+  type: (managedIdentities.?systemAssigned ?? false) ? (!empty(managedIdentities.?userAssignedResourceIds ?? {}) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(managedIdentities.?userAssignedResourceIds ?? {}) ? 'UserAssigned' : null)
   userAssignedIdentities: !empty(formattedUserAssignedIdentities) ? formattedUserAssignedIdentities : null
 } : null
 
@@ -243,6 +246,16 @@ module slot_authsettingsv2 'config--authsettingsv2/main.bicep' = if (!empty(auth
   }
 }
 
+module slot_basicPublishingCredentialsPolicies 'basic-publishing-credentials-policy/main.bicep' = [for (basicPublishingCredentialsPolicy, index) in basicPublishingCredentialsPolicies: {
+  name: '${uniqueString(deployment().name, location)}-Slot-Publish-Cred-${index}'
+  params: {
+    appName: app.name
+    slotName: slot.name
+    name: basicPublishingCredentialsPolicy.name
+    allow: contains(basicPublishingCredentialsPolicy, 'allow') ? basicPublishingCredentialsPolicy.allow : null
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+  }
+}]
 module slot_hybridConnectionRelays 'hybrid-connection-namespace/relay/main.bicep' = [for (hybridConnectionRelay, index) in hybridConnectionRelays: {
   name: '${uniqueString(deployment().name, location)}-Slot-HybridConnectionRelay-${index}'
   params: {
@@ -351,7 +364,7 @@ type managedIdentitiesType = {
   systemAssigned: bool?
 
   @description('Optional. The resource ID(s) to assign to the resource.')
-  userAssignedResourcesIds: string[]?
+  userAssignedResourceIds: string[]?
 }?
 
 type lockType = {
