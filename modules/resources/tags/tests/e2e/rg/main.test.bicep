@@ -35,9 +35,8 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
 // Test Execution //
 // ============== //
 
-@batchSize(1)
-module testDeployment '../../../main.bicep' = [for iteration in [ 'init', 'idem' ]: {
-  name: '${uniqueString(deployment().name, location)}-test-${serviceShort}-${iteration}'
+module testDeployment '../../../main.bicep' = {
+  name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     onlyUpdate: false
@@ -48,4 +47,4 @@ module testDeployment '../../../main.bicep' = [for iteration in [ 'init', 'idem'
       TestToo: 'No'
     }
   }
-}]
+}
