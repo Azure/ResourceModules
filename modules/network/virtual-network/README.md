@@ -1,6 +1,6 @@
 # Virtual Networks `[Microsoft.Network/virtualNetworks]`
 
-This module deploys a Virtual Network (VNET).
+This module deploys a Virtual Network (vNet).
 
 ## Navigation
 
@@ -666,7 +666,7 @@ module virtualNetwork 'br:bicep/modules/network.virtual-network:1.0.0' = {
 | Parameter | Type | Description |
 | :-- | :-- | :-- |
 | [`addressPrefixes`](#parameter-addressprefixes) | array | An Array of 1 or more IP Address Prefixes for the Virtual Network. |
-| [`name`](#parameter-name) | string | The Virtual Network (VNET) Name. |
+| [`name`](#parameter-name) | string | The Virtual Network (vNet) Name. |
 
 **Optional parameters**
 
@@ -871,7 +871,7 @@ Optional. Specify the name of lock.
 
 ### Parameter: `name`
 
-The Virtual Network (VNET) Name.
+The Virtual Network (vNet) Name.
 - Required: Yes
 - Type: string
 
