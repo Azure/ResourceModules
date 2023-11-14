@@ -15,18 +15,7 @@ param sku object
 
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
-/*
-@description('Optional. Kind of server OS.')
-@allowed([
-  'App'
-  'Elastic'
-  'FunctionApp'
-  'Windows'
-  'Linux'
-  ''
-])
-param kind string = ''
-*/
+
 @description('Conditional. Defaults to false when creating Windows/app App Service Plan. Required if creating a Linux App Service Plan and must be set to true.')
 param reserved bool = false
 
@@ -98,7 +87,6 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
 
 resource appServicePlan 'Microsoft.Web/serverfarms@2022-09-01' = {
   name: name
-  //kind: !empty(kind) ? kind : null
   location: location
   tags: tags
   sku: sku
