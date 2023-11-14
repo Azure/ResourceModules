@@ -5,8 +5,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.22.6.54827",
-      "templateHash": "9765196609767428090"
+      "version": "0.23.1.45101",
+      "templateHash": "16568387528687642838"
     },
     "name": "IP Groups",
     "description": "This module deploys an IP Group.",
