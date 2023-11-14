@@ -435,10 +435,11 @@ Enable telemetry via a Globally Unique Identifier (GUID).
 Kind of server OS.
 - Required: No
 - Type: string
-- Default: `'Windows'`
+- Default: `''`
 - Allowed:
   ```Bicep
   [
+    ''
     'App'
     'Elastic'
     'FunctionApp'
