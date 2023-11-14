@@ -72,7 +72,7 @@ module testDeployment '../../../main.bicep' = {
     sqlAdministratorLogin: 'synwsadmin'
     initialWorkspaceAdminObjectID: nestedDependencies.outputs.managedIdentityPrincipalId
     managedIdentities: {
-      userAssignedResourcesIds: [
+      userAssignedResourceIds: [
         nestedDependencies.outputs.managedIdentityResourceId
       ]
     }

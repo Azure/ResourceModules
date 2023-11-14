@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.23.1.45101",
-      "templateHash": "17402441205082083392"
+      "templateHash": "15054643166708760026"
     },
     "name": "Synapse Workspaces",
     "description": "This module deploys a Synapse Workspace.",
@@ -16,7 +16,7 @@
     "managedIdentitiesType": {
       "type": "object",
       "properties": {
-        "userAssignedResourcesIds": {
+        "userAssignedResourceIds": {
           "type": "array",
           "items": {
             "type": "string"
@@ -603,7 +603,7 @@
   },
   "variables": {
     "cmkUserAssignedIdentityAsArray": "[if(not(empty(coalesce(tryGet(parameters('customerManagedKey'), 'userAssignedIdentityResourceId'), createArray()))), createArray(tryGet(parameters('customerManagedKey'), 'userAssignedIdentityResourceId')), createArray())]",
-    "userAssignedIdentitiesUnion": "[if(not(empty(parameters('managedIdentities'))), union(coalesce(tryGet(parameters('managedIdentities'), 'userAssignedResourcesIds'), createArray()), variables('cmkUserAssignedIdentityAsArray')), variables('cmkUserAssignedIdentityAsArray'))]",
+    "userAssignedIdentitiesUnion": "[if(not(empty(parameters('managedIdentities'))), union(coalesce(tryGet(parameters('managedIdentities'), 'userAssignedResourceIds'), createArray()), variables('cmkUserAssignedIdentityAsArray')), variables('cmkUserAssignedIdentityAsArray'))]",
     "formattedUserAssignedIdentities": "[reduce(map(coalesce(variables('userAssignedIdentitiesUnion'), createArray()), lambda('id', createObject(format('{0}', lambdaVariables('id')), createObject()))), createObject(), lambda('cur', 'next', union(lambdaVariables('cur'), lambdaVariables('next'))))]",
     "identity": {
       "type": "[if(not(empty(variables('userAssignedIdentitiesUnion'))), 'SystemAssigned,UserAssigned', 'SystemAssigned')]",

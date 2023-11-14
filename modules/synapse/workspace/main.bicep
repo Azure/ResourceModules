@@ -95,7 +95,7 @@ param diagnosticSettings diagnosticSettingType
 
 var cmkUserAssignedIdentityAsArray = !empty(customerManagedKey.?userAssignedIdentityResourceId ?? []) ? [ customerManagedKey.?userAssignedIdentityResourceId ] : []
 
-var userAssignedIdentitiesUnion = !empty(managedIdentities) ? union(managedIdentities.?userAssignedResourcesIds ?? [], cmkUserAssignedIdentityAsArray) : cmkUserAssignedIdentityAsArray
+var userAssignedIdentitiesUnion = !empty(managedIdentities) ? union(managedIdentities.?userAssignedResourceIds ?? [], cmkUserAssignedIdentityAsArray) : cmkUserAssignedIdentityAsArray
 
 var formattedUserAssignedIdentities = reduce(map((userAssignedIdentitiesUnion ?? []), (id) => { '${id}': {} }), {}, (cur, next) => union(cur, next)) // Converts the flat array to an object like { '${id1}': {}, '${id2}': {} }
 
@@ -324,7 +324,7 @@ output location string = workspace.location
 
 type managedIdentitiesType = {
   @description('Optional. The resource ID(s) to assign to the resource.')
-  userAssignedResourcesIds: string[]
+  userAssignedResourceIds: string[]
 }?
 
 type lockType = {
