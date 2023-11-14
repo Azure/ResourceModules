@@ -158,7 +158,7 @@ module testDeployment '../../../main.bicep' = {
     ]
     privateDNSZone: nestedDependencies.outputs.privateDnsZoneResourceId
     managedIdentities: {
-      userAssignedResourcesIds: [
+      userAssignedResourceIds: [
         nestedDependencies.outputs.managedIdentityResourceId
       ]
     }

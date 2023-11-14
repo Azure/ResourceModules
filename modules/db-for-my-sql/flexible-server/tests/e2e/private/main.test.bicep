@@ -105,7 +105,7 @@ module testDeployment '../../../main.bicep' = [for iteration in [ 'init', 'idem'
     highAvailability: 'SameZone'
     storageAutoGrow: 'Enabled'
     managedIdentities: {
-      userAssignedResourcesIds: [
+      userAssignedResourceIds: [
         nestedDependencies.outputs.managedIdentityResourceId
       ]
     }

@@ -25,6 +25,7 @@ This module deploys a Web or Function App.
 | `Microsoft.Web/sites/config` | [2022-09-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/sites) |
 | `Microsoft.Web/sites/hybridConnectionNamespaces/relays` | [2022-09-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/2022-09-01/sites/hybridConnectionNamespaces/relays) |
 | `Microsoft.Web/sites/slots` | [2022-09-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/2022-09-01/sites/slots) |
+| `Microsoft.Web/sites/slots/basicPublishingCredentialsPolicies` | [2022-09-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/sites) |
 | `Microsoft.Web/sites/slots/config` | [2022-09-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/sites) |
 | `Microsoft.Web/sites/slots/hybridConnectionNamespaces/relays` | [2022-09-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/2022-09-01/sites/slots/hybridConnectionNamespaces/relays) |
 
@@ -163,7 +164,7 @@ module site 'br:bicep/modules/web.site:1.0.0' = {
     }
     managedIdentities: {
       systemAssigned: true
-      userAssignedResourcesIds: [
+      userAssignedResourceIds: [
         '<managedIdentityResourceId>'
       ]
     }
@@ -346,7 +347,7 @@ module site 'br:bicep/modules/web.site:1.0.0' = {
     "managedIdentities": {
       "value": {
         "systemAssigned": true,
-        "userAssignedResourcesIds": [
+        "userAssignedResourceIds": [
           "<managedIdentityResourceId>"
         ]
       }
@@ -472,11 +473,11 @@ module site 'br:bicep/modules/web.site:1.0.0' = {
     // Non-required parameters
     basicPublishingCredentialsPolicies: [
       {
-        allow: true
+        allow: false
         name: 'ftp'
       }
       {
-        allow: true
+        allow: false
         name: 'scm'
       }
     ]
@@ -508,7 +509,7 @@ module site 'br:bicep/modules/web.site:1.0.0' = {
     }
     managedIdentities: {
       systemAssigned: true
-      userAssignedResourcesIds: [
+      userAssignedResourceIds: [
         '<managedIdentityResourceId>'
       ]
     }
@@ -545,6 +546,16 @@ module site 'br:bicep/modules/web.site:1.0.0' = {
     }
     slots: [
       {
+        basicPublishingCredentialsPolicies: [
+          {
+            allow: false
+            name: 'ftp'
+          }
+          {
+            allow: false
+            name: 'scm'
+          }
+        ]
         diagnosticSettings: [
           {
             eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
@@ -592,6 +603,14 @@ module site 'br:bicep/modules/web.site:1.0.0' = {
         }
       }
       {
+        basicPublishingCredentialsPolicies: [
+          {
+            name: 'ftp'
+          }
+          {
+            name: 'scm'
+          }
+        ]
         name: 'slot2'
       }
     ]
@@ -628,11 +647,11 @@ module site 'br:bicep/modules/web.site:1.0.0' = {
     "basicPublishingCredentialsPolicies": {
       "value": [
         {
-          "allow": true,
+          "allow": false,
           "name": "ftp"
         },
         {
-          "allow": true,
+          "allow": false,
           "name": "scm"
         }
       ]
@@ -676,7 +695,7 @@ module site 'br:bicep/modules/web.site:1.0.0' = {
     "managedIdentities": {
       "value": {
         "systemAssigned": true,
-        "userAssignedResourcesIds": [
+        "userAssignedResourceIds": [
           "<managedIdentityResourceId>"
         ]
       }
@@ -725,6 +744,16 @@ module site 'br:bicep/modules/web.site:1.0.0' = {
     "slots": {
       "value": [
         {
+          "basicPublishingCredentialsPolicies": [
+            {
+              "allow": false,
+              "name": "ftp"
+            },
+            {
+              "allow": false,
+              "name": "scm"
+            }
+          ],
           "diagnosticSettings": [
             {
               "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
@@ -772,6 +801,14 @@ module site 'br:bicep/modules/web.site:1.0.0' = {
           }
         },
         {
+          "basicPublishingCredentialsPolicies": [
+            {
+              "name": "ftp"
+            },
+            {
+              "name": "scm"
+            }
+          ],
           "name": "slot2"
         }
       ]
@@ -1223,7 +1260,7 @@ The managed identity definition for this resource.
 | Name | Required | Type | Description |
 | :-- | :-- | :--| :-- |
 | [`systemAssigned`](#parameter-managedidentitiessystemassigned) | No | bool | Optional. Enables system assigned managed identity on the resource. |
-| [`userAssignedResourcesIds`](#parameter-managedidentitiesuserassignedresourcesids) | No | array | Optional. The resource ID(s) to assign to the resource. |
+| [`userAssignedResourceIds`](#parameter-managedidentitiesuserassignedresourceids) | No | array | Optional. The resource ID(s) to assign to the resource. |
 
 ### Parameter: `managedIdentities.systemAssigned`
 
@@ -1232,7 +1269,7 @@ Optional. Enables system assigned managed identity on the resource.
 - Required: No
 - Type: bool
 
-### Parameter: `managedIdentities.userAssignedResourcesIds`
+### Parameter: `managedIdentities.userAssignedResourceIds`
 
 Optional. The resource ID(s) to assign to the resource.
 
@@ -1637,7 +1674,7 @@ Virtual Network Route All enabled. This causes all outbound traffic to have Virt
 | `resourceId` | string | The resource ID of the site. |
 | `slotResourceIds` | array | The list of the slot resource ids. |
 | `slots` | array | The list of the slots. |
-| `slotSystemAssignedPrincipalIds` | array | The principal ID of the system assigned identity of slots. |
+| `slotSystemAssignedMIPrincipalIds` | array | The principal ID of the system assigned identity of slots. |
 | `systemAssignedMIPrincipalId` | string | The principal ID of the system assigned identity. |
 
 ## Cross-referenced modules

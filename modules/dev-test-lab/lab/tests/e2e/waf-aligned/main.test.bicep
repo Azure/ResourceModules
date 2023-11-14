@@ -96,7 +96,7 @@ module testDeployment '../../../main.bicep' = [for iteration in [ 'init', 'idem'
       markdown: 'DevTest Lab support text. <br> New line. It also supports Markdown'
     }
     managedIdentities: {
-      userAssignedResourcesIds: [
+      userAssignedResourceIds: [
         nestedDependencies.outputs.managedIdentityResourceId
       ]
     }

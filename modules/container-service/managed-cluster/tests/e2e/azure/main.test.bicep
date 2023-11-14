@@ -175,7 +175,7 @@ module testDeployment '../../../main.bicep' = {
     enableStorageProfileFileCSIDriver: true
     enableStorageProfileSnapshotController: true
     managedIdentities: {
-      userAssignedResourcesIds: [
+      userAssignedResourceIds: [
         nestedDependencies.outputs.managedIdentityResourceId
       ]
     }
