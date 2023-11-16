@@ -177,6 +177,11 @@ module testDeployment '../../main.bicep' = {
     enableAzureDefender: true
     enableKeyvaultSecretsProvider: true
     enablePodSecurityPolicy: false
+    enableAzureKeyVaultKms: true
+    keyVaultKms: {
+      keyId: nestedDependencies.outputs.keyUriWithVersion
+      keyVaultNetworkAccess: 'Public'
+    }
     lock: {
       kind: 'CanNotDelete'
       name: 'myCustomLockName'
@@ -184,7 +189,8 @@ module testDeployment '../../main.bicep' = {
     roleAssignments: [
       {
         roleDefinitionIdOrName: 'Reader'
-        principalId: nestedDependencies.outputs.managedIdentityPrincipalId
+        principalId: nestedDependencies.outputs.managedIdentityPrincipalId
+
         principalType: 'ServicePrincipal'
       }
     ]
@@ -253,4 +259,3 @@ module testDeployment '../../main.bicep' = {
     }
   }
 }
-
