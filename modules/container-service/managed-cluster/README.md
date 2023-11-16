@@ -130,6 +130,7 @@ module managedCluster 'br:bicep/modules/container-service.managed-cluster:1.0.0'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     diskEncryptionSetID: '<diskEncryptionSetID>'
     enableAzureDefender: true
+    enableAzureKeyVaultKms: true
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     enableKeyvaultSecretsProvider: true
     enableOidcIssuerProfile: true
@@ -199,6 +200,10 @@ module managedCluster 'br:bicep/modules/container-service.managed-cluster:1.0.0'
       kubeletidentity: {
         resourceId: '<resourceId>'
       }
+    }
+    keyVaultKms: {
+      keyId: '<keyId>'
+      keyVaultNetworkAccess: 'Public'
     }
     lock: {
       kind: 'CanNotDelete'
@@ -345,6 +350,9 @@ module managedCluster 'br:bicep/modules/container-service.managed-cluster:1.0.0'
     "enableAzureDefender": {
       "value": true
     },
+    "enableAzureKeyVaultKms": {
+      "value": true
+    },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     },
@@ -435,6 +443,12 @@ module managedCluster 'br:bicep/modules/container-service.managed-cluster:1.0.0'
         "kubeletidentity": {
           "resourceId": "<resourceId>"
         }
+      }
+    },
+    "keyVaultKms": {
+      "value": {
+        "keyId": "<keyId>",
+        "keyVaultNetworkAccess": "Public"
       }
     },
     "lock": {
