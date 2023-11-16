@@ -1073,6 +1073,7 @@ module managedCluster 'br:bicep/modules/container-service.managed-cluster:1.0.0'
 | :-- | :-- | :-- |
 | [`aksServicePrincipalProfile`](#parameter-aksserviceprincipalprofile) | object | Information about a service principal identity for the cluster to use for manipulating Azure APIs. Required if no managed identities are assigned to the cluster. |
 | [`appGatewayResourceId`](#parameter-appgatewayresourceid) | string | Specifies the resource ID of connected application gateway. Required if `ingressApplicationGatewayEnabled` is set to `true`. |
+| [`keyVaultKms`](#parameter-keyvaultkms) | object | Object that contains the 'keyId', 'keyVaultNetworkAccess' and 'keyVaultResourceId' to enable Key Management Service. Required if enableAzureKeyVaultKms is set to true. |
 
 **Optional parameters**
 
@@ -1123,6 +1124,7 @@ module managedCluster 'br:bicep/modules/container-service.managed-cluster:1.0.0'
 | [`dnsServiceIP`](#parameter-dnsserviceip) | string | Specifies the IP address assigned to the Kubernetes DNS service. It must be within the Kubernetes service address range specified in serviceCidr. |
 | [`dnsZoneResourceId`](#parameter-dnszoneresourceid) | string | Specifies the resource ID of connected DNS zone. It will be ignored if `webApplicationRoutingEnabled` is set to `false`. |
 | [`enableAzureDefender`](#parameter-enableazuredefender) | bool | Whether to enable Azure Defender. |
+| [`enableAzureKeyVaultKms`](#parameter-enableazurekeyvaultkms) | bool | Whether to enable Key Management Service. |
 | [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
 | [`enableDnsZoneContributorRoleAssignment`](#parameter-enablednszonecontributorroleassignment) | bool | Specifies whether assing the DNS zone contributor role to the cluster service principal. It will be ignored if `webApplicationRoutingEnabled` is set to `false` or `dnsZoneResourceId` not provided. |
 | [`enableKeyvaultSecretsProvider`](#parameter-enablekeyvaultsecretsprovider) | bool | Specifies whether the KeyvaultSecretsProvider add-on is enabled or not. |
@@ -1510,6 +1512,13 @@ Whether to enable Azure Defender.
 - Type: bool
 - Default: `False`
 
+### Parameter: `enableAzureKeyVaultKms`
+
+Whether to enable Key Management Service.
+- Required: No
+- Type: bool
+- Default: `False`
+
 ### Parameter: `enableDefaultTelemetry`
 
 Enable telemetry via a Globally Unique Identifier (GUID).
@@ -1650,6 +1659,13 @@ Specifies whether the ingressApplicationGateway (AGIC) add-on is enabled or not.
 - Required: No
 - Type: bool
 - Default: `False`
+
+### Parameter: `keyVaultKms`
+
+Object that contains the 'keyId', 'keyVaultNetworkAccess' and 'keyVaultResourceId' to enable Key Management Service. Required if enableAzureKeyVaultKms is set to true.
+- Required: No
+- Type: object
+- Default: `{object}`
 
 ### Parameter: `kubeDashboardEnabled`
 
