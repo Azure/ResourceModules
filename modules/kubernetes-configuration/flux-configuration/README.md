@@ -17,7 +17,7 @@ This module deploys a Kubernetes Configuration Flux Configuration.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.KubernetesConfiguration/fluxConfigurations` | [2022-03-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.KubernetesConfiguration/2022-03-01/fluxConfigurations) |
+| `Microsoft.KubernetesConfiguration/fluxConfigurations` | [2023-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.KubernetesConfiguration/fluxConfigurations) |
 
 ## Usage examples
 
@@ -64,6 +64,12 @@ module fluxConfiguration 'br:bicep/modules/kubernetes-configuration.flux-configu
         dependsOn: []
         force: false
         path: './cluster-manifests'
+        postBuild: {
+          substitute: {
+            TEST_VAR1: 'foo'
+            TEST_VAR2: 'bar'
+          }
+        }
         prune: true
         syncIntervalInSeconds: 300
         timeoutInSeconds: 300
@@ -119,6 +125,12 @@ module fluxConfiguration 'br:bicep/modules/kubernetes-configuration.flux-configu
           "dependsOn": [],
           "force": false,
           "path": "./cluster-manifests",
+          "postBuild": {
+            "substitute": {
+              "TEST_VAR1": "foo",
+              "TEST_VAR2": "bar"
+            }
+          },
           "prune": true,
           "syncIntervalInSeconds": 300,
           "timeoutInSeconds": 300
