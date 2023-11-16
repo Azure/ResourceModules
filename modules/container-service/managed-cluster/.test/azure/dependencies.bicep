@@ -79,6 +79,13 @@ resource keyVault 'Microsoft.KeyVault/vaults@2022-11-01' = {
       kty: 'RSA'
     }
   }
+
+  resource kmskey 'keys@2022-07-01' = {
+    name: 'kmsEncryptionKey'
+    properties: {
+      kty: 'RSA'
+    }
+  }
 }
 
 resource diskEncryptionSet 'Microsoft.Compute/diskEncryptionSets@2022-07-02' = {
@@ -95,6 +102,16 @@ resource diskEncryptionSet 'Microsoft.Compute/diskEncryptionSets@2022-07-02' = {
       keyUrl: keyVault::key.properties.keyUriWithVersion
     }
     encryptionType: 'EncryptionAtRestWithCustomerKey'
+  }
+}
+
+resource keyPermissionsKeyVaultCryptoUser 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  name: guid('msi-${keyVault.id}-${location}-${managedIdentity.id}-KeyVault-Crypto-User-RoleAssignment')
+  scope: keyVault
+  properties: {
+    principalId: managedIdentity.properties.principalId
+    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '12338af0-0e69-4776-bea7-57ae8d297424') // KeyVault-Crypto-User
+    principalType: 'ServicePrincipal'
   }
 }
 
@@ -160,3 +177,6 @@ output dnsZoneResourceId string = dnsZone.id
 
 @description('The resource ID of the created Log Analytics Workspace.')
 output logAnalyticsWorkspaceResourceId string = logAnalyticsWorkspace.id
+
+@description('The uri including version of the KMS Key.')
+output keyUriWithVersion string = keyVault::kmskey.properties.keyUriWithVersion

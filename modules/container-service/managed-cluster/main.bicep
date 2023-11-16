@@ -387,6 +387,12 @@ param diagnosticMetricsToEnable array = [
 @description('Optional. The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings".')
 param diagnosticSettingsName string = ''
 
+@description('Optional. Whether to enable Key Management Service.')
+param enableAzureKeyVaultKms bool = false
+
+@description('Conditional. Object that contains the \'keyId\', \'keyVaultNetworkAccess\' and \'keyVaultResourceId\' to enable Key Management Service. Required if enableAzureKeyVaultKms is set to true.')
+param keyVaultKms object = {}
+
 var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs' && item != ''): {
   category: category
   enabled: true
@@ -596,6 +602,12 @@ resource managedCluster 'Microsoft.ContainerService/managedClusters@2023-07-02-p
       userAssignedIdentityExceptions: podIdentityProfileUserAssignedIdentityExceptions
     }
     securityProfile: {
+      azureKeyVaultKms: enableAzureKeyVaultKms ? {
+        enabled: enableAzureKeyVaultKms
+        keyId: keyVaultKms.keyId
+        keyVaultNetworkAccess: keyVaultKms.keyVaultNetworkAccess
+        keyVaultResourceId: keyVaultKms.keyVaultNetworkAccess == 'Private' ? keyVaultKms.keyVaultResourceId : null
+      } : null
       defender: enableAzureDefender ? {
         securityMonitoring: {
           enabled: enableAzureDefender

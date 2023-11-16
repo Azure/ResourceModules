@@ -5,8 +5,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.22.6.54827",
-      "templateHash": "9286702996832369711"
+      "version": "0.21.1.54444",
+      "templateHash": "5758086513280284891"
     },
     "name": "Azure Kubernetes Service (AKS) Managed Clusters",
     "description": "This module deploys an Azure Kubernetes Service (AKS) Managed Cluster.",
@@ -878,6 +878,20 @@
       "metadata": {
         "description": "Optional. The name of the diagnostic setting, if deployed. If left empty, it defaults to \"<resourceName>-diagnosticSettings\"."
       }
+    },
+    "enableAzureKeyVaultKms": {
+      "type": "bool",
+      "defaultValue": false,
+      "metadata": {
+        "description": "Optional. Whether to enable Key Management Service."
+      }
+    },
+    "keyVaultKms": {
+      "type": "object",
+      "defaultValue": {},
+      "metadata": {
+        "description": "Conditional. Object that contains the 'keyId', 'keyVaultNetworkAccess' and 'keyVaultResourceId' to enable Key Management Service. Required if enableAzureKeyVaultKms is set to true."
+      }
     }
   },
   "variables": {
@@ -1079,6 +1093,7 @@
           "userAssignedIdentityExceptions": "[parameters('podIdentityProfileUserAssignedIdentityExceptions')]"
         },
         "securityProfile": {
+          "azureKeyVaultKms": "[if(parameters('enableAzureKeyVaultKms'), createObject('enabled', parameters('enableAzureKeyVaultKms'), 'keyId', parameters('keyVaultKms').keyId, 'keyVaultNetworkAccess', parameters('keyVaultKms').keyVaultNetworkAccess, 'keyVaultResourceId', if(equals(parameters('keyVaultKms').keyVaultNetworkAccess, 'Private'), parameters('keyVaultKms').keyVaultResourceId, null())), null())]",
           "defender": "[if(parameters('enableAzureDefender'), createObject('securityMonitoring', createObject('enabled', parameters('enableAzureDefender')), 'logAnalyticsWorkspaceResourceId', if(not(empty(parameters('monitoringWorkspaceId'))), parameters('monitoringWorkspaceId'), null())), null())]",
           "workloadIdentity": "[if(parameters('enableWorkloadIdentity'), createObject('enabled', parameters('enableWorkloadIdentity')), null())]"
         },
@@ -1240,8 +1255,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.22.6.54827",
-              "templateHash": "14295298572292657386"
+              "version": "0.21.1.54444",
+              "templateHash": "4770361784914879415"
             },
             "name": "Azure Kubernetes Service (AKS) Managed Cluster Agent Pools",
             "description": "This module deploys an Azure Kubernetes Service (AKS) Managed Cluster Agent Pool.",
@@ -1683,8 +1698,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.22.6.54827",
-              "templateHash": "5002606439705018990"
+              "version": "0.21.1.54444",
+              "templateHash": "14913275975998013893"
             },
             "name": "Kubernetes Configuration Extensions",
             "description": "This module deploys a Kubernetes Configuration Extension.",
@@ -1846,8 +1861,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.22.6.54827",
-                      "templateHash": "6686104224333946371"
+                      "version": "0.21.1.54444",
+                      "templateHash": "11648869363176032755"
                     },
                     "name": "Kubernetes Configuration Flux Configurations",
                     "description": "This module deploys a Kubernetes Configuration Flux Configuration.",
