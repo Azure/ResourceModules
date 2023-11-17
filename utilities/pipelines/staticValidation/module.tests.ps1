@@ -1156,7 +1156,7 @@ Describe 'API version tests' -Tag 'ApiCheck' {
         return
     }
 
-    $ApiVersions = Get-Content -Path $apiSpecsFilePath -Raw | ConvertFrom-Json
+    $ApiVersions = Get-Content -Path $apiSpecsFilePath -Raw | ConvertFrom-Json -AsHashtable
     foreach ($moduleFolderPath in $moduleFolderPaths) {
 
         $moduleFolderName = $moduleFolderPath.Replace('\', '/').Split('/modules/')[1]
