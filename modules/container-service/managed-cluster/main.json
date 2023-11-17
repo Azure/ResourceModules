@@ -5,8 +5,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.23.1.45101",
-      "templateHash": "10758692765653328788"
+      "version": "0.21.1.54444",
+      "templateHash": "4058831928600365880"
     },
     "name": "Azure Kubernetes Service (AKS) Managed Clusters",
     "description": "This module deploys an Azure Kubernetes Service (AKS) Managed Cluster.",
@@ -864,6 +864,20 @@
         "description": "Optional. The diagnostic settings of the service."
       }
     },
+    "enableAzureKeyVaultKms": {
+      "type": "bool",
+      "defaultValue": false,
+      "metadata": {
+        "description": "Optional. Whether to enable Key Management Service."
+      }
+    },
+    "keyVaultKms": {
+      "type": "object",
+      "defaultValue": {},
+      "metadata": {
+        "description": "Conditional. Object that contains the 'keyId', 'keyVaultNetworkAccess' and 'keyVaultResourceId' to enable Key Management Service. Required if enableAzureKeyVaultKms is set to true."
+      }
+    },
     "omsAgentEnabled": {
       "type": "bool",
       "defaultValue": true,
@@ -938,62 +952,6 @@
       "metadata": {
         "description": "Optional. Identities associated with the cluster."
       }
-      <<<<<<< HEAD
-    },
-    "diagnosticLogCategoriesToEnable": {
-      "type": "array",
-      "defaultValue": [
-        "allLogs"
-      ],
-      "allowedValues": [
-        "",
-        "allLogs",
-        "kube-apiserver",
-        "kube-audit",
-        "kube-controller-manager",
-        "kube-scheduler",
-        "cluster-autoscaler",
-        "kube-audit-admin",
-        "guard"
-      ],
-      "metadata": {
-        "description": "Optional. The name of logs that will be streamed. \"allLogs\" includes all possible logs for the resource. Set to '' to disable log collection."
-      }
-    },
-    "diagnosticMetricsToEnable": {
-      "type": "array",
-      "defaultValue": [
-        "AllMetrics"
-      ],
-      "allowedValues": [
-        "AllMetrics"
-      ],
-      "metadata": {
-        "description": "Optional. The name of metrics that will be streamed."
-      }
-    },
-    "diagnosticSettingsName": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": "Optional. The name of the diagnostic setting, if deployed. If left empty, it defaults to \"<resourceName>-diagnosticSettings\"."
-      }
-    },
-    "enableAzureKeyVaultKms": {
-      "type": "bool",
-      "defaultValue": false,
-      "metadata": {
-        "description": "Optional. Whether to enable Key Management Service."
-      }
-    },
-    "keyVaultKms": {
-      "type": "object",
-      "defaultValue": {},
-      "metadata": {
-        "description": "Conditional. Object that contains the 'keyId', 'keyVaultNetworkAccess' and 'keyVaultResourceId' to enable Key Management Service. Required if enableAzureKeyVaultKms is set to true."
-      }
-      ======= >>>>>>>
-      main
     }
   },
   "variables": {
@@ -1342,12 +1300,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.23.1.45101",
-              <<<<<<< HEAD
-              "templateHash": "5488981271275128668"
-              =======
-              "templateHash": "13811832596066396545"
-              >>>>>>> main
+              "version": "0.21.1.54444",
+              "templateHash": "16583400731032415311"
             },
             "name": "Azure Kubernetes Service (AKS) Managed Cluster Agent Pools",
             "description": "This module deploys an Azure Kubernetes Service (AKS) Managed Cluster Agent Pool.",
@@ -1798,8 +1752,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.23.1.45101",
-              "templateHash": "18265527122738367400"
+              "version": "0.21.1.54444",
+              "templateHash": "14913275975998013893"
             },
             "name": "Kubernetes Configuration Extensions",
             "description": "This module deploys a Kubernetes Configuration Extension.",
@@ -1961,8 +1915,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.23.1.45101",
-                      "templateHash": "8985718648814286209"
+                      "version": "0.21.1.54444",
+                      "templateHash": "11648869363176032755"
                     },
                     "name": "Kubernetes Configuration Flux Configurations",
                     "description": "This module deploys a Kubernetes Configuration Flux Configuration.",
