@@ -66,14 +66,11 @@ param volumes array = []
 @description('Optional. The lock settings of the service.')
 param lock lockType
 
-@description('Optional. Enables system assigned managed identity on the resource.')
-param systemAssignedIdentity bool = false
-
-@description('Optional. The ID(s) to assign to the resource.')
-param userAssignedIdentities object = {}
+@description('Optional. The managed identity definition for this resource.')
+param managedIdentities managedIdentitiesType
 
 @description('Optional. Tags of the resource.')
-param tags object = {}
+param tags object?
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
@@ -85,23 +82,14 @@ param enableDefaultTelemetry bool = true
 ])
 param sku string = 'Standard'
 
-@description('Optional. The resource ID of a key vault to reference a customer managed key for encryption from.')
-param cMKKeyVaultResourceId string = ''
+@description('Optional. The customer managed key definition.')
+param customerManagedKey customerManagedKeyType
 
-@description('Optional. The name of the customer managed key to use for encryption.')
-param cMKKeyName string = ''
+var formattedUserAssignedIdentities = reduce(map((managedIdentities.?userAssignedResourceIds ?? []), (id) => { '${id}': {} }), {}, (cur, next) => union(cur, next)) // Converts the flat array to an object like { '${id1}': {}, '${id2}': {} }
 
-@description('Optional. The version of the customer managed key to reference for encryption. If not provided, the latest key version is used.')
-param cMKKeyVersion string = ''
-
-@description('Conditional. User assigned identity to use when fetching the customer managed key. Required if \'cMKKeyName\' is not empty.')
-param cMKUserAssignedIdentityResourceId string = ''
-
-var identityType = systemAssignedIdentity ? (!empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
-
-var identity = identityType != 'None' ? {
-  type: identityType
-  userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
+var identity = !empty(managedIdentities) ? {
+  type: (managedIdentities.?systemAssigned ?? false) ? (!empty(managedIdentities.?userAssignedResourceIds ?? {}) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(managedIdentities.?userAssignedResourceIds ?? {}) ? 'UserAssigned' : null)
+  userAssignedIdentities: !empty(formattedUserAssignedIdentities) ? formattedUserAssignedIdentities : null
 } : null
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
@@ -116,13 +104,18 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource cMKKeyVault 'Microsoft.KeyVault/vaults@2021-10-01' existing = if (!empty(cMKKeyVaultResourceId)) {
-  name: last(split((!empty(cMKKeyVaultResourceId) ? cMKKeyVaultResourceId : 'dummyVault'), '/'))!
-  scope: resourceGroup(split((!empty(cMKKeyVaultResourceId) ? cMKKeyVaultResourceId : '//'), '/')[2], split((!empty(cMKKeyVaultResourceId) ? cMKKeyVaultResourceId : '////'), '/')[4])
+resource cMKKeyVault 'Microsoft.KeyVault/vaults@2023-02-01' existing = if (!empty(customerManagedKey.?keyVaultResourceId)) {
+  name: last(split((customerManagedKey.?keyVaultResourceId ?? 'dummyVault'), '/'))
+  scope: resourceGroup(split((customerManagedKey.?keyVaultResourceId ?? '//'), '/')[2], split((customerManagedKey.?keyVaultResourceId ?? '////'), '/')[4])
 
-  resource cMKKey 'keys@2023-02-01' existing = if (!empty(cMKKeyName)) {
-    name: !empty(cMKKeyName) ? cMKKeyName : 'dummyKey'
+  resource cMKKey 'keys@2023-02-01' existing = if (!empty(customerManagedKey.?keyVaultResourceId) && !empty(customerManagedKey.?keyName)) {
+    name: customerManagedKey.?keyName ?? 'dummyKey'
   }
+}
+
+resource cMKUserAssignedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' existing = if (!empty(customerManagedKey.?userAssignedIdentityResourceId)) {
+  name: last(split(customerManagedKey.?userAssignedIdentityResourceId ?? 'dummyMsi', '/'))
+  scope: resourceGroup(split((customerManagedKey.?userAssignedIdentityResourceId ?? '//'), '/')[2], split((customerManagedKey.?userAssignedIdentityResourceId ?? '////'), '/')[4])
 }
 
 resource containergroup 'Microsoft.ContainerInstance/containerGroups@2022-09-01' = {
@@ -132,10 +125,10 @@ resource containergroup 'Microsoft.ContainerInstance/containerGroups@2022-09-01'
   tags: tags
   properties: union({
       containers: containers
-      encryptionProperties: !empty(cMKKeyName) ? {
-        identity: cMKUserAssignedIdentityResourceId
-        keyName: cMKKeyName
-        keyVersion: !empty(cMKKeyVersion) ? cMKKeyVersion : last(split(cMKKeyVault::cMKKey.properties.keyUriWithVersion, '/'))
+      encryptionProperties: !empty(customerManagedKey) ? {
+        identity: !empty(customerManagedKey.?userAssignedIdentityResourceId ?? '') ? cMKUserAssignedIdentity.id : null
+        keyName: customerManagedKey!.keyName
+        keyVersion: !empty(customerManagedKey.?keyVersion ?? '') ? customerManagedKey!.keyVersion : last(split(cMKKeyVault::cMKKey.properties.keyUriWithVersion, '/'))
         vaultBaseUrl: cMKKeyVault.properties.vaultUri
       } : null
       imageRegistryCredentials: imageRegistryCredentials
@@ -185,7 +178,7 @@ output resourceGroupName string = resourceGroup().name
 output iPv4Address string = containergroup.properties.ipAddress.ip
 
 @description('The principal ID of the system assigned identity.')
-output systemAssignedPrincipalId string = systemAssignedIdentity && contains(containergroup.identity, 'principalId') ? containergroup.identity.principalId : ''
+output systemAssignedMIPrincipalId string = (managedIdentities.?systemAssigned ?? false) && contains(containergroup.identity, 'principalId') ? containergroup.identity.principalId : ''
 
 @description('The location the resource was deployed into.')
 output location string = containergroup.location
@@ -194,10 +187,32 @@ output location string = containergroup.location
 //   Definitions   //
 // =============== //
 
+type managedIdentitiesType = {
+  @description('Optional. Enables system assigned managed identity on the resource.')
+  systemAssigned: bool?
+
+  @description('Optional. The resource ID(s) to assign to the resource.')
+  userAssignedResourceIds: string[]?
+}?
+
 type lockType = {
   @description('Optional. Specify the name of lock.')
   name: string?
 
   @description('Optional. Specify the type of lock.')
   kind: ('CanNotDelete' | 'ReadOnly' | 'None')?
+}?
+
+type customerManagedKeyType = {
+  @description('Required. The resource ID of a key vault to reference a customer managed key for encryption from.')
+  keyVaultResourceId: string
+
+  @description('Required. The name of the customer managed key to use for encryption.')
+  keyName: string
+
+  @description('Optional. The version of the customer managed key to reference for encryption. If not provided, using \'latest\'.')
+  keyVersion: string?
+
+  @description('Optional. User assigned identity to use when fetching the customer managed key. Required if no system assigned identity is available for use.')
+  userAssignedIdentityResourceId: string?
 }?

@@ -62,7 +62,14 @@ Specifies whether this published application can be launched with command-line a
 - Required: No
 - Type: string
 - Default: `'DoNotAllow'`
-- Allowed: `[Allow, DoNotAllow, Require]`
+- Allowed:
+  ```Bicep
+  [
+    'Allow'
+    'DoNotAllow'
+    'Require'
+  ]
+  ```
 
 ### Parameter: `description`
 

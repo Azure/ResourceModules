@@ -54,7 +54,15 @@ The name of the parent Log Analytics workspace. Required if the template is used
 Name of the link.
 - Required: Yes
 - Type: string
-- Allowed: `[Alerts, AzureWatson, CustomLogs, Query]`
+- Allowed:
+  ```Bicep
+  [
+    'Alerts'
+    'AzureWatson'
+    'CustomLogs'
+    'Query'
+  ]
+  ```
 
 ### Parameter: `resourceId`
 

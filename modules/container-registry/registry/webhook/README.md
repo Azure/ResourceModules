@@ -47,14 +47,23 @@ This module deploys an Azure Container Registry (ACR) Webhook.
 The list of actions that trigger the webhook to post notifications.
 - Required: No
 - Type: array
-- Default: `[chart_delete, chart_push, delete, push, quarantine]`
+- Default:
+  ```Bicep
+  [
+    'chart_delete'
+    'chart_push'
+    'delete'
+    'push'
+    'quarantine'
+  ]
+  ```
 
 ### Parameter: `customHeaders`
 
 Custom headers that will be added to the webhook notifications.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `enableDefaultTelemetry`
 
@@ -102,14 +111,19 @@ The status of the webhook at the time the operation was called.
 - Required: No
 - Type: string
 - Default: `'enabled'`
-- Allowed: `[disabled, enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'disabled'
+    'enabled'
+  ]
+  ```
 
 ### Parameter: `tags`
 
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 
 ## Outputs

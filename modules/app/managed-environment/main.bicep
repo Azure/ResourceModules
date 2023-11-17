@@ -12,7 +12,7 @@ param logAnalyticsWorkspaceResourceId string
 param location string = resourceGroup().location
 
 @description('Optional. Tags of the resource.')
-param tags object = {}
+param tags object?
 
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments roleAssignmentType
@@ -187,7 +187,7 @@ type roleAssignmentType = {
   principalId: string
 
   @description('Optional. The principal type of the assigned principal ID.')
-  principalType: ('ServicePrincipal' | 'Group' | 'User' | 'ForeignGroup' | 'Device' | null)?
+  principalType: ('ServicePrincipal' | 'Group' | 'User' | 'ForeignGroup' | 'Device')?
 
   @description('Optional. The description of the role assignment.')
   description: string?

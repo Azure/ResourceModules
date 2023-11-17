@@ -26,6 +26,7 @@ The following section provides usage examples for the module, which were used to
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/insights.metric-alert:1.0.0`.
 
 - [Using large parameter set](#example-1-using-large-parameter-set)
+- [WAF-aligned](#example-2-waf-aligned)
 
 ### Example 1: _Using large parameter set_
 
@@ -38,7 +39,7 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module metricAlert 'br:bicep/modules/insights.metric-alert:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-imacom'
+  name: '${uniqueString(deployment().name, location)}-test-imamax'
   params: {
     // Required parameters
     criterias: [
@@ -52,7 +53,7 @@ module metricAlert 'br:bicep/modules/insights.metric-alert:1.0.0' = {
         timeAggregation: 'Average'
       }
     ]
-    name: 'imacom001'
+    name: 'imamax001'
     // Non-required parameters
     actions: [
       '<actionGroupResourceId>'
@@ -61,9 +62,7 @@ module metricAlert 'br:bicep/modules/insights.metric-alert:1.0.0' = {
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     roleAssignments: [
       {
-        principalIds: [
-          '<managedIdentityPrincipalId>'
-        ]
+        principalId: '<principalId>'
         principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
@@ -107,7 +106,7 @@ module metricAlert 'br:bicep/modules/insights.metric-alert:1.0.0' = {
       ]
     },
     "name": {
-      "value": "imacom001"
+      "value": "imamax001"
     },
     // Non-required parameters
     "actions": {
@@ -124,9 +123,131 @@ module metricAlert 'br:bicep/modules/insights.metric-alert:1.0.0' = {
     "roleAssignments": {
       "value": [
         {
-          "principalIds": [
-            "<managedIdentityPrincipalId>"
-          ],
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    },
+    "targetResourceRegion": {
+      "value": "westeurope"
+    },
+    "targetResourceType": {
+      "value": "microsoft.compute/virtualmachines"
+    },
+    "windowSize": {
+      "value": "PT15M"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 2: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module metricAlert 'br:bicep/modules/insights.metric-alert:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-imawaf'
+  params: {
+    // Required parameters
+    criterias: [
+      {
+        criterionType: 'StaticThresholdCriterion'
+        metricName: 'Percentage CPU'
+        metricNamespace: 'microsoft.compute/virtualmachines'
+        name: 'HighCPU'
+        operator: 'GreaterThan'
+        threshold: '90'
+        timeAggregation: 'Average'
+      }
+    ]
+    name: 'imawaf001'
+    // Non-required parameters
+    actions: [
+      '<actionGroupResourceId>'
+    ]
+    alertCriteriaType: 'Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+    targetResourceRegion: 'westeurope'
+    targetResourceType: 'microsoft.compute/virtualmachines'
+    windowSize: 'PT15M'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "criterias": {
+      "value": [
+        {
+          "criterionType": "StaticThresholdCriterion",
+          "metricName": "Percentage CPU",
+          "metricNamespace": "microsoft.compute/virtualmachines",
+          "name": "HighCPU",
+          "operator": "GreaterThan",
+          "threshold": "90",
+          "timeAggregation": "Average"
+        }
+      ]
+    },
+    "name": {
+      "value": "imawaf001"
+    },
+    // Non-required parameters
+    "actions": {
+      "value": [
+        "<actionGroupResourceId>"
+      ]
+    },
+    "alertCriteriaType": {
+      "value": "Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria"
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
           "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
@@ -203,7 +324,14 @@ Maps to the 'odata.type' field. Specifies the type of the alert criteria.
 - Required: No
 - Type: string
 - Default: `'Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria'`
-- Allowed: `[Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria, Microsoft.Azure.Monitor.SingleResourceMultipleMetricCriteria, Microsoft.Azure.Monitor.WebtestLocationAvailabilityCriteria]`
+- Allowed:
+  ```Bicep
+  [
+    'Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria'
+    'Microsoft.Azure.Monitor.SingleResourceMultipleMetricCriteria'
+    'Microsoft.Azure.Monitor.WebtestLocationAvailabilityCriteria'
+  ]
+  ```
 
 ### Parameter: `alertDescription`
 
@@ -245,7 +373,16 @@ how often the metric alert is evaluated represented in ISO 8601 duration format.
 - Required: No
 - Type: string
 - Default: `'PT5M'`
-- Allowed: `[PT15M, PT1H, PT1M, PT30M, PT5M]`
+- Allowed:
+  ```Bicep
+  [
+    'PT15M'
+    'PT1H'
+    'PT1M'
+    'PT30M'
+    'PT5M'
+  ]
+  ```
 
 ### Parameter: `location`
 
@@ -265,14 +402,80 @@ The name of the alert.
 Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
 - Required: No
 - Type: array
-- Default: `[]`
+
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`condition`](#parameter-roleassignmentscondition) | No | string | Optional. The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container" |
+| [`conditionVersion`](#parameter-roleassignmentsconditionversion) | No | string | Optional. Version of the condition. |
+| [`delegatedManagedIdentityResourceId`](#parameter-roleassignmentsdelegatedmanagedidentityresourceid) | No | string | Optional. The Resource Id of the delegated managed identity resource. |
+| [`description`](#parameter-roleassignmentsdescription) | No | string | Optional. The description of the role assignment. |
+| [`principalId`](#parameter-roleassignmentsprincipalid) | Yes | string | Required. The principal ID of the principal (user/group/identity) to assign the role to. |
+| [`principalType`](#parameter-roleassignmentsprincipaltype) | No | string | Optional. The principal type of the assigned principal ID. |
+| [`roleDefinitionIdOrName`](#parameter-roleassignmentsroledefinitionidorname) | Yes | string | Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead. |
+
+### Parameter: `roleAssignments.condition`
+
+Optional. The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container"
+
+- Required: No
+- Type: string
+
+### Parameter: `roleAssignments.conditionVersion`
+
+Optional. Version of the condition.
+
+- Required: No
+- Type: string
+- Allowed: `[2.0]`
+
+### Parameter: `roleAssignments.delegatedManagedIdentityResourceId`
+
+Optional. The Resource Id of the delegated managed identity resource.
+
+- Required: No
+- Type: string
+
+### Parameter: `roleAssignments.description`
+
+Optional. The description of the role assignment.
+
+- Required: No
+- Type: string
+
+### Parameter: `roleAssignments.principalId`
+
+Required. The principal ID of the principal (user/group/identity) to assign the role to.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `roleAssignments.principalType`
+
+Optional. The principal type of the assigned principal ID.
+
+- Required: No
+- Type: string
+- Allowed: `[Device, ForeignGroup, Group, ServicePrincipal, User]`
+
+### Parameter: `roleAssignments.roleDefinitionIdOrName`
+
+Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead.
+
+- Required: Yes
+- Type: string
 
 ### Parameter: `scopes`
 
 the list of resource IDs that this metric alert is scoped to.
 - Required: No
 - Type: array
-- Default: `[[subscription().id]]`
+- Default:
+  ```Bicep
+  [
+    '[subscription().id]'
+  ]
+  ```
 
 ### Parameter: `severity`
 
@@ -280,14 +483,22 @@ The severity of the alert.
 - Required: No
 - Type: int
 - Default: `3`
-- Allowed: `[0, 1, 2, 3, 4]`
+- Allowed:
+  ```Bicep
+  [
+    0
+    1
+    2
+    3
+    4
+  ]
+  ```
 
 ### Parameter: `tags`
 
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `targetResourceRegion`
 
@@ -309,7 +520,19 @@ the period of time (in ISO 8601 duration format) that is used to monitor alert a
 - Required: No
 - Type: string
 - Default: `'PT15M'`
-- Allowed: `[P1D, PT12H, PT15M, PT1H, PT1M, PT30M, PT5M, PT6H]`
+- Allowed:
+  ```Bicep
+  [
+    'P1D'
+    'PT12H'
+    'PT15M'
+    'PT1H'
+    'PT1M'
+    'PT30M'
+    'PT5M'
+    'PT6H'
+  ]
+  ```
 
 
 ## Outputs

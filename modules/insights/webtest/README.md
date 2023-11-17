@@ -26,108 +26,11 @@ The following section provides usage examples for the module, which were used to
 
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/insights.webtest:1.0.0`.
 
-- [Using large parameter set](#example-1-using-large-parameter-set)
-- [Using only defaults](#example-2-using-only-defaults)
+- [Using only defaults](#example-1-using-only-defaults)
+- [Using large parameter set](#example-2-using-large-parameter-set)
+- [WAF-aligned](#example-3-waf-aligned)
 
-### Example 1: _Using large parameter set_
-
-This instance deploys the module with most of its features enabled.
-
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module webtest 'br:bicep/modules/insights.webtest:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-iwtcom'
-  params: {
-    // Required parameters
-    name: 'iwtcom001'
-    request: {
-      HttpVerb: 'GET'
-      RequestUrl: 'https://learn.microsoft.com/en-us/'
-    }
-    tags: {
-      'hidden-link:${nestedDependencies.outputs.appInsightResourceId}': 'Resource'
-      'hidden-title': 'This is visible in the resource name'
-    }
-    webTestName: 'wt$iwtcom001'
-    // Non-required parameters
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    locations: [
-      {
-        Id: 'emea-nl-ams-azr'
-      }
-    ]
-    lock: {
-      kind: 'CanNotDelete'
-      name: 'myCustomLockName'
-    }
-    syntheticMonitorId: 'iwtcom001'
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "iwtcom001"
-    },
-    "request": {
-      "value": {
-        "HttpVerb": "GET",
-        "RequestUrl": "https://learn.microsoft.com/en-us/"
-      }
-    },
-    "tags": {
-      "value": {
-        "hidden-link:${nestedDependencies.outputs.appInsightResourceId}": "Resource",
-        "hidden-title": "This is visible in the resource name"
-      }
-    },
-    "webTestName": {
-      "value": "wt$iwtcom001"
-    },
-    // Non-required parameters
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
-    "locations": {
-      "value": [
-        {
-          "Id": "emea-nl-ams-azr"
-        }
-      ]
-    },
-    "lock": {
-      "value": {
-        "kind": "CanNotDelete",
-        "name": "myCustomLockName"
-      }
-    },
-    "syntheticMonitorId": {
-      "value": "iwtcom001"
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-### Example 2: _Using only defaults_
+### Example 1: _Using only defaults_
 
 This instance deploys the module with the minimum set of required parameters.
 
@@ -199,6 +102,202 @@ module webtest 'br:bicep/modules/insights.webtest:1.0.0' = {
 </details>
 <p>
 
+### Example 2: _Using large parameter set_
+
+This instance deploys the module with most of its features enabled.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module webtest 'br:bicep/modules/insights.webtest:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-iwtmax'
+  params: {
+    // Required parameters
+    name: 'iwtmax001'
+    request: {
+      HttpVerb: 'GET'
+      RequestUrl: 'https://learn.microsoft.com/en-us/'
+    }
+    tags: {
+      'hidden-link:${nestedDependencies.outputs.appInsightResourceId}': 'Resource'
+      'hidden-title': 'This is visible in the resource name'
+    }
+    webTestName: 'wt$iwtmax001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    locations: [
+      {
+        Id: 'emea-nl-ams-azr'
+      }
+    ]
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    syntheticMonitorId: 'iwtmax001'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "iwtmax001"
+    },
+    "request": {
+      "value": {
+        "HttpVerb": "GET",
+        "RequestUrl": "https://learn.microsoft.com/en-us/"
+      }
+    },
+    "tags": {
+      "value": {
+        "hidden-link:${nestedDependencies.outputs.appInsightResourceId}": "Resource",
+        "hidden-title": "This is visible in the resource name"
+      }
+    },
+    "webTestName": {
+      "value": "wt$iwtmax001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "locations": {
+      "value": [
+        {
+          "Id": "emea-nl-ams-azr"
+        }
+      ]
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "syntheticMonitorId": {
+      "value": "iwtmax001"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 3: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module webtest 'br:bicep/modules/insights.webtest:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-iwtwaf'
+  params: {
+    // Required parameters
+    name: 'iwtwaf001'
+    request: {
+      HttpVerb: 'GET'
+      RequestUrl: 'https://learn.microsoft.com/en-us/'
+    }
+    tags: {
+      'hidden-link:${nestedDependencies.outputs.appInsightResourceId}': 'Resource'
+      'hidden-title': 'This is visible in the resource name'
+    }
+    webTestName: 'wt$iwtwaf001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    locations: [
+      {
+        Id: 'emea-nl-ams-azr'
+      }
+    ]
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    syntheticMonitorId: 'iwtwaf001'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "iwtwaf001"
+    },
+    "request": {
+      "value": {
+        "HttpVerb": "GET",
+        "RequestUrl": "https://learn.microsoft.com/en-us/"
+      }
+    },
+    "tags": {
+      "value": {
+        "hidden-link:${nestedDependencies.outputs.appInsightResourceId}": "Resource",
+        "hidden-title": "This is visible in the resource name"
+      }
+    },
+    "webTestName": {
+      "value": "wt$iwtwaf001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "locations": {
+      "value": [
+        {
+          "Id": "emea-nl-ams-azr"
+        }
+      ]
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "syntheticMonitorId": {
+      "value": "iwtwaf001"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
 
 ## Parameters
 
@@ -235,7 +334,7 @@ module webtest 'br:bicep/modules/insights.webtest:1.0.0' = {
 An XML configuration specification for a WebTest.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `description`
 
@@ -271,7 +370,14 @@ The kind of WebTest that this web test watches.
 - Required: No
 - Type: string
 - Default: `'standard'`
-- Allowed: `[multistep, ping, standard]`
+- Allowed:
+  ```Bicep
+  [
+    'multistep'
+    'ping'
+    'standard'
+  ]
+  ```
 
 ### Parameter: `location`
 
@@ -285,7 +391,26 @@ Location for all Resources.
 List of where to physically run the tests from to give global coverage for accessibility of your application.
 - Required: No
 - Type: array
-- Default: `[System.Management.Automation.OrderedHashtable, System.Management.Automation.OrderedHashtable, System.Management.Automation.OrderedHashtable, System.Management.Automation.OrderedHashtable, System.Management.Automation.OrderedHashtable]`
+- Default:
+  ```Bicep
+  [
+    {
+      Id: 'us-il-ch1-azr'
+    }
+    {
+      Id: 'us-fl-mia-edge'
+    }
+    {
+      Id: 'latam-br-gru-edge'
+    }
+    {
+      Id: 'apac-sg-sin-azr'
+    }
+    {
+      Id: 'emea-nl-ams-azr'
+    }
+  ]
+  ```
 
 ### Parameter: `lock`
 
@@ -338,7 +463,68 @@ Allow for retries should this WebTest fail.
 Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
 - Required: No
 - Type: array
-- Default: `[]`
+
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`condition`](#parameter-roleassignmentscondition) | No | string | Optional. The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container" |
+| [`conditionVersion`](#parameter-roleassignmentsconditionversion) | No | string | Optional. Version of the condition. |
+| [`delegatedManagedIdentityResourceId`](#parameter-roleassignmentsdelegatedmanagedidentityresourceid) | No | string | Optional. The Resource Id of the delegated managed identity resource. |
+| [`description`](#parameter-roleassignmentsdescription) | No | string | Optional. The description of the role assignment. |
+| [`principalId`](#parameter-roleassignmentsprincipalid) | Yes | string | Required. The principal ID of the principal (user/group/identity) to assign the role to. |
+| [`principalType`](#parameter-roleassignmentsprincipaltype) | No | string | Optional. The principal type of the assigned principal ID. |
+| [`roleDefinitionIdOrName`](#parameter-roleassignmentsroledefinitionidorname) | Yes | string | Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead. |
+
+### Parameter: `roleAssignments.condition`
+
+Optional. The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container"
+
+- Required: No
+- Type: string
+
+### Parameter: `roleAssignments.conditionVersion`
+
+Optional. Version of the condition.
+
+- Required: No
+- Type: string
+- Allowed: `[2.0]`
+
+### Parameter: `roleAssignments.delegatedManagedIdentityResourceId`
+
+Optional. The Resource Id of the delegated managed identity resource.
+
+- Required: No
+- Type: string
+
+### Parameter: `roleAssignments.description`
+
+Optional. The description of the role assignment.
+
+- Required: No
+- Type: string
+
+### Parameter: `roleAssignments.principalId`
+
+Required. The principal ID of the principal (user/group/identity) to assign the role to.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `roleAssignments.principalType`
+
+Optional. The principal type of the assigned principal ID.
+
+- Required: No
+- Type: string
+- Allowed: `[Device, ForeignGroup, Group, ServicePrincipal, User]`
+
+### Parameter: `roleAssignments.roleDefinitionIdOrName`
+
+Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead.
+
+- Required: Yes
+- Type: string
 
 ### Parameter: `syntheticMonitorId`
 
@@ -365,7 +551,7 @@ Seconds until this WebTest will timeout and fail.
 The collection of validation rule properties.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `webTestName`
 

@@ -35,11 +35,60 @@ The following section provides usage examples for the module, which were used to
 
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/relay.namespace:1.0.0`.
 
-- [Using large parameter set](#example-1-using-large-parameter-set)
-- [Using only defaults](#example-2-using-only-defaults)
+- [Using only defaults](#example-1-using-only-defaults)
+- [Using large parameter set](#example-2-using-large-parameter-set)
 - [Pe](#example-3-pe)
+- [WAF-aligned](#example-4-waf-aligned)
 
-### Example 1: _Using large parameter set_
+### Example 1: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module namespace 'br:bicep/modules/relay.namespace:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-rnmin'
+  params: {
+    // Required parameters
+    name: 'rnmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "rnmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 2: _Using large parameter set_
 
 This instance deploys the module with most of its features enabled.
 
@@ -50,10 +99,10 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module namespace 'br:bicep/modules/relay.namespace:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-rncom'
+  name: '${uniqueString(deployment().name, location)}-test-rnmax'
   params: {
     // Required parameters
-    name: 'rncom001'
+    name: 'rnmax001'
     // Non-required parameters
     authorizationRules: [
       {
@@ -72,19 +121,27 @@ module namespace 'br:bicep/modules/relay.namespace:1.0.0' = {
         ]
       }
     ]
-    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-    diagnosticEventHubName: '<diagnosticEventHubName>'
-    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    diagnosticSettings: [
+      {
+        eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+        eventHubName: '<eventHubName>'
+        metricCategories: [
+          {
+            category: 'AllMetrics'
+          }
+        ]
+        name: 'customSetting'
+        storageAccountResourceId: '<storageAccountResourceId>'
+        workspaceResourceId: '<workspaceResourceId>'
+      }
+    ]
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     hybridConnections: [
       {
-        name: 'rncomhc001'
+        name: 'rnmaxhc001'
         roleAssignments: [
           {
-            principalIds: [
-              '<managedIdentityPrincipalId>'
-            ]
+            principalId: '<principalId>'
             principalType: 'ServicePrincipal'
             roleDefinitionIdOrName: 'Reader'
           }
@@ -134,9 +191,7 @@ module namespace 'br:bicep/modules/relay.namespace:1.0.0' = {
     ]
     roleAssignments: [
       {
-        principalIds: [
-          '<managedIdentityPrincipalId>'
-        ]
+        principalId: '<principalId>'
         principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
@@ -149,13 +204,11 @@ module namespace 'br:bicep/modules/relay.namespace:1.0.0' = {
     }
     wcfRelays: [
       {
-        name: 'rncomwcf001'
+        name: 'rnmaxwcf001'
         relayType: 'NetTcp'
         roleAssignments: [
           {
-            principalIds: [
-              '<managedIdentityPrincipalId>'
-            ]
+            principalId: '<principalId>'
             principalType: 'ServicePrincipal'
             roleDefinitionIdOrName: 'Reader'
           }
@@ -180,7 +233,7 @@ module namespace 'br:bicep/modules/relay.namespace:1.0.0' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "rncom001"
+      "value": "rnmax001"
     },
     // Non-required parameters
     "authorizationRules": {
@@ -202,17 +255,21 @@ module namespace 'br:bicep/modules/relay.namespace:1.0.0' = {
         }
       ]
     },
-    "diagnosticEventHubAuthorizationRuleId": {
-      "value": "<diagnosticEventHubAuthorizationRuleId>"
-    },
-    "diagnosticEventHubName": {
-      "value": "<diagnosticEventHubName>"
-    },
-    "diagnosticStorageAccountId": {
-      "value": "<diagnosticStorageAccountId>"
-    },
-    "diagnosticWorkspaceId": {
-      "value": "<diagnosticWorkspaceId>"
+    "diagnosticSettings": {
+      "value": [
+        {
+          "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+          "eventHubName": "<eventHubName>",
+          "metricCategories": [
+            {
+              "category": "AllMetrics"
+            }
+          ],
+          "name": "customSetting",
+          "storageAccountResourceId": "<storageAccountResourceId>",
+          "workspaceResourceId": "<workspaceResourceId>"
+        }
+      ]
     },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
@@ -220,12 +277,10 @@ module namespace 'br:bicep/modules/relay.namespace:1.0.0' = {
     "hybridConnections": {
       "value": [
         {
-          "name": "rncomhc001",
+          "name": "rnmaxhc001",
           "roleAssignments": [
             {
-              "principalIds": [
-                "<managedIdentityPrincipalId>"
-              ],
+              "principalId": "<principalId>",
               "principalType": "ServicePrincipal",
               "roleDefinitionIdOrName": "Reader"
             }
@@ -283,9 +338,7 @@ module namespace 'br:bicep/modules/relay.namespace:1.0.0' = {
     "roleAssignments": {
       "value": [
         {
-          "principalIds": [
-            "<managedIdentityPrincipalId>"
-          ],
+          "principalId": "<principalId>",
           "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
@@ -304,67 +357,17 @@ module namespace 'br:bicep/modules/relay.namespace:1.0.0' = {
     "wcfRelays": {
       "value": [
         {
-          "name": "rncomwcf001",
+          "name": "rnmaxwcf001",
           "relayType": "NetTcp",
           "roleAssignments": [
             {
-              "principalIds": [
-                "<managedIdentityPrincipalId>"
-              ],
+              "principalId": "<principalId>",
               "principalType": "ServicePrincipal",
               "roleDefinitionIdOrName": "Reader"
             }
           ]
         }
       ]
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-### Example 2: _Using only defaults_
-
-This instance deploys the module with the minimum set of required parameters.
-
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module namespace 'br:bicep/modules/relay.namespace:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-rnmin'
-  params: {
-    // Required parameters
-    name: 'rnmin001'
-    // Non-required parameters
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "rnmin001"
-    },
-    // Non-required parameters
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
     }
   }
 }
@@ -392,7 +395,6 @@ module namespace 'br:bicep/modules/relay.namespace:1.0.0' = {
         privateDnsZoneResourceIds: [
           '<privateDNSZoneResourceId>'
         ]
-        service: 'namespace'
         subnetResourceId: '<subnetResourceId>'
         tags: {
           Environment: 'Non-Prod'
@@ -437,7 +439,6 @@ module namespace 'br:bicep/modules/relay.namespace:1.0.0' = {
           "privateDnsZoneResourceIds": [
             "<privateDNSZoneResourceId>"
           ],
-          "service": "namespace",
           "subnetResourceId": "<subnetResourceId>",
           "tags": {
             "Environment": "Non-Prod",
@@ -464,6 +465,294 @@ module namespace 'br:bicep/modules/relay.namespace:1.0.0' = {
 </details>
 <p>
 
+### Example 4: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module namespace 'br:bicep/modules/relay.namespace:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-rnwaf'
+  params: {
+    // Required parameters
+    name: 'rnwaf001'
+    // Non-required parameters
+    authorizationRules: [
+      {
+        name: 'RootManageSharedAccessKey'
+        rights: [
+          'Listen'
+          'Manage'
+          'Send'
+        ]
+      }
+      {
+        name: 'AnotherKey'
+        rights: [
+          'Listen'
+          'Send'
+        ]
+      }
+    ]
+    diagnosticSettings: [
+      {
+        eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+        eventHubName: '<eventHubName>'
+        metricCategories: [
+          {
+            category: 'AllMetrics'
+          }
+        ]
+        name: 'customSetting'
+        storageAccountResourceId: '<storageAccountResourceId>'
+        workspaceResourceId: '<workspaceResourceId>'
+      }
+    ]
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    hybridConnections: [
+      {
+        name: 'rnwafhc001'
+        roleAssignments: [
+          {
+            principalId: '<principalId>'
+            principalType: 'ServicePrincipal'
+            roleDefinitionIdOrName: 'Reader'
+          }
+        ]
+        userMetadata: '[{\'key\':\'endpoint\'\'value\':\'db-server.constoso.com:1433\'}]'
+      }
+    ]
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    networkRuleSets: {
+      defaultAction: 'Deny'
+      ipRules: [
+        {
+          action: 'Allow'
+          ipMask: '10.0.1.0/32'
+        }
+        {
+          action: 'Allow'
+          ipMask: '10.0.2.0/32'
+        }
+      ]
+      trustedServiceAccessEnabled: true
+      virtualNetworkRules: [
+        {
+          subnet: {
+            id: '<id>'
+            ignoreMissingVnetServiceEndpoint: true
+          }
+        }
+      ]
+    }
+    privateEndpoints: [
+      {
+        privateDnsZoneResourceIds: [
+          '<privateDNSZoneResourceId>'
+        ]
+        service: 'namespace'
+        subnetResourceId: '<subnetResourceId>'
+        tags: {
+          Environment: 'Non-Prod'
+          'hidden-title': 'This is visible in the resource name'
+          Role: 'DeploymentValidation'
+        }
+      }
+    ]
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    skuName: 'Standard'
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+    wcfRelays: [
+      {
+        name: 'rnwafwcf001'
+        relayType: 'NetTcp'
+        roleAssignments: [
+          {
+            principalId: '<principalId>'
+            principalType: 'ServicePrincipal'
+            roleDefinitionIdOrName: 'Reader'
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "rnwaf001"
+    },
+    // Non-required parameters
+    "authorizationRules": {
+      "value": [
+        {
+          "name": "RootManageSharedAccessKey",
+          "rights": [
+            "Listen",
+            "Manage",
+            "Send"
+          ]
+        },
+        {
+          "name": "AnotherKey",
+          "rights": [
+            "Listen",
+            "Send"
+          ]
+        }
+      ]
+    },
+    "diagnosticSettings": {
+      "value": [
+        {
+          "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+          "eventHubName": "<eventHubName>",
+          "metricCategories": [
+            {
+              "category": "AllMetrics"
+            }
+          ],
+          "name": "customSetting",
+          "storageAccountResourceId": "<storageAccountResourceId>",
+          "workspaceResourceId": "<workspaceResourceId>"
+        }
+      ]
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "hybridConnections": {
+      "value": [
+        {
+          "name": "rnwafhc001",
+          "roleAssignments": [
+            {
+              "principalId": "<principalId>",
+              "principalType": "ServicePrincipal",
+              "roleDefinitionIdOrName": "Reader"
+            }
+          ],
+          "userMetadata": "[{\"key\":\"endpoint\",\"value\":\"db-server.constoso.com:1433\"}]"
+        }
+      ]
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "networkRuleSets": {
+      "value": {
+        "defaultAction": "Deny",
+        "ipRules": [
+          {
+            "action": "Allow",
+            "ipMask": "10.0.1.0/32"
+          },
+          {
+            "action": "Allow",
+            "ipMask": "10.0.2.0/32"
+          }
+        ],
+        "trustedServiceAccessEnabled": true,
+        "virtualNetworkRules": [
+          {
+            "subnet": {
+              "id": "<id>",
+              "ignoreMissingVnetServiceEndpoint": true
+            }
+          }
+        ]
+      }
+    },
+    "privateEndpoints": {
+      "value": [
+        {
+          "privateDnsZoneResourceIds": [
+            "<privateDNSZoneResourceId>"
+          ],
+          "service": "namespace",
+          "subnetResourceId": "<subnetResourceId>",
+          "tags": {
+            "Environment": "Non-Prod",
+            "hidden-title": "This is visible in the resource name",
+            "Role": "DeploymentValidation"
+          }
+        }
+      ]
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "skuName": {
+      "value": "Standard"
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    },
+    "wcfRelays": {
+      "value": [
+        {
+          "name": "rnwafwcf001",
+          "relayType": "NetTcp",
+          "roleAssignments": [
+            {
+              "principalId": "<principalId>",
+              "principalType": "ServicePrincipal",
+              "roleDefinitionIdOrName": "Reader"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
+```
+
+</details>
+<p>
+
 
 ## Parameters
 
@@ -478,13 +767,7 @@ module namespace 'br:bicep/modules/relay.namespace:1.0.0' = {
 | Parameter | Type | Description |
 | :-- | :-- | :-- |
 | [`authorizationRules`](#parameter-authorizationrules) | array | Authorization Rules for the Relay namespace. |
-| [`diagnosticEventHubAuthorizationRuleId`](#parameter-diagnosticeventhubauthorizationruleid) | string | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
-| [`diagnosticEventHubName`](#parameter-diagnosticeventhubname) | string | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
-| [`diagnosticLogCategoriesToEnable`](#parameter-diagnosticlogcategoriestoenable) | array | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
-| [`diagnosticMetricsToEnable`](#parameter-diagnosticmetricstoenable) | array | The name of metrics that will be streamed. |
-| [`diagnosticSettingsName`](#parameter-diagnosticsettingsname) | string | The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings". |
-| [`diagnosticStorageAccountId`](#parameter-diagnosticstorageaccountid) | string | Resource ID of the diagnostic storage account. |
-| [`diagnosticWorkspaceId`](#parameter-diagnosticworkspaceid) | string | Resource ID of the diagnostic log analytics workspace. |
+| [`diagnosticSettings`](#parameter-diagnosticsettings) | array | The diagnostic settings of the service. |
 | [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
 | [`hybridConnections`](#parameter-hybridconnections) | array | The hybrid connections to create in the relay namespace. |
 | [`location`](#parameter-location) | string | Location for all resources. |
@@ -501,58 +784,134 @@ module namespace 'br:bicep/modules/relay.namespace:1.0.0' = {
 Authorization Rules for the Relay namespace.
 - Required: No
 - Type: array
-- Default: `[System.Management.Automation.OrderedHashtable]`
+- Default:
+  ```Bicep
+  [
+    {
+      name: 'RootManageSharedAccessKey'
+      rights: [
+        'Listen'
+        'Manage'
+        'Send'
+      ]
+    }
+  ]
+  ```
 
-### Parameter: `diagnosticEventHubAuthorizationRuleId`
+### Parameter: `diagnosticSettings`
 
-Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.
-- Required: No
-- Type: string
-- Default: `''`
-
-### Parameter: `diagnosticEventHubName`
-
-Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.
-- Required: No
-- Type: string
-- Default: `''`
-
-### Parameter: `diagnosticLogCategoriesToEnable`
-
-The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection.
+The diagnostic settings of the service.
 - Required: No
 - Type: array
-- Default: `[allLogs, hybridConnectionsEvent]`
-- Allowed: `['', allLogs, hybridConnectionsEvent, OperationalLogs]`
 
-### Parameter: `diagnosticMetricsToEnable`
 
-The name of metrics that will be streamed.
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`eventHubAuthorizationRuleResourceId`](#parameter-diagnosticsettingseventhubauthorizationruleresourceid) | No | string | Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
+| [`eventHubName`](#parameter-diagnosticsettingseventhubname) | No | string | Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
+| [`logAnalyticsDestinationType`](#parameter-diagnosticsettingsloganalyticsdestinationtype) | No | string | Optional. A string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destination type. |
+| [`logCategoriesAndGroups`](#parameter-diagnosticsettingslogcategoriesandgroups) | No | array | Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
+| [`marketplacePartnerResourceId`](#parameter-diagnosticsettingsmarketplacepartnerresourceid) | No | string | Optional. The full ARM resource ID of the Marketplace resource to which you would like to send Diagnostic Logs. |
+| [`metricCategories`](#parameter-diagnosticsettingsmetriccategories) | No | array | Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
+| [`name`](#parameter-diagnosticsettingsname) | No | string | Optional. The name of diagnostic setting. |
+| [`storageAccountResourceId`](#parameter-diagnosticsettingsstorageaccountresourceid) | No | string | Optional. Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
+| [`workspaceResourceId`](#parameter-diagnosticsettingsworkspaceresourceid) | No | string | Optional. Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
+
+### Parameter: `diagnosticSettings.eventHubAuthorizationRuleResourceId`
+
+Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.
+
+- Required: No
+- Type: string
+
+### Parameter: `diagnosticSettings.eventHubName`
+
+Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.
+
+- Required: No
+- Type: string
+
+### Parameter: `diagnosticSettings.logAnalyticsDestinationType`
+
+Optional. A string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destination type.
+
+- Required: No
+- Type: string
+- Allowed: `[AzureDiagnostics, Dedicated]`
+
+### Parameter: `diagnosticSettings.logCategoriesAndGroups`
+
+Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection.
+
 - Required: No
 - Type: array
-- Default: `[AllMetrics]`
-- Allowed: `[AllMetrics]`
 
-### Parameter: `diagnosticSettingsName`
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`category`](#parameter-diagnosticsettingslogcategoriesandgroupscategory) | No | string | Optional. Name of a Diagnostic Log category for a resource type this setting is applied to. Set the specific logs to collect here. |
+| [`categoryGroup`](#parameter-diagnosticsettingslogcategoriesandgroupscategorygroup) | No | string | Optional. Name of a Diagnostic Log category group for a resource type this setting is applied to. Set to 'AllLogs' to collect all logs. |
 
-The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings".
+### Parameter: `diagnosticSettings.logCategoriesAndGroups.category`
+
+Optional. Name of a Diagnostic Log category for a resource type this setting is applied to. Set the specific logs to collect here.
+
 - Required: No
 - Type: string
-- Default: `''`
 
-### Parameter: `diagnosticStorageAccountId`
+### Parameter: `diagnosticSettings.logCategoriesAndGroups.categoryGroup`
 
-Resource ID of the diagnostic storage account.
+Optional. Name of a Diagnostic Log category group for a resource type this setting is applied to. Set to 'AllLogs' to collect all logs.
+
 - Required: No
 - Type: string
-- Default: `''`
 
-### Parameter: `diagnosticWorkspaceId`
 
-Resource ID of the diagnostic log analytics workspace.
+### Parameter: `diagnosticSettings.marketplacePartnerResourceId`
+
+Optional. The full ARM resource ID of the Marketplace resource to which you would like to send Diagnostic Logs.
+
 - Required: No
 - Type: string
-- Default: `''`
+
+### Parameter: `diagnosticSettings.metricCategories`
+
+Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection.
+
+- Required: No
+- Type: array
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`category`](#parameter-diagnosticsettingsmetriccategoriescategory) | Yes | string | Required. Name of a Diagnostic Metric category for a resource type this setting is applied to. Set to 'AllMetrics' to collect all metrics. |
+
+### Parameter: `diagnosticSettings.metricCategories.category`
+
+Required. Name of a Diagnostic Metric category for a resource type this setting is applied to. Set to 'AllMetrics' to collect all metrics.
+
+- Required: Yes
+- Type: string
+
+
+### Parameter: `diagnosticSettings.name`
+
+Optional. The name of diagnostic setting.
+
+- Required: No
+- Type: string
+
+### Parameter: `diagnosticSettings.storageAccountResourceId`
+
+Optional. Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.
+
+- Required: No
+- Type: string
+
+### Parameter: `diagnosticSettings.workspaceResourceId`
+
+Optional. Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.
+
+- Required: No
+- Type: string
 
 ### Parameter: `enableDefaultTelemetry`
 
@@ -613,21 +972,273 @@ Name of the Relay Namespace.
 Configure networking options for Relay. This object contains IPs/Subnets to allow or restrict access to private endpoints only. For security reasons, it is recommended to configure this object on the Namespace.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `privateEndpoints`
 
 Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.
 - Required: No
 - Type: array
-- Default: `[]`
+
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`applicationSecurityGroupResourceIds`](#parameter-privateendpointsapplicationsecuritygroupresourceids) | No | array | Optional. Application security groups in which the private endpoint IP configuration is included. |
+| [`customDnsConfigs`](#parameter-privateendpointscustomdnsconfigs) | No | array | Optional. Custom DNS configurations. |
+| [`customNetworkInterfaceName`](#parameter-privateendpointscustomnetworkinterfacename) | No | string | Optional. The custom name of the network interface attached to the private endpoint. |
+| [`enableTelemetry`](#parameter-privateendpointsenabletelemetry) | No | bool | Optional. Enable/Disable usage telemetry for module. |
+| [`ipConfigurations`](#parameter-privateendpointsipconfigurations) | No | array | Optional. A list of IP configurations of the private endpoint. This will be used to map to the First Party Service endpoints. |
+| [`location`](#parameter-privateendpointslocation) | No | string | Optional. The location to deploy the private endpoint to. |
+| [`lock`](#parameter-privateendpointslock) | No | object | Optional. Specify the type of lock. |
+| [`manualPrivateLinkServiceConnections`](#parameter-privateendpointsmanualprivatelinkserviceconnections) | No | array | Optional. Manual PrivateLink Service Connections. |
+| [`name`](#parameter-privateendpointsname) | No | string | Optional. The name of the private endpoint. |
+| [`privateDnsZoneGroupName`](#parameter-privateendpointsprivatednszonegroupname) | No | string | Optional. The name of the private DNS zone group to create if privateDnsZoneResourceIds were provided. |
+| [`privateDnsZoneResourceIds`](#parameter-privateendpointsprivatednszoneresourceids) | No | array | Optional. The private DNS zone groups to associate the private endpoint with. A DNS zone group can support up to 5 DNS zones. |
+| [`roleAssignments`](#parameter-privateendpointsroleassignments) | No | array | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| [`service`](#parameter-privateendpointsservice) | No | string | Optional. The service (sub-) type to deploy the private endpoint for. For example "vault" or "blob". |
+| [`subnetResourceId`](#parameter-privateendpointssubnetresourceid) | Yes | string | Required. Resource ID of the subnet where the endpoint needs to be created. |
+| [`tags`](#parameter-privateendpointstags) | No | object | Optional. Tags to be applied on all resources/resource groups in this deployment. |
+
+### Parameter: `privateEndpoints.applicationSecurityGroupResourceIds`
+
+Optional. Application security groups in which the private endpoint IP configuration is included.
+
+- Required: No
+- Type: array
+
+### Parameter: `privateEndpoints.customDnsConfigs`
+
+Optional. Custom DNS configurations.
+
+- Required: No
+- Type: array
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`fqdn`](#parameter-privateendpointscustomdnsconfigsfqdn) | No | string | Required. Fqdn that resolves to private endpoint ip address. |
+| [`ipAddresses`](#parameter-privateendpointscustomdnsconfigsipaddresses) | Yes | array | Required. A list of private ip addresses of the private endpoint. |
+
+### Parameter: `privateEndpoints.customDnsConfigs.fqdn`
+
+Required. Fqdn that resolves to private endpoint ip address.
+
+- Required: No
+- Type: string
+
+### Parameter: `privateEndpoints.customDnsConfigs.ipAddresses`
+
+Required. A list of private ip addresses of the private endpoint.
+
+- Required: Yes
+- Type: array
+
+
+### Parameter: `privateEndpoints.customNetworkInterfaceName`
+
+Optional. The custom name of the network interface attached to the private endpoint.
+
+- Required: No
+- Type: string
+
+### Parameter: `privateEndpoints.enableTelemetry`
+
+Optional. Enable/Disable usage telemetry for module.
+
+- Required: No
+- Type: bool
+
+### Parameter: `privateEndpoints.ipConfigurations`
+
+Optional. A list of IP configurations of the private endpoint. This will be used to map to the First Party Service endpoints.
+
+- Required: No
+- Type: array
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`name`](#parameter-privateendpointsipconfigurationsname) | Yes | string | Required. The name of the resource that is unique within a resource group. |
+| [`properties`](#parameter-privateendpointsipconfigurationsproperties) | Yes | object | Required. Properties of private endpoint IP configurations. |
+
+### Parameter: `privateEndpoints.ipConfigurations.name`
+
+Required. The name of the resource that is unique within a resource group.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `privateEndpoints.ipConfigurations.properties`
+
+Required. Properties of private endpoint IP configurations.
+
+- Required: Yes
+- Type: object
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`groupId`](#parameter-privateendpointsipconfigurationspropertiesgroupid) | Yes | string | Required. The ID of a group obtained from the remote resource that this private endpoint should connect to. |
+| [`memberName`](#parameter-privateendpointsipconfigurationspropertiesmembername) | Yes | string | Required. The member name of a group obtained from the remote resource that this private endpoint should connect to. |
+| [`privateIPAddress`](#parameter-privateendpointsipconfigurationspropertiesprivateipaddress) | Yes | string | Required. A private ip address obtained from the private endpoint's subnet. |
+
+### Parameter: `privateEndpoints.ipConfigurations.properties.groupId`
+
+Required. The ID of a group obtained from the remote resource that this private endpoint should connect to.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `privateEndpoints.ipConfigurations.properties.memberName`
+
+Required. The member name of a group obtained from the remote resource that this private endpoint should connect to.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `privateEndpoints.ipConfigurations.properties.privateIPAddress`
+
+Required. A private ip address obtained from the private endpoint's subnet.
+
+- Required: Yes
+- Type: string
+
+
+
+### Parameter: `privateEndpoints.location`
+
+Optional. The location to deploy the private endpoint to.
+
+- Required: No
+- Type: string
+
+### Parameter: `privateEndpoints.lock`
+
+Optional. Specify the type of lock.
+
+- Required: No
+- Type: object
+
+### Parameter: `privateEndpoints.manualPrivateLinkServiceConnections`
+
+Optional. Manual PrivateLink Service Connections.
+
+- Required: No
+- Type: array
+
+### Parameter: `privateEndpoints.name`
+
+Optional. The name of the private endpoint.
+
+- Required: No
+- Type: string
+
+### Parameter: `privateEndpoints.privateDnsZoneGroupName`
+
+Optional. The name of the private DNS zone group to create if privateDnsZoneResourceIds were provided.
+
+- Required: No
+- Type: string
+
+### Parameter: `privateEndpoints.privateDnsZoneResourceIds`
+
+Optional. The private DNS zone groups to associate the private endpoint with. A DNS zone group can support up to 5 DNS zones.
+
+- Required: No
+- Type: array
+
+### Parameter: `privateEndpoints.roleAssignments`
+
+Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
+
+- Required: No
+- Type: array
+
+### Parameter: `privateEndpoints.service`
+
+Optional. The service (sub-) type to deploy the private endpoint for. For example "vault" or "blob".
+
+- Required: No
+- Type: string
+
+### Parameter: `privateEndpoints.subnetResourceId`
+
+Required. Resource ID of the subnet where the endpoint needs to be created.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `privateEndpoints.tags`
+
+Optional. Tags to be applied on all resources/resource groups in this deployment.
+
+- Required: No
+- Type: object
 
 ### Parameter: `roleAssignments`
 
 Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
 - Required: No
 - Type: array
-- Default: `[]`
+
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`condition`](#parameter-roleassignmentscondition) | No | string | Optional. The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container" |
+| [`conditionVersion`](#parameter-roleassignmentsconditionversion) | No | string | Optional. Version of the condition. |
+| [`delegatedManagedIdentityResourceId`](#parameter-roleassignmentsdelegatedmanagedidentityresourceid) | No | string | Optional. The Resource Id of the delegated managed identity resource. |
+| [`description`](#parameter-roleassignmentsdescription) | No | string | Optional. The description of the role assignment. |
+| [`principalId`](#parameter-roleassignmentsprincipalid) | Yes | string | Required. The principal ID of the principal (user/group/identity) to assign the role to. |
+| [`principalType`](#parameter-roleassignmentsprincipaltype) | No | string | Optional. The principal type of the assigned principal ID. |
+| [`roleDefinitionIdOrName`](#parameter-roleassignmentsroledefinitionidorname) | Yes | string | Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead. |
+
+### Parameter: `roleAssignments.condition`
+
+Optional. The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container"
+
+- Required: No
+- Type: string
+
+### Parameter: `roleAssignments.conditionVersion`
+
+Optional. Version of the condition.
+
+- Required: No
+- Type: string
+- Allowed: `[2.0]`
+
+### Parameter: `roleAssignments.delegatedManagedIdentityResourceId`
+
+Optional. The Resource Id of the delegated managed identity resource.
+
+- Required: No
+- Type: string
+
+### Parameter: `roleAssignments.description`
+
+Optional. The description of the role assignment.
+
+- Required: No
+- Type: string
+
+### Parameter: `roleAssignments.principalId`
+
+Required. The principal ID of the principal (user/group/identity) to assign the role to.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `roleAssignments.principalType`
+
+Optional. The principal type of the assigned principal ID.
+
+- Required: No
+- Type: string
+- Allowed: `[Device, ForeignGroup, Group, ServicePrincipal, User]`
+
+### Parameter: `roleAssignments.roleDefinitionIdOrName`
+
+Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead.
+
+- Required: Yes
+- Type: string
 
 ### Parameter: `skuName`
 
@@ -635,14 +1246,18 @@ Name of this SKU.
 - Required: No
 - Type: string
 - Default: `'Standard'`
-- Allowed: `[Standard]`
+- Allowed:
+  ```Bicep
+  [
+    'Standard'
+  ]
+  ```
 
 ### Parameter: `tags`
 
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `wcfRelays`
 

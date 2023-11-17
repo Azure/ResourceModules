@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "10325872136554369855"
+      "templateHash": "12513996667923008520"
     },
     "name": "Virtual Network Gateway Connections",
     "description": "This module deploys a Virtual Network Gateway Connection.",
@@ -171,7 +171,7 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Tags of the resource."
       }

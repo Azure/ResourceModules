@@ -33,8 +33,16 @@ This module deploys a Web Site Basic Publishing Credentials Policy.
 
 | Parameter | Type | Description |
 | :-- | :-- | :-- |
+| [`allow`](#parameter-allow) | bool | Set to true to enable or false to disable a publishing method. |
 | [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
 | [`location`](#parameter-location) | string | Location for all Resources. |
+
+### Parameter: `allow`
+
+Set to true to enable or false to disable a publishing method.
+- Required: No
+- Type: bool
+- Default: `True`
 
 ### Parameter: `enableDefaultTelemetry`
 
@@ -55,7 +63,13 @@ Location for all Resources.
 The name of the resource.
 - Required: Yes
 - Type: string
-- Allowed: `[ftp, scm]`
+- Allowed:
+  ```Bicep
+  [
+    'ftp'
+    'scm'
+  ]
+  ```
 
 ### Parameter: `webAppName`
 

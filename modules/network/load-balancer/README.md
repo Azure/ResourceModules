@@ -1,5 +1,7 @@
 # Load Balancers `[Microsoft.Network/loadBalancers]`
 
+> This module has already been migrated to [AVM](https://github.com/Azure/bicep-registry-modules/tree/main/avm/res). Only the AVM version is expected to receive updates / new features. Please do not work on improving this module in [CARML](https://aka.ms/carml).
+
 This module deploys a Load Balancer.
 
 ## Navigation
@@ -30,11 +32,299 @@ The following section provides usage examples for the module, which were used to
 
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/network.load-balancer:1.0.0`.
 
-- [Using large parameter set](#example-1-using-large-parameter-set)
+- [Using only defaults](#example-1-using-only-defaults)
 - [Internal](#example-2-internal)
-- [Using only defaults](#example-3-using-only-defaults)
+- [Using large parameter set](#example-3-using-large-parameter-set)
+- [WAF-aligned](#example-4-waf-aligned)
 
-### Example 1: _Using large parameter set_
+### Example 1: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module loadBalancer 'br:bicep/modules/network.load-balancer:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-nlbmin'
+  params: {
+    // Required parameters
+    frontendIPConfigurations: [
+      {
+        name: 'publicIPConfig1'
+        publicIPAddressId: '<publicIPAddressId>'
+      }
+    ]
+    name: 'nlbmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "frontendIPConfigurations": {
+      "value": [
+        {
+          "name": "publicIPConfig1",
+          "publicIPAddressId": "<publicIPAddressId>"
+        }
+      ]
+    },
+    "name": {
+      "value": "nlbmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 2: _Internal_
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module loadBalancer 'br:bicep/modules/network.load-balancer:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-nlbint'
+  params: {
+    // Required parameters
+    frontendIPConfigurations: [
+      {
+        name: 'privateIPConfig1'
+        subnetId: '<subnetId>'
+      }
+    ]
+    name: 'nlbint001'
+    // Non-required parameters
+    backendAddressPools: [
+      {
+        name: 'servers'
+      }
+    ]
+    diagnosticSettings: [
+      {
+        eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+        eventHubName: '<eventHubName>'
+        metricCategories: [
+          {
+            category: 'AllMetrics'
+          }
+        ]
+        name: 'customSetting'
+        storageAccountResourceId: '<storageAccountResourceId>'
+        workspaceResourceId: '<workspaceResourceId>'
+      }
+    ]
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    inboundNatRules: [
+      {
+        backendPort: 443
+        enableFloatingIP: false
+        enableTcpReset: false
+        frontendIPConfigurationName: 'privateIPConfig1'
+        frontendPort: 443
+        idleTimeoutInMinutes: 4
+        name: 'inboundNatRule1'
+        protocol: 'Tcp'
+      }
+      {
+        backendPort: 3389
+        frontendIPConfigurationName: 'privateIPConfig1'
+        frontendPort: 3389
+        name: 'inboundNatRule2'
+      }
+    ]
+    loadBalancingRules: [
+      {
+        backendAddressPoolName: 'servers'
+        backendPort: 0
+        disableOutboundSnat: true
+        enableFloatingIP: true
+        enableTcpReset: false
+        frontendIPConfigurationName: 'privateIPConfig1'
+        frontendPort: 0
+        idleTimeoutInMinutes: 4
+        loadDistribution: 'Default'
+        name: 'privateIPLBRule1'
+        probeName: 'probe1'
+        protocol: 'All'
+      }
+    ]
+    probes: [
+      {
+        intervalInSeconds: 5
+        name: 'probe1'
+        numberOfProbes: 2
+        port: '62000'
+        protocol: 'Tcp'
+      }
+    ]
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    skuName: 'Standard'
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "frontendIPConfigurations": {
+      "value": [
+        {
+          "name": "privateIPConfig1",
+          "subnetId": "<subnetId>"
+        }
+      ]
+    },
+    "name": {
+      "value": "nlbint001"
+    },
+    // Non-required parameters
+    "backendAddressPools": {
+      "value": [
+        {
+          "name": "servers"
+        }
+      ]
+    },
+    "diagnosticSettings": {
+      "value": [
+        {
+          "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+          "eventHubName": "<eventHubName>",
+          "metricCategories": [
+            {
+              "category": "AllMetrics"
+            }
+          ],
+          "name": "customSetting",
+          "storageAccountResourceId": "<storageAccountResourceId>",
+          "workspaceResourceId": "<workspaceResourceId>"
+        }
+      ]
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "inboundNatRules": {
+      "value": [
+        {
+          "backendPort": 443,
+          "enableFloatingIP": false,
+          "enableTcpReset": false,
+          "frontendIPConfigurationName": "privateIPConfig1",
+          "frontendPort": 443,
+          "idleTimeoutInMinutes": 4,
+          "name": "inboundNatRule1",
+          "protocol": "Tcp"
+        },
+        {
+          "backendPort": 3389,
+          "frontendIPConfigurationName": "privateIPConfig1",
+          "frontendPort": 3389,
+          "name": "inboundNatRule2"
+        }
+      ]
+    },
+    "loadBalancingRules": {
+      "value": [
+        {
+          "backendAddressPoolName": "servers",
+          "backendPort": 0,
+          "disableOutboundSnat": true,
+          "enableFloatingIP": true,
+          "enableTcpReset": false,
+          "frontendIPConfigurationName": "privateIPConfig1",
+          "frontendPort": 0,
+          "idleTimeoutInMinutes": 4,
+          "loadDistribution": "Default",
+          "name": "privateIPLBRule1",
+          "probeName": "probe1",
+          "protocol": "All"
+        }
+      ]
+    },
+    "probes": {
+      "value": [
+        {
+          "intervalInSeconds": 5,
+          "name": "probe1",
+          "numberOfProbes": 2,
+          "port": "62000",
+          "protocol": "Tcp"
+        }
+      ]
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "skuName": {
+      "value": "Standard"
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 3: _Using large parameter set_
 
 This instance deploys the module with most of its features enabled.
 
@@ -45,7 +335,7 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module loadBalancer 'br:bicep/modules/network.load-balancer:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-nlbcom'
+  name: '${uniqueString(deployment().name, location)}-test-nlbmax'
   params: {
     // Required parameters
     frontendIPConfigurations: [
@@ -54,7 +344,7 @@ module loadBalancer 'br:bicep/modules/network.load-balancer:1.0.0' = {
         publicIPAddressId: '<publicIPAddressId>'
       }
     ]
-    name: 'nlbcom001'
+    name: 'nlbmax001'
     // Non-required parameters
     backendAddressPools: [
       {
@@ -64,10 +354,20 @@ module loadBalancer 'br:bicep/modules/network.load-balancer:1.0.0' = {
         name: 'backendAddressPool2'
       }
     ]
-    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-    diagnosticEventHubName: '<diagnosticEventHubName>'
-    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    diagnosticSettings: [
+      {
+        eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+        eventHubName: '<eventHubName>'
+        metricCategories: [
+          {
+            category: 'AllMetrics'
+          }
+        ]
+        name: 'customSetting'
+        storageAccountResourceId: '<storageAccountResourceId>'
+        workspaceResourceId: '<workspaceResourceId>'
+      }
+    ]
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     inboundNatRules: [
       {
@@ -141,9 +441,7 @@ module loadBalancer 'br:bicep/modules/network.load-balancer:1.0.0' = {
     ]
     roleAssignments: [
       {
-        principalIds: [
-          '<managedIdentityPrincipalId>'
-        ]
+        principalId: '<principalId>'
         principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
@@ -179,7 +477,7 @@ module loadBalancer 'br:bicep/modules/network.load-balancer:1.0.0' = {
       ]
     },
     "name": {
-      "value": "nlbcom001"
+      "value": "nlbmax001"
     },
     // Non-required parameters
     "backendAddressPools": {
@@ -192,17 +490,21 @@ module loadBalancer 'br:bicep/modules/network.load-balancer:1.0.0' = {
         }
       ]
     },
-    "diagnosticEventHubAuthorizationRuleId": {
-      "value": "<diagnosticEventHubAuthorizationRuleId>"
-    },
-    "diagnosticEventHubName": {
-      "value": "<diagnosticEventHubName>"
-    },
-    "diagnosticStorageAccountId": {
-      "value": "<diagnosticStorageAccountId>"
-    },
-    "diagnosticWorkspaceId": {
-      "value": "<diagnosticWorkspaceId>"
+    "diagnosticSettings": {
+      "value": [
+        {
+          "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+          "eventHubName": "<eventHubName>",
+          "metricCategories": [
+            {
+              "category": "AllMetrics"
+            }
+          ],
+          "name": "customSetting",
+          "storageAccountResourceId": "<storageAccountResourceId>",
+          "workspaceResourceId": "<workspaceResourceId>"
+        }
+      ]
     },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
@@ -290,9 +592,7 @@ module loadBalancer 'br:bicep/modules/network.load-balancer:1.0.0' = {
     "roleAssignments": {
       "value": [
         {
-          "principalIds": [
-            "<managedIdentityPrincipalId>"
-          ],
+          "principalId": "<principalId>",
           "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
@@ -312,224 +612,9 @@ module loadBalancer 'br:bicep/modules/network.load-balancer:1.0.0' = {
 </details>
 <p>
 
-### Example 2: _Internal_
+### Example 4: _WAF-aligned_
 
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module loadBalancer 'br:bicep/modules/network.load-balancer:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-nlbint'
-  params: {
-    // Required parameters
-    frontendIPConfigurations: [
-      {
-        name: 'privateIPConfig1'
-        subnetId: '<subnetId>'
-      }
-    ]
-    name: 'nlbint001'
-    // Non-required parameters
-    backendAddressPools: [
-      {
-        name: 'servers'
-      }
-    ]
-    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-    diagnosticEventHubName: '<diagnosticEventHubName>'
-    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    inboundNatRules: [
-      {
-        backendPort: 443
-        enableFloatingIP: false
-        enableTcpReset: false
-        frontendIPConfigurationName: 'privateIPConfig1'
-        frontendPort: 443
-        idleTimeoutInMinutes: 4
-        name: 'inboundNatRule1'
-        protocol: 'Tcp'
-      }
-      {
-        backendPort: 3389
-        frontendIPConfigurationName: 'privateIPConfig1'
-        frontendPort: 3389
-        name: 'inboundNatRule2'
-      }
-    ]
-    loadBalancingRules: [
-      {
-        backendAddressPoolName: 'servers'
-        backendPort: 0
-        disableOutboundSnat: true
-        enableFloatingIP: true
-        enableTcpReset: false
-        frontendIPConfigurationName: 'privateIPConfig1'
-        frontendPort: 0
-        idleTimeoutInMinutes: 4
-        loadDistribution: 'Default'
-        name: 'privateIPLBRule1'
-        probeName: 'probe1'
-        protocol: 'All'
-      }
-    ]
-    probes: [
-      {
-        intervalInSeconds: 5
-        name: 'probe1'
-        numberOfProbes: 2
-        port: '62000'
-        protocol: 'Tcp'
-      }
-    ]
-    roleAssignments: [
-      {
-        principalIds: [
-          '<managedIdentityPrincipalId>'
-        ]
-        principalType: 'ServicePrincipal'
-        roleDefinitionIdOrName: 'Reader'
-      }
-    ]
-    skuName: 'Standard'
-    tags: {
-      Environment: 'Non-Prod'
-      'hidden-title': 'This is visible in the resource name'
-      Role: 'DeploymentValidation'
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "frontendIPConfigurations": {
-      "value": [
-        {
-          "name": "privateIPConfig1",
-          "subnetId": "<subnetId>"
-        }
-      ]
-    },
-    "name": {
-      "value": "nlbint001"
-    },
-    // Non-required parameters
-    "backendAddressPools": {
-      "value": [
-        {
-          "name": "servers"
-        }
-      ]
-    },
-    "diagnosticEventHubAuthorizationRuleId": {
-      "value": "<diagnosticEventHubAuthorizationRuleId>"
-    },
-    "diagnosticEventHubName": {
-      "value": "<diagnosticEventHubName>"
-    },
-    "diagnosticStorageAccountId": {
-      "value": "<diagnosticStorageAccountId>"
-    },
-    "diagnosticWorkspaceId": {
-      "value": "<diagnosticWorkspaceId>"
-    },
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
-    "inboundNatRules": {
-      "value": [
-        {
-          "backendPort": 443,
-          "enableFloatingIP": false,
-          "enableTcpReset": false,
-          "frontendIPConfigurationName": "privateIPConfig1",
-          "frontendPort": 443,
-          "idleTimeoutInMinutes": 4,
-          "name": "inboundNatRule1",
-          "protocol": "Tcp"
-        },
-        {
-          "backendPort": 3389,
-          "frontendIPConfigurationName": "privateIPConfig1",
-          "frontendPort": 3389,
-          "name": "inboundNatRule2"
-        }
-      ]
-    },
-    "loadBalancingRules": {
-      "value": [
-        {
-          "backendAddressPoolName": "servers",
-          "backendPort": 0,
-          "disableOutboundSnat": true,
-          "enableFloatingIP": true,
-          "enableTcpReset": false,
-          "frontendIPConfigurationName": "privateIPConfig1",
-          "frontendPort": 0,
-          "idleTimeoutInMinutes": 4,
-          "loadDistribution": "Default",
-          "name": "privateIPLBRule1",
-          "probeName": "probe1",
-          "protocol": "All"
-        }
-      ]
-    },
-    "probes": {
-      "value": [
-        {
-          "intervalInSeconds": 5,
-          "name": "probe1",
-          "numberOfProbes": 2,
-          "port": "62000",
-          "protocol": "Tcp"
-        }
-      ]
-    },
-    "roleAssignments": {
-      "value": [
-        {
-          "principalIds": [
-            "<managedIdentityPrincipalId>"
-          ],
-          "principalType": "ServicePrincipal",
-          "roleDefinitionIdOrName": "Reader"
-        }
-      ]
-    },
-    "skuName": {
-      "value": "Standard"
-    },
-    "tags": {
-      "value": {
-        "Environment": "Non-Prod",
-        "hidden-title": "This is visible in the resource name",
-        "Role": "DeploymentValidation"
-      }
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-### Example 3: _Using only defaults_
-
-This instance deploys the module with the minimum set of required parameters.
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
 
 
 <details>
@@ -538,7 +623,7 @@ This instance deploys the module with the minimum set of required parameters.
 
 ```bicep
 module loadBalancer 'br:bicep/modules/network.load-balancer:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-nlbmin'
+  name: '${uniqueString(deployment().name, location)}-test-nlbwaf'
   params: {
     // Required parameters
     frontendIPConfigurations: [
@@ -547,9 +632,113 @@ module loadBalancer 'br:bicep/modules/network.load-balancer:1.0.0' = {
         publicIPAddressId: '<publicIPAddressId>'
       }
     ]
-    name: 'nlbmin001'
+    name: 'nlbwaf001'
     // Non-required parameters
+    backendAddressPools: [
+      {
+        name: 'backendAddressPool1'
+      }
+      {
+        name: 'backendAddressPool2'
+      }
+    ]
+    diagnosticSettings: [
+      {
+        eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+        eventHubName: '<eventHubName>'
+        metricCategories: [
+          {
+            category: 'AllMetrics'
+          }
+        ]
+        name: 'customSetting'
+        storageAccountResourceId: '<storageAccountResourceId>'
+        workspaceResourceId: '<workspaceResourceId>'
+      }
+    ]
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    inboundNatRules: [
+      {
+        backendPort: 443
+        enableFloatingIP: false
+        enableTcpReset: false
+        frontendIPConfigurationName: 'publicIPConfig1'
+        frontendPort: 443
+        idleTimeoutInMinutes: 4
+        name: 'inboundNatRule1'
+        protocol: 'Tcp'
+      }
+      {
+        backendPort: 3389
+        frontendIPConfigurationName: 'publicIPConfig1'
+        frontendPort: 3389
+        name: 'inboundNatRule2'
+      }
+    ]
+    loadBalancingRules: [
+      {
+        backendAddressPoolName: 'backendAddressPool1'
+        backendPort: 80
+        disableOutboundSnat: true
+        enableFloatingIP: false
+        enableTcpReset: false
+        frontendIPConfigurationName: 'publicIPConfig1'
+        frontendPort: 80
+        idleTimeoutInMinutes: 5
+        loadDistribution: 'Default'
+        name: 'publicIPLBRule1'
+        probeName: 'probe1'
+        protocol: 'Tcp'
+      }
+      {
+        backendAddressPoolName: 'backendAddressPool2'
+        backendPort: 8080
+        frontendIPConfigurationName: 'publicIPConfig1'
+        frontendPort: 8080
+        loadDistribution: 'Default'
+        name: 'publicIPLBRule2'
+        probeName: 'probe2'
+      }
+    ]
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    outboundRules: [
+      {
+        allocatedOutboundPorts: 63984
+        backendAddressPoolName: 'backendAddressPool1'
+        frontendIPConfigurationName: 'publicIPConfig1'
+        name: 'outboundRule1'
+      }
+    ]
+    probes: [
+      {
+        intervalInSeconds: 10
+        name: 'probe1'
+        numberOfProbes: 5
+        port: 80
+        protocol: 'Tcp'
+      }
+      {
+        name: 'probe2'
+        port: 443
+        protocol: 'Https'
+        requestPath: '/'
+      }
+    ]
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -576,11 +765,133 @@ module loadBalancer 'br:bicep/modules/network.load-balancer:1.0.0' = {
       ]
     },
     "name": {
-      "value": "nlbmin001"
+      "value": "nlbwaf001"
     },
     // Non-required parameters
+    "backendAddressPools": {
+      "value": [
+        {
+          "name": "backendAddressPool1"
+        },
+        {
+          "name": "backendAddressPool2"
+        }
+      ]
+    },
+    "diagnosticSettings": {
+      "value": [
+        {
+          "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+          "eventHubName": "<eventHubName>",
+          "metricCategories": [
+            {
+              "category": "AllMetrics"
+            }
+          ],
+          "name": "customSetting",
+          "storageAccountResourceId": "<storageAccountResourceId>",
+          "workspaceResourceId": "<workspaceResourceId>"
+        }
+      ]
+    },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
+    },
+    "inboundNatRules": {
+      "value": [
+        {
+          "backendPort": 443,
+          "enableFloatingIP": false,
+          "enableTcpReset": false,
+          "frontendIPConfigurationName": "publicIPConfig1",
+          "frontendPort": 443,
+          "idleTimeoutInMinutes": 4,
+          "name": "inboundNatRule1",
+          "protocol": "Tcp"
+        },
+        {
+          "backendPort": 3389,
+          "frontendIPConfigurationName": "publicIPConfig1",
+          "frontendPort": 3389,
+          "name": "inboundNatRule2"
+        }
+      ]
+    },
+    "loadBalancingRules": {
+      "value": [
+        {
+          "backendAddressPoolName": "backendAddressPool1",
+          "backendPort": 80,
+          "disableOutboundSnat": true,
+          "enableFloatingIP": false,
+          "enableTcpReset": false,
+          "frontendIPConfigurationName": "publicIPConfig1",
+          "frontendPort": 80,
+          "idleTimeoutInMinutes": 5,
+          "loadDistribution": "Default",
+          "name": "publicIPLBRule1",
+          "probeName": "probe1",
+          "protocol": "Tcp"
+        },
+        {
+          "backendAddressPoolName": "backendAddressPool2",
+          "backendPort": 8080,
+          "frontendIPConfigurationName": "publicIPConfig1",
+          "frontendPort": 8080,
+          "loadDistribution": "Default",
+          "name": "publicIPLBRule2",
+          "probeName": "probe2"
+        }
+      ]
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "outboundRules": {
+      "value": [
+        {
+          "allocatedOutboundPorts": 63984,
+          "backendAddressPoolName": "backendAddressPool1",
+          "frontendIPConfigurationName": "publicIPConfig1",
+          "name": "outboundRule1"
+        }
+      ]
+    },
+    "probes": {
+      "value": [
+        {
+          "intervalInSeconds": 10,
+          "name": "probe1",
+          "numberOfProbes": 5,
+          "port": 80,
+          "protocol": "Tcp"
+        },
+        {
+          "name": "probe2",
+          "port": 443,
+          "protocol": "Https",
+          "requestPath": "/"
+        }
+      ]
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }
@@ -604,12 +915,7 @@ module loadBalancer 'br:bicep/modules/network.load-balancer:1.0.0' = {
 | Parameter | Type | Description |
 | :-- | :-- | :-- |
 | [`backendAddressPools`](#parameter-backendaddresspools) | array | Collection of backend address pools used by a load balancer. |
-| [`diagnosticEventHubAuthorizationRuleId`](#parameter-diagnosticeventhubauthorizationruleid) | string | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
-| [`diagnosticEventHubName`](#parameter-diagnosticeventhubname) | string | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
-| [`diagnosticMetricsToEnable`](#parameter-diagnosticmetricstoenable) | array | The name of metrics that will be streamed. |
-| [`diagnosticSettingsName`](#parameter-diagnosticsettingsname) | string | The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings". |
-| [`diagnosticStorageAccountId`](#parameter-diagnosticstorageaccountid) | string | Resource ID of the diagnostic storage account. |
-| [`diagnosticWorkspaceId`](#parameter-diagnosticworkspaceid) | string | Resource ID of the diagnostic log analytics workspace. |
+| [`diagnosticSettings`](#parameter-diagnosticsettings) | array | The diagnostic settings of the service. |
 | [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
 | [`inboundNatRules`](#parameter-inboundnatrules) | array | Collection of inbound NAT Rules used by a load balancer. Defining inbound NAT rules on your load balancer is mutually exclusive with defining an inbound NAT pool. Inbound NAT pools are referenced from virtual machine scale sets. NICs that are associated with individual virtual machines cannot reference an Inbound NAT pool. They have to reference individual inbound NAT rules. |
 | [`loadBalancingRules`](#parameter-loadbalancingrules) | array | Array of objects containing all load balancing rules. |
@@ -628,48 +934,92 @@ Collection of backend address pools used by a load balancer.
 - Type: array
 - Default: `[]`
 
-### Parameter: `diagnosticEventHubAuthorizationRuleId`
+### Parameter: `diagnosticSettings`
 
-Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.
-- Required: No
-- Type: string
-- Default: `''`
-
-### Parameter: `diagnosticEventHubName`
-
-Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.
-- Required: No
-- Type: string
-- Default: `''`
-
-### Parameter: `diagnosticMetricsToEnable`
-
-The name of metrics that will be streamed.
+The diagnostic settings of the service.
 - Required: No
 - Type: array
-- Default: `[AllMetrics]`
-- Allowed: `[AllMetrics]`
 
-### Parameter: `diagnosticSettingsName`
 
-The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings".
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`eventHubAuthorizationRuleResourceId`](#parameter-diagnosticsettingseventhubauthorizationruleresourceid) | No | string | Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
+| [`eventHubName`](#parameter-diagnosticsettingseventhubname) | No | string | Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
+| [`logAnalyticsDestinationType`](#parameter-diagnosticsettingsloganalyticsdestinationtype) | No | string | Optional. A string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destination type. |
+| [`marketplacePartnerResourceId`](#parameter-diagnosticsettingsmarketplacepartnerresourceid) | No | string | Optional. The full ARM resource ID of the Marketplace resource to which you would like to send Diagnostic Logs. |
+| [`metricCategories`](#parameter-diagnosticsettingsmetriccategories) | No | array | Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
+| [`name`](#parameter-diagnosticsettingsname) | No | string | Optional. The name of diagnostic setting. |
+| [`storageAccountResourceId`](#parameter-diagnosticsettingsstorageaccountresourceid) | No | string | Optional. Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
+| [`workspaceResourceId`](#parameter-diagnosticsettingsworkspaceresourceid) | No | string | Optional. Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
+
+### Parameter: `diagnosticSettings.eventHubAuthorizationRuleResourceId`
+
+Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.
+
 - Required: No
 - Type: string
-- Default: `''`
 
-### Parameter: `diagnosticStorageAccountId`
+### Parameter: `diagnosticSettings.eventHubName`
 
-Resource ID of the diagnostic storage account.
+Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.
+
 - Required: No
 - Type: string
-- Default: `''`
 
-### Parameter: `diagnosticWorkspaceId`
+### Parameter: `diagnosticSettings.logAnalyticsDestinationType`
 
-Resource ID of the diagnostic log analytics workspace.
+Optional. A string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destination type.
+
 - Required: No
 - Type: string
-- Default: `''`
+- Allowed: `[AzureDiagnostics, Dedicated]`
+
+### Parameter: `diagnosticSettings.marketplacePartnerResourceId`
+
+Optional. The full ARM resource ID of the Marketplace resource to which you would like to send Diagnostic Logs.
+
+- Required: No
+- Type: string
+
+### Parameter: `diagnosticSettings.metricCategories`
+
+Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection.
+
+- Required: No
+- Type: array
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`category`](#parameter-diagnosticsettingsmetriccategoriescategory) | Yes | string | Required. Name of a Diagnostic Metric category for a resource type this setting is applied to. Set to 'AllMetrics' to collect all metrics. |
+
+### Parameter: `diagnosticSettings.metricCategories.category`
+
+Required. Name of a Diagnostic Metric category for a resource type this setting is applied to. Set to 'AllMetrics' to collect all metrics.
+
+- Required: Yes
+- Type: string
+
+
+### Parameter: `diagnosticSettings.name`
+
+Optional. The name of diagnostic setting.
+
+- Required: No
+- Type: string
+
+### Parameter: `diagnosticSettings.storageAccountResourceId`
+
+Optional. Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.
+
+- Required: No
+- Type: string
+
+### Parameter: `diagnosticSettings.workspaceResourceId`
+
+Optional. Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.
+
+- Required: No
+- Type: string
 
 ### Parameter: `enableDefaultTelemetry`
 
@@ -757,7 +1107,68 @@ Array of objects containing all probes, these are references in the load balanci
 Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
 - Required: No
 - Type: array
-- Default: `[]`
+
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`condition`](#parameter-roleassignmentscondition) | No | string | Optional. The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container" |
+| [`conditionVersion`](#parameter-roleassignmentsconditionversion) | No | string | Optional. Version of the condition. |
+| [`delegatedManagedIdentityResourceId`](#parameter-roleassignmentsdelegatedmanagedidentityresourceid) | No | string | Optional. The Resource Id of the delegated managed identity resource. |
+| [`description`](#parameter-roleassignmentsdescription) | No | string | Optional. The description of the role assignment. |
+| [`principalId`](#parameter-roleassignmentsprincipalid) | Yes | string | Required. The principal ID of the principal (user/group/identity) to assign the role to. |
+| [`principalType`](#parameter-roleassignmentsprincipaltype) | No | string | Optional. The principal type of the assigned principal ID. |
+| [`roleDefinitionIdOrName`](#parameter-roleassignmentsroledefinitionidorname) | Yes | string | Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead. |
+
+### Parameter: `roleAssignments.condition`
+
+Optional. The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container"
+
+- Required: No
+- Type: string
+
+### Parameter: `roleAssignments.conditionVersion`
+
+Optional. Version of the condition.
+
+- Required: No
+- Type: string
+- Allowed: `[2.0]`
+
+### Parameter: `roleAssignments.delegatedManagedIdentityResourceId`
+
+Optional. The Resource Id of the delegated managed identity resource.
+
+- Required: No
+- Type: string
+
+### Parameter: `roleAssignments.description`
+
+Optional. The description of the role assignment.
+
+- Required: No
+- Type: string
+
+### Parameter: `roleAssignments.principalId`
+
+Required. The principal ID of the principal (user/group/identity) to assign the role to.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `roleAssignments.principalType`
+
+Optional. The principal type of the assigned principal ID.
+
+- Required: No
+- Type: string
+- Allowed: `[Device, ForeignGroup, Group, ServicePrincipal, User]`
+
+### Parameter: `roleAssignments.roleDefinitionIdOrName`
+
+Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead.
+
+- Required: Yes
+- Type: string
 
 ### Parameter: `skuName`
 
@@ -765,14 +1176,19 @@ Name of a load balancer SKU.
 - Required: No
 - Type: string
 - Default: `'Standard'`
-- Allowed: `[Basic, Standard]`
+- Allowed:
+  ```Bicep
+  [
+    'Basic'
+    'Standard'
+  ]
+  ```
 
 ### Parameter: `tags`
 
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 
 ## Outputs

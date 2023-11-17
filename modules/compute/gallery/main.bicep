@@ -25,7 +25,7 @@ param lock lockType
 param roleAssignments roleAssignmentType
 
 @sys.description('Optional. Tags for all resources.')
-param tags object = {}
+param tags object?
 
 @sys.description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
@@ -100,7 +100,7 @@ module galleries_applications 'application/main.bicep' = [for (application, inde
     endOfLifeDate: contains(application, 'endOfLifeDate') ? application.endOfLifeDate : ''
     roleAssignments: contains(application, 'roleAssignments') ? application.roleAssignments : []
     customActions: contains(application, 'customActions') ? application.customActions : []
-    tags: contains(application, 'tags') ? application.tags : {}
+    tags: application.?tags ?? tags
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
@@ -132,7 +132,7 @@ module galleries_images 'image/main.bicep' = [for (image, index) in images: {
     endOfLife: contains(image, 'endOfLife') ? image.endOfLife : ''
     excludedDiskTypes: contains(image, 'excludedDiskTypes') ? image.excludedDiskTypes : []
     roleAssignments: contains(image, 'roleAssignments') ? image.roleAssignments : []
-    tags: contains(image, 'tags') ? image.tags : {}
+    tags: image.?tags ?? tags
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
@@ -169,7 +169,7 @@ type roleAssignmentType = {
   principalId: string
 
   @sys.description('Optional. The principal type of the assigned principal ID.')
-  principalType: ('ServicePrincipal' | 'Group' | 'User' | 'ForeignGroup' | 'Device' | null)?
+  principalType: ('ServicePrincipal' | 'Group' | 'User' | 'ForeignGroup' | 'Device')?
 
   @sys.description('Optional. The description of the role assignment.')
   description: string?

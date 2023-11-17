@@ -42,13 +42,13 @@ The following section provides usage examples for the module, which were used to
 
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/api-management.service:1.0.0`.
 
-- [Using large parameter set](#example-1-using-large-parameter-set)
-- [Max](#example-2-max)
-- [Using only defaults](#example-3-using-only-defaults)
+- [Using only defaults](#example-1-using-only-defaults)
+- [Using large parameter set](#example-2-using-large-parameter-set)
+- [WAF-aligned](#example-3-waf-aligned)
 
-### Example 1: _Using large parameter set_
+### Example 1: _Using only defaults_
 
-This instance deploys the module with most of its features enabled.
+This instance deploys the module with the minimum set of required parameters.
 
 
 <details>
@@ -57,54 +57,14 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module service 'br:bicep/modules/api-management.service:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-apiscom'
+  name: '${uniqueString(deployment().name, location)}-test-apismin'
   params: {
     // Required parameters
-    name: 'apiscom001'
+    name: 'apismin001'
     publisherEmail: 'apimgmt-noreply@mail.windowsazure.com'
     publisherName: 'az-amorg-x-001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    lock: {
-      kind: 'CanNotDelete'
-      name: 'myCustomLockName'
-    }
-    policies: [
-      {
-        format: 'xml'
-        value: '<policies> <inbound> <rate-limit-by-key calls=\'250\' renewal-period=\'60\' counter-key=\'@(context.Request.IpAddress)\' /> </inbound> <backend> <forward-request /> </backend> <outbound> </outbound> </policies>'
-      }
-    ]
-    portalsettings: [
-      {
-        name: 'signin'
-        properties: {
-          enabled: false
-        }
-      }
-      {
-        name: 'signup'
-        properties: {
-          enabled: false
-          termsOfService: {
-            consentRequired: false
-            enabled: false
-          }
-        }
-      }
-    ]
-    roleAssignments: [
-      {
-        principalId: '<principalId>'
-        principalType: 'ServicePrincipal'
-        roleDefinitionIdOrName: 'Reader'
-      }
-    ]
-    tags: {
-      Environment: 'Non-Prod'
-      'hidden-title': 'This is visible in the resource name'
-      Role: 'DeploymentValidation'
-    }
   }
 }
 ```
@@ -123,7 +83,7 @@ module service 'br:bicep/modules/api-management.service:1.0.0' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "apiscom001"
+      "value": "apismin001"
     },
     "publisherEmail": {
       "value": "apimgmt-noreply@mail.windowsazure.com"
@@ -134,56 +94,6 @@ module service 'br:bicep/modules/api-management.service:1.0.0' = {
     // Non-required parameters
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
-    },
-    "lock": {
-      "value": {
-        "kind": "CanNotDelete",
-        "name": "myCustomLockName"
-      }
-    },
-    "policies": {
-      "value": [
-        {
-          "format": "xml",
-          "value": "<policies> <inbound> <rate-limit-by-key calls=\"250\" renewal-period=\"60\" counter-key=\"@(context.Request.IpAddress)\" /> </inbound> <backend> <forward-request /> </backend> <outbound> </outbound> </policies>"
-        }
-      ]
-    },
-    "portalsettings": {
-      "value": [
-        {
-          "name": "signin",
-          "properties": {
-            "enabled": false
-          }
-        },
-        {
-          "name": "signup",
-          "properties": {
-            "enabled": false,
-            "termsOfService": {
-              "consentRequired": false,
-              "enabled": false
-            }
-          }
-        }
-      ]
-    },
-    "roleAssignments": {
-      "value": [
-        {
-          "principalId": "<principalId>",
-          "principalType": "ServicePrincipal",
-          "roleDefinitionIdOrName": "Reader"
-        }
-      ]
-    },
-    "tags": {
-      "value": {
-        "Environment": "Non-Prod",
-        "hidden-title": "This is visible in the resource name",
-        "Role": "DeploymentValidation"
-      }
     }
   }
 }
@@ -192,7 +102,10 @@ module service 'br:bicep/modules/api-management.service:1.0.0' = {
 </details>
 <p>
 
-### Example 2: _Max_
+### Example 2: _Using large parameter set_
+
+This instance deploys the module with most of its features enabled.
+
 
 <details>
 
@@ -255,10 +168,20 @@ module service 'br:bicep/modules/api-management.service:1.0.0' = {
         useFromLocation: 'westeurope'
       }
     ]
-    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-    diagnosticEventHubName: '<diagnosticEventHubName>'
-    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    diagnosticSettings: [
+      {
+        eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+        eventHubName: '<eventHubName>'
+        metricCategories: [
+          {
+            category: 'AllMetrics'
+          }
+        ]
+        name: 'customSetting'
+        storageAccountResourceId: '<storageAccountResourceId>'
+        workspaceResourceId: '<workspaceResourceId>'
+      }
+    ]
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     identityProviders: [
       {
@@ -268,6 +191,12 @@ module service 'br:bicep/modules/api-management.service:1.0.0' = {
     lock: {
       kind: 'CanNotDelete'
       name: 'myCustomLockName'
+    }
+    managedIdentities: {
+      systemAssigned: true
+      userAssignedResourceIds: [
+        '<managedIdentityResourceId>'
+      ]
     }
     namedValues: [
       {
@@ -329,14 +258,10 @@ module service 'br:bicep/modules/api-management.service:1.0.0' = {
         name: 'testArmSubscriptionAllApis'
       }
     ]
-    systemAssignedIdentity: true
     tags: {
       Environment: 'Non-Prod'
       'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
-    }
-    userAssignedIdentities: {
-      '<managedIdentityResourceId>': {}
     }
   }
 }
@@ -421,17 +346,21 @@ module service 'br:bicep/modules/api-management.service:1.0.0' = {
         }
       ]
     },
-    "diagnosticEventHubAuthorizationRuleId": {
-      "value": "<diagnosticEventHubAuthorizationRuleId>"
-    },
-    "diagnosticEventHubName": {
-      "value": "<diagnosticEventHubName>"
-    },
-    "diagnosticStorageAccountId": {
-      "value": "<diagnosticStorageAccountId>"
-    },
-    "diagnosticWorkspaceId": {
-      "value": "<diagnosticWorkspaceId>"
+    "diagnosticSettings": {
+      "value": [
+        {
+          "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+          "eventHubName": "<eventHubName>",
+          "metricCategories": [
+            {
+              "category": "AllMetrics"
+            }
+          ],
+          "name": "customSetting",
+          "storageAccountResourceId": "<storageAccountResourceId>",
+          "workspaceResourceId": "<workspaceResourceId>"
+        }
+      ]
     },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
@@ -447,6 +376,14 @@ module service 'br:bicep/modules/api-management.service:1.0.0' = {
       "value": {
         "kind": "CanNotDelete",
         "name": "myCustomLockName"
+      }
+    },
+    "managedIdentities": {
+      "value": {
+        "systemAssigned": true,
+        "userAssignedResourceIds": [
+          "<managedIdentityResourceId>"
+        ]
       }
     },
     "namedValues": {
@@ -521,19 +458,11 @@ module service 'br:bicep/modules/api-management.service:1.0.0' = {
         }
       ]
     },
-    "systemAssignedIdentity": {
-      "value": true
-    },
     "tags": {
       "value": {
         "Environment": "Non-Prod",
         "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
-      }
-    },
-    "userAssignedIdentities": {
-      "value": {
-        "<managedIdentityResourceId>": {}
       }
     }
   }
@@ -543,9 +472,9 @@ module service 'br:bicep/modules/api-management.service:1.0.0' = {
 </details>
 <p>
 
-### Example 3: _Using only defaults_
+### Example 3: _WAF-aligned_
 
-This instance deploys the module with the minimum set of required parameters.
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
 
 
 <details>
@@ -554,14 +483,156 @@ This instance deploys the module with the minimum set of required parameters.
 
 ```bicep
 module service 'br:bicep/modules/api-management.service:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-apismin'
+  name: '${uniqueString(deployment().name, location)}-test-apiswaf'
   params: {
     // Required parameters
-    name: 'apismin001'
+    name: 'apiswaf001'
     publisherEmail: 'apimgmt-noreply@mail.windowsazure.com'
     publisherName: 'az-amorg-x-001'
     // Non-required parameters
+    apis: [
+      {
+        apiVersionSet: {
+          name: 'echo-version-set'
+          properties: {
+            description: 'echo-version-set'
+            displayName: 'echo-version-set'
+            versioningScheme: 'Segment'
+          }
+        }
+        displayName: 'Echo API'
+        name: 'echo-api'
+        path: 'echo'
+        serviceUrl: 'http://echoapi.cloudapp.net/api'
+      }
+    ]
+    authorizationServers: {
+      secureList: [
+        {
+          authorizationEndpoint: '<authorizationEndpoint>'
+          clientId: 'apimclientid'
+          clientRegistrationEndpoint: 'http://localhost'
+          clientSecret: '<clientSecret>'
+          grantTypes: [
+            'authorizationCode'
+          ]
+          name: 'AuthServer1'
+          tokenEndpoint: '<tokenEndpoint>'
+        }
+      ]
+    }
+    backends: [
+      {
+        name: 'backend'
+        tls: {
+          validateCertificateChain: false
+          validateCertificateName: false
+        }
+        url: 'http://echoapi.cloudapp.net/api'
+      }
+    ]
+    caches: [
+      {
+        connectionString: 'connectionstringtest'
+        name: 'westeurope'
+        useFromLocation: 'westeurope'
+      }
+    ]
+    diagnosticSettings: [
+      {
+        eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+        eventHubName: '<eventHubName>'
+        metricCategories: [
+          {
+            category: 'AllMetrics'
+          }
+        ]
+        name: 'customSetting'
+        storageAccountResourceId: '<storageAccountResourceId>'
+        workspaceResourceId: '<workspaceResourceId>'
+      }
+    ]
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    identityProviders: [
+      {
+        name: 'aadProvider'
+      }
+    ]
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    managedIdentities: {
+      systemAssigned: true
+      userAssignedResourceIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
+    namedValues: [
+      {
+        displayName: 'apimkey'
+        name: 'apimkey'
+        secret: true
+      }
+    ]
+    policies: [
+      {
+        format: 'xml'
+        value: '<policies> <inbound> <rate-limit-by-key calls=\'250\' renewal-period=\'60\' counter-key=\'@(context.Request.IpAddress)\' /> </inbound> <backend> <forward-request /> </backend> <outbound> </outbound> </policies>'
+      }
+    ]
+    portalsettings: [
+      {
+        name: 'signin'
+        properties: {
+          enabled: false
+        }
+      }
+      {
+        name: 'signup'
+        properties: {
+          enabled: false
+          termsOfService: {
+            consentRequired: false
+            enabled: false
+          }
+        }
+      }
+    ]
+    products: [
+      {
+        apis: [
+          {
+            name: 'echo-api'
+          }
+        ]
+        approvalRequired: false
+        groups: [
+          {
+            name: 'developers'
+          }
+        ]
+        name: 'Starter'
+        subscriptionRequired: false
+      }
+    ]
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    subscriptions: [
+      {
+        name: 'testArmSubscriptionAllApis'
+      }
+    ]
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -580,7 +651,7 @@ module service 'br:bicep/modules/api-management.service:1.0.0' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "apismin001"
+      "value": "apiswaf001"
     },
     "publisherEmail": {
       "value": "apimgmt-noreply@mail.windowsazure.com"
@@ -589,8 +660,180 @@ module service 'br:bicep/modules/api-management.service:1.0.0' = {
       "value": "az-amorg-x-001"
     },
     // Non-required parameters
+    "apis": {
+      "value": [
+        {
+          "apiVersionSet": {
+            "name": "echo-version-set",
+            "properties": {
+              "description": "echo-version-set",
+              "displayName": "echo-version-set",
+              "versioningScheme": "Segment"
+            }
+          },
+          "displayName": "Echo API",
+          "name": "echo-api",
+          "path": "echo",
+          "serviceUrl": "http://echoapi.cloudapp.net/api"
+        }
+      ]
+    },
+    "authorizationServers": {
+      "value": {
+        "secureList": [
+          {
+            "authorizationEndpoint": "<authorizationEndpoint>",
+            "clientId": "apimclientid",
+            "clientRegistrationEndpoint": "http://localhost",
+            "clientSecret": "<clientSecret>",
+            "grantTypes": [
+              "authorizationCode"
+            ],
+            "name": "AuthServer1",
+            "tokenEndpoint": "<tokenEndpoint>"
+          }
+        ]
+      }
+    },
+    "backends": {
+      "value": [
+        {
+          "name": "backend",
+          "tls": {
+            "validateCertificateChain": false,
+            "validateCertificateName": false
+          },
+          "url": "http://echoapi.cloudapp.net/api"
+        }
+      ]
+    },
+    "caches": {
+      "value": [
+        {
+          "connectionString": "connectionstringtest",
+          "name": "westeurope",
+          "useFromLocation": "westeurope"
+        }
+      ]
+    },
+    "diagnosticSettings": {
+      "value": [
+        {
+          "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+          "eventHubName": "<eventHubName>",
+          "metricCategories": [
+            {
+              "category": "AllMetrics"
+            }
+          ],
+          "name": "customSetting",
+          "storageAccountResourceId": "<storageAccountResourceId>",
+          "workspaceResourceId": "<workspaceResourceId>"
+        }
+      ]
+    },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
+    },
+    "identityProviders": {
+      "value": [
+        {
+          "name": "aadProvider"
+        }
+      ]
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "managedIdentities": {
+      "value": {
+        "systemAssigned": true,
+        "userAssignedResourceIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
+    },
+    "namedValues": {
+      "value": [
+        {
+          "displayName": "apimkey",
+          "name": "apimkey",
+          "secret": true
+        }
+      ]
+    },
+    "policies": {
+      "value": [
+        {
+          "format": "xml",
+          "value": "<policies> <inbound> <rate-limit-by-key calls=\"250\" renewal-period=\"60\" counter-key=\"@(context.Request.IpAddress)\" /> </inbound> <backend> <forward-request /> </backend> <outbound> </outbound> </policies>"
+        }
+      ]
+    },
+    "portalsettings": {
+      "value": [
+        {
+          "name": "signin",
+          "properties": {
+            "enabled": false
+          }
+        },
+        {
+          "name": "signup",
+          "properties": {
+            "enabled": false,
+            "termsOfService": {
+              "consentRequired": false,
+              "enabled": false
+            }
+          }
+        }
+      ]
+    },
+    "products": {
+      "value": [
+        {
+          "apis": [
+            {
+              "name": "echo-api"
+            }
+          ],
+          "approvalRequired": false,
+          "groups": [
+            {
+              "name": "developers"
+            }
+          ],
+          "name": "Starter",
+          "subscriptionRequired": false
+        }
+      ]
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "subscriptions": {
+      "value": [
+        {
+          "name": "testArmSubscriptionAllApis"
+        }
+      ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }
@@ -622,13 +865,7 @@ module service 'br:bicep/modules/api-management.service:1.0.0' = {
 | [`caches`](#parameter-caches) | array | Caches. |
 | [`certificates`](#parameter-certificates) | array | List of Certificates that need to be installed in the API Management service. Max supported certificates that can be installed is 10. |
 | [`customProperties`](#parameter-customproperties) | object | Custom properties of the API Management service. |
-| [`diagnosticEventHubAuthorizationRuleId`](#parameter-diagnosticeventhubauthorizationruleid) | string | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
-| [`diagnosticEventHubName`](#parameter-diagnosticeventhubname) | string | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
-| [`diagnosticLogCategoriesToEnable`](#parameter-diagnosticlogcategoriestoenable) | array | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
-| [`diagnosticMetricsToEnable`](#parameter-diagnosticmetricstoenable) | array | The name of metrics that will be streamed. |
-| [`diagnosticSettingsName`](#parameter-diagnosticsettingsname) | string | The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings". |
-| [`diagnosticStorageAccountId`](#parameter-diagnosticstorageaccountid) | string | Resource ID of the diagnostic storage account. |
-| [`diagnosticWorkspaceId`](#parameter-diagnosticworkspaceid) | string | Resource ID of the diagnostic log analytics workspace. |
+| [`diagnosticSettings`](#parameter-diagnosticsettings) | array | The diagnostic settings of the service. |
 | [`disableGateway`](#parameter-disablegateway) | bool | Property only valid for an API Management service deployed in multiple locations. This can be used to disable the gateway in master region. |
 | [`enableClientCertificate`](#parameter-enableclientcertificate) | bool | Property only meant to be used for Consumption SKU Service. This enforces a client certificate to be presented on each request to the gateway. This also enables the ability to authenticate the certificate in the policy on the gateway. |
 | [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
@@ -636,6 +873,7 @@ module service 'br:bicep/modules/api-management.service:1.0.0' = {
 | [`identityProviders`](#parameter-identityproviders) | array | Identity providers. |
 | [`location`](#parameter-location) | string | Location for all Resources. |
 | [`lock`](#parameter-lock) | object | The lock settings of the service. |
+| [`managedIdentities`](#parameter-managedidentities) | object | The managed identity definition for this resource. |
 | [`minApiVersion`](#parameter-minapiversion) | string | Limit control plane API calls to API Management service with version equal to or newer than this value. |
 | [`namedValues`](#parameter-namedvalues) | array | Named values. |
 | [`newGuidValue`](#parameter-newguidvalue) | string | Necessary to create a new GUID. |
@@ -649,9 +887,7 @@ module service 'br:bicep/modules/api-management.service:1.0.0' = {
 | [`skuCount`](#parameter-skucount) | int | The instance size of this API Management service. |
 | [`subnetResourceId`](#parameter-subnetresourceid) | string | The full resource ID of a subnet in a virtual network to deploy the API Management service in. |
 | [`subscriptions`](#parameter-subscriptions) | array | Subscriptions. |
-| [`systemAssignedIdentity`](#parameter-systemassignedidentity) | bool | Enables system assigned managed identity on the resource. |
 | [`tags`](#parameter-tags) | object | Tags of the resource. |
-| [`userAssignedIdentities`](#parameter-userassignedidentities) | object | The ID(s) to assign to the resource. |
 | [`virtualNetworkType`](#parameter-virtualnetworktype) | string | The type of VPN in which API Management service needs to be configured in. None (Default Value) means the API Management service is not part of any Virtual Network, External means the API Management deployment is set up inside a Virtual Network having an internet Facing Endpoint, and Internal means that API Management deployment is setup inside a Virtual Network having an Intranet Facing Endpoint only. |
 | [`zones`](#parameter-zones) | array | A list of availability zones denoting where the resource needs to come from. |
 
@@ -681,7 +917,7 @@ API Version Sets.
 Authorization servers.
 - Required: No
 - Type: secureObject
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `backends`
 
@@ -709,58 +945,122 @@ List of Certificates that need to be installed in the API Management service. Ma
 Custom properties of the API Management service.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
-### Parameter: `diagnosticEventHubAuthorizationRuleId`
+### Parameter: `diagnosticSettings`
 
-Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.
-- Required: No
-- Type: string
-- Default: `''`
-
-### Parameter: `diagnosticEventHubName`
-
-Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.
-- Required: No
-- Type: string
-- Default: `''`
-
-### Parameter: `diagnosticLogCategoriesToEnable`
-
-The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection.
+The diagnostic settings of the service.
 - Required: No
 - Type: array
-- Default: `[allLogs]`
-- Allowed: `['', allLogs, GatewayLogs]`
 
-### Parameter: `diagnosticMetricsToEnable`
 
-The name of metrics that will be streamed.
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`eventHubAuthorizationRuleResourceId`](#parameter-diagnosticsettingseventhubauthorizationruleresourceid) | No | string | Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
+| [`eventHubName`](#parameter-diagnosticsettingseventhubname) | No | string | Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
+| [`logAnalyticsDestinationType`](#parameter-diagnosticsettingsloganalyticsdestinationtype) | No | string | Optional. A string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destination type. |
+| [`logCategoriesAndGroups`](#parameter-diagnosticsettingslogcategoriesandgroups) | No | array | Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
+| [`marketplacePartnerResourceId`](#parameter-diagnosticsettingsmarketplacepartnerresourceid) | No | string | Optional. The full ARM resource ID of the Marketplace resource to which you would like to send Diagnostic Logs. |
+| [`metricCategories`](#parameter-diagnosticsettingsmetriccategories) | No | array | Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
+| [`name`](#parameter-diagnosticsettingsname) | No | string | Optional. The name of diagnostic setting. |
+| [`storageAccountResourceId`](#parameter-diagnosticsettingsstorageaccountresourceid) | No | string | Optional. Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
+| [`workspaceResourceId`](#parameter-diagnosticsettingsworkspaceresourceid) | No | string | Optional. Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
+
+### Parameter: `diagnosticSettings.eventHubAuthorizationRuleResourceId`
+
+Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.
+
+- Required: No
+- Type: string
+
+### Parameter: `diagnosticSettings.eventHubName`
+
+Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.
+
+- Required: No
+- Type: string
+
+### Parameter: `diagnosticSettings.logAnalyticsDestinationType`
+
+Optional. A string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destination type.
+
+- Required: No
+- Type: string
+- Allowed: `[AzureDiagnostics, Dedicated]`
+
+### Parameter: `diagnosticSettings.logCategoriesAndGroups`
+
+Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection.
+
 - Required: No
 - Type: array
-- Default: `[AllMetrics]`
-- Allowed: `[AllMetrics]`
 
-### Parameter: `diagnosticSettingsName`
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`category`](#parameter-diagnosticsettingslogcategoriesandgroupscategory) | No | string | Optional. Name of a Diagnostic Log category for a resource type this setting is applied to. Set the specific logs to collect here. |
+| [`categoryGroup`](#parameter-diagnosticsettingslogcategoriesandgroupscategorygroup) | No | string | Optional. Name of a Diagnostic Log category group for a resource type this setting is applied to. Set to 'AllLogs' to collect all logs. |
 
-The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings".
+### Parameter: `diagnosticSettings.logCategoriesAndGroups.category`
+
+Optional. Name of a Diagnostic Log category for a resource type this setting is applied to. Set the specific logs to collect here.
+
 - Required: No
 - Type: string
-- Default: `''`
 
-### Parameter: `diagnosticStorageAccountId`
+### Parameter: `diagnosticSettings.logCategoriesAndGroups.categoryGroup`
 
-Resource ID of the diagnostic storage account.
+Optional. Name of a Diagnostic Log category group for a resource type this setting is applied to. Set to 'AllLogs' to collect all logs.
+
 - Required: No
 - Type: string
-- Default: `''`
 
-### Parameter: `diagnosticWorkspaceId`
 
-Resource ID of the diagnostic log analytics workspace.
+### Parameter: `diagnosticSettings.marketplacePartnerResourceId`
+
+Optional. The full ARM resource ID of the Marketplace resource to which you would like to send Diagnostic Logs.
+
 - Required: No
 - Type: string
-- Default: `''`
+
+### Parameter: `diagnosticSettings.metricCategories`
+
+Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection.
+
+- Required: No
+- Type: array
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`category`](#parameter-diagnosticsettingsmetriccategoriescategory) | Yes | string | Required. Name of a Diagnostic Metric category for a resource type this setting is applied to. Set to 'AllMetrics' to collect all metrics. |
+
+### Parameter: `diagnosticSettings.metricCategories.category`
+
+Required. Name of a Diagnostic Metric category for a resource type this setting is applied to. Set to 'AllMetrics' to collect all metrics.
+
+- Required: Yes
+- Type: string
+
+
+### Parameter: `diagnosticSettings.name`
+
+Optional. The name of diagnostic setting.
+
+- Required: No
+- Type: string
+
+### Parameter: `diagnosticSettings.storageAccountResourceId`
+
+Optional. Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.
+
+- Required: No
+- Type: string
+
+### Parameter: `diagnosticSettings.workspaceResourceId`
+
+Optional. Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.
+
+- Required: No
+- Type: string
 
 ### Parameter: `disableGateway`
 
@@ -830,6 +1130,32 @@ Optional. Specify the name of lock.
 
 - Required: No
 - Type: string
+
+### Parameter: `managedIdentities`
+
+The managed identity definition for this resource.
+- Required: No
+- Type: object
+
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`systemAssigned`](#parameter-managedidentitiessystemassigned) | No | bool | Optional. Enables system assigned managed identity on the resource. |
+| [`userAssignedResourceIds`](#parameter-managedidentitiesuserassignedresourceids) | No | array | Optional. The resource ID(s) to assign to the resource. |
+
+### Parameter: `managedIdentities.systemAssigned`
+
+Optional. Enables system assigned managed identity on the resource.
+
+- Required: No
+- Type: bool
+
+### Parameter: `managedIdentities.userAssignedResourceIds`
+
+Optional. The resource ID(s) to assign to the resource.
+
+- Required: No
+- Type: array
 
 ### Parameter: `minApiVersion`
 
@@ -979,7 +1305,16 @@ The pricing tier of this API Management service.
 - Required: No
 - Type: string
 - Default: `'Developer'`
-- Allowed: `[Basic, Consumption, Developer, Premium, Standard]`
+- Allowed:
+  ```Bicep
+  [
+    'Basic'
+    'Consumption'
+    'Developer'
+    'Premium'
+    'Standard'
+  ]
+  ```
 
 ### Parameter: `skuCount`
 
@@ -987,7 +1322,13 @@ The instance size of this API Management service.
 - Required: No
 - Type: int
 - Default: `1`
-- Allowed: `[1, 2]`
+- Allowed:
+  ```Bicep
+  [
+    1
+    2
+  ]
+  ```
 
 ### Parameter: `subnetResourceId`
 
@@ -1003,26 +1344,11 @@ Subscriptions.
 - Type: array
 - Default: `[]`
 
-### Parameter: `systemAssignedIdentity`
-
-Enables system assigned managed identity on the resource.
-- Required: No
-- Type: bool
-- Default: `False`
-
 ### Parameter: `tags`
 
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
-
-### Parameter: `userAssignedIdentities`
-
-The ID(s) to assign to the resource.
-- Required: No
-- Type: object
-- Default: `{object}`
 
 ### Parameter: `virtualNetworkType`
 
@@ -1030,7 +1356,14 @@ The type of VPN in which API Management service needs to be configured in. None 
 - Required: No
 - Type: string
 - Default: `'None'`
-- Allowed: `[External, Internal, None]`
+- Allowed:
+  ```Bicep
+  [
+    'External'
+    'Internal'
+    'None'
+  ]
+  ```
 
 ### Parameter: `zones`
 
@@ -1048,7 +1381,7 @@ A list of availability zones denoting where the resource needs to come from.
 | `name` | string | The name of the API management service. |
 | `resourceGroupName` | string | The resource group the API management service was deployed into. |
 | `resourceId` | string | The resource ID of the API management service. |
-| `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
+| `systemAssignedMIPrincipalId` | string | The principal ID of the system assigned identity. |
 
 ## Cross-referenced modules
 

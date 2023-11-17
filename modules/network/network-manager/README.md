@@ -35,6 +35,7 @@ The following section provides usage examples for the module, which were used to
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/network.network-manager:1.0.0`.
 
 - [Using large parameter set](#example-1-using-large-parameter-set)
+- [WAF-aligned](#example-2-waf-aligned)
 
 ### Example 1: _Using large parameter set_
 
@@ -47,7 +48,7 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module networkManager 'br:bicep/modules/network.network-manager:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-nnmcom'
+  name: '${uniqueString(deployment().name, location)}-test-nnmmax'
   params: {
     // Required parameters
     name: '<name>'
@@ -122,9 +123,7 @@ module networkManager 'br:bicep/modules/network.network-manager:1.0.0' = {
     ]
     roleAssignments: [
       {
-        principalIds: [
-          '<managedIdentityPrincipalId>'
-        ]
+        principalId: '<principalId>'
         principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
@@ -351,9 +350,457 @@ module networkManager 'br:bicep/modules/network.network-manager:1.0.0' = {
     "roleAssignments": {
       "value": [
         {
-          "principalIds": [
-            "<managedIdentityPrincipalId>"
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "scopeConnections": {
+      "value": [
+        {
+          "description": "description of the scope connection",
+          "name": "scope-connection-test",
+          "resourceId": "<resourceId>",
+          "tenantid": "<tenantid>"
+        }
+      ]
+    },
+    "securityAdminConfigurations": {
+      "value": [
+        {
+          "applyOnNetworkIntentPolicyBasedServices": [
+            "AllowRulesOnly"
           ],
+          "description": "description of the security admin config",
+          "name": "test-security-admin-config",
+          "ruleCollections": [
+            {
+              "appliesToGroups": [
+                {
+                  "networkGroupId": "<networkGroupId>"
+                }
+              ],
+              "description": "test-rule-collection-description",
+              "name": "test-rule-collection-1",
+              "rules": [
+                {
+                  "access": "Allow",
+                  "description": "test-inbound-allow-rule-1-description",
+                  "direction": "Inbound",
+                  "name": "test-inbound-allow-rule-1",
+                  "priority": 150,
+                  "protocol": "Tcp"
+                },
+                {
+                  "access": "Deny",
+                  "description": "test-outbound-deny-rule-2-description",
+                  "direction": "Outbound",
+                  "name": "test-outbound-deny-rule-2",
+                  "priority": 200,
+                  "protocol": "Tcp",
+                  "sourcePortRanges": [
+                    "442-445",
+                    "80"
+                  ],
+                  "sources": [
+                    {
+                      "addressPrefix": "AppService.WestEurope",
+                      "addressPrefixType": "ServiceTag"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "appliesToGroups": [
+                {
+                  "networkGroupId": "<networkGroupId>"
+                }
+              ],
+              "description": "test-rule-collection-description",
+              "name": "test-rule-collection-2",
+              "rules": [
+                {
+                  "access": "Allow",
+                  "description": "test-inbound-allow-rule-3-description",
+                  "destinationPortRanges": [
+                    "442-445",
+                    "80"
+                  ],
+                  "destinations": [
+                    {
+                      "addressPrefix": "192.168.20.20",
+                      "addressPrefixType": "IPPrefix"
+                    }
+                  ],
+                  "direction": "Inbound",
+                  "name": "test-inbound-allow-rule-3",
+                  "priority": 250,
+                  "protocol": "Tcp"
+                },
+                {
+                  "access": "Allow",
+                  "description": "test-inbound-allow-rule-4-description",
+                  "destinations": [
+                    {
+                      "addressPrefix": "172.16.0.0/24",
+                      "addressPrefixType": "IPPrefix"
+                    },
+                    {
+                      "addressPrefix": "172.16.1.0/24",
+                      "addressPrefixType": "IPPrefix"
+                    }
+                  ],
+                  "direction": "Inbound",
+                  "name": "test-inbound-allow-rule-4",
+                  "priority": 260,
+                  "protocol": "Tcp",
+                  "sources": [
+                    {
+                      "addressPrefix": "10.0.0.0/24",
+                      "addressPrefixType": "IPPrefix"
+                    },
+                    {
+                      "addressPrefix": "100.100.100.100",
+                      "addressPrefixType": "IPPrefix"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 2: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module networkManager 'br:bicep/modules/network.network-manager:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-nnmwaf'
+  params: {
+    // Required parameters
+    name: '<name>'
+    networkManagerScopeAccesses: [
+      'Connectivity'
+      'SecurityAdmin'
+    ]
+    networkManagerScopes: {
+      subscriptions: [
+        '<id>'
+      ]
+    }
+    // Non-required parameters
+    connectivityConfigurations: [
+      {
+        appliesToGroups: [
+          {
+            groupConnectivity: 'None'
+            isGlobal: 'False'
+            networkGroupId: '<networkGroupId>'
+            useHubGateway: 'False'
+          }
+        ]
+        connectivityTopology: 'HubAndSpoke'
+        deleteExistingPeering: 'True'
+        description: 'hubSpokeConnectivity description'
+        hubs: [
+          {
+            resourceId: '<resourceId>'
+            resourceType: 'Microsoft.Network/virtualNetworks'
+          }
+        ]
+        isGlobal: 'True'
+        name: 'hubSpokeConnectivity'
+      }
+      {
+        appliesToGroups: [
+          {
+            groupConnectivity: 'None'
+            isGlobal: 'False'
+            networkGroupId: '<networkGroupId>'
+            useHubGateway: 'False'
+          }
+        ]
+        connectivityTopology: 'Mesh'
+        deleteExistingPeering: 'True'
+        description: 'MeshConnectivity description'
+        isGlobal: 'True'
+        name: 'MeshConnectivity'
+      }
+    ]
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    networkGroups: [
+      {
+        description: 'network-group-spokes description'
+        name: 'network-group-spokes'
+        staticMembers: [
+          {
+            name: 'virtualNetworkSpoke1'
+            resourceId: '<resourceId>'
+          }
+          {
+            name: 'virtualNetworkSpoke2'
+            resourceId: '<resourceId>'
+          }
+        ]
+      }
+    ]
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    scopeConnections: [
+      {
+        description: 'description of the scope connection'
+        name: 'scope-connection-test'
+        resourceId: '<resourceId>'
+        tenantid: '<tenantid>'
+      }
+    ]
+    securityAdminConfigurations: [
+      {
+        applyOnNetworkIntentPolicyBasedServices: [
+          'AllowRulesOnly'
+        ]
+        description: 'description of the security admin config'
+        name: 'test-security-admin-config'
+        ruleCollections: [
+          {
+            appliesToGroups: [
+              {
+                networkGroupId: '<networkGroupId>'
+              }
+            ]
+            description: 'test-rule-collection-description'
+            name: 'test-rule-collection-1'
+            rules: [
+              {
+                access: 'Allow'
+                description: 'test-inbound-allow-rule-1-description'
+                direction: 'Inbound'
+                name: 'test-inbound-allow-rule-1'
+                priority: 150
+                protocol: 'Tcp'
+              }
+              {
+                access: 'Deny'
+                description: 'test-outbound-deny-rule-2-description'
+                direction: 'Outbound'
+                name: 'test-outbound-deny-rule-2'
+                priority: 200
+                protocol: 'Tcp'
+                sourcePortRanges: [
+                  '442-445'
+                  '80'
+                ]
+                sources: [
+                  {
+                    addressPrefix: 'AppService.WestEurope'
+                    addressPrefixType: 'ServiceTag'
+                  }
+                ]
+              }
+            ]
+          }
+          {
+            appliesToGroups: [
+              {
+                networkGroupId: '<networkGroupId>'
+              }
+            ]
+            description: 'test-rule-collection-description'
+            name: 'test-rule-collection-2'
+            rules: [
+              {
+                access: 'Allow'
+                description: 'test-inbound-allow-rule-3-description'
+                destinationPortRanges: [
+                  '442-445'
+                  '80'
+                ]
+                destinations: [
+                  {
+                    addressPrefix: '192.168.20.20'
+                    addressPrefixType: 'IPPrefix'
+                  }
+                ]
+                direction: 'Inbound'
+                name: 'test-inbound-allow-rule-3'
+                priority: 250
+                protocol: 'Tcp'
+              }
+              {
+                access: 'Allow'
+                description: 'test-inbound-allow-rule-4-description'
+                destinations: [
+                  {
+                    addressPrefix: '172.16.0.0/24'
+                    addressPrefixType: 'IPPrefix'
+                  }
+                  {
+                    addressPrefix: '172.16.1.0/24'
+                    addressPrefixType: 'IPPrefix'
+                  }
+                ]
+                direction: 'Inbound'
+                name: 'test-inbound-allow-rule-4'
+                priority: 260
+                protocol: 'Tcp'
+                sources: [
+                  {
+                    addressPrefix: '10.0.0.0/24'
+                    addressPrefixType: 'IPPrefix'
+                  }
+                  {
+                    addressPrefix: '100.100.100.100'
+                    addressPrefixType: 'IPPrefix'
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "<name>"
+    },
+    "networkManagerScopeAccesses": {
+      "value": [
+        "Connectivity",
+        "SecurityAdmin"
+      ]
+    },
+    "networkManagerScopes": {
+      "value": {
+        "subscriptions": [
+          "<id>"
+        ]
+      }
+    },
+    // Non-required parameters
+    "connectivityConfigurations": {
+      "value": [
+        {
+          "appliesToGroups": [
+            {
+              "groupConnectivity": "None",
+              "isGlobal": "False",
+              "networkGroupId": "<networkGroupId>",
+              "useHubGateway": "False"
+            }
+          ],
+          "connectivityTopology": "HubAndSpoke",
+          "deleteExistingPeering": "True",
+          "description": "hubSpokeConnectivity description",
+          "hubs": [
+            {
+              "resourceId": "<resourceId>",
+              "resourceType": "Microsoft.Network/virtualNetworks"
+            }
+          ],
+          "isGlobal": "True",
+          "name": "hubSpokeConnectivity"
+        },
+        {
+          "appliesToGroups": [
+            {
+              "groupConnectivity": "None",
+              "isGlobal": "False",
+              "networkGroupId": "<networkGroupId>",
+              "useHubGateway": "False"
+            }
+          ],
+          "connectivityTopology": "Mesh",
+          "deleteExistingPeering": "True",
+          "description": "MeshConnectivity description",
+          "isGlobal": "True",
+          "name": "MeshConnectivity"
+        }
+      ]
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "networkGroups": {
+      "value": [
+        {
+          "description": "network-group-spokes description",
+          "name": "network-group-spokes",
+          "staticMembers": [
+            {
+              "name": "virtualNetworkSpoke1",
+              "resourceId": "<resourceId>"
+            },
+            {
+              "name": "virtualNetworkSpoke2",
+              "resourceId": "<resourceId>"
+            }
+          ]
+        }
+      ]
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
           "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
@@ -606,7 +1053,68 @@ Scope of Network Manager. Contains a list of management groups or a list of subs
 Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
 - Required: No
 - Type: array
-- Default: `[]`
+
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`condition`](#parameter-roleassignmentscondition) | No | string | Optional. The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container" |
+| [`conditionVersion`](#parameter-roleassignmentsconditionversion) | No | string | Optional. Version of the condition. |
+| [`delegatedManagedIdentityResourceId`](#parameter-roleassignmentsdelegatedmanagedidentityresourceid) | No | string | Optional. The Resource Id of the delegated managed identity resource. |
+| [`description`](#parameter-roleassignmentsdescription) | No | string | Optional. The description of the role assignment. |
+| [`principalId`](#parameter-roleassignmentsprincipalid) | Yes | string | Required. The principal ID of the principal (user/group/identity) to assign the role to. |
+| [`principalType`](#parameter-roleassignmentsprincipaltype) | No | string | Optional. The principal type of the assigned principal ID. |
+| [`roleDefinitionIdOrName`](#parameter-roleassignmentsroledefinitionidorname) | Yes | string | Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead. |
+
+### Parameter: `roleAssignments.condition`
+
+Optional. The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container"
+
+- Required: No
+- Type: string
+
+### Parameter: `roleAssignments.conditionVersion`
+
+Optional. Version of the condition.
+
+- Required: No
+- Type: string
+- Allowed: `[2.0]`
+
+### Parameter: `roleAssignments.delegatedManagedIdentityResourceId`
+
+Optional. The Resource Id of the delegated managed identity resource.
+
+- Required: No
+- Type: string
+
+### Parameter: `roleAssignments.description`
+
+Optional. The description of the role assignment.
+
+- Required: No
+- Type: string
+
+### Parameter: `roleAssignments.principalId`
+
+Required. The principal ID of the principal (user/group/identity) to assign the role to.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `roleAssignments.principalType`
+
+Optional. The principal type of the assigned principal ID.
+
+- Required: No
+- Type: string
+- Allowed: `[Device, ForeignGroup, Group, ServicePrincipal, User]`
+
+### Parameter: `roleAssignments.roleDefinitionIdOrName`
+
+Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead.
+
+- Required: Yes
+- Type: string
 
 ### Parameter: `scopeConnections`
 
@@ -627,7 +1135,6 @@ Security Admin Configurations, Rule Collections and Rules to create for the netw
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 
 ## Outputs

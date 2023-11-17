@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "31081249188890418"
+      "templateHash": "2807663755404362270"
     },
     "name": "CDN Profiles",
     "description": "This module deploys a CDN Profile.",
@@ -198,7 +198,7 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Endpoint tags."
       }
@@ -328,12 +328,13 @@
         },
         "template": {
           "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "languageVersion": "2.0",
           "contentVersion": "1.0.0.0",
           "metadata": {
             "_generator": {
               "name": "bicep",
               "version": "0.22.6.54827",
-              "templateHash": "66122595863754952"
+              "templateHash": "4870857598190177606"
             },
             "name": "CDN Profiles Endpoints",
             "description": "This module deploys a CDN Profile Endpoint.",
@@ -367,7 +368,7 @@
             },
             "tags": {
               "type": "object",
-              "defaultValue": {},
+              "nullable": true,
               "metadata": {
                 "description": "Optional. Endpoint tags."
               }
@@ -383,8 +384,8 @@
           "variables": {
             "enableReferencedModulesTelemetry": false
           },
-          "resources": [
-            {
+          "resources": {
+            "defaultTelemetry": {
               "condition": "[parameters('enableDefaultTelemetry')]",
               "type": "Microsoft.Resources/deployments",
               "apiVersion": "2021-04-01",
@@ -398,15 +399,24 @@
                 }
               }
             },
-            {
+            "profile": {
+              "existing": true,
+              "type": "Microsoft.Cdn/profiles",
+              "apiVersion": "2021-06-01",
+              "name": "[parameters('profileName')]"
+            },
+            "endpoint": {
               "type": "Microsoft.Cdn/profiles/endpoints",
               "apiVersion": "2021-06-01",
               "name": "[format('{0}/{1}', parameters('profileName'), parameters('name'))]",
               "location": "[parameters('location')]",
               "properties": "[parameters('properties')]",
-              "tags": "[parameters('tags')]"
+              "tags": "[parameters('tags')]",
+              "dependsOn": [
+                "profile"
+              ]
             },
-            {
+            "endpoint_origins": {
               "copy": {
                 "name": "endpoint_origins",
                 "count": "[length(parameters('properties').origins)]"
@@ -606,9 +616,12 @@
                     }
                   }
                 }
-              }
+              },
+              "dependsOn": [
+                "profile"
+              ]
             }
-          ],
+          },
           "outputs": {
             "name": {
               "type": "string",
@@ -636,14 +649,14 @@
               "metadata": {
                 "description": "The location the resource was deployed into."
               },
-              "value": "[reference(resourceId('Microsoft.Cdn/profiles/endpoints', parameters('profileName'), parameters('name')), '2021-06-01', 'full').location]"
+              "value": "[reference('endpoint', '2021-06-01', 'full').location]"
             },
             "endpointProperties": {
               "type": "object",
               "metadata": {
                 "description": "The properties of the endpoint."
               },
-              "value": "[reference(resourceId('Microsoft.Cdn/profiles/endpoints', parameters('profileName'), parameters('name')), '2021-06-01')]"
+              "value": "[reference('endpoint')]"
             }
           }
         }
@@ -1685,16 +1698,19 @@
             "value": "[variables('enableReferencedModulesTelemetry')]"
           },
           "routes": "[if(contains(parameters('afdEndpoints')[copyIndex()], 'routes'), createObject('value', parameters('afdEndpoints')[copyIndex()].routes), createObject('value', createArray()))]",
-          "tags": "[if(contains(parameters('afdEndpoints')[copyIndex()], 'tags'), createObject('value', parameters('afdEndpoints')[copyIndex()].tags), createObject('value', createObject()))]"
+          "tags": {
+            "value": "[coalesce(tryGet(parameters('afdEndpoints')[copyIndex()], 'tags'), parameters('tags'))]"
+          }
         },
         "template": {
           "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "languageVersion": "2.0",
           "contentVersion": "1.0.0.0",
           "metadata": {
             "_generator": {
               "name": "bicep",
               "version": "0.22.6.54827",
-              "templateHash": "11941850826145778575"
+              "templateHash": "14944467223785761559"
             },
             "name": "CDN Profiles AFD Endpoints",
             "description": "This module deploys a CDN Profile AFD Endpoint.",
@@ -1722,7 +1738,7 @@
             },
             "tags": {
               "type": "object",
-              "defaultValue": {},
+              "nullable": true,
               "metadata": {
                 "description": "Optional. The tags of the AFD Endpoint."
               }
@@ -1769,8 +1785,8 @@
           "variables": {
             "enableReferencedModulesTelemetry": false
           },
-          "resources": [
-            {
+          "resources": {
+            "defaultTelemetry": {
               "condition": "[parameters('enableDefaultTelemetry')]",
               "type": "Microsoft.Resources/deployments",
               "apiVersion": "2021-04-01",
@@ -1784,7 +1800,13 @@
                 }
               }
             },
-            {
+            "profile": {
+              "existing": true,
+              "type": "Microsoft.Cdn/profiles",
+              "apiVersion": "2023-05-01",
+              "name": "[parameters('profileName')]"
+            },
+            "afd_endpoint": {
               "type": "Microsoft.Cdn/profiles/afdEndpoints",
               "apiVersion": "2023-05-01",
               "name": "[format('{0}/{1}', parameters('profileName'), parameters('name'))]",
@@ -1793,9 +1815,12 @@
               "properties": {
                 "autoGeneratedDomainNameLabelScope": "[parameters('autoGeneratedDomainNameLabelScope')]",
                 "enabledState": "[parameters('enabledState')]"
-              }
+              },
+              "dependsOn": [
+                "profile"
+              ]
             },
-            {
+            "afd_endpoint_route": {
               "copy": {
                 "name": "afd_endpoint_route",
                 "count": "[length(parameters('routes'))]"
@@ -2040,10 +2065,11 @@
                 }
               },
               "dependsOn": [
-                "[resourceId('Microsoft.Cdn/profiles/afdEndpoints', parameters('profileName'), parameters('name'))]"
+                "afd_endpoint",
+                "profile"
               ]
             }
-          ],
+          },
           "outputs": {
             "name": {
               "type": "string",
@@ -2071,7 +2097,7 @@
               "metadata": {
                 "description": "The location the resource was deployed into."
               },
-              "value": "[reference(resourceId('Microsoft.Cdn/profiles/afdEndpoints', parameters('profileName'), parameters('name')), '2023-05-01', 'full').location]"
+              "value": "[reference('afd_endpoint', '2023-05-01', 'full').location]"
             }
           }
         }

@@ -68,7 +68,13 @@ A value indicating whether multi-VM sync has to be enabled.
 - Required: No
 - Type: string
 - Default: `'Enable'`
-- Allowed: `[Disable, Enable]`
+- Allowed:
+  ```Bicep
+  [
+    'Disable'
+    'Enable'
+  ]
+  ```
 
 ### Parameter: `name`
 

@@ -28,149 +28,12 @@ The following section provides usage examples for the module, which were used to
 
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/network.bastion-host:1.0.0`.
 
-- [Using large parameter set](#example-1-using-large-parameter-set)
-- [Custompip](#example-2-custompip)
-- [Using only defaults](#example-3-using-only-defaults)
+- [Custompip](#example-1-custompip)
+- [Using only defaults](#example-2-using-only-defaults)
+- [Using large parameter set](#example-3-using-large-parameter-set)
+- [WAF-aligned](#example-4-waf-aligned)
 
-### Example 1: _Using large parameter set_
-
-This instance deploys the module with most of its features enabled.
-
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module bastionHost 'br:bicep/modules/network.bastion-host:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-nbhcom'
-  params: {
-    // Required parameters
-    name: 'nbhcom001'
-    vNetId: '<vNetId>'
-    // Non-required parameters
-    bastionSubnetPublicIpResourceId: '<bastionSubnetPublicIpResourceId>'
-    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-    diagnosticEventHubName: '<diagnosticEventHubName>'
-    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
-    disableCopyPaste: true
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    enableFileCopy: false
-    enableIpConnect: false
-    enableShareableLink: false
-    lock: {
-      kind: 'CanNotDelete'
-      name: 'myCustomLockName'
-    }
-    roleAssignments: [
-      {
-        principalIds: [
-          '<managedIdentityPrincipalId>'
-        ]
-        principalType: 'ServicePrincipal'
-        roleDefinitionIdOrName: 'Reader'
-      }
-    ]
-    scaleUnits: 4
-    skuName: 'Standard'
-    tags: {
-      Environment: 'Non-Prod'
-      'hidden-title': 'This is visible in the resource name'
-      Role: 'DeploymentValidation'
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "nbhcom001"
-    },
-    "vNetId": {
-      "value": "<vNetId>"
-    },
-    // Non-required parameters
-    "bastionSubnetPublicIpResourceId": {
-      "value": "<bastionSubnetPublicIpResourceId>"
-    },
-    "diagnosticEventHubAuthorizationRuleId": {
-      "value": "<diagnosticEventHubAuthorizationRuleId>"
-    },
-    "diagnosticEventHubName": {
-      "value": "<diagnosticEventHubName>"
-    },
-    "diagnosticStorageAccountId": {
-      "value": "<diagnosticStorageAccountId>"
-    },
-    "diagnosticWorkspaceId": {
-      "value": "<diagnosticWorkspaceId>"
-    },
-    "disableCopyPaste": {
-      "value": true
-    },
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
-    "enableFileCopy": {
-      "value": false
-    },
-    "enableIpConnect": {
-      "value": false
-    },
-    "enableShareableLink": {
-      "value": false
-    },
-    "lock": {
-      "value": {
-        "kind": "CanNotDelete",
-        "name": "myCustomLockName"
-      }
-    },
-    "roleAssignments": {
-      "value": [
-        {
-          "principalIds": [
-            "<managedIdentityPrincipalId>"
-          ],
-          "principalType": "ServicePrincipal",
-          "roleDefinitionIdOrName": "Reader"
-        }
-      ]
-    },
-    "scaleUnits": {
-      "value": 4
-    },
-    "skuName": {
-      "value": "Standard"
-    },
-    "tags": {
-      "value": {
-        "Environment": "Non-Prod",
-        "hidden-title": "This is visible in the resource name",
-        "Role": "DeploymentValidation"
-      }
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-### Example 2: _Custompip_
+### Example 1: _Custompip_
 
 <details>
 
@@ -187,21 +50,25 @@ module bastionHost 'br:bicep/modules/network.bastion-host:1.0.0' = {
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     publicIPAddressObject: {
       allocationMethod: 'Static'
-      diagnosticLogCategoriesToEnable: [
-        'DDoSMitigationFlowLogs'
-        'DDoSMitigationReports'
-        'DDoSProtectionNotifications'
-      ]
-      diagnosticMetricsToEnable: [
-        'AllMetrics'
+      diagnosticSettings: [
+        {
+          eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+          eventHubName: '<eventHubName>'
+          metricCategories: [
+            {
+              category: 'AllMetrics'
+            }
+          ]
+          name: 'customSetting'
+          storageAccountResourceId: '<storageAccountResourceId>'
+          workspaceResourceId: '<workspaceResourceId>'
+        }
       ]
       name: 'nbhctmpip001-pip'
       publicIPPrefixResourceId: ''
       roleAssignments: [
         {
-          principalIds: [
-            '<managedIdentityPrincipalId>'
-          ]
+          principalId: '<principalId>'
           principalType: 'ServicePrincipal'
           roleDefinitionIdOrName: 'Reader'
         }
@@ -249,21 +116,25 @@ module bastionHost 'br:bicep/modules/network.bastion-host:1.0.0' = {
     "publicIPAddressObject": {
       "value": {
         "allocationMethod": "Static",
-        "diagnosticLogCategoriesToEnable": [
-          "DDoSMitigationFlowLogs",
-          "DDoSMitigationReports",
-          "DDoSProtectionNotifications"
-        ],
-        "diagnosticMetricsToEnable": [
-          "AllMetrics"
+        "diagnosticSettings": [
+          {
+            "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+            "eventHubName": "<eventHubName>",
+            "metricCategories": [
+              {
+                "category": "AllMetrics"
+              }
+            ],
+            "name": "customSetting",
+            "storageAccountResourceId": "<storageAccountResourceId>",
+            "workspaceResourceId": "<workspaceResourceId>"
+          }
         ],
         "name": "nbhctmpip001-pip",
         "publicIPPrefixResourceId": "",
         "roleAssignments": [
           {
-            "principalIds": [
-              "<managedIdentityPrincipalId>"
-            ],
+            "principalId": "<principalId>",
             "principalType": "ServicePrincipal",
             "roleDefinitionIdOrName": "Reader"
           }
@@ -291,7 +162,7 @@ module bastionHost 'br:bicep/modules/network.bastion-host:1.0.0' = {
 </details>
 <p>
 
-### Example 3: _Using only defaults_
+### Example 2: _Using only defaults_
 
 This instance deploys the module with the minimum set of required parameters.
 
@@ -343,6 +214,282 @@ module bastionHost 'br:bicep/modules/network.bastion-host:1.0.0' = {
 </details>
 <p>
 
+### Example 3: _Using large parameter set_
+
+This instance deploys the module with most of its features enabled.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module bastionHost 'br:bicep/modules/network.bastion-host:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-nbhmax'
+  params: {
+    // Required parameters
+    name: 'nbhmax001'
+    vNetId: '<vNetId>'
+    // Non-required parameters
+    bastionSubnetPublicIpResourceId: '<bastionSubnetPublicIpResourceId>'
+    diagnosticSettings: [
+      {
+        eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+        eventHubName: '<eventHubName>'
+        name: 'customSetting'
+        storageAccountResourceId: '<storageAccountResourceId>'
+        workspaceResourceId: '<workspaceResourceId>'
+      }
+    ]
+    disableCopyPaste: true
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    enableFileCopy: false
+    enableIpConnect: false
+    enableShareableLink: false
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    scaleUnits: 4
+    skuName: 'Standard'
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "nbhmax001"
+    },
+    "vNetId": {
+      "value": "<vNetId>"
+    },
+    // Non-required parameters
+    "bastionSubnetPublicIpResourceId": {
+      "value": "<bastionSubnetPublicIpResourceId>"
+    },
+    "diagnosticSettings": {
+      "value": [
+        {
+          "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+          "eventHubName": "<eventHubName>",
+          "name": "customSetting",
+          "storageAccountResourceId": "<storageAccountResourceId>",
+          "workspaceResourceId": "<workspaceResourceId>"
+        }
+      ]
+    },
+    "disableCopyPaste": {
+      "value": true
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "enableFileCopy": {
+      "value": false
+    },
+    "enableIpConnect": {
+      "value": false
+    },
+    "enableShareableLink": {
+      "value": false
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "scaleUnits": {
+      "value": 4
+    },
+    "skuName": {
+      "value": "Standard"
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 4: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module bastionHost 'br:bicep/modules/network.bastion-host:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-nbhwaf'
+  params: {
+    // Required parameters
+    name: 'nbhwaf001'
+    vNetId: '<vNetId>'
+    // Non-required parameters
+    bastionSubnetPublicIpResourceId: '<bastionSubnetPublicIpResourceId>'
+    diagnosticSettings: [
+      {
+        eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+        eventHubName: '<eventHubName>'
+        name: 'customSetting'
+        storageAccountResourceId: '<storageAccountResourceId>'
+        workspaceResourceId: '<workspaceResourceId>'
+      }
+    ]
+    disableCopyPaste: true
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    enableFileCopy: false
+    enableIpConnect: false
+    enableShareableLink: false
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    scaleUnits: 4
+    skuName: 'Standard'
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "nbhwaf001"
+    },
+    "vNetId": {
+      "value": "<vNetId>"
+    },
+    // Non-required parameters
+    "bastionSubnetPublicIpResourceId": {
+      "value": "<bastionSubnetPublicIpResourceId>"
+    },
+    "diagnosticSettings": {
+      "value": [
+        {
+          "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+          "eventHubName": "<eventHubName>",
+          "name": "customSetting",
+          "storageAccountResourceId": "<storageAccountResourceId>",
+          "workspaceResourceId": "<workspaceResourceId>"
+        }
+      ]
+    },
+    "disableCopyPaste": {
+      "value": true
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "enableFileCopy": {
+      "value": false
+    },
+    "enableIpConnect": {
+      "value": false
+    },
+    "enableShareableLink": {
+      "value": false
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "scaleUnits": {
+      "value": 4
+    },
+    "skuName": {
+      "value": "Standard"
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
 
 ## Parameters
 
@@ -358,22 +505,16 @@ module bastionHost 'br:bicep/modules/network.bastion-host:1.0.0' = {
 | Parameter | Type | Description |
 | :-- | :-- | :-- |
 | [`bastionSubnetPublicIpResourceId`](#parameter-bastionsubnetpublicipresourceid) | string | The Public IP resource ID to associate to the azureBastionSubnet. If empty, then the Public IP that is created as part of this module will be applied to the azureBastionSubnet. |
-| [`diagnosticEventHubAuthorizationRuleId`](#parameter-diagnosticeventhubauthorizationruleid) | string | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
-| [`diagnosticEventHubName`](#parameter-diagnosticeventhubname) | string | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
-| [`diagnosticLogCategoriesToEnable`](#parameter-diagnosticlogcategoriestoenable) | array | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
-| [`diagnosticSettingsName`](#parameter-diagnosticsettingsname) | string | The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings". |
-| [`diagnosticStorageAccountId`](#parameter-diagnosticstorageaccountid) | string | Resource ID of the diagnostic storage account. |
-| [`diagnosticWorkspaceId`](#parameter-diagnosticworkspaceid) | string | Resource ID of the diagnostic log analytics workspace. |
+| [`diagnosticSettings`](#parameter-diagnosticsettings) | array | The diagnostic settings of the service. |
 | [`disableCopyPaste`](#parameter-disablecopypaste) | bool | Choose to disable or enable Copy Paste. |
 | [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
 | [`enableFileCopy`](#parameter-enablefilecopy) | bool | Choose to disable or enable File Copy. |
 | [`enableIpConnect`](#parameter-enableipconnect) | bool | Choose to disable or enable IP Connect. |
 | [`enableKerberos`](#parameter-enablekerberos) | bool | Choose to disable or enable Kerberos authentication. |
 | [`enableShareableLink`](#parameter-enableshareablelink) | bool | Choose to disable or enable Shareable Link. |
-| [`isCreateDefaultPublicIP`](#parameter-iscreatedefaultpublicip) | bool | Specifies if a Public IP should be created by default if one is not provided. |
 | [`location`](#parameter-location) | string | Location for all resources. |
 | [`lock`](#parameter-lock) | object | The lock settings of the service. |
-| [`publicIPAddressObject`](#parameter-publicipaddressobject) | object | Specifies the properties of the Public IP to create and be used by Azure Bastion. If it's not provided and publicIPAddressResourceId is empty, a '-pip' suffix will be appended to the Bastion's name. |
+| [`publicIPAddressObject`](#parameter-publicipaddressobject) | object | Specifies the properties of the Public IP to create and be used by Azure Bastion, if no existing public IP was provided. |
 | [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | [`scaleUnits`](#parameter-scaleunits) | int | The scale units for the Bastion Host resource. |
 | [`skuName`](#parameter-skuname) | string | The SKU of this Bastion Host. |
@@ -386,48 +527,100 @@ The Public IP resource ID to associate to the azureBastionSubnet. If empty, then
 - Type: string
 - Default: `''`
 
-### Parameter: `diagnosticEventHubAuthorizationRuleId`
+### Parameter: `diagnosticSettings`
 
-Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.
-- Required: No
-- Type: string
-- Default: `''`
-
-### Parameter: `diagnosticEventHubName`
-
-Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.
-- Required: No
-- Type: string
-- Default: `''`
-
-### Parameter: `diagnosticLogCategoriesToEnable`
-
-The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection.
+The diagnostic settings of the service.
 - Required: No
 - Type: array
-- Default: `[allLogs]`
-- Allowed: `['', allLogs, BastionAuditLogs]`
 
-### Parameter: `diagnosticSettingsName`
 
-The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings".
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`eventHubAuthorizationRuleResourceId`](#parameter-diagnosticsettingseventhubauthorizationruleresourceid) | No | string | Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
+| [`eventHubName`](#parameter-diagnosticsettingseventhubname) | No | string | Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
+| [`logAnalyticsDestinationType`](#parameter-diagnosticsettingsloganalyticsdestinationtype) | No | string | Optional. A string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destination type. |
+| [`logCategoriesAndGroups`](#parameter-diagnosticsettingslogcategoriesandgroups) | No | array | Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
+| [`marketplacePartnerResourceId`](#parameter-diagnosticsettingsmarketplacepartnerresourceid) | No | string | Optional. The full ARM resource ID of the Marketplace resource to which you would like to send Diagnostic Logs. |
+| [`name`](#parameter-diagnosticsettingsname) | No | string | Optional. The name of diagnostic setting. |
+| [`storageAccountResourceId`](#parameter-diagnosticsettingsstorageaccountresourceid) | No | string | Optional. Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
+| [`workspaceResourceId`](#parameter-diagnosticsettingsworkspaceresourceid) | No | string | Optional. Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
+
+### Parameter: `diagnosticSettings.eventHubAuthorizationRuleResourceId`
+
+Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.
+
 - Required: No
 - Type: string
-- Default: `''`
 
-### Parameter: `diagnosticStorageAccountId`
+### Parameter: `diagnosticSettings.eventHubName`
 
-Resource ID of the diagnostic storage account.
+Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.
+
 - Required: No
 - Type: string
-- Default: `''`
 
-### Parameter: `diagnosticWorkspaceId`
+### Parameter: `diagnosticSettings.logAnalyticsDestinationType`
 
-Resource ID of the diagnostic log analytics workspace.
+Optional. A string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destination type.
+
 - Required: No
 - Type: string
-- Default: `''`
+- Allowed: `[AzureDiagnostics, Dedicated]`
+
+### Parameter: `diagnosticSettings.logCategoriesAndGroups`
+
+Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection.
+
+- Required: No
+- Type: array
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`category`](#parameter-diagnosticsettingslogcategoriesandgroupscategory) | No | string | Optional. Name of a Diagnostic Log category for a resource type this setting is applied to. Set the specific logs to collect here. |
+| [`categoryGroup`](#parameter-diagnosticsettingslogcategoriesandgroupscategorygroup) | No | string | Optional. Name of a Diagnostic Log category group for a resource type this setting is applied to. Set to 'AllLogs' to collect all logs. |
+
+### Parameter: `diagnosticSettings.logCategoriesAndGroups.category`
+
+Optional. Name of a Diagnostic Log category for a resource type this setting is applied to. Set the specific logs to collect here.
+
+- Required: No
+- Type: string
+
+### Parameter: `diagnosticSettings.logCategoriesAndGroups.categoryGroup`
+
+Optional. Name of a Diagnostic Log category group for a resource type this setting is applied to. Set to 'AllLogs' to collect all logs.
+
+- Required: No
+- Type: string
+
+
+### Parameter: `diagnosticSettings.marketplacePartnerResourceId`
+
+Optional. The full ARM resource ID of the Marketplace resource to which you would like to send Diagnostic Logs.
+
+- Required: No
+- Type: string
+
+### Parameter: `diagnosticSettings.name`
+
+Optional. The name of diagnostic setting.
+
+- Required: No
+- Type: string
+
+### Parameter: `diagnosticSettings.storageAccountResourceId`
+
+Optional. Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.
+
+- Required: No
+- Type: string
+
+### Parameter: `diagnosticSettings.workspaceResourceId`
+
+Optional. Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.
+
+- Required: No
+- Type: string
 
 ### Parameter: `disableCopyPaste`
 
@@ -471,13 +664,6 @@ Choose to disable or enable Shareable Link.
 - Type: bool
 - Default: `False`
 
-### Parameter: `isCreateDefaultPublicIP`
-
-Specifies if a Public IP should be created by default if one is not provided.
-- Required: No
-- Type: bool
-- Default: `True`
-
 ### Parameter: `location`
 
 Location for all resources.
@@ -520,17 +706,83 @@ Name of the Azure Bastion resource.
 
 ### Parameter: `publicIPAddressObject`
 
-Specifies the properties of the Public IP to create and be used by Azure Bastion. If it's not provided and publicIPAddressResourceId is empty, a '-pip' suffix will be appended to the Bastion's name.
+Specifies the properties of the Public IP to create and be used by Azure Bastion, if no existing public IP was provided.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default:
+  ```Bicep
+  {
+      name: '[format(\'{0}-pip\' parameters(\'name\'))]'
+  }
+  ```
 
 ### Parameter: `roleAssignments`
 
 Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
 - Required: No
 - Type: array
-- Default: `[]`
+
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`condition`](#parameter-roleassignmentscondition) | No | string | Optional. The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container" |
+| [`conditionVersion`](#parameter-roleassignmentsconditionversion) | No | string | Optional. Version of the condition. |
+| [`delegatedManagedIdentityResourceId`](#parameter-roleassignmentsdelegatedmanagedidentityresourceid) | No | string | Optional. The Resource Id of the delegated managed identity resource. |
+| [`description`](#parameter-roleassignmentsdescription) | No | string | Optional. The description of the role assignment. |
+| [`principalId`](#parameter-roleassignmentsprincipalid) | Yes | string | Required. The principal ID of the principal (user/group/identity) to assign the role to. |
+| [`principalType`](#parameter-roleassignmentsprincipaltype) | No | string | Optional. The principal type of the assigned principal ID. |
+| [`roleDefinitionIdOrName`](#parameter-roleassignmentsroledefinitionidorname) | Yes | string | Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead. |
+
+### Parameter: `roleAssignments.condition`
+
+Optional. The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container"
+
+- Required: No
+- Type: string
+
+### Parameter: `roleAssignments.conditionVersion`
+
+Optional. Version of the condition.
+
+- Required: No
+- Type: string
+- Allowed: `[2.0]`
+
+### Parameter: `roleAssignments.delegatedManagedIdentityResourceId`
+
+Optional. The Resource Id of the delegated managed identity resource.
+
+- Required: No
+- Type: string
+
+### Parameter: `roleAssignments.description`
+
+Optional. The description of the role assignment.
+
+- Required: No
+- Type: string
+
+### Parameter: `roleAssignments.principalId`
+
+Required. The principal ID of the principal (user/group/identity) to assign the role to.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `roleAssignments.principalType`
+
+Optional. The principal type of the assigned principal ID.
+
+- Required: No
+- Type: string
+- Allowed: `[Device, ForeignGroup, Group, ServicePrincipal, User]`
+
+### Parameter: `roleAssignments.roleDefinitionIdOrName`
+
+Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead.
+
+- Required: Yes
+- Type: string
 
 ### Parameter: `scaleUnits`
 
@@ -545,14 +797,19 @@ The SKU of this Bastion Host.
 - Required: No
 - Type: string
 - Default: `'Basic'`
-- Allowed: `[Basic, Standard]`
+- Allowed:
+  ```Bicep
+  [
+    'Basic'
+    'Standard'
+  ]
+  ```
 
 ### Parameter: `tags`
 
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `vNetId`
 

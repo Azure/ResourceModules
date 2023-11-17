@@ -139,10 +139,20 @@ module flexibleServer 'br:bicep/modules/db-for-postgre-sql.flexible-server:1.0.0
       }
     ]
     delegatedSubnetResourceId: '<delegatedSubnetResourceId>'
-    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-    diagnosticEventHubName: '<diagnosticEventHubName>'
-    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    diagnosticSettings: [
+      {
+        eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+        eventHubName: '<eventHubName>'
+        metricCategories: [
+          {
+            category: 'AllMetrics'
+          }
+        ]
+        name: 'customSetting'
+        storageAccountResourceId: '<storageAccountResourceId>'
+        workspaceResourceId: '<workspaceResourceId>'
+      }
+    ]
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     geoRedundantBackup: 'Enabled'
     privateDnsZoneArmResourceId: '<privateDnsZoneArmResourceId>'
@@ -213,17 +223,21 @@ module flexibleServer 'br:bicep/modules/db-for-postgre-sql.flexible-server:1.0.0
     "delegatedSubnetResourceId": {
       "value": "<delegatedSubnetResourceId>"
     },
-    "diagnosticEventHubAuthorizationRuleId": {
-      "value": "<diagnosticEventHubAuthorizationRuleId>"
-    },
-    "diagnosticEventHubName": {
-      "value": "<diagnosticEventHubName>"
-    },
-    "diagnosticStorageAccountId": {
-      "value": "<diagnosticStorageAccountId>"
-    },
-    "diagnosticWorkspaceId": {
-      "value": "<diagnosticWorkspaceId>"
+    "diagnosticSettings": {
+      "value": [
+        {
+          "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+          "eventHubName": "<eventHubName>",
+          "metricCategories": [
+            {
+              "category": "AllMetrics"
+            }
+          ],
+          "name": "customSetting",
+          "storageAccountResourceId": "<storageAccountResourceId>",
+          "workspaceResourceId": "<workspaceResourceId>"
+        }
+      ]
     },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
@@ -272,9 +286,6 @@ module flexibleServer 'br:bicep/modules/db-for-postgre-sql.flexible-server:1.0.0
     ]
     availabilityZone: '1'
     backupRetentionDays: 20
-    cMKKeyName: '<cMKKeyName>'
-    cMKKeyVaultResourceId: '<cMKKeyVaultResourceId>'
-    cMKUserAssignedIdentityResourceId: '<cMKUserAssignedIdentityResourceId>'
     configurations: [
       {
         name: 'log_min_messages'
@@ -282,6 +293,11 @@ module flexibleServer 'br:bicep/modules/db-for-postgre-sql.flexible-server:1.0.0
         value: 'INFO'
       }
     ]
+    customerManagedKey: {
+      keyName: '<keyName>'
+      keyVaultResourceId: '<keyVaultResourceId>'
+      userAssignedIdentityResourceId: '<userAssignedIdentityResourceId>'
+    }
     databases: [
       {
         charset: 'UTF8'
@@ -292,10 +308,20 @@ module flexibleServer 'br:bicep/modules/db-for-postgre-sql.flexible-server:1.0.0
         name: 'testdb2'
       }
     ]
-    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-    diagnosticEventHubName: '<diagnosticEventHubName>'
-    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    diagnosticSettings: [
+      {
+        eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+        eventHubName: '<eventHubName>'
+        metricCategories: [
+          {
+            category: 'AllMetrics'
+          }
+        ]
+        name: 'customSetting'
+        storageAccountResourceId: '<storageAccountResourceId>'
+        workspaceResourceId: '<workspaceResourceId>'
+      }
+    ]
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     firewallRules: [
       {
@@ -317,14 +343,16 @@ module flexibleServer 'br:bicep/modules/db-for-postgre-sql.flexible-server:1.0.0
     geoRedundantBackup: 'Disabled'
     highAvailability: 'SameZone'
     location: '<location>'
+    managedIdentities: {
+      userAssignedResourceIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
     storageSizeGB: 1024
     tags: {
       Environment: 'Non-Prod'
       'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
-    }
-    userAssignedIdentities: {
-      '<managedIdentityResourceId>': {}
     }
     version: '14'
   }
@@ -369,15 +397,6 @@ module flexibleServer 'br:bicep/modules/db-for-postgre-sql.flexible-server:1.0.0
     "backupRetentionDays": {
       "value": 20
     },
-    "cMKKeyName": {
-      "value": "<cMKKeyName>"
-    },
-    "cMKKeyVaultResourceId": {
-      "value": "<cMKKeyVaultResourceId>"
-    },
-    "cMKUserAssignedIdentityResourceId": {
-      "value": "<cMKUserAssignedIdentityResourceId>"
-    },
     "configurations": {
       "value": [
         {
@@ -386,6 +405,13 @@ module flexibleServer 'br:bicep/modules/db-for-postgre-sql.flexible-server:1.0.0
           "value": "INFO"
         }
       ]
+    },
+    "customerManagedKey": {
+      "value": {
+        "keyName": "<keyName>",
+        "keyVaultResourceId": "<keyVaultResourceId>",
+        "userAssignedIdentityResourceId": "<userAssignedIdentityResourceId>"
+      }
     },
     "databases": {
       "value": [
@@ -399,17 +425,21 @@ module flexibleServer 'br:bicep/modules/db-for-postgre-sql.flexible-server:1.0.0
         }
       ]
     },
-    "diagnosticEventHubAuthorizationRuleId": {
-      "value": "<diagnosticEventHubAuthorizationRuleId>"
-    },
-    "diagnosticEventHubName": {
-      "value": "<diagnosticEventHubName>"
-    },
-    "diagnosticStorageAccountId": {
-      "value": "<diagnosticStorageAccountId>"
-    },
-    "diagnosticWorkspaceId": {
-      "value": "<diagnosticWorkspaceId>"
+    "diagnosticSettings": {
+      "value": [
+        {
+          "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+          "eventHubName": "<eventHubName>",
+          "metricCategories": [
+            {
+              "category": "AllMetrics"
+            }
+          ],
+          "name": "customSetting",
+          "storageAccountResourceId": "<storageAccountResourceId>",
+          "workspaceResourceId": "<workspaceResourceId>"
+        }
+      ]
     },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
@@ -442,6 +472,13 @@ module flexibleServer 'br:bicep/modules/db-for-postgre-sql.flexible-server:1.0.0
     "location": {
       "value": "<location>"
     },
+    "managedIdentities": {
+      "value": {
+        "userAssignedResourceIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
+    },
     "storageSizeGB": {
       "value": 1024
     },
@@ -450,11 +487,6 @@ module flexibleServer 'br:bicep/modules/db-for-postgre-sql.flexible-server:1.0.0
         "Environment": "Non-Prod",
         "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
-      }
-    },
-    "userAssignedIdentities": {
-      "value": {
-        "<managedIdentityResourceId>": {}
       }
     },
     "version": {
@@ -482,11 +514,9 @@ module flexibleServer 'br:bicep/modules/db-for-postgre-sql.flexible-server:1.0.0
 
 | Parameter | Type | Description |
 | :-- | :-- | :-- |
-| [`cMKKeyVaultResourceId`](#parameter-cmkkeyvaultresourceid) | string | The resource ID of a key vault to reference a customer managed key for encryption from. Required if 'cMKKeyName' is not empty. |
-| [`cMKUserAssignedIdentityResourceId`](#parameter-cmkuserassignedidentityresourceid) | string | User assigned identity to use when fetching the customer managed key. The identity should have key usage permissions on the Key Vault Key. Required if 'cMKKeyName' is not empty. |
+| [`managedIdentities`](#parameter-managedidentities) | object | The managed identity definition for this resource. Required if 'cMKKeyName' is not empty. |
 | [`pointInTimeUTC`](#parameter-pointintimeutc) | string | Required if "createMode" is set to "PointInTimeRestore". |
 | [`sourceServerResourceId`](#parameter-sourceserverresourceid) | string | Required if "createMode" is set to "PointInTimeRestore". |
-| [`userAssignedIdentities`](#parameter-userassignedidentities) | object | The ID(s) to assign to the resource. Required if 'cMKKeyName' is not empty. |
 
 **Optional parameters**
 
@@ -498,19 +528,12 @@ module flexibleServer 'br:bicep/modules/db-for-postgre-sql.flexible-server:1.0.0
 | [`administrators`](#parameter-administrators) | array | The Azure AD administrators when AAD authentication enabled. |
 | [`availabilityZone`](#parameter-availabilityzone) | string | Availability zone information of the server. Default will have no preference set. |
 | [`backupRetentionDays`](#parameter-backupretentiondays) | int | Backup retention days for the server. |
-| [`cMKKeyName`](#parameter-cmkkeyname) | string | The name of the customer managed key to use for encryption. |
-| [`cMKKeyVersion`](#parameter-cmkkeyversion) | string | The version of the customer managed key to reference for encryption. If not provided, the latest key version is used. |
 | [`configurations`](#parameter-configurations) | array | The configurations to create in the server. |
 | [`createMode`](#parameter-createmode) | string | The mode to create a new PostgreSQL server. |
+| [`customerManagedKey`](#parameter-customermanagedkey) | object | The customer managed key definition. |
 | [`databases`](#parameter-databases) | array | The databases to create in the server. |
 | [`delegatedSubnetResourceId`](#parameter-delegatedsubnetresourceid) | string | Delegated subnet arm resource ID. Used when the desired connectivity mode is "Private Access" - virtual network integration. |
-| [`diagnosticEventHubAuthorizationRuleId`](#parameter-diagnosticeventhubauthorizationruleid) | string | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
-| [`diagnosticEventHubName`](#parameter-diagnosticeventhubname) | string | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
-| [`diagnosticLogCategoriesToEnable`](#parameter-diagnosticlogcategoriestoenable) | array | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
-| [`diagnosticMetricsToEnable`](#parameter-diagnosticmetricstoenable) | array | The name of metrics that will be streamed. |
-| [`diagnosticSettingsName`](#parameter-diagnosticsettingsname) | string | The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings". |
-| [`diagnosticStorageAccountId`](#parameter-diagnosticstorageaccountid) | string | Resource ID of the diagnostic storage account. |
-| [`diagnosticWorkspaceId`](#parameter-diagnosticworkspaceid) | string | Resource ID of the diagnostic log analytics workspace. |
+| [`diagnosticSettings`](#parameter-diagnosticsettings) | array | The diagnostic settings of the service. |
 | [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
 | [`firewallRules`](#parameter-firewallrules) | array | The firewall rules to create in the PostgreSQL flexible server. |
 | [`geoRedundantBackup`](#parameter-georedundantbackup) | string | A value indicating whether Geo-Redundant backup is enabled on the server. Should be left disabled if 'cMKKeyName' is not empty. |
@@ -532,7 +555,13 @@ If Enabled, Azure Active Directory authentication is enabled.
 - Required: No
 - Type: string
 - Default: `'Enabled'`
-- Allowed: `[Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 ### Parameter: `administratorLogin`
 
@@ -561,7 +590,15 @@ Availability zone information of the server. Default will have no preference set
 - Required: No
 - Type: string
 - Default: `''`
-- Allowed: `['', 1, 2, 3]`
+- Allowed:
+  ```Bicep
+  [
+    ''
+    '1'
+    '2'
+    '3'
+  ]
+  ```
 
 ### Parameter: `backupRetentionDays`
 
@@ -569,34 +606,6 @@ Backup retention days for the server.
 - Required: No
 - Type: int
 - Default: `7`
-
-### Parameter: `cMKKeyName`
-
-The name of the customer managed key to use for encryption.
-- Required: No
-- Type: string
-- Default: `''`
-
-### Parameter: `cMKKeyVaultResourceId`
-
-The resource ID of a key vault to reference a customer managed key for encryption from. Required if 'cMKKeyName' is not empty.
-- Required: No
-- Type: string
-- Default: `''`
-
-### Parameter: `cMKKeyVersion`
-
-The version of the customer managed key to reference for encryption. If not provided, the latest key version is used.
-- Required: No
-- Type: string
-- Default: `''`
-
-### Parameter: `cMKUserAssignedIdentityResourceId`
-
-User assigned identity to use when fetching the customer managed key. The identity should have key usage permissions on the Key Vault Key. Required if 'cMKKeyName' is not empty.
-- Required: No
-- Type: string
-- Default: `''`
 
 ### Parameter: `configurations`
 
@@ -611,7 +620,57 @@ The mode to create a new PostgreSQL server.
 - Required: No
 - Type: string
 - Default: `'Default'`
-- Allowed: `[Create, Default, PointInTimeRestore, Update]`
+- Allowed:
+  ```Bicep
+  [
+    'Create'
+    'Default'
+    'PointInTimeRestore'
+    'Update'
+  ]
+  ```
+
+### Parameter: `customerManagedKey`
+
+The customer managed key definition.
+- Required: No
+- Type: object
+
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`keyName`](#parameter-customermanagedkeykeyname) | Yes | string | Required. The name of the customer managed key to use for encryption. |
+| [`keyVaultResourceId`](#parameter-customermanagedkeykeyvaultresourceid) | Yes | string | Required. The resource ID of a key vault to reference a customer managed key for encryption from. |
+| [`keyVersion`](#parameter-customermanagedkeykeyversion) | No | string | Optional. The version of the customer managed key to reference for encryption. If not provided, using 'latest'. |
+| [`userAssignedIdentityResourceId`](#parameter-customermanagedkeyuserassignedidentityresourceid) | Yes | string | Required. User assigned identity to use when fetching the customer managed key. |
+
+### Parameter: `customerManagedKey.keyName`
+
+Required. The name of the customer managed key to use for encryption.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `customerManagedKey.keyVaultResourceId`
+
+Required. The resource ID of a key vault to reference a customer managed key for encryption from.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `customerManagedKey.keyVersion`
+
+Optional. The version of the customer managed key to reference for encryption. If not provided, using 'latest'.
+
+- Required: No
+- Type: string
+
+### Parameter: `customerManagedKey.userAssignedIdentityResourceId`
+
+Required. User assigned identity to use when fetching the customer managed key.
+
+- Required: Yes
+- Type: string
 
 ### Parameter: `databases`
 
@@ -627,56 +686,120 @@ Delegated subnet arm resource ID. Used when the desired connectivity mode is "Pr
 - Type: string
 - Default: `''`
 
-### Parameter: `diagnosticEventHubAuthorizationRuleId`
+### Parameter: `diagnosticSettings`
 
-Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.
-- Required: No
-- Type: string
-- Default: `''`
-
-### Parameter: `diagnosticEventHubName`
-
-Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.
-- Required: No
-- Type: string
-- Default: `''`
-
-### Parameter: `diagnosticLogCategoriesToEnable`
-
-The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection.
+The diagnostic settings of the service.
 - Required: No
 - Type: array
-- Default: `[allLogs]`
-- Allowed: `['', allLogs, PostgreSQLFlexDatabaseXacts, PostgreSQLFlexQueryStoreRuntime, PostgreSQLFlexQueryStoreWaitStats, PostgreSQLFlexSessions, PostgreSQLFlexTableStats, PostgreSQLLogs]`
 
-### Parameter: `diagnosticMetricsToEnable`
 
-The name of metrics that will be streamed.
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`eventHubAuthorizationRuleResourceId`](#parameter-diagnosticsettingseventhubauthorizationruleresourceid) | No | string | Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
+| [`eventHubName`](#parameter-diagnosticsettingseventhubname) | No | string | Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
+| [`logAnalyticsDestinationType`](#parameter-diagnosticsettingsloganalyticsdestinationtype) | No | string | Optional. A string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destination type. |
+| [`logCategoriesAndGroups`](#parameter-diagnosticsettingslogcategoriesandgroups) | No | array | Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
+| [`marketplacePartnerResourceId`](#parameter-diagnosticsettingsmarketplacepartnerresourceid) | No | string | Optional. The full ARM resource ID of the Marketplace resource to which you would like to send Diagnostic Logs. |
+| [`metricCategories`](#parameter-diagnosticsettingsmetriccategories) | No | array | Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
+| [`name`](#parameter-diagnosticsettingsname) | No | string | Optional. The name of diagnostic setting. |
+| [`storageAccountResourceId`](#parameter-diagnosticsettingsstorageaccountresourceid) | No | string | Optional. Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
+| [`workspaceResourceId`](#parameter-diagnosticsettingsworkspaceresourceid) | No | string | Optional. Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
+
+### Parameter: `diagnosticSettings.eventHubAuthorizationRuleResourceId`
+
+Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.
+
+- Required: No
+- Type: string
+
+### Parameter: `diagnosticSettings.eventHubName`
+
+Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.
+
+- Required: No
+- Type: string
+
+### Parameter: `diagnosticSettings.logAnalyticsDestinationType`
+
+Optional. A string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destination type.
+
+- Required: No
+- Type: string
+- Allowed: `[AzureDiagnostics, Dedicated]`
+
+### Parameter: `diagnosticSettings.logCategoriesAndGroups`
+
+Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection.
+
 - Required: No
 - Type: array
-- Default: `[AllMetrics]`
-- Allowed: `[AllMetrics]`
 
-### Parameter: `diagnosticSettingsName`
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`category`](#parameter-diagnosticsettingslogcategoriesandgroupscategory) | No | string | Optional. Name of a Diagnostic Log category for a resource type this setting is applied to. Set the specific logs to collect here. |
+| [`categoryGroup`](#parameter-diagnosticsettingslogcategoriesandgroupscategorygroup) | No | string | Optional. Name of a Diagnostic Log category group for a resource type this setting is applied to. Set to 'AllLogs' to collect all logs. |
 
-The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings".
+### Parameter: `diagnosticSettings.logCategoriesAndGroups.category`
+
+Optional. Name of a Diagnostic Log category for a resource type this setting is applied to. Set the specific logs to collect here.
+
 - Required: No
 - Type: string
-- Default: `''`
 
-### Parameter: `diagnosticStorageAccountId`
+### Parameter: `diagnosticSettings.logCategoriesAndGroups.categoryGroup`
 
-Resource ID of the diagnostic storage account.
+Optional. Name of a Diagnostic Log category group for a resource type this setting is applied to. Set to 'AllLogs' to collect all logs.
+
 - Required: No
 - Type: string
-- Default: `''`
 
-### Parameter: `diagnosticWorkspaceId`
 
-Resource ID of the diagnostic log analytics workspace.
+### Parameter: `diagnosticSettings.marketplacePartnerResourceId`
+
+Optional. The full ARM resource ID of the Marketplace resource to which you would like to send Diagnostic Logs.
+
 - Required: No
 - Type: string
-- Default: `''`
+
+### Parameter: `diagnosticSettings.metricCategories`
+
+Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection.
+
+- Required: No
+- Type: array
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`category`](#parameter-diagnosticsettingsmetriccategoriescategory) | Yes | string | Required. Name of a Diagnostic Metric category for a resource type this setting is applied to. Set to 'AllMetrics' to collect all metrics. |
+
+### Parameter: `diagnosticSettings.metricCategories.category`
+
+Required. Name of a Diagnostic Metric category for a resource type this setting is applied to. Set to 'AllMetrics' to collect all metrics.
+
+- Required: Yes
+- Type: string
+
+
+### Parameter: `diagnosticSettings.name`
+
+Optional. The name of diagnostic setting.
+
+- Required: No
+- Type: string
+
+### Parameter: `diagnosticSettings.storageAccountResourceId`
+
+Optional. Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.
+
+- Required: No
+- Type: string
+
+### Parameter: `diagnosticSettings.workspaceResourceId`
+
+Optional. Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.
+
+- Required: No
+- Type: string
 
 ### Parameter: `enableDefaultTelemetry`
 
@@ -698,7 +821,13 @@ A value indicating whether Geo-Redundant backup is enabled on the server. Should
 - Required: No
 - Type: string
 - Default: `'Disabled'`
-- Allowed: `[Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 ### Parameter: `highAvailability`
 
@@ -706,7 +835,14 @@ The mode for high availability.
 - Required: No
 - Type: string
 - Default: `'Disabled'`
-- Allowed: `[Disabled, SameZone, ZoneRedundant]`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'SameZone'
+    'ZoneRedundant'
+  ]
+  ```
 
 ### Parameter: `location`
 
@@ -747,7 +883,25 @@ Optional. Specify the name of lock.
 Properties for the maintenence window. If provided, "customWindow" property must exist and set to "Enabled".
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
+
+### Parameter: `managedIdentities`
+
+The managed identity definition for this resource. Required if 'cMKKeyName' is not empty.
+- Required: No
+- Type: object
+
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`userAssignedResourceIds`](#parameter-managedidentitiesuserassignedresourceids) | Yes | array | Optional. The resource ID(s) to assign to the resource. |
+
+### Parameter: `managedIdentities.userAssignedResourceIds`
+
+Optional. The resource ID(s) to assign to the resource.
+
+- Required: Yes
+- Type: array
 
 ### Parameter: `name`
 
@@ -761,7 +915,13 @@ If Enabled, password authentication is enabled.
 - Required: No
 - Type: string
 - Default: `'Disabled'`
-- Allowed: `[Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 ### Parameter: `pointInTimeUTC`
 
@@ -864,14 +1024,27 @@ Max storage allowed for a server.
 - Required: No
 - Type: int
 - Default: `32`
-- Allowed: `[32, 64, 128, 256, 512, 1024, 2048, 4096, 8192, 16384]`
+- Allowed:
+  ```Bicep
+  [
+    32
+    64
+    128
+    256
+    512
+    1024
+    2048
+    4096
+    8192
+    16384
+  ]
+  ```
 
 ### Parameter: `tags`
 
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `tenantId`
 
@@ -885,14 +1058,14 @@ Tenant id of the server.
 The tier of the particular SKU. Tier must align with the "skuName" property. Example, tier cannot be "Burstable" if skuName is "Standard_D4s_v3".
 - Required: Yes
 - Type: string
-- Allowed: `[Burstable, GeneralPurpose, MemoryOptimized]`
-
-### Parameter: `userAssignedIdentities`
-
-The ID(s) to assign to the resource. Required if 'cMKKeyName' is not empty.
-- Required: No
-- Type: object
-- Default: `{object}`
+- Allowed:
+  ```Bicep
+  [
+    'Burstable'
+    'GeneralPurpose'
+    'MemoryOptimized'
+  ]
+  ```
 
 ### Parameter: `version`
 
@@ -900,7 +1073,16 @@ PostgreSQL Server version.
 - Required: No
 - Type: string
 - Default: `'15'`
-- Allowed: `[11, 12, 13, 14, 15]`
+- Allowed:
+  ```Bicep
+  [
+    '11'
+    '12'
+    '13'
+    '14'
+    '15'
+  ]
+  ```
 
 
 ## Outputs

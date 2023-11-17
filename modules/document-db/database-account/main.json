@@ -5,14 +5,37 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.22.6.54827",
-      "templateHash": "10157225997571423198"
+      "version": "0.23.1.45101",
+      "templateHash": "6369048122051620701"
     },
     "name": "DocumentDB Database Accounts",
     "description": "This module deploys a DocumentDB Database Account.",
     "owner": "Azure/module-maintainers"
   },
   "definitions": {
+    "managedIdentitiesType": {
+      "type": "object",
+      "properties": {
+        "systemAssigned": {
+          "type": "bool",
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Enables system assigned managed identity on the resource."
+          }
+        },
+        "userAssignedResourceIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. The resource ID(s) to assign to the resource."
+          }
+        }
+      },
+      "nullable": true
+    },
     "lockType": {
       "type": "object",
       "properties": {
@@ -103,6 +126,286 @@
         }
       },
       "nullable": true
+    },
+    "privateEndpointType": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true,
+            "metadata": {
+              "description": "Optional. The name of the private endpoint."
+            }
+          },
+          "location": {
+            "type": "string",
+            "nullable": true,
+            "metadata": {
+              "description": "Optional. The location to deploy the private endpoint to."
+            }
+          },
+          "service": {
+            "type": "string",
+            "metadata": {
+              "description": "Required. The service (sub-) type to deploy the private endpoint for. For example \"vault\" or \"blob\"."
+            }
+          },
+          "subnetResourceId": {
+            "type": "string",
+            "metadata": {
+              "description": "Required. Resource ID of the subnet where the endpoint needs to be created."
+            }
+          },
+          "privateDnsZoneGroupName": {
+            "type": "string",
+            "nullable": true,
+            "metadata": {
+              "description": "Optional. The name of the private DNS zone group to create if privateDnsZoneResourceIds were provided."
+            }
+          },
+          "privateDnsZoneResourceIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true,
+            "metadata": {
+              "description": "Optional. The private DNS zone groups to associate the private endpoint with. A DNS zone group can support up to 5 DNS zones."
+            }
+          },
+          "customDnsConfigs": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "fqdn": {
+                  "type": "string",
+                  "nullable": true,
+                  "metadata": {
+                    "description": "Required. Fqdn that resolves to private endpoint ip address."
+                  }
+                },
+                "ipAddresses": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "metadata": {
+                    "description": "Required. A list of private ip addresses of the private endpoint."
+                  }
+                }
+              }
+            },
+            "nullable": true,
+            "metadata": {
+              "description": "Optional. Custom DNS configurations."
+            }
+          },
+          "ipConfigurations": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "metadata": {
+                    "description": "Required. The name of the resource that is unique within a resource group."
+                  }
+                },
+                "properties": {
+                  "type": "object",
+                  "properties": {
+                    "groupId": {
+                      "type": "string",
+                      "metadata": {
+                        "description": "Required. The ID of a group obtained from the remote resource that this private endpoint should connect to."
+                      }
+                    },
+                    "memberName": {
+                      "type": "string",
+                      "metadata": {
+                        "description": "Required. The member name of a group obtained from the remote resource that this private endpoint should connect to."
+                      }
+                    },
+                    "privateIPAddress": {
+                      "type": "string",
+                      "metadata": {
+                        "description": "Required. A private ip address obtained from the private endpoint's subnet."
+                      }
+                    }
+                  },
+                  "metadata": {
+                    "description": "Required. Properties of private endpoint IP configurations."
+                  }
+                }
+              }
+            },
+            "nullable": true,
+            "metadata": {
+              "description": "Optional. A list of IP configurations of the private endpoint. This will be used to map to the First Party Service endpoints."
+            }
+          },
+          "applicationSecurityGroupResourceIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true,
+            "metadata": {
+              "description": "Optional. Application security groups in which the private endpoint IP configuration is included."
+            }
+          },
+          "customNetworkInterfaceName": {
+            "type": "string",
+            "nullable": true,
+            "metadata": {
+              "description": "Optional. The custom name of the network interface attached to the private endpoint."
+            }
+          },
+          "lock": {
+            "$ref": "#/definitions/lockType",
+            "metadata": {
+              "description": "Optional. Specify the type of lock."
+            }
+          },
+          "roleAssignments": {
+            "$ref": "#/definitions/roleAssignmentType",
+            "metadata": {
+              "description": "Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'."
+            }
+          },
+          "tags": {
+            "type": "object",
+            "nullable": true,
+            "metadata": {
+              "description": "Optional. Tags to be applied on all resources/resource groups in this deployment."
+            }
+          },
+          "manualPrivateLinkServiceConnections": {
+            "type": "array",
+            "nullable": true,
+            "metadata": {
+              "description": "Optional. Manual PrivateLink Service Connections."
+            }
+          },
+          "enableTelemetry": {
+            "type": "bool",
+            "nullable": true,
+            "metadata": {
+              "description": "Optional. Enable/Disable usage telemetry for module."
+            }
+          }
+        }
+      },
+      "nullable": true
+    },
+    "diagnosticSettingType": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true,
+            "metadata": {
+              "description": "Optional. The name of diagnostic setting."
+            }
+          },
+          "logCategoriesAndGroups": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "category": {
+                  "type": "string",
+                  "nullable": true,
+                  "metadata": {
+                    "description": "Optional. Name of a Diagnostic Log category for a resource type this setting is applied to. Set the specific logs to collect here."
+                  }
+                },
+                "categoryGroup": {
+                  "type": "string",
+                  "nullable": true,
+                  "metadata": {
+                    "description": "Optional. Name of a Diagnostic Log category group for a resource type this setting is applied to. Set to 'AllLogs' to collect all logs."
+                  }
+                }
+              }
+            },
+            "nullable": true,
+            "metadata": {
+              "description": "Optional. The name of logs that will be streamed. \"allLogs\" includes all possible logs for the resource. Set to '' to disable log collection."
+            }
+          },
+          "metricCategories": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "category": {
+                  "type": "string",
+                  "metadata": {
+                    "description": "Required. Name of a Diagnostic Metric category for a resource type this setting is applied to. Set to 'AllMetrics' to collect all metrics."
+                  }
+                }
+              }
+            },
+            "nullable": true,
+            "metadata": {
+              "description": "Optional. The name of logs that will be streamed. \"allLogs\" includes all possible logs for the resource. Set to '' to disable log collection."
+            }
+          },
+          "logAnalyticsDestinationType": {
+            "type": "string",
+            "allowedValues": [
+              "AzureDiagnostics",
+              "Dedicated"
+            ],
+            "nullable": true,
+            "metadata": {
+              "description": "Optional. A string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destination type."
+            }
+          },
+          "workspaceResourceId": {
+            "type": "string",
+            "nullable": true,
+            "metadata": {
+              "description": "Optional. Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub."
+            }
+          },
+          "storageAccountResourceId": {
+            "type": "string",
+            "nullable": true,
+            "metadata": {
+              "description": "Optional. Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub."
+            }
+          },
+          "eventHubAuthorizationRuleResourceId": {
+            "type": "string",
+            "nullable": true,
+            "metadata": {
+              "description": "Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to."
+            }
+          },
+          "eventHubName": {
+            "type": "string",
+            "nullable": true,
+            "metadata": {
+              "description": "Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub."
+            }
+          },
+          "marketplacePartnerResourceId": {
+            "type": "string",
+            "nullable": true,
+            "metadata": {
+              "description": "Optional. The full ARM resource ID of the Marketplace resource to which you would like to send Diagnostic Logs."
+            }
+          }
+        }
+      },
+      "nullable": true
     }
   },
   "parameters": {
@@ -121,23 +424,15 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Tags of the Database Account resource."
       }
     },
-    "systemAssignedIdentity": {
-      "type": "bool",
-      "defaultValue": false,
+    "managedIdentities": {
+      "$ref": "#/definitions/managedIdentitiesType",
       "metadata": {
-        "description": "Optional. Enables system assigned managed identity on the resource."
-      }
-    },
-    "userAssignedIdentities": {
-      "type": "object",
-      "defaultValue": {},
-      "metadata": {
-        "description": "Optional. The ID(s) to assign to the resource."
+        "description": "Optional. The managed identity definition for this resource."
       }
     },
     "databaseAccountOfferType": {
@@ -255,73 +550,10 @@
         "description": "Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalIds' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'."
       }
     },
-    "diagnosticStorageAccountId": {
-      "type": "string",
-      "defaultValue": "",
+    "diagnosticSettings": {
+      "$ref": "#/definitions/diagnosticSettingType",
       "metadata": {
-        "description": "Optional. Resource ID of the diagnostic storage account."
-      }
-    },
-    "diagnosticWorkspaceId": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Resource ID of the log analytics workspace."
-      }
-    },
-    "diagnosticEventHubAuthorizationRuleId": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to."
-      }
-    },
-    "diagnosticEventHubName": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category."
-      }
-    },
-    "diagnosticLogCategoriesToEnable": {
-      "type": "array",
-      "defaultValue": [
-        "allLogs"
-      ],
-      "allowedValues": [
-        "",
-        "allLogs",
-        "DataPlaneRequests",
-        "MongoRequests",
-        "QueryRuntimeStatistics",
-        "PartitionKeyStatistics",
-        "PartitionKeyRUConsumption",
-        "ControlPlaneRequests",
-        "CassandraRequests",
-        "GremlinRequests",
-        "TableApiRequests"
-      ],
-      "metadata": {
-        "description": "Optional. The name of logs that will be streamed. \"allLogs\" includes all possible logs for the resource. Set to '' to disable log collection."
-      }
-    },
-    "diagnosticMetricsToEnable": {
-      "type": "array",
-      "defaultValue": [
-        "Requests"
-      ],
-      "allowedValues": [
-        "Requests"
-      ],
-      "metadata": {
-        "description": "Optional. The name of metrics that will be streamed."
-      }
-    },
-    "diagnosticSettingsName": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": "Optional. The name of the diagnostic setting, if deployed. If left empty, it defaults to \"<resourceName>-diagnosticSettings\"."
+        "description": "Optional. The diagnostic settings of the service."
       }
     },
     "capabilitiesToAdd": {
@@ -392,8 +624,7 @@
       }
     },
     "privateEndpoints": {
-      "type": "array",
-      "defaultValue": [],
+      "$ref": "#/definitions/privateEndpointType",
       "metadata": {
         "description": "Optional. Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible."
       }
@@ -401,23 +632,6 @@
   },
   "variables": {
     "copy": [
-      {
-        "name": "diagnosticsLogsSpecified",
-        "count": "[length(filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', and(not(equals(lambdaVariables('item'), 'allLogs')), not(equals(lambdaVariables('item'), ''))))))]",
-        "input": {
-          "category": "[filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', and(not(equals(lambdaVariables('item'), 'allLogs')), not(equals(lambdaVariables('item'), '')))))[copyIndex('diagnosticsLogsSpecified')]]",
-          "enabled": true
-        }
-      },
-      {
-        "name": "diagnosticsMetrics",
-        "count": "[length(parameters('diagnosticMetricsToEnable'))]",
-        "input": {
-          "category": "[parameters('diagnosticMetricsToEnable')[copyIndex('diagnosticsMetrics')]]",
-          "timeGrain": null,
-          "enabled": true
-        }
-      },
       {
         "name": "databaseAccount_locations",
         "count": "[length(parameters('locations'))]",
@@ -435,9 +649,8 @@
         }
       }
     ],
-    "diagnosticsLogs": "[if(contains(parameters('diagnosticLogCategoriesToEnable'), 'allLogs'), createArray(createObject('categoryGroup', 'allLogs', 'enabled', true())), if(contains(parameters('diagnosticLogCategoriesToEnable'), ''), createArray(), variables('diagnosticsLogsSpecified')))]",
-    "identityType": "[if(parameters('systemAssignedIdentity'), if(not(empty(parameters('userAssignedIdentities'))), 'SystemAssigned, UserAssigned', 'SystemAssigned'), if(not(empty(parameters('userAssignedIdentities'))), 'UserAssigned', 'None'))]",
-    "identity": "[if(not(equals(variables('identityType'), 'None')), createObject('type', variables('identityType'), 'userAssignedIdentities', if(not(empty(parameters('userAssignedIdentities'))), parameters('userAssignedIdentities'), null())), null())]",
+    "formattedUserAssignedIdentities": "[reduce(map(coalesce(tryGet(parameters('managedIdentities'), 'userAssignedResourceIds'), createArray()), lambda('id', createObject(format('{0}', lambdaVariables('id')), createObject()))), createObject(), lambda('cur', 'next', union(lambdaVariables('cur'), lambdaVariables('next'))))]",
+    "identity": "[if(not(empty(parameters('managedIdentities'))), createObject('type', if(coalesce(tryGet(parameters('managedIdentities'), 'systemAssigned'), false()), if(not(empty(coalesce(tryGet(parameters('managedIdentities'), 'userAssignedResourceIds'), createObject()))), 'SystemAssigned,UserAssigned', 'SystemAssigned'), if(not(empty(coalesce(tryGet(parameters('managedIdentities'), 'userAssignedResourceIds'), createObject()))), 'UserAssigned', null())), 'userAssignedIdentities', if(not(empty(variables('formattedUserAssignedIdentities'))), variables('formattedUserAssignedIdentities'), null())), null())]",
     "consistencyPolicy": {
       "Eventual": {
         "defaultConsistencyLevel": "Eventual"
@@ -514,18 +727,23 @@
       ]
     },
     "databaseAccount_diagnosticSettings": {
-      "condition": "[or(or(or(not(empty(parameters('diagnosticStorageAccountId'))), not(empty(parameters('diagnosticWorkspaceId')))), not(empty(parameters('diagnosticEventHubAuthorizationRuleId')))), not(empty(parameters('diagnosticEventHubName'))))]",
+      "copy": {
+        "name": "databaseAccount_diagnosticSettings",
+        "count": "[length(coalesce(parameters('diagnosticSettings'), createArray()))]"
+      },
       "type": "Microsoft.Insights/diagnosticSettings",
       "apiVersion": "2021-05-01-preview",
       "scope": "[format('Microsoft.DocumentDB/databaseAccounts/{0}', parameters('name'))]",
-      "name": "[if(not(empty(parameters('diagnosticSettingsName'))), parameters('diagnosticSettingsName'), format('{0}-diagnosticSettings', parameters('name')))]",
+      "name": "[coalesce(tryGet(coalesce(parameters('diagnosticSettings'), createArray())[copyIndex()], 'name'), format('{0}-diagnosticSettings', parameters('name')))]",
       "properties": {
-        "storageAccountId": "[if(not(empty(parameters('diagnosticStorageAccountId'))), parameters('diagnosticStorageAccountId'), null())]",
-        "workspaceId": "[if(not(empty(parameters('diagnosticWorkspaceId'))), parameters('diagnosticWorkspaceId'), null())]",
-        "eventHubAuthorizationRuleId": "[if(not(empty(parameters('diagnosticEventHubAuthorizationRuleId'))), parameters('diagnosticEventHubAuthorizationRuleId'), null())]",
-        "eventHubName": "[if(not(empty(parameters('diagnosticEventHubName'))), parameters('diagnosticEventHubName'), null())]",
-        "metrics": "[variables('diagnosticsMetrics')]",
-        "logs": "[variables('diagnosticsLogs')]"
+        "storageAccountId": "[tryGet(coalesce(parameters('diagnosticSettings'), createArray())[copyIndex()], 'storageAccountResourceId')]",
+        "workspaceId": "[tryGet(coalesce(parameters('diagnosticSettings'), createArray())[copyIndex()], 'workspaceResourceId')]",
+        "eventHubAuthorizationRuleId": "[tryGet(coalesce(parameters('diagnosticSettings'), createArray())[copyIndex()], 'eventHubAuthorizationRuleResourceId')]",
+        "eventHubName": "[tryGet(coalesce(parameters('diagnosticSettings'), createArray())[copyIndex()], 'eventHubName')]",
+        "metrics": "[coalesce(tryGet(coalesce(parameters('diagnosticSettings'), createArray())[copyIndex()], 'metricCategories'), createArray(createObject('category', 'AllMetrics', 'timeGrain', null(), 'enabled', true())))]",
+        "logs": "[coalesce(tryGet(coalesce(parameters('diagnosticSettings'), createArray())[copyIndex()], 'logCategoriesAndGroups'), createArray(createObject('categoryGroup', 'AllLogs', 'enabled', true())))]",
+        "marketplacePartnerId": "[tryGet(coalesce(parameters('diagnosticSettings'), createArray())[copyIndex()], 'marketplacePartnerResourceId')]",
+        "logAnalyticsDestinationType": "[tryGet(coalesce(parameters('diagnosticSettings'), createArray())[copyIndex()], 'logAnalyticsDestinationType')]"
       },
       "dependsOn": [
         "databaseAccount"
@@ -582,12 +800,13 @@
         },
         "template": {
           "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "languageVersion": "2.0",
           "contentVersion": "1.0.0.0",
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.22.6.54827",
-              "templateHash": "11353697729412779140"
+              "version": "0.23.1.45101",
+              "templateHash": "5236608683863945170"
             },
             "name": "DocumentDB Database Account SQL Databases",
             "description": "This module deploys a SQL Database in a CosmosDB Account.",
@@ -629,7 +848,7 @@
             },
             "tags": {
               "type": "object",
-              "defaultValue": {},
+              "nullable": true,
               "metadata": {
                 "description": "Optional. Tags of the SQL database resource."
               }
@@ -645,8 +864,8 @@
           "variables": {
             "enableReferencedModulesTelemetry": false
           },
-          "resources": [
-            {
+          "resources": {
+            "defaultTelemetry": {
               "condition": "[parameters('enableDefaultTelemetry')]",
               "type": "Microsoft.Resources/deployments",
               "apiVersion": "2022-09-01",
@@ -660,7 +879,13 @@
                 }
               }
             },
-            {
+            "databaseAccount": {
+              "existing": true,
+              "type": "Microsoft.DocumentDB/databaseAccounts",
+              "apiVersion": "2023-04-15",
+              "name": "[parameters('databaseAccountName')]"
+            },
+            "sqlDatabase": {
               "type": "Microsoft.DocumentDB/databaseAccounts/sqlDatabases",
               "apiVersion": "2023-04-15",
               "name": "[format('{0}/{1}', parameters('databaseAccountName'), parameters('name'))]",
@@ -669,10 +894,13 @@
                 "resource": {
                   "id": "[parameters('name')]"
                 },
-                "options": "[if(contains(reference(resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('databaseAccountName')), '2023-04-15').capabilities, createObject('name', 'EnableServerless')), null(), createObject('throughput', if(equals(parameters('autoscaleSettingsMaxThroughput'), -1), parameters('throughput'), null()), 'autoscaleSettings', if(not(equals(parameters('autoscaleSettingsMaxThroughput'), -1)), createObject('maxThroughput', parameters('autoscaleSettingsMaxThroughput')), null())))]"
-              }
+                "options": "[if(contains(reference('databaseAccount').capabilities, createObject('name', 'EnableServerless')), null(), createObject('throughput', if(equals(parameters('autoscaleSettingsMaxThroughput'), -1), parameters('throughput'), null()), 'autoscaleSettings', if(not(equals(parameters('autoscaleSettingsMaxThroughput'), -1)), createObject('maxThroughput', parameters('autoscaleSettingsMaxThroughput')), null())))]"
+              },
+              "dependsOn": [
+                "databaseAccount"
+              ]
             },
-            {
+            "container": {
               "copy": {
                 "name": "container",
                 "count": "[length(parameters('containers'))]"
@@ -710,12 +938,13 @@
                 },
                 "template": {
                   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                  "languageVersion": "2.0",
                   "contentVersion": "1.0.0.0",
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.22.6.54827",
-                      "templateHash": "8116399669974678281"
+                      "version": "0.23.1.45101",
+                      "templateHash": "7712060799698135624"
                     },
                     "name": "DocumentDB Database Account SQL Database Containers",
                     "description": "This module deploys a SQL Database Container in a CosmosDB Account.",
@@ -780,7 +1009,7 @@
                     },
                     "tags": {
                       "type": "object",
-                      "defaultValue": {},
+                      "nullable": true,
                       "metadata": {
                         "description": "Optional. Tags of the SQL Database resource."
                       }
@@ -826,8 +1055,17 @@
                       }
                     }
                   },
-                  "resources": [
-                    {
+                  "resources": {
+                    "databaseAccount::sqlDatabase": {
+                      "existing": true,
+                      "type": "Microsoft.DocumentDB/databaseAccounts/sqlDatabases",
+                      "apiVersion": "2023-04-15",
+                      "name": "[format('{0}/{1}', parameters('databaseAccountName'), parameters('sqlDatabaseName'))]",
+                      "dependsOn": [
+                        "databaseAccount"
+                      ]
+                    },
+                    "defaultTelemetry": {
                       "condition": "[parameters('enableDefaultTelemetry')]",
                       "type": "Microsoft.Resources/deployments",
                       "apiVersion": "2022-09-01",
@@ -841,7 +1079,13 @@
                         }
                       }
                     },
-                    {
+                    "databaseAccount": {
+                      "existing": true,
+                      "type": "Microsoft.DocumentDB/databaseAccounts",
+                      "apiVersion": "2023-04-15",
+                      "name": "[parameters('databaseAccountName')]"
+                    },
+                    "container": {
                       "type": "Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers",
                       "apiVersion": "2023-04-15",
                       "name": "[format('{0}/{1}/{2}', parameters('databaseAccountName'), parameters('sqlDatabaseName'), parameters('name'))]",
@@ -859,10 +1103,13 @@
                           },
                           "uniqueKeyPolicy": "[if(not(empty(parameters('uniqueKeyPolicyKeys'))), createObject('uniqueKeys', parameters('uniqueKeyPolicyKeys')), null())]"
                         },
-                        "options": "[if(contains(reference(resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('databaseAccountName')), '2023-04-15').capabilities, createObject('name', 'EnableServerless')), null(), createObject('throughput', if(equals(parameters('autoscaleSettingsMaxThroughput'), -1), parameters('throughput'), null()), 'autoscaleSettings', if(not(equals(parameters('autoscaleSettingsMaxThroughput'), -1)), createObject('maxThroughput', parameters('autoscaleSettingsMaxThroughput')), null())))]"
-                      }
+                        "options": "[if(contains(reference('databaseAccount').capabilities, createObject('name', 'EnableServerless')), null(), createObject('throughput', if(equals(parameters('autoscaleSettingsMaxThroughput'), -1), parameters('throughput'), null()), 'autoscaleSettings', if(not(equals(parameters('autoscaleSettingsMaxThroughput'), -1)), createObject('maxThroughput', parameters('autoscaleSettingsMaxThroughput')), null())))]"
+                      },
+                      "dependsOn": [
+                        "databaseAccount::sqlDatabase"
+                      ]
                     }
-                  ],
+                  },
                   "outputs": {
                     "name": {
                       "type": "string",
@@ -889,10 +1136,10 @@
                 }
               },
               "dependsOn": [
-                "[resourceId('Microsoft.DocumentDB/databaseAccounts/sqlDatabases', parameters('databaseAccountName'), parameters('name'))]"
+                "sqlDatabase"
               ]
             }
-          ],
+          },
           "outputs": {
             "name": {
               "type": "string",
@@ -949,12 +1196,13 @@
         },
         "template": {
           "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "languageVersion": "2.0",
           "contentVersion": "1.0.0.0",
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.22.6.54827",
-              "templateHash": "1822071123668929932"
+              "version": "0.23.1.45101",
+              "templateHash": "10909630292111406683"
             },
             "name": "DocumentDB Database Account MongoDB Databases",
             "description": "This module deploys a MongoDB Database within a CosmosDB Account.",
@@ -989,7 +1237,7 @@
             },
             "tags": {
               "type": "object",
-              "defaultValue": {},
+              "nullable": true,
               "metadata": {
                 "description": "Optional. Tags of the resource."
               }
@@ -1005,8 +1253,8 @@
           "variables": {
             "enableReferencedModulesTelemetry": false
           },
-          "resources": [
-            {
+          "resources": {
+            "defaultTelemetry": {
               "condition": "[parameters('enableDefaultTelemetry')]",
               "type": "Microsoft.Resources/deployments",
               "apiVersion": "2022-09-01",
@@ -1020,7 +1268,13 @@
                 }
               }
             },
-            {
+            "databaseAccount": {
+              "existing": true,
+              "type": "Microsoft.DocumentDB/databaseAccounts",
+              "apiVersion": "2023-04-15",
+              "name": "[parameters('databaseAccountName')]"
+            },
+            "mongodbDatabase": {
               "type": "Microsoft.DocumentDB/databaseAccounts/mongodbDatabases",
               "apiVersion": "2023-04-15",
               "name": "[format('{0}/{1}', parameters('databaseAccountName'), parameters('name'))]",
@@ -1029,10 +1283,13 @@
                 "resource": {
                   "id": "[parameters('name')]"
                 },
-                "options": "[if(contains(reference(resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('databaseAccountName')), '2023-04-15').capabilities, createObject('name', 'EnableServerless')), null(), createObject('throughput', parameters('throughput')))]"
-              }
+                "options": "[if(contains(reference('databaseAccount').capabilities, createObject('name', 'EnableServerless')), null(), createObject('throughput', parameters('throughput')))]"
+              },
+              "dependsOn": [
+                "databaseAccount"
+              ]
             },
-            {
+            "mongodbDatabase_collections": {
               "copy": {
                 "name": "mongodbDatabase_collections",
                 "count": "[length(parameters('collections'))]"
@@ -1071,8 +1328,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.22.6.54827",
-                      "templateHash": "14573428332905458641"
+                      "version": "0.23.1.45101",
+                      "templateHash": "2460347721734751381"
                     },
                     "name": "DocumentDB Database Account MongoDB Database Collections",
                     "description": "This module deploys a MongoDB Database Collection.",
@@ -1179,10 +1436,10 @@
                 }
               },
               "dependsOn": [
-                "[resourceId('Microsoft.DocumentDB/databaseAccounts/mongodbDatabases', parameters('databaseAccountName'), parameters('name'))]"
+                "mongodbDatabase"
               ]
             }
-          ],
+          },
           "outputs": {
             "name": {
               "type": "string",
@@ -1239,16 +1496,42 @@
         },
         "template": {
           "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "languageVersion": "2.0",
           "contentVersion": "1.0.0.0",
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.22.6.54827",
-              "templateHash": "15423165717770718605"
+              "version": "0.23.1.45101",
+              "templateHash": "8314710518368415809"
             },
             "name": "DocumentDB Database Account Gremlin Databases",
             "description": "This module deploys a Gremlin Database within a CosmosDB Account.",
             "owner": "Azure/module-maintainers"
+          },
+          "definitions": {
+            "managedIdentitiesType": {
+              "type": "object",
+              "properties": {
+                "systemAssigned": {
+                  "type": "bool",
+                  "nullable": true,
+                  "metadata": {
+                    "description": "Optional. Enables system assigned managed identity on the resource."
+                  }
+                },
+                "userAssignedResourceIds": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "nullable": true,
+                  "metadata": {
+                    "description": "Optional. The resource ID(s) to assign to the resource."
+                  }
+                }
+              },
+              "nullable": true
+            }
           },
           "parameters": {
             "name": {
@@ -1259,23 +1542,9 @@
             },
             "tags": {
               "type": "object",
-              "defaultValue": {},
+              "nullable": true,
               "metadata": {
                 "description": "Optional. Tags of the Gremlin database resource."
-              }
-            },
-            "systemAssignedIdentity": {
-              "type": "bool",
-              "defaultValue": false,
-              "metadata": {
-                "description": "Optional. Enables system assigned managed identity on the resource."
-              }
-            },
-            "userAssignedIdentities": {
-              "type": "object",
-              "defaultValue": {},
-              "metadata": {
-                "description": "Optional. The ID(s) to assign to the resource."
               }
             },
             "databaseAccountName": {
@@ -1314,11 +1583,10 @@
             }
           },
           "variables": {
-            "enableReferencedModulesTelemetry": false,
-            "identityType": "[if(parameters('systemAssignedIdentity'), if(not(empty(parameters('userAssignedIdentities'))), 'SystemAssigned, UserAssigned', 'SystemAssigned'), if(not(empty(parameters('userAssignedIdentities'))), 'UserAssigned', 'None'))]"
+            "enableReferencedModulesTelemetry": false
           },
-          "resources": [
-            {
+          "resources": {
+            "defaultTelemetry": {
               "condition": "[parameters('enableDefaultTelemetry')]",
               "type": "Microsoft.Resources/deployments",
               "apiVersion": "2022-09-01",
@@ -1332,20 +1600,28 @@
                 }
               }
             },
-            {
+            "databaseAccount": {
+              "existing": true,
+              "type": "Microsoft.DocumentDB/databaseAccounts",
+              "apiVersion": "2023-04-15",
+              "name": "[parameters('databaseAccountName')]"
+            },
+            "gremlinDatabase": {
               "type": "Microsoft.DocumentDB/databaseAccounts/gremlinDatabases",
               "apiVersion": "2023-04-15",
               "name": "[format('{0}/{1}', parameters('databaseAccountName'), parameters('name'))]",
               "tags": "[parameters('tags')]",
-              "identity": "[if(not(equals(variables('identityType'), 'None')), createObject('type', variables('identityType'), 'userAssignedIdentities', if(not(empty(parameters('userAssignedIdentities'))), parameters('userAssignedIdentities'), null())), null())]",
               "properties": {
-                "options": "[if(contains(reference(resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('databaseAccountName')), '2023-04-15').capabilities, createObject('name', 'EnableServerless')), createObject(), createObject('autoscaleSettings', if(equals(parameters('throughput'), -1), createObject('maxThroughput', parameters('maxThroughput')), null()), 'throughput', if(not(equals(parameters('throughput'), -1)), parameters('throughput'), null())))]",
+                "options": "[if(contains(reference('databaseAccount').capabilities, createObject('name', 'EnableServerless')), createObject(), createObject('autoscaleSettings', if(equals(parameters('throughput'), -1), createObject('maxThroughput', parameters('maxThroughput')), null()), 'throughput', if(not(equals(parameters('throughput'), -1)), parameters('throughput'), null())))]",
                 "resource": {
                   "id": "[parameters('name')]"
                 }
-              }
+              },
+              "dependsOn": [
+                "databaseAccount"
+              ]
             },
-            {
+            "gremlinDatabase_gremlinGraphs": {
               "copy": {
                 "name": "gremlinDatabase_gremlinGraphs",
                 "count": "[length(parameters('graphs'))]"
@@ -1376,12 +1652,13 @@
                 },
                 "template": {
                   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                  "languageVersion": "2.0",
                   "contentVersion": "1.0.0.0",
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.22.6.54827",
-                      "templateHash": "18333404401527081455"
+                      "version": "0.23.1.45101",
+                      "templateHash": "4035784770059836359"
                     },
                     "name": "DocumentDB Database Accounts Gremlin Databases Graphs",
                     "description": "This module deploys a DocumentDB Database Accounts Gremlin Database Graph.",
@@ -1396,7 +1673,7 @@
                     },
                     "tags": {
                       "type": "object",
-                      "defaultValue": {},
+                      "nullable": true,
                       "metadata": {
                         "description": "Optional. Tags of the Gremlin graph resource."
                       }
@@ -1435,8 +1712,17 @@
                       }
                     }
                   },
-                  "resources": [
-                    {
+                  "resources": {
+                    "databaseAccount::gremlinDatabase": {
+                      "existing": true,
+                      "type": "Microsoft.DocumentDB/databaseAccounts/gremlinDatabases",
+                      "apiVersion": "2023-04-15",
+                      "name": "[format('{0}/{1}', parameters('databaseAccountName'), parameters('gremlinDatabaseName'))]",
+                      "dependsOn": [
+                        "databaseAccount"
+                      ]
+                    },
+                    "defaultTelemetry": {
                       "condition": "[parameters('enableDefaultTelemetry')]",
                       "type": "Microsoft.Resources/deployments",
                       "apiVersion": "2022-09-01",
@@ -1450,7 +1736,13 @@
                         }
                       }
                     },
-                    {
+                    "databaseAccount": {
+                      "existing": true,
+                      "type": "Microsoft.DocumentDB/databaseAccounts",
+                      "apiVersion": "2023-04-15",
+                      "name": "[parameters('databaseAccountName')]"
+                    },
+                    "gremlinGraph": {
                       "type": "Microsoft.DocumentDB/databaseAccounts/gremlinDatabases/graphs",
                       "apiVersion": "2023-04-15",
                       "name": "[format('{0}/{1}/{2}', parameters('databaseAccountName'), parameters('gremlinDatabaseName'), parameters('name'))]",
@@ -1463,9 +1755,12 @@
                             "paths": "[if(not(empty(parameters('partitionKeyPaths'))), parameters('partitionKeyPaths'), null())]"
                           }
                         }
-                      }
+                      },
+                      "dependsOn": [
+                        "databaseAccount::gremlinDatabase"
+                      ]
                     }
-                  ],
+                  },
                   "outputs": {
                     "name": {
                       "type": "string",
@@ -1492,10 +1787,10 @@
                 }
               },
               "dependsOn": [
-                "[resourceId('Microsoft.DocumentDB/databaseAccounts/gremlinDatabases', parameters('databaseAccountName'), parameters('name'))]"
+                "gremlinDatabase"
               ]
             }
-          ],
+          },
           "outputs": {
             "name": {
               "type": "string",
@@ -1528,11 +1823,11 @@
     "databaseAccount_privateEndpoints": {
       "copy": {
         "name": "databaseAccount_privateEndpoints",
-        "count": "[length(parameters('privateEndpoints'))]"
+        "count": "[length(coalesce(parameters('privateEndpoints'), createArray()))]"
       },
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
-      "name": "[format('{0}-CosmosDB-PrivateEndpoint-{1}', uniqueString(deployment().name, parameters('location')), copyIndex())]",
+      "name": "[format('{0}-databaseAccount-PrivateEndpoint-{1}', uniqueString(deployment().name, parameters('location')), copyIndex())]",
       "properties": {
         "expressionEvaluationOptions": {
           "scope": "inner"
@@ -1541,32 +1836,54 @@
         "parameters": {
           "groupIds": {
             "value": [
-              "[parameters('privateEndpoints')[copyIndex()].service]"
+              "[coalesce(parameters('privateEndpoints'), createArray())[copyIndex()].service]"
             ]
           },
-          "name": "[if(contains(parameters('privateEndpoints')[copyIndex()], 'name'), createObject('value', parameters('privateEndpoints')[copyIndex()].name), createObject('value', format('pe-{0}-{1}-{2}', last(split(resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('name')), '/')), parameters('privateEndpoints')[copyIndex()].service, copyIndex())))]",
+          "name": {
+            "value": "[coalesce(tryGet(coalesce(parameters('privateEndpoints'), createArray())[copyIndex()], 'name'), format('pep-{0}-{1}-{2}', last(split(resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('name')), '/')), coalesce(tryGet(coalesce(parameters('privateEndpoints'), createArray())[copyIndex()], 'service'), coalesce(parameters('privateEndpoints'), createArray())[copyIndex()].service), copyIndex()))]"
+          },
           "serviceResourceId": {
             "value": "[resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('name'))]"
           },
           "subnetResourceId": {
-            "value": "[parameters('privateEndpoints')[copyIndex()].subnetResourceId]"
+            "value": "[coalesce(parameters('privateEndpoints'), createArray())[copyIndex()].subnetResourceId]"
           },
           "enableDefaultTelemetry": {
-            "value": "[variables('enableReferencedModulesTelemetry')]"
+            "value": "[coalesce(tryGet(coalesce(parameters('privateEndpoints'), createArray())[copyIndex()], 'enableDefaultTelemetry'), variables('enableReferencedModulesTelemetry'))]"
           },
-          "location": "[if(contains(parameters('privateEndpoints')[copyIndex()], 'location'), createObject('value', parameters('privateEndpoints')[copyIndex()].location), createObject('value', reference(split(parameters('privateEndpoints')[copyIndex()].subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location))]",
+          "location": {
+            "value": "[coalesce(tryGet(coalesce(parameters('privateEndpoints'), createArray())[copyIndex()], 'location'), reference(split(coalesce(parameters('privateEndpoints'), createArray())[copyIndex()].subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location)]"
+          },
           "lock": {
-            "value": "[coalesce(tryGet(parameters('privateEndpoints')[copyIndex()], 'lock'), parameters('lock'))]"
+            "value": "[coalesce(tryGet(coalesce(parameters('privateEndpoints'), createArray())[copyIndex()], 'lock'), parameters('lock'))]"
           },
-          "privateDnsZoneGroupName": "[if(contains(parameters('privateEndpoints')[copyIndex()], 'privateDnsZoneGroupName'), createObject('value', parameters('privateEndpoints')[copyIndex()].privateDnsZoneGroupName), createObject('value', 'default'))]",
-          "privateDnsZoneResourceIds": "[if(contains(parameters('privateEndpoints')[copyIndex()], 'privateDnsZoneResourceIds'), createObject('value', parameters('privateEndpoints')[copyIndex()].privateDnsZoneResourceIds), createObject('value', createArray()))]",
-          "roleAssignments": "[if(contains(parameters('privateEndpoints')[copyIndex()], 'roleAssignments'), createObject('value', parameters('privateEndpoints')[copyIndex()].roleAssignments), createObject('value', createArray()))]",
-          "tags": "[if(contains(parameters('privateEndpoints')[copyIndex()], 'tags'), createObject('value', parameters('privateEndpoints')[copyIndex()].tags), createObject('value', createObject()))]",
-          "manualPrivateLinkServiceConnections": "[if(contains(parameters('privateEndpoints')[copyIndex()], 'manualPrivateLinkServiceConnections'), createObject('value', parameters('privateEndpoints')[copyIndex()].manualPrivateLinkServiceConnections), createObject('value', createArray()))]",
-          "customDnsConfigs": "[if(contains(parameters('privateEndpoints')[copyIndex()], 'customDnsConfigs'), createObject('value', parameters('privateEndpoints')[copyIndex()].customDnsConfigs), createObject('value', createArray()))]",
-          "ipConfigurations": "[if(contains(parameters('privateEndpoints')[copyIndex()], 'ipConfigurations'), createObject('value', parameters('privateEndpoints')[copyIndex()].ipConfigurations), createObject('value', createArray()))]",
-          "applicationSecurityGroupResourceIds": "[if(contains(parameters('privateEndpoints')[copyIndex()], 'applicationSecurityGroupResourceIds'), createObject('value', parameters('privateEndpoints')[copyIndex()].applicationSecurityGroupResourceIds), createObject('value', createArray()))]",
-          "customNetworkInterfaceName": "[if(contains(parameters('privateEndpoints')[copyIndex()], 'customNetworkInterfaceName'), createObject('value', parameters('privateEndpoints')[copyIndex()].customNetworkInterfaceName), createObject('value', ''))]"
+          "privateDnsZoneGroupName": {
+            "value": "[tryGet(coalesce(parameters('privateEndpoints'), createArray())[copyIndex()], 'privateDnsZoneGroupName')]"
+          },
+          "privateDnsZoneResourceIds": {
+            "value": "[tryGet(coalesce(parameters('privateEndpoints'), createArray())[copyIndex()], 'privateDnsZoneResourceIds')]"
+          },
+          "roleAssignments": {
+            "value": "[tryGet(coalesce(parameters('privateEndpoints'), createArray())[copyIndex()], 'roleAssignments')]"
+          },
+          "tags": {
+            "value": "[coalesce(tryGet(coalesce(parameters('privateEndpoints'), createArray())[copyIndex()], 'tags'), parameters('tags'))]"
+          },
+          "manualPrivateLinkServiceConnections": {
+            "value": "[tryGet(coalesce(parameters('privateEndpoints'), createArray())[copyIndex()], 'manualPrivateLinkServiceConnections')]"
+          },
+          "customDnsConfigs": {
+            "value": "[tryGet(coalesce(parameters('privateEndpoints'), createArray())[copyIndex()], 'customDnsConfigs')]"
+          },
+          "ipConfigurations": {
+            "value": "[tryGet(coalesce(parameters('privateEndpoints'), createArray())[copyIndex()], 'ipConfigurations')]"
+          },
+          "applicationSecurityGroupResourceIds": {
+            "value": "[tryGet(coalesce(parameters('privateEndpoints'), createArray())[copyIndex()], 'applicationSecurityGroupResourceIds')]"
+          },
+          "customNetworkInterfaceName": {
+            "value": "[tryGet(coalesce(parameters('privateEndpoints'), createArray())[copyIndex()], 'customNetworkInterfaceName')]"
+          }
         },
         "template": {
           "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
@@ -1575,8 +1892,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.22.6.54827",
-              "templateHash": "16178508232344722616"
+              "version": "0.23.1.45101",
+              "templateHash": "6873008238043407177"
             },
             "name": "Private Endpoints",
             "description": "This module deploys a Private Endpoint.",
@@ -1673,6 +1990,71 @@
                 }
               },
               "nullable": true
+            },
+            "ipConfigurationsType": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "metadata": {
+                      "description": "Required. The name of the resource that is unique within a resource group."
+                    }
+                  },
+                  "properties": {
+                    "type": "object",
+                    "properties": {
+                      "groupId": {
+                        "type": "string",
+                        "metadata": {
+                          "description": "Required. The ID of a group obtained from the remote resource that this private endpoint should connect to."
+                        }
+                      },
+                      "memberName": {
+                        "type": "string",
+                        "metadata": {
+                          "description": "Required. The member name of a group obtained from the remote resource that this private endpoint should connect to."
+                        }
+                      },
+                      "privateIPAddress": {
+                        "type": "string",
+                        "metadata": {
+                          "description": "Required. A private ip address obtained from the private endpoint's subnet."
+                        }
+                      }
+                    },
+                    "metadata": {
+                      "description": "Required. Properties of private endpoint IP configurations."
+                    }
+                  }
+                }
+              },
+              "nullable": true
+            },
+            "customDnsConfigType": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "fqdn": {
+                    "type": "string",
+                    "metadata": {
+                      "description": "Required. Fqdn that resolves to private endpoint ip address."
+                    }
+                  },
+                  "ipAddresses": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "metadata": {
+                      "description": "Required. A list of private ip addresses of the private endpoint."
+                    }
+                  }
+                }
+              },
+              "nullable": true
             }
           },
           "parameters": {
@@ -1709,7 +2091,7 @@
               }
             },
             "ipConfigurations": {
-              "type": "array",
+              "$ref": "#/definitions/ipConfigurationsType",
               "nullable": true,
               "metadata": {
                 "description": "Optional. A list of IP configurations of the private endpoint. This will be used to map to the First Party Service endpoints."
@@ -1762,7 +2144,7 @@
               }
             },
             "customDnsConfigs": {
-              "type": "array",
+              "$ref": "#/definitions/customDnsConfigType",
               "nullable": true,
               "metadata": {
                 "description": "Optional. Custom DNS configurations."
@@ -1829,7 +2211,7 @@
                     }
                   }
                 ],
-                "customDnsConfigs": "[coalesce(parameters('customDnsConfigs'), createArray())]",
+                "customDnsConfigs": "[parameters('customDnsConfigs')]",
                 "customNetworkInterfaceName": "[coalesce(parameters('customNetworkInterfaceName'), '')]",
                 "ipConfigurations": "[coalesce(parameters('ipConfigurations'), createArray())]",
                 "manualPrivateLinkServiceConnections": "[coalesce(parameters('manualPrivateLinkServiceConnections'), createArray())]",
@@ -1913,8 +2295,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.22.6.54827",
-                      "templateHash": "16391702514342252839"
+                      "version": "0.23.1.45101",
+                      "templateHash": "17578977753131828304"
                     },
                     "name": "Private Endpoint Private DNS Zone Groups",
                     "description": "This module deploys a Private Endpoint Private DNS Zone Group.",
@@ -2077,12 +2459,12 @@
       },
       "value": "[resourceGroup().name]"
     },
-    "systemAssignedPrincipalId": {
+    "systemAssignedMIPrincipalId": {
       "type": "string",
       "metadata": {
         "description": "The principal ID of the system assigned identity."
       },
-      "value": "[if(and(parameters('systemAssignedIdentity'), contains(reference('databaseAccount', '2023-04-15', 'full').identity, 'principalId')), reference('databaseAccount', '2023-04-15', 'full').identity.principalId, '')]"
+      "value": "[if(and(coalesce(tryGet(parameters('managedIdentities'), 'systemAssigned'), false()), contains(reference('databaseAccount', '2023-04-15', 'full').identity, 'principalId')), reference('databaseAccount', '2023-04-15', 'full').identity.principalId, '')]"
     },
     "location": {
       "type": "string",

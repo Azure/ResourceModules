@@ -1,11 +1,12 @@
 {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "languageVersion": "2.0",
   "contentVersion": "1.0.0.0",
   "metadata": {
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "1822071123668929932"
+      "templateHash": "18265317713061610546"
     },
     "name": "DocumentDB Database Account MongoDB Databases",
     "description": "This module deploys a MongoDB Database within a CosmosDB Account.",
@@ -40,7 +41,7 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Tags of the resource."
       }
@@ -56,8 +57,8 @@
   "variables": {
     "enableReferencedModulesTelemetry": false
   },
-  "resources": [
-    {
+  "resources": {
+    "defaultTelemetry": {
       "condition": "[parameters('enableDefaultTelemetry')]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
@@ -71,7 +72,13 @@
         }
       }
     },
-    {
+    "databaseAccount": {
+      "existing": true,
+      "type": "Microsoft.DocumentDB/databaseAccounts",
+      "apiVersion": "2023-04-15",
+      "name": "[parameters('databaseAccountName')]"
+    },
+    "mongodbDatabase": {
       "type": "Microsoft.DocumentDB/databaseAccounts/mongodbDatabases",
       "apiVersion": "2023-04-15",
       "name": "[format('{0}/{1}', parameters('databaseAccountName'), parameters('name'))]",
@@ -80,10 +87,13 @@
         "resource": {
           "id": "[parameters('name')]"
         },
-        "options": "[if(contains(reference(resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('databaseAccountName')), '2023-04-15').capabilities, createObject('name', 'EnableServerless')), null(), createObject('throughput', parameters('throughput')))]"
-      }
+        "options": "[if(contains(reference('databaseAccount').capabilities, createObject('name', 'EnableServerless')), null(), createObject('throughput', parameters('throughput')))]"
+      },
+      "dependsOn": [
+        "databaseAccount"
+      ]
     },
-    {
+    "mongodbDatabase_collections": {
       "copy": {
         "name": "mongodbDatabase_collections",
         "count": "[length(parameters('collections'))]"
@@ -230,10 +240,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.DocumentDB/databaseAccounts/mongodbDatabases', parameters('databaseAccountName'), parameters('name'))]"
+        "mongodbDatabase"
       ]
     }
-  ],
+  },
   "outputs": {
     "name": {
       "type": "string",

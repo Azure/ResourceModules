@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "7967405335324639786"
+      "templateHash": "11278878938849478552"
     },
     "name": "Proximity Placement Groups",
     "description": "This module deploys a Proximity Placement Group.",
@@ -144,7 +144,7 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Tags of the proximity placement group resource."
       }

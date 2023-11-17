@@ -27,10 +27,59 @@ The following section provides usage examples for the module, which were used to
 
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/desktop-virtualization.host-pool:1.0.0`.
 
-- [Using large parameter set](#example-1-using-large-parameter-set)
-- [Using only defaults](#example-2-using-only-defaults)
+- [Using only defaults](#example-1-using-only-defaults)
+- [Using large parameter set](#example-2-using-large-parameter-set)
+- [WAF-aligned](#example-3-waf-aligned)
 
-### Example 1: _Using large parameter set_
+### Example 1: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module hostPool 'br:bicep/modules/desktop-virtualization.host-pool:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-dvhpmin'
+  params: {
+    // Required parameters
+    name: 'dvhpmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "dvhpmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 2: _Using large parameter set_
 
 This instance deploys the module with most of its features enabled.
 
@@ -41,10 +90,10 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module hostPool 'br:bicep/modules/desktop-virtualization.host-pool:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-dvhpcom'
+  name: '${uniqueString(deployment().name, location)}-test-dvhpmax'
   params: {
     // Required parameters
-    name: 'dvhpcom001'
+    name: 'dvhpmax001'
     // Non-required parameters
     agentUpdate: {
       maintenanceWindows: [
@@ -63,10 +112,15 @@ module hostPool 'br:bicep/modules/desktop-virtualization.host-pool:1.0.0' = {
     }
     customRdpProperty: 'audiocapturemode:i:1;audiomode:i:0;drivestoredirect:s:;redirectclipboard:i:1;redirectcomports:i:1;redirectprinters:i:1;redirectsmartcards:i:1;screen mode id:i:2;'
     description: 'My first AVD Host Pool'
-    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-    diagnosticEventHubName: '<diagnosticEventHubName>'
-    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    diagnosticSettings: [
+      {
+        eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+        eventHubName: '<eventHubName>'
+        name: 'customSetting'
+        storageAccountResourceId: '<storageAccountResourceId>'
+        workspaceResourceId: '<workspaceResourceId>'
+      }
+    ]
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     friendlyName: 'AVDv2'
     loadBalancerType: 'BreadthFirst'
@@ -125,7 +179,7 @@ module hostPool 'br:bicep/modules/desktop-virtualization.host-pool:1.0.0' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "dvhpcom001"
+      "value": "dvhpmax001"
     },
     // Non-required parameters
     "agentUpdate": {
@@ -151,17 +205,16 @@ module hostPool 'br:bicep/modules/desktop-virtualization.host-pool:1.0.0' = {
     "description": {
       "value": "My first AVD Host Pool"
     },
-    "diagnosticEventHubAuthorizationRuleId": {
-      "value": "<diagnosticEventHubAuthorizationRuleId>"
-    },
-    "diagnosticEventHubName": {
-      "value": "<diagnosticEventHubName>"
-    },
-    "diagnosticStorageAccountId": {
-      "value": "<diagnosticStorageAccountId>"
-    },
-    "diagnosticWorkspaceId": {
-      "value": "<diagnosticWorkspaceId>"
+    "diagnosticSettings": {
+      "value": [
+        {
+          "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+          "eventHubName": "<eventHubName>",
+          "name": "customSetting",
+          "storageAccountResourceId": "<storageAccountResourceId>",
+          "workspaceResourceId": "<workspaceResourceId>"
+        }
+      ]
     },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
@@ -232,9 +285,9 @@ module hostPool 'br:bicep/modules/desktop-virtualization.host-pool:1.0.0' = {
 </details>
 <p>
 
-### Example 2: _Using only defaults_
+### Example 3: _WAF-aligned_
 
-This instance deploys the module with the minimum set of required parameters.
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
 
 
 <details>
@@ -243,12 +296,77 @@ This instance deploys the module with the minimum set of required parameters.
 
 ```bicep
 module hostPool 'br:bicep/modules/desktop-virtualization.host-pool:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-dvhpmin'
+  name: '${uniqueString(deployment().name, location)}-test-dvhpwaf'
   params: {
     // Required parameters
-    name: 'dvhpmin001'
+    name: 'dvhpwaf001'
     // Non-required parameters
+    agentUpdate: {
+      maintenanceWindows: [
+        {
+          dayOfWeek: 'Friday'
+          hour: 7
+        }
+        {
+          dayOfWeek: 'Saturday'
+          hour: 8
+        }
+      ]
+      maintenanceWindowTimeZone: 'Alaskan Standard Time'
+      type: 'Scheduled'
+      useSessionHostLocalTime: false
+    }
+    customRdpProperty: 'audiocapturemode:i:1;audiomode:i:0;drivestoredirect:s:;redirectclipboard:i:1;redirectcomports:i:1;redirectprinters:i:1;redirectsmartcards:i:1;screen mode id:i:2;'
+    description: 'My first AVD Host Pool'
+    diagnosticSettings: [
+      {
+        eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+        eventHubName: '<eventHubName>'
+        name: 'customSetting'
+        storageAccountResourceId: '<storageAccountResourceId>'
+        workspaceResourceId: '<workspaceResourceId>'
+      }
+    ]
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    friendlyName: 'AVDv2'
+    loadBalancerType: 'BreadthFirst'
+    location: '<location>'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    maxSessionLimit: 99999
+    personalDesktopAssignmentType: 'Automatic'
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+    type: 'Pooled'
+    vmTemplate: {
+      customImageId: '<customImageId>'
+      domain: 'domainname.onmicrosoft.com'
+      galleryImageOffer: 'office-365'
+      galleryImagePublisher: 'microsoftwindowsdesktop'
+      galleryImageSKU: '20h1-evd-o365pp'
+      imageType: 'Gallery'
+      imageUri: '<imageUri>'
+      namePrefix: 'avdv2'
+      osDiskType: 'StandardSSD_LRS'
+      useManagedDisks: true
+      vmSize: {
+        cores: 2
+        id: 'Standard_D2s_v3'
+        ram: 8
+      }
+    }
   }
 }
 ```
@@ -267,11 +385,104 @@ module hostPool 'br:bicep/modules/desktop-virtualization.host-pool:1.0.0' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "dvhpmin001"
+      "value": "dvhpwaf001"
     },
     // Non-required parameters
+    "agentUpdate": {
+      "value": {
+        "maintenanceWindows": [
+          {
+            "dayOfWeek": "Friday",
+            "hour": 7
+          },
+          {
+            "dayOfWeek": "Saturday",
+            "hour": 8
+          }
+        ],
+        "maintenanceWindowTimeZone": "Alaskan Standard Time",
+        "type": "Scheduled",
+        "useSessionHostLocalTime": false
+      }
+    },
+    "customRdpProperty": {
+      "value": "audiocapturemode:i:1;audiomode:i:0;drivestoredirect:s:;redirectclipboard:i:1;redirectcomports:i:1;redirectprinters:i:1;redirectsmartcards:i:1;screen mode id:i:2;"
+    },
+    "description": {
+      "value": "My first AVD Host Pool"
+    },
+    "diagnosticSettings": {
+      "value": [
+        {
+          "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+          "eventHubName": "<eventHubName>",
+          "name": "customSetting",
+          "storageAccountResourceId": "<storageAccountResourceId>",
+          "workspaceResourceId": "<workspaceResourceId>"
+        }
+      ]
+    },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
+    },
+    "friendlyName": {
+      "value": "AVDv2"
+    },
+    "loadBalancerType": {
+      "value": "BreadthFirst"
+    },
+    "location": {
+      "value": "<location>"
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "maxSessionLimit": {
+      "value": 99999
+    },
+    "personalDesktopAssignmentType": {
+      "value": "Automatic"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    },
+    "type": {
+      "value": "Pooled"
+    },
+    "vmTemplate": {
+      "value": {
+        "customImageId": "<customImageId>",
+        "domain": "domainname.onmicrosoft.com",
+        "galleryImageOffer": "office-365",
+        "galleryImagePublisher": "microsoftwindowsdesktop",
+        "galleryImageSKU": "20h1-evd-o365pp",
+        "imageType": "Gallery",
+        "imageUri": "<imageUri>",
+        "namePrefix": "avdv2",
+        "osDiskType": "StandardSSD_LRS",
+        "useManagedDisks": true,
+        "vmSize": {
+          "cores": 2,
+          "id": "Standard_D2s_v3",
+          "ram": 8
+        }
+      }
     }
   }
 }
@@ -302,12 +513,7 @@ module hostPool 'br:bicep/modules/desktop-virtualization.host-pool:1.0.0' = {
 | [`agentUpdateUseSessionHostLocalTime`](#parameter-agentupdateusesessionhostlocaltime) | bool | Whether to use localTime of the virtual machine for scheduled agent updates. |
 | [`customRdpProperty`](#parameter-customrdpproperty) | string | Host Pool RDP properties. |
 | [`description`](#parameter-description) | string | The description of the Host Pool to be created. |
-| [`diagnosticEventHubAuthorizationRuleId`](#parameter-diagnosticeventhubauthorizationruleid) | string | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
-| [`diagnosticEventHubName`](#parameter-diagnosticeventhubname) | string | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
-| [`diagnosticLogCategoriesToEnable`](#parameter-diagnosticlogcategoriestoenable) | array | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
-| [`diagnosticSettingsName`](#parameter-diagnosticsettingsname) | string | The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings". |
-| [`diagnosticStorageAccountId`](#parameter-diagnosticstorageaccountid) | string | Resource ID of the diagnostic storage account. |
-| [`diagnosticWorkspaceId`](#parameter-diagnosticworkspaceid) | string | Resource ID of the diagnostic log analytics workspace. |
+| [`diagnosticSettings`](#parameter-diagnosticsettings) | array | The diagnostic settings of the service. |
 | [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
 | [`friendlyName`](#parameter-friendlyname) | string | The friendly name of the Host Pool to be created. |
 | [`loadBalancerType`](#parameter-loadbalancertype) | string | Type of load balancer algorithm. |
@@ -340,7 +546,15 @@ module hostPool 'br:bicep/modules/desktop-virtualization.host-pool:1.0.0' = {
 The session host configuration for updating agent, monitoring agent, and stack component.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default:
+  ```Bicep
+  {
+      maintenanceWindows: '[parameters(\'agentUpdateMaintenanceWindows\')]'
+      maintenanceWindowTimeZone: '[parameters(\'agentUpdateMaintenanceWindowTimeZone\')]'
+      type: '[parameters(\'agentUpdateType\')]'
+      useSessionHostLocalTime: '[parameters(\'agentUpdateUseSessionHostLocalTime\')]'
+  }
+  ```
 
 ### Parameter: `agentUpdateMaintenanceWindowDayOfWeek`
 
@@ -348,7 +562,18 @@ Update day for scheduled agent updates.
 - Required: No
 - Type: string
 - Default: `'Sunday'`
-- Allowed: `[Friday, Monday, Saturday, Sunday, Thursday, Tuesday, Wednesday]`
+- Allowed:
+  ```Bicep
+  [
+    'Friday'
+    'Monday'
+    'Saturday'
+    'Sunday'
+    'Thursday'
+    'Tuesday'
+    'Wednesday'
+  ]
+  ```
 
 ### Parameter: `agentUpdateMaintenanceWindowHour`
 
@@ -362,7 +587,15 @@ Update hour for scheduled agent updates.
 List of maintenance windows for scheduled agent updates.
 - Required: No
 - Type: array
-- Default: `[System.Management.Automation.OrderedHashtable]`
+- Default:
+  ```Bicep
+  [
+    {
+      dayOfWeek: '[parameters(\'agentUpdateMaintenanceWindowDayOfWeek\')]'
+      hour: '[parameters(\'agentUpdateMaintenanceWindowHour\')]'
+    }
+  ]
+  ```
 
 ### Parameter: `agentUpdateMaintenanceWindowTimeZone`
 
@@ -377,7 +610,13 @@ Enable scheduled agent updates, Default means agent updates will automatically b
 - Required: No
 - Type: string
 - Default: `'Default'`
-- Allowed: `[Default, Scheduled]`
+- Allowed:
+  ```Bicep
+  [
+    'Default'
+    'Scheduled'
+  ]
+  ```
 
 ### Parameter: `agentUpdateUseSessionHostLocalTime`
 
@@ -407,48 +646,100 @@ The description of the Host Pool to be created.
 - Type: string
 - Default: `''`
 
-### Parameter: `diagnosticEventHubAuthorizationRuleId`
+### Parameter: `diagnosticSettings`
 
-Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.
-- Required: No
-- Type: string
-- Default: `''`
-
-### Parameter: `diagnosticEventHubName`
-
-Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.
-- Required: No
-- Type: string
-- Default: `''`
-
-### Parameter: `diagnosticLogCategoriesToEnable`
-
-The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection.
+The diagnostic settings of the service.
 - Required: No
 - Type: array
-- Default: `[allLogs]`
-- Allowed: `['', AgentHealthStatus, allLogs, Checkpoint, Connection, Error, HostRegistration, Management]`
 
-### Parameter: `diagnosticSettingsName`
 
-The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings".
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`eventHubAuthorizationRuleResourceId`](#parameter-diagnosticsettingseventhubauthorizationruleresourceid) | No | string | Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
+| [`eventHubName`](#parameter-diagnosticsettingseventhubname) | No | string | Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
+| [`logAnalyticsDestinationType`](#parameter-diagnosticsettingsloganalyticsdestinationtype) | No | string | Optional. A string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destination type. |
+| [`logCategoriesAndGroups`](#parameter-diagnosticsettingslogcategoriesandgroups) | No | array | Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
+| [`marketplacePartnerResourceId`](#parameter-diagnosticsettingsmarketplacepartnerresourceid) | No | string | Optional. The full ARM resource ID of the Marketplace resource to which you would like to send Diagnostic Logs. |
+| [`name`](#parameter-diagnosticsettingsname) | No | string | Optional. The name of diagnostic setting. |
+| [`storageAccountResourceId`](#parameter-diagnosticsettingsstorageaccountresourceid) | No | string | Optional. Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
+| [`workspaceResourceId`](#parameter-diagnosticsettingsworkspaceresourceid) | No | string | Optional. Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
+
+### Parameter: `diagnosticSettings.eventHubAuthorizationRuleResourceId`
+
+Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.
+
 - Required: No
 - Type: string
-- Default: `''`
 
-### Parameter: `diagnosticStorageAccountId`
+### Parameter: `diagnosticSettings.eventHubName`
 
-Resource ID of the diagnostic storage account.
+Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.
+
 - Required: No
 - Type: string
-- Default: `''`
 
-### Parameter: `diagnosticWorkspaceId`
+### Parameter: `diagnosticSettings.logAnalyticsDestinationType`
 
-Resource ID of the diagnostic log analytics workspace.
+Optional. A string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destination type.
+
 - Required: No
 - Type: string
-- Default: `''`
+- Allowed: `[AzureDiagnostics, Dedicated]`
+
+### Parameter: `diagnosticSettings.logCategoriesAndGroups`
+
+Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection.
+
+- Required: No
+- Type: array
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`category`](#parameter-diagnosticsettingslogcategoriesandgroupscategory) | No | string | Optional. Name of a Diagnostic Log category for a resource type this setting is applied to. Set the specific logs to collect here. |
+| [`categoryGroup`](#parameter-diagnosticsettingslogcategoriesandgroupscategorygroup) | No | string | Optional. Name of a Diagnostic Log category group for a resource type this setting is applied to. Set to 'AllLogs' to collect all logs. |
+
+### Parameter: `diagnosticSettings.logCategoriesAndGroups.category`
+
+Optional. Name of a Diagnostic Log category for a resource type this setting is applied to. Set the specific logs to collect here.
+
+- Required: No
+- Type: string
+
+### Parameter: `diagnosticSettings.logCategoriesAndGroups.categoryGroup`
+
+Optional. Name of a Diagnostic Log category group for a resource type this setting is applied to. Set to 'AllLogs' to collect all logs.
+
+- Required: No
+- Type: string
+
+
+### Parameter: `diagnosticSettings.marketplacePartnerResourceId`
+
+Optional. The full ARM resource ID of the Marketplace resource to which you would like to send Diagnostic Logs.
+
+- Required: No
+- Type: string
+
+### Parameter: `diagnosticSettings.name`
+
+Optional. The name of diagnostic setting.
+
+- Required: No
+- Type: string
+
+### Parameter: `diagnosticSettings.storageAccountResourceId`
+
+Optional. Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.
+
+- Required: No
+- Type: string
+
+### Parameter: `diagnosticSettings.workspaceResourceId`
+
+Optional. Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.
+
+- Required: No
+- Type: string
 
 ### Parameter: `enableDefaultTelemetry`
 
@@ -470,7 +761,14 @@ Type of load balancer algorithm.
 - Required: No
 - Type: string
 - Default: `'BreadthFirst'`
-- Allowed: `[BreadthFirst, DepthFirst, Persistent]`
+- Allowed:
+  ```Bicep
+  [
+    'BreadthFirst'
+    'DepthFirst'
+    'Persistent'
+  ]
+  ```
 
 ### Parameter: `location`
 
@@ -525,7 +823,14 @@ Set the type of assignment for a Personal Host Pool type.
 - Required: No
 - Type: string
 - Default: `''`
-- Allowed: `['', Automatic, Direct]`
+- Allowed:
+  ```Bicep
+  [
+    ''
+    'Automatic'
+    'Direct'
+  ]
+  ```
 
 ### Parameter: `preferredAppGroupType`
 
@@ -533,7 +838,14 @@ The type of preferred application group type, default to Desktop Application Gro
 - Required: No
 - Type: string
 - Default: `'Desktop'`
-- Allowed: `[Desktop, None, RailApplications]`
+- Allowed:
+  ```Bicep
+  [
+    'Desktop'
+    'None'
+    'RailApplications'
+  ]
+  ```
 
 ### Parameter: `ring`
 
@@ -637,7 +949,16 @@ The type of single sign on Secret Type.
 - Required: No
 - Type: string
 - Default: `''`
-- Allowed: `['', Certificate, CertificateInKeyVault, SharedKey, SharedKeyInKeyVault]`
+- Allowed:
+  ```Bicep
+  [
+    ''
+    'Certificate'
+    'CertificateInKeyVault'
+    'SharedKey'
+    'SharedKeyInKeyVault'
+  ]
+  ```
 
 ### Parameter: `startVMOnConnect`
 
@@ -651,7 +972,6 @@ Enable Start VM on connect to allow users to start the virtual machine from a de
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `tokenValidityLength`
 
@@ -666,7 +986,13 @@ Set this parameter to Personal if you would like to enable Persistent Desktop ex
 - Required: No
 - Type: string
 - Default: `'Pooled'`
-- Allowed: `[Personal, Pooled]`
+- Allowed:
+  ```Bicep
+  [
+    'Personal'
+    'Pooled'
+  ]
+  ```
 
 ### Parameter: `validationEnvironment`
 
@@ -680,7 +1006,7 @@ Validation host pools allows you to test service changes before they are deploye
 The necessary information for adding more VMs to this Host Pool. The object is converted to an in-line string when handed over to the resource deployment, since that only takes strings.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 
 ## Outputs

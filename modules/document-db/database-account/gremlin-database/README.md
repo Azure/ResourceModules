@@ -38,10 +38,8 @@ This module deploys a Gremlin Database within a CosmosDB Account.
 | [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
 | [`graphs`](#parameter-graphs) | array | Array of graphs to deploy in the Gremlin database. |
 | [`maxThroughput`](#parameter-maxthroughput) | int | Represents maximum throughput, the resource can scale up to. Cannot be set together with `throughput`. If `throughput` is set to something else than -1, this autoscale setting is ignored. |
-| [`systemAssignedIdentity`](#parameter-systemassignedidentity) | bool | Enables system assigned managed identity on the resource. |
 | [`tags`](#parameter-tags) | object | Tags of the Gremlin database resource. |
 | [`throughput`](#parameter-throughput) | int | Request Units per second (for example 10000). Cannot be set together with `maxThroughput`. |
-| [`userAssignedIdentities`](#parameter-userassignedidentities) | object | The ID(s) to assign to the resource. |
 
 ### Parameter: `databaseAccountName`
 
@@ -76,19 +74,11 @@ Name of the Gremlin database.
 - Required: Yes
 - Type: string
 
-### Parameter: `systemAssignedIdentity`
-
-Enables system assigned managed identity on the resource.
-- Required: No
-- Type: bool
-- Default: `False`
-
 ### Parameter: `tags`
 
 Tags of the Gremlin database resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `throughput`
 
@@ -96,13 +86,6 @@ Request Units per second (for example 10000). Cannot be set together with `maxTh
 - Required: No
 - Type: int
 - Default: `-1`
-
-### Parameter: `userAssignedIdentities`
-
-The ID(s) to assign to the resource.
-- Required: No
-- Type: object
-- Default: `{object}`
 
 
 ## Outputs

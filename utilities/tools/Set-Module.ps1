@@ -111,6 +111,10 @@ function Set-Module {
 
         # create reference as it must be loaded in the thread to work
         $ReadMeScriptFilePath = (Join-Path (Get-Item $PSScriptRoot).Parent.FullName 'pipelines' 'sharedScripts' 'Set-ModuleReadMe.ps1')
+    } else {
+        # Instatiate values to enable safe $using usage
+        $crossReferencedModuleList = $null
+        $ReadMeScriptFilePath = $null
     }
 
     # Using threading to speed up the process
@@ -132,11 +136,11 @@ function Set-Module {
                 ################
                 if (-not $using:SkipReadMe) {
                     Write-Output "Generating readme for [$resourceTypeIdentifier]"
-                    . $using:ReadMeScriptFilePath
 
                     # If the template was just build, we can pass the JSON into the readme script to be more efficient
                     $readmeTemplateFilePath = (-not $using:SkipBuild) ? (Join-Path (Split-Path $_ -Parent) 'main.json') : $_
 
+                    . $using:ReadMeScriptFilePath
                     Set-ModuleReadMe -TemplateFilePath $readmeTemplateFilePath -CrossReferencedModuleList $using:crossReferencedModuleList
                 }
             }

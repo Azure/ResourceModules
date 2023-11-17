@@ -43,7 +43,7 @@ This module deploys a Log Analytics Workspace Data Export.
 Destination properties.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `enable`
 

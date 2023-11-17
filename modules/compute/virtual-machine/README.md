@@ -62,11 +62,39 @@ module virtualMachine 'br:bicep/modules/compute.virtual-machine:1.0.0' = {
     nicConfigurations: [
       {
         deleteOption: 'Delete'
+        diagnosticSettings: [
+          {
+            eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+            eventHubName: '<eventHubName>'
+            metricCategories: [
+              {
+                category: 'AllMetrics'
+              }
+            ]
+            name: 'customSetting'
+            storageAccountResourceId: '<storageAccountResourceId>'
+            workspaceResourceId: '<workspaceResourceId>'
+          }
+        ]
         ipConfigurations: [
           {
             applicationSecurityGroups: [
               {
                 id: '<id>'
+              }
+            ]
+            diagnosticSettings: [
+              {
+                eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+                eventHubName: '<eventHubName>'
+                metricCategories: [
+                  {
+                    category: 'AllMetrics'
+                  }
+                ]
+                name: 'customSetting'
+                storageAccountResourceId: '<storageAccountResourceId>'
+                workspaceResourceId: '<workspaceResourceId>'
               }
             ]
             loadBalancerBackendAddressPools: [
@@ -140,10 +168,6 @@ module virtualMachine 'br:bicep/modules/compute.virtual-machine:1.0.0' = {
         }
       }
     ]
-    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-    diagnosticEventHubName: '<diagnosticEventHubName>'
-    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     disablePasswordAuthentication: true
     enableAutomaticUpdates: true
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
@@ -228,6 +252,12 @@ module virtualMachine 'br:bicep/modules/compute.virtual-machine:1.0.0' = {
       kind: 'CanNotDelete'
       name: 'myCustomLockName'
     }
+    managedIdentities: {
+      systemAssigned: true
+      userAssignedResourceIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
     monitoringWorkspaceId: '<monitoringWorkspaceId>'
     name: 'cvmlincom'
     patchMode: 'AutomaticByPlatform'
@@ -244,14 +274,10 @@ module virtualMachine 'br:bicep/modules/compute.virtual-machine:1.0.0' = {
         roleDefinitionIdOrName: 'Reader'
       }
     ]
-    systemAssignedIdentity: true
     tags: {
       Environment: 'Non-Prod'
       'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
-    }
-    userAssignedIdentities: {
-      '<managedIdentityResourceId>': {}
     }
   }
 }
@@ -285,11 +311,39 @@ module virtualMachine 'br:bicep/modules/compute.virtual-machine:1.0.0' = {
       "value": [
         {
           "deleteOption": "Delete",
+          "diagnosticSettings": [
+            {
+              "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+              "eventHubName": "<eventHubName>",
+              "metricCategories": [
+                {
+                  "category": "AllMetrics"
+                }
+              ],
+              "name": "customSetting",
+              "storageAccountResourceId": "<storageAccountResourceId>",
+              "workspaceResourceId": "<workspaceResourceId>"
+            }
+          ],
           "ipConfigurations": [
             {
               "applicationSecurityGroups": [
                 {
                   "id": "<id>"
+                }
+              ],
+              "diagnosticSettings": [
+                {
+                  "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+                  "eventHubName": "<eventHubName>",
+                  "metricCategories": [
+                    {
+                      "category": "AllMetrics"
+                    }
+                  ],
+                  "name": "customSetting",
+                  "storageAccountResourceId": "<storageAccountResourceId>",
+                  "workspaceResourceId": "<workspaceResourceId>"
                 }
               ],
               "loadBalancerBackendAddressPools": [
@@ -381,18 +435,6 @@ module virtualMachine 'br:bicep/modules/compute.virtual-machine:1.0.0' = {
           }
         }
       ]
-    },
-    "diagnosticEventHubAuthorizationRuleId": {
-      "value": "<diagnosticEventHubAuthorizationRuleId>"
-    },
-    "diagnosticEventHubName": {
-      "value": "<diagnosticEventHubName>"
-    },
-    "diagnosticStorageAccountId": {
-      "value": "<diagnosticStorageAccountId>"
-    },
-    "diagnosticWorkspaceId": {
-      "value": "<diagnosticWorkspaceId>"
     },
     "disablePasswordAuthentication": {
       "value": true
@@ -506,6 +548,14 @@ module virtualMachine 'br:bicep/modules/compute.virtual-machine:1.0.0' = {
         "name": "myCustomLockName"
       }
     },
+    "managedIdentities": {
+      "value": {
+        "systemAssigned": true,
+        "userAssignedResourceIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
+    },
     "monitoringWorkspaceId": {
       "value": "<monitoringWorkspaceId>"
     },
@@ -532,19 +582,11 @@ module virtualMachine 'br:bicep/modules/compute.virtual-machine:1.0.0' = {
         }
       ]
     },
-    "systemAssignedIdentity": {
-      "value": true
-    },
     "tags": {
       "value": {
         "Environment": "Non-Prod",
         "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
-      }
-    },
-    "userAssignedIdentities": {
-      "value": {
-        "<managedIdentityResourceId>": {}
       }
     }
   }
@@ -895,11 +937,39 @@ module virtualMachine 'br:bicep/modules/compute.virtual-machine:1.0.0' = {
     nicConfigurations: [
       {
         deleteOption: 'Delete'
+        diagnosticSettings: [
+          {
+            eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+            eventHubName: '<eventHubName>'
+            metricCategories: [
+              {
+                category: 'AllMetrics'
+              }
+            ]
+            name: 'customSetting'
+            storageAccountResourceId: '<storageAccountResourceId>'
+            workspaceResourceId: '<workspaceResourceId>'
+          }
+        ]
         ipConfigurations: [
           {
             applicationSecurityGroups: [
               {
                 id: '<id>'
+              }
+            ]
+            diagnosticSettings: [
+              {
+                eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+                eventHubName: '<eventHubName>'
+                metricCategories: [
+                  {
+                    category: 'AllMetrics'
+                  }
+                ]
+                name: 'customSetting'
+                storageAccountResourceId: '<storageAccountResourceId>'
+                workspaceResourceId: '<workspaceResourceId>'
               }
             ]
             loadBalancerBackendAddressPools: [
@@ -974,10 +1044,6 @@ module virtualMachine 'br:bicep/modules/compute.virtual-machine:1.0.0' = {
         }
       }
     ]
-    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-    diagnosticEventHubName: '<diagnosticEventHubName>'
-    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     enableAutomaticUpdates: true
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     encryptionAtHost: false
@@ -1084,6 +1150,12 @@ module virtualMachine 'br:bicep/modules/compute.virtual-machine:1.0.0' = {
       kind: 'CanNotDelete'
       name: 'myCustomLockName'
     }
+    managedIdentities: {
+      systemAssigned: true
+      userAssignedResourceIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
     monitoringWorkspaceId: '<monitoringWorkspaceId>'
     name: 'cvmwincom'
     patchMode: 'AutomaticByPlatform'
@@ -1095,14 +1167,10 @@ module virtualMachine 'br:bicep/modules/compute.virtual-machine:1.0.0' = {
         roleDefinitionIdOrName: 'Reader'
       }
     ]
-    systemAssignedIdentity: true
     tags: {
       Environment: 'Non-Prod'
       'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
-    }
-    userAssignedIdentities: {
-      '<managedIdentityResourceId>': {}
     }
   }
 }
@@ -1136,11 +1204,39 @@ module virtualMachine 'br:bicep/modules/compute.virtual-machine:1.0.0' = {
       "value": [
         {
           "deleteOption": "Delete",
+          "diagnosticSettings": [
+            {
+              "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+              "eventHubName": "<eventHubName>",
+              "metricCategories": [
+                {
+                  "category": "AllMetrics"
+                }
+              ],
+              "name": "customSetting",
+              "storageAccountResourceId": "<storageAccountResourceId>",
+              "workspaceResourceId": "<workspaceResourceId>"
+            }
+          ],
           "ipConfigurations": [
             {
               "applicationSecurityGroups": [
                 {
                   "id": "<id>"
+                }
+              ],
+              "diagnosticSettings": [
+                {
+                  "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+                  "eventHubName": "<eventHubName>",
+                  "metricCategories": [
+                    {
+                      "category": "AllMetrics"
+                    }
+                  ],
+                  "name": "customSetting",
+                  "storageAccountResourceId": "<storageAccountResourceId>",
+                  "workspaceResourceId": "<workspaceResourceId>"
                 }
               ],
               "loadBalancerBackendAddressPools": [
@@ -1235,18 +1331,6 @@ module virtualMachine 'br:bicep/modules/compute.virtual-machine:1.0.0' = {
           }
         }
       ]
-    },
-    "diagnosticEventHubAuthorizationRuleId": {
-      "value": "<diagnosticEventHubAuthorizationRuleId>"
-    },
-    "diagnosticEventHubName": {
-      "value": "<diagnosticEventHubName>"
-    },
-    "diagnosticStorageAccountId": {
-      "value": "<diagnosticStorageAccountId>"
-    },
-    "diagnosticWorkspaceId": {
-      "value": "<diagnosticWorkspaceId>"
     },
     "enableAutomaticUpdates": {
       "value": true
@@ -1382,6 +1466,14 @@ module virtualMachine 'br:bicep/modules/compute.virtual-machine:1.0.0' = {
         "name": "myCustomLockName"
       }
     },
+    "managedIdentities": {
+      "value": {
+        "systemAssigned": true,
+        "userAssignedResourceIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
+    },
     "monitoringWorkspaceId": {
       "value": "<monitoringWorkspaceId>"
     },
@@ -1403,19 +1495,11 @@ module virtualMachine 'br:bicep/modules/compute.virtual-machine:1.0.0' = {
         }
       ]
     },
-    "systemAssignedIdentity": {
-      "value": true
-    },
     "tags": {
       "value": {
         "Environment": "Non-Prod",
         "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
-      }
-    },
-    "userAssignedIdentities": {
-      "value": {
-        "<managedIdentityResourceId>": {}
       }
     }
   }
@@ -1869,10 +1953,6 @@ module virtualMachine 'br:bicep/modules/compute.virtual-machine:1.0.0' = {
 | [`customData`](#parameter-customdata) | string | Custom data associated to the VM, this value will be automatically converted into base64 to account for the expected VM format. |
 | [`dataDisks`](#parameter-datadisks) | array | Specifies the data disks. For security reasons, it is recommended to specify DiskEncryptionSet into the dataDisk object. Restrictions: DiskEncryptionSet cannot be enabled if Azure Disk Encryption (guest-VM encryption using bitlocker/DM-Crypt) is enabled on your VMs. |
 | [`dedicatedHostId`](#parameter-dedicatedhostid) | string | Specifies resource ID about the dedicated host that the virtual machine resides in. |
-| [`diagnosticEventHubAuthorizationRuleId`](#parameter-diagnosticeventhubauthorizationruleid) | string | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
-| [`diagnosticEventHubName`](#parameter-diagnosticeventhubname) | string | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
-| [`diagnosticStorageAccountId`](#parameter-diagnosticstorageaccountid) | string | Resource ID of the diagnostic storage account. |
-| [`diagnosticWorkspaceId`](#parameter-diagnosticworkspaceid) | string | Resource ID of the diagnostic log analytics workspace. |
 | [`disablePasswordAuthentication`](#parameter-disablepasswordauthentication) | bool | Specifies whether password authentication should be disabled. |
 | [`enableAutomaticUpdates`](#parameter-enableautomaticupdates) | bool | Indicates whether Automatic Updates is enabled for the Windows virtual machine. Default value is true. When patchMode is set to Manual, this parameter must be set to false. For virtual machine scale sets, this property can be updated and updates will take effect on OS reprovisioning. |
 | [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
@@ -1892,16 +1972,12 @@ module virtualMachine 'br:bicep/modules/compute.virtual-machine:1.0.0' = {
 | [`licenseType`](#parameter-licensetype) | string | Specifies that the image or disk that is being used was licensed on-premises. This element is only used for images that contain the Windows Server operating system. |
 | [`location`](#parameter-location) | string | Location for all resources. |
 | [`lock`](#parameter-lock) | object | The lock settings of the service. |
+| [`managedIdentities`](#parameter-managedidentities) | object | The managed identity definition for this resource. The system-assigned managed identity will automatically be enabled if extensionAadJoinConfig.enabled = "True". |
 | [`maxPriceForLowPriorityVm`](#parameter-maxpriceforlowpriorityvm) | string | Specifies the maximum price you are willing to pay for a low priority VM/VMSS. This price is in US Dollars. |
 | [`monitoringWorkspaceId`](#parameter-monitoringworkspaceid) | string | Resource ID of the monitoring log analytics workspace. Must be set when extensionMonitoringAgentConfig is set to true. |
 | [`name`](#parameter-name) | string | The name of the virtual machine to be created. You should use a unique prefix to reduce name collisions in Active Directory. If no value is provided, a 10 character long unique string will be generated based on the Resource Group's name. |
-| [`nicdiagnosticMetricsToEnable`](#parameter-nicdiagnosticmetricstoenable) | array | The name of metrics that will be streamed. |
-| [`nicDiagnosticSettingsName`](#parameter-nicdiagnosticsettingsname) | string | The name of the NIC diagnostic setting, if deployed. |
 | [`patchAssessmentMode`](#parameter-patchassessmentmode) | string | VM guest patching assessment mode. Set it to 'AutomaticByPlatform' to enable automatically check for updates every 24 hours. |
 | [`patchMode`](#parameter-patchmode) | string | VM guest patching orchestration mode. 'AutomaticByOS' & 'Manual' are for Windows only, 'ImageDefault' for Linux only. Refer to 'https://learn.microsoft.com/en-us/azure/virtual-machines/automatic-vm-guest-patching'. |
-| [`pipdiagnosticLogCategoriesToEnable`](#parameter-pipdiagnosticlogcategoriestoenable) | array | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
-| [`pipdiagnosticMetricsToEnable`](#parameter-pipdiagnosticmetricstoenable) | array | The name of metrics that will be streamed. |
-| [`pipDiagnosticSettingsName`](#parameter-pipdiagnosticsettingsname) | string | The name of the PIP diagnostic setting, if deployed. |
 | [`plan`](#parameter-plan) | object | Specifies information about the marketplace image used to create the virtual machine. This element is only used for marketplace images. Before you can use a marketplace image from an API, you must enable the image for programmatic use. |
 | [`priority`](#parameter-priority) | string | Specifies the priority for the virtual machine. |
 | [`provisionVMAgent`](#parameter-provisionvmagent) | bool | Indicates whether virtual machine agent should be provisioned on the virtual machine. When this property is not specified in the request body, default behavior is to set it to true. This will ensure that VM Agent is installed on the VM so that extensions can be added to the VM later. |
@@ -1911,11 +1987,9 @@ module virtualMachine 'br:bicep/modules/compute.virtual-machine:1.0.0' = {
 | [`sasTokenValidityLength`](#parameter-sastokenvaliditylength) | string | SAS token validity length to use to download files from storage accounts. Usage: 'PT8H' - valid for 8 hours; 'P5D' - valid for 5 days; 'P1Y' - valid for 1 year. When not provided, the SAS token will be valid for 8 hours. |
 | [`secureBootEnabled`](#parameter-securebootenabled) | bool | Specifies whether secure boot should be enabled on the virtual machine. This parameter is part of the UefiSettings. SecurityType should be set to TrustedLaunch to enable UefiSettings. |
 | [`securityType`](#parameter-securitytype) | string | Specifies the SecurityType of the virtual machine. It is set as TrustedLaunch to enable UefiSettings. |
-| [`systemAssignedIdentity`](#parameter-systemassignedidentity) | bool | Enables system assigned managed identity on the resource. The system-assigned managed identity will automatically be enabled if extensionAadJoinConfig.enabled = "True". |
 | [`tags`](#parameter-tags) | object | Tags of the resource. |
 | [`timeZone`](#parameter-timezone) | string | Specifies the time zone of the virtual machine. e.g. 'Pacific Standard Time'. Possible values can be `TimeZoneInfo.id` value from time zones returned by `TimeZoneInfo.GetSystemTimeZones`. |
 | [`ultraSSDEnabled`](#parameter-ultrassdenabled) | bool | The flag that enables or disables a capability to have one or more managed data disks with UltraSSD_LRS storage account type on the VM or VMSS. Managed disks with storage account type UltraSSD_LRS can be added to a virtual machine or virtual machine scale set only if this property is enabled. |
-| [`userAssignedIdentities`](#parameter-userassignedidentities) | object | The ID(s) to assign to the resource. |
 | [`vTpmEnabled`](#parameter-vtpmenabled) | bool | Specifies whether vTPM should be enabled on the virtual machine. This parameter is part of the UefiSettings.  SecurityType should be set to TrustedLaunch to enable UefiSettings. |
 | [`winRM`](#parameter-winrm) | object | Specifies the Windows Remote Management listeners. This enables remote Windows PowerShell. - WinRMConfiguration object. |
 
@@ -1965,7 +2039,15 @@ If set to 1, 2 or 3, the availability zone for all VMs is hardcoded to that valu
 - Required: No
 - Type: int
 - Default: `0`
-- Allowed: `[0, 1, 2, 3]`
+- Allowed:
+  ```Bicep
+  [
+    0
+    1
+    2
+    3
+  ]
+  ```
 
 ### Parameter: `backupPolicyName`
 
@@ -2036,7 +2118,14 @@ The configuration profile of automanage.
 - Required: No
 - Type: string
 - Default: `''`
-- Allowed: `['', /providers/Microsoft.Automanage/bestPractices/AzureBestPracticesDevTest, /providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction]`
+- Allowed:
+  ```Bicep
+  [
+    ''
+    '/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesDevTest'
+    '/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction'
+  ]
+  ```
 
 ### Parameter: `customData`
 
@@ -2055,34 +2144,6 @@ Specifies the data disks. For security reasons, it is recommended to specify Dis
 ### Parameter: `dedicatedHostId`
 
 Specifies resource ID about the dedicated host that the virtual machine resides in.
-- Required: No
-- Type: string
-- Default: `''`
-
-### Parameter: `diagnosticEventHubAuthorizationRuleId`
-
-Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.
-- Required: No
-- Type: string
-- Default: `''`
-
-### Parameter: `diagnosticEventHubName`
-
-Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.
-- Required: No
-- Type: string
-- Default: `''`
-
-### Parameter: `diagnosticStorageAccountId`
-
-Resource ID of the diagnostic storage account.
-- Required: No
-- Type: string
-- Default: `''`
-
-### Parameter: `diagnosticWorkspaceId`
-
-Resource ID of the diagnostic log analytics workspace.
 - Required: No
 - Type: string
 - Default: `''`
@@ -2127,49 +2188,80 @@ This property can be used by user in the request to enable or disable the Host E
 The configuration for the [AAD Join] extension. Must at least contain the ["enabled": true] property to be executed.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default:
+  ```Bicep
+  {
+      enabled: false
+  }
+  ```
 
 ### Parameter: `extensionAntiMalwareConfig`
 
 The configuration for the [Anti Malware] extension. Must at least contain the ["enabled": true] property to be executed.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default:
+  ```Bicep
+  {
+      enabled: false
+  }
+  ```
 
 ### Parameter: `extensionAzureDiskEncryptionConfig`
 
 The configuration for the [Azure Disk Encryption] extension. Must at least contain the ["enabled": true] property to be executed. Restrictions: Cannot be enabled on disks that have encryption at host enabled. Managed disks encrypted using Azure Disk Encryption cannot be encrypted using customer-managed keys.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default:
+  ```Bicep
+  {
+      enabled: false
+  }
+  ```
 
 ### Parameter: `extensionCustomScriptConfig`
 
 The configuration for the [Custom Script] extension. Must at least contain the ["enabled": true] property to be executed.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default:
+  ```Bicep
+  {
+      enabled: false
+      fileData: []
+  }
+  ```
 
 ### Parameter: `extensionCustomScriptProtectedSetting`
 
 Any object that contains the extension specific protected settings.
 - Required: No
 - Type: secureObject
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `extensionDependencyAgentConfig`
 
 The configuration for the [Dependency Agent] extension. Must at least contain the ["enabled": true] property to be executed.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default:
+  ```Bicep
+  {
+      enabled: false
+  }
+  ```
 
 ### Parameter: `extensionDomainJoinConfig`
 
 The configuration for the [Domain Join] extension. Must at least contain the ["enabled": true] property to be executed.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default:
+  ```Bicep
+  {
+      enabled: false
+  }
+  ```
 
 ### Parameter: `extensionDomainJoinPassword`
 
@@ -2183,21 +2275,36 @@ Required if name is specified. Password of the user specified in user parameter.
 The configuration for the [Desired State Configuration] extension. Must at least contain the ["enabled": true] property to be executed.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default:
+  ```Bicep
+  {
+      enabled: false
+  }
+  ```
 
 ### Parameter: `extensionMonitoringAgentConfig`
 
 The configuration for the [Monitoring Agent] extension. Must at least contain the ["enabled": true] property to be executed.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default:
+  ```Bicep
+  {
+      enabled: false
+  }
+  ```
 
 ### Parameter: `extensionNetworkWatcherAgentConfig`
 
 The configuration for the [Network Watcher Agent] extension. Must at least contain the ["enabled": true] property to be executed.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default:
+  ```Bicep
+  {
+      enabled: false
+  }
+  ```
 
 ### Parameter: `imageReference`
 
@@ -2211,7 +2318,14 @@ Specifies that the image or disk that is being used was licensed on-premises. Th
 - Required: No
 - Type: string
 - Default: `''`
-- Allowed: `['', Windows_Client, Windows_Server]`
+- Allowed:
+  ```Bicep
+  [
+    ''
+    'Windows_Client'
+    'Windows_Server'
+  ]
+  ```
 
 ### Parameter: `location`
 
@@ -2247,6 +2361,32 @@ Optional. Specify the name of lock.
 - Required: No
 - Type: string
 
+### Parameter: `managedIdentities`
+
+The managed identity definition for this resource. The system-assigned managed identity will automatically be enabled if extensionAadJoinConfig.enabled = "True".
+- Required: No
+- Type: object
+
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`systemAssigned`](#parameter-managedidentitiessystemassigned) | No | bool | Optional. Enables system assigned managed identity on the resource. |
+| [`userAssignedResourceIds`](#parameter-managedidentitiesuserassignedresourceids) | No | array | Optional. The resource ID(s) to assign to the resource. |
+
+### Parameter: `managedIdentities.systemAssigned`
+
+Optional. Enables system assigned managed identity on the resource.
+
+- Required: No
+- Type: bool
+
+### Parameter: `managedIdentities.userAssignedResourceIds`
+
+Optional. The resource ID(s) to assign to the resource.
+
+- Required: No
+- Type: array
+
 ### Parameter: `maxPriceForLowPriorityVm`
 
 Specifies the maximum price you are willing to pay for a low priority VM/VMSS. This price is in US Dollars.
@@ -2274,21 +2414,6 @@ Configures NICs and PIPs.
 - Required: Yes
 - Type: array
 
-### Parameter: `nicdiagnosticMetricsToEnable`
-
-The name of metrics that will be streamed.
-- Required: No
-- Type: array
-- Default: `[AllMetrics]`
-- Allowed: `[AllMetrics]`
-
-### Parameter: `nicDiagnosticSettingsName`
-
-The name of the NIC diagnostic setting, if deployed.
-- Required: No
-- Type: string
-- Default: `[format('{0}-diagnosticSettings', parameters('name'))]`
-
 ### Parameter: `osDisk`
 
 Specifies the OS disk. For security reasons, it is recommended to specify DiskEncryptionSet into the osDisk object.  Restrictions: DiskEncryptionSet cannot be enabled if Azure Disk Encryption (guest-VM encryption using bitlocker/DM-Crypt) is enabled on your VMs.
@@ -2300,7 +2425,13 @@ Specifies the OS disk. For security reasons, it is recommended to specify DiskEn
 The chosen OS type.
 - Required: Yes
 - Type: string
-- Allowed: `[Linux, Windows]`
+- Allowed:
+  ```Bicep
+  [
+    'Linux'
+    'Windows'
+  ]
+  ```
 
 ### Parameter: `patchAssessmentMode`
 
@@ -2308,7 +2439,13 @@ VM guest patching assessment mode. Set it to 'AutomaticByPlatform' to enable aut
 - Required: No
 - Type: string
 - Default: `'ImageDefault'`
-- Allowed: `[AutomaticByPlatform, ImageDefault]`
+- Allowed:
+  ```Bicep
+  [
+    'AutomaticByPlatform'
+    'ImageDefault'
+  ]
+  ```
 
 ### Parameter: `patchMode`
 
@@ -2316,37 +2453,23 @@ VM guest patching orchestration mode. 'AutomaticByOS' & 'Manual' are for Windows
 - Required: No
 - Type: string
 - Default: `''`
-- Allowed: `['', AutomaticByOS, AutomaticByPlatform, ImageDefault, Manual]`
-
-### Parameter: `pipdiagnosticLogCategoriesToEnable`
-
-The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection.
-- Required: No
-- Type: array
-- Default: `[allLogs]`
-- Allowed: `['', allLogs, DDoSMitigationFlowLogs, DDoSMitigationReports, DDoSProtectionNotifications]`
-
-### Parameter: `pipdiagnosticMetricsToEnable`
-
-The name of metrics that will be streamed.
-- Required: No
-- Type: array
-- Default: `[AllMetrics]`
-- Allowed: `[AllMetrics]`
-
-### Parameter: `pipDiagnosticSettingsName`
-
-The name of the PIP diagnostic setting, if deployed.
-- Required: No
-- Type: string
-- Default: `[format('{0}-diagnosticSettings', parameters('name'))]`
+- Allowed:
+  ```Bicep
+  [
+    ''
+    'AutomaticByOS'
+    'AutomaticByPlatform'
+    'ImageDefault'
+    'Manual'
+  ]
+  ```
 
 ### Parameter: `plan`
 
 Specifies information about the marketplace image used to create the virtual machine. This element is only used for marketplace images. Before you can use a marketplace image from an API, you must enable the image for programmatic use.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `priority`
 
@@ -2354,7 +2477,14 @@ Specifies the priority for the virtual machine.
 - Required: No
 - Type: string
 - Default: `'Regular'`
-- Allowed: `[Low, Regular, Spot]`
+- Allowed:
+  ```Bicep
+  [
+    'Low'
+    'Regular'
+    'Spot'
+  ]
+  ```
 
 ### Parameter: `provisionVMAgent`
 
@@ -2466,19 +2596,11 @@ Specifies the SecurityType of the virtual machine. It is set as TrustedLaunch to
 - Type: string
 - Default: `''`
 
-### Parameter: `systemAssignedIdentity`
-
-Enables system assigned managed identity on the resource. The system-assigned managed identity will automatically be enabled if extensionAadJoinConfig.enabled = "True".
-- Required: No
-- Type: bool
-- Default: `False`
-
 ### Parameter: `tags`
 
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `timeZone`
 
@@ -2493,13 +2615,6 @@ The flag that enables or disables a capability to have one or more managed data 
 - Required: No
 - Type: bool
 - Default: `False`
-
-### Parameter: `userAssignedIdentities`
-
-The ID(s) to assign to the resource.
-- Required: No
-- Type: object
-- Default: `{object}`
 
 ### Parameter: `vmSize`
 
@@ -2519,7 +2634,7 @@ Specifies whether vTPM should be enabled on the virtual machine. This parameter 
 Specifies the Windows Remote Management listeners. This enables remote Windows PowerShell. - WinRMConfiguration object.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 
 ## Outputs
@@ -2530,7 +2645,7 @@ Specifies the Windows Remote Management listeners. This enables remote Windows P
 | `name` | string | The name of the VM. |
 | `resourceGroupName` | string | The name of the resource group the VM was created in. |
 | `resourceId` | string | The resource ID of the VM. |
-| `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
+| `systemAssignedMIPrincipalId` | string | The principal ID of the system assigned identity. |
 
 ## Cross-referenced modules
 

@@ -133,7 +133,7 @@ param scaleSetPriority string = ''
 param spotMaxPrice int = -1
 
 @description('Optional. Tags of the resource.')
-param tags object = {}
+param tags object?
 
 @description('Optional. The type of Agent Pool.')
 param type string = ''
