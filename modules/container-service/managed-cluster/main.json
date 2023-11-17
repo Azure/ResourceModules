@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.23.1.45101",
-      "templateHash": "10758692765653328788"
+      "templateHash": "1906456864170625087"
     },
     "name": "Azure Kubernetes Service (AKS) Managed Clusters",
     "description": "This module deploys an Azure Kubernetes Service (AKS) Managed Cluster.",
@@ -864,6 +864,20 @@
         "description": "Optional. The diagnostic settings of the service."
       }
     },
+    "enableAzureKeyVaultKms": {
+      "type": "bool",
+      "defaultValue": false,
+      "metadata": {
+        "description": "Optional. Whether to enable Key Management Service."
+      }
+    },
+    "keyVaultKms": {
+      "type": "object",
+      "defaultValue": {},
+      "metadata": {
+        "description": "Conditional. Object that contains the 'keyId', 'keyVaultNetworkAccess' and 'keyVaultResourceId' to enable Key Management Service. Required if enableAzureKeyVaultKms is set to true."
+      }
+    },
     "omsAgentEnabled": {
       "type": "bool",
       "defaultValue": true,
@@ -1116,6 +1130,7 @@
           "userAssignedIdentityExceptions": "[parameters('podIdentityProfileUserAssignedIdentityExceptions')]"
         },
         "securityProfile": {
+          "azureKeyVaultKms": "[if(parameters('enableAzureKeyVaultKms'), createObject('enabled', parameters('enableAzureKeyVaultKms'), 'keyId', parameters('keyVaultKms').keyId, 'keyVaultNetworkAccess', parameters('keyVaultKms').keyVaultNetworkAccess, 'keyVaultResourceId', if(equals(parameters('keyVaultKms').keyVaultNetworkAccess, 'Private'), parameters('keyVaultKms').keyVaultResourceId, null())), null())]",
           "defender": "[if(parameters('enableAzureDefender'), createObject('securityMonitoring', createObject('enabled', parameters('enableAzureDefender')), 'logAnalyticsWorkspaceResourceId', if(not(empty(parameters('monitoringWorkspaceId'))), parameters('monitoringWorkspaceId'), null())), null())]",
           "workloadIdentity": "[if(parameters('enableWorkloadIdentity'), createObject('enabled', parameters('enableWorkloadIdentity')), null())]"
         },

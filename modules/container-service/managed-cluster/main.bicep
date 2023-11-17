@@ -314,6 +314,12 @@ param supportPlan string = 'KubernetesOfficial'
 @description('Optional. The diagnostic settings of the service.')
 param diagnosticSettings diagnosticSettingType
 
+@description('Optional. Whether to enable Key Management Service.')
+param enableAzureKeyVaultKms bool = false
+
+@description('Conditional. Object that contains the \'keyId\', \'keyVaultNetworkAccess\' and \'keyVaultResourceId\' to enable Key Management Service. Required if enableAzureKeyVaultKms is set to true.')
+param keyVaultKms object = {}
+
 @description('Optional. Specifies whether the OMS agent is enabled.')
 param omsAgentEnabled bool = true
 
@@ -539,6 +545,12 @@ resource managedCluster 'Microsoft.ContainerService/managedClusters@2023-07-02-p
       userAssignedIdentityExceptions: podIdentityProfileUserAssignedIdentityExceptions
     }
     securityProfile: {
+      azureKeyVaultKms: enableAzureKeyVaultKms ? {
+        enabled: enableAzureKeyVaultKms
+        keyId: keyVaultKms.keyId
+        keyVaultNetworkAccess: keyVaultKms.keyVaultNetworkAccess
+        keyVaultResourceId: keyVaultKms.keyVaultNetworkAccess == 'Private' ? keyVaultKms.keyVaultResourceId : null
+      } : null
       defender: enableAzureDefender ? {
         securityMonitoring: {
           enabled: enableAzureDefender
