@@ -1836,7 +1836,7 @@ Specifies whether the ingressApplicationGateway (AGIC) add-on is enabled or not.
 Object that contains the 'keyId', 'keyVaultNetworkAccess' and 'keyVaultResourceId' to enable Key Management Service. Required if enableAzureKeyVaultKms is set to true.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `kubeDashboardEnabled`
 
