@@ -130,13 +130,6 @@ resource proximityPlacementGroup 'Microsoft.Compute/proximityPlacementGroups@202
   location: location
 }
 
-@description('The resource ID of the created Virtual Network Subnet.')
-output subnetResourceIds array = [
-  virtualNetwork.properties.subnets[0].id
-  virtualNetwork.properties.subnets[1].id
-  virtualNetwork.properties.subnets[2].id
-]
-
 resource dnsZone 'Microsoft.Network/dnsZones@2018-05-01' = {
   name: dnsZoneName
   location: 'global'
@@ -178,5 +171,17 @@ output dnsZoneResourceId string = dnsZone.id
 @description('The resource ID of the created Log Analytics Workspace.')
 output logAnalyticsWorkspaceResourceId string = logAnalyticsWorkspace.id
 
-@description('The uri including version of the KMS Key.')
-output keyUriWithVersion string = keyVault::kmskey.properties.keyUriWithVersion
+@description('The resource ID of the created Key Vault.')
+output keyVaultResourceId string = keyVault.id
+
+@description('The name of the Key Vault Encryption Key.')
+output keyVaultEncryptionKeyName string = keyVault::key.name
+
+@description('The resource ID of the created Virtual Network System Agent Pool Subnet.')
+output systemPoolSubnetResourceId string = virtualNetwork.properties.subnets[0].id
+
+@description('The resource ID of the created Virtual Network Agent Pool 1 Subnet.')
+output agentPool1SubnetResourceId string = virtualNetwork.properties.subnets[1].id
+
+@description('The resource ID of the created Virtual Network Agent Pool 2 Subnet.')
+output agentPool2SubnetResourceId string = virtualNetwork.properties.subnets[2].id

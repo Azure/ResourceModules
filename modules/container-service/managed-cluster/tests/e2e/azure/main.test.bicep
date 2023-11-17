@@ -92,7 +92,7 @@ module testDeployment '../../../main.bicep' = {
         storageProfile: 'ManagedDisks'
         type: 'VirtualMachineScaleSets'
         vmSize: 'Standard_DS2_v2'
-        vnetSubnetID: nestedDependencies.outputs.subnetResourceIds[0]
+        vnetSubnetID: nestedDependencies.outputs.systemPoolSubnetResourceId
       }
     ]
     agentPools: [
@@ -119,7 +119,7 @@ module testDeployment '../../../main.bicep' = {
         storageProfile: 'ManagedDisks'
         type: 'VirtualMachineScaleSets'
         vmSize: 'Standard_DS2_v2'
-        vnetSubnetID: nestedDependencies.outputs.subnetResourceIds[1]
+        vnetSubnetID: nestedDependencies.outputs.agentPool1SubnetResourceId
         proximityPlacementGroupResourceId: nestedDependencies.outputs.proximityPlacementGroupResourceId
       }
       {
@@ -145,7 +145,7 @@ module testDeployment '../../../main.bicep' = {
         storageProfile: 'ManagedDisks'
         type: 'VirtualMachineScaleSets'
         vmSize: 'Standard_DS2_v2'
-        vnetSubnetID: nestedDependencies.outputs.subnetResourceIds[2]
+        vnetSubnetID: nestedDependencies.outputs.agentPool2SubnetResourceId
       }
     ]
     autoUpgradeProfileUpgradeChannel: 'stable'
@@ -189,10 +189,10 @@ module testDeployment '../../../main.bicep' = {
     enableAzureDefender: true
     enableKeyvaultSecretsProvider: true
     enablePodSecurityPolicy: false
-    enableAzureKeyVaultKms: true
-    keyVaultKms: {
-      keyId: nestedDependencies.outputs.keyUriWithVersion
+    customerManagedKey: {
+      keyName: nestedDependencies.outputs.keyVaultEncryptionKeyName
       keyVaultNetworkAccess: 'Public'
+      keyVaultResourceId: nestedDependencies.outputs.keyVaultResourceId
     }
     lock: {
       kind: 'CanNotDelete'
