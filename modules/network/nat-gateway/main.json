@@ -5,8 +5,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.22.6.54827",
-      "templateHash": "11905897400304782014"
+      "version": "0.23.1.45101",
+      "templateHash": "9381387795158980533"
     },
     "name": "NAT Gateways",
     "description": "This module deploys a NAT Gateway.",
@@ -425,8 +425,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.22.6.54827",
-              "templateHash": "18404193892947466906"
+              "version": "0.23.1.45101",
+              "templateHash": "15536304828480480757"
             },
             "name": "Public IP Addresses",
             "description": "This module deploys a Public IP Address.",
@@ -945,8 +945,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.22.6.54827",
-              "templateHash": "311381109175947078"
+              "version": "0.23.1.45101",
+              "templateHash": "16528829671778949522"
             }
           },
           "parameters": {
@@ -1021,8 +1021,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.22.6.54827",
-              "templateHash": "12289116883631984029"
+              "version": "0.23.1.45101",
+              "templateHash": "9244193973447540175"
             },
             "name": "Public IP Prefixes",
             "description": "This module deploys a Public IP Prefix.",
@@ -1317,8 +1317,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.22.6.54827",
-              "templateHash": "311381109175947078"
+              "version": "0.23.1.45101",
+              "templateHash": "16528829671778949522"
             }
           },
           "parameters": {
