@@ -41,7 +41,7 @@ The following section provides usage examples for the module, which were used to
 
 ```bicep
 module dataCollectionRule 'br:bicep/modules/insights.data-collection-rule:1.0.0' = {
-  name: '${uniqueString(deployment().name)}-test-idcrcusadv'
+  name: '${uniqueString(deployment().name, location)}-test-idcrcusadv'
   params: {
     // Required parameters
     dataFlows: [
@@ -284,7 +284,7 @@ module dataCollectionRule 'br:bicep/modules/insights.data-collection-rule:1.0.0'
 
 ```bicep
 module dataCollectionRule 'br:bicep/modules/insights.data-collection-rule:1.0.0' = {
-  name: '${uniqueString(deployment().name)}-test-idcrcusbas'
+  name: '${uniqueString(deployment().name, location)}-test-idcrcusbas'
   params: {
     // Required parameters
     dataFlows: [
@@ -495,7 +495,7 @@ module dataCollectionRule 'br:bicep/modules/insights.data-collection-rule:1.0.0'
 
 ```bicep
 module dataCollectionRule 'br:bicep/modules/insights.data-collection-rule:1.0.0' = {
-  name: '${uniqueString(deployment().name)}-test-idcrcusiis'
+  name: '${uniqueString(deployment().name, location)}-test-idcrcusiis'
   params: {
     // Required parameters
     dataFlows: [
@@ -665,7 +665,7 @@ This instance deploys the module with the minimum set of required parameters.
 
 ```bicep
 module dataCollectionRule 'br:bicep/modules/insights.data-collection-rule:1.0.0' = {
-  name: '${uniqueString(deployment().name)}-test-idcrmin'
+  name: '${uniqueString(deployment().name, location)}-test-idcrmin'
   params: {
     // Required parameters
     dataFlows: [
@@ -796,7 +796,7 @@ module dataCollectionRule 'br:bicep/modules/insights.data-collection-rule:1.0.0'
 
 ```bicep
 module dataCollectionRule 'br:bicep/modules/insights.data-collection-rule:1.0.0' = {
-  name: '${uniqueString(deployment().name)}-test-idcrlin'
+  name: '${uniqueString(deployment().name, location)}-test-idcrlin'
   params: {
     // Required parameters
     dataFlows: [
@@ -1187,7 +1187,7 @@ module dataCollectionRule 'br:bicep/modules/insights.data-collection-rule:1.0.0'
 
 ```bicep
 module dataCollectionRule 'br:bicep/modules/insights.data-collection-rule:1.0.0' = {
-  name: '${uniqueString(deployment().name)}-test-idcrwin'
+  name: '${uniqueString(deployment().name, location)}-test-idcrwin'
   params: {
     // Required parameters
     dataFlows: [
