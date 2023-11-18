@@ -45,7 +45,7 @@ This section provides an overview of the library's feature set.
 | 30 | consumption<p>budget | [![Consumption - Budgets](https://github.com/Azure/ResourceModules/workflows/Consumption%20-%20Budgets/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.consumption.budgets.yml) |  |  |  |  |  |  | [L1:1, L2:1, L3:3] | 92 |
 | 31 | container-instance<p>container-group | [![ContainerInstance - ContainerGroups](https://github.com/Azure/ResourceModules/workflows/ContainerInstance%20-%20ContainerGroups/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.containerinstance.containergroups.yml) |  |  |  |  |  |  | [L1:1, L2:1, L3:5] | 175 |
 | 32 | container-registry<p>registry | [![ContainerRegistry - Registries](https://github.com/Azure/ResourceModules/workflows/ContainerRegistry%20-%20Registries/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.containerregistry.registries.yml) |  |  |  |  |  |  | [L1:4, L2:1, L3:5] | 447 |
-| 33 | container-service<p>managed-cluster | [![ContainerService - ManagedClusters](https://github.com/Azure/ResourceModules/workflows/ContainerService%20-%20ManagedClusters/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.containerservice.managedclusters.yml) |  |  |  |  |  |  | [L1:2, L2:1, L3:4] | 668 |
+| 33 | container-service<p>managed-cluster | [![ContainerService - ManagedClusters](https://github.com/Azure/ResourceModules/workflows/ContainerService%20-%20ManagedClusters/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.containerservice.managedclusters.yml) |  |  |  |  |  |  | [L1:2, L2:1, L3:4] | 693 |
 | 34 | data-factory<p>factory | [![DataFactory - Factories](https://github.com/Azure/ResourceModules/workflows/DataFactory%20-%20Factories/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.datafactory.factories.yml) |  |  |  |  |  |  | [L1:3, L2:2, L3:3] | 342 |
 | 35 | data-protection<p>backup-vault | [![DataProtection - BackupVaults](https://github.com/Azure/ResourceModules/workflows/DataProtection%20-%20BackupVaults/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.dataprotection.backupvaults.yml) |  |  |  |  |  |  | [L1:2, L2:1, L3:3] | 159 |
 | 36 | databricks<p>access-connector | [![Databricks - Access Connectors](https://github.com/Azure/ResourceModules/workflows/Databricks%20-%20Access%20Connectors/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.databricks.accessconnectors.yml) |  |  |  |  |  |  | [L1:1, L2:1, L3:3] | 110 |
@@ -150,7 +150,7 @@ This section provides an overview of the library's feature set.
 | 135 | web<p>serverfarm | [![Web - Serverfarms](https://github.com/Azure/ResourceModules/workflows/Web%20-%20Serverfarms/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.web.serverfarms.yml) |  |  |  |  |  |  | [L1:1, L2:1, L3:2] | 184 |
 | 136 | web<p>site | [![Web - Sites](https://github.com/Azure/ResourceModules/workflows/Web%20-%20Sites/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.web.sites.yml) |  |  |  |  |  |  | [L1:6, L2:6, L3:5] | 455 |
 | 137 | web<p>static-site | [![Web - StaticSites](https://github.com/Azure/ResourceModules/workflows/Web%20-%20StaticSites/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.web.staticsites.yml) |  |  |  |  |  |  | [L1:4, L2:1, L3:3] | 284 |
-| Sum | | | 0 | 0 | 1 | 0 | 0 | 2 | 981 | 29849 |
+| Sum | | | 0 | 0 | 1 | 0 | 0 | 2 | 981 | 29874 |
 
 ## Legend
 
