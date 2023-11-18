@@ -31,14 +31,12 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2023-04-01' = {
         addressPrefix
       ]
     }
-    subnets: [
-      {
-        name: 'defaultSubnet'
+    subnets: map(range(0, 2), i => {
+        name: 'subnet-${i}'
         properties: {
-          addressPrefix: cidrSubnet(addressPrefix, 16, 0)
+          addressPrefix: cidrSubnet(addressPrefix, 24, i)
         }
-      }
-    ]
+      })
   }
 }
 
@@ -85,3 +83,9 @@ output privateDnsZoneResourceId string = privateDnsZone.id
 
 @description('The resource ID of the VirtualNetwork created.')
 output vNetResourceId string = virtualNetwork.id
+
+@description('The resource ID of the created Virtual Network System Agent Pool Subnet.')
+output systemPoolSubnetResourceId string = virtualNetwork.properties.subnets[0].id
+
+@description('The resource ID of the created Virtual Network Agent Pool 1 Subnet.')
+output agentPoolSubnetResourceId string = virtualNetwork.properties.subnets[1].id
