@@ -44,7 +44,7 @@ This instance deploys the module with the minimum set of required parameters.
 
 ```bicep
 module account 'br:bicep/modules/purview.account:1.0.0' = {
-  name: '${uniqueString(deployment().name)}-test-pvamin'
+  name: '${uniqueString(deployment().name, location)}-test-pvamin'
   params: {
     // Required parameters
     name: 'pvamin001'
@@ -96,7 +96,7 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module account 'br:bicep/modules/purview.account:1.0.0' = {
-  name: '${uniqueString(deployment().name)}-test-pvamax'
+  name: '${uniqueString(deployment().name, location)}-test-pvamax'
   params: {
     // Required parameters
     name: 'pvamax001'
@@ -386,7 +386,7 @@ This instance deploys the module in alignment with the best-practices of the Azu
 
 ```bicep
 module account 'br:bicep/modules/purview.account:1.0.0' = {
-  name: '${uniqueString(deployment().name)}-test-pvawaf'
+  name: '${uniqueString(deployment().name, location)}-test-pvawaf'
   params: {
     // Required parameters
     name: 'pvawaf001'
