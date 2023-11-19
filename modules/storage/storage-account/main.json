@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.23.1.45101",
-      "templateHash": "12303802246802299756"
+      "templateHash": "7985973411510885345"
     },
     "name": "Storage Accounts",
     "description": "This module deploys a Storage Account.",
@@ -1861,7 +1861,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.23.1.45101",
-              "templateHash": "2468823120254808431"
+              "templateHash": "10696407376477942681"
             },
             "name": "Storage Account blob Services",
             "description": "This module deploys a Storage Account Blob Service.",
@@ -1999,7 +1999,7 @@
             },
             "changeFeedRetentionInDays": {
               "type": "int",
-              "defaultValue": 7,
+              "nullable": true,
               "minValue": 0,
               "maxValue": 146000,
               "metadata": {
@@ -2015,7 +2015,7 @@
             },
             "containerDeleteRetentionPolicyDays": {
               "type": "int",
-              "defaultValue": 7,
+              "nullable": true,
               "minValue": 1,
               "maxValue": 365,
               "metadata": {
@@ -2052,7 +2052,7 @@
             },
             "deleteRetentionPolicyDays": {
               "type": "int",
-              "defaultValue": 7,
+              "nullable": true,
               "minValue": 1,
               "maxValue": 365,
               "metadata": {
@@ -2089,10 +2089,10 @@
             },
             "restorePolicyDays": {
               "type": "int",
-              "defaultValue": 6,
+              "nullable": true,
               "minValue": 1,
               "metadata": {
-                "description": "Optional. how long this blob can be restored. It should be less than DeleteRetentionPolicy days."
+                "description": "Optional. How long this blob can be restored. It should be less than DeleteRetentionPolicy days."
               }
             },
             "containers": {
@@ -2149,11 +2149,11 @@
                 "automaticSnapshotPolicyEnabled": "[parameters('automaticSnapshotPolicyEnabled')]",
                 "changeFeed": {
                   "enabled": "[parameters('changeFeedEnabled')]",
-                  "retentionInDays": "[if(equals(parameters('changeFeedEnabled'), true()), if(not(equals(parameters('changeFeedRetentionInDays'), 0)), parameters('changeFeedRetentionInDays'), null()), null())]"
+                  "retentionInDays": "[parameters('changeFeedRetentionInDays')]"
                 },
                 "containerDeleteRetentionPolicy": {
                   "enabled": "[parameters('containerDeleteRetentionPolicyEnabled')]",
-                  "days": "[if(equals(parameters('containerDeleteRetentionPolicyEnabled'), true()), parameters('containerDeleteRetentionPolicyDays'), null())]",
+                  "days": "[parameters('containerDeleteRetentionPolicyDays')]",
                   "allowPermanentDelete": "[if(equals(parameters('containerDeleteRetentionPolicyEnabled'), true()), parameters('containerDeleteRetentionPolicyAllowPermanentDelete'), null())]"
                 },
                 "cors": {
@@ -2162,7 +2162,7 @@
                 "defaultServiceVersion": "[if(not(empty(parameters('defaultServiceVersion'))), parameters('defaultServiceVersion'), null())]",
                 "deleteRetentionPolicy": {
                   "enabled": "[parameters('deleteRetentionPolicyEnabled')]",
-                  "days": "[if(equals(parameters('deleteRetentionPolicyEnabled'), true()), parameters('deleteRetentionPolicyDays'), null())]",
+                  "days": "[parameters('deleteRetentionPolicyDays')]",
                   "allowPermanentDelete": "[if(and(parameters('deleteRetentionPolicyEnabled'), parameters('deleteRetentionPolicyAllowPermanentDelete')), true(), null())]"
                 },
                 "isVersioningEnabled": "[parameters('isVersioningEnabled')]",
